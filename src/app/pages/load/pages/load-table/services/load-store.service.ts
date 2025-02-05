@@ -14,8 +14,20 @@ import {
     ILoadGridItem,
 } from '@pages/load/pages/load-table/models/index';
 import { ITableData } from '@shared/models/table-data.model';
-import { Column, ICurrentSearchTableData, ITableColummn, ITableOptions } from '@shared/models';
-import { CreateCommentCommand, CreateLoadTemplateCommand, LoadListResponse, LoadStatusType, RevertLoadStatusCommand, UpdateLoadStatusCommand } from 'appcoretruckassist';
+import {
+    Column,
+    ICurrentSearchTableData,
+    ITableColummn,
+    ITableOptions,
+} from '@shared/models';
+import {
+    CreateCommentCommand,
+    CreateLoadTemplateCommand,
+    LoadListResponse,
+    LoadStatusType,
+    RevertLoadStatusCommand,
+    UpdateLoadStatusCommand,
+} from 'appcoretruckassist';
 import { Load } from '@pages/load/models';
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
 
@@ -36,7 +48,10 @@ import {
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
 // enums
-import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import {
+    eActiveViewMode,
+    eLoadStatusType,
+} from '@pages/load/pages/load-table/enums/index';
 import { DispatcherFilter } from '@shared/models/filters';
 
 @Injectable({
@@ -44,7 +59,7 @@ import { DispatcherFilter } from '@shared/models/filters';
 })
 export class LoadStoreService {
     constructor(private store: Store) {}
-    
+
     public viewData$: Observable<ILoadGridItem[]> = this.store.pipe(
         select(viewDataSelector)
     );
@@ -81,32 +96,41 @@ export class LoadStoreService {
         select(getStatusListSelector)
     );
 
-    public dispatchLoadList(apiParam: IGetLoadListParam, showMore?: boolean, onSearch?: ICurrentSearchTableData): void {
+    public dispatchLoadList(
+        apiParam: IGetLoadListParam,
+        showMore?: boolean,
+        onSearch?: ICurrentSearchTableData
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_LIST,
             apiParam,
             showMore,
-            onSearch
+            onSearch,
         });
-        
-        this.store.dispatch({
-            type: LoadStoreConstants.ACTION_GET_DISPATCHER_LIST,
-            loadStatusType: apiParam.statusType
-        })
-
-        
-        this.store.dispatch({
-            type: LoadStoreConstants.ACTION_GET_LOAD_STATUS_FILTER,
-            apiParam
-        })
     }
 
-    public dispatchLoadTemplateList(apiParam: IGetLoadTemplateParam, showMore?: boolean, onSearch?: ICurrentSearchTableData): void {
+    public loadDispatchFilters(apiParam: IGetLoadListParam): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_DISPATCHER_LIST,
+            loadStatusType: apiParam.loadStatusType,
+        });
+
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_LOAD_STATUS_FILTER,
+            loadStatusType: apiParam.loadStatusType,
+        });
+    }
+
+    public dispatchLoadTemplateList(
+        apiParam: IGetLoadTemplateParam,
+        showMore?: boolean,
+        onSearch?: ICurrentSearchTableData
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_TEMPLATES,
             apiParam,
             showMore,
-            onSearch
+            onSearch,
         });
     }
 
@@ -123,286 +147,355 @@ export class LoadStoreService {
     public dispatchGetLoadStatusFilter(apiParam: LoadStatusType): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_LOAD_STATUS_FILTER,
-            apiParam
+            apiParam,
         });
     }
 
     public dispatchSelectedTab(selectedTab: eLoadStatusType): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_SET_SELECTED_TAB,
-            selectedTab
+            selectedTab,
         });
     }
 
     public dispatchSetActiveViewMode(activeViewMode: eActiveViewMode): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
-            activeViewMode
+            activeViewMode,
         });
     }
 
     public dispatchUpdateLoadStatus(apiParam: UpdateLoadStatusCommand): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
-            apiParam
+            apiParam,
         });
     }
 
-    public dispatchUpdateloadStatusConfirmation(confirmation: ConfirmationActivation): void {
+    public dispatchUpdateloadStatusConfirmation(
+        confirmation: ConfirmationActivation
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
-            confirmation
+            confirmation,
         });
     }
 
     public dispatchUpdateLoadStatusSignalR(response: LoadListResponse): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_SIGNALR,
-            response
+            response,
         });
     }
 
     public dispatchRevertLoadStatus(apiParam: RevertLoadStatusCommand): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_REVERT_LOAD_STATUS,
-            apiParam
+            apiParam,
         });
     }
 
-    public dispatchUpdateOrRevertLoadStatus(param: UpdateLoadStatusCommand | RevertLoadStatusCommand, isRevert: boolean): void {
-        if (isRevert)
-            this.dispatchRevertLoadStatus(param);
-        else
-            this.dispatchUpdateLoadStatus(param);
+    public dispatchUpdateOrRevertLoadStatus(
+        param: UpdateLoadStatusCommand | RevertLoadStatusCommand,
+        isRevert: boolean
+    ): void {
+        if (isRevert) this.dispatchRevertLoadStatus(param);
+        else this.dispatchUpdateLoadStatus(param);
     }
 
     public dispatchSaveValueNote(entityId: number, value: string): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_SAVE_NOTE,
             entityId,
-            value
-        })
+            value,
+        });
     }
 
     public dispatchDeleteCommentById(apiParam: number, loadId: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DELETE_COMMENT_BY_ID,
             apiParam,
-            loadId
+            loadId,
         });
     }
 
     public dispatchDeleteLoadTemplateById(id: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DELETE_LOAD_TEMPLATE_BY_ID,
-            apiParam: id
+            apiParam: id,
         });
     }
 
     public dispatchDeleteLoadById(id: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DELETE_LOAD_BY_ID,
-            apiParam: id
+            apiParam: id,
         });
     }
 
-    public dispatchDeleteLoadOrTemplateById(id: number, selectedTab: eLoadStatusType): void {
+    public dispatchDeleteLoadOrTemplateById(
+        id: number,
+        selectedTab: eLoadStatusType
+    ): void {
         if (selectedTab === eLoadStatusType.Template)
             this.dispatchDeleteLoadTemplateById(id);
-        else
-            this.dispatchDeleteLoadById(id);
+        else this.dispatchDeleteLoadById(id);
     }
 
     public dispatchDeleteBulkLoadTemplates(ids: number[]): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DELETE_BULK_LOAD_TEMPLATE,
-            apiParam: ids
+            apiParam: ids,
         });
     }
 
     public dispatchDeleteBulkLoads(ids: number[]): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DELETE_BULK_LOAD,
-            apiParam: ids
+            apiParam: ids,
         });
     }
 
-    public dispatchBulkDeleteBulkLoadsOrTemplates(ids: number[], selectedTab: eLoadStatusType): void {
+    public dispatchBulkDeleteBulkLoadsOrTemplates(
+        ids: number[],
+        selectedTab: eLoadStatusType
+    ): void {
         if (selectedTab === eLoadStatusType.Template)
             this.dispatchDeleteBulkLoadTemplates(ids);
-        else
-            this.dispatchDeleteBulkLoads(ids);
+        else this.dispatchDeleteBulkLoads(ids);
     }
 
-    public dsipatchCanDeleteSelectedDataRows(canDeleteSelectedDataRows: boolean, ids: number[]): void {
+    public dsipatchCanDeleteSelectedDataRows(
+        canDeleteSelectedDataRows: boolean,
+        ids: number[]
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_CAN_DELETE_SELECTED_DATA_ROWS,
             canDeleteSelectedDataRows,
-            ids
+            ids,
         });
     }
 
     public dispatchActionItemId(actionItemId: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_LOAD_BY_ID_LOCAL,
-            actionItemId
+            actionItemId,
         });
     }
 
     public dispatchTableColumnToggled(column: Column): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TABLE_COLUMN_TOGGLE,
-            column
+            column,
         });
     }
 
     public dispatchTableColumnReset(): void {
         this.store.dispatch({
-            type: LoadStoreConstants.ACTION_RESET_COLUMNS
-        })
+            type: LoadStoreConstants.ACTION_RESET_COLUMNS,
+        });
     }
 
     public dispatchTableUnlockToggle(): void {
         this.store.dispatch({
-            type: LoadStoreConstants.ACTION_TABLE_UNLOCK_TOGGLE
-        })
+            type: LoadStoreConstants.ACTION_TABLE_UNLOCK_TOGGLE,
+        });
     }
 
-    public dispatchTableColumnResize(columns: ITableColummn[], width: number, index: number): void {
+    public dispatchTableColumnResize(
+        columns: ITableColummn[],
+        width: number,
+        index: number
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_RESIZE_COLUMN,
             columns,
             width,
-            index
-        })
+            index,
+        });
     }
 
     public dispatchGetLoadById(id: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_LOAD_BY_ID,
-            apiParam: id
+            apiParam: id,
         });
     }
 
     public dispatchGetLoadTemplateById(id: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_LOAD_TEMPLATE_BY_ID,
-            apiParam: id
+            apiParam: id,
         });
     }
 
     public dispatchCreateLoad(apiParam: Load): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_CREATE_LOAD,
-            apiParam
+            apiParam,
         });
     }
 
-    public dispatchCreateLoadTemplate(apiParam: CreateLoadTemplateCommand): void {
+    public dispatchCreateLoadTemplate(
+        apiParam: CreateLoadTemplateCommand
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_CREATE_LOAD_TEMPLATE,
-            apiParam
+            apiParam,
         });
     }
 
-    public dispatchCreateComment(apiParam: CreateCommentCommand, metadata: ICreateCommentMetadata): void {
+    public dispatchCreateComment(
+        apiParam: CreateCommentCommand,
+        metadata: ICreateCommentMetadata
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_CREATE_COMMENT,
             apiParam,
-            metadata
+            metadata,
         });
     }
 
     public dispatchUpdateLoad(apiParam: Load): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD,
-            apiParam
+            apiParam,
         });
     }
 
-    public dispatchUpdateLoadTemplate(apiParam: CreateLoadTemplateCommand): void {
+    public dispatchUpdateLoadTemplate(
+        apiParam: CreateLoadTemplateCommand
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD_TEMPLATE,
-            apiParam
+            apiParam,
         });
     }
 
-    public dispatchUpdateLoadAndStatus(apiParamLoad: Load, apiParamStatus: UpdateLoadStatusCommand): void {
+    public dispatchUpdateLoadAndStatus(
+        apiParamLoad: Load,
+        apiParamStatus: UpdateLoadStatusCommand
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD_AND_STATUS,
             apiParamLoad,
-            apiParamStatus
-        })
+            apiParamStatus,
+        });
     }
 
-    public dispatchRevertStatusAndUpdateLoad(apiParamLoad: Load, apiParamStatus: RevertLoadStatusCommand): void {
+    public dispatchRevertStatusAndUpdateLoad(
+        apiParamLoad: Load,
+        apiParamStatus: RevertLoadStatusCommand
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD_AND_REVERT_STATUS,
             apiParamLoad,
-            apiParamStatus
-        })
+            apiParamStatus,
+        });
     }
 
-    public dispatchUpdateOrRevertStatusAndUpdateLoad(apiParamStatus: UpdateLoadStatusCommand | RevertLoadStatusCommand, apiParamLoad: Load, isRevert?: boolean) {
+    public dispatchUpdateOrRevertStatusAndUpdateLoad(
+        apiParamStatus: UpdateLoadStatusCommand | RevertLoadStatusCommand,
+        apiParamLoad: Load,
+        isRevert?: boolean
+    ) {
         if (isRevert)
-            this.dispatchRevertStatusAndUpdateLoad(apiParamLoad, apiParamStatus);
-        else
-            this.dispatchUpdateLoadAndStatus(apiParamLoad, apiParamStatus);
+            this.dispatchRevertStatusAndUpdateLoad(
+                apiParamLoad,
+                apiParamStatus
+            );
+        else this.dispatchUpdateLoadAndStatus(apiParamLoad, apiParamStatus);
     }
 
-    public dispatchGetEditLoadModalData(apiParam: number, selectedTab: eLoadStatusType, eventType: string): void {
+    public dispatchGetEditLoadModalData(
+        apiParam: number,
+        selectedTab: eLoadStatusType,
+        eventType: string
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_DATA,
             apiParam,
             selectedTab,
-            eventType
+            eventType,
         });
     }
 
-    public dispatchGetEditLoadTemplateModalData(apiParam: number, selectedTab: eLoadStatusType, eventType: string): void {
+    public dispatchGetEditLoadTemplateModalData(
+        apiParam: number,
+        selectedTab: eLoadStatusType,
+        eventType: string
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_EDIT_LOAD_TEMPLATE_MODAL_DATA,
             apiParam,
             selectedTab,
-            eventType
+            eventType,
         });
     }
 
-    public dispatchGetEditLoadOrTemplateModalData(apiParam: number, selectedTab: eLoadStatusType, eventType: string): void {
+    public dispatchGetEditLoadOrTemplateModalData(
+        apiParam: number,
+        selectedTab: eLoadStatusType,
+        eventType: string
+    ): void {
         if (selectedTab === eLoadStatusType.Template)
-            this.dispatchGetEditLoadTemplateModalData(apiParam, selectedTab, eventType);
-        else 
+            this.dispatchGetEditLoadTemplateModalData(
+                apiParam,
+                selectedTab,
+                eventType
+            );
+        else
             this.dispatchGetEditLoadModalData(apiParam, selectedTab, eventType);
     }
 
     public dispatchGetCreateLoadModalData(): void {
         this.store.dispatch({
-            type: LoadStoreConstants.ACTION_GET_CREATE_LOAD_MODAL_DATA
-        })
+            type: LoadStoreConstants.ACTION_GET_CREATE_LOAD_MODAL_DATA,
+        });
     }
 
-    public dispatchGetConvertToLoadModalData(apiParam: number, selectedTab: eLoadStatusType, eventType: string): void {
+    public dispatchGetConvertToLoadModalData(
+        apiParam: number,
+        selectedTab: eLoadStatusType,
+        eventType: string
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_CONVERT_TO_LOAD_MODAL_DATA,
             apiParam,
             selectedTab,
-            eventType
+            eventType,
         });
     }
 
-    public dispatchGetConvertToLoadTemplateModalData(apiParam: number, selectedTab: eLoadStatusType, eventType: string): void {
+    public dispatchGetConvertToLoadTemplateModalData(
+        apiParam: number,
+        selectedTab: eLoadStatusType,
+        eventType: string
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_CONVERT_TO_TEMPLATE_MODAL_DATA,
             apiParam,
             selectedTab,
-            eventType
-        })
+            eventType,
+        });
     }
 
-    public dispatchGetConvertToLoadOrTemplateModalData(apiParam: number, selectedTab: eLoadStatusType, eventType: string): void {
+    public dispatchGetConvertToLoadOrTemplateModalData(
+        apiParam: number,
+        selectedTab: eLoadStatusType,
+        eventType: string
+    ): void {
         if (selectedTab === eLoadStatusType.Template)
-            this.dispatchGetConvertToLoadModalData(apiParam, selectedTab, eventType);
-        else 
-            this.dispatchGetConvertToLoadTemplateModalData(apiParam, selectedTab, eventType);
+            this.dispatchGetConvertToLoadModalData(
+                apiParam,
+                selectedTab,
+                eventType
+            );
+        else
+            this.dispatchGetConvertToLoadTemplateModalData(
+                apiParam,
+                selectedTab,
+                eventType
+            );
     }
 }

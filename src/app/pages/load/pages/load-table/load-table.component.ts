@@ -154,7 +154,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
     ngOnInit(): void {
         this.loadStoreService.dispatchLoadList({
             statusType: eLoadStatusType.Active,
-            loadStatusType: LoadFilterStringEnum.ACTIVE_2
         });
 
         this.dispatchHubService.connect();
@@ -255,6 +254,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.filter,
                 eLoadStatusType[selectedTab]
             );
+
             this.updateCardView();
         } else if (action === TableStringEnum.VIEW_MODE) {
             this.loadStoreService.dispatchSetActiveViewMode(
@@ -537,9 +537,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     private getLoadStatusFilter(): void {
         if (this.selectedTab !== TableStringEnum.TEMPLATE_2)
-            this.loadStoreService.dispatchGetLoadStatusFilter(
-                <LoadStatusType>this.selectedTab
-            );
+            this.loadStoreService.loadDispatchFilters({
+                loadStatusType: this.selectedTab,
+            });
     }
 
     private onResize(): void {

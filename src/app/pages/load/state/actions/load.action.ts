@@ -1,34 +1,60 @@
-import { createAction, props } from "@ngrx/store";
+import { createAction, props } from '@ngrx/store';
 
 // models
-import { ICreateCommentMetadata, IGetLoadListParam, IGetLoadTemplateParam, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index";
-import { CommentResponse, CreateCommentCommand, CreateLoadTemplateCommand, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatusResponse, LoadStatusType, LoadTemplateResponse, RevertLoadStatusCommand, UpdateLoadStatusCommand } from "appcoretruckassist";
-import { Load } from "@pages/load/models";
-import { Column, ICurrentSearchTableData, ITableColummn } from "@shared/models";
-import { ConfirmationActivation } from "@shared/components/ta-shared-modals/confirmation-activation-modal/models";
+import {
+    ICreateCommentMetadata,
+    IGetLoadListParam,
+    IGetLoadTemplateParam,
+    ILoadTemplateGridItem,
+} from '@pages/load/pages/load-table/models/index';
+import {
+    CommentResponse,
+    CreateCommentCommand,
+    CreateLoadTemplateCommand,
+    DispatcherFilterResponse,
+    LoadListDto,
+    LoadListResponse,
+    LoadModalResponse,
+    LoadResponse,
+    LoadStatusResponse,
+    LoadStatusType,
+    LoadTemplateResponse,
+    RevertLoadStatusCommand,
+    UpdateLoadStatusCommand,
+} from 'appcoretruckassist';
+import { Load } from '@pages/load/models';
+import { Column, ICurrentSearchTableData, ITableColummn } from '@shared/models';
+import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
 
 // constants
-import { LoadStoreConstants } from "@pages/load/pages/load-table/utils/constants/index";
+import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
 // enums
-import { eLoadStatusType, eActiveViewMode } from "@pages/load/pages/load-table/enums/index";
+import {
+    eLoadStatusType,
+    eActiveViewMode,
+} from '@pages/load/pages/load-table/enums/index';
 
 // #region loadList
 export const getLoadsPayload = createAction(
     LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_LIST,
-    props<{ apiParam: IGetLoadListParam, showMore?: boolean, onSearch?: ICurrentSearchTableData }>()
+    props<{
+        apiParam: IGetLoadListParam;
+        showMore?: boolean;
+        onSearch?: ICurrentSearchTableData;
+    }>()
 );
 
 export const getLoadsPayloadSuccess = createAction(
     LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_LIST_SUCCESS,
-    props<{ 
-        data: LoadListDto[], 
-        templateCount: number,
-        pendingCount: number,
-        activeCount: number,
-        closedCount: number,
-        selectedTab: eLoadStatusType,
-        showMore?: boolean
+    props<{
+        data: LoadListDto[];
+        templateCount: number;
+        pendingCount: number;
+        activeCount: number;
+        closedCount: number;
+        selectedTab: eLoadStatusType;
+        showMore?: boolean;
     }>()
 );
 
@@ -41,19 +67,23 @@ export const getLoadsPayloadError = createAction(
 // #region loadTemplates
 export const getTemplatesPayload = createAction(
     LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_TEMPLATES,
-    props<{ apiParam: IGetLoadTemplateParam, showMore?: boolean, onSearch?: ICurrentSearchTableData }>()
+    props<{
+        apiParam: IGetLoadTemplateParam;
+        showMore?: boolean;
+        onSearch?: ICurrentSearchTableData;
+    }>()
 );
 
 export const getTemplatesPayloadSuccess = createAction(
     LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_TEMPLATES_SUCCESS,
-    props<{ 
-        data: ILoadTemplateGridItem[], 
-        templateCount: number,
-        pendingCount: number,
-        activeCount: number,
-        closedCount: number,
-        selectedTab: eLoadStatusType,
-        showMore?: boolean
+    props<{
+        data: ILoadTemplateGridItem[];
+        templateCount: number;
+        pendingCount: number;
+        activeCount: number;
+        closedCount: number;
+        selectedTab: eLoadStatusType;
+        showMore?: boolean;
     }>()
 );
 
@@ -72,7 +102,7 @@ export const getLoadById = createAction(
 export const getLoadByIdSuccess = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_BY_ID_SUCCESS,
     props<{ load: LoadListDto }>()
-)
+);
 
 export const getLoadByIdError = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_BY_ID_ERROR,
@@ -83,29 +113,37 @@ export const getLoadByIdError = createAction(
 // #region getEditLoadModalData
 export const getEditLoadModalData = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_DATA,
-    props<{ apiParam: number, selectedTab: eLoadStatusType, eventType: string }>()
+    props<{
+        apiParam: number;
+        selectedTab: eLoadStatusType;
+        eventType: string;
+    }>()
 );
 
 export const getEditLoadModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_DATA_SUCCESS,
-    props<{ load: LoadResponse, modal: LoadModalResponse }>()
-)
+    props<{ load: LoadResponse; modal: LoadModalResponse }>()
+);
 
 export const getEditLoadModalDataError = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_DATA_ERROR,
     props<{ error: Error }>()
-)
+);
 // #endregion
 
 // #region getEditLoadTemplateModalData
 export const getEditLoadTemplateModalData = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_TEMPLATE_MODAL_DATA,
-    props<{ apiParam: number, selectedTab: eLoadStatusType, eventType: string }>()
+    props<{
+        apiParam: number;
+        selectedTab: eLoadStatusType;
+        eventType: string;
+    }>()
 );
 
 export const getEditLoadTemplateModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_TEMPLATE_MODAL_DATA_SUCCESS,
-    props<{ loadTemplate: LoadTemplateResponse, modal: LoadModalResponse }>()
+    props<{ loadTemplate: LoadTemplateResponse; modal: LoadModalResponse }>()
 );
 
 export const getEditLoadTemplateModalDataError = createAction(
@@ -116,7 +154,7 @@ export const getEditLoadTemplateModalDataError = createAction(
 
 // #region getCreateLoadModalData
 export const getCreateLoadModalData = createAction(
-    LoadStoreConstants.ACTION_GET_CREATE_LOAD_MODAL_DATA,
+    LoadStoreConstants.ACTION_GET_CREATE_LOAD_MODAL_DATA
 );
 
 export const getCreateLoadModalDataSuccess = createAction(
@@ -133,12 +171,16 @@ export const getCreateLoadModalDataError = createAction(
 // #region getConvertToLoadModalData
 export const getConvertToLoadModalData = createAction(
     LoadStoreConstants.ACTION_GET_CONVERT_TO_LOAD_MODAL_DATA,
-    props<{ apiParam: number, selectedTab: eLoadStatusType, eventType: string }>()
+    props<{
+        apiParam: number;
+        selectedTab: eLoadStatusType;
+        eventType: string;
+    }>()
 );
 
 export const getConvertToLoadModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_CONVERT_TO_LOAD_MODAL_DATA_SUCCESS,
-    props<{ load: LoadResponse, modal: LoadModalResponse }>()
+    props<{ load: LoadResponse; modal: LoadModalResponse }>()
 );
 
 export const getConvertToLoadModalDataError = createAction(
@@ -150,12 +192,16 @@ export const getConvertToLoadModalDataError = createAction(
 // #region getConvertToLoadTemplateModalData
 export const getConvertToLoadTemplateModalData = createAction(
     LoadStoreConstants.ACTION_GET_CONVERT_TO_TEMPLATE_MODAL_DATA,
-    props<{ apiParam: number, selectedTab: eLoadStatusType, eventType: string }>()
+    props<{
+        apiParam: number;
+        selectedTab: eLoadStatusType;
+        eventType: string;
+    }>()
 );
 
 export const getConvertToLoadTemplateModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_CONVERT_TO_TEMPLATE_MODAL_DATA_SUCCESS,
-    props<{ loadTemplate: LoadTemplateResponse, modal: LoadModalResponse }>()
+    props<{ loadTemplate: LoadTemplateResponse; modal: LoadModalResponse }>()
 );
 
 export const getConvertToLoadTemplateModalDataError = createAction(
@@ -184,7 +230,7 @@ export const getLoadTemplateByIdError = createAction(
 // #region getLoadStatusFilter
 export const getLoadStatusFilter = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_STATUS_FILTER,
-    props<{ apiParam: LoadStatusType, selectedTab: eLoadStatusType }>()
+    props<{ loadStatusType: LoadStatusType }>()
 );
 
 export const getLoadStatusFilterSuccess = createAction(
@@ -269,7 +315,7 @@ export const setClosedCountDecrement = createAction(
 // #region selectedDataRowsChange
 export const selectedDataRowsChange = createAction(
     LoadStoreConstants.ACTION_CAN_DELETE_SELECTED_DATA_ROWS,
-    props<{ canDeleteSelectedDataRows: boolean, ids: number[] }>()
+    props<{ canDeleteSelectedDataRows: boolean; ids: number[] }>()
 );
 // #endregion
 
@@ -296,7 +342,7 @@ export const tableUnlockToggle = createAction(
 // #region tableColumnResize
 export const tableColumnResize = createAction(
     LoadStoreConstants.ACTION_RESIZE_COLUMN,
-    props<{ columns: ITableColummn[], width: number, index: number }>()
+    props<{ columns: ITableColummn[]; width: number; index: number }>()
 );
 // #endregion
 
@@ -323,19 +369,22 @@ export const setActiveViewMode = createAction(
 // #region saveNote
 export const saveNote = createAction(
     LoadStoreConstants.ACTION_SAVE_NOTE,
-    props<{ entityId: number, value: string }>()
+    props<{ entityId: number; value: string }>()
 );
 // #endregion
 
 // #region updateLoadStatus
 export const updateLoadStatus = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
-    props<{ apiParam: UpdateLoadStatusCommand, confirmation: ConfirmationActivation }>()
+    props<{
+        apiParam: UpdateLoadStatusCommand;
+        confirmation: ConfirmationActivation;
+    }>()
 );
 
 export const updateLoadStatusSuccess = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_SUCCESS,
-    props<{ loadId: number, status: LoadStatusResponse }>()
+    props<{ loadId: number; status: LoadStatusResponse }>()
 );
 
 export const updateLoadStatusError = createAction(
@@ -359,7 +408,7 @@ export const revertLoadStatus = createAction(
 
 export const revertLoadStatusSuccess = createAction(
     LoadStoreConstants.ACTION_REVERT_LOAD_STATUS_SUCCESS,
-    props<{ loadId: number, status: LoadStatusResponse }>()
+    props<{ loadId: number; status: LoadStatusResponse }>()
 );
 
 export const revertLoadStatusError = createAction(
@@ -377,7 +426,7 @@ export const createLoad = createAction(
 export const createLoadSuccess = createAction(
     LoadStoreConstants.ACTION_CREATE_LOAD_SUCCESS,
     props<{ load: LoadResponse }>()
-)
+);
 
 export const createLoadError = createAction(
     LoadStoreConstants.ACTION_CREATE_LOAD_ERROR,
@@ -405,12 +454,19 @@ export const createLoadTemplateError = createAction(
 // #region createComment
 export const createComment = createAction(
     LoadStoreConstants.ACTION_CREATE_COMMENT,
-    props<{ apiParam: CreateCommentCommand, metadata: ICreateCommentMetadata }>()
+    props<{
+        apiParam: CreateCommentCommand;
+        metadata: ICreateCommentMetadata;
+    }>()
 );
 
 export const createCommentSuccess = createAction(
     LoadStoreConstants.ACTION_CREATE_COMMENT_SUCCESS,
-    props<{ loadId: number, comment: CommentResponse, metadata: ICreateCommentMetadata }>()
+    props<{
+        loadId: number;
+        comment: CommentResponse;
+        metadata: ICreateCommentMetadata;
+    }>()
 );
 
 export const createCommentError = createAction(
@@ -457,12 +513,12 @@ export const updateLoadTemplateError = createAction(
 // #region updateLoadAndStatus
 export const updateLoadAndStatus = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_AND_STATUS,
-    props<{ apiParamLoad: Load, apiParamStatus: UpdateLoadStatusCommand }>()
+    props<{ apiParamLoad: Load; apiParamStatus: UpdateLoadStatusCommand }>()
 );
 
 export const updateLoadAndStatusSuccess = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_AND_STATUS_SUCCESS,
-    props<{ response: LoadListResponse, status: LoadStatusResponse }>()
+    props<{ response: LoadListResponse; status: LoadStatusResponse }>()
 );
 
 export const updateLoadAndStatusError = createAction(
@@ -474,12 +530,12 @@ export const updateLoadAndStatusError = createAction(
 // #region updateLoadAndRevertStatus
 export const updateLoadAndRevertStatus = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_AND_REVERT_STATUS,
-    props<{ apiParamStatus: RevertLoadStatusCommand, apiParamLoad: Load }>()
+    props<{ apiParamStatus: RevertLoadStatusCommand; apiParamLoad: Load }>()
 );
 
 export const updateLoadAndRevertStatusSuccess = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_AND_REVERT_STATUS_SUCCESS,
-    props<{ response: LoadListResponse, status: LoadStatusResponse}>()
+    props<{ response: LoadListResponse; status: LoadStatusResponse }>()
 );
 
 export const updateLoadAndRevertStatusError = createAction(
@@ -491,12 +547,12 @@ export const updateLoadAndRevertStatusError = createAction(
 // #region deleteCommentById
 export const deleteCommentById = createAction(
     LoadStoreConstants.ACTION_DELETE_COMMENT_BY_ID,
-    props<{ apiParam: number, loadId: number }>()
+    props<{ apiParam: number; loadId: number }>()
 );
 
 export const deleteCommentByIdSuccess = createAction(
     LoadStoreConstants.ACTION_DELETE_COMMENT_BY_ID_SUCCESS,
-    props<{ loadId: number, commentId: number }>()
+    props<{ loadId: number; commentId: number }>()
 );
 
 export const deleteCommentByIdError = createAction(
@@ -576,12 +632,12 @@ export const deleteBulkLoadError = createAction(
 // #region getDispatcherList
 export const getDispatcherList = createAction(
     LoadStoreConstants.ACTION_GET_DISPATCHER_LIST,
-    props<{  loadStatusType?: LoadStatusType }>()
+    props<{ loadStatusType: LoadStatusType }>()
 );
 
 export const getDispatcherListSuccess = createAction(
     LoadStoreConstants.ACTION_GET_DISPATCHER_LIST_SUCCESS,
-    props<{  dispatcherList?: DispatcherFilterResponse[] }>()
+    props<{ dispatcherList?: DispatcherFilterResponse[] }>()
 );
 
 export const getDispatcherListError = createAction(

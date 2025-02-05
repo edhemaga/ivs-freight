@@ -174,9 +174,7 @@ export class LoadService {
     }
 
     // TODO: make load details use store
-    public deleteLoadById(
-        loadId: number
-    ): Observable<void> {
+    public deleteLoadById(loadId: number): Observable<void> {
         return this.loadService.apiLoadIdDelete(loadId);
     }
 
@@ -321,7 +319,9 @@ export class LoadService {
         return this.loadService.apiLoadIdGet(id);
     }
 
-    public apiGetLoadTemplateById(id: number): Observable<LoadTemplateResponse> {
+    public apiGetLoadTemplateById(
+        id: number
+    ): Observable<LoadTemplateResponse> {
         return this.loadService.apiLoadTemplateIdGet(id);
     }
 
@@ -329,7 +329,9 @@ export class LoadService {
         return this.loadService.apiLoadModalGet();
     }
 
-    public apiGetLoadPossibleStatusesDropdownOptions(id: number): Observable<LoadPossibleStatusesResponse> {
+    public apiGetLoadPossibleStatusesDropdownOptions(
+        id: number
+    ): Observable<LoadPossibleStatusesResponse> {
         return this.loadService.apiLoadListStatusIdGet(id);
     }
 
@@ -350,28 +352,36 @@ export class LoadService {
         return this.loadService.apiLoadPut();
     }
 
-    public apiUpdateLoadTemplate(data: CreateLoadTemplateCommand): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse> {
+    public apiUpdateLoadTemplate(
+        data: CreateLoadTemplateCommand
+    ): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse> {
         return this.loadService.apiLoadTemplatePut(data);
     }
 
-    public apiCreateComment(param: CreateCommentCommand): Observable<CreateResponse> {
+    public apiCreateComment(
+        param: CreateCommentCommand
+    ): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(param);
         return this.commentService.apiCommentPost(param);
     }
 
-    public apiCreateLoad(data: Load): Observable<LoadListDtoCreateGenericWithUploadsResponse> {
+    public apiCreateLoad(
+        data: Load
+    ): Observable<LoadListDtoCreateGenericWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(data);
         return this.loadService.apiLoadPost();
     }
 
-    public apiCreateLoadTemplate(param: CreateLoadTemplateCommand): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse> {
+    public apiCreateLoadTemplate(
+        param: CreateLoadTemplateCommand
+    ): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse> {
         this.formDataService.extractFormDataFromFunction(param);
         return this.loadService.apiLoadTemplatePost(param);
     }
 
     public apiDeleteBulkLoads(ids: number[]): Observable<any> {
         const body = {
-            Ids: ids
+            Ids: ids,
         };
 
         return this.httpClient.post<any>(
@@ -382,8 +392,8 @@ export class LoadService {
 
     public apiDeleteBulkLoadTemplates(ids: number[]): Observable<any> {
         const body = {
-            Ids: ids
-        }
+            Ids: ids,
+        };
 
         return this.httpClient.post<any>(
             `${environment.API_ENDPOINT}/api/load/template/list`,
