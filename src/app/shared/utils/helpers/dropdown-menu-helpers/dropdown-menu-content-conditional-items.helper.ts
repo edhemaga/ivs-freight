@@ -241,4 +241,16 @@ export class DropdownMenuContentConditionalItemsHelper {
             },
         ];
     }
+
+    // load
+    static getLoadModifierItems(
+        isPendingLoad: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.DELETE,
+                isDisabled: !isPendingLoad,
+            },
+        ];
+    }
 }

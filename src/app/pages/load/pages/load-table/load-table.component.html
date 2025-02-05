@@ -35,7 +35,7 @@
                 [columns]="store?.columns"
                 [options]="store?.tableOptions"
                 [selectedTab]="selectedTab | lowercase"
-                (bodyActions)="onTableBodyActions($event)"
+                (tableBodyActions)="handleDropdownMenuActions($event, dropdownMenuStringEnum.LOAD, selectedTab)"
                 [tableData]="store?.tableData"
                 (saveValueNote)="saveValueNote($event)"
             ></app-ta-table-body>
@@ -55,7 +55,7 @@
                     "
                     [displayRowsBack]="(displayRows$ | async)?.displayRowsBack"
                     [page]="page"
-                    [selectedTab]="selectedTab | lowercase"
+                    [selectedTab]="selectedTab"
                     (saveValueNote)="saveValueNote($event)"
                 ></app-load-card>
 
@@ -75,7 +75,7 @@
                     ) {
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>
