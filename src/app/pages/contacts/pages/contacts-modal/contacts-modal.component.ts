@@ -61,7 +61,6 @@ import { ContactModalConfig } from '@pages/contacts/pages/contacts-modal/utils/c
 // models
 import {
     AddressEntity,
-    AddressResponse,
     CompanyContactLabelResponse,
     ContactColorResponse,
     ContactEmailResponse,
@@ -73,11 +72,12 @@ import {
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import { EditData } from '@shared/models/edit-data.model';
-import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 
 // utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-contact-modal',
@@ -107,10 +107,13 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
         TaAppTooltipV2Component,
     ],
 })
-export class ContactsModalComponent implements OnInit, OnDestroy {
+export class ContactsModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnInit, OnDestroy
+{
     @Input() editData: EditData;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
     public contactForm: UntypedFormGroup;
@@ -146,9 +149,6 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public modalTableTypeEnum = ModalTableTypeEnum;
     public taModalActionEnum = ContactsModalStringEnum;
 
-    public addressList: AddressListResponse;
-    public addressData: AddressResponse;
-
     constructor(
         private ngbActiveModal: NgbActiveModal,
 
@@ -163,8 +163,10 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private contactService: ContactsService,
         private formService: FormService,
-        private addressService: AddressService
-    ) {}
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
@@ -687,24 +689,6 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         if (enableSaving) this.enableSaving();
 
         if (close) this.ngbActiveModal.close();
-    }
-
-    public onAddressChange({
-        query,
-        searchLayers,
-        closedBorder,
-    }: AddressProperties): void {
-        this.addressService
-            .getAddresses(query, searchLayers, closedBorder)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressList = res));
-    }
-
-    public getAddressData(address: string): void {
-        this.addressService
-            .getAddressInfo(address)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {

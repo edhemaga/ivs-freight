@@ -265,10 +265,16 @@
                                             onHandleAddress($event)
                                         "
                                         (sentAddressData)="
-                                            onAddressChange($event)
+                                            onAddressChange(
+                                                $event,
+                                                addressService
+                                            )
                                         "
                                         (sentAddressValue)="
-                                            getAddressData($event)
+                                            getAddressData(
+                                                $event,
+                                                addressService
+                                            )
                                         "
                                     ></app-ca-input-address-dropdown>
                                 </div>

@@ -5,7 +5,7 @@
     <div
         [ngClass]="{
             hovering: isHoveringRow,
-            'padding-inside': address?.address
+            'padding-inside': address?.address,
         }"
     >
         <ng-container
@@ -18,14 +18,18 @@
                     else addressInfo
                 "
             >
-                <app-ta-input-address-dropdown
+                <app-ca-input-address-dropdown
                     [formControl]="truckAddressControl"
                     [inputConfig]="lastLocationAddressConfig"
                     [placeholderType]="'shortAddress'"
                     [isDispatchBoardAddress]="true"
                     (selectedAddress)="handleInputSelect($event)"
                     (closeDropdown)="onHideDropdown($event)"
-                ></app-ta-input-address-dropdown>
+                    [receivedAddressList]="addressList"
+                    [receivedAddressData]="addressData"
+                    (sentAddressData)="onAddressChange($event)"
+                    (sentAddressValue)="getAddressData($event)"
+                ></app-ca-input-address-dropdown>
             </ng-container>
 
             <ng-template #addressInfo>

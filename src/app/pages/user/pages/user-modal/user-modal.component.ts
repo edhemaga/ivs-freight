@@ -58,11 +58,8 @@ import {
     AddressEntity,
     CreateResponse,
     EnumValue,
-    AddressResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
-import { AddressListResponse } from '@ca-shared/models/address-list-response.model';
 
 //Components
 import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
@@ -90,6 +87,7 @@ import { UserModalSvgRoutes } from '@pages/user/pages/user-modal/utils/svg-route
 
 // config
 import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-user-modal',
@@ -119,7 +117,10 @@ import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
         CaInputAddressDropdownComponent,
     ],
 })
-export class UserModalComponent implements OnInit, OnDestroy {
+export class UserModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnDestroy, OnInit
+{
     @Input() editData: any;
     public userForm: UntypedFormGroup;
     public selectedTab: number = 1;
@@ -160,13 +161,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public userFullName: string = null;
     public userStatus: boolean = true;
     public isCardAnimationDisabled: boolean = false;
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
     public isEmailCheckCompleted: boolean;
     public currentUserStatus: string;
     public userModalSvgRoutes: UserModalSvgRoutes = UserModalSvgRoutes;
     public userModalConfig: UserModalConfig = UserModalConfig;
-    public addressList: AddressListResponse;
-    public addressData: AddressResponse;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -180,8 +179,10 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private confirmationActivationService: ConfirmationActivationService,
         private confirmationService: ConfirmationService,
-        private addressService: AddressService
-    ) {}
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
@@ -1123,24 +1124,6 @@ export class UserModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
-    }
-
-    public onAddressChange({
-        query,
-        searchLayers,
-        closedBorder,
-    }: AddressProperties): void {
-        this.addressService
-            .getAddresses(query, searchLayers, closedBorder)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressList = res));
-    }
-
-    public getAddressData(address: string): void {
-        this.addressService
-            .getAddressInfo(address)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.addressData = res));
     }
 
     ngOnDestroy(): void {

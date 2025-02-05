@@ -15,7 +15,10 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 import { RepairService } from '@shared/services/repair.service';
 
 // constants
-import { RepairExpenseCartConstants, RepairShopChartsConfiguration } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
+import {
+    RepairExpenseCartConstants,
+    RepairShopChartsConfiguration,
+} from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
 
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
@@ -34,7 +37,7 @@ import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/model
         // components
         TaCustomCardComponent,
         TaTabSwitchComponent,
-        CaChartComponent
+        CaChartComponent,
     ],
 })
 export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
@@ -65,7 +68,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
         // change detection
         private cdRef: ChangeDetectorRef
-    ) { }
+    ) {}
 
     private getConstantData(): void {
         this.repairCall = RepairExpenseCartConstants.REPAIR_CALL;
@@ -75,7 +78,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.chartTabs = RepairExpenseCartConstants.CHART_TABS;
     }
 
-    public createRepairExpenseCardData(data): void {
+    public createRepairExpenseCardData(data: RepairShopResponse): void {
         this._cardData = data;
 
         this.getConstantData();
@@ -111,6 +114,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                     labels = [],
                     maxValue = 0,
                     maxValue2 = 0;
+
                 item.repairShopExpensesChartResponse.forEach((data) => {
                     milesPerGallon.push(data.repair);
                     costPerGallon.push(data.repairCost);

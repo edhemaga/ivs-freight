@@ -48,14 +48,6 @@ export class DropdownMenuContentConditionalItemsHelper {
                 title: DropdownMenuStringEnum.EDIT,
                 isDisabled: !isActiveOwner,
             },
-            {
-                title: DropdownMenuStringEnum.ADD_TRUCK,
-                isDisabled: !isActiveOwner,
-            },
-            {
-                title: DropdownMenuStringEnum.ADD_TRAILER,
-                isDisabled: !isActiveOwner,
-            },
         ];
     }
 
@@ -238,6 +230,18 @@ export class DropdownMenuContentConditionalItemsHelper {
             {
                 title: DropdownMenuStringEnum.REQUEST,
                 isDisabled: !isActiveDriver,
+            },
+        ];
+    }
+
+    // load
+    static getLoadModifierItems(
+        isPendingLoad: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.DELETE,
+                isDisabled: !isPendingLoad,
             },
         ];
     }

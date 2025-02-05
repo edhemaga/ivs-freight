@@ -101,8 +101,6 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         this.confirmationSubscribe();
     }
 
-    public trackByIdentity = (index: number): number => index;
-
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -168,10 +166,10 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
     }
 
     public handleActionClick(type: string, index?: number): void {
-        const repair = this._repairList[index];
-
         switch (type) {
             case RepairShopDetailsStringEnum.FINISH_ORDER:
+                const repair = this._repairList[index];
+
                 this.handleFinishOrderClick(repair);
 
                 break;

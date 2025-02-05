@@ -28,3 +28,7 @@
 .d-f-aic-jcb {
     @include flex(center, space-between);
 }
+
+@mixin grid-template-columns($columns) {
+    grid-template-columns: $columns;
+}

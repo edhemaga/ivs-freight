@@ -83,10 +83,6 @@ export class TrailerCardComponent
         this.flipAllCards();
     }
 
-    public trackCard(id: number): number {
-        return id;
-    }
-
     public flipCard(index: number): void {
         this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }

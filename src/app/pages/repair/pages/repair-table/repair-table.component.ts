@@ -2,7 +2,6 @@ import {
     Component,
     OnInit,
     OnDestroy,
-    ViewChild,
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
@@ -23,14 +22,13 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 import {
-    CaMapComponent,
     CaSearchMultipleStatesService,
     ICaMapProps,
     IMapMarkers,
     IMapBoundsZoom,
     IMapSelectedMarkerData,
     SortColumn,
-    MapMarkerIconHelper,
+    MapMarkerIconService,
 } from 'ca-components';
 
 // base classes
@@ -118,9 +116,6 @@ export class RepairTableComponent
     extends RepairDropdownMenuActionsBase
     implements OnInit, OnDestroy, AfterViewInit
 {
-    @ViewChild('mapsComponent')
-    public mapsComponent: CaMapComponent;
-
     public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
@@ -223,6 +218,7 @@ export class RepairTableComponent
         private repairCardsModalService: RepairCardsModalService,
         private confirmationActivationService: ConfirmationActivationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private markerIconService: MapMarkerIconService,
 
         // store
         private repairShopQuery: RepairShopQuery,
@@ -381,15 +377,15 @@ export class RepairTableComponent
             .subscribe((res) => {
                 if (res?.length) {
                     const mappedRes = res.map(({ tableData: repairShop }) => {
-                        const { id } = repairShop;
+                        const { id, name, address } = repairShop;
 
                         return {
                             id,
                             data: {
                                 ...repairShop,
                             },
-                            modalTitle: repairShop.name,
-                            modalSecondTitle: repairShop?.address?.address,
+                            modalTitle: name,
+                            modalSecondTitle: address?.address,
                         };
                     });
 
@@ -1517,10 +1513,10 @@ export class RepairTableComponent
             tableAddress: address?.address,
             tableShopServiceType: shopServiceType?.name,
             tableShopServices: serviceTypes,
-            tableOpenHours: null /*  {
+            tableOpenHours: {
                 openHours,
                 openHoursToday,
-            }, */,
+            },
             tableRepairCountBill: bill,
             tableRepairCountOrder: order,
             tableBankDetailsBankName: bankResponse?.name,
@@ -1800,6 +1796,12 @@ export class RepairTableComponent
                                     item.position.lng === data.longitude
                             );
 
+                        const previousMarkerData = this.mapData.markers.find(
+                            (item2) =>
+                                item2.position.lat === data.latitude &&
+                                item2.position.lng === data.longitude
+                        );
+
                         let clusterInfoWindowContent = data.pagination?.data
                             ? {
                                   clusterData: [...data.pagination.data],
@@ -1819,45 +1821,49 @@ export class RepairTableComponent
                             };
                         }
 
-                        const markerIcon =
-                            data?.count > 1
-                                ? MapMarkerIconHelper.getClusterMarker(
-                                      data?.count,
-                                      !!clusterInfoWindowContent?.selectedClusterItemData
-                                  )
-                                : MapMarkerIconHelper.getMapMarker(
-                                      data.favourite,
-                                      data.isClosed
-                                  );
+                        if (previousClusterData || previousMarkerData) {
+                            const newMarkerData = {
+                                ...(previousMarkerData || previousClusterData),
+                                infoWindowContent: clusterInfoWindowContent,
+                            };
 
-                        const markerData = {
-                            position: {
-                                lat: data.latitude,
-                                lng: data.longitude,
-                            },
-                            icon: {
-                                url: markerIcon,
-                                labelOrigin: new google.maps.Point(80, 15),
-                            },
-                            infoWindowContent: clusterInfoWindowContent,
-                            label: data.name
-                                ? {
-                                      text: data.name.toUpperCase(),
-                                      fontSize: '11px',
-                                      color: '#424242',
-                                      fontWeight: '500',
-                                  }
-                                : null,
-                            labelOrigin: { x: 90, y: 15 },
-                            options: {
-                                zIndex: index + 1,
-                                animation: google.maps.Animation.DROP,
-                            },
-                            data,
-                        };
+                            if (data.count > 1)
+                                clusterMarkers.push(newMarkerData);
+                            else markers.push(newMarkerData);
+                        } else {
+                            let markerData: IMapMarkers = {
+                                position: {
+                                    lat: data.latitude,
+                                    lng: data.longitude,
+                                },
+                                infoWindowContent: clusterInfoWindowContent,
+                                label: data.name,
+                                isFavorite: data.favourite,
+                                isClosed: data.isClosed,
+                                id: data.id,
+                                data,
+                            };
 
-                        if (data.count > 1) clusterMarkers.push(markerData);
-                        else markers.push(markerData);
+                            const markerIcon =
+                                data.count > 1
+                                    ? this.markerIconService.getClusterMarkerIcon(
+                                          markerData
+                                      )
+                                    : this.markerIconService.getMarkerIcon(
+                                          data.id,
+                                          data.name,
+                                          data.isClosed,
+                                          data.favourite
+                                      );
+
+                            markerData = {
+                                ...markerData,
+                                content: markerIcon,
+                            };
+
+                            if (data.count > 1) clusterMarkers.push(markerData);
+                            else markers.push(markerData);
+                        }
                     });
 
                     this.mapData = {

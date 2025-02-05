@@ -190,7 +190,7 @@
                                         class="truck-location d-flex align-items-center flex-row gap-2"
                                         [formGroup]="locationForm"
                                     >
-                                        <app-ta-input-address-dropdown
+                                        <app-ca-input-address-dropdown
                                             formControlName="origin"
                                             [inputConfig]="{
                                                 name: 'Address',
@@ -209,7 +209,21 @@
                                             (selectedAddress)="
                                                 handleLocationSelect($event)
                                             "
-                                        ></app-ta-input-address-dropdown>
+                                            [receivedAddressList]="addressList"
+                                            [receivedAddressData]="addressData"
+                                            (sentAddressData)="
+                                                onAddressChange(
+                                                    $event,
+                                                    addressService
+                                                )
+                                            "
+                                            (sentAddressValue)="
+                                                getAddressData(
+                                                    $event,
+                                                    addressService
+                                                )
+                                            "
+                                        ></app-ca-input-address-dropdown>
                                     </div>
                                 </ng-container>
                             </ng-container>

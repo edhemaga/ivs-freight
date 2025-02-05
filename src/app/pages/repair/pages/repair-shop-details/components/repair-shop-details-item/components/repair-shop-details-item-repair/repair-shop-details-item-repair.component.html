@@ -1,32 +1,27 @@
-<ng-container *ngIf="_repairList.length">
+@if (_repairList.length) {
     <div
         class="d-flex flex-column justify-content-center shop-details-item-repair"
     >
         <!-- Search -->
 
-        <ng-container *ngIf="searchConfig[0]">
+        @if (searchConfig[0]) {
             <div class="shop-details-item-repair-search">
                 <app-ca-search-multiple-states
                     [searchType]="'Repair'"
                     [toolbarSearch]="true"
                     [isDetailsPageSearch]="true"
                     [selectedTabData]="{
-                        gridNameTitle: 'Repair'
+                        gridNameTitle: 'Repair',
                     }"
                     (close)="handleCloseSearchEmit()"
                 ></app-ca-search-multiple-states>
             </div>
-        </ng-container>
+        }
 
         <!-- Header -->
 
         <div class="align-items-center shop-details-item-repair-header">
-            <ng-container
-                *ngFor="
-                    let headerItem of repairHeaderItems;
-                    trackBy: trackByIdentity
-                "
-            >
+            @for (headerItem of repairHeaderItems; track headerItem) {
                 <div
                     class="d-flex align-items-center shop-details-item-repair-header-item"
                     [ngClass]="{ 'justify-content-end': headerItem === 'COST' }"
@@ -35,7 +30,7 @@
                         {{ headerItem }}
                     </p>
                 </div>
-            </ng-container>
+            }
         </div>
 
         <!-- Main -->
@@ -43,18 +38,16 @@
         <div
             class="d-flex flex-column justify-content-center shop-details-item-repair-main"
         >
-            <ng-container
-                *ngFor="
-                    let repair of _repairList;
-                    let repairIndex = index;
-                    trackBy: trackByIdentity
-                "
-            >
+            @for (
+                repair of _repairList;
+                let repairIndex = $index;
+                track repair.id
+            ) {
                 <div
                     class="shop-details-item-repair-main-border"
                     [ngClass]="{
                         'active-drawer':
-                            repairIndex === repairItemDocumentsDrawerIndex
+                            repairIndex === repairItemDocumentsDrawerIndex,
                     }"
                 >
                     <!-- Repair Item -->
@@ -64,7 +57,7 @@
                         [ngClass]="{
                             active: repairIndex === repairItemDropdownIndex,
                             'active-options':
-                                repairIndex === repairItemOptionsDropdownIndex
+                                repairIndex === repairItemOptionsDropdownIndex,
                         }"
                     >
                         <div
@@ -77,14 +70,12 @@
                                 class="d-flex align-items-center invoice-container"
                             >
                                 <p
-                                    class="m-0 ta-font-bold text-size-14 text-color-black"
+                                    class="m-0 ta-font-bold text-size-14 text-color-black d-inline-block text-truncate"
                                 >
                                     {{ repair?.invoice || repair?.orderNumber }}
                                 </p>
 
-                                <ng-container
-                                    *ngIf="repair?.repairType?.name === 'Order'"
-                                >
+                                @if (repair?.repairType?.name === 'Order') {
                                     <svg-icon
                                         class="repair-order-icon"
                                         [src]="
@@ -92,10 +83,10 @@
                                         "
                                         [svgStyle]="{
                                             'width.px': 10,
-                                            'height.px': 10
+                                            'height.px': 10,
                                         }"
                                     ></svg-icon>
-                                </ng-container>
+                                }
                             </div>
 
                             <!-- Date -->
@@ -138,15 +129,10 @@
                                     'padding-right':
                                         repair?.repairType?.name === 'Order'
                                             ? 0
-                                            : '8px'
+                                            : '8px',
                                 }"
                             >
-                                <ng-container
-                                    *ngIf="
-                                        repair?.repairType?.name === 'Order';
-                                        else bill
-                                    "
-                                >
+                                @if (repair?.repairType?.name === 'Order') {
                                     <button
                                         type="button"
                                         class="d-flex justify-content-center align-items-center ta-font-bold text-size-11 finish-order-btn"
@@ -161,15 +147,13 @@
                                     >
                                         FINISH ORDER
                                     </button>
-                                </ng-container>
-
-                                <ng-template #bill>
+                                } @else {
                                     <p
                                         class="m-0 ta-font-bold text-size-14 text-color-black"
                                     >
                                         ${{ repair?.total | thousandSeparator }}
                                     </p>
-                                </ng-template>
+                                }
                             </div>
                         </div>
 
@@ -230,7 +214,7 @@
                         class="d-flex flex-column shop-details-item-repair-main-dropdown"
                         [ngClass]="{
                             expanded: repairIndex === repairItemDropdownIndex,
-                            'dropdown-scroll': repair?.items?.length >= 8
+                            'dropdown-scroll': repair?.items?.length >= 8,
                         }"
                     >
                         <!-- Dropdown Header -->
@@ -239,20 +223,17 @@
                             class="align-items-center shop-details-item-repair-main-dropdown-header"
                             [ngClass]="{
                                 'order-header':
-                                    repair?.repairType?.name === 'Order'
+                                    repair?.repairType?.name === 'Order',
                             }"
                         >
-                            <ng-container
-                                *ngFor="
-                                    let dropdownHeaderItem of repair?.repairType
-                                        ?.name === 'Order'
-                                        ? (repairDropdownHeaderItems
-                                          | slice : 0 : 3)
-                                        : repairDropdownHeaderItems;
-                                    let dropdownHeaderItemIndex = index;
-                                    trackBy: trackByIdentity
-                                "
-                            >
+                            @for (
+                                dropdownHeaderItem of repair?.repairType
+                                    ?.name === 'Order'
+                                    ? (repairDropdownHeaderItems | slice: 0 : 3)
+                                    : repairDropdownHeaderItems;
+                                let dropdownHeaderItemIndex = $index;
+                                track dropdownHeaderItem
+                            ) {
                                 <div
                                     class="d-flex align-items-center shop-details-item-repair-main-dropdown-header-item"
                                     [ngClass]="{
@@ -260,7 +241,7 @@
                                             dropdownHeaderItemIndex === 0 ||
                                             dropdownHeaderItemIndex === 2,
                                         'justify-content-end':
-                                            dropdownHeaderItemIndex > 2
+                                            dropdownHeaderItemIndex > 2,
                                     }"
                                 >
                                     <p
@@ -269,7 +250,7 @@
                                         {{ dropdownHeaderItem }}
                                     </p>
                                 </div>
-                            </ng-container>
+                            }
                         </div>
 
                         <!-- Dropdown Main -->
@@ -277,20 +258,19 @@
                         <div
                             class="d-flex flex-column justify-content-center shop-details-item-repair-main-dropdown-main"
                         >
-                            <ng-container
-                                *ngFor="
-                                    let repairItem of repair?.items;
-                                    let repairItemIndex = index;
-                                    trackBy: trackByIdentity
-                                "
-                            >
+                            @for (
+                                repairItem of repair?.items;
+                                let repairItemIndex = $index;
+                                track repairItem.id
+                            ) {
                                 <!-- Dropdown Main Item -->
 
                                 <div
                                     class="align-items-center shop-details-item-repair-main-dropdown-main-item"
                                     [ngClass]="{
                                         'order-item':
-                                            repair?.repairType?.name === 'Order'
+                                            repair?.repairType?.name ===
+                                            'Order',
                                     }"
                                 >
                                     <!-- # -->
@@ -307,7 +287,7 @@
                                                 'text-color-black': !(
                                                     repairItem?.pmTruck ||
                                                     repairItem?.pmTrailer
-                                                )
+                                                ),
                                             }"
                                         >
                                             {{ repairItemIndex + 1 }}
@@ -328,27 +308,30 @@
                                                 'text-color-black': !(
                                                     repairItem?.pmTruck ||
                                                     repairItem?.pmTrailer
-                                                )
+                                                ),
                                             }"
                                         >
                                             {{ repairItem?.description }}
                                         </p>
 
-                                        <svg-icon
-                                            *ngIf="
-                                                repairItem?.pmTruck ||
-                                                repairItem?.pmTrailer
-                                            "
-                                            class="pm-icon"
-                                            [src]="
-                                                repairItem?.pmTruck?.logoName ||
-                                                repairItem?.pmTrailer.logoName
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': 14,
-                                                'height.px': 14
-                                            }"
-                                        ></svg-icon>
+                                        @if (
+                                            repairItem?.pmTruck ||
+                                            repairItem?.pmTrailer
+                                        ) {
+                                            <svg-icon
+                                                class="pm-icon"
+                                                [src]="
+                                                    repairItem?.pmTruck
+                                                        ?.logoName ||
+                                                    repairItem?.pmTrailer
+                                                        .logoName
+                                                "
+                                                [svgStyle]="{
+                                                    'width.px': 14,
+                                                    'height.px': 14,
+                                                }"
+                                            ></svg-icon>
+                                        }
                                     </div>
 
                                     <!-- Quantity -->
@@ -365,18 +348,14 @@
                                                 'text-color-black': !(
                                                     repairItem?.pmTruck ||
                                                     repairItem?.pmTrailer
-                                                )
+                                                ),
                                             }"
                                         >
                                             {{ repairItem?.quantity }}
                                         </p>
                                     </div>
 
-                                    <ng-container
-                                        *ngIf="
-                                            repair?.repairType?.name !== 'Order'
-                                        "
-                                    >
+                                    @if (repair?.repairType?.name !== 'Order') {
                                         <!-- Price -->
 
                                         <div
@@ -391,7 +370,7 @@
                                                     'text-color-black': !(
                                                         repairItem?.pmTruck ||
                                                         repairItem?.pmTrailer
-                                                    )
+                                                    ),
                                                 }"
                                             >
                                                 ${{
@@ -415,7 +394,7 @@
                                                     'text-color-black': !(
                                                         repairItem?.pmTruck ||
                                                         repairItem?.pmTrailer
-                                                    )
+                                                    ),
                                                 }"
                                             >
                                                 ${{
@@ -424,13 +403,13 @@
                                                 }}
                                             </p>
                                         </div>
-                                    </ng-container>
+                                    }
                                 </div>
-                            </ng-container>
+                            }
                         </div>
                     </div>
                 </div>
-            </ng-container>
+            }
         </div>
 
         <!-- Footer -->
@@ -452,4 +431,4 @@
             </div>
         </div>
     </div>
-</ng-container>
+}
