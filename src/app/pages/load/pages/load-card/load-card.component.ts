@@ -97,10 +97,6 @@ export class LoadCardComponent
         this.flipAllCards();
     }
 
-    public trackCard(item: number): number {
-        return item;
-    }
-
     public flipCard(index: number): void {
         this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }

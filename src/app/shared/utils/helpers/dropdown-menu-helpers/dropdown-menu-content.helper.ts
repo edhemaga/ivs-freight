@@ -318,14 +318,14 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    // truck
-    static getTruckDropdownContent(selectedTab: string): DropdownMenuItem[] {
-        const isActiveTruck = selectedTab === DropdownMenuStringEnum.ACTIVE;
+    // truck and trailer
+    static getTruckTrailerDropdownContent(selectedTab: string): DropdownMenuItem[] {
+        const isActiveTruckTrailer = selectedTab === DropdownMenuStringEnum.ACTIVE;
 
         // modifier items
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getTruckTrailerModifierItems(
-                isActiveTruck
+                isActiveTruckTrailer
             );
 
         // requested items
@@ -336,53 +336,7 @@ export class DropdownMenuContentHelper {
         const requestedSharedItems = [
             DropdownMenuStringEnum.EDIT,
             DropdownMenuStringEnum.VIEW_DETAILS,
-            isActiveTruck
-                ? DropdownMenuStringEnum.DEACTIVATE
-                : DropdownMenuStringEnum.ACTIVATE,
-            DropdownMenuStringEnum.DELETE,
-        ];
-
-        // items
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedConditionalItems,
-                false,
-                modifierItems
-            );
-
-        const sharedItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedSharedItems,
-                true,
-                modifierItems
-            );
-
-        return [
-            ...sharedItems.slice(0, 2),
-            ...conditionalItems,
-            ...sharedItems.slice(2),
-        ];
-    }
-
-    // trailer
-    static getTrailerDropdownContent(selectedTab: string): DropdownMenuItem[] {
-        const isActiveTrailer = selectedTab === DropdownMenuStringEnum.ACTIVE;
-
-        // modifier items
-        const modifierItems =
-            DropdownMenuContentConditionalItemsHelper.getTruckTrailerModifierItems(
-                isActiveTrailer
-            );
-
-        // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER,
-        ];
-
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
-            isActiveTrailer
+            isActiveTruckTrailer
                 ? DropdownMenuStringEnum.DEACTIVATE
                 : DropdownMenuStringEnum.ACTIVATE,
             DropdownMenuStringEnum.DELETE,
