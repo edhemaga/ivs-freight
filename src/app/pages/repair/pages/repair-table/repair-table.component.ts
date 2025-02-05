@@ -1650,7 +1650,7 @@ export class RepairTableComponent
 
                     this.mapData.clusterMarkers.forEach((clusterMarker) => {
                         const clusterItemIndex =
-                            clusterMarker.data.pagination?.data?.findIndex(
+                            clusterMarker.infoWindowContent?.clusterData?.findIndex(
                                 (clusterItem) => clusterItem.id === markerId
                             );
 
@@ -1788,7 +1788,7 @@ export class RepairTableComponent
                     const clusterMarkers: IMapMarkers[] = [];
                     const markers: IMapMarkers[] = [];
 
-                    clustersResponse?.forEach((data, index) => {
+                    clustersResponse?.forEach((data) => {
                         const previousClusterData =
                             this.mapData.clusterMarkers.find(
                                 (item) =>
