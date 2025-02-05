@@ -2002,7 +2002,6 @@ export class SettingsBasicModalComponent
                                 EBankAccountStatus.VERIFIED
                         })
                     );
-                    console.log(this.bankAccounts.controls);
                     this.selectedBankAccountFormArray.push(
                         bankAccount.bank
                     );
@@ -2412,8 +2411,6 @@ export class SettingsBasicModalComponent
                                             foundAccount ?
                                                 EBankAccountStatus.VERIFIED :
                                                 EBankAccountStatus.UNVERIFIED;
-
-                                        console.log(addedAccount);
                                     });
 
                             },
