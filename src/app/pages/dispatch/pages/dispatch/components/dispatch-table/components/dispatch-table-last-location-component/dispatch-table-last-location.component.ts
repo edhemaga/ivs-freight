@@ -9,12 +9,20 @@ import { AddressEntity } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
 
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
+// services
+import { AddressService } from '@shared/services/address.service';
+
 @Component({
     selector: 'app-dispatch-table-last-location',
     templateUrl: './dispatch-table-last-location.component.html',
     styleUrls: ['./dispatch-table-last-location.component.scss'],
 })
-export class DispatchTableLastLocationComponentComponent {
+export class DispatchTableLastLocationComponentComponent extends AddressMixin(
+    class { addressService!: AddressService; }
+) {
     @Input() set parkingList(value: DispatchBoardParking[]) {
         if (this.address) this.checkParkingLocation(value);
     }
@@ -42,7 +50,9 @@ export class DispatchTableLastLocationComponentComponent {
 
     public _locationDropdownWidth: number;
 
-    constructor() {}
+    constructor(public addressService: AddressService) {
+        super();
+    }
 
     get lastLocationAddressConfig(): ITaInput {
         return DispatchConfig.getDispatchAddressConfig(

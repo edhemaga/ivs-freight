@@ -17,10 +17,11 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 // Components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { CaInputAddressDropdownComponent } from 'ca-components';
 
 // Services
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { AddressService } from '@shared/services/address.service';
 
 // Models
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models/confirmation-activation.model';
@@ -30,6 +31,9 @@ import { AddressResponse } from 'appcoretruckassist';
 // Pipes
 import { ConfirmationModalTitlePipe } from '@shared/components/ta-shared-modals/confirmation-activation-modal/pipes/confirmation-modal-title.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-confirmation-activation-modal',
@@ -43,7 +47,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
         // Components
         TaModalComponent,
         LoadStatusStringComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         // Pipes
         ConfirmationModalTitlePipe,
         FormatDatePipe,
@@ -51,7 +55,10 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
     templateUrl: './confirmation-activation-modal.component.html',
     styleUrls: ['./confirmation-activation-modal.component.scss'],
 })
-export class ConfirmationActivationModalComponent implements OnInit {
+export class ConfirmationActivationModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnInit
+{
     @Input() editData: ConfirmationActivation;
     public selectedAddress: AddressResponse;
     public locationForm!: UntypedFormGroup;
@@ -64,8 +71,11 @@ export class ConfirmationActivationModalComponent implements OnInit {
         private formBuilder: UntypedFormBuilder,
 
         // services
-        private confirmationActivationService: ConfirmationActivationService
-    ) {}
+        private confirmationActivationService: ConfirmationActivationService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         if (

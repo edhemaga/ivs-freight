@@ -20,6 +20,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
 
 // components
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
@@ -27,13 +28,12 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
-import { CaUploadFilesComponent } from 'ca-components';
+import { CaUploadFilesComponent, CaInputAddressDropdownComponent } from 'ca-components';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -99,6 +99,9 @@ import { AnimationOptions } from '@shared/models/animation-options.model';
 // svg routes
 import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/svg-routes';
 
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
 @Component({
     selector: 'app-settings-basic-modal',
     templateUrl: './settings-basic-modal.component.html',
@@ -121,16 +124,19 @@ import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/se
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaLogoChangeComponent,
         CaUploadFilesComponent,
     ],
 })
-export class SettingsBasicModalComponent implements OnInit, OnDestroy {
+export class SettingsBasicModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnDestroy, OnInit
+{
     @Input() editData: EditData;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public companyForm: UntypedFormGroup;
     public uploadOptionsConstants = SettingsModalConstants.UPLOAD_OPTIONS;
@@ -216,8 +222,11 @@ export class SettingsBasicModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,
         private bankVerificationService: BankVerificationService,
-        private formService: FormService
-    ) {}
+        private formService: FormService,
+        public addressService: AddressService,
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.createForm();

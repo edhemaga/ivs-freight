@@ -48,6 +48,9 @@ export enum DropdownMenuStringEnum {
     ALL_TRANSACTIONS = 'All Transactions',
     SUGGEST_EDIT = 'Suggest Edit',
     ADD_TRANSACTION = 'Add Transaction',
+    CREATE_LOAD = 'Create Load',
+    CREATE_TEMPLATE = 'Create Template',
+    EXPORT_BATCH = 'Export Batch',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -97,6 +100,9 @@ export enum DropdownMenuStringEnum {
     ALL_TRANSACTIONS_TYPE = 'all-transactions',
     SUGGEST_EDIT_TYPE = 'suggest-edit',
     ADD_TRANSACTION_TYPE = 'add-transaction',
+    CREATE_LOAD_TYPE = 'create-new-load',
+    CREATE_TEMPLATE_TYPE = 'create-template-from-load',
+    EXPORT_BATH_TYPE = 'export-batch',
 
     // table types
     ACCOUNT = 'account',
@@ -109,6 +115,9 @@ export enum DropdownMenuStringEnum {
     USER = 'user',
     FUEL_TRANSACTION = 'fuel-transaction',
     FUEL_STOP = 'fuel-stop',
+    TRUCK = 'truck',
+    TRAILER = 'trailer',
+    LOAD = 'load',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',
@@ -123,6 +132,11 @@ export enum DropdownMenuStringEnum {
     ADD_REPAIR_BILL_TRUCK = 'add-repair-bill-truck',
     ADD_REPAIR_BILL_TRAILER = 'add-repair-bill-trailer',
     ADD_REPAIR_BILL_SHOP = 'add-repair-bill-shop',
+    CLOSE = 'close',
+    OPEN = 'open',
+    TEMPLATE = 'Template',
+    PENDING = 'Pending',
+    CLOSED = 'Closed',
 
     // additional
     BLANK = '_blank',
@@ -133,4 +147,8 @@ export enum DropdownMenuStringEnum {
     INVITED = 'Invited',
     EXPIRED = 'Expired',
     FUEL = 'fuel',
+
+    // sizes
+    SMALL = 'small',
+    LARGE = 'large',
 }

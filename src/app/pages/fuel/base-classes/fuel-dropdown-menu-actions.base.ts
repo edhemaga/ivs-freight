@@ -16,6 +16,7 @@ import {
     TableStringEnum,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
@@ -23,6 +24,7 @@ import { FuelStopResponse, FuelTransactionResponse } from 'appcoretruckassist';
 
 export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBase {
     protected abstract destroy$: Subject<void>;
+    protected abstract viewData: FuelStopResponse[];
 
     // services
     protected abstract fuelService: FuelService;
@@ -50,6 +52,11 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
                 const { favourite } = data as FuelStopResponse;
 
                 this.handleFavoriteAction(id, !favourite);
+
+                break;
+            case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
+            case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
+                this.handleFuelStopOpenCloseBusinessAction(event, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
@@ -86,17 +93,36 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
             .updateFuelStopFavorite(id, isPinned)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                /*   this.viewData.sort(
-                        (a, b) => Number(b.isFavorite) - Number(a.isFavorite)
-                    );
-    
-                    const favoritedRepairShop = this.viewData.find(
-                        (item) => item.id === repairShopId
-                    );
-    
-                    this.updateMapItem(favoritedRepairShop);
-     */
+                this.viewData.sort(
+                    (a, b) => Number(b.favourite) - Number(a.favourite)
+                );
             });
+    }
+
+    private handleFuelStopOpenCloseBusinessAction<T extends FuelStopResponse>(
+        event: TableCardBodyActions<T>,
+        tableType: string
+    ): void {
+        const {
+            data: { businessName, address, isClosed },
+        } = event;
+
+        const data = {
+            status: +!isClosed,
+        };
+
+        const adjustedEvent = {
+            ...event,
+            data,
+            template: tableType,
+            subType: tableType,
+            subTypeStatus: TableStringEnum.BUSINESS,
+            tableType: ConfirmationActivationStringEnum.FUEL_STOP_TEXT,
+            modalTitle: businessName,
+            modalSecondTitle: `${address.city}, ${address.stateShortName}`,
+        };
+
+        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
     }
 
     private handleFuelDeleteAction<

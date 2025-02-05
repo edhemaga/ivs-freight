@@ -116,15 +116,25 @@
 
                         <div class="row last-row repair-shop-address d-grid">
                             <div>
-                                <app-ta-input-address-dropdown
-                                    (selectedAddress)="onAddressChange($event)"
+                                <app-ca-input-address-dropdown
+                                    (selectedAddress)="
+                                        onAddressChangeInit($event)
+                                    "
                                     [activeAddress]="selectedAddress"
                                     [inputConfig]="addressInputConfig"
                                     [placeholderType]="'longAddress'"
                                     [formControlName]="
                                         RepairShopModalStringEnum.ADDRESS
                                     "
-                                ></app-ta-input-address-dropdown>
+                                    [receivedAddressList]="addressList"
+                                    [receivedAddressData]="addressData"
+                                    (sentAddressData)="
+                                        onAddressChange($event, addressService)
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData($event, addressService)
+                                    "
+                                ></app-ca-input-address-dropdown>
                             </div>
                             <div>
                                 <app-ca-input
@@ -566,6 +576,8 @@
                                 [isCardOpen]="!!files?.length"
                                 [hasBodyData]="true"
                                 [hasDivider]="true"
+                                [hasSmallDivider]="true"
+                                [hasDarkDivider]="true"
                                 [hasCounter]="files?.length"
                                 [animationMarginParams]="{
                                     marginTop: '0',
@@ -648,6 +660,9 @@
                                 ></app-ca-upload-files>
                             </app-ta-custom-card>
                         </div>
+
+                        <div class="divider divider--dark divider--small"></div>
+
                         <!-- Note -->
                         <app-ca-input-note
                             [isVisibleNote]="
@@ -884,7 +899,7 @@
 
 <ng-template #footerTemplate>
     <div class="modal-footer modal-footer-payroll">
-        <div class="divider"></div>
+        <div class="divider divider--dark divider--small"></div>
         @if (isEditMode) {
             <div class="d-flex justify-content-between w-full">
                 <div class="d-flex">

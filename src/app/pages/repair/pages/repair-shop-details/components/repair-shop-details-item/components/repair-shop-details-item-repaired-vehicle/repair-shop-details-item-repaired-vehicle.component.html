@@ -1,60 +1,56 @@
-<ng-container *ngIf="_repairedVehicleList?.length">
+@if (_repairedVehicleList?.length) {
     <div
         class="d-flex flex-column justify-content-center repaired-vehicle-list-container"
     >
         <!-- Search -->
 
-        <ng-container *ngIf="searchConfig[1]">
+        @if (searchConfig[1]) {
             <div class="repaired-vehicle-list-search">
                 <app-ca-search-multiple-states
                     [searchType]="'Vehicle'"
                     [toolbarSearch]="false"
                     [isDetailsPageSearch]="true"
                     [selectedTabData]="{
-                        gridNameTitle: 'Vehicle'
+                        gridNameTitle: 'Vehicle',
                     }"
                     (close)="handleCloseSearchEmit()"
                 ></app-ca-search-multiple-states>
             </div>
-        </ng-container>
+        }
 
         <!-- Header -->
 
         <div class="align-items-center repaired-vehicle-list-header">
-            <ng-container
-                *ngFor="
-                    let headerItem of repairedVehicleListHeaderItems;
-                    let headerItemIndex = index;
-                    trackBy: trackByIdentity
-                "
-            >
+            @for (
+                headerItem of repairedVehicleListHeaderItems;
+                let headerItemIndex = $index;
+                track headerItem
+            ) {
                 <div
                     class="d-flex align-items-center"
                     [ngClass]="{
                         'justify-content-center': headerItemIndex === 2,
-                        'justify-content-end': headerItemIndex === 3
+                        'justify-content-end': headerItemIndex === 3,
                     }"
                 >
-                    <ng-container *ngIf="headerItem; else headerItemIcon">
+                    @if (headerItem) {
                         <p
                             class="m-0 ta-font-bold text-size-11 text-color-bw6-2"
                         >
                             {{ headerItem }}
                         </p>
-                    </ng-container>
-
-                    <ng-template #headerItemIcon>
+                    } @else {
                         <svg-icon
                             class="repaired-vehicle-list-header-icon"
                             [src]="repairShopDetailsSvgRoutes.repairRoute"
                             [svgStyle]="{
                                 'width.px': 14,
-                                'height.px': 14
+                                'height.px': 14,
                             }"
                         ></svg-icon>
-                    </ng-template>
+                    }
                 </div>
-            </ng-container>
+            }
         </div>
 
         <!-- Body -->
@@ -62,13 +58,11 @@
         <div
             class="d-flex flex-column justify-content-center repaired-vehicle-list-body"
         >
-            <ng-container
-                *ngFor="
-                    let repairedVehicle of _repairedVehicleList;
-                    let repairedVehicleIndex = index;
-                    trackBy: trackByIdentity
-                "
-            >
+            @for (
+                repairedVehicle of _repairedVehicleList;
+                let repairedVehicleIndex = $index;
+                track repairedVehicle.unitId
+            ) {
                 <div class="align-items-center repaired-vehicle-list-body-item">
                     <!-- Unit -->
 
@@ -151,7 +145,7 @@
                         </p>
                     </div>
                 </div>
-            </ng-container>
+            }
         </div>
 
         <!-- Footer -->
@@ -165,4 +159,4 @@
             </p>
         </div>
     </div>
-</ng-container>
+}

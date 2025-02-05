@@ -1,7 +1,8 @@
 import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 
 // constants
-import { DashboardStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants/dashboard-state.constants';
+import { DashboardStateConstants } from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
+
 
 // models
 import { MapStates } from '@pages/dashboard/pages/dashboard-by-state/models/map-states.model';
@@ -40,10 +41,11 @@ export class DashboardStateTrackingComponent implements OnChanges {
     private setSelectedStates(selectedMapList: MapListItem[]): void {
         selectedMapList.map((selectedMapItem) => {
             const selectedState = this.usaStates[selectedMapItem.state];
-
-            selectedState.color = selectedMapItem.selectedColor;
-            selectedState.value = selectedMapItem.value;
-            selectedState.percent = selectedMapItem.percent;
+            if(selectedState) {
+                selectedState.color = selectedMapItem.selectedColor;
+                selectedState.value = selectedMapItem.value;
+                selectedState.percent = selectedMapItem.percent;
+            }
         });
     }
 }

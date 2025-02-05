@@ -1,5 +1,6 @@
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
+import { ByStateReportType } from 'appcoretruckassist';
 
 export class DashboardByStateConstants {
     static BY_STATE_DROPDOWN_DATA: DropdownItem[] = [
@@ -57,4 +58,12 @@ export class DashboardByStateConstants {
             checked: false,
         },
     ];
+
+    static BY_STATE_REPORT_TYPE_MAP: Record<ByStateReportType, string> = {
+        Count: 'count',
+        Cost: 'cost',
+        SeverityWeight: 'severityWeight',
+        Revenue: 'revenue',
+        Gallon: 'gallon'
+    }
 }

@@ -124,17 +124,22 @@ export class BrokerDetailsCardComponent
     public invoiceChartConfig!: IChartConfiguration;
     public invoiceChartLegend!: ChartLegendProperty[];
     public invoiceChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public invoiceLegendTitle!: string;
+    public invoiceLegendHighlightedBackground!: boolean;
 
     public mileageChartData!: BrokerMileageRateResponse;
     public mileageChartConfig!: IChartConfiguration;
     public mileageChartLegendData!: ChartLegendProperty[];
     public mileageChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public mileageLegendTitle!: string;
+    public mileageLegendHighlightedBackground!: boolean;
 
     public paymentChartData!: IBrokerPaymentHistory;
     public paymentChartConfig!: IChartConfiguration;
     public paymentChartLegendData!: ChartLegendProperty[];
     public paymentChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
-
+    public paymentLegendTitle!: string;
+    public paymentLegendHighlightedBackground!: boolean;
     constructor(
         // Store
         private brokerQuery: BrokerQuery,
@@ -272,16 +277,73 @@ export class BrokerDetailsCardComponent
     }
 
     public setMileageLegendOnHover(index: number): void {
-        this.mileageChartLegendData =
-            ChartLegendConfiguration.mileageLegendConfiguration(this.mileageChartData.brokerMileageRateChartResponse[index]);
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.mileageChartConfig.chartData.labels
+            );
+
+        this.mileageLegendHighlightedBackground = hasHighlightedBackground;
+        this.mileageLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.mileageChartData :
+                this.mileageChartData?.
+                    brokerMileageRateChartResponse[index];
+
+        this.mileageChartLegendData = ChartLegendConfiguration
+            .mileageLegendConfiguration(dataForLegend);
     }
 
     public setInvoiceLegendOnHover(index: number): void {
-        this.invoiceChartLegend = ChartLegendConfiguration.invoiceChartLegendConfiguration(this.invoiceChartData.brokerPaidInvoiceChartResponse[index])
+
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.invoiceChartConfig.chartData.labels
+            );
+
+        this.invoiceLegendHighlightedBackground = hasHighlightedBackground;
+        this.invoiceLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.invoiceChartData :
+                this.invoiceChartData?.
+                    brokerPaidInvoiceChartResponse[index]
+
+        this.invoiceChartLegend = ChartLegendConfiguration
+            .invoiceChartLegendConfiguration(dataForLegend);
     }
 
     public setPaymentHistoryLegendOnHover(index: number): void {
-        this.paymentChartLegendData = ChartLegendConfiguration.brokerPaymentHistory(this.paymentChartData.brokerPaymentHistoryChartResponse[index]);
+        const {
+            hasHighlightedBackground,
+            title
+        } =
+            ChartHelper.setChartLegend(
+                index,
+                this.paymentChartConfig.chartData.labels
+            );
+
+        this.paymentLegendHighlightedBackground = hasHighlightedBackground;
+        this.paymentLegendTitle = title;
+
+        const dataForLegend =
+            (isNaN(index) || index < 0) ?
+                this.paymentChartData :
+                this.paymentChartData?.
+                    brokerPaymentHistoryChartResponse[index]
+
+        this.paymentChartLegendData = ChartLegendConfiguration
+            .brokerPaymentHistory(dataForLegend);
     }
 
     public tabsButton(): void {

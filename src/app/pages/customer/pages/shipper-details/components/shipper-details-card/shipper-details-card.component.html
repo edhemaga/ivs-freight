@@ -2,7 +2,7 @@
     <app-ta-details-header-card
         [ngClass]="{
             disabedPreviousArrow: shipperIndex == 0,
-            disableNextArrow: shipperIndex == shipperList.length - 1
+            disableNextArrow: shipperIndex == shipperList.length - 1,
         }"
         [cardDetailsDate]="shipper?.createdAt | formatDateP"
         [tooltipNext]="
@@ -77,7 +77,7 @@
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
@@ -133,20 +133,23 @@
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
                 <div class="charts-template perfomance">
-                    <!-- <div [class.d-none]="stackedBarChart.hoveringStatus"> -->
-                    <app-ta-tab-switch
-                        [tabs]="shipperTabs"
-                        (switchClicked)="changeShipperTabs($event)"
-                        [type]="'type2-modal-popup'"
+                    @if (!payrollLegendHighlightedBackground) {
+                        <app-ta-tab-switch
+                            [tabs]="payrollChartTabs"
+                            (switchClicked)="changeShipperTabs($event)"
+                            [type]="'type2-modal-popup'"
+                        >
+                        </app-ta-tab-switch>
+                    }
+                    <app-ca-chart
+                        [chartConfig]="payrollChartConfig"
+                        (hoveredIndex)="setPayrollLegendOnHover($event)"
                     >
-                    </app-ta-tab-switch>
-                    <!-- </div> -->
-                    <app-ca-chart [chartConfig]="payrollChartConfig">
                     </app-ca-chart>
                 </div>
             </app-ta-custom-card>

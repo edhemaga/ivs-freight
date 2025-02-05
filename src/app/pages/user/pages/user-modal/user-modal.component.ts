@@ -41,6 +41,7 @@ import { UserService } from '@pages/user/services/user.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { AddressService } from '@shared/services/address.service';
 
 //Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -76,7 +77,6 @@ import {
     CaInputDropdownComponent,
     CaInputAddressDropdownComponent,
 } from 'ca-components';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -87,6 +87,7 @@ import { UserModalSvgRoutes } from '@pages/user/pages/user-modal/utils/svg-route
 
 // config
 import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-user-modal',
@@ -114,10 +115,12 @@ import { UserModalConfig } from '@pages/user/pages/user-modal/utils/constants';
         CaInputComponent,
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
-        TaInputAddressDropdownComponent,
     ],
 })
-export class UserModalComponent implements OnInit, OnDestroy {
+export class UserModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnDestroy, OnInit
+{
     @Input() editData: any;
     public userForm: UntypedFormGroup;
     public selectedTab: number = 1;
@@ -158,7 +161,7 @@ export class UserModalComponent implements OnInit, OnDestroy {
     public userFullName: string = null;
     public userStatus: boolean = true;
     public isCardAnimationDisabled: boolean = false;
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
     public isEmailCheckCompleted: boolean;
     public currentUserStatus: string;
     public userModalSvgRoutes: UserModalSvgRoutes = UserModalSvgRoutes;
@@ -175,8 +178,11 @@ export class UserModalComponent implements OnInit, OnDestroy {
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         private confirmationActivationService: ConfirmationActivationService,
-        private confirmationService: ConfirmationService
-    ) {}
+        private confirmationService: ConfirmationService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();

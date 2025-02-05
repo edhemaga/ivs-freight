@@ -44,7 +44,6 @@ import {
     RepairShopTabs,
     RepairShopModalService,
     DisplayServiceTab,
-    RepairShopModalAction,
     CreateShopModel,
     RepairShopContactExtended,
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
@@ -83,7 +82,6 @@ import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 // Components
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -94,6 +92,7 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaUploadFilesComponent,
+    CaInputAddressDropdownComponent,
 } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
@@ -106,7 +105,11 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { ModalButtonSize, ModalButtonType, TableStringEnum } from '@shared/enums';
+import {
+    ModalButtonSize,
+    ModalButtonType,
+    TableStringEnum,
+} from '@shared/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import {
     ActionTypesEnum,
@@ -129,6 +132,10 @@ import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/uti
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
+import { AddressService } from '@shared/services/address.service';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -155,7 +162,7 @@ import { FormatDatePipe } from '@shared/pipes';
         CaInputComponent,
         TaCustomCardComponent,
         CaInputDropdownComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         CaInputNoteComponent,
         TaCheckboxComponent,
         CaUploadFilesComponent,
@@ -168,7 +175,14 @@ import { FormatDatePipe } from '@shared/pipes';
         FormatDatePipe,
     ],
 })
-export class RepairShopModalComponent implements OnInit, OnDestroy {
+export class RepairShopModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     // Enums
     public repairShopModalSvgRoutes = RepairShopModalSvgRoutes;
     public RepairShopModalStringEnum = RepairShopModalStringEnum;
@@ -205,7 +219,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
     public selectedAddress: AddressEntity;
 
     // Subject
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     // Services and Types
     public services: RepairShopModalService[] = [];
@@ -260,7 +274,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
 
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
-    
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -277,8 +291,11 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         private confirmationService: ConfirmationService,
         private ngbActiveModal: NgbActiveModal,
         private confirmationActivationService: ConfirmationActivationService,
-        private inputService: TaInputService
-    ) {}
+        private inputService: TaInputService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     public get isModalValidToSubmit(): boolean {
         return (
@@ -599,7 +616,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         }
 
         // Patch address
-        this.onAddressChange({
+        this.onAddressChangeInit({
             address: res.address,
             valid: true,
             longLat: {
@@ -662,7 +679,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onAddressChange(event: {
+    public onAddressChangeInit(event: {
         address: AddressEntity;
         valid: boolean;
         longLat: any;
@@ -1153,7 +1170,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
                           (item) => item.name === department
                       )?.id,
                       phone,
-                      extensionPhone: phoneExt,
+                      phoneExt: phoneExt,
                       email,
                   };
         });
@@ -1165,7 +1182,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                   this.setModalSpinner(true, addNewShop);
+                    this.setModalSpinner(true, addNewShop);
                 },
                 error: () => {
                     this.setModalSpinner(false, false);
@@ -1187,10 +1204,7 @@ export class RepairShopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private setModalSpinner(
-        close: boolean,
-        addNew?: boolean
-    ): void {
+    private setModalSpinner(close: boolean, addNew?: boolean): void {
         if (close) this.ngbActiveModal.close();
 
         if (addNew) this.modalService.openModal(RepairShopModalComponent, {});

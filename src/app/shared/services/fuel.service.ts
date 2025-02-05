@@ -80,6 +80,7 @@ export class FuelService {
         fuelTransactionSpecParamsTruckId?: number,
         fuelTransactionSpecParamsDriverId?: number,
         fuelTransactionSpecParams?: boolean,
+        fuelTransactionSpecParamsIsIncomplete?: boolean,
         fuelTransactionSpecParamsPageIndex?: number,
         fuelTransactionSpecParamsPageSize?: any,
         fuelTransactionSpecParamsCompanyId?: number,
@@ -109,6 +110,7 @@ export class FuelService {
             fuelTransactionSpecParamsTruckId,
             fuelTransactionSpecParamsDriverId,
             fuelTransactionSpecParams,
+            fuelTransactionSpecParamsIsIncomplete,
             fuelTransactionSpecParamsPageIndex,
             fuelTransactionSpecParamsPageSize,
             fuelTransactionSpecParamsCompanyId,
@@ -311,7 +313,23 @@ export class FuelService {
     }
 
     public updateFuelStopStatus(id: number): Observable<void> {
-        return this.fuelService.apiFuelFuelstopStatusIdPut(id);
+        return this.fuelService.apiFuelFuelstopStatusIdPut(id).pipe(
+            tap(() => {
+                this.fuelStore.update((store) => ({
+                    fuelStops: {
+                        ...store.fuelStops,
+                        pagination: {
+                            ...store.fuelStops.pagination,
+                            data: store.fuelStops.pagination.data.map((stop) =>
+                                stop.id === id
+                                    ? { ...stop, isClosed: !stop.isClosed }
+                                    : stop
+                            ),
+                        },
+                    },
+                }));
+            })
+        );
     }
 
     public deleteFuelStopList(ids: number[]): Observable<void> {

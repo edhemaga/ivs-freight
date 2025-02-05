@@ -755,9 +755,14 @@ export class TaTableBodyComponent<
             ? DropdownMenuStringEnum.UNMARK_FAVORITE_TYPE
             : DropdownMenuStringEnum.MARK_AS_FAVORITE_TYPE;
 
+        const data = {
+            favourite: isFavorite,
+        } as T & { favourite?: boolean };
+
         this.tableBodyActions.emit({
             id,
             type,
+            data,
         });
     }
 
