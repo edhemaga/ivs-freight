@@ -1,5 +1,6 @@
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 import {
+    OpenHoursTodayResponse,
     RepairShopContactListResponse,
     RepairShopListDto,
     RepairShopOpenHoursResponse,
@@ -13,7 +14,7 @@ export interface MappedRepairShop extends RepairShopListDto {
     tableShopServices: RepairShopServiceTypeResponse[];
     tableOpenHours: {
         openHours: RepairShopOpenHoursResponse[];
-        openHoursToday: string;
+        openHoursToday: OpenHoursTodayResponse;
     };
     tableRepairCountBill: number;
     tableRepairCountOrder: number;

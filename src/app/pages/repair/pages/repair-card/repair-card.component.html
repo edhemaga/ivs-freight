@@ -1,7 +1,5 @@
 <div class="cards-container">
-    <ng-container
-        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
-    >
+    @for (card of _viewData; let i = $index; track card.id) {
         <div class="custom-card">
             <!-- Card splited on left and right side -->
 
@@ -76,14 +74,14 @@
                                     </span></span
                                 >
 
-                                <ng-container *ngIf="card.isRepairOrder">
+                                @if (card.isRepairOrder) {
                                     <span
                                         class="finish-order-action ta-font-bold d-flex align-items-center"
                                         (click)="onFinishOrder(card)"
                                     >
                                         Finish Order
                                     </span>
-                                </ng-container>
+                                }
                             </div>
                         </div>
                     </div>
@@ -91,17 +89,15 @@
                     <!-- Card body front-->
 
                     <div class="card-body-content flipped">
-                        <ng-container
-                            *ngFor="
-                                let cardRow of displayRowsFront
-                                    | flipCards
-                                        : i
-                                        : isCardFlippedCheckInCards
-                                        : isAllCardsFlipp
-                                        : displayRowsBack;
-                                trackBy: trackCard
-                            "
-                        >
+                        @for (
+                            cardRow of displayRowsFront
+                                | flipCards
+                                    : i
+                                    : isCardFlippedCheckInCards
+                                    : isAllCardsFlipp
+                                    : displayRowsBack;
+                            track cardRow.title
+                        ) {
                             <div class="one-row">
                                 <div class="item-body">
                                     <div class="top-item-body">
@@ -113,12 +109,10 @@
                                     #parentElement
                                     class="bottom-item-body d-flex align-items-center"
                                 >
-                                    <ng-container
-                                        *ngIf="
-                                            cardRow.title ===
-                                            'Item Detail • Description'
-                                        "
-                                    >
+                                    @if (
+                                        cardRow.title ===
+                                        'Item Detail • Description'
+                                    ) {
                                         <div
                                             class="items-container-body d-flex align-items-center"
                                         >
@@ -154,14 +148,11 @@
                                                 ></div>
                                             </div>
                                         </div>
-                                    </ng-container>
+                                    }
 
-                                    <ng-container
-                                        *ngIf="
-                                            cardRow.title ===
-                                            'Unit Detail • Type'
-                                        "
-                                    >
+                                    @if (
+                                        cardRow.title === 'Unit Detail • Type'
+                                    ) {
                                         <svg-icon
                                             [src]="
                                                 selectedTab === 'inactive'
@@ -173,24 +164,17 @@
                                                           .logoName
                                             "
                                         ></svg-icon>
+
                                         {{
                                             selectedTab === 'inactive'
                                                 ? card.trailer.trailerType.name
                                                 : card.truck.truckType.name
                                         }}
-                                    </ng-container>
+                                    }
 
-                                    <ng-container
-                                        *ngIf="cardRow.title === 'Contact'"
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                !card[cardRow.key]?.length;
-                                                else contacts
-                                            "
-                                            >/</ng-container
-                                        >
-                                        <ng-template #contacts>
+                                    @if (cardRow.title === 'Contact') {
+                                        @if (!card[cardRow.key]?.length) {
+                                        } @else {
                                             <div class="contacts-holder">
                                                 <app-ta-input-dropdown-contacts
                                                     [contactsData]="
@@ -207,29 +191,29 @@
                                                     "
                                                 ></app-ta-input-dropdown-contacts>
                                             </div>
-                                        </ng-template>
-                                    </ng-container>
+                                        }
+                                    }
 
-                                    <ng-container
-                                        *ngIf="cardRow.title === 'Open Hours'"
-                                    >
+                                    @if (cardRow.title === 'Open Hours') {
                                         <app-ta-open-hours-dropdown
-                                            [componentData]="{
-                                                openHours: card?.openHours,
+                                            [dropdownConfig]="{
+                                                rowId: card?.id,
+                                                width: 190,
+                                                openHours:
+                                                    card[cardRow.key]
+                                                        ?.openHours,
                                                 openHoursToday:
-                                                    card?.openHoursToday,
+                                                    card[cardRow.key]
+                                                        ?.openHoursToday,
                                             }"
                                         ></app-ta-open-hours-dropdown>
-                                    </ng-container>
+                                    }
 
-                                    <ng-container
-                                        *ngIf="cardRow.title === 'Services'"
-                                    >
-                                        <ng-container
-                                            *ngFor="
-                                                let item of card.serviceTypes
-                                            "
-                                        >
+                                    @if (cardRow.title === 'Services') {
+                                        @for (
+                                            item of card.serviceTypes;
+                                            track item.serviceType
+                                        ) {
                                             <svg-icon
                                                 class="service-svg"
                                                 [src]="
@@ -240,46 +224,39 @@
                                                     'active-svg': item.active,
                                                 }"
                                             ></svg-icon>
-                                        </ng-container>
-                                    </ng-container>
+                                        }
+                                    }
 
-                                    <ng-container
-                                        *ngIf="
-                                            cardRow.title !==
-                                                'Item Detail • Description' &&
-                                            cardRow.title !== 'Services' &&
-                                            cardRow.title !==
-                                                'Item Detail • Cost' &&
-                                            cardRow.title !==
-                                                'Unit Detail • Type' &&
-                                            cardRow.title !== 'Contact' &&
-                                            cardRow.title !== 'Open Hours'
-                                        "
-                                    >
+                                    @if (
+                                        cardRow.title !==
+                                            'Item Detail • Description' &&
+                                        cardRow.title !== 'Services' &&
+                                        cardRow.title !==
+                                            'Item Detail • Cost' &&
+                                        cardRow.title !==
+                                            'Unit Detail • Type' &&
+                                        cardRow.title !== 'Contact' &&
+                                        cardRow.title !== 'Open Hours'
+                                    ) {
                                         {{ card | cardValue: cardRow }}
-                                        <ng-container
-                                            *ngIf="
-                                                cardRow.title ===
-                                                    'Unit Detail • Odometer' &&
-                                                card[cardRow.key]
-                                            "
-                                        >
-                                            <span class="muted"
-                                                >mi</span
-                                            ></ng-container
-                                        >
-                                    </ng-container>
-                                    <ng-container
-                                        *ngIf="
+
+                                        @if (
                                             cardRow.title ===
-                                            'Item Detail • Cost'
-                                        "
-                                    >
+                                                'Unit Detail • Odometer' &&
+                                            card[cardRow.key]
+                                        ) {
+                                            <span class="muted">mi</span>
+                                        }
+                                    }
+
+                                    @if (
+                                        cardRow.title === 'Item Detail • Cost'
+                                    ) {
                                         ${{ card[cardRow.key] | nFormatter }}
-                                    </ng-container>
+                                    }
                                 </div>
                             </div>
-                        </ng-container>
+                        }
                     </div>
                 </div>
 
@@ -319,7 +296,7 @@
                             </app-ta-note>
                         </div>
 
-                        <ng-container *ngIf="card.fileCount">
+                        @if (card.fileCount) {
                             <div
                                 class="card-attachments-icon-container d-flex flex-column align-items-center"
                             >
@@ -336,7 +313,7 @@
                                     {{ card.fileCount }}
                                 </div>
                             </div>
-                        </ng-container>
+                        }
 
                         <!-- Expand element -->
 
@@ -369,7 +346,7 @@
                 </div>
             </div>
         </div>
-    </ng-container>
+    }
 </div>
 
 <!-- Description-->
@@ -422,13 +399,11 @@
                 'dropdown-scroll': data.descriptionItems.length >= 8,
             }"
         >
-            <ng-container
-                *ngFor="
-                    let descriptionPopoverItem of data.descriptionItems;
-                    let descriptionPopoverItemIndex = index;
-                    trackBy: trackCard
-                "
-            >
+            @for (
+                descriptionPopoverItem of data.descriptionItems;
+                let descriptionPopoverItemIndex = $index;
+                track descriptionPopoverItem.id
+            ) {
                 <div
                     class="align-items-center description-items-item"
                     [ngClass]="{
@@ -462,41 +437,44 @@
                                 {{ descriptionPopoverItem?.description }}
                             </p>
 
-                            <svg-icon
-                                *ngIf="
-                                    descriptionPopoverItem?.pmTruck ||
-                                    descriptionPopoverItem?.pmTrailer
-                                "
-                                class="pm-icon"
-                                [src]="
-                                    descriptionPopoverItem?.pmTruck?.logoName ||
-                                    descriptionPopoverItem?.pmTrailer.logoName
-                                "
-                                [svgStyle]="{
-                                    'width.px': 14,
-                                    'height.px': 14,
-                                }"
-                            ></svg-icon>
+                            @if (
+                                descriptionPopoverItem?.pmTruck ||
+                                descriptionPopoverItem?.pmTrailer
+                            ) {
+                                <svg-icon
+                                    class="pm-icon"
+                                    [src]="
+                                        descriptionPopoverItem?.pmTruck
+                                            ?.logoName ||
+                                        descriptionPopoverItem?.pmTrailer
+                                            .logoName
+                                    "
+                                    [svgStyle]="{
+                                        'width.px': 14,
+                                        'height.px': 14,
+                                    }"
+                                ></svg-icon>
+                            }
                         </div>
 
-                        <ng-container *ngIf="!data.isRepairOrder">
+                        @if (!data.isRepairOrder) {
                             <span class="text-size-11 text-color-grey">
                                 {{ descriptionPopoverItem?.quantity }} x
                                 {{ descriptionPopoverItem?.descriptionPrice }}
                             </span>
-                        </ng-container>
+                        }
                     </div>
 
                     <!-- Price -->
 
                     <div class="d-flex align-items-center justify-content-end">
-                        <ng-contaner *ngIf="data.isRepairOrder">
+                        @if (data.isRepairOrder) {
                             <span
                                 class="text-size-14 text-color-grey quantity-x-text"
                             >
                                 x
                             </span>
-                        </ng-contaner>
+                        }
 
                         <p
                             class="m-0 ta-font-medium text-size-14 text-color-white"
@@ -509,7 +487,7 @@
                         </p>
                     </div>
                 </div>
-            </ng-container>
+            }
         </div>
     </div>
 </ng-template>

@@ -1,7 +1,5 @@
 <div class="repair-shop-details-container">
-    <ng-container
-        *ngFor="let item of repairShopDetailsConfig; trackBy: trackByIdentity"
-    >
+    @for (item of repairShopDetailsConfig; track item.id) {
         <app-ta-details-header
             [hasIcon]="item?.icon"
             [hasSearch]="item?.hasSearch"
@@ -43,7 +41,7 @@
             (specialFilterActions)="onFilter($event)"
         >
         </app-ta-details-header>
-    </ng-container>
+    }
 
     <div>
         <app-repair-shop-details-item

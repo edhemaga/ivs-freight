@@ -4,7 +4,7 @@
     [bodyTemplate]="'card'"
     [animationMarginParams]="{
         marginTop: '0px',
-        marginBottom: '8px'
+        marginBottom: '8px',
     }"
 >
     <div
@@ -41,15 +41,16 @@
                 class="shop-details-map-location-cover-main-cover"
                 [hidden]="selectedTabId === 1"
             >
-                <app-ta-upload-files
-                    *ngIf="_cardData?.cover"
-                    [files]="[_cardData?.cover]"
-                    [customClassName]="'driver-card-pdf'"
-                    [hasCarouselBottomTabs]="true"
-                    [type]="'details'"
-                    [slideWidth]="428"
-                    [reviewMode]="'REVIEW_MODE'"
-                ></app-ta-upload-files>
+                @if (_cardData?.cover) {
+                    <app-ta-upload-files
+                        [files]="[_cardData?.cover]"
+                        [customClassName]="'driver-card-pdf'"
+                        [hasCarouselBottomTabs]="true"
+                        [type]="'details'"
+                        [slideWidth]="428"
+                        [reviewMode]="'REVIEW_MODE'"
+                    ></app-ta-upload-files>
+                }
             </div>
         </div>
     </div>
