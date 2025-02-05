@@ -461,7 +461,7 @@ export class DropdownMenuContentHelper {
     }
 
     // load template
-    static getLoadTemplateDropdownContent(): any[] {
+    static getLoadTemplateDropdownContent(): DropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [DropdownMenuStringEnum.CREATE_LOAD];
 
@@ -493,7 +493,7 @@ export class DropdownMenuContentHelper {
     }
 
     // load
-    static getLoadDropdownContent(selectedTab: string): any[] {
+    static getLoadDropdownContent(selectedTab: string): DropdownMenuItem[] {
         const isPendingLoad = selectedTab === DropdownMenuStringEnum.PENDING;
         const isClosedLoad = selectedTab === DropdownMenuStringEnum.CLOSED;
 
@@ -544,7 +544,7 @@ export class DropdownMenuContentHelper {
         archivedDate: string,
         applicationStatus: string,
         review: string
-    ): any[] {
+    ): any[] /* DropdownMenuItem[] */ {
         return [
             {
                 title: 'Edit',
@@ -688,7 +688,7 @@ export class DropdownMenuContentHelper {
         status: number,
         ban?: boolean,
         dnu?: boolean
-    ): any[] {
+    ): any[] /* DropdownMenuItem[] */ {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -847,7 +847,9 @@ export class DropdownMenuContentHelper {
     }
 
     // shipper
-    static getShipperDropdownContent(status: number): any[] {
+    static getShipperDropdownContent(
+        status: number
+    ): any[] /* DropdownMenuItem[] */ {
         return [
             {
                 title: TableStringEnum.EDIT_2,

@@ -7,31 +7,31 @@ import {
     Output,
 } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
 
 // base classes
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
-// Helpers
+// helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// Services
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { ModalService } from '@shared/services/modal.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
 
-// Models
+// models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
 
-// Pipes
+// pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
 
@@ -43,11 +43,11 @@ import { LoadCardSvgRoutes } from '@pages/load/pages/load-card/utils/svg-routes/
     templateUrl: './load-card.component.html',
     styleUrls: ['./load-card.component.scss'],
     providers: [
-        // Pipes
+        // pipes
         FormatCurrencyPipe,
         TimeFormatPipe,
 
-        //Helpers
+        // helpers
         CardHelper,
     ],
 })
@@ -59,14 +59,10 @@ export class LoadCardComponent
         this._viewData = value;
     }
 
-    // Card body keys
+    // card body endpoints
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
 
-    @Input() cardTitle: string;
-    @Input() rows: number[];
-
-    @Input() cardTitleLink: string;
     @Input() selectedTab: string;
 
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
@@ -84,21 +80,29 @@ export class LoadCardComponent
     constructor(
         protected router: Router,
 
-        // Services
+        // services
+        protected modalService: ModalService,
+        protected loadStoreService: LoadStoreService,
+
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
-        protected modalService: ModalService,
-        public imageBase64Service: ImageBase64Service,
-        public loadStoreService: LoadStoreService,
 
-        // Helpers
+        // helpers
         private cardHelper: CardHelper
     ) {
-        super(loadStoreService);
+        super();
     }
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    public trackCard(item: number): number {
+        return item;
+    }
+
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public flipAllCards(): void {
@@ -112,7 +116,6 @@ export class LoadCardComponent
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -121,20 +124,17 @@ export class LoadCardComponent
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    // Flip card based on card index
-    public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
-    }
-
-    public trackCard(item: number): number {
-        return item;
-    }
-
     public saveNoteValue(note: string, id: number): void {
         this.saveValueNote.emit({
             value: note,
             id: id,
         });
+    }
+
+    public goToDetailsPage(card: CardDetails, link: string): void {
+        this.detailsDataService.setNewData(card);
+
+        this.router.navigate([link]);
     }
 
     public handleToggleDropdownMenuActions<T>(
@@ -154,12 +154,6 @@ export class LoadCardComponent
             DropdownMenuStringEnum.LOAD,
             this.selectedTab
         );
-    }
-
-    public goToDetailsPage(card: CardDetails, link: string): void {
-        this.detailsDataService.setNewData(card);
-
-        this.router.navigate([link]);
     }
 
     public handleShowMoreAction(): void {}

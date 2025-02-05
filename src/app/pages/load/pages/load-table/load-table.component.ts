@@ -5,6 +5,8 @@ import {
     AfterViewInit,
     ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
+
 import {
     filter,
     map,
@@ -14,7 +16,6 @@ import {
     take,
     takeUntil,
 } from 'rxjs';
-import { Router } from '@angular/router';
 
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -29,7 +30,6 @@ import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
@@ -65,20 +65,19 @@ import {
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
-// Helpers
+// helpers
 import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpers/load-table.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
 // models
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
 import {
     LoadListDto,
     LoadListResponse,
     LoadStatusType,
     SortOrder,
 } from 'appcoretruckassist';
-import { IGetLoadListParam } from '@pages/load/pages/load-table/models/index';
+import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
 
 @Component({
     selector: 'app-load-table',
@@ -96,40 +95,41 @@ export class LoadTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
 
-    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
+    public resizeObserver: ResizeObserver;
 
     public selectedTab: string = TableStringEnum.ACTIVE_2;
-    public resizeObserver: ResizeObserver;
+
     public loadingPage: boolean = false;
-    public cardTitleLink: string = TableStringEnum.LOAD_DETAILS;
-    public cardTitle: string;
-    public sendDataToCardsFront: CardRows[];
-    public sendDataToCardsBack: CardRows[];
-    public displayRows$: Observable<any>; //leave this as any for now
+
+    // filters
+    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
+
+    // cards
+    public displayRows$: Observable<any>;
 
     constructor(
-        //services
-        private tableService: TruckassistTableService,
+        // router
+        protected router: Router,
+
+        // services
         protected modalService: ModalService,
+        protected loadStoreService: LoadStoreService,
+
+        private tableService: TruckassistTableService,
         private loadServices: LoadService,
         private dispatchHubService: DispatchHubService,
-        private tableDropdownService: TableCardDropdownActionsService,
         private confiramtionService: ConfirmationService,
         private loadCardsModalService: LoadCardModalService,
         private confirmationActivationService: ConfirmationActivationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
-        public loadStoreService: LoadStoreService,
 
-        //pipes
+        // pipes
         public datePipe: DatePipe,
 
-        //store
-        private store: Store,
-
-        // Router
-        protected router: Router
+        // store
+        private store: Store
     ) {
-        super(loadStoreService);
+        super();
     }
 
     ngOnInit(): void {
@@ -337,6 +337,7 @@ export class LoadTableComponent
 
     public saveValueNote(event: { value: string; id: number }): void {
         const { id, value } = event || {};
+
         this.loadStoreService.dispatchSaveValueNote(id, value);
     }
 

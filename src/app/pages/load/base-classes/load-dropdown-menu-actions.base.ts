@@ -15,7 +15,10 @@ import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpe
 import { TableCardBodyActions } from '@shared/models';
 
 export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBase {
-    constructor(protected loadStoreService: LoadStoreService) {
+    // services
+    protected abstract loadStoreService: LoadStoreService;
+
+    constructor() {
         super();
     }
 
@@ -53,6 +56,7 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
         selectedTab: string
     ) {
         const { type, id } = event;
+
         const selectedLoadTab: eLoadStatusType = eLoadStatusType[selectedTab];
 
         this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(
@@ -67,6 +71,7 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
         selectedTab: string
     ) {
         const { type, id } = event;
+
         const selectedLoadTab: eLoadStatusType = eLoadStatusType[selectedTab];
 
         this.loadStoreService.dispatchGetConvertToLoadOrTemplateModalData(
@@ -81,13 +86,14 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
         tableType: string,
         selectedTab: string
     ): void {
-        const modalTitle = LoadTableHelper.composeDeleteModalTitle(selectedTab);
+        const modalHeaderTitle =
+            LoadTableHelper.composeDeleteModalTitle(selectedTab);
 
         const adjustedEvent = {
             ...event,
             template: DropdownMenuStringEnum.LOAD,
             subType: selectedTab.toLowerCase(),
-            modalHeaderTitle: modalTitle,
+            modalHeaderTitle,
         };
 
         super.handleSharedDropdownMenuActions(adjustedEvent, tableType);

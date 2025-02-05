@@ -7,8 +7,6 @@ import { SharedModule } from '@shared/shared.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CustomerRoutingModule } from '@pages/customer/customer-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-// import { AgmSnazzyInfoWindowModule } from '@agm/snazzy-info-window';
-// import { AgmCoreModule } from '@agm/core';
 import { BrokerDetailsModule } from '@pages/customer/pages/broker-details/broker-details.module';
 
 // Components
@@ -22,7 +20,6 @@ import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-to
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 
-//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { TaMapListComponent } from '@shared/components/ta-map-list/ta-map-list.component';
 import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-map-list-card.component';
 
@@ -55,8 +52,6 @@ import { customerCardModalReducer } from '@pages/customer/pages/customer-table/c
         BrokerDetailsModule,
         AngularSvgIconModule,
         SharedModule,
-        // AgmCoreModule,
-        // AgmSnazzyInfoWindowModule,
         NgbModule,
 
         // Components
@@ -66,7 +61,6 @@ import { customerCardModalReducer } from '@pages/customer/pages/customer-table/c
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,
-        // TaMapsComponent,
         TaMapListComponent,
         TaMapListCardComponent,
         TaInputDropdownTableComponent,
@@ -77,13 +71,13 @@ import { customerCardModalReducer } from '@pages/customer/pages/customer-table/c
         CaChartComponent,
         CaMapComponent,
 
-        // Pipes
+        // pipes
         FormatDatePipe,
         FormatEinPipe,
         FlipCardsPipe,
         CardValuePipe,
 
-        //Store
+        // store
         StoreModule.forFeature('customerCardData', customerCardModalReducer),
     ],
 })

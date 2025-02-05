@@ -4,15 +4,19 @@ import { DatePipe } from '@angular/common';
 import {
     TableStringEnum,
     TooltipColorsStringEnum,
-    TrailerNameStringEnum,
     TruckNameStringEnum,
 } from '@shared/enums';
 import { LoadModalStopItemsStringEnum } from '@pages/load/enums';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // helpers
-import { AvatarColorsHelper, DataFilterHelper, DropdownMenuContentHelper, LoadStatusHelper, MethodsGlobalHelper } from "@shared/utils/helpers";
-
+import {
+    AvatarColorsHelper,
+    DataFilterHelper,
+    DropdownMenuContentHelper,
+    LoadStatusHelper,
+    MethodsGlobalHelper,
+} from '@shared/utils/helpers';
 
 // models
 import {
@@ -207,7 +211,9 @@ export class LoadStoreHelper {
             tableAssignedUnitTrailer: {
                 text: driver?.trailerNumber,
                 type: driver?.trailerType?.name,
-                color: MethodsGlobalHelper.getTrailerTooltipColor(driver?.trailerType?.name),
+                color: MethodsGlobalHelper.getTrailerTooltipColor(
+                    driver?.trailerType?.name
+                ),
                 hover: false,
             },
             tabelLength: loadRequirements?.trailerLength?.name
@@ -409,7 +415,9 @@ export class LoadStoreHelper {
             tableAssignedUnitTrailer: {
                 text: dispatch?.trailer?.trailerNumber,
                 type: dispatch?.trailer?.model,
-                color: MethodsGlobalHelper.getTrailerTooltipColor(dispatch?.trailer?.model),
+                color: MethodsGlobalHelper.getTrailerTooltipColor(
+                    dispatch?.trailer?.model
+                ),
                 hover: false,
             },
             tabelLength: loadRequirements?.trailerLength?.name
