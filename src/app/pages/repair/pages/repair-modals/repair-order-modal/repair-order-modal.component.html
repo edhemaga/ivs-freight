@@ -208,6 +208,7 @@
                                             [textColor]="'#424242'"
                                             [textFontSize]="'11px'"
                                             [leftSideIcon]="true"
+                                            [maxWidth]="'240px'"
                                         ></app-ta-copy>
                                     </div>
                                 }
@@ -257,6 +258,7 @@
                         </div>
                     } @else {
                         <!-- Repair Shop Dropdown -->
+
                         @if (!selectedRepairShop) {
                             <app-ca-input-dropdown
                                 formControlName="repairShopId"
@@ -283,7 +285,7 @@
 
             <app-ta-custom-card
                 [cardName]="'Item'"
-                [disableAnimation]="isCardanimationDisabled"
+                [disableAnimation]="isCardAnimationDisabled"
                 [hasActionSvg]="true"
                 [hasArrow]="false"
                 [hasScrollBody]="
@@ -342,7 +344,7 @@
 
             <app-ta-custom-card
                 [cardName]="'Service'"
-                [disableAnimation]="isCardanimationDisabled"
+                [disableAnimation]="isCardAnimationDisabled"
                 [hasCounter]="services | activeItems"
                 [isCardOpen]="true"
             >
@@ -354,34 +356,32 @@
                 ></app-ta-tab-switch>
 
                 <div class="repair-shop-services">
-                    <ng-container
-                        *ngFor="
-                            let repair of services?.length > 10
-                                ? (services | slice: 2)
-                                : services;
-                            trackBy: trackByIdentity
-                        "
-                    >
+                    @for (
+                        service of services?.length > 10
+                            ? (services | slice: 2)
+                            : services;
+                        track service.id
+                    ) {
                         <div
                             class="d-flex align-items-center repair-shop-service"
                             [ngClass]="{
-                                active: repair.active && repair.isSelected,
-                                inactive: repair.active && !repair.isSelected,
+                                active: service.active && service.isSelected,
+                                inactive: service.active && !service.isSelected,
                                 disabled:
-                                    !repair.active || !this.selectedRepairShop,
+                                    !service.active || !this.selectedRepairShop,
                             }"
-                            (click)="handleServiceActiveClick(repair)"
+                            (click)="handleServiceActiveClick(service)"
                         >
                             <svg-icon
-                                [src]="repair?.svg"
+                                [src]="service?.svg"
                                 [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
                             ></svg-icon>
 
                             <p class="ta-font-bold">
-                                {{ repair?.serviceType }}
+                                {{ service?.serviceType }}
                             </p>
                         </div>
-                    </ng-container>
+                    }
                 </div>
             </app-ta-custom-card>
 
@@ -408,6 +408,7 @@
             </div>
 
             <!-- Note -->
+
             <div class="divider"></div>
 
             <app-ca-input-note

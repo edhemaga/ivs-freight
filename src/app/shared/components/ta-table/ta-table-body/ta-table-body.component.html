@@ -4594,8 +4594,10 @@
                                             popoverClass="table-description-popover"
                                             [ngbPopover]="descriptionPopover"
                                             (click)="
-                                                column.ngTemplate ===
-                                                    'description' &&
+                                                (column.ngTemplate ===
+                                                    'description' ||
+                                                    column.ngTemplate ===
+                                                        'total') &&
                                                     onShowDescriptionDropdown(
                                                         t1,
                                                         tableData[0]

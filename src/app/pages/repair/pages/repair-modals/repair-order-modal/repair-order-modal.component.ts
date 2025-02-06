@@ -162,7 +162,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public activeAction: string;
-    
+
     public repairOrderForm: UntypedFormGroup;
     public isFormDirty: boolean = false;
 
@@ -172,7 +172,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public hideIconIndex: number = 0;
 
     // cards
-    public isCardanimationDisabled: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     // tabs
     public headerTabs: Tabs[] = [];
@@ -1103,7 +1103,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         RepairOrderModalStringEnum.EDIT
                     )
                 ) {
-                    this.isCardanimationDisabled = true;
+                    this.isCardAnimationDisabled = true;
 
                     this.editRepairById(this.editData.data);
                 } else this.startFormChanges();
@@ -1284,6 +1284,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private editRepairById(editData: RepairResponse): void {
+        console.log('editData', editData);
+
         const {
             repairType,
             invoice,
@@ -1429,7 +1431,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         setTimeout(() => {
             this.startFormChanges();
 
-            this.isCardanimationDisabled = false;
+            this.isCardAnimationDisabled = false;
         }, 1000);
     }
 
@@ -1554,7 +1556,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private loadPreSelected(): void {
-        const selectedUnit = (this.unitDropdownList as any[]).find(
+        const selectedUnit = this.unitDropdownList.find(
             (unit) => unit.id === this.editData.preSelectedUnit
         );
 
@@ -1564,7 +1566,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         );
 
         this.repairOrderForm.patchValue({
-            unit: selectedUnit?.truckNumber ?? selectedUnit?.trailerNumber,
+            unit:
+                RepairOrderModalStringEnum.TRUCK_NUMBER in selectedUnit!
+                    ? (selectedUnit as TruckMinimalResponse).truckNumber
+                    : (selectedUnit as TrailerMinimalResponse).trailerNumber,
         });
     }
 

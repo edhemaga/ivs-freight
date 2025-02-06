@@ -15,6 +15,8 @@ export enum RepairOrderModalStringEnum {
 
     REPAIR_UNIT = 'repair-unit',
 
+    TRUCK_NUMBER = 'truckNumber',
+
     ORDER = 'Order',
     BILL = 'Bill',
 
