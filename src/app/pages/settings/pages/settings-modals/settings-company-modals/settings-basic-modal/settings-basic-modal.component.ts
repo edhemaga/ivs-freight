@@ -1554,8 +1554,6 @@ export class SettingsBasicModalComponent
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
         };
 
-        console.log(bankAccounts);
-
         departmentContacts.forEach((departmentContact, index: number) => {
             departmentContact.departmentId = this.selectedDepartmentFormArray[index].id;
         });

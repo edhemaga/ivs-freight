@@ -13,7 +13,6 @@ export class SettingsBankAccountStatusPipe implements PipeTransform {
     status: string | number | null,
     isHovered?: boolean
   ): string {
-    console.log(status);
     switch (true) {
       case !status:
         return EBankAccountStatus.VERIFY;
