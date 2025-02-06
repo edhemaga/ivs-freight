@@ -117,6 +117,9 @@ import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/se
 // Mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
+// Pipes
+import { SettingsBankAccountStatusPipe } from '@pages/settings/pages/settings-company/pipes';
+
 // Plaid
 declare const Plaid: IPlaid;
 
@@ -146,6 +149,9 @@ declare const Plaid: IPlaid;
         TaCustomCardComponent,
         TaLogoChangeComponent,
         CaUploadFilesComponent,
+
+        // Pipes
+        SettingsBankAccountStatusPipe
     ],
 })
 export class SettingsBasicModalComponent
@@ -164,7 +170,7 @@ export class SettingsBasicModalComponent
     public isCardAnimationDisabled: boolean = false;
     public svgRoutes = SettingsModalSvgRoutes;
 
-    // tabs
+    // Tabs
     public selectedTab: number = 1;
 
     public tabs: Tabs[];
@@ -172,7 +178,7 @@ export class SettingsBasicModalComponent
     public prefferedLoadTabs: Tabs[];
     public fleetTypeTabs: Tabs[];
 
-    // options
+    // Options
     public driverCommissionOptions: Options;
     public ownerCommissionOptions: Options;
     public commonOptions: Options;
@@ -183,7 +189,7 @@ export class SettingsBasicModalComponent
 
     public animationObject: AnimationOptions;
 
-    // basic tab
+    // Basic tab
     public selectedAddress: AddressEntity;
     public selectedTimeZone: any = null;
     public selectedCurrency: any = null;
@@ -195,7 +201,7 @@ export class SettingsBasicModalComponent
     public isBankSelectedFormArray: boolean[] = [];
     public bankCardTypes: string[] = [];
 
-    // dropdowns
+    // Dropdowns
     public banks: BankResponse[] = [];
     public payPeriods: EnumValue[] = [];
     public endingIns: EnumValue[] = [];
@@ -230,9 +236,15 @@ export class SettingsBasicModalComponent
     // Plaid bank verification
     public isPlaidAvailable: boolean = true;
 
-    // logo actions
+    // Logo actions
     public displayDeleteAction: boolean = false;
     public displayUploadZone: boolean = false;
+
+    // Enums
+    public EBankAccountStatus = EBankAccountStatus;
+
+    // Bank account actions
+    public focusedBankAccount!: number | null;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -244,13 +256,12 @@ export class SettingsBasicModalComponent
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         public addressService: AddressService,
-        // TODO test move to local service
         private companyService: CompanyService
     ) {
         super();
     }
 
-    async ngOnInit(): Promise<void> {
+    ngOnInit(): void {
         this.createForm();
 
         this.getModalDropdowns();
@@ -773,6 +784,10 @@ export class SettingsBasicModalComponent
 
     }
 
+    public focusBankAccount(index: number | null): void {
+        this.focusedBankAccount = index;
+    }
+
     public addBankAccount(event: { check: boolean; action: string }) {
         if (event.check && this.bankAccounts.valid)
             this.bankAccounts.push(this.createBankAccount());
@@ -954,20 +969,20 @@ export class SettingsBasicModalComponent
         let selectedEndingIn: EnumValue;
 
         if (payPeriod === 'Semi Monthly' || payPeriod === 'Monthly') {
-            if (payPeriod === 'Semi Monthly') {
+            if (payPeriod === 'Semi Monthly')
                 selectedEndingIn = {
                     id: 7,
                     name: '15th / Last day',
                 };
-            } else {
+            else
                 selectedEndingIn = {
                     id: 8,
                     name: 'Last Day',
                 };
-            }
-        } else {
+
+        } else
             selectedEndingIn = this.endingIns[0];
-        }
+
 
         return selectedEndingIn;
     }
@@ -1328,7 +1343,7 @@ export class SettingsBasicModalComponent
             });
     }
 
-    private editCompanyDivision() {
+    private editCompanyDivision(): void {
         const { additionalInfo, ...company } = this.editData?.company;
 
         this.companyForm.patchValue({
@@ -1400,11 +1415,11 @@ export class SettingsBasicModalComponent
                         email: department.email,
                     })
                 );
-                this.selectedDepartmentFormArray.push(department.department);
+                this.selectedDepartmentFormArray.push({ ...department.department });
             }
         }
 
-        if (this.editData.company.bankAccounts.length) {
+        if (this.editData.company.bankAccounts?.length) {
             this.editData.company.bankAccounts.forEach(
                 (bankAccount, index: number) => {
 
@@ -1428,9 +1443,8 @@ export class SettingsBasicModalComponent
                         })
                     );
 
-
                     this.selectedBankAccountFormArray.push(
-                        this.editData.company.bankAccounts[index].bank
+                        { ...this.editData.company.bankAccounts[index].bank }
                     );
 
                     this.isBankSelectedFormArray.push(
@@ -1459,12 +1473,12 @@ export class SettingsBasicModalComponent
                 }
             }
 
-            // tabs
+            // Tabs
             const selectedPrefferedLoadTypeTab = this.prefferedLoadTabs.find(
-                (tab) => tab.name === additionalInfo?.preferredLoadType
+                (tab: Tabs) => tab.name === additionalInfo?.preferredLoadType
             );
             const selectedFleetTypeTab = this.fleetTypeTabs.find(
-                (tab) => tab.name === additionalInfo?.fleetType
+                (tab: Tabs) => tab.name === additionalInfo?.fleetType
             );
 
             this.onPrefferedLoadCheck(selectedPrefferedLoadTypeTab);
@@ -1523,6 +1537,8 @@ export class SettingsBasicModalComponent
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
         };
+
+        console.log(bankAccounts);
 
         departmentContacts.forEach((departmentContact, index: number) => {
             departmentContact.departmentId = this.selectedDepartmentFormArray[index].id;
@@ -1985,7 +2001,7 @@ export class SettingsBasicModalComponent
                     })
                 );
 
-                this.selectedDepartmentFormArray.push(department.department);
+                this.selectedDepartmentFormArray.push({ ...department.department });
             }
 
         if (data.bankAccounts?.length)
@@ -2006,13 +2022,13 @@ export class SettingsBasicModalComponent
                             bankId: bankAccount?.bank?.name,
                             routing: routing,
                             account: account,
-                            status: status === (0 || NaN) ?
-                                EBankAccountStatus.UNVERIFIED :
-                                EBankAccountStatus.VERIFIED
+                            status: status ?
+                                EBankAccountStatus.VERIFIED :
+                                EBankAccountStatus.UNVERIFIED
                         })
                     );
                     this.selectedBankAccountFormArray.push(
-                        bankAccount.bank
+                        { ...bankAccount.bank }
                     );
                     this.isBankSelectedFormArray.push(
                         id ? true : false
@@ -2342,9 +2358,9 @@ export class SettingsBasicModalComponent
             }
         }
 
-        if (this.companyForm.get(ESettingsFormControls.LOGO).value) {
+        if (this.companyForm.get(ESettingsFormControls.LOGO).value)
             this.displayDeleteAction = true;
-        }
+
 
         setTimeout(() => {
             this.isCardAnimationDisabled = false;

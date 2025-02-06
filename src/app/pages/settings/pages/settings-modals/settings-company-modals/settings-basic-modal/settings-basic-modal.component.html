@@ -694,24 +694,44 @@
                                                         }"
                                                     ></app-ta-input>
 
-                                                    <svg-icon
-                                                        class="common-fake-table-check"
-                                                        [src]="
-                                                            svgRoutes.iconConfirmSvgRoute
+                                                    @let bankStatus =
+                                                        bankAccount?.status
+                                                            | settingsBankAccountStatus
+                                                                : ind ===
+                                                                      focusedBankAccount;
+                                                    <div
+                                                        class="common-fake-table-status status text-size-14 ta-font-bold"
+                                                        [class.pending]="
+                                                            bankStatus ===
+                                                            EBankAccountStatus.PENDING
+                                                        "
+                                                        [class.verified]="
+                                                            bankStatus ===
+                                                            EBankAccountStatus.VERIFIED
+                                                        "
+                                                        [class.verify]="
+                                                            bankStatus ===
+                                                            EBankAccountStatus.VERIFY
                                                         "
                                                         (click)="
-                                                            verifyBankAccount(
+                                                            bankStatus !==
+                                                                EBankAccountStatus.VERIFIED &&
+                                                                verifyBankAccount(
+                                                                    ind
+                                                                )
+                                                        "
+                                                        (mouseenter)="
+                                                            focusBankAccount(
                                                                 ind
                                                             )
                                                         "
-                                                    ></svg-icon>
-
-                                                    <div
-                                                        class="common-fake-table-status common-fake-table-status-pending"
+                                                        (mouseleave)="
+                                                            focusBankAccount(
+                                                                null
+                                                            )
+                                                        "
                                                     >
-                                                        {{
-                                                            bankAccount?.status
-                                                        }}
+                                                        {{ bankStatus }}
                                                     </div>
 
                                                     <div
