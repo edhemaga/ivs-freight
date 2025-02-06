@@ -318,14 +318,14 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    // truck
-    static getTruckDropdownContent(selectedTab: string): DropdownMenuItem[] {
-        const isActiveTruck = selectedTab === DropdownMenuStringEnum.ACTIVE;
+    // truck and trailer
+    static getTruckTrailerDropdownContent(selectedTab: string): DropdownMenuItem[] {
+        const isActiveTruckTrailer = selectedTab === DropdownMenuStringEnum.ACTIVE;
 
         // modifier items
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getTruckTrailerModifierItems(
-                isActiveTruck
+                isActiveTruckTrailer
             );
 
         // requested items
@@ -336,53 +336,7 @@ export class DropdownMenuContentHelper {
         const requestedSharedItems = [
             DropdownMenuStringEnum.EDIT,
             DropdownMenuStringEnum.VIEW_DETAILS,
-            isActiveTruck
-                ? DropdownMenuStringEnum.DEACTIVATE
-                : DropdownMenuStringEnum.ACTIVATE,
-            DropdownMenuStringEnum.DELETE,
-        ];
-
-        // items
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedConditionalItems,
-                false,
-                modifierItems
-            );
-
-        const sharedItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedSharedItems,
-                true,
-                modifierItems
-            );
-
-        return [
-            ...sharedItems.slice(0, 2),
-            ...conditionalItems,
-            ...sharedItems.slice(2),
-        ];
-    }
-
-    // trailer
-    static getTrailerDropdownContent(selectedTab: string): DropdownMenuItem[] {
-        const isActiveTrailer = selectedTab === DropdownMenuStringEnum.ACTIVE;
-
-        // modifier items
-        const modifierItems =
-            DropdownMenuContentConditionalItemsHelper.getTruckTrailerModifierItems(
-                isActiveTrailer
-            );
-
-        // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER,
-        ];
-
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
-            isActiveTrailer
+            isActiveTruckTrailer
                 ? DropdownMenuStringEnum.DEACTIVATE
                 : DropdownMenuStringEnum.ACTIVATE,
             DropdownMenuStringEnum.DELETE,
@@ -460,6 +414,83 @@ export class DropdownMenuContentHelper {
         ];
     }
 
+    // load template
+    static getLoadTemplateDropdownContent(): DropdownMenuItem[] {
+        // requested items
+        const requestedConditionalItems = [DropdownMenuStringEnum.CREATE_LOAD];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [
+            ...sharedItems.slice(0, 1),
+            ...conditionalItems,
+            ...sharedItems.slice(1),
+        ];
+    }
+
+    // load
+    static getLoadDropdownContent(selectedTab: string): DropdownMenuItem[] {
+        const isPendingLoad = selectedTab === DropdownMenuStringEnum.PENDING;
+        const isClosedLoad = selectedTab === DropdownMenuStringEnum.CLOSED;
+
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getLoadModifierItems(
+                isPendingLoad
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.CREATE_TEMPLATE,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.VIEW_DETAILS,
+            isClosedLoad && DropdownMenuStringEnum.EXPORT_BATCH,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
+        return [
+            ...sharedItems.slice(0, isClosedLoad ? 3 : 2),
+            ...conditionalItems,
+            ...sharedItems.slice(isClosedLoad ? 3 : 2),
+        ];
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
 
     // driver applicant
@@ -467,7 +498,7 @@ export class DropdownMenuContentHelper {
         archivedDate: string,
         applicationStatus: string,
         review: string
-    ): any[] {
+    ): any[] /* DropdownMenuItem[] */ {
         return [
             {
                 title: 'Edit',
@@ -611,7 +642,7 @@ export class DropdownMenuContentHelper {
         status: number,
         ban?: boolean,
         dnu?: boolean
-    ): any[] {
+    ): any[] /* DropdownMenuItem[] */ {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -770,7 +801,9 @@ export class DropdownMenuContentHelper {
     }
 
     // shipper
-    static getShipperDropdownContent(status: number): any[] {
+    static getShipperDropdownContent(
+        status: number
+    ): any[] /* DropdownMenuItem[] */ {
         return [
             {
                 title: TableStringEnum.EDIT_2,
@@ -851,96 +884,6 @@ export class DropdownMenuContentHelper {
                     height: 18,
                 },
                 svgClass: TableStringEnum.DELETE,
-            },
-        ];
-    }
-
-    // load
-    static getLoadDropdownContent(selectedTab: string): any[] {
-        return [
-            {
-                title: 'Edit',
-                name: 'edit',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-
-            {
-                title: 'View Details',
-                name: 'view-details',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title:
-                    selectedTab === TableStringEnum.TEMPLATE
-                        ? 'Create Load'
-                        : 'Create Template',
-                name:
-                    selectedTab === TableStringEnum.TEMPLATE
-                        ? TableStringEnum.CONVERT_TO_LOAD
-                        : TableStringEnum.CONVERT_TO_TEMPLATE,
-                svgUrl: `assets/svg/truckassist-table/new-list-dropdown/${
-                    selectedTab === TableStringEnum.TEMPLATE ? 'plus' : 'slider'
-                }.svg`,
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.ACTIVATE,
-                hasBorder: true,
-            },
-            {
-                title: 'Share',
-                name: 'share',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: 'Print',
-                name: 'print',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title: 'Delete',
-                name: TableStringEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-                isDisabled:
-                    selectedTab === TableStringEnum.ACTIVE ||
-                    selectedTab === TableStringEnum.CLOSED,
             },
         ];
     }
