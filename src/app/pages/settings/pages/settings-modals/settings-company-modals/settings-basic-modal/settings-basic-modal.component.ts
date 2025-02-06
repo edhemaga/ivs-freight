@@ -245,6 +245,7 @@ export class SettingsBasicModalComponent
 
     // Bank account actions
     public focusedBankAccount!: number | null;
+    public isInitialLoading: boolean = true;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -775,7 +776,10 @@ export class SettingsBasicModalComponent
     }
 
     public verifyBankAccount(index: number): void {
-        if (this.bankAccounts?.valid && this.isPlaidAvailable) {
+        if (
+            this.bankAccounts?.at(index).valid &&
+            this.isPlaidAvailable
+        ) {
             const value: IBankAccount =
                 this.bankAccounts.
                     value[index];
@@ -800,15 +804,27 @@ export class SettingsBasicModalComponent
     }
 
     private onBankSelected(index: number): void {
-        this.bankAccounts
-            .at(index)
-            .valueChanges.pipe(
-                debounceTime(150),
+        const bankAccount =
+            this.bankAccounts
+                .at(index);
+
+        bankAccount
+            .valueChanges
+            .pipe(
+                debounceTime(350),
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
             // TODO This needs to be refactored
-            .subscribe(async (value) => { });
+            // Previous code gets constantly called
+            .subscribe((value) => {
+                if (value.status === EBankAccountStatus.VERIFIED &&
+                    !bankAccount.pristine)
+                    bankAccount.patchValue({
+                        ...this.bankAccounts.at(index),
+                        status: EBankAccountStatus.UNVERIFIED
+                    });
+            });
     }
 
     public get bankCards(): UntypedFormArray {
@@ -2006,8 +2022,7 @@ export class SettingsBasicModalComponent
 
         if (data.bankAccounts?.length)
 
-            data.
-                bankAccounts?.
+            data.bankAccounts?.
                 forEach((bankAccount, index: number) => {
                     const {
                         id,
