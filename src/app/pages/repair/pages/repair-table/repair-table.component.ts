@@ -102,6 +102,7 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
 @Component({
     selector: 'app-repair-table',
@@ -211,6 +212,7 @@ export class RepairTableComponent
         // services
         protected modalService: ModalService,
         protected repairService: RepairService,
+        protected reviewsRatingService: ReviewsRatingService,
 
         private tableService: TruckassistTableService,
         private mapsService: MapsService,

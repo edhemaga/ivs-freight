@@ -33,6 +33,9 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
+        console.log('event', event);
+        console.log('tableType', tableType);
+
         const { id, type } = event;
 
         switch (type) {
@@ -57,6 +60,11 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
             case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
             case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
                 this.handleRepairShopOpenCloseBusinessAction(event, tableType);
+
+                break;
+            case DropdownMenuStringEnum.RATING_LIKE_TYPE:
+            case DropdownMenuStringEnum.RATING_DISLIKE_TYPE:
+                this.handleRepairShopLikeDislikeAction(event, tableType);
 
                 break;
             default:
@@ -117,6 +125,29 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
             tableType: ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
             modalTitle: name,
             modalSecondTitle: address.address,
+        };
+
+        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+    }
+
+    private handleRepairShopLikeDislikeAction<T extends RepairShopResponse>(
+        event: TableCardBodyActions<T>,
+        tableType: string
+    ): void {
+        const { id, type, data } = event;
+
+        const thumb = type === DropdownMenuStringEnum.RATING_LIKE_TYPE ? 1 : -1;
+
+        const rating = {
+            entityTypeRatingId: 2,
+            entityTypeId: id,
+            thumb,
+            tableData: data,
+        };
+
+        const adjustedEvent = {
+            ...event,
+            rating,
         };
 
         super.handleSharedDropdownMenuActions(adjustedEvent, tableType);

@@ -779,7 +779,10 @@
                                                 'avatar-is-owner': row.isOwner,
                                             }"
                                         >
-                                            @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                            @if (
+                                                row.isIncompleteFuelTransaction &&
+                                                column.name === 'Driver'
+                                            ) {
                                                 <div
                                                     mainTooltip="Driver not Linked"
                                                     mainContent
@@ -816,7 +819,10 @@
                                             }
                                         </div>
 
-                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                        @if (
+                                            row.isIncompleteFuelTransaction &&
+                                            column.name === 'Driver'
+                                        ) {
                                             <span
                                                 class="table-text column-text-red"
                                                 [ngClass]="{
@@ -830,15 +836,17 @@
                                                 [innerHtml]="
                                                     row[column.field]
                                                         ? (row[column.field]
-                                                        | tableHighlightSearchText
-                                                            : this
+                                                          | tableHighlightSearchText
+                                                              : this
                                                                     .chipsForHighlight)
                                                         : ''
                                                 "
                                             ></span>
                                         } @else {
                                             <div
-                                                (click)="goToDetails(column, row)"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
                                                 [ngClass]="{
                                                     'has-details-page':
                                                         !column.link
@@ -848,8 +856,8 @@
                                                 [innerHtml]="
                                                     row[column.field]
                                                         ? (row[column.field]
-                                                        | tableHighlightSearchText
-                                                            : this
+                                                          | tableHighlightSearchText
+                                                              : this
                                                                     .chipsForHighlight)
                                                         : ''
                                                 "
@@ -859,14 +867,16 @@
                                                 [autoClose]="'outside'"
                                                 popoverClass="toolbar-options-popover"
                                                 triggers="manual"
-                                                (hidden)="optionsPopupOpen = false"
+                                                (hidden)="
+                                                    optionsPopupOpen = false
+                                                "
                                                 mainTooltip="View Detail"
                                                 [tooltipBackground]="'#424242'"
                                                 [tooltipColor]="'#ffff'"
                                                 position="bottom"
                                             >
                                                 {{ row[column.field] }}
-                                            </div>     
+                                            </div>
                                         }
                                     </div>
 
@@ -2317,7 +2327,13 @@
 
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onLike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-like-icon':
                                                         row[column.field]
@@ -2330,7 +2346,6 @@
                                             <!-- Raiting Count -->
                                             <div
                                                 class="raiting-counter-container"
-                                                (click)="onOpenReviews(row)"
                                             >
                                                 <div
                                                     class="raiting-counter like-counter"
@@ -2355,7 +2370,13 @@
 
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onDislike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        !row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-dislike-icon':
                                                         row[column.field]
@@ -3803,7 +3824,10 @@
                                         }"
                                         class="td-content"
                                     >
-                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                        @if (
+                                            row.isIncompleteFuelTransaction &&
+                                            column.name === 'Driver'
+                                        ) {
                                             <div
                                                 mainTooltip="Driver not Linked"
                                                 mainContent
@@ -3824,10 +3848,10 @@
                                             <div
                                                 class="avatar-container"
                                                 [ngClass]="{
-                                                    'avatar-is-owner': row.isOwner,
+                                                    'avatar-is-owner':
+                                                        row.isOwner,
                                                 }"
                                             >
-                                                
                                                 <ng-container
                                                     [ngTemplateOutlet]="
                                                         avatarColumn
@@ -3847,7 +3871,10 @@
                                             </div>
                                         }
 
-                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                        @if (
+                                            row.isIncompleteFuelTransaction &&
+                                            column.name === 'Driver'
+                                        ) {
                                             <span
                                                 class="table-text column-text-red"
                                                 [ngClass]="{
@@ -3861,15 +3888,17 @@
                                                 [innerHtml]="
                                                     row[column.field]
                                                         ? (row[column.field]
-                                                        | tableHighlightSearchText
-                                                            : this
+                                                          | tableHighlightSearchText
+                                                              : this
                                                                     .chipsForHighlight)
                                                         : ''
                                                 "
                                             ></span>
                                         } @else {
                                             <span
-                                                (click)="goToDetails(column, row)"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
                                                 [ngClass]="{
                                                     'has-details-page':
                                                         !column.link
@@ -3879,14 +3908,13 @@
                                                 [innerHtml]="
                                                     row[column.field]
                                                         ? (row[column.field]
-                                                        | tableHighlightSearchText
-                                                            : this
+                                                          | tableHighlightSearchText
+                                                              : this
                                                                     .chipsForHighlight)
                                                         : ''
                                                 "
                                             ></span>
                                         }
-                                        
                                     </div>
 
                                     <div
@@ -4834,7 +4862,13 @@
                                             <!-- Like -->
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onLike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-like-icon':
                                                         row[column.field]
@@ -4847,7 +4881,6 @@
                                             <!-- Raiting Count -->
                                             <div
                                                 class="raiting-counter-container"
-                                                (click)="onOpenReviews(row)"
                                             >
                                                 <div
                                                     class="raiting-counter like-counter"
@@ -4869,7 +4902,13 @@
                                             <!-- Dislike -->
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onDislike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        !row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-dislike-icon':
                                                         row[column.field]
@@ -5287,7 +5326,10 @@
                                                     column?.minWidth ?? 'unset',
                                             }"
                                         >
-                                            @if (row.isIncompleteFuelTransaction && column.name === 'Truck') {
+                                            @if (
+                                                row.isIncompleteFuelTransaction &&
+                                                column.name === 'Truck'
+                                            ) {
                                                 <svg-icon
                                                     class="lh-1 mr-1 column-text-svg-transaction-incomplete"
                                                     [src]="
@@ -5295,8 +5337,11 @@
                                                     "
                                                 ></svg-icon>
                                             }
-                                            
-                                            @if (row[column.field] === 'Hazardous') {
+
+                                            @if (
+                                                row[column.field] ===
+                                                'Hazardous'
+                                            ) {
                                                 <svg-icon
                                                     class="d-flex align-items-center"
                                                     [ngStyle]="{
@@ -5336,7 +5381,7 @@
                                                         column.isJustifyEnd,
                                                     'column-text-red':
                                                         row.isIncompleteFuelTransaction &&
-                                                        column.name === 'Truck'
+                                                        column.name === 'Truck',
                                                 }"
                                                 [innerHtml]="
                                                     row[column.field]

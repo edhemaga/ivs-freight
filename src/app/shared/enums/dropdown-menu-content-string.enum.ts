@@ -97,6 +97,8 @@ export enum DropdownMenuStringEnum {
     ALL_TRANSACTIONS_TYPE = 'all-transactions',
     SUGGEST_EDIT_TYPE = 'suggest-edit',
     ADD_TRANSACTION_TYPE = 'add-transaction',
+    RATING_LIKE_TYPE = 'rating-like',
+    RATING_DISLIKE_TYPE = 'rating-dislike',
 
     // table types
     ACCOUNT = 'account',

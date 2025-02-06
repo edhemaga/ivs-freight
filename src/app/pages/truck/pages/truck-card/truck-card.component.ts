@@ -45,7 +45,7 @@ export class TruckCardComponent
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public _viewData: CardDetails[];
 
