@@ -6,7 +6,9 @@ export class FilterHelper {
         return res.map((type: DispatcherFilterResponse) => ({
             name: type?.fullName,
             count: type.loadCount,
-            isSelected: false 
+            isSelected: false,
+            avatar: type.avatar,
+            id: type.id
         }));
     }
 }

@@ -21,6 +21,7 @@ import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/n
 import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
+    CaFilterDropdownComponent
 } from 'ca-components';
 import { ToolbarTabsComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs/toolbar-tabs.component';
 
@@ -59,6 +60,7 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
         CaFilterComponent,
         CaSearchMultipleStatesComponent,
         ToolbarTabsComponent,
+        CaFilterDropdownComponent,
 
         // pipes
         FormatDatePipe,
