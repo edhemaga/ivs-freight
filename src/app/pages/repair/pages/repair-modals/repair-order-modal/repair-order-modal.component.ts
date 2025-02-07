@@ -15,7 +15,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-import { forkJoin, Subject, takeUntil } from 'rxjs';
+import { distinctUntilChanged, forkJoin, Subject, take, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -201,7 +201,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public selectedDriver: RepairDriverResponse;
     public selectedRepairShop: ExtendedRepairShopResponse;
 
-    public isDriverSelected: boolean = false;
+    public isDriverDisabled: boolean = true;
 
     // items
     public isRepairBillRowCreated: boolean = false;
@@ -631,24 +631,24 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                         .valid &&
                     event
                 )
-                    this.getDrivers();
+                    if (!event) {
+                        this.getDrivers();
 
-                if (!event) {
-                    this.selectedDriver = null;
+                        this.selectedDriver = null;
 
-                    this.repairOrderForm
-                        .get(RepairOrderModalStringEnum.DRIVER)
-                        .reset();
+                        this.repairOrderForm
+                            .get(RepairOrderModalStringEnum.DRIVER)
+                            .reset();
 
-                    this.inputService.changeValidators(
-                        this.repairOrderForm.get(
-                            RepairOrderModalStringEnum.ODOMETER
-                        ),
-                        false,
-                        [],
-                        false
-                    );
-                }
+                        this.inputService.changeValidators(
+                            this.repairOrderForm.get(
+                                RepairOrderModalStringEnum.ODOMETER
+                            ),
+                            false,
+                            [],
+                            false
+                        );
+                    }
 
                 setTimeout(() => {
                     this.isResetSelectedPm = false;
@@ -743,14 +743,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public monitorDateInput(): void {
         this.repairOrderForm
             .get(RepairOrderModalStringEnum.DATE)
-            .valueChanges.pipe(takeUntil(this.destroy$))
+            .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
             .subscribe((res) => {
                 if (!res) {
-                    this.selectedDriver = null;
-
-                    this.repairOrderForm
-                        .get(RepairOrderModalStringEnum.DRIVER)
-                        .reset();
+                    this.resetDriverInputField();
                 } else {
                     if (this.selectedUnit) this.getDrivers();
                 }
@@ -959,48 +955,50 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         };
     }
 
+    private resetDriverInputField(): void {
+        this.repairOrderForm.get(RepairOrderModalStringEnum.DRIVER).reset();
+
+        this.selectedDriver = null;
+
+        this.driversDropdownList = [];
+
+        this.isDriverDisabled = true;
+    }
+
     public getDrivers(): void {
         const formatedDate = moment(
             this.repairOrderForm.get(RepairOrderModalStringEnum.DATE).value,
             RepairOrderModalStringEnum.FORMAT_DATE
         ).format(RepairOrderModalStringEnum.FORMAT_DATE_1);
 
-        let truckId: number;
-        let trailerId: number;
-
-        if (this.truckOrTrailer === RepairOrderModalStringEnum.TRUCK) {
-            truckId = this.selectedUnit?.id;
-        } else {
-            trailerId = this.selectedUnit?.id;
-        }
+        const truckId =
+            this.truckOrTrailer === RepairOrderModalStringEnum.TRUCK
+                ? this.selectedUnit?.id
+                : null;
+        const trailerId =
+            this.truckOrTrailer !== RepairOrderModalStringEnum.TRUCK
+                ? this.selectedUnit?.id
+                : null;
 
         if (truckId || trailerId)
             this.repairService
                 .getRepairDriversList(truckId, trailerId, formatedDate)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe((driversList) => {
-                    if (driversList.length) {
-                        this.driversDropdownList = driversList.map((item) => {
-                            return {
-                                ...item,
-                                name: item.firstName + ' ' + item.lastName,
-                            };
-                        });
+                .subscribe(({ drivers, isTeamDrivers }) => {
+                    this.resetDriverInputField();
 
-                        this.selectedDriver =
-                            this.driversDropdownList[
-                                this.driversDropdownList.length - 1
-                            ];
+                    if (drivers?.length) {
+                        this.driversDropdownList = drivers.map(
+                            ({ firstName, lastName, ...driver }) => ({
+                                ...driver,
+                                name: `${firstName} ${lastName}`,
+                            })
+                        );
 
-                        this.isDriverSelected = true;
-                    } else {
-                        this.repairOrderForm
-                            .get(RepairOrderModalStringEnum.DRIVER)
-                            .reset();
+                        this.isDriverDisabled = drivers.length === 1;
 
-                        this.selectedDriver = null;
-
-                        this.isDriverSelected = false;
+                        if (this.isDriverDisabled || isTeamDrivers)
+                            this.selectedDriver = this.driversDropdownList[0];
                     }
                 });
     }
