@@ -1,7 +1,7 @@
 import {
     IPlaidAccount,
     IPlaidInstitution
-} from "..";
+} from "@shared/models";
 
 export interface IPlaidLinkOnExitMetadata {
     institution: null | IPlaidInstitution;

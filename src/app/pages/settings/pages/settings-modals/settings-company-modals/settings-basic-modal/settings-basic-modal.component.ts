@@ -746,7 +746,6 @@ export class SettingsBasicModalComponent
                         this.selectedBankAccountFormArray[index],
                     ];
                 },
-                error: () => { },
             });
     }
 
@@ -815,8 +814,6 @@ export class SettingsBasicModalComponent
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
-            // TODO This needs to be refactored
-            // Previous code gets constantly called
             .subscribe((value) => {
                 if (value.status === EBankAccountStatus.VERIFIED &&
                     !bankAccount.pristine)
@@ -1009,13 +1006,13 @@ export class SettingsBasicModalComponent
             .valueChanges.
             pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                if (value > 10) {
+                if (value > 10)
                     this.companyForm
                         .get(ESettingsFormControls.SOLO_EMPTY_MILE)
                         .setErrors({ invalid: true });
-                } else {
+                else
                     this.companyForm.get(ESettingsFormControls.SOLO_EMPTY_MILE).setErrors(null);
-                }
+
             });
 
         this.companyForm
@@ -1040,14 +1037,14 @@ export class SettingsBasicModalComponent
         this.companyForm
             .get(ESettingsFormControls.PER_MILE_SOLO)
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value > 10) {
+            .subscribe((value: number) => {
+                if (value > 10)
                     this.companyForm
                         .get(ESettingsFormControls.PER_MILE_SOLO)
                         .setErrors({ invalid: true });
-                } else {
+                else
                     this.companyForm.get(ESettingsFormControls.PER_MILE_SOLO).setErrors(null);
-                }
+
             });
 
         this.companyForm
@@ -1066,12 +1063,12 @@ export class SettingsBasicModalComponent
         this.companyForm
             .get(ESettingsFormControls.TEAM_LOADED_MILE)
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value > 10) {
+            .subscribe((value: number) => {
+                if (value > 10)
                     this.companyForm
                         .get(ESettingsFormControls.TEAM_LOADED_MILE)
                         .setErrors({ invalid: true });
-                } else {
+                else {
                     this.companyForm.get(ESettingsFormControls.TEAM_LOADED_MILE).setErrors(null);
                     if (this.companyForm.get(ESettingsFormControls.TEAM_EMPTY_MILE).value) {
                         this.companyForm.get(ESettingsFormControls.TEAM_EMPTY_MILE).patchValue(value);
@@ -1082,14 +1079,14 @@ export class SettingsBasicModalComponent
         this.companyForm
             .get(ESettingsFormControls.PER_MILE_TEAM)
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value > 10) {
+            .subscribe((value: number) => {
+                if (value > 10)
                     this.companyForm
                         .get(ESettingsFormControls.PER_MILE_TEAM)
                         .setErrors({ invalid: true });
-                } else {
+                else
                     this.companyForm.get(ESettingsFormControls.PER_MILE_TEAM).setErrors(null);
-                }
+
             });
     }
 
@@ -2374,7 +2371,6 @@ export class SettingsBasicModalComponent
         if (this.companyForm.get(ESettingsFormControls.LOGO).value)
             this.displayDeleteAction = true;
 
-
         setTimeout(() => {
             this.isCardAnimationDisabled = false;
         }, 1000);
@@ -2441,10 +2437,6 @@ export class SettingsBasicModalComponent
                                                     )
                                                 );
 
-                                        // TODO remove test data
-                                        // 1111222233330000
-                                        // 011401533
-
                                         addedAccount.status =
                                             foundAccount ?
                                                 EBankAccountStatus.VERIFIED :
@@ -2458,11 +2450,6 @@ export class SettingsBasicModalComponent
                         ) => {
                             this.isPlaidAvailable = true;
                         },
-                        onEvent: (
-                            eventName: string,
-                            metadata: IPlaidLinkOnEventMetadata
-                        ) => { },
-                        onLoad: () => { },
                     });
                 plaid.open();
             });

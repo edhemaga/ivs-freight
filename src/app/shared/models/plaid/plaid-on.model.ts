@@ -1,4 +1,4 @@
-import { EPlaidLinkStableEvent } from "@shared/enums/plaid/plaid-event.enum";
+import { EPlaidLinkStableEvent } from "@shared/enums";
 
 // Models
 import {
@@ -6,7 +6,7 @@ import {
     IPlaidLinkOnEventMetadata,
     IPlaidLinkOnExitMetadata,
     IPlaidLinkOnSuccessMetadata
-} from "..";
+} from '@shared/models';
 
 export type IPlaidLinkOnSuccess = (
     public_token: string,

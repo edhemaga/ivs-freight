@@ -4,7 +4,7 @@ import {
     IPlaidLinkOnExit,
     IPlaidLinkOnLoad,
     IPlaidLinkOnSuccess
-} from "..";
+} from "@shared/models";
 
 export interface IPlaidLinkOptions {
     token: string;

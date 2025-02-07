@@ -17,3 +17,5 @@ export * from './modal-button-text.enum';
 // Charts
 export * from './chart/chart-value-label.enum';
 export * from './chart/chart-tab-string.enum';
+
+export * from './plaid/plaid-event.enum';
