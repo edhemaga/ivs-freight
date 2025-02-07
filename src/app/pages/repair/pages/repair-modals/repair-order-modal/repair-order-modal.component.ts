@@ -303,7 +303,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             repairShopId: [null, Validators.required],
             repairItems: [null],
             shopServiceType: [null],
-            servicesHelper: [null],
             files: [null],
             tags: [null],
             note: [null],
@@ -823,16 +822,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.total = total;
     }
 
-    public handleServiceActiveClick(
-        service: ExtendedServiceTypeResponse
-    ): void {
-        service.isSelected = !service.isSelected;
-
-        this.repairOrderForm
-            .get(RepairOrderModalStringEnum.SERVICES_HELPER)
-            .patchValue(JSON.stringify(this.services));
-    }
-
     public resetActiveServices(): void {
         this.services = this.services.map((service) => {
             return {
@@ -1096,10 +1085,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                     };
                 });
 
-                this.repairOrderForm
-                    .get(RepairOrderModalStringEnum.SERVICES_HELPER)
-                    .patchValue(JSON.stringify(this.services));
-
                 // tags
                 this.tags = getRepairModalData.tags;
 
@@ -1199,7 +1184,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             repairItems, // eslint-disable-next-line no-unused-vars
             driver, // eslint-disable-next-line no-unused-vars
             orderNumber, // eslint-disable-next-line no-unused-vars
-            servicesHelper, // eslint-disable-next-line no-unused-vars
             total, // eslint-disable-next-line no-unused-vars
             unit,
             unitType,
@@ -1430,7 +1414,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 MethodsCalculationsHelper.convertNumberInThousandSep(odometer),
             repairItems: JSON.stringify(this.updatedRepairItems),
             repairShopId: repairShop?.id ?? null,
-            servicesHelper: JSON.stringify(this.services),
             note: editData.note,
         });
 
@@ -1451,7 +1434,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             repairItems, // eslint-disable-next-line no-unused-vars
             driver, // eslint-disable-next-line no-unused-vars
             orderNumber, // eslint-disable-next-line no-unused-vars
-            servicesHelper, // eslint-disable-next-line no-unused-vars
             total, // eslint-disable-next-line no-unused-vars
             unit,
             unitType,
