@@ -873,6 +873,14 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         });
     }
 
+    public handleRepairShopClearClick(): void {
+        this.selectedRepairShop = null;
+
+        this.repairOrderForm.get('repairShopId').patchValue(null);
+
+        this.resetActiveServices();
+    }
+
     private createAddOrUpdateRepairProperties(
         date: string,
         unitType: string

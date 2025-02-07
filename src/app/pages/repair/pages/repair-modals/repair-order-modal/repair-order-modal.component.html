@@ -216,12 +216,12 @@
 
                             <div class="clear-selected-item">
                                 <div
-                                    (click)="openRepairShop()"
                                     class="clear-x"
                                     mainTooltip="Edit"
                                     ngbTooltip
                                     position="top"
                                     tooltipBackground="#424242"
+                                    (click)="openRepairShop()"
                                 >
                                     <svg-icon
                                         [src]="svgRoutes.PEN_ICON"
@@ -233,18 +233,12 @@
                                 </div>
 
                                 <div
-                                    (click)="
-                                        selectedRepairShop = null;
-                                        repairOrderForm
-                                            .get('repairShopId')
-                                            .patchValue(null);
-                                        resetActiveServices()
-                                    "
                                     class="clear-x"
                                     mainTooltip="Clear"
                                     ngbTooltip
                                     position="top"
                                     tooltipBackground="#424242"
+                                    (click)="handleRepairShopClearClick()"
                                 >
                                     <svg-icon
                                         [src]="svgRoutes.X_ICON"
@@ -365,12 +359,10 @@
                         <div
                             class="d-flex align-items-center repair-shop-service"
                             [ngClass]="{
-                                active: service.active && service.isSelected,
                                 inactive: service.active && !service.isSelected,
                                 disabled:
                                     !service.active || !this.selectedRepairShop,
                             }"
-                            (click)="handleServiceActiveClick(service)"
                         >
                             <svg-icon
                                 [src]="service?.svg"
