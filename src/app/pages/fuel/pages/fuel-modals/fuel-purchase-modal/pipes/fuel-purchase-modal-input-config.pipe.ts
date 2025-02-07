@@ -14,7 +14,9 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
             configType,
             editDataType,
             fuelTransactionTypeName,
+            fuelCardHolderName,
             selectedTruckType,
+            selectedDriver,
             trailerId,
             logoName,
         } = args;
@@ -37,7 +39,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Fuel Card',
                     isDisabled: true,
-                    placeholderIcon: 'fuel-card',
+                    placeholderIcon: 'fuel_card',
                 };
 
                 break;
@@ -116,6 +118,30 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     dropdownWidthClass: !trailerId
                         ? 'w-col-216 truck-trailer-dropdown'
                         : 'w-col-143 truck-trailer-dropdown',
+                    customClass: 'truck-trailer-dropdown',
+                };
+
+                break;
+            case 'driverDropdownInputConfig':
+                const { avatarFile } = selectedDriver || {};
+                console.log(fuelCardHolderName);
+
+                inputConfig = {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Driver',
+                    isDropdown: true,
+                    isRequired: true,
+                    placeholder: fuelCardHolderName ?? 'Driver',
+                    dropdownImageInput: {
+                        withText: true,
+                        svg: true,
+                        image: false,
+                        url: avatarFile?.url,
+                        template: 'user-avatar',
+                        class: 'classtest'
+                    },
+                    dropdownWidthClass: 'w-col-216',
                     customClass: 'truck-trailer-dropdown',
                 };
 
