@@ -135,8 +135,6 @@ export interface IViewModelData {
     tableAdded?: string;
     tableEdited?: string;
     tableAttachments?: any[];
-    tableDropdownContent?: {
-        hasContent?: boolean;
-        content?: DropdownItem[];
-    }
+    tableDropdownContent?: DropdownItem[];
+    
 }

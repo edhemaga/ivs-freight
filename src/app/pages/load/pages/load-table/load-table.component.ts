@@ -5,6 +5,8 @@ import {
     AfterViewInit,
     ViewChild,
 } from '@angular/core';
+import { Router } from '@angular/router';
+
 import {
     filter,
     map,
@@ -15,47 +17,26 @@ import {
     takeUntil,
 } from 'rxjs';
 
-// Services
+// components
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+
+// base classes
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
+
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { LoadService } from '@shared/services/load.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
-// Models
-import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import {
-    LoadListDto,
-    LoadListResponse,
-    LoadStatusType,
-    SortOrder,
-} from 'appcoretruckassist';
-import { IGetLoadListParam } from '@pages/load/pages/load-table/models/index';
-
-// Pipes
-import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
-import { DatePipe } from '@angular/common';
-import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
-
-// Constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
-
-// Enums
-import { TableStringEnum, LoadStatusEnum } from '@shared/enums/index';
-import { eActiveViewMode, eLoadStatusType, LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/index';
-
-// Components
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
-import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
-
-// Store
+// store
 import { Store, select } from '@ngrx/store';
 import {
     selectActiveTabCards,
@@ -64,14 +45,39 @@ import {
     selectTemplateTabCards,
 } from '@pages/load/pages/load-card-modal/state/load-card-modal.selectors';
 
-// Utils
+// pipes
+import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
+import { DatePipe } from '@angular/common';
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+
+// enums
+import {
+    TableStringEnum,
+    LoadStatusEnum,
+    DropdownMenuStringEnum,
+} from '@shared/enums/index';
+import {
+    eActiveViewMode,
+    eLoadStatusType,
+    LoadFilterStringEnum,
+} from '@pages/load/pages/load-table/enums/index';
+
+// constants
+import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
+
+// helpers
+import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpers/load-table.helper';
 import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
-// Router
-import { Router } from '@angular/router';
-
-// Helpers
-import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpers/load-table.helper';
+// models
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import {
+    LoadListDto,
+    LoadListResponse,
+    LoadStatusType,
+    SortOrder,
+} from 'appcoretruckassist';
+import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
 
 @Component({
     selector: 'app-load-table',
@@ -79,49 +85,54 @@ import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpe
     styleUrls: ['./load-table.component.scss'],
     providers: [ThousandSeparatorPipe, NameInitialsPipe],
 })
-export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
+export class LoadTableComponent
+    extends LoadDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
     @ViewChild('toolbarComponent') toolbarComponent: TaTableToolbarComponent;
 
     private destroy$ = new Subject<void>();
-    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
+
+    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+
+    public resizeObserver: ResizeObserver;
 
     public selectedTab: string = TableStringEnum.ACTIVE_2;
-    public resizeObserver: ResizeObserver;
+
     public loadingPage: boolean = false;
-    public cardTitleLink: string = TableStringEnum.LOAD_DETAILS;
-    public cardTitle: string;
-    public sendDataToCardsFront: CardRows[];
-    public sendDataToCardsBack: CardRows[];
-    public displayRows$: Observable<any>; //leave this as any for now
+
+    // filters
+    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
+
+    // cards
+    public displayRows$: Observable<any>;
 
     constructor(
-        //services
+        // router
+        protected router: Router,
+
+        // services
+        protected modalService: ModalService,
+        protected loadStoreService: LoadStoreService,
+
         private tableService: TruckassistTableService,
-        private modalService: ModalService,
         private loadServices: LoadService,
         private dispatchHubService: DispatchHubService,
-        private tableDropdownService: TableCardDropdownActionsService,
         private confiramtionService: ConfirmationService,
         private loadCardsModalService: LoadCardModalService,
         private confirmationActivationService: ConfirmationActivationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
-        public loadStoreService: LoadStoreService,
 
-        //pipes
+        // pipes
         public datePipe: DatePipe,
 
-        //store
-        private store: Store,
-
-        // Router
-        private router: Router
-    ) {}
+        // store
+        private store: Store
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
-        this.loadStoreService.dispatchLoadList({
-            statusType: eLoadStatusType.Active,
-        });
-
         this.dispatchHubService.connect();
 
         this.manageDispatchHubListeners();
@@ -263,7 +274,8 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
             if (direction) {
                 const statusType: number | null =
-                    eLoadStatusType[this.selectedTab] === eLoadStatusType.Template
+                    eLoadStatusType[this.selectedTab] ===
+                    eLoadStatusType.Template
                         ? null
                         : eLoadStatusType[this.selectedTab];
 
@@ -287,20 +299,6 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 eLoadStatusType[this.selectedTab]
             );
         }
-    }
-
-    public onDropdownActions(): void {
-        this.tableDropdownService.openModal$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((event) => {
-                this.onTableBodyActions(event);
-            });
-    }
-
-    public onShowMore(): void {
-        this.onTableBodyActions({
-            type: TableStringEnum.SHOW_MORE,
-        });
     }
 
     //TODO: move cards to load store
@@ -335,6 +333,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public saveValueNote(event: { value: string; id: number }): void {
         const { id, value } = event || {};
+
         this.loadStoreService.dispatchSaveValueNote(id, value);
     }
 
@@ -499,21 +498,27 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     } else {
                         const { id } = confirmationData || {};
 
-                        this.loadStoreService.dispatchDeleteLoadOrTemplateById(id, eLoadStatusType[this.selectedTab]);
+                        this.loadStoreService.dispatchDeleteLoadOrTemplateById(
+                            id,
+                            eLoadStatusType[this.selectedTab]
+                        );
                     }
                 } else if (type === TableStringEnum.MULTIPLE_DELETE) {
                     const { array } = confirmationData || {};
 
-                    this.loadStoreService.dispatchBulkDeleteBulkLoadsOrTemplates(array, eLoadStatusType[this.selectedTab])
+                    this.loadStoreService.dispatchBulkDeleteBulkLoadsOrTemplates(
+                        array,
+                        eLoadStatusType[this.selectedTab]
+                    );
                 }
             });
 
         this.confirmationActivationService.getConfirmationActivationData$
-            .pipe(
-                takeUntil(this.destroy$),
-            )
+            .pipe(takeUntil(this.destroy$))
             .subscribe((confirmationResponse) => {
-                this.loadStoreService.dispatchUpdateloadStatusConfirmation(confirmationResponse);
+                this.loadStoreService.dispatchUpdateloadStatusConfirmation(
+                    confirmationResponse
+                );
             });
     }
 
@@ -605,7 +610,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 if (response.length && !this.loadingPage) {
-                    const modalTitle = LoadTableHelper.composeDeleteModalTitle(this.selectedTab);
+                    const modalTitle = LoadTableHelper.composeDeleteModalTitle(
+                        this.selectedTab
+                    );
 
                     const mappedRes = response.map((item) => {
                         return {
@@ -636,7 +643,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 }
             });
     }
-    
+
     private observeTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
@@ -659,8 +666,7 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
         const { ...params } = this.filter || {};
         const { type } = event || {};
         const { id } = event || {};
-        const selectedTab: eLoadStatusType =
-            eLoadStatusType[this.selectedTab];
+        const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
 
         if (type === TableStringEnum.SHOW_MORE) {
             this.filter = {
@@ -676,7 +682,9 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 true
             );
         } else if (type === TableStringEnum.DELETE) {
-            const modalTitle = LoadTableHelper.composeDeleteModalTitle(this.selectedTab);
+            const modalTitle = LoadTableHelper.composeDeleteModalTitle(
+                this.selectedTab
+            );
 
             this.modalService.openModal(
                 ConfirmationModalComponent,
@@ -752,6 +760,20 @@ export class LoadTableComponent implements OnInit, AfterViewInit, OnDestroy {
                     response as LoadListResponse
                 );
             });
+    }
+
+    public handleShowMoreAction(): void {
+        const { ...params } = this.filter || {};
+        const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
+
+        this.filter = {
+            ...params,
+            pageIndex: params.pageIndex ? params.pageIndex + 1 : 1,
+            statusType: selectedTab,
+            pageSize: 25,
+        };
+
+        this.loadStoreService.dispatchGetList(this.filter, selectedTab, true);
     }
 
     public ngOnDestroy(): void {

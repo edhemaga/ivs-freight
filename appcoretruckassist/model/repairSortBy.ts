@@ -11,20 +11,23 @@
  */
 
 
-export type RepairSortBy = 'RepairType' | 'UnitType' | 'Invoice' | 'Date' | 'RepairShopName' | 'RepairShopAddress' | 'TrailerType' | 'TrailerMake' | 'TrailerModel' | 'TrailerYear' | 'Odometer' | 'ItemDescription' | 'ItemCost' | 'DateAdded' | 'DateEdited';
+export type RepairSortBy = 'InvoiceNumber' | 'IssuedAdded' | 'PaidDate' | 'PayType' | 'UnitNumber' | 'UnitType' | 'UnitMake' | 'UnitModel' | 'UnitYear' | 'Odometer' | 'DriverName' | 'RepairShopName' | 'RepairShopAddress' | 'ServiceType' | 'ItemDescription' | 'ItemCost' | 'DateAdded' | 'DateEdited';
 
 export const RepairSortBy = {
-    RepairType: 'RepairType' as RepairSortBy,
+    InvoiceNumber: 'InvoiceNumber' as RepairSortBy,
+    IssuedAdded: 'IssuedAdded' as RepairSortBy,
+    PaidDate: 'PaidDate' as RepairSortBy,
+    PayType: 'PayType' as RepairSortBy,
+    UnitNumber: 'UnitNumber' as RepairSortBy,
     UnitType: 'UnitType' as RepairSortBy,
-    Invoice: 'Invoice' as RepairSortBy,
-    Date: 'Date' as RepairSortBy,
+    UnitMake: 'UnitMake' as RepairSortBy,
+    UnitModel: 'UnitModel' as RepairSortBy,
+    UnitYear: 'UnitYear' as RepairSortBy,
+    Odometer: 'Odometer' as RepairSortBy,
+    DriverName: 'DriverName' as RepairSortBy,
     RepairShopName: 'RepairShopName' as RepairSortBy,
     RepairShopAddress: 'RepairShopAddress' as RepairSortBy,
-    TrailerType: 'TrailerType' as RepairSortBy,
-    TrailerMake: 'TrailerMake' as RepairSortBy,
-    TrailerModel: 'TrailerModel' as RepairSortBy,
-    TrailerYear: 'TrailerYear' as RepairSortBy,
-    Odometer: 'Odometer' as RepairSortBy,
+    ServiceType: 'ServiceType' as RepairSortBy,
     ItemDescription: 'ItemDescription' as RepairSortBy,
     ItemCost: 'ItemCost' as RepairSortBy,
     DateAdded: 'DateAdded' as RepairSortBy,

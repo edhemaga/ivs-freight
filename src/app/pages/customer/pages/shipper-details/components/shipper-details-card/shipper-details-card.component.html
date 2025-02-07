@@ -148,12 +148,6 @@
                     }
                     <app-ca-chart
                         [chartConfig]="payrollChartConfig"
-                        [legendData]="{
-                            data: payrollChartLegend,
-                            hasHighlightedBackground:
-                                payrollLegendHighlightedBackground,
-                            title: payrollLegendTitle,
-                        }"
                         (hoveredIndex)="setPayrollLegendOnHover($event)"
                     >
                     </app-ca-chart>

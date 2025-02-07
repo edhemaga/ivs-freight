@@ -37,10 +37,6 @@ export class RepairShopDetailsServicesCardComponent {
 
     public _cardData: ExtendedRepairShopResponse;
 
-    public trackByIdentity(index: number): number {
-        return index;
-    }
-
     private createServicesCardData(data: RepairShopResponse): void {
         this._cardData = data;
 

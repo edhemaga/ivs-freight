@@ -2,7 +2,7 @@
     [ngClass]="{
         disabedPreviousArrow: [0, -1].includes(repairShopCurrentIndex),
         disableNextArrow:
-            repairShopCurrentIndex === repairShopDropdownList?.length - 1
+            repairShopCurrentIndex === repairShopDropdownList?.length - 1,
     }"
     [tooltipNext]="
         repairShopCurrentIndex === repairShopDropdownList?.length - 1
@@ -26,8 +26,8 @@
         !_cardData?.status
             ? 'Permanently Closed'
             : _cardData?.companyOwned
-            ? 'Company Owned'
-            : 'Favorite'
+              ? 'Company Owned'
+              : 'Favorite'
     "
     [options]="repairShopDropdownList"
     [currentName]="_cardData?.name"
@@ -39,8 +39,8 @@
         !_cardData?.status
             ? repairShopDetailsSvgRoutes.closedRoute
             : _cardData?.companyOwned
-            ? repairShopDetailsSvgRoutes.companyOwnedRoute
-            : repairShopDetailsSvgRoutes.favoriteRoute
+              ? repairShopDetailsSvgRoutes.companyOwnedRoute
+              : repairShopDetailsSvgRoutes.favoriteRoute
     "
     (selectValue)="handleCardChanges($event, 'select-repair-shop')"
     (changeEvent)="handleCardChanges($event, 'change-repair-shop')"
@@ -70,7 +70,7 @@
 
         <!-- Email -->
 
-        <ng-container *ngIf="_cardData?.email">
+        @if (_cardData?.email) {
             <div class="d-flex align-items-center shop-title-card-item">
                 <div
                     ngbTooltip
@@ -90,7 +90,7 @@
                     [textColor]="'#2f2f2f'"
                 ></app-ta-copy>
             </div>
-        </ng-container>
+        }
 
         <!-- Address -->
 
