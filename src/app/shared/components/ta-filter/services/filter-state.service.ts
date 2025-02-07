@@ -165,21 +165,6 @@ export class FilterStateService implements OnDestroy {
             });
     }
 
-    public getDispatchData() {
-        const dispatcherData = this.loadService
-            .apiLoadDispatcherFilterGet('Active')
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: (data /* : DispatcherFilterListResponse */) => {
-                    this.tableService.sendActionAnimation({
-                        animation: 'dispatch-data-update',
-                        data: data,
-                        id: null,
-                    });
-                },
-            });
-    }
-
     public getPmData(mod: string) {
         if (mod == 'truck') {
             const pmTruckData = this.repairService

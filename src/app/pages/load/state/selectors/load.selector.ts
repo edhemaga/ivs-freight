@@ -305,9 +305,7 @@ export const tableOptionsSelector = createSelector(
 
         const tableOptions: ITableOptions = {
             toolbarActions: {
-                hideActivationButton: true,
-                showDispatcherFilter:
-                    selectedTabKeyLower !== TableStringEnum.TEMPLATE,
+                hideActivationButton: true, 
                 showTimeFilter:
                     selectedTabKeyLower !== TableStringEnum.TEMPLATE,
                 showStatusFilter:

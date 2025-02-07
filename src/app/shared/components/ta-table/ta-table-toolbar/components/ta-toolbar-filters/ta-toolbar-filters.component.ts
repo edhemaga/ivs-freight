@@ -135,9 +135,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         if (this.options.toolbarActions.showParkingFilter)
             this.filterService.getDispatchFilterData();
 
-        if (this.options.toolbarActions.showDispatcherFilter)
-            this.filterService.getDispatchData();
-
         if (this.options.toolbarActions.showStateFilter)
             this.filterService.getStateData();
 

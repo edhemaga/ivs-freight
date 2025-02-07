@@ -53,6 +53,21 @@
                 background: #cccccc;
             }
         }
+
+        &-plus-icon {
+            background: $ta-blue-14;
+            height: 36px;
+            width: 36px;
+            padding: 8px;
+            border-radius: 3px;
+            transition: $transition;
+
+            &:hover {
+                height: 44px;
+                width: 44px;
+                padding: 12px;
+                background: $ta-blue-15;
+            }
+        }
     }
 }
-

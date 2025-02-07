@@ -300,20 +300,7 @@
         [pmFilterArray]="categoryFuelArray"
     >
     </app-ca-filter>
-
-    <!-- DISPECHER FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showDispatcherFilter"
-        [type]="'dispatcherFilter'"
-        [icon]="'user'"
-        [searchState]="true"
-        [filterTitle]="'Dispatcher Filter'"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [unselectedUser]="unselectedDispatcher"
-    >
-    </app-ca-filter>
-
+ 
     <!-- STATUS FILTER -->
     <app-ca-filter
         *ngIf="

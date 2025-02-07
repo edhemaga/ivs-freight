@@ -104,7 +104,7 @@ body {
         .map-list-body
     ):not(.cluster-marker-container):not(
         .shop-details-item-repair-main-dropdown
-    ):not(.description-items) {
+    ):not(.description-items):not(.ca-scroll-bar) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {

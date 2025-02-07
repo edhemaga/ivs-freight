@@ -15,7 +15,11 @@
         <app-new-table-toolbar
             [title]="'Load'"
             [leftSide]="leftSide"
-            [rightSide]="rightSide"
+            (onPlusClick)="
+                onToolBarAction({
+                    action: tableStringEnum.OPEN_MODAL,
+                })
+            "
         ></app-new-table-toolbar>
 
         @if (store?.activeViewMode === 'List') {
@@ -116,15 +120,6 @@
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
                 @if (selectedTab !== 'Template') {
-                    <!-- <app-ca-filter
-                        [type]="'timeFilter'"
-                        [icon]="'ic_time'"
-                        [filterTitle]="'Time Filter'"
-                        [timeSubType]="'past'"
-                        (setFilter)="setFilters($event)"
-                        (clearAll)="setFilters($event)"
-                    >
-                    </app-ca-filter> -->
                     <app-ca-filter-dropdown
                         type="Dispatcher"
                         [list]="store.dispatcherList"
@@ -138,9 +133,27 @@
                         (setFilter)="setFilters($event)"
                     >
                     </app-ca-filter-dropdown> 
-
-                    <!-- -->
                     <!-- <app-ca-filter
+                        [type]="'timeFilter'"
+                        [icon]="'ic_time'"
+                        [filterTitle]="'Time Filter'"
+                        [timeSubType]="'past'"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
+                    >
+                    </app-ca-filter> 
+                    </app-ca-filter> 
+                    <app-ca-filter
+                        [type]="'statusFilter'"
+                        [filterTitle]="'Status Filter'"
+                        [icon]="'broker-half-circle'"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
+                        [loadStatusOptionsArray]="store.statusList"
+                    >
+                    </app-ca-filter>
+ 
+                    <app-ca-filter
                         [type]="'moneyFilter'"
                         [icon]="'dollar'"
                         [filterTitle]="'Money Filter'"
@@ -152,18 +165,6 @@
                     >
                     </app-ca-filter> -->
                 }
-            </div>
-        </ng-template>
-
-        <ng-template #rightSide>
-            <div
-                (click)="
-                    onToolBarAction({
-                        action: tableStringEnum.OPEN_MODAL,
-                    })
-                "
-            >
-                ADD
             </div>
         </ng-template>
 

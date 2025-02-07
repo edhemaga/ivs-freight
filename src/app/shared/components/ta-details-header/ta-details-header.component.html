@@ -11,7 +11,7 @@
                 'Shipper Detail',
                 'Broker Detail',
                 'Roadside Insp. Detail',
-                'Load Detail'
+                'Load Detail',
             ].includes(headerText)
         "
     >
@@ -58,8 +58,8 @@
                             subText === 'PENDING'
                                 ? '#919191'
                                 : subText === 'ACTIVE'
-                                ? '#6692F1'
-                                : '#56B4AC'
+                                  ? '#6692F1'
+                                  : '#56B4AC',
                     }"
                 >
                     <p class="m-0 ta-font-bold">{{ subText }}</p>
@@ -94,7 +94,7 @@
                     'Shipper Detail',
                     'Broker Detail',
                     'Roadside Insp. Detail',
-                    'Load Detail'
+                    'Load Detail',
                 ].includes(headerText)
             "
         >
@@ -102,7 +102,7 @@
                 class="counter-text"
                 [ngClass]="{
                     'has-counter-header': counterData,
-                    dropOpenedHeader: dropOpened
+                    dropOpenedHeader: dropOpened,
                 }"
             >
                 <div
@@ -254,7 +254,7 @@
                             [searchType]="headerText"
                             [toolbarSearch]="true"
                             [selectedTabData]="{
-                                gridNameTitle: searchPlaceholder
+                                gridNameTitle: searchPlaceholder,
                             }"
                         ></app-ca-search-multiple-states>
                     </span>
@@ -346,16 +346,12 @@
                         <ng-container *ngIf="dispatcherFilter">
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
-                                <app-ca-filter
-                                    [type]="'dispatcherFilter'"
-                                    [icon]="'user'"
-                                    [searchState]="true"
-                                    [filterTitle]="'Dispatcher Filter'"
+                                <app-ca-filter-dropdown
+                                    type="Dispatcher"
+                                    [list]="unselectedDispatcher"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                    [unselectedUser]="unselectedDispatcher"
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-dropdown>
                             </span>
                         </ng-container>
 
@@ -482,7 +478,7 @@
                                 [src]="detailsHeaderSvgRoutes.sortRoute"
                                 [svgStyle]="{
                                     'width.px': '18',
-                                    'height.px': '18'
+                                    'height.px': '18',
                                 }"
                                 (click)="handleSortClick(true)"
                             ></svg-icon>

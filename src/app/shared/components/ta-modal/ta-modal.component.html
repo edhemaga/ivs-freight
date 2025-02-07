@@ -203,17 +203,12 @@
 
                     <ng-container *ngIf="hasDispatcherFilter">
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'dispatcherFilter'"
-                                [icon]="'user'"
-                                [searchState]="true"
-                                [filterTitle]="'Dispatcher Filter'"
-                                [defFilterHolder]="true"
+                            <app-ca-filter-dropdown
+                                type="Dispatcher"
+                                [list]="unselectedDispatcher"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
-                                [unselectedUser]="unselectedDispatcher"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-dropdown>
                         </div>
                     </ng-container>
 
