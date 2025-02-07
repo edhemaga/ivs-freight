@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+
+// enums
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
-import { eLoadStatusType } from '../pages/load-table/enums';
-import { Observable } from 'rxjs';
+
+// models
 import { LoadListResponse, LoadTemplateListResponse } from 'appcoretruckassist';
 
 @Injectable({
@@ -14,7 +18,7 @@ export class LoadResolver {
         // services
         private loadStoreService: LoadStoreService
     ) {}
-    
+
     resolve(): Observable<LoadListResponse | LoadTemplateListResponse> {
         this.loadStoreService.dispatchLoadList({
             statusType: eLoadStatusType.Active,
