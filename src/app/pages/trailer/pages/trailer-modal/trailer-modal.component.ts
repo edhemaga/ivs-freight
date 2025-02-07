@@ -191,7 +191,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService
-    ) { }
+    ) {}
 
     get volumenTrailers(): string[] {
         return TrailerModalConfig.getVolumenTrailers();
@@ -554,7 +554,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }
                 },
-                error: () => { },
             });
     }
 
@@ -576,8 +575,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             ownerId: this.trailerForm.get('companyOwned').value
                 ? null
                 : this.selectedOwner
-                    ? this.selectedOwner.id
-                    : null,
+                  ? this.selectedOwner.id
+                  : null,
             axles: this.trailerForm.get('axles').value
                 ? parseInt(this.trailerForm.get('axles').value)
                 : null,
@@ -592,31 +591,31 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             emptyWeight: this.trailerForm.get('emptyWeight').value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    this.trailerForm.get('emptyWeight').value
-                )
+                      this.trailerForm.get('emptyWeight').value
+                  )
                 : null,
             mileage: this.trailerForm.get('mileage').value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    this.trailerForm.get('mileage').value
-                )
+                      this.trailerForm.get('mileage').value
+                  )
                 : null,
             volume: this.trailerForm.get('volume').value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    this.trailerForm.get('volume').value
-                )
+                      this.trailerForm.get('volume').value
+                  )
                 : null,
             purchaseDate: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchaseDate').value
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                        this.trailerForm.get('purchaseDate').value
-                    )
+                          this.trailerForm.get('purchaseDate').value
+                      )
                     : null
                 : null,
             purchasePrice: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchasePrice').value
                     ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                        this.trailerForm.get('purchasePrice').value
-                    )
+                          this.trailerForm.get('purchasePrice').value
+                      )
                     : null
                 : null,
             files: documents,
@@ -690,8 +689,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             ownerId: this.trailerForm.get('companyOwned').value
                 ? null
                 : this.selectedOwner
-                    ? this.selectedOwner.id
-                    : null,
+                  ? this.selectedOwner.id
+                  : null,
             axles: this.trailerForm.get('axles').value
                 ? parseInt(this.trailerForm.get('axles').value)
                 : null,
@@ -718,31 +717,31 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             isLiftgate: this.trailerForm.get('isLiftgate').value ?? false,
             emptyWeight: this.trailerForm.get('emptyWeight').value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    this.trailerForm.get('emptyWeight').value
-                )
+                      this.trailerForm.get('emptyWeight').value
+                  )
                 : null,
             mileage: this.trailerForm.get('mileage').value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    this.trailerForm.get('mileage').value
-                )
+                      this.trailerForm.get('mileage').value
+                  )
                 : null,
             volume: this.trailerForm.get('volume').value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    this.trailerForm.get('volume').value
-                )
+                      this.trailerForm.get('volume').value
+                  )
                 : null,
             purchaseDate: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchaseDate').value
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                        this.trailerForm.get('purchaseDate').value
-                    )
+                          this.trailerForm.get('purchaseDate').value
+                      )
                     : null
                 : null,
             purchasePrice: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchasePrice').value
                     ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                        this.trailerForm.get('purchasePrice').value
-                    )
+                          this.trailerForm.get('purchasePrice').value
+                      )
                     : null
                 : null,
             files: documents ? documents : this.trailerForm.value.files,
@@ -852,8 +851,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         ownerId: res.companyOwned
                             ? null
                             : res.owner
-                                ? res.owner.name
-                                : null,
+                              ? res.owner.name
+                              : null,
                         note: res.note,
                         axles: res.axles,
                         suspension: res.suspension ? res.suspension.name : null,
@@ -862,29 +861,29 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         reeferUnit: res.reeferUnit ? res.reeferUnit.name : null,
                         emptyWeight: res.emptyWeight
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                res.emptyWeight
-                            )
+                                  res.emptyWeight
+                              )
                             : null,
                         mileage: res.mileage
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                res.mileage
-                            )
+                                  res.mileage
+                              )
                             : null,
                         volume: res.volume
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                res.volume
-                            )
+                                  res.volume
+                              )
                             : null,
                         insurancePolicy: res.insurancePolicy,
                         purchaseDate: res.purchaseDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                res.purchaseDate
-                            )
+                                  res.purchaseDate
+                              )
                             : null,
                         purchasePrice: res.purchasePrice
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                res.purchasePrice
-                            )
+                                  res.purchasePrice
+                              )
                             : null,
                         fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
                     });
@@ -910,7 +909,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }, 1000);
                 },
-                error: () => { },
             });
     }
 
@@ -1020,7 +1018,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                 this.loadingVinDecoder = false;
                                 this.selectedTrailerMake = res.trailerMake;
                             },
-                            error: () => { },
                         });
                 }
             });

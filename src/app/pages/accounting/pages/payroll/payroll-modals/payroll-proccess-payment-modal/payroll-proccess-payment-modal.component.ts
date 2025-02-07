@@ -81,7 +81,7 @@ import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
         CaModalComponent,
         CaInputDropdownComponent,
         TaSpinnerComponent,
-        TaAppTooltipV2Component
+        TaAppTooltipV2Component,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -100,7 +100,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         private inputService: TaInputService,
         private chDetRef: ChangeDetectorRef,
         private payrollFacadeService: PayrollFacadeService
-    ) { }
+    ) {}
 
     public inputConfig = inputConfig;
 
@@ -150,11 +150,13 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         const ammount = this.paymentForm.get(PayrollStringEnum.AMOUNT);
 
         // Manually handle the initial value
-        const initialValue = MethodsCalculationsHelper.convertThousandSepInNumber(ammount.value);
+        const initialValue =
+            MethodsCalculationsHelper.convertThousandSepInNumber(ammount.value);
         this.handleAmountChange(initialValue);
 
         ammount.valueChanges.subscribe((val) => {
-            const convertToNumber = MethodsCalculationsHelper.convertThousandSepInNumber(val);
+            const convertToNumber =
+                MethodsCalculationsHelper.convertThousandSepInNumber(val);
             this.handleAmountChange(convertToNumber);
         });
     }
@@ -163,11 +165,12 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         const totalEarnings = this.modalData?.totalEarnings;
 
         if (convertToNumber > totalEarnings) {
-            this.paymentForm.get(PayrollStringEnum.AMOUNT).patchValue(totalEarnings, { emitEvent: false });
+            this.paymentForm
+                .get(PayrollStringEnum.AMOUNT)
+                .patchValue(totalEarnings, { emitEvent: false });
         }
         this.isPaidInFull = convertToNumber === totalEarnings;
     }
-
 
     private subscribeToStore(): void {
         this.payrollFacadeService.selectPayrollReportStates$
@@ -245,8 +248,8 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
                 amount: isUnpaid
                     ? 0
                     : MethodsCalculationsHelper.convertThousandSepInNumber(
-                        formData.amount
-                    ),
+                          formData.amount
+                      ),
                 reportId: this.modalData.id,
                 paymentType:
                     this.selectedTab === 2
@@ -274,8 +277,6 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
             );
         }
     }
-
-    selectedItem(dd: any) { }
 
     get modalData(): IPayrollProccessPaymentModal {
         return this.editData.data as IPayrollProccessPaymentModal;

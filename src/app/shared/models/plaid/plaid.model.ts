@@ -1,10 +1,9 @@
-
 import {
     IPlaidLinkOnEvent,
     IPlaidLinkOnExit,
     IPlaidLinkOnLoad,
-    IPlaidLinkOnSuccess
-} from "@shared/models";
+    IPlaidLinkOnSuccess,
+} from '@shared/models';
 
 export interface IPlaidLinkOptions {
     token: string;
@@ -19,6 +18,5 @@ export interface IPlaidCreated {
 }
 
 export interface IPlaid {
-    create(config: IPlaidLinkOptions):
-        Promise<IPlaidCreated>;
+    create(config: IPlaidLinkOptions): IPlaidCreated;
 }

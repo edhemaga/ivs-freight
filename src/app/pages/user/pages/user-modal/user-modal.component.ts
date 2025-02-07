@@ -118,8 +118,13 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class UserModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
-    implements OnDestroy, OnInit {
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnDestroy, OnInit
+{
     @Input() editData: any;
     public userForm: UntypedFormGroup;
     public selectedTab: number = 1;
@@ -303,7 +308,6 @@ export class UserModalComponent
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => { },
             });
     }
 
@@ -406,13 +410,13 @@ export class UserModalComponent
                             : null,
                         salary: salary
                             ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                                salary
-                            )
+                                  salary
+                              )
                             : null,
                         startDate: startDate
                             ? MethodsCalculationsHelper.convertDateToBackend(
-                                startDate
-                            )
+                                  startDate
+                              )
                             : null,
                         is1099: this.selectedW21099
                             ? this.selectedW21099.name === '1099'
@@ -420,8 +424,8 @@ export class UserModalComponent
                         bankId: this.selectedBank ? this.selectedBank.id : null,
                         base: base
                             ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                                base
-                            )
+                                  base
+                              )
                             : null,
                         commission: commission ? parseFloat(commission) : null,
                     };
@@ -778,33 +782,6 @@ export class UserModalComponent
             });
     }
 
-    private deleteUserById(id: number) {
-        this.companyUserService
-            .deleteUserById(
-                id,
-                this.selectedTab
-                    ? TableStringEnum.ACTIVE
-                    : TableStringEnum.INACTIVE
-            )
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
-    }
-
     private getUserById(id: number) {
         this.companyUserService
             .getUserByid(id)
@@ -835,13 +812,13 @@ export class UserModalComponent
                             : null,
                         salary: res.salary
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                res.salary
-                            )
+                                  res.salary
+                              )
                             : null,
                         startDate: res.startDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                res.startDate
-                            )
+                                  res.startDate
+                              )
                             : null,
                         is1099: res.is1099,
                         bankId: res.bank ? res.bank.name : null,
@@ -849,8 +826,8 @@ export class UserModalComponent
                         accountNumber: res.accountNumber,
                         base: res.base
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                res.base
-                            )
+                                  res.base
+                              )
                             : null,
                         commission: res.commission,
                         note: res.note,
@@ -948,7 +925,6 @@ export class UserModalComponent
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => { },
             });
     }
 
@@ -980,8 +956,8 @@ export class UserModalComponent
                             personalEmail: this.editData.data.personalEmail,
                             departmentId: this.editData.data.departmentId
                                 ? this.departments[
-                                    this.editData.data.departmentId - 1
-                                ].name
+                                      this.editData.data.departmentId - 1
+                                  ].name
                                 : null,
                             companyOfficeId:
                                 this.editData.data.companyOfficeId ?? null,
@@ -1001,13 +977,13 @@ export class UserModalComponent
                                 : null,
                             salary: this.editData.data.salary
                                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    this.editData.data.salary
-                                )
+                                      this.editData.data.salary
+                                  )
                                 : null,
                             startDate: this.editData.data.startDate
                                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                                    this.editData.data.startDate
-                                )
+                                      this.editData.data.startDate
+                                  )
                                 : null,
                             is1099: this.editData.data.is1099,
                             bankId: this.editData.data.bank
@@ -1017,8 +993,8 @@ export class UserModalComponent
                             accountNumber: this.editData.data.accountNumber,
                             base: this.editData.data.base
                                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                    this.editData.data.base
-                                )
+                                      this.editData.data.base
+                                  )
                                 : null,
                             commission: this.editData.data.commission,
                             note: this.editData.data.note,
@@ -1027,7 +1003,7 @@ export class UserModalComponent
                         this.selectedAddress = this.editData.data.address;
                         this.selectedDepartment =
                             this.departments[
-                            this.editData.data.departmentId - 1
+                                this.editData.data.departmentId - 1
                             ];
                         this.selectedOffice = this.editData.data.companyOffice;
                         this.selectedUserType = this.editData.data.userType;
@@ -1112,7 +1088,6 @@ export class UserModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => { },
             });
     }
 

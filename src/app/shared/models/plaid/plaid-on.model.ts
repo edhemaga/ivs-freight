@@ -1,11 +1,11 @@
-import { EPlaidLinkStableEvent } from "@shared/enums";
+import { EPlaidLinkStableEvent } from '@shared/enums';
 
 // Models
 import {
     IPlaidLinkError,
     IPlaidLinkOnEventMetadata,
     IPlaidLinkOnExitMetadata,
-    IPlaidLinkOnSuccessMetadata
+    IPlaidLinkOnSuccessMetadata,
 } from '@shared/models';
 
 export type IPlaidLinkOnSuccess = (
@@ -14,13 +14,13 @@ export type IPlaidLinkOnSuccess = (
 ) => void;
 
 export type IPlaidLinkOnExit = (
-    error: null | IPlaidLinkError,
-    metadata: IPlaidLinkOnExitMetadata
+    error?: null | IPlaidLinkError,
+    metadata?: IPlaidLinkOnExitMetadata
 ) => void;
 
 export type IPlaidLinkOnEvent = (
-    eventName: EPlaidLinkStableEvent | string,
-    metadata: IPlaidLinkOnEventMetadata
+    eventName?: EPlaidLinkStableEvent | string,
+    metadata?: IPlaidLinkOnEventMetadata
 ) => void;
 
 export type IPlaidLinkOnLoad = () => void;

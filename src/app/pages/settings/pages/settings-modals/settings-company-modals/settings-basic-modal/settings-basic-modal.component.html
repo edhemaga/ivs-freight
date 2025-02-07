@@ -397,7 +397,7 @@
                         <app-ta-custom-card
                             [cardName]="'Logo'"
                             [isCardOpen]="true"
-                            [hasDeleteAction]="displayDeleteAction"
+                            [hasDeleteAction]="hasDisplayDeleteAction"
                             [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="handleDeleteClick($event)"
                         >
@@ -705,13 +705,17 @@
                                                             bankStatus ===
                                                             EBankAccountStatus.PENDING
                                                         "
-                                                        [class.verified]="
+                                                        [class.text-color-green]="
                                                             bankStatus ===
                                                             EBankAccountStatus.VERIFIED
                                                         "
-                                                        [class.verify]="
+                                                        [class.text-color-light-grey-6]="
                                                             bankStatus ===
                                                             EBankAccountStatus.VERIFY
+                                                        "
+                                                        [class.text-color-red-10]="
+                                                            bankStatus ===
+                                                            EBankAccountStatus.FAILED
                                                         "
                                                         (click)="
                                                             bankStatus !==
