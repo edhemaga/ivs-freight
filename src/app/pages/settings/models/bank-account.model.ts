@@ -1,4 +1,4 @@
-import { EBankAccountStatus } from "../enums";
+import { EBankAccountStatus } from '@pages/settings/enums';
 
 export class IBankAccount {
     id?: number;

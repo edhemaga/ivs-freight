@@ -8,8 +8,7 @@ import {
 import { Options } from '@angular-slider/ngx-slider';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
-import { debounceTime, distinctUntilChanged, Subject, takeUntil, switchMap } from 'rxjs';
+import { debounceTime, distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -33,7 +32,10 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
-import { CaUploadFilesComponent, CaInputAddressDropdownComponent } from 'ca-components';
+import {
+    CaUploadFilesComponent,
+    CaInputAddressDropdownComponent,
+} from 'ca-components';
 
 // Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -81,7 +83,10 @@ import { SettingsModalConstants } from '@pages/settings/pages/settings-company/u
 // Enums
 import { ESettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
 import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
-import { EBankAccountStatus, ESettingsFormControls } from '@pages/settings/enums';
+import {
+    EBankAccountStatus,
+    ESettingsFormControls,
+} from '@pages/settings/enums';
 
 // Models
 import {
@@ -92,9 +97,6 @@ import {
     UpdateDivisionCompanyCommand,
     BankResponse,
     EnumValue,
-    CompanyService,
-    LinkTokenResponse,
-    ExchangePublicTokenCommand,
     AccessTokenResponse,
     AccountDetailsResponse,
     AchDetail,
@@ -102,13 +104,6 @@ import {
 import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
-import {
-    IPlaid,
-    IPlaidCreated,
-    IPlaidLinkOnEventMetadata,
-    IPlaidLinkOnExitMetadata,
-    IPlaidLinkOnSuccessMetadata
-} from '@shared/models';
 import { IBankAccount } from '@pages/settings/models';
 
 // SVG routes
@@ -119,9 +114,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 // Pipes
 import { SettingsBankAccountStatusPipe } from '@pages/settings/pages/settings-company/pipes';
-
-// Plaid
-declare const Plaid: IPlaid;
+import { PlaidService } from '@shared/services';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -151,12 +144,17 @@ declare const Plaid: IPlaid;
         CaUploadFilesComponent,
 
         // Pipes
-        SettingsBankAccountStatusPipe
+        SettingsBankAccountStatusPipe,
     ],
 })
 export class SettingsBasicModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
-    implements OnDestroy, OnInit {
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnDestroy, OnInit
+{
     @Input() editData: EditData;
 
     public destroy$ = new Subject<void>();
@@ -237,8 +235,8 @@ export class SettingsBasicModalComponent
     public isPlaidAvailable: boolean = true;
 
     // Logo actions
-    public displayDeleteAction: boolean = false;
-    public displayUploadZone: boolean = false;
+    public hasDisplayDeleteAction: boolean = false;
+    public hasDisplayUploadZone: boolean = false;
 
     // Enums
     public EBankAccountStatus = EBankAccountStatus;
@@ -257,7 +255,7 @@ export class SettingsBasicModalComponent
         private bankVerificationService: BankVerificationService,
         private formService: FormService,
         public addressService: AddressService,
-        private companyService: CompanyService
+        private plaidService: PlaidService
     ) {
         super();
     }
@@ -491,7 +489,10 @@ export class SettingsBasicModalComponent
                 ESettingsModalEnum.WEEKLY,
                 Validators.required,
             ],
-            accountingEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
+            accountingEndingIn: [
+                ESettingsModalEnum.MONDAY,
+                Validators.required,
+            ],
             accountingDefaultBase: [null, defaultBaseValidation],
             // company owner
             companyOwnerPayPeriod: [
@@ -518,7 +519,10 @@ export class SettingsBasicModalComponent
                 ESettingsModalEnum.WEEKLY,
                 Validators.required,
             ],
-            recruitingEndingIn: [ESettingsModalEnum.MONDAY, Validators.required],
+            recruitingEndingIn: [
+                ESettingsModalEnum.MONDAY,
+                Validators.required,
+            ],
             recruitingDefaultBase: [null, defaultBaseValidation],
             // repair
             repairPayPeriod: [ESettingsModalEnum.WEEKLY, Validators.required],
@@ -582,7 +586,9 @@ export class SettingsBasicModalComponent
                         close: false,
                     });
                 } else {
-                    if (this.editData.type === ESettingsModalEnum.NEW_DIVISION) {
+                    if (
+                        this.editData.type === ESettingsModalEnum.NEW_DIVISION
+                    ) {
                         this.addCompanyDivision();
 
                         this.modalService.setModalSpinner({
@@ -626,10 +632,7 @@ export class SettingsBasicModalComponent
         }
     }
 
-    public tabChange(
-        event:
-            { id: number }
-    ): void {
+    public tabChange(event: { id: number }): void {
         this.selectedTab = event.id;
         let dotAnimation = document.querySelector('.animation-three-tabs');
 
@@ -645,14 +648,13 @@ export class SettingsBasicModalComponent
             };
         });
 
-        if (this.selectedTab !== 2)
-            this.isPlaidAvailable = false;
-        else
-            this.isPlaidAvailable = true;
+        this.isPlaidAvailable = this.selectedTab === 2 ? true : false;
     }
 
     public get departmentContacts(): UntypedFormArray {
-        return this.companyForm.get(ESettingsFormControls.DEPARTMENT_CONTACTS) as UntypedFormArray;
+        return this.companyForm.get(
+            ESettingsFormControls.DEPARTMENT_CONTACTS
+        ) as UntypedFormArray;
     }
 
     private createDepartmentContacts(data?: {
@@ -683,11 +685,10 @@ export class SettingsBasicModalComponent
         });
     }
 
-    public addDepartmentContacts(
-        event: {
-            check: boolean;
-            action: string
-        }): void {
+    public addDepartmentContacts(event: {
+        check: boolean;
+        action: string;
+    }): void {
         if (event.check && this.departmentContacts.valid) {
             const form = this.createDepartmentContacts();
             this.departmentContacts.push(form);
@@ -750,7 +751,9 @@ export class SettingsBasicModalComponent
     }
 
     public get bankAccounts(): UntypedFormArray {
-        return this.companyForm.get(ESettingsFormControls.BANK_ACCOUNTS) as UntypedFormArray;
+        return this.companyForm.get(
+            ESettingsFormControls.BANK_ACCOUNTS
+        ) as UntypedFormArray;
     }
 
     private createBankAccount(data?: IBankAccount): UntypedFormGroup {
@@ -768,23 +771,15 @@ export class SettingsBasicModalComponent
                 data?.account ? data.account : null,
                 [Validators.required, ...accountBankValidation],
             ],
-            status: [
-                data?.status ?? null
-            ]
+            status: [data?.status ?? null],
         });
     }
 
     public verifyBankAccount(index: number): void {
-        if (
-            this.bankAccounts?.at(index).valid &&
-            this.isPlaidAvailable
-        ) {
-            const value: IBankAccount =
-                this.bankAccounts.
-                    value[index];
+        if (this.bankAccounts?.at(index).valid && this.isPlaidAvailable) {
+            const value: IBankAccount = this.bankAccounts.value[index];
             this.checkBankAccountValidity(value);
         }
-
     }
 
     public focusBankAccount(index: number | null): void {
@@ -803,29 +798,30 @@ export class SettingsBasicModalComponent
     }
 
     private onBankSelected(index: number): void {
-        const bankAccount =
-            this.bankAccounts
-                .at(index);
+        const bankAccount = this.bankAccounts.at(index);
 
-        bankAccount
-            .valueChanges
+        bankAccount.valueChanges
             .pipe(
                 debounceTime(350),
                 distinctUntilChanged(),
                 takeUntil(this.destroy$)
             )
             .subscribe((value) => {
-                if (value.status === EBankAccountStatus.VERIFIED &&
-                    !bankAccount.pristine)
+                if (
+                    value.status === EBankAccountStatus.VERIFIED &&
+                    !bankAccount.pristine
+                )
                     bankAccount.patchValue({
                         ...this.bankAccounts.at(index),
-                        status: EBankAccountStatus.UNVERIFIED
+                        status: EBankAccountStatus.UNVERIFIED,
                     });
             });
     }
 
     public get bankCards(): UntypedFormArray {
-        return this.companyForm.get(ESettingsFormControls.BANK_CARDS) as UntypedFormArray;
+        return this.companyForm.get(
+            ESettingsFormControls.BANK_CARDS
+        ) as UntypedFormArray;
     }
 
     private createBankCard(data?: {
@@ -992,10 +988,7 @@ export class SettingsBasicModalComponent
                     id: 8,
                     name: 'Last Day',
                 };
-
-        } else
-            selectedEndingIn = this.endingIns[0];
-
+        } else selectedEndingIn = this.endingIns[0];
 
         return selectedEndingIn;
     }
@@ -1003,34 +996,38 @@ export class SettingsBasicModalComponent
     private validateMiles(): void {
         this.companyForm
             .get(ESettingsFormControls.SOLO_EMPTY_MILE)
-            .valueChanges.
-            pipe(takeUntil(this.destroy$))
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value > 10)
                     this.companyForm
                         .get(ESettingsFormControls.SOLO_EMPTY_MILE)
                         .setErrors({ invalid: true });
                 else
-                    this.companyForm.get(ESettingsFormControls.SOLO_EMPTY_MILE).setErrors(null);
-
+                    this.companyForm
+                        .get(ESettingsFormControls.SOLO_EMPTY_MILE)
+                        .setErrors(null);
             });
 
         this.companyForm
             .get(ESettingsFormControls.SOLO_LOADED_MILE)
-            .valueChanges.
-            pipe(takeUntil(this.destroy$))
+            .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value > 10) {
                     this.companyForm
                         .get(ESettingsFormControls.SOLO_LOADED_MILE)
                         .setErrors({ invalid: true });
                 } else {
-                    this.companyForm.get(ESettingsFormControls.SOLO_LOADED_MILE)?.
-                        setErrors(null);
-                    if (!this.companyForm.get(ESettingsFormControls.SOLO_EMPTY_MILE).value)
-                        this.companyForm.get(ESettingsFormControls.SOLO_EMPTY_MILE)?.
-                            patchValue(value);
-
+                    this.companyForm
+                        .get(ESettingsFormControls.SOLO_LOADED_MILE)
+                        ?.setErrors(null);
+                    if (
+                        !this.companyForm.get(
+                            ESettingsFormControls.SOLO_EMPTY_MILE
+                        ).value
+                    )
+                        this.companyForm
+                            .get(ESettingsFormControls.SOLO_EMPTY_MILE)
+                            ?.patchValue(value);
                 }
             });
 
@@ -1043,8 +1040,9 @@ export class SettingsBasicModalComponent
                         .get(ESettingsFormControls.PER_MILE_SOLO)
                         .setErrors({ invalid: true });
                 else
-                    this.companyForm.get(ESettingsFormControls.PER_MILE_SOLO).setErrors(null);
-
+                    this.companyForm
+                        .get(ESettingsFormControls.PER_MILE_SOLO)
+                        .setErrors(null);
             });
 
         this.companyForm
@@ -1056,7 +1054,9 @@ export class SettingsBasicModalComponent
                         .get(ESettingsFormControls.TEAM_EMPTY_MILE)
                         .setErrors({ invalid: true });
                 } else {
-                    this.companyForm.get(ESettingsFormControls.TEAM_EMPTY_MILE).setErrors(null);
+                    this.companyForm
+                        .get(ESettingsFormControls.TEAM_EMPTY_MILE)
+                        .setErrors(null);
                 }
             });
 
@@ -1069,9 +1069,17 @@ export class SettingsBasicModalComponent
                         .get(ESettingsFormControls.TEAM_LOADED_MILE)
                         .setErrors({ invalid: true });
                 else {
-                    this.companyForm.get(ESettingsFormControls.TEAM_LOADED_MILE).setErrors(null);
-                    if (this.companyForm.get(ESettingsFormControls.TEAM_EMPTY_MILE).value) {
-                        this.companyForm.get(ESettingsFormControls.TEAM_EMPTY_MILE).patchValue(value);
+                    this.companyForm
+                        .get(ESettingsFormControls.TEAM_LOADED_MILE)
+                        .setErrors(null);
+                    if (
+                        this.companyForm.get(
+                            ESettingsFormControls.TEAM_EMPTY_MILE
+                        ).value
+                    ) {
+                        this.companyForm
+                            .get(ESettingsFormControls.TEAM_EMPTY_MILE)
+                            .patchValue(value);
                     }
                 }
             });
@@ -1085,8 +1093,9 @@ export class SettingsBasicModalComponent
                         .get(ESettingsFormControls.PER_MILE_TEAM)
                         .setErrors({ invalid: true });
                 else
-                    this.companyForm.get(ESettingsFormControls.PER_MILE_TEAM).setErrors(null);
-
+                    this.companyForm
+                        .get(ESettingsFormControls.PER_MILE_TEAM)
+                        .setErrors(null);
             });
     }
 
@@ -1097,7 +1106,7 @@ export class SettingsBasicModalComponent
             .subscribe((bankCards) => {
                 const hasDuplicates =
                     bankCards.map((bankCard) => bankCard.card).length >
-                        new Set(bankCards.map((bankCard) => bankCard.card)).size
+                    new Set(bankCards.map((bankCard) => bankCard.card)).size
                         ? true
                         : false;
 
@@ -1106,7 +1115,9 @@ export class SettingsBasicModalComponent
                         .get(ESettingsFormControls.BANK_CARDS)
                         .setErrors({ invalid: true });
                 else
-                    this.companyForm.get(ESettingsFormControls.BANK_CARDS).setErrors(null);
+                    this.companyForm
+                        .get(ESettingsFormControls.BANK_CARDS)
+                        .setErrors(null);
 
                 let cardTypes: string[] = [];
 
@@ -1126,7 +1137,9 @@ export class SettingsBasicModalComponent
 
     public onImageValidation(event: boolean): void {
         if (!event) {
-            this.companyForm.get(ESettingsFormControls.LOGO).setErrors({ invalid: true });
+            this.companyForm
+                .get(ESettingsFormControls.LOGO)
+                .setErrors({ invalid: true });
         } else {
             this.inputService.changeValidators(
                 this.companyForm.get(ESettingsFormControls.LOGO),
@@ -1136,8 +1149,7 @@ export class SettingsBasicModalComponent
     }
 
     public onSaveLogoAction(event: any): void {
-        if (event)
-            this.displayDeleteAction = true;
+        if (event) this.hasDisplayDeleteAction = true;
     }
 
     public onPrefferedLoadCheck(event: Tabs): void {
@@ -1177,44 +1189,77 @@ export class SettingsBasicModalComponent
             .subscribe((val) => {
                 if (val) {
                     if (
-                        [ESettingsModalEnum.SOLO, ESettingsModalEnum.COMBINED as string].includes(
-                            this.selectedFleetType
-                        )
+                        [
+                            ESettingsModalEnum.SOLO,
+                            ESettingsModalEnum.COMBINED as string,
+                        ].includes(this.selectedFleetType)
                     )
-                        if (this.companyForm.get(ESettingsFormControls.SOLO_LOADED_MILE).value)
+                        if (
+                            this.companyForm.get(
+                                ESettingsFormControls.SOLO_LOADED_MILE
+                            ).value
+                        )
                             this.companyForm
                                 .get(ESettingsFormControls.PER_MILE_SOLO)
                                 .patchValue(
-                                    this.companyForm.get(ESettingsFormControls.SOLO_LOADED_MILE).value
+                                    this.companyForm.get(
+                                        ESettingsFormControls.SOLO_LOADED_MILE
+                                    ).value
                                 );
 
-                    if (['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType))
-                        if (this.companyForm.get(ESettingsFormControls.TEAM_LOADED_MILE).value)
-                            this.companyForm
-                                .get(ESettingsFormControls.PER_MILE_TEAM)
-                                .patchValue(
-                                    this.companyForm.get(ESettingsFormControls.TEAM_LOADED_MILE).value
-                                );
-
-                } else {
                     if (
-                        [ESettingsModalEnum.SOLO, ESettingsModalEnum.COMBINED as string].includes(
+                        ['Team', ESettingsModalEnum.COMBINED].includes(
                             this.selectedFleetType
                         )
                     )
-                        if (this.companyForm.get(ESettingsFormControls.PER_MILE_SOLO).value)
+                        if (
+                            this.companyForm.get(
+                                ESettingsFormControls.TEAM_LOADED_MILE
+                            ).value
+                        )
+                            this.companyForm
+                                .get(ESettingsFormControls.PER_MILE_TEAM)
+                                .patchValue(
+                                    this.companyForm.get(
+                                        ESettingsFormControls.TEAM_LOADED_MILE
+                                    ).value
+                                );
+                } else {
+                    if (
+                        [
+                            ESettingsModalEnum.SOLO,
+                            ESettingsModalEnum.COMBINED as string,
+                        ].includes(this.selectedFleetType)
+                    )
+                        if (
+                            this.companyForm.get(
+                                ESettingsFormControls.PER_MILE_SOLO
+                            ).value
+                        )
                             this.companyForm
                                 .get(ESettingsFormControls.SOLO_LOADED_MILE)
                                 .patchValue(
-                                    this.companyForm.get(ESettingsFormControls.PER_MILE_SOLO).value
+                                    this.companyForm.get(
+                                        ESettingsFormControls.PER_MILE_SOLO
+                                    ).value
                                 );
 
-                    if (['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)) {
-                        if (this.companyForm.get(ESettingsFormControls.PER_MILE_TEAM).value)
+                    if (
+                        ['Team', ESettingsModalEnum.COMBINED].includes(
+                            this.selectedFleetType
+                        )
+                    ) {
+                        if (
+                            this.companyForm.get(
+                                ESettingsFormControls.PER_MILE_TEAM
+                            ).value
+                        )
                             this.companyForm
                                 .get(ESettingsFormControls.TEAM_LOADED_MILE)
                                 .patchValue(
-                                    this.companyForm.get(ESettingsFormControls.PER_MILE_TEAM).value
+                                    this.companyForm.get(
+                                        ESettingsFormControls.PER_MILE_TEAM
+                                    ).value
                                 );
                     }
                 }
@@ -1322,7 +1367,8 @@ export class SettingsBasicModalComponent
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
-            departmentContact.departmentId = this.selectedDepartmentFormArray[index].id;
+            departmentContact.departmentId =
+                this.selectedDepartmentFormArray[index].id;
         });
 
         bankAccounts.forEach((bankAccount, index: number) => {
@@ -1330,9 +1376,10 @@ export class SettingsBasicModalComponent
         });
 
         bankCards.forEach((bankCard, index: number) => {
-            bankCard.expireDate = MethodsCalculationsHelper.convertDateToBackend(
-                bankCards[index].expireDate
-            );
+            bankCard.expireDate =
+                MethodsCalculationsHelper.convertDateToBackend(
+                    bankCards[index].expireDate
+                );
         });
 
         this.settingsCompanyService
@@ -1392,8 +1439,8 @@ export class SettingsBasicModalComponent
             fleetType: additionalInfo?.fleetType,
             payTerm: additionalInfo?.payTerm
                 ? this.payTermOptions?.find(
-                    (payTerm) => payTerm.id === additionalInfo?.payTerm
-                )?.name
+                      (payTerm) => payTerm.id === additionalInfo?.payTerm
+                  )?.name
                 : null,
             customerCredit: additionalInfo?.customerCredit,
             mvrMonths: additionalInfo?.mvrMonths,
@@ -1428,45 +1475,43 @@ export class SettingsBasicModalComponent
                         email: department.email,
                     })
                 );
-                this.selectedDepartmentFormArray.push({ ...department.department });
+                this.selectedDepartmentFormArray.push({
+                    ...department.department,
+                });
             }
         }
 
         if (this.editData.company.bankAccounts?.length) {
             this.editData.company.bankAccounts.forEach(
-                (bankAccount, index: number) => {
+                (bankAccountItem, index: number) => {
+                    const { id, routing, account, status } = bankAccountItem;
 
-                    const {
+                    const bankAccount: IBankAccount = {
                         id,
                         routing,
                         account,
-                        status
-                    } = bankAccount;
+                        bankId: this.editData.company.bankAccounts[index].bank
+                            .name,
+                        status: status
+                            ? EBankAccountStatus.VERIFIED
+                            : EBankAccountStatus.UNVERIFIED,
+                    };
 
-                    this.bankAccounts.push(
-                        this.createBankAccount({
-                            id,
-                            bankId: this.editData.company.bankAccounts[index].bank
-                                .name,
-                            routing,
-                            account,
-                            status: status ?
-                                EBankAccountStatus.VERIFIED :
-                                EBankAccountStatus.UNVERIFIED
-                        })
-                    );
+                    this.bankAccounts.push(this.createBankAccount(bankAccount));
 
-                    this.selectedBankAccountFormArray.push(
-                        { ...this.editData.company.bankAccounts[index].bank }
-                    );
+                    this.selectedBankAccountFormArray.push({
+                        ...this.editData.company.bankAccounts[index].bank,
+                    });
 
                     this.isBankSelectedFormArray.push(
-                        this.editData.company.bankAccounts[index].id ? true : false
+                        this.editData.company.bankAccounts[index].id
+                            ? true
+                            : false
                     );
 
                     this.onBankSelected(index);
-
-                });
+                }
+            );
 
             if (this.editData.company.bankCards.length) {
                 for (const card of this.editData.company.bankCards) {
@@ -1478,8 +1523,8 @@ export class SettingsBasicModalComponent
                             cvc: card.cvc,
                             expireDate: card.expireDate
                                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                                    card.expireDate
-                                )
+                                      card.expireDate
+                                  )
                                 : null,
                         })
                     );
@@ -1552,7 +1597,8 @@ export class SettingsBasicModalComponent
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
-            departmentContact.departmentId = this.selectedDepartmentFormArray[index].id;
+            departmentContact.departmentId =
+                this.selectedDepartmentFormArray[index].id;
         });
 
         bankAccounts.forEach((bankAccount, index: number) => {
@@ -1560,9 +1606,10 @@ export class SettingsBasicModalComponent
         });
 
         bankCards.forEach((bankCard, index: number) => {
-            bankCard.expireDate = MethodsCalculationsHelper.convertDateToBackend(
-                bankCards[index].expireDate
-            );
+            bankCard.expireDate =
+                MethodsCalculationsHelper.convertDateToBackend(
+                    bankCards[index].expireDate
+                );
         });
 
         this.settingsCompanyService
@@ -1666,8 +1713,8 @@ export class SettingsBasicModalComponent
                 : null,
             dateOfIncorporation: dateOfIncorporation
                 ? MethodsCalculationsHelper.convertDateToBackend(
-                    dateOfIncorporation
-                )
+                      dateOfIncorporation
+                  )
                 : null,
             preferredLoadType:
                 this.companyForm.get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
@@ -1677,7 +1724,8 @@ export class SettingsBasicModalComponent
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
-            departmentContact.departmentId = this.selectedDepartmentFormArray[index].id;
+            departmentContact.departmentId =
+                this.selectedDepartmentFormArray[index].id;
         });
 
         bankAccounts.forEach((bankAccount, index: number) => {
@@ -1685,9 +1733,10 @@ export class SettingsBasicModalComponent
         });
 
         bankCards.forEach((bankCard, index: number) => {
-            bankCard.expireDate = MethodsCalculationsHelper.convertDateToBackend(
-                bankCards[index].expireDate
-            );
+            bankCard.expireDate =
+                MethodsCalculationsHelper.convertDateToBackend(
+                    bankCards[index].expireDate
+                );
         });
 
         const accountingPayroll = {
@@ -1696,8 +1745,8 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedAccountingEndingIn?.id,
             defaultBase: accountingDefaultBase
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    accountingDefaultBase
-                )
+                      accountingDefaultBase
+                  )
                 : null,
         };
 
@@ -1707,8 +1756,8 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedDispatchEndingIn?.id,
             defaultBase: dispatchDefaultBase
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    dispatchDefaultBase
-                )
+                      dispatchDefaultBase
+                  )
                 : null,
             defaultCommission: dispatchDefaultCommission,
         };
@@ -1719,8 +1768,8 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedRecEndingIn?.id,
             defaultBase: recruitingDefaultBase
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    recruitingDefaultBase
-                )
+                      recruitingDefaultBase
+                  )
                 : null,
         };
 
@@ -1730,8 +1779,8 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedRepairEndingIn?.id,
             defaultBase: repairDefaultBase
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    repairDefaultBase
-                )
+                      repairDefaultBase
+                  )
                 : null,
         };
 
@@ -1741,8 +1790,8 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedSafetyEndingIn?.id,
             defaultBase: safetyDefaultBase
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    safetyDefaultBase
-                )
+                      safetyDefaultBase
+                  )
                 : null,
         };
 
@@ -1752,8 +1801,8 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedManagerEndingIn?.id,
             defaultBase: managerDefaultBase
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    managerDefaultBase
-                )
+                      managerDefaultBase
+                  )
                 : null,
             defaultCommission: managerDefaultCommission,
         };
@@ -1765,8 +1814,8 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedCompanyEndingIn?.id,
             defaultBase: companyOwnerDefaultBase
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    companyOwnerDefaultBase
-                )
+                      companyOwnerDefaultBase
+                  )
                 : null,
         };
 
@@ -1776,11 +1825,10 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedOtherEndingIn?.id,
             defaultBase: otherDefaultBase
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    otherDefaultBase
-                )
+                      otherDefaultBase
+                  )
                 : null,
         };
-
 
         const driverOwnerPayroll = {
             departmentId: 10,
@@ -1788,62 +1836,70 @@ export class SettingsBasicModalComponent
             endingIn: this.selectedDriverEndingIn?.id,
             solo: {
                 emptyMile: !loadedAndEmptySameRate
-                    ? [ESettingsModalEnum.SOLO,
-                    ESettingsModalEnum.COMBINED as string].includes(
-                        this.selectedFleetType
-                    )
+                    ? [
+                          ESettingsModalEnum.SOLO,
+                          ESettingsModalEnum.COMBINED as string,
+                      ].includes(this.selectedFleetType)
                         ? parseFloat(soloEmptyMile)
                         : null
                     : null,
                 loadedMile: !loadedAndEmptySameRate
-                    ? [ESettingsModalEnum.SOLO,
-                    ESettingsModalEnum.COMBINED as string].includes(
-                        this.selectedFleetType
-                    )
+                    ? [
+                          ESettingsModalEnum.SOLO,
+                          ESettingsModalEnum.COMBINED as string,
+                      ].includes(this.selectedFleetType)
                         ? parseFloat(soloLoadedMile)
                         : null
                     : null,
-                perStop: [ESettingsModalEnum.SOLO,
-                ESettingsModalEnum.COMBINED as string].includes(
-                    this.selectedFleetType
-                )
+                perStop: [
+                    ESettingsModalEnum.SOLO,
+                    ESettingsModalEnum.COMBINED as string,
+                ].includes(this.selectedFleetType)
                     ? soloPerStop
                         ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                            soloPerStop
-                        )
+                              soloPerStop
+                          )
                         : null
                     : null,
             },
             team: {
                 emptyMile: !loadedAndEmptySameRate
-                    ? ['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)
+                    ? ['Team', ESettingsModalEnum.COMBINED].includes(
+                          this.selectedFleetType
+                      )
                         ? parseFloat(teamEmptyMile)
                         : null
                     : null,
                 loadedMile: !loadedAndEmptySameRate
-                    ? ['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)
+                    ? ['Team', ESettingsModalEnum.COMBINED].includes(
+                          this.selectedFleetType
+                      )
                         ? parseFloat(teamLoadedMile)
                         : null
                     : null,
-                perStop: ['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)
+                perStop: ['Team', ESettingsModalEnum.COMBINED].includes(
+                    this.selectedFleetType
+                )
                     ? teamPerStop
                         ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                            teamPerStop
-                        )
+                              teamPerStop
+                          )
                         : null
                     : null,
             },
-            perMileSolo: [ESettingsModalEnum.SOLO,
-            ESettingsModalEnum.COMBINED as string].includes(
-                this.selectedFleetType
-            )
+            perMileSolo: [
+                ESettingsModalEnum.SOLO,
+                ESettingsModalEnum.COMBINED as string,
+            ].includes(this.selectedFleetType)
                 ? loadedAndEmptySameRate
                     ? perMileSolo
                         ? parseFloat(perMileSolo)
                         : null
                     : null
                 : null,
-            perMileTeam: ['Team', ESettingsModalEnum.COMBINED].includes(this.selectedFleetType)
+            perMileTeam: ['Team', ESettingsModalEnum.COMBINED].includes(
+                this.selectedFleetType
+            )
                 ? loadedAndEmptySameRate
                     ? perMileTeam
                         ? parseFloat(perMileTeam)
@@ -1852,13 +1908,13 @@ export class SettingsBasicModalComponent
                 : null,
             soloPerLoad: soloPerLoad
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    soloPerLoad
-                )
+                      soloPerLoad
+                  )
                 : null,
             teamPerLoad: teamPerLoad
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                    teamPerLoad
-                )
+                      teamPerLoad
+                  )
                 : null,
             defaultSoloDriverCommission: [
                 ESettingsModalEnum.SOLO,
@@ -1866,9 +1922,10 @@ export class SettingsBasicModalComponent
             ].includes(this.selectedFleetType)
                 ? driverSoloDefaultCommission
                 : null,
-            defaultTeamDriverCommission: ['Team', ESettingsModalEnum.COMBINED].includes(
-                this.selectedFleetType
-            )
+            defaultTeamDriverCommission: [
+                'Team',
+                ESettingsModalEnum.COMBINED,
+            ].includes(this.selectedFleetType)
                 ? driverTeamDefaultCommission
                 : null,
             defaultOwnerCommission: ownerDefaultCommission,
@@ -1939,8 +1996,8 @@ export class SettingsBasicModalComponent
                 data.companyType?.id !== 0 ? data.companyType.name : null,
             dateOfIncorporation: data.dateOfIncorporation
                 ? MethodsCalculationsHelper.convertDateFromBackend(
-                    data.dateOfIncorporation
-                )
+                      data.dateOfIncorporation
+                  )
                 : null,
             logo: data.logo ?? null,
             //-------------------- Additional Tab
@@ -1959,8 +2016,8 @@ export class SettingsBasicModalComponent
             driverFlatRate: data.driverFlatRate,
             payTerm: data.additionalInfo?.payTerm
                 ? this.payTermOptions?.find(
-                    (payTerm) => payTerm.id === data.additionalInfo?.payTerm
-                )?.name
+                      (payTerm) => payTerm.id === data.additionalInfo?.payTerm
+                  )?.name
                 : null,
             customerCredit: data.additionalInfo.customerCredit,
             mvrMonths: data.additionalInfo.mvrMonths,
@@ -2012,40 +2069,29 @@ export class SettingsBasicModalComponent
                     })
                 );
 
-                this.selectedDepartmentFormArray.push({ ...department.department });
+                this.selectedDepartmentFormArray.push({
+                    ...department.department,
+                });
             }
 
         if (data.bankAccounts?.length)
+            data.bankAccounts?.forEach((bankAccountItem, index: number) => {
+                const { id, account, routing, status, bank } = bankAccountItem;
+                const bankAccount: IBankAccount = {
+                    id,
+                    bankId: bank?.name,
+                    account,
+                    routing,
+                    status: status
+                        ? EBankAccountStatus.VERIFIED
+                        : EBankAccountStatus.UNVERIFIED,
+                };
 
-            data.bankAccounts?.
-                forEach((bankAccount, index: number) => {
-                    const {
-                        id,
-                        routing,
-                        account,
-                        status
-                    } = bankAccount;
-
-                    this.bankAccounts.push(
-                        this.createBankAccount({
-                            id,
-                            bankId: bankAccount?.bank?.name,
-                            routing: routing,
-                            account: account,
-                            status: status ?
-                                EBankAccountStatus.VERIFIED :
-                                EBankAccountStatus.UNVERIFIED
-                        })
-                    );
-                    this.selectedBankAccountFormArray.push(
-                        { ...bankAccount.bank }
-                    );
-                    this.isBankSelectedFormArray.push(
-                        id ? true : false
-                    );
-                    this.onBankSelected(index);
-                })
-
+                this.bankAccounts.push(this.createBankAccount(bankAccount));
+                this.selectedBankAccountFormArray.push(bank);
+                this.isBankSelectedFormArray.push(id ? true : false);
+                this.onBankSelected(index);
+            });
 
         if (data.bankCards.length) {
             for (const card of data.bankCards) {
@@ -2057,8 +2103,8 @@ export class SettingsBasicModalComponent
                         cvc: card.cvc,
                         expireDate: card.expireDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
-                                card.expireDate
-                            )
+                                  card.expireDate
+                              )
                             : null,
                     })
                 );
@@ -2083,8 +2129,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.defaultBase
-                                    )
+                                          payroll.defaultBase
+                                      )
                                     : null
                             );
 
@@ -2108,8 +2154,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.defaultBase
-                                    )
+                                          payroll.defaultBase
+                                      )
                                     : null
                             );
                         this.companyForm
@@ -2135,8 +2181,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.defaultBase
-                                    )
+                                          payroll.defaultBase
+                                      )
                                     : null
                             );
 
@@ -2159,8 +2205,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.defaultBase
-                                    )
+                                          payroll.defaultBase
+                                      )
                                     : null
                             );
 
@@ -2183,8 +2229,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.defaultBase
-                                    )
+                                          payroll.defaultBase
+                                      )
                                     : null
                             );
 
@@ -2207,8 +2253,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.defaultBase
-                                    )
+                                          payroll.defaultBase
+                                      )
                                     : null
                             );
                         this.companyForm
@@ -2234,8 +2280,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.defaultBase
-                                    )
+                                          payroll.defaultBase
+                                      )
                                     : null
                             );
 
@@ -2258,8 +2304,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.defaultBase
-                                    )
+                                          payroll.defaultBase
+                                      )
                                     : null
                             );
 
@@ -2289,8 +2335,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.solo.perStop
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.solo.perStop
-                                    )
+                                          payroll.solo.perStop
+                                      )
                                     : null
                             );
                         this.companyForm
@@ -2302,8 +2348,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.soloPerLoad
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.soloPerLoad
-                                    )
+                                          payroll.soloPerLoad
+                                      )
                                     : null
                             );
 
@@ -2322,8 +2368,8 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.team.perStop
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.team.perStop
-                                    )
+                                          payroll.team.perStop
+                                      )
                                     : null
                             );
 
@@ -2336,21 +2382,27 @@ export class SettingsBasicModalComponent
                             .patchValue(
                                 payroll.teamPerLoad
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                        payroll.teamPerLoad
-                                    )
+                                          payroll.teamPerLoad
+                                      )
                                     : null
                             );
 
                         this.companyForm
-                            .get(ESettingsFormControls.LOADED_AND_EMPTY_SAME_RATE)
+                            .get(
+                                ESettingsFormControls.LOADED_AND_EMPTY_SAME_RATE
+                            )
                             .patchValue(payroll.loadedAndEmptySameRate);
 
                         this.companyForm
-                            .get(ESettingsFormControls.DRIVER_SOLO_DEFAULT_COMMISSION)
+                            .get(
+                                ESettingsFormControls.DRIVER_SOLO_DEFAULT_COMMISSION
+                            )
                             .patchValue(payroll.defaultSoloDriverCommission);
 
                         this.companyForm
-                            .get(ESettingsFormControls.DRIVER_TEAM_DEFAULT_COMMISSION)
+                            .get(
+                                ESettingsFormControls.DRIVER_TEAM_DEFAULT_COMMISSION
+                            )
                             .patchValue(payroll.defaultTeamDriverCommission);
 
                         this.companyForm
@@ -2369,89 +2421,51 @@ export class SettingsBasicModalComponent
         }
 
         if (this.companyForm.get(ESettingsFormControls.LOGO).value)
-            this.displayDeleteAction = true;
+            this.hasDisplayDeleteAction = true;
 
         setTimeout(() => {
             this.isCardAnimationDisabled = false;
         }, 1000);
     }
 
-    public handleDeleteClick(event: any) {
+    public handleDeleteClick(event: any): void {
         if (event.action === 'delete') {
-            this.displayUploadZone = true;
+            this.hasDisplayUploadZone = true;
 
             this.companyForm.get(ESettingsFormControls.LOGO).patchValue(null);
             this.companyForm.get(ESettingsFormControls.LOGO).setErrors(null);
 
-            this.displayDeleteAction = false;
+            this.hasDisplayDeleteAction = false;
         }
     }
 
     private checkBankAccountValidity(addedAccount: IBankAccount): void {
         this.isPlaidAvailable = false;
-        this.companyService
-            .apiCompanyPlaidLinkTokenGet()
+
+        this.plaidService
+            .getPlaidVerification()
             .pipe(takeUntil(this.destroy$))
-            .subscribe(async (res: LinkTokenResponse) => {
-
-                if (!res?.link_token) return;
-
-                const plaid: IPlaidCreated =
-                    await Plaid.create({
-                        token: res.link_token,
-                        onSuccess:
-                            (publicToken: string,
-                                metadata: IPlaidLinkOnSuccessMetadata) => {
-                                const publicTokenExchange: ExchangePublicTokenCommand = {
-                                    publicToken
-                                }
-                                if (!publicToken) return;
-
-                                this.companyService
-                                    .apiCompanyPlaidTokenExchangePost(
-                                        publicTokenExchange
-                                    ).
-                                    pipe(
-                                        takeUntil(this.destroy$),
-                                        switchMap((atRes: AccessTokenResponse) =>
-                                            this.companyService
-                                                .apiCompanyPlaidAuthGetPost
-                                                ({
-                                                    accessToken: atRes?.access_token
-                                                })
-                                        ),
-                                    ).
-                                    subscribe((details: AccountDetailsResponse) => {
-                                        if (details.institution_name !== addedAccount.bankId) {
-                                            addedAccount.status = EBankAccountStatus.UNVERIFIED
-                                            return
-                                        };
-                                        const foundAccount: AchDetail =
-                                            details.
-                                                account_detail.
-                                                find(
-                                                    detail =>
-                                                    (
-                                                        detail.routing === addedAccount.routing &&
-                                                        detail.account === addedAccount.account
-                                                    )
-                                                );
-
-                                        addedAccount.status =
-                                            foundAccount ?
-                                                EBankAccountStatus.VERIFIED :
-                                                EBankAccountStatus.UNVERIFIED;
-                                    });
-
-                            },
-                        onExit: (
-                            error: unknown,
-                            metadata: IPlaidLinkOnExitMetadata
-                        ) => {
-                            this.isPlaidAvailable = true;
-                        },
-                    });
-                plaid.open();
+            .subscribe(
+                ([accessToken, details]: [
+                    AccessTokenResponse,
+                    AccountDetailsResponse,
+                ]) => {
+                    this.plaidService.compareVerificationResults(
+                        details,
+                        addedAccount
+                    );
+                    this.isPlaidAvailable = true;
+                },
+                () => {
+                    this.plaidService.compareVerificationResults(
+                        {},
+                        addedAccount
+                    );
+                    this.isPlaidAvailable = true;
+                }
+            )
+            .add(() => {
+                this.isPlaidAvailable = true;
             });
     }
 

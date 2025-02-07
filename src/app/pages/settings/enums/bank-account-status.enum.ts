@@ -2,5 +2,6 @@ export enum EBankAccountStatus {
     VERIFIED = 'Verified',
     UNVERIFIED = 'Unverified',
     VERIFY = 'Verify',
-    PENDING = 'Pending'
+    PENDING = 'Pending',
+    FAILED = 'Failed',
 }

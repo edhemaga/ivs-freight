@@ -127,7 +127,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
         // change detector
         private changeDetector: ChangeDetectorRef,
         private ngbActiveModal: NgbActiveModal
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.createForm();
@@ -395,7 +395,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     );
                     this.changeDetector.detectChanges();
                 },
-                error: () => { },
             });
     }
 
@@ -443,7 +442,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => { },
             });
     }
 
@@ -491,7 +489,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => { },
             });
     }
 
@@ -539,7 +536,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => { },
             });
     }
 
@@ -558,8 +554,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                    ? PMStatus.Active
-                                    : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -574,9 +570,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case TableStringEnum.REPAIR_MODAL:
                                 this.openRepairModal();
-
                                 break;
-
                             default:
                                 break;
                         }
@@ -602,8 +596,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                    ? PMStatus.Active
-                                    : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -618,9 +612,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case TableStringEnum.REPAIR_MODAL:
                                 this.openRepairModal();
-
                                 break;
-
                             default: {
                                 break;
                             }
@@ -649,8 +641,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                    ? PMStatus.Active
-                                    : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
                 ...this.newPMs.controls.map((item, index) => {
@@ -664,8 +656,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 4
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                    ? PMStatus.Active
-                                    : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -708,8 +700,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                    ? PMStatus.Active
-                                    : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
                 ...this.newPMs.controls.map((item, index) => {
@@ -722,8 +714,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                             index < 1
                                 ? PMStatus.Default
                                 : item.get(TableStringEnum.IS_CHECKED).value
-                                    ? PMStatus.Active
-                                    : PMStatus.Inactive,
+                                  ? PMStatus.Active
+                                  : PMStatus.Inactive,
                     };
                 }),
             ],
@@ -868,7 +860,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 const defaultPmsIndex =
                     this.editData.header ===
                         TableStringEnum.TRUCK_PM_SETTINGS ||
-                        this.editData.header ===
+                    this.editData.header ===
                         TableStringEnum.CONFIGURE_TRUCK_PM_HEADER
                         ? 4
                         : 1;
@@ -883,8 +875,8 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         existingPmIndex < defaultPmsIndex
                             ? PMStatus.Default
                             : pmItem.isChecked
-                                ? PMStatus.Active
-                                : PMStatus.Inactive,
+                              ? PMStatus.Active
+                              : PMStatus.Inactive,
                 });
             }
 
