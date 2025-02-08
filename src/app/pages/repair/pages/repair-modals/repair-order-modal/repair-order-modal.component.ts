@@ -231,11 +231,13 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
     public modalButtonText = ModalButtonText;
-    public svgRoutes = SharedSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
 
-    // Const
+    // config
     public RepairOrderConfig = RepairOrderConfig;
+
+    // SVG routes
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -264,6 +266,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         this.monitorDateInput();
 
+        this.monitorDatePaidInput();
+
         this.checkIsTruckOrTrailerInit();
 
         this.addRepairItemOnInit();
@@ -271,22 +275,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.checkIsFinishOrder();
 
         this.confirmationActivationSubscribe();
-    }
-
-    private confirmationActivationSubscribe(): void {
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                if (res.action !== TableStringEnum.CLOSE)
-                    this.ngbActiveModal?.close();
-            });
-    }
-
-    public trackByIdentity(
-        _: number,
-        item: ExtendedServiceTypeResponse
-    ): string {
-        return item.serviceType;
     }
 
     private createForm(): void {
@@ -317,6 +305,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
             });
     }
 
@@ -749,12 +746,41 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         this.repairOrderForm
             .get(RepairOrderModalStringEnum.DATE)
             .valueChanges.pipe(takeUntil(this.destroy$), distinctUntilChanged())
-            .subscribe((res) => {
-                if (!res) {
+            .subscribe((value) => {
+                if (!value) {
                     this.resetDriverInputField();
                 } else {
                     if (this.selectedUnit) this.getDrivers();
                 }
+            });
+    }
+
+    public monitorDatePaidInput(): void {
+        const repairDatePaidControl = this.repairOrderForm.get(
+            RepairOrderModalStringEnum.DATE_PAID
+        );
+
+        repairDatePaidControl.valueChanges
+            .pipe(takeUntil(this.destroy$), distinctUntilChanged())
+            .subscribe((value) => {
+                const repairDate =
+                    MethodsCalculationsHelper.convertRegularDateToIsoFormat(
+                        this.repairOrderForm.get(
+                            RepairOrderModalStringEnum.DATE
+                        ).value
+                    );
+
+                const repairDatePaid =
+                    MethodsCalculationsHelper.convertRegularDateToIsoFormat(
+                        value
+                    );
+
+                const isRepairDatePaidBeforeDate =
+                    moment(repairDatePaid).isBefore(repairDate);
+
+                repairDatePaidControl.setErrors({
+                    invalid: isRepairDatePaidBeforeDate,
+                });
             });
     }
 
@@ -961,10 +987,10 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public getDrivers(): void {
-        const formatedDate = moment(
-            this.repairOrderForm.get(RepairOrderModalStringEnum.DATE).value,
-            RepairOrderModalStringEnum.FORMAT_DATE
-        ).format(RepairOrderModalStringEnum.FORMAT_DATE_1);
+        const repairDate =
+            MethodsCalculationsHelper.convertRegularDateToIsoFormat(
+                this.repairOrderForm.get(RepairOrderModalStringEnum.DATE).value
+            );
 
         const truckId =
             this.truckOrTrailer === RepairOrderModalStringEnum.TRUCK
@@ -977,7 +1003,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         if (truckId || trailerId)
             this.repairService
-                .getRepairDriversList(truckId, trailerId, formatedDate)
+                .getRepairDriversList(truckId, trailerId, repairDate)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe(({ drivers, isTeamDrivers }) => {
                     this.resetDriverInputField();
@@ -1269,8 +1295,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     private editRepairById(editData: RepairResponse): void {
-        console.log('editData', editData);
-
         const {
             repairType,
             invoice,

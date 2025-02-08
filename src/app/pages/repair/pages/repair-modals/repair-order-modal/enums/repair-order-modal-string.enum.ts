@@ -66,9 +66,6 @@ export enum RepairOrderModalStringEnum {
     TAG = 'tag',
     TAGS = 'tags',
 
-    FORMAT_DATE = 'MM/DD/YY',
-    FORMAT_DATE_1 = 'YYYY-MM-DD',
-
     COMMON = 'common',
     REPAIR_PM = 'repair-pm',
 

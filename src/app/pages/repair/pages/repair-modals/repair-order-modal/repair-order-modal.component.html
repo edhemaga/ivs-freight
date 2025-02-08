@@ -21,6 +21,7 @@
         >
             @if (selectedHeaderTab === 1) {
                 <!-- Invoice, Date, Pay Type, Date Paid -->
+
                 <div class="repair-modal-bill-first-row">
                     <app-ca-input
                         formControlName="invoice"
@@ -51,6 +52,7 @@
             }
             <div class="repair-modal-bill-first-row">
                 <!-- Order No, Date -->
+
                 @if (selectedHeaderTab === 2) {
                     <app-ca-input
                         formControlName="orderNumber"
