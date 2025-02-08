@@ -33,9 +33,6 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
         event: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        console.log('event', event);
-        console.log('tableType', tableType);
-
         const { id, type } = event;
 
         switch (type) {

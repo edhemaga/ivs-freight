@@ -364,6 +364,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             }
         }
 
+        if (this.editData?.type?.includes(RepairOrderModalStringEnum.EDIT)) {
+            this.isCardAnimationDisabled = true;
+
+            this.editRepairById(this.editData.data);
+        } else this.startFormChanges();
+
         if (this.editData?.preSelectedUnit)
             setTimeout(() => {
                 this.loadPreSelected();
@@ -996,7 +1002,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         truckId?: number,
         trailerId?: number,
         unitType?: string,
-        onlyPMS?: boolean
+        isPmOnlyDropdown?: boolean
     ): void {
         forkJoin([
             this.repairService.getRepairModalDropdowns(truckId, trailerId),
@@ -1036,7 +1042,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 };
 
                 // if only pm dropdowns
-                if (onlyPMS) return;
+                if (isPmOnlyDropdown) return;
 
                 // pay types
                 this.payTypeDropdownList = getRepairModalData.payTypes;
@@ -1087,17 +1093,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
                 // tags
                 this.tags = getRepairModalData.tags;
-
-                // ------------- EDIT --------------
-                if (
-                    this.editData?.type?.includes(
-                        RepairOrderModalStringEnum.EDIT
-                    )
-                ) {
-                    this.isCardAnimationDisabled = true;
-
-                    this.editRepairById(this.editData.data);
-                } else this.startFormChanges();
             });
     }
 
