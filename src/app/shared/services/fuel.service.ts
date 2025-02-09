@@ -143,7 +143,7 @@ export class FuelService {
         return this.fuelService.apiFuelFuelstopfranchiseIdGet(id);
     }
 
-    public getDriverBySelectedTruckAndDate(
+    public getDispatchHistoryByTruckIdAndDate(
         truckId: number,
         date: string
     ): Observable<FuelDispatchHistoryResponse> {

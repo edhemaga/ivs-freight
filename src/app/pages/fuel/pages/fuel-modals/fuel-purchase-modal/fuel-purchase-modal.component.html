@@ -72,7 +72,7 @@
             </div>
             <div
                 [ngClass]="
-                    fuelForm.get('trailerId').value
+                    fuelForm.get(fuelValuesStringEnum.TRAILER_ID).value
                         ? 'row-columns-3'
                         : 'row-columns-2'
                 "
@@ -85,15 +85,15 @@
                         {
                             configType: 'truckInputConfig',
                             selectedTruckType,
-                            trailerId: fuelForm.get('trailerId').value,
+                            trailerId: fuelForm.get(fuelValuesStringEnum.TRAILER_ID).value,
                         } | fuelPurchaseModalInputConfig
                     "
                     [options]="truckType"
                     [activeItem]="selectedTruckType"
-                    (selectedItem)="onSelectDropDown($event, 'truck')"
+                    (selectedItem)="onSelectDropDown($event, fuelValuesStringEnum.TRUCK)"
                 ></app-ca-input-dropdown>
 
-                @if (fuelForm.get('trailerId').value) {
+                @if (fuelForm.get(fuelValuesStringEnum.TRAILER_ID).value) {
                     <app-ca-input-dropdown
                         formControlName="trailerId"
                         [template]="'svgtext-template'"
@@ -107,7 +107,7 @@
                     ></app-ca-input-dropdown>
                 }
 
-                @if (fuelTransactionType?.id === eFuelTransactionType.Manual) {
+                @if (modalActionType === fuelDataOptionsStringEnum.ADD || fuelTransactionType?.id === eFuelTransactionType.Manual) {
                     <app-ca-input
                         formControlName="driverFullName"
                         [inputConfig]="
@@ -210,7 +210,7 @@
                                         (click)="
                                             selectedFuelStop = null;
                                             fuelForm
-                                                .get('fuelStopStoreId')
+                                                .get(fuelValuesStringEnum.FUEL_STOP_STORE_ID)
                                                 .patchValue(null)
                                         "
                                     >
@@ -311,9 +311,9 @@
 </app-ca-modal>
 
 <ng-template #leftModalContent>
-    @if (fuelForm.get('invoice')?.value) {
+    @if (fuelForm.get(fuelValuesStringEnum.INVOICE)?.value) {
         <div class="payroll-number text-color-white text-size-14 ta-font-bold">
-            {{ fuelForm.get('invoice')?.value }}
+            {{ fuelForm.get(fuelValuesStringEnum.INVOICE)?.value }}
         </div>
     }
 </ng-template>
@@ -367,7 +367,6 @@
                     (click)="onModalAction(taModalActionEnum.SAVE)"
                     [class.valid]="
                         fuelForm.valid &&
-                        isFormDirty &&
                         fuelItems.length &&
                         isEachFuelRowValid
                     "
@@ -380,7 +379,6 @@
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
                 [class.valid]="
                     fuelForm.valid &&
-                    isFormDirty &&
                     fuelItems.length &&
                     isEachFuelRowValid
                 "
@@ -393,7 +391,6 @@
                 (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
                     fuelForm.valid &&
-                    isFormDirty &&
                     fuelItems.length &&
                     isEachFuelRowValid
                 "

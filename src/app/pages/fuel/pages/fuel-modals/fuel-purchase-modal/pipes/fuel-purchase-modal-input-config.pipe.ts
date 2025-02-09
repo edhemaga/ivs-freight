@@ -124,7 +124,6 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                 break;
             case 'driverDropdownInputConfig':
                 const { avatarFile } = selectedDriver || {};
-                console.log(fuelCardHolderName);
 
                 inputConfig = {
                     name: 'Input Dropdown',
