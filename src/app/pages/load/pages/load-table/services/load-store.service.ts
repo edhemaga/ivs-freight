@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 // rxjs
-import { Observable } from 'rxjs';
+import { filter, Observable, take } from 'rxjs';
 
 // store
 import { select, Store } from '@ngrx/store';
@@ -15,7 +15,7 @@ import {
 } from '@pages/load/pages/load-table/models/index';
 import { ITableData } from '@shared/models/table-data.model';
 import { Column, ICurrentSearchTableData, ITableColummn, ITableOptions } from '@shared/models';
-import { CreateCommentCommand, CreateLoadTemplateCommand, LoadListResponse, LoadStatusType, RevertLoadStatusCommand, UpdateLoadStatusCommand } from 'appcoretruckassist';
+import { CreateCommentCommand, CreateLoadTemplateCommand, LoadListResponse, LoadStatusType, LoadTemplateListResponse, RevertLoadStatusCommand, UpdateLoadStatusCommand } from 'appcoretruckassist';
 import { Load } from '@pages/load/models';
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
 
@@ -24,6 +24,7 @@ import {
     activeTableDataSelector,
     activeViewModeSelector,
     columnsSelector,
+    getSelector,
     selectedTabSelector,
     tableDataSelector,
     tableOptionsSelector,
@@ -41,6 +42,12 @@ import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/e
 })
 export class LoadStoreService {
     constructor(private store: Store) {}
+
+    public resolveInitialData$: Observable<LoadListResponse | LoadTemplateListResponse> = this.store.pipe(
+        select(getSelector),
+        filter(data =>  !!data),
+        take(1)
+    );
     
     public viewData$: Observable<ILoadGridItem[]> = this.store.pipe(
         select(viewDataSelector)
