@@ -52,6 +52,9 @@ import {
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
+// Enums
+import { EFileFormControls, EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-violation-modal',
     templateUrl: './violation-modal.component.html',
@@ -404,18 +407,18 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case EGeneralActions.ADD: {
                 this.violationForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.violationForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

@@ -28,6 +28,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // svg routes
 import { SettingsFactorySvgRoutes } from './utils/svg-routes/settings-factoring-svg-routes';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-settings-factoring',
     templateUrl: './settings-factoring.component.html',
@@ -69,7 +72,7 @@ export class SettingsFactoringComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case 'delete': {
+                        case EGeneralActions.DELETE: {
                             if (res.template === 'factoring') {
                                 this.deleteFactoringByCompanyId(res.id);
                             }
@@ -100,7 +103,7 @@ export class SettingsFactoringComponent
             {
                 id: this.factoringData.id,
                 template: 'factoring',
-                type: 'delete',
+                type: EGeneralActions.DELETE,
                 image: false,
             }
         );

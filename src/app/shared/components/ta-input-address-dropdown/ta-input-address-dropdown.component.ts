@@ -43,10 +43,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // enums
-import { InputAddressCommandsStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-commands-string.enum';
 import { InputAddressStopTypesStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-stop-types-string.enum';
 import { InputAddressTypeStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-type-string.enum';
 import { InputAddressLayersStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-layers-string.enum';
+import { EGeneralActions } from '@shared/enums';
 
 // models
 import { AddressData } from '@shared/components/ta-input-address-dropdown/models/address-data.model';
@@ -112,25 +112,19 @@ export class TaInputAddressDropdownComponent
     handleKeyboardEvent(event: KeyboardEvent) {
         const key = event.key;
         if (this.inputConfig.name == 'RoutingAddress') {
-            if (key === InputAddressCommandsStringEnum.ENTER) {
-                if (this.currentAddressData) {
-                    this.onCommands(
-                        event,
-                        InputAddressCommandsStringEnum.CONFIRM
-                    );
-                }
-            } else if (key === InputAddressCommandsStringEnum.ESCAPE) {
-                this.clearInput(event);
-            }
+            if (key === EGeneralActions.ENTER) {
+                if (this.currentAddressData)
+                    this.onCommands(event, EGeneralActions.CONFIRM);
+            } else if (key === EGeneralActions.ESCAPE) this.clearInput(event);
         }
     }
 
-    //Address data
+    // Address data
     public addressList: AddressList[];
     private searchLayers: AutocompleteSearchLayer[];
     public currentAddressData: AddressData;
 
-    //Confg
+    // Config
     public addressExpanded: boolean = false;
     public chosenFromDropdown: boolean = false;
     private allowValidation: boolean = false;
@@ -343,17 +337,13 @@ export class TaInputAddressDropdownComponent
         }
     }
 
-    public onCommands(
-        e: KeyboardEvent,
-        type: InputAddressCommandsStringEnum
-    ): void {
+    public onCommands(e: KeyboardEvent, type: EGeneralActions): void {
         e.preventDefault();
         e.stopPropagation();
 
         if (
-            (type === InputAddressCommandsStringEnum.CONFIRM &&
-                this.currentAddressData) ||
-            type === InputAddressCommandsStringEnum.CANCEL
+            (type === EGeneralActions.CONFIRM && this.currentAddressData) ||
+            type === EGeneralActions.CANCEL
         ) {
             this.currentAddressData.type = type;
             this.commandEvent.emit(this.currentAddressData ?? {});
@@ -385,8 +375,8 @@ export class TaInputAddressDropdownComponent
             value === InputAddressTypeStringEnum.LONG_ADDRESS
                 ? [InputAddressLayersStringEnum.ADDRESS]
                 : value === InputAddressTypeStringEnum.SHORT_ADDRESS
-                ? [InputAddressLayersStringEnum.LOCALITY]
-                : [];
+                  ? [InputAddressLayersStringEnum.LOCALITY]
+                  : [];
     }
 
     public changeStopType(): void {

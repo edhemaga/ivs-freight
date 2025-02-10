@@ -46,6 +46,9 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-ta-map-toolbar',
     templateUrl: './ta-map-toolbar.component.html',
@@ -467,7 +470,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 {
                     ...routeInfo,
                     mapId: this.activeTableData.id,
-                    type: 'add',
+                    type: EGeneralActions.ADD,
                 }
             );
         }

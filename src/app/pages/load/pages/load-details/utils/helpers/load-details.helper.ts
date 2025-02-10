@@ -8,6 +8,7 @@ import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-selec
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { EGeneralActions } from '@shared/enums';
 
 export class LoadDetailsHelper {
     static getDetailsDropdownOptions(
@@ -59,7 +60,7 @@ export class LoadDetailsHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
+                    iconName: EGeneralActions.DELETE,
                     disabled: LoadDetailsHelper.enableDeleteButton(
                         load.statusType.name
                     ),

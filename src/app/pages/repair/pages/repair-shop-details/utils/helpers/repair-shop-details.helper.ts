@@ -7,6 +7,9 @@ import { DetailsConfig } from '@shared/models/details-config.model';
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { RepairShopContactResponse } from 'appcoretruckassist';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 export class RepairShopDetailsHelper {
     static getDetailsDropdownOptions(
         pinned: boolean,
@@ -100,7 +103,7 @@ export class RepairShopDetailsHelper {
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
+                    iconName: EGeneralActions.DELETE,
                 },
             ],
             export: true,

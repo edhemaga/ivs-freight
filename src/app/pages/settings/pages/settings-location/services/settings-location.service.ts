@@ -41,6 +41,7 @@ import { TerminalStore } from '@pages/settings/state/settings-terminal-state/com
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { EGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -129,7 +130,7 @@ export class SettingsLocationService implements OnDestroy {
                                 ({ id }) => id === parkingId
                             );
                             this.tableService.sendActionAnimation({
-                                animation: 'delete',
+                                animation: EGeneralActions.DELETE,
                                 data: parking,
                                 id: parkingId,
                             });
@@ -157,7 +158,7 @@ export class SettingsLocationService implements OnDestroy {
                         next: (parking: ParkingListResponse | any) => {
                             this.parkingStore.add(parking.pagination.data);
                             this.tableService.sendActionAnimation({
-                                animation: 'add',
+                                animation: EGeneralActions.ADD,
                                 data: parking,
                                 id: parking.id,
                             });
@@ -183,7 +184,7 @@ export class SettingsLocationService implements OnDestroy {
 
                             this.parkingStore.add(parking);
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: parking,
                                 id: parking.id,
                             });
@@ -211,7 +212,7 @@ export class SettingsLocationService implements OnDestroy {
                                 );
 
                                 this.tableService.sendActionAnimation({
-                                    animation: 'delete',
+                                    animation: EGeneralActions.DELETE,
                                     data: office,
                                     id: office.id,
                                 });
@@ -243,7 +244,7 @@ export class SettingsLocationService implements OnDestroy {
                         next: (office: CompanyOfficeResponse | any) => {
                             this.officeStore.add(office.pagination.data);
                             this.tableService.sendActionAnimation({
-                                animation: 'add',
+                                animation: EGeneralActions.ADD,
                                 data: office,
                                 id: office.id,
                             });
@@ -269,7 +270,7 @@ export class SettingsLocationService implements OnDestroy {
 
                             this.officeStore.add(office);
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: office,
                                 id: office.id,
                             });
@@ -294,7 +295,7 @@ export class SettingsLocationService implements OnDestroy {
                                 ({ id }) => id === terminalId
                             );
                             this.tableService.sendActionAnimation({
-                                animation: 'delete',
+                                animation: EGeneralActions.DELETE,
                                 data: terminal,
                                 id: terminalId,
                             });
@@ -322,7 +323,7 @@ export class SettingsLocationService implements OnDestroy {
                         next: (terminal: TerminalListResponse | any) => {
                             this.terminalStore.add(terminal.pagination.data);
                             this.tableService.sendActionAnimation({
-                                animation: 'add',
+                                animation: EGeneralActions.ADD,
                                 data: terminal,
                                 id: res.id,
                             });
@@ -344,7 +345,7 @@ export class SettingsLocationService implements OnDestroy {
                         next: (terminal: TerminalListResponse | any) => {
                             this.terminalStore.add(terminal);
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: terminal,
                                 id: res.id,
                             });

@@ -31,6 +31,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // pipes
 import { ReviewsSortPipe } from '@shared/components/ta-user-review/pipes/reviews-sort.pipe';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-ta-user-review',
     templateUrl: './ta-user-review.component.html',
@@ -109,7 +112,7 @@ export class TaUserReviewComponent implements OnChanges {
                 );
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.reviewData = this.reviewData.filter(
                     (item) => item.id !== review.id
                 );
@@ -122,7 +125,7 @@ export class TaUserReviewComponent implements OnChanges {
                 });
                 break;
             }
-            case 'add': {
+            case EGeneralActions.ADD: {
                 review.commentContent =
                     this.reviewMessageRef.toArray()[index].nativeElement.value;
                 review.isEditMode = false;
@@ -137,7 +140,7 @@ export class TaUserReviewComponent implements OnChanges {
                 });
                 break;
             }
-            case 'update': {
+            case EGeneralActions.UPDATE: {
                 review.commentContent =
                     this.reviewMessageRef.toArray()[index].nativeElement.value;
                 review.isEditMode = false;
@@ -151,7 +154,7 @@ export class TaUserReviewComponent implements OnChanges {
                 });
                 break;
             }
-            case 'cancel': {
+            case EGeneralActions.CANCEL: {
                 review.isEditMode = false;
 
                 this.reviewData[0].isNewReview = false;
@@ -195,7 +198,7 @@ export class TaUserReviewComponent implements OnChanges {
     public keyUp(event: any, review: any, type: string, index: number) {
         if (event.key === 'Enter' || event.keyCode === 13) {
             switch (type) {
-                case 'add': {
+                case EGeneralActions.ADD: {
                     review.commentContent =
                         this.reviewMessageRef.toArray()[
                             index
@@ -212,7 +215,7 @@ export class TaUserReviewComponent implements OnChanges {
                     });
                     break;
                 }
-                case 'update': {
+                case EGeneralActions.UPDATE: {
                     review.commentContent =
                         this.reviewMessageRef.toArray()[
                             index

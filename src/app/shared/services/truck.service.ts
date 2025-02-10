@@ -16,6 +16,11 @@ import { TrucksDetailsListStore } from '@pages/truck/state/truck-details-list-st
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FormDataService } from '@shared/services/form-data.service';
+import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
+
+// Enums
+import { EGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -29,8 +34,6 @@ import {
     TruckMinimalListResponse,
     TruckAutocompleteModelResponse,
 } from 'appcoretruckassist';
-import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
-import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 @Injectable({ providedIn: 'root' })
 export class TruckService implements OnDestroy {
@@ -131,7 +134,7 @@ export class TruckService implements OnDestroy {
                                 );
 
                                 this.tableService.sendActionAnimation({
-                                    animation: 'add',
+                                    animation: EGeneralActions.ADD,
                                     data: truck,
                                     id: truck.id,
                                 });
@@ -166,7 +169,7 @@ export class TruckService implements OnDestroy {
                     .subscribe({
                         next: (truck: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: truck,
                                 id: truck.id,
                             });
@@ -188,10 +191,8 @@ export class TruckService implements OnDestroy {
                     localStorage.getItem('truckTableCount')
                 );
                 if (tableSelectedTab === 'active') {
-
                     truckCount.active--;
                 } else if (tableSelectedTab === 'inactive') {
-
                     truckCount.inactive--;
                 }
 
@@ -207,7 +208,7 @@ export class TruckService implements OnDestroy {
                     .subscribe({
                         next: (truck: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: 'delete',
+                                animation: EGeneralActions.DELETE,
                                 data: truck,
                                 id: truck.id,
                             });
@@ -239,7 +240,7 @@ export class TruckService implements OnDestroy {
                     next: (res: any) => {
                         truckData.registrations = res;
                         this.tableService.sendActionAnimation({
-                            animation: 'update',
+                            animation: EGeneralActions.UPDATE,
                             data: truckData,
                             id: truckData.id,
                         });
@@ -261,10 +262,8 @@ export class TruckService implements OnDestroy {
                     localStorage.getItem('truckTableCount')
                 );
                 if (tableSelectedTab === 'active') {
-
                     truckCount.active--;
                 } else if (tableSelectedTab === 'inactive') {
-
                     truckCount.inactive--;
                 }
 
@@ -291,7 +290,6 @@ export class TruckService implements OnDestroy {
                 );
 
                 trucksToDelete.map((truckId) => {
-
                     if (tableSelectedTab === 'active') {
                         truckCount.active--;
                     } else if (tableSelectedTab === 'inactive') {
@@ -471,7 +469,7 @@ export class TruckService implements OnDestroy {
                 this.truckItem.set([truck]);
 
                 this.tableService.sendActionAnimation({
-                    animation: 'update',
+                    animation: EGeneralActions.UPDATE,
                     data: truck,
                     id: truck.id,
                 });

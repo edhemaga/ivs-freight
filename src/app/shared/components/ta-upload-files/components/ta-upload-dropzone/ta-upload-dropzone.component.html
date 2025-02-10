@@ -32,7 +32,7 @@
         [ngClass]="{
             small:
                 size === 'medium' && filesLength > 1 && modalSize === 'small',
-            'ta-upload-dropzone-column': dropzoneColumn
+            'ta-upload-dropzone-column': dropzoneColumn,
         }"
     >
         <svg-icon
@@ -55,10 +55,10 @@
         >
             <!-- Files -->
             <span
-                *ngIf="_dropZoneConfig.dropZoneType === 'files'"
+                *ngIf="_dropZoneConfig.dropZoneType === EFileFormControls.FILES"
                 [ngClass]="{
                     'ta-upload-dropzone-text-big':
-                        _dropZoneConfig.globalDropZone
+                        _dropZoneConfig.globalDropZone,
                 }"
                 >{{
                     filesLength > 1 && size == 'medium'
@@ -76,7 +76,7 @@
                 *ngIf="_dropZoneConfig.dropZoneType === 'media'"
                 [ngClass]="{
                     'ta-upload-dropzone-text-big':
-                        _dropZoneConfig.globalDropZone
+                        _dropZoneConfig.globalDropZone,
                 }"
             >
                 DRAG MEDIA HERE
@@ -86,7 +86,7 @@
                 *ngIf="_dropZoneConfig.dropZoneType === 'image'"
                 [ngClass]="{
                     'ta-upload-dropzone-text-big':
-                        _dropZoneConfig.globalDropZone
+                        _dropZoneConfig.globalDropZone,
                 }"
                 >{{
                     filesLength > 1 && size === 'medium'

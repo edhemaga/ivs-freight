@@ -68,6 +68,9 @@ import { CaInputAddressDropdownComponent } from 'ca-components';
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
+// Enums
+import { EFileFormControls, EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-settings-insurance-policy-modal',
     templateUrl: './settings-insurance-policy-modal.component.html',
@@ -238,10 +241,10 @@ export class SettingsInsurancePolicyModalComponent
                 }
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.deleteInsurancePolicyById(this.editData.company.id);
                 this.modalService.setModalSpinner({
-                    action: 'delete',
+                    action: EGeneralActions.DELETE,
                     status: true,
                     close: false,
                 });
@@ -414,15 +417,15 @@ export class SettingsInsurancePolicyModalComponent
     public onFilesEvent(event: any) {
         this.documents = event.files?.length ? event.files : [];
         switch (event.action) {
-            case 'add': {
+            case EGeneralActions.ADD: {
                 this.insurancePolicyForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.insurancePolicyForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
@@ -979,14 +982,14 @@ export class SettingsInsurancePolicyModalComponent
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: EGeneralActions.DELETE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: EGeneralActions.DELETE,
                         status: false,
                         close: false,
                     });

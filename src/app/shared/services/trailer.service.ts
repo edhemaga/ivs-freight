@@ -33,6 +33,7 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
 
 // enums
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
+import { EGeneralActions } from '@shared/enums';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerService implements OnDestroy {
@@ -60,7 +61,7 @@ export class TrailerService implements OnDestroy {
         private trailerService: TrailerTService,
         private tableService: TruckassistTableService,
         private filterService: FilterStateService
-    ) { }
+    ) {}
 
     /* Observable<CreateTrailerResponse> */
     public addTrailer(
@@ -92,7 +93,7 @@ export class TrailerService implements OnDestroy {
                                 );
 
                                 this.tableService.sendActionAnimation({
-                                    animation: 'add',
+                                    animation: EGeneralActions.ADD,
                                     data: trailer,
                                     id: trailer.id,
                                 });
@@ -165,7 +166,7 @@ export class TrailerService implements OnDestroy {
                     .subscribe({
                         next: (trailer: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: trailer,
                                 id: trailer.id,
                             });
@@ -206,7 +207,7 @@ export class TrailerService implements OnDestroy {
                     .subscribe({
                         next: (trailer: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: 'delete',
+                                animation: EGeneralActions.DELETE,
                                 data: trailer,
                                 id: trailer.id,
                             });
@@ -359,7 +360,7 @@ export class TrailerService implements OnDestroy {
                     next: (res: any) => {
                         trailerData.registrations = res;
                         this.tableService.sendActionAnimation({
-                            animation: 'update',
+                            animation: EGeneralActions.UPDATE,
                             data: trailerData,
                             id: trailerData.id,
                         });
@@ -435,7 +436,7 @@ export class TrailerService implements OnDestroy {
                 next: () => {
                     const storedTrailerData = {
                         ...this.trailerItemStore?.getValue()?.entities[
-                        trailerId
+                            trailerId
                         ],
                     };
                     const subTrailer = this.getTrailerById(trailerId)
@@ -443,7 +444,7 @@ export class TrailerService implements OnDestroy {
                         .subscribe({
                             next: (trailer: any) => {
                                 this.tableService.sendActionAnimation({
-                                    animation: 'update',
+                                    animation: EGeneralActions.UPDATE,
                                     data: trailer,
                                     id: trailer.id,
                                 });
@@ -470,21 +471,24 @@ export class TrailerService implements OnDestroy {
             if (data.id === trailer.id) {
                 data.selectedTab === TableActionsStringEnum.ACTIVE
                     ? this.trailerActiveStore.update(trailer.id, (entity) => ({
-                        ...entity,
-                        note: data.value,
-                    }))
+                          ...entity,
+                          note: data.value,
+                      }))
                     : this.trailerInactiveStore.update(
-                        trailer.id,
-                        (entity) => ({
-                            ...entity,
-                            note: data.value,
-                        })
-                    );
+                          trailer.id,
+                          (entity) => ({
+                              ...entity,
+                              note: data.value,
+                          })
+                      );
             }
         });
     }
 
-    public getTrailerFuelConsumption(id: number, timeFilter?: number): Observable<TrailerFuelConsumptionResponse> {
+    public getTrailerFuelConsumption(
+        id: number,
+        timeFilter?: number
+    ): Observable<TrailerFuelConsumptionResponse> {
         return this.trailerService.apiTrailerFuelconsumptionGet(id, timeFilter);
     }
 

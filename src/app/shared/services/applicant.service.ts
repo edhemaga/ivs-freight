@@ -18,6 +18,9 @@ import {
     UpdateApplicantCommand,
 } from 'appcoretruckassist';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -50,7 +53,7 @@ export class ApplicantService {
                         );
 
                         this.tableService.sendActionAnimation({
-                            animation: 'add',
+                            animation: EGeneralActions.ADD,
                             data: applicant,
                             id: applicant.id,
                         });

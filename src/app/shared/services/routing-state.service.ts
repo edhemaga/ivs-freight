@@ -40,24 +40,6 @@ export class RoutingStateService implements OnDestroy {
         private notificationService: NotificationService
     ) {}
 
-    // get() {
-    //   this.http
-    //     .get('https://akita.com')
-    //     .subscribe((entities) => this.routingStateStore.set(entities));
-    // }
-
-    // add(routingState: RoutingState) {
-    //   this.routingStateStore.add(routingState);
-    // }
-
-    // update(id, routingState: Partial<RoutingState>) {
-    //   this.routingStateStore.update(id, routingState);
-    // }
-
-    // remove(id: ID) {
-    //   this.routingStateStore.remove(id);
-    // }
-
     getMapById(mapId: number) {
         return this.mapService.apiMapIdGet(mapId);
     }
@@ -93,16 +75,6 @@ export class RoutingStateService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (map: MapResponse | any) => {
-                            // this.trailerActiveStore.remove(({ id }) => id === data.id);
-
-                            // this.trailerActiveStore.add(trailer);
-                            // this.tadl.replace(trailer.id, trailer);
-                            // this.tableService.sendActionAnimation({
-                            //   animation: 'update',
-                            //   data: trailer,
-                            //   id: trailer.id,
-                            // });
-
                             this.sendUpdatedData({
                                 type: 'map',
                                 data: map,
@@ -152,28 +124,6 @@ export class RoutingStateService implements OnDestroy {
                     .subscribe({
                         next: (route: RouteResponse | any) => {
                             this.routingStateStore.add(route);
-                            // this.shipperStore.add(shipper);
-                            // this.shipperMinimalStore.add(shipper);
-                            // const brokerShipperCount = JSON.parse(
-                            //   localStorage.getItem('brokerShipperTableCount')
-                            // );
-
-                            // brokerShipperCount.shipper++;
-
-                            // localStorage.setItem(
-                            //   'brokerShipperTableCount',
-                            //   JSON.stringify({
-                            //     broker: brokerShipperCount.broker,
-                            //     shipper: brokerShipperCount.shipper,
-                            //   })
-                            // );
-
-                            // this.tableService.sendActionAnimation({
-                            //   animation: 'add',
-                            //   tab: 'shipper',
-                            //   data: shipper,
-                            //   id: shipper.id,
-                            // });
 
                             this.sendUpdatedData({
                                 type: 'route',
@@ -237,16 +187,6 @@ export class RoutingStateService implements OnDestroy {
                                 routeData
                             );
 
-                            // this.trailerActiveStore.remove(({ id }) => id === data.id);
-
-                            // this.trailerActiveStore.add(trailer);
-                            // this.tadl.replace(trailer.id, trailer);
-                            // this.tableService.sendActionAnimation({
-                            //   animation: 'update',
-                            //   data: trailer,
-                            //   id: trailer.id,
-                            // });
-
                             this.sendUpdatedData({
                                 type: 'edit-route',
                                 data: routeData,
@@ -264,22 +204,6 @@ export class RoutingStateService implements OnDestroy {
         return this.routeService.apiRouteIdDelete(routeId).pipe(
             tap(() => {
                 this.routingStateStore.remove(({ id }) => id === routeId);
-                // this.shipperStore.remove(({ id }) => id === shipperId);
-                // this.shipperMinimalStore.remove(({ id }) => id === shipperId);
-                // this.sListStore.remove(({ id }) => id === shipperId);
-                // const brokerShipperCount = JSON.parse(
-                //   localStorage.getItem('brokerShipperTableCount')
-                // );
-
-                // brokerShipperCount.shipper--;
-
-                // localStorage.setItem(
-                //   'brokerShipperTableCount',
-                //   JSON.stringify({
-                //     broker: brokerShipperCount.broker,
-                //     shipper: brokerShipperCount.shipper,
-                //   })
-                // );
 
                 this.sendUpdatedData({
                     type: 'delete-route',

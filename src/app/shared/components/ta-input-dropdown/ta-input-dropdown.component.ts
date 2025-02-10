@@ -64,7 +64,8 @@ import { HoverSvgDirective } from '@shared/directives/';
 // svg routes
 import { InputDropdownSvgRoutes } from '@shared/components/ta-input-dropdown/utils/svg-routes/input-dropdown-svg-routes';
 
-// svg routes
+// enums
+import { EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-input-dropdown',
@@ -102,12 +103,7 @@ import { InputDropdownSvgRoutes } from '@shared/components/ta-input-dropdown/uti
     ],
 })
 export class TaInputDropdownComponent
-    implements
-        OnInit,
-        AfterViewInit,
-        OnChanges,
-        OnDestroy,
-        ControlValueAccessor
+    implements OnInit, AfterViewInit, OnChanges, OnDestroy, ControlValueAccessor
 {
     @ViewChild('input') inputRef: TaInputComponent;
     @ViewChild('t2') public popoverRef: NgbPopover;
@@ -185,8 +181,8 @@ export class TaInputDropdownComponent
                         value.number
                             ? value.number
                             : value.name
-                            ? value.name
-                            : value.companyName ?? null
+                              ? value.name
+                              : (value.companyName ?? null)
                     );
 
                     if (!this.inputConfig.hideColorValidations) {
@@ -507,10 +503,10 @@ export class TaInputDropdownComponent
             this.placeholderIconEvent.emit(true);
         }
 
-        if (event.action === 'cancel') {
+        if (event.action === EGeneralActions.CANCEL) {
             this.saveItem.emit({
                 data: this._activeItem,
-                action: 'cancel',
+                action: EGeneralActions.CANCEL,
             });
             this.selectedLabelMode.emit('Label');
         }
@@ -582,7 +578,7 @@ export class TaInputDropdownComponent
                         name: 'Cancel',
                         backgroundColor: '#2f2f2f',
                     },
-                    name: 'cancel',
+                    name: EGeneralActions.CANCEL,
                     svg: 'assets/svg/ic_x.svg',
                 },
             },
@@ -1157,11 +1153,11 @@ export class TaInputDropdownComponent
                               .toLowerCase()
                               .includes(searchText.toLowerCase())
                         : item.code
-                        ? item.code
-                              .concat(' - ', item.description)
-                              .toLowerCase()
-                              .includes(searchText.toLowerCase())
-                        : searchText.toLowerCase()
+                          ? item.code
+                                .concat(' - ', item.description)
+                                .toLowerCase()
+                                .includes(searchText.toLowerCase())
+                          : searchText.toLowerCase()
                 );
 
                 if (!this._options.length) {

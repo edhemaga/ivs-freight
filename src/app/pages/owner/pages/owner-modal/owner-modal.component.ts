@@ -73,7 +73,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Enums
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TableStringEnum } from '@shared/enums';
+import { EGeneralActions, TableStringEnum } from '@shared/enums';
 
 // Config
 import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
@@ -113,7 +113,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class OwnerModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     @Input() editData: any;
@@ -349,13 +353,13 @@ export class OwnerModalComponent
     public onFilesEvent(event: any) {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case EGeneralActions.ADD: {
                 this.ownerForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.ownerForm
                     .get('files')
                     .patchValue(

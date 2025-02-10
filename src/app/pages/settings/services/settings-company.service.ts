@@ -1,5 +1,4 @@
 import { Injectable, OnDestroy } from '@angular/core';
-
 import { Observable, Subject, takeUntil, tap } from 'rxjs';
 
 // models
@@ -27,6 +26,9 @@ import { FormDataService } from '@shared/services/form-data.service';
 
 // store
 import { CompanyStore } from '@pages/settings/state/company-state/company-settings.store';
+
+// enums
+import { EGeneralActions } from '@shared/enums';
 
 @Injectable({ providedIn: 'root' })
 export class SettingsCompanyService implements OnDestroy {
@@ -132,7 +134,7 @@ export class SettingsCompanyService implements OnDestroy {
                                 })
                             );
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: company,
                                 id: company.id,
                             });
@@ -176,7 +178,7 @@ export class SettingsCompanyService implements OnDestroy {
                             );
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
-                                animation: 'add',
+                                animation: EGeneralActions.ADD,
                                 data: company,
                                 id: company.id,
                             });
@@ -199,7 +201,7 @@ export class SettingsCompanyService implements OnDestroy {
                         next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: company,
                                 id: company.id,
                                 editedDivisionCompId: data.id,
@@ -229,7 +231,7 @@ export class SettingsCompanyService implements OnDestroy {
 
                             companiesCount.numberOfCompany--;
                             this.tableService.sendActionAnimation({
-                                animation: 'delete',
+                                animation: EGeneralActions.DELETE,
                                 data: company,
                                 id: company.id,
                             });
@@ -254,7 +256,7 @@ export class SettingsCompanyService implements OnDestroy {
                     .subscribe({
                         next: (company: CompanyResponse) => {
                             this.tableService.sendActionAnimation({
-                                animation: 'delete',
+                                animation: EGeneralActions.DELETE,
                                 data: company,
                                 id: company.id,
                             });
@@ -276,7 +278,7 @@ export class SettingsCompanyService implements OnDestroy {
                         next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
-                                animation: 'add',
+                                animation: EGeneralActions.ADD,
                                 data: company,
                                 id: company.id,
                                 editedDivisionCompId: data.isDivision
@@ -301,7 +303,7 @@ export class SettingsCompanyService implements OnDestroy {
                         next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: company,
                                 id: company.id,
                             });
@@ -329,7 +331,7 @@ export class SettingsCompanyService implements OnDestroy {
                         next: (company: CompanyResponse) => {
                             this.companyStore.add(company);
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: company,
                                 id: company.id,
                             });
@@ -349,7 +351,7 @@ export class SettingsCompanyService implements OnDestroy {
                     .subscribe({
                         next: (company: CompanyResponse) => {
                             this.tableService.sendActionAnimation({
-                                animation: 'delete',
+                                animation: EGeneralActions.DELETE,
                                 data: company,
                                 id: company.id,
                             });

@@ -20,7 +20,7 @@ import {
 } from '@core/components/navigation/animations/navigation.animation';
 
 // models
-import {  NavigationUserPanel } from '@core/components/navigation/models';
+import { NavigationUserPanel } from '@core/components/navigation/models';
 // constants
 import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
@@ -32,6 +32,9 @@ import { UserProfileUpdateService } from '@shared/services/user-profile-update.s
 
 // components
 import { NavigationProfileUpdateModalComponent } from '@core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
+
+// enums
+import { EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-navigation-user-profile',
@@ -99,7 +102,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
     public onAction(data: NavigationUserPanel) {
         switch (data.action) {
-            case 'update': {
+            case EGeneralActions.UPDATE: {
                 this.modalService.openModal(
                     NavigationProfileUpdateModalComponent,
                     {

@@ -46,6 +46,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
+// Enums
+import { EFileFormControls, EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-fuel-stop-modal',
     templateUrl: './fuel-stop-modal.component.html',
@@ -70,7 +73,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class FuelStopModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnDestroy, OnInit
 {
     @Input() editData: any;
@@ -107,7 +114,7 @@ export class FuelStopModalComponent
         private modalService: ModalService,
         private formService: FormService,
         private fuelService: FuelService,
-        public addressService: AddressService,
+        public addressService: AddressService
     ) {
         super();
     }
@@ -146,7 +153,6 @@ export class FuelStopModalComponent
             case 'save':
                 if (this.fuelStopForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.fuelStopForm);
-
                     return;
                 }
 
@@ -247,22 +253,20 @@ export class FuelStopModalComponent
         this.documents = event.files;
 
         switch (event.action) {
-            case 'add':
+            case EGeneralActions.ADD:
                 this.fuelStopForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case 'delete':
+            case EGeneralActions.DELETE:
                 this.fuelStopForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
 
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
 
                 this.fileModified = true;
 

@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpResponseBase } from '@angular/common/http';
 import {
     AbstractControl,
     FormsModule,
@@ -80,6 +79,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
+import { EFileFormControls, EGeneralActions } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -1023,18 +1023,18 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case EGeneralActions.ADD: {
                 this.trailerForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.trailerForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

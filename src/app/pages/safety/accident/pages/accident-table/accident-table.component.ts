@@ -26,6 +26,9 @@ import { AccidentInactiveQuery } from '@pages/safety/accident/state/accident-ina
 // models
 import { AccidentShortResponse } from 'appcoretruckassist';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-accident-table',
     templateUrl: './accident-table.component.html',
@@ -99,9 +102,7 @@ export class AccidentTableComponent
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: boolean) => {
-                if (response) {
-                    this.sendAccidentData();
-                }
+                if (response) this.sendAccidentData();
             });
 
         // Resize
@@ -136,42 +137,15 @@ export class AccidentTableComponent
                     });
                 }
             });
-
-        // Search
-        this.caSearchMultipleStatesService.currentSearchTableData
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {});
-
-        // Accident Actions
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                // Add Accident
-                if (res.animation === 'add') {
-                }
-                // Update Accident
-                else if (res.animation === 'update') {
-                }
-                // Delete Accident
-                else if (res.animation === 'delete') {
-                }
-            });
-
-        // Delete Selected Rows
-        this.tableService.currentDeleteSelectedRows
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {});
     }
 
     // -------------------------------NgAfterViewInit-------------------------------
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
+        this.observeTableContainer();
     }
 
     // Responsive Observer
-    observTableContainer() {
+    private observeTableContainer() {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -211,11 +185,11 @@ export class AccidentTableComponent
                 },
                 {
                     title: 'Delete',
-                    name: 'delete',
+                    name: EGeneralActions.DELETE,
                     type: 'safety',
                     text: 'Are you sure you want to delete accident?',
                     class: 'delete-text',
-                    contentType: 'delete',
+                    contentType: EGeneralActions.DELETE,
                     show: true,
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',

@@ -26,6 +26,9 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 //Constants
 import { ShipperDetailsItemSvgRoutes } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/svg-routes';
 
+// Enums
+import { EGeneralActions } from '@shared/enums';
+
 @Titles()
 @Component({
     selector: 'app-shipper-details-item',
@@ -84,17 +87,13 @@ export class ShipperDetailsItemComponent implements OnChanges {
             };
         });
     }
-    public changeReviewsEvent(reviews: ReviewComment) {
+    public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.deleteReview(reviews);
                 break;
             }
-            case 'add': {
-                //this.addReview(reviews);
-                break;
-            }
-            case 'update': {
+            case EGeneralActions.UPDATE: {
                 this.updateReview(reviews);
                 break;
             }
@@ -112,20 +111,14 @@ export class ShipperDetailsItemComponent implements OnChanges {
         this.reviewRatingService
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private deleteReview(reviews: ReviewComment) {
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private orderContacts(): void {

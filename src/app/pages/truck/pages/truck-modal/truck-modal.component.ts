@@ -79,7 +79,12 @@ import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-m
 import { TruckModalForm } from '@pages/truck/pages/truck-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { TableStringEnum } from '@shared/enums';
+import {
+    EFileActions,
+    EFileFormControls,
+    EGeneralActions,
+    TableStringEnum,
+} from '@shared/enums';
 
 // Const
 import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
@@ -326,7 +331,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             case TaModalActionEnum.CLOSE:
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
-                        case 'repair-modal':
+                        case TruckModalForm.REPAIR_MODAL:
                             this.modalService.setProjectionModal({
                                 action: 'close',
                                 payload: {
@@ -437,7 +442,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
-            case 'truck-type':
+            case TruckModalForm.TRUCK_TYPE:
                 this.selectedTruckType = event;
 
                 if (this.isLengthRequired) {
@@ -467,16 +472,15 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 if (!this.isSpecialTruckType)
                     this.truckForm.get(TruckModalForm.VOLUME).setValue(null);
                 break;
-            case 'truck-make':
+            case TruckModalForm.TRUCK_MAKE:
                 this.selectedTruckMake = event;
                 break;
-            case 'color':
+            case TruckModalForm.COLOR:
                 this.selectedColor = event;
                 break;
-            case 'owner':
+            case TruckModalForm.OWNER:
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
-
                     this.modalService.setProjectionModal({
                         action: 'open',
                         payload: {
@@ -515,46 +519,46 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.selectedOwner = event;
                 }
                 break;
-            case 'gross-weight':
+            case TruckModalForm.GROSS_WEIGHT:
                 this.selectedTruckGrossWeight = event;
                 break;
-            case 'tire-size':
+            case TruckModalForm.TIRE_SIZE:
                 this.selectedTireSize = event;
                 break;
-            case 'shifter':
+            case TruckModalForm.SHIFTER:
                 this.selectedShifter = event;
                 break;
-            case 'engine-model':
+            case TruckModalForm.ENGINE_MODEL:
                 this.selectedtruckEngineModelId = event;
                 break;
-            case 'engine-oil-type':
+            case TruckModalForm.ENGINE_OIL_TYPE:
                 this.selectedEngineOilType = event;
                 break;
-            case 'ap-unit':
+            case TruckModalForm.AP_UNIT:
                 this.selectedAPUnit = event;
                 break;
-            case 'gear-ratio':
+            case TruckModalForm.GEAR_RATIO:
                 this.selectedGearRatio = event;
                 break;
-            case 'toll-transponder':
+            case TruckModalForm.TOLL_TRANSPONDER:
                 this.selectedTollTransponders = event;
                 break;
-            case 'brakes':
+            case TruckModalForm.BRAKES:
                 this.selectedBrakes = event;
                 break;
-            case 'front-wheels':
+            case TruckModalForm.FRONT_WHEELS:
                 this.selectedFrontWheels = event;
                 break;
-            case 'rear-wheels':
+            case TruckModalForm.REAR_WHEELS:
                 this.selectedRearWheels = event;
                 break;
-            case 'fuel-type':
+            case TruckModalForm.FUEL_TYPE:
                 this.selectedFuelType = event;
                 break;
-            case 'truck-length':
+            case TruckModalForm.TRUCK_LENGTH:
                 this.selectedTruckLengthId = event;
                 this.inputService.changeValidators(
-                    this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
+                    this.truckForm.get(TruckModalForm.TRUCK_LENGTH),
                     this.isLengthRequired
                 );
                 break;
@@ -566,7 +570,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     private vinDecoder() {
         this.truckForm
-            .get('vin')
+            .get(TruckModalForm.VIN)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
                 this.skipVinDecocerEdit ? skip(1) : tap()
@@ -575,7 +579,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.skipVinDecocerEdit = false;
                 if (!(value?.length === 13 || value?.length === 17)) {
                     this.truckForm
-                        .get('vin')
+                        .get(TruckModalForm.VIN)
                         .setErrors({ incorrectVinNumber: true });
                 }
 
@@ -657,7 +661,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     });
                     this.rearWheels = this.frontWheels = res.wheelsTypes;
                     this.fuelTypes = res.fuelTypes;
-                    this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
+                    this.truckForm
+                        .get(TruckModalForm.FHWA_EXP)
+                        .patchValue(res.fhwaExp);
 
                     // Edit part
                     if (!this.editData?.id) {
@@ -1042,36 +1048,37 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             frontWheels: this.selectedFrontWheels
                 ? this.selectedFrontWheels.name
                 : null,
-            wheelBase: this.truckForm.get('wheelBase').value
+            wheelBase: this.truckForm.get(TruckModalForm.WHEEL_BASE).value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                      this.truckForm.get('wheelBase').value
+                      this.truckForm.get(TruckModalForm.WHEEL_BASE).value
                   )
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
                 : null,
-            fuelTankSize: this.truckForm.get('fuelTankSize').value
+            fuelTankSize: this.truckForm.get(TruckModalForm.FUEL_TANK_SIZE)
+                .value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                      this.truckForm.get('fuelTankSize').value
+                      this.truckForm.get(TruckModalForm.FUEL_TANK_SIZE).value
                   )
                 : null,
-            mileage: this.truckForm.get('mileage').value
+            mileage: this.truckForm.get(TruckModalForm.MILEAGE).value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                      this.truckForm.get('mileage').value
+                      this.truckForm.get(TruckModalForm.MILEAGE).value
                   )
                 : null,
-            axles: this.truckForm.get('axles').value
-                ? parseInt(this.truckForm.get('axles').value)
+            axles: this.truckForm.get(TruckModalForm.AXLES).value
+                ? parseInt(this.truckForm.get(TruckModalForm.AXLES).value)
                 : null,
-            emptyWeight: this.truckForm.get('emptyWeight').value
+            emptyWeight: this.truckForm.get(TruckModalForm.EMPTY_WEIGHT).value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                      this.truckForm.get('emptyWeight').value
+                      this.truckForm.get(TruckModalForm.EMPTY_WEIGHT).value
                   )
                 : null,
-            commission: this.truckForm.get('commission').value
+            commission: this.truckForm.get(TruckModalForm.COMMISSION).value
                 ? parseFloat(
                       this.truckForm
-                          .get('commission')
+                          .get(TruckModalForm.COMMISSION)
                           .value.toString()
                           .replace(/,/g, '')
                   )
@@ -1132,19 +1139,23 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case EGeneralActions.ADD: {
                 this.updateFormControl(
                     this.truckForm,
-                    'files',
+                    EFileFormControls.FILES,
                     JSON.stringify(event.files)
                 );
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 const value = event.files.length
                     ? JSON.stringify(event.files)
                     : null;
-                this.updateFormControl(this.truckForm, 'files', value);
+                this.updateFormControl(
+                    this.truckForm,
+                    EFileFormControls.FILES,
+                    value
+                );
                 if (!event.deleteId) return;
 
                 this.filesForDelete = this.filesForDelete?.length
@@ -1154,7 +1165,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.fileModified = true;
                 break;
             }
-            case 'tag': {
+            case EFileActions.TAG: {
                 const changedTag: boolean = event?.files?.some(
                     (item) => item.tagChanged
                 );

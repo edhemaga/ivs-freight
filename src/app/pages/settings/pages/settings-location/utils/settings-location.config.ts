@@ -1,3 +1,6 @@
+// Enums
+import { EGeneralActions } from '@shared/enums';
+
 export class SettingsLocationConfig {
     static options = {
         disabledMutedStyle: null,
@@ -57,7 +60,7 @@ export class SettingsLocationConfig {
                 danger: true,
                 show: true,
                 redIcon: true,
-                iconName: 'delete',
+                iconName: EGeneralActions.DELETE,
             },
         ],
         export: true,

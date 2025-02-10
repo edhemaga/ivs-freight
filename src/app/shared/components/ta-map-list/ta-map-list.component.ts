@@ -41,6 +41,7 @@ import { SortColumn } from 'ca-components';
 
 // Enums
 import { MapListStringEnum } from '@shared/components/ta-map-list/enums';
+import { EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-map-list',
@@ -108,7 +109,7 @@ export class TaMapListComponent
             this.checkResizeButton();
 
             this.mapListContent?.map((data) => {
-                if (data.actionAnimation == 'delete') {
+                if (data.actionAnimation == EGeneralActions.DELETE) {
                     this.deleteAnimation(data.id);
                 }
             });

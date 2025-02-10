@@ -25,6 +25,9 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-settings-insurancepolicy',
     templateUrl: './settings-insurancepolicy.component.html',
@@ -67,7 +70,7 @@ export class SettingsInsurancepolicyComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case 'delete': {
+                        case EGeneralActions.DELETE: {
                             if (res.template === 'insurance') {
                                 this.deleteInsurancePolicy(res.id);
                             }
@@ -148,7 +151,7 @@ export class SettingsInsurancepolicyComponent
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
+                    iconName: EGeneralActions.DELETE,
                 },
             ],
             export: true,
@@ -173,7 +176,7 @@ export class SettingsInsurancepolicyComponent
                     {
                         id: insurance.id,
                         template: 'insurance',
-                        type: 'delete',
+                        type: EGeneralActions.DELETE,
                         image: false,
                     }
                 );

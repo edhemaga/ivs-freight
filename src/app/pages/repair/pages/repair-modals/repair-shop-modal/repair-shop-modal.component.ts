@@ -106,6 +106,7 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import {
+    EGeneralActions,
     ModalButtonSize,
     ModalButtonType,
     TableStringEnum,
@@ -1297,15 +1298,15 @@ export class RepairShopModalComponent
 
     public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case 'delete':
+            case EGeneralActions.DELETE:
                 this.deleteReview(reviews);
                 break;
 
-            case 'add':
+            case EGeneralActions.ADD:
                 this.addReview(reviews);
                 break;
 
-            case 'update':
+            case EGeneralActions.UPDATE:
                 this.updateReview(reviews);
                 break;
 

@@ -45,6 +45,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { ApplicantLicensesTableComponent } from '@pages/applicant/components/applicant-licenses-table/applicant-licenses-table.component';
 import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
+import { EFileFormControls, EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-mvr-authorization',
@@ -63,7 +64,7 @@ import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/appli
         TaCheckboxComponent,
         TaCounterComponent,
         ApplicantLicensesTableComponent,
-        ApplicantNextBackBtnComponent
+        ApplicantNextBackBtnComponent,
     ],
 })
 export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
@@ -232,7 +233,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             signature,
             files,
             id,
-            issueDate
+            issueDate,
             /*          filesReviewMessage, */
         } = stepValues;
 
@@ -245,7 +246,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             licenseCheck: onlyLicense,
             files: files ? JSON.stringify(files) : null,
             issueDate:
-                MethodsCalculationsHelper.convertDateFromBackend(issueDate)
+                MethodsCalculationsHelper.convertDateFromBackend(issueDate),
         });
 
         this.signatureImgSrc = signature;
@@ -255,59 +256,15 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
         this.dontHaveMvrForm.get('dontHaveMvr').patchValue(dontHaveMvr);
 
-        if (dontHaveMvr) {
+        if (dontHaveMvr)
             this.inputService.changeValidators(
-                this.mvrAuthorizationForm.get('files'),
+                this.mvrAuthorizationForm.get(EFileFormControls.FILES),
                 false
             );
-        } else {
+        else
             this.inputService.changeValidators(
-                this.mvrAuthorizationForm.get('files')
+                this.mvrAuthorizationForm.get(EFileFormControls.FILES)
             );
-        }
-
-        // if (this.selectedMode === SelectedMode.REVIEW) {
-        //     if (stepValues.files[0].review) {
-        //         this.stepHasReviewValues = true;
-
-        //         for (let i = 0; i < stepValues.files.length; i++) {
-        //             const isFileValid = stepValues.files[i].review.isValid;
-
-        //             this.openAnnotationArray[0].lineInputs = [
-        //                 ...this.openAnnotationArray[0].lineInputs,
-        //                 !isFileValid,
-        //             ];
-        //         }
-
-        //         const filesLineInputItems =
-        //             this.openAnnotationArray[0].lineInputs;
-        //         const isAnyInputInLineIncorrect =
-        //             anyInputInLineIncorrect(filesLineInputItems);
-
-        //         /*     if (isAnyInputInLineIncorrect && !filesReviewMessage) {
-        //             this.openAnnotationArray[0].displayAnnotationButton = true;
-        //         }
-
-        //         if (isAnyInputInLineIncorrect && filesReviewMessage) {
-        //             this.openAnnotationArray[0].displayAnnotationTextArea =
-        //                 true;
-        //         } */
-
-        //         const inputFieldsArray = JSON.stringify(
-        //             this.openAnnotationArray[0].lineInputs
-        //         );
-
-        //         if (inputFieldsArray.includes('true')) {
-        //             this.hasIncorrectFields = true;
-        //         } else {
-        //             this.hasIncorrectFields = false;
-        //         }
-
-        //         /*   this.mvrAuthorizationForm.patchValue({
-        //             firstRowReview: filesReviewMessage,
-        //         }); */
-        //     }
-        // }
     }
 
     public requestDrivingRecordFromEmployer(): void {
@@ -323,7 +280,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                     };
 
                     this.inputService.changeValidators(
-                        this.mvrAuthorizationForm.get('files'),
+                        this.mvrAuthorizationForm.get(EFileFormControls.FILES),
                         false
                     );
                 } else {
@@ -333,10 +290,11 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                         this.mvrAuthorizationForm.patchValue({
                             files,
                         });
+                        EFileFormControls.FILES;
                     }
 
                     this.inputService.changeValidators(
-                        this.mvrAuthorizationForm.get('files')
+                        this.mvrAuthorizationForm.get(EFileFormControls.FILES)
                     );
                 }
             });
@@ -362,15 +320,14 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
         this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
-            case 'add':
+            case EGeneralActions.ADD:
                 this.mvrAuthorizationForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
-
                 break;
-            case 'delete':
+            case EGeneralActions.DELETE:
                 this.mvrAuthorizationForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
@@ -515,7 +472,8 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
         const saveData: any = {
             applicantId: this.applicantId,
-            issueDate: MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
             isEmployee: isConsentRelease,
             isPeriodicallyObtained,
             isInformationCorrect,

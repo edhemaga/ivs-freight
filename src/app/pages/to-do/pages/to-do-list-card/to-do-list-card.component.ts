@@ -33,6 +33,9 @@ import { cardComponentAnimation } from '@shared/animations/card-component.animat
 // helpers
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-to-do-list-card',
     templateUrl: './to-do-list-card.component.html',
@@ -181,8 +184,8 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         private todoQuery: TodoQuery,
         private notificationService: NotificationService,
         private confirmationService: ConfirmationService,
-        private DetailsDataService: DetailsDataService,
-    ) { }
+        private DetailsDataService: DetailsDataService
+    ) {}
 
     ngOnInit(): void {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
@@ -201,7 +204,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case 'delete': {
+                        case EGeneralActions.DELETE: {
                             this.dropAct(res);
                             break;
                         }
@@ -568,7 +571,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
+                    iconName: EGeneralActions.DELETE,
                 },
             ],
             export: true,
@@ -576,7 +579,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     dropAct(event) {
-        if (event.type == 'delete') {
+        if (event.type == EGeneralActions.DELETE) {
             this.todoService.deleteTodoById(event.id).subscribe();
             this.cardData = this.cardData.filter((item) => {
                 if (event.id == item.id) {
@@ -597,7 +600,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 {
                     ...event,
                     template: 'task',
-                    type: 'delete',
+                    type: EGeneralActions.DELETE,
                 }
             );
         } else if (event.type === 'add-comment') {
@@ -627,7 +630,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     changeReviewsEvent(event) {
-        if (event.action == 'delete') {
+        if (event.action == EGeneralActions.DELETE) {
             this.commentsService.deleteCommentById(event.data).subscribe({
                 next: () => {
                     let todoCom = this.scene.children[
@@ -644,7 +647,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     console.log('ERROR WHILE DELETING');
                 },
             });
-        } else if (event.action == 'update') {
+        } else if (event.action == EGeneralActions.UPDATE) {
             this.commentsService
                 .updateComment({
                     id: event.data.id,
@@ -655,7 +658,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     commentEvent(ev) {
-        if (ev['action'] == 'add') {
+        if (ev['action'] == EGeneralActions.ADD) {
             this.addComment(
                 this.comments[0],
                 this.scene.children[this.currentHoldIndex].children[
@@ -663,7 +666,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 ].id
             );
             this.newComment = false;
-        } else if (ev['action'] == 'cancel') {
+        } else if (ev['action'] == EGeneralActions.CANCEL) {
             this.newComment = false;
         }
     }
@@ -705,7 +708,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                         this.currentChildIndex
                     ].comments.unshift(this.comments[0]);
                 },
-                error: () => { },
+                error: () => {},
             });
     }
 

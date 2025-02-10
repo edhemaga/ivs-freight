@@ -1,4 +1,7 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// enums
+import { EGeneralActions } from '@shared/enums';
 export class AccountModalConfig {
     static NAME_INPUT_CONFIG(isEditMode: boolean): ITaInput {
         return {
@@ -40,7 +43,7 @@ export class AccountModalConfig {
                     name: 'Cancel',
                     backgroundColor: '#2f2f2f',
                 },
-                name: 'cancel',
+                name: EGeneralActions.CANCEL,
                 svg: 'assets/svg/ic_x.svg',
             },
         },

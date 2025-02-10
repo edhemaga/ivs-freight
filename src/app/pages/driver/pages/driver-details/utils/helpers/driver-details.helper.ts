@@ -1,5 +1,9 @@
+// Models
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
+
+// Enums
+import { EGeneralActions } from '@shared/enums';
 
 export class DriverDetailsHelper {
     static getDetailsDropdownOptions(status: number): DetailsDropdownOptions {
@@ -104,7 +108,7 @@ export class DriverDetailsHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
+                    iconName: EGeneralActions.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,

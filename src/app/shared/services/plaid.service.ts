@@ -11,7 +11,7 @@ import {
 } from 'appcoretruckassist';
 
 // Models
-import { IPlaid } from '@shared/models';
+import { IPlaid, IPlaidCreated } from '@shared/models';
 import { IBankAccount } from '@pages/settings/models';
 
 // Enums
@@ -34,7 +34,7 @@ export class PlaidService {
             switchMap(
                 (res: LinkTokenResponse) =>
                     new Observable<string>((observer) => {
-                        const plaid = Plaid.create({
+                        const plaid: IPlaidCreated = Plaid.create({
                             token: res.link_token,
                             onSuccess: (publicToken: string) => {
                                 observer.next(publicToken);

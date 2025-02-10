@@ -1,3 +1,6 @@
+// Enums
+import { EFileFormControls } from '@shared/enums';
+
 export class SettingsDocumentsConstants {
     public static INITIAL_TABLE_DATA = [
         {
@@ -22,7 +25,7 @@ export class SettingsDocumentsConstants {
     };
 
     public static DROPZONE_CONFIG = {
-        dropZoneType: 'files',
+        dropZoneType: EFileFormControls.FILES,
         dropZoneSvg: 'assets/svg/common/drag-image-dropzone-files.svg',
         dropZoneAvailableFiles:
             'application/pdf, image/png, image/jpeg, image/jpg',

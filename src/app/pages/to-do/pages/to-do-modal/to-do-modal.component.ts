@@ -41,7 +41,12 @@ import { CommentsService } from '@shared/services/comments.service';
 import { FormService } from '@shared/services/form.service';
 
 //  Enums
-import { ModalButtonType, ModalButtonSize } from '@shared/enums';
+import {
+    ModalButtonType,
+    ModalButtonSize,
+    EFileFormControls,
+    EGeneralActions,
+} from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Svg routes
@@ -194,7 +199,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
             case TaModalActionEnum.DELETE: {
                 this.deleteTaskById(this.editData.id);
                 this.modalService.setModalSpinner({
-                    action: 'delete',
+                    action: EGeneralActions.DELETE,
                     status: true,
                     close: false,
                 });
@@ -208,15 +213,15 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
     public changeCommentsEvent(comments: ReviewComment) {
         switch (comments.action) {
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.deleteComment(comments);
                 break;
             }
-            case 'add': {
+            case EGeneralActions.ADD: {
                 this.addComment(comments);
                 break;
             }
-            case 'update': {
+            case EGeneralActions.UPDATE: {
                 this.updateComment(comments);
                 break;
             }
@@ -297,15 +302,15 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     public onFilesEvent(event: any) {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case EGeneralActions.ADD: {
                 this.taskForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.taskForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

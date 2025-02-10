@@ -35,6 +35,9 @@ import { TruckListResponse, TrailerListResponse } from 'appcoretruckassist';
 import { TelematicStateQuery } from '@pages/telematic/state/telematic-state.query';
 import { TelematicStateStore } from '@pages/telematic/state/telematic-state.store';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-telematic-map',
     templateUrl: './telematic-map.component.html',
@@ -415,12 +418,13 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                         data.motionStatus === 1
                             ? 'MOTION'
                             : data.motionStatus === 2
-                            ? 'SHORT_STOP'
-                            : data.motionStatus === 3
-                            ? 'EXTENDED_STOP'
-                            : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
-                            ? 'PARKING'
-                            : data.motionStatus;
+                              ? 'SHORT_STOP'
+                              : data.motionStatus === 3
+                                ? 'EXTENDED_STOP'
+                                : data.motionStatus === 4 ||
+                                    data.motionStatus === 5 // 5 == offline
+                                  ? 'PARKING'
+                                  : data.motionStatus;
 
                     if (data.coordinates) {
                         data.coordinates = data.coordinates.replace('-', '');
@@ -461,12 +465,13 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                         data.motionStatus === 1
                             ? 'MOTION'
                             : data.motionStatus === 2
-                            ? 'SHORT_STOP'
-                            : data.motionStatus === 3
-                            ? 'EXTENDED_STOP'
-                            : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
-                            ? 'PARKING'
-                            : data.motionStatus;
+                              ? 'SHORT_STOP'
+                              : data.motionStatus === 3
+                                ? 'EXTENDED_STOP'
+                                : data.motionStatus === 4 ||
+                                    data.motionStatus === 5 // 5 == offline
+                                  ? 'PARKING'
+                                  : data.motionStatus;
 
                     if (data.coordinates) {
                         data.coordinates = data.coordinates.replace('-', '');
@@ -524,13 +529,13 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     deviceData.motionStatus === 1
                         ? 'MOTION'
                         : deviceData.motionStatus === 2
-                        ? 'SHORT_STOP'
-                        : deviceData.motionStatus === 3
-                        ? 'EXTENDED_STOP'
-                        : deviceData.motionStatus === 4 ||
-                          deviceData.motionStatus === 5 // 5 == offline
-                        ? 'PARKING'
-                        : deviceData.motionStatus;
+                          ? 'SHORT_STOP'
+                          : deviceData.motionStatus === 3
+                            ? 'EXTENDED_STOP'
+                            : deviceData.motionStatus === 4 ||
+                                deviceData.motionStatus === 5 // 5 == offline
+                              ? 'PARKING'
+                              : deviceData.motionStatus;
 
                 let driverIndex = this.driverLocations.findIndex(
                     (device) => device.deviceId === deviceId
@@ -755,16 +760,16 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
         this.highlightSearchedText(true);
     }
 
-    handleInputSelect(event, type) {
-        if (type == 'TRUCK') {
-            this.selectedTruckUnit = event;
-        } else {
+    handleInputSelect(event, type): void {
+        if (type !== 'TRUCK') {
             this.selectedTrailerUnit = event;
+            return;
         }
+        this.selectedTruckUnit = event;
     }
 
-    saveTruckSelection(event, item) {
-        if (event.action === 'cancel') {
+    saveTruckSelection(event, item): void {
+        if (event.action === EGeneralActions.CANCEL) {
             this.selectedTruckUnit = {};
             this.searchForm.get('truckUnit').patchValue(null);
         } else {
@@ -776,7 +781,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     saveTrailerSelection(event, item) {
-        if (event.action === 'cancel') {
+        if (event.action === EGeneralActions.CANCEL) {
             this.selectedTrailerUnit = {};
             this.searchForm.get('trailerUnit').patchValue(null);
         } else {
@@ -1146,12 +1151,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                     data.motionStatus === 1
                         ? 'MOTION'
                         : data.motionStatus === 2
-                        ? 'SHORT_STOP'
-                        : data.motionStatus === 3
-                        ? 'EXTENDED_STOP'
-                        : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
-                        ? 'PARKING'
-                        : data.motionStatus;
+                          ? 'SHORT_STOP'
+                          : data.motionStatus === 3
+                            ? 'EXTENDED_STOP'
+                            : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
+                              ? 'PARKING'
+                              : data.motionStatus;
 
                 let driverIndex = this.driverLocations.findIndex(
                     (device) => device.deviceId === data.deviceId
@@ -1629,12 +1634,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 data.motionStatus === 1
                     ? 'MOTION'
                     : data.motionStatus === 2
-                    ? 'SHORT_STOP'
-                    : data.motionStatus === 3
-                    ? 'EXTENDED_STOP'
-                    : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
-                    ? 'PARKING'
-                    : data.motionStatus;
+                      ? 'SHORT_STOP'
+                      : data.motionStatus === 3
+                        ? 'EXTENDED_STOP'
+                        : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
+                          ? 'PARKING'
+                          : data.motionStatus;
 
             if (data.coordinates) {
                 data.coordinates = data.coordinates.replace('-', '');
@@ -1649,12 +1654,12 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
                 data.motionStatus === 1
                     ? 'MOTION'
                     : data.motionStatus === 2
-                    ? 'SHORT_STOP'
-                    : data.motionStatus === 3
-                    ? 'EXTENDED_STOP'
-                    : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
-                    ? 'PARKING'
-                    : data.motionStatus;
+                      ? 'SHORT_STOP'
+                      : data.motionStatus === 3
+                        ? 'EXTENDED_STOP'
+                        : data.motionStatus === 4 || data.motionStatus === 5 // 5 == offline
+                          ? 'PARKING'
+                          : data.motionStatus;
 
             if (data.coordinates) {
                 data.coordinates = data.coordinates.replace('-', '');

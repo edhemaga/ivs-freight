@@ -10,6 +10,9 @@ import { IntegrationActiveQuery } from '@pages/settings/state/settings-integrati
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+
+// enums
+import { EGeneralActions } from '@shared/enums';
 @Component({
     selector: 'app-settings-integration',
     templateUrl: './settings-integration.component.html',
@@ -116,19 +119,19 @@ export class SettingsIntegrationComponent
                     title: 'Website',
                     name: 'add-registration',
                     class: 'regular-text',
-                    contentType: 'add',
+                    contentType: EGeneralActions.ADD,
                 },
                 {
                     title: 'Share',
                     name: 'add-inspection',
                     class: 'regular-text',
-                    contentType: 'add',
+                    contentType: EGeneralActions.ADD,
                 },
                 {
                     title: 'Print',
                     name: 'add-repair',
                     class: 'regular-text',
-                    contentType: 'add',
+                    contentType: EGeneralActions.ADD,
                 },
                 {
                     title: 'Activate',
@@ -143,7 +146,7 @@ export class SettingsIntegrationComponent
                     type: 'integrations',
                     text: 'Are you sure you want to delete integration(s)?',
                     class: 'delete-text',
-                    contentType: 'delete',
+                    contentType: EGeneralActions.DELETE,
                 },
             ],
         };

@@ -29,6 +29,9 @@ import { TruckInactiveStore } from '@pages/truck/state/truck-inactive-state/truc
 import { TrailerActiveStore } from '@pages/trailer/state/trailer-active-state/trailer-active.store';
 import { TrailerInactiveStore } from '@pages/trailer/state/trailer-inactive-state/trailer-inactive.store';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -71,7 +74,7 @@ export class TruckTrailerService {
                                 this.tdlStore.add(newData);
                                 this.truckItemStore.set([newData]);
                                 this.tableService.sendActionAnimation({
-                                    animation: 'update',
+                                    animation: EGeneralActions.UPDATE,
                                     data: newData,
                                     id: newData.id,
                                 });
@@ -98,7 +101,7 @@ export class TruckTrailerService {
                                 }
                                 // Send Update Data To Table
                                 this.tableService.sendActionAnimation({
-                                    animation: 'update',
+                                    animation: EGeneralActions.UPDATE,
                                     data: trailer,
                                     id: trailer.id,
                                 });
@@ -179,9 +182,9 @@ export class TruckTrailerService {
                                 newData.inspections.push(inspection);
                                 this.tdlStore.add(newData);
                                 this.truckItemStore.set([newData]);
-                                
+
                                 this.tableService.sendActionAnimation({
-                                    animation: 'update',
+                                    animation: EGeneralActions.UPDATE,
                                     data: newData,
                                     id: newData.id,
                                 });
@@ -194,7 +197,7 @@ export class TruckTrailerService {
                             next: (trailer: any) => {
                                 // Send Update Data To Table
                                 this.tableService.sendActionAnimation({
-                                    animation: 'update',
+                                    animation: EGeneralActions.UPDATE,
                                     data: trailer,
                                     id: trailer.id,
                                 });
@@ -248,7 +251,7 @@ export class TruckTrailerService {
                             next: (resp: any) => {
                                 newData.titles.push(resp);
                                 this.tableService.sendActionAnimation({
-                                    animation: 'update',
+                                    animation: EGeneralActions.UPDATE,
                                     data: newData,
                                     id: newData.id,
                                 });
@@ -269,7 +272,7 @@ export class TruckTrailerService {
                             next: (resp: any) => {
                                 newData.titles.push(resp);
                                 this.tableService.sendActionAnimation({
-                                    animation: 'update',
+                                    animation: EGeneralActions.UPDATE,
                                     data: newData,
                                     id: newData.id,
                                 });
@@ -329,7 +332,7 @@ export class TruckTrailerService {
                             );
 
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: newData,
                                 id: newData.id,
                             });
@@ -350,7 +353,7 @@ export class TruckTrailerService {
                 newData.registrations.splice(indexNum, 1);
 
                 this.tableService.sendActionAnimation({
-                    animation: 'update',
+                    animation: EGeneralActions.UPDATE,
                     data: newData,
                     id: newData.id,
                 });
@@ -368,7 +371,7 @@ export class TruckTrailerService {
                             });
 
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: newData,
                                 id: newData.id,
                             });
@@ -388,7 +391,7 @@ export class TruckTrailerService {
                 newData.inspections.splice(indexNum, 1);
 
                 this.tableService.sendActionAnimation({
-                    animation: 'update',
+                    animation: EGeneralActions.UPDATE,
                     data: newData,
                     id: newData.id,
                 });
@@ -406,7 +409,7 @@ export class TruckTrailerService {
                             });
 
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: newData,
                                 id: newData.id,
                             });
@@ -426,7 +429,7 @@ export class TruckTrailerService {
                 newData.titles.splice(indexNum, 1);
 
                 this.tableService.sendActionAnimation({
-                    animation: 'update',
+                    animation: EGeneralActions.UPDATE,
                     data: newData,
                     id: newData.id,
                 });
@@ -451,7 +454,7 @@ export class TruckTrailerService {
                                 }
                             );
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: newData,
                                 id: newData.id,
                             });
@@ -471,7 +474,7 @@ export class TruckTrailerService {
                 newData.registrations.splice(indexNum, 1);
 
                 this.tableService.sendActionAnimation({
-                    animation: 'update',
+                    animation: EGeneralActions.UPDATE,
                     data: newData,
                     id: newData.id,
                 });
@@ -489,7 +492,7 @@ export class TruckTrailerService {
                             });
 
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: newData,
                                 id: newData.id,
                             });
@@ -509,7 +512,7 @@ export class TruckTrailerService {
                 newData.inspections.splice(indexNum, 1);
 
                 this.tableService.sendActionAnimation({
-                    animation: 'update',
+                    animation: EGeneralActions.UPDATE,
                     data: newData,
                     id: newData.id,
                 });
@@ -527,7 +530,7 @@ export class TruckTrailerService {
                             });
 
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: EGeneralActions.UPDATE,
                                 data: newData,
                                 id: newData.id,
                             });
@@ -547,7 +550,7 @@ export class TruckTrailerService {
                 newData.titles.splice(indexNum, 1);
 
                 this.tableService.sendActionAnimation({
-                    animation: 'update',
+                    animation: EGeneralActions.UPDATE,
                     data: newData,
                     id: newData.id,
                 });

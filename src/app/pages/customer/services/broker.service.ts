@@ -36,8 +36,9 @@ import {
     BrokerMileageRateResponse,
 } from 'appcoretruckassist';
 
-// Eenums
+// Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { EGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -60,7 +61,7 @@ export class BrokerService {
         private bls: BrokerDetailsListStore,
         private brokerItemStore: BrokerDetailsStore,
         private brokerMinimalQuery: BrokerMinimalListQuery
-    ) { }
+    ) {}
 
     // Add Broker
     public addBroker(data: any): Observable<CreateResponse> {
@@ -89,7 +90,7 @@ export class BrokerService {
                         }
 
                         this.tableService.sendActionAnimation({
-                            animation: 'add',
+                            animation: EGeneralActions.ADD,
                             tab: 'broker',
                             data: broker,
                             id: broker.id,
@@ -128,7 +129,7 @@ export class BrokerService {
                         this.brokerMinimalStore.add(brokerData);
                         this.bls.replace(broker.id, brokerData);
                         this.tableService.sendActionAnimation({
-                            animation: 'update',
+                            animation: EGeneralActions.UPDATE,
                             tab: 'broker',
                             data: brokerData,
                             id: broker.id,
@@ -294,7 +295,7 @@ export class BrokerService {
                 ).subscribe({
                     next: (broker: BrokerResponse | any) => {
                         this.tableService.sendActionAnimation({
-                            animation: 'delete',
+                            animation: EGeneralActions.DELETE,
                             tab: 'broker',
                             data: broker,
                             id: broker.id,
@@ -667,7 +668,7 @@ export class BrokerService {
             paidFrom,
             paidTo,
             dueFrom,
-            dueTo,
+            dueTo
             // pickup,
             // delivery,
             // longitude,
@@ -753,15 +754,24 @@ export class BrokerService {
             );
     }
 
-    public getMileageChartData(id: number, chartType: number): Observable<BrokerMileageRateResponse> {
+    public getMileageChartData(
+        id: number,
+        chartType: number
+    ): Observable<BrokerMileageRateResponse> {
         return this.brokerService.apiBrokerMileageratehistoryGet(id, chartType);
     }
 
-    public getPaymentChartData(id: number, chartType: number): Observable<BrokerPaymentHistoryResponse> {
+    public getPaymentChartData(
+        id: number,
+        chartType: number
+    ): Observable<BrokerPaymentHistoryResponse> {
         return this.brokerService.apiBrokerPaymenthistoryGet(id, chartType);
     }
 
-    public getInvoiceChartData(id: number, chartType: number): Observable<BrokerPaidInvoiceResponse> {
+    public getInvoiceChartData(
+        id: number,
+        chartType: number
+    ): Observable<BrokerPaidInvoiceResponse> {
         return this.brokerService.apiBrokerPaidinvoiceGet(id, chartType);
     }
 }

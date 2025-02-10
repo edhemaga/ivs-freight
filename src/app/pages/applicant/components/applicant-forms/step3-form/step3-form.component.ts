@@ -75,6 +75,7 @@ import { SharedModule } from '@shared/shared.module';
 
 // configs
 import { Step3Config } from '@pages/applicant/pages/applicant-application/components/step3/config/step3.config';
+import { EFileFormControls, EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-step3-form',
@@ -590,7 +591,7 @@ export class Step3FormComponent
 
     public onFilesAction(fileActionEvent: {
         files: File[];
-        action: 'add' | 'delete';
+        action: EGeneralActions.ADD | EGeneralActions.DELETE;
         deleteId?: number;
     }): void {
         this.documents = fileActionEvent.files;
@@ -598,14 +599,14 @@ export class Step3FormComponent
         this.displayDocumentsRequiredNote = false;
 
         switch (fileActionEvent.action) {
-            case 'add':
+            case EGeneralActions.ADD:
                 this.licenseForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
-            case 'delete':
+            case EGeneralActions.DELETE:
                 this.licenseForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(
                         fileActionEvent.files.length
                             ? JSON.stringify(fileActionEvent.files)
@@ -659,12 +660,10 @@ export class Step3FormComponent
                 : [],
             isEditingLicense: false,
             documents: this.documents,
-            ...((
-                this.documentsForDeleteIds.length &&
-                this.documentsForDeleteIds[0]
-            ) && {
-                filesForDeleteIds: this.documentsForDeleteIds,
-            }),
+            ...(this.documentsForDeleteIds.length &&
+                this.documentsForDeleteIds[0] && {
+                    filesForDeleteIds: this.documentsForDeleteIds,
+                }),
         };
 
         this.formValuesEmitter.emit(saveData);
@@ -728,12 +727,10 @@ export class Step3FormComponent
                 : [],
             isEditingLicense: false,
             documents: this.documents,
-            ...((
-                this.documentsForDeleteIds.length &&
-                this.documentsForDeleteIds[0]
-            ) && {
-                filesForDeleteIds: this.documentsForDeleteIds,
-            }),
+            ...(this.documentsForDeleteIds.length &&
+                this.documentsForDeleteIds[0] && {
+                    filesForDeleteIds: this.documentsForDeleteIds,
+                }),
         };
 
         this.saveFormEditingEmitter.emit(saveData);

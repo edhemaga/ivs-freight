@@ -1,4 +1,7 @@
-import { PayrollDeleteModal } from "@pages/accounting/pages/payroll/state/models";
+import { PayrollDeleteModal } from '@pages/accounting/pages/payroll/state/models';
+
+// Enums
+import { EGeneralActions } from '@shared/enums';
 
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....

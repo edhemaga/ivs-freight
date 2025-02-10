@@ -87,7 +87,12 @@ import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/co
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { ModalButtonSize, ModalButtonType } from '@shared/enums';
+import {
+    EFileFormControls,
+    EGeneralActions,
+    ModalButtonSize,
+    ModalButtonType,
+} from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // svg routes
@@ -150,7 +155,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class ShipperModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     @Input() editData;
@@ -517,19 +526,19 @@ export class ShipperModalComponent
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case 'delete':
+            case EGeneralActions.DELETE:
                 this.deleteReview(true, review);
 
                 break;
-            case 'add':
+            case EGeneralActions.ADD:
                 this.addReview(review);
 
                 break;
-            case 'update':
+            case EGeneralActions.UPDATE:
                 this.updateReview(review);
 
                 break;
-            case 'cancel':
+            case EGeneralActions.CANCEL:
                 this.reviews = this.reviews.filter((review) => review.id);
 
                 break;
@@ -1189,15 +1198,15 @@ export class ShipperModalComponent
     public onFilesEvent(event: any) {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case EGeneralActions.ADD: {
                 this.shipperForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case 'delete': {
+            case EGeneralActions.DELETE: {
                 this.shipperForm
-                    .get('files')
+                    .get(EFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
