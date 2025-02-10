@@ -20,6 +20,7 @@ import { BankVerificationService } from '@shared/services/bank-verification.serv
 import { TaInputService } from '@shared/services/ta-input.service';
 import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
+import { PlaidService } from '@shared/services';
 
 // Components
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
@@ -114,7 +115,6 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 // Pipes
 import { SettingsBankAccountStatusPipe } from '@pages/settings/pages/settings-company/pipes';
-import { PlaidService } from '@shared/services';
 
 @Component({
     selector: 'app-settings-basic-modal',
