@@ -778,7 +778,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
 
                     this.modalService.changeModalStatus({
-                        name: 'deactivate',
+                        name: EGeneralActions.DEACTIVATE,
                         status: this.truckStatus,
                     });
 
@@ -838,7 +838,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         this.selectedFuelType = res.selectedFuelType;
 
         this.modalService.changeModalStatus({
-            name: 'deactivate',
+            name: EGeneralActions.DEACTIVATE,
             status: this.truckStatus,
         });
     }
@@ -890,36 +890,37 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             frontWheels: this.selectedFrontWheels
                 ? this.selectedFrontWheels.name
                 : null,
-            wheelBase: this.truckForm.get('wheelBase').value
+            wheelBase: this.truckForm.get(TruckModalForm.WHEEL_BASE).value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                      this.truckForm.get('wheelBase').value
+                      this.truckForm.get(TruckModalForm.WHEEL_BASE).value
                   )
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
                 : null,
-            fuelTankSize: this.truckForm.get('fuelTankSize').value
+            fuelTankSize: this.truckForm.get(TruckModalForm.FUEL_TANK_SIZE)
+                .value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                      this.truckForm.get('fuelTankSize').value
+                      this.truckForm.get(TruckModalForm.FUEL_TANK_SIZE).value
                   )
                 : null,
-            mileage: this.truckForm.get('mileage').value
+            mileage: this.truckForm.get(TruckModalForm.MILEAGE).value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                      this.truckForm.get('mileage').value
+                      this.truckForm.get(TruckModalForm.MILEAGE).value
                   )
                 : null,
-            axles: this.truckForm.get('axles').value
-                ? parseInt(this.truckForm.get('axles').value)
+            axles: this.truckForm.get(TruckModalForm.AXLES).value
+                ? parseInt(this.truckForm.get(TruckModalForm.AXLES).value)
                 : null,
-            emptyWeight: this.truckForm.get('emptyWeight').value
+            emptyWeight: this.truckForm.get(TruckModalForm.EMPTY_WEIGHT).value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                      this.truckForm.get('emptyWeight').value
+                      this.truckForm.get(TruckModalForm.EMPTY_WEIGHT).value
                   )
                 : null,
-            commission: this.truckForm.get('commission').value
+            commission: this.truckForm.get(TruckModalForm.COMMISSION).value
                 ? parseFloat(
                       this.truckForm
-                          .get('commission')
+                          .get(TruckModalForm.COMMISSION)
                           .value.toString()
                           .replace(/,/g, '')
                   )

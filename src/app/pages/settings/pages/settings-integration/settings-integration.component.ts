@@ -138,7 +138,7 @@ export class SettingsIntegrationComponent
                     reverseTitle: 'Deactivate',
                     name: 'activate-item',
                     class: 'regular-text',
-                    contentType: 'activate',
+                    contentType: EGeneralActions.ACTIVATE,
                 },
                 {
                     title: 'Delete',

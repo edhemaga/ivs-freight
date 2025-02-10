@@ -93,7 +93,9 @@ export class DriverDetailsHelper {
                 },
                 {
                     title: !status ? 'Activate' : 'Deactivate',
-                    name: !status ? 'activate' : 'deactivate',
+                    name: !status
+                        ? EGeneralActions.ACTIVATE
+                        : EGeneralActions.DEACTIVATE,
                     iconName: 'activate-item',
                     svg: 'assets/svg/common/ic_deactivate.svg',
                     activate: !status,

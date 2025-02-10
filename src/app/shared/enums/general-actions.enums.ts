@@ -6,4 +6,6 @@ export enum EGeneralActions {
     ENTER = 'Enter',
     ESCAPE = 'Escape',
     CONFIRM = 'confirm',
+    ACTIVATE = 'activate',
+    DEACTIVATE = 'deactivate',
 }

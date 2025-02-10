@@ -51,6 +51,9 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Titles()
 @Component({
     selector: 'app-truck-details-item',
@@ -111,7 +114,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         private commonTruckService: TruckTrailerService,
         private dropDownService: DropDownService,
         private truckService: TruckService
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         this.truck.map((object: TruckDetailsConfig) => {
@@ -431,10 +434,10 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         cdlsArray.length
             ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
             : this.optionsEvent(
-                { id: id, type: 'activate' },
-                data,
-                'registration'
-            );
+                  { id: id, type: EGeneralActions.ACTIVATE },
+                  data,
+                  'registration'
+              );
     }
 
     public formatDate(mod) {

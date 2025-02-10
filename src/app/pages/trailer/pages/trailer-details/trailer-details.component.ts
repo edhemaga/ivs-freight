@@ -34,6 +34,7 @@ import {
     TrailerUiData,
     TrailerCombinedData,
 } from '@pages/trailer/pages/trailer-modal/models/';
+import { EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-trailer-details',
@@ -388,12 +389,9 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                             if (res.template === 'trailer')
                                 this.deleteTrailerById(res?.id);
                             break;
-
-                        case TableStringEnum.ACTIVATE:
                         case TableStringEnum.DEACTIVATE:
                             this.changeTrailerStatus(res?.id);
                             break;
-
                         default:
                             break;
                     }

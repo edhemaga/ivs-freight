@@ -479,7 +479,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.uploadFileService.uploadFiles(null);
                 break;
             }
-            case 'deactivate': {
+            case EGeneralActions.DEACTIVATE: {
                 if (!this.isDeactivateOnly)
                     this.isDeactivated = !this.isDeactivated;
                 this.action.emit({
@@ -489,7 +489,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case 'activate': {
+            case EGeneralActions.ACTIVATE: {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
@@ -703,7 +703,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
             .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe((data: { name: string; status: boolean }) => {
                 switch (data?.name) {
-                    case 'deactivate': {
+                    case EGeneralActions.DEACTIVATE: {
                         this.isDeactivated = data.status;
                         break;
                     }

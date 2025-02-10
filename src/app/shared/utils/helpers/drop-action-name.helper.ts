@@ -1,3 +1,6 @@
+// Enums
+import { EGeneralActions } from '@shared/enums';
+
 export class DropActionNameHelper {
     static dropActionNameDriver(any: any, action: string) {
         let dropAction: string;
@@ -139,12 +142,10 @@ export class DropActionNameHelper {
                 }
             }
         }
-        if (any.type === 'void') {
-            dropAction = 'void';
-        }
-        if (any.type === 'activate') {
-            dropAction = 'activate';
-        }
+        if (any.type === 'void') dropAction = 'void';
+
+        if (any.type === EGeneralActions.ACTIVATE)
+            dropAction = EGeneralActions.ACTIVATE;
 
         return dropAction;
     }

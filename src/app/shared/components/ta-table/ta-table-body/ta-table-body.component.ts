@@ -83,7 +83,7 @@ import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { DropdownMenuStringEnum, EGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -1110,11 +1110,11 @@ export class TaTableBodyComponent<
     }
 
     // Only For User Table To Activate User
-    onActivateUser(row: any) {
+    onActivateUser(row: any): void {
         this.bodyActions.emit({
             id: row.id,
             data: row,
-            type: 'activate',
+            type: EGeneralActions.ACTIVATE,
         });
     }
 

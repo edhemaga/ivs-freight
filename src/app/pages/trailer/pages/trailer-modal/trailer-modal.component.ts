@@ -817,7 +817,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.trailerStatus = res.trailerStatus;
 
             this.modalService.changeModalStatus({
-                name: 'deactivate',
+                name: EGeneralActions.DEACTIVATE,
                 status: this.trailerStatus,
             });
 
@@ -901,7 +901,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
 
                     this.modalService.changeModalStatus({
-                        name: 'deactivate',
+                        name: EGeneralActions.DEACTIVATE,
                         status: this.trailerStatus,
                     });
 
