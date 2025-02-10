@@ -315,17 +315,14 @@
     }
 
     <!-- PARKING FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showParkingFilter"
-        [type]="'parkingFilter'"
-        [icon]="'parking'"
-        [filterTitle]="'Parking Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [pmFilterArray]="loadParkingOptionsArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showParkingFilter) {
+        <app-ca-filter-dropdown
+            type="Parking"
+            [list]="loadParkingOptionsArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- TRUCK TYPE FILTER -->
     <app-ca-filter

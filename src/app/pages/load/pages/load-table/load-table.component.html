@@ -142,9 +142,9 @@
                         (clearAll)="setFilters($event)"
                     >
                     </app-ca-filter> 
-                    </app-ca-filter>  
+                    </app-ca-filter>   -->
  
-                    <app-ca-filter
+                    <app-ca-filter-dropdown
                         [type]="'moneyFilter'"
                         [icon]="'dollar'"
                         [filterTitle]="'Money Filter'"
@@ -154,7 +154,7 @@
                         (setFilter)="setFilters($event)"
                         (clearAll)="setFilters($event)"
                     >
-                    </app-ca-filter> -->
+                    </app-ca-filter-dropdown>
                 }
             </div>
         </ng-template>
