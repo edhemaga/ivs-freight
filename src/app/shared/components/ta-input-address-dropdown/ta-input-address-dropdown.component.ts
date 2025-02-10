@@ -47,6 +47,7 @@ import { InputAddressStopTypesStringEnum } from '@shared/components/ta-input-add
 import { InputAddressTypeStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-type-string.enum';
 import { InputAddressLayersStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-layers-string.enum';
 import { EGeneralActions } from '@shared/enums';
+import { InputAddressCommandsStringEnum } from 'ca-components/lib/components/ca-input-address-dropdown/enums/input-address-commands-string.enum';
 
 // models
 import { AddressData } from '@shared/components/ta-input-address-dropdown/models/address-data.model';
