@@ -1,9 +1,7 @@
 <div class="toolbar-container d-flex align-items-center">
     <!-- LIST NAME -->
-    <div
-        class="list-name text-black d-f-aic-jcc ta-font-black"
-    >
-        {{ 'Payroll' | listNameCase : false }}
+    <div class="list-name text-black d-f-aic-jcc ta-font-black">
+        {{ 'Payroll' | listNameCase: false }}
     </div>
 
     <div class="tab-wrapper d-flex align-items-center">
@@ -15,15 +13,13 @@
                 [ngClass]="{
                     'tab-inactive': selectedTab !== data.field,
                     'tab-active': selectedTab === data.field,
-                    disabled: data.inactive
+                    disabled: data.inactive,
                 }"
                 (click)="onSelectTab(data.field)"
             >
                 <div class="tab d-flex align-items-center">
                     <ng-container *ngIf="!data.iconLink">
-                        <div
-                            class="tab-title d-f-aic-jcc ta-font-extra-bold"
-                        >
+                        <div class="tab-title d-f-aic-jcc ta-font-extra-bold">
                             {{ data.title | titlecase }}
                         </div>
                     </ng-container>
@@ -31,16 +27,14 @@
                         <svg-icon
                             [svgStyle]="{
                                 'width.px': 20,
-                                'height.px': 20
+                                'height.px': 20,
                             }"
                             [svgClass]="'d-flex'"
                             [src]="data.iconLink"
                         ></svg-icon>
                     </ng-container>
                     <ng-container *ngIf="!data.hideDataCount">
-                        <div
-                            class="data-count d-f-aic-jcc ta-font-extra-bold"
-                        >
+                        <div class="data-count d-f-aic-jcc ta-font-extra-bold">
                             {{ data.length }}
                         </div>
                     </ng-container>
@@ -50,9 +44,7 @@
     </div>
 
     <div class="filters_and_search d-f-aic">
-        <div
-            class="border-container d-f-aic-jcc"
-        >
+        <div class="border-container d-f-aic-jcc">
             <div class="border-stick"></div>
         </div>
         <div class="search-filter-holder">
@@ -63,20 +55,13 @@
             ></app-ca-search-multiple-states>
         </div>
 
-        <div
-            class="border-container d-flex d-f-aic-jcc"
-        >
+        <div class="border-container d-flex d-f-aic-jcc">
             <div class="border-stick"></div>
         </div>
 
         <div class="search-filter-holder">
-            <app-ca-filter
-                [type]="'statusFilter'"
-                [loadStatusOptionsArray]="filterConfig"
-                [filterTitle]="'Status Filter'"
-                [icon]="'broker-half-circle'"
-            >
-            </app-ca-filter>
+            <app-ca-filter-dropdown type="Status" [list]="filterConfig">
+            </app-ca-filter-dropdown>
         </div>
     </div>
     <!-- TOOLBAR ACTIONS -->
@@ -116,9 +101,7 @@
                 </div>
             </div>
 
-            <div
-                class="border-container d-f-aic-jcc"
-            >
+            <div class="border-container d-f-aic-jcc">
                 <div class="border-stick"></div>
             </div>
             <div class="search-filter-holder">

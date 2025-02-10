@@ -20,6 +20,7 @@ import {
     CaSearchMultipleStatesComponent,
     CaFilterComponent,
     CaDropdownMenuComponent,
+    CaFilterDropdownComponent
 } from 'ca-components';
 
 import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
@@ -103,6 +104,7 @@ import { PayrollTableCommissionTotalPipe } from '@pages/accounting/pages/payroll
         TaProfileImagesComponent,
         TaCustomCardComponent,
         CaFilterComponent,
+        CaFilterDropdownComponent,
         EffectsModule.forFeature([PayrollEffect]),
         StoreModule.forFeature('payroll', payrollReducer),
         CaMainTableComponent,

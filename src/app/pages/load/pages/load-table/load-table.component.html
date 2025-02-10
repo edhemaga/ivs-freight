@@ -142,16 +142,7 @@
                         (clearAll)="setFilters($event)"
                     >
                     </app-ca-filter> 
-                    </app-ca-filter> 
-                    <app-ca-filter
-                        [type]="'statusFilter'"
-                        [filterTitle]="'Status Filter'"
-                        [icon]="'broker-half-circle'"
-                        (setFilter)="setFilters($event)"
-                        (clearAll)="setFilters($event)"
-                        [loadStatusOptionsArray]="store.statusList"
-                    >
-                    </app-ca-filter>
+                    </app-ca-filter>  
  
                     <app-ca-filter
                         [type]="'moneyFilter'"

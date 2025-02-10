@@ -1,7 +1,7 @@
 <div
     class="table-filter-container"
     [ngClass]="{
-        'table-filter-padding': options.toolbarActions.showSearchBorder
+        'table-filter-padding': options.toolbarActions.showSearchBorder,
     }"
 >
     <!-- VIEW MODE SELECT -->
@@ -11,7 +11,7 @@
         <div
             class="money-count-container d-flex justify-content-center align-items-center"
             [ngClass]="{
-                'money-count-select-style': activeTableData.moneyCountSelected
+                'money-count-select-style': activeTableData.moneyCountSelected,
             }"
         >
             <div
@@ -47,7 +47,7 @@
                         'mode-margin':
                             activeTableData.gridNameTitle === 'Account' ||
                             activeTableData.gridNameTitle === 'Contact' ||
-                            activeTableData.gridNameTitle === 'User'
+                            activeTableData.gridNameTitle === 'User',
                     }"
                     (click)="changeModeView(viewMode.name)"
                 >
@@ -75,7 +75,7 @@
     <ng-container *ngIf="!options.toolbarActions.hideSearch">
         <div
             [ngClass]="{
-                'disabled-icon pe-none': options.toolbarActions.disableSearch
+                'disabled-icon pe-none': options.toolbarActions.disableSearch,
             }"
         >
             <app-ca-search-multiple-states
@@ -300,23 +300,19 @@
         [pmFilterArray]="categoryFuelArray"
     >
     </app-ca-filter>
- 
+
     <!-- STATUS FILTER -->
-    <app-ca-filter
-        *ngIf="
-            options.toolbarActions.showStatusFilter ||
-            options.toolbarActions.showStatusDispatchFilter
-        "
-        [type]="'statusFilter'"
-        [icon]="'broker-half-circle'"
-        [filterTitle]="'Status Filter'"
-        [noLeftIcon]="false"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isDispatchFilter]="options.toolbarActions.showStatusDispatchFilter"
-        [loadStatusOptionsArray]="loadStatusOptionsArray"
-    >
-    </app-ca-filter>
+    @if (
+        options.toolbarActions.showStatusFilter ||
+        options.toolbarActions.showStatusDispatchFilter
+    ) {
+        <app-ca-filter-dropdown
+            type="Status"
+            [list]="loadStatusOptionsArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- PARKING FILTER -->
     <app-ca-filter
@@ -425,7 +421,7 @@
             <div
                 class="no-filter ta-font-extra-bold d-flex justify-content-center align-items-center"
                 [ngClass]="{
-                    'active-options-filter': filterData.active
+                    'active-options-filter': filterData.active,
                 }"
                 (click)="changeFilterView(filterData.name)"
             >
@@ -493,13 +489,13 @@
         [selectedFilter]="this.activeTableData.dnuArray.selectedFilter"
     ></app-ta-special-filter>
 
-    <ng-container 
+    <ng-container
         *ngIf="
-            (options.toolbarActions.showBrokerFilter ||
-                options.toolbarActions.showRepairShop ||
-                options.toolbarActions.showBrokerFilterClosed ||
-                options.toolbarActions.showFuelPermanentlyClosed)
-            "
+            options.toolbarActions.showBrokerFilter ||
+            options.toolbarActions.showRepairShop ||
+            options.toolbarActions.showBrokerFilterClosed ||
+            options.toolbarActions.showFuelPermanentlyClosed
+        "
     >
         <app-ta-special-filter
             [type]="tableStringEnum.FUEL_STOP_FILTER_CLOSED"
@@ -511,7 +507,6 @@
             [selectedFilter]="activeTableData?.closedArray?.selectedFilter"
         ></app-ta-special-filter>
     </ng-container>
-    
 
     <ng-container
         *ngIf="options.toolbarActions.showIntegratedFuelTransactionsFilter"
@@ -534,8 +529,12 @@
             [filterTitle]="'Incomplete Transactions'"
             [dataArray]="activeTableData.data"
             [dataCount]="activeTableData.incompleteDataCount"
-            (setFilter)="onSpecialFilter($event, tableStringEnum.FUEL_INCOMPLETE_ARRAY)"
-            [selectedFilter]="activeTableData?.fuelIncompleteArray?.selectedFilter"
+            (setFilter)="
+                onSpecialFilter($event, tableStringEnum.FUEL_INCOMPLETE_ARRAY)
+            "
+            [selectedFilter]="
+                activeTableData?.fuelIncompleteArray?.selectedFilter
+            "
         ></app-ta-special-filter>
     }
 

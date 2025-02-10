@@ -358,18 +358,12 @@
                         <ng-container *ngIf="statusFilter">
                             <span class="ic-hed">
                                 <!-- STATUS FILTER -->
-                                <app-ca-filter
-                                    [type]="'statusFilter'"
-                                    [icon]="'broker-half-circle'"
-                                    [filterTitle]="'Status Filter'"
-                                    [noLeftIcon]="false"
+                                <app-ca-filter-dropdown
+                                    type="Status"
+                                    [list]="loadStatusOptionsArray"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                    [loadStatusOptionsArray]="
-                                        loadStatusOptionsArray
-                                    "
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-dropdown>
                             </span>
                         </ng-container>
 

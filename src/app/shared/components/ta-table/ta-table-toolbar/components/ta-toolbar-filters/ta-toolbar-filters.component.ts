@@ -20,6 +20,7 @@ import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/t
 import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
+    CaFilterDropdownComponent
 } from 'ca-components';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -55,6 +56,7 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
         TaSpecialFilterComponent,
         CaSearchMultipleStatesComponent,
         CaFilterComponent,
+        CaFilterDropdownComponent
     ],
 })
 export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
