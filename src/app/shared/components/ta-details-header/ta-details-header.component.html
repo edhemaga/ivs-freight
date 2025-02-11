@@ -283,7 +283,7 @@
                                 <app-ca-filter-dropdown
                                     type="TruckType"
                                     [list]="truckTypeArray"
-                                    (setFilter)="onFilter($event)"
+                                    (setFilter)="setFilterValue($event)"
                                 >
                                 </app-ca-filter-dropdown>
                             </span>
@@ -294,7 +294,7 @@
                                 <app-ca-filter-dropdown
                                     type="TrailerType"
                                     [list]="trailerTypeArray"
-                                    (setFilter)="onFilter($event)"
+                                    (setFilter)="setFilterValue($event)"
                                 >
                                 </app-ca-filter-dropdown>
                             </span>
@@ -382,18 +382,12 @@
                         <ng-container *ngIf="pmFilter">
                             <span class="ic-hed">
                                 <!-- PM FILTER -->
-                                <app-ca-filter
-                                    [type]="'pmFilter'"
-                                    [icon]="'default_pm'"
-                                    [filterTitle]="'PM Filter'"
-                                    [pmSubtype]="'truck'"
-                                    [noLeftIcon]="false"
-                                    [leftSideIcon]="true"
+                                <app-ca-filter-dropdown
+                                    type="Pm"
+                                    [list]="pmFilterArray"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                    [pmFilterArray]="pmFilterArray"
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-dropdown>
                             </span>
                         </ng-container>
 

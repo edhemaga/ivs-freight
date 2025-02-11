@@ -253,26 +253,14 @@
     </app-ta-filter>
 
     <!-- PM FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showPMFilter"
-        [type]="'pmFilter'"
-        [icon]="'default_pm'"
-        [pmSubtype]="
-            options.toolbarActions.showTrailerPmFilter ? 'trailer' : 'truck'
-        "
-        [filterTitle]="'PM Filter'"
-        [noLeftIcon]="false"
-        [leftSideIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.pm
-                ? 'order-' + options.toolbarActions.filtersOrder.pm
-                : ''
-        "
-        [pmFilterArray]="pmFilterArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showPMFilter) {
+        <app-ca-filter-dropdown
+            type="Pm"
+            [list]="pmFilterArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- CATEGORY REPAIR FILTER -->
     <app-ca-filter
@@ -289,18 +277,14 @@
     </app-ca-filter>
 
     <!-- CATEGORY FUEL FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showCategoryFuelFilter"
-        [type]="'pmFilter'"
-        [icon]="'funnel'"
-        [filterTitle]="'Fuel Item Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [pmFilterArray]="categoryFuelArray"
-    >
-    </app-ca-filter>
-
+    @if (options.toolbarActions.showCategoryFuelFilter) {
+        <app-ca-filter-dropdown
+            type="Pm"
+            [list]="categoryFuelArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
     <!-- STATUS FILTER -->
     @if (
         options.toolbarActions.showStatusFilter ||
