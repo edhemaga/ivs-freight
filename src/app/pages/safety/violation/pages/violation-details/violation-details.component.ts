@@ -13,6 +13,9 @@ import { RoadsideDetailsListQuery } from '@pages/safety/violation/state/roadside
 // models
 import { LoadResponse, RoadsideInspectionResponse } from 'appcoretruckassist';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-violation-details',
     templateUrl: './violation-details.component.html',
@@ -80,7 +83,7 @@ export class ViolationDetailsComponent implements OnInit {
 
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: EGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                 },

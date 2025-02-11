@@ -29,10 +29,10 @@ import { FormService } from '@shared/services/form.service';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import {
-    CaInputComponent,
-    CaInputNoteComponent
-} from 'ca-components';
+import { CaInputComponent, CaInputNoteComponent } from 'ca-components';
+
+// enums
+import { EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-applicant-modal',
@@ -73,12 +73,12 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private applicantService: ApplicantService,
         private formService: FormService
-    ) { }
+    ) {}
 
     ngOnInit() {
         this.createForm();
 
-        if (this.editData?.type === 'edit') {
+        if (this.editData?.type === EGeneralActions.EDIT) {
             this.editApplicant(this.editData.id);
         }
     }
@@ -108,7 +108,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case 'close': {
+            case EGeneralActions.CLOSE: {
                 break;
             }
             case 'resend email': {
@@ -140,7 +140,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === EGeneralActions.EDIT) {
                     this.updateApplicant(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: null,
@@ -246,7 +246,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         res.lastName
                     );
                 },
-                error: () => { },
+                error: () => {},
             });
     }
 

@@ -333,7 +333,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     switch (this.editData?.key) {
                         case TruckModalForm.REPAIR_MODAL:
                             this.modalService.setProjectionModal({
-                                action: 'close',
+                                action: EGeneralActions.CLOSE,
                                 payload: {
                                     key: this.editData?.key,
                                     value: null,
@@ -482,7 +482,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
                     this.modalService.setProjectionModal({
-                        action: 'open',
+                        action: EGeneralActions.OPEN,
                         payload: {
                             key: 'truck-modal',
                             value: {
@@ -568,7 +568,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private vinDecoder() {
+    private vinDecoder(): void {
         this.truckForm
             .get(TruckModalForm.VIN)
             .valueChanges.pipe(
@@ -964,7 +964,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: EGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -1130,10 +1130,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         this.truckModalService
             .deleteTruckById(id, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.ngbActiveModal.close();
-                },
+            .subscribe(() => {
+                this.ngbActiveModal.close();
             });
     }
 

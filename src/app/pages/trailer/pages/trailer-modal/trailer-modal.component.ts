@@ -400,7 +400,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 switch (this.editData?.key) {
                     case 'repair-modal': {
                         this.modalService.setProjectionModal({
-                            action: 'close',
+                            action: EGeneralActions.CLOSE,
                             payload: { key: this.editData?.key, value: null },
                             component: RepairOrderModalComponent,
                             size: 'large',
@@ -550,9 +550,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.id) {
                         this.skipVinDecocerEdit = true;
                         this.editTrailerById(this.editData.id);
-                    } else {
-                        this.startFormChanges();
-                    }
+                    } else this.startFormChanges();
                 },
             });
     }
@@ -630,7 +628,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: EGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -1051,7 +1049,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onBlurTrailerModel() {
+    public onBlurTrailerModel(): void {
         const model = this.trailerForm.get('model').value;
         if (model?.length >= 1) {
             this.trailerModalService
@@ -1061,7 +1059,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.trailerForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))

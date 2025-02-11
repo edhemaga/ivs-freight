@@ -659,7 +659,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 if (this.editData?.canOpenModal) {
                     if (this.editData?.key === 'load-modal')
                         this.modalService.setProjectionModal({
-                            action: 'close',
+                            action: EGeneralActions.CLOSE,
                             payload: {
                                 key: this.editData?.key,
                                 value: null,
@@ -697,7 +697,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.isUploadInProgress = true;
 
-                    if (this.editData?.type.includes('edit')) {
+                    if (this.editData?.type.includes(EGeneralActions.EDIT)) {
                         this.updateBroker(this.editData.id);
                     } else {
                         this.addBroker();
@@ -1594,7 +1594,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         if (this.editData?.key === 'load-modal')
                             this.modalService.setProjectionModal({
-                                action: 'close',
+                                action: EGeneralActions.CLOSE,
                                 payload: {
                                     key: this.editData?.key,
                                     value: null,
@@ -1653,7 +1653,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 this.setModalSpinner(null, false, true);
 
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: EGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,

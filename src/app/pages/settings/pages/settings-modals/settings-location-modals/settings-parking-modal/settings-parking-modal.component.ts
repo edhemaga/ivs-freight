@@ -60,7 +60,9 @@ import {
     ModalButtonType,
     TableStringEnum,
     DropActionsStringEnum,
+    EGeneralActions,
 } from '@shared/enums';
+import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // validators
 import {
@@ -78,9 +80,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Config
 import { SettingsParkingConfig } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/config';
-
-// Enums
-import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -125,8 +124,13 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsParkingModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
-    implements OnInit, OnDestroy {
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     @Input() editData: any;
 
     public parkingForm: UntypedFormGroup;
@@ -225,7 +229,7 @@ export class SettingsParkingModalComponent
         private ngbActiveModal: NgbActiveModal,
         public dropDownService: DropDownService,
         private confirmationService: ConfirmationService,
-        public addressService: AddressService,
+        public addressService: AddressService
     ) {
         super();
     }
@@ -275,15 +279,15 @@ export class SettingsParkingModalComponent
 
     public tabChange(event: any, action?: string): void {
         switch (action) {
-            case SettingsFormEnum.GATE: {
+            case ESettingsFormEnum.GATE: {
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
                         ? this.parkingForm
-                            .get(SettingsFormEnum.GATE)
-                            .patchValue(false)
+                              .get(ESettingsFormEnum.GATE)
+                              .patchValue(false)
                         : this.parkingForm
-                            .get(SettingsFormEnum.GATE)
-                            .patchValue(true);
+                              .get(ESettingsFormEnum.GATE)
+                              .patchValue(true);
 
                     return {
                         ...item,
@@ -296,11 +300,11 @@ export class SettingsParkingModalComponent
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.parkingForm
-                            .get(SettingsFormEnum.SECURITY_CAMERA)
-                            .patchValue(false)
+                              .get(ESettingsFormEnum.SECURITY_CAMERA)
+                              .patchValue(false)
                         : this.parkingForm
-                            .get(SettingsFormEnum.SECURITY_CAMERA)
-                            .patchValue(true);
+                              .get(ESettingsFormEnum.SECURITY_CAMERA)
+                              .patchValue(true);
 
                     return {
                         ...item,
@@ -328,11 +332,9 @@ export class SettingsParkingModalComponent
                     this.inputService.markInvalid(this.parkingForm);
                     return;
                 }
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === EGeneralActions.EDIT)
                     this.updateParking(this.editData.id);
-                } else {
-                    this.addParking();
-                }
+                else this.addParking();
                 break;
             }
             case TaModalActionEnum.SAVE_AND_ADD_NEW: {
@@ -447,8 +449,8 @@ export class SettingsParkingModalComponent
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                        ? this.parkingSlots[1].value
-                        : 0
+                      ? this.parkingSlots[1].value
+                      : 0
                 : 0,
             parkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -509,8 +511,8 @@ export class SettingsParkingModalComponent
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                        ? this.parkingSlots[1].value
-                        : 0
+                      ? this.parkingSlots[1].value
+                      : 0
                 : 0,
             parkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -576,8 +578,8 @@ export class SettingsParkingModalComponent
                         securityCamera: res.securityCamera,
                         rent: res.rent
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                res.rent
-                            )
+                                  res.rent
+                              )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay: res.payPeriod?.name
@@ -643,7 +645,7 @@ export class SettingsParkingModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === 'edit') {
+                    if (this.editData?.type === EGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
                         this.editCompanyParkingById(this.editData.id);
                     } else {

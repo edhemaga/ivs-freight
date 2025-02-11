@@ -31,7 +31,11 @@ import { NavigationRouteComponent } from '@core/components/navigation/components
 import { NavigationSubrouteComponent } from '@core/components/navigation/components/navigation-subroute/navigation-subroute.component';
 
 // models
-import {  NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
+import {
+    NavigationSubRoutes,
+    Navigation,
+} from '@core/components/navigation/models';
+import { EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-navigation',
@@ -217,7 +221,7 @@ export class NavigationComponent implements OnInit, OnDestroy {
                             this.selectedSubRoute = t;
                             this.cdRef.detectChanges();
                         }
-                    } 
+                    }
                     let t =
                         ruteName[1].charAt(0).toUpperCase() +
                         ruteName[1].substr(1).toLowerCase();
@@ -318,12 +322,14 @@ export class NavigationComponent implements OnInit, OnDestroy {
                 event.target?.parentElement?.parentElement.classList.contains(
                     'nav-header-top-logo'
                 ) ||
-                event.target.parentElement?.classList.contains('close') ||
+                event.target.parentElement?.classList.contains(
+                    EGeneralActions.CLOSE
+                ) ||
                 event.target.parentElement?.parentElement?.classList.contains(
-                    'close'
+                    EGeneralActions.CLOSE
                 ) ||
                 event.target.parentElement?.parentElement?.parentElement?.classList.contains(
-                    'close'
+                    EGeneralActions.CLOSE
                 )
             ) {
                 this.isUserCompanyDetailsOpen = false;

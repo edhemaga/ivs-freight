@@ -144,7 +144,7 @@ export class MapsService implements OnDestroy {
                     name: 'edit-cutomer-or-shipper',
                     svg: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                     show: true,
-                    iconName: 'edit',
+                    iconName: EGeneralActions.EDIT,
                     disabled: !data.status || data.isClosed,
                 },
                 {
@@ -204,10 +204,10 @@ export class MapsService implements OnDestroy {
             dropActions = [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: EGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit',
+                    iconName: EGeneralActions.EDIT,
                     disabled: data.status == 0 || data.isClosed,
                 },
                 {

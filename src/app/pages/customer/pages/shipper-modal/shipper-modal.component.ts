@@ -360,7 +360,7 @@ export class ShipperModalComponent
             switch (this.editData?.key) {
                 case 'load-modal': {
                     this.modalService.setProjectionModal({
-                        action: 'close',
+                        action: EGeneralActions.CLOSE,
                         payload: {
                             key: this.editData?.key,
                             value: null,
@@ -418,7 +418,7 @@ export class ShipperModalComponent
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (this.editData?.type.includes('edit')) {
+                if (this.editData?.type.includes(EGeneralActions.EDIT)) {
                     this.updateShipper(this.editData.id);
                 } else {
                     this.addShipper();
@@ -838,7 +838,7 @@ export class ShipperModalComponent
                         switch (this.editData?.key) {
                             case 'load-modal': {
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: EGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -923,7 +923,7 @@ export class ShipperModalComponent
                                     close: true,
                                 });
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: EGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,

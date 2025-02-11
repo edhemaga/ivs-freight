@@ -20,6 +20,9 @@ import { FuelService } from '@shared/services/fuel.service';
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-fuel-details-item',
     templateUrl: './fuel-details-item.component.html',
@@ -54,7 +57,7 @@ export class FuelDetailsItemComponent implements OnInit {
         '#E57373',
         '#919191',
     ];
-    constructor(private fuelService: FuelService) { }
+    constructor(private fuelService: FuelService) {}
 
     ngOnInit(): void {
         this.initTableOptions();
@@ -110,7 +113,7 @@ export class FuelDetailsItemComponent implements OnInit {
             actions: [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: EGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                 },
@@ -776,25 +779,20 @@ export class FuelDetailsItemComponent implements OnInit {
     }
 
     public setFuelLegendOnHover(index: number): void {
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend(
-                index,
-                this.fuelChartConfig.chartData.labels
-            );
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.fuelChartConfig.chartData.labels
+        );
         this.fuelLegendHighlightedBackground = hasHighlightedBackground;
         this.fuelLegendTitle = title;
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.fuelChartData :
-                this.fuelChartData?.
-                    fuelStopExpensesChartResponse[index];
+            isNaN(index) || index < 0
+                ? this.fuelChartData
+                : this.fuelChartData?.fuelStopExpensesChartResponse[index];
 
-        this.fuelChartLegend = ChartLegendConfiguration
-            .fuelExpensesLegend(dataForLegend);
+        this.fuelChartLegend =
+            ChartLegendConfiguration.fuelExpensesLegend(dataForLegend);
     }
 
     ngOnDestroy(): void {

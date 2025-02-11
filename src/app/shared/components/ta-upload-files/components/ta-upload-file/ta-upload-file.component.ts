@@ -174,7 +174,7 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.file.fileName = this.fileNewName.value;
                 // this.file.fileName =
                 //   this.fileNewName.value[0].toUpperCase() +
-                //   this.fileAction.emit({ file: this.file, action: 'edit' });
+                //   this.fileAction.emit({ file: this.file, action: EGeneralActions.EDIT });
             }
         }
     }

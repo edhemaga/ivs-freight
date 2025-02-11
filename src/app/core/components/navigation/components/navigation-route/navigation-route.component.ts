@@ -29,7 +29,10 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
-import {  NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
+import {
+    NavigationSubRoutes,
+    Navigation,
+} from '@core/components/navigation/models';
 
 // Const
 import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
@@ -123,7 +126,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
             this.routeWithSubRouteClicked.emit(false);
         }
     }
-    ngOnInit() {
+    ngOnInit(): void {
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);
             clearTimeout(this.timeout);

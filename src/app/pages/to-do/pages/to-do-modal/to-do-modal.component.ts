@@ -189,7 +189,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.taskForm);
                     return;
                 }
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === EGeneralActions.EDIT) {
                     this.updateTaskById(this.editData.id);
                 } else {
                     this.addTask();
@@ -487,7 +487,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     });
                     this.resCompanyUsers = [...this.showCompanyUsers];
 
-                    if (this.editData?.type === 'edit') {
+                    if (this.editData?.type === EGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
                         this.editTask(this.editData.id);
                     } else {

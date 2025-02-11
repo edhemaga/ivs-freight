@@ -589,7 +589,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'settings',
             show: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-            iconName: 'edit',
+            iconName: EGeneralActions.EDIT,
         },
         {
             title: 'border',

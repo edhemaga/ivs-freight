@@ -1,5 +1,8 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
+// Enums
+import { EGeneralActions } from '@shared/enums';
+
 export class SettingsTerminalConfig {
     static getNameInputConfig(type: string): ITaInput {
         return {
@@ -8,7 +11,7 @@ export class SettingsTerminalConfig {
             label: 'Terminal Name',
             isRequired: true,
             textTransform: 'uppercase',
-            autoFocus: type !== 'edit',
+            autoFocus: type !== EGeneralActions.EDIT,
             minLength: 1,
             maxLength: 64,
         };
@@ -113,7 +116,7 @@ export class SettingsTerminalConfig {
             type: 'text',
             label: 'Parking Slot # (Truck)',
             minLength: 1,
-            maxLength: 64
+            maxLength: 64,
         };
     }
 

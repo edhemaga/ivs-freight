@@ -471,7 +471,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case 'close': {
+            case EGeneralActions.CLOSE: {
                 this.action.emit({ action: action, bool: false });
                 $('.pac-container').remove();
                 this.ngbActiveModal.close();

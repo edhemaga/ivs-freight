@@ -100,7 +100,7 @@ export class TaUserReviewComponent implements OnChanges {
 
     public onAction(review: any, type: string, index: number) {
         switch (type) {
-            case 'edit': {
+            case EGeneralActions.EDIT: {
                 this.reviewData.filter((item) => (item.isEditMode = false));
 
                 review.isEditMode = true;
@@ -253,7 +253,7 @@ export class TaUserReviewComponent implements OnChanges {
                 this.doubleClick = false;
             }, 250);
         } else {
-            this.onAction(data, 'edit', ind);
+            this.onAction(data, EGeneralActions.EDIT, ind);
         }
     }
 }

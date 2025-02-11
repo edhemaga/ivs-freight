@@ -179,7 +179,7 @@ export class AccidentTableComponent
                     title: 'Edit',
                     name: 'edit-accident',
                     class: 'regular-text',
-                    contentType: 'edit',
+                    contentType: EGeneralActions.EDIT,
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                 },
@@ -363,7 +363,11 @@ export class AccidentTableComponent
                 this.modalService.openModal(
                     AccidentModalComponent,
                     { size: 'large-xl' },
-                    { id: event.id, type: 'edit', data: event.data }
+                    {
+                        id: event.id,
+                        type: EGeneralActions.EDIT,
+                        data: event.data,
+                    }
                 );
             }
         }

@@ -17,10 +17,10 @@ export class SettingsLocationConfig {
         actions: [
             {
                 title: 'Edit',
-                name: 'edit',
+                name: EGeneralActions.EDIT,
                 svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                 show: true,
-                iconName: 'edit',
+                iconName: EGeneralActions.EDIT,
             },
             {
                 title: 'border',

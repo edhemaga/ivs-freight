@@ -11,6 +11,9 @@ import { ControlValueAccessor, NgControl } from '@angular/forms';
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
+// enums
+import { EGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-applicant-review-feedback',
     templateUrl: './applicant-review-feedback.component.html',
@@ -59,7 +62,7 @@ export class ApplicantReviewFeedbackComponent implements ControlValueAccessor {
         } else {
             this.annotationBtnClickEvent.emit({
                 lineIndex: this.lineIndex,
-                type: 'close',
+                type: EGeneralActions.CLOSE,
             });
 
             this.getSuperControl.patchValue(null);

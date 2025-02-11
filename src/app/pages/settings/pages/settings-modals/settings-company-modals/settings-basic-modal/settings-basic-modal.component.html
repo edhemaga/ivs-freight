@@ -1362,12 +1362,6 @@
                                                     maxLength: 4,
                                                 }"
                                             ></app-ta-input>
-                                        }
-                                        @if (
-                                            !this.companyForm.get(
-                                                'loadedAndEmptySameRate'
-                                            ).value
-                                        ) {
                                             <app-ta-input
                                                 formControlName="soloLoadedMile"
                                                 [inputConfig]="{
@@ -1381,13 +1375,7 @@
                                                     maxLength: 4,
                                                 }"
                                             ></app-ta-input>
-                                        }
-
-                                        @if (
-                                            this.companyForm.get(
-                                                'loadedAndEmptySameRate'
-                                            ).value
-                                        ) {
+                                        } @else {
                                             <app-ta-input
                                                 formControlName="perMileSolo"
                                                 [inputConfig]="{
@@ -1402,7 +1390,6 @@
                                                 }"
                                             ></app-ta-input>
                                         }
-
                                         <app-ta-input
                                             formControlName="soloPerStop"
                                             [inputConfig]="{

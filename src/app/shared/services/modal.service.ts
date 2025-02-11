@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Subject } from 'rxjs';
 
 // bootstrap
-import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 // models
 import { ConfirmationReset } from '@shared/components/ta-shared-modals/confirmation-reset-modal/models/confirmation-reset.model';
@@ -11,6 +11,9 @@ import { ModalOptions } from '@shared/components/ta-modal/models/modal-options.m
 
 // services
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
+
+// enums
+import { EGeneralActions, EStringPlaceholder } from '@shared/enums';
 @Injectable({
     providedIn: 'root',
 })
@@ -57,7 +60,10 @@ export class ModalService {
         });
     }
 
-    public changeModalStatus(data: { name: string; status: boolean | null }) {
+    public changeModalStatus(data: {
+        name: string;
+        status: boolean | null;
+    }): void {
         this.modalStatusChange.next({ name: data.name, status: data.status });
     }
 
@@ -79,7 +85,7 @@ export class ModalService {
         closing?: 'fastest' | 'slowlest';
     }) {
         // Closing Modal and Open New One
-        if (data.action === 'open') {
+        if (data.action === EGeneralActions.OPEN) {
             sessionStorage.clear();
             const timeout = setTimeout(() => {
                 sessionStorage.setItem(
@@ -111,7 +117,7 @@ export class ModalService {
         }
 
         // Closing Modal and Open Old One
-        if (data.action === 'close') {
+        if (data.action === EGeneralActions.CLOSE) {
             const timeout = setTimeout(
                 () => {
                     this.openModal(
@@ -162,7 +168,7 @@ export class ModalService {
         const fx = (modal as any)._removeModalElements.bind(modal);
 
         (modal as any)._removeModalElements = () => {
-            instance.windowClass = '';
+            instance.windowClass = EStringPlaceholder.EMPTY;
             setTimeout(fx, 100);
         };
 

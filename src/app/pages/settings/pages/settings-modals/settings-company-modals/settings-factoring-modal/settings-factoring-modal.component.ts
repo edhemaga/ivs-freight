@@ -40,7 +40,7 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
-    CaInputAddressDropdownComponent
+    CaInputAddressDropdownComponent,
 } from 'ca-components';
 
 // models
@@ -54,7 +54,11 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { ModalButtonType, ModalButtonSize } from '@shared/enums';
+import {
+    ModalButtonType,
+    ModalButtonSize,
+    EGeneralActions,
+} from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -91,7 +95,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsFactoringModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnDestroy, OnInit
 {
     public destroy$ = new Subject<void>();
@@ -148,7 +156,7 @@ export class SettingsFactoringModalComponent
 
     ngOnInit(): void {
         this.createForm();
-        if (this.editData.type === 'edit') {
+        if (this.editData.type === EGeneralActions.EDIT) {
             this.isCardAnimationDisabled = true;
             this.editFactoringCompany(this.editData.company);
         } else {

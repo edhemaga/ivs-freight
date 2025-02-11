@@ -49,6 +49,7 @@ import {
     AccidentResponse,
     AccidentModalResponse,
 } from 'appcoretruckassist';
+import { EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-accident-modal',
@@ -258,10 +259,10 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
+            case EGeneralActions.CLOSE: {
                 break;
             }
-            case 'save': {
+            case EGeneralActions.SAVE: {
                 if (this.accidentForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accidentForm);
                     return;
@@ -289,7 +290,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public editAccidentById(id: number) {
+    public editAccidentById(id: number): void {
         this.accidentTService
             .getAccidentById(id)
             .pipe(takeUntil(this.destroy$))

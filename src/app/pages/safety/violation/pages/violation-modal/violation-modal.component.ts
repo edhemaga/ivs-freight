@@ -303,7 +303,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }): void {
         // Update
         switch (data.action) {
-            case 'close': {
+            case EGeneralActions.CLOSE: {
                 break;
             }
             case 'save': {

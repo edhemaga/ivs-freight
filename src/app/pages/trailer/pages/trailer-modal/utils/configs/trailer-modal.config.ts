@@ -1,5 +1,8 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { TrailerConfigInterface } from '@pages/trailer/pages/trailer-modal/models/';
+import { TrailerConfigInterface } from '@pages/trailer/pages/trailer-modal/models';
+
+// enums
+import { EGeneralActions } from '@shared/enums';
 
 export class TrailerModalConfig {
     static getVolumenTrailers(): string[] {
@@ -25,7 +28,7 @@ export class TrailerModalConfig {
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 8,
-            autoFocus: options?.editType !== 'edit',
+            autoFocus: options?.editType !== EGeneralActions.EDIT,
         };
     }
     static getTrailerTypeIdConfig(options: TrailerConfigInterface): ITaInput {
@@ -49,13 +52,13 @@ export class TrailerModalConfig {
                 )
                     ? 'tanker'
                     : options.selectedTrailerType?.name
-                          ?.toLowerCase()
-                          ?.includes('rgn')
-                    ? 'low-boy-rgn'
-                    : options.selectedTrailerType?.name
-                          ?.trim()
-                          .replace(' ', '')
-                          .toLowerCase(),
+                            ?.toLowerCase()
+                            ?.includes('rgn')
+                      ? 'low-boy-rgn'
+                      : options.selectedTrailerType?.name
+                            ?.trim()
+                            .replace(' ', '')
+                            .toLowerCase(),
             },
             dropdownWidthClass: 'w-col-212',
             customClass: 'truck-trailer-dropdown',
@@ -272,7 +275,7 @@ export class TrailerModalConfig {
             isDropdown: true,
             placeholderIcon: 'date',
             customClass: 'datetimeclass',
-            isFutureDateDisabled: true
+            isFutureDateDisabled: true,
         };
     }
     static getTrailerPurchasePriceConfig(): ITaInput {

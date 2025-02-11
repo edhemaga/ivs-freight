@@ -148,7 +148,7 @@ export class FuelStopModalComponent
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close':
+            case EGeneralActions.CLOSE:
                 break;
             case 'save':
                 if (this.fuelStopForm.invalid || !this.isFormDirty) {
@@ -525,7 +525,7 @@ export class FuelStopModalComponent
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
 
-                    if (this.editData?.type === 'edit') {
+                    if (this.editData?.type === EGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
 
                         this.getFuelStopById(this.editData.id);

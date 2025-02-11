@@ -26,9 +26,9 @@ export class DriverDetailsItemHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: EGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
+                    iconName: EGeneralActions.EDIT,
                     show: true,
                 },
                 {
@@ -120,9 +120,9 @@ export class DriverDetailsItemHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: EGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
+                    iconName: EGeneralActions.EDIT,
                     show: true,
                     disabled: !driverStatus,
                 },

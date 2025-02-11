@@ -66,9 +66,10 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 import {
     DropActionsStringEnum,
+    EGeneralActions,
     ModalButtonType,
     TableStringEnum,
 } from '@shared/enums';
@@ -286,26 +287,26 @@ export class SettingsTerminalModalComponent
         });
 
         this.inputService.customInputValidator(
-            this.terminalForm.get(SettingsFormEnum.EMAIL),
-            SettingsFormEnum.EMAIL,
+            this.terminalForm.get(ESettingsFormEnum.EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get(SettingsFormEnum.OFFICE_EMAIL),
-            SettingsFormEnum.EMAIL,
+            this.terminalForm.get(ESettingsFormEnum.OFFICE_EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get(SettingsFormEnum.PARKING_EMAIL),
-            SettingsFormEnum.EMAIL,
+            this.terminalForm.get(ESettingsFormEnum.PARKING_EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get(SettingsFormEnum.WAREHOUSE_EMAIL),
-            SettingsFormEnum.EMAIL,
+            this.terminalForm.get(ESettingsFormEnum.WAREHOUSE_EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
     }
@@ -322,7 +323,7 @@ export class SettingsTerminalModalComponent
                     this.inputService.markInvalid(this.terminalForm);
                     return;
                 }
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === EGeneralActions.EDIT) {
                     this.updateTerminal(this.editData.id);
                 } else {
                     this.addTerminal();
@@ -350,16 +351,16 @@ export class SettingsTerminalModalComponent
 
     public openCloseCheckboxCard() {
         this.isChecked(
-            SettingsFormEnum.OFFICE_CHECKED,
-            SettingsFormEnum.OFFICE_PHONE
+            ESettingsFormEnum.OFFICE_CHECKED,
+            ESettingsFormEnum.OFFICE_PHONE
         );
         this.isChecked(
-            SettingsFormEnum.PARKING_CHECKED,
-            SettingsFormEnum.OFFICE_PHONE
+            ESettingsFormEnum.PARKING_CHECKED,
+            ESettingsFormEnum.OFFICE_PHONE
         );
         this.isChecked(
-            SettingsFormEnum.WAREHOUSE_CHECKED,
-            SettingsFormEnum.WAREHOUSE_PHONE
+            ESettingsFormEnum.WAREHOUSE_CHECKED,
+            ESettingsFormEnum.WAREHOUSE_PHONE
         );
     }
 
@@ -385,14 +386,14 @@ export class SettingsTerminalModalComponent
 
     public onAction(event: any, action: string) {
         switch (action) {
-            case SettingsFormEnum.GATE: {
+            case ESettingsFormEnum.GATE: {
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
-                              .get(SettingsFormEnum.GATE)
+                              .get(ESettingsFormEnum.GATE)
                               .patchValue(false)
                         : this.terminalForm
-                              .get(SettingsFormEnum.GATE)
+                              .get(ESettingsFormEnum.GATE)
                               .patchValue(true);
 
                     return {
@@ -406,10 +407,10 @@ export class SettingsTerminalModalComponent
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
+                              .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(false)
                         : this.terminalForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
+                              .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(true);
 
                     return {
@@ -427,7 +428,7 @@ export class SettingsTerminalModalComponent
 
     private parkingSlot() {
         this.terminalForm
-            .get(SettingsFormEnum.TERMINAL_PARKING_STOP)
+            .get(ESettingsFormEnum.TERMINAL_PARKING_STOP)
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
@@ -435,7 +436,7 @@ export class SettingsTerminalModalComponent
                     MethodsCalculationsHelper.calculateParkingSlot(
                         value,
                         this.terminalForm.get(
-                            SettingsFormEnum.TERMINAL_PARKING_STOP
+                            ESettingsFormEnum.TERMINAL_PARKING_STOP
                         )
                     );
             });
@@ -443,7 +444,7 @@ export class SettingsTerminalModalComponent
 
     private fullParkingSlot() {
         this.terminalForm
-            .get(SettingsFormEnum.TERMINAL_FULL_PARKING_STOP)
+            .get(ESettingsFormEnum.TERMINAL_FULL_PARKING_STOP)
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
@@ -451,7 +452,7 @@ export class SettingsTerminalModalComponent
                     MethodsCalculationsHelper.calculateParkingSlot(
                         value,
                         this.terminalForm.get(
-                            SettingsFormEnum.TERMINAL_FULL_PARKING_STOP
+                            ESettingsFormEnum.TERMINAL_FULL_PARKING_STOP
                         )
                     );
             });
@@ -712,7 +713,7 @@ export class SettingsTerminalModalComponent
             });
     }
 
-    private getModalDropdowns() {
+    private getModalDropdowns(): void {
         this.settingsLocationService
             .getModalDropdowns()
             .pipe(takeUntil(this.destroy$))
@@ -722,7 +723,7 @@ export class SettingsTerminalModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === 'edit') {
+                    if (this.editData?.type === EGeneralActions.EDIT) {
                         this.editTerminalById(this.editData.id);
                     } else {
                         this.startFormChanges();

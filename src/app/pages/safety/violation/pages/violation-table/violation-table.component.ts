@@ -131,7 +131,7 @@ export class ViolationTableComponent
                     title: 'Edit',
                     name: 'edit-violation',
                     class: 'regular-text',
-                    contentType: 'edit',
+                    contentType: EGeneralActions.EDIT,
                 },
                 {
                     title: 'Delete',
@@ -321,7 +321,11 @@ export class ViolationTableComponent
                 this.modalService.openModal(
                     ViolationModalComponent,
                     { size: 'large-xl' },
-                    { id: event.id, type: 'edit', data: event.data }
+                    {
+                        id: event.id,
+                        type: EGeneralActions.EDIT,
+                        data: event.data,
+                    }
                 );
             }
         }

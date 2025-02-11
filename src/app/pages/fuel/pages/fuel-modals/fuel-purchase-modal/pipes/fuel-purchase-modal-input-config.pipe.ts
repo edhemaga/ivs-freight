@@ -4,6 +4,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
 
+import { EGeneralActions } from '@shared/enums';
+
 @Pipe({
     standalone: true,
     name: 'fuelPurchaseModalInputConfig',
@@ -74,7 +76,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     isRequired: true,
                     isDropdown: true,
                     isDisabled:
-                        editDataType === 'edit' &&
+                        editDataType === EGeneralActions.EDIT &&
                         fuelTransactionTypeName !== 'Manual',
                     customClass: 'datetimeclass',
                 };
@@ -89,7 +91,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     isDropdown: true,
                     isRequired: true,
                     isDisabled:
-                        editDataType === 'edit' &&
+                        editDataType === EGeneralActions.EDIT &&
                         fuelTransactionTypeName !== 'Manual',
                     customClass: 'datetimeclass',
                 };

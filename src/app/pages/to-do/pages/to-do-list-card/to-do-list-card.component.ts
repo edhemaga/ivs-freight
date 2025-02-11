@@ -490,10 +490,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             actions: [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: EGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit',
+                    iconName: EGeneralActions.EDIT,
                 },
                 {
                     title: 'border',
@@ -623,7 +623,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 { size: 'small' },
                 {
                     ...event,
-                    type: 'edit',
+                    type: EGeneralActions.EDIT,
                 }
             );
         }

@@ -495,7 +495,7 @@ export class TaInputDropdownComponent
             this.addNewItem();
         }
 
-        if (event.action === 'confirm' && event.mode === 'edit') {
+        if (event.action === 'confirm' && event.mode === EGeneralActions.EDIT) {
             this.updateItem();
         }
 
@@ -555,7 +555,7 @@ export class TaInputDropdownComponent
 
         this.saveItem.emit({
             data: this._activeItem,
-            action: 'edit',
+            action: EGeneralActions.EDIT,
         });
     }
 
@@ -942,7 +942,7 @@ export class TaInputDropdownComponent
             this.commandEvent({
                 data: this.getSuperControl.value,
                 action: 'confirm',
-                mode: data.dropdownLabelNew ? 'new' : 'edit',
+                mode: data.dropdownLabelNew ? 'new' : EGeneralActions.EDIT,
             });
             this.clearTimeoutDropdown = setTimeout(() => {
                 this.getSuperControl.setErrors(null);

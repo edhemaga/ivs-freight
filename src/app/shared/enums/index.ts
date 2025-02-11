@@ -15,6 +15,7 @@ export * from './modal-button-size.enum';
 export * from './modal-button-text.enum';
 
 export * from './general-actions.enums';
+export * from './string-placeholder.enum';
 
 // Files
 export * from './file/file-form-controls.enum';

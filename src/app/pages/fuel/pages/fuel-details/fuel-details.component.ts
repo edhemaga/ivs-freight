@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-//Models
+// Enums
+import { EGeneralActions } from '@shared/enums';
+
+// Models
 import { FuelStopResponse } from 'appcoretruckassist';
 
 @Component({
@@ -36,7 +39,7 @@ export class FuelDetailsComponent implements OnInit {
             actions: [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: EGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                 },
