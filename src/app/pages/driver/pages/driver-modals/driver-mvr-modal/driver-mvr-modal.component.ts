@@ -35,6 +35,7 @@ import {
     CaInputNoteComponent,
     CaModalComponent,
     CaModalButtonComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 // enums
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
@@ -72,7 +73,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         TaCustomCardComponent,
 
         CaInputDropdownComponent,
-        CaInputComponent,
+        CaInputDatetimePickerComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
 

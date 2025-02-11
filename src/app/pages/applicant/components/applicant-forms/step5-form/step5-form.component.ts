@@ -78,6 +78,7 @@ import { SharedModule } from '@shared/shared.module';
 
 // config
 import { Step5FormConfig } from '@pages/applicant/components/applicant-forms/step5-form/configs/step5-form.config';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-step5-form',
@@ -98,6 +99,7 @@ import { Step5FormConfig } from '@pages/applicant/components/applicant-forms/ste
         ApplicantAddSaveBtnComponent,
         TaAppTooltipV2Component,
         TaInputAddressDropdownComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class Step5FormComponent

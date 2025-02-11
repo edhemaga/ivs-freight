@@ -174,20 +174,20 @@
                     <!-- Template Name -->
 
                     <ng-container *ngIf="isConvertedToTemplate">
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="templateName"
                             [inputConfig]="loadTemplateInputConfig"
-                        ></app-ca-input>
+                        ></ca-input-test>
                     </ng-container>
 
                     <ng-container *ngIf="!isConvertedToTemplate">
                         <!-- Only One Company -->
 
-                        <app-ca-input
+                        <ca-input-test
                             *ngIf="labelsCompanies.length <= 1"
                             formControlName="companyId"
                             [inputConfig]="loadMainCompanyInputConfig"
-                        ></app-ca-input>
+                        ></ca-input-test>
 
                         <!-- Multiple Companies -->
 
@@ -218,10 +218,10 @@
 
             <!-- Broker -->
             <div class="load-ftl-second-row">
-                <app-ca-input
+                <ca-input-test
                     formControlName="referenceNumber"
                     [inputConfig]="loadReferenceInputConfig"
-                ></app-ca-input>
+                ></ca-input-test>
                 <app-ca-input-dropdown
                     formControlName="brokerId"
                     [template]="'load-broker'"
@@ -258,10 +258,10 @@
                     "
                 ></app-ca-input-dropdown>
 
-                <app-ca-input
+                <ca-input-test
                     formControlName="weight"
                     [inputConfig]="loadWeightInputConfig"
-                ></app-ca-input>
+                ></ca-input-test>
             </div>
             <!-- Requirement -->
 
@@ -523,7 +523,7 @@
                             class="stop-load-date-time"
                             [ngClass]="{ 'date-range-active': pickupDateRange }"
                         >
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="pickupDateFrom"
                                 [inputConfig]="getPickupDateFromInputConfig"
                                 (blurInput)="
@@ -532,7 +532,7 @@
                                 (clear)="
                                     markInputAsTouched('pickupDateFrom', true)
                                 "
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
 
                             <ng-container *ngIf="!pickupDateRange">
                                 <div
@@ -559,7 +559,7 @@
                                 </div>
                             </ng-container>
 
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 *ngIf="pickupDateRange"
                                 formControlName="pickupDateTo"
                                 [inputConfig]="loadPickupEndDateInputConfig"
@@ -567,9 +567,9 @@
                                 (clear)="
                                     markInputAsTouched('pickupDateTo', true)
                                 "
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
 
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="pickupTimeFrom"
                                 [inputConfig]="getPickupTimeFromInputConfig"
                                 (blurInput)="
@@ -578,16 +578,16 @@
                                 (clear)="
                                     markInputAsTouched('pickupTimeFrom', true)
                                 "
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
 
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="pickupTimeTo"
                                 [inputConfig]="getPickupTimeToInputConfig"
                                 (blurInput)="markInputAsTouched('pickupTimeTo')"
                                 (clear)="
                                     markInputAsTouched('pickupTimeTo', true)
                                 "
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
                         </div>
 
                         <div class="stop-load-date-time-driver">
@@ -889,7 +889,7 @@
                                                     ]
                                             }"
                                         >
-                                            <app-ca-input
+                                            <ca-input-datetime-picker
                                                 formControlName="dateFrom"
                                                 [inputConfig]="
                                                     getExtraStopsDateFromInputConfig(
@@ -904,7 +904,7 @@
                                                         .get('dateFrom')
                                                         .markAsTouched()
                                                 "
-                                            ></app-ca-input>
+                                            ></ca-input-datetime-picker>
 
                                             <ng-container
                                                 *ngIf="
@@ -955,7 +955,7 @@
                                                 </div>
                                             </ng-container>
 
-                                            <app-ca-input
+                                            <ca-input-datetime-picker
                                                 *ngIf="
                                                     loadExtraStopsDateRange[
                                                         indx
@@ -971,9 +971,9 @@
                                                         .get('dateTo')
                                                         .markAsTouched()
                                                 "
-                                            ></app-ca-input>
+                                            ></ca-input-datetime-picker>
 
-                                            <app-ca-input
+                                            <ca-input-datetime-picker
                                                 formControlName="timeFrom"
                                                 [inputConfig]="
                                                     getExtraStopsDateFromTimeFromInputConfig(
@@ -988,9 +988,9 @@
                                                         .get('timeFrom')
                                                         .markAsTouched()
                                                 "
-                                            ></app-ca-input>
+                                            ></ca-input-datetime-picker>
 
-                                            <app-ca-input
+                                            <ca-input-datetime-picker
                                                 formControlName="timeTo"
                                                 [inputConfig]="
                                                     getExtraStopsDateToTimeToInputConfig(
@@ -1005,7 +1005,7 @@
                                                         .get('timeTo')
                                                         .markAsTouched()
                                                 "
-                                            ></app-ca-input>
+                                            ></ca-input-datetime-picker>
                                         </div>
 
                                         <div class="stop-load-date-time-driver">
@@ -1244,7 +1244,7 @@
                                 'date-range-active': deliveryDateRange
                             }"
                         >
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="deliveryDateFrom"
                                 [inputConfig]="getDeliveryDateFromInputConfig"
                                 (blurInput)="
@@ -1252,7 +1252,7 @@
                                         .get('deliveryDateFrom')
                                         .markAsTouched()
                                 "
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
 
                             <ng-container *ngIf="!deliveryDateRange">
                                 <div
@@ -1279,7 +1279,7 @@
                                 </div>
                             </ng-container>
 
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 *ngIf="deliveryDateRange"
                                 formControlName="deliveryDateTo"
                                 [inputConfig]="loadDeliveryDateToInputConfig"
@@ -1289,9 +1289,9 @@
                                 (clear)="
                                     markInputAsTouched('deliveryDateTo', true)
                                 "
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
 
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="deliveryTimeFrom"
                                 [inputConfig]="getDeliveryTimeFromInputConfig"
                                 (blurInput)="
@@ -1300,9 +1300,9 @@
                                 (clear)="
                                     markInputAsTouched('deliveryTimeFrom', true)
                                 "
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
 
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="deliveryTimeTo"
                                 [inputConfig]="getDeliveryTimeToInputConfig"
                                 (blurInput)="
@@ -1311,7 +1311,7 @@
                                 (clear)="
                                     markInputAsTouched('deliveryTimeTo', true)
                                 "
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
                         </div>
 
                         <!-- Stop Items -->
@@ -1477,7 +1477,7 @@
                         <div class="load-financial-billing">
                             <!-- Base Rate -->
 
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="baseRate"
                                 [inputConfig]="loadBaseRateInputConfig"
                                 [ngClass]="{
@@ -1485,17 +1485,17 @@
                                         loadForm.get('tonuRate').value ||
                                         loadForm.get('revisedRate').value
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
                             <!-- Driver Rate -->
-                            <app-ca-input
+                            <ca-input-test
                                 *ngIf="showDriverRate"
                                 formControlName="driverRate"
                                 [inputConfig]="getDriverRateInputConfig"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
                             <!-- Adjusted Rate -->
-                            <app-ca-input
+                            <ca-input-test
                                 *ngIf="showAdjustedRate"
                                 formControlName="adjustedRate"
                                 [inputConfig]="getAdjustedRateInputConfig"
@@ -1505,21 +1505,21 @@
                                         loadForm.get('tonuRate').value ||
                                         loadForm.get('revisedRate').value
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
                             <!-- Tonu Rate -->
-                            <app-ca-input
+                            <ca-input-test
                                 *ngIf="showTonuRate"
                                 formControlName="tonuRate"
                                 [inputConfig]="getTonuRateInputConfig"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
                             <!-- Adjusted Rate -->
-                            <app-ca-input
+                            <ca-input-test
                                 *ngIf="showRevisedRate"
                                 formControlName="revisedRate"
                                 [inputConfig]="getRevisedRateInputConfig"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
                             <div formArrayName="additionalBillings">
                                 <div
@@ -1532,7 +1532,7 @@
                                     [ngStyle]="{ 'margin-bottom': '4px' }"
                                 >
                                     <div [formGroupName]="indx">
-                                        <app-ca-input
+                                        <ca-input-test
                                             [ngClass]="{
                                                 'load-financial-container-override':
                                                     loadForm.get('tonuRate')
@@ -1550,7 +1550,7 @@
                                                     indx
                                                 )
                                             "
-                                        ></app-ca-input>
+                                        ></ca-input-test>
                                     </div>
                                 </div>
                             </div>
@@ -1585,7 +1585,7 @@
                                 >
                                     <div [formGroupName]="indx">
                                         <div class="load-financial-payment">
-                                            <app-ca-input
+                                            <ca-input-test
                                                 formControlName="pay"
                                                 [inputConfig]="
                                                     getPaymentInputConfig(
@@ -1595,7 +1595,7 @@
                                                 (clear)="
                                                     removePaymentBilling(indx)
                                                 "
-                                            ></app-ca-input>
+                                            ></ca-input-test>
 
                                             <app-ca-input-dropdown
                                                 formControlName="displayPaymentType"
@@ -1615,12 +1615,12 @@
                                                 "
                                             ></app-ca-input-dropdown>
 
-                                            <app-ca-input
+                                            <loadPaydateInputConfig
                                                 formControlName="payDate"
                                                 [inputConfig]="
                                                     loadPaydateInputConfig
                                                 "
-                                            ></app-ca-input>
+                                            ></loadPaydateInputConfig>
                                         </div>
                                     </div>
                                 </div>
@@ -1645,10 +1645,10 @@
                         </div>
 
                         <div class="load-financial-invoice">
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="invoicedDate"
                                 [inputConfig]="loadInvoiceDateInputConfig()"
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
 
                             <ng-container *ngIf="invoicePercent.daysToPay">
                                 <app-ta-progres-bar

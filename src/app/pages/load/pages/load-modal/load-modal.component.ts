@@ -166,6 +166,8 @@ import {
     IMapMarkers,
     IMapRoutePath,
     MapMarkerIconService,
+    CaInputDatetimePickerComponent,
+    InputTestComponent,
 } from 'ca-components';
 
 @Component({
@@ -201,6 +203,8 @@ import {
         CaMapComponent,
         CaInputDropdownComponent,
         CaInputComponent,
+        CaInputDatetimePickerComponent,
+        InputTestComponent,
 
         // pipes
         FinancialCalculationPipe,

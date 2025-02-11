@@ -291,10 +291,10 @@
                     <ng-container *ngIf="trailerForm.get('companyOwned').value">
                         <div class="row row-no-mb">
                             <div class="col-6">
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="purchaseDate"
                                     [inputConfig]="TrailerPurchaseDateConfig"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="col-6">
                                 <app-ca-input

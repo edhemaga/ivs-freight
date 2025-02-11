@@ -17,7 +17,7 @@
 
             <div class="row last-row">
                 <div class="col-6">
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="issueDate"
                         [inputConfig]="{
                             name: 'datepicker',
@@ -30,11 +30,11 @@
                             autoFocus:
                                 editData && editData?.type !== 'edit-medical',
                         }"
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
 
                 <div class="col-6">
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="expDate"
                         [inputConfig]="{
                             name: 'datepicker',
@@ -45,7 +45,7 @@
                             isRequired: true,
                             customClass: 'datetimeclass',
                         }"
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
             </div>
 

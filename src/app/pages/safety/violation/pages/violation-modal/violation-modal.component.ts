@@ -51,6 +51,7 @@ import {
     RoadsideInspectionResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-violation-modal',
@@ -72,6 +73,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
         TaInputDropdownComponent,
         TaCustomCardComponent,
         TaInputAddressDropdownComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {

@@ -81,6 +81,7 @@ import { SharedModule } from '@shared/shared.module';
 
 // configs
 import { Step4FormConfig } from '@pages/applicant/components/applicant-forms/step4-form/config/step4-form.config';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-step4-form',
@@ -103,6 +104,7 @@ import { Step4FormConfig } from '@pages/applicant/components/applicant-forms/ste
         TaInputAddressDropdownComponent,
         TaInputArrowsComponent,
         TaInputRadiobuttonsComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class Step4FormComponent

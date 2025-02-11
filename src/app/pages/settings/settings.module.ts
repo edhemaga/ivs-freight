@@ -19,6 +19,7 @@ import { TaUploadFilesNoSliderComponent } from '@shared/components/ta-upload-fil
 
 // pipe
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
+import { InputTestComponent } from 'ca-components';
 
 @NgModule({
     imports: [
@@ -33,6 +34,7 @@ import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
         RouterModule,
         TaCounterComponent,
         TaUploadFilesNoSliderComponent,
+        InputTestComponent
     ],
     declarations: [
         SettingsComponent,

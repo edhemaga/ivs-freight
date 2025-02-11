@@ -56,6 +56,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import {
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
@@ -115,6 +116,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
         CaInputComponent,
         CaInputDropdownComponent,
         TaAppTooltipV2Component,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         FormatDatePipe,

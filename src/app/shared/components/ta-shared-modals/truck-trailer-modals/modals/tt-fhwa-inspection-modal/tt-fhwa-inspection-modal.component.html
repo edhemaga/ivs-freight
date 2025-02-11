@@ -16,7 +16,7 @@
         >
             <div class="row last-row">
                 <div class="col-12">
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="issueDate"
                         [inputConfig]="{
                             name: 'datepicker',
@@ -28,7 +28,7 @@
                             customClass: 'datetimeclass',
                             autoFocus: editData?.type !== 'edit-inspection',
                         }"
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
             </div>
             <div class="ta-card-body-overflow-none">

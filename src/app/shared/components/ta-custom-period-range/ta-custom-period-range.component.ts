@@ -35,6 +35,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-ta-custom-period-range',
@@ -49,6 +50,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class TaCustomPeriodRangeComponent
