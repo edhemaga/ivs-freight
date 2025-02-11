@@ -26,6 +26,8 @@ import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
 
 // svg routes
 import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
+
+// enums
 import { EnumValue } from 'appcoretruckassist';
 import { FuelDataOptionsStringEnum } from '@pages/fuel/enums';
 

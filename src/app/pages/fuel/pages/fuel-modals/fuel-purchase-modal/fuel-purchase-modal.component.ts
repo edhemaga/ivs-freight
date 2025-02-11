@@ -180,7 +180,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private payrollService: PayrollService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService
-    ) {}
+    ) {
+        this.createForm();
+    }
 
     ngOnInit() {
         this.setModalActionType();
@@ -260,8 +262,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 this.getDriverTrailerBySelectedTruck()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((response) => {
-                        const { pagination } = response || {};
-                        const { data } = pagination || {};
+                        const { data } = response?.pagination || {};
 
                         if (response?.trailerId)
                             this.selectedTrailerType = {
@@ -344,9 +345,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
         this.cd.detectChanges();
 
-        setTimeout(() => {
-            this.isFuelRowCreated = false;
-        }, 400);
+        this.isFuelRowCreated = false;
     }
 
     public handleModalTableValueEmit(
@@ -608,8 +607,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .subscribe((response) => {
                 if (!response) return;
 
-                const { pagination } = response || {};
-                const { data } = pagination || {};
+                const { data } = response?.pagination || {};
                 this.selectedDispatchHistory = response;
 
                 this.patchDriverFullName(
@@ -670,14 +668,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             const date = this.fuelForm.get(
                 FuelValuesStringEnum.TRANSACTION_DATE
             ).value;
-
             const time = this.fuelForm.get(
                 FuelValuesStringEnum.TRANSACTION_TIME
             ).value;
+            const dateUtc = moment.utc(new Date(date + ' ' + time)).format();
 
             return this.fuelService.getDispatchHistoryByTruckIdAndDate(
                 this.selectedTruckType.id,
-                moment.utc(new Date(date + ' ' + time)).format()
+                dateUtc
             );
         } else return of(null);
     }
