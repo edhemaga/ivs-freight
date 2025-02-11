@@ -1,7 +1,15 @@
-export class ContactsModalConstants {
-    static UPLOAD_OPTIONS = {
-        isVisibleCropAndDrop: true,
-        files: [],
+//enums
+import { FilesSizeEnum } from 'ca-components';
+
+//models
+import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
+
+export class NavigationDataUploadFilesConfig {
+    static NAVIGATION_PROFIL_UPLOAD_FILES_CONFIG: IUploadFilesConfig = {
+        //Files
+        files:[],
+        
+        // Carousel
         slider: {
             dontUseSlider: false,
             hasCarouselBottomTabs: false,
@@ -14,14 +22,12 @@ export class ContactsModalConstants {
         },
         hasCrop: true,
         isRoundCrop: true,
-        containWithinAspectRatio: false,
-        aspectRatio: [1, 1],
-        initialCropperPosition: {
-            x1: 0,
-            y1: 0,
-            x2: 184,
-            y2: 184,
-        },
+        hasBlobUrl: false,
+
+        // Tags
+        onlyOneTagFile: false,
+
+        // Dropzone
         dropzoneConf: [
             {
                 template: 'imageCropTemplate',
@@ -42,13 +48,28 @@ export class ContactsModalConstants {
                 },
             },
         ],
+        dropzoneCustomWidth: '',
+        isVisibleCropAndDrop: true,
+
+        // Cropper
+        initialCropperPosition: {
+            x1: 0,
+            y1: 0,
+            x2: 184,
+            y2: 184,
+        },
+        containWithinAspectRatio: false,
+        aspectRatio: [1, 1],
+
+        // Review
         review: {
             isReview: true,
             reviewMode: 'REVIEW_MODE',
             feedbackText: 'Sample feedback text',
             categoryTag: 'General',
         },
-        configFile: {
+
+        fileOptionsConfig: {
             id: 111,
             customClassName: 'modals',
             file: {
@@ -75,7 +96,7 @@ export class ContactsModalConstants {
                 },
             ],
         },
-        size: 'medium',
+        size: FilesSizeEnum.MEDIUM,
         slideWidth: 180,
     };
 }

@@ -1,0 +1,1 @@
+export * from './settings-basic-modal-upload-files.config';

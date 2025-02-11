@@ -1003,77 +1003,7 @@
                                 [isCardOpen]="!!documents.length"
                             >
                                 <app-ca-upload-files
-                                    [files]="documents"
-                                    [slider]="{
-                                        dontUseSlider: false,
-                                        hasCarouselBottomTabs: true,
-                                    }"
-                                    [carouselConfig]="{
-                                        files: documents,
-                                        customClass: 'medium',
-                                        customDetailsPageClass: 'modals',
-                                        hasCarouselBottomTabs: true,
-                                    }"
-                                    [hasCrop]="false"
-                                    [dropzoneConf]="[
-                                        {
-                                            template: 'documentsTemplate',
-                                            config: {
-                                                dropzone: {
-                                                    dropZoneType: 'files',
-                                                    multiple: true,
-                                                    globalDropZone: false,
-                                                    dropZonePages: 'tools_todo',
-                                                },
-                                                dropzoneOption: {
-                                                    customClassName:
-                                                        'documents-dropzone',
-                                                    size: 'medium',
-                                                    modalSize: 'lg',
-                                                    showDropzone: true,
-                                                    filesLength: 2,
-                                                    isRequired: true,
-                                                    dropzoneClose: false,
-                                                },
-                                            },
-                                        },
-                                    ]"
-                                    [dropzoneCustomWidth]="'603px'"
-                                    [isVisibleCropAndDrop]="true"
-                                    [review]="{
-                                        isReview: false,
-                                        reviewMode: 'FEEDBACK_MODE',
-                                        feedbackText: 'Sample feedback text',
-                                        categoryTag: 'General',
-                                    }"
-                                    [configFile]="{
-                                        id: 111,
-                                        customClassName: 'modals',
-                                        file: {
-                                            url: '',
-                                            incorrect: false,
-                                            lastHovered: false,
-                                            fileSize: 1200,
-                                            fileName: '',
-                                        },
-                                        hasTagsDropdown: true,
-                                        hasNumberOfPages: true,
-                                        activePage: 1,
-                                        type: 'modal',
-                                        hasLandscapeOption: false,
-                                        tagsOptions: [
-                                            {
-                                                tagName: 'HOS Agreement',
-                                                checked: false,
-                                            },
-                                            {
-                                                tagName: 'Unsafe Driving AGT',
-                                                checked: false,
-                                            },
-                                        ],
-                                    }"
-                                    [size]="'medium'"
-                                    [slideWidth]="180"
+                                    [uploadFilesConfig]="uploadDocumentsFilesConfig"
                                     (onFileEvent)="onFilesEvent($event)"
                                 ></app-ca-upload-files>
                             </app-ta-custom-card>
@@ -1111,37 +1041,7 @@
                             [disableAnimation]="isCardAnimationDisabled"
                         >
                             <app-ca-upload-files
-                                [isVisibleCropAndDrop]="
-                                    uploadOptionsConstants.isVisibleCropAndDrop
-                                "
-                                [files]="uploadOptionsConstants.files"
-                                [slider]="uploadOptionsConstants.slider"
-                                [carouselConfig]="
-                                    uploadOptionsConstants.carouselConfig
-                                "
-                                [hasCrop]="uploadOptionsConstants.hasCrop"
-                                [isRoundCrop]="
-                                    uploadOptionsConstants.isRoundCrop
-                                "
-                                [containWithinAspectRatio]="
-                                    uploadOptionsConstants.containWithinAspectRatio
-                                "
-                                [aspectRatio]="
-                                    uploadOptionsConstants.aspectRatio
-                                "
-                                [initialCropperPosition]="
-                                    uploadOptionsConstants.initialCropperPosition
-                                "
-                                [dropzoneCustomWidth]="
-                                    uploadOptionsConstants.dropzoneCustomWidth
-                                "
-                                [dropzoneConf]="
-                                    uploadOptionsConstants.dropzoneConf
-                                "
-                                [review]="uploadOptionsConstants.review"
-                                [configFile]="uploadOptionsConstants.configFile"
-                                [size]="uploadOptionsConstants.size"
-                                [slideWidth]="uploadOptionsConstants.slideWidth"
+                                [uploadFilesConfig]="uploadProfilePictureFilesConfig"
                                 (onFileEvent)="onUploadImage($event)"
                             ></app-ca-upload-files>
                         </app-ta-custom-card>
