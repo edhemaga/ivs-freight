@@ -107,7 +107,15 @@
                     ></app-ca-input-dropdown>
                 }
 
-                @if (modalActionType === fuelDataOptionsStringEnum.ADD || fuelTransactionType?.id === eFuelTransactionType.Manual) {
+                @if (
+                    modalActionType === fuelDataOptionsStringEnum.ADD || 
+                    fuelTransactionType?.id === eFuelTransactionType.Manual || 
+                    (
+                        fuelTransactionType?.id !== eFuelTransactionType.Manual && 
+                        fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)?.value &&
+                        !fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)?.dirty
+                    )
+                ) {
                     <app-ca-input
                         formControlName="driverFullName"
                         [inputConfig]="
@@ -118,7 +126,7 @@
                 } @else {
                     <app-ca-input-dropdown
                         formControlName="driverFullName"
-                        [template]="'svgtext-template'"
+                        [template]="'load-dispatcher'"
                         [inputConfig]="
                             {
                                 configType: 'driverDropdownInputConfig',
@@ -263,6 +271,7 @@
                     fuelItems?.length
                 "
                 (onActionEvent)="addFuelItem()"
+                [disableMultipleReviews]="modalActionType === fuelDataOptionsStringEnum.EDIT && fuelTransactionType?.id !== eFuelTransactionType.Manual"
             >
                 <app-ta-modal-table
                     [tableType]="modalTableTypeEnum.REPAIR_BILL"
@@ -270,6 +279,8 @@
                     [modalTableData]="updatedFuelItems"
                     [isFuelTable]="true"
                     [fuelItemsDropdown]="fuelItemsDropdown"
+                    [fuelTransactionType]="fuelTransactionType"
+                    [fuelModalActionType]="modalActionType"
                     (modalTableValueEmitter)="handleModalTableValueEmit($event)"
                     (modalTableValidStatusEmitter)="
                         handleModalTableValidStatusEmit($event)
@@ -355,13 +366,19 @@
     <div class="modal-footer modal-footer-payroll">
         <div class="divider"></div>
         @if (editData?.type === 'edit') {
-            <div class="d-flex justify-content-between w-full">
-                <button
-                    class="modal-delete-btn ta-font-bold mr-12 valid"
-                    (click)="onModalAction(taModalActionEnum.DELETE)"
-                >
-                    Delete
-                </button>
+            <div 
+                class="d-flex w-full"
+                [ngClass]="fuelTransactionType?.id === eFuelTransactionType.Manual ? 'justify-content-between' : 'justify-content-end'"
+            >
+                @if (fuelTransactionType?.id === eFuelTransactionType.Manual) {
+                    <button
+                        class="modal-delete-btn ta-font-bold mr-12 valid"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
+                    >
+                        Delete
+                    </button>
+                }
+                
                 <button
                     class="modal-save-btn ta-font-bold"
                     (click)="onModalAction(taModalActionEnum.SAVE)"

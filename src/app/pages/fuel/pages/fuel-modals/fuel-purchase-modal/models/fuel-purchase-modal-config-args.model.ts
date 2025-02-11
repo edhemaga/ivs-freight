@@ -1,4 +1,5 @@
 // models
+import { PayrollDriver } from "@pages/accounting/pages/payroll/state/models";
 import { DriverFilterResponse } from "appcoretruckassist";
 
 export interface FuelPurchaseModalConfigPipeArgs {
@@ -7,7 +8,7 @@ export interface FuelPurchaseModalConfigPipeArgs {
     fuelTransactionTypeName?: string;
     fuelCardHolderName?: string;
     selectedTruckType?: { logoName: string; name: string };
-    selectedDriver?: DriverFilterResponse;
+    selectedDriver?: PayrollDriver;
     trailerId?: number;
     logoName?: string;
 }
