@@ -262,24 +262,20 @@
         </app-ca-filter-dropdown>
     }
 
-    <!-- CATEGORY REPAIR FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showCategoryRepairFilter"
-        [type]="'categoryRepairFilter'"
-        [icon]="'ic_key-repair'"
-        [filterTitle]="'Service Filter'"
-        [noLeftIcon]="false"
-        [leftSideIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [pmFilterArray]="categoryRepairArray"
-    >
-    </app-ca-filter>
+    <!-- PM FILTER -->
+    @if (options.toolbarActions.showCategoryRepairFilter) {
+        <app-ca-filter-dropdown
+            type="Service"
+            [list]="categoryRepairArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- CATEGORY FUEL FILTER -->
     @if (options.toolbarActions.showCategoryFuelFilter) {
         <app-ca-filter-dropdown
-            type="Pm"
+            type="FuelItem"
             [list]="categoryFuelArray"
             (setFilter)="onFilter($event)"
         >
