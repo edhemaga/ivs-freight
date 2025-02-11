@@ -155,17 +155,14 @@
     </app-ca-filter>
 
     <!-- FUEL STOP FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showFuelStopFilter"
-        [type]="'fuelStopFilter'"
-        [icon]="'fuel'"
-        [filterTitle]="'Fuel Stop Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [unselectedUser]="fuelStopArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showFuelStopFilter) {
+        <app-ca-filter-dropdown
+            type="FuelStop"
+            [list]="fuelStopArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- DEPARTMENT FILTER -->
     <app-ca-filter
