@@ -325,72 +325,52 @@
     }
 
     <!-- TRUCK TYPE FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showTruckTypeFilter"
-        [type]="'truckTypeFilter'"
-        [icon]="'truck'"
-        [filterTitle]="'Truck Type Filter'"
-        [noLeftIcon]="false"
-        [leftSideIcon]="true"
-        [largeLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [truckTypeArray]="truckTypeArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showTruckTypeFilter) {
+        <app-ca-filter-dropdown
+            type="TruckType"
+            [list]="truckTypeArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- TRAILER TYPE FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showTrailerTypeFilter"
-        [type]="'trailerTypeFilter'"
-        [icon]="'trailer'"
-        [filterTitle]="'Trailer Type Filter'"
-        [noLeftIcon]="false"
-        [leftSideIcon]="true"
-        [largeLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [trailerTypeArray]="trailerTypeArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showTrailerTypeFilter) {
+        <app-ca-filter-dropdown
+            type="TrailerType"
+            [list]="trailerTypeArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- TRUCK FILTER -->
-    <app-ca-filter
-        *ngIf="
-            options.toolbarActions.showTruckFilter ||
-            options.toolbarActions.showTruckPmFilter ||
-            options.toolbarActions.showTruckDispatchFilter
-        "
-        [type]="'truckTypeFilter'"
-        [icon]="'truck'"
-        [filterTitle]="'Truck Type Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isRepairFilter]="!!options.toolbarActions.showTruckPmFilter"
-        [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
-        [truckTypeArray]="truckTypeArray"
-    >
-    </app-ca-filter>
+    @if (
+        options.toolbarActions.showTruckFilter ||
+        options.toolbarActions.showTruckPmFilter ||
+        options.toolbarActions.showTruckDispatchFilter
+    ) {
+        <app-ca-filter-dropdown
+            type="TruckType"
+            [list]="truckTypeArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- TRAILER FILTER -->
-    <app-ca-filter
-        *ngIf="
-            options.toolbarActions.showTrailerFilter ||
-            options.toolbarActions.showTrailerPmFilter ||
-            options.toolbarActions.showTrailerDispatchFilter
-        "
-        [type]="'trailerTypeFilter'"
-        [icon]="'trailer'"
-        [filterTitle]="'Trailer Type Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
-        [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
-        [trailerTypeArray]="trailerTypeArray"
-    >
-    </app-ca-filter>
+    @if (
+        options.toolbarActions.showTrailerFilter ||
+        options.toolbarActions.showTrailerPmFilter ||
+        options.toolbarActions.showTrailerDispatchFilter
+    ) {
+        <app-ca-filter-dropdown
+            type="TrailerType"
+            [list]="trailerTypeArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- MONEY FILTER -->
     <app-ca-filter

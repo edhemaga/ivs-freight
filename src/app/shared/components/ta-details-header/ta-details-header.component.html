@@ -278,31 +278,27 @@
                             </span>
                         </ng-container>
 
-                        <ng-container *ngIf="truckTypeFilter">
+                        @if (truckTypeFilter) {
                             <span class="ic-hed">
-                                <app-ca-filter
-                                    [type]="'truckTypeFilter'"
-                                    [truckTypeArray]="truckTypeArray"
-                                    [filterTitle]="'Truck Type Filter'"
-                                    [icon]="'truck'"
-                                    (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                ></app-ca-filter>
+                                <app-ca-filter-dropdown
+                                    type="TruckType"
+                                    [list]="truckTypeArray"
+                                    (setFilter)="onFilter($event)"
+                                >
+                                </app-ca-filter-dropdown>
                             </span>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="trailerTypeFilter">
+                        @if (trailerTypeFilter) {
                             <span class="ic-hed">
-                                <app-ca-filter
-                                    [type]="'trailerTypeFilter'"
-                                    [trailerTypeArray]="trailerTypeArray"
-                                    [filterTitle]="'Trailer Type Filter'"
-                                    [icon]="'trailer'"
-                                    (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                ></app-ca-filter>
+                                <app-ca-filter-dropdown
+                                    type="TrailerType"
+                                    [list]="trailerTypeArray"
+                                    (setFilter)="onFilter($event)"
+                                >
+                                </app-ca-filter-dropdown>
                             </span>
-                        </ng-container>
+                        }
 
                         <ng-container *ngIf="pickupFilter">
                             <span class="ic-hed">
