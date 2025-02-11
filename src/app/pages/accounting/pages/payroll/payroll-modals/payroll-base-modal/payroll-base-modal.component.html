@@ -140,35 +140,37 @@
 </app-ca-modal>
 
 <ng-template #rightModalContent>
-    <ng-container *ngIf="isEditMode">
+    <div class="d-flex gap-1 align-items-center">
+        @if (isEditMode) {
+            <div
+                ngbTooltip
+                mainTooltip="Added    {{
+                    editData?.data?.createdAt | formatDateP
+                }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+                tooltipBackground="#424242"
+                position="bottom"
+                class="d-flex justify-content-center align-items-center modal-close-container"
+            >
+                <svg-icon
+                    [src]="svgRoutes.dateIcon"
+                    class="modal-close svg-size-16 svg-fill-muted modal-buttons"
+                ></svg-icon>
+            </div>
+            <div class="modal-date-border"></div>
+        }
         <div
+            class="d-flex justify-content-center align-items-center modal-close-container"
             ngbTooltip
-            mainTooltip="Added    {{
-                editData?.data?.createdAt | formatDateP
-            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            mainTooltip="Cancel"
             tooltipBackground="#424242"
             position="bottom"
-            class="modal-date-logo"
+            (click)="onCloseModal()"
         >
             <svg-icon
-                [src]="svgRoutes.dateIcon"
-                class="modal-buttons"
+                class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+                [src]="svgRoutes.closeIcon"
             ></svg-icon>
         </div>
-        <div class="modal-date-border"></div>
-    </ng-container>
-    <div
-        class="d-flex justify-content-center align-items-center modal-close-container"
-        ngbTooltip
-        mainTooltip="Cancel"
-        tooltipBackground="#424242"
-        position="bottom"
-        (click)="onCloseModal()"
-    >
-        <svg-icon
-            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
-            [src]="svgRoutes.closeIcon"
-        ></svg-icon>
     </div>
 </ng-template>
 
