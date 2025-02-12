@@ -22,23 +22,17 @@
     <div class="divider"></div>
 
     <ng-container *ngIf="!isEditing">
-        <div
-            class="d-flex align-self-start accident-detail"
-        >
-            <p class="m-0 ta-font-extra-bold">
-                Accident Detail
-            </p>
+        <div class="d-flex align-self-start accident-detail">
+            <p class="m-0 ta-font-extra-bold">Accident Detail</p>
         </div>
     </ng-container>
 
     <div class="d-flex flex-column step-form" [formGroup]="accidentForm">
-        <div
-            class="d-flex line-container"
-        >
+        <div class="d-flex line-container">
             <div
                 class="group location-group"
                 [ngStyle]="{
-                    'margin-right': isEditing ? '8px' : '12px'
+                    'margin-right': isEditing ? '8px' : '12px',
                 }"
             >
                 <app-ta-input-address-dropdown
@@ -48,19 +42,16 @@
                     [activeAddress]="selectedAddress"
                     [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
                     (incorrectEvent)="incorrectInput($event, 0, 10)"
-                    (selectedAddress)="
-                        handleInputSelect($event, 'ADDRESS')
-                    "
+                    (selectedAddress)="handleInputSelect($event, 'ADDRESS')"
                 ></app-ta-input-address-dropdown>
             </div>
 
             <div class="group date-group">
-                <app-ta-input
+                <ca-input-datetime-picker
                     formControlName="date"
                     [inputConfig]="dateInputConfig"
-                    [incorrectValue]="openAnnotationArray[10].lineInputs[1]"
                     (incorrectEvent)="incorrectInput($event, 1, 10)"
-                ></app-ta-input>
+                ></ca-input-datetime-picker>
             </div>
 
             <!-- REVIEW AND FEEDBACK -->
@@ -97,14 +88,12 @@
 
         <!-- FATALITIES, INJURIES, HAZMAT SPILL -->
 
-        <div
-            class="d-flex justify-content-between"
-        >
+        <div class="d-flex justify-content-between">
             <div class="d-flex align-items-center fatalities-injuries-group">
-                <div 
+                <div
                     class="d-flex align-items-center fatalities-group"
                     [ngStyle]="{
-                        'margin-right': isEditing ? '8px' : '12px'
+                        'margin-right': isEditing ? '8px' : '12px',
                     }"
                 >
                     <app-ta-input
@@ -113,10 +102,10 @@
                     ></app-ta-input>
                 </div>
 
-                <div 
+                <div
                     class="d-flex align-items-center injuries-group"
                     [ngStyle]="{
-                        'margin-right': isEditing ? '8px' : '12px'
+                        'margin-right': isEditing ? '8px' : '12px',
                     }"
                 >
                     <app-ta-input
@@ -125,25 +114,19 @@
                     ></app-ta-input>
                 </div>
 
-                <div 
-                    class="d-flex align-items-center fatalities-group"
-                >
+                <div class="d-flex align-items-center fatalities-group">
                     <app-ta-input
                         formControlName="fatalities"
                         [inputConfig]="fatalityInputConfig"
                     ></app-ta-input>
                 </div>
-
-
             </div>
 
             <div
                 class="d-flex align-items-center justify-content-between group hazmat-spill-group"
             >
                 <div class="d-flex flex-column title-box">
-                    <p
-                        class="m-0 ta-font-medium"
-                    >
+                    <p class="m-0 ta-font-medium">
                         Hazmat spill
                         <span class="required">*</span>
                     </p>
@@ -167,13 +150,11 @@
 
         <!-- TRUCK TYPE, DESCRIPTION -->
 
-        <div
-            class="d-flex line-container"
-        >
+        <div class="d-flex line-container">
             <div
                 class="group truck-type-group"
                 [ngStyle]="{
-                    'margin-right': isEditing ? '8px' : '12px'
+                    'margin-right': isEditing ? '8px' : '12px',
                 }"
             >
                 <app-ta-input-dropdown
@@ -185,9 +166,7 @@
                     (selectedItem)="handleInputSelect($event, 'TRUCK-TYPE')"
                 ></app-ta-input-dropdown>
             </div>
-            <div
-                class="group description-group"
-            >
+            <div class="group description-group">
                 <app-ta-input
                     formControlName="description"
                     [inputConfig]="descriptionInputConfig"
@@ -234,7 +213,7 @@
             [ngStyle]="{
                 'padding-top': isEditing ? '12px' : 0,
                 margin: isEditing ? '0 4px 0 4px' : '10px 0 0 0',
-                'border-top': isEditing ? '1px solid #DADADA' : 0
+                'border-top': isEditing ? '1px solid #DADADA' : 0,
             }"
         >
             <ng-container
@@ -246,7 +225,7 @@
                     <h5 class="m-0 ta-font-extra-bold accident-title">
                         List any additional accidents in past 3 years
                     </h5>
-                
+
                     <app-applicant-add-save-btn
                         [addBtn]="true"
                         [sizeSmall]="true"
