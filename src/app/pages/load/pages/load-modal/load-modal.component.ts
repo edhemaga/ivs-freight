@@ -98,18 +98,15 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // models
 import {
     SignInResponse,
-    LoadModalResponse,
     RoutingResponse,
     LoadStopCommand,
     LoadType,
     LoadResponse,
     EnumValue,
-    LoadStatus,
     ShipperContactGroupResponse,
     BrokerContactGroupResponse,
     TruckTypeResponse,
@@ -202,7 +199,6 @@ import {
         TaModalTableComponent,
         CaMapComponent,
         CaInputDropdownComponent,
-        CaInputComponent,
         CaInputDatetimePickerComponent,
         InputTestComponent,
 
