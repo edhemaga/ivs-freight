@@ -22,18 +22,38 @@
                 >
                     <div
                         class="d-flex justify-content-center align-items-center table-item-number"
+                        [ngClass]="{
+                            'table-item-repair':
+                            (isFuelTransactionTable &&
+                                fuelTransactionType?.id ===
+                                    fuelTransactionTypeEnum.Manual) ||
+                            (isFuelTransactionTable &&
+                                fuelModalActionType ===
+                                    fuelDataOptionsStringEnum.ADD) ||
+                            !isFuelTransactionTable
+                        }"
                     >
                         <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
-                        <svg-icon
-                            class="delete-icon"
-                            [src]="svgRoutes.deleteIcon"
-                            [svgStyle]="{
-                                'width.px': 18,
-                                'height.px': 18,
-                            }"
-                            (click)="emitDeleteFormArrayRowClick(i)"
-                        ></svg-icon>
+                        @if (
+                            (isFuelTransactionTable &&
+                                fuelTransactionType?.id ===
+                                    fuelTransactionTypeEnum.Manual) ||
+                            (isFuelTransactionTable &&
+                                fuelModalActionType ===
+                                    fuelDataOptionsStringEnum.ADD) ||
+                            !isFuelTransactionTable
+                        ) {
+                            <svg-icon
+                                class="delete-icon"
+                                [src]="svgRoutes.deleteIcon"
+                                [svgStyle]="{
+                                    'width.px': 18,
+                                    'height.px': 18,
+                                }"
+                                (click)="emitDeleteFormArrayRowClick(i)"
+                            ></svg-icon>
+                        }
                     </div>
 
                     @if (!isFuelTransactionTable) {
@@ -113,6 +133,12 @@
                                 type: 'text',
                                 label: 'Item',
                                 isDropdown: true,
+                                isDisabled:
+                                    isFuelTransactionTable &&
+                                    fuelTransactionType?.id !==
+                                        fuelTransactionTypeEnum.Manual &&
+                                    fuelModalActionType ===
+                                        fuelDataOptionsStringEnum.EDIT,
                                 placeholderInsteadOfLabel: true,
                                 blackInput: true,
                                 isRequired: true,
@@ -148,6 +174,12 @@
                             minLength: 5,
                             maxLength: 64,
                             isRequired: true,
+                            isDisabled:
+                                isFuelTransactionTable &&
+                                fuelTransactionType?.id !==
+                                    fuelTransactionTypeEnum.Manual &&
+                                fuelModalActionType ===
+                                    fuelDataOptionsStringEnum.EDIT,
                             hideErrorMessage: true,
                             hideRequiredCheck: true,
                             priceSeparator: true,
@@ -179,6 +211,12 @@
                                 minLength: 5,
                                 maxLength: 64,
                                 isRequired: true,
+                                isDisabled:
+                                    isFuelTransactionTable &&
+                                    fuelTransactionType?.id !==
+                                        fuelTransactionTypeEnum.Manual &&
+                                    fuelModalActionType ===
+                                        fuelDataOptionsStringEnum.EDIT,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 priceSeparator: true,

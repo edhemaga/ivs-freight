@@ -15,6 +15,8 @@ import { CaInputDropdownComponent, CaInputComponent } from 'ca-components';
 // enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 import { EnumValue } from 'appcoretruckassist';
+import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
+import { FuelDataOptionsStringEnum } from '@pages/fuel/enums';
 
 // models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
@@ -49,6 +51,8 @@ export class TaModalTableRepairComponent {
     @Input() isFuelTransactionTable: boolean;
     @Input() fuelItemsDropdown: EnumValue[];
     @Input() activeFuelItem: EnumValue[] = [];
+    @Input() fuelTransactionType: eFuelTransactionType;
+    @Input() fuelModalActionType: FuelDataOptionsStringEnum;
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -74,6 +78,8 @@ export class TaModalTableRepairComponent {
     }
 
     public svgRoutes = ModalTableSvgRoutes;
+    public fuelTransactionTypeEnum = eFuelTransactionType;
+    public fuelDataOptionsStringEnum = FuelDataOptionsStringEnum;
 
     constructor() {}
 
