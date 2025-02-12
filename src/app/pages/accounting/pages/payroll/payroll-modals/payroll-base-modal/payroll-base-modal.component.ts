@@ -210,7 +210,7 @@ export class PayrollBaseModalComponent implements OnInit {
             .get(PayrollStringEnum.LIMITED_AMOUNT)
             .patchValue(
                 MethodsCalculationsHelper.convertNumberInThousandSep(
-                    Number((ammount / numberOfPayments).toFixed(2))
+                    Number((amount / numberOfPayments).toFixed(2))
                 ) ?? null
             );
     }
