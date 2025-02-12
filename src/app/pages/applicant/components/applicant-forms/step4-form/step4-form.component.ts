@@ -74,6 +74,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputRadiobuttonsComponent } from '@shared/components/ta-input-radiobuttons/ta-input-radiobuttons.component';
 import { TaInputArrowsComponent } from '@shared/components/ta-input-arrows/ta-input-arrows.component';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -81,7 +82,6 @@ import { SharedModule } from '@shared/shared.module';
 
 // configs
 import { Step4FormConfig } from '@pages/applicant/components/applicant-forms/step4-form/config/step4-form.config';
-import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-step4-form',

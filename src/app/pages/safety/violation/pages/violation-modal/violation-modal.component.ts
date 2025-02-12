@@ -41,6 +41,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -51,7 +52,6 @@ import {
     RoadsideInspectionResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-violation-modal',

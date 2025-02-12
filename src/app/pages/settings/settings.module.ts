@@ -16,10 +16,10 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaUploadFilesNoSliderComponent } from '@shared/components/ta-upload-files-no-slider/ta-upload-files-no-slider.component';
+import { InputTestComponent } from 'ca-components';
 
 // pipe
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
-import { InputTestComponent } from 'ca-components';
 
 @NgModule({
     imports: [
