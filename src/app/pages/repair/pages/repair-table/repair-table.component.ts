@@ -29,6 +29,8 @@ import {
     IMapSelectedMarkerData,
     SortColumn,
     MapMarkerIconService,
+    IMapPagination,
+    IMapBounds,
 } from 'ca-components';
 
 // base classes
@@ -178,18 +180,12 @@ export class RepairTableComponent
     public mapListData: MapList[] = [];
     public mapData: ICaMapProps = RepairShopMapConfig.repairShopMapConfig;
 
-    public mapListPagination: { pageIndex: number; pageSize: number } =
+    public mapListPagination: IMapPagination =
         RepairShopMapConfig.repairShopMapListPagination;
-    public mapClustersPagination: { pageIndex: number; pageSize: number } =
+    public mapClustersPagination: IMapPagination =
         RepairShopMapConfig.repairShopMapListPagination;
 
-    public mapClustersObject: {
-        northEastLatitude: number;
-        northEastLongitude: number;
-        southWestLatitude: number;
-        southWestLongitude: number;
-        zoomLevel: number;
-    } = null;
+    public mapClustersObject: IMapBounds = null;
 
     public mapListSearchValue: string | null = null;
     public mapListSortDirection: string | null = null;
