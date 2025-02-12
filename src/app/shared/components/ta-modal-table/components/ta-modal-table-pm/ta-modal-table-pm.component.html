@@ -28,7 +28,7 @@
                             [src]="svgRoutes.deleteIcon"
                             [svgStyle]="{
                                 'width.px': 18,
-                                'height.px': 18
+                                'height.px': 18,
                             }"
                             (click)="emitDeleteFormArrayRowClick(i)"
                         ></svg-icon>
@@ -72,14 +72,14 @@
                                       activePmDropdownItem[i]?.logoName
                                     : '',
                                 nameInitialsInsteadUrl: false,
-                                template: 'pm'
+                                template: 'pm',
                             },
                             blackInput: true,
                             isRequired: true,
                             textTransform: 'capitalize',
                             dropdownWidthClass: 'w-col-260',
                             customClass: 'w-col-218',
-                            autocomplete: 'off'
+                            autocomplete: 'off',
                         }"
                         [options]="
                             isPMTruckTable ? pmTruckOptions : pmTrailerOptions
@@ -100,23 +100,23 @@
                             blueCommands: true,
                             firstCommand: {
                                 name: 'decrement',
-                                svg: 'assets/svg/common/ic_pm_decrement.svg'
+                                svg: 'assets/svg/common/ic_pm_decrement.svg',
                             },
                             secondCommand: {
                                 name: 'increment',
-                                svg: 'assets/svg/common/ic_pm_increment.svg'
+                                svg: 'assets/svg/common/ic_pm_increment.svg',
                             },
                             thirdCommand: {
                                 name: 'reset',
-                                svg: 'assets/svg/common/ic_input_reset.svg'
-                            }
+                                svg: 'assets/svg/common/ic_input_reset.svg',
+                            },
                         },
                         thousandSeparator: true,
                         hideErrorMessage: true,
                         blueInput: true,
                         hideRequiredCheck: true,
                         maxLength: isPMTruckTable ? 999999999 : 2,
-                        defaultValue: pmItemRow.value.defaultMileage
+                        defaultValue: pmItemRow.value.defaultMileage,
                     }"
                 ></app-ca-input>
             </div>

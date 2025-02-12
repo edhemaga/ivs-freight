@@ -81,6 +81,7 @@ import {
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalButtonComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -147,6 +148,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         TaModalTableComponent,
         TaAppTooltipV2Component,
         CaModalButtonComponent,
+        CaInputDatetimePickerComponent,
 
         // Pipe
         ActiveItemsPipe,

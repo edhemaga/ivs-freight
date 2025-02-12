@@ -31,6 +31,7 @@ import {
     CaUploadFilesComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // helpers
@@ -88,6 +89,7 @@ import { FormatDatePipe } from '@shared/pipes';
         CaUploadFilesComponent,
         CaInputNoteComponent,
         CaModalButtonComponent,
+        CaInputDatetimePickerComponent,
 
         FormatDatePipe,
     ],
