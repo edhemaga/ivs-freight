@@ -33,6 +33,8 @@ export enum ESettingsFormEnum {
     INSURANCE_EMAIL = 'insuranceEmail',
     INSURANCE_PHONE = 'insurancePhone',
 
+    REEFER_BREAKDOWN = 'reeferBreakdown',
+
     ISSUED = 'issued',
     EXPIRES = 'expires',
 

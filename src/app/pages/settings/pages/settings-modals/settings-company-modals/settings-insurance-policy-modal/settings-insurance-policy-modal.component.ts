@@ -1137,24 +1137,24 @@ export class SettingsInsurancePolicyModalComponent
                     case ESettingsFormEnum.MOTOR_TRUCK_CARGO_BREAKDOWN:
                         this.idMotor = insur.id;
                         this.insurancePolicyForm
-                            .get('motorTruckCargo')
+                            .get(ESettingsFormEnum.MOTOR_TRUCK_CARGO)
                             .patchValue(true);
                         this.insurancePolicyForm
-                            .get('reeferBreakdown')
+                            .get(ESettingsFormEnum.REEFER_BREAKDOWN)
                             .patchValue(true);
                         this.insurancePolicyForm
-                            .get('motorPolicy')
+                            .get(ESettingsFormEnum.MOTOR_POLICY)
                             .patchValue(insur.policy);
                         this.insurancePolicyForm
-                            .get('motorInsurerName')
+                            .get(ESettingsFormEnum.MOTOR_INSURER_NAME)
                             .patchValue(insur.insurerName);
                         this.insurancePolicyForm
-                            .get('motorRating')
+                            .get(ESettingsFormEnum.MOTOR_RATING)
                             .patchValue(
                                 insur.rating ? insur.rating.name : null
                             );
                         this.insurancePolicyForm
-                            .get('motorConveyance')
+                            .get(ESettingsFormEnum.MOTOR_CONVEYANCE)
                             .patchValue(
                                 insur.singleConveyance
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1163,7 +1163,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('motorDeductable')
+                            .get(ESettingsFormEnum.MOTOR_DEDUCTIBLE)
                             .patchValue(
                                 insur.deductable
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1171,10 +1171,8 @@ export class SettingsInsurancePolicyModalComponent
                                       )
                                     : null
                             );
-
                         this.selectedMotorRating = insur.rating;
                         break;
-
                     case ESettingsFormEnum.PHYSICAL_DAMAGE_WITH_WHITESPACE:
                         this.idTrailerInterchange = insur.id;
                         this.insurancePolicyForm
