@@ -62,8 +62,8 @@ import {
 // utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
-// Const
-import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+// config
+import { NavigationDataUploadFilesConfig } from '@core/components/navigation/utils/config';
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
@@ -74,6 +74,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
 
 @Component({
     selector: 'app-navigation-profile-update-modal',
@@ -108,7 +109,7 @@ export class NavigationProfileUpdateModalComponent
 {
     public destroy$ = new Subject<void>();
 
-    public uploadOptionsConstants = NavigationDataConstants.UPLOAD_OPTIONS;
+    public uploadFilesConfig = NavigationDataUploadFilesConfig.NAVIGATION_PROFILE_UPLOAD_FILES_CONFIG;
 
     private user: SignInResponse;
 

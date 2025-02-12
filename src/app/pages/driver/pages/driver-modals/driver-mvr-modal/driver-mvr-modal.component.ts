@@ -37,6 +37,7 @@ import {
     CaModalButtonComponent,
     CaInputDatetimePickerComponent,
 } from 'ca-components';
+
 // enums
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { ModalButtonType, ModalButtonSize } from '@shared/enums';
@@ -46,11 +47,15 @@ import { EditData } from '@shared/models/edit-data.model';
 import { ExtendedCdlMinimalResponse } from '@pages/driver/pages/driver-modals/driver-mvr-modal/models/extended-cdl-minimal-response.model';
 import { MvrResponse } from 'appcoretruckassist';
 
+// constants
+import { DriverMvrModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-mvr-modal/utils/config';
+
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 
 @Component({
     selector: 'app-driver-mvr-modal',
@@ -104,6 +109,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
     public svgRoutes = SharedSvgRoutes;
+    public uploadFilesConfig = DriverMvrModalUploadFilesConfig.DRIVER_MVR_MODAL_UPLOAD_FILES_CONFIG;
 
     private isAddNewCdl: boolean = false;
     public modalButtonType = ModalButtonType;
