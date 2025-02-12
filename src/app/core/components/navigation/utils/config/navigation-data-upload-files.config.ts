@@ -5,7 +5,7 @@ import { FilesSizeEnum } from 'ca-components';
 import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
 
 export class NavigationDataUploadFilesConfig {
-    static NAVIGATION_PROFIL_UPLOAD_FILES_CONFIG: IUploadFilesConfig = {
+    static NAVIGATION_PROFILE_UPLOAD_FILES_CONFIG: IUploadFilesConfig = {
         //Files
         files:[],
         

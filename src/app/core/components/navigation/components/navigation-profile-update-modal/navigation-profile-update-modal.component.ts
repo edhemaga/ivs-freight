@@ -109,7 +109,7 @@ export class NavigationProfileUpdateModalComponent
 {
     public destroy$ = new Subject<void>();
 
-    public uploadFilesConfig = NavigationDataUploadFilesConfig.NAVIGATION_PROFIL_UPLOAD_FILES_CONFIG;
+    public uploadFilesConfig = NavigationDataUploadFilesConfig.NAVIGATION_PROFILE_UPLOAD_FILES_CONFIG;
 
     private user: SignInResponse;
 
