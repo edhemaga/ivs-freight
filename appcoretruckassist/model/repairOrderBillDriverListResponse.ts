@@ -9,17 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { RepairDriverResponse } from './repairDriverResponse';
 
 
-export interface UpdateFactoringCompanyCommand { 
-    companyId?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    address?: AddressEntity;
-    noticeOfAssigment?: string | null;
-    note?: string | null;
-    poBox?: string | null;
+export interface RepairOrderBillDriverListResponse { 
+    drivers?: Array<RepairDriverResponse> | null;
+    isTeamDrivers?: boolean;
+    isDispatchDriver?: boolean;
 }
 

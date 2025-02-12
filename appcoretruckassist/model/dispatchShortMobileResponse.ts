@@ -9,17 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { TruckMinimalResponse } from './truckMinimalResponse';
+import { TrailerMinimalResponse } from './trailerMinimalResponse';
 
 
-export interface UpdateFactoringCompanyCommand { 
-    companyId?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    address?: AddressEntity;
-    noticeOfAssigment?: string | null;
-    note?: string | null;
-    poBox?: string | null;
+export interface DispatchShortMobileResponse { 
+    id?: number;
+    dispatchBoardId?: number;
+    dispatcherId?: number | null;
+    truck?: TruckMinimalResponse;
+    trailer?: TrailerMinimalResponse;
 }
 

@@ -9,17 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface UpdateFactoringCompanyCommand { 
-    companyId?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    address?: AddressEntity;
-    noticeOfAssigment?: string | null;
-    note?: string | null;
-    poBox?: string | null;
+export interface LoadStopMobileShortResponse { 
+    count?: number;
+    location?: string | null;
+    date?: string;
 }
 
