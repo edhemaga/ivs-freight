@@ -1,0 +1,1 @@
+export * from './driver-mvr-modal-upload-files.config';

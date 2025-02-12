@@ -27,7 +27,7 @@
     .row {
         margin-bottom: 32px !important;
 
-        & > * { 
+        & > * {
             padding: 0px;
         }
     }
@@ -708,6 +708,7 @@
 
         &.inactive {
             background: $bw2;
+            cursor: auto;
 
             svg-icon {
                 svg {
@@ -719,22 +720,6 @@
 
             p {
                 color: $bw6-2;
-            }
-
-            &:hover {
-                background: $ta-blue-22;
-
-                svg-icon {
-                    svg {
-                        path {
-                            fill: $ta-blue-15;
-                        }
-                    }
-                }
-
-                p {
-                    color: $ta-blue-15;
-                }
             }
         }
 

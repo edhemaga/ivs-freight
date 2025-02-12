@@ -39,6 +39,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // enums
 import { DriverDrugAlcoholTestModalStringEnum } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/enums/driver-drug-alcohol-test-modal-string.enum';
+import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
 // models
 import { EnumValue, TestResponse } from 'appcoretruckassist';
@@ -50,8 +51,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
 
-// Enums
-import { ModalButtonType, ModalButtonSize } from '@shared/enums';
+// config
+import { DrugAlcoholTestModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/utils/config';
+
 
 @Component({
     selector: 'app-driver-drug-alcohol-test-modal',
@@ -118,6 +120,8 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
     public modalButtonSize = ModalButtonSize;
     public activeAction!: string;
     public taModalActionEnum = DriverDrugAlcoholTestModalStringEnum;
+
+    public uploadFilesConfig = DrugAlcoholTestModalUploadFilesConfig.DRUG_ALCOHOL_TEST_MODAL_UPLOAD_FILES_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

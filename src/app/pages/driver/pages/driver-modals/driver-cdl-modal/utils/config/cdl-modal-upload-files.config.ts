@@ -1,10 +1,18 @@
-export class ContactsModalConstants {
-    static UPLOAD_OPTIONS = {
-        isVisibleCropAndDrop: true,
-        files: [],
+//enums
+import { FilesSizeEnum } from 'ca-components';
+
+//models
+import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
+
+export class CdlModalUploadFilesConfig {
+    static CDL_MODAL_UPLOAD_FILES_CONFIG: IUploadFilesConfig = {
+        //Files
+        files:[],
+        
+        // Carousel
         slider: {
             dontUseSlider: false,
-            hasCarouselBottomTabs: false,
+            hasCarouselBottomTabs: true,
         },
         carouselConfig: {
             files: [],
@@ -12,43 +20,58 @@ export class ContactsModalConstants {
             customDetailsPageClass: 'modals',
             hasCarouselBottomTabs: true,
         },
-        hasCrop: true,
-        isRoundCrop: true,
-        containWithinAspectRatio: false,
-        aspectRatio: [1, 1],
-        initialCropperPosition: {
-            x1: 0,
-            y1: 0,
-            x2: 184,
-            y2: 184,
-        },
+        hasCrop: false,
+        isRoundCrop: false,
+        hasBlobUrl: false,
+
+        // Tags
+        onlyOneTagFile: false,
+
+        // Dropzone
         dropzoneConf: [
             {
-                template: 'imageCropTemplate',
+                template: 'documentsTemplate',
                 config: {
                     dropzone: {
-                        dropZoneType: 'image',
+                        dropZoneType: 'files',
                         multiple: true,
                         globalDropZone: false,
-                        dropZonePages: 'cdl',
+                        dropZonePages: 'tools_todo',
                     },
                     dropzoneOption: {
                         customClassName: 'documents-dropzone',
                         size: 'medium',
                         modalSize: 'lg',
                         showDropzone: true,
+                        filesLength: 2,
+                        isRequired: true,
                         dropzoneClose: false,
                     },
                 },
             },
         ],
+        dropzoneCustomWidth: '',
+        isVisibleCropAndDrop: true,
+
+        // Cropper
+        initialCropperPosition: {
+            x1: 0,
+            y1: 0,
+            x2: 184,
+            y2: 184,
+        },
+        containWithinAspectRatio: false,
+        aspectRatio: [1, 1],
+
+        // Review
         review: {
-            isReview: true,
-            reviewMode: 'REVIEW_MODE',
+            isReview: false,
+            reviewMode: 'FEEDBACK_MODE',
             feedbackText: 'Sample feedback text',
             categoryTag: 'General',
         },
-        configFile: {
+
+        fileOptionsConfig: {
             id: 111,
             customClassName: 'modals',
             file: {
@@ -58,24 +81,17 @@ export class ContactsModalConstants {
                 fileSize: 1200,
                 fileName: '',
             },
-            hasTagsDropdown: false,
+            hasTagsDropdown: true,
             hasNumberOfPages: true,
             activePage: 1,
-            tags: ['Example'],
             type: 'modal',
             hasLandscapeOption: false,
             tagsOptions: [
-                {
-                    tagName: 'HOS Agreement',
-                    checked: false,
-                },
-                {
-                    tagName: 'Unsafe Driving AGT',
-                    checked: false,
-                },
+                { tagName: 'HOS Agreement', checked: false },
+                { tagName: 'Unsafe Driving AGT', checked: false },
             ],
         },
-        size: 'medium',
+        size: FilesSizeEnum.MEDIUM,
         slideWidth: 180,
     };
 }

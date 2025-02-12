@@ -100,6 +100,8 @@ export enum DropdownMenuStringEnum {
     ALL_TRANSACTIONS_TYPE = 'all-transactions',
     SUGGEST_EDIT_TYPE = 'suggest-edit',
     ADD_TRANSACTION_TYPE = 'add-transaction',
+    RATING_LIKE_TYPE = 'rating-like',
+    RATING_DISLIKE_TYPE = 'rating-dislike',
     CREATE_LOAD_TYPE = 'create-new-load',
     CREATE_TEMPLATE_TYPE = 'create-template-from-load',
     EXPORT_BATH_TYPE = 'export-batch',

@@ -11,13 +11,15 @@
         grid-template-columns: 26px 306px 26px 60px 90px 88px;
     }
 
-    &.fuel-table {
+    &.fuel-transaction-table {
         .table-item {
             grid-template-columns: 26px 182px 80px 60px 90px 88px;
         }
     }
 
     .pm-dropdown-container {
+        margin-left: 2px;
+
         &.hidden-pm-dropdown {
             cursor: pointer;
             pointer-events: none;
