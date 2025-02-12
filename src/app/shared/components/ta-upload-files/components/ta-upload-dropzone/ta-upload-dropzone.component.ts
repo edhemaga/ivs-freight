@@ -22,7 +22,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { dropzoneDefaultConfig } from '@shared/components/ta-upload-files/configs/dropzone-default.config';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { EFileFormControls, EGeneralActions } from '@shared/enums';
 
 // FILES: assets/svg/common/ic_modal_upload_dropzone.svg
 // IMAGE: image/gif, image/jpeg, image/jpg, image/png
@@ -85,6 +85,9 @@ export class TaUploadDropzoneComponent {
     public supportedExtensions: string[] = [];
 
     public _dropZoneConfig: DropZoneConfig;
+
+    // enums
+    public EFileFormControls = EFileFormControls;
 
     @HostListener('body:dragleave', ['$event'])
     onDragLeaveWindows(e) {
