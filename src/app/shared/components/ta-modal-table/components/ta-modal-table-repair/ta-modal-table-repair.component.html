@@ -73,7 +73,7 @@
                                     !truckTrailerRepairPmOptions?.trailerPmDropdownList,
                             }"
                         >
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="pm"
                                 [template]="'svgtext-template'"
                                 [inputConfig]="{
@@ -103,7 +103,7 @@
                                     truckTrailerRepairPmOptions?.trailerPmDropdownList
                                 "
                                 (selectedItem)="emitOnSelectDropdown($event, i)"
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
                         </div>
                     } @else {
                         <app-ca-input-dropdown

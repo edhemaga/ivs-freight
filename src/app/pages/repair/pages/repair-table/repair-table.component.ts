@@ -1465,7 +1465,7 @@ export class RepairTableComponent
                 TableStringEnum.DATE_FORMAT
             ),
             tableAttachments: files,
-            fileCount: fileCount,
+            fileCount,
             tableDropdownContent: this.getRepairDropdownContent(
                 repairType?.name
             ),
