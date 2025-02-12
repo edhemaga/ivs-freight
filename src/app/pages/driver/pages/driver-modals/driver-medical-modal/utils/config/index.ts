@@ -1,0 +1,1 @@
+export * from './medical-modal-upload-files.config';

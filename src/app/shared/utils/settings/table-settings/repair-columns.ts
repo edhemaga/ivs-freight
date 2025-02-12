@@ -1,5 +1,5 @@
-import { RepairShopSortBy } from "appcoretruckassist/model/repairShopSortBy";
-import { RepairSortBy } from "appcoretruckassist/model/repairSortBy";
+import { RepairShopSortBy } from 'appcoretruckassist/model/repairShopSortBy';
+import { RepairSortBy } from 'appcoretruckassist/model/repairSortBy';
 
 export function getRepairTruckAndTrailerColumnDefinition() {
     return [
@@ -744,7 +744,7 @@ export function getRepairShopColumnDefinition() {
             ngTemplate: 'service',
             title: 'Services',
             field: 'tableShopServices',
-            name: 'Services', 
+            name: 'Services',
             hidden: false,
             isPined: false,
             width: 258,
@@ -841,7 +841,7 @@ export function getRepairShopColumnDefinition() {
             ngTemplate: 'text',
             title: 'Name ',
             field: 'tableBankDetailsBankName',
-            name: 'Bank Name',
+            name: 'Name',
             groupName: 'Bank Detail ',
             sortName: RepairShopSortBy.Bank,
             hidden: true,
@@ -890,7 +890,7 @@ export function getRepairShopColumnDefinition() {
             title: 'Account',
             field: 'tableBankDetailsAccount',
             name: 'Account',
-            groupName: 'Bank Detail ', 
+            groupName: 'Bank Detail ',
             hidden: true,
             isPined: false,
             width: 138,

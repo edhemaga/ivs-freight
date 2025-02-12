@@ -8,19 +8,28 @@ export class ModalTableConstants {
 
     static EMAIL_TABLE_HEADER_ITEMS: string[] = ['#', 'EMAIL', 'TYPE'];
 
-    static REPAIR_BILL_TABLE_HEADER_ITEMS = (isFuelTable: boolean) => {
-        if (isFuelTable) {
-            return ['#', 'ITEM', 'QTY', 'PRICE', 'SUBTOTAL'];
-        }
-
-        return ['#', 'DESCRIPTION', 'PM', 'QTY', 'PRICE', 'SUBTOTAL'];
-    };
+    static REPAIR_BILL_TABLE_HEADER_ITEMS = [
+        '#',
+        'DESCRIPTION',
+        'PM',
+        'QTY',
+        'PRICE',
+        'SUBTOTAL',
+    ];
 
     static REPAIR_ORDER_TABLE_HEADER_ITEMS: string[] = [
         '#',
         'DESCRIPTION',
         'PM',
         'QTY',
+    ];
+
+    static FUEL_TABLE_HEADER_ITEMS: string[] = [
+        '#',
+        'ITEM',
+        'QTY',
+        'PRICE',
+        'SUBTOTAL',
     ];
 
     static CONTACT_TABLE_HEADER_ITEMS: string[] = [
@@ -94,6 +103,11 @@ export class ModalTableConstants {
     static IS_INPUT_HOVER_ROW_EMAIL: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_REPAIR_BILL: boolean[] = [false, false, false];
     static IS_INPUT_HOVER_ROW_REPAIR_ORDER: boolean[] = [false, false];
+    static IS_INPUT_HOVER_ROW_FUEL_TRANSACTION: boolean[] = [
+        false,
+        false,
+        false,
+    ];
     static IS_INPUT_HOVER_ROW_CONTACT: boolean[] = [false, false, false, false];
     static IS_INPUT_HOVER_ROW_OFF_DUTY_LOCATION: boolean[] = [false, false];
     static IS_INPUT_HOVER_ROW_FUEL_CARD: boolean[] = [false];

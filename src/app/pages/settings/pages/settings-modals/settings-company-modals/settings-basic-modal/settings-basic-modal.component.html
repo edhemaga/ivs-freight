@@ -68,7 +68,7 @@
 
                         <div class="row">
                             <div class="col-12">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="name"
                                     [inputConfig]="{
                                         name: 'Company name',
@@ -89,7 +89,29 @@
                                             ? true
                                             : false,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
+                                <!-- <app-ta-input
+                                    formControlName="name"
+                                    [inputConfig]="{
+                                        name: 'Company name',
+                                        type: 'text',
+                                        label: 'Business Name',
+                                        isRequired:
+                                            editData.type === 'new-division'
+                                                ? true
+                                                : false,
+                                        isDisabled:
+                                            editData?.type?.includes(
+                                                'edit-company'
+                                            ),
+                                        textTransform: 'uppercase',
+                                        autoFocus: !editData?.type?.includes(
+                                            'edit-company'
+                                        )
+                                            ? true
+                                            : false,
+                                    }"
+                                ></app-ta-input> -->
                             </div>
                         </div>
 
@@ -97,7 +119,7 @@
 
                         <div class="row">
                             <div class="col-4">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="usDot"
                                     [inputConfig]="{
                                         name: 'USDOT',
@@ -108,11 +130,11 @@
                                         minLength: 6,
                                         maxLength: 8,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
 
                             <div class="col-4">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="ein"
                                     [inputConfig]="{
                                         name: 'EIN',
@@ -125,11 +147,11 @@
                                         mask: '00-0000000',
                                         maxLength: 10,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
 
                             <div class="col-4">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="mc"
                                     [inputConfig]="{
                                         name: 'MC/FF',
@@ -139,7 +161,7 @@
                                         maxLength: 6,
                                         minLength: 5,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -147,7 +169,7 @@
 
                         <div class="row">
                             <div class="col-5">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="phone"
                                     [inputConfig]="{
                                         name: 'Phone',
@@ -157,11 +179,11 @@
                                         mask: '(000) 000-0000',
                                         maxLength: 14,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
 
                             <div class="col-7">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="email"
                                     [inputConfig]="{
                                         name: 'Email',
@@ -180,7 +202,7 @@
                                         maxLength: 64,
                                         textTransform: 'lowercase',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -188,7 +210,7 @@
 
                         <div class="row">
                             <div class="col-5">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="fax"
                                     [inputConfig]="{
                                         name: 'Fax',
@@ -197,11 +219,11 @@
                                         mask: '(000) 000-0000',
                                         placeholderIcon: 'fax',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
 
                             <div class="col-7">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="webUrl"
                                     [inputConfig]="{
                                         name: 'Url',
@@ -211,7 +233,7 @@
                                         maxLength: 255,
                                         placeholderIcon: 'hyperlink',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -247,7 +269,7 @@
                             </div>
 
                             <div class="col-2">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="addressUnit"
                                     [inputConfig]="{
                                         name: 'address-unit',
@@ -257,14 +279,14 @@
                                         minLength: 1,
                                         maxLength: 10,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
                         <!-- Irp, Ifta, Toll, Scac -->
 
                         <div class="company-irp-ifta-toll-scac">
-                            <app-ta-input
+                            <ca-input-test
                                 formControlName="irp"
                                 [inputConfig]="{
                                     name: 'IRP',
@@ -273,9 +295,9 @@
                                     minLength: 5,
                                     maxLength: 5,
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-test>
 
-                            <app-ta-input
+                            <ca-input-test
                                 formControlName="ifta"
                                 [inputConfig]="{
                                     name: 'IFTA',
@@ -285,9 +307,9 @@
                                     minLength: 13,
                                     maxLength: 13,
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-test>
 
-                            <app-ta-input
+                            <ca-input-test
                                 formControlName="toll"
                                 [inputConfig]="{
                                     name: 'TOLL',
@@ -296,9 +318,9 @@
                                     minLength: 8,
                                     maxLength: 8,
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-test>
 
-                            <app-ta-input
+                            <ca-input-test
                                 formControlName="scac"
                                 [inputConfig]="{
                                     name: 'SCAC',
@@ -308,7 +330,7 @@
                                     minLength: 2,
                                     maxLength: 4,
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-test>
                         </div>
 
                         <!-- TimeZone, Currency -->
@@ -384,7 +406,7 @@
                             </div>
 
                             <div class="col-6">
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="dateOfIncorporation"
                                     [inputConfig]="{
                                         id: 'Date of Incorporation',
@@ -395,7 +417,7 @@
                                         placeholderIcon: 'date',
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                         </div>
 
@@ -407,39 +429,7 @@
                             (onActionEvent)="handleDeleteClick($event)"
                         >
                             <app-ca-upload-files
-                                [isVisibleCropAndDrop]="
-                                    uploadOptionsConstants.isVisibleCropAndDrop
-                                "
-                                [files]="[
-                                    { url: editData?.company?.logoFile?.url },
-                                ]"
-                                [slider]="uploadOptionsConstants.slider"
-                                [carouselConfig]="
-                                    uploadOptionsConstants.carouselConfig
-                                "
-                                [hasCrop]="uploadOptionsConstants.hasCrop"
-                                [isRoundCrop]="
-                                    uploadOptionsConstants.isRoundCrop
-                                "
-                                [containWithinAspectRatio]="
-                                    uploadOptionsConstants.containWithinAspectRatio
-                                "
-                                [aspectRatio]="
-                                    uploadOptionsConstants.aspectRatio
-                                "
-                                [initialCropperPosition]="
-                                    uploadOptionsConstants.initialCropperPosition
-                                "
-                                [dropzoneCustomWidth]="
-                                    uploadOptionsConstants.dropzoneCustomWidth
-                                "
-                                [dropzoneConf]="
-                                    uploadOptionsConstants.dropzoneConf
-                                "
-                                [review]="uploadOptionsConstants.review"
-                                [configFile]="uploadOptionsConstants.configFile"
-                                [size]="uploadOptionsConstants.size"
-                                [slideWidth]="uploadOptionsConstants.slideWidth"
+                                [uploadFilesConfig]="uploadFilesConfig"
                                 (onFileEvent)="onUploadImage($event)"
                             ></app-ca-upload-files>
                         </app-ta-custom-card>

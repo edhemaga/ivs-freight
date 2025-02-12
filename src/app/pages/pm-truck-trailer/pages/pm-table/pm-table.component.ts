@@ -83,7 +83,7 @@ export class PmTableComponent
     extends PmDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
 

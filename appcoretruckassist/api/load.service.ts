@@ -71,6 +71,8 @@ import { LoadSortBy } from '../model/loadSortBy';
 // @ts-ignore
 import { LoadStatus } from '../model/loadStatus';
 // @ts-ignore
+import { LoadStatusFilterResponse } from '../model/loadStatusFilterResponse';
+// @ts-ignore
 import { LoadStatusHistoryCommand } from '../model/loadStatusHistoryCommand';
 // @ts-ignore
 import { LoadStatusResponse } from '../model/loadStatusResponse';
@@ -2857,9 +2859,9 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<DispatcherFilterResponse>>;
-    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<DispatcherFilterResponse>>>;
-    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<DispatcherFilterResponse>>>;
+    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<LoadStatusFilterResponse>>;
+    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<LoadStatusFilterResponse>>>;
+    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<LoadStatusFilterResponse>>>;
     public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -2919,7 +2921,7 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load/status/filter`;
-        return this.httpClient.request<Array<DispatcherFilterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<LoadStatusFilterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
