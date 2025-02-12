@@ -133,10 +133,6 @@ export class LoadTableComponent
     }
 
     ngOnInit(): void {
-        this.loadStoreService.dispatchLoadList({
-            statusType: eLoadStatusType.Active,
-        });
-
         this.dispatchHubService.connect();
 
         this.manageDispatchHubListeners();
