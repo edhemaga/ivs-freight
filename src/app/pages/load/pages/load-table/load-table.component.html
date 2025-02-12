@@ -133,17 +133,13 @@
                         (setFilter)="setFilters($event)"
                     >
                     </app-ca-filter-dropdown> 
-                    <!-- <app-ca-filter
-                        [type]="'timeFilter'"
-                        [icon]="'ic_time'"
-                        [filterTitle]="'Time Filter'"
-                        [timeSubType]="'past'"
+                    <app-ca-filter-dropdown
+                        type="TimeFilter"
+                        subType="past"
                         (setFilter)="setFilters($event)"
-                        (clearAll)="setFilters($event)"
                     >
-                    </app-ca-filter> 
-                    </app-ca-filter>   -->
- 
+                    </app-ca-filter-dropdown>
+
                     <app-ca-filter-dropdown
                         [type]="'moneyFilter'"
                         [icon]="'dollar'"

@@ -264,19 +264,16 @@
                     <div class="repair-header-icons gap-1">
                         <div class="border-line-left"></div>
 
-                        <ng-container *ngIf="timeFilter">
-                            <span class="ic-hed">
-                                <app-ca-filter
-                                    [type]="'timeFilter'"
-                                    [icon]="'ic_time'"
-                                    [filterTitle]="'Time Filter'"
-                                    [timeSubType]="'past'"
+                        @if (timeFilter) {
+                            <span class="ic-hed"> 
+                                <app-ca-filter-dropdown
+                                    type="TimeFilter"
+                                    timeSubType="past"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-dropdown>
                             </span>
-                        </ng-container>
+                        }
 
                         @if (truckTypeFilter) {
                             <span class="ic-hed">

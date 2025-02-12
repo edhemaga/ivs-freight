@@ -173,33 +173,27 @@
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="hasFutureTimeFilter">
+                    @if (hasFutureTimeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'timeFilter'"
-                                [icon]="'ic_time'"
-                                [filterTitle]="'Time Filter'"
-                                [timeSubType]="'future'"
+                            <app-ca-filter-dropdown
+                                type="TimeFilter"
+                                subType="future"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
-                    <ng-container *ngIf="hasTimeFilter">
+                    @if (hasTimeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'timeFilter'"
-                                [icon]="'ic_time'"
-                                [filterTitle]="'Time Filter'"
-                                [timeSubType]="'past'"
+                            <app-ca-filter-dropdown
+                                type="TimeFilter"
+                                subType="past"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
                     <ng-container *ngIf="hasDispatcherFilter">
                         <div class="me-1">
