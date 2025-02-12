@@ -64,6 +64,7 @@ import {
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
+    InputTestComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -114,6 +115,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
         TaCheckboxComponent,
         TaNgxSliderComponent,
         TaAppTooltipV2Component,
+        InputTestComponent,
 
         // Pipes
         FormatDatePipe,

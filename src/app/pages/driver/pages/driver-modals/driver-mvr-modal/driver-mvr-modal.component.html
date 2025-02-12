@@ -14,7 +14,7 @@
 
             <div class="row first-row last-row">
                 <div class="col-6">
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="issueDate"
                         [inputConfig]="{
                             name: 'datepicker',
@@ -26,7 +26,7 @@
                             customClass: 'datetimeclass',
                             autoFocus: editData?.type !== 'edit-mvr',
                         }"
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
 
                 <div class="col-6">

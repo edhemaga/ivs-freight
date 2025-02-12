@@ -63,7 +63,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { CaInputAddressDropdownComponent } from 'ca-components';
+import { CaInputAddressDropdownComponent, CaInputDatetimePickerComponent } from 'ca-components';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
@@ -91,6 +91,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class SettingsInsurancePolicyModalComponent

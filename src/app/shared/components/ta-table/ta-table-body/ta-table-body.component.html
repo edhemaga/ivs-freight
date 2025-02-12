@@ -781,7 +781,8 @@
                                         >
                                             @if (
                                                 row.isIncompleteFuelTransaction &&
-                                                column.name === 'Driver'
+                                                column.name === 'Driver' &&
+                                                !row.driver
                                             ) {
                                                 <div
                                                     mainTooltip="Driver not Linked"
@@ -821,7 +822,8 @@
 
                                         @if (
                                             row.isIncompleteFuelTransaction &&
-                                            column.name === 'Driver'
+                                            column.name === 'Driver' &&
+                                            !row.driver
                                         ) {
                                             <span
                                                 class="table-text column-text-red"
@@ -3820,7 +3822,8 @@
                                     >
                                         @if (
                                             row.isIncompleteFuelTransaction &&
-                                            column.name === 'Driver'
+                                            column.name === 'Driver' &&
+                                            !row.driver
                                         ) {
                                             <div
                                                 mainTooltip="Driver not Linked"
@@ -3867,7 +3870,8 @@
 
                                         @if (
                                             row.isIncompleteFuelTransaction &&
-                                            column.name === 'Driver'
+                                            column.name === 'Driver' &&
+                                            !row.driver
                                         ) {
                                             <span
                                                 class="table-text column-text-red"
@@ -5344,7 +5348,8 @@
                                         >
                                             @if (
                                                 row.isIncompleteFuelTransaction &&
-                                                column.title === 'Truck'
+                                                column.title === 'Truck' &&
+                                                !row.truck
                                             ) {
                                                 <svg-icon
                                                     class="lh-1 mr-1 column-text-svg-transaction-incomplete"
@@ -5396,8 +5401,14 @@
                                                     'align-end':
                                                         column.isJustifyEnd,
                                                     'column-text-red':
-                                                        row.isIncompleteFuelTransaction &&
-                                                        column.name === 'Truck',
+                                                        (row.isIncompleteFuelTransaction &&
+                                                            column.title ===
+                                                                'Truck' &&
+                                                            !row.truck) ||
+                                                        (row.isIncompleteFuelTransaction &&
+                                                            column.title ===
+                                                                'Driver' &&
+                                                            !row.driver),
                                                 }"
                                                 [innerHtml]="
                                                     row[column.field]
