@@ -611,8 +611,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 })
             )
             .subscribe((response) => {
-                if (!response) return;
-
                 const { data } = response?.pagination || {};
                 this.selectedDispatchHistory = response;
 
