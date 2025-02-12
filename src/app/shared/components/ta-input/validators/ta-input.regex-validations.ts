@@ -277,6 +277,7 @@ export const passwordAccountValidation = [Validators.maxLength(64)];
 export const fullNameValidation = [
     Validators.minLength(2),
     Validators.maxLength(32),
+    Validators.required
 ];
 
 //---------------- Title

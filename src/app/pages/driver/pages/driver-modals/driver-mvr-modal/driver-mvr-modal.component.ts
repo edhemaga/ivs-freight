@@ -35,6 +35,7 @@ import {
     CaInputNoteComponent,
     CaModalComponent,
     CaModalButtonComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // enums
@@ -77,7 +78,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         TaCustomCardComponent,
 
         CaInputDropdownComponent,
-        CaInputComponent,
+        CaInputDatetimePickerComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
 

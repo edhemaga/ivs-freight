@@ -14,7 +14,7 @@
 
             <div class="row">
                 <div class="col-6">
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="testingDate"
                         [inputConfig]="{
                             name: 'datepicker',
@@ -27,7 +27,7 @@
                             autoFocus:
                                 editData && editData?.type !== 'edit-drug',
                         }"
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
 
                 <div class="col-6">

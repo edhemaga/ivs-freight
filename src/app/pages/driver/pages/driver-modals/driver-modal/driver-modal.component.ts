@@ -73,10 +73,12 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 import {
     CaInputAddressDropdownComponent,
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
     CaUploadFilesComponent,
+    InputTestComponent,
 } from 'ca-components';
 
 // enums
@@ -166,6 +168,8 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
+        CaInputDatetimePickerComponent,
+        InputTestComponent,
 
         // Pipes
         FormatDatePipe,

@@ -37,7 +37,7 @@
                         <!-- First Name, Last Name, DOB -->
 
                         <div class="driver-modal-first-row">
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="firstName"
                                 [inputConfig]="{
                                     name: 'First Name',
@@ -49,9 +49,9 @@
                                     maxLength: 26,
                                     autoFocus: editData?.type !== 'edit',
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="lastName"
                                 [inputConfig]="{
                                     name: 'Last name',
@@ -62,9 +62,9 @@
                                     minLength: 2,
                                     maxLength: 26,
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="dateOfBirth"
                                 [inputConfig]="{
                                     name: 'datepicker',
@@ -75,13 +75,13 @@
                                     isRequired: true,
                                     customClass: 'datetimeclass',
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
                         </div>
 
                         <!-- Phone, Email, SSN -->
 
                         <div class="driver-modal-second-row">
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="phone"
                                 [inputConfig]="{
                                     name: 'Phone',
@@ -92,9 +92,9 @@
                                     mask: '(000) 000-0000',
                                     maxLength: 14,
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="email"
                                 [inputConfig]="{
                                     name: 'Email',
@@ -107,9 +107,9 @@
                                     textTransform: 'lowercase',
                                 }"
                                 (blurInput)="validateEmail()"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="ssn"
                                 [inputConfig]="{
                                     name: 'SSN',
@@ -121,7 +121,7 @@
                                 }"
                                 (blurInput)="validateSsn()"
                                 (clear)="validateSsn($event, true)"
-                            ></app-ca-input>
+                            ></ca-input-test>
                         </div>
 
                         <!-- Address, Unit -->
@@ -156,7 +156,7 @@
                             </div>
 
                             <div class="col-2">
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="addressUnit"
                                     [inputConfig]="{
                                         name: 'address-unit',
@@ -166,7 +166,7 @@
                                         minLength: 1,
                                         maxLength: 10,
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -375,7 +375,7 @@
                                                     else perMileSolo
                                                 "
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="soloEmptyMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -394,9 +394,9 @@
                                                         max: 10,
                                                         maxLength: 4,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
 
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="soloLoadedMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -415,11 +415,11 @@
                                                         max: 10,
                                                         maxLength: 4,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </ng-container>
 
                                             <ng-template #perMileSolo>
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="perMileSolo"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -439,10 +439,10 @@
                                                         maxLength: 4,
                                                     }"
                                                 >
-                                                </app-ca-input>
+                                                </ca-input-test>
                                             </ng-template>
 
-                                            <app-ca-input
+                                            <ca-input-test
                                                 formControlName="soloPerStop"
                                                 [inputConfig]="{
                                                     name: 'Per Stop',
@@ -459,7 +459,7 @@
                                                     min: 0,
                                                     max: 5000,
                                                 }"
-                                            ></app-ca-input>
+                                            ></ca-input-test>
                                         </div>
                                     </ng-container>
 
@@ -503,7 +503,7 @@
                                                     else perMileTeam
                                                 "
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="teamEmptyMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -522,9 +522,9 @@
                                                         max: 10,
                                                         maxLength: 4,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
 
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="teamLoadedMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -543,11 +543,11 @@
                                                         max: 10,
                                                         maxLength: 4,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </ng-container>
 
                                             <ng-template #perMileTeam>
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="perMileTeam"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -567,10 +567,10 @@
                                                         maxLength: 4,
                                                     }"
                                                 >
-                                                </app-ca-input>
+                                                </ca-input-test>
                                             </ng-template>
 
-                                            <app-ca-input
+                                            <ca-input-test
                                                 formControlName="teamPerStop"
                                                 [inputConfig]="{
                                                     name: 'Per Stop',
@@ -587,7 +587,7 @@
                                                     min: 0,
                                                     max: 5000,
                                                 }"
-                                            ></app-ca-input>
+                                            ></ca-input-test>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -731,7 +731,7 @@
                                                         'Combined',
                                                 }"
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="flatRateSolo"
                                                     [inputConfig]="{
                                                         name: 'Flat Rate',
@@ -754,7 +754,7 @@
                                                         min: 0,
                                                         max: 5000,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </div>
                                         </ng-container>
 
@@ -774,7 +774,7 @@
                                                         'Combined',
                                                 }"
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="flatRateTeam"
                                                     [inputConfig]="{
                                                         name: 'Flat Rate',
@@ -797,7 +797,7 @@
                                                         min: 0,
                                                         max: 5000,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -835,7 +835,7 @@
                                 </div>
 
                                 <div class="bank-field">
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="routing"
                                         [inputConfig]="{
                                             name: 'routing-bank',
@@ -846,11 +846,11 @@
                                             minLength: 9,
                                             maxLength: 9,
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
 
                                 <div class="bank-field">
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="account"
                                         [inputConfig]="{
                                             name: 'account-bank',
@@ -861,7 +861,7 @@
                                             maxLength: 17,
                                             minLength: 5,
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
                             </div>
 
@@ -955,7 +955,7 @@
                             }"
                         >
                             <div class="emergency-contact">
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="emergencyContactName"
                                     [inputConfig]="{
                                         name: 'Emergency Name',
@@ -965,9 +965,9 @@
                                         minLength: 2,
                                         maxLength: 24,
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-test>
 
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="emergencyContactPhone"
                                     [inputConfig]="{
                                         name: 'Phone',
@@ -977,9 +977,9 @@
                                         mask: '(000) 000-0000',
                                         maxLength: 14,
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-test>
 
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="emergencyContactRelationship"
                                     [inputConfig]="{
                                         name: 'Relationship',
@@ -989,7 +989,7 @@
                                         minLength: 2,
                                         maxLength: 24,
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-test>
                             </div>
                         </app-ta-custom-card>
 
@@ -1099,7 +1099,7 @@
                                         [customClass]="'medium'"
                                     ></app-ta-checkbox>
 
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="twicExpDate"
                                         [inputConfig]="{
                                             name: 'datepicker',
@@ -1113,9 +1113,9 @@
                                                 !driverForm.get('twic').value,
                                             customClass: 'datetimeclass',
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
 
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="mvrExpiration"
                                         [inputConfig]="{
                                             name: 'months',
@@ -1137,7 +1137,7 @@
                                                 },
                                             },
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
                             </app-ta-custom-card>
                         </div>

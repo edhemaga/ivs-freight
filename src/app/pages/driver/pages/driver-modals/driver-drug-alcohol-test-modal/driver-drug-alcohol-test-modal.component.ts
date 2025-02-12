@@ -31,6 +31,7 @@ import {
     CaInputNoteComponent,
     CaModalComponent,
     CaModalButtonComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // helpers
@@ -76,6 +77,7 @@ import { DrugAlcoholTestModalUploadFilesConfig } from '@pages/driver/pages/drive
 
         CaInputDropdownComponent,
         CaInputComponent,
+        CaInputDatetimePickerComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
 

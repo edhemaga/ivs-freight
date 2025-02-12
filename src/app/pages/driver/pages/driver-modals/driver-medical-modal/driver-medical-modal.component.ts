@@ -31,6 +31,7 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // helpers
@@ -72,8 +73,8 @@ import { MedicalModalUploadFilesConfig } from '@pages/driver/pages/driver-modals
         CaModalButtonComponent,
         CaModalComponent,
         TaCustomCardComponent,
-
-        CaInputComponent,
+        
+        CaInputDatetimePickerComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
 
