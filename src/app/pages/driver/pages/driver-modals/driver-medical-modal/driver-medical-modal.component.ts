@@ -31,6 +31,7 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // helpers
@@ -49,6 +50,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
+
+//config
+import { MedicalModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-medical-modal/utils/config';
 
 @Component({
     selector: 'app-driver-medical-modal',
@@ -69,8 +73,8 @@ import { FormatDatePipe } from '@shared/pipes';
         CaModalButtonComponent,
         CaModalComponent,
         TaCustomCardComponent,
-
-        CaInputComponent,
+        
+        CaInputDatetimePickerComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
 
@@ -101,6 +105,8 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     public modalButtonSize = ModalButtonSize;
     public activeAction!: string;
     public taModalActionEnum = DriverMedicalModalStringEnum;
+
+    public uploadFilesConfig = MedicalModalUploadFilesConfig.MEDICAL_MODAL_UPLOAD_FILES_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

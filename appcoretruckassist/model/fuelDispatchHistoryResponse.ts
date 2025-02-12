@@ -10,6 +10,7 @@
  * Do not edit the class manually.
  */
 import { FileResponse } from './fileResponse';
+import { DriverFilterResponsePagination } from './driverFilterResponsePagination';
 
 
 export interface FuelDispatchHistoryResponse { 
@@ -22,5 +23,6 @@ export interface FuelDispatchHistoryResponse {
     trailerNumber?: string | null;
     trailerTypeName?: string | null;
     logoName?: string | null;
+    pagination?: DriverFilterResponsePagination;
 }
 

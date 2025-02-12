@@ -77,7 +77,6 @@ import { EGeneralActions, TableStringEnum } from '@shared/enums';
 
 // Config
 import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
-import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
@@ -159,7 +158,6 @@ export class OwnerModalComponent
     public taModalActionEnum = TaModalActionEnum;
     public ownerModalConfig = OwnerModalConfig;
 
-    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,

@@ -36,6 +36,8 @@ import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-sl
 import {
     CaUploadFilesComponent,
     CaInputAddressDropdownComponent,
+    InputTestComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // Animations
@@ -81,6 +83,9 @@ import {
 // Constants
 import { SettingsModalConstants } from '@pages/settings/pages/settings-company/utils/constants/settings-modal.constants';
 
+//config
+import { SettingsBasicModalUploadFileConfig } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/config';
+
 // Enums
 import { ESettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
 import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
@@ -114,9 +119,6 @@ import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/se
 // Mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
-// Pipes
-import { SettingsBankAccountStatusPipe } from '@pages/settings/pages/settings-company/pipes';
-
 @Component({
     selector: 'app-settings-basic-modal',
     templateUrl: './settings-basic-modal.component.html',
@@ -143,9 +145,8 @@ import { SettingsBankAccountStatusPipe } from '@pages/settings/pages/settings-co
         TaCustomCardComponent,
         TaLogoChangeComponent,
         CaUploadFilesComponent,
-
-        // Pipes
-        SettingsBankAccountStatusPipe,
+        InputTestComponent,
+        CaInputDatetimePickerComponent,
     ],
 })
 export class SettingsBasicModalComponent
@@ -161,7 +162,9 @@ export class SettingsBasicModalComponent
     public destroy$ = new Subject<void>();
 
     public companyForm: UntypedFormGroup;
-    public uploadOptionsConstants = SettingsModalConstants.UPLOAD_OPTIONS;
+
+    public uploadFilesConfig =
+        SettingsBasicModalUploadFileConfig.SETTINGS_BASIC_MODAL_UPLOAD_FILES_CONFIG;
 
     public isFormDirty: boolean = false;
     public isSetupCompany: boolean = false;
@@ -271,6 +274,11 @@ export class SettingsBasicModalComponent
         this.checkForCompany();
 
         this.validateCreditCards();
+
+        this.uploadFilesConfig = {
+            ...SettingsBasicModalUploadFileConfig.SETTINGS_BASIC_MODAL_UPLOAD_FILES_CONFIG,
+            files: [{ url: this.editData?.company?.logoFile?.url }],
+        };
     }
 
     private getConstantData(): void {
@@ -648,7 +656,7 @@ export class SettingsBasicModalComponent
             };
         });
 
-        this.isPlaidAvailable = this.selectedTab === 2 ? true : false;
+        this.isPlaidAvailable = this.selectedTab === 2;
     }
 
     public get departmentContacts(): UntypedFormArray {

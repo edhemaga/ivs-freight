@@ -58,12 +58,11 @@
             <div
                 class="group date-group"
             >
-                <app-ta-input
+                <ca-input-datetime-picker
                     formControlName="date"
                     [inputConfig]="dateInputConfig"
-                    [incorrectValue]="openAnnotationArray[10].lineInputs[0]"
                     (incorrectEvent)="incorrectInput($event, 0, 10)"
-                ></app-ta-input>
+                ></ca-input-datetime-picker>
             </div>
 
             <!-- REVIEW AND FEEDBACK -->

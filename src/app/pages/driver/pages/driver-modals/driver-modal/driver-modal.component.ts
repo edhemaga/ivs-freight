@@ -73,10 +73,12 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 import {
     CaInputAddressDropdownComponent,
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
     CaUploadFilesComponent,
+    InputTestComponent,
 } from 'ca-components';
 
 // enums
@@ -86,7 +88,10 @@ import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // constants
-import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants/driver-modal.constants';
+import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants';
+
+//config
+import { DriverModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-modal/utils/config';
 
 // models
 import {
@@ -163,6 +168,8 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
+        CaInputDatetimePickerComponent,
+        InputTestComponent,
 
         // Pipes
         FormatDatePipe,
@@ -238,8 +245,10 @@ export class DriverModalComponent
 
     public isFileModified: boolean = false;
 
+    public uploadDocumentsFilesConfig = DriverModalUploadFilesConfig.DRIVER_MODAL_DOCUMENTS_UPLOAD_FILES_CONFIG;
+
     // logo
-    public uploadOptionsConstants = DriverModalConstants.UPLOAD_OPTIONS;
+    public uploadProfilePictureFilesConfig = DriverModalUploadFilesConfig.DRIVER_MODAL_PROFILE_PICTURE_UPLOAD_FILES_CONFIG;
 
     // payroll
     public payrollDefaultValues: PayrollDefaultValues;

@@ -74,7 +74,7 @@ import {
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { RepairShopHelper } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/helpers';
-import { RepairShopConfig } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
+import { RepairShopConfig, RepairShopModalUploadFilesConfig } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
 
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -129,7 +129,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Types
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -190,8 +189,6 @@ export class RepairShopModalComponent
     public TableStringEnum = TableStringEnum;
     public RepairShopModalEnum = RepairShopModalEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
-
-    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
 
     // Inputs
     @Input() editData: RepeairShopModalInput;
@@ -275,6 +272,9 @@ export class RepairShopModalComponent
 
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
+
+    public uploadDocumentFilesConfig = RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG;
+    public uploadCoverPhotoFilesConfig = RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_COVER_PHOTO_UPLOAD_FILES_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -421,6 +421,10 @@ export class RepairShopModalComponent
         this.confirmationActivationSubscribe();
         this.confirmationData();
         this.companyUser = JSON.parse(localStorage.getItem('user'));
+        this.uploadCoverPhotoFilesConfig = {
+            ...RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG,
+            files: [{ url: this.coverPhoto?.url}],
+        };
     }
 
     private confirmationActivationSubscribe(): void {

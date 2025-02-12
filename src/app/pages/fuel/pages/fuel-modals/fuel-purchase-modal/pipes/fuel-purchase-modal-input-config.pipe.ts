@@ -6,17 +6,24 @@ import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/f
 
 import { EGeneralActions } from '@shared/enums';
 
+// enums
+import { NameInitialsPipe } from '@shared/pipes';
+
 @Pipe({
     standalone: true,
     name: 'fuelPurchaseModalInputConfig',
 })
 export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
+    constructor(private nameInitialsPipe: NameInitialsPipe) {}
+
     transform(args: FuelPurchaseModalConfigPipeArgs): ITaInput {
         const {
             configType,
             editDataType,
             fuelTransactionTypeName,
+            fuelCardHolderName,
             selectedTruckType,
+            selectedDriver,
             trailerId,
             logoName,
         } = args;
@@ -39,7 +46,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Fuel Card',
                     isDisabled: true,
-                    placeholderIcon: 'fuel-card',
+                    placeholderIcon: 'fuel_card',
                 };
 
                 break;
@@ -101,24 +108,54 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                 inputConfig = {
                     name: 'Input Dropdown',
                     type: 'text',
-                    label: 'Truck',
-                    isDropdown: true,
+                    label: 'Type',
                     isRequired: true,
+                    isDropdown: true,
                     dropdownImageInput: {
                         withText: true,
                         svg: true,
                         image: false,
-                        url: selectedTruckType?.logoName,
+                        url:
+                            selectedTruckType?.logoName &&
+                            'assets/svg/common/trucks/' +
+                                selectedTruckType?.logoName,
                         template: 'truck',
                         class: selectedTruckType?.name
                             ?.trim()
                             .replace(' ', '')
                             .toLowerCase(),
                     },
-                    dropdownWidthClass: !trailerId
-                        ? 'w-col-216 truck-trailer-dropdown'
-                        : 'w-col-143 truck-trailer-dropdown',
+                    dropdownWidthClass:
+                        selectedTruckType?.name === 'Box Truck'
+                            ? 'w-col-188'
+                            : 'w-col-308',
                     customClass: 'truck-trailer-dropdown',
+                };
+
+                break;
+            case 'driverDropdownInputConfig':
+                const { logoName: driverLogoName } = selectedDriver || {};
+                const initials: string = this.nameInitialsPipe.transform(
+                    driverLogoName ?? fuelCardHolderName
+                );
+
+                inputConfig = {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Driver',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-221',
+                    dropdownImageInput: {
+                        withText: true,
+                        svg: false,
+                        image: true,
+                        url: driverLogoName,
+                        // TODO: waiting for CAR-3201 to be done
+                        // nameInitialsInsteadUrl: driverLogoName ? null : initials,
+                        template: 'user',
+                    } as any,
+                    isBlueDropdown: true,
+                    isRequired: true,
                 };
 
                 break;

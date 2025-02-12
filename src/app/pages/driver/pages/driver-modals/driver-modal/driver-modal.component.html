@@ -37,7 +37,7 @@
                         <!-- First Name, Last Name, DOB -->
 
                         <div class="driver-modal-first-row">
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="firstName"
                                 [inputConfig]="{
                                     name: 'First Name',
@@ -50,9 +50,9 @@
                                     autoFocus:
                                         editData?.type !== EGeneralActions.EDIT,
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="lastName"
                                 [inputConfig]="{
                                     name: 'Last name',
@@ -63,9 +63,9 @@
                                     minLength: 2,
                                     maxLength: 26,
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
-                            <app-ca-input
+                            <ca-input-datetime-picker
                                 formControlName="dateOfBirth"
                                 [inputConfig]="{
                                     name: 'datepicker',
@@ -76,13 +76,13 @@
                                     isRequired: true,
                                     customClass: 'datetimeclass',
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-datetime-picker>
                         </div>
 
                         <!-- Phone, Email, SSN -->
 
                         <div class="driver-modal-second-row">
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="phone"
                                 [inputConfig]="{
                                     name: 'Phone',
@@ -93,9 +93,9 @@
                                     mask: '(000) 000-0000',
                                     maxLength: 14,
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="email"
                                 [inputConfig]="{
                                     name: 'Email',
@@ -108,9 +108,9 @@
                                     textTransform: 'lowercase',
                                 }"
                                 (blurInput)="validateEmail()"
-                            ></app-ca-input>
+                            ></ca-input-test>
 
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="ssn"
                                 [inputConfig]="{
                                     name: 'SSN',
@@ -122,7 +122,7 @@
                                 }"
                                 (blurInput)="validateSsn()"
                                 (clear)="validateSsn($event, true)"
-                            ></app-ca-input>
+                            ></ca-input-test>
                         </div>
 
                         <!-- Address, Unit -->
@@ -153,7 +153,7 @@
                             </div>
 
                             <div class="col-2">
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="addressUnit"
                                     [inputConfig]="{
                                         name: 'address-unit',
@@ -163,7 +163,7 @@
                                         minLength: 1,
                                         maxLength: 10,
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -372,7 +372,7 @@
                                                     else perMileSolo
                                                 "
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="soloEmptyMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -391,9 +391,9 @@
                                                         max: 10,
                                                         maxLength: 4,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
 
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="soloLoadedMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -412,11 +412,11 @@
                                                         max: 10,
                                                         maxLength: 4,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </ng-container>
 
                                             <ng-template #perMileSolo>
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="perMileSolo"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -436,10 +436,10 @@
                                                         maxLength: 4,
                                                     }"
                                                 >
-                                                </app-ca-input>
+                                                </ca-input-test>
                                             </ng-template>
 
-                                            <app-ca-input
+                                            <ca-input-test
                                                 formControlName="soloPerStop"
                                                 [inputConfig]="{
                                                     name: 'Per Stop',
@@ -456,7 +456,7 @@
                                                     min: 0,
                                                     max: 5000,
                                                 }"
-                                            ></app-ca-input>
+                                            ></ca-input-test>
                                         </div>
                                     </ng-container>
 
@@ -500,7 +500,7 @@
                                                     else perMileTeam
                                                 "
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="teamEmptyMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -519,9 +519,9 @@
                                                         max: 10,
                                                         maxLength: 4,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
 
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="teamLoadedMile"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -540,11 +540,11 @@
                                                         max: 10,
                                                         maxLength: 4,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </ng-container>
 
                                             <ng-template #perMileTeam>
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="perMileTeam"
                                                     [inputConfig]="{
                                                         name: 'Per Mile',
@@ -564,10 +564,10 @@
                                                         maxLength: 4,
                                                     }"
                                                 >
-                                                </app-ca-input>
+                                                </ca-input-test>
                                             </ng-template>
 
-                                            <app-ca-input
+                                            <ca-input-test
                                                 formControlName="teamPerStop"
                                                 [inputConfig]="{
                                                     name: 'Per Stop',
@@ -584,7 +584,7 @@
                                                     min: 0,
                                                     max: 5000,
                                                 }"
-                                            ></app-ca-input>
+                                            ></ca-input-test>
                                         </div>
                                     </ng-container>
                                 </div>
@@ -728,7 +728,7 @@
                                                         'Combined',
                                                 }"
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="flatRateSolo"
                                                     [inputConfig]="{
                                                         name: 'Flat Rate',
@@ -751,7 +751,7 @@
                                                         min: 0,
                                                         max: 5000,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </div>
                                         </ng-container>
 
@@ -771,7 +771,7 @@
                                                         'Combined',
                                                 }"
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="flatRateTeam"
                                                     [inputConfig]="{
                                                         name: 'Flat Rate',
@@ -794,7 +794,7 @@
                                                         min: 0,
                                                         max: 5000,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </div>
                                         </ng-container>
                                     </div>
@@ -832,7 +832,7 @@
                                 </div>
 
                                 <div class="bank-field">
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="routing"
                                         [inputConfig]="{
                                             name: 'routing-bank',
@@ -843,11 +843,11 @@
                                             minLength: 9,
                                             maxLength: 9,
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
 
                                 <div class="bank-field">
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="account"
                                         [inputConfig]="{
                                             name: 'account-bank',
@@ -858,7 +858,7 @@
                                             maxLength: 17,
                                             minLength: 5,
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
                             </div>
 
@@ -952,7 +952,7 @@
                             }"
                         >
                             <div class="emergency-contact">
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="emergencyContactName"
                                     [inputConfig]="{
                                         name: 'Emergency Name',
@@ -962,9 +962,9 @@
                                         minLength: 2,
                                         maxLength: 24,
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-test>
 
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="emergencyContactPhone"
                                     [inputConfig]="{
                                         name: 'Phone',
@@ -974,9 +974,9 @@
                                         mask: '(000) 000-0000',
                                         maxLength: 14,
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-test>
 
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="emergencyContactRelationship"
                                     [inputConfig]="{
                                         name: 'Relationship',
@@ -986,7 +986,7 @@
                                         minLength: 2,
                                         maxLength: 24,
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-test>
                             </div>
                         </app-ta-custom-card>
 
@@ -1000,77 +1000,7 @@
                                 [isCardOpen]="!!documents.length"
                             >
                                 <app-ca-upload-files
-                                    [files]="documents"
-                                    [slider]="{
-                                        dontUseSlider: false,
-                                        hasCarouselBottomTabs: true,
-                                    }"
-                                    [carouselConfig]="{
-                                        files: documents,
-                                        customClass: 'medium',
-                                        customDetailsPageClass: 'modals',
-                                        hasCarouselBottomTabs: true,
-                                    }"
-                                    [hasCrop]="false"
-                                    [dropzoneConf]="[
-                                        {
-                                            template: 'documentsTemplate',
-                                            config: {
-                                                dropzone: {
-                                                    dropZoneType: 'files',
-                                                    multiple: true,
-                                                    globalDropZone: false,
-                                                    dropZonePages: 'tools_todo',
-                                                },
-                                                dropzoneOption: {
-                                                    customClassName:
-                                                        'documents-dropzone',
-                                                    size: 'medium',
-                                                    modalSize: 'lg',
-                                                    showDropzone: true,
-                                                    filesLength: 2,
-                                                    isRequired: true,
-                                                    dropzoneClose: false,
-                                                },
-                                            },
-                                        },
-                                    ]"
-                                    [dropzoneCustomWidth]="'603px'"
-                                    [isVisibleCropAndDrop]="true"
-                                    [review]="{
-                                        isReview: false,
-                                        reviewMode: 'FEEDBACK_MODE',
-                                        feedbackText: 'Sample feedback text',
-                                        categoryTag: 'General',
-                                    }"
-                                    [configFile]="{
-                                        id: 111,
-                                        customClassName: 'modals',
-                                        file: {
-                                            url: '',
-                                            incorrect: false,
-                                            lastHovered: false,
-                                            fileSize: 1200,
-                                            fileName: '',
-                                        },
-                                        hasTagsDropdown: true,
-                                        hasNumberOfPages: true,
-                                        activePage: 1,
-                                        type: 'modal',
-                                        hasLandscapeOption: false,
-                                        tagsOptions: [
-                                            {
-                                                tagName: 'HOS Agreement',
-                                                checked: false,
-                                            },
-                                            {
-                                                tagName: 'Unsafe Driving AGT',
-                                                checked: false,
-                                            },
-                                        ],
-                                    }"
-                                    [size]="'medium'"
-                                    [slideWidth]="180"
+                                    [uploadFilesConfig]="uploadDocumentsFilesConfig"
                                     (onFileEvent)="onFilesEvent($event)"
                                 ></app-ca-upload-files>
                             </app-ta-custom-card>
@@ -1108,37 +1038,7 @@
                             [disableAnimation]="isCardAnimationDisabled"
                         >
                             <app-ca-upload-files
-                                [isVisibleCropAndDrop]="
-                                    uploadOptionsConstants.isVisibleCropAndDrop
-                                "
-                                [files]="uploadOptionsConstants.files"
-                                [slider]="uploadOptionsConstants.slider"
-                                [carouselConfig]="
-                                    uploadOptionsConstants.carouselConfig
-                                "
-                                [hasCrop]="uploadOptionsConstants.hasCrop"
-                                [isRoundCrop]="
-                                    uploadOptionsConstants.isRoundCrop
-                                "
-                                [containWithinAspectRatio]="
-                                    uploadOptionsConstants.containWithinAspectRatio
-                                "
-                                [aspectRatio]="
-                                    uploadOptionsConstants.aspectRatio
-                                "
-                                [initialCropperPosition]="
-                                    uploadOptionsConstants.initialCropperPosition
-                                "
-                                [dropzoneCustomWidth]="
-                                    uploadOptionsConstants.dropzoneCustomWidth
-                                "
-                                [dropzoneConf]="
-                                    uploadOptionsConstants.dropzoneConf
-                                "
-                                [review]="uploadOptionsConstants.review"
-                                [configFile]="uploadOptionsConstants.configFile"
-                                [size]="uploadOptionsConstants.size"
-                                [slideWidth]="uploadOptionsConstants.slideWidth"
+                                [uploadFilesConfig]="uploadProfilePictureFilesConfig"
                                 (onFileEvent)="onUploadImage($event)"
                             ></app-ca-upload-files>
                         </app-ta-custom-card>
@@ -1196,7 +1096,7 @@
                                         [customClass]="'medium'"
                                     ></app-ta-checkbox>
 
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="twicExpDate"
                                         [inputConfig]="{
                                             name: 'datepicker',
@@ -1210,9 +1110,9 @@
                                                 !driverForm.get('twic').value,
                                             customClass: 'datetimeclass',
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
 
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="mvrExpiration"
                                         [inputConfig]="{
                                             name: 'months',
@@ -1234,7 +1134,7 @@
                                                 },
                                             },
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
                             </app-ta-custom-card>
                         </div>

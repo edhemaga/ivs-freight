@@ -76,6 +76,7 @@ import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputAddressDropdownComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // enums
@@ -115,6 +116,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class UserModalComponent
@@ -775,6 +777,33 @@ export class UserModalComponent
                 error: () => {
                     this.modalService.setModalSpinner({
                         action: null,
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
+    }
+
+    private deleteUserById(id: number): void {
+        this.companyUserService
+            .deleteUserById(
+                id,
+                this.selectedTab
+                    ? TableStringEnum.ACTIVE
+                    : TableStringEnum.INACTIVE
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
                         status: false,
                         close: false,
                     });
