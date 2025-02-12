@@ -164,7 +164,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public activeAction: string;
-    
+
     public repairOrderForm: UntypedFormGroup;
     public isFormDirty: boolean = false;
 
@@ -973,13 +973,15 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 .getRepairDriversList(truckId, trailerId, formatedDate)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((driversList) => {
-                    if (driversList.length) {
-                        this.driversDropdownList = driversList.map((item) => {
-                            return {
-                                ...item,
-                                name: item.firstName + ' ' + item.lastName,
-                            };
-                        });
+                    if (driversList?.drivers?.length) {
+                        this.driversDropdownList = driversList?.drivers?.map(
+                            (item) => {
+                                return {
+                                    ...item,
+                                    name: item.firstName + ' ' + item.lastName,
+                                };
+                            }
+                        );
 
                         this.selectedDriver =
                             this.driversDropdownList[

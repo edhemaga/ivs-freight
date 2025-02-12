@@ -29,7 +29,6 @@ import {
     RepairListResponse,
     ClusterResponse,
     RepairShopNewListResponse,
-    RepairDriverResponse,
     RepairModalResponse,
     RepairShopMinimalListResponse,
     RepairShopResponse,
@@ -43,6 +42,7 @@ import {
     CreateWithUploadsResponse,
     RepairShopSortBy,
     RepairSortBy,
+    RepairOrderBillDriverListResponse,
 } from 'appcoretruckassist';
 import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 import { CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
@@ -126,7 +126,7 @@ export class RepairService {
         truckId: number,
         trailerId: number,
         repairDate: string
-    ): Observable<RepairDriverResponse[]> {
+    ): Observable<RepairOrderBillDriverListResponse> {
         return this.repairService.apiRepairDriversGet(
             truckId,
             trailerId,
