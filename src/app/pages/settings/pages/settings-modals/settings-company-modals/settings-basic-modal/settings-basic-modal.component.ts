@@ -648,7 +648,7 @@ export class SettingsBasicModalComponent
             };
         });
 
-        this.isPlaidAvailable = this.selectedTab === 2 ? true : false;
+        this.isPlaidAvailable = this.selectedTab === 2;
     }
 
     public get departmentContacts(): UntypedFormArray {

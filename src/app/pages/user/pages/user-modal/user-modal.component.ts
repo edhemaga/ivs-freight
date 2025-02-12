@@ -782,6 +782,33 @@ export class UserModalComponent
             });
     }
 
+    private deleteUserById(id: number): void {
+        this.companyUserService
+            .deleteUserById(
+                id,
+                this.selectedTab
+                    ? TableStringEnum.ACTIVE
+                    : TableStringEnum.INACTIVE
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: true,
+                        close: true,
+                    });
+                },
+                error: () => {
+                    this.modalService.setModalSpinner({
+                        action: 'delete',
+                        status: false,
+                        close: false,
+                    });
+                },
+            });
+    }
+
     private getUserById(id: number) {
         this.companyUserService
             .getUserByid(id)
