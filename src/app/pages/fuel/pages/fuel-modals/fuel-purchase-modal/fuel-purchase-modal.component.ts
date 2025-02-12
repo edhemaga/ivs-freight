@@ -46,6 +46,7 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import {
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaModalComponent,
 } from 'ca-components';
@@ -128,6 +129,7 @@ import moment from 'moment';
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
+        CaInputDatetimePickerComponent,
 
         // pipes
         FormatDatePipe,

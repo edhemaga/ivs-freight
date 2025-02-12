@@ -59,6 +59,11 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
                 this.handleRepairShopOpenCloseBusinessAction(event, tableType);
 
                 break;
+            case DropdownMenuStringEnum.RATING_LIKE_TYPE:
+            case DropdownMenuStringEnum.RATING_DISLIKE_TYPE:
+                this.handleRepairShopLikeDislikeAction(event, tableType);
+
+                break;
             default:
                 // call the parent class method to handle shared cases
                 super.handleSharedDropdownMenuActions(event, tableType);
@@ -117,6 +122,29 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
             tableType: ConfirmationActivationStringEnum.REPAIR_SHOP_TEXT,
             modalTitle: name,
             modalSecondTitle: address.address,
+        };
+
+        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+    }
+
+    private handleRepairShopLikeDislikeAction<T extends RepairShopResponse>(
+        event: TableCardBodyActions<T>,
+        tableType: string
+    ): void {
+        const { id, type, data } = event;
+
+        const thumb = type === DropdownMenuStringEnum.RATING_LIKE_TYPE ? 1 : -1;
+
+        const rating = {
+            entityTypeRatingId: 2,
+            entityTypeId: id,
+            thumb,
+            tableData: data,
+        };
+
+        const adjustedEvent = {
+            ...event,
+            rating,
         };
 
         super.handleSharedDropdownMenuActions(adjustedEvent, tableType);

@@ -14,7 +14,7 @@
 
             <div class="row first-row last-row">
                 <div class="col-6">
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="issueDate"
                         [inputConfig]="{
                             name: 'datepicker',
@@ -26,7 +26,7 @@
                             customClass: 'datetimeclass',
                             autoFocus: editData?.type !== 'edit-mvr',
                         }"
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
 
                 <div class="col-6">
@@ -62,72 +62,7 @@
                     [hasSmallDivider]="true"
                 >
                     <app-ca-upload-files
-                        [files]="documents"
-                        [slider]="{
-                            dontUseSlider: false,
-                            hasCarouselBottomTabs: true,
-                        }"
-                        [carouselConfig]="{
-                            files: documents,
-                            customClass: 'medium',
-                            customDetailsPageClass: 'modals',
-                            hasCarouselBottomTabs: true,
-                        }"
-                        [hasCrop]="false"
-                        [dropzoneConf]="[
-                            {
-                                template: 'documentsTemplate',
-                                config: {
-                                    dropzone: {
-                                        dropZoneType: 'files',
-                                        multiple: true,
-                                        globalDropZone: false,
-                                        dropZonePages: 'tools_todo',
-                                    },
-                                    dropzoneOption: {
-                                        customClassName: 'documents-dropzone',
-                                        size: 'medium',
-                                        modalSize: 'lg',
-                                        showDropzone: true,
-                                        filesLength: 2,
-                                        isRequired: true,
-                                        dropzoneClose: false,
-                                    },
-                                },
-                            },
-                        ]"
-                        [isVisibleCropAndDrop]="true"
-                        [review]="{
-                            isReview: false,
-                            reviewMode: 'FEEDBACK_MODE',
-                            feedbackText: 'Sample feedback text',
-                            categoryTag: 'General',
-                        }"
-                        [configFile]="{
-                            id: 111,
-                            customClassName: 'modals',
-                            file: {
-                                url: '',
-                                incorrect: false,
-                                lastHovered: false,
-                                fileSize: 1200,
-                                fileName: '',
-                            },
-                            hasTagsDropdown: true,
-                            hasNumberOfPages: true,
-                            activePage: 1,
-                            type: 'modal',
-                            hasLandscapeOption: false,
-                            tagsOptions: [
-                                { tagName: 'HOS Agreement', checked: false },
-                                {
-                                    tagName: 'Unsafe Driving AGT',
-                                    checked: false,
-                                },
-                            ],
-                        }"
-                        [size]="'medium'"
-                        [slideWidth]="180"
+                        [uploadFilesConfig]="uploadFilesConfig"
                         (onFileEvent)="onFilesEvent($event)"
                     ></app-ca-upload-files>
                 </app-ta-custom-card>

@@ -28,6 +28,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import {
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
@@ -84,6 +85,7 @@ import { FormatDatePipe } from '@shared/pipes';
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaUserReviewComponent,
+        CaInputDatetimePickerComponent,
         // Pipes
         FormatDatePipe,
     ],

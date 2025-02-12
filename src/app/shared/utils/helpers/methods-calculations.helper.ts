@@ -101,17 +101,17 @@ export class MethodsCalculationsHelper {
     };
 
     //------------------------------- DATE TO BACKEND -------------------------------
-    static convertDateToBackend = (date: string) => {
+    static convertDateToBackend = (date: string): string => {
         return moment(new Date(date)).toISOString(true);
     };
 
     //------------------------------- DATE FROM BACKEND -------------------------------
-    static convertDateFromBackend = (date: string) => {
+    static convertDateFromBackend = (date: string): string => {
         return moment.utc(date).local().format('MM/DD/YY');
     };
 
     //------------------------------- DATE FROM BACKEND TO FULL UTC  -------------------------------
-    static convertDateFromBackendToFullUTC = (date: string) => {
+    static convertDateFromBackendToFullUTC = (date: string): string => {
         return moment.utc(date).local().format();
     };
 
@@ -119,7 +119,7 @@ export class MethodsCalculationsHelper {
     static convertDateToTimeFromBackend = (
         date: string,
         show_am_ap?: boolean
-    ) => {
+    ): string => {
         if (!date) {
             return null;
         }
@@ -130,21 +130,24 @@ export class MethodsCalculationsHelper {
     };
 
     //------------------------------- TIME FROM BACKEND WITH EXTRA SECONDS / BAD TIME FORMAT - TO TIME -------------------------------
-    static convertTimeFromBackendBadFormat = (time: string) => {
+    static convertTimeFromBackendBadFormat = (time: string): string => {
         return moment(time.split('.')[0], 'HH:mm:ss').format('hh:mm A');
     };
 
     //------------------------------- TIME FROM BACKEND -------------------------------
-    static convertTimeFromBackend = (time: string) => {
+    static convertTimeFromBackend = (time: string): Date => {
         return moment(time, 'HH:mm:SS A').toDate();
     };
 
     //------------------------------- DATE FROM BACKEND TO TIME -------------------------------
-    static convertDateFromBackendToTime = (date: string) => {
+    static convertDateFromBackendToTime = (date: string): string => {
         return moment(new Date(date)).format('LT');
     };
 
-    static combineDateAndTimeToBackend = (date: string, time: string) => {
+    static combineDateAndTimeToBackend = (
+        date: string,
+        time: string
+    ): string => {
         if (!time) {
             return moment(new Date(date)).toISOString(true);
         }
@@ -152,23 +155,25 @@ export class MethodsCalculationsHelper {
     };
 
     //------------------------------- DATE FROM BACKEND TO DATE AND TIME  -------------------------------
-    static convertDateFromBackendToDateAndTime = (date: Date | string) => {
+    static convertDateFromBackendToDateAndTime = (
+        date: Date | string
+    ): string => {
         return moment(new Date(date)).format('MM/DD/YY, hh:mm A');
     };
 
     //------------------------------- Convert thousand separator in number -------------------------------
-    static convertThousanSepInNumber = (value: string) => {
+    static convertThousanSepInNumber = (value: string): number => {
         if (value) return parseFloat(value.toString().replace(/,/g, ''));
     };
 
     //------------------------------- Convert number in thousand separator -------------------------------
-    static convertNumberInThousandSep = (value: number) => {
+    static convertNumberInThousandSep = (value: number): string => {
         if (value)
             return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
     };
 
     //------------------------------- Convert number to short format (1.000 to 1K, 1.000.000 to 1M) -------------------------------
-    static convertThousandToShortFormat = (value: number) => {
+    static convertThousandToShortFormat = (value: number): string => {
         if (value)
             return new Intl.NumberFormat(undefined, {
                 //@ts-ignore
@@ -178,11 +183,18 @@ export class MethodsCalculationsHelper {
         else return '0';
     };
 
+    // Convert regular date to ISO format
+    static convertRegularDateToIsoFormat = (date: string): string | null => {
+        const parsedDate = moment(date, 'MM/DD/YY', true);
+
+        return parsedDate.isValid() ? parsedDate.format('YYYY-MM-DD') : null;
+    };
+
     //------------------------------- SPECIFIC PRICE CONVERTORS -------------------------------
     static convertNumberWithCurrencyFormatterToBackend = (
         value: number,
         hasDollar: boolean = false
-    ) => {
+    ): string => {
         const formatedValue = value.toLocaleString('en-US', {
             style: 'currency',
             currency: 'USD',

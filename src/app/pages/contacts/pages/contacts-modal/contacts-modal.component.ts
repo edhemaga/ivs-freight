@@ -55,8 +55,10 @@ import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/en
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // constants
-import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 import { ContactModalConfig } from '@pages/contacts/pages/contacts-modal/utils/contacts-modal.config';
+
+// config
+import { ContactsModalUploadFilesConfig } from '@pages/contacts/pages/contacts-modal/utils/config';
 
 // models
 import {
@@ -115,7 +117,7 @@ export class ContactsModalComponent
 
     public destroy$ = new Subject<void>();
 
-    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
+    public uploadFilesConfig = ContactsModalUploadFilesConfig.CONTACTS_MODAL_UPLOAD_FILES_CONFIG;
     public contactForm: UntypedFormGroup;
     public isFormDirty: boolean;
 

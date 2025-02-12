@@ -33,7 +33,7 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
-import { CaUploadFilesComponent, CaInputAddressDropdownComponent } from 'ca-components';
+import { CaUploadFilesComponent, CaInputAddressDropdownComponent, InputTestComponent, CaInputDatetimePickerComponent } from 'ca-components';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -77,6 +77,9 @@ import {
 
 // constants
 import { SettingsModalConstants } from '@pages/settings/pages/settings-company/utils/constants/settings-modal.constants';
+
+//config
+import { SettingsBasicModalUploadFileConfig } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/utils/config';
 
 // enums
 import { SettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
@@ -128,6 +131,8 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         TaCustomCardComponent,
         TaLogoChangeComponent,
         CaUploadFilesComponent,
+        InputTestComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class SettingsBasicModalComponent
@@ -139,7 +144,8 @@ export class SettingsBasicModalComponent
     public destroy$ = new Subject<void>();
 
     public companyForm: UntypedFormGroup;
-    public uploadOptionsConstants = SettingsModalConstants.UPLOAD_OPTIONS;
+
+    public uploadFilesConfig = SettingsBasicModalUploadFileConfig.SETTINGS_BASIC_MODAL_UPLOAD_FILES_CONFIG;
 
     public isFormDirty: boolean = false;
     public isSetupCompany: boolean = false;
@@ -238,6 +244,11 @@ export class SettingsBasicModalComponent
         this.checkForCompany();
 
         this.validateCreditCards();
+
+        this.uploadFilesConfig = {
+            ...SettingsBasicModalUploadFileConfig.SETTINGS_BASIC_MODAL_UPLOAD_FILES_CONFIG,
+            files: [{ url: this.editData?.company?.logoFile?.url }]
+        }
     }
 
     private getConstantData(): void {

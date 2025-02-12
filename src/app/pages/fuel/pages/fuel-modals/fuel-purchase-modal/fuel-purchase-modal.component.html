@@ -48,7 +48,7 @@
                             | fuelPurchaseModalInputConfig
                     "
                 ></app-ca-input>
-                <app-ca-input
+                <ca-input-datetime-picker
                     formControlName="transactionDate"
                     [inputConfig]="
                         {
@@ -57,9 +57,9 @@
                             fuelTransactionTypeName: fuelTransactionType?.name,
                         } | fuelPurchaseModalInputConfig
                     "
-                ></app-ca-input>
+                ></ca-input-datetime-picker>
                 <!-- Time Picker -->
-                <app-ca-input
+                <ca-input-datetime-picker
                     formControlName="transactionTime"
                     [inputConfig]="
                         {
@@ -68,7 +68,7 @@
                             fuelTransactionTypeName: fuelTransactionType?.name,
                         } | fuelPurchaseModalInputConfig
                     "
-                ></app-ca-input>
+                ></ca-input-datetime-picker>
             </div>
             <div
                 [ngClass]="
@@ -277,7 +277,7 @@
                     [tableType]="modalTableTypeEnum.REPAIR_BILL"
                     [isNewRowCreated]="isFuelRowCreated"
                     [modalTableData]="updatedFuelItems"
-                    [isFuelTable]="true"
+                    [isFuelTransactionTable]="true"
                     [fuelItemsDropdown]="fuelItemsDropdown"
                     [fuelTransactionType]="fuelTransactionType"
                     [fuelModalActionType]="modalActionType"
