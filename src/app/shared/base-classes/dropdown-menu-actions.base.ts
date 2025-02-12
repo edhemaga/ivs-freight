@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
@@ -84,6 +85,13 @@ export abstract class DropdownMenuActionsBase {
             case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
             case DropdownMenuStringEnum.TITLE_TYPE:
                 this.handleTruckTrailerAddActions(event);
+
+                break;
+            case DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE:
+            case DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE:
+            case DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE:
+            case DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE:
+                this.handleMoveAction(event, tableType);
 
                 break;
             default:
@@ -213,6 +221,29 @@ export abstract class DropdownMenuActionsBase {
             { size: DropdownMenuStringEnum.SMALL },
             {
                 ...event,
+            }
+        );
+    }
+
+    private handleMoveAction<T>(
+        event: TableCardBodyActions<T>,
+        tableType: string
+    ): void {
+        const { type } = event;
+        const eventType =
+            type ===
+            (DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
+                DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE)
+                ? DropdownMenuStringEnum.MOVE
+                : DropdownMenuStringEnum.REMOVE;
+
+        this.modalService.openModal(
+            ConfirmationMoveModalComponent,
+            { size: TableStringEnum.SMALL },
+            {
+                ...event,
+                type: eventType,
+                template: tableType,
             }
         );
     }

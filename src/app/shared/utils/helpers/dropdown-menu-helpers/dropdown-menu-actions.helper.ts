@@ -19,6 +19,7 @@ import { DriverMvrModalComponent } from '@pages/driver/pages/driver-modals/drive
 import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
 import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
+import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
@@ -36,6 +37,7 @@ import {
     TableCardBodyActions,
 } from '@shared/models';
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
+import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 
 export class DropdownMenuActionsHelper {
     static createDropdownMenuActionsEmitEvent<T extends { id?: number }>(
@@ -96,6 +98,8 @@ export class DropdownMenuActionsHelper {
             [DropdownMenuStringEnum.TRUCK]: TruckModalComponent,
             [DropdownMenuStringEnum.TRAILER]: TrailerModalComponent,
             [DropdownMenuStringEnum.DRIVER]: DriverModalComponent,
+            [DropdownMenuStringEnum.SHIPPER]: ShipperModalComponent,
+            [DropdownMenuStringEnum.BROKER]: BrokerModalComponent,
         };
 
         return modalComponentMap[tableType];

@@ -9,36 +9,44 @@ import {
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-// Models
-import { CardDetails } from '@shared/models/card-models/card-table-data.model';
-import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
-
-// Pipes
-import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
-import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
-
-// Services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { DetailsDataService } from '@shared/services/details-data.service';
-import { ModalService } from '@shared/services/modal.service';
-
-// Helpers
-import { CardHelper } from '@shared/utils/helpers/card-helper';
-
-// Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
-
-//Components
+// components
 import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { MappedShipperBroker } from '../../models/mapped-shipper-broker.model';
+import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+
+// base classes
+import { CustomerDropdownMenuActionsBase } from '@pages/customer/base-classes';
+
+// helpers
+import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { DetailsDataService } from '@shared/services/details-data.service';
+import { ModalService } from '@shared/services/modal.service';
+
+// pipes
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
+
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
+import { DropdownMenuStringEnum } from '@shared/enums';
+
+// models
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
     selector: 'app-customer-card',
@@ -46,7 +54,10 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
     styleUrls: ['./customer-card.component.scss'],
     providers: [FormatCurrencyPipe, TimeFormatPipe, CardHelper],
 })
-export class CustomerCardComponent implements OnInit, OnDestroy {
+export class CustomerCardComponent
+    extends CustomerDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
     @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
 
     @Input() set viewData(value: CardDetails[]) {
@@ -65,7 +76,7 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
         this.cardHelper.resetSelectedCards();
     }
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     // Array holding id of checked cards
     public isCheckboxCheckedArray: number[] = [];
@@ -82,15 +93,18 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
     constructor(
         // Services
         private tableService: TruckassistTableService,
-        private detailsDataService: DetailsDataService,
-        private modalService: ModalService,
+        protected detailsDataService: DetailsDataService,
+        protected modalService: ModalService,
+        protected loadStoreService: LoadStoreService,
 
         // Router
-        private router: Router,
+        protected router: Router,
 
         // Helpers
         private cardHelper: CardHelper
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.flipAllCards();
@@ -130,10 +144,6 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
             this.router.navigate([`/list/customer/${card.id}/shipper-details`]);
     }
 
-    public trackCard(item: number): number {
-        return item;
-    }
-
     public onCardActions(event: any): void {
         if (
             event.type === TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER ||
@@ -155,8 +165,8 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
                             event.type === TableStringEnum.ADD_CONTRACT
                                 ? TableStringEnum.CONTRACT
                                 : event.type === TableStringEnum.WRITE_REVIEW
-                                ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                  ? TableStringEnum.REVIEW
+                                  : TableStringEnum.DETAIL,
                     }
                 );
             }
@@ -172,8 +182,8 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
                             event.type === TableStringEnum.ADD_CONTRACT
                                 ? TableStringEnum.CONTRACT
                                 : event.type === TableStringEnum.WRITE_REVIEW
-                                ? TableStringEnum.REVIEW
-                                : TableStringEnum.DETAIL,
+                                  ? TableStringEnum.REVIEW
+                                  : TableStringEnum.DETAIL,
                     }
                 );
             }
@@ -276,6 +286,23 @@ export class CustomerCardComponent implements OnInit, OnDestroy {
             );
         }
     }
+
+    public handleToggleDropdownMenuActions<T extends MappedShipperBroker>(
+        event: DropdownMenuOptionEmit,
+        cardData: T
+    ): void {
+        const { type } = event;
+
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                type,
+                cardData
+            );
+
+        this.handleDropdownMenuActions(emitEvent, this._selectedTab);
+    }
+
+    public handleShowMoreAction(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();
