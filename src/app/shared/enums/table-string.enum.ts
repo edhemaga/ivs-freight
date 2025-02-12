@@ -81,7 +81,6 @@ export enum TableStringEnum {
     DATE_FORMAT = 'MM/dd/yy',
     HOURS = 'h',
     MINUTES = 'min',
-    PM = 'pm',
     PM_2 = 'PM',
 
     // Distance
