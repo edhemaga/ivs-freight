@@ -178,29 +178,31 @@ export class FuelService {
         return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
             tap(() => {
                 ids.forEach((id) => {
-                    this.fuelStore.update((store) => ({
-                        fuelTransactions: {
-                            ...store.fuelTransactions,
-                            pagination: {
-                                ...store.fuelTransactions.pagination,
-                                data: store.fuelTransactions.pagination.data.filter(
-                                    (transaction) => transaction.id !== id
-                                ),
+                        this.fuelStore.update((store) => ({
+                            fuelTransactions: {
+                                ...store.fuelTransactions,
+                                pagination: {
+                                    ...store.fuelTransactions?.pagination,
+                                    data: store.fuelTransactions?.pagination?.data?.filter(
+                                        (transaction) => transaction.id !== id
+                                    ),
+                                },
                             },
-                        },
-                    }));
+                        }));
                 });
 
                 const tableCount = JSON.parse(
                     localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
                 );
 
-                tableCount.fuelTransactions -= ids.length;
+                if(tableCount) {
+                    tableCount.fuelTransactions -= ids.length;
 
-                localStorage.setItem(
-                    TableStringEnum.FUEL_TABLE_COUNT,
-                    JSON.stringify(tableCount)
-                );
+                    localStorage.setItem(
+                        TableStringEnum.FUEL_TABLE_COUNT,
+                        JSON.stringify(tableCount)
+                    );
+                }
             })
         );
     }
