@@ -2323,7 +2323,13 @@
 
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onLike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-like-icon':
                                                         row[column.field]
@@ -2336,7 +2342,6 @@
                                             <!-- Raiting Count -->
                                             <div
                                                 class="raiting-counter-container"
-                                                (click)="onOpenReviews(row)"
                                             >
                                                 <div
                                                     class="raiting-counter like-counter"
@@ -2361,7 +2366,13 @@
 
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onDislike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        !row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-dislike-icon':
                                                         row[column.field]
@@ -4587,8 +4598,10 @@
                                             popoverClass="table-description-popover"
                                             [ngbPopover]="descriptionPopover"
                                             (click)="
-                                                column.ngTemplate ===
-                                                    'description' &&
+                                                (column.ngTemplate ===
+                                                    'description' ||
+                                                    column.ngTemplate ===
+                                                        'total') &&
                                                     onShowDescriptionDropdown(
                                                         t1,
                                                         tableData[0]
@@ -4869,7 +4882,13 @@
                                             <!-- Like -->
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onLike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-like-icon':
                                                         row[column.field]
@@ -4882,7 +4901,6 @@
                                             <!-- Raiting Count -->
                                             <div
                                                 class="raiting-counter-container"
-                                                (click)="onOpenReviews(row)"
                                             >
                                                 <div
                                                     class="raiting-counter like-counter"
@@ -4904,7 +4922,13 @@
                                             <!-- Dislike -->
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onDislike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        !row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-dislike-icon':
                                                         row[column.field]

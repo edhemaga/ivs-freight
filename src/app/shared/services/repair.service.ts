@@ -29,7 +29,6 @@ import {
     RepairListResponse,
     ClusterResponse,
     RepairShopNewListResponse,
-    RepairDriverResponse,
     RepairModalResponse,
     RepairShopMinimalListResponse,
     RepairShopResponse,
@@ -43,6 +42,7 @@ import {
     CreateWithUploadsResponse,
     RepairShopSortBy,
     RepairSortBy,
+    RepairOrderBillDriverListResponse,
 } from 'appcoretruckassist';
 import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 import { CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
@@ -95,7 +95,7 @@ export class RepairService {
         search2?: string
     ): Observable<RepairListResponse> {
         const sorting = getOrderAndSort(sort);
-        
+
         return this.repairService.apiRepairListGet(
             repairShopId,
             unitType,
@@ -126,7 +126,7 @@ export class RepairService {
         truckId: number,
         trailerId: number,
         repairDate: string
-    ): Observable<RepairDriverResponse[]> {
+    ): Observable<RepairOrderBillDriverListResponse> {
         return this.repairService.apiRepairDriversGet(
             truckId,
             trailerId,
@@ -228,38 +228,16 @@ export class RepairService {
 
     public deleteRepairList(
         repairIds: number[],
+        repairShopIds: number[],
         tabSelected?: string
     ): Observable<any> {
         return this.repairService.apiRepairListDelete(repairIds).pipe(
             tap(() => {
-                const repairCount = JSON.parse(
-                    localStorage.getItem(
-                        TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
-                    )
-                );
-
-                repairIds.forEach((repairId) => {
-                    if (tabSelected === TableStringEnum.ACTIVE) {
-                        this.repairTruckStore.remove(
-                            ({ id }) => id === repairId
-                        );
-
-                        repairCount.repairTrucks--;
-                    } else if (tabSelected === TableStringEnum.INACTIVE) {
-                        this.repairTrailerStore.remove(
-                            ({ id }) => id === repairId
-                        );
-
-                        repairCount.repairTrailers--;
-                    }
-
-                    localStorage.setItem(
-                        TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
-                        JSON.stringify({
-                            repairTrucks: repairCount.repairTrucks,
-                            repairTrailers: repairCount.repairTrailers,
-                            repairShops: repairCount.repairShops,
-                        })
+                repairIds.forEach((repairId, index) => {
+                    this.handleRepairDeleteStores(
+                        repairId,
+                        repairShopIds[index],
+                        tabSelected
                     );
                 });
             })
