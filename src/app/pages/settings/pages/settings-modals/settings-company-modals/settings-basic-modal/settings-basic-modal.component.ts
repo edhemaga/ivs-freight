@@ -105,7 +105,6 @@ import {
     EnumValue,
     AccessTokenResponse,
     AccountDetailsResponse,
-    AchDetail,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
 import { EditData } from '@shared/models/edit-data.model';
@@ -117,6 +116,9 @@ import { SettingsModalSvgRoutes } from '@pages/settings/pages/settings-modals/se
 
 // Mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
+// Pipes
+import { SettingsBankAccountStatusPipe } from '@pages/settings/pages/settings-company/pipes';
 
 @Component({
     selector: 'app-settings-basic-modal',
@@ -146,6 +148,9 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaUploadFilesComponent,
         InputTestComponent,
         CaInputDatetimePickerComponent,
+
+        // pipes
+        SettingsBankAccountStatusPipe,
     ],
 })
 export class SettingsBasicModalComponent

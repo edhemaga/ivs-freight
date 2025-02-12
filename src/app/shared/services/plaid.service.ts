@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, filter, switchMap, combineLatestWith } from 'rxjs';
+import { Observable, filter, switchMap, from, forkJoin, mergeMap } from 'rxjs';
 
 // Services
 import {
@@ -25,45 +25,35 @@ declare const Plaid: IPlaid;
 })
 export class PlaidService {
     constructor(private companyService: CompanyService) {}
-
     public getPlaidVerification(): Observable<
         [AccessTokenResponse, AccountDetailsResponse]
     > {
         return this.companyService.apiCompanyPlaidLinkTokenGet().pipe(
             filter((res: LinkTokenResponse) => !!res?.link_token),
-            switchMap(
-                (res: LinkTokenResponse) =>
-                    new Observable<string>((observer) => {
+            switchMap((res: LinkTokenResponse) => {
+                return from(
+                    new Promise<string>((resolve, reject) => {
                         const plaid = Plaid.create({
                             token: res.link_token,
-                            onSuccess: (publicToken: string) => {
-                                observer.next(publicToken);
-                                observer.complete();
-                            },
-                            onExit: () => {
-                                observer.complete();
-                            },
+                            onSuccess: resolve,
+                            onExit: (err) => reject(err),
                         });
-
                         plaid.open();
                     })
-            ),
-            switchMap((publicToken: string) =>
-                this.companyService
-                    .apiCompanyPlaidTokenExchangePost({
+                );
+            }),
+            mergeMap((publicToken: string) =>
+                forkJoin([
+                    this.companyService.apiCompanyPlaidTokenExchangePost({
                         publicToken,
-                    })
-                    .pipe(
-                        combineLatestWith(
-                            this.companyService.apiCompanyPlaidAuthGetPost({
-                                accessToken: publicToken,
-                            })
-                        )
-                    )
+                    }),
+                    this.companyService.apiCompanyPlaidAuthGetPost({
+                        accessToken: publicToken,
+                    }),
+                ])
             )
         );
     }
-
     public compareVerificationResults(
         details: AccountDetailsResponse,
         addedAccount: IBankAccount
