@@ -16,6 +16,7 @@ import { FormatDatePipe } from '@shared/pipes';
 // Components
 import {
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaModalComponent,
 } from 'ca-components';
@@ -77,6 +78,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         CaInputDropdownComponent,
         TaCheckboxComponent,
         TaAppTooltipV2Component,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         FormatDatePipe,
@@ -210,7 +212,7 @@ export class PayrollBaseModalComponent implements OnInit {
             .get(PayrollStringEnum.LIMITED_AMOUNT)
             .patchValue(
                 MethodsCalculationsHelper.convertNumberInThousandSep(
-                    ammount / numberOfPayments
+                    Number((ammount / numberOfPayments).toFixed(2))
                 ) ?? null
             );
     }

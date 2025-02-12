@@ -34,6 +34,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @NgModule({ declarations: [
         ApplicantComponent,
@@ -70,6 +71,7 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
         TaCounterComponent,
         TaCustomCardComponent,
         TaModalTableComponent,
+        CaInputDatetimePickerComponent,
         /* PIPES */
         SumArraysPipe], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class ApplicantModule {}

@@ -71,6 +71,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { ApplicantAddSaveBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-add-save-btn/applicant-add-save-btn.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -98,6 +99,7 @@ import { Step5FormConfig } from '@pages/applicant/components/applicant-forms/ste
         ApplicantAddSaveBtnComponent,
         TaAppTooltipV2Component,
         TaInputAddressDropdownComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class Step5FormComponent

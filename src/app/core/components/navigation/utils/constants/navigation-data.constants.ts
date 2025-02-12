@@ -457,7 +457,7 @@ export class NavigationDataConstants {
     static repairNavigationData: NavigationModal[] = [
         {
             id: 15,
-            name: 'Order',
+            name: 'Bill / Order',
             path: 'repair-order',
         },
         {
