@@ -94,6 +94,10 @@ import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dro
 import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
 import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
 
+// enums
+import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
+import { FuelDataOptionsStringEnum } from '@pages/fuel/enums';
+
 @Component({
     selector: 'app-ta-modal-table',
     templateUrl: './ta-modal-table.component.html',
@@ -145,6 +149,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() selectedTrailer: TrailerTypeResponse;
     @Input() isFuelTable: boolean;
     @Input() fuelItemsDropdown: EnumValue[];
+    @Input() fuelTransactionType: eFuelTransactionType;
+    @Input() fuelModalActionType: FuelDataOptionsStringEnum;
+
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
         | CreateContactEmailCommand[]
