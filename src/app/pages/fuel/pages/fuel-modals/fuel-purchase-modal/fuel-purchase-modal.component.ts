@@ -24,6 +24,8 @@ import {
     Observable,
     empty,
     EMPTY,
+    tap,
+    filter,
 } from 'rxjs';
 
 // services
@@ -262,6 +264,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 this.getDriverTrailerBySelectedTruck()
                     .pipe(takeUntil(this.destroy$))
                     .subscribe((response) => {
+                        this.selectedDispatchHistory = response;
                         const { data } = response?.pagination || {};
 
                         if (response?.trailerId)
@@ -384,6 +387,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             trailerId: this.selectedTrailerType
                 ? this.selectedTrailerType.id
                 : null,
+            driverId: this.selectedDispatchHistory?.driverId,
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.isFranchise
                     ? this.selectedFuelStop.storeId
@@ -427,6 +431,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             trailerId: this.selectedTrailerType
                 ? this.selectedTrailerType.id
                 : null,
+            driverId: this.selectedDispatchHistory?.driverId,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
@@ -507,7 +512,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .getFuelTransactionById(id)
             .pipe(
                 takeUntil(this.destroy$),
-                switchMap((response) => {
+                tap((response) => {
                     const {
                         fuelCard,
                         trailer,
@@ -599,9 +604,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
                     this.fuelTransactionType = fuelTransactionType;
                     this.fuelCardHolderName = fuelCardHolderName;
-
-                    if (driver) return EMPTY;
-                    else return this.getDriverTrailerBySelectedTruck();
+                }),
+                filter(response => !!response.driver),
+                switchMap(() => {
+                    return this.getDriverTrailerBySelectedTruck();
                 })
             )
             .subscribe((response) => {
@@ -678,6 +684,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 dateUtc
             );
         } else return of(null);
+    }
+
+    private getInitialDriverTrailerBySelectedTruck(): void {
+        this.getDriverTrailerBySelectedTruck()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                this.selectedDispatchHistory = response;
+            });
     }
 
     private getFuelTransactionFranchises(
