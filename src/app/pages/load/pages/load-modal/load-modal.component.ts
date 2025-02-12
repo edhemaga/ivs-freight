@@ -2941,7 +2941,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // shipper config
         this.loadExtraStopsShipperInputConfig.push({
-            id: `${this.loadExtraStops().length}-${
+            id: `${this.loadExtraStops.length}-${
                 LoadModalStringEnum.EXTRA_STOP_SHIPPER
             }`,
             name: LoadModalStringEnum.INPUT_DROPDOWN,
@@ -2962,7 +2962,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // shipper contact config
         this.loadExtraStopsShipperContactsInputConfig.push({
-            id: `${this.loadExtraStops().length}-${
+            id: `${this.loadExtraStops.length}-${
                 LoadModalStringEnum.EXTRA_STOP_SHIPPER_CONTACT
             }`,
             name: LoadModalStringEnum.INPUT_DROPDOWN,
@@ -2999,14 +2999,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public addLoadExtraStop(): void {
-        this.loadExtraStops().push(this.newLoadExtraStop());
-        this.closeAllLoadExtraStopExceptActive(
-            this.loadExtraStops().length - 1
-        );
-        this.loadExtraStops()
-            .controls[
-                this.loadExtraStops().length - 1
-            ].get(LoadModalStringEnum.OPEN_CLOSE)
+        this.loadExtraStops.push(this.newLoadExtraStop());
+        this.closeAllLoadExtraStopExceptActive(this.loadExtraStops.length - 1);
+        this.loadExtraStops.controls[this.loadExtraStops.length - 1]
+            .get(LoadModalStringEnum.OPEN_CLOSE)
             .patchValue(true);
 
         const obj = this.numberOfLoadExtraStops();
@@ -3248,16 +3244,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 };
             }
 
-            if (newItem.secure) {
+            if (newItem.secure)
                 newItem = {
                     ...newItem,
                     secure: this.stopItemDropdownLists.secureDropdownList.find(
                         (secure) => secure.name === newItem.secure
                     )?.id,
                 };
-            }
 
-            if (newItem.stackable) {
+            if (newItem.stackable)
                 newItem = {
                     ...newItem,
                     stackable:
@@ -3265,18 +3260,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             (stackable) => stackable.name === newItem.stackable
                         )?.id,
                 };
-            }
 
-            if (newItem.tarp) {
+            if (newItem.tarp)
                 newItem = {
                     ...newItem,
                     tarp: this.stopItemDropdownLists.tarpDropdownList.find(
                         (tarp) => tarp.name === newItem.tarp
                     )?.id,
                 };
-            }
 
-            if (newItem.hazardousMaterialId) {
+            if (newItem.hazardousMaterialId)
                 newItem = {
                     ...newItem,
                     description: null,
@@ -3288,12 +3281,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 newItem.id === hazard.id
                         )?.id,
                 };
-            } else {
+            else
                 newItem = {
                     ...newItem,
                     hazardousMaterialId: null,
                 };
-            }
 
             // Remove null properties from form data
             Object.keys(newItem).forEach((key) => {
