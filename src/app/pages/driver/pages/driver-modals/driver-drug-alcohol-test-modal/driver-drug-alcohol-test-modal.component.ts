@@ -31,6 +31,7 @@ import {
     CaInputNoteComponent,
     CaModalComponent,
     CaModalButtonComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // helpers
@@ -74,6 +75,7 @@ import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
         CaInputDropdownComponent,
         CaInputComponent,
+        CaInputDatetimePickerComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
 

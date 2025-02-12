@@ -31,6 +31,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // components
 import {
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
@@ -71,6 +72,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaInputNoteComponent,
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         FormatDatePipe,

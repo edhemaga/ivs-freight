@@ -76,6 +76,7 @@ import {
     CaInputComponent,
     CaInputDropdownComponent,
     CaInputAddressDropdownComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // enums
@@ -115,6 +116,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class UserModalComponent

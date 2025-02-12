@@ -3,7 +3,7 @@
         class="d-flex flex-column repair-bill-table-container"
         [ngClass]="{
             'repair-order-table-container': isRepairOrderTable,
-            'fuel-table': isFuelTable
+            'fuel-table': isFuelTable,
         }"
     >
         <ng-container
@@ -20,45 +20,66 @@
                 [formGroupName]="i"
             >
                 <div
-                    class="d-flex justify-content-center align-items-center table-item-number"
+                    class="d-flex justify-content-center align-items-center table-item-repair"
+                    [ngClass]="{
+                        'table-item-number':
+                        (isFuelTable &&
+                            fuelTransactionType?.id ===
+                                fuelTransactionTypeEnum.Manual) ||
+                        (isFuelTable &&
+                            fuelModalActionType ===
+                                fuelDataOptionsStringEnum.ADD) ||
+                        !isFuelTable
+                    }"
                 >
                     <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
-                    <svg-icon
-                        class="delete-icon"
-                        [src]="svgRoutes.deleteIcon"
-                        [svgStyle]="{
-                            'width.px': 18,
-                            'height.px': 18
-                        }"
-                        (click)="emitDeleteFormArrayRowClick(i)"
-                    ></svg-icon>
+                    @if (
+                        (isFuelTable &&
+                            fuelTransactionType?.id ===
+                                fuelTransactionTypeEnum.Manual) ||
+                        (isFuelTable &&
+                            fuelModalActionType ===
+                                fuelDataOptionsStringEnum.ADD) ||
+                        !isFuelTable
+                    ) {
+                        <svg-icon
+                            class="delete-icon"
+                            [src]="svgRoutes.deleteIcon"
+                            [svgStyle]="{
+                                'width.px': 18,
+                                'height.px': 18,
+                            }"
+                            (click)="emitDeleteFormArrayRowClick(i)"
+                        ></svg-icon>
+                    }
                 </div>
 
                 <ng-container *ngIf="!isFuelTable; else showItemsDropdown">
                     <app-ca-input
                         [formControl]="repairBillItemRow.get('description')"
                         [inputConfig]="{
-                        name: 'description',
-                        type: 'text',
-                        label: 'Description',
-                        placeholderInsteadOfLabel: true,
-                        minLength: 5,
-                        maxLength: 64,
-                        textTransform: 'capitalize',
-                        hideErrorMessage: true,
-                        hideRequiredCheck: true,
-                        isRequired: true,
-                        isInputBackgroundRemoved:
-                            repairBillItemRow.valid && !isInputHoverRows[i][0],
-                        isBlueText:
-                            repairBillItemRow.valid &&
-                            !isInputHoverRows[i][0] &&
-                            selectedTruckTrailerRepairPm[i],
-                        blackInput:
-                            repairBillItemRow.get('description').value &&
-                            !isInputHoverRows[i][0],
-                    }"
+                            name: 'description',
+                            type: 'text',
+                            label: 'Description',
+                            placeholderInsteadOfLabel: true,
+                            minLength: 5,
+                            maxLength: 64,
+                            textTransform: 'capitalize',
+                            hideErrorMessage: true,
+                            hideRequiredCheck: true,
+                            isRequired: true,
+                            isInputBackgroundRemoved:
+                                repairBillItemRow.valid &&
+                                !isInputHoverRows[i][0],
+                            isBlueText:
+                                repairBillItemRow.valid &&
+                                !isInputHoverRows[i][0] &&
+                                selectedTruckTrailerRepairPm[i],
+                            blackInput:
+                                repairBillItemRow.get('description').value &&
+                                !isInputHoverRows[i][0],
+                        }"
                         (mouseenter)="emitOnInputHover(true, i, 0)"
                         (mouseleave)="emitOnInputHover(false, i, 0)"
                     ></app-ca-input>
@@ -67,7 +88,7 @@
                         [ngClass]="{
                             'hidden-pm-dropdown':
                                 !truckTrailerRepairPmOptions?.truckPmDropdownList &&
-                                !truckTrailerRepairPmOptions?.trailerPmDropdownList
+                                !truckTrailerRepairPmOptions?.trailerPmDropdownList,
                         }"
                     >
                         <app-ta-input-dropdown
@@ -87,7 +108,7 @@
                                 inputIcon:
                                     selectedTruckTrailerRepairPm[i]?.logoName ||
                                     'ic_custom_pm.svg',
-                                dropdownWidthClass: 'w-col-200'
+                                dropdownWidthClass: 'w-col-200',
                             }"
                             [canAddNew]="
                                 truckTrailerRepairPmOptions?.truckPmDropdownList &&
@@ -107,29 +128,43 @@
                     <app-ca-input-dropdown
                         [formControl]="repairBillItemRow.get('itemfuel')"
                         [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Item',
-                        isDropdown: true,
-                        placeholderInsteadOfLabel: true,
-                        blackInput: true,
-                        isRequired: true,
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-182',
-                        customClass: 'w-col-182',
-                    }"
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Item',
+                            isDropdown: true,
+                            isDisabled:
+                                isFuelTable &&
+                                fuelTransactionType?.id !==
+                                    fuelTransactionTypeEnum.Manual &&
+                                fuelModalActionType ===
+                                    fuelDataOptionsStringEnum.EDIT,
+                            placeholderInsteadOfLabel: true,
+                            blackInput: true,
+                            isRequired: true,
+                            textTransform: 'capitalize',
+                            dropdownWidthClass: 'w-col-182',
+                            customClass: 'w-col-182',
+                        }"
                         [options]="fuelItemsDropdown"
                         [activeItem]="activeFuelItem[i]"
                         (selectedItem)="emitOnSelectDropdown($event, i)"
                     ></app-ca-input-dropdown>
                 </ng-template>
                 <app-ca-input
-                    [formControl]="repairBillItemRow.get(!isFuelTable ? 'quantity' : 'qty')"
+                    [formControl]="
+                        repairBillItemRow.get(!isFuelTable ? 'quantity' : 'qty')
+                    "
                     [inputConfig]="{
                         name: 'qty',
                         type: 'text',
                         label: 'Qty',
                         placeholderInsteadOfLabel: true,
+                        isDisabled:
+                            isFuelTable &&
+                            fuelTransactionType?.id !==
+                                fuelTransactionTypeEnum.Manual &&
+                            fuelModalActionType ===
+                                fuelDataOptionsStringEnum.EDIT,
                         minLength: 5,
                         maxLength: 64,
                         isRequired: true,
@@ -145,7 +180,7 @@
                             selectedTruckTrailerRepairPm[i],
                         blackInput:
                             repairBillItemRow.get('quantity').value &&
-                            !isInputHoverRows[i][1]
+                            !isInputHoverRows[i][1],
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 1)"
                     (mouseleave)="emitOnInputHover(false, i, 1)"
@@ -159,7 +194,12 @@
                             type: 'text',
                             label: 'Price',
                             placeholderInsteadOfLabel: true,
-                            
+                            isDisabled:
+                                isFuelTable &&
+                                fuelTransactionType?.id !==
+                                    fuelTransactionTypeEnum.Manual &&
+                                fuelModalActionType ===
+                                    fuelDataOptionsStringEnum.EDIT,
                             minLength: 5,
                             maxLength: 64,
                             isRequired: true,
@@ -176,7 +216,7 @@
                                 selectedTruckTrailerRepairPm[i],
                             blackInput:
                                 repairBillItemRow.get('price').value &&
-                                !isInputHoverRows[i][2]
+                                !isInputHoverRows[i][2],
                         }"
                         (mouseenter)="emitOnInputHover(true, i, 2)"
                         (mouseleave)="emitOnInputHover(false, i, 2)"
@@ -185,7 +225,7 @@
                     <div
                         class="subtotal d-flex justify-content-end"
                         [ngClass]="{
-                            valid: selectedTruckTrailerRepairPm[i]
+                            valid: selectedTruckTrailerRepairPm[i],
                         }"
                     >
                         <p class="m-0 ta-font-semi-bold">

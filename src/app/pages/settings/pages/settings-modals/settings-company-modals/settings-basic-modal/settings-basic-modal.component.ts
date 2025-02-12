@@ -33,10 +33,7 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
-import {
-    CaUploadFilesComponent,
-    CaInputAddressDropdownComponent,
-} from 'ca-components';
+import { CaUploadFilesComponent, CaInputAddressDropdownComponent, InputTestComponent, CaInputDatetimePickerComponent } from 'ca-components';
 
 // Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -142,6 +139,8 @@ import { SettingsBankAccountStatusPipe } from '@pages/settings/pages/settings-co
         TaCustomCardComponent,
         TaLogoChangeComponent,
         CaUploadFilesComponent,
+        InputTestComponent,
+        CaInputDatetimePickerComponent
 
         // Pipes
         SettingsBankAccountStatusPipe,

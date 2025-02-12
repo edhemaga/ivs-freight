@@ -98,18 +98,15 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { LoadStatusEnum } from '@shared/enums/load-status.enum';
 
 // models
 import {
     SignInResponse,
-    LoadModalResponse,
     RoutingResponse,
     LoadStopCommand,
     LoadType,
     LoadResponse,
     EnumValue,
-    LoadStatus,
     ShipperContactGroupResponse,
     BrokerContactGroupResponse,
     TruckTypeResponse,
@@ -166,6 +163,8 @@ import {
     IMapMarkers,
     IMapRoutePath,
     MapMarkerIconService,
+    CaInputDatetimePickerComponent,
+    InputTestComponent,
 } from 'ca-components';
 
 @Component({
@@ -200,7 +199,8 @@ import {
         TaModalTableComponent,
         CaMapComponent,
         CaInputDropdownComponent,
-        CaInputComponent,
+        CaInputDatetimePickerComponent,
+        InputTestComponent,
 
         // pipes
         FinancialCalculationPipe,
@@ -466,7 +466,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         public financialCalculationPipe: FinancialCalculationPipe,
         private cdRef: ChangeDetectorRef,
         private loadStoreService: LoadStoreService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.getCompanyUser();
@@ -510,7 +510,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             this.showAdjustedRate =
                 !!selectedDispatcher.driver.owner ||
                 selectedDispatcher.driver.payType.name ===
-                LoadModalStringEnum.COMMISSION;
+                    LoadModalStringEnum.COMMISSION;
         } else this.showAdjustedRate = false;
     }
 
@@ -518,7 +518,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.showDriverRate =
             this.selectedDispatches &&
             this.selectedDispatches?.driver?.payType.name ===
-            LoadModalStringEnum.FLAT_RATE &&
+                LoadModalStringEnum.FLAT_RATE &&
             !this.selectedDispatches.payType.includes(
                 LoadModalStringEnum.PERCENT_PAY_TYPE
             );
@@ -573,7 +573,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public getDispatcherInputConfig(): ITaInput {
         return LoadModalConfig.getDispatcherInputConfig(
             this.selectedDispatcher?.logoName ||
-            this.selectedDispatcher?.avatarFile?.url,
+                this.selectedDispatcher?.avatarFile?.url,
             this.selectedDispatcher?.name
         );
     }
@@ -608,7 +608,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return LoadModalConfig.getInvoiceDate(
             loadWasInvoiced,
             !loadWasInvoiced &&
-            !this.loadForm.get(LoadModalStringEnum.INVOICED_DATE).value
+                !this.loadForm.get(LoadModalStringEnum.INVOICED_DATE).value
         );
     }
 
@@ -849,7 +849,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             if (
                 this.editData?.loadAction ===
-                TableStringEnum.CONVERT_TO_TEMPLATE ||
+                    TableStringEnum.CONVERT_TO_TEMPLATE ||
                 (this.editData?.loadAction ===
                     TableStringEnum.CONVERT_TO_LOAD &&
                     this.loadForm.valid)
@@ -986,9 +986,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     public get areOriginAndDestinationValid(): boolean {
         return (
             this.validatePickupStops(this.loadForm) ===
-            LoadModalStringEnum.VALID_STATUS &&
+                LoadModalStringEnum.VALID_STATUS &&
             this.validateDeliveryStops(this.loadForm) ===
-            LoadModalStringEnum.VALID_STATUS
+                LoadModalStringEnum.VALID_STATUS
         );
     }
 
@@ -1121,7 +1121,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     }
                 );
 
-                this.loadExtraStops()
+                this.loadExtraStops
                     .at(indx)
                     .get(LoadModalStringEnum.STOP_TYPE)
                     .patchValue(
@@ -1144,7 +1144,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             LoadModalStringEnum.DELIVERY_STOP_ORDER
                         ).value;
 
-                        this.loadExtraStops()
+                        this.loadExtraStops
                             .at(indx)
                             .get(LoadModalStringEnum.STOP_ORDER)
                             .patchValue(obj.numberOfDeliveries);
@@ -1153,7 +1153,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             .get(LoadModalStringEnum.DELIVERY_STOP_ORDER)
                             .patchValue(obj.numberOfDeliveries + 1);
                     } else {
-                        this.loadExtraStops()
+                        this.loadExtraStops
                             .at(indx)
                             .get(LoadModalStringEnum.STOP_ORDER)
                             .patchValue(obj.numberOfPickups);
@@ -1267,7 +1267,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.selectedExtraStopTime[indx] === 2
                 ) {
                     this.inputService.changeValidators(
-                        this.loadExtraStops()
+                        this.loadExtraStops
                             .at(indx)
                             .get(LoadModalStringEnum.TIME_TO),
                         false
@@ -1280,7 +1280,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     );
                 } else {
                     this.inputService.changeValidators(
-                        this.loadExtraStops()
+                        this.loadExtraStops
                             .at(indx)
                             .get(LoadModalStringEnum.TIME_TO)
                     );
@@ -1314,7 +1314,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.isEditingMode &&
                     this.isConvertedToTemplate &&
                     this.editData.loadAction !==
-                    TableStringEnum.CONVERT_TO_TEMPLATE
+                        TableStringEnum.CONVERT_TO_TEMPLATE
                 ) {
                     this.updateLoadTemplate(addNew);
                 } else if (this.isConvertedToTemplate) {
@@ -2017,7 +2017,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 LoadModalStringEnum.PICKUP_TIME_FROM,
                 LoadModalStringEnum.PICKUP_TIME_TO,
                 this.selectedStopTimePickup === 6 ||
-                this.selectedStopTimePickup === 2
+                    this.selectedStopTimePickup === 2
             );
 
             // draw stop on map
@@ -2160,7 +2160,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 LoadModalStringEnum.DELIVERY_TIME_FROM,
                 LoadModalStringEnum.DELIVERY_TIME_TO,
                 this.selectedStopTimeDelivery === 2 ||
-                this.selectedStopTimeDelivery === 8
+                    this.selectedStopTimeDelivery === 8
             );
             // draw stop on map
             this.drawStopOnMap();
@@ -2349,7 +2349,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 LoadModalStringEnum.TIME_FROM,
                 LoadModalStringEnum.TIME_TO,
                 isAppointment,
-                this.loadExtraStops().at(index)
+                this.loadExtraStops.at(index)
             );
             this.drawStopOnMap();
 
@@ -2402,7 +2402,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     this.selectedExtraStopShipperContact[index] =
                         this.labelsShipperContacts[1].contacts[0];
 
-                    this.loadExtraStops()
+                    this.loadExtraStops
                         .at(index)
                         .get(LoadModalStringEnum.SHIPPER_CONTACT_ID)
                         .patchValue(
@@ -2444,7 +2444,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     this.selectedExtraStopShipperContact[index] = null;
 
-                    this.loadExtraStops()
+                    this.loadExtraStops
                         .at(index)
                         .get(LoadModalStringEnum.SHIPPER_CONTACT_ID)
                         .patchValue(null);
@@ -2467,7 +2467,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 this.selectedExtraStopShipperContact[index] = null;
 
-                this.loadExtraStops()
+                this.loadExtraStops
                     .at(index)
                     .get(LoadModalStringEnum.SHIPPER_CONTACT_ID)
                     .patchValue(null);
@@ -2535,7 +2535,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.isActivePickupStop = !this.isActivePickupStop;
                 this.isActiveDeliveryStop = false;
 
-                this.loadExtraStops().controls.filter((item) => {
+                this.loadExtraStops.controls.filter((item) => {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
                 });
 
@@ -2547,7 +2547,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 this.isActivePickupStop = false;
 
-                this.loadExtraStops().controls.filter((item) => {
+                this.loadExtraStops.controls.filter((item) => {
                     item.get(LoadModalStringEnum.OPEN_CLOSE).patchValue(false);
                 });
 
@@ -2826,8 +2826,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     (acc, val) => {
                         const pay = val.pay
                             ? MethodsCalculationsHelper.convertThousandSepInNumber(
-                                val.pay as string
-                            )
+                                  val.pay as string
+                              )
                             : 0;
                         switch (val.paymentType) {
                             case LoadModalPaymentEnum.PAID_IN_FULL:
@@ -2917,7 +2917,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         additionalBillingType: item.id,
                         rate: biilingRate
                             ? biilingRate.get(LoadModalStringEnum.BILLING_VALUE)
-                                .value
+                                  .value
                             : null,
                     };
                 }
@@ -2928,17 +2928,18 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public get hasValidSteps(): boolean {
-        return this.areOriginAndDestinationValid && this.loadExtraStops().valid;
+        return this.areOriginAndDestinationValid && this.loadExtraStops.valid;
     }
 
     public createNewExtraStop(): void {
-        if (!this.areOriginAndDestinationValid || !this.loadExtraStops().valid)
+        if (!this.areOriginAndDestinationValid || !this.loadExtraStops.valid)
             return;
 
         // shipper config
         this.loadExtraStopsShipperInputConfig.push({
-            id: `${this.loadExtraStops().length}-${LoadModalStringEnum.EXTRA_STOP_SHIPPER
-                }`,
+            id: `${this.loadExtraStops.length}-${
+                LoadModalStringEnum.EXTRA_STOP_SHIPPER
+            }`,
             name: LoadModalStringEnum.INPUT_DROPDOWN,
             type: LoadModalStringEnum.TEXT,
             multipleLabel: {
@@ -2957,8 +2958,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // shipper contact config
         this.loadExtraStopsShipperContactsInputConfig.push({
-            id: `${this.loadExtraStops().length}-${LoadModalStringEnum.EXTRA_STOP_SHIPPER_CONTACT
-                }`,
+            id: `${this.loadExtraStops.length}-${
+                LoadModalStringEnum.EXTRA_STOP_SHIPPER_CONTACT
+            }`,
             name: LoadModalStringEnum.INPUT_DROPDOWN,
             type: LoadModalStringEnum.TEXT,
             multipleLabel: {
@@ -2993,33 +2995,29 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public addLoadExtraStop(): void {
-        this.loadExtraStops().push(this.newLoadExtraStop());
-        this.closeAllLoadExtraStopExceptActive(
-            this.loadExtraStops().length - 1
-        );
-        this.loadExtraStops()
-            .controls[
-            this.loadExtraStops().length - 1
-        ].get(LoadModalStringEnum.OPEN_CLOSE)
+        this.loadExtraStops.push(this.newLoadExtraStop());
+        this.closeAllLoadExtraStopExceptActive(this.loadExtraStops.length - 1);
+        this.loadExtraStops.controls[this.loadExtraStops.length - 1]
+            .get(LoadModalStringEnum.OPEN_CLOSE)
             .patchValue(true);
 
         const obj = this.numberOfLoadExtraStops();
 
-        this.loadExtraStops()
-            .at(this.loadExtraStops().length - 1)
+        this.loadExtraStops
+            .at(this.loadExtraStops.length - 1)
             .get(LoadModalStringEnum.STOP_ORDER)
             .patchValue(obj.numberOfPickups);
 
-        if (this.loadExtraStops().length > 1) {
+        if (this.loadExtraStops.length > 1) {
             this.typeOfExtraStops.push([
                 {
-                    id: 3000 + this.loadExtraStops().length,
+                    id: 3000 + this.loadExtraStops.length,
                     name: LoadModalStringEnum.PICKUP_2,
                     checked: true,
                     color: LoadModalStringEnum.COLOR_1,
                 },
                 {
-                    id: 4000 + this.loadExtraStops().length,
+                    id: 4000 + this.loadExtraStops.length,
                     name: LoadModalStringEnum.DELIVERY_2,
                     checked: false,
                     color: LoadModalStringEnum.COLOR_2,
@@ -3028,13 +3026,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             this.stopTimeTabsExtraStops.push([
                 {
-                    id: 7900 + this.loadExtraStops().length,
+                    id: 7900 + this.loadExtraStops.length,
                     name: LoadModalStringEnum.WORK_HOURS,
                     checked: true,
                     color: LoadModalStringEnum.COLOR_3,
                 },
                 {
-                    id: 9000 + this.loadExtraStops().length,
+                    id: 9000 + this.loadExtraStops.length,
                     name: LoadModalStringEnum.APPOINTMENT,
                     checked: false,
                     color: LoadModalStringEnum.COLOR_3,
@@ -3079,7 +3077,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         let pickups: number = 1;
         let deliveries: number = 0;
 
-        this.loadExtraStops().controls.forEach((item) => {
+        this.loadExtraStops.controls.forEach((item) => {
             if (
                 item.get(LoadModalStringEnum.STOP_TYPE).value ===
                 LoadModalStringEnum.PICKUP_2
@@ -3096,7 +3094,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         };
     }
 
-    public loadExtraStops(): UntypedFormArray {
+    public get loadExtraStops(): UntypedFormArray {
         return this.loadForm.get(
             LoadModalStringEnum.EXTRA_STOPS_2
         ) as UntypedFormArray;
@@ -3105,13 +3103,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private calculateStopOrder(): void {
         let stopOrder = 1;
 
-        for (let i = 0; i < this.loadExtraStops().length; i++) {
-            const stopType = this.loadExtraStops()
+        for (let i = 0; i < this.loadExtraStops.length; i++) {
+            const stopType = this.loadExtraStops
                 .at(i)
                 .get(LoadModalStringEnum.STOP_TYPE).value;
 
             if (stopType === LoadModalStringEnum.PICKUP_2) {
-                this.loadExtraStops()
+                this.loadExtraStops
                     .at(i)
                     .get(LoadModalStringEnum.STOP_ORDER)
                     .patchValue(stopOrder + 1);
@@ -3122,24 +3120,24 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
 
     public removeLoadExtraStop(index: number): void {
-        this.loadExtraStops().removeAt(index);
+        this.loadExtraStops.removeAt(index);
 
         let pickupOrder = 2;
         let deliveryOrder = 1;
 
-        for (let i = 0; i < this.loadExtraStops().length; i++) {
+        for (let i = 0; i < this.loadExtraStops.length; i++) {
             if (
-                this.loadExtraStops().at(i).get(LoadModalStringEnum.STOP_TYPE)
+                this.loadExtraStops.at(i).get(LoadModalStringEnum.STOP_TYPE)
                     .value === LoadModalStringEnum.PICKUP_2
             ) {
-                this.loadExtraStops()
+                this.loadExtraStops
                     .at(i)
                     .get(LoadModalStringEnum.STOP_ORDER)
                     .patchValue(pickupOrder);
 
                 pickupOrder++;
             } else {
-                this.loadExtraStops()
+                this.loadExtraStops
                     .at(i)
                     .get(LoadModalStringEnum.STOP_ORDER)
                     .patchValue(deliveryOrder);
@@ -3153,7 +3151,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
 
         if (
-            !this.loadExtraStops().value.some(
+            !this.loadExtraStops.value.some(
                 (extraStop) =>
                     extraStop.stopType === LoadModalStringEnum.DELIVERY_2
             )
@@ -3172,7 +3170,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.loadExtraStopsDateRange.splice(index, 1);
         this.selectedExtraStopTime.splice(index, 1);
 
-        if (this.loadExtraStops().length) {
+        if (this.loadExtraStops.length) {
             this.typeOfExtraStops.splice(index, 1);
 
             this.stopTimeTabsExtraStops.splice(index, 1);
@@ -3205,8 +3203,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.isActivePickupStop = false;
         this.isActiveDeliveryStop = false;
 
-        if (this.loadExtraStops().length) {
-            this.loadExtraStops().controls.map((item, index) => {
+        if (this.loadExtraStops.length) {
+            this.loadExtraStops.controls.map((item, index) => {
                 if (index === idx) {
                     const isCardOpen = item.get(
                         LoadModalStringEnum.OPEN_CLOSE
@@ -3235,10 +3233,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     units: newItem.units.id
                         ? newItem.units.id
                         : this.stopItemDropdownLists.quantityDropdownList.find(
-                            (unit) =>
-                                unit.name === newItem.units ||
-                                newItem.units === unit.id
-                        )?.id,
+                              (unit) =>
+                                  unit.name === newItem.units ||
+                                  newItem.units === unit.id
+                          )?.id,
                 };
             }
 
@@ -3278,7 +3276,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         this.stopItemDropdownLists.hazardousDropdownList.find(
                             (hazard) =>
                                 hazard.description ===
-                                newItem.hazardousMaterialId ||
+                                    newItem.hazardousMaterialId ||
                                 newItem.id === hazard.id
                         )?.id,
                 };
@@ -3388,9 +3386,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 timeType: saveCurrentLoad
                     ? this.stopTimeTabsPickup.find((item) => item.checked)
                     : this.stopTimeTabsPickup.find((item) => item.checked)
-                        ?.name === LoadModalStringEnum.APPOINTMENT
-                        ? 2
-                        : 1,
+                            ?.name === LoadModalStringEnum.APPOINTMENT
+                      ? 2
+                      : 1,
                 timeFrom: pickupTimeFrom,
                 timeTo: pickupTimeTo,
                 arrive: arrive,
@@ -3405,8 +3403,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
 
         // extra Stops
-        if (this.loadExtraStops().length) {
-            this.loadExtraStops().controls.forEach((item, index) => {
+        if (this.loadExtraStops.length) {
+            this.loadExtraStops.controls.forEach((item, index) => {
                 const { legHours, legMinutes, legMiles } = this.mapLegTime(
                     item.get(LoadModalStringEnum.LEG_HOURS).value,
                     item.get(LoadModalStringEnum.LEG_MINUTES).value,
@@ -3419,8 +3417,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : null,
                     stopType: saveCurrentLoad
                         ? this.typeOfExtraStops[index]?.find(
-                            (item) => item.checked
-                        )
+                              (item) => item.checked
+                          )
                         : item.get(LoadModalStringEnum.STOP_TYPE).value,
                     stopOrder: stops.length + 1,
                     stopLoadOrder: this.extraStopNumbers?.[index] ?? 1,
@@ -3440,13 +3438,13 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     ),
                     timeType: saveCurrentLoad
                         ? this.stopTimeTabsExtraStops[index]?.find(
-                            (item) => item.checked
-                        )
+                              (item) => item.checked
+                          )
                         : this.stopTimeTabsExtraStops[index].find(
-                            (item) => item.checked
-                        )?.name === LoadModalStringEnum.APPOINTMENT
-                            ? 2
-                            : 1,
+                                (item) => item.checked
+                            )?.name === LoadModalStringEnum.APPOINTMENT
+                          ? 2
+                          : 1,
                     timeFrom: item.get(LoadModalStringEnum.TIME_FROM).value,
                     timeTo: item.get(LoadModalStringEnum.TIME_TO).value,
                     arrive: item.get(LoadModalStringEnum.ARIVE).value,
@@ -3475,7 +3473,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     : null,
                 stopType: deliveryStop,
                 stopOrder: stops.length + 1,
-                stopLoadOrder: this.loadForm.get(LoadModalStringEnum.DELIVERY_STOP_ORDER).value ?? 1,
+                stopLoadOrder:
+                    this.loadForm.get(LoadModalStringEnum.DELIVERY_STOP_ORDER)
+                        .value ?? 1,
                 shipperId: this.selectedDeliveryShipper.id,
                 shipper: this.originalShippers.find(
                     (shipper) => shipper.id === this.selectedDeliveryShipper.id
@@ -3491,9 +3491,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 timeType: saveCurrentLoad
                     ? this.stopTimeTabsDelivery.find((item) => item.checked)
                     : this.stopTimeTabsDelivery.find((item) => item.checked)
-                        ?.name === LoadModalStringEnum.APPOINTMENT
-                        ? 2
-                        : 1,
+                            ?.name === LoadModalStringEnum.APPOINTMENT
+                      ? 2
+                      : 1,
                 timeFrom: deliveryTimeFrom,
                 timeTo: deliveryTimeTo,
                 arrive: null,
@@ -3618,8 +3618,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         }
 
         // extra stops
-        if (this.loadExtraStops().length) {
-            this.loadExtraStops().controls.map((item, index) => {
+        if (this.loadExtraStops.length) {
+            this.loadExtraStops.controls.map((item, index) => {
                 routes.push({
                     longitude: this.selectedExtraStopShipper[index]?.longitude,
                     latitude: this.selectedExtraStopShipper[index]?.latitude,
@@ -3680,8 +3680,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                     stopColor: route.pickup
                                         ? LoadModalStringEnum.COLOR_5
                                         : route.delivery
-                                            ? LoadModalStringEnum.COLOR_6
-                                            : LoadModalStringEnum.COLOR_4,
+                                          ? LoadModalStringEnum.COLOR_6
+                                          : LoadModalStringEnum.COLOR_4,
                                     stopNumber: route.stopNumber.toString(),
                                     empty:
                                         this.selectedDispatches
@@ -3760,23 +3760,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                         .get(LoadModalStringEnum.DELIVERY_SHAPE)
                                         .patchValue(res?.legs[index].shape);
                                 } else {
-                                    this.loadExtraStops()
+                                    this.loadExtraStops
                                         .at(index - 1)
                                         .get(LoadModalStringEnum.LEG_MILES)
                                         .patchValue(item.miles);
-                                    this.loadExtraStops()
+                                    this.loadExtraStops
                                         .at(index - 1)
                                         .get(LoadModalStringEnum.SHAPE)
                                         .patchValue(item.shape);
-                                    this.loadExtraStops()
+                                    this.loadExtraStops
                                         .at(index - 1)
                                         .get(LoadModalStringEnum.LEG_HOURS)
                                         .patchValue(item.hours);
-                                    this.loadExtraStops()
+                                    this.loadExtraStops
                                         .at(index - 1)
                                         .get(LoadModalStringEnum.LEG_MINUTES)
                                         .patchValue(item.minutes);
-                                    this.loadExtraStops()
+                                    this.loadExtraStops
                                         .at(index - 1)
                                         .get(LoadModalStringEnum.LEG_COST)
                                         .patchValue(item.cost);
@@ -3852,7 +3852,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 this.loadExtraStopsDateRange[extraStopId] = required;
 
                 this.inputService.changeValidators(
-                    this.loadExtraStops()
+                    this.loadExtraStops
                         .at(extraStopId)
                         ?.get(LoadModalStringEnum.DATE_TO),
                     required
@@ -4175,14 +4175,14 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                 this.previousStatus = statusDropdownData?.previousStatus
                     ? {
-                        name: statusDropdownData?.previousStatus
-                            ?.statusString,
-                        id: statusDropdownData?.previousStatus?.statusValue
-                            ?.id,
-                        valueForRequest:
-                            statusDropdownData?.previousStatus?.statusValue
-                                ?.name,
-                    }
+                          name: statusDropdownData?.previousStatus
+                              ?.statusString,
+                          id: statusDropdownData?.previousStatus?.statusValue
+                              ?.id,
+                          valueForRequest:
+                              statusDropdownData?.previousStatus?.statusValue
+                                  ?.name,
+                      }
                     : null;
             }
 
@@ -4320,8 +4320,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     item?.dnu || item?.ban
                         ? LoadModalStringEnum.BROKER_OPEN_SVG
                         : item?.status === 0
-                            ? LoadModalStringEnum.BROKER_CLOSED_SVG
-                            : null,
+                          ? LoadModalStringEnum.BROKER_CLOSED_SVG
+                          : null,
             };
         });
 
@@ -4863,16 +4863,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // Check if loadRequirements exists before accessing its properties
         const loadRequirements = loadModalData.loadRequirements
             ? {
-                truckType: loadModalData.loadRequirements.truckType,
-                trailerType: loadModalData.loadRequirements.trailerType,
-                year: loadModalData.loadRequirements.year,
-                liftgate: loadModalData.loadRequirements.liftgate,
-                driverMessage: loadModalData.loadRequirements.driverMessage,
-                trailierLength: loadModalData.loadRequirements.trailerLength,
-                doorType: loadModalData.loadRequirements.doorType,
-                suspension: loadModalData.loadRequirements.suspension,
-                id: loadModalData.loadRequirements.id,
-            }
+                  truckType: loadModalData.loadRequirements.truckType,
+                  trailerType: loadModalData.loadRequirements.trailerType,
+                  year: loadModalData.loadRequirements.year,
+                  liftgate: loadModalData.loadRequirements.liftgate,
+                  driverMessage: loadModalData.loadRequirements.driverMessage,
+                  trailierLength: loadModalData.loadRequirements.trailerLength,
+                  doorType: loadModalData.loadRequirements.doorType,
+                  suspension: loadModalData.loadRequirements.suspension,
+                  id: loadModalData.loadRequirements.id,
+              }
             : {};
 
         // Ensure pickupStop and deliveryStop are defined
@@ -4881,9 +4881,9 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         // Ensure broker exists before attempting to find and spread
         const editedBroker = broker
             ? {
-                ...this.labelsBroker.find((b) => b.id === broker?.id),
-                name: broker?.businessName,
-            }
+                  ...this.labelsBroker.find((b) => b.id === broker?.id),
+                  name: broker?.businessName,
+              }
             : {};
 
         // Ensure dispatcher exists before attempting to spread
@@ -4892,15 +4892,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         );
         const editedDispatcher = selectedDispatcher
             ? {
-                ...selectedDispatcher,
-                name: selectedDispatcher?.fullName,
-            }
+                  ...selectedDispatcher,
+                  name: selectedDispatcher?.fullName,
+              }
             : {};
 
         const editedTruck = dispatch
             ? this.originLabelsDispatches.find(
-                (dispatches) => dispatches.id === dispatch?.id
-            )
+                  (dispatches) => dispatches.id === dispatch?.id
+              )
             : null;
 
         const editedPickupShipper = this.formatShipper(pickupStop?.shipper);
@@ -5061,37 +5061,34 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
                     if (extraStop) extraStop = this.formatStopTimes(extraStop);
 
-                    this.loadExtraStops()
-                        .at(index)
-                        .patchValue({
-                            id: extraStop.id,
-                            stopType: extraStop.stopType.name,
-                            stopOrder: extraStop.stopLoadOrder,
-                            stopLoadOrder: extraStop.stopLoadOrder,
-                            shipperId: extraStop.shipper?.id ?? null,
-                            shipperContactId:
-                                extraStop.shipperContact?.id ?? null,
-                            dateFrom: extraStop
-                                ? this.convertDate(extraStop.dateFrom)
-                                : null,
-                            dateTo: extraStop
-                                ? this.convertDate(extraStop.dateTo)
-                                : null,
-                            timeType: extraStop.timeType.name.toUpperCase(),
-                            timeFrom: extraStop?.timeFrom,
-                            timeTo: extraStop?.timeTo,
-                            arrive: extraStop?.arrive,
-                            depart: extraStop?.depart,
-                            legMiles: extraStop?.legMiles,
-                            legHours: extraStop?.legHours,
-                            legMinutes: extraStop?.legMinutes,
-                            items: extraStop?.items,
-                            openClose: false,
-                            statusHistory: extraStop?.statusHistory,
-                            waitTime: extraStop
-                                ? this.formatTimeDifference(extraStop.wait)
-                                : null,
-                        });
+                    this.loadExtraStops.at(index).patchValue({
+                        id: extraStop.id,
+                        stopType: extraStop.stopType.name,
+                        stopOrder: extraStop.stopLoadOrder,
+                        stopLoadOrder: extraStop.stopLoadOrder,
+                        shipperId: extraStop.shipper?.id ?? null,
+                        shipperContactId: extraStop.shipperContact?.id ?? null,
+                        dateFrom: extraStop
+                            ? this.convertDate(extraStop.dateFrom)
+                            : null,
+                        dateTo: extraStop
+                            ? this.convertDate(extraStop.dateTo)
+                            : null,
+                        timeType: extraStop.timeType.name.toUpperCase(),
+                        timeFrom: extraStop?.timeFrom,
+                        timeTo: extraStop?.timeTo,
+                        arrive: extraStop?.arrive,
+                        depart: extraStop?.depart,
+                        legMiles: extraStop?.legMiles,
+                        legHours: extraStop?.legHours,
+                        legMinutes: extraStop?.legMinutes,
+                        items: extraStop?.items,
+                        openClose: false,
+                        statusHistory: extraStop?.statusHistory,
+                        waitTime: extraStop
+                            ? this.formatTimeDifference(extraStop.wait)
+                            : null,
+                    });
 
                     this.loadExtraStopsDateRange[index] = !!extraStop?.dateTo;
 
@@ -5140,10 +5137,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.selectedTrailerReq = loadRequirements?.trailerType;
         this.selectedYear = loadRequirements?.year
             ? this.labelsYear.find(
-                (year) =>
-                    year.name.toString().replace('+', '') ==
-                    `${loadRequirements?.year.toString().replace('+', '')}`
-            )
+                  (year) =>
+                      year.name.toString().replace('+', '') ==
+                      `${loadRequirements?.year.toString().replace('+', '')}`
+              )
             : null;
 
         additionalBillingRates?.forEach((rate) => {
@@ -5248,7 +5245,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return (
             this.isStepFinished(extraStop) ||
             this.isDragAndDropActive ||
-            this.loadExtraStops().controls.length < 2 ||
+            this.loadExtraStops.controls.length < 2 ||
             extraStop.get(LoadModalStringEnum.OPEN_CLOSE).value
         );
     }
@@ -5283,7 +5280,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         const isAppointment =
             this.selectedExtraStopTime[index] === 2 ||
             this.selectedExtraStopTime[index] > 8999;
-        if (this.isStepFinished(this.loadExtraStops().at(index))) {
+        if (this.isStepFinished(this.loadExtraStops.at(index))) {
             return false;
         }
 
@@ -5322,7 +5319,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         // Reorder values from extra stops
         const itemsToReorder = [
-            this.loadExtraStops().controls,
+            this.loadExtraStops.controls,
             this.selectExtraStopType,
             this.selectedExtraStopShipper,
             this.selectedExtraStopShipperContact,
@@ -5381,7 +5378,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         let deliveryStopNumber = 0;
         this.extraStopNumbers = [];
 
-        this.loadExtraStops().controls.forEach((extraStop, index) => {
+        this.loadExtraStops.controls.forEach((extraStop, index) => {
             if (extraStop.value.stopType === LoadModalStringEnum.PICKUP_2) {
                 pickupStopNumber++;
                 this.extraStopNumbers.push(pickupStopNumber);
@@ -5404,8 +5401,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             const stopType = loadStop.pickup
                 ? LoadModalStringEnum.PICKUP
                 : loadStop.delivery
-                    ? LoadModalStringEnum.DELIVERY
-                    : null;
+                  ? LoadModalStringEnum.DELIVERY
+                  : null;
 
             const markerData = {
                 position: {
@@ -5421,7 +5418,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     loadStop.stopNumber ?? 0,
                     stopType,
                     false,
-                    true,
+                    true
                 ),
             };
 

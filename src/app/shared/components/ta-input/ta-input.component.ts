@@ -2871,7 +2871,8 @@ export class TaInputComponent
                     )
                         this.getSuperControl.setErrors({
                             invalid: true,
-                        }); // don't accept future dates
+                        });
+                    // don't accept future dates
                     else {
                         if (
                             this._inputConfig.expiredDateInvalid &&
