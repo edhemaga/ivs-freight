@@ -20,6 +20,7 @@ import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modal
 import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
 import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
+import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
@@ -37,7 +38,6 @@ import {
     TableCardBodyActions,
 } from '@shared/models';
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
-import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 
 export class DropdownMenuActionsHelper {
     static createDropdownMenuActionsEmitEvent<T extends { id?: number }>(
@@ -67,16 +67,33 @@ export class DropdownMenuActionsHelper {
     }
 
     static createViewDetailsActionLink(id: number, tableType: string): string {
-        const adjustedTableType =
-            tableType === DropdownMenuStringEnum.REPAIR_SHOP
-                ? DropdownMenuStringEnum.REPAIR
-                : tableType === DropdownMenuStringEnum.FUEL_STOP
-                  ? DropdownMenuStringEnum.FUEL
-                  : tableType;
+        let adjustedTableType: string;
+        let detailsPath = DropdownMenuStringEnum.DETAILS;
 
-        const link = `/list/${adjustedTableType}/${id}/details`;
+        switch (tableType) {
+            case DropdownMenuStringEnum.REPAIR_SHOP:
+                adjustedTableType = DropdownMenuStringEnum.REPAIR;
 
-        return link;
+                break;
+            case DropdownMenuStringEnum.FUEL_STOP:
+                adjustedTableType = DropdownMenuStringEnum.FUEL;
+
+                break;
+            case DropdownMenuStringEnum.SHIPPER:
+                adjustedTableType = DropdownMenuStringEnum.CUSTOMER;
+                detailsPath = DropdownMenuStringEnum.SHIPPER_DETAILS;
+
+                break;
+            case DropdownMenuStringEnum.BROKER:
+                adjustedTableType = DropdownMenuStringEnum.CUSTOMER;
+                detailsPath = DropdownMenuStringEnum.BROKER_DETAILS;
+
+                break;
+            default:
+                adjustedTableType = tableType;
+        }
+
+        return `/list/${adjustedTableType}/${id}/${detailsPath}`;
     }
 
     static getEditActionModalComponent(

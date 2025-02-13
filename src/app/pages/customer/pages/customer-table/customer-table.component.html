@@ -31,13 +31,9 @@
         <div class="elements">
             <app-customer-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
-                [cardTitleLink]="cardTitleLink"
+                [selectedTab]="selectedTab"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
             ></app-customer-card>
 
             <!-- Show More -->
@@ -91,7 +87,6 @@
                         [rating]="latlong?.tableRaiting"
                         [type]="'shipper'"
                         [locationFilterOn]="locationFilterOn"
-                        (bodyActions)="onTableBodyActions($event)"
                         [ngStyle]="{
                             display:
                                 locationFilterOn && latlong?.isShown == false

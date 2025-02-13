@@ -130,6 +130,7 @@ export enum DropdownMenuStringEnum {
     LOAD = 'load',
     SHIPPER = 'shipper',
     BROKER = 'broker',
+    CUSTOMER = 'customer',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',
@@ -177,4 +178,7 @@ export enum DropdownMenuStringEnum {
     REMOVE = 'remove',
     BAN = 'ban',
     DNU = 'dnu',
+    DETAILS = 'details',
+    SHIPPER_DETAILS = 'shipper-details',
+    BROKER_DETAILS = 'broker-details',
 }

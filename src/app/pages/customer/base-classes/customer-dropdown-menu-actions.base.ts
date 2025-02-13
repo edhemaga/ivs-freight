@@ -37,11 +37,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             case DropdownMenuStringEnum.EDIT_TYPE:
             case DropdownMenuStringEnum.ADD_CONTACT_TYPE:
             case DropdownMenuStringEnum.WRITE_REVIEW_TYPE:
-                this.handleShipperBrokerEditAction(event, type, tableType);
-
-                break;
-            case DropdownMenuStringEnum.VIEW_DETAILS_TYPE:
-                this.handleShipperBrokerViewDetailsAction(event, tableType);
+                this.handleShipperBrokerEditAction(event, tableType);
 
                 break;
             case DropdownMenuStringEnum.CREATE_LOAD_TYPE:
@@ -52,12 +48,12 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             case DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE:
             case DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE:
             case DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE:
-                this.handleBrokerMoveAction(event, type, tableType);
+                this.handleBrokerMoveActions(event, tableType);
 
                 break;
             case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
             case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
-                this.handleShipperBrokerCloseBusinessAction(event, tableType);
+                this.handleShipperBrokerCloseBusinessActions(event, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
@@ -74,15 +70,16 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
 
     private handleShipperBrokerEditAction<T extends MappedShipperBroker>(
         event: TableCardBodyActions<T>,
-        eventType: string,
         tableType: string
     ) {
+        const { type } = event;
+
         this.detailsDataService.setNewData(event.data);
 
         const openedTab =
-            eventType === DropdownMenuStringEnum.ADD_CONTACT_TYPE
+            type === DropdownMenuStringEnum.ADD_CONTACT_TYPE
                 ? DropdownMenuStringEnum.ADDITIONAL
-                : eventType === DropdownMenuStringEnum.WRITE_REVIEW_TYPE
+                : type === DropdownMenuStringEnum.WRITE_REVIEW_TYPE
                   ? DropdownMenuStringEnum.REVIEW
                   : DropdownMenuStringEnum.BASIC;
 
@@ -100,18 +97,8 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
     }
 
-    private handleShipperBrokerViewDetailsAction<T extends MappedShipperBroker>(
+    private handleBrokerMoveActions<T extends MappedShipperBroker>(
         event: TableCardBodyActions<T>,
-        tableType: string
-    ) {
-        const { id } = event;
-        const link = `/list/customer/${id}/${tableType}-details`;
-        this.router.navigate([link]);
-    }
-
-    private handleBrokerMoveAction<T extends MappedShipperBroker>(
-        event: TableCardBodyActions<T>,
-        eventType: string,
         tableType: string
     ) {
         const {
@@ -119,11 +106,12 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
                 businessName,
                 mainAddress: { address },
             },
+            type,
         } = event;
 
         const subType =
-            eventType === DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
-            eventType === DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE
+            type === DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
+            type === DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE
                 ? DropdownMenuStringEnum.BAN
                 : DropdownMenuStringEnum.DNU;
 
@@ -145,7 +133,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         this.loadStoreService.dispatchGetCreateLoadModalData();
     }
 
-    private handleShipperBrokerCloseBusinessAction<
+    private handleShipperBrokerCloseBusinessActions<
         T extends MappedShipperBroker,
     >(event: TableCardBodyActions<T>, tableType: string) {
         const {
@@ -170,7 +158,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             subTypeStatus: DropdownMenuStringEnum.BUSINESS,
             tableType,
             modalTitle,
-            modalSecondTitle: modalSecondTitle,
+            modalSecondTitle,
         };
 
         super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
@@ -190,6 +178,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             svg: true,
             modalHeaderTitle,
         };
+
         super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
     }
 }

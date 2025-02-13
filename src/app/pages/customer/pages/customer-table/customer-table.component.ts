@@ -90,7 +90,6 @@ import {
 } from 'appcoretruckassist';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CustomerViewDataResponse } from '@pages/customer/pages/customer-table/models/customer-viewdata-response.model';
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { MappedShipperBroker } from '@pages/customer/pages/customer-table/models/mapped-shipper-broker.model';
 import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
@@ -99,6 +98,7 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { MapList } from '@pages/repair/pages/repair-table/models';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 @Component({
     selector: 'app-customer-table',
@@ -131,7 +131,6 @@ export class CustomerTableComponent
     public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = CustomerCardDataConfigConstants.cardTitle;
     public displayRowsFront: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsFrontBroker;
     public displayRowsBack: CardRows[] =
@@ -142,9 +141,6 @@ export class CustomerTableComponent
         CustomerCardDataConfigConstants.displayRowsBackShipper;
 
     public activeTableDataLength: number;
-
-    public page: string = CustomerCardDataConfigConstants.page;
-    public rows: number = CustomerCardDataConfigConstants.rows;
 
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
@@ -1644,7 +1640,7 @@ export class CustomerTableComponent
         status: number,
         ban: boolean,
         dnu: boolean
-    ): DropdownItem[] {
+    ): DropdownMenuItem[] {
         return DropdownMenuContentHelper.getBrokerDropdownContent(
             status,
             ban,
@@ -1652,7 +1648,7 @@ export class CustomerTableComponent
         );
     }
 
-    private getShipperDropdownContent(status: number): DropdownItem[] {
+    private getShipperDropdownContent(status: number): DropdownMenuItem[] {
         return DropdownMenuContentHelper.getShipperDropdownContent(status);
     }
 
@@ -1867,238 +1863,6 @@ export class CustomerTableComponent
         }
     }
 
-    // private onTableBodyActions(event: {
-    //     id?: number;
-    //     data?: any; // leave as any for now
-    //     type?: string;
-    //     subType?: string;
-    // }): void {
-    //     this.detailsDataService.setNewData(event.data);
-
-    //     // Edit Call
-    //     if (event.type === TableStringEnum.SHOW_MORE) {
-    //         if (this.selectedTab === TableStringEnum.ACTIVE) {
-    //             this.backBrokerFilterQuery.pageIndex++;
-
-    //             this.brokerBackFilter(this.backBrokerFilterQuery, true);
-    //         } else {
-    //             this.backShipperFilterQuery.pageIndex++;
-
-    //             this.shipperBackFilter(this.backShipperFilterQuery, true);
-    //         }
-    //     } else if (
-    //         event.type === TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER ||
-    //         event.type === TableStringEnum.ADD_CONTRACT ||
-    //         event.type === TableStringEnum.EDIT_CONTACT ||
-    //         event.type === TableStringEnum.DELTETE_CONTACT ||
-    //         event.type === TableStringEnum.WRITE_REVIEW
-    //     ) {
-    //         // Edit Broker Call Modal
-    //         if (this.selectedTab === TableStringEnum.ACTIVE) {
-    //             this.modalService.openModal(
-    //                 BrokerModalComponent,
-    //                 { size: TableStringEnum.SMALL },
-    //                 {
-    //                     ...event,
-    //                     type: TableStringEnum.EDIT,
-    //                     dnuButton: true,
-    //                     bfbButton: true,
-    //                     tab: 3,
-    //                     openedTab:
-    //                         event.type === TableStringEnum.ADD_CONTRACT ||
-    //                         event.type === TableStringEnum.EDIT_CONTACT ||
-    //                         event.type === TableStringEnum.DELTETE_CONTACT
-    //                             ? TableStringEnum.ADDITIONAL
-    //                             : event.type === TableStringEnum.WRITE_REVIEW
-    //                               ? TableStringEnum.REVIEW
-    //                               : TableStringEnum.BASIC,
-    //                 }
-    //             );
-    //         }
-    //         // Edit Shipper Call Modal
-    //         else {
-    //             this.modalService.openModal(
-    //                 ShipperModalComponent,
-    //                 { size: TableStringEnum.SMALL },
-    //                 {
-    //                     ...event,
-    //                     type: TableStringEnum.EDIT,
-    //                     openedTab:
-    //                         event.type === TableStringEnum.ADD_CONTRACT ||
-    //                         event.type === TableStringEnum.EDIT_CONTACT ||
-    //                         event.type === TableStringEnum.DELTETE_CONTACT
-    //                             ? TableStringEnum.ADDITIONAL
-    //                             : event.type === TableStringEnum.WRITE_REVIEW
-    //                               ? TableStringEnum.REVIEW
-    //                               : TableStringEnum.BASIC,
-    //                 }
-    //             );
-    //         }
-    //     } else if (event.type === TableStringEnum.MOVE_TO_BAN_LIST) {
-    //         const mappedEvent = {
-    //             ...event,
-    //             type: !event.data.ban
-    //                 ? TableStringEnum.MOVE
-    //                 : TableStringEnum.REMOVE,
-    //         };
-
-    //         this.modalService.openModal(
-    //             ConfirmationMoveModalComponent,
-    //             { size: TableStringEnum.SMALL },
-    //             {
-    //                 ...mappedEvent,
-    //                 template: TableStringEnum.BROKER,
-    //                 subType: TableStringEnum.BAN,
-    //                 tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
-    //                 modalTitle:
-    //                     event.data.businessName.name ?? event.data.businessName,
-    //                 modalSecondTitle:
-    //                     event.data?.billingAddress?.address ??
-    //                     TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-    //             }
-    //         );
-    //     } else if (event.type === TableStringEnum.MOVE_TO_DNU_LIST) {
-    //         const mappedEvent = {
-    //             ...event,
-    //             type: !event.data.dnu
-    //                 ? TableStringEnum.MOVE
-    //                 : TableStringEnum.REMOVE,
-    //         };
-
-    //         this.modalService.openModal(
-    //             ConfirmationMoveModalComponent,
-    //             { size: TableStringEnum.SMALL },
-    //             {
-    //                 ...mappedEvent,
-    //                 template: TableStringEnum.BROKER,
-    //                 subType: TableStringEnum.DNU,
-    //                 tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
-    //                 modalTitle:
-    //                     event.data.businessName.name ?? event.data.businessName,
-    //                 modalSecondTitle:
-    //                     event.data?.billingAddress?.address ??
-    //                     TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-    //             }
-    //         );
-    //     } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
-    //         const mappedEvent = {
-    //             ...event,
-    //             type: event.data.status
-    //                 ? TableStringEnum.CLOSE
-    //                 : TableStringEnum.OPEN,
-    //         };
-
-    //         this.modalService.openModal(
-    //             ConfirmationActivationModalComponent,
-    //             { size: TableStringEnum.SMALL },
-    //             {
-    //                 ...mappedEvent,
-    //                 template: TableStringEnum.INFO,
-    //                 subType:
-    //                     this.selectedTab === TableStringEnum.ACTIVE
-    //                         ? TableStringEnum.BROKER_2
-    //                         : TableStringEnum.SHIPPER_3,
-    //                 subTypeStatus: TableStringEnum.BUSINESS,
-    //                 tableType:
-    //                     this.selectedTab === TableStringEnum.ACTIVE
-    //                         ? ConfirmationActivationStringEnum.BROKER_TEXT
-    //                         : ConfirmationActivationStringEnum.SHIPPER_TEXT,
-    //                 modalTitle:
-    //                     event.data.businessName.name ?? event.data.businessName,
-    //                 modalSecondTitle:
-    //                     event.data?.address?.address ??
-    //                     event.data?.billingAddress?.address ??
-    //                     TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-    //             }
-    //         );
-    //     } else if (event.type === TableStringEnum.VIEW_DETAILS) {
-    //         if (this.selectedTab === TableStringEnum.ACTIVE) {
-    //             this.router.navigate([
-    //                 `/list/customer/${event.id}/broker-details`,
-    //             ]);
-    //         } else {
-    //             this.router.navigate([
-    //                 `/list/customer/${event.id}/shipper-details`,
-    //             ]);
-    //         }
-    //     }
-    //     // Delete Call
-    //     else if (event.type === TableStringEnum.DELETE) {
-    //         this.modalService.openModal(
-    //             ConfirmationModalComponent,
-    //             { size: TableStringEnum.DELETE },
-    //             {
-    //                 ...event,
-    //                 template:
-    //                     this.selectedTab === TableStringEnum.ACTIVE
-    //                         ? TableStringEnum.BROKER
-    //                         : TableStringEnum.SHIPPER,
-    //                 type: TableStringEnum.DELETE,
-    //                 svg: true,
-    //                 modalHeaderTitle:
-    //                     this.selectedTab === TableStringEnum.ACTIVE
-    //                         ? ConfirmationModalStringEnum.DELETE_BROKER
-    //                         : ConfirmationModalStringEnum.DELETE_SHIPPER,
-    //             }
-    //         );
-    //     }
-    //     // Raiting
-    //     else if (event.type === TableStringEnum.RATING) {
-    //         let raitingData = {
-    //             entityTypeRatingId:
-    //                 this.selectedTab === TableStringEnum.ACTIVE ? 1 : 3,
-    //             entityTypeId: event.data.id,
-    //             thumb: event.subType === TableStringEnum.LIKE ? 1 : -1,
-    //             tableData: event.data,
-    //         };
-
-    //         this.reviewRatingService
-    //             .addRating(raitingData)
-    //             .pipe(takeUntil(this.destroy$))
-    //             .subscribe((res: RatingSetResponse) => {
-    //                 const newViewData = [...this.viewData];
-
-    //                 newViewData.map((data: CustomerUpdateRating) => {
-    //                     if (data.id === event.data.id) {
-    //                         data.actionAnimation = TableStringEnum.UPDATE;
-    //                         data.tableRaiting = {
-    //                             hasLiked: res.currentCompanyUserRating === 1,
-    //                             hasDislike: res.currentCompanyUserRating === -1,
-    //                             likeCount: res?.upCount,
-    //                             dislikeCount: res?.downCount,
-    //                         };
-    //                     }
-    //                 });
-
-    //                 this.viewData = [...newViewData];
-
-    //                 const interval = setInterval(() => {
-    //                     this.viewData =
-    //                         MethodsGlobalHelper.closeAnimationAction(
-    //                             false,
-    //                             this.viewData
-    //                         );
-
-    //                     clearInterval(interval);
-    //                 }, 1000);
-
-    //                 this.mapsService.addRating(res);
-
-    //                 this.updateMapItem(
-    //                     this.viewData.find((item) => item.id === event.data.id)
-    //                 );
-    //             });
-    //     } else if (event.type === TableStringEnum.CREATE_LOAD) {
-    //         this.modalService.openModal(
-    //             LoadModalComponent,
-    //             { size: TableStringEnum.LOAD },
-    //             {
-    //                 data: { broker: event.data },
-    //             }
-    //         );
-    //     }
-    // }
-
     private getSelectedTabTableData(): void {
         if (this.tableData?.length)
             this.activeTableDataLength = this.tableData.find(
@@ -2240,8 +2004,6 @@ export class CustomerTableComponent
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.cardTitle = TableStringEnum.INVOICE;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
@@ -2249,8 +2011,6 @@ export class CustomerTableComponent
                 break;
 
             case TableStringEnum.INACTIVE:
-                this.cardTitle = TableStringEnum.INVOICE;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectInactiveTabCards)
                 );

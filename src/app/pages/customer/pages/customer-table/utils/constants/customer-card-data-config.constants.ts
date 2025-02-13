@@ -1,12 +1,6 @@
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 
 export class CustomerCardDataConfigConstants {
-    static rows: number = 4;
-
-    static page: string = 'Customer';
-
-    static cardTitle: string = 'businessName';
-
     // Data for broker
     static displayRowsFrontBroker: CardRows[] = [
         {

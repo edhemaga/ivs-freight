@@ -393,21 +393,18 @@ export class DropdownMenuContentConstants {
             svgUrl: 'assets/svg/common/load/ic_load_shipper_contact_avatar.svg',
             svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
         },
-
         [DropdownMenuStringEnum.MOVE_TO_BAN_LIST]: {
             title: DropdownMenuStringEnum.MOVE_TO_BAN_LIST,
             type: DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE,
             svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
             svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
         },
-
         [DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST]: {
             title: DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST,
             type: DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE,
             svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
             svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
         },
-
         [DropdownMenuStringEnum.MOVE_TO_DNU_LIST]: {
             title: DropdownMenuStringEnum.MOVE_TO_DNU_LIST,
             type: DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE,
@@ -415,7 +412,6 @@ export class DropdownMenuContentConstants {
             svgClass: DropdownMenuStringEnum.DELETE_SVG_CLASS,
             hasBorder: true,
         },
-
         [DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST]: {
             title: DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST,
             type: DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE,

@@ -496,11 +496,11 @@ export class DropdownMenuContentHelper {
 
     // shipper
     static getShipperDropdownContent(status: number): DropdownMenuItem[] {
-        const isOpenShipper = status ? true : false;
+        const isOpenBusiness = !!status;
 
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getShipperModifierItems(
-                isOpenShipper
+                isOpenBusiness
             );
 
         // requested items
@@ -512,7 +512,7 @@ export class DropdownMenuContentHelper {
             DropdownMenuStringEnum.WRITE_REVIEW,
             DropdownMenuStringEnum.SHARE,
             DropdownMenuStringEnum.PRINT,
-            isOpenShipper
+            isOpenBusiness
                 ? DropdownMenuStringEnum.CLOSE_BUSINESS
                 : DropdownMenuStringEnum.OPEN_BUSINESS,
             DropdownMenuStringEnum.DELETE,
@@ -546,12 +546,12 @@ export class DropdownMenuContentHelper {
         isBrokerBanned?: boolean,
         isBrokerDnu?: boolean
     ): DropdownMenuItem[] {
-        const isOpenBroker = status ? true : false;
+        const isOpenBusiness = !!status;
         const isMovedToBanOrDnu = isBrokerBanned || isBrokerDnu;
 
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getBrokerModifiedItems(
-                isOpenBroker,
+                isOpenBusiness,
                 isMovedToBanOrDnu
             );
 
@@ -573,7 +573,7 @@ export class DropdownMenuContentHelper {
             DropdownMenuStringEnum.WRITE_REVIEW,
             DropdownMenuStringEnum.SHARE,
             DropdownMenuStringEnum.PRINT,
-            isOpenBroker
+            isOpenBusiness
                 ? DropdownMenuStringEnum.CLOSE_BUSINESS
                 : DropdownMenuStringEnum.OPEN_BUSINESS,
             DropdownMenuStringEnum.DELETE,
@@ -601,6 +601,133 @@ export class DropdownMenuContentHelper {
             ...conditionalItems.slice(2),
             ...sharedItems.slice(3),
         ];
+    }
+
+    // user
+    static getUserDropdownContent(
+        selectedTab: string,
+        userStatus: string,
+        isInvitationSent: boolean
+    ): DropdownMenuItem[] {
+        const isActiveUser = selectedTab === DropdownMenuStringEnum.ACTIVE;
+        const isOwnerUser = userStatus === TableStringEnum.OWNER;
+
+        const isUserStatusInvited =
+            userStatus === DropdownMenuStringEnum.INVITED;
+        const isUserStatusExpired =
+            userStatus === DropdownMenuStringEnum.EXPIRED;
+
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getUserModifierItems(
+                isActiveUser,
+                isOwnerUser,
+                isUserStatusInvited,
+                isUserStatusExpired,
+                isInvitationSent
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.RESET_PASSWORD,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.SEND_MESSAGE,
+            isInvitationSent
+                ? DropdownMenuStringEnum.INVITATION_SENT
+                : DropdownMenuStringEnum.RESEND_INVITATION,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            isActiveUser
+                ? DropdownMenuStringEnum.DEACTIVATE
+                : DropdownMenuStringEnum.ACTIVATE,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false,
+                modifierItems
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
+        return [
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems,
+            ...sharedItems.slice(2),
+        ];
+    }
+
+    // payroll
+    static getPayrollDropdownContent(
+        isOpenPayroll: boolean = false
+    ): DropdownMenuItem[] {
+        // requested items
+        const requestedConditionalItems = isOpenPayroll
+            ? [
+                  DropdownMenuStringEnum.EDIT_LOAD,
+                  DropdownMenuStringEnum.EDIT_PAYROLL,
+                  DropdownMenuStringEnum.PREVIEW_REPORT,
+                  DropdownMenuStringEnum.DOWNLOAD,
+              ]
+            : [
+                  DropdownMenuStringEnum.RESEND_REPORT,
+                  DropdownMenuStringEnum.PREVIEW_REPORT,
+                  DropdownMenuStringEnum.DOWNLOAD,
+              ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [
+            ...conditionalItems.slice(0, isOpenPayroll ? 2 : 1),
+            ...sharedItems,
+            ...conditionalItems.slice(-2),
+        ];
+    }
+
+    // payroll select load
+    static getPayrollSelectLoadDropdownContent(
+        loadList: { id: number; title: string }[]
+    ): DropdownMenuItem[] {
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.EDIT_LOAD_SELECT,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        return [...conditionalItems, ...loadList];
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -747,133 +874,6 @@ export class DropdownMenuContentHelper {
                 svgClass: TableStringEnum.DELETE,
             },
         ];
-    }
-
-    // user
-    static getUserDropdownContent(
-        selectedTab: string,
-        userStatus: string,
-        isInvitationSent: boolean
-    ): DropdownMenuItem[] {
-        const isActiveUser = selectedTab === DropdownMenuStringEnum.ACTIVE;
-        const isOwnerUser = userStatus === TableStringEnum.OWNER;
-
-        const isUserStatusInvited =
-            userStatus === DropdownMenuStringEnum.INVITED;
-        const isUserStatusExpired =
-            userStatus === DropdownMenuStringEnum.EXPIRED;
-
-        // modifier items
-        const modifierItems =
-            DropdownMenuContentConditionalItemsHelper.getUserModifierItems(
-                isActiveUser,
-                isOwnerUser,
-                isUserStatusInvited,
-                isUserStatusExpired,
-                isInvitationSent
-            );
-
-        // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.RESET_PASSWORD,
-        ];
-
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.SEND_MESSAGE,
-            isInvitationSent
-                ? DropdownMenuStringEnum.INVITATION_SENT
-                : DropdownMenuStringEnum.RESEND_INVITATION,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            isActiveUser
-                ? DropdownMenuStringEnum.DEACTIVATE
-                : DropdownMenuStringEnum.ACTIVATE,
-            DropdownMenuStringEnum.DELETE,
-        ];
-
-        // items
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedConditionalItems,
-                false,
-                modifierItems
-            );
-
-        const sharedItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedSharedItems,
-                true,
-                modifierItems
-            );
-
-        return [
-            ...sharedItems.slice(0, 2),
-            ...conditionalItems,
-            ...sharedItems.slice(2),
-        ];
-    }
-
-    // payroll
-    static getPayrollDropdownContent(
-        isOpenPayroll: boolean = false
-    ): DropdownMenuItem[] {
-        // requested items
-        const requestedConditionalItems = isOpenPayroll
-            ? [
-                  DropdownMenuStringEnum.EDIT_LOAD,
-                  DropdownMenuStringEnum.EDIT_PAYROLL,
-                  DropdownMenuStringEnum.PREVIEW_REPORT,
-                  DropdownMenuStringEnum.DOWNLOAD,
-              ]
-            : [
-                  DropdownMenuStringEnum.RESEND_REPORT,
-                  DropdownMenuStringEnum.PREVIEW_REPORT,
-                  DropdownMenuStringEnum.DOWNLOAD,
-              ];
-
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-        ];
-
-        // items
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedConditionalItems,
-                false
-            );
-
-        const sharedItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedSharedItems,
-                true
-            );
-
-        return [
-            ...conditionalItems.slice(0, isOpenPayroll ? 2 : 1),
-            ...sharedItems,
-            ...conditionalItems.slice(-2),
-        ];
-    }
-
-    // payroll select load
-    static getPayrollSelectLoadDropdownContent(
-        loadList: { id: number; title: string }[]
-    ): DropdownMenuItem[] {
-        // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.EDIT_LOAD_SELECT,
-        ];
-
-        // items
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedConditionalItems,
-                false
-            );
-
-        return [...conditionalItems, ...loadList];
     }
 
     // table toolbar - hamburger - table options
