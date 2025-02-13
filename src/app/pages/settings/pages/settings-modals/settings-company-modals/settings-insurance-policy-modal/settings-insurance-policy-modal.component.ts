@@ -63,7 +63,10 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { CaInputAddressDropdownComponent, CaInputDatetimePickerComponent } from 'ca-components';
+import {
+    CaInputAddressDropdownComponent,
+    CaInputDatetimePickerComponent,
+} from 'ca-components';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
@@ -95,7 +98,7 @@ import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
-        CaInputDatetimePickerComponent
+        CaInputDatetimePickerComponent,
     ],
 })
 export class SettingsInsurancePolicyModalComponent
@@ -217,10 +220,7 @@ export class SettingsInsurancePolicyModalComponent
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case EGeneralActions.CLOSE: {
-                break;
-            }
-            case EGeneralActions.SAVE: {
+            case EGeneralActions.SAVE:
                 // If Form not valid
                 if (this.insurancePolicyForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.insurancePolicyForm);
@@ -242,8 +242,7 @@ export class SettingsInsurancePolicyModalComponent
                     });
                 }
                 break;
-            }
-            case EGeneralActions.DELETE: {
+            case EGeneralActions.DELETE:
                 this.deleteInsurancePolicyById(this.editData.company.id);
                 this.modalService.setModalSpinner({
                     action: EGeneralActions.DELETE,
@@ -252,10 +251,8 @@ export class SettingsInsurancePolicyModalComponent
                 });
 
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -371,29 +368,23 @@ export class SettingsInsurancePolicyModalComponent
                         this.inputService.changeValidators(control_9, false);
 
                     switch (action) {
-                        case 'commercial': {
+                        case 'commercial':
                             this.selectedCommericalRating = null;
                             break;
-                        }
-                        case 'automobile': {
+                        case 'automobile':
                             this.selectedAutomobileRating = null;
                             break;
-                        }
-                        case 'motor': {
+                        case 'motor':
                             this.selectedMotorRating = null;
                             break;
-                        }
-                        case 'physical': {
+                        case 'physical':
                             this.selectedPhysicalDamageRating = null;
                             break;
-                        }
-                        case 'trailer': {
+                        case 'trailer':
                             this.selectedTrailerRating = null;
                             break;
-                        }
-                        default: {
+                        default:
                             break;
-                        }
                     }
                 }
             });
@@ -408,55 +399,45 @@ export class SettingsInsurancePolicyModalComponent
 
     public onSelectDropdown(event: any, action: string): void {
         switch (action) {
-            case 'commercial': {
+            case 'commercial':
                 this.selectedCommericalRating = event;
                 break;
-            }
-            case 'automobile': {
+            case 'automobile':
                 this.selectedAutomobileRating = event;
                 break;
-            }
-            case 'motor': {
+            case 'motor':
                 this.selectedMotorRating = event;
                 break;
-            }
-            case 'physical damage': {
+            case 'physical damage':
                 this.selectedPhysicalDamageRating = event;
                 break;
-            }
-            case 'trailer interchange': {
+            case 'trailer interchange':
                 this.selectedTrailerRating = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
     public onFilesEvent(event: any): void {
         this.documents = event.files?.length ? event.files : [];
         switch (event.action) {
-            case EGeneralActions.ADD: {
+            case EGeneralActions.ADD:
                 this.insurancePolicyForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            }
-            case EGeneralActions.DELETE: {
+            case EGeneralActions.DELETE:
                 this.insurancePolicyForm
                     .get(EFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
                 if (event.deleteId) this.filesForDelete.push(event.deleteId);
-
                 this.fileModified = true;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 

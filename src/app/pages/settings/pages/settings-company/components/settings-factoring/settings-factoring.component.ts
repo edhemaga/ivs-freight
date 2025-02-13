@@ -65,22 +65,20 @@ export class SettingsFactoringComponent
             this.factoringData = changes?.factoringData?.currentValue;
         }
     }
-    ngOnInit() {
+    ngOnInit(): void {
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case EGeneralActions.DELETE: {
+                        case EGeneralActions.DELETE:
                             if (res.template === 'factoring') {
                                 this.deleteFactoringByCompanyId(res.id);
                             }
                             break;
-                        }
-                        default: {
+                        default:
                             break;
-                        }
                     }
                 },
             });
@@ -96,7 +94,7 @@ export class SettingsFactoringComponent
             .subscribe();
     }
 
-    public onDeleteFactoringCompany() {
+    public onDeleteFactoringCompany(): void {
         this.modalService.openModal(
             ConfirmationModalComponent,
             { size: 'small' },
@@ -109,7 +107,7 @@ export class SettingsFactoringComponent
         );
     }
 
-    public toggleNoteVisibility() {
+    public toggleNoteVisibility(): void {
         this.isNoteVisible = !this.isNoteVisible;
     }
 

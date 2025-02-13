@@ -49,6 +49,8 @@ import {
     AccidentResponse,
     AccidentModalResponse,
 } from 'appcoretruckassist';
+
+// enums
 import { EGeneralActions } from '@shared/enums';
 
 @Component({
@@ -145,9 +147,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         if (this.editData) {
             this.isCardAnimationDisabled = true;
             this.editAccidentById(this.editData.id);
-        } else {
-            this.startFormChanges();
-        }
+        } else this.startFormChanges();
     }
 
     private createForm() {
@@ -239,11 +239,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public addInsurance(event: { check: boolean; action: string }) {
+    public addInsurance(event: { check: boolean; action: string }): void {
         const form = this.createInsurance();
-        if (event.check) {
-            this.insurances.push(form);
-        }
+        if (event.check) this.insurances.push(form);
 
         this.inputService.customInputValidator(
             form.get('email'),
@@ -259,10 +257,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case EGeneralActions.CLOSE: {
+            case EGeneralActions.CLOSE:
                 break;
-            }
-            case EGeneralActions.SAVE: {
+            case EGeneralActions.SAVE:
                 if (this.accidentForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accidentForm);
                     return;
@@ -283,10 +280,8 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -454,66 +449,54 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         action: string
     ) {
         switch (action) {
-            case 'address-authority': {
+            case 'address-authority':
                 if (event.valid) this.selectedAddressAuthority = event.address;
                 break;
-            }
-            case 'address-origin': {
+            case 'address-origin':
                 if (event.valid) this.selectedAddressOrigin = event.address;
                 break;
-            }
-            case 'address-destination': {
+            case 'address-destination':
                 if (event.valid)
                     this.selectedAddressDestination = event.address;
                 break;
-            }
-            case 'location': {
+            case 'location':
                 if (event.valid) this.selectedAddressLocation = event.address;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         switch (event.type) {
-            case 'documents': {
+            case 'documents':
                 this.documents = event.files;
                 break;
-            }
-            case 'media': {
+            case 'media':
                 this.media = event.files;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onSelectDropDown(event: any, action: string, index?: number) {
+    public onSelectDropDown(event: any, action: string, index?: number): void {
         switch (action) {
-            case 'shipping-customer': {
+            case 'shipping-customer':
                 this.selectedAccidentCustomer = event;
                 break;
-            }
-            case 'trailer-unit': {
+            case 'trailer-unit':
                 this.selectedTrailerUnit = event;
                 break;
-            }
-            case 'insurance-type': {
+            case 'insurance-type':
                 this.selectedInsuranceType[index] = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.accidentForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))

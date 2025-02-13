@@ -73,7 +73,11 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Enums
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { EGeneralActions, TableStringEnum } from '@shared/enums';
+import {
+    EGeneralActions,
+    EStringPlaceholder,
+    TableStringEnum,
+} from '@shared/enums';
 
 // Config
 import { OwnerModalConfig } from '@pages/owner/pages/owner-modal/utils/consts';
@@ -231,10 +235,10 @@ export class OwnerModalComponent
 
     public onModalAction(action: string): void {
         switch (action) {
-            case TaModalActionEnum.CLOSE: {
+            case TaModalActionEnum.CLOSE:
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
-                        case 'truck-modal': {
+                        case 'truck-modal':
                             this.modalService.setProjectionModal({
                                 action: 'close',
                                 payload: {
@@ -246,8 +250,7 @@ export class OwnerModalComponent
                                 closing: 'fastest',
                             });
                             break;
-                        }
-                        case 'trailer-modal': {
+                        case 'trailer-modal':
                             this.modalService.setProjectionModal({
                                 action: 'close',
                                 payload: {
@@ -259,16 +262,13 @@ export class OwnerModalComponent
                                 closing: 'fastest',
                             });
                             break;
-                        }
-                        default: {
+                        default:
                             break;
-                        }
                     }
                 }
                 this.ngbActiveModal.close();
                 break;
-            }
-            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
@@ -276,20 +276,14 @@ export class OwnerModalComponent
                 this.addNewAfterSave = true;
                 this.addOwner();
                 break;
-            }
-            case TaModalActionEnum.SAVE: {
+            case TaModalActionEnum.SAVE:
                 if (this.ownerForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.ownerForm);
                     return;
                 }
-                if (this.editData?.id) {
-                    this.updateOwner(this.editData.id);
-                } else {
-                    this.addOwner();
-                }
-
+                if (this.editData?.id) this.updateOwner(this.editData.id);
+                else this.addOwner();
                 break;
-            }
             case TaModalActionEnum.DELETE:
                 if (this.editData) {
                     this.modalService.openModal(
@@ -304,9 +298,8 @@ export class OwnerModalComponent
                     );
                 }
                 break;
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -314,22 +307,20 @@ export class OwnerModalComponent
         address: AddressEntity;
         valid: boolean;
         longLat: any;
-    }) {
-        if (event.valid) {
-            this.selectedAddress = event.address;
-            this.longitude = event.longLat.longitude;
-            this.latitude = event.longLat.latitude;
-        }
+    }): void {
+        if (!event.valid) return;
+
+        this.selectedAddress = event.address;
+        this.longitude = event.longLat.longitude;
+        this.latitude = event.longLat.latitude;
     }
 
     public onSelectBank(event: any): void {
         this.selectedBank = event;
-        if (!event) {
-            this.ownerForm.get('bankId').patchValue(null);
-        }
+        if (!event) this.ownerForm.get('bankId').patchValue(null);
     }
 
-    public onSaveNewBank(bank: { data: any; action: string }) {
+    public onSaveNewBank(bank: { data: any; action: string }): void {
         this.selectedBank = bank.data;
 
         this.bankVerificationService
@@ -344,20 +335,18 @@ export class OwnerModalComponent
 
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => {},
             });
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case EGeneralActions.ADD: {
+            case EGeneralActions.ADD:
                 this.ownerForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
-            }
-            case EGeneralActions.DELETE: {
+            case EGeneralActions.DELETE:
                 this.ownerForm
                     .get('files')
                     .patchValue(
@@ -368,14 +357,12 @@ export class OwnerModalComponent
                 }
                 this.fileModified = true;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private manipulateWithOwnerInputs() {
+    private manipulateWithOwnerInputs(): void {
         if (this.selectedTab === 1) {
             this.inputService.changeValidators(
                 this.ownerForm.get('bussinesName')
@@ -537,7 +524,7 @@ export class OwnerModalComponent
                             close: true,
                         });
                         switch (this.editData?.key) {
-                            case 'truck-modal': {
+                            case 'truck-modal':
                                 this.modalService.setProjectionModal({
                                     action: 'close',
                                     payload: {
@@ -549,8 +536,7 @@ export class OwnerModalComponent
                                     closing: 'slowlest',
                                 });
                                 break;
-                            }
-                            case 'trailer-modal': {
+                            case 'trailer-modal':
                                 this.modalService.setProjectionModal({
                                     action: 'close',
                                     payload: {
@@ -562,10 +548,8 @@ export class OwnerModalComponent
                                     closing: 'slowlest',
                                 });
                                 break;
-                            }
-                            default: {
+                            default:
                                 break;
-                            }
                         }
                     }
 
@@ -574,9 +558,7 @@ export class OwnerModalComponent
                         this.modalService.openModal(OwnerModalComponent, {
                             size: ContactsModalStringEnum.SMALL,
                         });
-                    } else {
-                        this.ngbActiveModal.close();
-                    }
+                    } else this.ngbActiveModal.close();
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
@@ -595,9 +577,12 @@ export class OwnerModalComponent
             .subscribe({
                 next: (res: OwnerResponse) => {
                     const splitName =
-                        res.ownerType.id === 2 ? res.name.split(' ') : null;
+                        res.ownerType.id === 2
+                            ? res.name.split(EStringPlaceholder.WHITESPACE)
+                            : null;
 
                     this.ownerForm.patchValue({
+                        ...res,
                         bussinesName: res.ownerType.id === 1 ? res.name : null,
                         firstName: res.ownerType.id === 2 ? splitName[0] : null,
                         lastName: res.ownerType.id === 2 ? splitName[1] : null,
@@ -605,12 +590,7 @@ export class OwnerModalComponent
                         ein: res.ownerType.id === 1 ? res.ssnEin : null,
                         address: res.address.address,
                         addressUnit: res.address.addressUnit,
-                        phone: res.phone,
-                        email: res.email,
-                        bankId: res?.bank?.name ? res.bank.name : null,
-                        accountNumber: res.accountNumber,
-                        routingNumber: res.routingNumber,
-                        note: res.note,
+                        bankId: res?.bank?.name ?? null,
                     });
                     this.selectedAddress = res.address;
                     this.selectedBank = res.bank;
@@ -623,11 +603,10 @@ export class OwnerModalComponent
 
                     this.startFormChanges();
                 },
-                error: () => {},
             });
     }
 
-    private getOwnerDropdowns() {
+    private getOwnerDropdowns(): void {
         this.ownerModalService
             .getOwnerDropdowns()
             .pipe(takeUntil(this.destroy$))
@@ -641,7 +620,6 @@ export class OwnerModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 

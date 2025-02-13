@@ -15,460 +15,515 @@
                     onAction({
                         modalName: 'insurance-policy',
                         type: 'new',
-                        company: insurancePolicyData
+                        company: insurancePolicyData,
                     })
                 "
             ></svg-icon>
         </div>
     </div>
     <div class="settings-body">
-        <div
-            class="settings-insuarnce"
-            *ngFor="
-                let insurance of insurancePolicyData?.insurancePolicies;
-                let i = index;
-                trackBy: identity
-            "
-        >
-            <app-ta-common-card
-                [cardNameCommon]="insurance?.producerName"
-                [haveHeaderText]="true"
-                [cardDocumentCounter]="insurance?.files?.length ?? 0"
-                [options]="dropOptions"
-                [optionsId]="insurance.id"
-                (resizePage)="toggleResizePage(i)"
-                (dropActions)="optionsEvent($event, insurance)"
-                [paddingDots]="'8px 0px 0px 0px'"
-                [insuranceCard]="true"
-                [noteIcons]="
-                    insurance?.note
-                        ? 'assets/svg/truckassist-table/note/Note.svg'
-                        : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-                "
-            >
-                <div class="settings-body-items">
-                    <div *ngIf="insurance?.phone" class="single-item">
-                        <svg-icon
-                            class="mr-3 svg-fill-light-grey-2"
-                            src="assets/svg/common/ic_phone.svg"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="insurance?.phone"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
-                    <div *ngIf="insurance.email" class="single-item">
-                        <svg-icon
-                            class="mr-3 svg-fill-light-grey-2"
-                            src="assets/svg/common/ic_email.svg"
-                        ></svg-icon>
-                        <app-ta-copy
-                            [copyValue]="insurance?.email"
-                            [textColor]="'#2f2f2f'"
-                        >
-                        </app-ta-copy>
-                    </div>
-                    <div *ngIf="insurance.address.address" class="single-item">
-                        <svg-icon
-                            class="mr-3 svg-fill-light-grey-2"
-                            src="assets/svg/truckassist-table/location-icon.svg"
-                        ></svg-icon>
-                        <span class="single-item-address">{{
-                            insurance?.address?.address
-                        }}</span>
-                    </div>
-                </div>
-                <div
-                    *ngFor="
-                        let insuranceAdditional of insurance?.insurancePolicyAddons;
-                        let i = index;
-                        trackBy: identity
+        @for (
+            insurance of insurancePolicyData?.insurancePolicies;
+            let ind = $index;
+            track ind
+        ) {
+            <div class="settings-insuarnce">
+                <app-ta-common-card
+                    [cardNameCommon]="insurance?.producerName"
+                    [haveHeaderText]="true"
+                    [cardDocumentCounter]="insurance?.files?.length ?? 0"
+                    [options]="dropOptions"
+                    [optionsId]="insurance.id"
+                    (resizePage)="toggleResizePage(i)"
+                    (dropActions)="optionsEvent($event, insurance)"
+                    [paddingDots]="'8px 0px 0px 0px'"
+                    [insuranceCard]="true"
+                    [noteIcons]="
+                        insurance?.note
+                            ? 'assets/svg/truckassist-table/note/Note.svg'
+                            : 'assets/svg/truckassist-table/note/Note - Empty.svg'
                     "
                 >
-                    <app-ta-custom-card
-                        [cardName]="
-                            insuranceAdditional.insurancePolicyAddonType.name
-                        "
-                        [bodyTemplate]="'card'"
-                        [isCardOpen]="false"
-                        [hasDivider]="true"
-                        [customClass]="'detailsPadding'"
-                    >
-                        <div class="insuarance-card-top-container">
-                            <div class="name-div-wrapper">
-                                <span class="insurer-name">{{
-                                    insuranceAdditional?.insurerName
-                                }}</span>
-                                <div
-                                    *ngIf="insuranceAdditional?.rating?.name"
-                                    class="rating"
-                                >
-                                    <div class="rating-value">
-                                        {{ insuranceAdditional?.rating?.name }}
+                    <div class="settings-body-items">
+                        <div *ngIf="insurance?.phone" class="single-item">
+                            <svg-icon
+                                class="mr-3 svg-fill-light-grey-2"
+                                src="assets/svg/common/ic_phone.svg"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [copyValue]="insurance?.phone"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                        <div *ngIf="insurance.email" class="single-item">
+                            <svg-icon
+                                class="mr-3 svg-fill-light-grey-2"
+                                src="assets/svg/common/ic_email.svg"
+                            ></svg-icon>
+                            <app-ta-copy
+                                [copyValue]="insurance?.email"
+                                [textColor]="'#2f2f2f'"
+                            >
+                            </app-ta-copy>
+                        </div>
+                        <div
+                            *ngIf="insurance.address.address"
+                            class="single-item"
+                        >
+                            <svg-icon
+                                class="mr-3 svg-fill-light-grey-2"
+                                src="assets/svg/truckassist-table/location-icon.svg"
+                            ></svg-icon>
+                            <span class="single-item-address">{{
+                                insurance?.address?.address
+                            }}</span>
+                        </div>
+                    </div>
+                    @for (
+                        insuranceAdditional of insurance?.insurancePolicyAddons;
+                        let ind = $index;
+                        track ind
+                    ) {
+                        <div>
+                            <app-ta-custom-card
+                                [cardName]="
+                                    insuranceAdditional.insurancePolicyAddonType
+                                        .name
+                                "
+                                [bodyTemplate]="'card'"
+                                [isCardOpen]="false"
+                                [hasDivider]="true"
+                                [customClass]="'detailsPadding'"
+                            >
+                                <div class="insuarance-card-top-container">
+                                    <div class="name-div-wrapper">
+                                        <span class="insurer-name">{{
+                                            insuranceAdditional?.insurerName
+                                        }}</span>
+                                        <div
+                                            *ngIf="
+                                                insuranceAdditional?.rating
+                                                    ?.name
+                                            "
+                                            class="rating"
+                                        >
+                                            <div class="rating-value">
+                                                {{
+                                                    insuranceAdditional?.rating
+                                                        ?.name
+                                                }}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="policy-company-wrapper"
+                                        [ngClass]="{
+                                            copied: copyPolicyName[i],
+                                        }"
+                                    >
+                                        <div class="number-of-policy">
+                                            {{ insuranceAdditional?.policy }}
+                                        </div>
+                                        <span
+                                            [tooltipBackground]="
+                                                copyPolicyName[i]
+                                                    ? '#536BC2'
+                                                    : '#6c6c6c'
+                                            "
+                                            ngbTooltip
+                                            [mainTooltip]="
+                                                copyPolicyName[i]
+                                                    ? 'Copied'
+                                                    : 'Copy'
+                                            "
+                                            position="top"
+                                            [autoClose]="false"
+                                        >
+                                            <svg-icon
+                                                (mouseleave)="
+                                                    copyPolicyName[i] = false
+                                                "
+                                                class="insurance-copy"
+                                                (click)="
+                                                    copyText(
+                                                        insuranceAdditional?.policy,
+                                                        i
+                                                    )
+                                                "
+                                                src="assets/svg/common/ic_copy.svg"
+                                            ></svg-icon>
+                                        </span>
                                     </div>
                                 </div>
-                            </div>
-                            <div
-                                class="policy-company-wrapper"
-                                [ngClass]="{ copied: copyPolicyName[i] }"
-                            >
-                                <div class="number-of-policy">
-                                    {{ insuranceAdditional?.policy }}
-                                </div>
-                                <span
-                                    [tooltipBackground]="
-                                        copyPolicyName[i]
-                                            ? '#536BC2'
-                                            : '#6c6c6c'
+                                <div
+                                    *ngIf="
+                                        insuranceAdditional
+                                            .insurancePolicyAddonType.name ===
+                                        'Commercial General Liabillity'
                                     "
-                                    ngbTooltip
-                                    [mainTooltip]="
-                                        copyPolicyName[i] ? 'Copied' : 'Copy'
-                                    "
-                                    position="top"
-                                    [autoClose]="false"
+                                    class="payroll-template-data"
                                 >
-                                    <svg-icon
-                                        (mouseleave)="copyPolicyName[i] = false"
-                                        class="insurance-copy"
-                                        (click)="
-                                            copyText(
-                                                insuranceAdditional?.policy,
-                                                i
-                                            )
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.eachOccurrence
                                         "
-                                        src="assets/svg/common/ic_copy.svg"
-                                    ></svg-icon>
-                                </span>
-                            </div>
-                        </div>
-                        <div
-                            *ngIf="
-                                insuranceAdditional.insurancePolicyAddonType
-                                    .name === 'Commercial General Liabillity'
-                            "
-                            class="payroll-template-data"
-                        >
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.eachOccurrence"
-                            >
-                                <p class="payroll-name">Each Occurrence</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.eachOccurrence
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="
-                                    insuranceAdditional?.damageToRentedPremises
-                                "
-                            >
-                                <p class="payroll-name">Dmg. to Rented Pr.</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.damageToRentedPremises
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.medicalExpanses"
-                            >
-                                <p class="payroll-name">Medical Expanses</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.medicalExpanses
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="
-                                    insuranceAdditional?.personalAndAdvertisingInjury
-                                "
-                            >
-                                <p class="payroll-name">
-                                    Pers. and Adv. Injury
-                                </p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.personalAndAdvertisingInjury
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.generalAggregate"
-                            >
-                                <p class="payroll-name">General Aggregate</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.generalAggregate
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="
-                                    insuranceAdditional?.productsCompOperAggregate
-                                "
-                            >
-                                <p class="payroll-name">Products - Comp / OP</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.productsCompOperAggregate
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div
-                            *ngIf="
-                                insuranceAdditional.insurancePolicyAddonType
-                                    .name === 'Autmobile Liabillity'
-                            "
-                            class="payroll-template-data"
-                        >
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.combinedSingleLimit"
-                            >
-                                <p class="payroll-name">Combined Single</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.combinedSingleLimit
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.propertyDamage"
-                            >
-                                <p class="payroll-name">Property Damage</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.propertyDamage
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.bodilyInjuryPerson"
-                            >
-                                <p class="payroll-name">
-                                    Boldly Injury(Person)
-                                </p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.bodilyInjuryPerson
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="
-                                    insuranceAdditional?.bodilyInjuryAccident
-                                "
-                            >
-                                <p class="payroll-name">
-                                    Boldly Injury(Accident)
-                                </p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.bodilyInjuryAccident
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div
-                            *ngIf="
-                                insuranceAdditional.insurancePolicyAddonType
-                                    .name === 'Motor Truck Cargo Breakdown'
-                            "
-                            class="payroll-template-data"
-                        >
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.singleConveyance"
-                            >
-                                <p class="payroll-name">Single Conveyance</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.singleConveyance
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.deductable"
-                            >
-                                <p class="payroll-name">Deductable</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.deductable
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div
-                            *ngIf="
-                                insuranceAdditional.insurancePolicyAddonType
-                                    .name === 'Physical Damage'
-                            "
-                            class="payroll-template-data"
-                        >
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="
-                                    insuranceAdditional?.comprehensiveAndCollision
-                                "
-                            >
-                                <p class="payroll-name">
-                                    Comprehen. & Collision
-                                </p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.comprehensiveAndCollision
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.deductable"
-                            >
-                                <p class="payroll-name">Deductable</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.deductable
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-
-                        <div
-                            *ngIf="
-                                insuranceAdditional.insurancePolicyAddonType
-                                    .name === 'Trailer Interchange'
-                            "
-                            class="payroll-template-data"
-                        >
-                            <div
-                                class="payroll-template-item"
-                                *ngIf="insuranceAdditional?.value"
-                            >
-                                <p class="payroll-name">Value</p>
-                                <p class="payroll-value">
-                                    ${{
-                                        insuranceAdditional?.value
-                                            | thousandSeparator
-                                    }}
-                                </p>
-                            </div>
-                        </div>
-                    </app-ta-custom-card>
-                </div>
-                <div class="divider"></div>
-                <div class="settings-progress-container">
-                    <app-ta-progress-expiration
-                        [expireDate]="insurance.expires | formatDateP"
-                        [startDate]="insurance.issued | formatDateP"
-                        [expiresSettings]="'settings-insurance-policy'"
-                        [darkText]="true"
-                    ></app-ta-progress-expiration>
-                </div>
-                <div
-                    [ngClass]="{ 'body-show': toggler[i] }"
-                    [@showHideCardBody]="toggler[i] ? 'true' : 'false'"
-                >
-                    <div class="divider" *ngIf="insurance?.files?.length"></div>
-                    <div
-                        class="details-document-container"
-                        *ngIf="insurance?.files?.length"
-                    >
-                        <div class="icon-counter-wrapper">
-                            <div class="counter-text-wrapper">
-                                <div class="counter-text-wrapper">
-                                    <p class="details-document-name">
-                                        Document
-                                    </p>
-                                    <app-ta-counter
-                                        [countBackground]="'#424242'"
-                                        [customClass]="'circle_counter'"
-                                        [countHeight]="'22px'"
-                                        [countWidth]="'22px'"
-                                        [count]="insurance.files?.length ?? 0"
                                     >
-                                    </app-ta-counter>
+                                        <p class="payroll-name">
+                                            Each Occurrence
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.eachOccurrence
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.damageToRentedPremises
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Dmg. to Rented Pr.
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.damageToRentedPremises
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.medicalExpanses
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Medical Expanses
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.medicalExpanses
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.personalAndAdvertisingInjury
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Pers. and Adv. Injury
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.personalAndAdvertisingInjury
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.generalAggregate
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            General Aggregate
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.generalAggregate
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.productsCompOperAggregate
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Products - Comp / OP
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.productsCompOperAggregate
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
                                 </div>
-                            </div>
-                            <svg-icon
-                                (click)="downloadAllFiles()"
-                                src="assets/svg/common/ic_download.svg"
-                            >
-                            </svg-icon>
+
+                                <div
+                                    *ngIf="
+                                        insuranceAdditional
+                                            .insurancePolicyAddonType.name ===
+                                        'Autmobile Liabillity'
+                                    "
+                                    class="payroll-template-data"
+                                >
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.combinedSingleLimit
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Combined Single
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.combinedSingleLimit
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.propertyDamage
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Property Damage
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.propertyDamage
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.bodilyInjuryPerson
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Boldly Injury(Person)
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.bodilyInjuryPerson
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.bodilyInjuryAccident
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Boldly Injury(Accident)
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.bodilyInjuryAccident
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    *ngIf="
+                                        insuranceAdditional
+                                            .insurancePolicyAddonType.name ===
+                                        'Motor Truck Cargo Breakdown'
+                                    "
+                                    class="payroll-template-data"
+                                >
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.singleConveyance
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Single Conveyance
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.singleConveyance
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="insuranceAdditional?.deductable"
+                                    >
+                                        <p class="payroll-name">Deductable</p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.deductable
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    *ngIf="
+                                        insuranceAdditional
+                                            .insurancePolicyAddonType.name ===
+                                        'Physical Damage'
+                                    "
+                                    class="payroll-template-data"
+                                >
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="
+                                            insuranceAdditional?.comprehensiveAndCollision
+                                        "
+                                    >
+                                        <p class="payroll-name">
+                                            Comprehen. & Collision
+                                        </p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.comprehensiveAndCollision
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="insuranceAdditional?.deductable"
+                                    >
+                                        <p class="payroll-name">Deductable</p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.deductable
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div
+                                    *ngIf="
+                                        insuranceAdditional
+                                            .insurancePolicyAddonType.name ===
+                                        'Trailer Interchange'
+                                    "
+                                    class="payroll-template-data"
+                                >
+                                    <div
+                                        class="payroll-template-item"
+                                        *ngIf="insuranceAdditional?.value"
+                                    >
+                                        <p class="payroll-name">Value</p>
+                                        <p class="payroll-value">
+                                            ${{
+                                                insuranceAdditional?.value
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                            </app-ta-custom-card>
                         </div>
+                    }
+                    <div class="divider"></div>
+                    <div class="settings-progress-container">
+                        <app-ta-progress-expiration
+                            [expireDate]="insurance.expires | formatDateP"
+                            [startDate]="insurance.issued | formatDateP"
+                            [expiresSettings]="'settings-insurance-policy'"
+                            [darkText]="true"
+                        ></app-ta-progress-expiration>
                     </div>
                     <div
-                        *ngIf="insurance?.files?.length"
-                        class="card-pdf"
-                        [class.extended]="insurance?.files?.length > 1"
-                        [class.disabled]="!insurance?.files?.length"
+                        [ngClass]="{ 'body-show': toggler[i] }"
+                        [@showHideCardBody]="toggler[i] ? 'true' : 'false'"
                     >
-                        <app-ta-upload-files
-                            #insuranceFiles
-                            [files]="insurance?.files"
-                            [customClassName]="'company-details-pdf'"
-                            [slideWidth]="390"
-                            [type]="'details'"
-                            [hasCarouselBottomTabs]="true"
-                            [reviewMode]="'REVIEW_MODE'"
-                        ></app-ta-upload-files>
-                    </div>
-                    <div class="divider"></div>
-                    <div class="card-note">
-                        <app-ta-input-note
-                            [formControl]="insuranceNote"
-                            [isVisibleDivider]="false"
-                            [isVisibleNote]="true"
-                            [isVisibleArrow]="false"
-                            [minRows]="1"
-                            [placeholder]="'Write something.'"
-                            [customClass]="'note-small'"
-                            [noteType]="'details-card'"
-                            [note]="
-                                insurance.note && insurance.note != 'null'
-                                    ? insurance.note
-                                    : ''
-                            "
-                            [entityId]="insurance.id"
-                            [entityType]="'InsurancePolicy'"
+                        <div
+                            class="divider"
+                            *ngIf="insurance?.files?.length"
+                        ></div>
+                        <div
+                            class="details-document-container"
+                            *ngIf="insurance?.files?.length"
                         >
-                        </app-ta-input-note>
+                            <div class="icon-counter-wrapper">
+                                <div class="counter-text-wrapper">
+                                    <div class="counter-text-wrapper">
+                                        <p class="details-document-name">
+                                            Document
+                                        </p>
+                                        <app-ta-counter
+                                            [countBackground]="'#424242'"
+                                            [customClass]="'circle_counter'"
+                                            [countHeight]="'22px'"
+                                            [countWidth]="'22px'"
+                                            [count]="
+                                                insurance.files?.length ?? 0
+                                            "
+                                        >
+                                        </app-ta-counter>
+                                    </div>
+                                </div>
+                                <svg-icon
+                                    (click)="downloadAllFiles()"
+                                    src="assets/svg/common/ic_download.svg"
+                                >
+                                </svg-icon>
+                            </div>
+                        </div>
+                        <div
+                            *ngIf="insurance?.files?.length"
+                            class="card-pdf"
+                            [class.extended]="insurance?.files?.length > 1"
+                            [class.disabled]="!insurance?.files?.length"
+                        >
+                            <app-ta-upload-files
+                                #insuranceFiles
+                                [files]="insurance?.files"
+                                [customClassName]="'company-details-pdf'"
+                                [slideWidth]="390"
+                                [type]="'details'"
+                                [hasCarouselBottomTabs]="true"
+                                [reviewMode]="'REVIEW_MODE'"
+                            ></app-ta-upload-files>
+                        </div>
+                        <div class="divider"></div>
+                        <div class="card-note">
+                            <app-ta-input-note
+                                [formControl]="insuranceNote"
+                                [isVisibleDivider]="false"
+                                [isVisibleNote]="true"
+                                [isVisibleArrow]="false"
+                                [minRows]="1"
+                                [placeholder]="'Write something.'"
+                                [customClass]="'note-small'"
+                                [noteType]="'details-card'"
+                                [note]="
+                                    insurance.note && insurance.note != 'null'
+                                        ? insurance.note
+                                        : ''
+                                "
+                                [entityId]="insurance.id"
+                                [entityType]="'InsurancePolicy'"
+                            >
+                            </app-ta-input-note>
+                        </div>
                     </div>
-                </div>
-            </app-ta-common-card>
-        </div>
+                </app-ta-common-card>
+            </div>
+        }
     </div>
 </div>

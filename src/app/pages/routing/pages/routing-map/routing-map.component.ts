@@ -891,7 +891,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case EGeneralActions.DELETE: {
+                        case EGeneralActions.DELETE:
                             if (res.template === 'route') {
                                 this.showHideRouteLine(res.data, true);
 
@@ -903,10 +903,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                     .subscribe();
                             }
                             break;
-                        }
-                        default: {
+
+                        default:
                             break;
-                        }
                     }
                 },
             });
@@ -914,11 +913,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.routingService.currentUpdatedData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.type == 'map') {
-                    this.updateMapData(res.id, res.data);
-                } else if (res.type == 'route') {
-                    this.addRoute(res.mapId);
-                } else if (res.type == 'edit-route') {
+                if (res.type == 'map') this.updateMapData(res.id, res.data);
+                else if (res.type == 'route') this.addRoute(res.mapId);
+                else if (res.type == 'edit-route') {
                     const routeIndex = this.tableData[
                         this.selectedMapIndex
                     ].routes.findIndex((item) => {
@@ -979,19 +976,18 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             true
                         );
                     }
-                } else if (res.type == 'delete-route') {
+                } else if (res.type == 'delete-route')
                     this.getRouteList(
                         this.tableData[this.selectedMapIndex].id,
                         1,
                         8
                     );
-                } else if (res.type == 'delete-stop') {
+                else if (res.type == 'delete-stop')
                     this.getRouteList(
                         this.tableData[this.selectedMapIndex].id,
                         1,
                         8
                     );
-                }
             });
     }
 
@@ -1011,7 +1007,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         return this.addressInputs;
     }
 
-    dropRoutes(event: CdkDragDrop<string[]>) {
+    dropRoutes(event: CdkDragDrop<string[]>): void {
         if (
             event.previousContainer === event.container &&
             event.previousIndex !== event.currentIndex &&

@@ -27,7 +27,7 @@ import { AccidentInactiveQuery } from '@pages/safety/accident/state/accident-ina
 import { AccidentShortResponse } from 'appcoretruckassist';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { EGeneralActions, EStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-accident-table',
@@ -81,7 +81,7 @@ export class AccidentTableComponent
         sortName: 'report',
     };
     public sortBy: any;
-    public searchValue: string = '';
+    public searchValue: string = EStringPlaceholder.EMPTY;
     public locationFilterOn: boolean = false;
 
     constructor(
@@ -145,7 +145,7 @@ export class AccidentTableComponent
     }
 
     // Responsive Observer
-    private observeTableContainer() {
+    private observeTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -198,7 +198,7 @@ export class AccidentTableComponent
         };
     }
 
-    sendAccidentData() {
+    sendAccidentData(): void {
         const tableView = JSON.parse(
             localStorage.getItem(`Accident-table-view`)
         );
@@ -259,7 +259,7 @@ export class AccidentTableComponent
     }
 
     // Get Table Tab Data
-    getTabData(dataType?: string) {
+    public getTabData(dataType?: string): AccidentActiveState[] {
         if (dataType === 'active') {
             this.accidentActive = this.accidentActiveQuery.getAll();
 
@@ -286,7 +286,7 @@ export class AccidentTableComponent
     }
 
     // Set Accident Data
-    setAccidentData(td: any) {
+    public setAccidentData(td: any): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -295,71 +295,54 @@ export class AccidentTableComponent
             this.viewData = this.viewData.map((data: any) => {
                 return this.mapAccidentData(data);
             });
-
-            /* for(let i = 0; i < 100; i++){
-        this.viewData.push(this.viewData[2]);
-      } */
-        } else {
-            this.viewData = [];
-        }
+        } else this.viewData = [];
     }
 
     // Map Accident Data
-    mapAccidentData(data: AccidentShortResponse) {
+    public mapAccidentData(data: AccidentShortResponse) {
         return {
             ...data,
             isSelected: false,
             tableReport: data?.report ? data.report : 'No Report',
-            tableDriverName: data?.driver_FullName ? data.driver_FullName : '',
+            tableDriverName: data?.driver_FullName
+                ? data.driver_FullName
+                : EStringPlaceholder.EMPTY,
             truckNumber: null,
             trailerNumber: null,
             tableDate: data?.date
                 ? this.datePipe.transform(data.date, 'MM/dd/yy')
-                : '',
-            tabelTime: data?.time ? data?.time : '',
-            tableState: data?.state ? data?.state : '',
+                : EStringPlaceholder.EMPTY,
+            tabelTime: data?.time ?? EStringPlaceholder.EMPTY,
+            tableState: data?.state ? data?.state : EStringPlaceholder.EMPTY,
             tableAttachments: [],
         };
     }
 
-    //On Toolbar Action
-    onToolBarAction(event: any) {
+    // On Toolbar Action
+    public onToolBarAction(event: any): void {
         if (event.action === 'open-modal') {
             this.modalService.openModal(AccidentModalComponent, {
                 size: 'large-xl',
             });
         } else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
-
             this.sendAccidentData();
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
-
             this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 
     // On Head Actions
     onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
-            if (event.direction) {
-                /*  this.mapingIndex = 0;
-
-        this.backFilterQuery.sort = event.direction;
-
-        this.backFilterQuery.pageIndex = 1;
-
-        this.contactBackFilter(this.backFilterQuery); */
-            } else {
-                this.sendAccidentData();
-            }
-        }
+        if (event.action === 'sort' && !event.direction)
+            this.sendAccidentData();
     }
 
     // Table Body Action
-    onTableBodyActions(event: any) {
+    public onTableBodyActions(event: any): void {
         switch (event.type) {
-            case 'edit-accident': {
+            case 'edit-accident':
                 this.modalService.openModal(
                     AccidentModalComponent,
                     { size: 'large-xl' },
@@ -369,24 +352,20 @@ export class AccidentTableComponent
                         data: event.data,
                     }
                 );
-            }
+            default:
+                break;
         }
     }
 
     // Map Select Item
-    selectItem(id) {
+    selectItem(id): void {
         this.mapsComponent.clickedMarker(id);
     }
 
     // -------------------------------NgOnDestroy-------------------------------
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
-
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
         this.resizeObserver.disconnect();
-
         this.destroy$.next();
         this.destroy$.complete();
     }

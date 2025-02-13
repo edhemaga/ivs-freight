@@ -109,7 +109,6 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
         switch (data.action) {
             case EGeneralActions.CLOSE:
                 break;
-
             case 'resend email':
                 this.resendApplicationEmail(this.editData.id);
                 this.modalService.setModalSpinner({
@@ -118,7 +117,6 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     close: false,
                 });
                 break;
-
             case 'save and add new':
                 if (this.applicantForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.applicantForm);
@@ -132,13 +130,11 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     close: false,
                 });
                 break;
-
             case EGeneralActions.SAVE:
                 if (this.applicantForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.applicantForm);
                     return;
                 }
-
                 if (this.editData?.type === EGeneralActions.EDIT) {
                     this.updateApplicant(this.editData.id);
                     this.modalService.setModalSpinner({
@@ -155,7 +151,6 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-
             default:
                 break;
         }

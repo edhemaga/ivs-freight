@@ -314,42 +314,34 @@ export class SettingsTerminalModalComponent
     public onModalAction(action: string): void {
         this.activeAction = action;
         switch (action) {
-            case TaModalActionEnum.CLOSE: {
+            case TaModalActionEnum.CLOSE:
                 this.ngbActiveModal.close();
                 break;
-            }
-            case TaModalActionEnum.SAVE: {
+            case TaModalActionEnum.SAVE:
                 if (this.terminalForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.terminalForm);
                     return;
                 }
-                if (this.editData?.type === EGeneralActions.EDIT) {
+                if (this.editData?.type === EGeneralActions.EDIT)
                     this.updateTerminal(this.editData.id);
-                } else {
-                    this.addTerminal();
-                }
+                else this.addTerminal();
                 break;
-            }
-            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
                 if (this.terminalForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.terminalForm);
                     return;
                 }
-
                 this.addTerminal(true);
                 break;
-            }
-            case TaModalActionEnum.DELETE: {
+            case TaModalActionEnum.DELETE:
                 this.deleteTerminalById();
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public openCloseCheckboxCard() {
+    public openCloseCheckboxCard(): void {
         this.isChecked(
             ESettingsFormEnum.OFFICE_CHECKED,
             ESettingsFormEnum.OFFICE_PHONE
@@ -364,7 +356,7 @@ export class SettingsTerminalModalComponent
         );
     }
 
-    public isChecked(formControlName: string, phoneControlName: string) {
+    public isChecked(formControlName: string, phoneControlName: string): void {
         this.terminalForm
             .get(formControlName)
             .valueChanges.pipe(takeUntil(this.destroy$))
@@ -386,7 +378,7 @@ export class SettingsTerminalModalComponent
 
     public onAction(event: any, action: string) {
         switch (action) {
-            case ESettingsFormEnum.GATE: {
+            case ESettingsFormEnum.GATE:
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
@@ -402,8 +394,7 @@ export class SettingsTerminalModalComponent
                     };
                 });
                 break;
-            }
-            case 'camera': {
+            case 'camera':
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
@@ -419,10 +410,8 @@ export class SettingsTerminalModalComponent
                     };
                 });
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -442,7 +431,7 @@ export class SettingsTerminalModalComponent
             });
     }
 
-    private fullParkingSlot() {
+    private fullParkingSlot(): void {
         this.terminalForm
             .get(ESettingsFormEnum.TERMINAL_FULL_PARKING_STOP)
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
@@ -458,25 +447,22 @@ export class SettingsTerminalModalComponent
             });
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: any, action: string): void {
         switch (action) {
-            case 'pay-period': {
+            case 'pay-period':
                 this.selectedPayPeriod = event;
                 this.terminalForm.get('monthlyDay').patchValue('');
                 this.selectedDay = null;
                 break;
-            }
-            case 'day': {
+            case 'day':
                 this.selectedDay = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private updateTerminal(id: number) {
+    private updateTerminal(id: number): void {
         const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: UpdateTerminalCommand = {
@@ -529,7 +515,7 @@ export class SettingsTerminalModalComponent
             });
     }
 
-    private addTerminal(addNew?: boolean) {
+    private addTerminal(addNew?: boolean): void {
         const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: CreateTerminalCommand = {
@@ -611,42 +597,16 @@ export class SettingsTerminalModalComponent
             .subscribe({
                 next: (res: TerminalResponse) => {
                     this.terminalForm.patchValue({
-                        isOwner: res.isOwner,
-                        name: res.name,
+                        ...res,
                         address: res.address.address,
                         addressUnit: res.address.addressUnit,
-                        phone: res.phone,
-                        extensionPhone: res.extensionPhone,
-                        email: res.email,
-                        // Office
-                        officeChecked: res.officeChecked,
-                        officePhone: res.officePhone,
-                        officeExtPhone: res.officeExtPhone,
-                        officeEmail: res.officeEmail,
-                        // Parking
-                        parkingChecked: res.parkingChecked,
-                        parkingPhone: res.parkingPhone,
-                        parkingExtPhone: res.parkingExtPhone,
-                        parkingEmail: res.parkingEmail,
-
-                        terminalParkingSlot: res.terminalParkingSlot,
-                        terminalFullParkingSlot: res.terminalFullParkingSlot,
-                        gate: res.gate,
-                        securityCamera: res.securityCamera,
-                        // Warehouse
-                        warehouseChecked: res.warehouseChecked,
-                        warehousePhone: res.warehousePhone,
-                        warehouseExtPhone: res.warehouseExtPhone,
-                        warehouseEmail: res.warehouseEmail,
-                        // Fuel stattion
-                        fuelStationChecked: res.fuelStationChecked,
                         // Additional tab
                         rent: res.rent
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                   res.rent
                               )
                             : null,
-                        payPeriod: res.payPeriod ? res.payPeriod.name : null,
+                        payPeriod: res.payPeriod?.name ?? null,
                         monthlyDay: res.payPeriod?.name
                             ? res.payPeriod.name === 'Monthly'
                                 ? res.monthlyDay.name
@@ -688,21 +648,14 @@ export class SettingsTerminalModalComponent
                         this.cameraBtns[1].checked = true;
                     }
 
-                    if (res.extensionPhone) {
-                        this.isTerminalPhoneExtExist = true;
-                    }
+                    if (res.extensionPhone) this.isTerminalPhoneExtExist = true;
 
-                    if (res.officeExtPhone) {
-                        this.isOfficePhoneExtExist = true;
-                    }
+                    if (res.officeExtPhone) this.isOfficePhoneExtExist = true;
 
-                    if (res.parkingExtPhone) {
-                        this.isParkingPhoneExtExist = true;
-                    }
+                    if (res.parkingExtPhone) this.isParkingPhoneExtExist = true;
 
-                    if (res.warehouseExtPhone) {
+                    if (res.warehouseExtPhone)
                         this.isWarehousePhoneExtExist = true;
-                    }
 
                     this.data = res;
 
@@ -732,7 +685,7 @@ export class SettingsTerminalModalComponent
             });
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.terminalForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))

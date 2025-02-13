@@ -4,10 +4,9 @@ import { Pipe, PipeTransform } from '@angular/core';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
 
-import { EGeneralActions } from '@shared/enums';
-
 // enums
 import { NameInitialsPipe } from '@shared/pipes';
+import { EGeneralActions } from '@shared/enums';
 
 @Pipe({
     standalone: true,

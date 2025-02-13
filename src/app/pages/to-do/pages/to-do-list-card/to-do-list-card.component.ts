@@ -204,52 +204,46 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case EGeneralActions.DELETE: {
+                        case EGeneralActions.DELETE:
                             this.dropAct(res);
                             break;
-                        }
-                        default: {
+                        default:
                             break;
-                        }
                     }
                 },
             });
-
-        // this.tableService.currentSearchTableData
-        //   .pipe(takeUntil(this.destroy$))
-        //   .subscribe((res: any) => {
-        //     if (res) {
-        //       // your search code here
-        //     }
-        //   });
     }
 
-    dragStart = () => {
+    dragStart = (): void => {
         this.dragStarted = true;
     };
 
-    dragStoped = () => {
+    dragStoped = (): void => {
         this.dragStarted = false;
     };
 
-    changedRow(e) {
+    changedRow(e): void {
         if (!this.startChangingStatus) {
             let newStatus = TodoStatus.Todo;
             this.startChangingStatus = true;
 
-            if (e.x === 0) {
-                newStatus = TodoStatus.Todo;
-                e.status.name = TodoStatus.Todo;
-                e.status.id = 1;
-            } else if (e.x === 1) {
-                newStatus = TodoStatus.InProgres;
-                e.status.name = TodoStatus.InProgres;
-                e.status.id = 2;
-            } else {
-                newStatus = TodoStatus.Done;
-                e.status.name = TodoStatus.Done;
-                e.status.id = 3;
-                e.setAsDoneAt = moment();
+            switch (e.x) {
+                case 0:
+                    newStatus = TodoStatus.Todo;
+                    e.status.name = TodoStatus.Todo;
+                    e.status.id = 1;
+                    break;
+                case 1:
+                    newStatus = TodoStatus.InProgres;
+                    e.status.name = TodoStatus.InProgres;
+                    e.status.id = 2;
+                    break;
+                default:
+                    newStatus = TodoStatus.Done;
+                    e.status.name = TodoStatus.Done;
+                    e.status.id = 3;
+                    e.setAsDoneAt = moment();
+                    break;
             }
 
             this.updatedStatusData = {
@@ -260,11 +254,11 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         }
     }
 
-    public openModalTodo() {
+    public openModalTodo(): void {
         this.modalService.openModal(TodoModalComponent, { size: 'small' });
     }
 
-    public updateStatus(todo) {
+    public updateStatus(todo): void {
         this.todoService
             .updateTodoItem(todo)
             .pipe(takeUntil(this.destroy$))
@@ -274,7 +268,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             });
     }
 
-    updateTodosList(resp, noReplace?: boolean) {
+    updateTodosList(resp, noReplace?: boolean): void {
         this.toDoTasks = resp.filter((x) => {
             if (x.status.name === TodoStatus.Todo) {
                 if (!noReplace) {
@@ -401,7 +395,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         });
     }
 
-    toggleComment(e: Event, mainIndx: number, indx: number) {
+    toggleComment(e: Event, mainIndx: number, indx: number): void {
         e.preventDefault();
         e.stopPropagation();
         this.DetailsDataService.setNewData(
@@ -411,7 +405,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             !this.scene.children[mainIndx].children[indx]['commentActive'];
     }
 
-    toggleFiles(e: Event, mainIndx: number, indx: number) {
+    toggleFiles(e: Event, mainIndx: number, indx: number): void {
         e.preventDefault();
         e.stopPropagation();
 
@@ -419,14 +413,14 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             !this.scene.children[mainIndx].children[indx]['filesActive'];
     }
 
-    toggleLinkShow(e: Event, mainIndx: number, indx: number) {
+    toggleLinkShow(e: Event, mainIndx: number, indx: number): void {
         e.preventDefault();
         e.stopPropagation();
         this.scene.children[mainIndx].children[indx]['linkActive'] =
             !this.scene.children[mainIndx].children[indx]['linkActive'];
     }
 
-    onCardDrop(columnId, dropResult) {
+    onCardDrop(columnId, dropResult): void {
         if (
             dropResult.removedIndex !== null ||
             dropResult.addedIndex !== null
@@ -455,18 +449,17 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
         }
     }
 
-    getCardPayload(columnId) {
+    public getCardPayload(columnId) {
         return (index) => {
             return this.scene.children.filter((p) => p.id === columnId)[0]
                 .children[index];
         };
     }
 
-    log(...params) {
+    public log(...params): void {
         this.DetailsDataService.setNewData(params[1]['payload']);
     }
 
-    // eslint-disable-next-line @angular-eslint/use-lifecycle-interface
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.sharedService.emitUpdateScrollHeight.emit(true);

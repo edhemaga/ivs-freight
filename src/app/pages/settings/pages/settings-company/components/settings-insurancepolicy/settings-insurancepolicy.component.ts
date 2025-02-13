@@ -70,44 +70,43 @@ export class SettingsInsurancepolicyComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case EGeneralActions.DELETE: {
-                            if (res.template === 'insurance') {
+                        case EGeneralActions.DELETE:
+                            if (res.template === 'insurance')
                                 this.deleteInsurancePolicy(res.id);
-                            }
+
                             break;
-                        }
-                        default: {
+                        default:
                             break;
-                        }
                     }
                 },
             });
     }
     /**Function for toggle page in cards */
-    public toggleResizePage(value: number) {
+    public toggleResizePage(value: number): void {
         this.toggler[value] = !this.toggler[value];
     }
-    public onAction(modal: { modalName: string; type: string; company?: any }) {
+    public onAction(modal: {
+        modalName: string;
+        type: string;
+        company?: any;
+    }): void {
         this.settingsCompanyService.onModalAction(modal);
     }
 
-    public deleteInsurancePolicy(insurance: any) {
+    public deleteInsurancePolicy(insurance: any): void {
         this.settingsCompanyService
             .deleteInsurancePolicyById(insurance)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
     /* To copy any Text */
-    public copyText(val: any, index: number) {
+    public copyText(val: any, index: number): void {
         this.copyPolicyName[index] = true;
         this.clipboar.copy(val);
     }
-    /**Function for dots in cards */
+
+    /* Function for dots in cards */
     public initDropOptions(): void {
         this.dropOptions = {
             disabledMutedStyle: null,
@@ -158,18 +157,17 @@ export class SettingsInsurancepolicyComponent
         };
     }
 
-    //Function for drop-down
-    public optionsEvent(action: any, insurance: any) {
+    // Function for drop-down
+    public optionsEvent(action: any, insurance: any): void {
         switch (action.type) {
-            case EGeneralActions.EDIT: {
+            case EGeneralActions.EDIT:
                 this.onAction({
                     modalName: 'insurance-policy',
                     type: EGeneralActions.EDIT,
                     company: insurance,
                 });
                 break;
-            }
-            case 'delete-item': {
+            case 'delete-item':
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
@@ -181,10 +179,8 @@ export class SettingsInsurancepolicyComponent
                     }
                 );
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -192,7 +188,7 @@ export class SettingsInsurancepolicyComponent
         this.insuranceFiles.downloadAllFiles();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
     }

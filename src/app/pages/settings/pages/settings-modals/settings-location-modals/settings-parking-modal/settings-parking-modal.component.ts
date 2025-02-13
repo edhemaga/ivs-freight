@@ -279,7 +279,7 @@ export class SettingsParkingModalComponent
 
     public tabChange(event: any, action?: string): void {
         switch (action) {
-            case ESettingsFormEnum.GATE: {
+            case ESettingsFormEnum.GATE:
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
                         ? this.parkingForm
@@ -295,8 +295,8 @@ export class SettingsParkingModalComponent
                     };
                 });
                 break;
-            }
-            case 'camera': {
+
+            case 'camera':
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.parkingForm
@@ -305,17 +305,14 @@ export class SettingsParkingModalComponent
                         : this.parkingForm
                               .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(true);
-
                     return {
                         ...item,
                         checked: item.id === event.id,
                     };
                 });
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -323,11 +320,10 @@ export class SettingsParkingModalComponent
         this.activeAction = action;
 
         switch (action) {
-            case TaModalActionEnum.CLOSE: {
+            case TaModalActionEnum.CLOSE:
                 this.ngbActiveModal.close();
                 break;
-            }
-            case TaModalActionEnum.SAVE: {
+            case TaModalActionEnum.SAVE:
                 if (this.parkingForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.parkingForm);
                     return;
@@ -336,24 +332,18 @@ export class SettingsParkingModalComponent
                     this.updateParking(this.editData.id);
                 else this.addParking();
                 break;
-            }
-            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
                 if (this.parkingForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.parkingForm);
                     return;
                 }
-
                 this.addParking(true);
                 break;
-            }
-            case TaModalActionEnum.DELETE: {
+            case TaModalActionEnum.DELETE:
                 this.deleteParkingById(this.editData.id);
-
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -366,20 +356,17 @@ export class SettingsParkingModalComponent
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
-            case 'pay-period': {
+            case 'pay-period':
                 this.selectedPayPeriod = event;
                 this.parkingForm.get('monthlyDay').patchValue(null);
                 this.parkingForm.get('weeklyDay').patchValue(null);
                 this.selectedDay = null;
                 break;
-            }
-            case 'day': {
+            case 'day':
                 this.selectedDay = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 

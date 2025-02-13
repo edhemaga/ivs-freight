@@ -42,7 +42,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
     public shipperContacts: ShipperContactGroupResponse[];
     public shipperLikes: number;
     public shipperDislike: number;
-    public reviewsRepair: any = []; //leave this any, it's not going into this spring
+    public reviewsRepair: any = [];
     public departmentContacts: DepartmentContacts[];
 
     //Images
@@ -73,12 +73,10 @@ export class ShipperDetailsItemComponent implements OnChanges {
                 ...item,
                 companyUser: {
                     ...item.companyUser,
-                    avatar: /* item.companyUser.avatar
-                        ? item.companyUser.avatar
-                        :  */ 'assets/svg/common/ic_profile.svg',
+                    avatar: 'assets/svg/common/ic_profile.svg',
                 },
                 commentContent: item.comment,
-                rating: item.thumb, // - item.ratingFromTheReviewer doesn't exist in response
+                rating: item.thumb,
             };
         });
     }

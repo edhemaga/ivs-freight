@@ -3,4 +3,5 @@ export enum EStringPlaceholder {
     WHITESPACE = ' ',
     DASH = '-',
     COMMA_WHITESPACE = ', ',
+    DOT = '.',
 }
