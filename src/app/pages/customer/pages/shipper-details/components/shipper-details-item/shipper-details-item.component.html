@@ -1,5 +1,5 @@
 <div class="repair-component">
-    @for (let shipperData of shipper; let ind = $index; track: ind) {
+    @for (shipperData of shipper; let ind = $index; track ind) {
         <div
             class="repair-component"
             [class.contactGridHolder]="shipperData.nameDefault === 'Contact'"
@@ -30,9 +30,9 @@
                             </div>
                             <div class="divider"></div>
                             @for (
-                                let loadStop of shipperLoads;
+                                loadStop of shipperLoads;
                                 let ind = $index;
-                                track: ind
+                                track ind
                             ) {
                                 <div class="repair-items-wrapper">
                                     <div class="repair-items">

@@ -58,6 +58,7 @@ import {
     CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
+    CaModalButtonComponent,
     CaModalComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -402,7 +403,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             this.trailerForm
                 .get(TrailerFormFieldEnum.COMPANY_OWNED)
                 .setValue(false);
-                this.onSelectDropdown(this.editData.ownerData, TableStringEnum.OWNER_3);
+            this.onSelectDropdown(
+                this.editData.ownerData,
+                ETrailerAction.OWNER
+            );
         }
     }
 
@@ -576,7 +580,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private addTrailer(): void {
-        let documents =
+        const documents =
             this.documents
                 .filter((item) => item.realFile)
                 .map((item) => {
@@ -595,25 +599,21 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             ownerId: this.trailerForm.get(TrailerFormFieldEnum.COMPANY_OWNED)
                 .value
                 ? null
-                : this.selectedOwner
-                  ? this.selectedOwner.id
-                  : null,
+                : (this.selectedOwner?.id ?? null),
             axles: this.trailerForm.get(TrailerFormFieldEnum.AXLES).value
                 ? parseInt(
                       this.trailerForm.get(TrailerFormFieldEnum.AXLES).value
                   )
                 : null,
-            suspension: this.selectedSuspension
-                ? this.selectedSuspension.id
-                : null,
+            suspension: this.selectedSuspension?.id ?? null,
+
             tireSizeId: this.selectedTireSize?.id ?? null,
             doorType: this.selectedDoorType?.id ?? null,
             isLiftgate:
                 this.trailerForm.get(TrailerFormFieldEnum.IS_LIFTGATE).value ??
                 false,
-            reeferUnit: this.selectedReeferType
-                ? this.selectedReeferType.id
-                : null,
+            reeferUnit: this.selectedReeferType?.id ?? null,
+
             emptyWeight: this.trailerForm.get(TrailerFormFieldEnum.EMPTY_WEIGHT)
                 .value
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
@@ -700,15 +700,14 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private updateTrailer(id: number): void {
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const documents = this.documents
+            .filter((item) => item.realFile)
+            .map((item) => {
+                return item.realFile;
+            });
 
         const newData: any = {
-            id: id,
+            id,
             ...this.trailerForm.value,
             trailerTypeId: this.selectedTrailerType.id,
             trailerMakeId: this.selectedTrailerMake.id,
@@ -727,9 +726,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                       this.trailerForm.get(TrailerFormFieldEnum.AXLES).value
                   )
                 : null,
-            suspension: this.selectedSuspension
-                ? this.selectedSuspension.id
-                : null,
+            suspension: this.selectedSuspension?.id ?? null,
             tireSizeId: this.selectedTireSize?.id ?? null,
             doorType: this.selectedDoorType?.id ?? null,
             isLiftgate:
@@ -778,7 +775,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                       )
                     : null
                 : null,
-            files: documents ? documents : this.trailerForm.value.files,
+            files: documents ?? this.trailerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
         };
 
@@ -900,7 +897,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onSelectDropdown(event: any, action: ETrailerAction) {
+    public onSelectDropdown(event: any, action: ETrailerAction): void {
         switch (action) {
             case ETrailerAction.TRAILER_TYPE:
                 this.selectedTrailerType = event;

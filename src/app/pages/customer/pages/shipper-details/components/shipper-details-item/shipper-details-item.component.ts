@@ -37,7 +37,7 @@ import { EGeneralActions } from '@shared/enums';
     encapsulation: ViewEncapsulation.None,
 })
 export class ShipperDetailsItemComponent implements OnChanges {
-    @Input() shipper: ShipperResponse;
+    @Input() shipper: ShipperResponse[];
     @Input() shipperLoads: ShipperLoadStopsResponse[];
     public shipperContacts: ShipperContactGroupResponse[];
     public shipperLikes: number;
@@ -65,11 +65,6 @@ export class ShipperDetailsItemComponent implements OnChanges {
             this.orderContacts();
             this.getReviews(changes.shipper.currentValue[0].data);
         }
-    }
-
-    /**Function return id */
-    public identity(index: number, item: any): number {
-        return item.id;
     }
 
     public getReviews(reviewsData: ShipperResponse): void {

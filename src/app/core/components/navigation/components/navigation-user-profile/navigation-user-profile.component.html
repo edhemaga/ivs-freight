@@ -20,11 +20,7 @@
             'hide-panel': !isUserPanelOpen,
         }"
     >
-        @for (
-            let item of userNavigationData;
-            let ind = $index;
-            track: identity
-        ) {
+        @for (item of userNavigationData; let ind = $index; track ind) {
             <div
                 class="items"
                 (click)="onAction(item)"
