@@ -213,7 +213,7 @@ export class TrailerDetailsCardComponent
         if (event && event.id !== this.trailer.id) {
             if (event.name === TableStringEnum.ADD_NEW_3) {
                 this.modalService.openModal(TrailerModalComponent, {
-                    size: 'small',
+                    size: TableStringEnum.SMALL,
                 });
 
                 return;

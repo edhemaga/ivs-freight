@@ -337,11 +337,11 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         );
     }
 
-    public onSelectedTruck(event: any): void {
+    public onSelectedTruck(event: { id: number; name?: string }): void {
         if (event && event.id !== this.truck.id) {
             if (event.name === TableStringEnum.ADD_NEW_3) {
                 this.modalService.openModal(TruckModalComponent, {
-                    size: 'small',
+                    size: TableStringEnum.SMALL,
                 });
 
                 return;
