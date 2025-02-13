@@ -162,7 +162,7 @@ export class MethodsCalculationsHelper {
     };
 
     //------------------------------- Convert thousand separator in number -------------------------------
-    static convertThousanSepInNumber = (value: string): number => {
+    static convertThousandSepInNumber = (value: string): number => {
         if (value) return parseFloat(value.toString().replace(/,/g, ''));
     };
 

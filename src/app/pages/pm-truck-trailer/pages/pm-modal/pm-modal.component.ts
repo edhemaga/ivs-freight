@@ -395,7 +395,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     );
                     this.changeDetector.detectChanges();
                 },
-                error: () => {},
             });
     }
 
@@ -443,7 +442,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => {},
             });
     }
 
@@ -491,7 +489,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => {},
             });
     }
 
@@ -539,7 +536,6 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         this.pmTableData
                     );
                 },
-                error: () => {},
             });
     }
 
@@ -551,7 +547,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         id: item.get(TableStringEnum.ID).value,
                         title: item.get(TableStringEnum.TITLE_2).value,
                         mileage:
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                            MethodsCalculationsHelper.convertThousandSepInNumber(
                                 item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
@@ -574,9 +570,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case TableStringEnum.REPAIR_MODAL:
                                 this.openRepairModal();
-
                                 break;
-
                             default:
                                 break;
                         }
@@ -595,7 +589,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get(TableStringEnum.ID).value,
                         title: item.get(TableStringEnum.TITLE_2).value,
-                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousandSepInNumber(
                             item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:
@@ -618,9 +612,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case TableStringEnum.REPAIR_MODAL:
                                 this.openRepairModal();
-
                                 break;
-
                             default: {
                                 break;
                             }
@@ -642,7 +634,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get(TableStringEnum.ID).value,
                         mileage:
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                            MethodsCalculationsHelper.convertThousandSepInNumber(
                                 item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
@@ -657,7 +649,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                     return {
                         id: item.get(TableStringEnum.ID).value,
                         mileage:
-                            MethodsCalculationsHelper.convertThousanSepInNumber(
+                            MethodsCalculationsHelper.convertThousandSepInNumber(
                                 item.get(TableStringEnum.MILEAGE).value
                             ),
                         status:
@@ -701,7 +693,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 ...this.defaultPMs.controls.map((item, index) => {
                     return {
                         id: item.get(TableStringEnum.ID).value,
-                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousandSepInNumber(
                             item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:
@@ -715,7 +707,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
                 ...this.newPMs.controls.map((item, index) => {
                     return {
                         id: item.get(TableStringEnum.ID).value,
-                        months: MethodsCalculationsHelper.convertThousanSepInNumber(
+                        months: MethodsCalculationsHelper.convertThousandSepInNumber(
                             item.get(TableStringEnum.MILEAGE).value
                         ),
                         status:

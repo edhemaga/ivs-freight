@@ -10,7 +10,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 export class ThousandSeparatorPipe implements PipeTransform {
     transform(value: any): any {
         return MethodsCalculationsHelper.convertNumberInThousandSep(
-            MethodsCalculationsHelper.convertThousanSepInNumber(
+            MethodsCalculationsHelper.convertThousandSepInNumber(
                 value ? value : '0'
             )
         );
