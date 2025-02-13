@@ -69,7 +69,7 @@ export class PayrollDeductionModalComponent implements OnInit {
         private payrollDeductionService: PayrollDeductionService,
         private ngbActiveModal: NgbActiveModal,
         private payrollService: PayrollService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.generateDeduction();
@@ -115,7 +115,7 @@ export class PayrollDeductionModalComponent implements OnInit {
             [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
             [PayrollStringEnum.DATE]: [
                 MethodsCalculationsHelper.convertDateFromBackend(data.date) ??
-                    new Date(),
+                new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -177,7 +177,7 @@ export class PayrollDeductionModalComponent implements OnInit {
                 .value,
             recurringType: isRecurring
                 ? this.payrollCreditForm.get(PayrollStringEnum.RECURRING_TYPE)
-                      .value
+                    .value
                 : null,
             driverId: this.payrollCreditForm.get(
                 PayrollStringEnum.SELECTED_DRIVER_ID
@@ -191,22 +191,22 @@ export class PayrollDeductionModalComponent implements OnInit {
             date: MethodsCalculationsHelper.convertDateToBackend(
                 this.payrollCreditForm.get(PayrollStringEnum.DATE).value
             ),
-            amount: MethodsCalculationsHelper.convertThousanSepInNumber(
+            amount: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
             ),
             recurring: isRecurring,
             limited: this.payrollCreditForm.get(PayrollStringEnum.LIMITED)
                 .value,
             limitedAmount: isRecurring
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.payrollCreditForm.get(
-                          PayrollStringEnum.LIMITED_AMOUNT
-                      ).value
-                  )
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    this.payrollCreditForm.get(
+                        PayrollStringEnum.LIMITED_AMOUNT
+                    ).value
+                )
                 : null,
             limitedNumber: isRecurring
                 ? this.payrollCreditForm.get(PayrollStringEnum.LIMITED_NUMBER)
-                      .value
+                    .value
                 : null,
         };
     }
