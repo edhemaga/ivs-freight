@@ -129,6 +129,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaInputDropdownComponent,
         TaAppTooltipV2Component,
         CaInputDatetimePickerComponent,
+        CaModalButtonComponent,
 
         // Pipes
         FormatDatePipe,
@@ -396,6 +397,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER
                     );
             });
+
+        if (this.editData?.ownerData) {
+            this.trailerForm
+                .get(TrailerFormFieldEnum.COMPANY_OWNED)
+                .setValue(false);
+                this.onSelectDropdown(this.editData.ownerData, TableStringEnum.OWNER_3);
+        }
     }
 
     private updateOwnerIdValidators(
