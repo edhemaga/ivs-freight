@@ -32,7 +32,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { CaInputComponent, CaInputNoteComponent } from 'ca-components';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { EGeneralActions, EStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-applicant-modal',
@@ -78,12 +78,11 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        if (this.editData?.type === EGeneralActions.EDIT) {
+        if (this.editData?.type === EGeneralActions.EDIT)
             this.editApplicant(this.editData.id);
-        }
     }
 
-    private createForm() {
+    private createForm(): void {
         this.applicantForm = this.formBuilder.group({
             firstName: [null, [Validators.required, ...firstNameValidation]],
             lastName: [null, [Validators.required, ...lastNameValidation]],
@@ -106,12 +105,12 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case EGeneralActions.CLOSE: {
+            case EGeneralActions.CLOSE:
                 break;
-            }
-            case 'resend email': {
+
+            case 'resend email':
                 this.resendApplicationEmail(this.editData.id);
                 this.modalService.setModalSpinner({
                     action: 'resend email',
@@ -119,8 +118,8 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     close: false,
                 });
                 break;
-            }
-            case 'save and add new': {
+
+            case 'save and add new':
                 if (this.applicantForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.applicantForm);
                     return;
@@ -133,8 +132,8 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     close: false,
                 });
                 break;
-            }
-            case 'save': {
+
+            case EGeneralActions.SAVE:
                 if (this.applicantForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.applicantForm);
                     return;
@@ -156,10 +155,9 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+
+            default:
                 break;
-            }
         }
     }
 
@@ -195,7 +193,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addApplicant() {
+    private addApplicant(): void {
         this.applicantService
             .addApplicantAdmin(this.applicantForm.value)
             .pipe(takeUntil(this.destroy$))
@@ -228,7 +226,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private editApplicant(id: number) {
+    private editApplicant(id: number): void {
         this.applicantService
             .getApplicantByIdAdmin(id)
             .pipe(takeUntil(this.destroy$))
@@ -242,11 +240,10 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                     });
                     this.applicantFullName = res.firstName.concat(
-                        ' ',
+                        EStringPlaceholder.WHITESPACE,
                         res.lastName
                     );
                 },
-                error: () => {},
             });
     }
 

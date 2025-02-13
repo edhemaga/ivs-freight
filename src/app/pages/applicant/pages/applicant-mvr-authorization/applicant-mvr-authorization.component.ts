@@ -6,8 +6,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 // helpers
 import { anyInputInLineIncorrect } from '@pages/applicant/utils/helpers/applicant.helper';
@@ -25,11 +24,17 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
+import {
+    EFileFormControls,
+    EGeneralActions,
+    EStringPlaceholder,
+} from '@shared/enums';
 
 // models
 import {
     ApplicantResponse,
     CreateMvrAuthReviewCommand,
+    CreateWithUploadsResponse,
     MvrAuthFeedbackResponse,
 } from 'appcoretruckassist';
 import { License } from '@pages/applicant/pages/applicant-application/models/license.model';
@@ -45,7 +50,6 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { ApplicantLicensesTableComponent } from '@pages/applicant/components/applicant-licenses-table/applicant-licenses-table.component';
 import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/applicant-buttons/applicant-next-back-btn/applicant-next-back-btn.component';
-import { EFileFormControls, EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-mvr-authorization',
@@ -203,10 +207,10 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                                 ),
                             restrictions: item.cdlRestrictions
                                 .map((resItem) => resItem.code)
-                                .join(', '),
+                                .join(EStringPlaceholder.COMMA_WHITESPACE),
                             endorsments: item.cdlEndorsements
                                 .map((resItem) => resItem.code)
-                                .join(', '),
+                                .join(EStringPlaceholder.COMMA_WHITESPACE),
                         };
                     });
 
@@ -301,17 +305,14 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
     }
 
     public onSignatureAction(event: any): void {
-        if (event) {
+        if (event)
             this.signature = this.imageBase64Service.getStringFromBase64(event);
-        } else {
-            this.signature = null;
-        }
+        else this.signature = null;
     }
 
     public onRemoveSignatureRequiredNoteAction(event: any): void {
-        if (event) {
-            this.displaySignatureRequiredNote = false;
-        }
+        if (!event) return;
+        this.displaySignatureRequiredNote = false;
     }
 
     public onFilesAction(event: any): void {
@@ -339,15 +340,13 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
                 break;
             case 'mark-incorrect':
-                if (this.selectedMode === SelectedMode.REVIEW) {
+                if (this.selectedMode === SelectedMode.REVIEW)
                     this.incorrectInput(true, event.index, 0);
-                }
 
                 break;
             case 'mark-correct':
-                if (this.selectedMode === SelectedMode.REVIEW) {
+                if (this.selectedMode === SelectedMode.REVIEW)
                     this.incorrectInput(false, event.index, 0);
-                }
 
                 break;
 
@@ -386,22 +385,18 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
 
-            if (!isAnyInputInLineIncorrect) {
+            if (!isAnyInputInLineIncorrect)
                 this.mvrAuthorizationForm
                     .get('firstRowReview')
                     .patchValue(null);
-            }
         }
 
         const inputFieldsArray = JSON.stringify(
             this.openAnnotationArray.map((item) => item.lineInputs)
         );
 
-        if (inputFieldsArray.includes('true')) {
-            this.hasIncorrectFields = true;
-        } else {
-            this.hasIncorrectFields = false;
-        }
+        if (inputFieldsArray.includes('true')) this.hasIncorrectFields = true;
+        else this.hasIncorrectFields = false;
     }
 
     public getAnnotationBtnClickValue(event: any): void {
@@ -422,18 +417,13 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === StepAction.NEXT_STEP) {
-            if (this.selectedMode !== SelectedMode.REVIEW) {
-                this.onSubmit();
-            }
-
-            if (this.selectedMode === SelectedMode.REVIEW) {
+            if (this.selectedMode === SelectedMode.REVIEW)
                 this.onSubmitReview();
-            }
+            else this.onSubmit();
         }
 
-        if (event.action === StepAction.BACK_STEP) {
+        if (event.action === StepAction.BACK_STEP)
             this.router.navigate([`/medical-certificate/${this.applicantId}`]);
-        }
     }
 
     public onSubmit(): void {
@@ -441,14 +431,11 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             if (this.mvrAuthorizationForm.invalid) {
                 this.inputService.markInvalid(this.mvrAuthorizationForm);
 
-                if (!this.documents.length) {
+                if (!this.documents.length)
                     this.displayDocumentsRequiredNote = true;
-                }
             }
 
-            if (!this.signature) {
-                this.displaySignatureRequiredNote = true;
-            }
+            if (!this.signature) this.displaySignatureRequiredNote = true;
 
             return;
         }
@@ -463,12 +450,12 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
         const { dontHaveMvr } = this.dontHaveMvrForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        let documents =
+            this.documents
+                .filter((item) => item.realFile)
+                .map((item) => {
+                    documents.push(item.realFile);
+                }) ?? [];
 
         const saveData: any = {
             applicantId: this.applicantId,
@@ -491,26 +478,25 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             }),
         };
 
-        const selectMatchingBackendMethod = () => {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT &&
-                !this.stepHasValues
-            ) {
-                return this.applicantActionsService.createMvrAuthorization(
-                    saveData
-                );
-            }
+        const selectMatchingBackendMethod =
+            (): Observable<CreateWithUploadsResponse> => {
+                if (
+                    this.selectedMode === SelectedMode.APPLICANT &&
+                    !this.stepHasValues
+                )
+                    return this.applicantActionsService.createMvrAuthorization(
+                        saveData
+                    );
 
-            if (
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    this.stepHasValues) ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
-                return this.applicantActionsService.updateMvrAuthorization(
-                    saveData
-                );
-            }
-        };
+                if (
+                    (this.selectedMode === SelectedMode.APPLICANT &&
+                        this.stepHasValues) ||
+                    this.selectedMode === SelectedMode.FEEDBACK
+                )
+                    return this.applicantActionsService.updateMvrAuthorization(
+                        saveData
+                    );
+            };
 
         selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
@@ -542,9 +528,6 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: (err) => {
-                    console.log(err);
-                },
             });
     }
 
@@ -557,11 +540,11 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                     isValid: !this.openAnnotationArray[0].lineInputs[index],
                 };
             }),
-            /*    filesReviewMessage:
-                this.mvrAuthorizationForm.get('firstRowReview').value, */
         };
 
-        const selectMatchingBackendMethod = () => {
+        const selectMatchingBackendMethod = (): Observable<
+            CreateWithUploadsResponse | object
+        > => {
             if (
                 this.selectedMode === SelectedMode.REVIEW &&
                 !this.stepHasReviewValues
@@ -574,11 +557,10 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             if (
                 this.selectedMode === SelectedMode.REVIEW &&
                 this.stepHasReviewValues
-            ) {
+            )
                 return this.applicantActionsService.updateMvrAuthorizationReview(
                     saveData
                 );
-            }
         };
 
         selectMatchingBackendMethod()
@@ -610,9 +592,6 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                             },
                         };
                     });
-                },
-                error: (err) => {
-                    console.log(err);
                 },
             });
     }

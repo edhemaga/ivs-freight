@@ -35,6 +35,8 @@ import {
     NavigationSubRoutes,
     Navigation,
 } from '@core/components/navigation/models';
+
+// enums
 import { EGeneralActions } from '@shared/enums';
 
 @Component({

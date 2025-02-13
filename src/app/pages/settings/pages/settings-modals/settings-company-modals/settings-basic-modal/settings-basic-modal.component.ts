@@ -249,6 +249,7 @@ export class SettingsBasicModalComponent
 
     // Enums
     public EBankAccountStatus = EBankAccountStatus;
+    public ESettingsFormControls = ESettingsFormControls;
 
     // Bank account actions
     public focusedBankAccount!: number | null;
@@ -357,7 +358,6 @@ export class SettingsBasicModalComponent
 
                     if (this.editData.type === ESettingsModalEnum.PAYROLL_TAB)
                         this.tabChange({ id: 3 });
-
                     break;
                 case ESettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN:
                     this.isSetupCompany = true;
@@ -367,10 +367,8 @@ export class SettingsBasicModalComponent
                         .pipe(takeUntil(this.destroy$))
                         .subscribe((data) => {
                             this.editCompany(data);
-
                             this.editData.data = data;
                         });
-
                     break;
                 default:
                     break;
@@ -980,16 +978,9 @@ export class SettingsBasicModalComponent
         )
             return this.endingIns[0];
 
-        if (payPeriod === ESettingsModalEnum.SEMI_MONTHLY)
-            return {
-                id: 7,
-                name: '15th / Last day',
-            };
-        else
-            return {
-                id: 8,
-                name: 'Last Day',
-            };
+        return payPeriod === ESettingsModalEnum.SEMI_MONTHLY
+            ? { id: 7, name: '15th / Last day' }
+            : { id: 8, name: 'Last Day' };
     }
 
     private validateMiles(): void {

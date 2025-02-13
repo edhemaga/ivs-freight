@@ -1,6 +1,6 @@
 <div
     [ngClass]="{
-        'user-panel': isNavigationHovered
+        'user-panel': isNavigationHovered,
     }"
     class="wrapper"
     *ngIf="!isUserCompanyDetailsOpen"
@@ -9,7 +9,7 @@
         <div
             [ngClass]="{
                 'background-on-user-panel': isUserPanelOpen,
-                'remove-background-on-user-panel': !isUserPanelOpen
+                'remove-background-on-user-panel': !isUserPanelOpen,
             }"
         ></div>
     </div>
@@ -17,66 +17,71 @@
         class="wrapper-elements"
         [ngClass]="{
             'show-panel': isNavigationHovered && isUserPanelOpen,
-            'hide-panel': !isUserPanelOpen
+            'hide-panel': !isUserPanelOpen,
         }"
     >
-        <div
-            class="items"
-            *ngFor="let item of userNavigationData; trackBy: identity"
-            (click)="onAction(item)"
-            [ngClass]="{
-                'user-content-exists':
-                    item.name !== 'Switch Company' && !companiesExists,
-                'hide-company':
-                    item.name === 'Switch Company' && !companiesExists,
-                'user-content': companiesExists
-            }"
-        >
-            <div class="items-holder">
-                <div class="user-content-hover"></div>
-                <svg-icon
-                    [ngClass]="{
-                        'user-content-logout': item.name === 'Logout',
-                        'user-content-status': item.name === 'User status'
-                    }"
-                    class="user-content-svg"
-                    [src]="
-                        item.name === 'User status'
-                            ? currentUserStatus === 'online'
-                                ? 'assets/svg/common/' + item.image
-                                : 'assets/svg/common/ic_verify-check.svg'
-                            : 'assets/svg/common/' + item.image
-                    "
-                ></svg-icon>
-                <p
-                    *ngIf="item.name !== 'User status'"
-                    class="user-content-text"
-                    [ngClass]="{
-                        'user-content-logout': item.name === 'Logout'
-                    }"
-                >
-                    {{ item.name }}
-                </p>
-                <p
-                    *ngIf="
-                        item.name === 'User status' &&
-                        currentUserStatus === 'online'
-                    "
-                    class="user-content-text user-content-text-status"
-                >
-                    Set Busy Status
-                </p>
-                <p
-                    *ngIf="
-                        item.name === 'User status' &&
-                        currentUserStatus === 'busy'
-                    "
-                    class="user-content-text user-content-text-status"
-                >
-                    Set Active Status
-                </p>
+        @for (
+            let item of userNavigationData;
+            let ind = $index;
+            track: identity
+        ) {
+            <div
+                class="items"
+                (click)="onAction(item)"
+                [ngClass]="{
+                    'user-content-exists':
+                        item.name !== 'Switch Company' && !companiesExists,
+                    'hide-company':
+                        item.name === 'Switch Company' && !companiesExists,
+                    'user-content': companiesExists,
+                }"
+            >
+                <div class="items-holder">
+                    <div class="user-content-hover"></div>
+                    <svg-icon
+                        [ngClass]="{
+                            'user-content-logout': item.name === 'Logout',
+                            'user-content-status': item.name === 'User status',
+                        }"
+                        class="user-content-svg"
+                        [src]="
+                            item.name === 'User status'
+                                ? currentUserStatus === 'online'
+                                    ? 'assets/svg/common/' + item.image
+                                    : 'assets/svg/common/ic_verify-check.svg'
+                                : 'assets/svg/common/' + item.image
+                        "
+                    ></svg-icon>
+                    <p
+                        *ngIf="item.name !== 'User status'"
+                        class="user-content-text"
+                        [ngClass]="{
+                            'user-content-logout': item.name === 'Logout',
+                        }"
+                    >
+                        {{ item.name }}
+                    </p>
+                    <p
+                        *ngIf="
+                            item.name === 'User status' &&
+                            currentUserStatus === 'online'
+                        "
+                        class="user-content-text user-content-text-status"
+                    >
+                        Set Busy Status
+                    </p>
+                    <p
+                        *ngIf="
+                            item.name === 'User status' &&
+                            currentUserStatus === 'busy'
+                        "
+                        class="user-content-text user-content-text-status"
+                    >
+                        Set Active Status
+                    </p>
+                </div>
             </div>
-        </div>
+        }
     </div>
 
     <div class="panel-user" (click)="onUserPanelClose()">
@@ -107,7 +112,7 @@
                 *ngIf="currentUserStatus"
                 class="status-marker-container"
                 [ngClass]="{
-                    'status-nav-closed': !isNavigationHovered
+                    'status-nav-closed': !isNavigationHovered,
                 }"
             >
                 <div
@@ -116,16 +121,18 @@
                         'status-online': currentUserStatus === 'online',
                         'status-away': currentUserStatus === 'away',
                         'status-busy': currentUserStatus === 'busy',
-                        'status-offline': currentUserStatus === 'offline'
+                        'status-offline': currentUserStatus === 'offline',
                     }"
                     class="status-marker"
                 >
-                <ng-container *ngIf="isNavigationHovered; else whitePanel">
-                    <svg-icon src="assets/svg/applicant/user-active.svg"> </svg-icon>
-                </ng-container>
-                <ng-template #whitePanel>
-                    <svg-icon src="assets/svg/user-active-white.svg"> </svg-icon>
-                </ng-template>
+                    <ng-container *ngIf="isNavigationHovered; else whitePanel">
+                        <svg-icon src="assets/svg/applicant/user-active.svg">
+                        </svg-icon>
+                    </ng-container>
+                    <ng-template #whitePanel>
+                        <svg-icon src="assets/svg/user-active-white.svg">
+                        </svg-icon>
+                    </ng-template>
                 </div>
             </div>
         </div>

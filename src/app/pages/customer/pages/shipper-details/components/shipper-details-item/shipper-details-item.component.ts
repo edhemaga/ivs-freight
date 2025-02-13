@@ -72,7 +72,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
         return item.id;
     }
 
-    public getReviews(reviewsData: ShipperResponse) {
+    public getReviews(reviewsData: ShipperResponse): void {
         this.reviewsRepair = reviewsData.ratingReviews.map((item) => {
             return {
                 ...item,
@@ -89,17 +89,14 @@ export class ShipperDetailsItemComponent implements OnChanges {
     }
     public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case EGeneralActions.DELETE: {
+            case EGeneralActions.DELETE:
                 this.deleteReview(reviews);
                 break;
-            }
-            case EGeneralActions.UPDATE: {
+            case EGeneralActions.UPDATE:
                 this.updateReview(reviews);
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 

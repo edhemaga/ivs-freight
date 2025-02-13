@@ -193,11 +193,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
                 this.setModalSpinner(TaModalActionEnum.SAVE, false);
 
-                if (this.editData) {
-                    this.updateCompanyAccount(this.editData.id);
-                } else {
-                    this.addCompanyAccount();
-                }
+                if (this.editData) this.updateCompanyAccount(this.editData.id);
+                else this.addCompanyAccount();
+
                 break;
 
             case TaModalActionEnum.DELETE:
@@ -230,11 +228,9 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                         return { ...item, dropLabel: true };
                     });
 
-                    if (this.editData) {
+                    if (this.editData)
                         this.editCompanyAccount(this.editData.id);
-                    } else {
-                        this.startFormChanges();
-                    }
+                    else this.startFormChanges();
                 },
             });
     }
@@ -247,7 +243,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                 next: (res: Array<AccountColorResponse>) => {
                     this.colors = res;
                 },
-                error: () => {},
             });
     }
 
@@ -270,7 +265,6 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     this.selectedAccountLabel = res.companyAccountLabel;
                     this.startFormChanges();
                 },
-                error: () => {},
             });
     }
 
@@ -295,9 +289,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                         });
 
                         this.addNewAfterSave = false;
-                    } else {
-                        this.setModalSpinner(null, true);
-                    }
+                    } else this.setModalSpinner(null, true);
                 },
                 error: () => {
                     this.setModalSpinner(null, false);
@@ -345,7 +337,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public onSaveLabel(data: { data: any; action: string }) {
         switch (data.action) {
-            case EGeneralActions.EDIT: {
+            case EGeneralActions.EDIT:
                 this.selectedAccountLabel = data.data;
                 this.accountService
                     .updateCompanyAccountLabel({
@@ -366,8 +358,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                         error: () => {},
                     });
                 break;
-            }
-            case 'new': {
+            case 'new':
                 this.selectedAccountLabel = {
                     id: data.data.id,
                     name: data.data.name,
@@ -411,10 +402,8 @@ export class AccountModalComponent implements OnInit, OnDestroy {
                     });
 
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 

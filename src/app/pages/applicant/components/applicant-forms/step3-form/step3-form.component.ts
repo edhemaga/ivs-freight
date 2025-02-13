@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
@@ -47,6 +45,11 @@ import {
 // enums
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import {
+    EFileFormControls,
+    EGeneralActions,
+    EStringPlaceholder,
+} from '@shared/enums';
 
 // routes
 import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
@@ -75,7 +78,6 @@ import { SharedModule } from '@shared/shared.module';
 
 // configs
 import { Step3Config } from '@pages/applicant/pages/applicant-application/components/step3/config/step3.config';
-import { EFileFormControls, EGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-step3-form',
@@ -283,9 +285,9 @@ export class Step3FormComponent
                     if (
                         this.documentsForDeleteIds.length &&
                         this.documentsForDeleteIds[0]
-                    ) {
+                    )
                         res.filesForDeleteIds = this.documentsForDeleteIds;
-                    }
+
                     this.lastFormValuesEmitter.emit(res);
                 });
         }
@@ -326,7 +328,7 @@ export class Step3FormComponent
         if (
             changes.formValuesToPatch?.previousValue !==
             changes.formValuesToPatch?.currentValue
-        ) {
+        )
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
@@ -334,7 +336,6 @@ export class Step3FormComponent
                     this.startValueChangesMonitoring();
                 }
             }, 50);
-        }
     }
 
     private createForm(): void {
@@ -418,19 +419,14 @@ export class Step3FormComponent
         });
 
         setTimeout(() => {
-            if (formValue.country?.toLowerCase() === 'us') {
+            if (formValue.country?.toLowerCase() === 'us')
                 this.stateTypes = this.usStates;
-            } else {
-                this.stateTypes = this.canadaStates;
-            }
+            else this.stateTypes = this.canadaStates;
 
-            if (formValue?.documents) {
-                this.documents = formValue?.documents;
-            }
+            if (formValue?.documents) this.documents = formValue?.documents;
 
-            if (formValue?.filesForDeleteIds) {
+            if (formValue?.filesForDeleteIds)
                 this.documentsForDeleteIds = formValue.filesForDeleteIds;
-            }
 
             this.selectedCountryType = this.countryTypes.find(
                 (item) => item.name === formValue?.country
@@ -454,8 +450,14 @@ export class Step3FormComponent
                 return {
                     ...item,
                     name: item.code
-                        .concat(' ', '-')
-                        .concat(' ', item.description),
+                        .concat(
+                            EStringPlaceholder.WHITESPACE,
+                            EStringPlaceholder.DASH
+                        )
+                        .concat(
+                            EStringPlaceholder.WHITESPACE,
+                            item.description
+                        ),
                 };
             });
 
@@ -463,8 +465,14 @@ export class Step3FormComponent
                 return {
                     ...item,
                     name: item.code
-                        .concat(' ', '-')
-                        .concat(' ', item.description),
+                        .concat(
+                            EStringPlaceholder.WHITESPACE,
+                            EStringPlaceholder.DASH
+                        )
+                        .concat(
+                            EStringPlaceholder.WHITESPACE,
+                            item.description
+                        ),
                 };
             });
         }, 50);
@@ -792,8 +800,14 @@ export class Step3FormComponent
                     return {
                         ...item,
                         name: item.code
-                            .concat(' ', '-')
-                            .concat(' ', item.description),
+                            .concat(
+                                EStringPlaceholder.WHITESPACE,
+                                EStringPlaceholder.DASH
+                            )
+                            .concat(
+                                EStringPlaceholder.WHITESPACE,
+                                item.description
+                            ),
                     };
                 });
 
@@ -801,8 +815,14 @@ export class Step3FormComponent
                     return {
                         ...item,
                         name: item.code
-                            .concat(' ', '-')
-                            .concat(' ', item.description),
+                            .concat(
+                                EStringPlaceholder.WHITESPACE,
+                                EStringPlaceholder.DASH
+                            )
+                            .concat(
+                                EStringPlaceholder.WHITESPACE,
+                                item.description
+                            ),
                     };
                 });
             });

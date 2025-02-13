@@ -93,16 +93,16 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onUserPanelClose() {
+    public onUserPanelClose(): void {
         this.navigationService.onDropdownActivation({
             name: 'User Panel',
             type: !this.isUserPanelOpen,
         });
     }
 
-    public onAction(data: NavigationUserPanel) {
+    public onAction(data: NavigationUserPanel): void {
         switch (data.action) {
-            case EGeneralActions.UPDATE: {
+            case EGeneralActions.UPDATE:
                 this.modalService.openModal(
                     NavigationProfileUpdateModalComponent,
                     {
@@ -110,36 +110,24 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                     }
                 );
                 break;
-            }
-            case 'status': {
-                this.changeMyStatus();
+            case 'status':
                 break;
-            }
-            case 'company': {
+            case 'company':
                 this.navigationService.onDropdownActivation({
                     name: 'User Company Details',
                     type: true,
                 });
                 break;
-            }
-            case 'help': {
+            case 'help':
                 break;
-            }
-            case 'logout': {
+            case 'logout':
                 localStorage.clear();
                 this.websiteAuthService.accountLogout();
                 break;
-            }
             default:
                 return;
         }
     }
-
-    public identity(_: number, item: NavigationUserPanel): number {
-        return item.id;
-    }
-
-    private changeMyStatus() {}
 
     ngOnDestroy(): void {
         this.destroy$.next();
