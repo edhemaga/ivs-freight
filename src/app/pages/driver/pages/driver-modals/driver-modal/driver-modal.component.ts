@@ -73,10 +73,12 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 import {
     CaInputAddressDropdownComponent,
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
     CaUploadFilesComponent,
+    InputTestComponent,
 } from 'ca-components';
 
 // enums
@@ -86,7 +88,10 @@ import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // constants
-import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants/driver-modal.constants';
+import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants';
+
+//config
+import { DriverModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-modal/utils/config';
 
 // models
 import {
@@ -163,15 +168,16 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
+        CaInputDatetimePickerComponent,
+        InputTestComponent,
 
         // Pipes
         FormatDatePipe,
     ],
 })
-export class DriverModalComponent 
-    extends AddressMixin(class { addressService!: AddressService; }) 
-    implements OnInit, OnDestroy 
-{
+export class DriverModalComponent
+    extends AddressMixin(class { addressService!: AddressService; })
+    implements OnInit, OnDestroy {
     @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
     @Input() editData: DriverModalEditData;
@@ -239,8 +245,10 @@ export class DriverModalComponent
 
     public isFileModified: boolean = false;
 
+    public uploadDocumentsFilesConfig = DriverModalUploadFilesConfig.DRIVER_MODAL_DOCUMENTS_UPLOAD_FILES_CONFIG;
+
     // logo
-    public uploadOptionsConstants = DriverModalConstants.UPLOAD_OPTIONS;
+    public uploadProfilePictureFilesConfig = DriverModalUploadFilesConfig.DRIVER_MODAL_PROFILE_PICTURE_UPLOAD_FILES_CONFIG;
 
     // payroll
     public payrollDefaultValues: PayrollDefaultValues;
@@ -857,7 +865,7 @@ export class DriverModalComponent
                 changeValidatorsAndPatch(
                     DriverModalStringEnum.COMMISSION_SOLO,
                     this.payrollDefaultValues[
-                        DriverModalStringEnum.COMMISSION_SOLO
+                    DriverModalStringEnum.COMMISSION_SOLO
                     ]
                 );
             }
@@ -866,7 +874,7 @@ export class DriverModalComponent
                 changeValidatorsAndPatch(
                     DriverModalStringEnum.COMMISSION_TEAM,
                     this.payrollDefaultValues[
-                        DriverModalStringEnum.COMMISSION_TEAM
+                    DriverModalStringEnum.COMMISSION_TEAM
                     ]
                 );
             }
@@ -1099,13 +1107,13 @@ export class DriverModalComponent
                 soloLoadedMile: dataSolo.loadedMile,
                 soloPerStop: dataSolo.perStop
                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                          dataSolo.perStop
-                      )
+                        dataSolo.perStop
+                    )
                     : null,
                 flatRateSolo: flatRateSolo
                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                          flatRateSolo
-                      )
+                        flatRateSolo
+                    )
                     : null,
                 perMileSolo,
                 ...(defaultSoloDriverCommission && {
@@ -1126,13 +1134,13 @@ export class DriverModalComponent
                     teamLoadedMile: dataTeam.loadedMile,
                     teamPerStop: dataTeam.perStop
                         ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                              dataTeam.perStop
-                          )
+                            dataTeam.perStop
+                        )
                         : null,
                     flatRateTeam: flatRateTeam
                         ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                              flatRateTeam
-                          )
+                            flatRateTeam
+                        )
                         : null,
                     perMileTeam,
                     ...(defaultTeamDriverCommission && {
@@ -1161,17 +1169,17 @@ export class DriverModalComponent
                 inputFields =
                     type === DriverModalStringEnum.SOLO
                         ? [
-                              DriverModalStringEnum.SOLO_EMPTY_MILE,
-                              DriverModalStringEnum.SOLO_LOADED_MILE,
-                              DriverModalStringEnum.PER_MILE_SOLO,
-                              DriverModalStringEnum.SOLO_PER_STOP,
-                          ]
+                            DriverModalStringEnum.SOLO_EMPTY_MILE,
+                            DriverModalStringEnum.SOLO_LOADED_MILE,
+                            DriverModalStringEnum.PER_MILE_SOLO,
+                            DriverModalStringEnum.SOLO_PER_STOP,
+                        ]
                         : [
-                              DriverModalStringEnum.TEAM_EMPTY_MILE,
-                              DriverModalStringEnum.TEAM_LOADED_MILE,
-                              DriverModalStringEnum.PER_MILE_TEAM,
-                              DriverModalStringEnum.TEAM_PER_STOP,
-                          ];
+                            DriverModalStringEnum.TEAM_EMPTY_MILE,
+                            DriverModalStringEnum.TEAM_LOADED_MILE,
+                            DriverModalStringEnum.PER_MILE_TEAM,
+                            DriverModalStringEnum.TEAM_PER_STOP,
+                        ];
 
                 options.inputField = this.hasMilesSameRate ? 10 : 0 || 1;
 
@@ -1408,119 +1416,119 @@ export class DriverModalComponent
                 ? 1
                 : !isOwner &&
                     payrollType === DriverModalStringEnum.THIRD_PARTY_DRIVER
-                  ? 2
-                  : null;
+                    ? 2
+                    : null;
 
         // solo empty mile
         const conditionalSoloEmptyMile =
             this.selectedPayType?.name === DriverModalStringEnum.PER_MILE &&
-            !this.hasMilesSameRate &&
-            soloEmptyMile
+                !this.hasMilesSameRate &&
+                soloEmptyMile
                 ? parseFloat(soloEmptyMile)
                 : null;
 
         // solo loaded mile
         const conditionalSoloLoadedMile =
             this.selectedPayType?.name === DriverModalStringEnum.PER_MILE &&
-            !this.hasMilesSameRate &&
-            soloLoadedMile
+                !this.hasMilesSameRate &&
+                soloLoadedMile
                 ? parseFloat(soloLoadedMile)
                 : null;
 
         // solo per stop
         const conditionalSoloPerStop =
             this.selectedPayType?.name === DriverModalStringEnum.PER_MILE &&
-            soloPerStop
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      soloPerStop
-                  )
+                soloPerStop
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    soloPerStop
+                )
                 : null;
 
         // solo per mile
         const conditionalPerMileSolo =
             this.selectedPayType?.name === DriverModalStringEnum.PER_MILE &&
-            this.hasMilesSameRate &&
-            perMileSolo
+                this.hasMilesSameRate &&
+                perMileSolo
                 ? parseFloat(perMileSolo)
                 : null;
 
         // team empty mile
         const conditionalTeamEmptyMile =
             this.selectedPayType?.name === DriverModalStringEnum.PER_MILE &&
-            !this.hasMilesSameRate &&
-            teamEmptyMile
+                !this.hasMilesSameRate &&
+                teamEmptyMile
                 ? parseFloat(teamEmptyMile)
                 : null;
 
         // team loaded mile
         const conditionalTeamLoadedMile =
             this.selectedPayType?.name === DriverModalStringEnum.PER_MILE &&
-            !this.hasMilesSameRate &&
-            teamLoadedMile
+                !this.hasMilesSameRate &&
+                teamLoadedMile
                 ? parseFloat(teamLoadedMile)
                 : null;
 
         // team per stop
         const conditionalTeamPerStop =
             this.selectedPayType?.name === DriverModalStringEnum.PER_MILE &&
-            teamPerStop
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      teamPerStop
-                  )
+                teamPerStop
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    teamPerStop
+                )
                 : null;
 
         // team per mile
         const conditionalPerMileTeam =
             this.selectedPayType?.name === DriverModalStringEnum.PER_MILE &&
-            this.hasMilesSameRate &&
-            perMileTeam
+                this.hasMilesSameRate &&
+                perMileTeam
                 ? parseFloat(perMileTeam)
                 : null;
 
         // commission solo
         const conditionalCommissionSolo =
             this.selectedPayType?.name === DriverModalStringEnum.COMMISSION &&
-            ((this.fleetType === DriverModalStringEnum.COMBINED &&
-                commissionSolo) ||
-                (this.fleetType === DriverModalStringEnum.SOLO &&
-                    driverCommission))
+                ((this.fleetType === DriverModalStringEnum.COMBINED &&
+                    commissionSolo) ||
+                    (this.fleetType === DriverModalStringEnum.SOLO &&
+                        driverCommission))
                 ? parseFloat(
-                      this.fleetType === DriverModalStringEnum.COMBINED
-                          ? commissionSolo
-                          : driverCommission
-                  )
+                    this.fleetType === DriverModalStringEnum.COMBINED
+                        ? commissionSolo
+                        : driverCommission
+                )
                 : null;
 
         // commission team
         const conditionalCommissionTeam =
             this.selectedPayType?.name === DriverModalStringEnum.COMMISSION &&
-            ((this.fleetType === DriverModalStringEnum.COMBINED &&
-                commissionTeam) ||
-                (this.fleetType === DriverModalStringEnum.TEAM &&
-                    driverCommission))
+                ((this.fleetType === DriverModalStringEnum.COMBINED &&
+                    commissionTeam) ||
+                    (this.fleetType === DriverModalStringEnum.TEAM &&
+                        driverCommission))
                 ? parseFloat(
-                      this.fleetType === DriverModalStringEnum.COMBINED
-                          ? commissionTeam
-                          : driverCommission
-                  )
+                    this.fleetType === DriverModalStringEnum.COMBINED
+                        ? commissionTeam
+                        : driverCommission
+                )
                 : null;
 
         // solo flat rate
         const conditionalFlatRateSolo =
             this.selectedPayType?.name === DriverModalStringEnum.FLAT_RATE &&
-            flatRateSolo
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      flatRateSolo
-                  )
+                flatRateSolo
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    flatRateSolo
+                )
                 : null;
 
         // team flat rate
         const conditionalFlatRateTeam =
             this.selectedPayType?.name === DriverModalStringEnum.FLAT_RATE &&
-            flatRateTeam
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      flatRateTeam
-                  )
+                flatRateTeam
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                    flatRateTeam
+                )
                 : null;
 
         // payroll shared
@@ -1578,8 +1586,8 @@ export class DriverModalComponent
         const conditionalOwnerType = !isOwner
             ? null
             : ownerType === DriverModalStringEnum.SOLE_PROPRIETOR
-              ? DriverModalStringEnum.PROPRIETOR
-              : DriverModalStringEnum.COMPANY;
+                ? DriverModalStringEnum.PROPRIETOR
+                : DriverModalStringEnum.COMPANY;
 
         // owner id
         const conditionalOwnerId =
@@ -1652,8 +1660,8 @@ export class DriverModalComponent
             perMileSolo,
             soloPerStop: solo?.perStop
                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                      solo?.perStop
-                  )
+                    solo?.perStop
+                )
                 : null,
             commissionSolo:
                 defaultSoloDriverCommission ??
@@ -1661,8 +1669,8 @@ export class DriverModalComponent
                     .value,
             flatRateSolo: flatRateSolo
                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                      flatRateSolo
-                  )
+                    flatRateSolo
+                )
                 : null,
 
             teamEmptyMile: team?.emptyMile,
@@ -1670,8 +1678,8 @@ export class DriverModalComponent
             perMileTeam,
             teamPerStop: team?.perStop
                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                      team?.perStop
-                  )
+                    team?.perStop
+                )
                 : null,
             commissionTeam:
                 defaultTeamDriverCommission ??
@@ -1679,8 +1687,8 @@ export class DriverModalComponent
                     .value,
             flatRateTeam: flatRateTeam
                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                      flatRateTeam
-                  )
+                    flatRateTeam
+                )
                 : null,
 
             mvrExpiration: mvrExpiration ?? 12,
@@ -2083,8 +2091,8 @@ export class DriverModalComponent
                 : solo.loadedMile,
             soloPerStop: solo?.perStop
                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                      solo?.perStop
-                  )
+                    solo?.perStop
+                )
                 : null,
             perMileSolo: solo?.perMile ? String(solo?.perMile) : solo?.perMile,
             teamEmptyMile: team?.emptyMile
@@ -2095,8 +2103,8 @@ export class DriverModalComponent
                 : team?.loadedMile,
             teamPerStop: team?.perStop
                 ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                      team?.perStop
-                  )
+                    team?.perStop
+                )
                 : null,
             perMileTeam: team?.perMile ? String(team?.perMile) : team?.perMile,
             commissionSolo: solo?.commission,
@@ -2105,8 +2113,8 @@ export class DriverModalComponent
                 this.fleetType === DriverModalStringEnum.SOLO
                     ? solo?.commission
                     : this.fleetType === DriverModalStringEnum.TEAM
-                      ? team?.commission
-                      : null,
+                        ? team?.commission
+                        : null,
             flatRateSolo: solo?.flatRate,
             flatRateTeam: team?.flatRate,
 

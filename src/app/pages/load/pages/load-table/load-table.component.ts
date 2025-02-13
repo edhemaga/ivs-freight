@@ -91,7 +91,7 @@ export class LoadTableComponent
 {
     @ViewChild('toolbarComponent') toolbarComponent: TaTableToolbarComponent;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
 

@@ -63,7 +63,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { CaInputAddressDropdownComponent } from 'ca-components';
+import { CaInputAddressDropdownComponent, CaInputDatetimePickerComponent } from 'ca-components';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
@@ -91,10 +91,15 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class SettingsInsurancePolicyModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     public destroy$ = new Subject<void>();
@@ -131,7 +136,7 @@ export class SettingsInsurancePolicyModalComponent
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,
         private formService: FormService,
-        public addressService: AddressService,
+        public addressService: AddressService
     ) {
         super();
     }
@@ -450,7 +455,6 @@ export class SettingsInsurancePolicyModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 
@@ -538,32 +542,32 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedCommericalRating.id
                       : null,
                   eachOccurrence: commericalOccurrence
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalOccurrence
                         )
                       : null,
                   damageToRentedPremises: commericalDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalDamage
                         )
                       : null,
                   personalAndAdvertisingInjury: commericalInj
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalInj
                         )
                       : null,
                   medicalExpanses: commericalMedical
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalMedical
                         )
                       : null,
                   generalAggregate: commericalGeneralAggregate
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalGeneralAggregate
                         )
                       : null,
                   productsCompOperAggregate: commericalProducts
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalProducts
                         )
                       : null,
@@ -579,22 +583,22 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedAutomobileRating.id
                       : null,
                   bodilyInjuryAccident: automobileAccident
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileAccident
                         )
                       : null,
                   bodilyInjuryPerson: automobileInjuryPerson
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileInjuryPerson
                         )
                       : null,
                   combinedSingleLimit: automobileLimit
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileLimit
                         )
                       : null,
                   propertyDamage: automobileDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileDamage
                         )
                       : null,
@@ -611,12 +615,12 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedMotorRating.id
                       : null,
                   singleConveyance: motorConveyance
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             motorConveyance
                         )
                       : null,
                   deductable: motorDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             motorDeductable
                         )
                       : null,
@@ -632,12 +636,12 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedPhysicalDamageRating.id
                       : null,
                   comprehensiveAndCollision: physicalCollision
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             physicalCollision
                         )
                       : null,
                   deductable: physicalDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             physicalDeductable
                         )
                       : null,
@@ -653,7 +657,7 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedTrailerRating.id
                       : null,
                   value: trailerValue
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             trailerValue
                         )
                       : null,
@@ -795,32 +799,32 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedCommericalRating.id
                       : null,
                   eachOccurrence: commericalOccurrence
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalOccurrence
                         )
                       : null,
                   damageToRentedPremises: commericalDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalDamage
                         )
                       : null,
                   personalAndAdvertisingInjury: commericalInj
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalInj
                         )
                       : null,
                   medicalExpanses: commericalMedical
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalMedical
                         )
                       : null,
                   generalAggregate: commericalGeneralAggregate
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalGeneralAggregate
                         )
                       : null,
                   productsCompOperAggregate: commericalProducts
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalProducts
                         )
                       : null,
@@ -837,22 +841,22 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedAutomobileRating.id
                       : null,
                   bodilyInjuryAccident: automobileAccident
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileAccident
                         )
                       : null,
                   bodilyInjuryPerson: automobileInjuryPerson
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileInjuryPerson
                         )
                       : null,
                   combinedSingleLimit: automobileLimit
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileLimit
                         )
                       : null,
                   propertyDamage: automobileDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileDamage
                         )
                       : null,
@@ -870,12 +874,12 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedMotorRating.id
                       : null,
                   singleConveyance: motorConveyance
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             motorConveyance
                         )
                       : null,
                   deductable: motorDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             motorDeductable
                         )
                       : null,
@@ -892,12 +896,12 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedPhysicalDamageRating.id
                       : null,
                   comprehensiveAndCollision: physicalCollision
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             physicalCollision
                         )
                       : null,
                   deductable: physicalDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             physicalDeductable
                         )
                       : null,
@@ -914,7 +918,7 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedTrailerRating.id
                       : null,
                   value: trailerValue
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             trailerValue
                         )
                       : null,

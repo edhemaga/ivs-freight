@@ -708,31 +708,19 @@ export class TaTableBodyComponent<
         }, 1000);
     }
 
-    // RAITING
-    onLike(row: any) {
-        this.detailsDataService.setNewData(row);
-        this.tableBodyActions.emit({
-            data: row,
-            type: 'raiting',
-            subType: 'like',
-        });
-    }
+    // RATING
+    public onLikeDislike(isLike: boolean, rowData: T): void {
+        const type = isLike
+            ? DropdownMenuStringEnum.RATING_LIKE_TYPE
+            : DropdownMenuStringEnum.RATING_DISLIKE_TYPE;
 
-    onDislike(row: any) {
-        this.detailsDataService.setNewData(row);
+        const emitEvent =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+                type,
+                rowData
+            );
 
-        this.tableBodyActions.emit({
-            data: row,
-            type: 'raiting',
-            subType: 'dislike',
-        });
-    }
-
-    onOpenReviews(row: any) {
-        this.bodyActions.emit({
-            data: row,
-            type: 'open-reviews',
-        });
+        this.tableBodyActions.emit(emitEvent);
     }
 
     // HIRE

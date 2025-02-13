@@ -56,8 +56,10 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import {
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
+    CaModalButtonComponent,
     CaModalComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -80,6 +82,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
+import { ModalButtonSize, ModalButtonType } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -115,6 +118,8 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
         CaInputComponent,
         CaInputDropdownComponent,
         TaAppTooltipV2Component,
+        CaInputDatetimePickerComponent,
+        CaModalButtonComponent,
 
         // Pipes
         FormatDatePipe,
@@ -180,6 +185,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public actionTypesEnum = ActionTypesEnum;
     public taModalActionEnum = TaModalActionEnum;
+    public activeAction: string;
+
+    public modalButtonType = ModalButtonType;
+    public modalButtonSize = ModalButtonSize;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -379,6 +388,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     );
                 }
             });
+
+        if (this.editData?.ownerData) {
+            this.trailerForm
+                .get(TrailerFormFieldEnum.COMPANY_OWNED)
+                .setValue(false);
+                this.onSelectDropdown(this.editData.ownerData, TableStringEnum.OWNER_3);
+        }
     }
 
     private updateOwnerIdValidators(
@@ -395,6 +411,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
+        this.activeAction = action;
         if (action === TaModalActionEnum.CLOSE) {
             if (this.editData?.canOpenModal) {
                 switch (this.editData?.key) {
@@ -554,7 +571,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 
@@ -591,17 +607,17 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 ? this.selectedReeferType.id
                 : null,
             emptyWeight: this.trailerForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('emptyWeight').value
                   )
                 : null,
             mileage: this.trailerForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('mileage').value
                   )
                 : null,
             volume: this.trailerForm.get('volume').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('volume').value
                   )
                 : null,
@@ -614,7 +630,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             purchasePrice: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchasePrice').value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
                           this.trailerForm.get('purchasePrice').value
                       )
                     : null
@@ -662,11 +678,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     }
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.activeAction = null;
                 },
             });
     }
@@ -717,17 +729,17 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             isLiftgate: this.trailerForm.get('isLiftgate').value ?? false,
             emptyWeight: this.trailerForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('emptyWeight').value
                   )
                 : null,
             mileage: this.trailerForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('mileage').value
                   )
                 : null,
             volume: this.trailerForm.get('volume').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('volume').value
                   )
                 : null,
@@ -740,7 +752,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             purchasePrice: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchasePrice').value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
                           this.trailerForm.get('purchasePrice').value
                       )
                     : null
@@ -754,18 +766,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+                    this.ngbActiveModal.close();
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.activeAction = null;
                 },
             });
     }
@@ -910,7 +914,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -1020,7 +1023,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                 this.loadingVinDecoder = false;
                                 this.selectedTrailerMake = res.trailerMake;
                             },
-                            error: () => {},
                         });
                 }
             });

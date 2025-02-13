@@ -50,7 +50,7 @@ export class OwnerCardComponent
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public _viewData: CardDetails[];
 

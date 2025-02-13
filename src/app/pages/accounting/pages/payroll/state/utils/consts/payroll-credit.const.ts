@@ -78,6 +78,7 @@ export class PayrollCreditConst {
         type: 'text',
         isDropdown: true,
         placeholderIcon: 'date',
+        
         isRequired: true,
         customClass: 'datetimeclass',
     };

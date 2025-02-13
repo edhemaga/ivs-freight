@@ -1,5 +1,7 @@
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
@@ -14,21 +16,27 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 
 // services
 import { ModalService } from '@shared/services/modal.service';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
 import {
+    CreateRatingCommand,
     PMTrailerUnitResponse,
     PMTruckUnitResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
 
 export abstract class DropdownMenuActionsBase {
+    protected destroy$: Subject<void>;
+
     // router
     protected router: Router;
 
     // services
     protected abstract modalService: ModalService;
+
+    protected reviewsRatingService: ReviewsRatingService;
 
     constructor() {}
 
@@ -92,6 +100,11 @@ export abstract class DropdownMenuActionsBase {
             case DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE:
             case DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE:
                 this.handleMoveAction(event, tableType);
+
+                break;
+            case DropdownMenuStringEnum.RATING_LIKE_TYPE:
+            case DropdownMenuStringEnum.RATING_DISLIKE_TYPE:
+                this.handleLikeDislikeAction(event);
 
                 break;
             default:
@@ -246,6 +259,19 @@ export abstract class DropdownMenuActionsBase {
                 template: tableType,
             }
         );
+    }
+
+    private handleLikeDislikeAction<T extends { rating?: CreateRatingCommand }>(
+        event: TableCardBodyActions<T>
+    ): void {
+        const {
+            data: { rating },
+        } = event;
+
+        this.reviewsRatingService
+            .addRating(rating)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     // protected abstract - dependency

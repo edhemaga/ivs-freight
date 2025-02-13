@@ -16,6 +16,7 @@ import { FormatDatePipe } from '@shared/pipes';
 // Components
 import {
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaModalComponent,
 } from 'ca-components';
@@ -77,6 +78,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         CaInputDropdownComponent,
         TaCheckboxComponent,
         TaAppTooltipV2Component,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         FormatDatePipe,
@@ -151,8 +153,6 @@ export class PayrollBaseModalComponent implements OnInit {
                 }
             }
         }
-
-        if (this.isBonusModal) this.getEmployeesDropdown();
     }
 
     private setupEventListeners(): void {
@@ -198,11 +198,11 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     private calculateDeductionPayAmmount(): void {
-        const ammount = MethodsCalculationsHelper.convertThousanSepInNumber(
+        const amount = MethodsCalculationsHelper.convertThousandSepInNumber(
             this.baseForm.get(PayrollStringEnum.AMOUNT).value
         );
         const numberOfPayments =
-            MethodsCalculationsHelper.convertThousanSepInNumber(
+            MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.baseForm.get(PayrollStringEnum.LIMITED_NUMBER).value
             );
 
@@ -210,13 +210,9 @@ export class PayrollBaseModalComponent implements OnInit {
             .get(PayrollStringEnum.LIMITED_AMOUNT)
             .patchValue(
                 MethodsCalculationsHelper.convertNumberInThousandSep(
-                    ammount / numberOfPayments
+                    Number((amount / numberOfPayments).toFixed(2))
                 ) ?? null
             );
-    }
-
-    private getEmployeesDropdown(): void {
-        this.payrollBonusService.getPayrollBonusModal().subscribe((res) => {});
     }
 
     private driverAndTruckDropdowns(): void {
@@ -229,7 +225,6 @@ export class PayrollBaseModalComponent implements OnInit {
                     this.mapTrucks(res.trucks);
                     this.populateData();
                 },
-                error: () => {},
             });
     }
 

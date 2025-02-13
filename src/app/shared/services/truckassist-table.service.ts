@@ -113,11 +113,6 @@ export class TruckassistTableService {
     public currentResetSelectedColumns =
         this.resetSelectedColumns.asObservable();
 
-    /* Switch Select  */
-    private toolBarSwitchActive = new BehaviorSubject<any>(null);
-    public currentSwitchOptionSelected =
-        this.toolBarSwitchActive.asObservable();
-
     /* Search  */
     private searchTableData = new BehaviorSubject<any>(null);
     public currentSearchTableData = this.searchTableData.asObservable();
@@ -202,11 +197,6 @@ export class TruckassistTableService {
     /* Send Chips For Highlight Search To Table */
     public sendChipsForHighlightSearchToTable(chip: string[]) {
         this.chipsForHighlightSearchToTable.next(chip);
-    }
-
-    /*  Switch Select  */
-    public sendCurrentSwitchOptionSelected(option: any) {
-        this.toolBarSwitchActive.next(option);
     }
 
     /* Reset Selected Columns  */
