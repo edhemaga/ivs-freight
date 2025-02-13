@@ -1,3 +1,9 @@
+@let areDropdownsDisabled = isFuelTransactionTable &&
+    fuelTransactionType?.id !==
+        fuelTransactionTypeEnum.Manual &&
+    fuelModalActionType ===
+        fuelDataOptionsStringEnum.EDIT;
+
 <form [formGroup]="modalTableForm" class="table-body">
     <div
         class="d-flex flex-column repair-bill-table-container"
@@ -16,14 +22,13 @@
                     class="align-items-center table-item"
                     [ngClass]="{
                         valid: repairBillItemRow.valid,
-                        'hide-delete-icon': isFuelTransactionTableSingleItem,
                     }"
                     [formGroupName]="i"
                 >
                     <div
                         class="d-flex justify-content-center align-items-center table-item-number"
                         [ngClass]="{
-                            'table-item-repair':
+                            'table-item-number-hover':
                             (isFuelTransactionTable &&
                                 fuelTransactionType?.id ===
                                     fuelTransactionTypeEnum.Manual) ||
@@ -35,25 +40,15 @@
                     >
                         <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
-                        @if (
-                            (isFuelTransactionTable &&
-                                fuelTransactionType?.id ===
-                                    fuelTransactionTypeEnum.Manual) ||
-                            (isFuelTransactionTable &&
-                                fuelModalActionType ===
-                                    fuelDataOptionsStringEnum.ADD) ||
-                            !isFuelTransactionTable
-                        ) {
-                            <svg-icon
-                                class="delete-icon"
-                                [src]="svgRoutes.deleteIcon"
-                                [svgStyle]="{
-                                    'width.px': 18,
-                                    'height.px': 18,
-                                }"
-                                (click)="emitDeleteFormArrayRowClick(i)"
-                            ></svg-icon>
-                        }
+                        <svg-icon
+                            class="delete-icon"
+                            [src]="svgRoutes.deleteIcon"
+                            [svgStyle]="{
+                                'width.px': 18,
+                                'height.px': 18,
+                            }"
+                            (click)="emitDeleteFormArrayRowClick(i)"
+                        ></svg-icon>
                     </div>
 
                     @if (!isFuelTransactionTable) {
@@ -133,12 +128,7 @@
                                 type: 'text',
                                 label: 'Item',
                                 isDropdown: true,
-                                isDisabled:
-                                    isFuelTransactionTable &&
-                                    fuelTransactionType?.id !==
-                                        fuelTransactionTypeEnum.Manual &&
-                                    fuelModalActionType ===
-                                        fuelDataOptionsStringEnum.EDIT,
+                                isDisabled: areDropdownsDisabled,
                                 placeholderInsteadOfLabel: true,
                                 blackInput: true,
                                 isRequired: true,
@@ -174,12 +164,7 @@
                             minLength: 5,
                             maxLength: 64,
                             isRequired: true,
-                            isDisabled:
-                                isFuelTransactionTable &&
-                                fuelTransactionType?.id !==
-                                    fuelTransactionTypeEnum.Manual &&
-                                fuelModalActionType ===
-                                    fuelDataOptionsStringEnum.EDIT,
+                            isDisabled: areDropdownsDisabled,
                             hideErrorMessage: true,
                             hideRequiredCheck: true,
                             priceSeparator: true,
@@ -211,12 +196,7 @@
                                 minLength: 5,
                                 maxLength: 64,
                                 isRequired: true,
-                                isDisabled:
-                                    isFuelTransactionTable &&
-                                    fuelTransactionType?.id !==
-                                        fuelTransactionTypeEnum.Manual &&
-                                    fuelModalActionType ===
-                                        fuelDataOptionsStringEnum.EDIT,
+                                isDisabled: areDropdownsDisabled,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 priceSeparator: true,

@@ -143,7 +143,7 @@
             margin-bottom: 4px;
 
             &:hover {
-                .table-item-number {
+                .table-item-number-hover {
                     p {
                         display: none;
                     }
@@ -190,7 +190,6 @@
                 }
             }
 
-            &-repair,
             &-number {
                 p {
                     font-size: 14px;
@@ -222,7 +221,7 @@
             }
 
             &.hide-delete-icon {
-                .table-item-number {
+                .table-item-number-hover {
                     p {
                         display: block !important;
                     }

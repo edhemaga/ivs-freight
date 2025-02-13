@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+} from '@angular/core';
 import {
     ReactiveFormsModule,
     UntypedFormArray,
@@ -36,6 +41,7 @@ import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg
         AngularSvgIconModule,
         ReactiveFormsModule,
 
+        // components
         CaInputDropdownComponent,
         CaInputComponent,
     ],
@@ -51,7 +57,7 @@ export class TaModalTableRepairComponent {
     @Input() isFuelTransactionTable: boolean;
     @Input() fuelItemsDropdown: EnumValue[];
     @Input() activeFuelItem: EnumValue[] = [];
-    @Input() fuelTransactionType: eFuelTransactionType;
+    @Input() fuelTransactionType: EnumValue;
     @Input() fuelModalActionType: FuelDataOptionsStringEnum;
 
     @Output() onSelectDropdown: EventEmitter<{
