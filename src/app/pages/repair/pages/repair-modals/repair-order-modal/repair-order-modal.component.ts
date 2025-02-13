@@ -1250,7 +1250,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
                 odometer: odometer
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
                           odometer
                       )
                     : null,
@@ -1501,7 +1501,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
                 odometer: odometer
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
                           odometer
                       )
                     : null,

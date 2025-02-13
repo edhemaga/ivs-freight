@@ -120,7 +120,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class UserModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnDestroy, OnInit
 {
     @Input() editData: any;
@@ -306,7 +310,6 @@ export class UserModalComponent
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => {},
             });
     }
 
@@ -408,7 +411,7 @@ export class UserModalComponent
                             ? this.selectedPayment.id
                             : null,
                         salary: salary
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
                                   salary
                               )
                             : null,
@@ -422,7 +425,7 @@ export class UserModalComponent
                             : false,
                         bankId: this.selectedBank ? this.selectedBank.id : null,
                         base: base
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
                                   base
                               )
                             : null,
@@ -682,7 +685,7 @@ export class UserModalComponent
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
             salary: salary
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(salary)
                 : null,
             startDate: startDate
                 ? MethodsCalculationsHelper.convertDateToBackend(startDate)
@@ -692,7 +695,7 @@ export class UserModalComponent
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
             base: base
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(base)
                 : null,
             commission: commission ? parseFloat(commission) : null,
         };
@@ -745,7 +748,7 @@ export class UserModalComponent
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
             salary: salary
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(salary)
                 : null,
             startDate: startDate
                 ? MethodsCalculationsHelper.convertDateToBackend(startDate)
@@ -755,7 +758,7 @@ export class UserModalComponent
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
             base: base
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(base)
                 : null,
             commission: commission ? parseFloat(commission) : null,
         };
@@ -781,7 +784,7 @@ export class UserModalComponent
             });
     }
 
-    private deleteUserById(id: number) {
+    private deleteUserById(id: number): void {
         this.companyUserService
             .deleteUserById(
                 id,
@@ -951,7 +954,6 @@ export class UserModalComponent
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -1115,7 +1117,6 @@ export class UserModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 
