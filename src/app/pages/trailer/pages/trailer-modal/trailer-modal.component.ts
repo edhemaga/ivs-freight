@@ -58,11 +58,11 @@ import {
     CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
-    CaModalButtonComponent,
     CaModalComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -100,8 +100,6 @@ import { FormatDatePipe } from '@shared/pipes';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { NullLogger } from '@microsoft/signalr';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -836,7 +834,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                             : null,
                         ownerId: res.companyOwned
                             ? null
-                            : (res.owner?.name ?? NullLogger),
+                            : (res.owner?.name ?? null),
                         suspension: res.suspension?.name ?? null,
                         tireSizeId: res.tireSize?.name ?? null,
                         doorType: res.doorType?.name ?? null,
