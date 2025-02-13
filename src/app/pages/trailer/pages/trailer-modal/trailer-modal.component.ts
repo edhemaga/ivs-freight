@@ -389,7 +389,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 }
             });
 
-        if (this.editData.ownerData) {
+        if (this.editData?.ownerData) {
             this.trailerForm
                 .get(TrailerFormFieldEnum.COMPANY_OWNED)
                 .setValue(false);

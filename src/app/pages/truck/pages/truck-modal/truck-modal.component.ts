@@ -449,9 +449,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 }
             });
 
-        if (this.editData.ownerData) {
+        if (this.editData?.ownerData) {
             this.truckForm.get(TruckModalForm.COMPANY_OWNED).setValue(false);
-            this.onSelectDropdown(this.editData.ownerData, TableStringEnum.OWNER_3);
+            this.onSelectDropdown(
+                this.editData.ownerData,
+                TableStringEnum.OWNER_3
+            );
         }
     }
 
