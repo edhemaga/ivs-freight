@@ -108,18 +108,18 @@ export class OwnerCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: OwnerResponse
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitEvent, DropdownMenuStringEnum.OWNER);
+        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.OWNER);
     }
 
     public handleShowMoreAction(): void {

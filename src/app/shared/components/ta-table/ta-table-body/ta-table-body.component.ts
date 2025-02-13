@@ -714,13 +714,13 @@ export class TaTableBodyComponent<
             ? DropdownMenuStringEnum.RATING_LIKE_TYPE
             : DropdownMenuStringEnum.RATING_DISLIKE_TYPE;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 rowData
             );
 
-        this.tableBodyActions.emit(emitEvent);
+        this.tableBodyActions.emit(emitAction);
     }
 
     // HIRE
@@ -776,18 +776,18 @@ export class TaTableBodyComponent<
 
     // Toggle Dropdown
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         rowData: T
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 rowData
             );
 
-        this.tableBodyActions.emit(emitEvent);
+        this.tableBodyActions.emit(emitAction);
     }
 
     toggleDropdown(tooltip: NgbTooltip, row: any) {
@@ -1150,13 +1150,13 @@ export class TaTableBodyComponent<
 
     // Finish Order
     public onFinishOrder(rowData: T): void {
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 DropdownMenuStringEnum.FINISH_ORDER_TYPE,
                 rowData
             );
 
-        this.tableBodyActions.emit(emitEvent);
+        this.tableBodyActions.emit(emitAction);
     }
 
     // Contacts dropdown actions

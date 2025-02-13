@@ -30,10 +30,10 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
     }
 
     protected handleDropdownMenuActions<T extends RepairResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        const { id, type } = event;
+        const { id, type } = action;
 
         switch (type) {
             case DropdownMenuStringEnum.ALL_BILLS_TYPE:
@@ -42,7 +42,7 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
                 break;
             case DropdownMenuStringEnum.FINISH_ORDER_TYPE:
             case DropdownMenuStringEnum.WRITE_REVIEW_TYPE:
-                this.handleConvertedToEditTypeAction(event, tableType);
+                this.handleConvertedToEditTypeAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.ALL_ORDERS_TYPE:
@@ -56,17 +56,17 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
                 break;
             case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
             case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
-                this.handleRepairShopOpenCloseBusinessAction(event, tableType);
+                this.handleRepairShopOpenCloseBusinessAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.RATING_LIKE_TYPE:
             case DropdownMenuStringEnum.RATING_DISLIKE_TYPE:
-                this.handleRepairShopLikeDislikeAction(event, tableType);
+                this.handleRepairShopLikeDislikeAction(action, tableType);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
@@ -75,23 +75,23 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
     private handleAllBillsAction(): void {}
 
     private handleConvertedToEditTypeAction<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        const { type } = event;
+        const { type } = action;
 
         const additionalProperties =
             DropdownMenuActionsHelper.createEditActionModalAdditionalProperties(
                 type
             );
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             type: DropdownMenuStringEnum.EDIT_TYPE,
             ...additionalProperties,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleAllOrdersAction(): void {}
@@ -109,13 +109,13 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
 
     private handleRepairShopOpenCloseBusinessAction<
         T extends RepairShopResponse,
-    >(event: TableCardBodyActions<T>, tableType: string): void {
+    >(action: TableCardBodyActions<T>, tableType: string): void {
         const {
             data: { name, address },
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             template: TableStringEnum.INFO,
             subType: TableStringEnum.REPAIR_SHOP,
             subTypeStatus: TableStringEnum.BUSINESS,
@@ -124,14 +124,14 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
             modalSecondTitle: address.address,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleRepairShopLikeDislikeAction<T extends RepairShopResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        const { id, type, data } = event;
+        const { id, type, data } = action;
 
         const thumb = type === DropdownMenuStringEnum.RATING_LIKE_TYPE ? 1 : -1;
 
@@ -142,11 +142,11 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
             tableData: data,
         };
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             rating,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 }

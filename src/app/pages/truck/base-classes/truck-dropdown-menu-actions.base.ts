@@ -14,45 +14,45 @@ export abstract class TruckDropdownMenuActionsBase extends DropdownMenuActionsBa
     }
 
     protected handleDropdownMenuActions<T extends TruckMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const { type } = event;
+        const { type } = action;
 
-        const tabSelected = event.data?.status
+        const tabSelected = action.data?.status
             ? TableStringEnum.ACTIVE
             : TableStringEnum.INACTIVE;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_TYPE:
-                this.handleTruckEditAction(event, tableType, tabSelected);
+                this.handleTruckEditAction(action, tableType, tabSelected);
 
                 break;
             case DropdownMenuStringEnum.REGISTRATION_TYPE:
             case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
             case DropdownMenuStringEnum.TITLE_TYPE:
-                this.handleTruckAddActions(event, tableType, tabSelected);
+                this.handleTruckAddActions(action, tableType, tabSelected);
 
                 break;
             case DropdownMenuStringEnum.ACTIVATE_TYPE:
             case DropdownMenuStringEnum.DEACTIVATE_TYPE:
-                this.handleTruckActivateDeactivateAction(event, tableType);
+                this.handleTruckActivateDeactivateAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleTruckDeleteAction(event, tableType);
+                this.handleTruckDeleteAction(action, tableType);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
     }
 
     private handleTruckEditAction<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string,
         tabSelected: string
     ): void {
@@ -61,16 +61,16 @@ export abstract class TruckDropdownMenuActionsBase extends DropdownMenuActionsBa
             tabSelected,
         };
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             ...additionalProperties,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleTruckAddActions<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string,
         tabSelected: string
     ): void {
@@ -79,27 +79,27 @@ export abstract class TruckDropdownMenuActionsBase extends DropdownMenuActionsBa
             tabSelected,
         };
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             ...additionalProperties,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleTruckActivateDeactivateAction<T extends TruckMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { truckNumber, tableVin, truckTypeIcon },
             type,
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data: {
-                ...event.data,
+                ...action.data,
                 number: truckNumber,
                 vin: tableVin.boldText + tableVin.regularText,
                 avatarFile: {
@@ -115,21 +115,21 @@ export abstract class TruckDropdownMenuActionsBase extends DropdownMenuActionsBa
             svg: true,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleTruckDeleteAction<T extends TruckMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { truckNumber, tableVin, truckTypeIcon },
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data: {
-                ...event.data,
+                ...action.data,
                 number: truckNumber,
                 vin: tableVin.boldText + tableVin.regularText,
                 avatarImg: `/assets/svg/common/trucks/${truckTypeIcon}`,
@@ -137,6 +137,6 @@ export abstract class TruckDropdownMenuActionsBase extends DropdownMenuActionsBa
             svg: true,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 }

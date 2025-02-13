@@ -40,19 +40,19 @@ import {
 import { PMTrailerUnitResponse, PMTruckUnitResponse } from 'appcoretruckassist';
 
 export class DropdownMenuActionsHelper {
-    static createDropdownMenuActionsEmitEvent<T extends { id?: number }>(
+    static createDropdownMenuActionsEmitAction<T extends { id?: number }>(
         type: string,
         data: T
     ): TableCardBodyActions<T> {
         const { id } = data;
 
-        const emitEvent = {
+        const emitAction = {
             type,
             id,
             data,
         };
 
-        return emitEvent;
+        return emitAction;
     }
 
     static createEditActionModalAdditionalProperties(

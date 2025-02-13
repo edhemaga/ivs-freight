@@ -124,18 +124,18 @@ export class CustomerCardComponent
     }
 
     public handleToggleDropdownMenuActions<T extends MappedShipperBroker>(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: T
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitEvent, this._selectedTab);
+        this.handleDropdownMenuActions(emitAction, this._selectedTab);
     }
 
     public handleShowMoreAction(): void {}

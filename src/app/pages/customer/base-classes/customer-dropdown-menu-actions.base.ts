@@ -26,10 +26,10 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
     }
 
     protected handleDropdownMenuActions<T extends MappedShipperBroker>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         selectedTab: string
     ) {
-        const { type } = event;
+        const { type } = action;
 
         const tableType =
             selectedTab === DropdownMenuStringEnum.ACTIVE
@@ -40,7 +40,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             case DropdownMenuStringEnum.EDIT_TYPE:
             case DropdownMenuStringEnum.ADD_CONTACT_TYPE:
             case DropdownMenuStringEnum.WRITE_REVIEW_TYPE:
-                this.handleShipperBrokerEditAction(event, tableType);
+                this.handleShipperBrokerEditAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.CREATE_LOAD_TYPE:
@@ -51,33 +51,33 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             case DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE:
             case DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE:
             case DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE:
-                this.handleBrokerMoveActions(event, tableType);
+                this.handleBrokerMoveActions(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
             case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
-                this.handleShipperBrokerCloseBusinessActions(event, tableType);
+                this.handleShipperBrokerCloseBusinessActions(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleShipperBrokerDeleteAction(event, tableType);
+                this.handleShipperBrokerDeleteAction(action, tableType);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
     }
 
     private handleShipperBrokerEditAction<T extends MappedShipperBroker>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const { type } = event;
+        const { type } = action;
 
-        this.detailsDataService.setNewData(event.data);
+        this.detailsDataService.setNewData(action.data);
 
         const openedTab =
             type === DropdownMenuStringEnum.ADD_CONTACT_TYPE
@@ -86,8 +86,8 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
                   ? DropdownMenuStringEnum.REVIEW
                   : DropdownMenuStringEnum.BASIC;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             type: DropdownMenuStringEnum.EDIT_TYPE,
             ...(tableType === DropdownMenuStringEnum.BROKER && {
                 dnuButton: true,
@@ -97,11 +97,11 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             openedTab,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleBrokerMoveActions<T extends MappedShipperBroker>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
         const {
@@ -110,7 +110,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
                 mainAddress: { address },
             },
             type,
-        } = event;
+        } = action;
 
         const subType =
             type === DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
@@ -128,8 +128,8 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
                 ? DropdownMenuStringEnum.MOVE
                 : DropdownMenuStringEnum.REMOVE;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             subType,
             tableType,
             modalTitle,
@@ -140,7 +140,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             ConfirmationMoveModalComponent,
             { size: DropdownMenuStringEnum.SMALL },
             {
-                ...adjustedEvent,
+                ...adjustedAction,
                 type: modalType,
                 template: tableType,
             }
@@ -153,10 +153,10 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
 
     private handleShipperBrokerCloseBusinessActions<
         T extends MappedShipperBroker,
-    >(event: TableCardBodyActions<T>, tableType: string) {
+    >(action: TableCardBodyActions<T>, tableType: string) {
         const {
             data: { businessName },
-        } = event;
+        } = action;
 
         const subType =
             tableType === DropdownMenuStringEnum.SHIPPER
@@ -167,10 +167,10 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             typeof businessName === 'string' ? businessName : businessName.name;
 
         const modalSecondTitle =
-            event.data?.mainAddress?.address ?? event.data?.address?.address;
+        action.data?.mainAddress?.address ?? action.data?.address?.address;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             template: DropdownMenuStringEnum.INFO,
             subType,
             subTypeStatus: DropdownMenuStringEnum.BUSINESS,
@@ -179,11 +179,11 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             modalSecondTitle,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleShipperBrokerDeleteAction<T extends MappedShipperBroker>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
         const modalHeaderTitle =
@@ -191,12 +191,12 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
                 ? ConfirmationModalStringEnum.DELETE_SHIPPER
                 : ConfirmationModalStringEnum.DELETE_BROKER;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             svg: true,
             modalHeaderTitle,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 }

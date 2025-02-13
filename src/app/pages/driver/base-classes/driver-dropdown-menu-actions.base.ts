@@ -27,60 +27,60 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
     }
 
     protected handleDropdownMenuActions<T extends DriverMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const { type } = event;
+        const { type } = action;
 
-        const tabSelected = event.data?.status
+        const tabSelected = action.data?.status
             ? TableStringEnum.ACTIVE
             : TableStringEnum.INACTIVE;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_TYPE:
-                this.handleDriverEditAction(event, tableType);
+                this.handleDriverEditAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.CDL_TYPE:
             case DropdownMenuStringEnum.TEST_TYPE:
             case DropdownMenuStringEnum.MEDICAL_EXAM_TYPE:
             case DropdownMenuStringEnum.MVR_TYPE:
-                this.handleDriverAddActions(event, tabSelected);
+                this.handleDriverAddActions(action, tabSelected);
 
                 break;
             case DropdownMenuStringEnum.ACTIVATE_TYPE:
             case DropdownMenuStringEnum.DEACTIVATE_TYPE:
-                this.handleDriverActivateDeactivateAction(event, tableType);
+                this.handleDriverActivateDeactivateAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleDriverDeleteAction(event, tableType);
+                this.handleDriverDeleteAction(action, tableType);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
     }
 
     private handleDriverEditAction<T extends DriverMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
         const {
             id,
             data: { avatarImg, avatarColor, textShortName, fullName, tableDOB },
             type,
-        } = event;
+        } = action;
 
         this.driverService
             .getDriverById(id)
             .pipe(
                 takeUntil(this.destroy$),
                 tap((driver) => {
-                    const adjustedEvent = {
+                    const adjustedAction = {
                         data: {
                             ...driver,
                             avatarImg,
@@ -96,7 +96,7 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
                     };
 
                     super.handleSharedDropdownMenuActions(
-                        adjustedEvent,
+                        adjustedAction,
                         tableType
                     );
                 })
@@ -105,10 +105,10 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
     }
 
     private handleDriverAddActions<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tabSelected: string
     ) {
-        const { type } = event;
+        const { type } = action;
 
         const addAdditionalModalComponent =
             DropdownMenuActionsHelper.getAddDriverAdditionalModalComponent(
@@ -118,23 +118,23 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
         this.modalService.openModal(
             addAdditionalModalComponent,
             { size: DropdownMenuStringEnum.SMALL },
-            { ...event, tableActiveTab: tabSelected }
+            { ...action, tableActiveTab: tabSelected }
         );
     }
 
     private handleDriverActivateDeactivateAction<T extends DriverMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { fullName },
             type,
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data: {
-                ...event.data,
+                ...action.data,
                 name: fullName,
             },
             template: TableStringEnum.DRIVER_1,
@@ -143,22 +143,22 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
             tableType,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleDriverDeleteAction<T extends DriverMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { fullName },
             type,
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data: {
-                ...event.data,
+                ...action.data,
                 name: fullName,
             },
             template: DropdownMenuStringEnum.DRIVER,
@@ -166,6 +166,6 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
             image: true,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 }

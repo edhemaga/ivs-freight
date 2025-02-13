@@ -40,10 +40,10 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
     }
 
     protected handleDropdownMenuActions<T extends AccountResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        const { id, data, type } = event;
+        const { id, data, type } = action;
 
         switch (type) {
             case DropdownMenuStringEnum.GO_TO_LINK_TYPE:
@@ -76,7 +76,7 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
