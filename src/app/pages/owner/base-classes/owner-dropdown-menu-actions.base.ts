@@ -21,12 +21,12 @@ export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBa
         event: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const { type } = event;
+        const { type, data } = event;
 
         switch (type) {
             case DropdownMenuStringEnum.ADD_TRUCK_TYPE:
             case DropdownMenuStringEnum.ADD_TRAILER_TYPE:
-                this.handleAddTruckTrailerAction(type);
+                this.handleAddTruckTrailerAction(type, data);
 
                 break;
             default:
@@ -37,15 +37,24 @@ export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBa
         }
     }
 
-    private handleAddTruckTrailerAction(type: string): void {
+    private handleAddTruckTrailerAction(
+        type: string,
+        ownerData: OwnerResponse
+    ): void {
         const addTruckTrailerModalComponent =
             type === DropdownMenuStringEnum.ADD_TRUCK_TYPE
                 ? TruckModalComponent
                 : TrailerModalComponent;
 
-        this.modalService.openModal(addTruckTrailerModalComponent, {
-            size: TableStringEnum.SMALL,
-        });
+        this.modalService.openModal(
+            addTruckTrailerModalComponent,
+            {
+                size: TableStringEnum.SMALL,
+            },
+            {
+                ownerData
+            }
+        );
     }
 }
 

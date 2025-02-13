@@ -2825,7 +2825,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 const paymentTotals = value.reduce(
                     (acc, val) => {
                         const pay = val.pay
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
                                   val.pay as string
                               )
                             : 0;
@@ -4594,7 +4594,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.additionalPayments().value.map((payments) => {
             return {
                 ...payments,
-                pay: MethodsCalculationsHelper.convertThousanSepInNumber(
+                pay: MethodsCalculationsHelper.convertThousandSepInNumber(
                     payments.pay
                 ),
                 payDate: MethodsCalculationsHelper.convertDateToBackend(
@@ -4614,7 +4614,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 paymentType: this.orginalPaymentTypesDropdownList.find(
                     (pay) => pay.id === payments.paymentType
                 ),
-                pay: MethodsCalculationsHelper.convertThousanSepInNumber(
+                pay: MethodsCalculationsHelper.convertThousandSepInNumber(
                     payments.pay
                 ),
                 payDate: MethodsCalculationsHelper.convertDateToBackend(
@@ -4745,7 +4745,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
     private convertNumbers(value: string): number {
         return value
-            ? MethodsCalculationsHelper.convertThousanSepInNumber(value)
+            ? MethodsCalculationsHelper.convertThousandSepInNumber(value)
             : null;
     }
 

@@ -1,4 +1,4 @@
-export enum SettingsModalEnum {
+export enum ESettingsModalEnum {
     NEW_DIVISION = 'new-division',
     EDIT_DIVISION = 'edit-division',
     EDIT_COMPANY = 'edit-company',
@@ -22,6 +22,7 @@ export enum SettingsModalEnum {
     TRUCK_INSPECTION_MONTHS = 'truckInspectionMonths',
     TRAILER_INSPECTION_MONTHS = 'trailerInspectionMonths',
     SOLO = 'Solo',
+    COMBINED = 'Combined',
     WEEKLY = 'Weekly',
     MONDAY = 'Monday',
     EMAIL = 'email',

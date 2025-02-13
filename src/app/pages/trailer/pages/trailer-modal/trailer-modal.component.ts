@@ -119,6 +119,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
         CaInputDropdownComponent,
         TaAppTooltipV2Component,
         CaInputDatetimePickerComponent,
+        CaModalButtonComponent,
 
         // Pipes
         FormatDatePipe,
@@ -387,6 +388,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     );
                 }
             });
+
+        if (this.editData?.ownerData) {
+            this.trailerForm
+                .get(TrailerFormFieldEnum.COMPANY_OWNED)
+                .setValue(false);
+                this.onSelectDropdown(this.editData.ownerData, TableStringEnum.OWNER_3);
+        }
     }
 
     private updateOwnerIdValidators(
@@ -563,7 +571,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 
@@ -600,17 +607,17 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 ? this.selectedReeferType.id
                 : null,
             emptyWeight: this.trailerForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('emptyWeight').value
                   )
                 : null,
             mileage: this.trailerForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('mileage').value
                   )
                 : null,
             volume: this.trailerForm.get('volume').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('volume').value
                   )
                 : null,
@@ -623,7 +630,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             purchasePrice: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchasePrice').value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
                           this.trailerForm.get('purchasePrice').value
                       )
                     : null
@@ -722,17 +729,17 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             isLiftgate: this.trailerForm.get('isLiftgate').value ?? false,
             emptyWeight: this.trailerForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('emptyWeight').value
                   )
                 : null,
             mileage: this.trailerForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('mileage').value
                   )
                 : null,
             volume: this.trailerForm.get('volume').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.trailerForm.get('volume').value
                   )
                 : null,
@@ -745,7 +752,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 : null,
             purchasePrice: this.trailerForm.get('companyOwned').value
                 ? this.trailerForm.get('purchasePrice').value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
                           this.trailerForm.get('purchasePrice').value
                       )
                     : null
@@ -907,7 +914,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -1017,7 +1023,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                 this.loadingVinDecoder = false;
                                 this.selectedTrailerMake = res.trailerMake;
                             },
-                            error: () => {},
                         });
                 }
             });
