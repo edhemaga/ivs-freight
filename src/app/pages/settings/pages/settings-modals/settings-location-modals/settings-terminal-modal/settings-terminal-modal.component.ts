@@ -118,7 +118,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsTerminalModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     @Input() editData: any;
@@ -479,7 +483,7 @@ export class SettingsTerminalModalComponent
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
@@ -531,7 +535,7 @@ export class SettingsTerminalModalComponent
             ...form,
             address: { ...this.selectedAddress, addressUnit: addressUnit },
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
@@ -705,7 +709,6 @@ export class SettingsTerminalModalComponent
                         this.startFormChanges();
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -725,7 +728,6 @@ export class SettingsTerminalModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 

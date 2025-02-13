@@ -905,7 +905,6 @@ export class RepairShopModalComponent
 
                     this.banks = [...this.banks, this.selectedBank];
                 },
-                error: () => {},
             });
     }
 
@@ -1107,7 +1106,7 @@ export class RepairShopModalComponent
             rent: !this.getFromFieldValue(
                 RepairShopModalStringEnum.COMPANY_OWNED
             )
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.getFromFieldValue(RepairShopModalStringEnum.RENT)
                   )
                 : null,
@@ -1367,7 +1366,6 @@ export class RepairShopModalComponent
 
                     this.isOneMoreReviewDisabled = true;
                 },
-                error: () => {},
             });
     }
 

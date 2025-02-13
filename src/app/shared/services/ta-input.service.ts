@@ -15,7 +15,7 @@ import { NotificationService } from '@shared/services/notification.service';
     providedIn: 'root',
 })
 export class TaInputService {
-    constructor(public notificationService: NotificationService) {}
+    constructor(public notificationService: NotificationService) { }
 
     /**
      * @param formGroup FormGroup - The form group to touch
@@ -178,19 +178,16 @@ export class TaInputService {
         }
         // Reset validation
         else {
-            if (formControl && formControl.hasValidator(Validators.required)) {
+            if (formControl && formControl.hasValidator(Validators.required))
                 formControl.clearValidators();
-            }
 
-            if (reset && formControl) {
+            if (reset && formControl)
                 formControl.reset();
-            }
         }
 
         // Update Validity
-        if (formControl) {
+        if (formControl)
             formControl.updateValueAndValidity();
-        }
     }
 
     /**
