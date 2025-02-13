@@ -119,6 +119,7 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
         CaInputDropdownComponent,
         TaAppTooltipV2Component,
         CaInputDatetimePickerComponent,
+        CaModalButtonComponent,
 
         // Pipes
         FormatDatePipe,
@@ -387,6 +388,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     );
                 }
             });
+
+        if (this.editData.ownerData) {
+            this.trailerForm
+                .get(TrailerFormFieldEnum.COMPANY_OWNED)
+                .setValue(false);
+                this.onSelectDropdown(this.editData.ownerData, TableStringEnum.OWNER_3);
+        }
     }
 
     private updateOwnerIdValidators(
