@@ -95,13 +95,6 @@ export abstract class DropdownMenuActionsBase {
                 this.handleTruckTrailerAddActions(event);
 
                 break;
-            case DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE:
-            case DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE:
-            case DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE:
-            case DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE:
-                this.handleMoveAction(event, tableType);
-
-                break;
             case DropdownMenuStringEnum.RATING_LIKE_TYPE:
             case DropdownMenuStringEnum.RATING_DISLIKE_TYPE:
                 this.handleLikeDislikeAction(event);
@@ -234,29 +227,6 @@ export abstract class DropdownMenuActionsBase {
             { size: DropdownMenuStringEnum.SMALL },
             {
                 ...event,
-            }
-        );
-    }
-
-    private handleMoveAction<T>(
-        event: TableCardBodyActions<T>,
-        tableType: string
-    ): void {
-        const { type } = event;
-        const eventType =
-            type ===
-            (DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
-                DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE)
-                ? DropdownMenuStringEnum.MOVE
-                : DropdownMenuStringEnum.REMOVE;
-
-        this.modalService.openModal(
-            ConfirmationMoveModalComponent,
-            { size: TableStringEnum.SMALL },
-            {
-                ...event,
-                type: eventType,
-                template: tableType,
             }
         );
     }

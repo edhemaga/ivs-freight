@@ -113,7 +113,7 @@ export class CustomerTableComponent
     extends CustomerDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    protected destroy$ = new Subject<void>();
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;

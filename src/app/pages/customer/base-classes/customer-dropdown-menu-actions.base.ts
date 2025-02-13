@@ -1,3 +1,6 @@
+// components
+import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
+
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
 
@@ -118,6 +121,13 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         const modalTitle =
             typeof businessName === 'string' ? businessName : businessName.name;
 
+        const modalType =
+            type ===
+            (DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
+                DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE)
+                ? DropdownMenuStringEnum.MOVE
+                : DropdownMenuStringEnum.REMOVE;
+
         const adjustedEvent = {
             ...event,
             subType,
@@ -126,7 +136,15 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             modalSecondTitle: address,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        this.modalService.openModal(
+            ConfirmationMoveModalComponent,
+            { size: DropdownMenuStringEnum.SMALL },
+            {
+                ...adjustedEvent,
+                type: modalType,
+                template: tableType,
+            }
+        );
     }
 
     private handleCreateLoadAction() {
