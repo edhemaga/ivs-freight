@@ -71,7 +71,11 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
-import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
+import {
+    ColorResponse,
+    GetTrailerModalResponse,
+    VinDecodeResponse,
+} from 'appcoretruckassist';
 import type { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/configs/trailer-modal.config';
 
@@ -342,7 +346,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private createForm() {
+    private createForm(): void {
         this.trailerForm = this.formBuilder.group({
             companyOwned: [true],
             trailerNumber: [
@@ -483,7 +487,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 }
 
                 // Delete
-                if (action === TaModalActionEnum.DELETE && this.editData) {
+                if (action === TaModalActionEnum.DELETE && this.editData)
                     this.modalService.openModal(
                         ConfirmationModalComponent,
                         { size: TableStringEnum.SMALL },
@@ -494,7 +498,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                             svg: true,
                         }
                     );
-                }
             }
         }
     }
@@ -531,7 +534,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
                     this.trailerMakeType = res.trailerMakes;
 
-                    this.colorType = res.colors.map((item) => {
+                    this.colorType = res.colors.map((item: ColorResponse) => {
                         return {
                             ...item,
                             folder: 'common',
