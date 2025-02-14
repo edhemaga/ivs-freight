@@ -3692,7 +3692,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             }),
                         };
 
-                        this.setMapData(routes);
+                        this.setMapData(routes, res);
 
                         if (res?.legs?.length) {
                             res.legs.forEach((item, index) => {
@@ -5393,7 +5393,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .patchValue(deliveryStopNumber + 1);
     }
 
-    private setMapData(routes: LoadStopRoutes[]): void {
+    private setMapData(
+        routes: LoadStopRoutes[],
+        routingData: RoutingResponse
+    ): void {
         const routeMarkers: IMapMarkers[] = [];
         const routePaths: IMapRoutePath[] = [];
 
@@ -5426,16 +5429,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             if (index > 0) {
                 const routePath: IMapRoutePath = {
-                    path: [
-                        {
-                            lat: routes[index - 1].latitude!,
-                            lng: routes[index - 1].longitude!,
-                        },
-                        {
-                            lat: loadStop.latitude!,
-                            lng: loadStop.longitude!,
-                        },
-                    ],
+                    path: [],
+                    decodedShape: routingData.legs[index - 1].decodedShape,
                     strokeColor: MapOptionsConstants.routingPathColors.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,

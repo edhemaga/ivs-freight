@@ -1,6 +1,6 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 // ACTIONS
 import * as PayrollOwnerDriverActions from '@pages/accounting/pages/payroll/state/actions';
@@ -42,7 +42,8 @@ export function getPayrollOwnerDriverListEffect(
 
 export function getPayrollOwnerReportEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    store: Store
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -63,6 +64,26 @@ export function getPayrollOwnerReportEffect(
                                     {
                                         ownerPayrollReport: data,
                                     }
+                                );
+                            }),
+                            tap((data) => {
+                                const mapLocations = JSON.stringify(
+                                    data.ownerPayrollReport.mapLocations.map(
+                                        (item) => {
+                                            return {
+                                                longitude: item.longitude,
+                                                latitude: item.latitude,
+                                            };
+                                        }
+                                    )
+                                );
+
+                                store.dispatch(
+                                    PayrollOwnerDriverActions.getPayrollMapData(
+                                        {
+                                            locations: mapLocations,
+                                        }
+                                    )
                                 );
                             }),
                             catchError((error) =>
@@ -102,8 +123,7 @@ export function closePayrollOwnerReportEffect(
                         )
                         .pipe(
                             map((_) => {
-                                return PayrollOwnerDriverActions
-                                    .closePayrollOwnerReportDriverSuccess();
+                                return PayrollOwnerDriverActions.closePayrollOwnerReportDriverSuccess();
                             }),
                             catchError((error) =>
                                 of(

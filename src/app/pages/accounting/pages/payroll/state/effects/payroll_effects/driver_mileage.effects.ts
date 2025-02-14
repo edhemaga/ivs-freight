@@ -1,5 +1,5 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { map, switchMap, Observable, catchError, of, tap } from 'rxjs';
 
 // Services
@@ -197,7 +197,8 @@ export function closePayrollSoloMileageReportEffect(
 
 export function getPayrollSoloMileageReportEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    store: Store
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -219,6 +220,22 @@ export function getPayrollSoloMileageReportEffect(
                                     {
                                         payroll: data,
                                     }
+                                );
+                            }),
+                            tap((data) => {
+                                const mapLocations = JSON.stringify(
+                                    data.payroll.mapLocations.map((item) => {
+                                        return {
+                                            longitude: item.longitude,
+                                            latitude: item.latitude,
+                                        };
+                                    })
+                                );
+
+                                store.dispatch(
+                                    PayrollSoloMileageDriver.getPayrollMapData({
+                                        locations: mapLocations,
+                                    })
                                 );
                             }),
                             catchError((error) =>

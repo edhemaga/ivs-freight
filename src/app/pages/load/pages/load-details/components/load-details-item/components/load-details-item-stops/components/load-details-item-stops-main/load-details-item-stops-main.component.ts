@@ -69,9 +69,6 @@ import { LoadService } from '@shared/services/load.service';
         FormatDatePipe,
         FormatTimePipe,
         KeyValuePairsPipe,
-
-        // services
-        LoadService,
     ],
 })
 export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
@@ -115,6 +112,8 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
             this.getStopsData(changes?.stopsData?.currentValue?.stops);
 
             this.getLoadStopRoutes(changes?.stopsData?.currentValue?.stops);
+
+            this.getMapData();
 
             this.stopItemDropdownIndex = -1;
 
@@ -328,9 +327,6 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
         const routeMarkers: IMapMarkers[] = [];
         const routePaths: IMapRoutePath[] = [];
 
-        console.log('loadStopData', this.loadStopData);
-        console.log('stopsData', this.stopsData);
-
         this.loadService
             .getRouting(
                 JSON.stringify(
@@ -345,68 +341,55 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RoutingResponse) => {
+                    const routeLegs = res.legs;
+
                     console.log('getRouting res', res);
 
-                    const decodedShape =
-                        google.maps.geometry.encoding.decodePath(
-                            res.legs[0].shape
-                        );
-                    console.log('decodedShape', decodedShape);
-                    console.log('decodedShape lat', decodedShape[0].lat());
-                    console.log('decodedShape lng', decodedShape[0].lng());
+                    this.loadStopData.forEach((loadStop, index) => {
+                        const markerData = {
+                            position: {
+                                lat: loadStop.shipper.latitude,
+                                lng: loadStop.shipper.longitude,
+                            },
+                        };
 
-                    // this.loadStopData.forEach((loadStop, index) => {
-                    //     const markerData = {
-                    //         position: {
-                    //             lat: loadStop.shipper.latitude,
-                    //             lng: loadStop.shipper.longitude,
-                    //         },
-                    //     };
+                        const routeMarker: IMapMarkers = {
+                            ...markerData,
+                            content:
+                                this.markerIconService.getRoutingMarkerIcon(
+                                    markerData,
+                                    loadStop.stopLoadOrder ?? 0,
+                                    loadStop.stopType.name.toLowerCase(),
+                                    false,
+                                    true
+                                ),
+                        };
 
-                    //     const routeMarker: IMapMarkers = {
-                    //         ...markerData,
-                    //         content:
-                    //             this.markerIconService.getRoutingMarkerIcon(
-                    //                 markerData,
-                    //                 loadStop.stopLoadOrder ?? 0,
-                    //                 loadStop.stopType.name.toLowerCase(),
-                    //                 false,
-                    //                 true
-                    //             ),
-                    //     };
+                        routeMarkers.push(routeMarker);
 
-                    //     routeMarkers.push(routeMarker);
+                        if (index > 0) {
+                            const routePath: IMapRoutePath = {
+                                path: [],
+                                decodedShape:
+                                    routeLegs?.[index - 1]?.decodedShape,
+                                strokeColor:
+                                    MapOptionsConstants.routingPathColors.gray,
+                                strokeOpacity: 1,
+                                strokeWeight: 4,
+                                isDashed:
+                                    !this.loadStopData[index - 1].stopType.id,
+                            };
 
-                    //     if (index > 0) {
-                    //         const routePath: IMapRoutePath = {
-                    //             path: [
-                    //                 {
-                    //                     lat: this.loadStopData[index - 1]
-                    //                         .shipper.latitude!,
-                    //                     lng: this.loadStopData[index - 1]
-                    //                         .shipper.longitude!,
-                    //                 },
-                    //                 {
-                    //                     lat: loadStop.shipper.latitude!,
-                    //                     lng: loadStop.shipper.longitude!,
-                    //                 },
-                    //             ],
-                    //             strokeColor:
-                    //                 MapOptionsConstants.routingPathColors.gray,
-                    //             strokeOpacity: 1,
-                    //             strokeWeight: 4,
-                    //         };
+                            routePaths.push(routePath);
+                        }
+                    });
 
-                    //         routePaths.push(routePath);
-                    //     }
-                    // });
-
-                    // this.mapData = {
-                    //     ...this.mapData,
-                    //     isZoomShown: true,
-                    //     routingMarkers: routeMarkers,
-                    //     routePaths: routePaths,
-                    // };
+                    this.mapData = {
+                        ...this.mapData,
+                        isZoomShown: true,
+                        routingMarkers: routeMarkers,
+                        routePaths: routePaths,
+                    };
                 },
             });
     }

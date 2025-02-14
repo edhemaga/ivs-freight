@@ -5,7 +5,7 @@ import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums
 import { PayrollEnum } from '@pages/accounting/pages/payroll/state/enums/payroll.enums';
 
 // Models
-import { PayrollCountsResponse } from 'appcoretruckassist';
+import { PayrollCountsResponse, RoutingResponse } from 'appcoretruckassist';
 
 export const getPayrollCounts = createAction(
     PayrollEnum.GET_PAYROLL_COUNTS,
@@ -30,4 +30,19 @@ export const setTableReportExpanded = createAction(
 export const setPayrollopenedTab = createAction(
     PayrollEnum.SET_PAYROLL_TAB,
     props<{ tabStatus: PayrollTablesStatus }>()
+);
+
+export const getPayrollMapData = createAction(
+    PayrollEnum.GET_PAYROLL_MAP_DATA,
+    props<{ locations: string }>()
+);
+
+export const getPayrollMapDataSuccess = createAction(
+    PayrollEnum.GET_PAYROLL_MAP_DATA_SUCCESS,
+    props<{ mapData: RoutingResponse }>()
+);
+
+export const getPayrollMapDataError = createAction(
+    PayrollEnum.GET_PAYROLL_MAP_DATA_ERROR,
+    props<any>()
 );

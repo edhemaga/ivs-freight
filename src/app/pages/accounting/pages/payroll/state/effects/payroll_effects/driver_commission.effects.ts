@@ -1,6 +1,6 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 
 // ACTIONS
 import * as PayrollCommissionDriverActions from '@pages/accounting/pages/payroll/state/actions';
@@ -44,7 +44,8 @@ export function getPayrollCommissionDriverListEffect(
 
 export function getPayrollCommissionReportEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    store: Store
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -66,6 +67,24 @@ export function getPayrollCommissionReportEffect(
                                     {
                                         payroll: data,
                                     }
+                                );
+                            }),
+                            tap((data) => {
+                                const mapLocations = JSON.stringify(
+                                    data.payroll.mapLocations.map((item) => {
+                                        return {
+                                            longitude: item.longitude,
+                                            latitude: item.latitude,
+                                        };
+                                    })
+                                );
+
+                                store.dispatch(
+                                    PayrollCommissionDriverActions.getPayrollMapData(
+                                        {
+                                            locations: mapLocations,
+                                        }
+                                    )
                                 );
                             }),
                             catchError((error) =>
@@ -106,8 +125,7 @@ export function closePayrollCommissionReportEffect(
                         )
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions
-                                    .closePayrollCommissionReportDriverSuccess();
+                                return PayrollCommissionDriverActions.closePayrollCommissionReportDriverSuccess();
                             }),
                             catchError((error) =>
                                 of(

@@ -1,5 +1,5 @@
 // Models
-import { PayrollCountsResponse } from 'appcoretruckassist';
+import { PayrollCountsResponse, RoutingResponse } from 'appcoretruckassist';
 import { PayrollState } from '@pages/accounting/pages/payroll/state/models';
 
 // Enums
@@ -53,5 +53,15 @@ export const onSetTableReportExpanded = (
         ...state,
         payrollOpenedReport: null,
         expandedReportTable: data.expanded,
+    };
+};
+
+export const onGetMapDataSuccess = (
+    state: PayrollState,
+    data: { mapData: RoutingResponse }
+) => {
+    return {
+        ...state,
+        payrollMapRoutes: data.mapData,
     };
 };

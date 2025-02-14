@@ -5,6 +5,7 @@ import {
     PayrollDriverMileageByIdResponse,
     PayrollDriverMileageListResponse,
     PayrollOwnerResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 import { IDriverCommissionList } from './driver_commission.model';
 import { IDriverOwnerList } from './driver_owner.model';
@@ -41,6 +42,8 @@ export interface PayrollState {
     driverOwnerExpandedList?: PayrollDriverMileageExpandedListResponse[];
     driverFlatRateList?: IDriverFlatRateList;
     payrollOpenedTab: PayrollTablesStatus;
+
+    payrollMapRoutes: RoutingResponse;
 }
 
 export interface IPayrollCountsSelector {

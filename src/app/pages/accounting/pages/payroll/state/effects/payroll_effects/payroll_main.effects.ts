@@ -37,3 +37,33 @@ export function getPayrollCountsEffect(
             )
     );
 }
+
+export function getPayrollMapDataEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(PayrollActions.getPayrollMapData),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollMapData(action.locations)
+                        .pipe(
+                            map((data) => {
+                                return PayrollActions.getPayrollMapDataSuccess({
+                                    mapData: data,
+                                });
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollActions.getPayrollMapDataError({
+                                        error,
+                                    })
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}

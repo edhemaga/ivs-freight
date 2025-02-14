@@ -1,6 +1,6 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { catchError, map, Observable, of, switchMap } from 'rxjs';
-import { Action } from '@ngrx/store';
+import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
+import { Action, Store } from '@ngrx/store';
 
 // ACTIONS
 import * as PayrollFlatRateDriverActions from '@pages/accounting/pages/payroll/state/actions';
@@ -42,7 +42,8 @@ export function getPayrollFlatRateDriverListEffect(
 
 export function getPayrollFlatRateReportEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    store: Store
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -65,6 +66,25 @@ export function getPayrollFlatRateReportEffect(
                                     {
                                         payroll: data,
                                     }
+                                );
+                            }),
+
+                            tap((data) => {
+                                const mapLocations = JSON.stringify(
+                                    data.payroll.mapLocations.map((item) => {
+                                        return {
+                                            longitude: item.longitude,
+                                            latitude: item.latitude,
+                                        };
+                                    })
+                                );
+
+                                store.dispatch(
+                                    PayrollFlatRateDriverActions.getPayrollMapData(
+                                        {
+                                            locations: mapLocations,
+                                        }
+                                    )
                                 );
                             }),
                             catchError((error) =>

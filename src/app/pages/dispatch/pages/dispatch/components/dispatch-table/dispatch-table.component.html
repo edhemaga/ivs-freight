@@ -5,7 +5,7 @@
         'unlocked-skip-location':
             !isDispatchBoardLocked && showAddAddressFieldIndex !== -1,
         'unlocked-drag-trailer': isDrag && draggingType === 'trailer',
-        'unlocked-drag-driver': isDrag && draggingType === 'driver'
+        'unlocked-drag-driver': isDrag && draggingType === 'driver',
     }"
     cdkDropList
     (cdkDropListDropped)="dragEndRow($event)"
@@ -67,7 +67,7 @@
                                                     'DISPATCHER' ||
                                                 (tableHeaderItem?.title ===
                                                     'NOTE' &&
-                                                    !_isNoteExpanded))
+                                                    !_isNoteExpanded)),
                                     }"
                                     [ngStyle]="
                                         resizedColumnsWidth
@@ -98,7 +98,8 @@
                                             onResizeAction($event)
                                         "
                                         [ngClass]="{
-                                            'show-after': !isDispatchBoardLocked
+                                            'show-after':
+                                                !isDispatchBoardLocked,
                                         }"
                                     >
                                         <div
@@ -114,7 +115,7 @@
                                                         tableHeaderItem.title
                                                     | dispatchTableHeaderShowPipe
                                                         : columnsToShow
-                                                        : false
+                                                        : false,
                                             }"
                                         >
                                             <div
@@ -134,7 +135,7 @@
                                                         tableHeaderItem?.title ===
                                                             'LAST LOCATION'
                                                             ? 'pointer'
-                                                            : 'default'
+                                                            : 'default',
                                                 }"
                                             >
                                                 <svg-icon
@@ -146,7 +147,7 @@
                                                     "
                                                     [svgStyle]="{
                                                         'width.px': '14',
-                                                        'height.px': '14'
+                                                        'height.px': '14',
                                                     }"
                                                     [src]="
                                                         tableHeaderItem?.icon
@@ -183,13 +184,13 @@
                                                     class="pe-auto"
                                                     [ngStyle]="{
                                                         'padding-right': '10px',
-                                                        cursor: 'pointer'
+                                                        cursor: 'pointer',
                                                     }"
                                                 >
                                                     <svg-icon
                                                         [svgStyle]="{
                                                             'width.px': '14',
-                                                            'height.px': '14'
+                                                            'height.px': '14',
                                                         }"
                                                         [src]="
                                                             dispatchTableSvgRoutes?.closeSvgRoute
@@ -213,7 +214,7 @@
                                                     class="icon delivery"
                                                     [svgStyle]="{
                                                         'width.px': '14',
-                                                        'height.px': '14'
+                                                        'height.px': '14',
                                                     }"
                                                     [src]="
                                                         tableHeaderItem?.secondIcon
@@ -241,7 +242,7 @@
                                                 <svg-icon
                                                     [svgStyle]="{
                                                         'width.px': 12,
-                                                        'height.px': 12
+                                                        'height.px': 12,
                                                     }"
                                                     [src]="
                                                         sortDirection === 'asc'
@@ -298,7 +299,7 @@
                                 class="dragdrop-custom-placeholder"
                                 [ngStyle]="{
                                     width: tableBodyRowWidth + 'px',
-                                    maxWidth: '100%'
+                                    maxWidth: '100%',
                                 }"
                             ></div>
 
@@ -363,7 +364,7 @@
                                     "
                                     cdkDropList
                                     id="{{
-                                        rowIndex | cdkId : gridIndex : 'trailer'
+                                        rowIndex | cdkId: gridIndex : 'trailer'
                                     }}"
                                     [cdkDropListData]="item"
                                     [cdkDropListConnectedTo]="
@@ -469,7 +470,7 @@
                                     "
                                     cdkDropList
                                     id="{{
-                                        rowIndex | cdkId : gridIndex : 'driver'
+                                        rowIndex | cdkId: gridIndex : 'driver'
                                     }}"
                                     [cdkDropListData]="item"
                                     [cdkDropListConnectedTo]="
@@ -580,7 +581,7 @@
                                 class="location-field"
                                 [ngStyle]="
                                     resizedColumnsWidth
-                                        | dispatchTableColumnWidths : 'city'
+                                        | dispatchTableColumnWidths: 'city'
                                 "
                             >
                                 <app-dispatch-table-last-location
@@ -614,7 +615,7 @@
                                 class="status-field"
                                 [ngStyle]="
                                     resizedColumnsWidth
-                                        | dispatchTableColumnWidths : 'status'
+                                        | dispatchTableColumnWidths: 'status'
                                 "
                             >
                                 <app-dispatch-table-status
@@ -680,20 +681,28 @@
                                 >
                                     <div
                                         class="main_inside"
-                                        [class.filled]="progressBarData?.[rowIndex]"
+                                        [class.filled]="
+                                            progressBarData?.[rowIndex]
+                                        "
                                     >
                                         <div
                                             class="padding-inside"
                                             [class.hovering]="
                                                 isDispatchBoardLocked &&
-                                                isHoveringRowIndex === rowIndex && progressBarData?.[rowIndex]
+                                                isHoveringRowIndex ===
+                                                    rowIndex &&
+                                                progressBarData?.[rowIndex]
                                             "
                                         >
                                             <div
                                                 class="info-item d-block p-0 w-100"
                                             >
                                                 <ng-container
-                                                    *ngIf="progressBarData?.[rowIndex]"
+                                                    *ngIf="
+                                                        progressBarData?.[
+                                                            rowIndex
+                                                        ]
+                                                    "
                                                 >
                                                     <app-ca-progress-bar
                                                         [currentPosition]="
@@ -751,6 +760,14 @@
                                                                 rowIndex
                                                             ].dispatchStatus
                                                         "
+                                                        (onOpenMap)="
+                                                            onOpenProgressMap(
+                                                                progressBarData[
+                                                                    rowIndex
+                                                                ],
+                                                                rowIndex
+                                                            )
+                                                        "
                                                     ></app-ca-progress-bar>
                                                 </ng-container>
                                             </div>
@@ -806,7 +823,7 @@
                                                     isDispatchBoardLocked &&
                                                     item.dispatcher?.fullName &&
                                                     isHoveringRowIndex ===
-                                                        rowIndex
+                                                        rowIndex,
                                             }"
                                         >
                                             <div
@@ -1022,7 +1039,7 @@
                             class="location-field"
                             [ngStyle]="
                                 resizedColumnsWidth
-                                    | dispatchTableColumnWidths : 'city'
+                                    | dispatchTableColumnWidths: 'city'
                             "
                         >
                             <ng-container
@@ -1064,7 +1081,7 @@
                             class="status-field"
                             [ngStyle]="
                                 resizedColumnsWidth
-                                    | dispatchTableColumnWidths : 'status'
+                                    | dispatchTableColumnWidths: 'status'
                             "
                         >
                             <div class="main_inside">
@@ -1090,7 +1107,7 @@
                                 class="progress-field"
                                 [ngStyle]="
                                     resizedColumnsWidth
-                                        | dispatchTableColumnWidths : 'progress'
+                                        | dispatchTableColumnWidths: 'progress'
                                 "
                             >
                                 <div class="main_inside">
@@ -1207,7 +1224,7 @@
                                 class="location-field"
                                 [ngStyle]="
                                     resizedColumnsWidth
-                                        | dispatchTableColumnWidths : 'city'
+                                        | dispatchTableColumnWidths: 'city'
                                 "
                             >
                                 <div class="main_inside"></div>
@@ -1217,7 +1234,7 @@
                                 class="status-field"
                                 [ngStyle]="
                                     resizedColumnsWidth
-                                        | dispatchTableColumnWidths : 'status'
+                                        | dispatchTableColumnWidths: 'status'
                                 "
                             >
                                 <div class="main_inside"></div>
@@ -1327,7 +1344,7 @@
                                                 (columnsToShow[16].hidden &&
                                                     ind === 9) ||
                                                 (columnsToShow[17].hidden &&
-                                                    ind === 10)
+                                                    ind === 10),
                                         }"
                                         [ngStyle]="
                                             resizedColumnsWidth

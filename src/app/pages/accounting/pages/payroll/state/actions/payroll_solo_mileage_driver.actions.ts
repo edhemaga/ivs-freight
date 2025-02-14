@@ -1,7 +1,10 @@
 import { createAction, props } from '@ngrx/store';
 
 // MODELS
-import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
+import {
+    PayrollDriverMileageByIdResponse,
+    PayrollDriverMileageListResponse,
+} from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import {
     IAddPayrollClosedPayment,
@@ -65,7 +68,7 @@ export const getPayrollSoloMileageReportDriver = createAction(
 
 export const getPayrollSoloMileageReportDriverSuccess = createAction(
     PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_SUCCESS,
-    props<{ payroll: PayrollDriverMileageResponse }>()
+    props<{ payroll: PayrollDriverMileageByIdResponse }>()
 );
 
 export const getPayrollSoloMileageReportDriverError = createAction(

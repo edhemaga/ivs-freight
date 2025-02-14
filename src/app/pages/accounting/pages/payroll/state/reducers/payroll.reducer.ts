@@ -35,6 +35,7 @@ export const payrollState: PayrollState = {
     expandedReportTable: false,
     closeReportPaymentLoading: false,
     payrollOpenedTab: PayrollTablesStatus.OPEN,
+    payrollMapRoutes: null,
 };
 
 export const payrollReducer = createReducer(
@@ -55,6 +56,10 @@ export const payrollReducer = createReducer(
     on(
         PayrollActions.setTableReportExpanded,
         PayrollMainReducers.onSetTableReportExpanded
+    ),
+    on(
+        PayrollActions.getPayrollMapDataSuccess,
+        PayrollMainReducers.onGetMapDataSuccess
     ),
 
     /*

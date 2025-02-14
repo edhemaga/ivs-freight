@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Actions } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 
 // Services
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
@@ -15,11 +16,18 @@ import * as PayrollFlatRateEffect from '@pages/accounting/pages/payroll/state/ef
 export class PayrollEffect {
     constructor(
         private actions$: Actions,
-        private payrollService: PayrollService
+        private payrollService: PayrollService,
+        private store: Store
     ) {}
 
     // Payroll Main Effects
     public getPayrollCounts$ = PayrollMainEffects.getPayrollCountsEffect(
+        this.actions$,
+        this.payrollService
+    );
+
+    // Payroll Map Data Effects
+    public getPayrollMapData$ = PayrollMainEffects.getPayrollMapDataEffect(
         this.actions$,
         this.payrollService
     );
@@ -47,7 +55,8 @@ export class PayrollEffect {
     public getPayrollSoloMileageReport$ =
         PayrollMileageDriverEffects.getPayrollSoloMileageReportEffect(
             this.actions$,
-            this.payrollService
+            this.payrollService,
+            this.store
         );
 
     public closePayrollSoloMileageReport$ =
@@ -79,7 +88,8 @@ export class PayrollEffect {
     public getPayrollCommissionDriverReportEffect$ =
         PayrollCommissionDriverEffect.getPayrollCommissionReportEffect(
             this.actions$,
-            this.payrollService
+            this.payrollService,
+            this.store
         );
 
     public getPayrollCommissionClosedPayrollReportByIdEffect$ =
@@ -128,7 +138,8 @@ export class PayrollEffect {
     public getPayrollOwnerDriverReportEffect$ =
         PayrollOwnerDriverEffect.getPayrollOwnerReportEffect(
             this.actions$,
-            this.payrollService
+            this.payrollService,
+            this.store
         );
     public closePayrollOwnerReport$ =
         PayrollOwnerDriverEffect.closePayrollOwnerReportEffect(
@@ -170,7 +181,8 @@ export class PayrollEffect {
     public getPayrollFlatRateDriverReportEffect$ =
         PayrollFlatRateEffect.getPayrollFlatRateReportEffect(
             this.actions$,
-            this.payrollService
+            this.payrollService,
+            this.store
         );
 
     public closePayrollFlatRateReport$ =
