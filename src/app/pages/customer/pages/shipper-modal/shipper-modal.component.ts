@@ -87,7 +87,13 @@ import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/co
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { ModalButtonSize, ModalButtonType } from '@shared/enums';
+import {
+    eFileFormControls,
+    eGeneralActions,
+    eStringPlaceholder,
+    ModalButtonSize,
+    ModalButtonType,
+} from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // svg routes
@@ -150,7 +156,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class ShipperModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     @Input() editData;
@@ -349,9 +359,9 @@ export class ShipperModalComponent
 
         if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
-                case 'load-modal': {
+                case 'load-modal':
                     this.modalService.setProjectionModal({
-                        action: 'close',
+                        action: eGeneralActions.CLOSE,
                         payload: {
                             key: this.editData?.key,
                             value: null,
@@ -361,12 +371,9 @@ export class ShipperModalComponent
                         closing: 'fastest',
                     });
                     break;
-                }
-
-                default: {
+                default:
                     this.ngbActiveModal.close();
                     break;
-                }
             }
             return;
         }
@@ -409,14 +416,12 @@ export class ShipperModalComponent
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (this.editData?.type.includes('edit')) {
+                if (this.editData?.type.includes(eGeneralActions.EDIT))
                     this.updateShipper(this.editData.id);
-                } else {
-                    this.addShipper();
-                }
+                else this.addShipper();
             }
             // Delete
-            if (action === TaModalActionEnum.DELETE && this.editData) {
+            if (action === TaModalActionEnum.DELETE && this.editData)
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.DELETE },
@@ -430,7 +435,6 @@ export class ShipperModalComponent
                             ConfirmationModalStringEnum.DELETE_SHIPPER,
                     }
                 );
-            }
         }
     }
 
@@ -517,21 +521,17 @@ export class ShipperModalComponent
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.deleteReview(true, review);
-
                 break;
-            case 'add':
+            case eGeneralActions.ADD:
                 this.addReview(review);
-
                 break;
-            case 'update':
+            case eGeneralActions.UPDATE:
                 this.updateReview(review);
-
                 break;
-            case 'cancel':
-                this.reviews = this.reviews.filter((review) => review.id);
-
+            case eGeneralActions.CANCEL:
+                this.reviews = [...this.reviews.filter((review) => review.id)];
                 break;
             default:
                 break;
@@ -544,19 +544,18 @@ export class ShipperModalComponent
             .subscribe((action: LikeDislikeModel) => {
                 let rating: CreateRatingCommand = null;
 
-                if (action.action === 'liked') {
+                if (action.action === 'liked')
                     rating = {
                         entityTypeRatingId: 3,
                         entityTypeId: this.editData.id,
                         thumb: action.likeDislike,
                     };
-                } else {
+                else
                     rating = {
                         entityTypeRatingId: 3,
                         entityTypeId: this.editData.id,
                         thumb: action.likeDislike,
                     };
-                }
 
                 this.reviewRatingService
                     .addRating(rating)
@@ -589,9 +588,8 @@ export class ShipperModalComponent
                                         this.companyUser.companyUserId
                                 );
 
-                                if (reviewIndex !== -1) {
+                                if (reviewIndex !== -1)
                                     this.isOneMoreReviewDisabled = true;
-                                }
                             }
 
                             this.taLikeDislikeService.populateLikeDislikeEvent({
@@ -609,19 +607,18 @@ export class ShipperModalComponent
         if (
             this.reviews.some((item) => item.isNewReview) ||
             this.isOneMoreReviewDisabled
-        ) {
+        )
             return;
-        }
 
         this.reviews.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(
-                    ' ',
+                    eStringPlaceholder.WHITESPACE,
                     this.companyUser.lastName
                 ),
                 /*                 avatar: this.companyUser.avatar, */
             },
-            commentContent: '',
+            commentContent: eStringPlaceholder.EMPTY,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             isNewReview: true,
@@ -748,32 +745,27 @@ export class ShipperModalComponent
                             });
 
                             this.ratingChanges();
-                        } else {
-                            this.startFormChanges();
-                        }
+                        } else this.startFormChanges();
                     }
 
-                    if (this.editData) {
-                        this.tabs = this.tabs.map((tab) => ({
+                    if (this.editData)
+                        this.tabs = this.tabs?.map((tab) => ({
                             ...tab,
                             checked: tab.name === this.editData?.openedTab,
                         }));
-                    }
 
                     // Open Tab Position
                     if (this.editData?.openedTab) {
-                        setTimeout(() => {
-                            this.tabChange({
-                                id:
-                                    this.editData?.openedTab === 'Additional'
-                                        ? 2
-                                        : this.editData?.openedTab === 'Review'
-                                          ? 3
-                                          : 1,
-                            });
-
-                            this.isCardAnimationDisabled = true;
+                        this.tabChange({
+                            id:
+                                this.editData?.openedTab === 'Additional'
+                                    ? 2
+                                    : this.editData?.openedTab === 'Review'
+                                      ? 3
+                                      : 1,
                         });
+
+                        this.isCardAnimationDisabled = true;
                     }
                 },
             });
@@ -827,9 +819,9 @@ export class ShipperModalComponent
                 next: () => {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         switch (this.editData?.key) {
-                            case 'load-modal': {
+                            case 'load-modal':
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -839,18 +831,14 @@ export class ShipperModalComponent
                                     closing: 'slowlest',
                                 });
                                 break;
-                            }
-
-                            default: {
+                            default:
                                 break;
-                            }
                         }
                     }
                     this.ngbActiveModal.close();
 
-                    if (this.addNewAfterSave) {
+                    if (this.addNewAfterSave)
                         this.modalService.openModal(ShipperModalComponent, {});
-                    }
                 },
                 error: () => {
                     this.activeAction = null;
@@ -873,7 +861,7 @@ export class ShipperModalComponent
         const shipperContacts = this.mapContacts(this.shipperContacts);
 
         const newData = {
-            id: id,
+            id,
             ...form,
             address: {
                 ...this.selectedAddress,
@@ -907,14 +895,14 @@ export class ShipperModalComponent
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'load-modal': {
+                            case 'load-modal':
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,
                                     close: true,
                                 });
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -925,11 +913,8 @@ export class ShipperModalComponent
                                 });
 
                                 break;
-                            }
-
-                            default: {
+                            default:
                                 break;
-                            }
                         }
                     } else this.ngbActiveModal.close();
                 },
@@ -944,13 +929,7 @@ export class ShipperModalComponent
             .subscribe({
                 next: (res) => {
                     this.shipperForm.patchValue({
-                        businessName: res.businessName,
-                        phone: res.phone,
-                        phoneExt: res.phoneExt,
-                        email: res.email,
-                        address: res.address.address,
-                        addressUnit: res.address.addressUnit,
-                        receivingAppointment: res.receivingAppointment,
+                        ...res,
                         receivingOpenTwentyFourHours:
                             res.receivingOpenTwentyFourHours,
                         receivingFrom:
@@ -971,11 +950,6 @@ export class ShipperModalComponent
                                         res.receivingTo
                                     )
                                   : null,
-                        shippingHoursSameReceiving:
-                            res.shippingHoursSameReceiving,
-                        shippingAppointment: res.shippingAppointment,
-                        shippingOpenTwentyFourHours:
-                            res.shippingOpenTwentyFourHours,
                         shippingFrom:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
@@ -1006,35 +980,32 @@ export class ShipperModalComponent
                     this.longitude = res.longitude;
                     this.latitude = res.latitude;
 
-                    if (res.phoneExt) {
-                        this.isPhoneExtExist = true;
-                    }
+                    if (res.phoneExt) this.isPhoneExtExist = true;
 
-                    if (res.receivingAppointment) {
+                    if (res.receivingAppointment)
                         this.isAppointmentReceiving = true;
-                    }
 
                     if (
                         res.shippingAppointment ||
                         res.shippingHoursSameReceiving
-                    ) {
+                    )
                         this.isAppointmentShipping = true;
-                    }
 
                     // Contacts
                     this.updatedShipperContacts = res.shipperContacts;
 
                     // Review
-                    this.reviews = res.ratingReviews.map((item) => ({
-                        ...item,
-                        id: item.reviewId,
-                        companyUser: {
-                            ...item.companyUser,
-                            /*   avatar: item.companyUser.avatar, */
-                        },
-                        commentContent: item.comment,
-                        rating: item.thumb,
-                    }));
+                    this.reviews = [
+                        ...res.ratingReviews.map((item) => ({
+                            ...item,
+                            id: item.reviewId,
+                            companyUser: {
+                                ...item.companyUser,
+                            },
+                            commentContent: item.comment,
+                            rating: item.thumb,
+                        })),
+                    ];
 
                     const reviewIndex = this.reviews?.findIndex(
                         (item) =>
@@ -1042,9 +1013,7 @@ export class ShipperModalComponent
                             this.companyUser.companyUserId
                     );
 
-                    if (reviewIndex !== -1) {
-                        this.isOneMoreReviewDisabled = true;
-                    }
+                    if (reviewIndex !== -1) this.isOneMoreReviewDisabled = true;
 
                     this.taLikeDislikeService.populateLikeDislikeEvent({
                         downRatingCount: res.downCount,
@@ -1112,12 +1081,12 @@ export class ShipperModalComponent
             this.shipperForm.get(
                 ShipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS
             ).value
-        ) {
+        )
             receiving = {
                 receivingFrom: null,
                 receivingTo: null,
             };
-        } else {
+        else
             receiving = {
                 receivingFrom: this.shipperForm.get(
                     ShipperModalString.RECEIVING_FROM
@@ -1126,7 +1095,6 @@ export class ShipperModalComponent
                     ShipperModalString.RECEIVING_TO
                 ).value,
             };
-        }
 
         if (
             this.shipperForm.get(
@@ -1154,7 +1122,7 @@ export class ShipperModalComponent
                 this.shipperForm.get(
                     ShipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS
                 ).value
-            ) {
+            )
                 shipping = {
                     shippingAppointment: this.shipperForm.get(
                         ShipperModalString.SHIPPING_APPOINTMENT
@@ -1165,7 +1133,7 @@ export class ShipperModalComponent
                     shippingFrom: null,
                     shippingTo: null,
                 };
-            } else {
+            else
                 shipping = {
                     shippingAppointment: this.shipperForm.get(
                         ShipperModalString.SHIPPING_APPOINTMENT
@@ -1180,37 +1148,30 @@ export class ShipperModalComponent
                         this.shipperForm.get(ShipperModalString.SHIPPING_TO)
                             .value ?? null,
                 };
-            }
         }
 
         return { receiving, shipping };
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case eGeneralActions.ADD:
                 this.shipperForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            }
-            case 'delete': {
+            case eGeneralActions.DELETE:
                 this.shipperForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
                 this.fileModified = true;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -1296,12 +1257,14 @@ export class ShipperModalComponent
                     this.shipperForm.get(ShipperModalString.LONGITUDE).value,
                     this.shipperForm.get(ShipperModalString.LATITUDE).value
                 )
-                .pipe()
-                .subscribe((res) => {
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res: AddressEntity) => {
                     this.shipperForm.patchValue({
+                        ...res,
                         countryStateAddress:
-                            res?.county + ', ' + res.stateShortName,
-                        address: res.address,
+                            res?.county +
+                            eStringPlaceholder.COMMA_WHITESPACE +
+                            res.stateShortName,
                     });
 
                     this.selectedAddress = res;

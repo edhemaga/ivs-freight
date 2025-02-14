@@ -34,6 +34,7 @@ import { TaUploadFileService } from '@shared/components/ta-upload-files/services
 
 //Enums
 import { FileActionEnum } from '@shared/components/ta-upload-files-no-slider/enums/file-action-string.enum';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-upload-files-no-slider',
@@ -54,7 +55,8 @@ import { FileActionEnum } from '@shared/components/ta-upload-files-no-slider/enu
     ],
 })
 export class TaUploadFilesNoSliderComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @ViewChildren('uploadedFiles') public uploadedFiles: ElementRef;
 
     @Output() documentReviewInputEvent: EventEmitter<{
@@ -96,7 +98,7 @@ export class TaUploadFilesNoSliderComponent
     public currentSlide: number = 0;
     private destroy$ = new Subject<void>();
 
-    constructor(private uploadFileService: TaUploadFileService) { }
+    constructor(private uploadFileService: TaUploadFileService) {}
 
     ngOnInit(): void {
         this.uploadFileService.uploadedFiles$
@@ -178,7 +180,10 @@ export class TaUploadFilesNoSliderComponent
         if (data.action !== FileActionEnum.ADD) return;
 
         const uploadedFiles = [...data.files];
-        this.onFileEvent.emit({ files: uploadedFiles, action: 'add' });
+        this.onFileEvent.emit({
+            files: uploadedFiles,
+            action: eGeneralActions.ADD,
+        });
     }
 
     public documentReviewInputEventMethod(data: {

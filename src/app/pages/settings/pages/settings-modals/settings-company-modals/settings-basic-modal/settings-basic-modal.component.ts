@@ -88,11 +88,12 @@ import { SettingsBasicModalUploadFileConfig } from '@pages/settings/pages/settin
 
 // Enums
 import { ESettingsModalEnum } from '@pages/settings/pages/settings-company/enums/settings-modal.enum';
-import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 import {
     EBankAccountStatus,
     ESettingsFormControls,
 } from '@pages/settings/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // Models
 import {
@@ -248,6 +249,7 @@ export class SettingsBasicModalComponent
 
     // Enums
     public EBankAccountStatus = EBankAccountStatus;
+    public ESettingsFormControls = ESettingsFormControls;
 
     // Bank account actions
     public focusedBankAccount!: number | null;
@@ -318,7 +320,6 @@ export class SettingsBasicModalComponent
                 case ESettingsModalEnum.NEW_DIVISION:
                 case ESettingsModalEnum.EDIT_DIVISION:
                     this.createDivisionForm();
-
                     const handleCompanyPreselectedValues = () => {
                         const {
                             company: {
@@ -337,7 +338,7 @@ export class SettingsBasicModalComponent
                         );
 
                         this.companyForm.patchValue({
-                            starting: SettingsFormEnum.STARTING_NO,
+                            starting: ESettingsFormEnum.STARTING_NO,
                             payTerm: this.selectedPayTerm?.name ?? null,
                             customerCredit,
                             mvrMonths,
@@ -357,7 +358,6 @@ export class SettingsBasicModalComponent
 
                     if (this.editData.type === ESettingsModalEnum.PAYROLL_TAB)
                         this.tabChange({ id: 3 });
-
                     break;
                 case ESettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN:
                     this.isSetupCompany = true;
@@ -367,16 +367,14 @@ export class SettingsBasicModalComponent
                         .pipe(takeUntil(this.destroy$))
                         .subscribe((data) => {
                             this.editCompany(data);
-
                             this.editData.data = data;
                         });
-
                     break;
                 default:
                     break;
             }
 
-            if (!this.editData.type.includes(SettingsFormEnum.DIVISION)) {
+            if (!this.editData.type.includes(ESettingsFormEnum.DIVISION)) {
                 this.validateMiles();
                 this.onSamePerMileCheck();
             }
@@ -461,13 +459,13 @@ export class SettingsBasicModalComponent
                 [Validators.required, monthsValidRegex],
             ],
             driverMiles: [
-                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+                !this.editData.type.includes(ESettingsFormEnum.DIVISION),
             ],
             driverComission: [
-                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+                !this.editData.type.includes(ESettingsFormEnum.DIVISION),
             ],
             driverFlatRate: [
-                !this.editData.type.includes(SettingsFormEnum.DIVISION),
+                !this.editData.type.includes(ESettingsFormEnum.DIVISION),
             ],
             // payroll tab
             useACHPayout: [true],
@@ -621,11 +619,11 @@ export class SettingsBasicModalComponent
                 }
 
                 break;
-            case 'delete':
+            case eGeneralActions.DELETE:
                 if (!this.editData.company?.divisions.length) {
                     this.deleteCompanyDivisionById(this.editData.company.id);
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: eGeneralActions.DELETE,
                         status: true,
                         close: false,
                     });
@@ -678,21 +676,15 @@ export class SettingsBasicModalComponent
         email: any;
     }): UntypedFormGroup {
         return this.formBuilder.group({
-            id: [data?.id ? data.id : 0],
+            id: [data?.id ?? 0],
             departmentId: [
-                data?.departmentId ? data?.departmentId : null,
+                data?.departmentId ?? null,
                 [Validators.required, ...departmentValidation],
             ],
-            phone: [
-                data?.phone ? data?.phone : null,
-                [Validators.required, phoneFaxRegex],
-            ],
-            extensionPhone: [
-                data?.extensionPhone ? data?.extensionPhone : null,
-                [...phoneExtension],
-            ],
+            phone: [data?.phone ?? null, [Validators.required, phoneFaxRegex]],
+            extensionPhone: [data?.extensionPhone ?? null, [...phoneExtension]],
             email: [
-                data?.email ? data?.email : null,
+                data?.email ?? null,
                 [Validators.required, emailValidation],
             ],
         });
@@ -799,12 +791,12 @@ export class SettingsBasicModalComponent
         this.focusedBankAccount = index;
     }
 
-    public addBankAccount(event: { check: boolean; action: string }) {
-        if (event.check && this.bankAccounts.valid)
-            this.bankAccounts.push(this.createBankAccount());
+    public addBankAccount(event: { check: boolean; action: string }): void {
+        if (!event.check || !this.bankAccounts.valid) return;
+        this.bankAccounts.push(this.createBankAccount());
     }
 
-    public removeBankAccount(id: number) {
+    public removeBankAccount(id: number): void {
         this.bankAccounts.removeAt(id);
         this.selectedBankAccountFormArray.splice(id, 1);
         this.isBankSelectedFormArray.splice(id, 1);
@@ -845,138 +837,130 @@ export class SettingsBasicModalComponent
         expireDate: any;
     }): UntypedFormGroup {
         return this.formBuilder.group({
-            id: [data?.id ? data.id : 0],
+            id: [data?.id ?? 0],
             nickname: [
-                data?.nickname ? data.nickname : null,
+                data?.nickname ?? null,
                 [Validators.required, ...nicknameValidation],
             ],
             card: [
-                data?.card ? data.card : null,
+                data?.card ?? null,
                 [
                     Validators.minLength(15),
                     Validators.maxLength(16),
                     Validators.required,
                 ],
             ],
-            cvc: [
-                data?.cvc ? data.cvc : null,
-                [Validators.required, ...cvcValidation],
-            ],
-            expireDate: [
-                data?.expireDate ? data.expireDate : null,
-                [Validators.required],
-            ],
+            cvc: [data?.cvc ?? null, [Validators.required, ...cvcValidation]],
+            expireDate: [data?.expireDate ?? null, [Validators.required]],
         });
     }
 
-    public addBankCard(event: { check: boolean; action: string }) {
-        if (event.check && this.bankCards.valid) {
-            this.bankCards.push(this.createBankCard());
-        }
+    public addBankCard(event: { check: boolean; action: string }): void {
+        if (!event.check || !this.bankCards.valid) return;
+        this.bankCards.push(this.createBankCard());
     }
 
-    public removeBankCard(id: number) {
+    public removeBankCard(id: number): void {
         this.bankCards.removeAt(id);
     }
 
     public onHandleAddress(event: {
         address: AddressEntity | any;
         valid: boolean;
-    }) {
+    }): void {
         if (event.valid) this.selectedAddress = event.address;
     }
 
     public onSelectDropdown(event: any, action: string): void {
         switch (action) {
-            case 'timezone':
+            case ESettingsModalEnum.TIMEZONE:
                 this.selectedTimeZone = event;
                 break;
             case ESettingsModalEnum.CURRENCY:
                 this.selectedCurrency = event;
                 break;
-            case 'driver-pay-period':
+            case ESettingsModalEnum.DRIVER_PAY_PERIOD:
                 this.selectedDriverPayPeriod = event;
                 this.selectedDriverEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'driver-ending-in':
+            case ESettingsModalEnum.DRIVER_ENDING_IN:
                 this.selectedDriverEndingIn = event;
                 break;
-            case 'accounting-pay-period':
+            case ESettingsModalEnum.ACCOUNTING_PAY_PERIOD:
                 this.selectedAccountingPayPeriod = event;
                 this.selectedAccountingEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'accounting-ending-in':
+            case ESettingsModalEnum.ACCOUNTING_ENDING_IN:
                 this.selectedAccountingEndingIn = event;
                 break;
-            case 'companyOwner-pay-period':
+            case ESettingsModalEnum.COMPANY_OWNER_PAY_PERIOD:
                 this.selectedCompanyPayPeriod = event;
                 this.selectedCompanyEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'companyOwner-ending-in':
+            case ESettingsModalEnum.COMPANY_OWNER_ENDING_IN:
                 this.selectedCompanyEndingIn = event;
                 break;
-            case 'dispatch-pay-period':
+            case ESettingsModalEnum.DISPATCH_PAY_PERIOD:
                 this.selectedDispatchPayPeriod = event;
                 this.selectedDispatchEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'dispatch-ending-in':
+            case ESettingsModalEnum.DISPATCH_ENDING_IN:
                 this.selectedDispatchEndingIn = event;
                 break;
-            case 'manager-pay-period':
+            case ESettingsModalEnum.MANAGER_PAY_PERIOD:
                 this.selectedManagerPayPeriod = event;
                 this.selectedManagerEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'manager-ending-in':
+            case ESettingsModalEnum.MANAGER_ENDING_IN:
                 this.selectedManagerEndingIn = event;
                 break;
-            case 'recruiting-pay-period':
+            case ESettingsModalEnum.RECRUITING_PAY_PERIOD:
                 this.selectedRecPayPeriod = event;
-
                 this.selectedRecEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'recruiting-ending-in':
+            case ESettingsModalEnum.RECRUITING_ENDING_IN:
                 this.selectedRecEndingIn = event;
                 break;
-            case 'repair-pay-period':
+            case ESettingsModalEnum.REPAIR_PAY_PERIOD:
                 this.selectedRepairPayPeriod = event;
                 this.selectedRepairEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'repair-ending-in':
+            case ESettingsModalEnum.REPAIR_ENDING_IN:
                 this.selectedRepairEndingIn = event;
                 break;
-            case 'safety-pay-period':
+            case ESettingsModalEnum.SAFETY_PAY_PERIOD:
                 this.selectedSafetyPayPeriod = event;
                 this.selectedSafetyEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'safety-ending-in':
+            case ESettingsModalEnum.SAFETY_ENDING_IN:
                 this.selectedSafetyEndingIn = event;
                 break;
-            case 'other-pay-period':
+            case ESettingsModalEnum.OTHER_PAY_PERIOD:
                 this.selectedOtherPayPeriod = event;
                 this.selectedOtherEndingIn = this.setEndingInInputOptions(
                     event.name
                 );
                 break;
-            case 'other-ending-in':
+            case ESettingsModalEnum.OTHER_ENDING_IN:
                 this.selectedOtherEndingIn = event;
                 break;
-            case 'company-data':
+            case ESettingsModalEnum.COMPANY_DATA:
                 this.selectedCompanyData = event;
                 break;
             case ESettingsModalEnum.PAY_TERM:
@@ -988,22 +972,15 @@ export class SettingsBasicModalComponent
     }
 
     private setEndingInInputOptions(payPeriod: string): EnumValue {
-        let selectedEndingIn: EnumValue;
+        if (
+            payPeriod !== ESettingsModalEnum.SEMI_MONTHLY &&
+            payPeriod !== ESettingsModalEnum.MONTHLY
+        )
+            return this.endingIns[0];
 
-        if (payPeriod === 'Semi Monthly' || payPeriod === 'Monthly') {
-            if (payPeriod === 'Semi Monthly')
-                selectedEndingIn = {
-                    id: 7,
-                    name: '15th / Last day',
-                };
-            else
-                selectedEndingIn = {
-                    id: 8,
-                    name: 'Last Day',
-                };
-        } else selectedEndingIn = this.endingIns[0];
-
-        return selectedEndingIn;
+        return payPeriod === ESettingsModalEnum.SEMI_MONTHLY
+            ? { id: 7, name: '15th / Last day' }
+            : { id: 8, name: 'Last Day' };
     }
 
     private validateMiles(): void {
@@ -1089,11 +1066,10 @@ export class SettingsBasicModalComponent
                         this.companyForm.get(
                             ESettingsFormControls.TEAM_EMPTY_MILE
                         ).value
-                    ) {
+                    )
                         this.companyForm
                             .get(ESettingsFormControls.TEAM_EMPTY_MILE)
                             .patchValue(value);
-                    }
                 }
             });
 
@@ -1134,7 +1110,7 @@ export class SettingsBasicModalComponent
 
                 let cardTypes: string[] = [];
 
-                bankCards.map((card) => {
+                bankCards.forEach((card) => {
                     const cardType = bankCardTypeValidation(card.card);
                     cardTypes.push(cardType);
                 });
@@ -1142,7 +1118,7 @@ export class SettingsBasicModalComponent
             });
     }
 
-    public onUploadImage(event: any) {
+    public onUploadImage(event: any): void {
         const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
         this.companyForm.get(ESettingsFormControls.LOGO).patchValue(base64Data);
         this.companyForm.get(ESettingsFormControls.LOGO).setErrors(null);
@@ -1169,7 +1145,7 @@ export class SettingsBasicModalComponent
         this.prefferedLoadTabs = this.prefferedLoadTabs.map((item) => {
             if (item.name === event.name)
                 this.companyForm
-                    .get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
+                    .get(ESettingsFormEnum.PREFERRED_LOAD_TYPE)
                     .patchValue(item.name);
 
             return {
@@ -1183,7 +1159,7 @@ export class SettingsBasicModalComponent
         this.fleetTypeTabs = this.fleetTypeTabs.map((item) => {
             if (item.id === event.id)
                 this.companyForm
-                    .get(SettingsFormEnum.FLEET_TYPE)
+                    .get(ESettingsFormEnum.FLEET_TYPE)
                     .patchValue(item.name);
 
             this.selectedFleetType = item.name;
@@ -1221,9 +1197,10 @@ export class SettingsBasicModalComponent
                                 );
 
                     if (
-                        ['Team', ESettingsModalEnum.COMBINED].includes(
-                            this.selectedFleetType
-                        )
+                        [
+                            ESettingsModalEnum.TEAM,
+                            ESettingsModalEnum.COMBINED as String,
+                        ].includes(this.selectedFleetType)
                     )
                         if (
                             this.companyForm.get(
@@ -1258,9 +1235,10 @@ export class SettingsBasicModalComponent
                                 );
 
                     if (
-                        ['Team', ESettingsModalEnum.COMBINED].includes(
-                            this.selectedFleetType
-                        )
+                        [
+                            ESettingsModalEnum.TEAM,
+                            ESettingsModalEnum.COMBINED as String,
+                        ].includes(this.selectedFleetType)
                     ) {
                         if (
                             this.companyForm.get(
@@ -1279,7 +1257,7 @@ export class SettingsBasicModalComponent
             });
     }
 
-    private getModalDropdowns() {
+    private getModalDropdowns(): void {
         this.settingsCompanyService
             .getCompanyModal()
             .pipe(takeUntil(this.destroy$))
@@ -1306,28 +1284,29 @@ export class SettingsBasicModalComponent
                     this.payTermOptions = payTerms;
 
                     if (
-                        this.editData.type ===
+                        this.editData.type !==
                         ESettingsModalEnum.EDIT_COMPANY_FIRST_LOGIN
-                    ) {
-                        this.selectedDriverPayPeriod = payPeriods[0];
-                        this.selectedDriverEndingIn = endingIns[0];
-                        this.selectedAccountingPayPeriod = payPeriods[0];
-                        this.selectedAccountingEndingIn = endingIns[0];
-                        this.selectedCompanyPayPeriod = payPeriods[0];
-                        this.selectedCompanyEndingIn = endingIns[0];
-                        this.selectedDispatchPayPeriod = payPeriods[0];
-                        this.selectedDispatchEndingIn = endingIns[0];
-                        this.selectedManagerPayPeriod = payPeriods[0];
-                        this.selectedManagerEndingIn = endingIns[0];
-                        this.selectedRecPayPeriod = payPeriods[0];
-                        this.selectedRecEndingIn = endingIns[0];
-                        this.selectedRepairPayPeriod = payPeriods[0];
-                        this.selectedRepairEndingIn = endingIns[0];
-                        this.selectedSafetyPayPeriod = payPeriods[0];
-                        this.selectedSafetyEndingIn = endingIns[0];
-                        this.selectedOtherPayPeriod = payPeriods[0];
-                        this.selectedOtherEndingIn = endingIns[0];
-                    }
+                    )
+                        return;
+
+                    this.selectedDriverPayPeriod = payPeriods[0];
+                    this.selectedDriverEndingIn = endingIns[0];
+                    this.selectedAccountingPayPeriod = payPeriods[0];
+                    this.selectedAccountingEndingIn = endingIns[0];
+                    this.selectedCompanyPayPeriod = payPeriods[0];
+                    this.selectedCompanyEndingIn = endingIns[0];
+                    this.selectedDispatchPayPeriod = payPeriods[0];
+                    this.selectedDispatchEndingIn = endingIns[0];
+                    this.selectedManagerPayPeriod = payPeriods[0];
+                    this.selectedManagerEndingIn = endingIns[0];
+                    this.selectedRecPayPeriod = payPeriods[0];
+                    this.selectedRecEndingIn = endingIns[0];
+                    this.selectedRepairPayPeriod = payPeriods[0];
+                    this.selectedRepairEndingIn = endingIns[0];
+                    this.selectedSafetyPayPeriod = payPeriods[0];
+                    this.selectedSafetyEndingIn = endingIns[0];
+                    this.selectedOtherPayPeriod = payPeriods[0];
+                    this.selectedOtherEndingIn = endingIns[0];
                 },
             });
     }
@@ -1421,20 +1400,9 @@ export class SettingsBasicModalComponent
 
         this.companyForm.patchValue({
             // Basic Tab
-            name: company.name,
-            usDot: company.usDot,
-            ein: company.ein,
-            mc: company.mc,
-            phone: company.phone,
-            email: company.email,
-            fax: company.fax,
-            webUrl: company.webUrl,
+            ...company,
             address: company.address?.address,
             addressUnit: company.address?.addressUnit,
-            irp: company.irp,
-            ifta: company.ifta,
-            toll: company.toll,
-            scac: company.scac,
             timeZone:
                 company.timeZone?.id !== 0 ? company.timeZone?.name : null,
             currency:
@@ -1443,22 +1411,11 @@ export class SettingsBasicModalComponent
                 ? this.editData.company.logo
                 : */ null,
             // Additional Info Tab
-            prefix: additionalInfo?.prefix,
-            starting: additionalInfo?.starting,
-            suffix: additionalInfo?.sufix,
-            autoInvoicing: additionalInfo?.autoInvoicing,
-            factorByDefault: additionalInfo?.factorByDefault,
-            preferredLoadType: additionalInfo?.preferredLoadType,
-            fleetType: additionalInfo?.fleetType,
             payTerm: additionalInfo?.payTerm
                 ? this.payTermOptions?.find(
                       (payTerm) => payTerm.id === additionalInfo?.payTerm
                   )?.name
                 : null,
-            customerCredit: additionalInfo?.customerCredit,
-            mvrMonths: additionalInfo?.mvrMonths,
-            truckInspectionMonths: additionalInfo?.truckInspectionMonths,
-            trailerInspectionMonths: additionalInfo?.trailerInspectionMonths,
         });
 
         this.selectedAddress = this.editData.company.address;
@@ -1513,13 +1470,11 @@ export class SettingsBasicModalComponent
                     this.bankAccounts.push(this.createBankAccount(bankAccount));
 
                     this.selectedBankAccountFormArray.push({
-                        ...this.editData.company.bankAccounts[index].bank,
+                        ...this.editData.company?.bankAccounts[index]?.bank,
                     });
 
                     this.isBankSelectedFormArray.push(
-                        this.editData.company.bankAccounts[index].id
-                            ? true
-                            : false
+                        !!this.editData.company.bankAccounts[index]?.id
                     );
 
                     this.onBankSelected(index);
@@ -1555,9 +1510,7 @@ export class SettingsBasicModalComponent
             this.onPrefferedLoadCheck(selectedPrefferedLoadTypeTab);
             this.onFleetTypeCheck(selectedFleetTypeTab);
 
-            setTimeout(() => {
-                this.isCardAnimationDisabled = false;
-            }, 1000);
+            this.isCardAnimationDisabled = false;
         }
     }
 
@@ -1605,8 +1558,8 @@ export class SettingsBasicModalComponent
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
             },
-            timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
-            currency: this.selectedCurrency ? this.selectedCurrency.id : null,
+            timeZone: this.selectedTimeZone?.id ?? null,
+            currency: this.selectedCurrency?.id ?? null,
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
@@ -1653,14 +1606,14 @@ export class SettingsBasicModalComponent
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: eGeneralActions.DELETE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: eGeneralActions.DELETE,
                         status: false,
                         close: false,
                     });
@@ -1730,7 +1683,7 @@ export class SettingsBasicModalComponent
                   )
                 : null,
             preferredLoadType:
-                this.companyForm.get(SettingsFormEnum.PREFERRED_LOAD_TYPE)
+                this.companyForm.get(ESettingsFormEnum.PREFERRED_LOAD_TYPE)
                     .value === ESettingsModalEnum.FTL
                     ? 1
                     : 2,
@@ -1877,22 +1830,25 @@ export class SettingsBasicModalComponent
             },
             team: {
                 emptyMile: !loadedAndEmptySameRate
-                    ? ['Team', ESettingsModalEnum.COMBINED].includes(
-                          this.selectedFleetType
-                      )
+                    ? [
+                          ESettingsModalEnum.TEAM,
+                          ESettingsModalEnum.COMBINED as String,
+                      ].includes(this.selectedFleetType)
                         ? parseFloat(teamEmptyMile)
                         : null
                     : null,
                 loadedMile: !loadedAndEmptySameRate
-                    ? ['Team', ESettingsModalEnum.COMBINED].includes(
-                          this.selectedFleetType
-                      )
+                    ? [
+                          ESettingsModalEnum.TEAM,
+                          ESettingsModalEnum.COMBINED as String,
+                      ].includes(this.selectedFleetType)
                         ? parseFloat(teamLoadedMile)
                         : null
                     : null,
-                perStop: ['Team', ESettingsModalEnum.COMBINED].includes(
-                    this.selectedFleetType
-                )
+                perStop: [
+                    ESettingsModalEnum.TEAM,
+                    ESettingsModalEnum.COMBINED as String,
+                ].includes(this.selectedFleetType)
                     ? teamPerStop
                         ? MethodsCalculationsHelper.convertThousandSepInNumber(
                               teamPerStop
@@ -1910,9 +1866,11 @@ export class SettingsBasicModalComponent
                         : null
                     : null
                 : null,
-            perMileTeam: ['Team', ESettingsModalEnum.COMBINED].includes(
-                this.selectedFleetType
-            )
+            perMileTeam: [
+                ESettingsModalEnum.TEAM,
+
+                ESettingsModalEnum.COMBINED as String,
+            ].includes(this.selectedFleetType)
                 ? loadedAndEmptySameRate
                     ? perMileTeam
                         ? parseFloat(perMileTeam)
@@ -1936,8 +1894,8 @@ export class SettingsBasicModalComponent
                 ? driverSoloDefaultCommission
                 : null,
             defaultTeamDriverCommission: [
-                'Team',
-                ESettingsModalEnum.COMBINED,
+                ESettingsModalEnum.TEAM,
+                ESettingsModalEnum.COMBINED as String,
             ].includes(this.selectedFleetType)
                 ? driverTeamDefaultCommission
                 : null,
@@ -1988,21 +1946,9 @@ export class SettingsBasicModalComponent
 
     private editCompany(data: any): void {
         this.companyForm.patchValue({
-            // -------------------- Basic Tab
-            name: data.name,
-            usDot: data.usDot,
-            ein: data.ein,
-            mc: data.mc,
-            phone: data.phone,
-            email: data.email,
-            fax: data.fax,
-            webUrl: data.webUrl,
+            ...data,
             address: data.address.address,
             addressUnit: data.address.addressUnit,
-            irp: data.irp,
-            ifta: data.ifta,
-            toll: data.toll,
-            scac: data.scac,
             timeZone: data.timeZone?.id !== 0 ? data.timeZone.name : null,
             currency: data.currency?.id !== 0 ? data.currency.name : null,
             companyType:
@@ -2023,10 +1969,6 @@ export class SettingsBasicModalComponent
             autoInvoicing: data.additionalInfo.autoInvoicing,
             preferredLoadType: data.additionalInfo.preferredLoadType,
             factorByDefault: data.additionalInfo.factorByDefault,
-            hazMat: data.hazMat,
-            driverMiles: data.driverMiles,
-            driverComission: data.driverComission,
-            driverFlatRate: data.driverFlatRate,
             payTerm: data.additionalInfo?.payTerm
                 ? this.payTermOptions?.find(
                       (payTerm) => payTerm.id === data.additionalInfo?.payTerm
@@ -2038,7 +1980,7 @@ export class SettingsBasicModalComponent
             trailerInspectionMonths:
                 data.additionalInfo.trailerInspectionMonths,
             //-------------------- Payroll Tab
-            useACHPayout: data.useACHPayout ? true : false,
+            useACHPayout: !!data.useACHPayout,
         });
 
         this.selectedAddress = data.address;
@@ -2089,12 +2031,10 @@ export class SettingsBasicModalComponent
 
         if (data.bankAccounts?.length)
             data.bankAccounts?.forEach((bankAccountItem, index: number) => {
-                const { id, account, routing, status, bank } = bankAccountItem;
+                const { id, status, bank } = bankAccountItem;
                 const bankAccount: IBankAccount = {
-                    id,
+                    ...bankAccountItem,
                     bankId: bank?.name,
-                    account,
-                    routing,
                     status: status
                         ? EBankAccountStatus.VERIFIED
                         : EBankAccountStatus.UNVERIFIED,
@@ -2102,7 +2042,7 @@ export class SettingsBasicModalComponent
 
                 this.bankAccounts.push(this.createBankAccount(bankAccount));
                 this.selectedBankAccountFormArray.push(bank);
-                this.isBankSelectedFormArray.push(id ? true : false);
+                this.isBankSelectedFormArray.push(!!id);
                 this.onBankSelected(index);
             });
 
@@ -2110,10 +2050,7 @@ export class SettingsBasicModalComponent
             for (const card of data.bankCards) {
                 this.bankCards.push(
                     this.createBankCard({
-                        id: card.id,
-                        nickname: card.nickname,
-                        card: card.card,
-                        cvc: card.cvc,
+                        ...card,
                         expireDate: card.expireDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
                                   card.expireDate
@@ -2127,18 +2064,18 @@ export class SettingsBasicModalComponent
         if (data.companyPayrolls.length) {
             for (const payroll of data.companyPayrolls) {
                 switch (payroll.department.id) {
-                    case 1: {
+                    case 1:
                         // Accounting
                         this.companyForm
-                            .get('accountingPayPeriod')
+                            .get(ESettingsFormControls.ACCOUNTING_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
-                            .get('accountingEndingIn')
+                            .get(ESettingsFormControls.ACCOUNTING_ENDING_IN)
                             .patchValue(payroll.endingIn.name);
 
                         this.companyForm
-                            .get('accountingDefaultBase')
+                            .get(ESettingsFormControls.ACCOUNTING_DEFAULT_BASE)
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2149,21 +2086,19 @@ export class SettingsBasicModalComponent
 
                         this.selectedAccountingPayPeriod = payroll.payPeriod;
                         this.selectedAccountingEndingIn = payroll.endingIn;
-
                         break;
-                    }
-                    case 2: {
+                    case 2:
                         // Dispatcher
                         this.companyForm
-                            .get('dispatchPayPeriod')
+                            .get(ESettingsFormControls.DISPATCH_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
-                            .get('dispatchEndingIn')
+                            .get(ESettingsFormControls.DISPATCH_ENDING_IN)
                             .patchValue(payroll.endingIn.name);
 
                         this.companyForm
-                            .get('dispatchDefaultBase')
+                            .get(ESettingsFormControls.DISPATCH_DEFAULT_BASE)
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2172,25 +2107,27 @@ export class SettingsBasicModalComponent
                                     : null
                             );
                         this.companyForm
-                            .get('dispatchDefaultCommission')
+                            .get(
+                                ESettingsFormControls.DISPATCH_DEFAULT_COMMISSION
+                            )
                             .patchValue(payroll.defaultCommission);
 
                         this.selectedDispatchPayPeriod = payroll.payPeriod;
                         this.selectedDispatchEndingIn = payroll.endingIn;
                         break;
-                    }
-                    case 3: {
+
+                    case 3:
                         // Recruiting
                         this.companyForm
-                            .get('recruitingPayPeriod')
+                            .get(ESettingsFormControls.RECRUITING_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
-                            .get('recruitingEndingIn')
+                            .get(ESettingsFormControls.RECRUITING_ENDING_IN)
                             .patchValue(payroll.endingIn.name);
 
                         this.companyForm
-                            .get('recruitingDefaultBase')
+                            .get(ESettingsFormControls.RECRUITING_DEFAULT_BASE)
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2202,8 +2139,8 @@ export class SettingsBasicModalComponent
                         this.selectedRecPayPeriod = payroll.payPeriod;
                         this.selectedRecEndingIn = payroll.endingIn;
                         break;
-                    }
-                    case 4: {
+
+                    case 4:
                         // Repair
                         this.companyForm
                             .get('repairPayPeriod')
@@ -2226,19 +2163,19 @@ export class SettingsBasicModalComponent
                         this.selectedRepairPayPeriod = payroll.payPeriod;
                         this.selectedRepairEndingIn = payroll.endingIn;
                         break;
-                    }
-                    case 5: {
+
+                    case 5:
                         // Safety
                         this.companyForm
                             .get(ESettingsFormControls.SAFETY_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
-                            .get('safetyEndingIn')
+                            .get(ESettingsFormControls.SAFETY_ENDING_IN)
                             .patchValue(payroll.endingIn.name);
 
                         this.companyForm
-                            .get('safetyDefaultBase')
+                            .get(ESettingsFormControls.SAFETY_DEFAULT_BASE)
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2250,19 +2187,19 @@ export class SettingsBasicModalComponent
                         this.selectedSafetyPayPeriod = payroll.payPeriod;
                         this.selectedSafetyEndingIn = payroll.endingIn;
                         break;
-                    }
-                    case 7: {
+
+                    case 7:
                         // Manager
                         this.companyForm
-                            .get('managerPayPeriod')
+                            .get(ESettingsFormControls.MANAGER_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
-                            .get('managerEndingIn')
+                            .get(ESettingsFormControls.MANAGER_ENDING_IN)
                             .patchValue(payroll.endingIn.name);
 
                         this.companyForm
-                            .get('managerDefaultBase')
+                            .get(ESettingsFormControls.MANAGER_DEFAULT_BASE)
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2271,25 +2208,29 @@ export class SettingsBasicModalComponent
                                     : null
                             );
                         this.companyForm
-                            .get('managerDefaultCommission')
+                            .get(
+                                ESettingsFormControls.MANAGER_DEFAULT_COMMISSION
+                            )
                             .patchValue(payroll.defaultCommission);
 
                         this.selectedManagerPayPeriod = payroll.payPeriod;
                         this.selectedManagerEndingIn = payroll.endingIn;
                         break;
-                    }
-                    case 8: {
+
+                    case 8:
                         // Company Owner
                         this.companyForm
-                            .get('companyOwnerPayPeriod')
+                            .get(ESettingsFormControls.COMPANY_OWNER_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
-                            .get('companyOwnerEndingIn')
+                            .get(ESettingsFormControls.COMPANY_OWNER_ENDING_IN)
                             .patchValue(payroll.endingIn.name);
 
                         this.companyForm
-                            .get('companyOwnerDefaultBase')
+                            .get(
+                                ESettingsFormControls.COMPANY_OWNER_DEFAULT_BASE
+                            )
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2301,19 +2242,19 @@ export class SettingsBasicModalComponent
                         this.selectedCompanyPayPeriod = payroll.payPeriod;
                         this.selectedCompanyEndingIn = payroll.endingIn;
                         break;
-                    }
-                    case 9: {
+
+                    case 9:
                         // Other
                         this.companyForm
-                            .get('otherPayPeriod')
+                            .get(ESettingsFormControls.OTHER_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
 
                         this.companyForm
-                            .get('otherEndingIn')
+                            .get(ESettingsFormControls.OTHER_ENDING_IN)
                             .patchValue(payroll.endingIn.name);
 
                         this.companyForm
-                            .get('otherDefaultBase')
+                            .get(ESettingsFormControls.OTHER_DEFAULT_BASE)
                             .patchValue(
                                 payroll.defaultBase
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2325,8 +2266,8 @@ export class SettingsBasicModalComponent
                         this.selectedOtherPayPeriod = payroll.payPeriod;
                         this.selectedOtherEndingIn = payroll.endingIn;
                         break;
-                    }
-                    case 10: {
+
+                    case 10:
                         this.companyForm
                             .get(ESettingsFormControls.DRIVER_OWNER_PAY_PERIOD)
                             .patchValue(payroll.payPeriod.name);
@@ -2357,7 +2298,7 @@ export class SettingsBasicModalComponent
                             .patchValue(payroll.perMileSolo);
 
                         this.companyForm
-                            .get('soloPerLoad')
+                            .get(ESettingsFormControls.SOLO_PER_LOAD)
                             .patchValue(
                                 payroll.soloPerLoad
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2391,7 +2332,7 @@ export class SettingsBasicModalComponent
                             .patchValue(payroll.perMileTeam);
 
                         this.companyForm
-                            .get('teamPerLoad')
+                            .get(ESettingsFormControls.TEAM_PER_LOAD)
                             .patchValue(
                                 payroll.teamPerLoad
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -2425,10 +2366,9 @@ export class SettingsBasicModalComponent
                         this.selectedDriverPayPeriod = payroll.payPeriod;
                         this.selectedDriverEndingIn = payroll.endingIn;
                         break;
-                    }
-                    default: {
+
+                    default:
                         break;
-                    }
                 }
             }
         }
@@ -2436,13 +2376,11 @@ export class SettingsBasicModalComponent
         if (this.companyForm.get(ESettingsFormControls.LOGO).value)
             this.hasDisplayDeleteAction = true;
 
-        setTimeout(() => {
-            this.isCardAnimationDisabled = false;
-        }, 1000);
+        this.isCardAnimationDisabled = false;
     }
 
     public handleDeleteClick(event: any): void {
-        if (event.action === 'delete') {
+        if (event.action === eGeneralActions.DELETE) {
             this.hasDisplayUploadZone = true;
 
             this.companyForm.get(ESettingsFormControls.LOGO).patchValue(null);

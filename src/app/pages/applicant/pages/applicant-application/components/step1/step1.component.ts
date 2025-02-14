@@ -44,8 +44,6 @@ import {
     ssnNumberRegex,
     accountBankValidation,
     routingBankValidation,
-    addressValidation,
-    addressUnitValidation,
     firstNameValidation,
     bankValidation,
     lastNameValidation,
@@ -65,6 +63,7 @@ import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { ApplicantApplicationStringEnum } from '@pages/applicant/pages/applicant-application/enums/applicant-application-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -775,7 +774,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     public onFilesAction(fileActionEvent: {
         files: File[];
-        action: 'add' | 'delete';
+        action: eGeneralActions.ADD | eGeneralActions.DELETE;
         deleteId?: number;
     }): void {
         this.documents = fileActionEvent.files;
@@ -783,14 +782,14 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         this.displayDocumentsRequiredNote = false;
 
         switch (fileActionEvent.action) {
-            case 'add':
+            case eGeneralActions.ADD:
                 this.personalInfoForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.personalInfoForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         fileActionEvent.files.length
                             ? JSON.stringify(fileActionEvent.files)

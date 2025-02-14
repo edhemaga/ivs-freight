@@ -16,6 +16,7 @@ import {
     UpdatePMTrailerUnitListCommand,
     UpdatePMTruckDefaultListCommand,
 } from 'appcoretruckassist';
+import { PmUpdateTruckUnitListCommand } from '@pages/pm-truck-trailer/models/pm-update-truck-unit-list-command.model';
 
 // Store
 import { PmTruckStore } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.store';
@@ -24,8 +25,8 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { PmListTruckStore } from '@pages/pm-truck-trailer/state/pm-list-truck-state/pm-list-truck.store';
 import { PmListTrailerStore } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.store';
 
-// Model
-import { PmUpdateTruckUnitListCommand } from '@pages/pm-truck-trailer/models/pm-update-truck-unit-list-command.model';
+// Enums
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -138,7 +139,7 @@ export class PmService {
                             this.pmTruckStore.add(pm.pagination.data[0]);
 
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: eGeneralActions.UPDATE,
                                 data: pm.pagination.data[0],
                                 id: pm.pagination.data[0].id,
                             });
@@ -267,7 +268,7 @@ export class PmService {
                             this.pmTrailerStore.add(pm.pagination.data[0]);
 
                             this.tableService.sendActionAnimation({
-                                animation: 'update',
+                                animation: eGeneralActions.UPDATE,
                                 data: pm.pagination.data[0],
                                 id: pm.pagination.data[0].id,
                             });
