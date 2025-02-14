@@ -1,4 +1,4 @@
-export enum TruckModalForm {
+export enum eTruckModalForm {
     TRUCK_TRAILER_LENGTH = 'truckLengthId',
     PURCHASE_DATE = 'purchaseDate',
     PURCHASE_PRICE = 'purchasePrice',
