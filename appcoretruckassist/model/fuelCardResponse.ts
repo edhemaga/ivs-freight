@@ -9,16 +9,24 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TruckMinimalResponse } from './truckMinimalResponse';
 import { EnumValue } from './enumValue';
 import { DriverMinimalResponse } from './driverMinimalResponse';
+import { AddressEntity } from './addressEntity';
 
 
 export interface FuelCardResponse { 
     id?: number;
     driver?: DriverMinimalResponse;
+    drId?: string | null;
     cardNumber?: string | null;
     fuelCardBrand?: EnumValue;
     status?: boolean;
+    truck?: TruckMinimalResponse;
+    accountId?: string | null;
+    lastUsed?: string | null;
+    address?: AddressEntity;
+    totalCost?: number | null;
     createdAt?: string;
     updatedAt?: string;
 }
