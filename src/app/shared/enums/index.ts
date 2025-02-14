@@ -16,6 +16,7 @@ export * from './modal-button-text.enum';
 
 export * from './general-actions.enums';
 export * from './string-placeholder.enum';
+export * from './confirmation-message.enum';
 
 // Files
 export * from './file/file-form-controls.enum';
