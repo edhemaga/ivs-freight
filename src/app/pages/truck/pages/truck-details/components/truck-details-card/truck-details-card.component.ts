@@ -67,6 +67,9 @@ import { ChartHelper } from '@shared/utils/helpers';
 // components
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 
+// svg-routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Component({
     selector: 'app-truck-details-card',
     templateUrl: './truck-details-card.component.html',
@@ -141,6 +144,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public isWideScreen: boolean = false;
     public ownerHistoryHeader: { label: string }[] =
         TruckDetailsConstants.ownerHistoryHeader;
+
+    // svg-routes
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,

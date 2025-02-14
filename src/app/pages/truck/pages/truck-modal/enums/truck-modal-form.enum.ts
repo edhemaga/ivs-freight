@@ -1,4 +1,4 @@
-export enum TruckModalForm {
+export enum eTruckModalForm {
     TRUCK_TRAILER_LENGTH = 'truckLengthId',
     PURCHASE_DATE = 'purchaseDate',
     PURCHASE_PRICE = 'purchasePrice',
@@ -8,5 +8,12 @@ export enum TruckModalForm {
     EXCLUDE_FROM_IFTA = 'excludeFromIftaFuelTaxReport',
     BOX_TRUCK = 'Box Truck',
     COMPANY_OWNED = 'companyOwned',
-    YEAR = 'year'
+    YEAR = 'year',
+    OWNER_ID = 'ownerId',
+    FUEL_TANK_SIZE = 'fuelTankSize',
+    MILEAGE = 'mileage',
+    AXLES = 'axles',
+    EMPTY_WEIGHT = 'emptyWeight',
+    COMMISSION = 'commission',
+    WHEEL_BASE = 'wheelBase',
 }

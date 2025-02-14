@@ -698,72 +698,81 @@
                     </div>
                 </app-ta-custom-card>
                 <!--------Owner--------->
-                <app-ta-custom-card
-                    [cardName]="
-                        ownerCardOpened ? 'Owner' : 'Owner ' + truck.owner.name
-                    "
-                    [bodyTemplate]="'card'"
-                    [isCardOpen]="true"
-                    [customClass]="'detailsPadding'"
-                    [animationMarginParams]="{
-                        marginTop: '0px',
-                        marginBottom: '10px',
-                    }"
-                    (onOpenCard)="onOpenCloseCard($event)"
-                >
-                    <div class="common-template">
-                        <div class="common-template-item">
-                            <div class="common-template-item-name">Company</div>
-                            <div class="common-template-item-value size18">
-                                {{ truck.owner.name }}
+                @if (!truck.companyOwned) {
+                    <app-ta-custom-card
+                        [cardName]="
+                            ownerCardOpened
+                                ? 'Owner'
+                                : 'Owner ' + truck.owner.name
+                        "
+                        [bodyTemplate]="'card'"
+                        [isCardOpen]="true"
+                        [customClass]="'detailsPadding'"
+                        [animationMarginParams]="{
+                            marginTop: '0px',
+                            marginBottom: '10px',
+                        }"
+                        (onOpenCard)="onOpenCloseCard($event)"
+                    >
+                        <div class="common-template">
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Company
+                                </div>
+                                <div class="common-template-item-value size18">
+                                    {{ truck.owner.name }}
+                                </div>
+                            </div>
+                            <div class="common-template-item">
+                                <div class="common-template-item-name">
+                                    Commission
+                                </div>
+                                <div class="common-template-item-value size18">
+                                    {{ truck.commission }}%
+                                </div>
                             </div>
                         </div>
-                        <div class="common-template-item">
-                            <div class="common-template-item-name">
-                                Commission
-                            </div>
-                            <div class="common-template-item-value size18">
-                                {{ truck.commission }}%
-                            </div>
-                        </div>
-                    </div>
-                    <div class="wrapper-owner">
-                        <div class="owner-items">
-                            <svg-icon
-                                class="icons-details"
-                                src="assets/svg/common/ic_phone.svg"
-                            ></svg-icon>
+                        <div class="wrapper-owner">
+                            <div class="owner-items">
+                                <svg-icon
+                                    class="icons-details"
+                                    [src]="svgRoutes.PHONE_ICON"
+                                ></svg-icon>
 
-                            <app-ta-copy
-                                [copyValue]="truck?.owner?.phone"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                        <div class="owner-items">
-                            <svg-icon
-                                class="icons-details"
-                                src="assets/svg/common/ic_email.svg"
-                            ></svg-icon>
-                            <app-ta-copy
-                                [copyValue]="truck?.owner?.email"
-                                [textColor]="'#2f2f2f'"
-                            >
-                            </app-ta-copy>
-                        </div>
-                        <div class="owner-items">
-                            <svg-icon
-                                src="assets/svg/common/ic_address.svg"
-                            ></svg-icon>
-                            <p class="information-value">
                                 <app-ta-copy
-                                    [copyValue]="truck?.owner?.address?.address"
+                                    [copyValue]="truck?.owner?.phone"
                                     [textColor]="'#2f2f2f'"
-                                ></app-ta-copy>
-                            </p>
+                                >
+                                </app-ta-copy>
+                            </div>
+                            <div class="owner-items">
+                                <svg-icon
+                                    class="icons-details"
+                                    [src]="svgRoutes.EMAIL_ICON"
+                                ></svg-icon>
+                                <app-ta-copy
+                                    [copyValue]="truck?.owner?.email"
+                                    [textColor]="'#2f2f2f'"
+                                >
+                                </app-ta-copy>
+                            </div>
+                            <div class="owner-items">
+                                <svg-icon
+                                    [src]="svgRoutes.ADDRESS_ICON"
+                                ></svg-icon>
+                                <p class="information-value">
+                                    <app-ta-copy
+                                        [copyValue]="
+                                            truck?.owner?.address?.address
+                                        "
+                                        [textColor]="'#2f2f2f'"
+                                    ></app-ta-copy>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                </app-ta-custom-card>
+                    </app-ta-custom-card>
+                }
+                
                 <app-ta-custom-card
                     [isCardOpen]="false"
                     [tooltipName]="'View in Modal'"
