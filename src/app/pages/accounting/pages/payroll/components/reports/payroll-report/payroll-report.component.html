@@ -138,13 +138,19 @@
                 name="load_order_num_{{ data.orderNumber }}"
             ></svg-icon>
         </ng-container>
+        
+        @if(data.stopType.name === 'Repair') {
+            <span class="load-description-small-icon load-description-small-icon-repair text-size-11 text-weight-700 d-flex align-items-center justify-content-center">R</span>
+        } @else if(data.stopType.name === 'DeadHead') {
+            <span class="load-description-small-icon load-description-small-icon-deadhead text-color-bw6-2 text-size-11 text-weight-700 d-flex align-items-center justify-content-center">D</span>
+        }
 
         <div class="load-description-name">
-            <div class="load-description-address">
+            <div class="load-description-address text-color-black"> 
                 {{ data.address }}
-                <ng-container *ngIf="data.isTonu"
-                    ><span class="load-description-tonu">T</span></ng-container
-                >
+                @if (data.isTonu) {
+                    <span class="load-description-tonu">T</span>
+                } 
             </div>
             <div class="load-description-stop-type">
                 {{ data.stopType.name }}
