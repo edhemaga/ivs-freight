@@ -1,4 +1,4 @@
-export enum EGeneralActions {
+export enum eGeneralActions {
     ADD = 'add',
     UPDATE = 'update',
     DELETE = 'delete',

@@ -8,7 +8,7 @@ import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.
 import { RepairShopContactResponse } from 'appcoretruckassist';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export class RepairShopDetailsHelper {
     static getDetailsDropdownOptions(
@@ -31,9 +31,9 @@ export class RepairShopDetailsHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: EGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: EGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT,
                     disabled: !status,
                 },
                 {
@@ -103,7 +103,7 @@ export class RepairShopDetailsHelper {
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     show: true,
                     redIcon: true,
-                    iconName: EGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE,
                 },
             ],
             export: true,

@@ -47,7 +47,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 // Enums
-import { EFileFormControls, EGeneralActions } from '@shared/enums';
+import { EFileFormControls, eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-fuel-stop-modal',
@@ -148,7 +148,7 @@ export class FuelStopModalComponent
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case EGeneralActions.CLOSE:
+            case eGeneralActions.CLOSE:
                 break;
             case 'save':
                 if (this.fuelStopForm.invalid || !this.isFormDirty) {
@@ -253,13 +253,13 @@ export class FuelStopModalComponent
         this.documents = event.files;
 
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.fuelStopForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.fuelStopForm
                     .get(EFileFormControls.FILES)
                     .patchValue(
@@ -525,7 +525,7 @@ export class FuelStopModalComponent
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
 
-                    if (this.editData?.type === EGeneralActions.EDIT) {
+                    if (this.editData?.type === eGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
 
                         this.getFuelStopById(this.editData.id);

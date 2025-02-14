@@ -25,7 +25,7 @@ import {
 } from 'appcoretruckassist';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -64,7 +64,7 @@ export class AccountService {
                             );
 
                             this.tableService.sendActionAnimation({
-                                animation: EGeneralActions.ADD,
+                                animation: eGeneralActions.ADD,
                                 data: account,
                                 id: account.id,
                             });
@@ -95,7 +95,7 @@ export class AccountService {
                         this.accountStore.add(account);
 
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.UPDATE,
+                            animation: eGeneralActions.UPDATE,
                             data: account,
                             id: account.id,
                         });
@@ -187,7 +187,7 @@ export class AccountService {
                 );
 
                 this.tableService.sendActionAnimation({
-                    animation: EGeneralActions.DELETE,
+                    animation: eGeneralActions.DELETE,
                     id: accountId,
                 });
             })

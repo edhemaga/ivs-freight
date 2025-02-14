@@ -27,7 +27,7 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { ShipperDetailsItemSvgRoutes } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/svg-routes';
 
 // Enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Titles()
 @Component({
@@ -82,10 +82,10 @@ export class ShipperDetailsItemComponent implements OnChanges {
     }
     public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.deleteReview(reviews);
                 break;
-            case EGeneralActions.UPDATE:
+            case eGeneralActions.UPDATE:
                 this.updateReview(reviews);
                 break;
             default:

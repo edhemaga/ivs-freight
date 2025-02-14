@@ -53,7 +53,7 @@ import { addressValidation } from '@shared/components/ta-input/validators/ta-inp
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 declare var google: any;
 declare const geoXML3: any;
@@ -589,7 +589,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'settings',
             show: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-            iconName: EGeneralActions.EDIT,
+            iconName: eGeneralActions.EDIT,
         },
         {
             title: 'border',
@@ -657,16 +657,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         },
         {
             title: 'Delete',
-            name: EGeneralActions.DELETE,
+            name: eGeneralActions.DELETE,
             type: 'route',
             text: 'Are you sure you want to delete this Route?',
             class: 'delete-text',
-            contentType: EGeneralActions.DELETE,
+            contentType: eGeneralActions.DELETE,
             show: true,
             danger: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
             redIcon: true,
-            iconName: EGeneralActions.DELETE,
+            iconName: eGeneralActions.DELETE,
         },
     ];
 
@@ -891,7 +891,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case EGeneralActions.DELETE:
+                        case eGeneralActions.DELETE:
                             if (res.template === 'route') {
                                 this.showHideRouteLine(res.data, true);
 
@@ -1887,7 +1887,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.reverseRouteStops(currentId);
         } else if (actionName === 'clear-route-stops') {
             this.clearRouteStops(currentId);
-        } else if (actionName === EGeneralActions.DELETE) {
+        } else if (actionName === eGeneralActions.DELETE) {
             let route = this.getRouteById(currentId);
 
             var routeObj = {
@@ -1902,7 +1902,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 {
                     ...routeObj,
                     template: 'route',
-                    type: EGeneralActions.DELETE,
+                    type: eGeneralActions.DELETE,
                 }
             );
         } else if (actionName === 'open-settings') {

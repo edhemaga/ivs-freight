@@ -27,7 +27,7 @@ import {
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -101,7 +101,7 @@ export class UserService {
                         );
 
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.ADD,
+                            animation: eGeneralActions.ADD,
                             data: user,
                             id: user.id,
                         });
@@ -130,7 +130,7 @@ export class UserService {
                         this.userActiveStore.add(user);
 
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.UPDATE,
+                            animation: eGeneralActions.UPDATE,
                             data: user,
                             id: user.id,
                         });

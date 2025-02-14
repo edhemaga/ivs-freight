@@ -93,7 +93,7 @@ import {
     EBankAccountStatus,
     ESettingsFormControls,
 } from '@pages/settings/enums';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // Models
 import {
@@ -619,11 +619,11 @@ export class SettingsBasicModalComponent
                 }
 
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 if (!this.editData.company?.divisions.length) {
                     this.deleteCompanyDivisionById(this.editData.company.id);
                     this.modalService.setModalSpinner({
-                        action: EGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE,
                         status: true,
                         close: false,
                     });
@@ -1606,14 +1606,14 @@ export class SettingsBasicModalComponent
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: EGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: EGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE,
                         status: false,
                         close: false,
                     });
@@ -2380,7 +2380,7 @@ export class SettingsBasicModalComponent
     }
 
     public handleDeleteClick(event: any): void {
-        if (event.action === EGeneralActions.DELETE) {
+        if (event.action === eGeneralActions.DELETE) {
             this.hasDisplayUploadZone = true;
 
             this.companyForm.get(ESettingsFormControls.LOGO).patchValue(null);

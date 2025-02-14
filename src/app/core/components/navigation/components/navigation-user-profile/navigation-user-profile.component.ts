@@ -34,7 +34,7 @@ import { UserProfileUpdateService } from '@shared/services/user-profile-update.s
 import { NavigationProfileUpdateModalComponent } from '@core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-navigation-user-profile',
@@ -102,7 +102,7 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
 
     public onAction(data: NavigationUserPanel): void {
         switch (data.action) {
-            case EGeneralActions.UPDATE:
+            case eGeneralActions.UPDATE:
                 this.modalService.openModal(
                     NavigationProfileUpdateModalComponent,
                     {

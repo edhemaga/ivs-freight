@@ -27,7 +27,7 @@ import { AccidentInactiveQuery } from '@pages/safety/accident/state/accident-ina
 import { AccidentShortResponse } from 'appcoretruckassist';
 
 // enums
-import { EGeneralActions, EStringPlaceholder } from '@shared/enums';
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-accident-table',
@@ -81,7 +81,7 @@ export class AccidentTableComponent
         sortName: 'report',
     };
     public sortBy: any;
-    public searchValue: string = EStringPlaceholder.EMPTY;
+    public searchValue: string = eStringPlaceholder.EMPTY;
     public locationFilterOn: boolean = false;
 
     constructor(
@@ -179,17 +179,17 @@ export class AccidentTableComponent
                     title: 'Edit',
                     name: 'edit-accident',
                     class: 'regular-text',
-                    contentType: EGeneralActions.EDIT,
+                    contentType: eGeneralActions.EDIT,
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                 },
                 {
                     title: 'Delete',
-                    name: EGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE,
                     type: 'safety',
                     text: 'Are you sure you want to delete accident?',
                     class: 'delete-text',
-                    contentType: EGeneralActions.DELETE,
+                    contentType: eGeneralActions.DELETE,
                     show: true,
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
@@ -306,14 +306,14 @@ export class AccidentTableComponent
             tableReport: data?.report ? data.report : 'No Report',
             tableDriverName: data?.driver_FullName
                 ? data.driver_FullName
-                : EStringPlaceholder.EMPTY,
+                : eStringPlaceholder.EMPTY,
             truckNumber: null,
             trailerNumber: null,
             tableDate: data?.date
                 ? this.datePipe.transform(data.date, 'MM/dd/yy')
-                : EStringPlaceholder.EMPTY,
-            tabelTime: data?.time ?? EStringPlaceholder.EMPTY,
-            tableState: data?.state ? data?.state : EStringPlaceholder.EMPTY,
+                : eStringPlaceholder.EMPTY,
+            tabelTime: data?.time ?? eStringPlaceholder.EMPTY,
+            tableState: data?.state ? data?.state : eStringPlaceholder.EMPTY,
             tableAttachments: [],
         };
     }
@@ -348,7 +348,7 @@ export class AccidentTableComponent
                     { size: 'large-xl' },
                     {
                         id: event.id,
-                        type: EGeneralActions.EDIT,
+                        type: eGeneralActions.EDIT,
                         data: event.data,
                     }
                 );

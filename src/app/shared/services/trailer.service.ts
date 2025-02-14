@@ -33,7 +33,7 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
 
 // enums
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({ providedIn: 'root' })
 export class TrailerService implements OnDestroy {
@@ -93,7 +93,7 @@ export class TrailerService implements OnDestroy {
                                 );
 
                                 this.tableService.sendActionAnimation({
-                                    animation: EGeneralActions.ADD,
+                                    animation: eGeneralActions.ADD,
                                     data: trailer,
                                     id: trailer.id,
                                 });
@@ -166,7 +166,7 @@ export class TrailerService implements OnDestroy {
                     .subscribe({
                         next: (trailer: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: EGeneralActions.UPDATE,
+                                animation: eGeneralActions.UPDATE,
                                 data: trailer,
                                 id: trailer.id,
                             });
@@ -207,7 +207,7 @@ export class TrailerService implements OnDestroy {
                     .subscribe({
                         next: (trailer: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: EGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE,
                                 data: trailer,
                                 id: trailer.id,
                             });
@@ -360,7 +360,7 @@ export class TrailerService implements OnDestroy {
                     next: (res: any) => {
                         trailerData.registrations = res;
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.UPDATE,
+                            animation: eGeneralActions.UPDATE,
                             data: trailerData,
                             id: trailerData.id,
                         });
@@ -444,7 +444,7 @@ export class TrailerService implements OnDestroy {
                         .subscribe({
                             next: (trailer: any) => {
                                 this.tableService.sendActionAnimation({
-                                    animation: EGeneralActions.UPDATE,
+                                    animation: eGeneralActions.UPDATE,
                                     data: trailer,
                                     id: trailer.id,
                                 });

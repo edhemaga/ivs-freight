@@ -20,7 +20,7 @@ import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
 
 // Enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -134,7 +134,7 @@ export class TruckService implements OnDestroy {
                                 );
 
                                 this.tableService.sendActionAnimation({
-                                    animation: EGeneralActions.ADD,
+                                    animation: eGeneralActions.ADD,
                                     data: truck,
                                     id: truck.id,
                                 });
@@ -169,7 +169,7 @@ export class TruckService implements OnDestroy {
                     .subscribe({
                         next: (truck: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: EGeneralActions.UPDATE,
+                                animation: eGeneralActions.UPDATE,
                                 data: truck,
                                 id: truck.id,
                             });
@@ -208,7 +208,7 @@ export class TruckService implements OnDestroy {
                     .subscribe({
                         next: (truck: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: EGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE,
                                 data: truck,
                                 id: truck.id,
                             });
@@ -240,7 +240,7 @@ export class TruckService implements OnDestroy {
                     next: (res: any) => {
                         truckData.registrations = res;
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.UPDATE,
+                            animation: eGeneralActions.UPDATE,
                             data: truckData,
                             id: truckData.id,
                         });
@@ -469,7 +469,7 @@ export class TruckService implements OnDestroy {
                 this.truckItem.set([truck]);
 
                 this.tableService.sendActionAnimation({
-                    animation: EGeneralActions.UPDATE,
+                    animation: eGeneralActions.UPDATE,
                     data: truck,
                     id: truck.id,
                 });

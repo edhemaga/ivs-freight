@@ -2,7 +2,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerConfigInterface } from '@pages/trailer/pages/trailer-modal/models';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export class TrailerModalConfig {
     static getVolumenTrailers(): string[] {
@@ -28,7 +28,7 @@ export class TrailerModalConfig {
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 8,
-            autoFocus: options?.editType !== EGeneralActions.EDIT,
+            autoFocus: options?.editType !== eGeneralActions.EDIT,
         };
     }
     static getTrailerTypeIdConfig(options: TrailerConfigInterface): ITaInput {

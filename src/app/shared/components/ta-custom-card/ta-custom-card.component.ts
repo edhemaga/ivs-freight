@@ -23,7 +23,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -174,10 +174,10 @@ export class TaCustomCardComponent implements OnInit {
         event.stopPropagation();
 
         switch (action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.onActionEvent.emit({
                     check: true,
-                    action: EGeneralActions.ADD,
+                    action: eGeneralActions.ADD,
                 });
 
                 break;
@@ -192,10 +192,10 @@ export class TaCustomCardComponent implements OnInit {
                 });
 
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.onActionEvent.emit({
                     check: true,
-                    action: EGeneralActions.DELETE,
+                    action: eGeneralActions.DELETE,
                 });
 
                 break;

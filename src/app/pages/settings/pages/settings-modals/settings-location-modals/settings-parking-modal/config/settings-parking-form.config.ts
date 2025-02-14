@@ -1,7 +1,7 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export class SettingsParkingConfig {
     static getNameInputConfig(type: string): ITaInput {
@@ -10,7 +10,7 @@ export class SettingsParkingConfig {
             type: 'text',
             label: 'Parking Name',
             isRequired: true,
-            autoFocus: type !== EGeneralActions.EDIT,
+            autoFocus: type !== eGeneralActions.EDIT,
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 64,

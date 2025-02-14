@@ -18,7 +18,7 @@ import { getRoadsideInspectionColums } from '@shared/utils/settings/table-settin
 
 // components
 import { ViolationModalComponent } from '@pages/safety/violation/pages/violation-modal/violation-modal.component';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-violation-table',
@@ -131,15 +131,15 @@ export class ViolationTableComponent
                     title: 'Edit',
                     name: 'edit-violation',
                     class: 'regular-text',
-                    contentType: EGeneralActions.EDIT,
+                    contentType: eGeneralActions.EDIT,
                 },
                 {
                     title: 'Delete',
-                    name: EGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE,
                     type: 'violations',
                     text: 'Are you sure you want to delete violation?',
                     class: 'delete-text',
-                    contentType: EGeneralActions.DELETE,
+                    contentType: eGeneralActions.DELETE,
                 },
             ],
         };
@@ -323,7 +323,7 @@ export class ViolationTableComponent
                     { size: 'large-xl' },
                     {
                         id: event.id,
-                        type: EGeneralActions.EDIT,
+                        type: eGeneralActions.EDIT,
                         data: event.data,
                     }
                 );

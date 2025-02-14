@@ -89,8 +89,8 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import {
     EFileFormControls,
-    EGeneralActions,
-    EStringPlaceholder,
+    eGeneralActions,
+    eStringPlaceholder,
     ModalButtonSize,
     ModalButtonType,
 } from '@shared/enums';
@@ -361,7 +361,7 @@ export class ShipperModalComponent
             switch (this.editData?.key) {
                 case 'load-modal':
                     this.modalService.setProjectionModal({
-                        action: EGeneralActions.CLOSE,
+                        action: eGeneralActions.CLOSE,
                         payload: {
                             key: this.editData?.key,
                             value: null,
@@ -416,7 +416,7 @@ export class ShipperModalComponent
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (this.editData?.type.includes(EGeneralActions.EDIT))
+                if (this.editData?.type.includes(eGeneralActions.EDIT))
                     this.updateShipper(this.editData.id);
                 else this.addShipper();
             }
@@ -521,16 +521,16 @@ export class ShipperModalComponent
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.deleteReview(true, review);
                 break;
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.addReview(review);
                 break;
-            case EGeneralActions.UPDATE:
+            case eGeneralActions.UPDATE:
                 this.updateReview(review);
                 break;
-            case EGeneralActions.CANCEL:
+            case eGeneralActions.CANCEL:
                 this.reviews = [...this.reviews.filter((review) => review.id)];
                 break;
             default:
@@ -613,12 +613,12 @@ export class ShipperModalComponent
         this.reviews.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(
-                    EStringPlaceholder.WHITESPACE,
+                    eStringPlaceholder.WHITESPACE,
                     this.companyUser.lastName
                 ),
                 /*                 avatar: this.companyUser.avatar, */
             },
-            commentContent: EStringPlaceholder.EMPTY,
+            commentContent: eStringPlaceholder.EMPTY,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             isNewReview: true,
@@ -821,7 +821,7 @@ export class ShipperModalComponent
                         switch (this.editData?.key) {
                             case 'load-modal':
                                 this.modalService.setProjectionModal({
-                                    action: EGeneralActions.CLOSE,
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -902,7 +902,7 @@ export class ShipperModalComponent
                                     close: true,
                                 });
                                 this.modalService.setProjectionModal({
-                                    action: EGeneralActions.CLOSE,
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -1156,12 +1156,12 @@ export class ShipperModalComponent
     public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.shipperForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.shipperForm
                     .get(EFileFormControls.FILES)
                     .patchValue(
@@ -1263,7 +1263,7 @@ export class ShipperModalComponent
                         ...res,
                         countryStateAddress:
                             res?.county +
-                            EStringPlaceholder.COMMA_WHITESPACE +
+                            eStringPlaceholder.COMMA_WHITESPACE +
                             res.stateShortName,
                     });
 

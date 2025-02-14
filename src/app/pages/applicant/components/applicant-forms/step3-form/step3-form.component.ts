@@ -47,8 +47,8 @@ import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import {
     EFileFormControls,
-    EGeneralActions,
-    EStringPlaceholder,
+    eGeneralActions,
+    eStringPlaceholder,
 } from '@shared/enums';
 
 // routes
@@ -451,11 +451,11 @@ export class Step3FormComponent
                     ...item,
                     name: item.code
                         .concat(
-                            EStringPlaceholder.WHITESPACE,
-                            EStringPlaceholder.DASH
+                            eStringPlaceholder.WHITESPACE,
+                            eStringPlaceholder.DASH
                         )
                         .concat(
-                            EStringPlaceholder.WHITESPACE,
+                            eStringPlaceholder.WHITESPACE,
                             item.description
                         ),
                 };
@@ -466,11 +466,11 @@ export class Step3FormComponent
                     ...item,
                     name: item.code
                         .concat(
-                            EStringPlaceholder.WHITESPACE,
-                            EStringPlaceholder.DASH
+                            eStringPlaceholder.WHITESPACE,
+                            eStringPlaceholder.DASH
                         )
                         .concat(
-                            EStringPlaceholder.WHITESPACE,
+                            eStringPlaceholder.WHITESPACE,
                             item.description
                         ),
                 };
@@ -599,7 +599,7 @@ export class Step3FormComponent
 
     public onFilesAction(fileActionEvent: {
         files: File[];
-        action: EGeneralActions.ADD | EGeneralActions.DELETE;
+        action: eGeneralActions.ADD | eGeneralActions.DELETE;
         deleteId?: number;
     }): void {
         this.documents = fileActionEvent.files;
@@ -607,12 +607,12 @@ export class Step3FormComponent
         this.displayDocumentsRequiredNote = false;
 
         switch (fileActionEvent.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.licenseForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.licenseForm
                     .get(EFileFormControls.FILES)
                     .patchValue(
@@ -801,11 +801,11 @@ export class Step3FormComponent
                         ...item,
                         name: item.code
                             .concat(
-                                EStringPlaceholder.WHITESPACE,
-                                EStringPlaceholder.DASH
+                                eStringPlaceholder.WHITESPACE,
+                                eStringPlaceholder.DASH
                             )
                             .concat(
-                                EStringPlaceholder.WHITESPACE,
+                                eStringPlaceholder.WHITESPACE,
                                 item.description
                             ),
                     };
@@ -816,11 +816,11 @@ export class Step3FormComponent
                         ...item,
                         name: item.code
                             .concat(
-                                EStringPlaceholder.WHITESPACE,
-                                EStringPlaceholder.DASH
+                                eStringPlaceholder.WHITESPACE,
+                                eStringPlaceholder.DASH
                             )
                             .concat(
-                                EStringPlaceholder.WHITESPACE,
+                                eStringPlaceholder.WHITESPACE,
                                 item.description
                             ),
                     };

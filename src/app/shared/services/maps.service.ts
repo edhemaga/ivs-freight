@@ -15,7 +15,7 @@ import { MapService } from 'appcoretruckassist';
 import { CreateMapCommand, MapResponse } from 'appcoretruckassist';
 
 // enum
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 declare var google: any;
 
@@ -144,7 +144,7 @@ export class MapsService implements OnDestroy {
                     name: 'edit-cutomer-or-shipper',
                     svg: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                     show: true,
-                    iconName: EGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT,
                     disabled: !data.status || data.isClosed,
                 },
                 {
@@ -193,21 +193,21 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: EGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE,
                     svg: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                     redIcon: true,
                     show: true,
-                    iconName: EGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE,
                 },
             ];
         } else if (type == 'repairShop') {
             dropActions = [
                 {
                     title: 'Edit',
-                    name: EGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: EGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT,
                     disabled: data.status == 0 || data.isClosed,
                 },
                 {
@@ -271,14 +271,14 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: EGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE,
                     type: 'truck',
                     text: 'Are you sure you want to delete truck(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: EGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE,
                 },
             ];
         }

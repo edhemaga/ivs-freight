@@ -14,7 +14,7 @@ import { FormDataService } from '@shared/services/form-data.service';
 
 // Enums
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -251,7 +251,7 @@ export class OwnerService {
                 );
 
                 this.tableService.sendActionAnimation({
-                    animation: EGeneralActions.DELETE,
+                    animation: eGeneralActions.DELETE,
                     tab: tableSelectedTab,
                     id: ownerId,
                 });

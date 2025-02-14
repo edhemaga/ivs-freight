@@ -69,7 +69,7 @@ import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 import {
     DropActionsStringEnum,
-    EGeneralActions,
+    eGeneralActions,
     ModalButtonType,
     TableStringEnum,
 } from '@shared/enums';
@@ -322,7 +322,7 @@ export class SettingsTerminalModalComponent
                     this.inputService.markInvalid(this.terminalForm);
                     return;
                 }
-                if (this.editData?.type === EGeneralActions.EDIT)
+                if (this.editData?.type === eGeneralActions.EDIT)
                     this.updateTerminal(this.editData.id);
                 else this.addTerminal();
                 break;
@@ -676,7 +676,7 @@ export class SettingsTerminalModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === EGeneralActions.EDIT) {
+                    if (this.editData?.type === eGeneralActions.EDIT) {
                         this.editTerminalById(this.editData.id);
                     } else {
                         this.startFormChanges();

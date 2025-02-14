@@ -45,7 +45,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-upload-file',
@@ -174,7 +174,7 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.file.fileName = this.fileNewName.value;
                 // this.file.fileName =
                 //   this.fileNewName.value[0].toUpperCase() +
-                //   this.fileAction.emit({ file: this.file, action: EGeneralActions.EDIT });
+                //   this.fileAction.emit({ file: this.file, action: eGeneralActions.EDIT });
             }
         }
     }
@@ -218,12 +218,12 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.downloadFile(this.file.url, this.file.fileName);
                 break;
             }
-            case EGeneralActions.DELETE: {
+            case eGeneralActions.DELETE: {
                 this.isFileDelete = false;
                 this.fileAction.emit({ file: this.file, action });
                 break;
             }
-            case EGeneralActions.CANCEL: {
+            case eGeneralActions.CANCEL: {
                 this.isFileDelete = false;
                 break;
             }

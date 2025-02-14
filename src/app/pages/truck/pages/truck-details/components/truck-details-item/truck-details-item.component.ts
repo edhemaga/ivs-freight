@@ -52,7 +52,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Titles()
 @Component({
@@ -434,7 +434,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         cdlsArray.length
             ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
             : this.optionsEvent(
-                  { id: id, type: EGeneralActions.ACTIVATE },
+                  { id: id, type: eGeneralActions.ACTIVATE },
                   data,
                   'registration'
               );

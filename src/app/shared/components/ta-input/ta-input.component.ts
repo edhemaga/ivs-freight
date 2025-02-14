@@ -66,7 +66,7 @@ import { LoadModalProgressBarComponent } from '@pages/load/pages/load-modal/comp
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-input',
@@ -1808,14 +1808,14 @@ export class TaInputComponent
                                 !this._inputConfig.dropdownLabelNew &&
                                 this._inputConfig.name !==
                                     'Input Dropdown Bank Name'
-                                    ? EGeneralActions.EDIT
+                                    ? eGeneralActions.EDIT
                                     : 'new',
                         });
                         break;
                     }
-                    case EGeneralActions.CANCEL: {
+                    case eGeneralActions.CANCEL: {
                         this.commandEvent.emit({
-                            action: EGeneralActions.CANCEL,
+                            action: eGeneralActions.CANCEL,
                         });
                         break;
                     }

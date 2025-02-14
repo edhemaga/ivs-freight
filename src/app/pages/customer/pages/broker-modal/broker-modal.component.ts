@@ -84,7 +84,7 @@ import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import {
     EFileFormControls,
-    EGeneralActions,
+    eGeneralActions,
     ModalButtonSize,
     ModalButtonType,
 } from '@shared/enums';
@@ -659,7 +659,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 if (this.editData?.canOpenModal) {
                     if (this.editData?.key === 'load-modal')
                         this.modalService.setProjectionModal({
-                            action: EGeneralActions.CLOSE,
+                            action: eGeneralActions.CLOSE,
                             payload: {
                                 key: this.editData?.key,
                                 value: null,
@@ -697,7 +697,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.isUploadInProgress = true;
 
-                    if (this.editData?.type.includes(EGeneralActions.EDIT)) {
+                    if (this.editData?.type.includes(eGeneralActions.EDIT)) {
                         this.updateBroker(this.editData.id);
                     } else {
                         this.addBroker();
@@ -773,13 +773,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.documents = event.files;
 
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.brokerForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.brokerForm
                     .get(EFileFormControls.FILES)
                     .patchValue(
@@ -1288,16 +1288,16 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.deleteReview(true, review);
                 break;
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.addReview(review);
                 break;
-            case EGeneralActions.UPDATE:
+            case eGeneralActions.UPDATE:
                 this.updateReview(review);
                 break;
-            case EGeneralActions.CANCEL:
+            case eGeneralActions.CANCEL:
                 this.reviews = this.reviews.filter((review) => review.id);
                 break;
             default:
@@ -1594,7 +1594,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         if (this.editData?.key === 'load-modal')
                             this.modalService.setProjectionModal({
-                                action: EGeneralActions.CLOSE,
+                                action: eGeneralActions.CLOSE,
                                 payload: {
                                     key: this.editData?.key,
                                     value: null,
@@ -1653,7 +1653,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 this.setModalSpinner(null, false, true);
 
                                 this.modalService.setProjectionModal({
-                                    action: EGeneralActions.CLOSE,
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,

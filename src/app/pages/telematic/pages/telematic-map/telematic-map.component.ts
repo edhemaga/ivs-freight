@@ -36,7 +36,7 @@ import { TelematicStateQuery } from '@pages/telematic/state/telematic-state.quer
 import { TelematicStateStore } from '@pages/telematic/state/telematic-state.store';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-telematic-map',
@@ -769,7 +769,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     saveTruckSelection(event, item): void {
-        if (event.action === EGeneralActions.CANCEL) {
+        if (event.action === eGeneralActions.CANCEL) {
             this.selectedTruckUnit = {};
             this.searchForm.get('truckUnit').patchValue(null);
         } else {
@@ -781,7 +781,7 @@ export class TelematicMapComponent implements OnInit, OnDestroy {
     }
 
     saveTrailerSelection(event, item) {
-        if (event.action === EGeneralActions.CANCEL) {
+        if (event.action === eGeneralActions.CANCEL) {
             this.selectedTrailerUnit = {};
             this.searchForm.get('trailerUnit').patchValue(null);
         } else {

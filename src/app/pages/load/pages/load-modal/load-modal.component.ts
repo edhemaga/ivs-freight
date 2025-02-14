@@ -166,7 +166,7 @@ import {
     CaInputDatetimePickerComponent,
     InputTestComponent,
 } from 'ca-components';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-load-modal',
@@ -868,7 +868,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             }
 
             if (
-                this.editData?.type === EGeneralActions.EDIT ||
+                this.editData?.type === eGeneralActions.EDIT ||
                 this.editData?.isEditMode
             ) {
                 this.isFormDirty = true;
@@ -5458,7 +5458,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.formService.checkFormChange(this.loadForm);
 
         if (
-            this.editData?.type === EGeneralActions.EDIT ||
+            this.editData?.type === eGeneralActions.EDIT ||
             this.editData?.isEditMode
         ) {
             this.isFormDirty = true;

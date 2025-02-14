@@ -91,7 +91,7 @@ import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import {
     EFileFormControls,
-    EGeneralActions,
+    eGeneralActions,
     ModalButtonSize,
     ModalButtonType,
 } from '@shared/enums';
@@ -430,7 +430,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 switch (this.editData?.key) {
                     case ETrailerAction.REPAIR_MODAL:
                         this.modalService.setProjectionModal({
-                            action: EGeneralActions.CLOSE,
+                            action: eGeneralActions.CLOSE,
                             payload: { key: this.editData?.key, value: null },
                             component: RepairOrderModalComponent,
                             size: 'large',
@@ -666,7 +666,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case ETrailerAction.REPAIR_MODAL:
                                 this.modalService.setProjectionModal({
-                                    action: EGeneralActions.CLOSE,
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -816,7 +816,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         this.trailerStatus = res.trailerStatus;
 
         this.modalService.changeModalStatus({
-            name: EGeneralActions.DEACTIVATE,
+            name: eGeneralActions.DEACTIVATE,
             status: this.trailerStatus,
         });
     }
@@ -886,7 +886,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
 
                     this.modalService.changeModalStatus({
-                        name: EGeneralActions.DEACTIVATE,
+                        name: eGeneralActions.DEACTIVATE,
                         status: this.trailerStatus,
                     });
 
@@ -916,7 +916,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.ngbActiveModal.close();
 
                     this.modalService.setProjectionModal({
-                        action: EGeneralActions.OPEN,
+                        action: eGeneralActions.OPEN,
                         payload: {
                             key: ETrailerAction.TRAILER_MODAL,
                             value: {
@@ -999,12 +999,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.trailerForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.trailerForm
                     .get(EFileFormControls.FILES)
                     .patchValue(

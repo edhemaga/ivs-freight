@@ -32,7 +32,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ReviewsSortPipe } from '@shared/components/ta-user-review/pipes/reviews-sort.pipe';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-user-review',
@@ -100,7 +100,7 @@ export class TaUserReviewComponent implements OnChanges {
 
     public onAction(review: any, type: string, index: number) {
         switch (type) {
-            case EGeneralActions.EDIT: {
+            case eGeneralActions.EDIT: {
                 this.reviewData.filter((item) => (item.isEditMode = false));
 
                 review.isEditMode = true;
@@ -112,7 +112,7 @@ export class TaUserReviewComponent implements OnChanges {
                 );
                 break;
             }
-            case EGeneralActions.DELETE: {
+            case eGeneralActions.DELETE: {
                 this.reviewData = this.reviewData.filter(
                     (item) => item.id !== review.id
                 );
@@ -125,7 +125,7 @@ export class TaUserReviewComponent implements OnChanges {
                 });
                 break;
             }
-            case EGeneralActions.ADD: {
+            case eGeneralActions.ADD: {
                 review.commentContent =
                     this.reviewMessageRef.toArray()[index].nativeElement.value;
                 review.isEditMode = false;
@@ -140,7 +140,7 @@ export class TaUserReviewComponent implements OnChanges {
                 });
                 break;
             }
-            case EGeneralActions.UPDATE: {
+            case eGeneralActions.UPDATE: {
                 review.commentContent =
                     this.reviewMessageRef.toArray()[index].nativeElement.value;
                 review.isEditMode = false;
@@ -154,7 +154,7 @@ export class TaUserReviewComponent implements OnChanges {
                 });
                 break;
             }
-            case EGeneralActions.CANCEL: {
+            case eGeneralActions.CANCEL: {
                 review.isEditMode = false;
 
                 this.reviewData[0].isNewReview = false;
@@ -198,7 +198,7 @@ export class TaUserReviewComponent implements OnChanges {
     public keyUp(event: any, review: any, type: string, index: number) {
         if (event.key === 'Enter' || event.keyCode === 13) {
             switch (type) {
-                case EGeneralActions.ADD: {
+                case eGeneralActions.ADD: {
                     review.commentContent =
                         this.reviewMessageRef.toArray()[
                             index
@@ -215,7 +215,7 @@ export class TaUserReviewComponent implements OnChanges {
                     });
                     break;
                 }
-                case EGeneralActions.UPDATE: {
+                case eGeneralActions.UPDATE: {
                     review.commentContent =
                         this.reviewMessageRef.toArray()[
                             index
@@ -253,7 +253,7 @@ export class TaUserReviewComponent implements OnChanges {
                 this.doubleClick = false;
             }, 250);
         } else {
-            this.onAction(data, EGeneralActions.EDIT, ind);
+            this.onAction(data, eGeneralActions.EDIT, ind);
         }
     }
 }

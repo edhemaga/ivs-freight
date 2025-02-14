@@ -26,8 +26,8 @@ import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
 import {
     EFileFormControls,
-    EGeneralActions,
-    EStringPlaceholder,
+    eGeneralActions,
+    eStringPlaceholder,
 } from '@shared/enums';
 
 // models
@@ -207,10 +207,10 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                                 ),
                             restrictions: item.cdlRestrictions
                                 .map((resItem) => resItem.code)
-                                .join(EStringPlaceholder.COMMA_WHITESPACE),
+                                .join(eStringPlaceholder.COMMA_WHITESPACE),
                             endorsments: item.cdlEndorsements
                                 .map((resItem) => resItem.code)
-                                .join(EStringPlaceholder.COMMA_WHITESPACE),
+                                .join(eStringPlaceholder.COMMA_WHITESPACE),
                         };
                     });
 
@@ -321,12 +321,12 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
         this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.mvrAuthorizationForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.mvrAuthorizationForm
                     .get(EFileFormControls.FILES)
                     .patchValue(

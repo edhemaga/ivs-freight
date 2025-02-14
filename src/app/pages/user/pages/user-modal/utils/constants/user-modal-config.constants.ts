@@ -1,7 +1,7 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export class UserModalConfig {
     static MODAL_MAIN_TABS = [
@@ -57,7 +57,7 @@ export class UserModalConfig {
             maxLength: 64,
             isDisabled: selectedUserType === 'Owner',
             textTransform: 'lowercase',
-            autoFocus: editDataType !== EGeneralActions.EDIT,
+            autoFocus: editDataType !== eGeneralActions.EDIT,
         };
     }
 

@@ -83,7 +83,7 @@ import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum, EGeneralActions } from '@shared/enums';
+import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -1102,7 +1102,7 @@ export class TaTableBodyComponent<
         this.bodyActions.emit({
             id: row.id,
             data: row,
-            type: EGeneralActions.ACTIVATE,
+            type: eGeneralActions.ACTIVATE,
         });
     }
 

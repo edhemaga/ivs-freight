@@ -24,7 +24,7 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
-import { EFileFormControls, EGeneralActions } from '@shared/enums';
+import { EFileFormControls, eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -194,13 +194,13 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
         this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.medicalCertificateForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.medicalCertificateForm
                     .get(EFileFormControls.FILES)
                     .patchValue(

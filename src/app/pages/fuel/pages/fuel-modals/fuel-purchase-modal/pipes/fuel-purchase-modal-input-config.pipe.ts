@@ -6,7 +6,7 @@ import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/f
 
 // enums
 import { NameInitialsPipe } from '@shared/pipes';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Pipe({
     standalone: true,
@@ -82,7 +82,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     isRequired: true,
                     isDropdown: true,
                     isDisabled:
-                        editDataType === EGeneralActions.EDIT &&
+                        editDataType === eGeneralActions.EDIT &&
                         fuelTransactionTypeName !== 'Manual',
                     customClass: 'datetimeclass',
                 };
@@ -97,7 +97,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     isDropdown: true,
                     isRequired: true,
                     isDisabled:
-                        editDataType === EGeneralActions.EDIT &&
+                        editDataType === eGeneralActions.EDIT &&
                         fuelTransactionTypeName !== 'Manual',
                     customClass: 'datetimeclass',
                 };

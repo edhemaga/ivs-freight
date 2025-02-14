@@ -57,7 +57,7 @@ import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import {
     ModalButtonType,
     ModalButtonSize,
-    EGeneralActions,
+    eGeneralActions,
 } from '@shared/enums';
 
 // Pipes
@@ -156,7 +156,7 @@ export class SettingsFactoringModalComponent
 
     ngOnInit(): void {
         this.createForm();
-        if (this.editData.type === EGeneralActions.EDIT) {
+        if (this.editData.type === eGeneralActions.EDIT) {
             this.isCardAnimationDisabled = true;
             this.editFactoringCompany(this.editData.company);
         } else {

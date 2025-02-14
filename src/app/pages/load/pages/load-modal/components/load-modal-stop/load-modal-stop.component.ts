@@ -26,7 +26,7 @@ import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 @Component({
     selector: 'app-load-modal-stop',
     templateUrl: './load-modal-stop.component.html',

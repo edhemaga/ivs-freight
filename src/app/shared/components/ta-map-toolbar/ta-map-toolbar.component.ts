@@ -47,7 +47,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-map-toolbar',
@@ -453,7 +453,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             { size: 'small' },
             {
                 ...this.activeTableData,
-                type: EGeneralActions.EDIT,
+                type: eGeneralActions.EDIT,
             }
         );
     }
@@ -470,7 +470,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 {
                     ...routeInfo,
                     mapId: this.activeTableData.id,
-                    type: EGeneralActions.ADD,
+                    type: eGeneralActions.ADD,
                 }
             );
         }
@@ -727,7 +727,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             {
                 ...route,
                 mapId: this.activeTableData.id,
-                type: EGeneralActions.EDIT,
+                type: eGeneralActions.EDIT,
             }
         );
     }

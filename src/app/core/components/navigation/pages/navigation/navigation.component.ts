@@ -37,7 +37,7 @@ import {
 } from '@core/components/navigation/models';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-navigation',
@@ -325,13 +325,13 @@ export class NavigationComponent implements OnInit, OnDestroy {
                     'nav-header-top-logo'
                 ) ||
                 event.target.parentElement?.classList.contains(
-                    EGeneralActions.CLOSE
+                    eGeneralActions.CLOSE
                 ) ||
                 event.target.parentElement?.parentElement?.classList.contains(
-                    EGeneralActions.CLOSE
+                    eGeneralActions.CLOSE
                 ) ||
                 event.target.parentElement?.parentElement?.parentElement?.classList.contains(
-                    EGeneralActions.CLOSE
+                    eGeneralActions.CLOSE
                 )
             ) {
                 this.isUserCompanyDetailsOpen = false;

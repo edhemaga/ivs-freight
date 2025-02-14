@@ -26,7 +26,7 @@ import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-up
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-settings-insurancepolicy',
@@ -70,7 +70,7 @@ export class SettingsInsurancepolicyComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case EGeneralActions.DELETE:
+                        case eGeneralActions.DELETE:
                             if (res.template === 'insurance')
                                 this.deleteInsurancePolicy(res.id);
 
@@ -123,10 +123,10 @@ export class SettingsInsurancepolicyComponent
             actions: [
                 {
                     title: 'Edit',
-                    name: EGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: EGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT,
                 },
                 {
                     title: 'border',
@@ -150,7 +150,7 @@ export class SettingsInsurancepolicyComponent
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: EGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE,
                 },
             ],
             export: true,
@@ -160,10 +160,10 @@ export class SettingsInsurancepolicyComponent
     // Function for drop-down
     public optionsEvent(action: any, insurance: any): void {
         switch (action.type) {
-            case EGeneralActions.EDIT:
+            case eGeneralActions.EDIT:
                 this.onAction({
                     modalName: 'insurance-policy',
-                    type: EGeneralActions.EDIT,
+                    type: eGeneralActions.EDIT,
                     company: insurance,
                 });
                 break;
@@ -174,7 +174,7 @@ export class SettingsInsurancepolicyComponent
                     {
                         id: insurance.id,
                         template: 'insurance',
-                        type: EGeneralActions.DELETE,
+                        type: eGeneralActions.DELETE,
                         image: false,
                     }
                 );

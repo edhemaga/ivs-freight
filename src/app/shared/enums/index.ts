@@ -14,8 +14,8 @@ export * from './modal-button-type.enum';
 export * from './modal-button-size.enum';
 export * from './modal-button-text.enum';
 
-export * from './general-actions.enums';
-export * from './string-placeholder.enum';
+export * from './e-general-actions.enums';
+export * from './e-string-placeholder.enum';
 export * from './confirmation-message.enum';
 
 // Files

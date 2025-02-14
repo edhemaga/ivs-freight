@@ -65,7 +65,7 @@ import { HoverSvgDirective } from '@shared/directives/';
 import { InputDropdownSvgRoutes } from '@shared/components/ta-input-dropdown/utils/svg-routes/input-dropdown-svg-routes';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-input-dropdown',
@@ -495,7 +495,7 @@ export class TaInputDropdownComponent
             this.addNewItem();
         }
 
-        if (event.action === 'confirm' && event.mode === EGeneralActions.EDIT) {
+        if (event.action === 'confirm' && event.mode === eGeneralActions.EDIT) {
             this.updateItem();
         }
 
@@ -503,10 +503,10 @@ export class TaInputDropdownComponent
             this.placeholderIconEvent.emit(true);
         }
 
-        if (event.action === EGeneralActions.CANCEL) {
+        if (event.action === eGeneralActions.CANCEL) {
             this.saveItem.emit({
                 data: this._activeItem,
-                action: EGeneralActions.CANCEL,
+                action: eGeneralActions.CANCEL,
             });
             this.selectedLabelMode.emit('Label');
         }
@@ -555,7 +555,7 @@ export class TaInputDropdownComponent
 
         this.saveItem.emit({
             data: this._activeItem,
-            action: EGeneralActions.EDIT,
+            action: eGeneralActions.EDIT,
         });
     }
 
@@ -578,7 +578,7 @@ export class TaInputDropdownComponent
                         name: 'Cancel',
                         backgroundColor: '#2f2f2f',
                     },
-                    name: EGeneralActions.CANCEL,
+                    name: eGeneralActions.CANCEL,
                     svg: 'assets/svg/ic_x.svg',
                 },
             },
@@ -942,7 +942,7 @@ export class TaInputDropdownComponent
             this.commandEvent({
                 data: this.getSuperControl.value,
                 action: 'confirm',
-                mode: data.dropdownLabelNew ? 'new' : EGeneralActions.EDIT,
+                mode: data.dropdownLabelNew ? 'new' : eGeneralActions.EDIT,
             });
             this.clearTimeoutDropdown = setTimeout(() => {
                 this.getSuperControl.setErrors(null);

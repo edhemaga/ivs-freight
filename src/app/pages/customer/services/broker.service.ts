@@ -38,7 +38,7 @@ import {
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -90,7 +90,7 @@ export class BrokerService {
                         }
 
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.ADD,
+                            animation: eGeneralActions.ADD,
                             tab: 'broker',
                             data: broker,
                             id: broker.id,
@@ -129,7 +129,7 @@ export class BrokerService {
                         this.brokerMinimalStore.add(brokerData);
                         this.bls.replace(broker.id, brokerData);
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.UPDATE,
+                            animation: eGeneralActions.UPDATE,
                             tab: 'broker',
                             data: brokerData,
                             id: broker.id,
@@ -295,7 +295,7 @@ export class BrokerService {
                 ).subscribe({
                     next: (broker: BrokerResponse | any) => {
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.DELETE,
+                            animation: eGeneralActions.DELETE,
                             tab: 'broker',
                             data: broker,
                             id: broker.id,

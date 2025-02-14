@@ -34,7 +34,7 @@ import {
     TrailerUiData,
     TrailerCombinedData,
 } from '@pages/trailer/pages/trailer-modal/models/';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-trailer-details',

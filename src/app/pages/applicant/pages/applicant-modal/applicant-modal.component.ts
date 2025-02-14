@@ -32,7 +32,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { CaInputComponent, CaInputNoteComponent } from 'ca-components';
 
 // enums
-import { EGeneralActions, EStringPlaceholder } from '@shared/enums';
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-applicant-modal',
@@ -78,7 +78,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        if (this.editData?.type === EGeneralActions.EDIT)
+        if (this.editData?.type === eGeneralActions.EDIT)
             this.editApplicant(this.editData.id);
     }
 
@@ -107,7 +107,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case EGeneralActions.CLOSE:
+            case eGeneralActions.CLOSE:
                 break;
             case 'resend email':
                 this.resendApplicationEmail(this.editData.id);
@@ -130,12 +130,12 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     close: false,
                 });
                 break;
-            case EGeneralActions.SAVE:
+            case eGeneralActions.SAVE:
                 if (this.applicantForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.applicantForm);
                     return;
                 }
-                if (this.editData?.type === EGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT) {
                     this.updateApplicant(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: null,
@@ -235,7 +235,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                     });
                     this.applicantFullName = res.firstName.concat(
-                        EStringPlaceholder.WHITESPACE,
+                        eStringPlaceholder.WHITESPACE,
                         res.lastName
                     );
                 },

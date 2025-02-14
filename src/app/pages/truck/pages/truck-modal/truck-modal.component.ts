@@ -83,7 +83,7 @@ import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import {
     EFileActions,
     EFileFormControls,
-    EGeneralActions,
+    eGeneralActions,
     TableStringEnum,
 } from '@shared/enums';
 
@@ -335,7 +335,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     switch (this.editData?.key) {
                         case TruckModalForm.REPAIR_MODAL:
                             this.modalService.setProjectionModal({
-                                action: EGeneralActions.CLOSE,
+                                action: eGeneralActions.CLOSE,
                                 payload: {
                                     key: this.editData?.key,
                                     value: null,
@@ -492,7 +492,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
                     this.modalService.setProjectionModal({
-                        action: EGeneralActions.OPEN,
+                        action: eGeneralActions.OPEN,
                         payload: {
                             key: 'truck-modal',
                             value: {
@@ -788,7 +788,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
 
                     this.modalService.changeModalStatus({
-                        name: EGeneralActions.DEACTIVATE,
+                        name: eGeneralActions.DEACTIVATE,
                         status: this.truckStatus,
                     });
 
@@ -848,7 +848,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         this.selectedFuelType = res.selectedFuelType;
 
         this.modalService.changeModalStatus({
-            name: EGeneralActions.DEACTIVATE,
+            name: eGeneralActions.DEACTIVATE,
             status: this.truckStatus,
         });
     }
@@ -974,7 +974,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
                                 this.modalService.setProjectionModal({
-                                    action: EGeneralActions.CLOSE,
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -1148,7 +1148,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case EGeneralActions.ADD: {
+            case eGeneralActions.ADD: {
                 this.updateFormControl(
                     this.truckForm,
                     EFileFormControls.FILES,
@@ -1156,7 +1156,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 );
                 break;
             }
-            case EGeneralActions.DELETE: {
+            case eGeneralActions.DELETE: {
                 const value = event.files.length
                     ? JSON.stringify(event.files)
                     : null;

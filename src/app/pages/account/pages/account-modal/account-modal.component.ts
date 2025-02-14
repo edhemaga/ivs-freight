@@ -62,7 +62,7 @@ import { FormatDatePipe } from '@shared/pipes';
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { EGeneralActions, TableStringEnum } from '@shared/enums';
+import { eGeneralActions, TableStringEnum } from '@shared/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 
 // Services
@@ -337,7 +337,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public onSaveLabel(data: { data: any; action: string }) {
         switch (data.action) {
-            case EGeneralActions.EDIT:
+            case eGeneralActions.EDIT:
                 this.selectedAccountLabel = data.data;
                 this.accountService
                     .updateCompanyAccountLabel({

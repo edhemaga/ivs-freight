@@ -60,8 +60,8 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 // Enums
 import {
     EFileFormControls,
-    EGeneralActions,
-    EStringPlaceholder,
+    eGeneralActions,
+    eStringPlaceholder,
 } from '@shared/enums';
 
 @Component({
@@ -313,9 +313,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }): void {
         // Update
         switch (data.action) {
-            case EGeneralActions.CLOSE:
+            case eGeneralActions.CLOSE:
                 break;
-            case EGeneralActions.SAVE:
+            case eGeneralActions.SAVE:
                 if (this.violationForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.violationForm);
                     return;
@@ -411,12 +411,12 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.violationForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.violationForm
                     .get(EFileFormControls.FILES)
                     .patchValue(
@@ -609,8 +609,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                                 ? res.truck?.truckType?.name
                                       ?.trim()
                                       .replace(
-                                          EStringPlaceholder.WHITESPACE,
-                                          EStringPlaceholder.EMPTY
+                                          eStringPlaceholder.WHITESPACE,
+                                          eStringPlaceholder.EMPTY
                                       )
                                       .toLowerCase()
                                 : null,
@@ -628,8 +628,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                                 ? res.trailer?.trailerType?.name
                                       ?.trim()
                                       .replace(
-                                          EStringPlaceholder.WHITESPACE,
-                                          EStringPlaceholder.EMPTY
+                                          eStringPlaceholder.WHITESPACE,
+                                          eStringPlaceholder.EMPTY
                                       )
                                       .toLowerCase()
                                 : null,
@@ -648,7 +648,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                                             item.violationCategory.id,
                                         extraDescription: item.extraDescription
                                             ? item.description?.concat(
-                                                  EStringPlaceholder.DOT,
+                                                  eStringPlaceholder.DOT,
                                                   item.extraDescription
                                               )
                                             : item.description,
@@ -720,7 +720,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                           .get('extraDescription')
                           .value.replace(
                               item.get('description').value,
-                              EStringPlaceholder.EMPTY
+                              eStringPlaceholder.EMPTY
                           )
                     : null,
                 reason: item.get('reason').value,

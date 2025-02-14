@@ -1,7 +1,7 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export class SettingsOfficeConfig {
     static getNameInputConfig(type: string): ITaInput {
@@ -11,7 +11,7 @@ export class SettingsOfficeConfig {
             label: 'Office Name',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: type !== EGeneralActions.EDIT,
+            autoFocus: type !== eGeneralActions.EDIT,
             minLength: 2,
             maxLength: 64,
         };

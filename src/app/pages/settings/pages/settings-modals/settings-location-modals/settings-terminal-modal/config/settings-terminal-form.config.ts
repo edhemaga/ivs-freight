@@ -1,7 +1,7 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // Enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export class SettingsTerminalConfig {
     static getNameInputConfig(type: string): ITaInput {
@@ -11,7 +11,7 @@ export class SettingsTerminalConfig {
             label: 'Terminal Name',
             isRequired: true,
             textTransform: 'uppercase',
-            autoFocus: type !== EGeneralActions.EDIT,
+            autoFocus: type !== eGeneralActions.EDIT,
             minLength: 1,
             maxLength: 64,
         };

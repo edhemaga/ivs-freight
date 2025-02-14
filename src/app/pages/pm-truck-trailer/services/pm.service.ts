@@ -26,7 +26,7 @@ import { PmListTruckStore } from '@pages/pm-truck-trailer/state/pm-list-truck-st
 import { PmListTrailerStore } from '@pages/pm-truck-trailer/state/pm-list-trailer-state/pm-list-trailer.store';
 
 // Enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -139,7 +139,7 @@ export class PmService {
                             this.pmTruckStore.add(pm.pagination.data[0]);
 
                             this.tableService.sendActionAnimation({
-                                animation: EGeneralActions.UPDATE,
+                                animation: eGeneralActions.UPDATE,
                                 data: pm.pagination.data[0],
                                 id: pm.pagination.data[0].id,
                             });
@@ -268,7 +268,7 @@ export class PmService {
                             this.pmTrailerStore.add(pm.pagination.data[0]);
 
                             this.tableService.sendActionAnimation({
-                                animation: EGeneralActions.UPDATE,
+                                animation: eGeneralActions.UPDATE,
                                 data: pm.pagination.data[0],
                                 id: pm.pagination.data[0].id,
                             });

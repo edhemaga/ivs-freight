@@ -72,7 +72,7 @@ import {
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 // Enums
-import { EFileFormControls, EGeneralActions } from '@shared/enums';
+import { EFileFormControls, eGeneralActions } from '@shared/enums';
 import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 @Component({
@@ -220,13 +220,13 @@ export class SettingsInsurancePolicyModalComponent
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case EGeneralActions.SAVE:
+            case eGeneralActions.SAVE:
                 // If Form not valid
                 if (this.insurancePolicyForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.insurancePolicyForm);
                     return;
                 }
-                if (this.editData.type === EGeneralActions.EDIT) {
+                if (this.editData.type === eGeneralActions.EDIT) {
                     this.updateInsurancePolicy(this.editData.company.id);
                     this.modalService.setModalSpinner({
                         action: null,
@@ -242,10 +242,10 @@ export class SettingsInsurancePolicyModalComponent
                     });
                 }
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.deleteInsurancePolicyById(this.editData.company.id);
                 this.modalService.setModalSpinner({
-                    action: EGeneralActions.DELETE,
+                    action: eGeneralActions.DELETE,
                     status: true,
                     close: false,
                 });
@@ -422,12 +422,12 @@ export class SettingsInsurancePolicyModalComponent
     public onFilesEvent(event: any): void {
         this.documents = event.files?.length ? event.files : [];
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.insurancePolicyForm
                     .get(EFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.insurancePolicyForm
                     .get(EFileFormControls.FILES)
                     .patchValue(
@@ -449,7 +449,7 @@ export class SettingsInsurancePolicyModalComponent
                 next: (res: InsurancePolicyModalResponse) => {
                     this.ratings = res.ratings;
 
-                    if (this.editData.type === EGeneralActions.EDIT) {
+                    if (this.editData.type === eGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
                         this.editInsurancePolicyById(this.editData.company);
                     } else this.startFormChanges();
@@ -948,14 +948,14 @@ export class SettingsInsurancePolicyModalComponent
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: EGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: EGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE,
                         status: false,
                         close: false,
                     });

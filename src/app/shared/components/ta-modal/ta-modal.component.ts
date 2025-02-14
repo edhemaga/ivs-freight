@@ -60,7 +60,7 @@ import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.mo
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { TaModalActionEnum } from './enums';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
-import { EFileFormControls, EGeneralActions } from '@shared/enums';
+import { EFileFormControls, eGeneralActions } from '@shared/enums';
 
 // directive
 import { PreventMultipleclicksDirective } from '@shared/directives/';
@@ -471,7 +471,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case EGeneralActions.CLOSE: {
+            case eGeneralActions.CLOSE: {
                 this.action.emit({ action: action, bool: false });
                 $('.pac-container').remove();
                 this.ngbActiveModal.close();
@@ -479,7 +479,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.uploadFileService.uploadFiles(null);
                 break;
             }
-            case EGeneralActions.DEACTIVATE: {
+            case eGeneralActions.DEACTIVATE: {
                 if (!this.isDeactivateOnly)
                     this.isDeactivated = !this.isDeactivated;
                 this.action.emit({
@@ -489,7 +489,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case EGeneralActions.ACTIVATE: {
+            case eGeneralActions.ACTIVATE: {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
@@ -703,7 +703,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
             .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe((data: { name: string; status: boolean }) => {
                 switch (data?.name) {
-                    case EGeneralActions.DEACTIVATE: {
+                    case eGeneralActions.DEACTIVATE: {
                         this.isDeactivated = data.status;
                         break;
                     }
@@ -728,7 +728,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
             .subscribe(
                 (data: { action: string; status: boolean; close: boolean }) => {
                     switch (data.action) {
-                        case EGeneralActions.DELETE: {
+                        case eGeneralActions.DELETE: {
                             this.deleteSpinnerVisibility = data.status;
                             break;
                         }

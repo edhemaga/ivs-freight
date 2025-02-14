@@ -34,7 +34,7 @@ import { cardComponentAnimation } from '@shared/animations/card-component.animat
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-to-do-list-card',
@@ -204,7 +204,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case EGeneralActions.DELETE:
+                        case eGeneralActions.DELETE:
                             this.dropAct(res);
                             break;
                         default:
@@ -483,10 +483,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             actions: [
                 {
                     title: 'Edit',
-                    name: EGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: EGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT,
                 },
                 {
                     title: 'border',
@@ -564,7 +564,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: EGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE,
                 },
             ],
             export: true,
@@ -572,7 +572,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     dropAct(event) {
-        if (event.type == EGeneralActions.DELETE) {
+        if (event.type == eGeneralActions.DELETE) {
             this.todoService.deleteTodoById(event.id).subscribe();
             this.cardData = this.cardData.filter((item) => {
                 if (event.id == item.id) {
@@ -593,7 +593,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 {
                     ...event,
                     template: 'task',
-                    type: EGeneralActions.DELETE,
+                    type: eGeneralActions.DELETE,
                 }
             );
         } else if (event.type === 'add-comment') {
@@ -616,14 +616,14 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 { size: 'small' },
                 {
                     ...event,
-                    type: EGeneralActions.EDIT,
+                    type: eGeneralActions.EDIT,
                 }
             );
         }
     }
 
     changeReviewsEvent(event) {
-        if (event.action == EGeneralActions.DELETE) {
+        if (event.action == eGeneralActions.DELETE) {
             this.commentsService.deleteCommentById(event.data).subscribe({
                 next: () => {
                     let todoCom = this.scene.children[
@@ -640,7 +640,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     console.log('ERROR WHILE DELETING');
                 },
             });
-        } else if (event.action == EGeneralActions.UPDATE) {
+        } else if (event.action == eGeneralActions.UPDATE) {
             this.commentsService
                 .updateComment({
                     id: event.data.id,
@@ -651,7 +651,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     commentEvent(ev) {
-        if (ev['action'] == EGeneralActions.ADD) {
+        if (ev['action'] == eGeneralActions.ADD) {
             this.addComment(
                 this.comments[0],
                 this.scene.children[this.currentHoldIndex].children[
@@ -659,7 +659,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 ].id
             );
             this.newComment = false;
-        } else if (ev['action'] == EGeneralActions.CANCEL) {
+        } else if (ev['action'] == eGeneralActions.CANCEL) {
             this.newComment = false;
         }
     }

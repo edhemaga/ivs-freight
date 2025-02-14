@@ -31,7 +31,7 @@ import { ShipperService as ShipperMainService } from 'appcoretruckassist';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -84,7 +84,7 @@ export class ShipperService {
                         }
 
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.ADD,
+                            animation: eGeneralActions.ADD,
                             tab: 'shipper',
                             data: shipper,
                             id: shipper.id,
@@ -118,7 +118,7 @@ export class ShipperService {
                         this.shipperMinimalStore.add(shipper);
                         this.sListStore.update(shipper.id, shipper);
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.UPDATE,
+                            animation: eGeneralActions.UPDATE,
                             tab: 'shipper',
                             data: shipper,
                             id: shipper.id,
@@ -262,7 +262,7 @@ export class ShipperService {
                 ).subscribe({
                     next: (shipper: any) => {
                         this.tableService.sendActionAnimation({
-                            animation: EGeneralActions.DELETE,
+                            animation: eGeneralActions.DELETE,
                             tab: 'shipper',
                             data: shipper,
                             id: shipper.id,
@@ -594,7 +594,7 @@ export class ShipperService {
         });
 
         this.tableService.sendActionAnimation({
-            animation: EGeneralActions.UPDATE,
+            animation: eGeneralActions.UPDATE,
             tab: 'shipper',
             data: shipperData,
             id: shipperData.id,
@@ -652,7 +652,7 @@ export class ShipperService {
                 this.shipperMinimalStore.add(shipper);
                 this.sListStore.update(shipper.id, shipper);
                 this.tableService.sendActionAnimation({
-                    animation: EGeneralActions.UPDATE,
+                    animation: eGeneralActions.UPDATE,
                     tab: 'shipper',
                     data: shipper,
                     id: shipper.id,

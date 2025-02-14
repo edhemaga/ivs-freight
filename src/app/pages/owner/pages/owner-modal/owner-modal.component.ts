@@ -74,8 +74,8 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import {
-    EGeneralActions,
-    EStringPlaceholder,
+    eGeneralActions,
+    eStringPlaceholder,
     TableStringEnum,
 } from '@shared/enums';
 
@@ -341,12 +341,12 @@ export class OwnerModalComponent
     public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case EGeneralActions.ADD:
+            case eGeneralActions.ADD:
                 this.ownerForm
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case EGeneralActions.DELETE:
+            case eGeneralActions.DELETE:
                 this.ownerForm
                     .get('files')
                     .patchValue(
@@ -578,7 +578,7 @@ export class OwnerModalComponent
                 next: (res: OwnerResponse) => {
                     const splitName =
                         res.ownerType.id === 2
-                            ? res.name.split(EStringPlaceholder.WHITESPACE)
+                            ? res.name.split(eStringPlaceholder.WHITESPACE)
                             : null;
 
                     this.ownerForm.patchValue({

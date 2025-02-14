@@ -46,7 +46,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { InputAddressStopTypesStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-stop-types-string.enum';
 import { InputAddressTypeStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-type-string.enum';
 import { InputAddressLayersStringEnum } from '@shared/components/ta-input-address-dropdown/enums/input-address-layers-string.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 import { InputAddressCommandsStringEnum } from 'ca-components/lib/components/ca-input-address-dropdown/enums/input-address-commands-string.enum';
 
 // models
@@ -113,10 +113,10 @@ export class TaInputAddressDropdownComponent
     handleKeyboardEvent(event: KeyboardEvent) {
         const key = event.key;
         if (this.inputConfig.name == 'RoutingAddress') {
-            if (key === EGeneralActions.ENTER) {
+            if (key === eGeneralActions.ENTER) {
                 if (this.currentAddressData)
-                    this.onCommands(event, EGeneralActions.CONFIRM);
-            } else if (key === EGeneralActions.ESCAPE) this.clearInput(event);
+                    this.onCommands(event, eGeneralActions.CONFIRM);
+            } else if (key === eGeneralActions.ESCAPE) this.clearInput(event);
         }
     }
 
@@ -338,13 +338,13 @@ export class TaInputAddressDropdownComponent
         }
     }
 
-    public onCommands(e: KeyboardEvent, type: EGeneralActions): void {
+    public onCommands(e: KeyboardEvent, type: eGeneralActions): void {
         e.preventDefault();
         e.stopPropagation();
 
         if (
-            (type === EGeneralActions.CONFIRM && this.currentAddressData) ||
-            type === EGeneralActions.CANCEL
+            (type === eGeneralActions.CONFIRM && this.currentAddressData) ||
+            type === eGeneralActions.CANCEL
         ) {
             this.currentAddressData.type = type;
             this.commandEvent.emit(this.currentAddressData ?? {});

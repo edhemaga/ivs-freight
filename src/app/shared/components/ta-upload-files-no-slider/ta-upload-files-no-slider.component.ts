@@ -34,7 +34,7 @@ import { TaUploadFileService } from '@shared/components/ta-upload-files/services
 
 //Enums
 import { FileActionEnum } from '@shared/components/ta-upload-files-no-slider/enums/file-action-string.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-upload-files-no-slider',
@@ -182,7 +182,7 @@ export class TaUploadFilesNoSliderComponent
         const uploadedFiles = [...data.files];
         this.onFileEvent.emit({
             files: uploadedFiles,
-            action: EGeneralActions.ADD,
+            action: eGeneralActions.ADD,
         });
     }
 

@@ -34,7 +34,7 @@ import { TaUploadFileService } from '@shared/components/ta-upload-files/services
 //Enums
 import { FileTypesEnum } from '@shared/components/ta-upload-files/enums/file-types.enum';
 import { FilesSizeEnum } from '@shared/components/ta-upload-files/enums/files-size.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-upload-files',
@@ -136,7 +136,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                 });
                 break;
             }
-            case EGeneralActions.DELETE: {
+            case eGeneralActions.DELETE: {
                 let isLastDeleted = false;
                 this._files.map((item, index) => {
                     if (
@@ -247,7 +247,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     public onUploadFiles(data: { files: UploadFile[]; action: string }): void {
         const uploadedFiles = [...data.files];
         switch (data.action) {
-            case EGeneralActions.ADD: {
+            case eGeneralActions.ADD: {
                 uploadedFiles.map((files, i) => {
                     for (var a = 0; a < this._files.length; a++) {
                         if (
@@ -274,7 +274,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                 this._files = [...oldFiles, ...uploadedFiles];
                 this.onFileEvent.emit({
                     files: this._files,
-                    action: EGeneralActions.ADD,
+                    action: eGeneralActions.ADD,
                 });
                 const slideTo =
                     this.modalCarousel?.customClass == 'large'

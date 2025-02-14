@@ -1,7 +1,7 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export class ContactModalConfig {
     static NAME_INPUT_CONFIG(isEditMode: boolean): ITaInput {
@@ -51,7 +51,7 @@ export class ContactModalConfig {
                     name: 'Cancel',
                     backgroundColor: '#2f2f2f',
                 },
-                name: EGeneralActions.CANCEL,
+                name: eGeneralActions.CANCEL,
                 svg: 'assets/svg/ic_x.svg',
             },
         },

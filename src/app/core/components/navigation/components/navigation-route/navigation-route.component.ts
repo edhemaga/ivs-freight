@@ -38,7 +38,7 @@ import {
 import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
 // enums
-import { EStringPlaceholder } from '@shared/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-navigation-route',
@@ -72,8 +72,8 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() index: number;
     @Input() ind: number;
     @Input() middleIsHovered: boolean = false;
-    @Input() selectedRoute: string = EStringPlaceholder.EMPTY;
-    @Input() selectedSubRoute: string = EStringPlaceholder.EMPTY;
+    @Input() selectedRoute: string = eStringPlaceholder.EMPTY;
+    @Input() selectedSubRoute: string = eStringPlaceholder.EMPTY;
     @Input() subrouteContainerOpened: boolean = false;
     @Input() openedDropdown: boolean = false;
     @Input() hideSubrouteTitle: number = -1;
@@ -92,7 +92,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
     public footerHovered: boolean;
-    public textSubRoute: string = EStringPlaceholder.EMPTY;
+    public textSubRoute: string = eStringPlaceholder.EMPTY;
 
     public _activeLink = undefined;
     public activeLinkHighlight: boolean = false;
@@ -118,10 +118,6 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
             this.isNavigationHovered != false
         )
             this.activeLinkHighlight = value;
-    }
-    routeWithSubRoutesClick(event): void {
-        if (event !== undefined) this.routeWithSubRouteClicked.emit(true);
-        else this.routeWithSubRouteClicked.emit(false);
     }
     ngOnInit(): void {
         this.timeout = setTimeout(() => {
@@ -157,6 +153,10 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         } else this.activeRouteName = n[1];
     }
 
+    public routeWithSubRoutesClick(event): void {
+        if (event !== undefined) this.routeWithSubRouteClicked.emit(true);
+        else this.routeWithSubRouteClicked.emit(false);
+    }
     //Arrow clicked open link in new window
     public openLinkInNewWindow(item) {
         window.open(item, '_blank');

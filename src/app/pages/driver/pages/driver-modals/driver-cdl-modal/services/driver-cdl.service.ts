@@ -22,7 +22,7 @@ import {
 } from 'appcoretruckassist';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -139,7 +139,7 @@ export class DriverCdlService {
                         : this.driverInactiveStore.add(driver);
 
                     this.tableService.sendActionAnimation({
-                        animation: EGeneralActions.UPDATE,
+                        animation: eGeneralActions.UPDATE,
                         data: mappedDriver,
                         id: mappedDriver.id,
                     });

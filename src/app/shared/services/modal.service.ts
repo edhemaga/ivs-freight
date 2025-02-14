@@ -13,7 +13,7 @@ import { ModalOptions } from '@shared/components/ta-modal/models/modal-options.m
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 
 // enums
-import { EGeneralActions, EStringPlaceholder } from '@shared/enums';
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
 @Injectable({
     providedIn: 'root',
 })
@@ -85,7 +85,7 @@ export class ModalService {
         closing?: 'fastest' | 'slowlest';
     }) {
         // Closing Modal and Open New One
-        if (data.action === EGeneralActions.OPEN) {
+        if (data.action === eGeneralActions.OPEN) {
             sessionStorage.clear();
             const timeout = setTimeout(() => {
                 sessionStorage.setItem(
@@ -117,7 +117,7 @@ export class ModalService {
         }
 
         // Closing Modal and Open Old One
-        if (data.action === EGeneralActions.CLOSE) {
+        if (data.action === eGeneralActions.CLOSE) {
             const timeout = setTimeout(
                 () => {
                     this.openModal(
@@ -168,7 +168,7 @@ export class ModalService {
         const fx = (modal as any)._removeModalElements.bind(modal);
 
         (modal as any)._removeModalElements = () => {
-            instance.windowClass = EStringPlaceholder.EMPTY;
+            instance.windowClass = eStringPlaceholder.EMPTY;
             setTimeout(fx, 100);
         };
 

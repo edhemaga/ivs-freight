@@ -12,7 +12,7 @@ import { IntegrationActiveQuery } from '@pages/settings/state/settings-integrati
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 @Component({
     selector: 'app-settings-integration',
     templateUrl: './settings-integration.component.html',
@@ -113,32 +113,32 @@ export class SettingsIntegrationComponent
                     title: 'Edit',
                     name: 'edit-table',
                     class: 'regular-text',
-                    contentType: EGeneralActions.EDIT,
+                    contentType: eGeneralActions.EDIT,
                 },
                 {
                     title: 'Website',
                     name: 'add-registration',
                     class: 'regular-text',
-                    contentType: EGeneralActions.ADD,
+                    contentType: eGeneralActions.ADD,
                 },
                 {
                     title: 'Share',
                     name: 'add-inspection',
                     class: 'regular-text',
-                    contentType: EGeneralActions.ADD,
+                    contentType: eGeneralActions.ADD,
                 },
                 {
                     title: 'Print',
                     name: 'add-repair',
                     class: 'regular-text',
-                    contentType: EGeneralActions.ADD,
+                    contentType: eGeneralActions.ADD,
                 },
                 {
                     title: 'Activate',
                     reverseTitle: 'Deactivate',
                     name: 'activate-item',
                     class: 'regular-text',
-                    contentType: EGeneralActions.ACTIVATE,
+                    contentType: eGeneralActions.ACTIVATE,
                 },
                 {
                     title: 'Delete',
@@ -146,7 +146,7 @@ export class SettingsIntegrationComponent
                     type: 'integrations',
                     text: 'Are you sure you want to delete integration(s)?',
                     class: 'delete-text',
-                    contentType: EGeneralActions.DELETE,
+                    contentType: eGeneralActions.DELETE,
                 },
             ],
         };

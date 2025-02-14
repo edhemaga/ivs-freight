@@ -27,7 +27,7 @@ import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-map-route-modal',
@@ -141,7 +141,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case EGeneralActions.CLOSE: {
+            case eGeneralActions.CLOSE: {
                 break;
             }
             case 'save and add new': {
@@ -164,7 +164,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData?.type === EGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT) {
                     this.updateRoute(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: 'create-map-route',
@@ -225,7 +225,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                 });
 
                 // Edit
-                if (this.editData?.type === EGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT) {
                     this.getRoute(this.editData.id);
                 }
             });
@@ -328,7 +328,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     }
 
     private resetForm() {
-        if (this.editData?.type === EGeneralActions.EDIT) {
+        if (this.editData?.type === eGeneralActions.EDIT) {
             this.getRoute(this.editData.id);
         } else {
             this.mapRouteForm.reset();

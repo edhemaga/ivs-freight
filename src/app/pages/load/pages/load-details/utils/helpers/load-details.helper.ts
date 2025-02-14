@@ -8,7 +8,7 @@ import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-selec
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 export class LoadDetailsHelper {
     static getDetailsDropdownOptions(
@@ -29,9 +29,9 @@ export class LoadDetailsHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: EGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: EGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT,
                     subText: load.statusType.name.toUpperCase(),
                 },
                 {
@@ -60,7 +60,7 @@ export class LoadDetailsHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: EGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE,
                     disabled: LoadDetailsHelper.enableDeleteButton(
                         load.statusType.name
                     ),

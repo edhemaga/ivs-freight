@@ -1,5 +1,5 @@
 // Enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // Models
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
@@ -26,9 +26,9 @@ export class DriverDetailsItemHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: EGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: EGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT,
                     show: true,
                 },
                 {
@@ -92,7 +92,7 @@ export class DriverDetailsItemHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: EGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -120,9 +120,9 @@ export class DriverDetailsItemHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: EGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: EGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT,
                     show: true,
                     disabled: !driverStatus,
                 },
@@ -161,7 +161,7 @@ export class DriverDetailsItemHelper {
                     name: 'delete-item',
                     type: 'driver',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: EGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,

@@ -61,7 +61,7 @@ import {
     ModalButtonType,
     TableStringEnum,
     DropActionsStringEnum,
-    EGeneralActions,
+    eGeneralActions,
     EConfirmationMessage,
 } from '@shared/enums';
 import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
@@ -330,7 +330,7 @@ export class SettingsParkingModalComponent
                     this.inputService.markInvalid(this.parkingForm);
                     return;
                 }
-                if (this.editData?.type === EGeneralActions.EDIT)
+                if (this.editData?.type === eGeneralActions.EDIT)
                     this.updateParking(this.editData.id);
                 else this.addParking();
                 break;
@@ -634,7 +634,7 @@ export class SettingsParkingModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === EGeneralActions.EDIT) {
+                    if (this.editData?.type === eGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
                         this.editCompanyParkingById(this.editData.id);
                     } else {

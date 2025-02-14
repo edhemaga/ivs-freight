@@ -21,7 +21,7 @@ import { FuelService } from '@shared/services/fuel.service';
 import { ChartHelper } from '@shared/utils/helpers';
 
 // enums
-import { EGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-fuel-details-item',
@@ -113,7 +113,7 @@ export class FuelDetailsItemComponent implements OnInit {
             actions: [
                 {
                     title: 'Edit',
-                    name: EGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                 },
