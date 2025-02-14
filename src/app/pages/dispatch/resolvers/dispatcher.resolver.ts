@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 
-
 import { forkJoin, Observable, map } from 'rxjs';
 
 // services
@@ -16,12 +15,12 @@ import {
 @Injectable({
     providedIn: 'root',
 })
-export class DispatcherResolver  {
+export class DispatcherResolver {
     constructor(private dispatcherService: DispatcherService) {}
     resolve(): Observable<
         [
             DispatchModalResponse,
-            DispatchBoardListResponse | DispatchBoardResponse
+            DispatchBoardListResponse | DispatchBoardResponse,
         ]
     > {
         const dispatcherId = localStorage.getItem('dispatchUserSelect')
