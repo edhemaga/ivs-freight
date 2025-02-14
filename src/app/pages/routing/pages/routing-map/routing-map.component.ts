@@ -52,6 +52,9 @@ import { addressValidation } from '@shared/components/ta-input/validators/ta-inp
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 declare var google: any;
 declare const geoXML3: any;
 
@@ -586,7 +589,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             contentType: 'settings',
             show: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-            iconName: 'edit',
+            iconName: eGeneralActions.EDIT,
         },
         {
             title: 'border',
@@ -654,16 +657,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         },
         {
             title: 'Delete',
-            name: 'delete',
+            name: eGeneralActions.DELETE,
             type: 'route',
             text: 'Are you sure you want to delete this Route?',
             class: 'delete-text',
-            contentType: 'delete',
+            contentType: eGeneralActions.DELETE,
             show: true,
             danger: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
             redIcon: true,
-            iconName: 'delete',
+            iconName: eGeneralActions.DELETE,
         },
     ];
 
@@ -888,7 +891,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case 'delete': {
+                        case eGeneralActions.DELETE:
                             if (res.template === 'route') {
                                 this.showHideRouteLine(res.data, true);
 
@@ -900,10 +903,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                                     .subscribe();
                             }
                             break;
-                        }
-                        default: {
+
+                        default:
                             break;
-                        }
                     }
                 },
             });
@@ -911,11 +913,9 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         this.routingService.currentUpdatedData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res: any) => {
-                if (res.type == 'map') {
-                    this.updateMapData(res.id, res.data);
-                } else if (res.type == 'route') {
-                    this.addRoute(res.mapId);
-                } else if (res.type == 'edit-route') {
+                if (res.type == 'map') this.updateMapData(res.id, res.data);
+                else if (res.type == 'route') this.addRoute(res.mapId);
+                else if (res.type == 'edit-route') {
                     const routeIndex = this.tableData[
                         this.selectedMapIndex
                     ].routes.findIndex((item) => {
@@ -976,19 +976,18 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                             true
                         );
                     }
-                } else if (res.type == 'delete-route') {
+                } else if (res.type == 'delete-route')
                     this.getRouteList(
                         this.tableData[this.selectedMapIndex].id,
                         1,
                         8
                     );
-                } else if (res.type == 'delete-stop') {
+                else if (res.type == 'delete-stop')
                     this.getRouteList(
                         this.tableData[this.selectedMapIndex].id,
                         1,
                         8
                     );
-                }
             });
     }
 
@@ -1008,7 +1007,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         return this.addressInputs;
     }
 
-    dropRoutes(event: CdkDragDrop<string[]>) {
+    dropRoutes(event: CdkDragDrop<string[]>): void {
         if (
             event.previousContainer === event.container &&
             event.previousIndex !== event.currentIndex &&
@@ -1888,7 +1887,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.reverseRouteStops(currentId);
         } else if (actionName === 'clear-route-stops') {
             this.clearRouteStops(currentId);
-        } else if (actionName === 'delete') {
+        } else if (actionName === eGeneralActions.DELETE) {
             let route = this.getRouteById(currentId);
 
             var routeObj = {
@@ -1903,7 +1902,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 {
                     ...routeObj,
                     template: 'route',
-                    type: 'delete',
+                    type: eGeneralActions.DELETE,
                 }
             );
         } else if (actionName === 'open-settings') {
@@ -2338,10 +2337,10 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 event.tabData.field == 'map1'
                     ? 0
                     : event.tabData.field == 'map2'
-                    ? 1
-                    : event.tabData.field == 'map3'
-                    ? 2
-                    : 3;
+                      ? 1
+                      : event.tabData.field == 'map3'
+                        ? 2
+                        : 3;
 
             this.tableData[this.selectedMapIndex].routes.map(
                 (item, routeIndex) => {

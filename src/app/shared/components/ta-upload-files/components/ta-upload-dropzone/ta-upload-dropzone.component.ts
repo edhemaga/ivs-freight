@@ -21,6 +21,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // configs
 import { dropzoneDefaultConfig } from '@shared/components/ta-upload-files/configs/dropzone-default.config';
 
+// enums
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
+
 // FILES: assets/svg/common/ic_modal_upload_dropzone.svg
 // IMAGE: image/gif, image/jpeg, image/jpg, image/png
 // MEDIA: video/mp4,video/x-m4v,video/*
@@ -82,6 +85,9 @@ export class TaUploadDropzoneComponent {
     public supportedExtensions: string[] = [];
 
     public _dropZoneConfig: DropZoneConfig;
+
+    // enums
+    public eFileFormControls = eFileFormControls;
 
     @HostListener('body:dragleave', ['$event'])
     onDragLeaveWindows(e) {
@@ -228,9 +234,11 @@ export class TaUploadDropzoneComponent {
                 },
             ];
 
-            if (!prevent) {
-                this.onFileEvent.emit({ files: this.files, action: 'add' });
-            }
+            if (!prevent)
+                this.onFileEvent.emit({
+                    files: this.files,
+                    action: eGeneralActions.ADD,
+                });
         } catch (err) {
             console.error(`Can't upload ${file.name} ${err}`);
         }

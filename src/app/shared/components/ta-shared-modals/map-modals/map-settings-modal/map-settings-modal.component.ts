@@ -23,6 +23,9 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-map-settings-modal',
     templateUrl: './map-settings-modal.component.html',
@@ -99,7 +102,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        if (this.editData?.type === 'edit') {
+        if (this.editData?.type === eGeneralActions.EDIT) {
             this.editMap(this.editData.id);
         }
     }
@@ -122,7 +125,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case 'close': {
+            case eGeneralActions.CLOSE: {
                 break;
             }
             case 'set-map-settings': {
@@ -131,7 +134,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === eGeneralActions.EDIT) {
                     this.updateMap(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: 'set-map-settings',
@@ -223,7 +226,7 @@ export class MapSettingsModalComponent implements OnInit, OnDestroy {
     }
 
     private resetForm() {
-        if (this.editData?.type === 'edit') {
+        if (this.editData?.type === eGeneralActions.EDIT) {
             this.editMap(this.editData.id);
         } else {
             this.mapSettingsForm.reset();

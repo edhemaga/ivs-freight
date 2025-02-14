@@ -12,6 +12,7 @@ import { RepairMinimalListStore } from '@pages/repair/state/driver-details-minim
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eGeneralActions } from '@shared/enums';
 
 // services
 import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
@@ -180,7 +181,7 @@ export class RepairService {
                         );
 
                         this.tableService.sendActionAnimation({
-                            animation: 'add',
+                            animation: eGeneralActions.ADD,
                             tab: repair?.truckId
                                 ? TableStringEnum.ACTIVE
                                 : TableStringEnum.INACTIVE,

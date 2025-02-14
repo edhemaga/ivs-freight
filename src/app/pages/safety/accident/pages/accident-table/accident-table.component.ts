@@ -26,6 +26,9 @@ import { AccidentInactiveQuery } from '@pages/safety/accident/state/accident-ina
 // models
 import { AccidentShortResponse } from 'appcoretruckassist';
 
+// enums
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
+
 @Component({
     selector: 'app-accident-table',
     templateUrl: './accident-table.component.html',
@@ -78,7 +81,7 @@ export class AccidentTableComponent
         sortName: 'report',
     };
     public sortBy: any;
-    public searchValue: string = '';
+    public searchValue: string = eStringPlaceholder.EMPTY;
     public locationFilterOn: boolean = false;
 
     constructor(
@@ -99,9 +102,7 @@ export class AccidentTableComponent
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: boolean) => {
-                if (response) {
-                    this.sendAccidentData();
-                }
+                if (response) this.sendAccidentData();
             });
 
         // Resize
@@ -136,42 +137,15 @@ export class AccidentTableComponent
                     });
                 }
             });
-
-        // Search
-        this.caSearchMultipleStatesService.currentSearchTableData
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {});
-
-        // Accident Actions
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                // Add Accident
-                if (res.animation === 'add') {
-                }
-                // Update Accident
-                else if (res.animation === 'update') {
-                }
-                // Delete Accident
-                else if (res.animation === 'delete') {
-                }
-            });
-
-        // Delete Selected Rows
-        this.tableService.currentDeleteSelectedRows
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {});
     }
 
     // -------------------------------NgAfterViewInit-------------------------------
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
+        this.observeTableContainer();
     }
 
     // Responsive Observer
-    observTableContainer() {
+    private observeTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -205,17 +179,17 @@ export class AccidentTableComponent
                     title: 'Edit',
                     name: 'edit-accident',
                     class: 'regular-text',
-                    contentType: 'edit',
+                    contentType: eGeneralActions.EDIT,
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                 },
                 {
                     title: 'Delete',
-                    name: 'delete',
+                    name: eGeneralActions.DELETE,
                     type: 'safety',
                     text: 'Are you sure you want to delete accident?',
                     class: 'delete-text',
-                    contentType: 'delete',
+                    contentType: eGeneralActions.DELETE,
                     show: true,
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
@@ -224,7 +198,7 @@ export class AccidentTableComponent
         };
     }
 
-    sendAccidentData() {
+    sendAccidentData(): void {
         const tableView = JSON.parse(
             localStorage.getItem(`Accident-table-view`)
         );
@@ -285,7 +259,7 @@ export class AccidentTableComponent
     }
 
     // Get Table Tab Data
-    getTabData(dataType?: string) {
+    public getTabData(dataType?: string): AccidentActiveState[] {
         if (dataType === 'active') {
             this.accidentActive = this.accidentActiveQuery.getAll();
 
@@ -312,7 +286,7 @@ export class AccidentTableComponent
     }
 
     // Set Accident Data
-    setAccidentData(td: any) {
+    public setAccidentData(td: any): void {
         this.columns = td.gridColumns;
 
         if (td.data.length) {
@@ -321,94 +295,77 @@ export class AccidentTableComponent
             this.viewData = this.viewData.map((data: any) => {
                 return this.mapAccidentData(data);
             });
-
-            /* for(let i = 0; i < 100; i++){
-        this.viewData.push(this.viewData[2]);
-      } */
-        } else {
-            this.viewData = [];
-        }
+        } else this.viewData = [];
     }
 
     // Map Accident Data
-    mapAccidentData(data: AccidentShortResponse) {
+    public mapAccidentData(data: AccidentShortResponse) {
         return {
             ...data,
             isSelected: false,
             tableReport: data?.report ? data.report : 'No Report',
-            tableDriverName: data?.driver_FullName ? data.driver_FullName : '',
+            tableDriverName: data?.driver_FullName
+                ? data.driver_FullName
+                : eStringPlaceholder.EMPTY,
             truckNumber: null,
             trailerNumber: null,
             tableDate: data?.date
                 ? this.datePipe.transform(data.date, 'MM/dd/yy')
-                : '',
-            tabelTime: data?.time ? data?.time : '',
-            tableState: data?.state ? data?.state : '',
+                : eStringPlaceholder.EMPTY,
+            tabelTime: data?.time ?? eStringPlaceholder.EMPTY,
+            tableState: data?.state ? data?.state : eStringPlaceholder.EMPTY,
             tableAttachments: [],
         };
     }
 
-    //On Toolbar Action
-    onToolBarAction(event: any) {
+    // On Toolbar Action
+    public onToolBarAction(event: any): void {
         if (event.action === 'open-modal') {
             this.modalService.openModal(AccidentModalComponent, {
                 size: 'large-xl',
             });
         } else if (event.action === 'tab-selected') {
             this.selectedTab = event.tabData.field;
-
             this.sendAccidentData();
         } else if (event.action === 'view-mode') {
             this.activeViewMode = event.mode;
-
             this.tableOptions.toolbarActions.hideSearch = event.mode == 'Map';
         }
     }
 
     // On Head Actions
     onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
-            if (event.direction) {
-                /*  this.mapingIndex = 0;
-
-        this.backFilterQuery.sort = event.direction;
-
-        this.backFilterQuery.pageIndex = 1;
-
-        this.contactBackFilter(this.backFilterQuery); */
-            } else {
-                this.sendAccidentData();
-            }
-        }
+        if (event.action === 'sort' && !event.direction)
+            this.sendAccidentData();
     }
 
     // Table Body Action
-    onTableBodyActions(event: any) {
+    public onTableBodyActions(event: any): void {
         switch (event.type) {
-            case 'edit-accident': {
+            case 'edit-accident':
                 this.modalService.openModal(
                     AccidentModalComponent,
                     { size: 'large-xl' },
-                    { id: event.id, type: 'edit', data: event.data }
+                    {
+                        id: event.id,
+                        type: eGeneralActions.EDIT,
+                        data: event.data,
+                    }
                 );
-            }
+            default:
+                break;
         }
     }
 
     // Map Select Item
-    selectItem(id) {
+    selectItem(id): void {
         this.mapsComponent.clickedMarker(id);
     }
 
     // -------------------------------NgOnDestroy-------------------------------
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
-
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
         this.resizeObserver.disconnect();
-
         this.destroy$.next();
         this.destroy$.complete();
     }

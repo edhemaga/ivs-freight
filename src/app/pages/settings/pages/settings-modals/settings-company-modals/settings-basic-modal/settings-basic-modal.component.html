@@ -89,28 +89,6 @@
                                             : false,
                                     }"
                                 ></ca-input-test>
-                                <!-- <app-ta-input
-                                    formControlName="name"
-                                    [inputConfig]="{
-                                        name: 'Company name',
-                                        type: 'text',
-                                        label: 'Business Name',
-                                        isRequired:
-                                            editData.type === 'new-division'
-                                                ? true
-                                                : false,
-                                        isDisabled:
-                                            editData?.type?.includes(
-                                                'edit-company'
-                                            ),
-                                        textTransform: 'uppercase',
-                                        autoFocus: !editData?.type?.includes(
-                                            'edit-company'
-                                        )
-                                            ? true
-                                            : false,
-                                    }"
-                                ></app-ta-input> -->
                             </div>
                         </div>
 
@@ -1352,12 +1330,6 @@
                                                     maxLength: 4,
                                                 }"
                                             ></app-ta-input>
-                                        }
-                                        @if (
-                                            !this.companyForm.get(
-                                                'loadedAndEmptySameRate'
-                                            ).value
-                                        ) {
                                             <app-ta-input
                                                 formControlName="soloLoadedMile"
                                                 [inputConfig]="{
@@ -1371,13 +1343,7 @@
                                                     maxLength: 4,
                                                 }"
                                             ></app-ta-input>
-                                        }
-
-                                        @if (
-                                            this.companyForm.get(
-                                                'loadedAndEmptySameRate'
-                                            ).value
-                                        ) {
+                                        } @else {
                                             <app-ta-input
                                                 formControlName="perMileSolo"
                                                 [inputConfig]="{
@@ -1392,7 +1358,6 @@
                                                 }"
                                             ></app-ta-input>
                                         }
-
                                         <app-ta-input
                                             formControlName="soloPerStop"
                                             [inputConfig]="{
