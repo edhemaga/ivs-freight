@@ -34,4 +34,5 @@ export enum eTruckModalForm {
     AXLES = 'axles',
     EMPTY_WEIGHT = 'emptyWeight',
     COMMISSION = 'commission',
+    OWNER_ID = 'ownerId',
 }
