@@ -93,6 +93,7 @@ import {
     CaModalComponent,
     CaUploadFilesComponent,
     CaInputAddressDropdownComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
@@ -163,6 +164,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
         CaInputNoteComponent,
+        CaInputDatetimePickerComponent,
         TaCheckboxComponent,
         CaUploadFilesComponent,
         TaModalTableComponent,
