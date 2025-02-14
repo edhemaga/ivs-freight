@@ -8,5 +8,6 @@ export enum TruckModalForm {
     EXCLUDE_FROM_IFTA = 'excludeFromIftaFuelTaxReport',
     BOX_TRUCK = 'Box Truck',
     COMPANY_OWNED = 'companyOwned',
-    YEAR = 'year'
+    YEAR = 'year',
+    OWNER_ID = 'ownerId',
 }
