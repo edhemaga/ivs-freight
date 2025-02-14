@@ -292,23 +292,13 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: AccidentResponse) => {
                     this.accidentForm.patchValue({
-                        report: res.report,
-                        federallyRecordable: res.federallyRecordable,
-                        stateRecordable: res.stateRecordable,
-                        injury: res.injury,
-                        fatality: res.fatality,
-                        towing: res.towing,
-                        hazMat: res.hazMat,
-                        vehicleNo: res.vehicloNo,
-                        addressAccident: res.addressAccident
-                            ? res.addressAccident.address
-                            : null,
+                        ...res,
+                        addressAccident: res.addressAccident?.address ?? null,
                         date: res.date
                             ? MethodsCalculationsHelper.convertDateFromBackend(
                                   res.date
                               )
                             : null,
-                        time: res.time,
                         driverName: res.driver_FullName,
                         driverLicenceNumber: res.driver_LicenceNo,
                         driverState: res.driver_State,
@@ -332,26 +322,10 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                         violations: [],
                         insuranceType: [],
                         note: null,
-                        roadwayTrafficWay: res.roadwayTrafficway,
-                        weatherCondition: res.weatherCondition,
-                        roadAccessControl: res.roadAccessControl,
-                        roadSurfaceCondition: res.roadSurfaceCondition,
-                        lightCondition: res.lightCondition,
-                        reportingAgency: res.reportingAgency,
-                        policeOfficer: res.policeOfficer,
-                        bagdeNo: res.bagdeNo,
-                        authorityAddress: res.addressAuthority
-                            ? res.addressAuthority.address
-                            : null,
-                        phoneOfficer: res.phoneOfficer,
-                        fax: res.fax,
-                        origin: res.origin ? res.origin.address : null,
-                        destination: res.destination
-                            ? res.destination.address
-                            : null,
-                        customer: res.broker ? res.broker.businessName : null,
-                        boL: res.boL,
-                        cargo: res.cargo,
+                        authorityAddress: res.addressAuthority?.address ?? null,
+                        origin: res.origin?.address ?? null,
+                        destination: res.destination?.address ?? null,
+                        customer: res.broker?.businessName ?? null,
                     });
 
                     this.accidentModalName = res.report;
@@ -381,23 +355,11 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    // [
-                    //   this.formBuilder.group({
-                    //     categoryId: ['Crash Indicator'],
-                    //     sw: ['2'],
-                    //     hm: [true],
-                    //     description: [
-                    //       'Involves tow-away but no injury or fatality',
-                    //       [...descriptionValidation],
-                    //     ],
-                    //   }),
-                    // ]
                     setTimeout(() => {
                         this.startFormChanges();
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -437,7 +399,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     });
                     this.labelsInsuranceType = res.insuranceType;
                 },
-                error: () => {},
             });
     }
 

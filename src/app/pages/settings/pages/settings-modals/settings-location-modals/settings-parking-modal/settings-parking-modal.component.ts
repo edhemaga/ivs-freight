@@ -53,6 +53,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
 import { FormatDatePipe } from '@shared/pipes';
+import { SettingsParkingConfigPipe } from '@pages/settings/pipes';
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
@@ -89,7 +90,6 @@ import { DropActionNameHelper } from '@shared/utils/helpers';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
-
 @Component({
     selector: 'app-settings-parking-modal',
     templateUrl: './settings-parking-modal.component.html',
@@ -121,6 +121,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
         // Pipes
         FormatDatePipe,
+        SettingsParkingConfigPipe,
     ],
 })
 export class SettingsParkingModalComponent

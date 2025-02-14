@@ -5,6 +5,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 @Pipe({
     name: 'settingsParkingConfig',
+    standalone: true,
 })
 export class SettingsParkingConfigPipe implements PipeTransform {
     transform(type: string, value?: boolean): ITaInput {
