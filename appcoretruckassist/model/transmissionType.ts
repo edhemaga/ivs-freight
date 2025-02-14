@@ -9,17 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface UpdateFactoringCompanyCommand { 
-    companyId?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    address?: AddressEntity;
-    noticeOfAssigment?: string | null;
-    note?: string | null;
-    poBox?: string | null;
-}
+export type TransmissionType = 'Automatic' | 'Manual' | 'AutomatedManual';
+
+export const TransmissionType = {
+    Automatic: 'Automatic' as TransmissionType,
+    Manual: 'Manual' as TransmissionType,
+    AutomatedManual: 'AutomatedManual' as TransmissionType
+};
 

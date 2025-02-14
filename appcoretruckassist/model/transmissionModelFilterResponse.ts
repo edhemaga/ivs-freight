@@ -9,17 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { TransmissionModelResponse } from './transmissionModelResponse';
 
 
-export interface UpdateFactoringCompanyCommand { 
-    companyId?: number | null;
-    name?: string | null;
-    phone?: string | null;
-    email?: string | null;
-    address?: AddressEntity;
-    noticeOfAssigment?: string | null;
-    note?: string | null;
-    poBox?: string | null;
+export interface TransmissionModelFilterResponse { 
+    transmissionModel?: TransmissionModelResponse;
 }
 

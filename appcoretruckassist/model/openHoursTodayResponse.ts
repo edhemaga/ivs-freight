@@ -12,6 +12,7 @@
 
 
 export interface OpenHoursTodayResponse { 
+    id?: number;
     status?: string | null;
     info?: string | null;
 }
