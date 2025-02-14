@@ -1,5 +1,5 @@
 //enums
-import { FilesSizeEnum } from 'ca-components';
+import { eFilesSize } from 'ca-components';
 
 //models
 import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
@@ -91,7 +91,7 @@ export class CdlModalUploadFilesConfig {
                 { tagName: 'Unsafe Driving AGT', checked: false },
             ],
         },
-        size: FilesSizeEnum.MEDIUM,
+        size: eFilesSize.MEDIUM,
         slideWidth: 180,
     };
 }
