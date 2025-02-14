@@ -42,7 +42,12 @@ import { CommentsService } from '@shared/services/comments.service';
 import { FormService } from '@shared/services/form.service';
 
 //  Enums
-import { ModalButtonType, ModalButtonSize } from '@shared/enums';
+import {
+    ModalButtonType,
+    ModalButtonSize,
+    eFileFormControls,
+    eGeneralActions,
+} from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Svg routes
@@ -186,7 +191,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.taskForm);
                     return;
                 }
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === eGeneralActions.EDIT) {
                     this.updateTaskById(this.editData.id);
                 } else {
                     this.addTask();
@@ -196,7 +201,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
             case TaModalActionEnum.DELETE: {
                 this.deleteTaskById(this.editData.id);
                 this.modalService.setModalSpinner({
-                    action: 'delete',
+                    action: eGeneralActions.DELETE,
                     status: true,
                     close: false,
                 });
@@ -210,15 +215,15 @@ export class TodoModalComponent implements OnInit, OnDestroy {
 
     public changeCommentsEvent(comments: ReviewComment) {
         switch (comments.action) {
-            case 'delete': {
+            case eGeneralActions.DELETE: {
                 this.deleteComment(comments);
                 break;
             }
-            case 'add': {
+            case eGeneralActions.ADD: {
                 this.addComment(comments);
                 break;
             }
-            case 'update': {
+            case eGeneralActions.UPDATE: {
                 this.updateComment(comments);
                 break;
             }
@@ -299,15 +304,15 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     public onFilesEvent(event: any) {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case eGeneralActions.ADD: {
                 this.taskForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case 'delete': {
+            case eGeneralActions.DELETE: {
                 this.taskForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
@@ -484,7 +489,7 @@ export class TodoModalComponent implements OnInit, OnDestroy {
                     });
                     this.resCompanyUsers = [...this.showCompanyUsers];
 
-                    if (this.editData?.type === 'edit') {
+                    if (this.editData?.type === eGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
                         this.editTask(this.editData.id);
                     } else {

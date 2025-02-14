@@ -158,7 +158,7 @@
                         ></app-ca-input-dropdown>
                     </div>
                     <div class="d-grid form-container-truck-model mb-4">
-                        <ca-input-test
+                        <app-ca-input
                             formControlName="model"
                             [inputConfig]="{
                                 name: 'truck-trailer-model',
@@ -169,8 +169,7 @@
                                 minLength: 1,
                                 maxLength: 50,
                             }"
-                            (blurInput)="onBlurTruckModel()"
-                        ></ca-input-test>
+                        ></app-ca-input>
                         <app-ca-input-dropdown
                             formControlName="colorId"
                             [template]="'svgtext-template'"

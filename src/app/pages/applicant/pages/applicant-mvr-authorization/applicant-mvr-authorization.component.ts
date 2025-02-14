@@ -6,8 +6,7 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-
-import { Subject, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 
 // helpers
 import { anyInputInLineIncorrect } from '@pages/applicant/utils/helpers/applicant.helper';
@@ -25,11 +24,17 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
+import {
+    eFileFormControls,
+    eGeneralActions,
+    eStringPlaceholder,
+} from '@shared/enums';
 
 // models
 import {
     ApplicantResponse,
     CreateMvrAuthReviewCommand,
+    CreateWithUploadsResponse,
     MvrAuthFeedbackResponse,
 } from 'appcoretruckassist';
 import { License } from '@pages/applicant/pages/applicant-application/models/license.model';
@@ -63,7 +68,7 @@ import { ApplicantNextBackBtnComponent } from '@pages/applicant/components/appli
         TaCheckboxComponent,
         TaCounterComponent,
         ApplicantLicensesTableComponent,
-        ApplicantNextBackBtnComponent
+        ApplicantNextBackBtnComponent,
     ],
 })
 export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
@@ -202,10 +207,10 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                                 ),
                             restrictions: item.cdlRestrictions
                                 .map((resItem) => resItem.code)
-                                .join(', '),
+                                .join(eStringPlaceholder.COMMA_WHITESPACE),
                             endorsments: item.cdlEndorsements
                                 .map((resItem) => resItem.code)
-                                .join(', '),
+                                .join(eStringPlaceholder.COMMA_WHITESPACE),
                         };
                     });
 
@@ -232,7 +237,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             signature,
             files,
             id,
-            issueDate
+            issueDate,
             /*          filesReviewMessage, */
         } = stepValues;
 
@@ -245,7 +250,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             licenseCheck: onlyLicense,
             files: files ? JSON.stringify(files) : null,
             issueDate:
-                MethodsCalculationsHelper.convertDateFromBackend(issueDate)
+                MethodsCalculationsHelper.convertDateFromBackend(issueDate),
         });
 
         this.signatureImgSrc = signature;
@@ -255,59 +260,15 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
         this.dontHaveMvrForm.get('dontHaveMvr').patchValue(dontHaveMvr);
 
-        if (dontHaveMvr) {
+        if (dontHaveMvr)
             this.inputService.changeValidators(
-                this.mvrAuthorizationForm.get('files'),
+                this.mvrAuthorizationForm.get(eFileFormControls.FILES),
                 false
             );
-        } else {
+        else
             this.inputService.changeValidators(
-                this.mvrAuthorizationForm.get('files')
+                this.mvrAuthorizationForm.get(eFileFormControls.FILES)
             );
-        }
-
-        // if (this.selectedMode === SelectedMode.REVIEW) {
-        //     if (stepValues.files[0].review) {
-        //         this.stepHasReviewValues = true;
-
-        //         for (let i = 0; i < stepValues.files.length; i++) {
-        //             const isFileValid = stepValues.files[i].review.isValid;
-
-        //             this.openAnnotationArray[0].lineInputs = [
-        //                 ...this.openAnnotationArray[0].lineInputs,
-        //                 !isFileValid,
-        //             ];
-        //         }
-
-        //         const filesLineInputItems =
-        //             this.openAnnotationArray[0].lineInputs;
-        //         const isAnyInputInLineIncorrect =
-        //             anyInputInLineIncorrect(filesLineInputItems);
-
-        //         /*     if (isAnyInputInLineIncorrect && !filesReviewMessage) {
-        //             this.openAnnotationArray[0].displayAnnotationButton = true;
-        //         }
-
-        //         if (isAnyInputInLineIncorrect && filesReviewMessage) {
-        //             this.openAnnotationArray[0].displayAnnotationTextArea =
-        //                 true;
-        //         } */
-
-        //         const inputFieldsArray = JSON.stringify(
-        //             this.openAnnotationArray[0].lineInputs
-        //         );
-
-        //         if (inputFieldsArray.includes('true')) {
-        //             this.hasIncorrectFields = true;
-        //         } else {
-        //             this.hasIncorrectFields = false;
-        //         }
-
-        //         /*   this.mvrAuthorizationForm.patchValue({
-        //             firstRowReview: filesReviewMessage,
-        //         }); */
-        //     }
-        // }
     }
 
     public requestDrivingRecordFromEmployer(): void {
@@ -323,7 +284,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                     };
 
                     this.inputService.changeValidators(
-                        this.mvrAuthorizationForm.get('files'),
+                        this.mvrAuthorizationForm.get(eFileFormControls.FILES),
                         false
                     );
                 } else {
@@ -333,27 +294,25 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                         this.mvrAuthorizationForm.patchValue({
                             files,
                         });
+                        eFileFormControls.FILES;
                     }
 
                     this.inputService.changeValidators(
-                        this.mvrAuthorizationForm.get('files')
+                        this.mvrAuthorizationForm.get(eFileFormControls.FILES)
                     );
                 }
             });
     }
 
     public onSignatureAction(event: any): void {
-        if (event) {
+        if (event)
             this.signature = this.imageBase64Service.getStringFromBase64(event);
-        } else {
-            this.signature = null;
-        }
+        else this.signature = null;
     }
 
     public onRemoveSignatureRequiredNoteAction(event: any): void {
-        if (event) {
-            this.displaySignatureRequiredNote = false;
-        }
+        if (!event) return;
+        this.displaySignatureRequiredNote = false;
     }
 
     public onFilesAction(event: any): void {
@@ -362,15 +321,14 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
         this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
-            case 'add':
+            case eGeneralActions.ADD:
                 this.mvrAuthorizationForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
-
                 break;
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.mvrAuthorizationForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
@@ -382,15 +340,13 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
                 break;
             case 'mark-incorrect':
-                if (this.selectedMode === SelectedMode.REVIEW) {
+                if (this.selectedMode === SelectedMode.REVIEW)
                     this.incorrectInput(true, event.index, 0);
-                }
 
                 break;
             case 'mark-correct':
-                if (this.selectedMode === SelectedMode.REVIEW) {
+                if (this.selectedMode === SelectedMode.REVIEW)
                     this.incorrectInput(false, event.index, 0);
-                }
 
                 break;
 
@@ -429,22 +385,18 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                 selectedInputsLine.displayAnnotationTextArea = false;
             }
 
-            if (!isAnyInputInLineIncorrect) {
+            if (!isAnyInputInLineIncorrect)
                 this.mvrAuthorizationForm
                     .get('firstRowReview')
                     .patchValue(null);
-            }
         }
 
         const inputFieldsArray = JSON.stringify(
             this.openAnnotationArray.map((item) => item.lineInputs)
         );
 
-        if (inputFieldsArray.includes('true')) {
-            this.hasIncorrectFields = true;
-        } else {
-            this.hasIncorrectFields = false;
-        }
+        if (inputFieldsArray.includes('true')) this.hasIncorrectFields = true;
+        else this.hasIncorrectFields = false;
     }
 
     public getAnnotationBtnClickValue(event: any): void {
@@ -465,18 +417,13 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
     public onStepAction(event: any): void {
         if (event.action === StepAction.NEXT_STEP) {
-            if (this.selectedMode !== SelectedMode.REVIEW) {
-                this.onSubmit();
-            }
-
-            if (this.selectedMode === SelectedMode.REVIEW) {
+            if (this.selectedMode === SelectedMode.REVIEW)
                 this.onSubmitReview();
-            }
+            else this.onSubmit();
         }
 
-        if (event.action === StepAction.BACK_STEP) {
+        if (event.action === StepAction.BACK_STEP)
             this.router.navigate([`/medical-certificate/${this.applicantId}`]);
-        }
     }
 
     public onSubmit(): void {
@@ -484,14 +431,11 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             if (this.mvrAuthorizationForm.invalid) {
                 this.inputService.markInvalid(this.mvrAuthorizationForm);
 
-                if (!this.documents.length) {
+                if (!this.documents.length)
                     this.displayDocumentsRequiredNote = true;
-                }
             }
 
-            if (!this.signature) {
-                this.displaySignatureRequiredNote = true;
-            }
+            if (!this.signature) this.displaySignatureRequiredNote = true;
 
             return;
         }
@@ -506,16 +450,17 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
         const { dontHaveMvr } = this.dontHaveMvrForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        let documents =
+            this.documents
+                .filter((item) => item.realFile)
+                .map((item) => {
+                    documents.push(item.realFile);
+                }) ?? [];
 
         const saveData: any = {
             applicantId: this.applicantId,
-            issueDate: MethodsCalculationsHelper.convertDateToBackend(issueDate),
+            issueDate:
+                MethodsCalculationsHelper.convertDateToBackend(issueDate),
             isEmployee: isConsentRelease,
             isPeriodicallyObtained,
             isInformationCorrect,
@@ -533,26 +478,25 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             }),
         };
 
-        const selectMatchingBackendMethod = () => {
-            if (
-                this.selectedMode === SelectedMode.APPLICANT &&
-                !this.stepHasValues
-            ) {
-                return this.applicantActionsService.createMvrAuthorization(
-                    saveData
-                );
-            }
+        const selectMatchingBackendMethod =
+            (): Observable<CreateWithUploadsResponse> => {
+                if (
+                    this.selectedMode === SelectedMode.APPLICANT &&
+                    !this.stepHasValues
+                )
+                    return this.applicantActionsService.createMvrAuthorization(
+                        saveData
+                    );
 
-            if (
-                (this.selectedMode === SelectedMode.APPLICANT &&
-                    this.stepHasValues) ||
-                this.selectedMode === SelectedMode.FEEDBACK
-            ) {
-                return this.applicantActionsService.updateMvrAuthorization(
-                    saveData
-                );
-            }
-        };
+                if (
+                    (this.selectedMode === SelectedMode.APPLICANT &&
+                        this.stepHasValues) ||
+                    this.selectedMode === SelectedMode.FEEDBACK
+                )
+                    return this.applicantActionsService.updateMvrAuthorization(
+                        saveData
+                    );
+            };
 
         selectMatchingBackendMethod()
             .pipe(takeUntil(this.destroy$))
@@ -584,9 +528,6 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                         };
                     });
                 },
-                error: (err) => {
-                    console.log(err);
-                },
             });
     }
 
@@ -599,11 +540,11 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                     isValid: !this.openAnnotationArray[0].lineInputs[index],
                 };
             }),
-            /*    filesReviewMessage:
-                this.mvrAuthorizationForm.get('firstRowReview').value, */
         };
 
-        const selectMatchingBackendMethod = () => {
+        const selectMatchingBackendMethod = (): Observable<
+            CreateWithUploadsResponse | object
+        > => {
             if (
                 this.selectedMode === SelectedMode.REVIEW &&
                 !this.stepHasReviewValues
@@ -616,11 +557,10 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
             if (
                 this.selectedMode === SelectedMode.REVIEW &&
                 this.stepHasReviewValues
-            ) {
+            )
                 return this.applicantActionsService.updateMvrAuthorizationReview(
                     saveData
                 );
-            }
         };
 
         selectMatchingBackendMethod()
@@ -652,9 +592,6 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                             },
                         };
                     });
-                },
-                error: (err) => {
-                    console.log(err);
                 },
             });
     }

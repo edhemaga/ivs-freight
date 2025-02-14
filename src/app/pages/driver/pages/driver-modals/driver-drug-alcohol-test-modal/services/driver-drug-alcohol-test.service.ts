@@ -21,6 +21,9 @@ import {
     TestService,
 } from 'appcoretruckassist';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -104,7 +107,7 @@ export class DriverDrugAlcoholTestService {
                         : this.driverInactiveStore.add(driver);
 
                     this.tableService.sendActionAnimation({
-                        animation: 'update',
+                        animation: eGeneralActions.UPDATE,
                         data: mappedDriver,
                         id: mappedDriver.id,
                     });

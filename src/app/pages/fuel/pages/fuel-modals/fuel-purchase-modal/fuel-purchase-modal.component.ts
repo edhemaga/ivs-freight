@@ -1,5 +1,4 @@
 import {
-    AfterViewInit,
     ChangeDetectorRef,
     Component,
     Input,
@@ -20,10 +19,7 @@ import {
     takeUntil,
     switchMap,
     of,
-    take,
     Observable,
-    empty,
-    EMPTY,
     tap,
     filter,
 } from 'rxjs';
@@ -62,7 +58,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // models
 import {
-    FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
     GetFuelModalResponse,
     FuelDispatchHistoryResponse,
@@ -184,9 +179,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         private payrollService: PayrollService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService
-    ) {
-        this.createForm();
-    }
+    ) {}
 
     ngOnInit() {
         this.setModalActionType();
@@ -401,7 +394,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     form.transactionTime
                 ),
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
-            total: MethodsCalculationsHelper.convertThousanSepInNumber(
+            total: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.total as any
             ),
             fuelItems: this.fuelItems,
@@ -475,7 +468,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     form.transactionDate,
                     form.transactionTime
                 ),
-            total: MethodsCalculationsHelper.convertThousanSepInNumber(
+            total: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.total as any
             ),
             fuelItems: this.fuelItems,
@@ -607,14 +600,12 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.fuelTransactionType = fuelTransactionType;
                     this.fuelCardHolderName = fuelCardHolderName;
                 }),
-                filter(response => !!response.driver),
+                filter((response) => !!response.driver),
                 switchMap(() => {
                     return this.getDriverTrailerBySelectedTruck();
                 })
             )
             .subscribe((response) => {
-                if (!response) return;
-
                 const { data } = response?.pagination || {};
                 this.selectedDispatchHistory = response;
 

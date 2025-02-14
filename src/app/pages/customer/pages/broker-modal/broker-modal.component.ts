@@ -82,7 +82,12 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { ModalButtonSize, ModalButtonType } from '@shared/enums';
+import {
+    eFileFormControls,
+    eGeneralActions,
+    ModalButtonSize,
+    ModalButtonType,
+} from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // constants
@@ -91,12 +96,11 @@ import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/c
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// models
-import { ReviewComment } from '@shared/models/review-comment.model';
-
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
 
+// models
+import { ReviewComment } from '@shared/models/review-comment.model';
 import {
     BrokerAvailableCreditResponse,
     BrokerResponse,
@@ -113,7 +117,7 @@ import {
 } from 'appcoretruckassist';
 import { AnimationOptions } from '@shared/models/animation-options.model';
 import { Tabs } from '@shared/models/tabs.model';
-import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models/';
+import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models';
 import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
 
 @Component({
@@ -655,7 +659,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 if (this.editData?.canOpenModal) {
                     if (this.editData?.key === 'load-modal')
                         this.modalService.setProjectionModal({
-                            action: 'close',
+                            action: eGeneralActions.CLOSE,
                             payload: {
                                 key: this.editData?.key,
                                 value: null,
@@ -693,7 +697,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.isUploadInProgress = true;
 
-                    if (this.editData?.type.includes('edit')) {
+                    if (this.editData?.type.includes(eGeneralActions.EDIT)) {
                         this.updateBroker(this.editData.id);
                     } else {
                         this.addBroker();
@@ -769,15 +773,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.documents = event.files;
 
         switch (event.action) {
-            case 'add':
+            case eGeneralActions.ADD:
                 this.brokerForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.brokerForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
@@ -796,7 +800,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         let limit = this.brokerForm.get('creditLimit').value;
 
         if (limit) {
-            limit = MethodsCalculationsHelper.convertThousanSepInNumber(limit);
+            limit = MethodsCalculationsHelper.convertThousandSepInNumber(limit);
 
             const data = {
                 id: this.editData?.id ?? null,
@@ -1284,21 +1288,17 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.deleteReview(true, review);
-
                 break;
-            case 'add':
+            case eGeneralActions.ADD:
                 this.addReview(review);
-
                 break;
-            case 'update':
+            case eGeneralActions.UPDATE:
                 this.updateReview(review);
-
                 break;
-            case 'cancel':
+            case eGeneralActions.CANCEL:
                 this.reviews = this.reviews.filter((review) => review.id);
-
                 break;
             default:
                 break;
@@ -1594,7 +1594,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         if (this.editData?.key === 'load-modal')
                             this.modalService.setProjectionModal({
-                                action: 'close',
+                                action: eGeneralActions.CLOSE,
                                 payload: {
                                     key: this.editData?.key,
                                     value: null,
@@ -1653,7 +1653,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 this.setModalSpinner(null, false, true);
 
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,

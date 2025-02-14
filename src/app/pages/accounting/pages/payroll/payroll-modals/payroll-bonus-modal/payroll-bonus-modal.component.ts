@@ -61,7 +61,7 @@ export class PayrollBonusModalComponent implements OnInit {
         private payrollBonusService: PayrollBonusService,
         private ngbActiveModal: NgbActiveModal,
         private payrollService: PayrollService
-    ) {}
+    ) { }
 
     ngOnInit(): void {
         this.generateDeduction();
@@ -92,7 +92,7 @@ export class PayrollBonusModalComponent implements OnInit {
             [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
             [PayrollStringEnum.DATE]: [
                 MethodsCalculationsHelper.convertDateFromBackend(data.date) ??
-                    new Date(),
+                new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -124,7 +124,7 @@ export class PayrollBonusModalComponent implements OnInit {
             date: MethodsCalculationsHelper.convertDateToBackend(
                 this.payrollCreditForm.get(PayrollStringEnum.DATE).value
             ),
-            amount: MethodsCalculationsHelper.convertThousanSepInNumber(
+            amount: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
             ),
         };

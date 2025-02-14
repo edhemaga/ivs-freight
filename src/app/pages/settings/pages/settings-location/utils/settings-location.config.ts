@@ -1,3 +1,6 @@
+// Enums
+import { eGeneralActions } from '@shared/enums';
+
 export class SettingsLocationConfig {
     static options = {
         disabledMutedStyle: null,
@@ -14,10 +17,10 @@ export class SettingsLocationConfig {
         actions: [
             {
                 title: 'Edit',
-                name: 'edit',
+                name: eGeneralActions.EDIT,
                 svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                 show: true,
-                iconName: 'edit',
+                iconName: eGeneralActions.EDIT,
             },
             {
                 title: 'border',
@@ -57,7 +60,7 @@ export class SettingsLocationConfig {
                 danger: true,
                 show: true,
                 redIcon: true,
-                iconName: 'delete',
+                iconName: eGeneralActions.DELETE,
             },
         ],
         export: true,

@@ -74,7 +74,10 @@ import {
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { RepairShopHelper } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/helpers';
-import { RepairShopConfig, RepairShopModalUploadFilesConfig } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
+import {
+    RepairShopConfig,
+    RepairShopModalUploadFilesConfig,
+} from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
 
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -93,6 +96,7 @@ import {
     CaModalComponent,
     CaUploadFilesComponent,
     CaInputAddressDropdownComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
@@ -106,6 +110,7 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import {
+    eGeneralActions,
     ModalButtonSize,
     ModalButtonType,
     TableStringEnum,
@@ -163,6 +168,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
         CaInputNoteComponent,
+        CaInputDatetimePickerComponent,
         TaCheckboxComponent,
         CaUploadFilesComponent,
         TaModalTableComponent,
@@ -272,8 +278,10 @@ export class RepairShopModalComponent
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
 
-    public uploadDocumentFilesConfig = RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG;
-    public uploadCoverPhotoFilesConfig = RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_COVER_PHOTO_UPLOAD_FILES_CONFIG;
+    public uploadDocumentFilesConfig =
+        RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG;
+    public uploadCoverPhotoFilesConfig =
+        RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_COVER_PHOTO_UPLOAD_FILES_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -422,7 +430,7 @@ export class RepairShopModalComponent
         this.companyUser = JSON.parse(localStorage.getItem('user'));
         this.uploadCoverPhotoFilesConfig = {
             ...RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG,
-            files: [{ url: this.coverPhoto?.url}],
+            files: [{ url: this.coverPhoto?.url }],
         };
     }
 
@@ -905,7 +913,6 @@ export class RepairShopModalComponent
 
                     this.banks = [...this.banks, this.selectedBank];
                 },
-                error: () => {},
             });
     }
 
@@ -1107,7 +1114,7 @@ export class RepairShopModalComponent
             rent: !this.getFromFieldValue(
                 RepairShopModalStringEnum.COMPANY_OWNED
             )
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
                       this.getFromFieldValue(RepairShopModalStringEnum.RENT)
                   )
                 : null,
@@ -1302,15 +1309,15 @@ export class RepairShopModalComponent
 
     public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.deleteReview(reviews);
                 break;
 
-            case 'add':
+            case eGeneralActions.ADD:
                 this.addReview(reviews);
                 break;
 
-            case 'update':
+            case eGeneralActions.UPDATE:
                 this.updateReview(reviews);
                 break;
 
@@ -1367,7 +1374,6 @@ export class RepairShopModalComponent
 
                     this.isOneMoreReviewDisabled = true;
                 },
-                error: () => {},
             });
     }
 

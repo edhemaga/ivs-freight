@@ -33,6 +33,7 @@ import { VinDecoderService } from '@shared/services/vin-decoder.service';
 import { FormService } from '@shared/services/form.service';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -67,25 +68,34 @@ import {
     InputTestComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
 // models
 import { GetTruckModalResponse, VinDecodeResponse } from 'appcoretruckassist';
+import { Tabs } from '@shared/models';
+import { Confirmation } from '@shared/components/ta-shared-modals/confirmation-modal/models/confirmation.model';
 
 // Enums
-import { TruckModalForm } from '@pages/truck/pages/truck-modal/enums';
+import { eTruckModalForm } from '@pages/truck/pages/truck-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import {
+    eFileActions,
+    eFileFormControls,
+    eGeneralActions,
+    eStringPlaceholder,
+    TableStringEnum,
+} from '@shared/enums';
 
 // Const
 import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
+
+// SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TableStringEnum } from '@shared/enums';
-import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
-import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 @Component({
     selector: 'app-truck-modal',
@@ -122,8 +132,10 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
     ],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
-    public truckTypesWithLength = TruckModalConstants.truckTypesWithLength;
     @Input() editData: any;
+
+    // Constants
+    public truckTypesWithLength = TruckModalConstants.truckTypesWithLength;
 
     public truckForm: UntypedFormGroup;
     public truckType: any[] = [];
@@ -163,25 +175,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public selectedFuelType: any = null;
 
     public selectedTab: number = 1;
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
+    public tabs: Tabs[] = TruckModalConstants.truckModalTabs;
 
-    public commissionOptions: Options = {
-        floor: 2,
-        ceil: 25,
-        step: 0.5,
-        showSelectionBar: true,
-        hideLimitLabels: true,
-    };
+    public commissionOptions: Options = TruckModalConstants.commissionOptions;
 
     public animationObject = {
         value: this.selectedTab,
@@ -201,8 +197,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     public addNewAfterSave: boolean = false;
 
     public svgRoutes = SharedSvgRoutes;
-    private destroy$ = new Subject<void>();
     public taModalActionEnum = TaModalActionEnum;
+
+    // Clean-up
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -217,20 +215,23 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         private confirmationActivationService: ConfirmationActivationService
     ) {}
 
-    ngOnInit() {
+    ngOnInit(): void {
         this.createForm();
         this.isCompanyOwned();
-
-        if (this.editData?.storageData) {
-            this.skipVinDecocerEdit = true;
-            this.populateStorageData(this.editData.storageData);
-        } else {
-            this.getTruckDropdowns();
-        }
 
         this.vinDecoder();
         this.confirmationActivationSubscribe();
         this.confirmationDeactivationSubscribe();
+    }
+
+    ngAfterViewInit(): void {
+        if (!this.editData?.storageData) {
+            this.getTruckDropdowns();
+            return;
+        }
+
+        this.skipVinDecocerEdit = true;
+        this.populateStorageData(this.editData.storageData);
     }
 
     private confirmationDeactivationSubscribe(): void {
@@ -244,7 +245,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     private confirmationActivationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
+            .subscribe((res: Confirmation) => {
                 if (res.action !== TableStringEnum.CLOSE)
                     this.ngbActiveModal?.close();
             });
@@ -312,15 +313,16 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public tabChange(event: any): void {
+    public tabChange(event: Tabs): void {
         this.selectedTab = event.id;
-        this.tabs = this.tabs.map((item) => {
+        this.tabs = this.tabs?.map((item): Tabs => {
             return {
                 ...item,
                 checked: item.id === event.id,
             };
         });
-        let dotAnimation = document.querySelector('.animation-two-tabs');
+
+        const dotAnimation = document.querySelector('.animation-two-tabs');
         this.animationObject = {
             value: this.selectedTab,
             params: { height: `${dotAnimation.getClientRects()[0].height}px` },
@@ -332,9 +334,9 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             case TaModalActionEnum.CLOSE:
                 if (this.editData?.canOpenModal) {
                     switch (this.editData?.key) {
-                        case 'repair-modal':
+                        case eTruckModalForm.REPAIR_MODAL:
                             this.modalService.setProjectionModal({
-                                action: 'close',
+                                action: eGeneralActions.CLOSE,
                                 payload: {
                                     key: this.editData?.key,
                                     value: null,
@@ -348,9 +350,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         default:
                             break;
                     }
-                } else {
-                    this.ngbActiveModal.close();
-                }
+                } else this.ngbActiveModal.close();
                 break;
 
             case TaModalActionEnum.DEACTIVATE:
@@ -396,11 +396,10 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.truckForm);
                     return;
                 }
-                if (this.editData?.id) {
-                    this.updateTruck(this.editData.id);
-                } else {
-                    this.addTruck();
-                }
+
+                if (this.editData?.id) this.updateTruck(this.editData.id);
+                else this.addTruck();
+
                 break;
 
             case TaModalActionEnum.DELETE:
@@ -423,77 +422,90 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private isCompanyOwned() {
+    private isCompanyOwned(): void {
         this.truckForm
-            .get(TruckModalForm.COMPANY_OWNED)
+            .get(eTruckModalForm.COMPANY_OWNED)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                this.truckForm.get(TruckModalForm.PURCHASE_DATE).setValue(null);
                 this.truckForm
-                    .get(TruckModalForm.PURCHASE_PRICE)
+                    .get(eTruckModalForm.PURCHASE_DATE)
+                    .setValue(null);
+                this.truckForm
+                    .get(eTruckModalForm.PURCHASE_PRICE)
                     .setValue(null);
                 if (!value) {
                     this.inputService.changeValidators(
-                        this.truckForm.get('ownerId'),
+                        this.truckForm.get(eTruckModalForm.OWNER_ID),
                         true,
                         [],
                         false
                     );
+                    this.truckForm.get(eTruckModalForm.OWNER_ID).setValue(null);
                 } else {
                     this.inputService.changeValidators(
-                        this.truckForm.get('ownerId'),
+                        this.truckForm.get(eTruckModalForm.OWNER_ID),
                         false,
                         [],
                         false
                     );
                 }
             });
+
+        if (this.editData?.ownerData) {
+            this.truckForm.get(eTruckModalForm.COMPANY_OWNED).setValue(false);
+            this.onSelectDropdown(
+                this.editData.ownerData,
+                TableStringEnum.OWNER_3
+            );
+        }
     }
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
-            case 'truck-type':
+            case eTruckModalForm.TRUCK_TYPE:
                 this.selectedTruckType = event;
 
-                if (this.isLengthRequired) {
+                if (this.isLengthRequired)
                     this.inputService.changeValidators(
-                        this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH)
+                        this.truckForm.get(eTruckModalForm.TRUCK_TRAILER_LENGTH)
                     );
-                } else {
+                else
                     this.inputService.changeValidators(
-                        this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
+                        this.truckForm.get(
+                            eTruckModalForm.TRUCK_TRAILER_LENGTH
+                        ),
                         false
                     );
-                    this.selectedTruckLengthId = null;
-                }
+                this.selectedTruckLengthId = null;
 
                 if (!this.isFuelTypeEnabled) {
                     this.selectedFuelType = null;
-                    this.truckForm.get(TruckModalForm.FUEL_TYPE).setValue(null);
+                    this.truckForm
+                        .get(eTruckModalForm.FUEL_TYPE)
+                        .setValue(null);
                 }
 
                 if (this.isLengthRequired) {
                     this.selectedTruckLengthId = null;
                     this.truckForm
-                        .get(TruckModalForm.TRUCK_TRAILER_LENGTH)
+                        .get(eTruckModalForm.TRUCK_TRAILER_LENGTH)
                         .patchValue(null);
                 }
 
                 if (!this.isSpecialTruckType)
-                    this.truckForm.get(TruckModalForm.VOLUME).setValue(null);
+                    this.truckForm.get(eTruckModalForm.VOLUME).setValue(null);
                 break;
-            case 'truck-make':
+            case eTruckModalForm.TRUCK_MAKE:
                 this.selectedTruckMake = event;
                 break;
-            case 'color':
+            case eTruckModalForm.COLOR:
                 this.selectedColor = event;
                 break;
-            case 'owner':
+            case eTruckModalForm.OWNER:
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
-
                     this.modalService.setProjectionModal({
-                        action: 'open',
+                        action: eGeneralActions.OPEN,
                         payload: {
                             key: 'truck-modal',
                             value: {
@@ -526,62 +538,59 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         component: OwnerModalComponent,
                         size: 'small',
                     });
-                } else {
-                    this.selectedOwner = event;
-                }
+                } else this.selectedOwner = event;
                 break;
-            case 'gross-weight':
+            case eTruckModalForm.GROSS_WEIGHT:
                 this.selectedTruckGrossWeight = event;
                 break;
-            case 'tire-size':
+            case eTruckModalForm.TIRE_SIZE:
                 this.selectedTireSize = event;
                 break;
-            case 'shifter':
+            case eTruckModalForm.SHIFTER:
                 this.selectedShifter = event;
                 break;
-            case 'engine-model':
+            case eTruckModalForm.ENGINE_MODEL:
                 this.selectedtruckEngineModelId = event;
                 break;
-            case 'engine-oil-type':
+            case eTruckModalForm.ENGINE_OIL_TYPE:
                 this.selectedEngineOilType = event;
                 break;
-            case 'ap-unit':
+            case eTruckModalForm.AP_UNIT:
                 this.selectedAPUnit = event;
                 break;
-            case 'gear-ratio':
+            case eTruckModalForm.GEAR_RATIO:
                 this.selectedGearRatio = event;
                 break;
-            case 'toll-transponder':
+            case eTruckModalForm.TOLL_TRANSPONDER:
                 this.selectedTollTransponders = event;
                 break;
-            case 'brakes':
+            case eTruckModalForm.BRAKES:
                 this.selectedBrakes = event;
                 break;
-            case 'front-wheels':
+            case eTruckModalForm.FRONT_WHEELS:
                 this.selectedFrontWheels = event;
                 break;
-            case 'rear-wheels':
+            case eTruckModalForm.REAR_WHEELS:
                 this.selectedRearWheels = event;
                 break;
-            case 'fuel-type':
+            case eTruckModalForm.FUEL_TYPE:
                 this.selectedFuelType = event;
                 break;
-            case 'truck-length':
+            case eTruckModalForm.TRUCK_LENGTH:
                 this.selectedTruckLengthId = event;
                 this.inputService.changeValidators(
-                    this.truckForm.get(TruckModalForm.TRUCK_TRAILER_LENGTH),
+                    this.truckForm.get(eTruckModalForm.TRUCK_TRAILER_LENGTH),
                     this.isLengthRequired
                 );
                 break;
-
             default:
                 break;
         }
     }
 
-    private vinDecoder() {
+    private vinDecoder(): void {
         this.truckForm
-            .get('vin')
+            .get(eTruckModalForm.VIN)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
                 this.skipVinDecocerEdit ? skip(1) : tap()
@@ -590,7 +599,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.skipVinDecocerEdit = false;
                 if (!(value?.length === 13 || value?.length === 17)) {
                     this.truckForm
-                        .get('vin')
+                        .get(eTruckModalForm.VIN)
                         .setErrors({ incorrectVinNumber: true });
                 }
 
@@ -602,10 +611,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         .subscribe({
                             next: (res: VinDecodeResponse) => {
                                 this.truckForm.patchValue({
-                                    model: res?.model ? res.model : null,
-                                    year: res?.year
-                                        ? res.year.toString()
-                                        : null,
+                                    model: res?.model ?? null,
+                                    year: res?.year?.toString() ?? null,
                                     truckMakeId: res.truckMake
                                         ? res.truckMake.name
                                         : null,
@@ -627,13 +634,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     (item) => item.name === res.fuelType
                                 );
                             },
-                            error: () => {},
                         });
                 }
             });
     }
 
-    public getTruckDropdowns() {
+    public getTruckDropdowns(): void {
         this.truckModalService
             .getTruckDropdowns()
             .pipe(takeUntil(this.destroy$))
@@ -642,7 +648,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.apUnits = res.apUnits;
                     this.brakes = res.brakes;
                     this.tags = res.tags;
-                    this.colorType = res.colors.map((item) => {
+                    this.colorType = res.colors?.map((item) => {
                         return {
                             ...item,
                             folder: 'common',
@@ -666,7 +672,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.engineModels = res.truckEngineModels;
                     this.grossWeight = res.truckGrossWeights;
                     this.truckMakeType = res.truckMakes;
-                    this.truckType = res.truckTypes.map((item) => {
+                    this.truckType = res.truckTypes?.map((item) => {
                         return {
                             ...item,
                             folder: 'common',
@@ -675,21 +681,23 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     });
                     this.rearWheels = this.frontWheels = res.wheelsTypes;
                     this.fuelTypes = res.fuelTypes;
-                    this.truckForm.get('fhwaExp').patchValue(res.fhwaExp);
+                    this.truckForm
+                        .get(eTruckModalForm.FHWA_EXP)
+                        .patchValue(res.fhwaExp);
 
                     // Edit part
-                    if (this.editData?.id) {
-                        this.skipVinDecocerEdit = true;
-                        this.editTruckById(this.editData.id);
-                    } else {
+                    if (!this.editData?.id) {
                         this.startFormChanges();
+                        return;
                     }
+
+                    this.skipVinDecocerEdit = true;
+                    this.editTruckById(this.editData.id);
                 },
-                error: () => {},
             });
     }
 
-    public editTruckById(id: number) {
+    public editTruckById(id: number): void {
         this.truckModalService
             .getTruckById(id)
             .pipe(takeUntil(this.destroy$))
@@ -697,20 +705,13 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 next: (res: any) => {
                     this.truckForm.patchValue({
                         // Basic Tab
-                        companyOwned: res.companyOwned,
-                        truckNumber: res.truckNumber,
-                        truckTypeId: res.truckType ? res.truckType.name : null,
-                        vin: res.vin,
-                        truckMakeId: res.truckMake ? res.truckMake.name : null,
-                        model: res.model,
+                        ...res,
+                        truckTypeId: res.truckType?.name ?? null,
+                        truckMakeId: res.truckMake?.name ?? null,
                         year: res.year.toString(),
-                        truckLengthId: res.truckLength
-                            ? res.truckLength.name
-                            : null,
-                        colorId: res.color ? res.color.name : null,
-                        ownerId: res.owner ? res.owner.name : null,
-                        commission: res.commission,
-                        note: res.note,
+                        truckLengthId: res.truckLength?.name ?? null,
+                        colorId: res.color?.name ?? null,
+                        ownerId: res.owner?.name ?? null,
                         // Additional Tab
                         purchaseDate: res.purchaseDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
@@ -748,98 +749,72 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                   res.wheelBase
                               )
                             : null,
-                        rearWheels: res.rearWheels ? res.rearWheels.name : null,
-                        transmissionModel: res.transmissionModel,
-                        shifter: res.shifter ? res.shifter.name : null,
-                        axles: res.axles,
-                        insurancePolicy: res.insurancePolicy,
+                        rearWheels: res.rearWheels?.name ?? null,
+                        shifter: res.shifter?.name ?? null,
                         mileage: res.mileage
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                   res.mileage
                               )
                             : null,
-                        fuelType: res.fuelType ? res.fuelType.name : null,
+                        fuelType: res.fuelType?.name ?? null,
                         engineOilType: res.engineOilType
                             ? res.engineOilType.name
                             : null,
-                        gearRatio: res.gearRatio ? res.gearRatio.name : null,
-                        apUnit: res.apUnit ? res.apUnit.name : null,
-                        tollTransponder: res.tollTransponder
-                            ? res.tollTransponder.name
-                            : null,
-                        tollTransponderDeviceNo: res.tollTransponderDeviceNo,
-                        doubleBunk: res.doubleBunk,
-                        refrigerator: res.refrigerator,
-                        dcInverter: res.dcInverter,
-                        headacheRack: res.headacheRack,
-                        dashCam: res.dashCam,
-                        blower: res.blower,
-                        pto: res.pto,
-                        fhwaExp: res.fhwaExp ? res.fhwaExp : 12,
+                        gearRatio: res.gearRatio?.name ?? null,
+                        apUnit: res.apUnit?.name ?? null,
+                        tollTransponder: res.tollTransponder?.name ?? null,
+                        fhwaExp: res.fhwaExp ?? 12,
                         volume: res.volume ?? null,
                         excludeFromIftaFuelTaxReport:
                             res.excludeFromIftaFuelTaxReport,
                     });
 
-                    this.selectedAPUnit = res.apUnit ? res.apUnit : null;
-                    this.selectedBrakes = res.brakes ? res.brakes : null;
-                    this.selectedColor = res.color ? res.color : null;
-                    this.selectedEngineOilType = res.engineOilType
-                        ? res.engineOilType
-                        : null;
-                    this.selectedFrontWheels = res.frontWheels
-                        ? res.frontWheels
-                        : null;
-
+                    this.selectedAPUnit = res.apUnit ?? null;
+                    this.selectedBrakes = res.brakes ?? null;
+                    this.selectedColor = res.color ?? null;
+                    this.selectedEngineOilType = res.engineOilType ?? null;
+                    this.selectedFrontWheels = res.frontWheels ?? null;
                     this.selectedGearRatio = res.gearRatio
                         ? res.gearRatio
                         : null;
-                    this.selectedOwner = res.owner ? res.owner : null;
+                    this.selectedOwner =
+                        res.owner && !res.companyOwned ? res.owner : null;
                     this.selectedRearWheels = res.rearWheels
                         ? res.rearWheels
                         : null;
-                    this.selectedShifter = res.shifter ? res.shifter : null;
-                    this.selectedTireSize = res.tireSize ? res.tireSize : null;
-                    this.selectedTollTransponders = res.tollTransponder
-                        ? res.tollTransponder
-                        : null;
-                    this.selectedTruckGrossWeight = res.truckGrossWeight
-                        ? res.truckGrossWeight
-                        : null;
-                    this.selectedTruckMake = res.truckMake
-                        ? res.truckMake
-                        : null;
-                    this.selectedTruckType = res.truckType
-                        ? res.truckType
-                        : null;
-                    this.selectedtruckEngineModelId = res.truckEngineModel
-                        ? res.truckEngineModel
-                        : null;
+                    this.selectedShifter = res.shifter ?? null;
+                    this.selectedTireSize = res.tireSize ?? null;
+                    this.selectedTollTransponders = res.tollTransponder ?? null;
+                    this.selectedTruckGrossWeight =
+                        res.truckGrossWeight ?? null;
+                    this.selectedTruckMake = res.truckMake ?? null;
+                    this.selectedTruckType = res.truckType ?? null;
+                    this.selectedtruckEngineModelId =
+                        res.truckEngineModel ?? null;
                     this.selectedFuelType = res.fuelType;
                     this.truckStatus = res.status !== 1;
                     this.selectedTruckLengthId = res.truckLength;
                     this.documents = res.files;
 
                     this.modalService.changeModalStatus({
-                        name: 'deactivate',
+                        name: eGeneralActions.DEACTIVATE,
                         status: this.truckStatus,
                     });
 
                     this.startFormChanges();
                 },
-                error: () => {},
             });
     }
 
     public get isFuelTypeEnabled(): boolean {
         return TruckModalConstants.fuelTypeTrucks.includes(
-            this.truckForm.get(TruckModalForm.TRUCK_TYPE_ID).value
+            this.truckForm.get(eTruckModalForm.TRUCK_TYPE_ID).value
         );
     }
 
     public get isSpecialTruckType(): boolean {
         const truckTypeId = this.truckForm.get(
-            TruckModalForm.TRUCK_TYPE_ID
+            eTruckModalForm.TRUCK_TYPE_ID
         ).value;
         return TruckModalConstants.truckTypesWithAdditionalColumns.includes(
             truckTypeId
@@ -848,8 +823,8 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public get isBoxTruck(): boolean {
         return (
-            this.truckForm.get(TruckModalForm.TRUCK_TYPE_ID).value ===
-            TruckModalForm.BOX_TRUCK
+            this.truckForm.get(eTruckModalForm.TRUCK_TYPE_ID).value ===
+            eTruckModalForm.BOX_TRUCK
         );
     }
 
@@ -857,125 +832,63 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         return this.truckTypesWithLength.includes(this.selectedTruckType?.name);
     }
 
-    private populateStorageData(res: any) {
-        const timeout = setTimeout(() => {
-            this.getTruckDropdowns();
-            this.truckForm.patchValue({
-                companyOwned: res.companyOwned,
-                truckNumber: res.truckNumber,
-                truckTypeId: res.truckTypeId,
-                truckLengthId: res.truckLengthId,
-                vin: res.vin,
-                truckMakeId: res.truckMakeId,
-                model: res.model,
-                year: res.year,
-                colorId: res.colorId,
-                ownerId: res.ownerId,
-                commission: res.commission,
-                note: res.note,
-                // Additional Tab
-                purchaseDate: res.purchaseDate,
-                purchasePrice: res.purchasePrice,
-                truckGrossWeightId: res.truckGrossWeightId,
-                emptyWeight: res.emptyWeight,
-                truckEngineModelId: res.truckEngineModelId,
-                tireSizeId: res.tireSizeId,
-                fuelTankSize: res.fuelTankSize,
-                brakes: res.brakes,
-                frontWheels: res.frontWheels,
-                wheelBase: res.wheelBase,
-                rearWheels: res.rearWheels,
-                transmissionModel: res.transmissionModel,
-                shifter: res.shifter,
-                axles: res.axles,
-                fhwaExp: res.fhwaExp,
-                fuelType: res.fuelType,
-                insurancePolicy: res.insurancePolicy,
-                mileage: res.mileage,
-                engineOilType: res.engineOilType,
-                gearRatio: res.gearRatio,
-                apUnit: res.apUnit,
-                tollTransponder: res.tollTransponder,
-                tollTransponderDeviceNo: res.tollTransponderDeviceNo,
-                doubleBunk: res.doubleBunk,
-                refrigerator: res.refrigerator,
-                dcInverter: res.dcInverter,
-                headacheRack: res.headacheRack,
-                dashCam: res.dashCam,
-                blower: res.blower,
-                pto: res.pto,
-                volume: res.volume,
-                excludeFromIftaFuelTaxReport: res.excludeFromIftaFuelTaxReport,
-            });
+    private populateStorageData(res: any): void {
+        this.getTruckDropdowns();
+        this.truckForm.patchValue({ ...res });
 
-            if (res.id) {
-                this.editData = { ...this.editData, id: res.id };
-            }
+        if (res.id) this.editData = { ...this.editData, id: res.id };
 
-            this.selectedAPUnit = res.selectedAPUnit;
-            this.selectedBrakes = res.selectedBrakes;
-            this.selectedColor = res.selectedColor;
-            this.selectedEngineOilType = res.selectedEngineOilType;
-            this.selectedFrontWheels = res.selectedFrontWheels;
-            this.selectedGearRatio = res.selectedGearRatio;
-            this.selectedOwner = res.selectedOwner;
-            this.selectedRearWheels = res.selectedRearWheels;
-            this.selectedShifter = res.selectedShifter;
-            this.selectedTireSize = res.selectedTireSize;
-            this.selectedTollTransponders = res.selectedTollTransponders;
-            this.selectedTruckGrossWeight = res.selectedTruckGrossWeight;
-            this.selectedTruckMake = res.selectedTruckMake;
-            this.selectedTruckType = res.selectedTruckType;
-            this.selectedtruckEngineModelId = res.selectedtruckEngineModelId;
-            this.truckStatus = res.truckStatus;
-            this.selectedFuelType = res.selectedFuelType;
+        this.selectedAPUnit = res.selectedAPUnit;
+        this.selectedBrakes = res.selectedBrakes;
+        this.selectedColor = res.selectedColor;
+        this.selectedEngineOilType = res.selectedEngineOilType;
+        this.selectedFrontWheels = res.selectedFrontWheels;
+        this.selectedGearRatio = res.selectedGearRatio;
+        this.selectedOwner = res.selectedOwner;
+        this.selectedRearWheels = res.selectedRearWheels;
+        this.selectedShifter = res.selectedShifter;
+        this.selectedTireSize = res.selectedTireSize;
+        this.selectedTollTransponders = res.selectedTollTransponders;
+        this.selectedTruckGrossWeight = res.selectedTruckGrossWeight;
+        this.selectedTruckMake = res.selectedTruckMake;
+        this.selectedTruckType = res.selectedTruckType;
+        this.selectedtruckEngineModelId = res.selectedtruckEngineModelId;
+        this.truckStatus = res.truckStatus;
+        this.selectedFuelType = res.selectedFuelType;
 
-            this.modalService.changeModalStatus({
-                name: 'deactivate',
-                status: this.truckStatus,
-            });
-
-            clearTimeout(timeout);
-        }, 150);
+        this.modalService.changeModalStatus({
+            name: eGeneralActions.DEACTIVATE,
+            status: this.truckStatus,
+        });
     }
 
-    public addTruck() {
+    public addTruck(): void {
         let documents = [];
         let tagsArray = [];
-        this.documents.map((item) => {
-            if (item.tagId?.length)
-                tagsArray.push({
+
+        this.documents.forEach((item) => {
+            if (item.tagId?.length) {
+                const tag = {
                     fileName: item.realFile.name,
                     tagIds: item.tagId,
-                });
-
-            if (item.realFile) {
-                documents.push(item.realFile);
+                };
+                tagsArray = [...tagsArray, tag];
             }
+
+            if (item.realFile) documents = [...documents, item.realFile];
         });
 
-        if (!tagsArray.length) {
-            tagsArray = null;
-        }
+        if (!tagsArray.length) tagsArray = null;
 
         const newData: any = {
             ...this.truckForm.value,
-
-            apUnit: this.selectedAPUnit ? this.selectedAPUnit.name : null,
-            brakes: this.selectedBrakes ? this.selectedBrakes.name : null,
-            colorId: this.selectedColor ? this.selectedColor.id : null,
-            engineOilType: this.selectedEngineOilType
-                ? this.selectedEngineOilType.id
-                : null,
-            truckTypeId: this.selectedTruckType
-                ? this.selectedTruckType.id
-                : null,
-            truckMakeId: this.selectedTruckMake
-                ? this.selectedTruckMake.id
-                : null,
-            truckLengthId: this.selectedTruckLengthId
-                ? this.selectedTruckLengthId.id
-                : null,
+            apUnit: this.selectedAPUnit?.name ?? null,
+            brakes: this.selectedBrakes?.name ?? null,
+            colorId: this.selectedColor?.id ?? null,
+            engineOilType: this.selectedEngineOilType?.id ?? null,
+            truckTypeId: this.selectedTruckType?.id ?? null,
+            truckMakeId: this.selectedTruckMake?.id ?? null,
+            truckLengthId: this.selectedTruckLengthId?.id ?? null,
             tollTransponder: this.selectedTollTransponders
                 ? this.selectedTollTransponders.id
                 : null,
@@ -994,38 +907,39 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             frontWheels: this.selectedFrontWheels
                 ? this.selectedFrontWheels.name
                 : null,
-            wheelBase: this.truckForm.get('wheelBase').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('wheelBase').value
+            wheelBase: this.truckForm.get(eTruckModalForm.WHEEL_BASE).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.truckForm.get(eTruckModalForm.WHEEL_BASE).value
                   )
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
                 : null,
-            fuelTankSize: this.truckForm.get('fuelTankSize').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('fuelTankSize').value
+            fuelTankSize: this.truckForm.get(eTruckModalForm.FUEL_TANK_SIZE)
+                .value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.truckForm.get(eTruckModalForm.FUEL_TANK_SIZE).value
                   )
                 : null,
-            mileage: this.truckForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('mileage').value
+            mileage: this.truckForm.get(eTruckModalForm.MILEAGE).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.truckForm.get(eTruckModalForm.MILEAGE).value
                   )
                 : null,
-            axles: this.truckForm.get('axles').value
-                ? parseInt(this.truckForm.get('axles').value)
+            axles: this.truckForm.get(eTruckModalForm.AXLES).value
+                ? parseInt(this.truckForm.get(eTruckModalForm.AXLES).value)
                 : null,
-            emptyWeight: this.truckForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('emptyWeight').value
+            emptyWeight: this.truckForm.get(eTruckModalForm.EMPTY_WEIGHT).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.truckForm.get(eTruckModalForm.EMPTY_WEIGHT).value
                   )
                 : null,
-            commission: this.truckForm.get('commission').value
+            commission: this.truckForm.get(eTruckModalForm.COMMISSION).value
                 ? parseFloat(
                       this.truckForm
-                          .get('commission')
+                          .get(eTruckModalForm.COMMISSION)
                           .value.toString()
-                          .replace(/,/g, '')
+                          .replace(/,/g, eStringPlaceholder.EMPTY)
                   )
                 : null,
             fuelType: this.isFuelTypeEnabled
@@ -1033,28 +947,30 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     ? this.selectedFuelType.id
                     : null
                 : null,
-            year: parseInt(this.truckForm.get(TruckModalForm.YEAR).value),
-            purchaseDate: this.truckForm.get(TruckModalForm.COMPANY_OWNED).value
-                ? this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
+            year: parseInt(this.truckForm.get(eTruckModalForm.YEAR).value),
+            purchaseDate: this.truckForm.get(eTruckModalForm.COMPANY_OWNED)
+                .value
+                ? this.truckForm.get(eTruckModalForm.PURCHASE_DATE).value
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                          this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
+                          this.truckForm.get(eTruckModalForm.PURCHASE_DATE)
+                              .value
                       )
                     : null
                 : null,
-            purchasePrice: this.truckForm.get(TruckModalForm.COMPANY_OWNED)
+            purchasePrice: this.truckForm.get(eTruckModalForm.COMPANY_OWNED)
                 .value
-                ? this.truckForm.get(TruckModalForm.PURCHASE_PRICE).value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                          this.truckForm.get(TruckModalForm.PURCHASE_PRICE)
+                ? this.truckForm.get(eTruckModalForm.PURCHASE_PRICE).value
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                          this.truckForm.get(eTruckModalForm.PURCHASE_PRICE)
                               .value
                       )
                     : null
                 : null,
             files: documents,
             tags: tagsArray,
-            volume: this.truckForm.get(TruckModalForm.VOLUME).value,
+            volume: this.truckForm.get(eTruckModalForm.VOLUME).value,
             excludeFromIftaFuelTaxReport: this.truckForm.get(
-                TruckModalForm.EXCLUDE_FROM_IFTA
+                eTruckModalForm.EXCLUDE_FROM_IFTA
             ).value,
         };
 
@@ -1067,7 +983,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         switch (this.editData?.key) {
                             case 'repair-modal': {
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -1087,44 +1003,40 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     }
 
                     this.ngbActiveModal.close();
-                    if (this.addNewAfterSave) {
+                    if (this.addNewAfterSave)
                         this.modalService.openModal(TruckModalComponent, {
                             size: ContactsModalStringEnum.SMALL,
                         });
-                    }
                 },
-                error: () => {},
             });
     }
 
-    public updateTruck(id: number) {
+    public updateTruck(id: number): void {
         let documents = [];
         let tagsArray = [];
-        this.documents.map((item) => {
-            if (item.tagId?.length && item?.realFile?.name)
-                tagsArray.push({
-                    fileName: item.realFile.name,
-                    tagIds: item.tagId,
-                });
 
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
+        this.documents.forEach((item) => {
+            if (item.tagId?.length && item?.realFile?.name)
+                tagsArray = [
+                    ...tagsArray,
+                    {
+                        fileName: item.realFile.name,
+                        tagIds: item.tagId,
+                    },
+                ];
+
+            if (item.realFile) documents = [...documents, item.realFile];
         });
 
-        if (!tagsArray.length) {
-            tagsArray = null;
-        }
+        if (!tagsArray.length) tagsArray = null;
 
         const newData: any = {
-            id: id,
+            id,
             ...this.truckForm.value,
-            apUnit: this.selectedAPUnit ? this.selectedAPUnit.name : null,
-            brakes: this.selectedBrakes ? this.selectedBrakes.name : null,
-            colorId: this.selectedColor ? this.selectedColor.id : null,
-            engineOilType: this.selectedEngineOilType
-                ? this.selectedEngineOilType.id
-                : null,
+            apUnit: this.selectedAPUnit?.name ?? null,
+            brakes: this.selectedBrakes?.name ?? null,
+            colorId: this.selectedColor?.id ?? null,
+            engineOilType: this.selectedEngineOilType?.id ?? null,
             truckTypeId: this.selectedTruckType
                 ? this.selectedTruckType.id
                 : null,
@@ -1137,7 +1049,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             tollTransponder: this.selectedTollTransponders
                 ? this.selectedTollTransponders.id
                 : null,
-            ownerId: this.truckForm.get(TruckModalForm.COMPANY_OWNED).value
+            ownerId: this.truckForm.get(eTruckModalForm.COMPANY_OWNED).value
                 ? null
                 : this.selectedOwner
                   ? this.selectedOwner.id
@@ -1156,38 +1068,39 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             frontWheels: this.selectedFrontWheels
                 ? this.selectedFrontWheels.name
                 : null,
-            wheelBase: this.truckForm.get('wheelBase').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('wheelBase').value
+            wheelBase: this.truckForm.get(eTruckModalForm.WHEEL_BASE).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.truckForm.get(eTruckModalForm.WHEEL_BASE).value
                   )
                 : null,
             rearWheels: this.selectedRearWheels
                 ? this.selectedRearWheels.name
                 : null,
-            fuelTankSize: this.truckForm.get('fuelTankSize').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('fuelTankSize').value
+            fuelTankSize: this.truckForm.get(eTruckModalForm.FUEL_TANK_SIZE)
+                .value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.truckForm.get(eTruckModalForm.FUEL_TANK_SIZE).value
                   )
                 : null,
-            mileage: this.truckForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('mileage').value
+            mileage: this.truckForm.get(eTruckModalForm.MILEAGE).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.truckForm.get(eTruckModalForm.MILEAGE).value
                   )
                 : null,
-            axles: this.truckForm.get('axles').value
-                ? parseInt(this.truckForm.get('axles').value)
+            axles: this.truckForm.get(eTruckModalForm.AXLES).value
+                ? parseInt(this.truckForm.get(eTruckModalForm.AXLES).value)
                 : null,
-            emptyWeight: this.truckForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.truckForm.get('emptyWeight').value
+            emptyWeight: this.truckForm.get(eTruckModalForm.EMPTY_WEIGHT).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.truckForm.get(eTruckModalForm.EMPTY_WEIGHT).value
                   )
                 : null,
-            commission: this.truckForm.get('commission').value
+            commission: this.truckForm.get(eTruckModalForm.COMMISSION).value
                 ? parseFloat(
                       this.truckForm
-                          .get('commission')
+                          .get(eTruckModalForm.COMMISSION)
                           .value.toString()
-                          .replace(/,/g, '')
+                          .replace(/,/g, eStringPlaceholder.WHITESPACE)
                   )
                 : null,
             fuelType: this.isFuelTypeEnabled
@@ -1195,23 +1108,25 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     ? this.selectedFuelType.id
                     : null
                 : null,
-            year: parseInt(this.truckForm.get(TruckModalForm.YEAR).value),
-            volume: parseInt(this.truckForm.get(TruckModalForm.VOLUME).value),
+            year: parseInt(this.truckForm.get(eTruckModalForm.YEAR).value),
+            volume: parseInt(this.truckForm.get(eTruckModalForm.VOLUME).value),
             excludeFromIftaFuelTaxReport: this.truckForm.get(
-                TruckModalForm.EXCLUDE_FROM_IFTA
+                eTruckModalForm.EXCLUDE_FROM_IFTA
             ).value,
-            purchaseDate: this.truckForm.get(TruckModalForm.COMPANY_OWNED).value
-                ? this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
+            purchaseDate: this.truckForm.get(eTruckModalForm.COMPANY_OWNED)
+                .value
+                ? this.truckForm.get(eTruckModalForm.PURCHASE_DATE).value
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                          this.truckForm.get(TruckModalForm.PURCHASE_DATE).value
+                          this.truckForm.get(eTruckModalForm.PURCHASE_DATE)
+                              .value
                       )
                     : null
                 : null,
-            purchasePrice: this.truckForm.get(TruckModalForm.COMPANY_OWNED)
+            purchasePrice: this.truckForm.get(eTruckModalForm.COMPANY_OWNED)
                 .value
-                ? this.truckForm.get(TruckModalForm.PURCHASE_PRICE).value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                          this.truckForm.get(TruckModalForm.PURCHASE_PRICE)
+                ? this.truckForm.get(eTruckModalForm.PURCHASE_PRICE).value
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                          this.truckForm.get(eTruckModalForm.PURCHASE_PRICE)
                               .value
                       )
                     : null
@@ -1229,90 +1144,86 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.ngbActiveModal.close();
                     this.updateTags();
                 },
-                error: () => {},
             });
     }
 
-    public deleteTruckById(id: number) {
+    public deleteTruckById(id: number): void {
         this.truckModalService
             .deleteTruckById(id, this.editData.tabSelected)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.ngbActiveModal.close();
-                },
-                error: () => {},
+            .subscribe(() => {
+                this.ngbActiveModal.close();
             });
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
-                this.truckForm
-                    .get('files')
-                    .patchValue(JSON.stringify(event.files));
+            case eGeneralActions.ADD:
+                this.updateFormControl(
+                    this.truckForm,
+                    eFileFormControls.FILES,
+                    JSON.stringify(event.files)
+                );
                 break;
-            }
-            case 'delete': {
-                this.truckForm
-                    .get('files')
-                    .patchValue(
-                        event.files.length ? JSON.stringify(event.files) : null
-                    );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
+            case eGeneralActions.DELETE:
+                const value = event.files.length
+                    ? JSON.stringify(event.files)
+                    : null;
+                this.updateFormControl(
+                    this.truckForm,
+                    eFileFormControls.FILES,
+                    value
+                );
+                if (!event.deleteId) return;
+
+                this.filesForDelete = this.filesForDelete?.length
+                    ? [...this.filesForDelete, event.deleteId]
+                    : [];
 
                 this.fileModified = true;
                 break;
-            }
-            case 'tag': {
-                let changedTag = false;
-                event.files.map((item) => {
-                    if (item.tagChanged) {
-                        changedTag = true;
-                    }
-                });
+            case eFileActions.TAG:
+                const changedTag: boolean = event?.files?.some(
+                    (item) => item.tagChanged
+                );
 
-                this.truckForm.get('tags').patchValue(changedTag ? true : null);
+                this.updateFormControl(
+                    this.truckForm,
+                    'tags',
+                    changedTag ? true : null
+                );
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onBlurTruckModel() {
-        const model = this.truckForm.get('model').value;
-        if (model?.length >= 1) {
-            this.truckModalService
-                .autocompleteByTruckModel(model)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe();
-        }
+    private updateFormControl(
+        form: UntypedFormGroup,
+        formControlName: string,
+        value: unknown
+    ): void {
+        form.get(formControlName).patchValue(value);
     }
 
-    updateTags() {
-        let tags = [];
-
-        this.documents.map((item) => {
-            if (item?.tagChanged && item?.fileId) {
-                var tagsData = {
+    updateTags(): void {
+        const tags = this.documents
+            ?.filter((document) => document?.tagChanged && document?.fileId)
+            ?.map((item) => {
+                const tagsData = {
                     storageId: item.fileId,
                     tagId: item.tagId?.length ? item.tagId[0] : null,
                 };
-                tags.push(tagsData);
-            }
-        });
+                return tagsData;
+            });
 
-        if (tags.length) {
-            this.tagsService.updateTag({ tags: tags }).subscribe();
-        }
+        if (!tags.length) return;
+
+        this.tagsService.updateTag({ tags }).subscribe();
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.truckForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))

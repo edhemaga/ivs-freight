@@ -166,6 +166,7 @@ import {
     CaInputDatetimePickerComponent,
     InputTestComponent,
 } from 'ca-components';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-load-modal',
@@ -866,7 +867,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
+            if (
+                this.editData?.type === eGeneralActions.EDIT ||
+                this.editData?.isEditMode
+            ) {
                 this.isFormDirty = true;
             } else {
                 this.formService.formValueChange$
@@ -2825,7 +2829,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 const paymentTotals = value.reduce(
                     (acc, val) => {
                         const pay = val.pay
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
                                   val.pay as string
                               )
                             : 0;
@@ -3240,16 +3244,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 };
             }
 
-            if (newItem.secure) {
+            if (newItem.secure)
                 newItem = {
                     ...newItem,
                     secure: this.stopItemDropdownLists.secureDropdownList.find(
                         (secure) => secure.name === newItem.secure
                     )?.id,
                 };
-            }
 
-            if (newItem.stackable) {
+            if (newItem.stackable)
                 newItem = {
                     ...newItem,
                     stackable:
@@ -3257,18 +3260,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             (stackable) => stackable.name === newItem.stackable
                         )?.id,
                 };
-            }
 
-            if (newItem.tarp) {
+            if (newItem.tarp)
                 newItem = {
                     ...newItem,
                     tarp: this.stopItemDropdownLists.tarpDropdownList.find(
                         (tarp) => tarp.name === newItem.tarp
                     )?.id,
                 };
-            }
 
-            if (newItem.hazardousMaterialId) {
+            if (newItem.hazardousMaterialId)
                 newItem = {
                     ...newItem,
                     description: null,
@@ -3280,12 +3281,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 newItem.id === hazard.id
                         )?.id,
                 };
-            } else {
+            else
                 newItem = {
                     ...newItem,
                     hazardousMaterialId: null,
                 };
-            }
 
             // Remove null properties from form data
             Object.keys(newItem).forEach((key) => {
@@ -4594,7 +4594,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.additionalPayments().value.map((payments) => {
             return {
                 ...payments,
-                pay: MethodsCalculationsHelper.convertThousanSepInNumber(
+                pay: MethodsCalculationsHelper.convertThousandSepInNumber(
                     payments.pay
                 ),
                 payDate: MethodsCalculationsHelper.convertDateToBackend(
@@ -4614,7 +4614,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 paymentType: this.orginalPaymentTypesDropdownList.find(
                     (pay) => pay.id === payments.paymentType
                 ),
-                pay: MethodsCalculationsHelper.convertThousanSepInNumber(
+                pay: MethodsCalculationsHelper.convertThousandSepInNumber(
                     payments.pay
                 ),
                 payDate: MethodsCalculationsHelper.convertDateToBackend(
@@ -4745,7 +4745,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
     private convertNumbers(value: string): number {
         return value
-            ? MethodsCalculationsHelper.convertThousanSepInNumber(value)
+            ? MethodsCalculationsHelper.convertThousandSepInNumber(value)
             : null;
     }
 
@@ -5452,7 +5452,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     private startFormChanges(): void {
         this.formService.checkFormChange(this.loadForm);
 
-        if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
+        if (
+            this.editData?.type === eGeneralActions.EDIT ||
+            this.editData?.isEditMode
+        ) {
             this.isFormDirty = true;
         } else {
             this.formService.formValueChange$

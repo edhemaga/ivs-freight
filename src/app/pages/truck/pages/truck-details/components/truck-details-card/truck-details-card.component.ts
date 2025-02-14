@@ -21,6 +21,7 @@ import { Subject, takeUntil } from 'rxjs';
 // Services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckService } from '@shared/services/truck.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
@@ -62,6 +63,12 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
 
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';
+
+// components
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+
+// svg-routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -138,11 +145,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public ownerHistoryHeader: { label: string }[] =
         TruckDetailsConstants.ownerHistoryHeader;
 
+    // svg-routes
+    public svgRoutes = SharedSvgRoutes;
+
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
-        private truckService: TruckService
-    ) { }
+        private truckService: TruckService,
+        private modalService: ModalService
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.truck.firstChange && changes?.truck) {
@@ -332,8 +343,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         );
     }
 
-    public onSelectedTruck(event: any) {
+    public onSelectedTruck(event: { id: number; name?: string }): void {
         if (event && event.id !== this.truck.id) {
+            if (event.name === TableStringEnum.ADD_NEW_3) {
+                this.modalService.openModal(TruckModalComponent, {
+                    size: TableStringEnum.SMALL,
+                });
+
+                return;
+            }
             this.truckDropDowns = this.truckMinimalListQuery
                 .getAll()
                 .map((item) => {
@@ -457,82 +475,68 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public setFuelConsumptionLegendOnHover(index: number | null): void {
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.fuelConsumptionChartConfig?.chartData?.labels
+        );
 
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend(
-                index,
-                this.fuelConsumptionChartConfig?.
-                    chartData?.
-                    labels
-            );
-
-        this.fuelConsumptionLegendHighlightedBackground = hasHighlightedBackground;
+        this.fuelConsumptionLegendHighlightedBackground =
+            hasHighlightedBackground;
         this.fuelConsumptionLegendTitle = title;
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.fuelConsumptionChartData :
-                this.fuelConsumptionChartData?.
-                    truckFuelConsumptionCharts[index];
+            isNaN(index) || index < 0
+                ? this.fuelConsumptionChartData
+                : this.fuelConsumptionChartData?.truckFuelConsumptionCharts[
+                      index
+                  ];
 
         this.fuelConsumptionChartLegend =
-            ChartLegendConfiguration
-                .truckFuelConsumptionConfiguration(dataForLegend);
+            ChartLegendConfiguration.truckFuelConsumptionConfiguration(
+                dataForLegend
+            );
     }
 
     public setExpensesRevenueLegendOnHover(index: number | null): void {
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend(
-                index,
-                this.expensesChartConfig.chartData.labels
-            );
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.expensesChartConfig.chartData.labels
+        );
 
         this.expensesLegendHighlightedBackground = hasHighlightedBackground;
         this.expensesLegendTitle = title;
 
         if (index === null || index === undefined) {
-            this.expensesChartLegend = ChartLegendConfiguration
-                .truckExpensesConfiguration(
+            this.expensesChartLegend =
+                ChartLegendConfiguration.truckExpensesConfiguration(
                     this.expensesChartData
                 );
             return;
         }
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.expensesChartData :
-                this.expensesChartData?.
-                    truckExpensesCharts[index];
+            isNaN(index) || index < 0
+                ? this.expensesChartData
+                : this.expensesChartData?.truckExpensesCharts[index];
 
-        this.expensesChartLegend = ChartLegendConfiguration
-            .truckExpensesConfiguration(dataForLegend);
+        this.expensesChartLegend =
+            ChartLegendConfiguration.truckExpensesConfiguration(dataForLegend);
     }
 
     public setRevenueLegendOnHover(index: number | null): void {
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend(
-                index,
-                this.revenueChartConfig.chartData.labels
-            );
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.revenueChartConfig.chartData.labels
+        );
         this.revenueLegendHighlightedBackground = hasHighlightedBackground;
         this.revenueLegendTitle = title;
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.revenueChartData :
-                this.revenueChartData?.
-                    truckRevenueCharts[index];
+            isNaN(index) || index < 0
+                ? this.revenueChartData
+                : this.revenueChartData?.truckRevenueCharts[index];
 
-        this.revenueChartLegend = ChartLegendConfiguration
-            .truckRevenueConfiguration(dataForLegend);
+        this.revenueChartLegend =
+            ChartLegendConfiguration.truckRevenueConfiguration(dataForLegend);
     }
 }

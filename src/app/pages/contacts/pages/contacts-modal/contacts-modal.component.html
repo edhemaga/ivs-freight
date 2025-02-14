@@ -90,6 +90,7 @@
                 [hasCounter]="contactPhones?.length"
                 [cardName]="'Phone'"
                 [headerSvgEnabled]="true"
+                [isActionDisabled]="contactPhones.length >= 3"
                 [hasActionSvg]="true"
                 [subText]="
                     contactPhones?.length &&
@@ -119,6 +120,7 @@
                 [hasCounter]="contactEmails.length"
                 [cardName]="'Email'"
                 [headerSvgEnabled]="true"
+                [isActionDisabled]="contactEmails.length >= 2"
                 [hasActionSvg]="true"
                 [subText]="
                     contactEmails?.length &&

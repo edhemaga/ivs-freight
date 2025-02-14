@@ -6,7 +6,6 @@ import { Subject, takeUntil } from 'rxjs';
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
-import { CaSearchMultipleStatesService } from 'ca-components';
 
 // store
 import { RoadsideInactiveState } from '@pages/safety/violation/state/roadside-state/roadside-inactive/roadside-inactive.store';
@@ -19,6 +18,7 @@ import { getRoadsideInspectionColums } from '@shared/utils/settings/table-settin
 
 // components
 import { ViolationModalComponent } from '@pages/safety/violation/pages/violation-modal/violation-modal.component';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-violation-table',
@@ -46,8 +46,7 @@ export class ViolationTableComponent
         private modalService: ModalService,
         private roadsideActiveQuery: RoadsideActiveQuery,
         private roadsideInactiveQuery: RoadsideInactiveQuery,
-        private datePipe: DatePipe,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
+        private datePipe: DatePipe
     ) {}
 
     // -------------------------------NgOnInit-------------------------------
@@ -72,9 +71,8 @@ export class ViolationTableComponent
                         if (
                             c.title ===
                             response.columns[response.event.index].title
-                        ) {
+                        )
                             c.width = response.event.width;
-                        }
 
                         return c;
                     });
@@ -95,94 +93,14 @@ export class ViolationTableComponent
                     });
                 }
             });
-
-        // Search
-        this.caSearchMultipleStatesService.currentSearchTableData
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {});
-
-        // Roadside Inspection Actions
-        this.tableService.currentActionAnimation
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                // Add Roadside Insection
-                if (res.animation === 'add') {
-                    /* this.viewData.push(this.mapContactData(res.data));
-
-          this.viewData = this.viewData.map((contact: any) => {
-            if (contact.id === res.id) {
-              contact.actionAnimation = 'add';
-            }
-
-            return contact;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 2300);
-
-          this.updateDataCount(); */
-                }
-                // Update Roadside Insection
-                else if (res.animation === 'update') {
-                    /* const updatedContact = this.mapContactData(res.data, true);
-
-          this.viewData = this.viewData.map((contact: any) => {
-            if (contact.id === res.id) {
-              contact = updatedContact;
-              contact.actionAnimation = 'update';
-            }
-
-            return contact;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            clearInterval(inetval);
-          }, 1000); */
-                }
-                // Delete Roadside Insection
-                else if (res.animation === 'delete') {
-                    /* let contactIndex: number;
-
-          this.viewData = this.viewData.map((contact: any, index: number) => {
-            if (contact.id === res.id) {
-              contact.actionAnimation = 'delete';
-              contact = index;
-            }
-
-            return contact;
-          });
-
-          const inetval = setInterval(() => {
-            this.viewData = closeAnimationAction(false, this.viewData);
-
-            this.viewData.splice(contactIndex, 1);
-            clearInterval(inetval);
-          }, 900);
-
-          this.updateDataCount(); */
-                }
-            });
-
-        // Delete Selected Rows
-        this.tableService.currentDeleteSelectedRows
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(() => {});
     }
 
-    // -------------------------------NgAfterViewInit-------------------------------
     ngAfterViewInit(): void {
-        setTimeout(() => {
-            this.observTableContainer();
-        }, 10);
+        this.observeTableContainer();
     }
 
     // Responsive Observer
-    observTableContainer() {
+    private observeTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -195,7 +113,7 @@ export class ViolationTableComponent
     }
 
     // Table Options
-    initTableOptions(): void {
+    private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
                 viewModeOptions: [
@@ -213,15 +131,15 @@ export class ViolationTableComponent
                     title: 'Edit',
                     name: 'edit-violation',
                     class: 'regular-text',
-                    contentType: 'edit',
+                    contentType: eGeneralActions.EDIT,
                 },
                 {
                     title: 'Delete',
-                    name: 'delete',
+                    name: eGeneralActions.DELETE,
                     type: 'violations',
                     text: 'Are you sure you want to delete violation?',
                     class: 'delete-text',
-                    contentType: 'delete',
+                    contentType: eGeneralActions.DELETE,
                 },
             ],
         };
@@ -322,13 +240,7 @@ export class ViolationTableComponent
                     ? this.mapViolationSummaryData(data)
                     : this.mapRoadsideInspectionData(data);
             });
-
-            /* for(let i = 0; i < 100; i++){
-        this.viewData.push(this.viewData[2]);
-      } */
-        } else {
-            this.viewData = [];
-        }
+        } else this.viewData = [];
     }
 
     // Map Violation Summary Data
@@ -368,7 +280,7 @@ export class ViolationTableComponent
     }
 
     // Format Inspection Level
-    formatInspectionLevel(inspectionLevel: string) {
+    public formatInspectionLevel(inspectionLevel: string): string {
         let level = '';
 
         for (let i = 0; i < inspectionLevel.length; i++) {
@@ -383,7 +295,7 @@ export class ViolationTableComponent
     }
 
     // On Toolbar Actions
-    onToolBarAction(event: any) {
+    public onToolBarAction(event: any): void {
         if (event.action === 'open-modal') {
             alert('Treba da se odradi modal!');
         } else if (event.action === 'tab-selected') {
@@ -397,42 +309,30 @@ export class ViolationTableComponent
     }
 
     // On Head Actions
-    onTableHeadActions(event: any) {
-        if (event.action === 'sort') {
-            if (event.direction) {
-                /*  this.mapingIndex = 0;
-
-        this.backFilterQuery.sort = event.direction;
-
-        this.backFilterQuery.pageIndex = 1;
-
-        this.contactBackFilter(this.backFilterQuery); */
-            } else {
-                this.sendViolationData();
-            }
-        }
+    public onTableHeadActions(event: any): void {
+        if (event.action !== 'sort' || event.direction) return;
+        this.sendViolationData();
     }
 
     // On Body Actions
-    onTableBodyActions(event: any) {
+    public onTableBodyActions(event: any): void {
         switch (event.type) {
             case 'edit-violation': {
                 this.modalService.openModal(
                     ViolationModalComponent,
                     { size: 'large-xl' },
-                    { id: event.id, type: 'edit', data: event.data }
+                    {
+                        id: event.id,
+                        type: eGeneralActions.EDIT,
+                        data: event.data,
+                    }
                 );
             }
         }
     }
 
-    // -------------------------------NgOnDestroy-------------------------------
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
-
-        // this.resizeObserver.unobserve(
-        //     document.querySelector('.table-container')
-        // );
         this.resizeObserver.disconnect();
 
         this.destroy$.next();
