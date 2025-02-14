@@ -25,7 +25,7 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
 import {
-    EFileFormControls,
+    eFileFormControls,
     eGeneralActions,
     eStringPlaceholder,
 } from '@shared/enums';
@@ -262,12 +262,12 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
 
         if (dontHaveMvr)
             this.inputService.changeValidators(
-                this.mvrAuthorizationForm.get(EFileFormControls.FILES),
+                this.mvrAuthorizationForm.get(eFileFormControls.FILES),
                 false
             );
         else
             this.inputService.changeValidators(
-                this.mvrAuthorizationForm.get(EFileFormControls.FILES)
+                this.mvrAuthorizationForm.get(eFileFormControls.FILES)
             );
     }
 
@@ -284,7 +284,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                     };
 
                     this.inputService.changeValidators(
-                        this.mvrAuthorizationForm.get(EFileFormControls.FILES),
+                        this.mvrAuthorizationForm.get(eFileFormControls.FILES),
                         false
                     );
                 } else {
@@ -294,11 +294,11 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                         this.mvrAuthorizationForm.patchValue({
                             files,
                         });
-                        EFileFormControls.FILES;
+                        eFileFormControls.FILES;
                     }
 
                     this.inputService.changeValidators(
-                        this.mvrAuthorizationForm.get(EFileFormControls.FILES)
+                        this.mvrAuthorizationForm.get(eFileFormControls.FILES)
                     );
                 }
             });
@@ -323,12 +323,12 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
         switch (event.action) {
             case eGeneralActions.ADD:
                 this.mvrAuthorizationForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             case eGeneralActions.DELETE:
                 this.mvrAuthorizationForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

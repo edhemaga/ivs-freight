@@ -90,7 +90,7 @@ import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-m
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import {
-    EFileFormControls,
+    eFileFormControls,
     eGeneralActions,
     ModalButtonSize,
     ModalButtonType,
@@ -1001,12 +1001,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         switch (event.action) {
             case eGeneralActions.ADD:
                 this.trailerForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             case eGeneralActions.DELETE:
                 this.trailerForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

@@ -60,7 +60,7 @@ import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.mo
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { TaModalActionEnum } from './enums';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
-import { EFileFormControls, eGeneralActions } from '@shared/enums';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 // directive
 import { PreventMultipleclicksDirective } from '@shared/directives/';
@@ -181,7 +181,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() specificCaseModalName: boolean;
 
     @Input() dropZoneConfig: DropZoneConfig = {
-        dropZoneType: EFileFormControls.FILES, // files | image | media
+        dropZoneType: eFileFormControls.FILES, // files | image | media
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
         dropZoneAvailableFiles:
             'application/pdf, image/png, image/jpeg, image/jpg',

@@ -39,6 +39,7 @@ import { NavigationDataConstants } from '@core/components/navigation/utils/const
 
 // enums
 import { eStringPlaceholder } from '@shared/enums';
+import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-navigation-route',
@@ -158,14 +159,15 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         else this.routeWithSubRouteClicked.emit(false);
     }
     //Arrow clicked open link in new window
-    public openLinkInNewWindow(item) {
+    public openLinkInNewWindow(item): void {
         window.open(item, '_blank');
     }
     //Arrow hovered change fill
-    public hoveredArrow(event) {
+    public hoveredArrow(event): void {
         this.arrowHovered = event;
     }
-    public onRouteAction(ind?, underConstruction?: boolean) {
+
+    public onRouteAction(ind?, underConstruction?: boolean): void {
         if (underConstruction) return;
         ind && this.hideSubrouteFromChild.emit(ind);
 
@@ -182,7 +184,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         }
     }
 
-    public onReloadSubroute(flegId?: number) {
+    public onReloadSubroute(flegId?: number): void {
         this.onRouteEvent.emit({
             routeId: this.route.id,
             routes: this.route.route,
@@ -190,7 +192,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         });
     }
 
-    private isActiveRouteOnReload(pathname: string) {
+    private isActiveRouteOnReload(pathname: string): void {
         const flegId = JSON.parse(localStorage.getItem('subroute_active'));
 
         if (flegId && this.route.id === flegId) this.onReloadSubroute(flegId);
@@ -203,10 +205,12 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     }
 
     public onNavItemHover(type: boolean): void {
-        if (type)
-            this.isNavItemHovered = !(
-                [3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive
-            );
-        else this.isNavItemHovered = false;
+        if (!type) {
+            this.isNavItemHovered = false;
+            return;
+        }
+        this.isNavItemHovered = !(
+            [3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive
+        );
     }
 }

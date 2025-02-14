@@ -72,7 +72,7 @@ import {
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 // Enums
-import { EFileFormControls, eGeneralActions } from '@shared/enums';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 @Component({
@@ -424,12 +424,12 @@ export class SettingsInsurancePolicyModalComponent
         switch (event.action) {
             case eGeneralActions.ADD:
                 this.insurancePolicyForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             case eGeneralActions.DELETE:
                 this.insurancePolicyForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

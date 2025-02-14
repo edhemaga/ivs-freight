@@ -19,8 +19,8 @@ export * from './e-string-placeholder.enum';
 export * from './confirmation-message.enum';
 
 // Files
-export * from './file/file-form-controls.enum';
-export * from './file/file-actions.enum';
+export * from './file/e-file-form-controls.enum';
+export * from './file/e-file-actions.enum';
 
 // Charts
 export * from './chart/chart-value-label.enum';

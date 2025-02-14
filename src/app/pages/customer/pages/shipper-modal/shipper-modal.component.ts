@@ -88,7 +88,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import {
-    EFileFormControls,
+    eFileFormControls,
     eGeneralActions,
     eStringPlaceholder,
     ModalButtonSize,
@@ -1158,12 +1158,12 @@ export class ShipperModalComponent
         switch (event.action) {
             case eGeneralActions.ADD:
                 this.shipperForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             case eGeneralActions.DELETE:
                 this.shipperForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

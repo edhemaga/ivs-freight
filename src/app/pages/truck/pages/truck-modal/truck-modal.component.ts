@@ -81,8 +81,8 @@ import { TruckModalForm } from '@pages/truck/pages/truck-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import {
-    EFileActions,
-    EFileFormControls,
+    eFileActions,
+    eFileFormControls,
     eGeneralActions,
     TableStringEnum,
 } from '@shared/enums';
@@ -1151,7 +1151,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
             case eGeneralActions.ADD: {
                 this.updateFormControl(
                     this.truckForm,
-                    EFileFormControls.FILES,
+                    eFileFormControls.FILES,
                     JSON.stringify(event.files)
                 );
                 break;
@@ -1162,7 +1162,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     : null;
                 this.updateFormControl(
                     this.truckForm,
-                    EFileFormControls.FILES,
+                    eFileFormControls.FILES,
                     value
                 );
                 if (!event.deleteId) return;
@@ -1174,7 +1174,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                 this.fileModified = true;
                 break;
             }
-            case EFileActions.TAG: {
+            case eFileActions.TAG: {
                 const changedTag: boolean = event?.files?.some(
                     (item) => item.tagChanged
                 );

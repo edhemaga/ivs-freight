@@ -59,7 +59,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // Enums
 import {
-    EFileFormControls,
+    eFileFormControls,
     eGeneralActions,
     eStringPlaceholder,
 } from '@shared/enums';
@@ -413,12 +413,12 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         switch (event.action) {
             case eGeneralActions.ADD:
                 this.violationForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             case eGeneralActions.DELETE:
                 this.violationForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

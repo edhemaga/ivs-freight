@@ -46,7 +46,7 @@ import {
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import {
-    EFileFormControls,
+    eFileFormControls,
     eGeneralActions,
     eStringPlaceholder,
 } from '@shared/enums';
@@ -609,12 +609,12 @@ export class Step3FormComponent
         switch (fileActionEvent.action) {
             case eGeneralActions.ADD:
                 this.licenseForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
             case eGeneralActions.DELETE:
                 this.licenseForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         fileActionEvent.files.length
                             ? JSON.stringify(fileActionEvent.files)

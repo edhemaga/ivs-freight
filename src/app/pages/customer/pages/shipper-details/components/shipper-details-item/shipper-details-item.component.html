@@ -5,176 +5,207 @@
             [class.contactGridHolder]="shipperData.nameDefault === 'Contact'"
             [class.reviewGridHolder]="shipperData.nameDefault === 'Review'"
         >
-            <div [ngSwitch]="shipperData?.template">
-                <div *ngSwitchCase="'general'">
-                    <app-shipper-details-card [shipper]="shipperData?.data">
-                    </app-shipper-details-card>
-                </div>
-                <div *ngSwitchCase="'load'" class="load">
-                    @if (shipperLoads?.length) {
-                        <div class="repair-container shipper-details-padding">
-                            <div class="repair-header">
-                                <span class="repaier-headers">LOAD NO</span>
-                                <span class="repaier-headers">DRIVER</span>
-                                <span class="repaier-headers">TRUCK</span>
-                                <span class="repaier-headers">TRAILER</span>
-                                <span class="repaier-headers text-right"
-                                    >ARRIVE</span
-                                >
-                                <span class="repaier-headers text-right"
-                                    >DEPART</span
-                                >
-                                <span class="repaier-headers text-right"
-                                    >WAIT</span
-                                >
-                            </div>
-                            <div class="divider"></div>
-                            @for (
-                                loadStop of shipperLoads;
-                                let ind = $index;
-                                track ind
-                            ) {
-                                <div class="repair-items-wrapper">
-                                    <div class="repair-items">
-                                        <div class="items-header">
-                                            <div class="icon-svg-repair">
-                                                @if (
-                                                    loadStop?.stopType?.name ===
-                                                    'Pickup'
-                                                ) {
-                                                    <svg-icon
-                                                        class="arrow-ri"
-                                                        src="{{
-                                                            shipperImageRoutes.arrowRight
-                                                        }}"
-                                                    ></svg-icon>
-                                                }
+            @switch (shipperData?.template) {
+                @case ('general') {
+                    <div>
+                        <app-shipper-details-card [shipper]="shipperData?.data">
+                        </app-shipper-details-card>
+                    </div>
+                }
+                @case ('load') {
+                    <div class="load">
+                        @if (shipperLoads?.length) {
+                            <div
+                                class="repair-container shipper-details-padding"
+                            >
+                                <div class="repair-header">
+                                    <span class="repaier-headers">LOAD NO</span>
+                                    <span class="repaier-headers">DRIVER</span>
+                                    <span class="repaier-headers">TRUCK</span>
+                                    <span class="repaier-headers">TRAILER</span>
+                                    <span class="repaier-headers text-right"
+                                        >ARRIVE</span
+                                    >
+                                    <span class="repaier-headers text-right"
+                                        >DEPART</span
+                                    >
+                                    <span class="repaier-headers text-right"
+                                        >WAIT</span
+                                    >
+                                </div>
+                                <div class="divider"></div>
+                                @for (
+                                    loadStop of shipperLoads;
+                                    let ind = $index;
+                                    track ind
+                                ) {
+                                    <div class="repair-items-wrapper">
+                                        <div class="repair-items">
+                                            <div class="items-header">
+                                                <div class="icon-svg-repair">
+                                                    @if (
+                                                        loadStop?.stopType
+                                                            ?.name === 'Pickup'
+                                                    ) {
+                                                        <svg-icon
+                                                            class="arrow-ri"
+                                                            src="{{
+                                                                shipperImageRoutes.arrowRight
+                                                            }}"
+                                                        ></svg-icon>
+                                                    }
 
-                                                @if (
-                                                    loadStop?.stopType?.name ===
-                                                    'Delivery'
-                                                ) {
-                                                    <svg-icon
-                                                        class="arrow-le"
-                                                        src="{{
-                                                            shipperImageRoutes.arrowLeft
-                                                        }}"
-                                                    ></svg-icon>
-                                                }
+                                                    @if (
+                                                        loadStop?.stopType
+                                                            ?.name ===
+                                                        'Delivery'
+                                                    ) {
+                                                        <svg-icon
+                                                            class="arrow-le"
+                                                            src="{{
+                                                                shipperImageRoutes.arrowLeft
+                                                            }}"
+                                                        ></svg-icon>
+                                                    }
 
-                                                <span class="unit">{{
-                                                    loadStop?.loadNumber
+                                                    <span class="unit">{{
+                                                        loadStop?.loadNumber
+                                                    }}</span>
+                                                </div>
+                                                <span class="date">
+                                                    {{
+                                                        loadStop?.driver
+                                                            ?.firstName
+                                                            ?.length > 6
+                                                            ? loadStop?.driver
+                                                                  ?.firstName[0] +
+                                                              '.'
+                                                            : loadStop?.driver
+                                                                  ?.firstName
+                                                    }}
+                                                    {{
+                                                        loadStop?.driver
+                                                            ?.lastName
+                                                    }}
+                                                </span>
+                                                <span class="date">{{
+                                                    loadStop?.driver
+                                                        ?.truckNumber
                                                 }}</span>
-                                            </div>
-                                            <span class="date">
-                                                {{
-                                                    loadStop?.driver?.firstName
-                                                        ?.length > 6
-                                                        ? loadStop?.driver
-                                                              ?.firstName[0] +
-                                                          '.'
-                                                        : loadStop?.driver
-                                                              ?.firstName
-                                                }}
-                                                {{ loadStop?.driver?.lastName }}
-                                            </span>
-                                            <span class="date">{{
-                                                loadStop?.driver?.truckNumber
-                                            }}</span>
-                                            <span class="date">{{
-                                                loadStop?.driver?.trailerNumber
-                                            }}</span>
-                                            <div
-                                                class="time-date align-items-end"
-                                            >
-                                                @if (loadStop?.arrive) {
-                                                    <div
-                                                        class="d-flex flex-column align-items-center justify-content-center"
-                                                    >
-                                                        <span class="date">{{
-                                                            loadStop?.arrive
-                                                                | formatDateP
-                                                        }}</span>
-                                                        <span class="time">{{
-                                                            loadStop?.arrive
-                                                                | formatTime
-                                                        }}</span>
-                                                    </div>
-                                                }
-                                            </div>
-                                            <div
-                                                class="time-date align-items-end"
-                                            >
-                                                @if (loadStop?.depart) {
-                                                    <div
-                                                        class="d-flex flex-column align-items-center justify-content-center"
-                                                    >
-                                                        <span class="date">{{
-                                                            loadStop?.depart
-                                                                | formatDateP
-                                                        }}</span>
-                                                        <span class="time">{{
-                                                            loadStop?.depart
-                                                                | formatTime
-                                                        }}</span>
-                                                    </div>
-                                                }
-                                            </div>
-                                            <span
-                                                class="wait-time d-flex align-items-center justify-content-end gap-1"
-                                            >
-                                                @if (loadStop?.wait?.days > 0) {
-                                                    <span class="hours"
-                                                        >{{
-                                                            loadStop?.wait
-                                                                ?.days
-                                                        }}d</span
-                                                    >
-                                                }
+                                                <span class="date">{{
+                                                    loadStop?.driver
+                                                        ?.trailerNumber
+                                                }}</span>
+                                                <div
+                                                    class="time-date align-items-end"
+                                                >
+                                                    @if (loadStop?.arrive) {
+                                                        <div
+                                                            class="d-flex flex-column align-items-center justify-content-center"
+                                                        >
+                                                            <span
+                                                                class="date"
+                                                                >{{
+                                                                    loadStop?.arrive
+                                                                        | formatDateP
+                                                                }}</span
+                                                            >
+                                                            <span
+                                                                class="time"
+                                                                >{{
+                                                                    loadStop?.arrive
+                                                                        | formatTime
+                                                                }}</span
+                                                            >
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <div
+                                                    class="time-date align-items-end"
+                                                >
+                                                    @if (loadStop?.depart) {
+                                                        <div
+                                                            class="d-flex flex-column align-items-center justify-content-center"
+                                                        >
+                                                            <span
+                                                                class="date"
+                                                                >{{
+                                                                    loadStop?.depart
+                                                                        | formatDateP
+                                                                }}</span
+                                                            >
+                                                            <span
+                                                                class="time"
+                                                                >{{
+                                                                    loadStop?.depart
+                                                                        | formatTime
+                                                                }}</span
+                                                            >
+                                                        </div>
+                                                    }
+                                                </div>
+                                                <span
+                                                    class="wait-time d-flex align-items-center justify-content-end gap-1"
+                                                >
+                                                    @if (
+                                                        loadStop?.wait?.days > 0
+                                                    ) {
+                                                        <span class="hours"
+                                                            >{{
+                                                                loadStop?.wait
+                                                                    ?.days
+                                                            }}d</span
+                                                        >
+                                                    }
 
-                                                @if (
-                                                    loadStop?.wait?.hours > 0
-                                                ) {
-                                                    <span class="hours"
-                                                        >{{
-                                                            loadStop?.wait
-                                                                ?.hours
-                                                        }}h</span
-                                                    >
-                                                }
+                                                    @if (
+                                                        loadStop?.wait?.hours >
+                                                        0
+                                                    ) {
+                                                        <span class="hours"
+                                                            >{{
+                                                                loadStop?.wait
+                                                                    ?.hours
+                                                            }}h</span
+                                                        >
+                                                    }
 
-                                                @if (
-                                                    loadStop?.wait?.days <= 0 &&
-                                                    loadStop?.wait?.minutes
-                                                ) {
-                                                    <span class="hours">
-                                                        {{
-                                                            loadStop?.wait
-                                                                ?.minutes
-                                                        }}
-                                                        min
-                                                    </span>
-                                                }
-                                            </span>
+                                                    @if (
+                                                        loadStop?.wait?.days <=
+                                                            0 &&
+                                                        loadStop?.wait?.minutes
+                                                    ) {
+                                                        <span class="hours">
+                                                            {{
+                                                                loadStop?.wait
+                                                                    ?.minutes
+                                                            }}
+                                                            min
+                                                        </span>
+                                                    }
+                                                </span>
+                                            </div>
                                         </div>
                                     </div>
-                                </div>
-                            }
-                        </div>
-                    }
-                </div>
-                <div *ngSwitchCase="'contact'" class="contact">
-                    @if (shipperContacts.length) {
-                        <div class="contact-wrapper">
-                            <app-ta-contacts-card
-                                [type]="'shipper'"
-                                [departmentContacts]="departmentContacts"
-                                [viewData]="shipper[0].data"
-                            ></app-ta-contacts-card>
-                        </div>
-                    }
-                </div>
-            </div>
+                                }
+                            </div>
+                        }
+                    </div>
+                }
+                @case ('contact') {
+                    <div *ngSwitchCase="" class="contact">
+                        @if (shipperContacts.length) {
+                            <div class="contact-wrapper">
+                                <app-ta-contacts-card
+                                    [type]="'shipper'"
+                                    [departmentContacts]="departmentContacts"
+                                    [viewData]="shipper[0].data"
+                                ></app-ta-contacts-card>
+                            </div>
+                        }
+                    </div>
+                }
+            }
         </div>
     }
 </div>

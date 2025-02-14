@@ -63,7 +63,7 @@ import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { ApplicantApplicationStringEnum } from '@pages/applicant/pages/applicant-application/enums/applicant-application-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { EFileFormControls, eGeneralActions } from '@shared/enums';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -784,12 +784,12 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
         switch (fileActionEvent.action) {
             case eGeneralActions.ADD:
                 this.personalInfoForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
             case eGeneralActions.DELETE:
                 this.personalInfoForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         fileActionEvent.files.length
                             ? JSON.stringify(fileActionEvent.files)

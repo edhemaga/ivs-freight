@@ -83,7 +83,7 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import {
-    EFileFormControls,
+    eFileFormControls,
     eGeneralActions,
     ModalButtonSize,
     ModalButtonType,
@@ -775,13 +775,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         switch (event.action) {
             case eGeneralActions.ADD:
                 this.brokerForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
             case eGeneralActions.DELETE:
                 this.brokerForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

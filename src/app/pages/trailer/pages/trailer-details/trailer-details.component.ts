@@ -34,7 +34,6 @@ import {
     TrailerUiData,
     TrailerCombinedData,
 } from '@pages/trailer/pages/trailer-modal/models/';
-import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-trailer-details',
@@ -99,17 +98,15 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 name: 'Trailer Detail',
                 template: 'general',
                 data: data,
-                status: data?.status == 0 ? true : false,
+                status: data?.status === 0,
             },
             {
                 id: 1,
                 name: TruckDetailsEnum.REGISTRATION,
                 template: TruckDetailsEnum.REGISTRATION_2,
                 data: data.registrations,
-                length: data?.registrations?.length
-                    ? data.registrations.length
-                    : 0,
-                status: data?.status == 0 ? true : false,
+                length: data?.registrations?.length ?? 0,
+                status: data?.status === 0,
                 businessOpen: true,
             },
             {
@@ -117,8 +114,8 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 name: TruckDetailsEnum.FHWA_INSPECTION,
                 template: TruckDetailsEnum.FHWA_INSPECTION_2,
                 data: data.inspections,
-                length: data?.inspections?.length ? data.inspections.length : 0,
-                status: data?.status == 0 ? true : false,
+                length: data?.inspections?.length ?? 0,
+                status: data?.status === 0,
                 businessOpen: true,
             },
             {
@@ -126,13 +123,13 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                 name: TruckDetailsEnum.TITLE_2,
                 template: TruckDetailsEnum.TITLE,
                 data: data.titles,
-                length: data?.titles?.length ? data.titles.length : 0,
-                status: data?.status == 0 ? true : false,
+                length: data?.titles?.length ?? 0,
+                status: data?.status === 0,
                 businessOpen: true,
             },
         ];
 
-        this.trailerId = data?.id ? data.id : 0;
+        this.trailerId = data?.id ?? 0;
     }
 
     /**Function for dots in cards */
@@ -199,11 +196,11 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                             : TableStringEnum.DEACTIVATE,
                     svg: TruckDetailsEnum.DEACTIVATE_SVG,
                     iconName: TableStringEnum.ACTIVATE_ITEM,
-                    activate: data.status == 0 ? true : false,
-                    deactivate: data.status == 1 ? true : false,
-                    show: data.status == 1 || data.status == 0 ? true : false,
-                    redIcon: data.status == 1 ? true : false,
-                    blueIcon: data.status == 0 ? true : false,
+                    activate: data.status == 0,
+                    deactivate: data.status == 1,
+                    show: data.status == 1 || data.status == 0,
+                    redIcon: data.status == 1,
+                    blueIcon: data.status == 0,
                 },
                 {
                     title: TableStringEnum.DELETE_2,
@@ -220,7 +217,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
         };
     }
 
-    public getTrailerById(trid: number) {
+    public getTrailerById(trid: number): void {
         const trailerData$ = this.trailerService
             .getTrailerById(trid)
             .pipe(take(1));
@@ -256,17 +253,16 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             .subscribe();
     }
 
-    public deleteTrailerById(id: number) {
-        let status = this.trailerObject.status == 0 ? 'inactive' : 'active';
-        let last = this.trailerList.at(-1);
+    public deleteTrailerById(id: number): void {
+        const status = this.trailerObject.status == 0 ? 'inactive' : 'active';
+        const last = this.trailerList.at(-1);
         if (
             last.id ===
             this.trailerMinimalStore.getValue().ids[this.currentIndex]
-        ) {
+        )
             this.currentIndex = --this.currentIndex;
-        } else {
-            this.currentIndex = ++this.currentIndex;
-        }
+        else this.currentIndex = ++this.currentIndex;
+
         this.trailerList = this.trailerMinimalQuery.getAll();
 
         this.trailerService
@@ -288,7 +284,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
             });
     }
 
-    public changeTrailerStatus(id: number) {
+    public changeTrailerStatus(id: number): void {
         this.trailerService.changeActiveStatus(id);
     }
 
@@ -303,12 +299,12 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        let dataId = this.activated_route.snapshot.params.id;
-        let trailer = {
+        const dataId = this.activated_route.snapshot.params.id;
+        const trailer = {
             ...this.trailerItemStore?.getValue()?.entities[dataId],
         };
         switch (action.toLowerCase()) {
-            case TruckDetailsEnum.REGISTRATION_2: {
+            case TruckDetailsEnum.REGISTRATION_2:
                 this.modalService.openModal(
                     TtRegistrationModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -320,8 +316,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     }
                 );
                 break;
-            }
-            case TruckDetailsEnum.FHWA_INSPECTION_3: {
+            case TruckDetailsEnum.FHWA_INSPECTION_3:
                 this.modalService.openModal(
                     TtFhwaInspectionModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -333,8 +328,7 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     }
                 );
                 break;
-            }
-            case TruckDetailsEnum.TITLE: {
+            case TruckDetailsEnum.TITLE:
                 this.modalService.openModal(
                     TtTitleModalComponent,
                     { size: TableStringEnum.SMALL },
@@ -346,16 +340,9 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
                     }
                 );
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
-    }
-
-    /**Function return id */
-    public identity(index: number, item: any): number {
-        return item.id;
     }
 
     public setTableData(): void {
@@ -425,7 +412,6 @@ export class TrailerDetailsComponent implements OnInit, OnDestroy {
 
                             this.cdRef.detectChanges();
                         },
-                        error: () => {},
                     });
                 } else {
                     this.newTrailerId = id;

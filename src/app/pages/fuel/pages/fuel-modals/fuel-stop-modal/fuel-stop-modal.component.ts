@@ -47,7 +47,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 // Enums
-import { EFileFormControls, eGeneralActions } from '@shared/enums';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-fuel-stop-modal',
@@ -255,13 +255,13 @@ export class FuelStopModalComponent
         switch (event.action) {
             case eGeneralActions.ADD:
                 this.fuelStopForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
             case eGeneralActions.DELETE:
                 this.fuelStopForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

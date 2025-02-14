@@ -45,7 +45,7 @@ import { FormService } from '@shared/services/form.service';
 import {
     ModalButtonType,
     ModalButtonSize,
-    EFileFormControls,
+    eFileFormControls,
     eGeneralActions,
 } from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
@@ -306,13 +306,13 @@ export class TodoModalComponent implements OnInit, OnDestroy {
         switch (event.action) {
             case eGeneralActions.ADD: {
                 this.taskForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
             case eGeneralActions.DELETE: {
                 this.taskForm
-                    .get(EFileFormControls.FILES)
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
