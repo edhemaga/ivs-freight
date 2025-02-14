@@ -62,6 +62,7 @@ import {
     TableStringEnum,
     DropActionsStringEnum,
     EGeneralActions,
+    EConfirmationMessage,
 } from '@shared/enums';
 import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
@@ -144,7 +145,7 @@ export class SettingsParkingModalComponent
         },
         {
             id: 522,
-            name: 'No',
+            name: EConfirmationMessage.NO,
             checked: true,
         },
     ];
@@ -157,7 +158,7 @@ export class SettingsParkingModalComponent
         },
         {
             id: 367,
-            name: 'No',
+            name: EConfirmationMessage.NO,
             checked: true,
         },
     ];
@@ -282,7 +283,7 @@ export class SettingsParkingModalComponent
         switch (action) {
             case ESettingsFormEnum.GATE:
                 this.gateBtns = this.gateBtns.map((item) => {
-                    event.name === 'No'
+                    event.name === EConfirmationMessage.NO
                         ? this.parkingForm
                               .get(ESettingsFormEnum.GATE)
                               .patchValue(false)
@@ -299,7 +300,7 @@ export class SettingsParkingModalComponent
 
             case 'camera':
                 this.cameraBtns = this.cameraBtns.map((item) => {
-                    event.name === 'No'
+                    event.name === EConfirmationMessage.NO
                         ? this.parkingForm
                               .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(false)
