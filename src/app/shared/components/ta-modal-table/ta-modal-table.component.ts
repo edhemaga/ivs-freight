@@ -50,6 +50,7 @@ import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/con
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { FuelDataOptionsStringEnum } from '@pages/fuel/enums';
 
 // validations
 import {
@@ -95,10 +96,6 @@ import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.mod
 import { TruckTrailerPmDropdownLists } from '@shared/models/truck-trailer-pm-dropdown-lists.model';
 import { RepairItemCommand } from 'appcoretruckassist/model/repairItemCommand';
 import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
-
-// enums
-import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
-import { FuelDataOptionsStringEnum } from '@pages/fuel/enums';
 
 @Component({
     selector: 'app-ta-modal-table',
@@ -150,7 +147,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() selectedTrailer: TrailerTypeResponse;
     @Input() isFuelTransactionTable: boolean;
     @Input() fuelItemsDropdown: EnumValue[];
-    @Input() fuelTransactionType: eFuelTransactionType;
+    @Input() fuelTransactionType: EnumValue;
     @Input() fuelModalActionType: FuelDataOptionsStringEnum;
 
     @Output() modalTableValueEmitter = new EventEmitter<
