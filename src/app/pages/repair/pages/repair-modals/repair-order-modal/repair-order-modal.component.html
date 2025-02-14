@@ -42,12 +42,12 @@
                         (selectedItem)="onSelectDropDown($event, 'pay-type')"
                     ></app-ca-input-dropdown>
 
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="datePaid"
                         [inputConfig]="
                             RepairOrderConfig.DATE_PAID(selectedPayType)
                         "
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
             }
             <div class="repair-modal-bill-first-row">
