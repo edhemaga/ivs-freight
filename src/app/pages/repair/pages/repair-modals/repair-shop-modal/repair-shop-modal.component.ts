@@ -772,6 +772,16 @@ export class RepairShopModalComponent
 
     // Working hours
     public toggleWorkingDay(index: number): void {
+        // there should be always one active working day
+        const isSingleWorkingDay =
+            this.openHours.value.filter((workingDay) => workingDay.isWorkingDay)
+                .length === 1 &&
+            this.openHours
+                .at(index)
+                .get(RepairShopModalStringEnum.IS_WORKING_DAY).value;
+
+        if (isSingleWorkingDay) return;
+
         const newWorkingDay = this.openHours.at(index);
 
         // Toggle value
@@ -839,7 +849,15 @@ export class RepairShopModalComponent
                 : OpenWorkingHours.FIVEPM
         );
 
-        this.openHours.controls.forEach((item) => {
+        this.openHours.controls.forEach((item, index) => {
+            const isPatch = this.openAlways.value || index >= 5;
+
+            if (isPatch)
+                item
+                    .get(RepairShopModalStringEnum.IS_WORKING_DAY)
+                    ?.patchValue(this.openAlways.value);
+
+            // shifts
             const shiftsArray = item.get(
                 RepairShopModalStringEnum.SHIFTS
             ) as FormArray;
