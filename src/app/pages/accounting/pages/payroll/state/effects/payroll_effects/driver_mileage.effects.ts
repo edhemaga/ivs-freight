@@ -10,7 +10,8 @@ import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state
 
 export function getPayrollMileageClosedPayrollByIdEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    store: Store
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -27,6 +28,22 @@ export function getPayrollMileageClosedPayrollByIdEffect(
                                     {
                                         payroll: data,
                                     }
+                                );
+                            }),
+                            tap((data) => {
+                                const mapLocations = JSON.stringify(
+                                    data.payroll.mapLocations.map((item) => {
+                                        return {
+                                            longitude: item.longitude,
+                                            latitude: item.latitude,
+                                        };
+                                    })
+                                );
+
+                                store.dispatch(
+                                    PayrollSoloMileageDriver.getPayrollMapData({
+                                        locations: mapLocations,
+                                    })
                                 );
                             }),
                             catchError((error) =>

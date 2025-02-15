@@ -214,7 +214,8 @@ export function getPayrollOwnerDriverExpandedListEffect(
 
 export function getPayrollOwnerClosedPayrollReportByIdEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    store: Store
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -231,6 +232,24 @@ export function getPayrollOwnerClosedPayrollReportByIdEffect(
                                     {
                                         payroll: data,
                                     }
+                                );
+                            }),
+                            tap((data) => {
+                                const mapLocations = JSON.stringify(
+                                    data.payroll.mapLocations.map((item) => {
+                                        return {
+                                            longitude: item.longitude,
+                                            latitude: item.latitude,
+                                        };
+                                    })
+                                );
+
+                                store.dispatch(
+                                    PayrollOwnerDriverActions.getPayrollMapData(
+                                        {
+                                            locations: mapLocations,
+                                        }
+                                    )
                                 );
                             }),
                             catchError((error) =>

@@ -20,6 +20,7 @@ import {
     PayrollOwnerResponse,
     PayrollPaymentType,
     RoutingResponse,
+    PayrollDriverMileageClosedByIdResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import {
@@ -138,7 +139,9 @@ export class PayrollService {
         );
     }
 
-    public getPayrollSoloMileageDriverClosedById(payrollId: number) {
+    public getPayrollSoloMileageDriverClosedById(
+        payrollId: number
+    ): Observable<PayrollDriverMileageClosedByIdResponse> {
         return this.http.get<any>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/${payrollId}`
         );

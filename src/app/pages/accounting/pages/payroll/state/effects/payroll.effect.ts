@@ -37,7 +37,8 @@ export class PayrollEffect {
     public getPayrollMileageClosedPayrollById$ =
         PayrollMileageDriverEffects.getPayrollMileageClosedPayrollByIdEffect(
             this.actions$,
-            this.payrollService
+            this.payrollService,
+            this.store
         );
 
     public getPayrollMileageDriverExpandedList$ =
@@ -95,7 +96,8 @@ export class PayrollEffect {
     public getPayrollCommissionClosedPayrollReportByIdEffect$ =
         PayrollCommissionDriverEffect.getPayrollCommissionClosedPayrollReportByIdEffect(
             this.actions$,
-            this.payrollService
+            this.payrollService,
+            this.store
         );
 
     public closePayrollCommissionReport$ =
@@ -132,7 +134,8 @@ export class PayrollEffect {
     public getPayrollOwnerClosedPayrollReportByIdEffect$ =
         PayrollOwnerDriverEffect.getPayrollOwnerClosedPayrollReportByIdEffect(
             this.actions$,
-            this.payrollService
+            this.payrollService,
+            this.store
         );
 
     public getPayrollOwnerDriverReportEffect$ =
@@ -175,7 +178,8 @@ export class PayrollEffect {
     public getPayrollFlatRateClosedPayrollReportByIdEffect$ =
         PayrollFlatRateEffect.getPayrollFlatRateClosedPayrollReportByIdEffect(
             this.actions$,
-            this.payrollService
+            this.payrollService,
+            this.store
         );
 
     public getPayrollFlatRateDriverReportEffect$ =

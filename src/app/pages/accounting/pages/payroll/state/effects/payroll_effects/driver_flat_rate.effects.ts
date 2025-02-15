@@ -68,7 +68,6 @@ export function getPayrollFlatRateReportEffect(
                                     }
                                 );
                             }),
-
                             tap((data) => {
                                 const mapLocations = JSON.stringify(
                                     data.payroll.mapLocations.map((item) => {
@@ -217,7 +216,8 @@ export function getPayrollFlatRateDriverExpandedListEffect(
 
 export function getPayrollFlatRateClosedPayrollReportByIdEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    store: Store
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -236,6 +236,24 @@ export function getPayrollFlatRateClosedPayrollReportByIdEffect(
                                     {
                                         payroll: data,
                                     }
+                                );
+                            }),
+                            tap((data) => {
+                                const mapLocations = JSON.stringify(
+                                    data.payroll.mapLocations.map((item) => {
+                                        return {
+                                            longitude: item.longitude,
+                                            latitude: item.latitude,
+                                        };
+                                    })
+                                );
+
+                                store.dispatch(
+                                    PayrollFlatRateDriverActions.getPayrollMapData(
+                                        {
+                                            locations: mapLocations,
+                                        }
+                                    )
                                 );
                             }),
                             catchError((error) =>

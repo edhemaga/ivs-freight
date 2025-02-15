@@ -216,7 +216,8 @@ export function getPayrollCommissionDriverExpandedListEffect(
 
 export function getPayrollCommissionClosedPayrollReportByIdEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    store: Store
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -235,6 +236,24 @@ export function getPayrollCommissionClosedPayrollReportByIdEffect(
                                     {
                                         payroll: data,
                                     }
+                                );
+                            }),
+                            tap((data) => {
+                                const mapLocations = JSON.stringify(
+                                    data.payroll.mapLocations.map((item) => {
+                                        return {
+                                            longitude: item.longitude,
+                                            latitude: item.latitude,
+                                        };
+                                    })
+                                );
+
+                                store.dispatch(
+                                    PayrollCommissionDriverActions.getPayrollMapData(
+                                        {
+                                            locations: mapLocations,
+                                        }
+                                    )
                                 );
                             }),
                             catchError((error) =>
