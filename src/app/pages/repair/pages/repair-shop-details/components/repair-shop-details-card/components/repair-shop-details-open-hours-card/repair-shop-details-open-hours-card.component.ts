@@ -28,29 +28,39 @@ import { RepairShopResponse } from 'appcoretruckassist';
     ],
 })
 export class RepairShopDetailsOpenHoursCardComponent {
-    @Input() set cardData(data: RepairShopResponse) {} // w8ing for back
+    @Input() set cardData(data: RepairShopResponse) {
+        this.createOpenHoursCardData(data);
+    }
 
-    public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
-
-    public _cardData /* : RepairShopResponse[]  */ = [
-        // dummy w8ing for back
-        {
-            workingDays: 'Monday - Friday',
-            workingHours: '8:00 AM - 10:00 PM',
-        },
-        {
-            workingDays: 'Saturday',
-            workingHours: '10:00 AM - 4:00 PM',
-        },
-        {
-            workingDays: 'Sunday',
-            workingHours: '8:00 AM - 2:00 PM',
-        },
-    ];
+    public _cardData: RepairShopResponse;
 
     public isOpenHoursCardOpen: boolean = true;
 
+    public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
+
     public handleOpenHoursCardOpen(isOpen: boolean): void {
         this.isOpenHoursCardOpen = isOpen;
+    }
+
+    private createOpenHoursCardData(data: RepairShopResponse): void {
+        let openHours = [];
+
+        data?.openHours?.forEach((workingDay) => {
+            const { dayOfWeek, startTime, endTime } = workingDay;
+
+            const workingHourItem = {
+                workingDays: dayOfWeek,
+                workingHours: `${startTime} - ${endTime}`,
+            };
+
+            openHours = [...openHours, workingHourItem];
+        });
+
+        this._cardData = {
+            ...data,
+            openHours,
+        };
+
+        console.log('this._cardData', this._cardData);
     }
 }

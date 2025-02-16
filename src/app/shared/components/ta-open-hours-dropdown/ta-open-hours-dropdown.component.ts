@@ -42,10 +42,6 @@ export class TaOpenHoursDropdownComponent {
 
     public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
 
-    ngOnInit() {
-        console.log('dropdownConfig', this.dropdownConfig);
-    }
-
     public openHoursDropdownActiveId: number = -1;
 
     public onShowOpenHoursDropdown(popover: NgbPopover): void {

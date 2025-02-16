@@ -1,3 +1,5 @@
+@let isCurrentlyNotClosed = dropdownConfig?.openHoursToday?.id !== 3;
+
 <div
     [ngStyle]="{ 'width.px': dropdownConfig?.width ?? '100%' }"
     #openHoursPop="ngbPopover"
@@ -26,7 +28,7 @@
         tooltipMarginTop="-6px"
         position="bottom"
     >
-        @if (dropdownConfig?.openHoursToday?.id !== 3) {
+        @if (isCurrentlyNotClosed) {
             <svg-icon
                 class="open-hours-icon"
                 [ngClass]="{
@@ -43,21 +45,14 @@
         <p
             class="m-0 text-color-black text-size-14"
             [ngClass]="{
-                'ta-font-semi-bold': dropdownConfig?.openHoursToday?.id !== 3,
+                'ta-font-semi-bold': isCurrentlyNotClosed,
             }"
         >
             {{
-                dropdownConfig?.openHoursToday?.id !== 3
+                dropdownConfig?.openHoursToday?.id === 1
                     ? dropdownConfig?.openHoursToday?.status
                     : dropdownConfig?.openHoursToday?.info
             }}
-
-            <!--  {{ // w8 for back
-                dropdownConfig?.openHoursToday?.id ===
-                2
-                    ? dropdownConfig?.openHoursToday?.info
-                    : ''
-            }} -->
         </p>
     </div>
 </div>
