@@ -16,7 +16,7 @@ export abstract class TrailerDropdownMenuActionsBase extends DropdownMenuActions
     protected handleDropdownMenuActions<T extends TrailerMapped>(
         action: TableCardBodyActions<T>,
         tableType: string
-    ) {
+    ): void {
         const { type } = action;
 
         const tabSelected = action.data?.status

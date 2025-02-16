@@ -29,7 +29,7 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
     protected handleDropdownMenuActions<T extends DriverMapped>(
         action: TableCardBodyActions<T>,
         tableType: string
-    ) {
+    ): void {
         const { type } = action;
 
         const tabSelected = action.data?.status
@@ -68,7 +68,7 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
     private handleDriverEditAction<T extends DriverMapped>(
         action: TableCardBodyActions<T>,
         tableType: string
-    ) {
+    ): void {
         const {
             id,
             data: { avatarImg, avatarColor, textShortName, fullName, tableDOB },
@@ -107,7 +107,7 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
     private handleDriverAddActions<T>(
         action: TableCardBodyActions<T>,
         tabSelected: string
-    ) {
+    ): void {
         const { type } = action;
 
         const addAdditionalModalComponent =

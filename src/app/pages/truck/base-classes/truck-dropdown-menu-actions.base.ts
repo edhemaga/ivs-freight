@@ -16,7 +16,7 @@ export abstract class TruckDropdownMenuActionsBase extends DropdownMenuActionsBa
     protected handleDropdownMenuActions<T extends TruckMapped>(
         action: TableCardBodyActions<T>,
         tableType: string
-    ) {
+    ): void {
         const { type } = action;
 
         const tabSelected = action.data?.status

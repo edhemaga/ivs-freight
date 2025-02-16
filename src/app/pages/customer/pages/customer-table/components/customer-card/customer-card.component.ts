@@ -3,12 +3,6 @@ import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
 // components
-import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
-import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
-import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
-import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { MappedShipperBroker } from '../../models/mapped-shipper-broker.model';
 import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
 
 // base classes
@@ -30,13 +24,11 @@ import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models';
+import { MappedShipperBroker } from '@pages/customer/pages/customer-table/models/mapped-shipper-broker.model';
 
 @Component({
     selector: 'app-customer-card',

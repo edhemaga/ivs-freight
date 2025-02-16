@@ -44,6 +44,7 @@ import {
     SortColumn,
     MapMarkerIconService,
 } from 'ca-components';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // store
 import { BrokerState } from '@pages/customer/state/broker-state/broker.store';
@@ -97,7 +98,6 @@ import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { MapList } from '@pages/repair/pages/repair-table/models';
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 @Component({

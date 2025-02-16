@@ -28,7 +28,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
     protected handleDropdownMenuActions<T extends MappedShipperBroker>(
         action: TableCardBodyActions<T>,
         selectedTab: string
-    ) {
+    ): void {
         const { type } = action;
 
         const tableType =
@@ -74,7 +74,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
     private handleShipperBrokerEditAction<T extends MappedShipperBroker>(
         action: TableCardBodyActions<T>,
         tableType: string
-    ) {
+    ): void {
         const { type } = action;
 
         this.detailsDataService.setNewData(action.data);
@@ -103,7 +103,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
     private handleBrokerMoveActions<T extends MappedShipperBroker>(
         action: TableCardBodyActions<T>,
         tableType: string
-    ) {
+    ): void {
         const {
             data: {
                 businessName,
@@ -147,13 +147,13 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         );
     }
 
-    private handleCreateLoadAction() {
+    private handleCreateLoadAction(): void {
         this.loadStoreService.dispatchGetCreateLoadModalData();
     }
 
     private handleShipperBrokerCloseBusinessActions<
         T extends MappedShipperBroker,
-    >(action: TableCardBodyActions<T>, tableType: string) {
+    >(action: TableCardBodyActions<T>, tableType: string): void {
         const {
             data: { businessName },
         } = action;
@@ -167,7 +167,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             typeof businessName === 'string' ? businessName : businessName.name;
 
         const modalSecondTitle =
-        action.data?.mainAddress?.address ?? action.data?.address?.address;
+            action.data?.mainAddress?.address ?? action.data?.address?.address;
 
         const adjustedAction = {
             ...action,
@@ -185,7 +185,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
     private handleShipperBrokerDeleteAction<T extends MappedShipperBroker>(
         action: TableCardBodyActions<T>,
         tableType: string
-    ) {
+    ): void {
         const modalHeaderTitle =
             tableType === DropdownMenuStringEnum.SHIPPER
                 ? ConfirmationModalStringEnum.DELETE_SHIPPER
