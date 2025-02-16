@@ -28,6 +28,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 // svg routes
 import { SettingsFactorySvgRoutes } from './utils/svg-routes/settings-factoring-svg-routes';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-settings-factoring',
     templateUrl: './settings-factoring.component.html',
@@ -62,22 +65,20 @@ export class SettingsFactoringComponent
             this.factoringData = changes?.factoringData?.currentValue;
         }
     }
-    ngOnInit() {
+    ngOnInit(): void {
         // Confirmation Subscribe
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case 'delete': {
+                        case eGeneralActions.DELETE:
                             if (res.template === 'factoring') {
                                 this.deleteFactoringByCompanyId(res.id);
                             }
                             break;
-                        }
-                        default: {
+                        default:
                             break;
-                        }
                     }
                 },
             });
@@ -93,20 +94,20 @@ export class SettingsFactoringComponent
             .subscribe();
     }
 
-    public onDeleteFactoringCompany() {
+    public onDeleteFactoringCompany(): void {
         this.modalService.openModal(
             ConfirmationModalComponent,
             { size: 'small' },
             {
                 id: this.factoringData.id,
                 template: 'factoring',
-                type: 'delete',
+                type: eGeneralActions.DELETE,
                 image: false,
             }
         );
     }
 
-    public toggleNoteVisibility() {
+    public toggleNoteVisibility(): void {
         this.isNoteVisible = !this.isNoteVisible;
     }
 

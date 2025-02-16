@@ -1,3 +1,5 @@
+@import '/src/theme/variables.scss';
+
 .table-container {
     max-width: 1900px;
     width: 100%;
@@ -374,6 +376,20 @@
         border-radius: 1px;
         font-weight: 700;
         color: #fff;
+    }
+
+    &-small-icon {
+        height: 18px;
+        width: 18px;
+        margin-right: 4px;
+        border-radius: 1px;
+        &-repair {
+            background-color: $ta-brown-2; 
+            color: $ta-brown-1;
+        }
+        &-deadhead {
+            background-color: $dark-2; 
+        }
     }
 
     &.delivery {

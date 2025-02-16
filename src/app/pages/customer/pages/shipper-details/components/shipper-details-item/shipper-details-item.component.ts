@@ -26,6 +26,9 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 //Constants
 import { ShipperDetailsItemSvgRoutes } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/svg-routes';
 
+// Enums
+import { eGeneralActions } from '@shared/enums';
+
 @Titles()
 @Component({
     selector: 'app-shipper-details-item',
@@ -34,12 +37,12 @@ import { ShipperDetailsItemSvgRoutes } from '@pages/customer/pages/shipper-detai
     encapsulation: ViewEncapsulation.None,
 })
 export class ShipperDetailsItemComponent implements OnChanges {
-    @Input() shipper: ShipperResponse;
+    @Input() shipper: ShipperResponse[];
     @Input() shipperLoads: ShipperLoadStopsResponse[];
     public shipperContacts: ShipperContactGroupResponse[];
     public shipperLikes: number;
     public shipperDislike: number;
-    public reviewsRepair: any = []; //leave this any, it's not going into this spring
+    public reviewsRepair: any = [];
     public departmentContacts: DepartmentContacts[];
 
     //Images
@@ -64,43 +67,29 @@ export class ShipperDetailsItemComponent implements OnChanges {
         }
     }
 
-    /**Function return id */
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
-    public getReviews(reviewsData: ShipperResponse) {
+    public getReviews(reviewsData: ShipperResponse): void {
         this.reviewsRepair = reviewsData.ratingReviews.map((item) => {
             return {
                 ...item,
                 companyUser: {
                     ...item.companyUser,
-                    avatar: /* item.companyUser.avatar
-                        ? item.companyUser.avatar
-                        :  */ 'assets/svg/common/ic_profile.svg',
+                    avatar: 'assets/svg/common/ic_profile.svg',
                 },
                 commentContent: item.comment,
-                rating: item.thumb, // - item.ratingFromTheReviewer doesn't exist in response
+                rating: item.thumb,
             };
         });
     }
-    public changeReviewsEvent(reviews: ReviewComment) {
+    public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case 'delete': {
+            case eGeneralActions.DELETE:
                 this.deleteReview(reviews);
                 break;
-            }
-            case 'add': {
-                //this.addReview(reviews);
-                break;
-            }
-            case 'update': {
+            case eGeneralActions.UPDATE:
                 this.updateReview(reviews);
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -112,20 +101,14 @@ export class ShipperDetailsItemComponent implements OnChanges {
         this.reviewRatingService
             .updateReview(review)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private deleteReview(reviews: ReviewComment) {
         this.reviewRatingService
             .deleteReview(reviews.data)
             .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {},
-                error: () => {},
-            });
+            .subscribe();
     }
 
     private orderContacts(): void {

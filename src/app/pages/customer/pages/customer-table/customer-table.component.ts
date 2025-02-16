@@ -289,11 +289,9 @@ export class CustomerTableComponent
                             if (
                                 res.template !==
                                 BrokerModalStringEnum.DELETE_REVIEW
-                            ) {
+                            )
                                 this.changeBussinesStatusShipper(res.data);
-                            }
                         }
-
                         break;
                     case TableStringEnum.OPEN:
                         if (this.selectedTab === TableStringEnum.INACTIVE)

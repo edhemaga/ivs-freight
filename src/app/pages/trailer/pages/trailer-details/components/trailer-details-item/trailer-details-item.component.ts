@@ -39,6 +39,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
 import { TrailerDetailsConfig } from '../../models/trailer-details-config.model';
 import { RegistrationResponse } from 'appcoretruckassist';
+import { eGeneralActions } from '@shared/enums';
 
 @Titles()
 @Component({
@@ -360,7 +361,7 @@ export class TrailerDetailsItemComponent
         cdlsArray.length
             ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
             : this.optionsEvent(
-                  { id: id, type: 'activate' },
+                  { id: id, type: eGeneralActions.ACTIVATE },
                   data,
                   'registration'
               );

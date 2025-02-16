@@ -7,6 +7,9 @@ import {
     NavigationSettings,
 } from '@core/components/navigation/models';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 // environments
 import { environment } from 'src/environments/environment';
 
@@ -554,7 +557,7 @@ export class NavigationDataConstants {
             id: 27,
             name: 'Profile Update',
             image: 'ic_pen.svg',
-            action: 'update',
+            action: eGeneralActions.UPDATE,
         },
         {
             id: 28,

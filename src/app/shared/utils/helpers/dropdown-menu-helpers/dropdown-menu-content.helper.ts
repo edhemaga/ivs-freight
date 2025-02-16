@@ -1,5 +1,9 @@
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import {
+    DropdownMenuStringEnum,
+    eGeneralActions,
+    TableStringEnum,
+} from '@shared/enums';
 
 // helpers
 import { DropdownMenuContentConditionalItemsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -741,7 +745,7 @@ export class DropdownMenuContentHelper {
         return [
             {
                 title: 'Edit',
-                name: 'edit',
+                name: eGeneralActions.EDIT,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,
