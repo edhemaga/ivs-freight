@@ -260,8 +260,9 @@ export class DriverModalComponent
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
     public taModalActionEnum = TaModalActionEnum;
-    public svgRoutes = SharedSvgRoutes;
     public eGeneralActions = eGeneralActions;
+    
+    public svgRoutes = SharedSvgRoutes;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
