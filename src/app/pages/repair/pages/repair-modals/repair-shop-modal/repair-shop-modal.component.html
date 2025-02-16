@@ -292,14 +292,14 @@
                         <!-- Open Hours -->
 
                         <app-ta-custom-card
-                            (onActionEvent)="toggle247WorkingHours($event)"
                             [cardName]="'Work Hours'"
                             [has24Hours]="true"
                             [hasBodyData]="true"
                             [is24Hours]="isOpenAllDay"
-                            [isCardOpen]="true"
+                            [isCardOpen]="!isOpenAllDay"
                             [disabledCard]="false"
                             [hasArrow]="false"
+                            (onActionEvent)="toggle247WorkingHours($event)"
                         >
                             <div
                                 class="repair-shop-services repair-shop-services-large"
@@ -587,7 +587,9 @@
                             >
                                 <!-- TODO: -->
                                 <app-ca-upload-files
-                                    [uploadFilesConfig]="uploadDocumentFilesConfig"
+                                    [uploadFilesConfig]="
+                                        uploadDocumentFilesConfig
+                                    "
                                     (fileAdded)="fileAdded($event)"
                                 ></app-ca-upload-files>
                             </app-ta-custom-card>
@@ -656,7 +658,9 @@
                             [hasArrow]="false"
                         >
                             <app-ca-upload-files
-                                [uploadFilesConfig]="uploadCoverPhotoFilesConfig"
+                                [uploadFilesConfig]="
+                                    uploadCoverPhotoFilesConfig
+                                "
                                 (onFileEvent)="onUploadCoverPhoto($event)"
                             >
                             </app-ca-upload-files>
