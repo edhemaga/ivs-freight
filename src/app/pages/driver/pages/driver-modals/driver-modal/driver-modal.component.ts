@@ -86,6 +86,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { DriverModalStringEnum } from '@pages/driver/pages/driver-modals/driver-modal/enums/driver-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // constants
 import { DriverModalConstants } from '@pages/driver/pages/driver-modals/driver-modal/utils/constants';
@@ -259,6 +260,8 @@ export class DriverModalComponent
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
     public taModalActionEnum = TaModalActionEnum;
+    public eGeneralActions = eGeneralActions;
+    
     public svgRoutes = SharedSvgRoutes;
 
     constructor(
