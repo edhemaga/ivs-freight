@@ -9,12 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MobileGpsDataItemCommand } from './mobileGpsDataItemCommand';
 
 
-export interface MobileGpsDataCommand { 
-    deviceId?: string | null;
-    driverId?: number;
-    locations?: Array<MobileGpsDataItemCommand> | null;
+export interface MobileGpsDataItemCommand { 
+    latitude?: number;
+    longitude?: number;
+    altitude?: number | null;
+    accuracy?: number | null;
+    speed?: number;
+    heading?: number | null;
+    timestamp?: number;
 }
 

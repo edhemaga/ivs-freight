@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MobileGpsDataItemCommand } from './mobileGpsDataItemCommand';
 
 
-export interface MobileGpsDataCommand { 
-    deviceId?: string | null;
-    driverId?: number;
-    locations?: Array<MobileGpsDataItemCommand> | null;
-}
+export type TransmissionType = 'Automatic' | 'Manual' | 'AutomatedManual';
+
+export const TransmissionType = {
+    Automatic: 'Automatic' as TransmissionType,
+    Manual: 'Manual' as TransmissionType,
+    AutomatedManual: 'AutomatedManual' as TransmissionType
+};
 

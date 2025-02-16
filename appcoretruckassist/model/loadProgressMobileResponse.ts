@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MobileGpsDataItemCommand } from './mobileGpsDataItemCommand';
+import { LoadStopProgressBarMobileResponse } from './loadStopProgressBarMobileResponse';
 
 
-export interface MobileGpsDataCommand { 
-    deviceId?: string | null;
-    driverId?: number;
-    locations?: Array<MobileGpsDataItemCommand> | null;
+export interface LoadProgressMobileResponse { 
+    type?: string | null;
+    loadStops?: Array<LoadStopProgressBarMobileResponse> | null;
+    totalMiles?: number | null;
 }
 

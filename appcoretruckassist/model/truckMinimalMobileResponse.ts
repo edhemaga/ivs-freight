@@ -9,15 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TruckMinimalMobileResponse } from './truckMinimalMobileResponse';
-import { TrailerMinimalMobileResponse } from './trailerMinimalMobileResponse';
+import { EnumValue } from './enumValue';
+import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
+import { TruckTypeResponse } from './truckTypeResponse';
 
 
-export interface DispatchShortMobileResponse { 
+export interface TruckMinimalMobileResponse { 
     id?: number;
-    dispatchBoardId?: number;
-    dispatcherId?: number | null;
-    truck?: TruckMinimalMobileResponse;
-    trailer?: TrailerMinimalMobileResponse;
+    truckNumber?: string | null;
+    truckType?: TruckTypeResponse;
+    truckGrossWeight?: TruckGrossWeightResponse;
+    truckLength?: EnumValue;
 }
 

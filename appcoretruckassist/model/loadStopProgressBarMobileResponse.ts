@@ -9,12 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MobileGpsDataItemCommand } from './mobileGpsDataItemCommand';
+import { EnumValue } from './enumValue';
 
 
-export interface MobileGpsDataCommand { 
-    deviceId?: string | null;
-    driverId?: number;
-    locations?: Array<MobileGpsDataItemCommand> | null;
+export interface LoadStopProgressBarMobileResponse { 
+    loadStopId?: number;
+    stopType?: EnumValue;
+    totalLegMiles?: number | null;
+    cumulativeTotalLegMiles?: number | null;
+    progressBarPercentage?: number | null;
+    stopLoadOrder?: number;
 }
 

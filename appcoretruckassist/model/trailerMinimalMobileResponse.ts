@@ -9,12 +9,14 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MobileGpsDataItemCommand } from './mobileGpsDataItemCommand';
+import { TrailerLengthResponse } from './trailerLengthResponse';
+import { TrailerTypeResponse } from './trailerTypeResponse';
 
 
-export interface MobileGpsDataCommand { 
-    deviceId?: string | null;
-    driverId?: number;
-    locations?: Array<MobileGpsDataItemCommand> | null;
+export interface TrailerMinimalMobileResponse { 
+    id?: number;
+    trailerNumber?: string | null;
+    trailerType?: TrailerTypeResponse;
+    trailerLength?: TrailerLengthResponse;
 }
 

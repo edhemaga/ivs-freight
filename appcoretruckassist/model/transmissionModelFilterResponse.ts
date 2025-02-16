@@ -9,12 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MobileGpsDataItemCommand } from './mobileGpsDataItemCommand';
+import { TransmissionModelResponse } from './transmissionModelResponse';
 
 
-export interface MobileGpsDataCommand { 
-    deviceId?: string | null;
-    driverId?: number;
-    locations?: Array<MobileGpsDataItemCommand> | null;
+export interface TransmissionModelFilterResponse { 
+    transmissionModel?: TransmissionModelResponse;
 }
 
