@@ -543,7 +543,8 @@ export class RepairShopModalComponent
                                 repairShop.address.addressUnit,
                             [RepairShopModalStringEnum.ADDRESS]:
                                 repairShop.address.address,
-                            [RepairShopModalStringEnum.OPEN_ALWAYS]: false,
+                            [RepairShopModalStringEnum.OPEN_ALWAYS]:
+                                repairShop.openAlways,
                             [RepairShopModalStringEnum.ACCOUNT]:
                                 repairShop.account,
                             [RepairShopModalStringEnum.NOTE]: repairShop.note,
@@ -572,7 +573,6 @@ export class RepairShopModalComponent
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
                             [RepairShopModalStringEnum.COVER]: repairShop.cover,
                         });
-
                         this.mapEditData(repairShop);
                         this.isCompanyRelated =
                             this.editData?.companyOwned ||
@@ -838,16 +838,12 @@ export class RepairShopModalComponent
     public toggle247WorkingHours(): void {
         this.openAlways.patchValue(!this.isOpenAllDay);
 
-        const startTime = this.convertTime(
-            this.isOpenAllDay
-                ? OpenWorkingHours.MIDNIGHT
-                : OpenWorkingHours.EIGHTAM
-        );
-        const endTime = this.convertTime(
-            this.isOpenAllDay
-                ? OpenWorkingHours.MIDNIGHT
-                : OpenWorkingHours.FIVEPM
-        );
+        const startTime = this.isOpenAllDay
+            ? OpenWorkingHours.MIDNIGHT
+            : OpenWorkingHours.EIGHTAM;
+        const endTime = this.isOpenAllDay
+            ? OpenWorkingHours.MIDNIGHT
+            : OpenWorkingHours.FIVEPM;
 
         this.openHours.controls.forEach((item, index) => {
             const isPatch = this.openAlways.value || index >= 5;
@@ -867,10 +863,6 @@ export class RepairShopModalComponent
             shiftsArray.clear();
             shiftsArray.push(this.formBuilder.group(newShift));
         });
-    }
-
-    public convertTime(time: string): Date {
-        return MethodsCalculationsHelper.convertTimeFromBackend(time);
     }
 
     public applyMondayToAllDays(): void {
@@ -1084,7 +1076,7 @@ export class RepairShopModalComponent
                     active: item.active,
                 };
             }),
-            bankId: this.selectedBank ? this.selectedBank.id : null,
+            bankId: this.selectedBank?.id ?? null,
             files: this.createDocumentsForRequest(),
             filesForDeleteIds: this.filesForDelete,
             pinned: this.getFromFieldValue(RepairShopModalStringEnum.PINNED),
@@ -1101,7 +1093,10 @@ export class RepairShopModalComponent
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
-            openHours: this.formatOpenHours(),
+            openHours: this.isOpenAllDay ? [] : this.formatOpenHours(),
+            openAlways: this.getFromFieldValue(
+                RepairShopModalStringEnum.OPEN_ALWAYS
+            ),
             weeklyDay: !this.getFromFieldValue(
                 RepairShopModalStringEnum.COMPANY_OWNED
             )

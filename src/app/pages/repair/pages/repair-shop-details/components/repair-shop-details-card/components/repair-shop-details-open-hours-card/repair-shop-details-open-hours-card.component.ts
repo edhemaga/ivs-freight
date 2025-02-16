@@ -60,7 +60,5 @@ export class RepairShopDetailsOpenHoursCardComponent {
             ...data,
             openHours,
         };
-
-        console.log('this._cardData', this._cardData);
     }
 }
