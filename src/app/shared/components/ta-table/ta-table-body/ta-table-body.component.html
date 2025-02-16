@@ -1233,11 +1233,18 @@
                                                     position="bottom"
                                                 >
                                                     @if (
-                                                        row?.tableFuelStopIsClosed
+                                                        row?.tableFuelStopIsClosed ||
+                                                        row?.companyOwned
                                                     ) {
                                                         <svg-icon
+                                                            [ngClass]="{
+                                                                'company-owned-icon':
+                                                                    row?.companyOwned,
+                                                            }"
                                                             [src]="
-                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                                row?.tableFuelStopIsClosed
+                                                                    ? tableBodySvgRoutes.brokerClosedRoute
+                                                                    : tableBodySvgRoutes.companyOwnedRoute
                                                             "
                                                         ></svg-icon>
                                                     }
@@ -4106,11 +4113,14 @@
                                                     position="bottom"
                                                 >
                                                     @if (
-                                                        row?.tableFuelStopIsClosed
+                                                        row?.tableFuelStopIsClosed ||
+                                                        row?.companyOwned
                                                     ) {
                                                         <svg-icon
                                                             [src]="
-                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                                row?.tableFuelStopIsClosed
+                                                                    ? tableBodySvgRoutes.brokerClosedRoute
+                                                                    : tableBodySvgRoutes.companyOwnedRoute
                                                             "
                                                         ></svg-icon>
                                                     }
