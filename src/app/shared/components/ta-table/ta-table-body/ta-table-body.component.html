@@ -4117,6 +4117,10 @@
                                                         row?.companyOwned
                                                     ) {
                                                         <svg-icon
+                                                            [ngClass]="{
+                                                                'company-owned-icon':
+                                                                    row?.companyOwned,
+                                                            }"
                                                             [src]="
                                                                 row?.tableFuelStopIsClosed
                                                                     ? tableBodySvgRoutes.brokerClosedRoute
