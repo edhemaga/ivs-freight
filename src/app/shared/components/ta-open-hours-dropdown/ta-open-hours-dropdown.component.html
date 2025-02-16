@@ -26,16 +26,11 @@
         tooltipMarginTop="-6px"
         position="bottom"
     >
-        @if (
-            dropdownConfig?.openHoursToday?.status !==
-            openHoursDropdownStringEnum.CLOSED
-        ) {
+        @if (dropdownConfig?.openHoursToday?.id !== 3) {
             <svg-icon
                 class="open-hours-icon"
                 [ngClass]="{
-                    closing:
-                        dropdownConfig?.openHoursToday?.status ===
-                        openHoursDropdownStringEnum.CLOSING_SOON,
+                    closing: dropdownConfig?.openHoursToday?.id === 2,
                 }"
                 [src]="openHoursDropdownSvgRoutes.circleRoute"
                 [svgStyle]="{
@@ -48,21 +43,18 @@
         <p
             class="m-0 text-color-black text-size-14"
             [ngClass]="{
-                'ta-font-semi-bold':
-                    dropdownConfig?.openHoursToday?.status !==
-                    openHoursDropdownStringEnum.CLOSED,
+                'ta-font-semi-bold': dropdownConfig?.openHoursToday?.id !== 3,
             }"
         >
             {{
-                dropdownConfig?.openHoursToday?.status !==
-                openHoursDropdownStringEnum.CLOSED
+                dropdownConfig?.openHoursToday?.id !== 3
                     ? dropdownConfig?.openHoursToday?.status
                     : dropdownConfig?.openHoursToday?.info
             }}
 
             <!--  {{ // w8 for back
-                dropdownConfig?.openHoursToday?.status ===
-                openHoursDropdownStringEnum.CLOSING_SOON
+                dropdownConfig?.openHoursToday?.id ===
+                2
                     ? dropdownConfig?.openHoursToday?.info
                     : ''
             }} -->

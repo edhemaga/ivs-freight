@@ -1473,6 +1473,7 @@ export class RepairTableComponent
     }
 
     private mapShopData(repairShop: RepairShopListDto): MappedRepairShop {
+        console.log('repairShop', repairShop);
         const {
             address,
             shopServiceType,

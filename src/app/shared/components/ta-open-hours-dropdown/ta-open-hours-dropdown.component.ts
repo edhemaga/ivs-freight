@@ -11,9 +11,6 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // svg routes
 import { OpenHoursDropdownSvgRoutes } from '@shared/components/ta-open-hours-dropdown/utils/svg-routes';
 
-// enums
-import { OpenHoursDropdownStringEnum } from '@shared/components/ta-open-hours-dropdown/enums';
-
 // models
 import {
     OpenHoursTodayResponse,
@@ -44,7 +41,10 @@ export class TaOpenHoursDropdownComponent {
     };
 
     public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
-    public openHoursDropdownStringEnum = OpenHoursDropdownStringEnum;
+
+    ngOnInit() {
+        console.log('dropdownConfig', this.dropdownConfig);
+    }
 
     public openHoursDropdownActiveId: number = -1;
 
