@@ -74,7 +74,10 @@ import {
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { RepairShopHelper } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/helpers';
-import { RepairShopConfig, RepairShopModalUploadFilesConfig } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
+import {
+    RepairShopConfig,
+    RepairShopModalUploadFilesConfig,
+} from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
 
 // Animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -107,6 +110,7 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import {
+    eGeneralActions,
     ModalButtonSize,
     ModalButtonType,
     TableStringEnum,
@@ -274,8 +278,10 @@ export class RepairShopModalComponent
     public modalButtonType = ModalButtonType;
     public modalButtonSize = ModalButtonSize;
 
-    public uploadDocumentFilesConfig = RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG;
-    public uploadCoverPhotoFilesConfig = RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_COVER_PHOTO_UPLOAD_FILES_CONFIG;
+    public uploadDocumentFilesConfig =
+        RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG;
+    public uploadCoverPhotoFilesConfig =
+        RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_COVER_PHOTO_UPLOAD_FILES_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -424,7 +430,7 @@ export class RepairShopModalComponent
         this.companyUser = JSON.parse(localStorage.getItem('user'));
         this.uploadCoverPhotoFilesConfig = {
             ...RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG,
-            files: [{ url: this.coverPhoto?.url}],
+            files: [{ url: this.coverPhoto?.url }],
         };
     }
 
@@ -766,6 +772,16 @@ export class RepairShopModalComponent
 
     // Working hours
     public toggleWorkingDay(index: number): void {
+        // there should be always one active working day
+        const isSingleWorkingDay =
+            this.openHours.value.filter((workingDay) => workingDay.isWorkingDay)
+                .length === 1 &&
+            this.openHours
+                .at(index)
+                .get(RepairShopModalStringEnum.IS_WORKING_DAY).value;
+
+        if (isSingleWorkingDay) return;
+
         const newWorkingDay = this.openHours.at(index);
 
         // Toggle value
@@ -833,7 +849,15 @@ export class RepairShopModalComponent
                 : OpenWorkingHours.FIVEPM
         );
 
-        this.openHours.controls.forEach((item) => {
+        this.openHours.controls.forEach((item, index) => {
+            const isPatch = this.openAlways.value || index >= 5;
+
+            if (isPatch)
+                item
+                    .get(RepairShopModalStringEnum.IS_WORKING_DAY)
+                    ?.patchValue(this.openAlways.value);
+
+            // shifts
             const shiftsArray = item.get(
                 RepairShopModalStringEnum.SHIFTS
             ) as FormArray;
@@ -1303,15 +1327,15 @@ export class RepairShopModalComponent
 
     public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.deleteReview(reviews);
                 break;
 
-            case 'add':
+            case eGeneralActions.ADD:
                 this.addReview(reviews);
                 break;
 
-            case 'update':
+            case eGeneralActions.UPDATE:
                 this.updateReview(reviews);
                 break;
 

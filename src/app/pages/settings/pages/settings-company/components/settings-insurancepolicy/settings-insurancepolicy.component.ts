@@ -25,6 +25,9 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-settings-insurancepolicy',
     templateUrl: './settings-insurancepolicy.component.html',
@@ -67,44 +70,43 @@ export class SettingsInsurancepolicyComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case 'delete': {
-                            if (res.template === 'insurance') {
+                        case eGeneralActions.DELETE:
+                            if (res.template === 'insurance')
                                 this.deleteInsurancePolicy(res.id);
-                            }
+
                             break;
-                        }
-                        default: {
+                        default:
                             break;
-                        }
                     }
                 },
             });
     }
     /**Function for toggle page in cards */
-    public toggleResizePage(value: number) {
+    public toggleResizePage(value: number): void {
         this.toggler[value] = !this.toggler[value];
     }
-    public onAction(modal: { modalName: string; type: string; company?: any }) {
+    public onAction(modal: {
+        modalName: string;
+        type: string;
+        company?: any;
+    }): void {
         this.settingsCompanyService.onModalAction(modal);
     }
 
-    public deleteInsurancePolicy(insurance: any) {
+    public deleteInsurancePolicy(insurance: any): void {
         this.settingsCompanyService
             .deleteInsurancePolicyById(insurance)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    public identity(index: number, item: any): number {
-        return item.id;
-    }
-
     /* To copy any Text */
-    public copyText(val: any, index: number) {
+    public copyText(val: any, index: number): void {
         this.copyPolicyName[index] = true;
         this.clipboar.copy(val);
     }
-    /**Function for dots in cards */
+
+    /* Function for dots in cards */
     public initDropOptions(): void {
         this.dropOptions = {
             disabledMutedStyle: null,
@@ -121,10 +123,10 @@ export class SettingsInsurancepolicyComponent
             actions: [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit',
+                    iconName: eGeneralActions.EDIT,
                 },
                 {
                     title: 'border',
@@ -148,40 +150,37 @@ export class SettingsInsurancepolicyComponent
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
+                    iconName: eGeneralActions.DELETE,
                 },
             ],
             export: true,
         };
     }
 
-    //Function for drop-down
-    public optionsEvent(action: any, insurance: any) {
+    // Function for drop-down
+    public optionsEvent(action: any, insurance: any): void {
         switch (action.type) {
-            case 'edit': {
+            case eGeneralActions.EDIT:
                 this.onAction({
                     modalName: 'insurance-policy',
-                    type: 'edit',
+                    type: eGeneralActions.EDIT,
                     company: insurance,
                 });
                 break;
-            }
-            case 'delete-item': {
+            case 'delete-item':
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: 'small' },
                     {
                         id: insurance.id,
                         template: 'insurance',
-                        type: 'delete',
+                        type: eGeneralActions.DELETE,
                         image: false,
                     }
                 );
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -189,7 +188,7 @@ export class SettingsInsurancepolicyComponent
         this.insuranceFiles.downloadAllFiles();
     }
 
-    ngOnDestroy() {
+    ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
     }

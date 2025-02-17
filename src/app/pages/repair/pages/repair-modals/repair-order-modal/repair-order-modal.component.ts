@@ -253,7 +253,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         // services
         private inputService: TaInputService,
         private repairService: RepairService,
-        private repairShopController: RepairShopService,
         private modalService: ModalService,
         private formService: FormService,
         private detailsDataService: DetailsDataService,
@@ -1007,7 +1006,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.repairService
                 .getRepairDriversList(truckId, trailerId, repairDate)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(({ drivers, isTeamDrivers }) => {
+                .subscribe(({ drivers, isTeamDrivers, isDispatchDriver }) => {
                     this.resetDriverInputField();
 
                     if (drivers?.length) {
@@ -1018,7 +1017,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             })
                         );
 
-                        this.isDriverDisabled = drivers.length === 1;
+                        this.isDriverDisabled =
+                            drivers.length === 1 && isDispatchDriver;
 
                         if (this.isDriverDisabled || isTeamDrivers)
                             this.selectedDriver = this.driversDropdownList[0];
@@ -1034,7 +1034,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     ): void {
         forkJoin([
             this.repairService.getRepairModalDropdowns(truckId, trailerId),
-            this.repairShopController.apiRepairshopListMinimalGet(),
+            this.repairService.getRepairShopMinimalList(),
         ])
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {

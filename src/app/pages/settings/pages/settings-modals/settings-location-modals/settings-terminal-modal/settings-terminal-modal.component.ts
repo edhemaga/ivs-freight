@@ -66,9 +66,10 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 import {
     DropActionsStringEnum,
+    eGeneralActions,
     ModalButtonType,
     TableStringEnum,
 } from '@shared/enums';
@@ -286,26 +287,26 @@ export class SettingsTerminalModalComponent
         });
 
         this.inputService.customInputValidator(
-            this.terminalForm.get(SettingsFormEnum.EMAIL),
-            SettingsFormEnum.EMAIL,
+            this.terminalForm.get(ESettingsFormEnum.EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get(SettingsFormEnum.OFFICE_EMAIL),
-            SettingsFormEnum.EMAIL,
+            this.terminalForm.get(ESettingsFormEnum.OFFICE_EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get(SettingsFormEnum.PARKING_EMAIL),
-            SettingsFormEnum.EMAIL,
+            this.terminalForm.get(ESettingsFormEnum.PARKING_EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
 
         this.inputService.customInputValidator(
-            this.terminalForm.get(SettingsFormEnum.WAREHOUSE_EMAIL),
-            SettingsFormEnum.EMAIL,
+            this.terminalForm.get(ESettingsFormEnum.WAREHOUSE_EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
     }
@@ -313,57 +314,49 @@ export class SettingsTerminalModalComponent
     public onModalAction(action: string): void {
         this.activeAction = action;
         switch (action) {
-            case TaModalActionEnum.CLOSE: {
+            case TaModalActionEnum.CLOSE:
                 this.ngbActiveModal.close();
                 break;
-            }
-            case TaModalActionEnum.SAVE: {
+            case TaModalActionEnum.SAVE:
                 if (this.terminalForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.terminalForm);
                     return;
                 }
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === eGeneralActions.EDIT)
                     this.updateTerminal(this.editData.id);
-                } else {
-                    this.addTerminal();
-                }
+                else this.addTerminal();
                 break;
-            }
-            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
                 if (this.terminalForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.terminalForm);
                     return;
                 }
-
                 this.addTerminal(true);
                 break;
-            }
-            case TaModalActionEnum.DELETE: {
+            case TaModalActionEnum.DELETE:
                 this.deleteTerminalById();
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public openCloseCheckboxCard() {
+    public openCloseCheckboxCard(): void {
         this.isChecked(
-            SettingsFormEnum.OFFICE_CHECKED,
-            SettingsFormEnum.OFFICE_PHONE
+            ESettingsFormEnum.OFFICE_CHECKED,
+            ESettingsFormEnum.OFFICE_PHONE
         );
         this.isChecked(
-            SettingsFormEnum.PARKING_CHECKED,
-            SettingsFormEnum.OFFICE_PHONE
+            ESettingsFormEnum.PARKING_CHECKED,
+            ESettingsFormEnum.OFFICE_PHONE
         );
         this.isChecked(
-            SettingsFormEnum.WAREHOUSE_CHECKED,
-            SettingsFormEnum.WAREHOUSE_PHONE
+            ESettingsFormEnum.WAREHOUSE_CHECKED,
+            ESettingsFormEnum.WAREHOUSE_PHONE
         );
     }
 
-    public isChecked(formControlName: string, phoneControlName: string) {
+    public isChecked(formControlName: string, phoneControlName: string): void {
         this.terminalForm
             .get(formControlName)
             .valueChanges.pipe(takeUntil(this.destroy$))
@@ -385,14 +378,14 @@ export class SettingsTerminalModalComponent
 
     public onAction(event: any, action: string) {
         switch (action) {
-            case SettingsFormEnum.GATE: {
+            case ESettingsFormEnum.GATE:
                 this.gateBtns = this.gateBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
-                              .get(SettingsFormEnum.GATE)
+                              .get(ESettingsFormEnum.GATE)
                               .patchValue(false)
                         : this.terminalForm
-                              .get(SettingsFormEnum.GATE)
+                              .get(ESettingsFormEnum.GATE)
                               .patchValue(true);
 
                     return {
@@ -401,15 +394,14 @@ export class SettingsTerminalModalComponent
                     };
                 });
                 break;
-            }
-            case 'camera': {
+            case 'camera':
                 this.cameraBtns = this.cameraBtns.map((item) => {
                     event.name === 'No'
                         ? this.terminalForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
+                              .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(false)
                         : this.terminalForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
+                              .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(true);
 
                     return {
@@ -418,16 +410,14 @@ export class SettingsTerminalModalComponent
                     };
                 });
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
     private parkingSlot() {
         this.terminalForm
-            .get(SettingsFormEnum.TERMINAL_PARKING_STOP)
+            .get(ESettingsFormEnum.TERMINAL_PARKING_STOP)
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
@@ -435,15 +425,15 @@ export class SettingsTerminalModalComponent
                     MethodsCalculationsHelper.calculateParkingSlot(
                         value,
                         this.terminalForm.get(
-                            SettingsFormEnum.TERMINAL_PARKING_STOP
+                            ESettingsFormEnum.TERMINAL_PARKING_STOP
                         )
                     );
             });
     }
 
-    private fullParkingSlot() {
+    private fullParkingSlot(): void {
         this.terminalForm
-            .get(SettingsFormEnum.TERMINAL_FULL_PARKING_STOP)
+            .get(ESettingsFormEnum.TERMINAL_FULL_PARKING_STOP)
             .valueChanges.pipe(debounceTime(1000), takeUntil(this.destroy$))
             .subscribe((value) => {
                 this.parkingSlots = [...this.parkingSlots];
@@ -451,31 +441,28 @@ export class SettingsTerminalModalComponent
                     MethodsCalculationsHelper.calculateParkingSlot(
                         value,
                         this.terminalForm.get(
-                            SettingsFormEnum.TERMINAL_FULL_PARKING_STOP
+                            ESettingsFormEnum.TERMINAL_FULL_PARKING_STOP
                         )
                     );
             });
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: any, action: string): void {
         switch (action) {
-            case 'pay-period': {
+            case 'pay-period':
                 this.selectedPayPeriod = event;
                 this.terminalForm.get('monthlyDay').patchValue('');
                 this.selectedDay = null;
                 break;
-            }
-            case 'day': {
+            case 'day':
                 this.selectedDay = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private updateTerminal(id: number) {
+    private updateTerminal(id: number): void {
         const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: UpdateTerminalCommand = {
@@ -528,7 +515,7 @@ export class SettingsTerminalModalComponent
             });
     }
 
-    private addTerminal(addNew?: boolean) {
+    private addTerminal(addNew?: boolean): void {
         const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: CreateTerminalCommand = {
@@ -610,42 +597,16 @@ export class SettingsTerminalModalComponent
             .subscribe({
                 next: (res: TerminalResponse) => {
                     this.terminalForm.patchValue({
-                        isOwner: res.isOwner,
-                        name: res.name,
+                        ...res,
                         address: res.address.address,
                         addressUnit: res.address.addressUnit,
-                        phone: res.phone,
-                        extensionPhone: res.extensionPhone,
-                        email: res.email,
-                        // Office
-                        officeChecked: res.officeChecked,
-                        officePhone: res.officePhone,
-                        officeExtPhone: res.officeExtPhone,
-                        officeEmail: res.officeEmail,
-                        // Parking
-                        parkingChecked: res.parkingChecked,
-                        parkingPhone: res.parkingPhone,
-                        parkingExtPhone: res.parkingExtPhone,
-                        parkingEmail: res.parkingEmail,
-
-                        terminalParkingSlot: res.terminalParkingSlot,
-                        terminalFullParkingSlot: res.terminalFullParkingSlot,
-                        gate: res.gate,
-                        securityCamera: res.securityCamera,
-                        // Warehouse
-                        warehouseChecked: res.warehouseChecked,
-                        warehousePhone: res.warehousePhone,
-                        warehouseExtPhone: res.warehouseExtPhone,
-                        warehouseEmail: res.warehouseEmail,
-                        // Fuel stattion
-                        fuelStationChecked: res.fuelStationChecked,
                         // Additional tab
                         rent: res.rent
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                   res.rent
                               )
                             : null,
-                        payPeriod: res.payPeriod ? res.payPeriod.name : null,
+                        payPeriod: res.payPeriod?.name ?? null,
                         monthlyDay: res.payPeriod?.name
                             ? res.payPeriod.name === 'Monthly'
                                 ? res.monthlyDay.name
@@ -687,21 +648,14 @@ export class SettingsTerminalModalComponent
                         this.cameraBtns[1].checked = true;
                     }
 
-                    if (res.extensionPhone) {
-                        this.isTerminalPhoneExtExist = true;
-                    }
+                    if (res.extensionPhone) this.isTerminalPhoneExtExist = true;
 
-                    if (res.officeExtPhone) {
-                        this.isOfficePhoneExtExist = true;
-                    }
+                    if (res.officeExtPhone) this.isOfficePhoneExtExist = true;
 
-                    if (res.parkingExtPhone) {
-                        this.isParkingPhoneExtExist = true;
-                    }
+                    if (res.parkingExtPhone) this.isParkingPhoneExtExist = true;
 
-                    if (res.warehouseExtPhone) {
+                    if (res.warehouseExtPhone)
                         this.isWarehousePhoneExtExist = true;
-                    }
 
                     this.data = res;
 
@@ -712,7 +666,7 @@ export class SettingsTerminalModalComponent
             });
     }
 
-    private getModalDropdowns() {
+    private getModalDropdowns(): void {
         this.settingsLocationService
             .getModalDropdowns()
             .pipe(takeUntil(this.destroy$))
@@ -722,7 +676,7 @@ export class SettingsTerminalModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === 'edit') {
+                    if (this.editData?.type === eGeneralActions.EDIT) {
                         this.editTerminalById(this.editData.id);
                     } else {
                         this.startFormChanges();
@@ -731,7 +685,7 @@ export class SettingsTerminalModalComponent
             });
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.terminalForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))

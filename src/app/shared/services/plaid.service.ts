@@ -11,7 +11,7 @@ import {
 } from 'appcoretruckassist';
 
 // Models
-import { IPlaid } from '@shared/models';
+import { IPlaid, IPlaidCreated } from '@shared/models';
 import { IBankAccount } from '@pages/settings/models';
 
 // Enums

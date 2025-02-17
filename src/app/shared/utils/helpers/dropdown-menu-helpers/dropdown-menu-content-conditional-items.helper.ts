@@ -245,4 +245,59 @@ export class DropdownMenuContentConditionalItemsHelper {
             },
         ];
     }
+
+    // shipper
+    static getShipperModifierItems(
+        isOpenBusiness: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.EDIT,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.ADD_CONTACT,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.WRITE_REVIEW,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.REQUEST,
+                isDisabled: !isOpenBusiness,
+            },
+        ];
+    }
+
+    // broker
+    static getBrokerModifiedItems(
+        isOpenBusiness: boolean,
+        isMovedToBanOrDnu: boolean
+    ): Partial<DropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.EDIT,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.CREATE_LOAD,
+                isDisabled: isMovedToBanOrDnu,
+                hasBorder: false,
+            },
+            {
+                title: DropdownMenuStringEnum.ADD_CONTACT,
+                isDisabled: !isOpenBusiness,
+            },
+            {
+                title: DropdownMenuStringEnum.WRITE_REVIEW,
+                isDisabled: !isOpenBusiness,
+                hasBorder: false,
+            },
+            {
+                title: DropdownMenuStringEnum.MOVE_TO_BAN_LIST,
+                isDisabled: !isOpenBusiness,
+            },
+        ];
+    }
 }

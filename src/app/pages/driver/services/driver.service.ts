@@ -41,6 +41,7 @@ import { DriverModel } from '@pages/driver/pages/driver-table/models/driver.mode
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -327,7 +328,7 @@ export class DriverService {
                         this.dlStore.update(driver.id, driver);
 
                         this.tableService.sendActionAnimation({
-                            animation: 'update',
+                            animation: eGeneralActions.UPDATE,
                             data: driver,
                             id: driver.id,
                         });

@@ -20,7 +20,7 @@ import {
 } from '@core/components/navigation/animations/navigation.animation';
 
 // models
-import {  NavigationUserPanel } from '@core/components/navigation/models';
+import { NavigationUserPanel } from '@core/components/navigation/models';
 // constants
 import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
 
@@ -32,6 +32,9 @@ import { UserProfileUpdateService } from '@shared/services/user-profile-update.s
 
 // components
 import { NavigationProfileUpdateModalComponent } from '@core/components/navigation/components/navigation-profile-update-modal/navigation-profile-update-modal.component';
+
+// enums
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-navigation-user-profile',
@@ -90,16 +93,16 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onUserPanelClose() {
+    public onUserPanelClose(): void {
         this.navigationService.onDropdownActivation({
             name: 'User Panel',
             type: !this.isUserPanelOpen,
         });
     }
 
-    public onAction(data: NavigationUserPanel) {
+    public onAction(data: NavigationUserPanel): void {
         switch (data.action) {
-            case 'update': {
+            case eGeneralActions.UPDATE:
                 this.modalService.openModal(
                     NavigationProfileUpdateModalComponent,
                     {
@@ -107,36 +110,24 @@ export class NavigationUserProfileComponent implements OnInit, OnDestroy {
                     }
                 );
                 break;
-            }
-            case 'status': {
-                this.changeMyStatus();
+            case 'status':
                 break;
-            }
-            case 'company': {
+            case 'company':
                 this.navigationService.onDropdownActivation({
                     name: 'User Company Details',
                     type: true,
                 });
                 break;
-            }
-            case 'help': {
+            case 'help':
                 break;
-            }
-            case 'logout': {
+            case 'logout':
                 localStorage.clear();
                 this.websiteAuthService.accountLogout();
                 break;
-            }
             default:
                 return;
         }
     }
-
-    public identity(_: number, item: NavigationUserPanel): number {
-        return item.id;
-    }
-
-    private changeMyStatus() {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

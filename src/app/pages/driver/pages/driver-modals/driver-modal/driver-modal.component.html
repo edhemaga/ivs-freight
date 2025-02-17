@@ -47,7 +47,8 @@
                                     textTransform: 'capitalize',
                                     minLength: 2,
                                     maxLength: 26,
-                                    autoFocus: editData?.type !== 'edit',
+                                    autoFocus:
+                                        editData?.type !== eGeneralActions.EDIT,
                                 }"
                             ></ca-input-test>
 
@@ -146,12 +147,8 @@
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
                                     (selectedAddress)="onHandleAddress($event)"
-                                    (sentAddressData)="
-                                        onAddressChange($event)
-                                    "
-                                    (sentAddressValue)="
-                                        getAddressData($event)
-                                    "
+                                    (sentAddressData)="onAddressChange($event)"
+                                    (sentAddressValue)="getAddressData($event)"
                                 ></app-ca-input-address-dropdown>
                             </div>
 
@@ -1003,7 +1000,9 @@
                                 [isCardOpen]="!!documents.length"
                             >
                                 <app-ca-upload-files
-                                    [uploadFilesConfig]="uploadDocumentsFilesConfig"
+                                    [uploadFilesConfig]="
+                                        uploadDocumentsFilesConfig
+                                    "
                                     (onFileEvent)="onFilesEvent($event)"
                                 ></app-ca-upload-files>
                             </app-ta-custom-card>
@@ -1041,7 +1040,9 @@
                             [disableAnimation]="isCardAnimationDisabled"
                         >
                             <app-ca-upload-files
-                                [uploadFilesConfig]="uploadProfilePictureFilesConfig"
+                                [uploadFilesConfig]="
+                                    uploadProfilePictureFilesConfig
+                                "
                                 (onFileEvent)="onUploadImage($event)"
                             ></app-ca-upload-files>
                         </app-ta-custom-card>

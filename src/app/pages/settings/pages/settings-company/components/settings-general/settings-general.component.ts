@@ -25,6 +25,7 @@ import { DetailsActiveItemPipe } from '@shared/pipes/details-active-item.pipe';
 // enums
 import { SettingsGeneralStringEnum } from '@pages/settings/enums/settings-general-string.enum';
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
+import { eGeneralActions } from '@shared/enums';
 
 //Components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -255,7 +256,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             {
                 id: this.companyData.id,
                 template: 'company',
-                type: 'delete',
+                type: eGeneralActions.DELETE,
                 image: false,
             }
         );

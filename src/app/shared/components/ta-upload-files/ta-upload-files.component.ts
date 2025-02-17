@@ -34,6 +34,7 @@ import { TaUploadFileService } from '@shared/components/ta-upload-files/services
 //Enums
 import { FileTypesEnum } from '@shared/components/ta-upload-files/enums/file-types.enum';
 import { FilesSizeEnum } from '@shared/components/ta-upload-files/enums/files-size.enum';
+import { eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-upload-files',
@@ -135,7 +136,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                 });
                 break;
             }
-            case 'delete': {
+            case eGeneralActions.DELETE: {
                 let isLastDeleted = false;
                 this._files.map((item, index) => {
                     if (
@@ -186,19 +187,19 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                         this.modalCarousel.customClass == 'large'
                             ? 3
                             : this.modalCarousel.customClass == 'medium'
-                            ? 2
-                            : 1;
+                              ? 2
+                              : 1;
                     const allowSlide =
                         this.modalCarousel.customClass == 'large' &&
                         this._files.length > 2
                             ? true
                             : this.modalCarousel.customClass == 'medium' &&
-                              this._files.length > 1
-                            ? true
-                            : this.modalCarousel.customClass == 'small' &&
-                              this._files.length > 0
-                            ? true
-                            : false;
+                                this._files.length > 1
+                              ? true
+                              : this.modalCarousel.customClass == 'small' &&
+                                  this._files.length > 0
+                                ? true
+                                : false;
                     if (allowSlide) {
                         this.modalCarousel.slideToFile(
                             this._files.length - slideTo
@@ -246,7 +247,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     public onUploadFiles(data: { files: UploadFile[]; action: string }): void {
         const uploadedFiles = [...data.files];
         switch (data.action) {
-            case 'add': {
+            case eGeneralActions.ADD: {
                 uploadedFiles.map((files, i) => {
                     for (var a = 0; a < this._files.length; a++) {
                         if (
@@ -271,24 +272,27 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                 const oldFiles = this._files.length ? this._files : [];
 
                 this._files = [...oldFiles, ...uploadedFiles];
-                this.onFileEvent.emit({ files: this._files, action: 'add' });
+                this.onFileEvent.emit({
+                    files: this._files,
+                    action: eGeneralActions.ADD,
+                });
                 const slideTo =
                     this.modalCarousel?.customClass == 'large'
                         ? 3
                         : this.modalCarousel?.customClass == 'medium'
-                        ? 2
-                        : 1;
+                          ? 2
+                          : 1;
                 const allowSlide =
                     this.modalCarousel?.customClass == 'large' &&
                     this._files.length > 2
                         ? true
                         : this.modalCarousel?.customClass == 'medium' &&
-                          this._files.length > 1
-                        ? true
-                        : this.modalCarousel?.customClass == 'small' &&
-                          this._files.length > 0
-                        ? true
-                        : false;
+                            this._files.length > 1
+                          ? true
+                          : this.modalCarousel?.customClass == 'small' &&
+                              this._files.length > 0
+                            ? true
+                            : false;
                 if (allowSlide) {
                     this.modalCarousel?.slideToFile(
                         this._files.length - slideTo

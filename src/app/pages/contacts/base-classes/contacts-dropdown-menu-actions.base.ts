@@ -29,10 +29,10 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
     }
 
     protected handleDropdownMenuActions<T extends CompanyContactResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const { id, data, type } = event;
+        const { id, data, type } = action;
 
         switch (type) {
             case DropdownMenuStringEnum.SEND_SMS_TYPE:
@@ -50,12 +50,12 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleContactDeleteAction(event, tableType);
+                this.handleContactDeleteAction(action, tableType);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
@@ -97,14 +97,14 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
     }
 
     private handleContactDeleteAction<T extends CompanyContactResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             svg: true,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 }
