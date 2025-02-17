@@ -15,7 +15,7 @@
             <div
                 class="d-flex align-items-center group-container-header-box"
                 [ngClass]="{
-                    'justify-content-end': last
+                    'justify-content-end': last,
                 }"
             >
                 <p class="m-0 ta-font-bold">
@@ -57,7 +57,7 @@
                     [hasArrow]="groupIndex > 1"
                     [animationMarginParams]="{
                         marginTop: '8px',
-                        marginBottom: '8px'
+                        marginBottom: '8px',
                     }"
                 >
                     <ng-container
@@ -75,7 +75,7 @@
                                 hovering:
                                     isHoveringGroupIndex === groupIndex &&
                                     isHoveringGroupItemIndex ===
-                                        groupIndex + itemIndex
+                                        groupIndex + itemIndex,
                             }"
                             (mouseenter)="
                                 handleGroupRowHover(true, groupIndex, itemIndex)
@@ -101,12 +101,12 @@
                                             ?.statusString,
                                         valueForRequest:
                                             group?.items[itemIndex]?.status
-                                                ?.statusValue?.name
+                                                ?.statusValue?.name,
                                     }"
                                     [statusOrder]="{
                                         type: group?.items[itemIndex]?.type,
                                         stopOrder:
-                                            group?.items[itemIndex]?.stopOrder
+                                            group?.items[itemIndex]?.stopOrder,
                                     }"
                                 ></app-load-status-string>
 
@@ -132,13 +132,13 @@
                             <!-- Date Start -->
 
                             <div class="d-flex align-items-center item-box">
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="dateStart"
                                     [inputConfig]="
-                                        dispatchHistoryDateStartConfig({  
+                                        dispatchHistoryDateStartConfig({
                                             groupIndex,
                                             itemIndex,
-                                            groupItem
+                                            groupItem,
                                         })
                                     "
                                     (mouseenter)="
@@ -164,19 +164,19 @@
                                             'dateStart'
                                         )
                                     "
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
 
                             <!-- Time Start -->
 
                             <div class="d-flex align-items-center item-box">
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="timeStart"
                                     [inputConfig]="
-                                        dispatchHistoryTimeStartConfig({   
+                                        dispatchHistoryTimeStartConfig({
                                             groupIndex,
                                             itemIndex,
-                                            groupItem
+                                            groupItem,
                                         })
                                     "
                                     (mouseenter)="
@@ -202,7 +202,7 @@
                                             'timeStart'
                                         )
                                     "
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
 
                             <!-- Date End -->
@@ -211,13 +211,13 @@
                                 <ng-container
                                     *ngIf="groupItem?.get('dateEnd').value"
                                 >
-                                    <app-ca-input
+                                    <ca-input-datetime-picker
                                         formControlName="dateEnd"
                                         [inputConfig]="
-                                            dispatchHistoryDateEndConfig({ 
+                                            dispatchHistoryDateEndConfig({
                                                 groupIndex,
                                                 itemIndex,
-                                                groupItem
+                                                groupItem,
                                             })
                                         "
                                         (mouseenter)="
@@ -243,7 +243,7 @@
                                                 'dateEnd'
                                             )
                                         "
-                                    ></app-ca-input>
+                                    ></ca-input-datetime-picker>
                                 </ng-container>
                             </div>
 
@@ -253,13 +253,13 @@
                                 <ng-container
                                     *ngIf="groupItem?.get('dateEnd').value"
                                 >
-                                    <app-ca-input
+                                    <ca-input-datetime-picker
                                         formControlName="timeEnd"
                                         [inputConfig]="
                                             dispatchHistoryTimeEndConfig({
                                                 groupIndex,
                                                 itemIndex,
-                                                groupItem
+                                                groupItem,
                                             })
                                         "
                                         (mouseenter)="
@@ -285,7 +285,7 @@
                                                 'timeEnd'
                                             )
                                         "
-                                    ></app-ca-input>
+                                    ></ca-input-datetime-picker>
                                 </ng-container>
                             </div>
 

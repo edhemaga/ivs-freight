@@ -44,7 +44,7 @@
             }
         }
 
-        &.fuel-table-header {
+        &.fuel-transaction-table-header {
             grid-template-columns: 26px 182px 80px 60px 90px 88px;
         }
 
@@ -143,7 +143,7 @@
             margin-bottom: 4px;
 
             &:hover {
-                .table-item-number {
+                .table-item-number-hover {
                     p {
                         display: none;
                     }
@@ -221,7 +221,7 @@
             }
 
             &.hide-delete-icon {
-                .table-item-number {
+                .table-item-number-hover {
                     p {
                         display: block !important;
                     }

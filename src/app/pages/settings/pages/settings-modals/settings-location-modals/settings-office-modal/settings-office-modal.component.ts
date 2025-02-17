@@ -131,7 +131,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsOfficeModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     @Input() editData: any;
@@ -391,7 +395,7 @@ export class SettingsOfficeModalComponent
                 SettingsOfficeModalStringEnum.WEEKLY
             ),
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             departmentContacts,
         };
@@ -421,7 +425,7 @@ export class SettingsOfficeModalComponent
                 SettingsOfficeModalStringEnum.WEEKLY
             ),
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             departmentContacts,
         };
@@ -571,7 +575,6 @@ export class SettingsOfficeModalComponent
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 

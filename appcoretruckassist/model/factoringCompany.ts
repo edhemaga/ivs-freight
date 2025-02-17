@@ -19,5 +19,6 @@ export interface FactoringCompany {
     address: AddressEntity;
     noticeOfAssigment?: string | null;
     note?: string | null;
+    poBox?: string | null;
 }
 

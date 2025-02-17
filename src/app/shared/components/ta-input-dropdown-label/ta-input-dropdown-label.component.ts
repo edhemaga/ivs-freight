@@ -27,6 +27,9 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 // pipe
 import { FormControlPipe } from '@shared/components/ta-input/pipes/form-control.pipe';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-ta-input-dropdown-label',
     templateUrl: './ta-input-dropdown-label.component.html',
@@ -97,10 +100,9 @@ export class TaInputDropdownLabelComponent implements ControlValueAccessor {
     /**
      * SAVE LABEL NAME
      */
-    public onSaveLabel(event: any) {
-        if (event.action === 'edit') {
+    public onSaveLabel(event: any): void {
+        if (event.action === eGeneralActions.EDIT)
             this.saveLabel.emit({ data: event.data, action: event.action });
-        }
 
         if (event.action === 'new') {
             this.saveLabel.emit({ data: event.data, action: event.action });

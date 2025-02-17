@@ -65,6 +65,9 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 import { LoadModalProgressBarComponent } from '@pages/load/pages/load-modal/components/load-modal-progress-bar/load-modal-progress-bar.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-ta-input',
     templateUrl: './ta-input.component.html',
@@ -1709,7 +1712,7 @@ export class TaInputComponent
         switch (type) {
             case 'pm-increment-decrement': {
                 const value =
-                    MethodsCalculationsHelper.convertThousanSepInNumber(
+                    MethodsCalculationsHelper.convertThousandSepInNumber(
                         this.getSuperControl.value
                     );
                 switch (action) {
@@ -1805,13 +1808,15 @@ export class TaInputComponent
                                 !this._inputConfig.dropdownLabelNew &&
                                 this._inputConfig.name !==
                                     'Input Dropdown Bank Name'
-                                    ? 'edit'
+                                    ? eGeneralActions.EDIT
                                     : 'new',
                         });
                         break;
                     }
-                    case 'cancel': {
-                        this.commandEvent.emit({ action: 'cancel' });
+                    case eGeneralActions.CANCEL: {
+                        this.commandEvent.emit({
+                            action: eGeneralActions.CANCEL,
+                        });
                         break;
                     }
                     default: {
@@ -2872,7 +2877,8 @@ export class TaInputComponent
                     )
                         this.getSuperControl.setErrors({
                             invalid: true,
-                        }); // don't accept future dates
+                        });
+                    // don't accept future dates
                     else {
                         if (
                             this._inputConfig.expiredDateInvalid &&

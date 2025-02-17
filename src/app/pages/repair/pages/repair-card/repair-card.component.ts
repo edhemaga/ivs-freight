@@ -182,19 +182,19 @@ export class RepairCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: MappedRepairShop
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
         this.handleDropdownMenuActions(
-            emitEvent,
+            emitAction,
             this.selectedTab === TableStringEnum.REPAIR_SHOP
                 ? DropdownMenuStringEnum.REPAIR_SHOP
                 : DropdownMenuStringEnum.REPAIR

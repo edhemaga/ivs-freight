@@ -90,6 +90,7 @@
                 [hasCounter]="contactPhones?.length"
                 [cardName]="'Phone'"
                 [headerSvgEnabled]="true"
+                [isActionDisabled]="contactPhones.length >= 3"
                 [hasActionSvg]="true"
                 [subText]="
                     contactPhones?.length &&
@@ -119,6 +120,7 @@
                 [hasCounter]="contactEmails.length"
                 [cardName]="'Email'"
                 [headerSvgEnabled]="true"
+                [isActionDisabled]="contactEmails.length >= 2"
                 [hasActionSvg]="true"
                 [subText]="
                     contactEmails?.length &&
@@ -184,26 +186,7 @@
                     [isCardOpen]="contactForm.get('avatar')?.value ?? false"
                 >
                     <app-ca-upload-files
-                        [isVisibleCropAndDrop]="
-                            uploadOptionsConstants.isVisibleCropAndDrop
-                        "
-                        [files]="uploadOptionsConstants.files"
-                        [slider]="uploadOptionsConstants.slider"
-                        [carouselConfig]="uploadOptionsConstants.carouselConfig"
-                        [hasCrop]="uploadOptionsConstants.hasCrop"
-                        [isRoundCrop]="uploadOptionsConstants.isRoundCrop"
-                        [containWithinAspectRatio]="
-                            uploadOptionsConstants.containWithinAspectRatio
-                        "
-                        [aspectRatio]="uploadOptionsConstants.aspectRatio"
-                        [initialCropperPosition]="
-                            uploadOptionsConstants.initialCropperPosition
-                        "
-                        [dropzoneConf]="uploadOptionsConstants.dropzoneConf"
-                        [review]="uploadOptionsConstants.review"
-                        [configFile]="uploadOptionsConstants.configFile"
-                        [size]="uploadOptionsConstants.size"
-                        [slideWidth]="uploadOptionsConstants.slideWidth"
+                        [uploadFilesConfig]="uploadFilesConfig"
                         (onFileEvent)="onUploadImage($event)"
                     ></app-ca-upload-files>
                 </app-ta-custom-card>

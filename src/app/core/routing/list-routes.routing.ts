@@ -20,6 +20,7 @@ import { OwnerActiveResolver } from '@pages/owner/resolvers/owner-active.resolve
 import { OwnerInactiveResolver } from '@pages/owner/resolvers/owner-inactive.resolver';
 import { AccountResolver } from '@pages/account/resolvers/account.resolver';
 import { ContactsResolver } from '@pages/contacts/resolvers/contacts.resolver';
+import { LoadResolver } from '@pages/load/resolvers/load.resolver';
 
 export class ListRoutes {
     static routes = [
@@ -28,6 +29,7 @@ export class ListRoutes {
             loadChildren: () =>
                 import('@pages/load/load.module').then((m) => m.LoadModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
+            resolve: { data: LoadResolver }
         },
         {
             path: 'list/customer',

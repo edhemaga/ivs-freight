@@ -1,0 +1,1 @@
+export * from './cdl-modal-upload-files.config';

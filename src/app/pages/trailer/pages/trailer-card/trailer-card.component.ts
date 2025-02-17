@@ -55,7 +55,7 @@ export class TrailerCardComponent
     @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
         new EventEmitter<{ value: string; id: number }>();
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public _viewData: CardDetails[];
 
@@ -114,19 +114,19 @@ export class TrailerCardComponent
     }
 
     public handleToggleDropdownMenuActions<T extends TrailerMapped>(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: T
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
         this.handleDropdownMenuActions(
-            emitEvent,
+            emitAction,
             DropdownMenuStringEnum.TRAILER
         );
     }

@@ -7,7 +7,7 @@
             'phone-table-header': isPhoneTable,
             'email-table-header': isEmailTable,
             'repair-bill-table-header': isRepairBillTable || isRepairOrderTable,
-            'fuel-table-header': isFuelTable,
+            'fuel-transaction-table-header': isFuelTransactionTable,
             'repair-order-table-header': isRepairOrderTable,
             'contact-table-header': isContactTable,
             'department-contact-table-header': isDepartmentContactTable,
@@ -15,229 +15,250 @@
             'off-duty-location-table-header': isOffDutyLocationTable,
             'fuel-card-table-header': isFuelCardTable,
             'previous-adresses-table-header': isPreviousAddressesTable,
-            'load-items-table': isLoadItemTable
+            'load-items-table': isLoadItemTable,
         }"
     >
-        <ng-container
-            *ngFor="
-                let headerItem of modalTableHeaders;
-                let i = index;
-                let last = last;
-                let first = first;
-                trackBy: '' | trackByProperty
-            "
-        >
+        @for (
+            headerItem of modalTableHeaders;
+            let i = $index,first = $first, last = $last;
+            track headerItem
+        ) {
             <div
                 class="d-flex align-items-center table-header-box"
                 [ngClass]="{
-                    'justify-content-center': i === 0,
+                    'justify-content-center': first,
                     'repair-bill-header':
-                        (isRepairBillTable || isRepairOrderTable) && i !== 0,
+                        (isRepairBillTable || isRepairOrderTable) && !first,
                     'justify-content-end subtotal':
-                        i === 5 &&
-                        !isContactTable &&
-                        !isLoadItemTable &&
-                        !isDepartmentContactTable,
-                    'stop-items-number': isLoadItemTable && i === 0,
+                        last && (isRepairBillTable || isFuelTransactionTable),
+                    'stop-items-number': isLoadItemTable && first,
                     'stop-items-desc': isLoadItemTable && i === 1,
                     'scroll-first-item':
-                        i === 0 && (isContactTable || isDepartmentContactTable),
+                        first && (isContactTable || isDepartmentContactTable),
                     'scroll-second-item':
                         i === 1 && (isContactTable || isDepartmentContactTable),
-                    'justify-content-end': isFuelTable && last
                 }"
             >
-                <ng-container
-                    *ngIf="headerItem !== 'Checkbox' && headerItem !== 'Sort'"
-                >
-                    <p class="m-0 ta-font-bold">
-                        {{ headerItem }}
-                    </p>
-                </ng-container>
+                @switch (headerItem) {
+                    @case (modalTableTypeEnum.CHECKBOX) {
+                        <svg-icon
+                            [src]="svgRoutes.checkmarkicon"
+                            [svgStyle]="{
+                                'width.px': 14,
+                                'height.px': 14,
+                            }"
+                        ></svg-icon>
+                    }
 
-                <ng-container *ngIf="headerItem === 'Checkbox'">
-                    <svg-icon
-                        src="assets/svg/note/checkmark.svg"
-                        [svgStyle]="{
-                            'width.px': 14,
-                            'height.px': 14
-                        }"
-                    ></svg-icon>
-                </ng-container>
+                    @case (modalTableTypeEnum.SORT) {
+                        <svg-icon
+                            [src]="svgRoutes.sortIcon"
+                            [svgStyle]="{
+                                'width.px': 12,
+                                'height.px': 12,
+                            }"
+                        ></svg-icon>
+                    }
 
-                <ng-container *ngIf="headerItem === 'Sort'">
-                    <svg-icon
-                        src="assets/svg/common/ic_modal_card_sort.svg"
-                        [svgStyle]="{
-                            'width.px': 12,
-                            'height.px': 12
-                        }"
-                    ></svg-icon>
-                </ng-container>
+                    @default {
+                        <p class="m-0 ta-font-bold">
+                            {{ headerItem }}
+                        </p>
+                    }
+                }
 
-                <ng-container *ngIf="isFuelTable && !first && !last">
-                        <span class="m-0 ta-font-bold">*</span></ng-container>
-                <ng-container
-                    *ngIf="
-                        !isFuelTable && i
-                            | setHeaderRequiredStar
-                                : isPhoneTable
-                                : isEmailTable
-                                : isRepairBillTable
-                                : isRepairOrderTable
-                                : isContactTable
-                                : isDepartmentContactTable
-                                : isPMTruckTable
-                                : isPMTrailerTable
-                                : isOffDutyLocationTable
-                                : isFuelCardTable
-                                : isPreviousAddressesTable
-                    "
-                >
+                @if (
+                    i
+                        | setHeaderRequiredStar
+                            : isPhoneTable
+                            : isEmailTable
+                            : isRepairBillTable
+                            : isRepairOrderTable
+                            : isContactTable
+                            : isDepartmentContactTable
+                            : isPMTruckTable
+                            : isPMTrailerTable
+                            : isOffDutyLocationTable
+                            : isFuelCardTable
+                            : isPreviousAddressesTable
+                            : isFuelTransactionTable
+                ) {
                     <span class="m-0 ta-font-bold">*</span>
-                </ng-container>
+                }
             </div>
-        </ng-container>
+        }
     </div>
 
     <!-- Table Body -->
 
-    <ng-container [ngSwitch]="tableType">
-        <app-ta-modal-table-phone
-            *ngSwitchCase="modalTableTypeEnum.PHONE"
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.PHONE_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [isContactPhoneExtExist]="isContactPhoneExtExist"
-            [selectedContactPhoneType]="selectedContactPhoneType"
-            [contactPhoneTypeOptions]="contactPhoneTypeOptions"
-            (onSelectDropdown)="onSelectDropdown($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-phone>
+    @switch (tableType) {
+        <!-- Contact Phone Table -->
 
-        <app-ta-modal-table-email
-            *ngSwitchCase="modalTableTypeEnum.EMAIL"
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.EMAIL_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [selectedContactEmailType]="selectedContactEmailType"
-            [contactEmailTypeOptions]="contactEmailTypeOptions"
-            (onSelectDropdown)="onSelectDropdown($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-email>
+        @case (modalTableTypeEnum.PHONE) {
+            <app-ta-modal-table-phone
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.PHONE_TABLE_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [isContactPhoneExtExist]="isContactPhoneExtExist"
+                [selectedContactPhoneType]="selectedContactPhoneType"
+                [contactPhoneTypeOptions]="contactPhoneTypeOptions"
+                (onSelectDropdown)="onSelectDropdown($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+            >
+            </app-ta-modal-table-phone>
+        }
 
-        <app-ta-modal-table-repair
-            *ngSwitchCase="
-                [
-                    modalTableTypeEnum.REPAIR_BILL,
-                    modalTableTypeEnum.REPAIR_ORDER
-                ] | multiSwitchCase : tableType
-            "
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [subTotals]="subTotals"
-            [selectedTruckTrailerRepairPm]="selectedTruckTrailerRepairPm"
-            [truckTrailerRepairPmOptions]="truckTrailerRepairPmOptions"
-            [isRepairOrderTable]="isRepairOrderTable"
-            [activeFuelItem]="activeFuelItem"
-            [isFuelTable]="isFuelTable"
-            [fuelItemsDropdown]="fuelItemsDropdown"
-            (onSelectDropdown)="onSelectDropdown($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-repair>
+        <!-- Contact Email Table -->
 
-        <app-ta-modal-table-contact
-            *ngSwitchCase="modalTableTypeEnum.CONTACT"
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.CONTACT_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [departmentOptions]="departmentOptions"
-            [selectedDepartment]="selectedDepartment"
-            (onSelectDropdown)="onSelectDropdown($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-contact>
+        @case (modalTableTypeEnum.EMAIL) {
+            <app-ta-modal-table-email
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.EMAIL_TABLE_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [selectedContactEmailType]="selectedContactEmailType"
+                [contactEmailTypeOptions]="contactEmailTypeOptions"
+                (onSelectDropdown)="onSelectDropdown($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+            >
+            </app-ta-modal-table-email>
+        }
 
-        <app-ta-modal-table-department
-            *ngSwitchCase="modalTableTypeEnum.DEPARTMENT_CONTACT"
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.DEPARTMENT_CONTACT_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [departmentOptions]="departmentOptions"
-            [selectedDepartment]="selectedDepartment"
-            (onSelectDropdown)="onSelectDropdown($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-department>
+        <!-- Repair Bill & Order Table -->
 
-        <app-ta-modal-table-pm
-            *ngSwitchCase="
-                [modalTableTypeEnum.PM_TRUCK, modalTableTypeEnum.PM_TRAILER]
-                    | multiSwitchCase : tableType
-            "
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.PM_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [isPMTruckTable]="isPMTruckTable"
-            [isPMTrailerTable]="isPMTrailerTable"
-            [isEdit]="isEdit"
-            [pmTruckOptions]="pmTruckOptions"
-            [pmTrailerOptions]="pmTrailerOptions"
-            [activePmDropdownItem]="activePmDropdownItem"
-            (onSelectDropdown)="onSelectDropdown($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-        >
-        </app-ta-modal-table-pm>
+        @case (
+            [modalTableTypeEnum.REPAIR_BILL, modalTableTypeEnum.REPAIR_ORDER]
+                | multiSwitchCase: tableType
+        ) {
+            <app-ta-modal-table-repair
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.REPAIR_BILL_TABLE_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [subTotals]="subTotals"
+                [selectedTruckTrailerRepairPm]="selectedTruckTrailerRepairPm"
+                [truckTrailerRepairPmOptions]="truckTrailerRepairPmOptions"
+                [isRepairOrderTable]="isRepairOrderTable"
+                [activeFuelItem]="activeFuelItem"
+                [isFuelTransactionTable]="isFuelTransactionTable"
+                [fuelTransactionType]="fuelTransactionType"
+                [fuelModalActionType]="fuelModalActionType"
+                [fuelItemsDropdown]="fuelItemsDropdown"
+                (onSelectDropdown)="onSelectDropdown($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+            >
+            </app-ta-modal-table-repair>
+        }
 
-        <app-ta-modal-table-off-duty-location
-            *ngSwitchCase="modalTableTypeEnum.OFF_DUTY_LOCATION"
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.OFF_DUTY_LOCATION_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [selectedAddress]="selectedAddress"
-            (onSelectAddress)="onSelectAddress($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-off-duty-location>
+        <!-- Contact Table -->
 
-        <app-ta-modal-table-fuel-card
-            *ngSwitchCase="modalTableTypeEnum.FUEL_CARD"
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.FUEL_CARD_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [selectedFuelCard]="selectedFuelCard"
-            [fuelCardOptions]="fuelCardOptions"
-            (onSelectDropdown)="onSelectDropdown($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-fuel-card>
+        @case (modalTableTypeEnum.CONTACT) {
+            <app-ta-modal-table-contact
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.CONTACT_TABLE_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [departmentOptions]="departmentOptions"
+                [selectedDepartment]="selectedDepartment"
+                (onSelectDropdown)="onSelectDropdown($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+            >
+            </app-ta-modal-table-contact>
+        }
 
-        <app-ta-modal-table-previous-addresses
-            *ngSwitchCase="modalTableTypeEnum.PREVIOUS_ADDRESSES"
-            [modalTableForm]="modalTableForm"
-            [arrayName]="taModalTableStringEnum.PREVIOUS_ADDRESSES_TABLE_ITEMS"
-            [isInputHoverRows]="isInputHoverRows"
-            [selectedAddress]="selectedAddress"
-            (onSelectAddress)="onSelectAddress($event)"
-            (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
-            (onInputHover)="handleInputHover($event)"
-        >
-        </app-ta-modal-table-previous-addresses>
+        <!-- Department Contact Table -->
 
-        <ng-container *ngIf="isHazardous !== undefined">
+        @case (modalTableTypeEnum.DEPARTMENT_CONTACT) {
+            <app-ta-modal-table-department
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.DEPARTMENT_CONTACT_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [departmentOptions]="departmentOptions"
+                [selectedDepartment]="selectedDepartment"
+                (onSelectDropdown)="onSelectDropdown($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+            >
+            </app-ta-modal-table-department>
+        }
+
+        <!-- PM Truck & Trailer Table -->
+
+        @case (
+            [modalTableTypeEnum.PM_TRUCK, modalTableTypeEnum.PM_TRAILER]
+                | multiSwitchCase: tableType
+        ) {
+            <app-ta-modal-table-pm
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.PM_TABLE_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [isPMTruckTable]="isPMTruckTable"
+                [isPMTrailerTable]="isPMTrailerTable"
+                [isEdit]="isEdit"
+                [pmTruckOptions]="pmTruckOptions"
+                [pmTrailerOptions]="pmTrailerOptions"
+                [activePmDropdownItem]="activePmDropdownItem"
+                (onSelectDropdown)="onSelectDropdown($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+            >
+            </app-ta-modal-table-pm>
+        }
+
+        <!-- Offduty Location Table -->
+
+        @case (modalTableTypeEnum.OFF_DUTY_LOCATION) {
+            <app-ta-modal-table-off-duty-location
+                [modalTableForm]="modalTableForm"
+                [arrayName]="
+                    taModalTableStringEnum.OFF_DUTY_LOCATION_TABLE_ITEMS
+                "
+                [isInputHoverRows]="isInputHoverRows"
+                [selectedAddress]="selectedAddress"
+                (onSelectAddress)="onSelectAddress($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+            >
+            </app-ta-modal-table-off-duty-location>
+        }
+
+        <!-- Fuel Card Table -->
+
+        @case (modalTableTypeEnum.FUEL_CARD) {
+            <app-ta-modal-table-fuel-card
+                [modalTableForm]="modalTableForm"
+                [arrayName]="taModalTableStringEnum.FUEL_CARD_TABLE_ITEMS"
+                [isInputHoverRows]="isInputHoverRows"
+                [selectedFuelCard]="selectedFuelCard"
+                [fuelCardOptions]="fuelCardOptions"
+                (onSelectDropdown)="onSelectDropdown($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+            >
+            </app-ta-modal-table-fuel-card>
+        }
+
+        <!-- Previous Addresses Table -->
+
+        @case (modalTableTypeEnum.PREVIOUS_ADDRESSES) {
+            <app-ta-modal-table-previous-addresses
+                [modalTableForm]="modalTableForm"
+                [arrayName]="
+                    taModalTableStringEnum.PREVIOUS_ADDRESSES_TABLE_ITEMS
+                "
+                [isInputHoverRows]="isInputHoverRows"
+                [selectedAddress]="selectedAddress"
+                (onSelectAddress)="onSelectAddress($event)"
+                (deleteFormArrayRowClick)="deleteFormArrayRow($event)"
+                (onInputHover)="handleInputHover($event)"
+            >
+            </app-ta-modal-table-previous-addresses>
+        }
+
+        <!-- Load Items Table -->
+
+        @case (modalTableTypeEnum.LOAD_ITEMS) {
             <app-ta-modal-table-load-items
-                *ngSwitchCase="modalTableTypeEnum.LOAD_ITEMS"
                 [modalTableForm]="modalTableForm"
                 [arrayName]="taModalTableStringEnum.LOAD_MODAL_TABLE_ITEMS"
                 [isInputHoverRows]="isInputHoverRows"
@@ -255,6 +276,6 @@
                 (unitsChanged)="unitsChanged($event)"
             >
             </app-ta-modal-table-load-items>
-        </ng-container>
-    </ng-container>
+        }
+    }
 </div>

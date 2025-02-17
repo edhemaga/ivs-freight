@@ -45,7 +45,7 @@ export class TruckCardComponent
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public _viewData: CardDetails[];
 
@@ -97,18 +97,18 @@ export class TruckCardComponent
     }
 
     public handleToggleDropdownMenuActions<T extends TruckMapped>(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: T
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitEvent, DropdownMenuStringEnum.TRUCK);
+        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.TRUCK);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

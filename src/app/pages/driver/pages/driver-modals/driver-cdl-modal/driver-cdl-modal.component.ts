@@ -31,6 +31,7 @@ import {
     CaUploadFilesComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaInputDatetimePickerComponent,
 } from 'ca-components';
 
 // helpers
@@ -45,6 +46,9 @@ import {
 // enums
 import { DriverCdlModalStringEnum } from '@pages/driver/pages/driver-modals/driver-cdl-modal/enums/driver-cdl-modal-string.enum';
 
+// config
+import { CdlModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-cdl-modal/utils/config';
+
 // models
 import {
     CdlEndorsementResponse,
@@ -57,7 +61,6 @@ import {
 import { ExtendedStateResponse } from '@pages/driver/pages/driver-modals/driver-cdl-modal/models/extended-state-response.model';
 import { EditData } from '@shared/models/edit-data.model';
 import { FileEvent } from '@shared/models';
-import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 import { ModalButtonSize, ModalButtonType } from '@shared/enums';
 
@@ -88,6 +91,7 @@ import { FormatDatePipe } from '@shared/pipes';
         CaUploadFilesComponent,
         CaInputNoteComponent,
         CaModalButtonComponent,
+        CaInputDatetimePickerComponent,
 
         FormatDatePipe,
     ],
@@ -106,7 +110,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     public modalName: string;
 
     private driverStatus: number;
-    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
+
+    public uploadFilesConfig = CdlModalUploadFilesConfig.CDL_MODAL_UPLOAD_FILES_CONFIG; 
 
     // dropdowns
     public stateDropdownList: StateResponse[] = [];

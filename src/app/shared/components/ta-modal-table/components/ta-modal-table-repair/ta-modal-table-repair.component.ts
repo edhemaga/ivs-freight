@@ -1,31 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+} from '@angular/core';
 import {
     ReactiveFormsModule,
     UntypedFormArray,
     UntypedFormGroup,
 } from '@angular/forms';
 
-//modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//components
+// components
 import { CaInputDropdownComponent, CaInputComponent } from 'ca-components';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
-//enums
+// enums
 import { TaModalTableStringEnum } from '@shared/components/ta-modal-table/enums/';
+import { EnumValue } from 'appcoretruckassist';
+import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
+import { FuelDataOptionsStringEnum } from '@pages/fuel/enums';
 
-//models
+// models
 import { ModalTableDropdownOption } from '@shared/models/pm-dropdown-options.model';
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 
-//pipes
-import { TrackByPropertyPipe } from '@shared/pipes/track-by-property.pipe';
-
 // svg routes
 import { ModalTableSvgRoutes } from '@shared/components/ta-modal-table/utils/svg-routes';
-import { EnumValue } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-modal-table-repair',
@@ -38,12 +41,9 @@ import { EnumValue } from 'appcoretruckassist';
         AngularSvgIconModule,
         ReactiveFormsModule,
 
+        // components
         CaInputDropdownComponent,
         CaInputComponent,
-        TaInputDropdownComponent,
-
-        //pipes
-        TrackByPropertyPipe,
     ],
 })
 export class TaModalTableRepairComponent {
@@ -54,9 +54,11 @@ export class TaModalTableRepairComponent {
     @Input() subTotals: RepairSubtotal[];
     @Input() selectedTruckTrailerRepairPm: [] = [];
     @Input() truckTrailerRepairPmOptions: [] = [];
-    @Input() isFuelTable: boolean;
+    @Input() isFuelTransactionTable: boolean;
     @Input() fuelItemsDropdown: EnumValue[];
     @Input() activeFuelItem: EnumValue[] = [];
+    @Input() fuelTransactionType: EnumValue;
+    @Input() fuelModalActionType: FuelDataOptionsStringEnum;
 
     @Output() onSelectDropdown: EventEmitter<{
         dropdownEvent: ModalTableDropdownOption;
@@ -75,11 +77,21 @@ export class TaModalTableRepairComponent {
         return this.modalTableForm?.get(this.arrayName) as UntypedFormArray;
     }
 
+    get isFuelTransactionTableSingleItem() {
+        return (
+            this.isFuelTransactionTable && this.formArray.controls.length === 1
+        );
+    }
+
     public svgRoutes = ModalTableSvgRoutes;
+    public fuelTransactionTypeEnum = eFuelTransactionType;
+    public fuelDataOptionsStringEnum = FuelDataOptionsStringEnum;
 
     constructor() {}
 
     public emitDeleteFormArrayRowClick(index: number): void {
+        if (this.isFuelTransactionTableSingleItem) return;
+
         this.deleteFormArrayRowClick.emit(index);
     }
 

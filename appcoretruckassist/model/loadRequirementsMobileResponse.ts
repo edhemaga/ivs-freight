@@ -9,9 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { TrailerLengthResponse } from './trailerLengthResponse';
+import { EnumValue } from './enumValue';
+import { TruckGrossWeightResponse } from './truckGrossWeightResponse';
 
 
 export interface LoadRequirementsMobileResponse { 
     driverMessage?: string | null;
+    trailerLength?: TrailerLengthResponse;
+    truckGrossWeight?: TruckGrossWeightResponse;
+    truckLength?: EnumValue;
 }
 

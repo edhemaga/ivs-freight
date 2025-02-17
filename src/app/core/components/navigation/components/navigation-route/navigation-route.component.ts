@@ -29,10 +29,17 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
-import {  NavigationSubRoutes, Navigation } from '@core/components/navigation/models';
+import {
+    NavigationSubRoutes,
+    Navigation,
+} from '@core/components/navigation/models';
 
 // Const
-import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+import { NavigationDataConstants } from '@core/components/navigation/utils/constants/navigation-data.constants';
+
+// enums
+import { eStringPlaceholder } from '@shared/enums';
+import { takeUntil } from 'rxjs';
 
 @Component({
     selector: 'app-navigation-route',
@@ -66,8 +73,8 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     @Input() index: number;
     @Input() ind: number;
     @Input() middleIsHovered: boolean = false;
-    @Input() selectedRoute: string = '';
-    @Input() selectedSubRoute: string = '';
+    @Input() selectedRoute: string = eStringPlaceholder.EMPTY;
+    @Input() selectedSubRoute: string = eStringPlaceholder.EMPTY;
     @Input() subrouteContainerOpened: boolean = false;
     @Input() openedDropdown: boolean = false;
     @Input() hideSubrouteTitle: number = -1;
@@ -86,7 +93,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     public arrowHovered: boolean;
     public footerRouteActive: boolean;
     public footerHovered: boolean;
-    public textSubRoute: string = '';
+    public textSubRoute: string = eStringPlaceholder.EMPTY;
 
     public _activeLink = undefined;
     public activeLinkHighlight: boolean = false;
@@ -101,29 +108,19 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     ) {}
     @Input() set isNavigationHovered(value) {
         this.navigationIsOpened = value;
-        if (!this.isNavigationHovered) {
-            this._activeLink = 'undefined';
-        }
+        if (!this.isNavigationHovered) this._activeLink = 'undefined';
     }
     @Input() set activeLink(value) {
         this.activeLinkHighlight = false;
-        if (typeof this._activeLink == 'undefined' && value) {
+        if (typeof this._activeLink == 'undefined' && value)
             this._activeLink = value;
-        } else if (
+        else if (
             typeof this._activeLink != 'undefined' &&
             this.isNavigationHovered != false
-        ) {
+        )
             this.activeLinkHighlight = value;
-        }
     }
-    routeWithSubRoutesClick(event) {
-        if (event != undefined) {
-            this.routeWithSubRouteClicked.emit(true);
-        } else {
-            this.routeWithSubRouteClicked.emit(false);
-        }
-    }
-    ngOnInit() {
+    ngOnInit(): void {
         this.timeout = setTimeout(() => {
             this.isActiveRouteOnReload(window.location.pathname);
             clearTimeout(this.timeout);
@@ -137,13 +134,12 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
     }
 
     //Get subroute name
-    ngOnChanges(changes: SimpleChanges) {
+    ngOnChanges(changes: SimpleChanges): void {
         if (changes.hasOwnProperty('isNavigationHovered')) {
             const prev = changes.isNavigationHovered;
 
-            if (changes && prev.previousValue != undefined) {
+            if (changes && prev.previousValue != undefined)
                 this.magicBoxAnime = changes.isNavigationHovered.currentValue;
-            }
         }
         this.textSubRoute = this.selectedSubRoute;
         this.activeRouteIdFromLocalStorage = parseInt(
@@ -153,25 +149,25 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         let router = StaticInjectorService.Injector.get(Router);
         let n = router.url.split('/');
         if (n[2]) {
-            if (n[2] == 'todo') {
-                this.activeRouteName = 'To-Do';
-            } else {
-                this.activeRouteName = n[2];
-            }
-        } else {
-            this.activeRouteName = n[1];
-        }
+            if (n[2] == 'todo') this.activeRouteName = 'To-Do';
+            else this.activeRouteName = n[2];
+        } else this.activeRouteName = n[1];
     }
 
+    public routeWithSubRoutesClick(event): void {
+        if (event !== undefined) this.routeWithSubRouteClicked.emit(true);
+        else this.routeWithSubRouteClicked.emit(false);
+    }
     //Arrow clicked open link in new window
-    public openLinkInNewWindow(item) {
+    public openLinkInNewWindow(item): void {
         window.open(item, '_blank');
     }
     //Arrow hovered change fill
-    public hoveredArrow(event) {
+    public hoveredArrow(event): void {
         this.arrowHovered = event;
     }
-    public onRouteAction(ind?, underConstruction?: boolean) {
+
+    public onRouteAction(ind?, underConstruction?: boolean): void {
         if (underConstruction) return;
         ind && this.hideSubrouteFromChild.emit(ind);
 
@@ -188,7 +184,7 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         }
     }
 
-    public onReloadSubroute(flegId?: number) {
+    public onReloadSubroute(flegId?: number): void {
         this.onRouteEvent.emit({
             routeId: this.route.id,
             routes: this.route.route,
@@ -196,28 +192,25 @@ export class NavigationRouteComponent implements OnInit, OnChanges {
         });
     }
 
-    private isActiveRouteOnReload(pathname: string) {
+    private isActiveRouteOnReload(pathname: string): void {
         const flegId = JSON.parse(localStorage.getItem('subroute_active'));
 
-        if (flegId && this.route.id === flegId) {
-            this.onReloadSubroute(flegId);
-        }
+        if (flegId && this.route.id === flegId) this.onReloadSubroute(flegId);
 
         if (
             !Array.isArray(this.route.route) &&
             this.route.route.includes(pathname)
-        ) {
+        )
             this.onRouteAction();
-        }
     }
 
-    public onNavItemHover(type: boolean) {
-        if (type) {
-            this.isNavItemHovered = !(
-                [3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive
-            );
-        } else {
+    public onNavItemHover(type: boolean): void {
+        if (!type) {
             this.isNavItemHovered = false;
+            return;
         }
+        this.isNavItemHovered = !(
+            [3, 4, 5, 6].includes(this.route.id) && this.route.isRouteActive
+        );
     }
 }

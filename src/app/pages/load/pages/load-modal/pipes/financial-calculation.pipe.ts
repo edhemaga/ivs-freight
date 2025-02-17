@@ -15,9 +15,9 @@ export class FinancialCalculationPipe implements PipeTransform {
                     sum +=
                         val == '0'
                             ? 0
-                            : MethodsCalculationsHelper.convertThousanSepInNumber(
-                                  val
-                              );
+                            : MethodsCalculationsHelper.convertThousandSepInNumber(
+                                val
+                            );
                 }
             });
         }
@@ -27,9 +27,9 @@ export class FinancialCalculationPipe implements PipeTransform {
                 sum +=
                     key1[1] == '0'
                         ? 0
-                        : MethodsCalculationsHelper.convertThousanSepInNumber(
-                              key1[1]
-                          );
+                        : MethodsCalculationsHelper.convertThousandSepInNumber(
+                            key1[1]
+                        );
             });
         }
         return sum;

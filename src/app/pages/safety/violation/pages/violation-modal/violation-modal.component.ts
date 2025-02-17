@@ -22,7 +22,11 @@ import { RoadsideService } from '@pages/safety/violation/services/roadside.servi
 import { AccidentService } from '@pages/safety/accident/services/accident.service';
 
 // models
-import { AddressEntity } from 'appcoretruckassist';
+import {
+    AddressEntity,
+    ViolationCategoryResponse,
+    ViolationResponse,
+} from 'appcoretruckassist';
 
 // validations
 import {
@@ -41,6 +45,7 @@ import { TaInputComponent } from '@shared/components/ta-input/ta-input.component
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -51,6 +56,13 @@ import {
     RoadsideInspectionResponse,
 } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// Enums
+import {
+    eFileFormControls,
+    eGeneralActions,
+    eStringPlaceholder,
+} from '@shared/enums';
 
 @Component({
     selector: 'app-violation-modal',
@@ -72,6 +84,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
         TaInputDropdownComponent,
         TaCustomCardComponent,
         TaInputAddressDropdownComponent,
+        CaInputDatetimePickerComponent,
     ],
 })
 export class ViolationModalComponent implements OnInit, OnDestroy {
@@ -300,10 +313,9 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
     public onModalAction(data: { action: string; bool: boolean }): void {
         // Update
         switch (data.action) {
-            case 'close': {
+            case eGeneralActions.CLOSE:
                 break;
-            }
-            case 'save': {
+            case eGeneralActions.SAVE:
                 if (this.violationForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.violationForm);
                     return;
@@ -317,10 +329,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -368,87 +378,74 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
         action: string
     ) {
         switch (action) {
-            case 'address-authority': {
+            case 'address-authority':
                 if (event.valid) {
                     this.selectedAuthorityAddress = event.address;
                     this.longitude = event.longLat.longitude;
                     this.latitude = event.longLat.latitude;
                 }
                 break;
-            }
-            case 'address-origin': {
+            case 'address-origin':
                 if (event.valid) this.selectedAuthorityOrigin = event.address;
                 break;
-            }
-            case 'address-destination': {
+            case 'address-destination':
                 if (event.valid)
                     this.selectedAuthorityDestination = event.address;
                 break;
-            }
         }
     }
 
     public onSelectDropDown(event: any, action: string) {
         switch (action) {
-            case 'customer': {
+            case 'customer':
                 this.selectedViolationCustomer = event;
                 break;
-            }
-            case 'county': {
+            case 'county':
                 this.selectedCounty = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case eGeneralActions.ADD:
                 this.violationForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            }
-            case 'delete': {
+            case eGeneralActions.DELETE:
                 this.violationForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
                 this.fileModified = true;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public pickedSpecialChecks() {
+    public pickedSpecialChecks(): number {
         return this.specialChecks.filter((item) => item.active).length;
     }
 
-    private updateViolation(id: number) {
+    private updateViolation(id: number): void {
         const { ...form } = this.violationForm.value;
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
+        const documents = this.documents
+            .filter((item) => item.realFile)
+            .map((item) => {
                 documents.push(item.realFile);
-            }
-        });
+            });
 
         const newData: any = {
-            id: id,
-            county: this.selectedCounty ? this.selectedCounty.id : null,
+            id,
+            county: this.selectedCounty?.id ?? null,
             violations: this.premmapedViolations(),
             note: form.note,
             policeDepartment: form.policeDepartment,
@@ -461,13 +458,11 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             milePost: form.milePost,
             origin: this.selectedAuthorityOrigin,
             destination: this.selectedAuthorityDestination,
-            brokerId: this.selectedViolationCustomer
-                ? this.selectedViolationCustomer.id
-                : null,
+            brokerId: this.selectedViolationCustomer?.id ?? null,
             boL: form.boL,
             cargo: form.cargo,
             specialChecks: this.premmapedSpecialChecks(),
-            files: documents ? documents : this.violationForm.value.files,
+            files: documents ?? this.violationForm.value.files,
             filesForDeleteIds: this.filesForDelete,
             longitude: this.longitude,
             latitude: this.latitude,
@@ -501,13 +496,8 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: RoadsideInspectionResponse) => {
                     this.violationForm.patchValue({
-                        report: res.report,
-                        categoryReport: res.violationCategory?.name
-                            ? res.violationCategory.name
-                            : null,
-                        inspectionLevel: res.inspectionLevel,
-                        hmInspectionType: res.hmInspectionType,
-                        county: res.county, //TODO: Wait for backend
+                        ...res,
+                        categoryReport: res.violationCategory?.name ?? null,
                         state: res.state?.stateShortName
                             ? res.state.stateShortName
                             : null,
@@ -594,23 +584,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             : res.trailer_VIN,
                         // Violation
                         violations: [],
-                        note: res.note,
-                        policeDepartment: res.policeDepartment,
-                        policeOfficer: res.policeOfficer,
-                        badgeNo: res.badgeNo,
-                        address: res.address ? res.address.address : null,
-                        phone: res.phone,
-                        fax: res.fax,
-                        facility: res.facility,
-                        highway: res.highway,
-                        milePost: res.milePost,
-                        origin: res.origin ? res.origin.address : null,
-                        destination: res.destination
-                            ? res.destination.address
-                            : null,
-                        customer: res.broker ? res.broker.businessName : null,
-                        boL: res.boL,
-                        cargo: res.cargo,
+                        address: res.address?.address ?? null,
+                        origin: res.origin?.address ?? null,
+                        destination: res.destination?.address ?? null,
+                        customer: res.broker?.businessName ?? null,
                     });
 
                     this.selectedAuthorityAddress = res.address;
@@ -631,7 +608,10 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             class: res.truck?.truckType?.name
                                 ? res.truck?.truckType?.name
                                       ?.trim()
-                                      .replace(' ', '')
+                                      .replace(
+                                          eStringPlaceholder.WHITESPACE,
+                                          eStringPlaceholder.EMPTY
+                                      )
                                       .toLowerCase()
                                 : null,
                         },
@@ -647,44 +627,38 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                             class: res.trailer?.trailerType?.name
                                 ? res.trailer?.trailerType?.name
                                       ?.trim()
-                                      .replace(' ', '')
+                                      .replace(
+                                          eStringPlaceholder.WHITESPACE,
+                                          eStringPlaceholder.EMPTY
+                                      )
                                       .toLowerCase()
                                 : null,
                         },
                     };
 
                     if (res.violations.length) {
-                        for (let i = 0; i < res.violations.length; i++) {
-                            this.violations.push(
-                                this.createViolation({
-                                    id: res.violations[i].id,
-                                    code: res.violations[i].code,
-                                    category:
-                                        res.violations[i].violationCategory
-                                            .name,
-                                    unit: res.violations[i].unit,
-                                    sw: res.violations[i].sw,
-                                    oos: res.violations[i].oos,
-                                    sms: res.violations[i].sms,
-                                    description: res.violations[i].description,
-                                    extraDescription: res.violations[i]
-                                        .extraDescription
-                                        ? res.violations[i].description?.concat(
-                                              '.',
-                                              res.violations[i].extraDescription
-                                          )
-                                        : res.violations[i].description,
-                                    reason: res.violations[i].reason,
-                                    violationCategoryId:
-                                        res.violations[i].violationCategory.id,
-                                })
-                            );
-                            this.violationCategories[i] =
-                                res.violations[i].violationCategory;
-                        }
+                        this.violationCategories = [
+                            ...res.violations.map(
+                                (
+                                    item: ViolationResponse
+                                ): ViolationCategoryResponse => {
+                                    this.violations.push({
+                                        ...item,
+                                        violationCategoryId:
+                                            item.violationCategory.id,
+                                        extraDescription: item.extraDescription
+                                            ? item.description?.concat(
+                                                  eStringPlaceholder.DOT,
+                                                  item.extraDescription
+                                              )
+                                            : item.description,
+                                    });
+                                    return item.violationCategory;
+                                }
+                            ),
+                        ];
                     }
-
-                    if (res.specialChecks.length) {
+                    if (res.specialChecks.length)
                         this.specialChecks = res.specialChecks.map(
                             (item, index) => {
                                 return {
@@ -694,16 +668,13 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                                 };
                             }
                         );
-                    }
-                    setTimeout(() => {
-                        this.isCardAnimationDisabled = false;
-                    }, 1000);
+
+                    this.isCardAnimationDisabled = false;
                 },
-                error: () => {},
             });
     }
 
-    private getModalDropdowns() {
+    private getModalDropdowns(): void {
         this.accidentTService
             .getModalDropdowns()
             .pipe(takeUntil(this.destroy$))
@@ -721,7 +692,6 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                         this.editViolationById(this.editData.id);
                     }
                 },
-                error: () => {},
             });
     }
 
@@ -748,16 +718,15 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                 extraDescription: item.get('extraDescription').value
                     ? item
                           .get('extraDescription')
-                          .value.replace(item.get('description').value, '')
+                          .value.replace(
+                              item.get('description').value,
+                              eStringPlaceholder.EMPTY
+                          )
                     : null,
                 reason: item.get('reason').value,
                 violationCategoryId: item.get('violationCategoryId').value,
             };
         });
-    }
-
-    public identity(index: number, item: any): number {
-        return item.id;
     }
 
     ngOnDestroy(): void {

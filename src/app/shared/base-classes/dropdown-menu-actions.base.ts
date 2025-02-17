@@ -1,5 +1,7 @@
 import { Router } from '@angular/router';
 
+import { Subject, takeUntil } from 'rxjs';
+
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
@@ -13,37 +15,43 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 
 // services
 import { ModalService } from '@shared/services/modal.service';
+import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
 import {
+    CreateRatingCommand,
     PMTrailerUnitResponse,
     PMTruckUnitResponse,
     RepairShopResponse,
 } from 'appcoretruckassist';
 
 export abstract class DropdownMenuActionsBase {
+    protected destroy$: Subject<void>;
+
     // router
     protected router: Router;
 
     // services
     protected abstract modalService: ModalService;
 
+    protected reviewsRatingService: ReviewsRatingService;
+
     constructor() {}
 
     protected handleSharedDropdownMenuActions<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
-        const { id, data, type } = event;
+        const { id, data, type } = action;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_TYPE:
-                this.handleEditAction(event, tableType);
+                this.handleEditAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleDeleteAction(event, tableType);
+                this.handleDeleteAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.VIEW_DETAILS_TYPE:
@@ -72,18 +80,23 @@ export abstract class DropdownMenuActionsBase {
                 break;
             case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
             case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
-                this.handleOpenCloseBusinessAction(event);
+                this.handleOpenCloseBusinessAction(action);
 
                 break;
             case DropdownMenuStringEnum.ACTIVATE_TYPE:
             case DropdownMenuStringEnum.DEACTIVATE_TYPE:
-                this.handleActivateDeactivateAction(event);
+                this.handleActivateDeactivateAction(action);
 
                 break;
             case DropdownMenuStringEnum.REGISTRATION_TYPE:
             case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
             case DropdownMenuStringEnum.TITLE_TYPE:
-                this.handleTruckTrailerAddActions(event);
+                this.handleTruckTrailerAddActions(action);
+
+                break;
+            case DropdownMenuStringEnum.RATING_LIKE_TYPE:
+            case DropdownMenuStringEnum.RATING_DISLIKE_TYPE:
+                this.handleLikeDislikeAction(action);
 
                 break;
             default:
@@ -92,7 +105,7 @@ export abstract class DropdownMenuActionsBase {
     }
 
     private handleEditAction<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const editActionModalComponent =
@@ -102,20 +115,20 @@ export abstract class DropdownMenuActionsBase {
             editActionModalComponent,
             { size: TableStringEnum.SMALL },
             {
-                ...event,
+                ...action,
             }
         );
     }
 
     private handleDeleteAction<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         this.modalService.openModal(
             ConfirmationModalComponent,
             { size: TableStringEnum.SMALL },
             {
-                ...event,
+                ...action,
                 template: tableType,
             }
         );
@@ -168,11 +181,11 @@ export abstract class DropdownMenuActionsBase {
     }
 
     private handleOpenCloseBusinessAction<T extends { status?: number }>(
-        event: TableCardBodyActions<T>
+        action: TableCardBodyActions<T>
     ): void {
         const {
             data: { status },
-        } = event;
+        } = action;
 
         const type = status ? TableStringEnum.CLOSE : TableStringEnum.OPEN;
 
@@ -180,28 +193,28 @@ export abstract class DropdownMenuActionsBase {
             ConfirmationActivationModalComponent,
             { size: TableStringEnum.SMALL },
             {
-                ...event,
+                ...action,
                 type,
             }
         );
     }
 
     private handleActivateDeactivateAction<T>(
-        event: TableCardBodyActions<T>
+        action: TableCardBodyActions<T>
     ): void {
         this.modalService.openModal(
             ConfirmationActivationModalComponent,
             { size: DropdownMenuStringEnum.SMALL },
             {
-                ...event,
+                ...action,
             }
         );
     }
 
     private handleTruckTrailerAddActions<T>(
-        event: TableCardBodyActions<T>
+        action: TableCardBodyActions<T>
     ): void {
-        const { type } = event;
+        const { type } = action;
 
         const addAdditionalModalComponent =
             DropdownMenuActionsHelper.getAddTruckTrailerAdditionalModalComponent(
@@ -212,50 +225,24 @@ export abstract class DropdownMenuActionsBase {
             addAdditionalModalComponent,
             { size: DropdownMenuStringEnum.SMALL },
             {
-                ...event,
+                ...action,
             }
         );
+    }
+
+    private handleLikeDislikeAction<T extends { rating?: CreateRatingCommand }>(
+        action: TableCardBodyActions<T>
+    ): void {
+        const {
+            data: { rating },
+        } = action;
+
+        this.reviewsRatingService
+            .addRating(rating)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     // protected abstract - dependency
     protected abstract handleShowMoreAction(): void;
 }
-
-/*   const raitingData = {
-                entityTypeRatingId: 2,
-                entityTypeId: event.data.id,
-                thumb: event.subType === TableStringEnum.LIKE ? 1 : -1,
-                tableData: event.data,
-            };
-
-            this.reviewRatingService
-                .addRating(raitingData)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res) => {
-                    const newViewData = this.viewData.map((data) =>
-                        data.id === event.data.id
-                            ? {
-                                  ...data,
-                                  actionAnimation: TableStringEnum.UPDATE,
-                                  tableShopRaiting: {
-                                      hasLiked:
-                                          res.currentCompanyUserRating === 1,
-                                      hasDislike:
-                                          res.currentCompanyUserRating === -1,
-                                      likeCount: res.upCount,
-                                      dislikeCount: res.downCount,
-                                  },
-                              }
-                            : data
-                    );
-
-                    this.viewData = [...newViewData];
-
-                    this.handleCloseAnimationAction(false);
-
-                    this.mapsService.addRating(res);
-
-                    this.updateMapItem(
-                        this.viewData.find((item) => item.id === event.data.id)
-                    );
-                }); */

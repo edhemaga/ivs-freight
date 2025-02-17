@@ -21,16 +21,17 @@
         >
             @if (selectedHeaderTab === 1) {
                 <!-- Invoice, Date, Pay Type, Date Paid -->
+
                 <div class="repair-modal-bill-first-row">
                     <app-ca-input
                         formControlName="invoice"
                         [inputConfig]="RepairOrderConfig.INVOICE"
                     ></app-ca-input>
 
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="date"
                         [inputConfig]="RepairOrderConfig.DATE"
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
 
                     <app-ca-input-dropdown
                         formControlName="payType"
@@ -41,26 +42,27 @@
                         (selectedItem)="onSelectDropDown($event, 'pay-type')"
                     ></app-ca-input-dropdown>
 
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="datePaid"
                         [inputConfig]="
                             RepairOrderConfig.DATE_PAID(selectedPayType)
                         "
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
             }
             <div class="repair-modal-bill-first-row">
                 <!-- Order No, Date -->
+
                 @if (selectedHeaderTab === 2) {
                     <app-ca-input
                         formControlName="orderNumber"
                         [inputConfig]="RepairOrderConfig.ORDER_NUMBER"
                     ></app-ca-input>
 
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="date"
                         [inputConfig]="RepairOrderConfig.DATE"
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 }
                 <!-- Tabs -->
 
@@ -87,7 +89,7 @@
                     <app-ca-input-dropdown
                         formControlName="driver"
                         [inputConfig]="
-                            RepairOrderConfig.DRIVER(isDriverSelected)
+                            RepairOrderConfig.DRIVER(isDriverDisabled)
                         "
                         [activeItem]="selectedDriver"
                         [options]="driversDropdownList"
@@ -208,6 +210,7 @@
                                             [textColor]="'#424242'"
                                             [textFontSize]="'11px'"
                                             [leftSideIcon]="true"
+                                            [maxWidth]="'240px'"
                                         ></app-ta-copy>
                                     </div>
                                 }
@@ -215,12 +218,12 @@
 
                             <div class="clear-selected-item">
                                 <div
-                                    (click)="openRepairShop()"
                                     class="clear-x"
                                     mainTooltip="Edit"
                                     ngbTooltip
                                     position="top"
                                     tooltipBackground="#424242"
+                                    (click)="openRepairShop()"
                                 >
                                     <svg-icon
                                         [src]="svgRoutes.PEN_ICON"
@@ -232,18 +235,12 @@
                                 </div>
 
                                 <div
-                                    (click)="
-                                        selectedRepairShop = null;
-                                        repairOrderForm
-                                            .get('repairShopId')
-                                            .patchValue(null);
-                                        resetActiveServices()
-                                    "
                                     class="clear-x"
                                     mainTooltip="Clear"
                                     ngbTooltip
                                     position="top"
                                     tooltipBackground="#424242"
+                                    (click)="handleRepairShopClearClick()"
                                 >
                                     <svg-icon
                                         [src]="svgRoutes.X_ICON"
@@ -257,6 +254,7 @@
                         </div>
                     } @else {
                         <!-- Repair Shop Dropdown -->
+
                         @if (!selectedRepairShop) {
                             <app-ca-input-dropdown
                                 formControlName="repairShopId"
@@ -283,7 +281,7 @@
 
             <app-ta-custom-card
                 [cardName]="'Item'"
-                [disableAnimation]="isCardanimationDisabled"
+                [disableAnimation]="isCardAnimationDisabled"
                 [hasActionSvg]="true"
                 [hasArrow]="false"
                 [hasScrollBody]="
@@ -342,7 +340,7 @@
 
             <app-ta-custom-card
                 [cardName]="'Service'"
-                [disableAnimation]="isCardanimationDisabled"
+                [disableAnimation]="isCardAnimationDisabled"
                 [hasCounter]="services | activeItems"
                 [isCardOpen]="true"
             >
@@ -354,34 +352,30 @@
                 ></app-ta-tab-switch>
 
                 <div class="repair-shop-services">
-                    <ng-container
-                        *ngFor="
-                            let repair of services?.length > 10
-                                ? (services | slice: 2)
-                                : services;
-                            trackBy: trackByIdentity
-                        "
-                    >
+                    @for (
+                        service of services?.length > 10
+                            ? (services | slice: 2)
+                            : services;
+                        track service.id
+                    ) {
                         <div
                             class="d-flex align-items-center repair-shop-service"
                             [ngClass]="{
-                                active: repair.active && repair.isSelected,
-                                inactive: repair.active && !repair.isSelected,
+                                inactive: service.active && !service.isSelected,
                                 disabled:
-                                    !repair.active || !this.selectedRepairShop,
+                                    !service.active || !this.selectedRepairShop,
                             }"
-                            (click)="handleServiceActiveClick(repair)"
                         >
                             <svg-icon
-                                [src]="repair?.svg"
+                                [src]="service?.svg"
                                 [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
                             ></svg-icon>
 
                             <p class="ta-font-bold">
-                                {{ repair?.serviceType }}
+                                {{ service?.serviceType }}
                             </p>
                         </div>
-                    </ng-container>
+                    }
                 </div>
             </app-ta-custom-card>
 
@@ -408,6 +402,7 @@
             </div>
 
             <!-- Note -->
+
             <div class="divider"></div>
 
             <app-ca-input-note

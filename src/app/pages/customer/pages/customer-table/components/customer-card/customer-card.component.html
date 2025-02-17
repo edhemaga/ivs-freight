@@ -1,7 +1,5 @@
 <div class="cards-container">
-    <ng-container
-        *ngFor="let card of _viewData; let i = index; trackBy: trackCard"
-    >
+    @for (card of _viewData; let i = $index; track card.id) {
         <div class="custom-card">
             <!-- Card splited on left and right side -->
 
@@ -11,7 +9,7 @@
                     'body-active':
                         isCardFlippedCheckInCards.includes(i) ||
                         isAllCardsFlipp,
-                    'body-checked': card.isSelected
+                    'body-checked': card.isSelected,
                 }"
             >
                 <!-- Left side of the card -->
@@ -50,21 +48,22 @@
 
                         <div class="name d-flex ta-font-bold">
                             <span class="title" (click)="goToDetailsPage(card)">
-                                <svg-icon
-                                    *ngIf="card.businessName.hasBanDnu"
-                                    class="me-1"
-                                    [src]="
-                                        card.businessName.isDnu
-                                            ? 'assets/svg/truckassist-table/dnu-icon.svg'
-                                            : card.businessName.isClosed
-                                            ? 'assets/svg/common/ic_closed_broker.svg'
-                                            : 'assets/svg/truckassist-table/ban-icon.svg'
-                                    "
-                                    [svgStyle]="{
-                                        'width.px': '18',
-                                        'height.px': '18'
-                                    }"
-                                ></svg-icon>
+                                @if (card.businessName.hasBanDnu) {
+                                    <svg-icon
+                                        class="me-1"
+                                        [src]="
+                                            card.businessName.isDnu
+                                                ? 'assets/svg/truckassist-table/dnu-icon.svg'
+                                                : card.businessName.isClosed
+                                                  ? 'assets/svg/common/ic_closed_broker.svg'
+                                                  : 'assets/svg/truckassist-table/ban-icon.svg'
+                                        "
+                                        [svgStyle]="{
+                                            'width.px': '18',
+                                            'height.px': '18',
+                                        }"
+                                    ></svg-icon>
+                                }
 
                                 <span
                                     class="title-tooltip"
@@ -87,17 +86,15 @@
 
                     <!-- Card body front -->
                     <div class="card-body-content flipped">
-                        <ng-container
-                            *ngFor="
-                                let cardRow of displayRowsFront
-                                    | flipCards
-                                        : i
-                                        : isCardFlippedCheckInCards
-                                        : isAllCardsFlipp
-                                        : displayRowsBack;
-                                trackBy: trackCard
-                            "
-                        >
+                        @for (
+                            cardRow of displayRowsFront
+                                | flipCards
+                                    : i
+                                    : isCardFlippedCheckInCards
+                                    : isAllCardsFlipp
+                                    : displayRowsBack;
+                            track cardRow.title
+                        ) {
                             <div class="one-row">
                                 <div class="item-body">
                                     <div class="top-item-body">
@@ -108,21 +105,15 @@
                                     #parentElement
                                     class="bottom-item-body d-flex align-items-center"
                                 >
-                                    <ng-container
-                                        *ngIf="
-                                            cardRow.title !==
-                                                'Rating & Review' &&
-                                            cardRow.title !==
-                                                'Available Credit' &&
-                                            cardRow.title !== 'Contacts'
-                                        "
-                                    >
-                                        {{ card | cardValue : cardRow }}
-                                    </ng-container>
+                                    @if (
+                                        cardRow.title !== 'Rating & Review' &&
+                                        cardRow.title !== 'Available Credit' &&
+                                        cardRow.title !== 'Contacts'
+                                    ) {
+                                        {{ card | cardValue: cardRow }}
+                                    }
 
-                                    <ng-container
-                                        *ngIf="cardRow.title === 'Contacts'"
-                                    >
+                                    @if (cardRow.title === 'Contacts') {
                                         <div class="contacts-holder">
                                             <app-ta-input-dropdown-contacts
                                                 [contactsData]="
@@ -139,17 +130,13 @@
                                                 "
                                             ></app-ta-input-dropdown-contacts>
                                         </div>
-                                    </ng-container>
+                                    }
 
                                     <!-- Available Credit -->
 
-                                    <ng-container
-                                        *ngIf="
-                                            cardRow.title === 'Available Credit'
-                                        "
-                                    >
+                                    @if (cardRow.title === 'Available Credit') {
                                         /
-                                    </ng-container>
+                                    }
 
                                     <!-- Rating & Review Shipper
 
@@ -169,19 +156,24 @@
                                     </ng-container> this is not going into this sprint -->
                                 </div>
                             </div>
-                        </ng-container>
+                        }
                     </div>
                 </div>
 
                 <!-- Right side of the card -->
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
+                        <!-- Dropdown Menu -->
 
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                            (bodyActions)="onCardActions($event)"
-                        ></app-ta-table-card-dropdown-actions>
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -221,7 +213,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                                 customClass="mt-2"
                             >
@@ -234,5 +226,5 @@
                 </div>
             </div>
         </div>
-    </ng-container>
+    }
 </div>

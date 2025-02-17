@@ -1,4 +1,15 @@
 export enum TrailerFormFieldEnum {
     OWNER_ID = 'ownerId',
     COMPANY_OWNED = 'companyOwned',
+    YEAR = 'year',
+    AXLES = 'axles',
+    IS_LIFTGATE = 'isLiftgate',
+    EMPTY_WEIGHT = 'emptyWeight',
+    MILEAGE = 'mileage',
+    VOLUME = 'volume',
+    PURCHASE_DATE = 'purchaseDate',
+    PURCHASE_PRICE = 'purchasePrice',
+    VIN = 'vin',
+    MODEL = 'model',
+    FHWA_EXP = 'fhwaExp',
 }

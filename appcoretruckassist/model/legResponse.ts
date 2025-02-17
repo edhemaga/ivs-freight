@@ -9,6 +9,7 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { LongLat } from './longLat';
 
 
 export interface LegResponse { 
@@ -17,5 +18,6 @@ export interface LegResponse {
     hours?: number;
     minutes?: number;
     shape?: string | null;
+    decodedShape?: Array<LongLat> | null;
 }
 

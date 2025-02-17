@@ -44,6 +44,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // models
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-ta-upload-file',
     templateUrl: './ta-upload-file.component.html',
@@ -129,8 +132,8 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
             const name = this.file.fileName
                 ? this.file.fileName.split('')
                 : this.file.name
-                ? this.file.name.split('')
-                : '';
+                  ? this.file.name.split('')
+                  : '';
             name.map((item, i) => {
                 if (i < name.length - 4) {
                     setName = setName + item;
@@ -171,7 +174,7 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.file.fileName = this.fileNewName.value;
                 // this.file.fileName =
                 //   this.fileNewName.value[0].toUpperCase() +
-                //   this.fileAction.emit({ file: this.file, action: 'edit' });
+                //   this.fileAction.emit({ file: this.file, action: eGeneralActions.EDIT });
             }
         }
     }
@@ -215,12 +218,12 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.downloadFile(this.file.url, this.file.fileName);
                 break;
             }
-            case 'delete': {
+            case eGeneralActions.DELETE: {
                 this.isFileDelete = false;
                 this.fileAction.emit({ file: this.file, action });
                 break;
             }
-            case 'cancel': {
+            case eGeneralActions.CANCEL: {
                 this.isFileDelete = false;
                 break;
             }

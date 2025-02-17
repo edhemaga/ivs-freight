@@ -51,6 +51,11 @@ export enum DropdownMenuStringEnum {
     CREATE_LOAD = 'Create Load',
     CREATE_TEMPLATE = 'Create Template',
     EXPORT_BATCH = 'Export Batch',
+    ADD_CONTACT = 'Add Contact',
+    MOVE_TO_BAN_LIST = 'Move to Ban List',
+    MOVE_TO_DNU_LIST = 'Move to DNU List',
+    REMOVE_FROM_BAN_LIST = 'Remove from Ban List',
+    REMOVE_FROM_DNU_LIST = 'Remove from DNU List',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -100,9 +105,16 @@ export enum DropdownMenuStringEnum {
     ALL_TRANSACTIONS_TYPE = 'all-transactions',
     SUGGEST_EDIT_TYPE = 'suggest-edit',
     ADD_TRANSACTION_TYPE = 'add-transaction',
+    RATING_LIKE_TYPE = 'rating-like',
+    RATING_DISLIKE_TYPE = 'rating-dislike',
     CREATE_LOAD_TYPE = 'create-new-load',
     CREATE_TEMPLATE_TYPE = 'create-template-from-load',
     EXPORT_BATH_TYPE = 'export-batch',
+    ADD_CONTACT_TYPE = 'add-contact',
+    MOVE_TO_BAN_LIST_TYPE = 'move-to-ban-list',
+    MOVE_TO_DNU_LIST_TYPE = 'move-to-dnu-list',
+    REMOVE_FROM_BAN_LIST_TYPE = 'remove-from-ban-list',
+    REMOVE_FROM_DNU_LIST_TYPE = 'remove-from-dnu-list',
 
     // table types
     ACCOUNT = 'account',
@@ -118,6 +130,9 @@ export enum DropdownMenuStringEnum {
     TRUCK = 'truck',
     TRAILER = 'trailer',
     LOAD = 'load',
+    SHIPPER = 'shipper',
+    BROKER = 'broker',
+    CUSTOMER = 'customer',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',
@@ -147,8 +162,25 @@ export enum DropdownMenuStringEnum {
     INVITED = 'Invited',
     EXPIRED = 'Expired',
     FUEL = 'fuel',
+    ADDITIONAL = 'Additional',
+    EMPTY_STRING_PLACEHOLDER = '',
 
     // sizes
     SMALL = 'small',
     LARGE = 'large',
+
+    // customer
+    BASIC = 'Basic',
+    REVIEW = 'Review',
+    INFO = 'info',
+    BROKER_2 = 'Broker',
+    SHIPPER_2 = 'Shipper',
+    BUSINESS = 'business',
+    MOVE = 'move',
+    REMOVE = 'remove',
+    BAN = 'ban',
+    DNU = 'dnu',
+    DETAILS = 'details',
+    SHIPPER_DETAILS = 'shipper-details',
+    BROKER_DETAILS = 'broker-details',
 }
