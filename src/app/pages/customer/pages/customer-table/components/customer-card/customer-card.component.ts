@@ -9,7 +9,7 @@ import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/m
 import { CustomerDropdownMenuActionsBase } from '@pages/customer/base-classes';
 
 // helpers
-import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { CardHelper } from '@shared/utils/helpers';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // services
@@ -19,11 +19,10 @@ import { ModalService } from '@shared/services/modal.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // pipes
-import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
-import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
+import { FormatCurrencyPipe, TimeFormatPipe } from '@shared/pipes';
 
 // enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TableStringEnum } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';

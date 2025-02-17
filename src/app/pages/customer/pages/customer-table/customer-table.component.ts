@@ -55,18 +55,16 @@ import { Store, select } from '@ngrx/store';
 import {
     selectActiveTabCards,
     selectInactiveTabCards,
-} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/';
+} from '@pages/customer/pages/customer-table/components/customer-card-modal/state';
 
 // pipes
-import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
-import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { ThousandSeparatorPipe, FormatCurrencyPipe } from '@shared/pipes';
 
 // enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { TableStringEnum, TableActionsStringEnum } from '@shared/enums';
 import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
-import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
+import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums';
 import { CustomerTableStringEnum } from '@pages/customer/pages/customer-table/enums';
 
 // constants
@@ -77,9 +75,11 @@ import {
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 // helpers
-import { DropdownMenuContentHelper } from '@shared/utils/helpers';
-import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
-import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+import {
+    DropdownMenuContentHelper,
+    DataFilterHelper,
+    MethodsGlobalHelper,
+} from '@shared/utils/helpers';
 import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/utils/helpers';
 
 // models
