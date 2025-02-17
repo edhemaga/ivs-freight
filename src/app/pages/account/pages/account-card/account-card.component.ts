@@ -175,19 +175,19 @@ export class AccountCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: AccountResponse
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
         this.handleDropdownMenuActions(
-            emitEvent,
+            emitAction,
             DropdownMenuStringEnum.ACCOUNT
         );
     }

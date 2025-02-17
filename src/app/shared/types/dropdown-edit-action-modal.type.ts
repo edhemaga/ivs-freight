@@ -1,5 +1,7 @@
 import { AccountModalComponent } from '@pages/account/pages/account-modal/account-modal.component';
 import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/contacts-modal.component';
+import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
+import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { FuelStopModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-stop-modal/fuel-stop-modal.component';
@@ -21,4 +23,6 @@ export type DropdownEditActionModal =
     | FuelStopModalComponent
     | TruckModalComponent
     | TrailerModalComponent
-    | DriverModalComponent;
+    | DriverModalComponent
+    | ShipperModalComponent
+    | BrokerModalComponent;
