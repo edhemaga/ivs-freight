@@ -280,8 +280,6 @@ export class RepairTableComponent
         }, 10);
     }
 
-    public trackByIdentity = (_: number, item: any): number => item?.id;
-
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -775,6 +773,9 @@ export class RepairTableComponent
         const tableColumnsConfig = JSON.parse(
             localStorage.getItem(`table-${configType}-Configuration`)
         );
+
+        const repairConfig = getRepairTruckAndTrailerColumnDefinition();
+        const shopConfig = getRepairShopColumnDefinition();
 
         if (
             configType === TableStringEnum.REPAIR_TRUCK ||
@@ -1473,7 +1474,6 @@ export class RepairTableComponent
     }
 
     private mapShopData(repairShop: RepairShopListDto): MappedRepairShop {
-        console.log('repairShop', repairShop);
         const {
             address,
             shopServiceType,

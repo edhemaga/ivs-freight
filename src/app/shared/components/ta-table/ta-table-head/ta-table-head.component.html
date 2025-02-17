@@ -1,70 +1,70 @@
-<ng-container *ngIf="viewData?.length">
-    <table>
-        <thead
-            class="d-flex align-items-center"
-            [ngClass]="{ 'set-cursor-resize': resizing }"
+<!-- <ng-container *ngIf="viewData?.length"> -->
+<table>
+    <thead
+        class="d-flex align-items-center"
+        [ngClass]="{ 'set-cursor-resize': resizing }"
+    >
+        <!-- Pined -->
+
+        <app-table-head-rows
+            [tableHeadRowsData]="{
+                tableData,
+                pinedColumns,
+                locked,
+                resizeHitLimit,
+                resizeIsPined,
+                resizing,
+                mySelection,
+                selectableRow,
+                viewDataLength: viewData?.length,
+                reordering,
+            }"
+            (tableHeadRowsActionEmitter)="tableHeadRowsActionEmit($event)"
         >
-            <!-- Pined -->
+        </app-table-head-rows>
 
-            <app-table-head-rows
-                [tableHeadRowsData]="{
-                    tableData,
-                    pinedColumns,
-                    locked,
-                    resizeHitLimit,
-                    resizeIsPined,
-                    resizing,
-                    mySelection,
-                    selectableRow,
-                    viewDataLength: viewData?.length,
-                    reordering,
-                }"
-                (tableHeadRowsActionEmitter)="tableHeadRowsActionEmit($event)"
-            >
-            </app-table-head-rows>
+        <!-- Border -->
 
-            <!-- Border -->
+        <app-table-head-border [isDisplayBorder]="showBorder">
+        </app-table-head-border>
 
-            <app-table-head-border [isDisplayBorder]="showBorder">
-            </app-table-head-border>
+        <!-- Not Pined -->
 
-            <!-- Not Pined -->
+        <app-table-head-rows
+            [tableHeadRowsData]="{
+                tableData,
+                notPinedColumns,
+                notPinedMaxWidth,
+                locked,
+                reordering,
+                resizing,
+                resizeHitLimit,
+                resizeIsPined,
+                viewDataLength: viewData?.length,
+            }"
+            [id]="notPinedColumns ? 'parent-scroll' : null"
+            (tableHeadRowsActionEmitter)="tableHeadRowsActionEmit($event)"
+        >
+        </app-table-head-rows>
 
-            <app-table-head-rows
-                [tableHeadRowsData]="{
-                    tableData,
-                    notPinedColumns,
-                    notPinedMaxWidth,
-                    locked,
-                    reordering,
-                    resizing,
-                    resizeHitLimit,
-                    resizeIsPined,
-                    viewDataLength: viewData?.length,
-                }"
-                [id]="notPinedColumns ? 'parent-scroll' : null"
-                (tableHeadRowsActionEmitter)="tableHeadRowsActionEmit($event)"
-            >
-            </app-table-head-rows>
+        <!-- Border -->
 
-            <!-- Border -->
+        <app-table-head-border
+            [isBorderLeft]="false"
+            [isDisplayBorder]="showBorder"
+        >
+        </app-table-head-border>
 
-            <app-table-head-border
-                [isBorderLeft]="false"
-                [isDisplayBorder]="showBorder"
-            >
-            </app-table-head-border>
+        <!-- Actions -->
 
-            <!-- Actions -->
-
-            <app-table-head-actions
-                [tableHeadActionsData]="{
-                    tableData,
-                    actionColumns,
-                }"
-                [isDisplayBorder]="showBorder"
-            >
-            </app-table-head-actions>
-        </thead>
-    </table>
-</ng-container>
+        <app-table-head-actions
+            [tableHeadActionsData]="{
+                tableData,
+                actionColumns,
+            }"
+            [isDisplayBorder]="showBorder"
+        >
+        </app-table-head-actions>
+    </thead>
+</table>
+<!-- </ng-container> -->

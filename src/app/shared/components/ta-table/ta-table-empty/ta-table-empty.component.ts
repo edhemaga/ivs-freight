@@ -9,26 +9,43 @@ import {
     TemplateRef,
 } from '@angular/core';
 
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// svg routes
+import { TableEmptySvgRoutes } from '@shared/components/ta-table/ta-table-empty/utils/svg-routes';
+
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Component({
     selector: 'app-ta-table-empty',
     templateUrl: './ta-table-empty.component.html',
-    standalone: true,
-    imports: [CommonModule],
     styleUrls: ['./ta-table-empty.component.scss'],
+    standalone: true,
+    imports: [CommonModule, AngularSvgIconModule],
 })
 export class TaTableEmptyComponent implements OnInit, OnChanges {
-    public taStringEnum = TableStringEnum;
-    public emptyColums: number[] = [];
-    private columnCountCard: number = 6;
-    private columnCountList: number = 3;
     @Input() view: TableStringEnum.LIST | TableStringEnum.CARD =
         TableStringEnum.LIST;
+
     @Input() actionTemplate: TemplateRef<Element>;
     @Input() filteredResults: boolean;
     @Input() hasResults: boolean;
-    @Output() resetFilter$: EventEmitter<any> = new EventEmitter();
+
+    @Output() resetFilter$: EventEmitter<boolean> = new EventEmitter();
+
+    // columns
+    public emptyColums: number[] = [];
+
+    private columnCountCard: number = 6;
+    private columnCountList: number = 3;
+
+    // enums
+    public taStringEnum = TableStringEnum;
+
+    // svg routes
+    public tableEmptySvgRoutes = TableEmptySvgRoutes;
 
     ngOnInit(): void {
         this.fillColumns();

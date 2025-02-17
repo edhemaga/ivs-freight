@@ -68,7 +68,8 @@
             <div class="shop-details-working-hours-main">
                 @for (
                     workingHoursItem of _cardData?.openHours;
-                    track workingHoursItem?.workingDays
+                    let workingHoursItemIndex = $index;
+                    track workingHoursItemIndex
                 ) {
                     <div class="d-flex flex-column justify-content-center">
                         <p

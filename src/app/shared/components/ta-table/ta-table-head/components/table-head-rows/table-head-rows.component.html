@@ -4,8 +4,8 @@
     cdkDropListOrientation="horizontal"
     [id]="tableHeadRowsData?.notPinedColumns ? 'scroll' : null"
     [ngClass]="{
-        'pined-columns-container': tableHeadRowsData?.pinedColumns,
-        'not-pined-columns-container': tableHeadRowsData?.notPinedColumns,
+        'pined-columns-container': !!tableHeadRowsData?.pinedColumns,
+        'not-pined-columns-container': !!tableHeadRowsData?.notPinedColumns,
         'tr-height-2':
             tableHeadRowsData?.tableData[0]?.gridNameTitle
             | tableDoubleHeadHeight,
