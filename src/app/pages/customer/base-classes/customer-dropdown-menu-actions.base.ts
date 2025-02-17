@@ -122,9 +122,8 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
             typeof businessName === 'string' ? businessName : businessName.name;
 
         const modalType =
-            type ===
-            (DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
-                DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE)
+            type === DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
+            type === DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE
                 ? DropdownMenuStringEnum.MOVE
                 : DropdownMenuStringEnum.REMOVE;
 
