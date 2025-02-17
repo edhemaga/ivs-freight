@@ -498,6 +498,242 @@ export class DropdownMenuContentHelper {
         ];
     }
 
+    // shipper
+    static getShipperDropdownContent(status: number): DropdownMenuItem[] {
+        const isOpenBusiness = !!status;
+
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getShipperModifierItems(
+                isOpenBusiness
+            );
+
+        // requested items
+        const requestedConditionalItems = [DropdownMenuStringEnum.ADD_CONTACT];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.VIEW_DETAILS,
+            DropdownMenuStringEnum.WRITE_REVIEW,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            isOpenBusiness
+                ? DropdownMenuStringEnum.CLOSE_BUSINESS
+                : DropdownMenuStringEnum.OPEN_BUSINESS,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false,
+                modifierItems
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
+        return [
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems,
+            ...sharedItems.slice(2),
+        ];
+    }
+
+    // broker
+    static getBrokerDropdownContent(
+        status: number,
+        isBrokerBanned?: boolean,
+        isBrokerDnu?: boolean
+    ): DropdownMenuItem[] {
+        const isOpenBusiness = !!status;
+        const isMovedToBanOrDnu = isBrokerBanned || isBrokerDnu;
+
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getBrokerModifiedItems(
+                isOpenBusiness,
+                isMovedToBanOrDnu
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.CREATE_LOAD,
+            DropdownMenuStringEnum.ADD_CONTACT,
+            isBrokerBanned
+                ? DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST
+                : DropdownMenuStringEnum.MOVE_TO_BAN_LIST,
+            isBrokerDnu
+                ? DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST
+                : DropdownMenuStringEnum.MOVE_TO_DNU_LIST,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.VIEW_DETAILS,
+            DropdownMenuStringEnum.WRITE_REVIEW,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            isOpenBusiness
+                ? DropdownMenuStringEnum.CLOSE_BUSINESS
+                : DropdownMenuStringEnum.OPEN_BUSINESS,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false,
+                modifierItems
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
+        return [
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems.slice(0, 2),
+            ...sharedItems.slice(2, 3),
+            ...conditionalItems.slice(2),
+            ...sharedItems.slice(3),
+        ];
+    }
+
+    // user
+    static getUserDropdownContent(
+        selectedTab: string,
+        userStatus: string,
+        isInvitationSent: boolean
+    ): DropdownMenuItem[] {
+        const isActiveUser = selectedTab === DropdownMenuStringEnum.ACTIVE;
+        const isOwnerUser = userStatus === TableStringEnum.OWNER;
+
+        const isUserStatusInvited =
+            userStatus === DropdownMenuStringEnum.INVITED;
+        const isUserStatusExpired =
+            userStatus === DropdownMenuStringEnum.EXPIRED;
+
+        // modifier items
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getUserModifierItems(
+                isActiveUser,
+                isOwnerUser,
+                isUserStatusInvited,
+                isUserStatusExpired,
+                isInvitationSent
+            );
+
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.RESET_PASSWORD,
+        ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.EDIT,
+            DropdownMenuStringEnum.SEND_MESSAGE,
+            isInvitationSent
+                ? DropdownMenuStringEnum.INVITATION_SENT
+                : DropdownMenuStringEnum.RESEND_INVITATION,
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+            isActiveUser
+                ? DropdownMenuStringEnum.DEACTIVATE
+                : DropdownMenuStringEnum.ACTIVATE,
+            DropdownMenuStringEnum.DELETE,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false,
+                modifierItems
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
+        return [
+            ...sharedItems.slice(0, 2),
+            ...conditionalItems,
+            ...sharedItems.slice(2),
+        ];
+    }
+
+    // payroll
+    static getPayrollDropdownContent(
+        isOpenPayroll: boolean = false
+    ): DropdownMenuItem[] {
+        // requested items
+        const requestedConditionalItems = isOpenPayroll
+            ? [
+                  DropdownMenuStringEnum.EDIT_LOAD,
+                  DropdownMenuStringEnum.EDIT_PAYROLL,
+                  DropdownMenuStringEnum.PREVIEW_REPORT,
+                  DropdownMenuStringEnum.DOWNLOAD,
+              ]
+            : [
+                  DropdownMenuStringEnum.RESEND_REPORT,
+                  DropdownMenuStringEnum.PREVIEW_REPORT,
+                  DropdownMenuStringEnum.DOWNLOAD,
+              ];
+
+        const requestedSharedItems = [
+            DropdownMenuStringEnum.SHARE,
+            DropdownMenuStringEnum.PRINT,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [
+            ...conditionalItems.slice(0, isOpenPayroll ? 2 : 1),
+            ...sharedItems,
+            ...conditionalItems.slice(-2),
+        ];
+    }
+
+    // payroll select load
+    static getPayrollSelectLoadDropdownContent(
+        loadList: { id: number; title: string }[]
+    ): DropdownMenuItem[] {
+        // requested items
+        const requestedConditionalItems = [
+            DropdownMenuStringEnum.EDIT_LOAD_SELECT,
+        ];
+
+        // items
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedConditionalItems,
+                false
+            );
+
+        return [...conditionalItems, ...loadList];
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
 
     // driver applicant
@@ -642,384 +878,6 @@ export class DropdownMenuContentHelper {
                 svgClass: TableStringEnum.DELETE,
             },
         ];
-    }
-
-    // broker
-    static getBrokerDropdownContent(
-        status: number,
-        ban?: boolean,
-        dnu?: boolean
-    ): any[] /* DropdownMenuItem[] */ {
-        return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-            },
-
-            {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: TableStringEnum.CREATE_LOAD_2,
-                name: TableStringEnum.CREATE_LOAD,
-                svgUrl: 'assets/svg/common/ic_plus.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.ACTIVATE,
-                isDisabled: ban || dnu || !status,
-            },
-            {
-                title: TableStringEnum.ADD_CONTRACT_2,
-                name: TableStringEnum.ADD_CONTRACT,
-                svgUrl: 'assets/svg/truckassist-table/customer/contact-column-avatar.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-            },
-            {
-                title: TableStringEnum.WRITE_REVIEW_2,
-                name: TableStringEnum.WRITE_REVIEW,
-                svgUrl: 'assets/svg/common/review-pen.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-            },
-            {
-                title: !ban
-                    ? TableStringEnum.MOVE_TO_BAN_LIST_2
-                    : TableStringEnum.REMOVE_FROM_BAN_LIST,
-                name: TableStringEnum.MOVE_TO_BAN_LIST,
-                svgUrl: 'assets/svg/common/ic_banned_broker.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-            },
-            {
-                title: !dnu
-                    ? TableStringEnum.MOVE_TO_DNU_LIST_2
-                    : TableStringEnum.REMOVE_FROM_DNU_LIST,
-                name: TableStringEnum.MOVE_TO_DNU_LIST,
-                svgUrl: 'assets/svg/common/ic_dnu_broker.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.DELETE,
-            },
-            {
-                title: TableStringEnum.SHARE_2,
-                name: TableStringEnum.SHARE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Share.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: TableStringEnum.PRINT_2,
-                name: TableStringEnum.PRINT,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Print.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                hasBorder: true,
-            },
-            {
-                title: status
-                    ? TableStringEnum.CLOSE_BUSINESS_2
-                    : TableStringEnum.OPEN_BUSINESS,
-                name: TableStringEnum.CLOSE_BUSINESS,
-                svgUrl: status
-                    ? 'assets/svg/common/ic_closed_broker.svg'
-                    : 'assets/svg/common/ic_open_bussiness.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: status
-                    ? TableStringEnum.DELETE
-                    : TableStringEnum.OPEN_BUSINESS_2,
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ];
-    }
-
-    // shipper
-    static getShipperDropdownContent(
-        status: number
-    ): any[] /* DropdownMenuItem[] */ {
-        return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: 'edit-cutomer-or-shipper',
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-            },
-            {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: TableStringEnum.ADD_CONTRACT_2,
-                name: TableStringEnum.ADD_CONTRACT,
-                svgUrl: 'assets/svg/common/ic_broker-user.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-            },
-            {
-                title: TableStringEnum.WRITE_REVIEW_2,
-                name: TableStringEnum.WRITE_REVIEW,
-                svgUrl: '/assets/svg/common/review-pen.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDisabled: !status,
-                hasBorder: true,
-            },
-            {
-                title: status
-                    ? TableStringEnum.CLOSE_BUSINESS_2
-                    : TableStringEnum.OPEN_BUSINESS,
-                name: TableStringEnum.CLOSE_BUSINESS,
-                svgUrl: status
-                    ? 'assets/svg/common/ic_closed_broker.svg'
-                    : 'assets/svg/common/ic_verify-check.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-                svgClass: status
-                    ? TableStringEnum.DELETE
-                    : TableStringEnum.OPEN_BUSINESS_2,
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ];
-    }
-
-    // user
-    static getUserDropdownContent(
-        selectedTab: string,
-        userStatus: string,
-        isInvitationSent: boolean
-    ): DropdownMenuItem[] {
-        const isActiveUser = selectedTab === DropdownMenuStringEnum.ACTIVE;
-        const isOwnerUser = userStatus === TableStringEnum.OWNER;
-
-        const isUserStatusInvited =
-            userStatus === DropdownMenuStringEnum.INVITED;
-        const isUserStatusExpired =
-            userStatus === DropdownMenuStringEnum.EXPIRED;
-
-        // modifier items
-        const modifierItems =
-            DropdownMenuContentConditionalItemsHelper.getUserModifierItems(
-                isActiveUser,
-                isOwnerUser,
-                isUserStatusInvited,
-                isUserStatusExpired,
-                isInvitationSent
-            );
-
-        // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.RESET_PASSWORD,
-        ];
-
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.SEND_MESSAGE,
-            isInvitationSent
-                ? DropdownMenuStringEnum.INVITATION_SENT
-                : DropdownMenuStringEnum.RESEND_INVITATION,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            isActiveUser
-                ? DropdownMenuStringEnum.DEACTIVATE
-                : DropdownMenuStringEnum.ACTIVATE,
-            DropdownMenuStringEnum.DELETE,
-        ];
-
-        // items
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedConditionalItems,
-                false,
-                modifierItems
-            );
-
-        const sharedItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedSharedItems,
-                true,
-                modifierItems
-            );
-
-        return [
-            ...sharedItems.slice(0, 2),
-            ...conditionalItems,
-            ...sharedItems.slice(2),
-        ];
-    }
-
-    // payroll
-    static getPayrollDropdownContent(
-        isOpenPayroll: boolean = false
-    ): DropdownMenuItem[] {
-        // requested items
-        const requestedConditionalItems = isOpenPayroll
-            ? [
-                  DropdownMenuStringEnum.EDIT_LOAD,
-                  DropdownMenuStringEnum.EDIT_PAYROLL,
-                  DropdownMenuStringEnum.PREVIEW_REPORT,
-                  DropdownMenuStringEnum.DOWNLOAD,
-              ]
-            : [
-                  DropdownMenuStringEnum.RESEND_REPORT,
-                  DropdownMenuStringEnum.PREVIEW_REPORT,
-                  DropdownMenuStringEnum.DOWNLOAD,
-              ];
-
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-        ];
-
-        // items
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedConditionalItems,
-                false
-            );
-
-        const sharedItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedSharedItems,
-                true
-            );
-
-        return [
-            ...conditionalItems.slice(0, isOpenPayroll ? 2 : 1),
-            ...sharedItems,
-            ...conditionalItems.slice(-2),
-        ];
-    }
-
-    // payroll select load
-    static getPayrollSelectLoadDropdownContent(
-        loadList: { id: number; title: string }[]
-    ): DropdownMenuItem[] {
-        // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.EDIT_LOAD_SELECT,
-        ];
-
-        // items
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedConditionalItems,
-                false
-            );
-
-        return [...conditionalItems, ...loadList];
     }
 
     // table toolbar - hamburger - table options

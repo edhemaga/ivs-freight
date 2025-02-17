@@ -62,6 +62,7 @@ api/title.service.ts
 api/todo.service.ts
 api/trailer.service.ts
 api/trailerType.service.ts
+api/transmissionModel.service.ts
 api/truck.service.ts
 api/truckType.service.ts
 api/user.service.ts
@@ -1046,6 +1047,9 @@ model/trailerShortResponsePagination.ts
 model/trailerTypeFilterResponse.ts
 model/trailerTypeResponse.ts
 model/transferRegistrationCommand.ts
+model/transmissionModelFilterResponse.ts
+model/transmissionModelResponse.ts
+model/transmissionType.ts
 model/transponderGroup.ts
 model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts
