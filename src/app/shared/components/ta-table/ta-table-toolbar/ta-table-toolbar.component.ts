@@ -306,7 +306,9 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                                     selectRow.tableData
                                         ?.tablePaymentDetailCreditLimit;
                             } else {
-                                cost = selectRow.tableData?.tableCost;
+                                cost =
+                                    selectRow.tableData?.tableCost ||
+                                    selectRow.tableData?.tableExpense;
                             }
 
                             if (cost) {
@@ -766,8 +768,12 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.timeOutToaggleColumn = setTimeout(() => {
             if (!column.isPined) {
-                let _column = this.columns.find((item) => item.field === column.field);
-                let _columnGroup = this.columnsOptionsWithGroups.find((item) => item.field === column.field);
+                let _column = this.columns.find(
+                    (item) => item.field === column.field
+                );
+                let _columnGroup = this.columnsOptionsWithGroups.find(
+                    (item) => item.field === column.field
+                );
 
                 _column.hidden = !column.hidden;
                 _columnGroup.hidden = !column.hidden;

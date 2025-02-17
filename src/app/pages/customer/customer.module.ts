@@ -26,12 +26,15 @@ import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-m
 import { CustomerCardComponent } from '@pages/customer/pages/customer-table/components/customer-card/customer-card.component';
 
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
 import { TaInputDropdownContactsComponent } from '@shared/components/ta-input-dropdown-contacts/ta-input-dropdown-contacts.component';
-import { CaChartComponent, CaMapComponent } from 'ca-components';
+import {
+    CaChartComponent,
+    CaDropdownMenuComponent,
+    CaMapComponent,
+} from 'ca-components';
 //pipes
 import { FormatEinPipe } from '@shared/pipes/format-ein.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -64,12 +67,12 @@ import { customerCardModalReducer } from '@pages/customer/pages/customer-table/c
         TaMapListComponent,
         TaMapListCardComponent,
         TaInputDropdownTableComponent,
-        TaTableCardDropdownActionsComponent,
         TaNoteComponent,
         TaContactsCardComponent,
         TaInputDropdownContactsComponent,
         CaChartComponent,
         CaMapComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         FormatDatePipe,

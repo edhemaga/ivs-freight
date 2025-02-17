@@ -131,8 +131,13 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsOfficeModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
-    implements OnInit, OnDestroy {
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     @Input() editData: any;
 
     public officeForm: UntypedFormGroup;
@@ -469,22 +474,22 @@ export class SettingsOfficeModalComponent
 
             return isFormPatch
                 ? {
-                    department: (department as DepartmentResponse).name,
-                    phone,
-                    phoneExt:
-                        extensionPhone ??
-                        SettingsOfficeModalStringEnum.EMPTY_STRING,
-                    email,
-                }
+                      department: (department as DepartmentResponse).name,
+                      phone,
+                      phoneExt:
+                          extensionPhone ??
+                          SettingsOfficeModalStringEnum.EMPTY_STRING,
+                      email,
+                  }
                 : {
-                    id: this.updatedDepartmentContacts[index]?.id,
-                    departmentId: this.departmentOptions.find(
-                        (item) => item.name === department
-                    )?.id,
-                    phone,
-                    extensionPhone: phoneExt,
-                    email,
-                };
+                      id: this.updatedDepartmentContacts[index]?.id,
+                      departmentId: this.departmentOptions.find(
+                          (item) => item.name === department
+                      )?.id,
+                      phone,
+                      extensionPhone: phoneExt,
+                      email,
+                  };
         });
     }
 
@@ -529,18 +534,18 @@ export class SettingsOfficeModalComponent
                         email: res.email,
                         rent: res.rent
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
-                                res.rent
-                            )
+                                  res.rent
+                              )
                             : null,
                         payPeriod: res.payPeriod ? res.payPeriod.name : null,
                         monthlyDay:
                             res.payPeriod?.name ===
-                                SettingsOfficeModalStringEnum.MONTHLY
+                            SettingsOfficeModalStringEnum.MONTHLY
                                 ? res.monthlyDay?.name
                                 : null,
                         weeklyDay:
                             res.payPeriod?.name ===
-                                SettingsOfficeModalStringEnum.WEEKLY
+                            SettingsOfficeModalStringEnum.WEEKLY
                                 ? res.weeklyDay?.name
                                 : null,
                         contacts: this.mapContacts(
@@ -554,7 +559,7 @@ export class SettingsOfficeModalComponent
                     this.selectedPayPeriod = res.payPeriod;
                     this.selectedDay =
                         res.payPeriod?.name ===
-                            SettingsOfficeModalStringEnum.MONTHLY
+                        SettingsOfficeModalStringEnum.MONTHLY
                             ? res.monthlyDay
                             : res.weeklyDay;
 
@@ -570,7 +575,6 @@ export class SettingsOfficeModalComponent
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => { },
             });
     }
 

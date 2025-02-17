@@ -20,10 +20,13 @@ import { collapseAnimation } from '@pages/load/pages/load-modal/utils/animations
 
 // constants
 import { LoadStatusStringEnum } from '@pages/load/pages/load-modal/components/load-modal-stop/enums/load-status-string.enum';
-import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants'; 
+import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants';
 
-// Svg Routes
+// SVG Routes
 import { LoadModalSvgRoutes } from '@pages/load/pages/load-modal/utils/svg-routes/load-modal-svg-routes';
+
+// enums
+import { eGeneralActions } from '@shared/enums';
 @Component({
     selector: 'app-load-modal-stop',
     templateUrl: './load-modal-stop.component.html',
@@ -58,7 +61,10 @@ export class LoadModalStopComponent {
         avatar: string;
     };
     @Input() isCardOpen: boolean;
-    @Input() state: LoadStatusStringEnum.VALID | LoadStatusStringEnum.INVALID | LoadStatusStringEnum.STEP_INVALID_STATUS;
+    @Input() state:
+        | LoadStatusStringEnum.VALID
+        | LoadStatusStringEnum.INVALID
+        | LoadStatusStringEnum.STEP_INVALID_STATUS;
     @Input() animationMarginParams = LoadModalConstants.ANIMATION_MARGIN_PARAMS;
     @Input() isDestinationTab = false;
     @Input() isDragAndDropActive = false;

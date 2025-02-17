@@ -1,5 +1,4 @@
 import {
-    AfterViewInit,
     ChangeDetectorRef,
     Component,
     Input,
@@ -20,10 +19,7 @@ import {
     takeUntil,
     switchMap,
     of,
-    take,
     Observable,
-    empty,
-    EMPTY,
     tap,
     filter,
 } from 'rxjs';
@@ -62,7 +58,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // models
 import {
-    FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
     GetFuelModalResponse,
     FuelDispatchHistoryResponse,
@@ -611,8 +606,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 })
             )
             .subscribe((response) => {
-                if (!response) return;
-
                 const { data } = response?.pagination || {};
                 this.selectedDispatchHistory = response;
 

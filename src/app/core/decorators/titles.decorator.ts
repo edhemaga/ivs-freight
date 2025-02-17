@@ -20,7 +20,7 @@ export function Titles(): <T extends TFunction>(constructor: T) => T {
             pageTitle: string;
             titleChangeFnc;
 
-            ngOnChanges(changes) {
+            ngOnChanges(changes): void {
                 if (!this.pageTitle) {
                     const router = StaticInjectorService.Injector.get(Router);
 

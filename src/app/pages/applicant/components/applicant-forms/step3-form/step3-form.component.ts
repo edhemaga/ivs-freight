@@ -1,5 +1,3 @@
-/* eslint-disable no-unused-vars */
-
 import { CommonModule } from '@angular/common';
 import {
     AfterViewInit,
@@ -47,6 +45,11 @@ import {
 // enums
 import { InputSwitchActions } from '@pages/applicant/enums/input-switch-actions.enum';
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
+import {
+    eFileFormControls,
+    eGeneralActions,
+    eStringPlaceholder,
+} from '@shared/enums';
 
 // routes
 import { ApplicantSvgRoutes } from '@pages/applicant/utils/helpers/applicant-svg-routes';
@@ -282,9 +285,9 @@ export class Step3FormComponent
                     if (
                         this.documentsForDeleteIds.length &&
                         this.documentsForDeleteIds[0]
-                    ) {
+                    )
                         res.filesForDeleteIds = this.documentsForDeleteIds;
-                    }
+
                     this.lastFormValuesEmitter.emit(res);
                 });
         }
@@ -325,7 +328,7 @@ export class Step3FormComponent
         if (
             changes.formValuesToPatch?.previousValue !==
             changes.formValuesToPatch?.currentValue
-        ) {
+        )
             setTimeout(() => {
                 this.patchForm(changes.formValuesToPatch.currentValue);
 
@@ -333,7 +336,6 @@ export class Step3FormComponent
                     this.startValueChangesMonitoring();
                 }
             }, 50);
-        }
     }
 
     private createForm(): void {
@@ -417,19 +419,14 @@ export class Step3FormComponent
         });
 
         setTimeout(() => {
-            if (formValue.country?.toLowerCase() === 'us') {
+            if (formValue.country?.toLowerCase() === 'us')
                 this.stateTypes = this.usStates;
-            } else {
-                this.stateTypes = this.canadaStates;
-            }
+            else this.stateTypes = this.canadaStates;
 
-            if (formValue?.documents) {
-                this.documents = formValue?.documents;
-            }
+            if (formValue?.documents) this.documents = formValue?.documents;
 
-            if (formValue?.filesForDeleteIds) {
+            if (formValue?.filesForDeleteIds)
                 this.documentsForDeleteIds = formValue.filesForDeleteIds;
-            }
 
             this.selectedCountryType = this.countryTypes.find(
                 (item) => item.name === formValue?.country
@@ -453,8 +450,14 @@ export class Step3FormComponent
                 return {
                     ...item,
                     name: item.code
-                        .concat(' ', '-')
-                        .concat(' ', item.description),
+                        .concat(
+                            eStringPlaceholder.WHITESPACE,
+                            eStringPlaceholder.DASH
+                        )
+                        .concat(
+                            eStringPlaceholder.WHITESPACE,
+                            item.description
+                        ),
                 };
             });
 
@@ -462,8 +465,14 @@ export class Step3FormComponent
                 return {
                     ...item,
                     name: item.code
-                        .concat(' ', '-')
-                        .concat(' ', item.description),
+                        .concat(
+                            eStringPlaceholder.WHITESPACE,
+                            eStringPlaceholder.DASH
+                        )
+                        .concat(
+                            eStringPlaceholder.WHITESPACE,
+                            item.description
+                        ),
                 };
             });
         }, 50);
@@ -590,7 +599,7 @@ export class Step3FormComponent
 
     public onFilesAction(fileActionEvent: {
         files: File[];
-        action: 'add' | 'delete';
+        action: eGeneralActions.ADD | eGeneralActions.DELETE;
         deleteId?: number;
     }): void {
         this.documents = fileActionEvent.files;
@@ -598,14 +607,14 @@ export class Step3FormComponent
         this.displayDocumentsRequiredNote = false;
 
         switch (fileActionEvent.action) {
-            case 'add':
+            case eGeneralActions.ADD:
                 this.licenseForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.licenseForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         fileActionEvent.files.length
                             ? JSON.stringify(fileActionEvent.files)
@@ -659,12 +668,10 @@ export class Step3FormComponent
                 : [],
             isEditingLicense: false,
             documents: this.documents,
-            ...((
-                this.documentsForDeleteIds.length &&
-                this.documentsForDeleteIds[0]
-            ) && {
-                filesForDeleteIds: this.documentsForDeleteIds,
-            }),
+            ...(this.documentsForDeleteIds.length &&
+                this.documentsForDeleteIds[0] && {
+                    filesForDeleteIds: this.documentsForDeleteIds,
+                }),
         };
 
         this.formValuesEmitter.emit(saveData);
@@ -728,12 +735,10 @@ export class Step3FormComponent
                 : [],
             isEditingLicense: false,
             documents: this.documents,
-            ...((
-                this.documentsForDeleteIds.length &&
-                this.documentsForDeleteIds[0]
-            ) && {
-                filesForDeleteIds: this.documentsForDeleteIds,
-            }),
+            ...(this.documentsForDeleteIds.length &&
+                this.documentsForDeleteIds[0] && {
+                    filesForDeleteIds: this.documentsForDeleteIds,
+                }),
         };
 
         this.saveFormEditingEmitter.emit(saveData);
@@ -795,8 +800,14 @@ export class Step3FormComponent
                     return {
                         ...item,
                         name: item.code
-                            .concat(' ', '-')
-                            .concat(' ', item.description),
+                            .concat(
+                                eStringPlaceholder.WHITESPACE,
+                                eStringPlaceholder.DASH
+                            )
+                            .concat(
+                                eStringPlaceholder.WHITESPACE,
+                                item.description
+                            ),
                     };
                 });
 
@@ -804,8 +815,14 @@ export class Step3FormComponent
                     return {
                         ...item,
                         name: item.code
-                            .concat(' ', '-')
-                            .concat(' ', item.description),
+                            .concat(
+                                eStringPlaceholder.WHITESPACE,
+                                eStringPlaceholder.DASH
+                            )
+                            .concat(
+                                eStringPlaceholder.WHITESPACE,
+                                item.description
+                            ),
                     };
                 });
             });

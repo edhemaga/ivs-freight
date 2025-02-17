@@ -97,18 +97,18 @@ export class UserCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: CompanyUserResponse
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitEvent, DropdownMenuStringEnum.USER);
+        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.USER);
     }
 
     public handleShowMoreAction(): void {}

@@ -101,19 +101,19 @@ export class DriverCardComponent
     }
 
     public handleToggleDropdownMenuActions<T extends DriverMapped>(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: T
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
         this.handleDropdownMenuActions(
-            emitEvent,
+            emitAction,
             DropdownMenuStringEnum.DRIVER
         );
     }
