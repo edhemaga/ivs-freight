@@ -70,10 +70,6 @@ export class TableHeadRowsComponent {
 
     constructor() {}
 
-    ngOnInit() {
-        console.log('tableHeadRowsData', this.tableHeadRowsData);
-    }
-
     public trackByIdentity(_: number, item: any): string {
         return item.name || item.title;
     }

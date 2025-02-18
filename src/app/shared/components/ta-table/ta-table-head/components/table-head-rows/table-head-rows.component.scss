@@ -9,7 +9,6 @@
 
     &.not-pined-columns-container {
         padding: 2px 4px 2px 4px;
-        /*     overflow: hidden; */
     }
 
     &-height-2 {
@@ -70,6 +69,10 @@
 
         &.space-left {
             margin-left: 10px !important;
+        }
+
+        &.no-data {
+            pointer-events: none !important;
         }
 
         .pickup-delivery {

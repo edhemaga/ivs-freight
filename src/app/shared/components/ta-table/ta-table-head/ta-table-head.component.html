@@ -1,8 +1,13 @@
-<!-- <ng-container *ngIf="viewData?.length"> -->
-<table>
+<table
+    [ngStyle]="{
+        width: !viewData.length ? toolbarWidth?.width : '',
+        'max-width.px': toolbarWidth?.maxWidth,
+    }"
+>
     <thead
         class="d-flex align-items-center"
         [ngClass]="{ 'set-cursor-resize': resizing }"
+        [ngStyle]="{ position: !viewData?.length ? 'relative' : '' }"
     >
         <!-- Pined -->
 
@@ -61,10 +66,10 @@
             [tableHeadActionsData]="{
                 tableData,
                 actionColumns,
+                viewDataLength: viewData?.length,
             }"
             [isDisplayBorder]="showBorder"
         >
         </app-table-head-actions>
     </thead>
 </table>
-<!-- </ng-container> -->

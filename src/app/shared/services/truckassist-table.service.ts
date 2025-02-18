@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
+// interfaces
+import { IToolbarWidth } from '@shared/interfaces';
+
 // models
 import {
     BrokerResponse,
-    DispatcherFilterResponse,
     DriverResponse,
     ShipperResponse,
     TableConfigResponse,
@@ -150,6 +152,10 @@ export class TruckassistTableService {
     private scrollReseting = new BehaviorSubject<boolean>(false);
     public isScrollReseting = this.scrollReseting.asObservable();
 
+    /* Toolbar Width - For Table Empty State */
+    private toolbarWidth = new BehaviorSubject<IToolbarWidth>(null);
+    public currentToolbarWidth = this.toolbarWidth.asObservable();
+
     constructor(private tableColumnsConfigService: TableConfigService) {}
 
     // ------------------------------ Table Back Service Methods --------------------------------
@@ -293,5 +299,10 @@ export class TruckassistTableService {
     /* Load Status Filter */
     public sendLoadStatusFilter(statusFilterOptions): void {
         this.setLoadStatusFilterOptions.next(statusFilterOptions);
+    }
+
+    /* Toolbar Width - For Table Empty State */
+    public sendToolbarWidth(toolbarWidth: IToolbarWidth) {
+        this.toolbarWidth.next(toolbarWidth);
     }
 }

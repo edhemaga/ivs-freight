@@ -774,9 +774,6 @@ export class RepairTableComponent
             localStorage.getItem(`table-${configType}-Configuration`)
         );
 
-        const repairConfig = getRepairTruckAndTrailerColumnDefinition();
-        const shopConfig = getRepairShopColumnDefinition();
-
         if (
             configType === TableStringEnum.REPAIR_TRUCK ||
             configType === TableStringEnum.REPAIR_TRAILER

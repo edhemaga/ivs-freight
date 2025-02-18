@@ -1,55 +1,83 @@
+@let isListView = activeViewMode === taStringEnum.LIST;
+
 @if (!hasResults) {
     <div
-        class="d-grid empty-column-grid"
-        [ngClass]="
-            view === taStringEnum.LIST ? 'empty-grid-list' : 'empty-grid-card'
-        "
+        class="table-empty-container"
+        [ngStyle]="{
+            'margin-top': isListView ? '80px' : '50px',
+            width: toolbarWidth?.width,
+            'max-width.px': toolbarWidth?.maxWidth,
+        }"
     >
-        @for (
-            column of emptyColums;
-            let columnIndex = $index;
-            track columnIndex
-        ) {
-            <div
-                class="empty-column"
-                [ngClass]="
-                    view === taStringEnum.LIST
-                        ? 'empty-column-list'
-                        : 'empty-column-card'
-                "
-            ></div>
-        }
-    </div>
+        <!-- Empty Grid Placeholder -->
 
-    <div
-        class="d-flex align-items-center flex-column text-center"
-        [class.mt-80]="view === taStringEnum.CARD"
-        [class.mt-negative]="view === taStringEnum.LIST"
-    >
-        <svg-icon
-            class="no-data-icon"
-            [src]="tableEmptySvgRoutes.noDataSvgRoute"
-        ></svg-icon>
-
-        <h4 class="text-color-muted text-size-26 ta-font-extra-bold mb-3">
-            {{ !isEmptyList ? 'No data' : 'No results' }}
-        </h4>
-
-        <p class="text-color-muted text-size-11 ta-font-medium mb-5">
-            @if (isEmptyList) {
-                No entries match your criteria.<br />
-                Please revise your filters and search again.
+        <div
+            class="d-grid empty"
+            [ngClass]="isListView ? 'empty-grid-list' : 'empty-grid-card'"
+        >
+            @for (
+                emptyBox of emptyGridPlaceholder;
+                let columnIndex = $index;
+                track columnIndex
+            ) {
+                <div
+                    class="empty-column"
+                    [ngClass]="
+                        isListView ? 'empty-column-list' : 'empty-column-card'
+                    "
+                ></div>
             }
-        </p>
-    </div>
-
-    @if (!isEmptyList) {
-        <ng-container *ngTemplateOutlet="actionTemplate"></ng-container>
-    } @else {
-        <div class="d-flex align-items-center justify-content-center">
-            <button class="ca-btn ca-btn-tertiary" (click)="resetFilters()">
-                Clear All
-            </button>
         </div>
-    }
+
+        <!-- Main -->
+
+        <div
+            class="d-flex flex-column justify-content-center align-items-center table-empty-container-main"
+        >
+            <svg-icon
+                class="no-data-icon"
+                [src]="tableEmptySvgRoutes.noDataSvgRoute"
+            ></svg-icon>
+
+            <p class="m-0 ta-font-extra-bold text-color-grey text-size-26">
+                No data
+            </p>
+
+            <p class="m-0 ta-font-extra-bold text-color-grey text-size-26">
+                addshop
+            </p>
+
+            <p class="m-0 ta-font-extra-bold text-color-grey text-size-26">
+                importlist
+            </p>
+        </div>
+
+        <!--   <div
+    class="d-flex align-items-center flex-column text-center"
+    [class.mt-80]="view === taStringEnum.CARD"
+    [class.mt-negative]="isListView"
+>
+   
+    <h4 class="text-color-muted text-size-26 ta-font-extra-bold mb-3">
+        {{ !isEmptyList ? 'No data' : 'No results' }}
+    </h4>
+
+    <p class="text-color-muted text-size-11 ta-font-medium mb-5">
+        @if (isEmptyList) {
+            No entries match your criteria.<br />
+            Please revise your filters and search again.
+        }
+    </p>
+</div> -->
+
+        <!--  @if (!isEmptyList) {
+    <ng-container *ngTemplateOutlet="actionTemplate"></ng-container>
+} @else {
+    <div class="d-flex align-items-center justify-content-center">
+        <button class="ca-btn ca-btn-tertiary" (click)="resetFilters()">
+            Clear All
+        </button>
+    </div>
+} -->
+    </div>
 }

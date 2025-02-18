@@ -1,11 +1,11 @@
 <div class="table-container">
     <app-ta-table-toolbar
-        (toolBarAction)="onToolBarAction($event)"
         [options]="tableOptions"
         [tableData]="tableData"
         [selectedTab]="selectedTab"
         [columns]="columns"
         [activeViewMode]="activeViewMode"
+        (toolBarAction)="onToolBarAction($event)"
     ></app-ta-table-toolbar>
 
     @switch (activeViewMode) {
@@ -134,9 +134,8 @@
 </ng-template>
 
 <app-ta-table-empty
-    [actionTemplate]="actionTemplate"
+    [activeViewMode]="activeViewMode"
     [filteredResults]="tabResultLength"
     [hasResults]="viewData.length"
-    [view]="activeViewMode"
     (resetFilter$)="resetFilter()"
 ></app-ta-table-empty>
