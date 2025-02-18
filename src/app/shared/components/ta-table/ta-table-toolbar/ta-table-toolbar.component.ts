@@ -769,12 +769,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         this.timeOutToaggleColumn = setTimeout(() => {
             if (!column.isPined) {
                 this.columns = this.columns.map((item) => {
-                    if (item.field === column.field) {
+                    if (item.field === column.field)
                         item = {
                             ...item,
                             hidden: !column.hidden,
                         };
-                    }
 
                     return item;
                 });
