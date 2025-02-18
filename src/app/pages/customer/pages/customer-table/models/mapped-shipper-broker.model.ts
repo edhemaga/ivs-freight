@@ -4,7 +4,6 @@ import {
     BrokerResponse,
     EnumValue,
     InvoiceAgeingResponse,
-    LoadResponse,
     PoBoxEntity,
     ReviewResponse,
     ShipperContactResponse,
@@ -142,10 +141,7 @@ export interface MappedShipperBroker {
     tableAdded?: string;
     tableEdited?: string;
     tableLastUsed?: string;
-    tableDropdownContent?: {
-        hasContent?: boolean;
-        content?: DropdownItem[];
-    };
+    tableDropdownContent?: DropdownItem[];
     PaymentDetailInvAgeing?: {
         bfb: string;
         dnu: string;
@@ -157,4 +153,5 @@ export interface MappedShipperBroker {
     tableMiles?: string;
     tablePPM?: string;
     tableRevenue?: string;
+    address?: AddressEntity;
 }

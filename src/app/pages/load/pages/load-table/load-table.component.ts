@@ -416,10 +416,13 @@ export class LoadTableComponent
                     isPaidOrShortPaid ||
                     isTonuFromCancelled
                 ) {
-                    this.onTableBodyActions({
-                        type: TableStringEnum.EDIT,
-                        id: updatingItem.id,
-                    });
+                    const selectedTab: eLoadStatusType =
+                        eLoadStatusType[this.selectedTab];
+                    this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(
+                        updatingItem.id,
+                        selectedTab,
+                        TableStringEnum.EDIT
+                    );
                     return;
                 }
 
@@ -656,65 +659,6 @@ export class LoadTableComponent
         this.resizeObserver.observe(
             document.querySelector(TableStringEnum.TABLE_CONTAINER)
         );
-    }
-
-    private onTableBodyActions(event: {
-        type: string;
-        id?: number;
-        data?: any;
-    }): void {
-        const { ...params } = this.filter || {};
-        const { type } = event || {};
-        const { id } = event || {};
-        const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
-
-        if (type === TableStringEnum.SHOW_MORE) {
-            this.filter = {
-                ...params,
-                pageIndex: params.pageIndex ? params.pageIndex + 1 : 1,
-                statusType: selectedTab,
-                pageSize: 25,
-            };
-
-            this.loadStoreService.dispatchGetList(
-                this.filter,
-                selectedTab,
-                true
-            );
-        } else if (type === TableStringEnum.DELETE) {
-            const modalTitle = LoadTableHelper.composeDeleteModalTitle(
-                this.selectedTab
-            );
-
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    type: TableStringEnum.DELETE,
-                    template: TableStringEnum.LOAD,
-                    subType: this.selectedTab?.toLowerCase(),
-                    modalHeaderTitle: modalTitle,
-                }
-            );
-        } else if (type === TableStringEnum.EDIT) {
-            this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(
-                id,
-                selectedTab,
-                type
-            );
-        } else if (type === TableStringEnum.VIEW_DETAILS) {
-            this.router.navigate([`/list/load/${event.id}/details`]);
-        } else if (
-            type === TableStringEnum.CONVERT_TO_TEMPLATE ||
-            type === TableStringEnum.CONVERT_TO_LOAD
-        ) {
-            this.loadStoreService.dispatchGetConvertToLoadOrTemplateModalData(
-                id,
-                selectedTab,
-                type
-            );
-        }
     }
 
     private currentSelectedRowsSubscribe(): void {

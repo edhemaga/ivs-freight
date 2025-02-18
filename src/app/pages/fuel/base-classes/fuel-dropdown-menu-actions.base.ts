@@ -35,8 +35,8 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
 
     protected handleDropdownMenuActions<
         T extends FuelTransactionResponse | FuelStopResponse,
-    >(event: TableCardBodyActions<T>, tableType: string): void {
-        const { id, data, type } = event;
+    >(action: TableCardBodyActions<T>, tableType: string): void {
+        const { id, data, type } = action;
 
         switch (type) {
             case DropdownMenuStringEnum.ALL_TRANSACTIONS_TYPE:
@@ -56,16 +56,16 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
                 break;
             case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
             case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
-                this.handleFuelStopOpenCloseBusinessAction(event, tableType);
+                this.handleFuelStopOpenCloseBusinessAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleFuelDeleteAction(event, tableType);
+                this.handleFuelDeleteAction(action, tableType);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
@@ -100,19 +100,19 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
     }
 
     private handleFuelStopOpenCloseBusinessAction<T extends FuelStopResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { businessName, address, isClosed },
-        } = event;
+        } = action;
 
         const data = {
             status: +!isClosed,
         };
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data,
             template: tableType,
             subType: tableType,
@@ -122,17 +122,17 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
             modalSecondTitle: `${address.city}, ${address.stateShortName}`,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleFuelDeleteAction<
         T extends FuelTransactionResponse | FuelStopResponse,
-    >(event: TableCardBodyActions<T>, tableType: string): void {
+    >(action: TableCardBodyActions<T>, tableType: string): void {
         const isFuelTransaction =
             tableType === DropdownMenuStringEnum.FUEL_TRANSACTION;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             subType: isFuelTransaction
                 ? DropActionsStringEnum.DELETE_FUEL_TRANSACTION
                 : DropActionsStringEnum.DELETE_FUEL_STOP,
@@ -141,6 +141,6 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
                 : ConfirmationModalStringEnum.DELETE_FUEL_STOP,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 }

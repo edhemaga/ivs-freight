@@ -23,39 +23,39 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
     }
 
     protected handleDropdownMenuActions<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string,
         selectedTab?: string
     ) {
-        const { type } = event;
+        const { type } = action;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_TYPE:
-                this.handleLoadEditAction(event, selectedTab);
+                this.handleLoadEditAction(action, selectedTab);
 
                 break;
             case DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE:
             case DropdownMenuStringEnum.CREATE_LOAD_TYPE:
-                this.handleCreateLoadOrTemplateAction(event, selectedTab);
+                this.handleCreateLoadOrTemplateAction(action, selectedTab);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleLoadDeleteAction(event, tableType, selectedTab);
+                this.handleLoadDeleteAction(action, tableType, selectedTab);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
     }
 
     private handleLoadEditAction<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         selectedTab: string
     ) {
-        const { type, id } = event;
+        const { type, id } = action;
 
         const selectedLoadTab: eLoadStatusType = eLoadStatusType[selectedTab];
 
@@ -67,10 +67,10 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
     }
 
     private handleCreateLoadOrTemplateAction<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         selectedTab: string
     ) {
-        const { type, id } = event;
+        const { type, id } = action;
 
         const selectedLoadTab: eLoadStatusType = eLoadStatusType[selectedTab];
 
@@ -82,20 +82,20 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
     }
 
     private handleLoadDeleteAction<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string,
         selectedTab: string
     ): void {
         const modalHeaderTitle =
             LoadTableHelper.composeDeleteModalTitle(selectedTab);
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             template: DropdownMenuStringEnum.LOAD,
             subType: selectedTab.toLowerCase(),
             modalHeaderTitle,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 }

@@ -21,13 +21,13 @@ export abstract class PmDropdownMenuActionsBase extends DropdownMenuActionsBase 
 
     protected handleDropdownMenuActions<
         T extends PMTruckUnitResponse | PMTrailerUnitResponse,
-    >(event: TableCardBodyActions<T>, tableType: string) {
-        const { data, type } = event;
+    >(action: TableCardBodyActions<T>, tableType: string) {
+        const { data, type } = action;
 
         type === DropdownMenuStringEnum.CONFIGURE_TYPE
             ? this.handleConfigureAction(data)
             : // call the parent class method to handle shared cases
-              super.handleSharedDropdownMenuActions(event, tableType);
+              super.handleSharedDropdownMenuActions(action, tableType);
     }
 
     private handleConfigureAction(
