@@ -7,26 +7,33 @@ import {
     Output,
 } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// Models
-import { CardDetails } from '@shared/models/card-models/card-table-data.model';
-import { SendDataCard } from '@shared/models/card-models/send-data-card.model';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+// base classes
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
-// Pipes
-import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
-import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
+// helpers
+import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// Services
+// services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { ModalService } from '@shared/services/modal.service';
-import { ImageBase64Service } from '@shared/services/image-base64.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
-// Helpers
-import { CardHelper } from '@shared/utils/helpers/card-helper';
+// enums
+import { DropdownMenuStringEnum } from '@shared/enums';
+
+// models
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+
+// pipes
+import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
+import { TimeFormatPipe } from '@shared/pipes/time-format-am-pm.pipe';
 
 // Svg-Routes
 import { LoadCardSvgRoutes } from '@pages/load/pages/load-card/utils/svg-routes/load-card-svg-routes';
@@ -36,62 +43,62 @@ import { LoadCardSvgRoutes } from '@pages/load/pages/load-card/utils/svg-routes/
     templateUrl: './load-card.component.html',
     styleUrls: ['./load-card.component.scss'],
     providers: [
-        // Pipes
+        // pipes
         FormatCurrencyPipe,
         TimeFormatPipe,
 
-        //Helpers
+        // helpers
         CardHelper,
     ],
 })
-export class LoadCardComponent implements OnInit, OnDestroy {
-    @Output() bodyActions: EventEmitter<SendDataCard> = new EventEmitter();
-    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
-        new EventEmitter<{ value: string; id: number }>();
-
+export class LoadCardComponent
+    extends LoadDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
 
-    // Card body keys
-    @Input() cardTitle: string;
-    @Input() rows: number[];
+    // card body endpoints
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
+
     @Input() selectedTab: string;
 
-    private destroy$ = new Subject<void>();
+    @Output() saveValueNote: EventEmitter<{ value: string; id: number }> =
+        new EventEmitter<{ value: string; id: number }>();
 
-    // Array holding id of checked cards
-    public isCheckboxCheckedArray: number[] = [];
+    public destroy$ = new Subject<void>();
+
+    public _viewData: CardDetails[];
 
     public isCardFlippedCheckInCards: number[] = [];
-
     public isAllCardsFlipp: boolean = false;
-    public _viewData: CardDetails[];
-    public cardsFront: CardDataResult[][][] = [];
-    public cardsBack: CardDataResult[][][] = [];
-    public titleArray: string[][] = [];
 
     public loadImageRoutes = LoadCardSvgRoutes;
 
     constructor(
-        // Services
+        protected router: Router,
+
+        // services
+        protected modalService: ModalService,
+        protected loadStoreService: LoadStoreService,
+
         private tableService: TruckassistTableService,
         private detailsDataService: DetailsDataService,
-        private modalService: ModalService,
-        public imageBase64Service: ImageBase64Service,
 
-        // Router
-        private router: Router,
-
-        // Helpers
+        // helpers
         private cardHelper: CardHelper
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public flipAllCards(): void {
@@ -105,7 +112,6 @@ export class LoadCardComponent implements OnInit, OnDestroy {
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -114,27 +120,39 @@ export class LoadCardComponent implements OnInit, OnDestroy {
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    // Flip card based on card index
-    public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
-    }
-
-    public goToDetailsPage(card: CardDetails): void {
-        this.detailsDataService.setNewData(card);
-
-        this.router.navigate([`/list/load/${card.id}/details`]);
-    }
-
-    public trackCard(item: number): number {
-        return item;
-    }
-
     public saveNoteValue(note: string, id: number): void {
         this.saveValueNote.emit({
             value: note,
             id: id,
         });
     }
+
+    public goToDetailsPage(card: CardDetails, link: string): void {
+        this.detailsDataService.setNewData(card);
+
+        this.router.navigate([link]);
+    }
+
+    public handleToggleDropdownMenuActions<T>(
+        action: DropdownMenuOptionEmit,
+        cardData: T
+    ): void {
+        const { type } = action;
+
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
+                type,
+                cardData
+            );
+
+        this.handleDropdownMenuActions(
+            emitAction,
+            DropdownMenuStringEnum.LOAD,
+            this.selectedTab
+        );
+    }
+
+    public handleShowMoreAction(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

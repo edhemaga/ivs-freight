@@ -65,13 +65,13 @@ export class RepairOrderConfig {
         customClass: 'truck-trailer-dropdown',
     };
 
-    static DRIVER = (isDriverSelected: boolean): ITaInput => {
+    static DRIVER = (isDriverDisabled: boolean): ITaInput => {
         return {
             name: 'driver',
             type: 'text',
             label: 'Driver',
             isDropdown: true,
-            isDisabled: !isDriverSelected,
+            isDisabled: isDriverDisabled,
             textTransform: 'capitalize',
             minLength: 1,
             maxLength: 8,
@@ -80,7 +80,10 @@ export class RepairOrderConfig {
         };
     };
 
-    static ODOMETER = (selectedHeaderTab: number, isAnyRepairItemHasPmSelected: boolean): ITaInput => {
+    static ODOMETER = (
+        selectedHeaderTab: number,
+        isAnyRepairItemHasPmSelected: boolean
+    ): ITaInput => {
         return {
             name: 'repair-odometer',
             type: 'text',

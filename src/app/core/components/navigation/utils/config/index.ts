@@ -1,0 +1,1 @@
+export * from './navigation-data-upload-files.config';

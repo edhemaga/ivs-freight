@@ -17,6 +17,9 @@ import { DriversDetailsListStore } from '@pages/driver/state/driver-details-list
 // models
 import { GetMvrModalResponse, MvrResponse } from 'appcoretruckassist';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -100,7 +103,7 @@ export class DriverMvrService {
                         : this.driverInactiveStore.add(driver);
 
                     this.tableService.sendActionAnimation({
-                        animation: 'update',
+                        animation: eGeneralActions.UPDATE,
                         data: mappedDriver,
                         id: mappedDriver.id,
                     });

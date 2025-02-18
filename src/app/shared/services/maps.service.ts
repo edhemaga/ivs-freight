@@ -14,6 +14,9 @@ import { MapService } from 'appcoretruckassist';
 // models
 import { CreateMapCommand, MapResponse } from 'appcoretruckassist';
 
+// enum
+import { eGeneralActions } from '@shared/enums';
+
 declare var google: any;
 
 @Injectable({
@@ -94,29 +97,6 @@ export class MapsService implements OnDestroy {
                     .pipe(takeUntil(this.destroy$))
                     .subscribe({
                         next: (map: MapResponse | any) => {
-                            // this.shipperStore.add(shipper);
-                            // this.shipperMinimalStore.add(shipper);
-                            // const brokerShipperCount = JSON.parse(
-                            //   localStorage.getItem('brokerShipperTableCount')
-                            // );
-
-                            // brokerShipperCount.shipper++;
-
-                            // localStorage.setItem(
-                            //   'brokerShipperTableCount',
-                            //   JSON.stringify({
-                            //     broker: brokerShipperCount.broker,
-                            //     shipper: brokerShipperCount.shipper,
-                            //   })
-                            // );
-
-                            // this.tableService.sendActionAnimation({
-                            //   animation: 'add',
-                            //   tab: 'shipper',
-                            //   data: shipper,
-                            //   id: shipper.id,
-                            // });
-
                             subMap.unsubscribe();
                         },
                     });
@@ -164,7 +144,7 @@ export class MapsService implements OnDestroy {
                     name: 'edit-cutomer-or-shipper',
                     svg: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                     show: true,
-                    iconName: 'edit',
+                    iconName: eGeneralActions.EDIT,
                     disabled: !data.status || data.isClosed,
                 },
                 {
@@ -196,23 +176,6 @@ export class MapsService implements OnDestroy {
                 {
                     title: 'border',
                 },
-                // {
-                //     title: 'Share',
-                //     name: 'share',
-                //     svg: 'assets/svg/common/share-icon.svg',
-                //     show: true,
-                //     iconName: 'share',
-                // },
-                // {
-                //     title: 'Print',
-                //     name: 'print',
-                //     svg: 'assets/svg/common/ic_fax.svg',
-                //     show: true,
-                //     iconName: 'print',
-                // },
-                // {
-                //     title: 'border',
-                // },
                 {
                     title:
                         !data.status || data.isClosed
@@ -230,21 +193,21 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: 'delete',
+                    name: eGeneralActions.DELETE,
                     svg: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                     redIcon: true,
                     show: true,
-                    iconName: 'delete',
+                    iconName: eGeneralActions.DELETE,
                 },
             ];
         } else if (type == 'repairShop') {
             dropActions = [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: 'edit',
+                    iconName: eGeneralActions.EDIT,
                     disabled: data.status == 0 || data.isClosed,
                 },
                 {
@@ -290,23 +253,7 @@ export class MapsService implements OnDestroy {
                 {
                     title: 'border',
                 },
-                // {
-                //     title: 'Share',
-                //     name: 'share',
-                //     svg: 'assets/svg/common/share-icon.svg',
-                //     show: true,
-                //     iconName: 'share',
-                // },
-                // {
-                //     title: 'Print',
-                //     name: 'print',
-                //     svg: 'assets/svg/common/ic_fax.svg',
-                //     show: true,
-                //     iconName: 'print',
-                // },
-                // {
-                //     title: 'border',
-                // },
+
                 {
                     title:
                         data.status == 0 || data.isClosed
@@ -324,14 +271,14 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: 'delete',
+                    name: eGeneralActions.DELETE,
                     type: 'truck',
                     text: 'Are you sure you want to delete truck(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: 'delete',
+                    iconName: eGeneralActions.DELETE,
                 },
             ];
         }

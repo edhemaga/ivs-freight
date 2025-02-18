@@ -87,7 +87,7 @@
                             }"
                             formControlName="state"
                         ></app-ta-input-dropdown>
-                        <app-ta-input
+                        <ca-input-datetime-picker
                             [inputConfig]="{
                                 name: 'datepicker',
                                 type: 'text',
@@ -98,9 +98,9 @@
                                 customClass: 'datetimeclass',
                             }"
                             formControlName="date"
-                        ></app-ta-input>
+                        ></ca-input-datetime-picker>
                         <!-- Time Picker -->
-                        <app-ta-input
+                        <ca-input-datetime-picker
                             [inputConfig]="{
                                 name: 'timepicker',
                                 type: 'text',
@@ -111,10 +111,10 @@
                                 isDisabled: true,
                             }"
                             formControlName="startTime"
-                        ></app-ta-input>
+                        ></ca-input-datetime-picker>
 
                         <!-- Time Picker -->
-                        <app-ta-input
+                        <ca-input-datetime-picker
                             [inputConfig]="{
                                 name: 'timepicker',
                                 type: 'text',
@@ -125,7 +125,7 @@
                                 isDisabled: true,
                             }"
                             formControlName="endTime"
-                        ></app-ta-input>
+                        ></ca-input-datetime-picker>
                     </div>
                     <app-ta-custom-card
                         [animationMarginParams]="{
@@ -165,7 +165,7 @@
                                 }"
                                 formControlName="driverState"
                             ></app-ta-input>
-                            <app-ta-input
+                            <ca-input-datetime-picker
                                 [inputConfig]="{
                                     name: 'datepicker',
                                     type: 'text',
@@ -176,7 +176,7 @@
                                     customClass: 'datetimeclass',
                                 }"
                                 formControlName="driverDOB"
-                            ></app-ta-input>
+                            ></ca-input-datetime-picker>
                         </div>
                     </app-ta-custom-card>
                     <app-ta-custom-card
@@ -217,7 +217,7 @@
                                 }"
                                 formControlName="coDriverState"
                             ></app-ta-input>
-                            <app-ta-input
+                            <ca-input-datetime-picker
                                 [inputConfig]="{
                                     name: 'datepicker',
                                     type: 'text',
@@ -228,7 +228,7 @@
                                     customClass: 'datetimeclass',
                                 }"
                                 formControlName="coDriverDOB"
-                            ></app-ta-input>
+                            ></ca-input-datetime-picker>
                         </div>
                     </app-ta-custom-card>
                     <app-ta-custom-card
@@ -748,19 +748,22 @@
                         [isCardOpen]="isSpecialChecksOpen"
                     >
                         <div class="violation-special-checks">
-                            <div
-                                (click)="
-                                    specialCheck.active = !specialCheck.active
-                                "
-                                *ngFor="
-                                    let specialCheck of specialChecks;
-                                    trackBy: identity
-                                "
-                                [class.active]="specialCheck.active"
-                                class="violation-special-check"
-                            >
-                                <p>{{ specialCheck.name }}</p>
-                            </div>
+                            @for (
+                                specialCheck of specialChecks;
+                                let ind = $index;
+                                track ind
+                            ) {
+                                <div
+                                    (click)="
+                                        specialCheck.active =
+                                            !specialCheck.active
+                                    "
+                                    [class.active]="specialCheck.active"
+                                    class="violation-special-check"
+                                >
+                                    <p>{{ specialCheck.name }}</p>
+                                </div>
+                            }
                         </div>
                     </app-ta-custom-card>
                 </div>

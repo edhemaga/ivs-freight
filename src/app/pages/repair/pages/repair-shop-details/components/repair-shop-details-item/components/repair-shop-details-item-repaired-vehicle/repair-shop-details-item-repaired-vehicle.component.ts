@@ -23,7 +23,7 @@ import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-
 import { DispatchColorFinderPipe, ThousandSeparatorPipe } from '@shared/pipes';
 
 // models
-import { RepairedVehicleListResponse } from 'appcoretruckassist';
+import { RepairedVehicleResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-repair-shop-details-item-repaired-vehicle',
@@ -46,12 +46,12 @@ import { RepairedVehicleListResponse } from 'appcoretruckassist';
     ],
 })
 export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
-    @Input() set repairedVehicleList(data: RepairedVehicleListResponse[]) {
+    @Input() set repairedVehicleList(data: RepairedVehicleResponse[]) {
         this._repairedVehicleList = data;
     }
     @Input() searchConfig: boolean[];
 
-    public _repairedVehicleList: RepairedVehicleListResponse[] = [];
+    public _repairedVehicleList: RepairedVehicleResponse[] = [];
 
     public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
 
@@ -67,8 +67,6 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
     ngOnInit(): void {
         this.getConstantData();
     }
-
-    public trackByIdentity = (index: number): number => index;
 
     private getConstantData(): void {
         this.repairedVehicleListHeaderItems =

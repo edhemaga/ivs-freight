@@ -36,7 +36,13 @@
                 [columns]="store?.columns"
                 [options]="store?.tableOptions"
                 [selectedTab]="selectedTab | lowercase"
-                (bodyActions)="onTableBodyActions($event)"
+                (tableBodyActions)="
+                    handleDropdownMenuActions(
+                        $event,
+                        dropdownMenuStringEnum.LOAD,
+                        selectedTab
+                    )
+                "
                 [tableData]="store?.tableData"
                 (saveValueNote)="saveValueNote($event)"
             ></app-ta-table-body>
@@ -46,17 +52,12 @@
         @if (store?.activeViewMode === 'Card') {
             <div class="elements">
                 <app-load-card
-                    (bodyActions)="onTableBodyActions($event)"
                     [viewData]="store?.viewData"
-                    [rows]="rows"
-                    [cardTitle]="cardTitle"
-                    [cardTitleLink]="cardTitleLink"
+                    [selectedTab]="selectedTab"
                     [displayRowsFront]="
                         (displayRows$ | async)?.displayRowsFront
                     "
                     [displayRowsBack]="(displayRows$ | async)?.displayRowsBack"
-                    [page]="page"
-                    [selectedTab]="selectedTab | lowercase"
                     (saveValueNote)="saveValueNote($event)"
                 ></app-load-card>
 
@@ -70,13 +71,14 @@
                         {{ store?.viewData?.length }} OF
                         {{ store?.activeTableData?.data?.length }}
                     </div>
+
                     @if (
                         store?.viewData?.length <
                         store?.activeTableData?.data?.length
                     ) {
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>

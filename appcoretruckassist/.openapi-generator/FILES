@@ -62,6 +62,7 @@ api/title.service.ts
 api/todo.service.ts
 api/trailer.service.ts
 api/trailerType.service.ts
+api/transmissionModel.service.ts
 api/truck.service.ts
 api/truckType.service.ts
 api/user.service.ts
@@ -427,6 +428,7 @@ model/dispatchParkingFilterResponse.ts
 model/dispatchPossibleStatusResponse.ts
 model/dispatchResponse.ts
 model/dispatchResponsePagination.ts
+model/dispatchShortMobileResponse.ts
 model/dispatchShortResponse.ts
 model/dispatchStatus.ts
 model/dispatchStatusFilterResponse.ts
@@ -650,6 +652,7 @@ model/loadResponse.ts
 model/loadShortResponse.ts
 model/loadSortBy.ts
 model/loadStatus.ts
+model/loadStatusFilterResponse.ts
 model/loadStatusHistoryCommand.ts
 model/loadStatusHistoryResponse.ts
 model/loadStatusResponse.ts
@@ -661,6 +664,7 @@ model/loadStopItemCommand.ts
 model/loadStopItemResponse.ts
 model/loadStopLoadListResponse.ts
 model/loadStopMobileResponse.ts
+model/loadStopMobileShortResponse.ts
 model/loadStopProgressBarResponse.ts
 model/loadStopResponse.ts
 model/loadStopShortResponse.ts
@@ -860,6 +864,7 @@ model/repairItemResponse.ts
 model/repairListResponse.ts
 model/repairMainModuleResponse.ts
 model/repairModalResponse.ts
+model/repairOrderBillDriverListResponse.ts
 model/repairResponse.ts
 model/repairResponsePagination.ts
 model/repairServiceTypeCommand.ts
@@ -1042,6 +1047,9 @@ model/trailerShortResponsePagination.ts
 model/trailerTypeFilterResponse.ts
 model/trailerTypeResponse.ts
 model/transferRegistrationCommand.ts
+model/transmissionModelFilterResponse.ts
+model/transmissionModelResponse.ts
+model/transmissionType.ts
 model/transponderGroup.ts
 model/truckAccidentResponse.ts
 model/truckAutocompleteModelResponse.ts

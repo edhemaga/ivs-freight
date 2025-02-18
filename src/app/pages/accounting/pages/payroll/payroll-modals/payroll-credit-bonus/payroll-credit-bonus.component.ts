@@ -76,7 +76,7 @@ export class PayrollCreditBonusComponent implements OnInit {
         private payrollInternalService: PayrollInternalService,
         private ngbActiveModal: NgbActiveModal,
         private formBuilder: UntypedFormBuilder
-    ) {}
+    ) { }
 
     ngOnInit() {
         this.createForm();
@@ -94,7 +94,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
             [PayrollStringEnum.DATE]: [
                 MethodsCalculationsHelper.convertDateFromBackend(data.date) ??
-                    new Date(),
+                new Date(),
                 Validators.required,
             ],
             [PayrollStringEnum.DESCRIPTION]: [
@@ -223,7 +223,7 @@ export class PayrollCreditBonusComponent implements OnInit {
             date: MethodsCalculationsHelper.convertDateToBackend(
                 this.payrollCreditForm.get(PayrollStringEnum.DATE).value
             ),
-            amount: MethodsCalculationsHelper.convertThousanSepInNumber(
+            amount: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
             ),
         };

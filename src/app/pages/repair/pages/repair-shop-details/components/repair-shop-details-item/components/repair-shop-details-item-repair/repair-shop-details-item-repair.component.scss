@@ -91,6 +91,10 @@
                 padding: 4px 6px;
 
                 .invoice-container {
+                    p {
+                        max-width: 115px;
+                    }
+
                     .repair-order-icon {
                         position: relative;
                         bottom: 1px;
@@ -112,7 +116,9 @@
                         color: $ta-blue-18;
                         border-radius: 2px;
                         padding: 4px 8px;
-                        transition: color 0.2s ease-in, background 0.2s ease-in;
+                        transition:
+                            color 0.2s ease-in,
+                            background 0.2s ease-in;
 
                         user-select: none;
                         -webkit-user-select: none;
@@ -142,7 +148,9 @@
 
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.2s ease-out, padding 0.2s ease-out;
+            transition:
+                max-height 0.2s ease-out,
+                padding 0.2s ease-out;
 
             &.expanded {
                 max-height: 226px;

@@ -779,7 +779,11 @@
                                                 'avatar-is-owner': row.isOwner,
                                             }"
                                         >
-                                            @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                            @if (
+                                                row.isIncompleteFuelTransaction &&
+                                                column.name === 'Driver' &&
+                                                !row.driver
+                                            ) {
                                                 <div
                                                     mainTooltip="Driver not Linked"
                                                     mainContent
@@ -816,7 +820,11 @@
                                             }
                                         </div>
 
-                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                        @if (
+                                            row.isIncompleteFuelTransaction &&
+                                            column.name === 'Driver' &&
+                                            !row.driver
+                                        ) {
                                             <span
                                                 class="table-text column-text-red"
                                                 [ngClass]="{
@@ -830,15 +838,17 @@
                                                 [innerHtml]="
                                                     row[column.field]
                                                         ? (row[column.field]
-                                                        | tableHighlightSearchText
-                                                            : this
+                                                          | tableHighlightSearchText
+                                                              : this
                                                                     .chipsForHighlight)
                                                         : ''
                                                 "
                                             ></span>
                                         } @else {
                                             <div
-                                                (click)="goToDetails(column, row)"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
                                                 [ngClass]="{
                                                     'has-details-page':
                                                         !column.link
@@ -848,8 +858,8 @@
                                                 [innerHtml]="
                                                     row[column.field]
                                                         ? (row[column.field]
-                                                        | tableHighlightSearchText
-                                                            : this
+                                                          | tableHighlightSearchText
+                                                              : this
                                                                     .chipsForHighlight)
                                                         : ''
                                                 "
@@ -859,14 +869,16 @@
                                                 [autoClose]="'outside'"
                                                 popoverClass="toolbar-options-popover"
                                                 triggers="manual"
-                                                (hidden)="optionsPopupOpen = false"
+                                                (hidden)="
+                                                    optionsPopupOpen = false
+                                                "
                                                 mainTooltip="View Detail"
                                                 [tooltipBackground]="'#424242'"
                                                 [tooltipColor]="'#ffff'"
                                                 position="bottom"
                                             >
                                                 {{ row[column.field] }}
-                                            </div>     
+                                            </div>
                                         }
                                     </div>
 
@@ -1090,16 +1102,6 @@
                                                             ?.invoice
                                                     }}
                                                 </span>
-
-                                                @if (
-                                                    row.isIntegratedFuelTransaction
-                                                ) {
-                                                    <svg-icon
-                                                        [src]="
-                                                            tableBodySvgRoutes.fuelIntegratedTransactionInvoiceSvgRoute
-                                                        "
-                                                    ></svg-icon>
-                                                }
                                             </div>
 
                                             <!-- Hide LTL and FTL icons for now  -->
@@ -1121,9 +1123,7 @@
 
                                     <!-- NAME LINK COLUMN -->
 
-                                    <ng-container
-                                        *ngIf="column.ngTemplate === 'nameLink'"
-                                    >
+                                    @if (column.ngTemplate === 'nameLink') {
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
@@ -1133,12 +1133,73 @@
                                             }"
                                             ngbTooltip
                                         >
-                                            <ng-container
-                                                *ngIf="
-                                                    !column.link
-                                                        ?.doesNotHaveRout
-                                                "
-                                            >
+                                            @if (column.link?.doesNotHaveRout) {
+                                                <div
+                                                    [ngStyle]="{
+                                                        width:
+                                                            column.width + 'px',
+                                                    }"
+                                                    class="table-name-link"
+                                                    [ngClass]="{
+                                                        'has-details-page':
+                                                            !column.link
+                                                                ?.doesNotHaveRout,
+                                                    }"
+                                                    (click)="
+                                                        goToDetails(column, row)
+                                                    "
+                                                >
+                                                    @if (
+                                                        row?.tableFuelStopIsClosed
+                                                    ) {
+                                                        <svg-icon
+                                                            [src]="
+                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    }
+
+                                                    @if (
+                                                        row.isIntegratedFuelTransaction
+                                                    ) {
+                                                        <svg-icon
+                                                            class="mr-3 lh-0 integrated-fuel-transaction"
+                                                            [src]="
+                                                                tableBodySvgRoutes.circleRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    } @else if (
+                                                        !row.isIntegratedFuelTransaction &&
+                                                        activeTableData?.gridNameTitle ===
+                                                            'FUEL'
+                                                    ) {
+                                                        <svg-icon
+                                                            class="mr-3 lh-0 manual-fuel-transaction"
+                                                            [src]="
+                                                                tableBodySvgRoutes.circleRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    }
+
+                                                    {{ row[column.field] }}
+
+                                                    @if (
+                                                        row.isRepairOrder &&
+                                                        !row.actionAnimation
+                                                    ) {
+                                                        <svg-icon
+                                                            class="repair-order-icon"
+                                                            [src]="
+                                                                tableBodySvgRoutes.circleRoute
+                                                            "
+                                                            [svgStyle]="{
+                                                                'width.px': 10,
+                                                                'height.px': 10,
+                                                            }"
+                                                        ></svg-icon>
+                                                    }
+                                                </div>
+                                            } @else {
                                                 <div
                                                     [ngStyle]="{
                                                         width:
@@ -1171,80 +1232,25 @@
                                                     [tooltipColor]="'#ffff'"
                                                     position="bottom"
                                                 >
-                                                    <ng-container
-                                                        *ngIf="
-                                                            row?.tableFuelStopIsClosed
-                                                        "
-                                                    >
+                                                    @if (
+                                                        row?.tableFuelStopIsClosed
+                                                    ) {
                                                         <svg-icon
                                                             [src]="
                                                                 tableBodySvgRoutes.brokerClosedRoute
                                                             "
                                                         ></svg-icon>
-                                                    </ng-container>
+                                                    }
+
                                                     {{
                                                         row[column.field]
                                                             ?.name ||
                                                             row[column.field]
                                                     }}
                                                 </div>
-                                            </ng-container>
-
-                                            <ng-container
-                                                *ngIf="
-                                                    column.link?.doesNotHaveRout
-                                                "
-                                            >
-                                                <div
-                                                    [ngStyle]="{
-                                                        width:
-                                                            column.width + 'px',
-                                                    }"
-                                                    class="table-name-link"
-                                                    [ngClass]="{
-                                                        'has-details-page':
-                                                            !column.link
-                                                                ?.doesNotHaveRout,
-                                                    }"
-                                                    (click)="
-                                                        goToDetails(column, row)
-                                                    "
-                                                >
-                                                    <ng-container
-                                                        *ngIf="
-                                                            row?.tableFuelStopIsClosed
-                                                        "
-                                                    >
-                                                        <svg-icon
-                                                            [src]="
-                                                                tableBodySvgRoutes.brokerClosedRoute
-                                                            "
-                                                        ></svg-icon>
-                                                    </ng-container>
-
-                                                    {{ row[column.field] }}
-
-                                                    <ng-container
-                                                        *ngIf="
-                                                            row.isRepairOrder &&
-                                                            !row.actionAnimation
-                                                        "
-                                                    >
-                                                        <svg-icon
-                                                            class="repair-order-icon"
-                                                            [src]="
-                                                                tableBodySvgRoutes.circleRoute
-                                                            "
-                                                            [svgStyle]="{
-                                                                'width.px': 10,
-                                                                'height.px': 10,
-                                                            }"
-                                                        ></svg-icon>
-                                                    </ng-container>
-                                                </div>
-                                            </ng-container>
+                                            }
                                         </div>
-                                    </ng-container>
+                                    }
 
                                     <!-- OOS COLUMN -->
 
@@ -2317,7 +2323,13 @@
 
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onLike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-like-icon':
                                                         row[column.field]
@@ -2330,7 +2342,6 @@
                                             <!-- Raiting Count -->
                                             <div
                                                 class="raiting-counter-container"
-                                                (click)="onOpenReviews(row)"
                                             >
                                                 <div
                                                     class="raiting-counter like-counter"
@@ -2355,7 +2366,13 @@
 
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onDislike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        !row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-dislike-icon':
                                                         row[column.field]
@@ -3258,6 +3275,32 @@
                                         </div>
                                     </ng-container>
 
+                                    <!-- OPEN HOURS COLUMN -->
+
+                                    @if (column.ngTemplate === 'open-hours') {
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px':
+                                                    column?.minWidth ?? 'unset',
+                                            }"
+                                        >
+                                            <app-ta-open-hours-dropdown
+                                                [dropdownConfig]="{
+                                                    rowId: row?.id,
+                                                    width: column?.width,
+                                                    openHours:
+                                                        row[column.field]
+                                                            ?.openHours,
+                                                    openHoursToday:
+                                                        row[column.field]
+                                                            ?.openHoursToday,
+                                                }"
+                                            ></app-ta-open-hours-dropdown>
+                                        </div>
+                                    }
+
                                     <!-- PROGRESS RANGE COLUMN -->
 
                                     <ng-container
@@ -3777,7 +3820,11 @@
                                         }"
                                         class="td-content"
                                     >
-                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                        @if (
+                                            row.isIncompleteFuelTransaction &&
+                                            column.name === 'Driver' &&
+                                            !row.driver
+                                        ) {
                                             <div
                                                 mainTooltip="Driver not Linked"
                                                 mainContent
@@ -3798,10 +3845,10 @@
                                             <div
                                                 class="avatar-container"
                                                 [ngClass]="{
-                                                    'avatar-is-owner': row.isOwner,
+                                                    'avatar-is-owner':
+                                                        row.isOwner,
                                                 }"
                                             >
-                                                
                                                 <ng-container
                                                     [ngTemplateOutlet]="
                                                         avatarColumn
@@ -3821,7 +3868,11 @@
                                             </div>
                                         }
 
-                                        @if (row.isIncompleteFuelTransaction && column.name === 'Driver') {
+                                        @if (
+                                            row.isIncompleteFuelTransaction &&
+                                            column.name === 'Driver' &&
+                                            !row.driver
+                                        ) {
                                             <span
                                                 class="table-text column-text-red"
                                                 [ngClass]="{
@@ -3835,15 +3886,17 @@
                                                 [innerHtml]="
                                                     row[column.field]
                                                         ? (row[column.field]
-                                                        | tableHighlightSearchText
-                                                            : this
+                                                          | tableHighlightSearchText
+                                                              : this
                                                                     .chipsForHighlight)
                                                         : ''
                                                 "
                                             ></span>
                                         } @else {
                                             <span
-                                                (click)="goToDetails(column, row)"
+                                                (click)="
+                                                    goToDetails(column, row)
+                                                "
                                                 [ngClass]="{
                                                     'has-details-page':
                                                         !column.link
@@ -3853,14 +3906,13 @@
                                                 [innerHtml]="
                                                     row[column.field]
                                                         ? (row[column.field]
-                                                        | tableHighlightSearchText
-                                                            : this
+                                                          | tableHighlightSearchText
+                                                              : this
                                                                     .chipsForHighlight)
                                                         : ''
                                                 "
                                             ></span>
                                         }
-                                        
                                     </div>
 
                                     <div
@@ -3981,95 +4033,115 @@
 
                                     <!-- NAME LINK COLUMN -->
 
-                                    <div
-                                        class="td-content"
-                                        *ngIf="column.ngTemplate === 'nameLink'"
-                                        [ngStyle]="{
-                                            width: column.width + 'px',
-                                            'min-width.px': column?.minWidth
-                                                ? column.minWidth
-                                                : 'unset',
-                                        }"
-                                        ngbTooltip
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                !column.link?.doesNotHaveRout
-                                            "
+                                    @if (column.ngTemplate === 'nameLink') {
+                                        <div
+                                            class="td-content"
+                                            [ngStyle]="{
+                                                width: column.width + 'px',
+                                                'min-width.px': column?.minWidth
+                                                    ? column.minWidth
+                                                    : 'unset',
+                                            }"
+                                            ngbTooltip
                                         >
-                                            <div
-                                                [ngStyle]="{
-                                                    width: column.width + 'px',
-                                                }"
-                                                class="table-name-link"
-                                                [ngClass]="{
-                                                    'has-details-page':
-                                                        !column.link
-                                                            ?.doesNotHaveRout,
-                                                }"
-                                                (click)="
-                                                    goToDetails(column, row)
-                                                "
-                                                #op="ngbPopover"
-                                                [ngbPopover]="optionsPopover"
-                                                [placement]="'bottom-right'"
-                                                [autoClose]="'outside'"
-                                                popoverClass="toolbar-options-popover"
-                                                triggers="manual"
-                                                (hidden)="
-                                                    otionsPopupOppen = false
-                                                "
-                                                mainTooltip="View Detail"
-                                                [tooltipBackground]="'#424242'"
-                                                [tooltipColor]="'#ffff'"
-                                                position="bottom"
-                                            >
-                                                <ng-container
-                                                    *ngIf="
-                                                        row?.tableFuelStopIsClosed
+                                            @if (column.link?.doesNotHaveRout) {
+                                                <div
+                                                    [ngStyle]="{
+                                                        width:
+                                                            column.width + 'px',
+                                                    }"
+                                                    class="table-name-link"
+                                                    [ngClass]="{
+                                                        'has-details-page':
+                                                            !column.link
+                                                                ?.doesNotHaveRout,
+                                                    }"
+                                                    (click)="
+                                                        goToDetails(column, row)
                                                     "
                                                 >
-                                                    <svg-icon
-                                                        [src]="
-                                                            tableBodySvgRoutes.brokerClosedRoute
-                                                        "
-                                                    ></svg-icon>
-                                                </ng-container>
-                                                {{ row[column.field] }}
-                                            </div>
-                                        </ng-container>
-                                        <ng-container
-                                            *ngIf="column.link?.doesNotHaveRout"
-                                        >
-                                            <div
-                                                [ngStyle]="{
-                                                    width: column.width + 'px',
-                                                }"
-                                                class="table-name-link"
-                                                [ngClass]="{
-                                                    'has-details-page':
-                                                        !column.link
-                                                            ?.doesNotHaveRout,
-                                                }"
-                                                (click)="
-                                                    goToDetails(column, row)
-                                                "
-                                            >
-                                                <ng-container
-                                                    *ngIf="
+                                                    @if (
                                                         row?.tableFuelStopIsClosed
+                                                    ) {
+                                                        <svg-icon
+                                                            [src]="
+                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    }
+
+                                                    {{ row[column.field] }}
+                                                </div>
+                                            } @else {
+                                                <div
+                                                    [ngStyle]="{
+                                                        width:
+                                                            column.width + 'px',
+                                                    }"
+                                                    class="table-name-link"
+                                                    [ngClass]="{
+                                                        'has-details-page':
+                                                            !column.link
+                                                                ?.doesNotHaveRout,
+                                                    }"
+                                                    (click)="
+                                                        goToDetails(column, row)
                                                     "
+                                                    #op="ngbPopover"
+                                                    [ngbPopover]="
+                                                        optionsPopover
+                                                    "
+                                                    [placement]="'bottom-right'"
+                                                    [autoClose]="'outside'"
+                                                    popoverClass="toolbar-options-popover"
+                                                    triggers="manual"
+                                                    (hidden)="
+                                                        otionsPopupOppen = false
+                                                    "
+                                                    mainTooltip="View Detail"
+                                                    [tooltipBackground]="
+                                                        '#424242'
+                                                    "
+                                                    [tooltipColor]="'#ffff'"
+                                                    position="bottom"
                                                 >
-                                                    <svg-icon
-                                                        [src]="
-                                                            tableBodySvgRoutes.brokerClosedRoute
-                                                        "
-                                                    ></svg-icon>
-                                                </ng-container>
-                                                {{ row[column.field] }}
-                                            </div>
-                                        </ng-container>
-                                    </div>
+                                                    @if (
+                                                        row?.tableFuelStopIsClosed
+                                                    ) {
+                                                        <svg-icon
+                                                            [src]="
+                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    }
+
+                                                    @if (
+                                                        row.isIntegratedFuelTransaction
+                                                    ) {
+                                                        <svg-icon
+                                                            class="mr-3 lh-0 integrated-fuel-transaction"
+                                                            [src]="
+                                                                tableBodySvgRoutes.circleRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    } @else if (
+                                                        !row.isIntegratedFuelTransaction &&
+                                                        activeTableData?.gridNameTitle ===
+                                                            'FUEL'
+                                                    ) {
+                                                        <svg-icon
+                                                            class="mr-3 lh-0 manual-fuel-transaction"
+                                                            [src]="
+                                                                tableBodySvgRoutes.circleRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    }
+
+                                                    {{ row[column.field] }}
+                                                </div>
+                                            }
+                                        </div>
+                                    }
 
                                     <!-- OOS COLUMN -->
 
@@ -4526,8 +4598,10 @@
                                             popoverClass="table-description-popover"
                                             [ngbPopover]="descriptionPopover"
                                             (click)="
-                                                column.ngTemplate ===
-                                                    'description' &&
+                                                (column.ngTemplate ===
+                                                    'description' ||
+                                                    column.ngTemplate ===
+                                                        'total') &&
                                                     onShowDescriptionDropdown(
                                                         t1,
                                                         tableData[0]
@@ -4808,7 +4882,13 @@
                                             <!-- Like -->
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onLike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-like-icon':
                                                         row[column.field]
@@ -4821,7 +4901,6 @@
                                             <!-- Raiting Count -->
                                             <div
                                                 class="raiting-counter-container"
-                                                (click)="onOpenReviews(row)"
                                             >
                                                 <div
                                                     class="raiting-counter like-counter"
@@ -4843,7 +4922,13 @@
                                             <!-- Dislike -->
                                             <div
                                                 class="raiting-icon"
-                                                (click)="onDislike(row)"
+                                                (click)="
+                                                    onLikeDislike(
+                                                        !row[column.field]
+                                                            ?.hasLiked,
+                                                        row
+                                                    )
+                                                "
                                                 [ngClass]="{
                                                     'did-dislike-icon':
                                                         row[column.field]
@@ -5261,7 +5346,11 @@
                                                     column?.minWidth ?? 'unset',
                                             }"
                                         >
-                                            @if (row.isIncompleteFuelTransaction && column.name === 'Truck') {
+                                            @if (
+                                                row.isIncompleteFuelTransaction &&
+                                                column.title === 'Truck' &&
+                                                !row.truck
+                                            ) {
                                                 <svg-icon
                                                     class="lh-1 mr-1 column-text-svg-transaction-incomplete"
                                                     [src]="
@@ -5269,8 +5358,11 @@
                                                     "
                                                 ></svg-icon>
                                             }
-                                            
-                                            @if (row[column.field] === 'Hazardous') {
+
+                                            @if (
+                                                row[column.field] ===
+                                                'Hazardous'
+                                            ) {
                                                 <svg-icon
                                                     class="d-flex align-items-center"
                                                     [ngStyle]="{
@@ -5309,8 +5401,14 @@
                                                     'align-end':
                                                         column.isJustifyEnd,
                                                     'column-text-red':
-                                                        row.isIncompleteFuelTransaction &&
-                                                        column.name === 'Truck'
+                                                        (row.isIncompleteFuelTransaction &&
+                                                            column.title ===
+                                                                'Truck' &&
+                                                            !row.truck) ||
+                                                        (row.isIncompleteFuelTransaction &&
+                                                            column.title ===
+                                                                'Driver' &&
+                                                            !row.driver),
                                                 }"
                                                 [innerHtml]="
                                                     row[column.field]
@@ -6146,11 +6244,7 @@
 
                                     <!-- OPEN HOURS COLUMN -->
 
-                                    <ng-container
-                                        *ngIf="
-                                            column.ngTemplate === 'open-hours'
-                                        "
-                                    >
+                                    @if (column.ngTemplate === 'open-hours') {
                                         <div
                                             class="td-content"
                                             [ngStyle]="{
@@ -6160,7 +6254,7 @@
                                             }"
                                         >
                                             <app-ta-open-hours-dropdown
-                                                [componentData]="{
+                                                [dropdownConfig]="{
                                                     rowId: row?.id,
                                                     width: column?.width,
                                                     openHours:
@@ -6172,7 +6266,7 @@
                                                 }"
                                             ></app-ta-open-hours-dropdown>
                                         </div>
-                                    </ng-container>
+                                    }
 
                                     <!-- PROGRESS RANGE COLUMN -->
 

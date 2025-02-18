@@ -95,6 +95,7 @@ $notification: #e57373;
     position: absolute;
     bottom: 12px;
     left: 17px;
+    pointer-events: none;
 
     .status-marker {
         width: 10px;

@@ -108,10 +108,7 @@ export const viewDataSelector = createSelector(
 
         if (selectedTab === eLoadStatusType.Template)
             return data.map((rowData: LoadModel) => {
-                return LoadStoreHelper.mapTemplateData(
-                    rowData,
-                    eLoadStatusType[selectedTab]
-                );
+                return LoadStoreHelper.mapTemplateData(rowData);
             });
         else
             return data.map((rowData) => {

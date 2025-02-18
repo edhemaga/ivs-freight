@@ -104,10 +104,6 @@ export class RepairCardComponent
         this.windowResizeUpdateDescriptionDropdown();
     }
 
-    public trackCard(item: number): number {
-        return item;
-    }
-
     public flipCard(index: number): void {
         this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
@@ -186,26 +182,24 @@ export class RepairCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: MappedRepairShop
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
         this.handleDropdownMenuActions(
-            emitEvent,
+            emitAction,
             this.selectedTab === TableStringEnum.REPAIR_SHOP
                 ? DropdownMenuStringEnum.REPAIR_SHOP
                 : DropdownMenuStringEnum.REPAIR
         );
     }
-
-    public updateMapItem<T>(_: T): void {}
 
     public handleShowMoreAction(): void {}
 

@@ -35,7 +35,7 @@
                                 : 'form-container-truck-normal'
                         "
                     >
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="truckNumber"
                             [inputConfig]="{
                                 name: 'vehicle-unit',
@@ -47,7 +47,7 @@
                                 maxLength: 8,
                                 autoFocus: editData?.type !== 'edit',
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="truckTypeId"
                             [template]="'svgtext-template'"
@@ -104,7 +104,7 @@
                     </div>
 
                     <div class="d-grid form-container-truck-year mb-32">
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="year"
                             [inputConfig]="{
                                 name: 'Year',
@@ -114,8 +114,8 @@
                                 minLength: 4,
                                 maxLength: 4,
                             }"
-                        ></app-ca-input>
-                        <app-ca-input
+                        ></ca-input-test>
+                        <ca-input-test
                             formControlName="vin"
                             [inputConfig]="{
                                 name: 'vin-number',
@@ -131,7 +131,7 @@
                                     isLoading: loadingVinDecoder,
                                 },
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="truckMakeId"
                             [template]="'svg-template'"
@@ -169,7 +169,6 @@
                                 minLength: 1,
                                 maxLength: 50,
                             }"
-                            (blurInput)="onBlurTruckModel()"
                         ></app-ca-input>
                         <app-ca-input-dropdown
                             formControlName="colorId"
@@ -329,32 +328,29 @@
                             "
                         ></app-ca-input-dropdown>
                         <ng-container *ngIf="isSpecialTruckType">
-                            <app-ca-input
+                            <ca-input-test
                                 formControlName="volume"
                                 [inputConfig]="{
                                     name: 'trailer-volume',
                                     type: 'text',
                                     label: 'Volume',
-                                    minLength: 5,
-                                    maxLength: 7,
+                                    maxLength: 5,
                                     priceSeparator: true,
-                                    priceSeparatorLimitation: 6,
                                 }"
-                            ></app-ca-input>
+                            ></ca-input-test>
                         </ng-container>
 
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="emptyWeight"
                             [inputConfig]="{
                                 name: 'Empty Weight',
                                 type: 'text',
                                 label: 'Empty Weight',
-                                minLength: 4,
-                                maxLength: 6,
+                                maxLength: 5,
                                 placeholderText: 'ibs',
                                 thousandSeparator: true,
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
                     </div>
 
                     <!-- Second Row -->
@@ -436,14 +432,14 @@
 
                     <!-- Fourth Row -->
                     <div class="truck-additional-three-columns">
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="transmissionModel"
                             [inputConfig]="{
                                 name: 'Transmission Model',
                                 type: 'text',
                                 label: 'Transmission Model',
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="shifter"
                             [inputConfig]="{
@@ -492,14 +488,14 @@
                                 onSelectDropdown($event, 'tire-size')
                             "
                         ></app-ca-input-dropdown>
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="axles"
                             [inputConfig]="{
                                 name: 'Axles',
                                 type: 'number',
                                 label: 'Axle',
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="brakes"
                             [inputConfig]="{
@@ -517,17 +513,16 @@
 
                     <!-- Sixth Row -->
                     <div class="truck-additional-three-columns">
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="wheelBase"
                             [inputConfig]="{
                                 name: 'Wheel Basee',
                                 type: 'text',
                                 label: 'Wheel Base',
-                                minLength: 1,
-                                maxLength: 10,
+                                maxLength: 8,
                                 thousandSeparator: true,
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="frontWheels"
                             [inputConfig]="{
@@ -637,7 +632,7 @@
                                 onSelectDropdown($event, 'toll-transponder')
                             "
                         ></app-ca-input-dropdown>
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="tollTransponderDeviceNo"
                             [inputConfig]="{
                                 name: 'Device No',
@@ -645,7 +640,7 @@
                                 label: 'Device No.',
                                 isDisabled: !selectedTollTransponders?.id,
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
                     </div>
 
                     <!-- Ninth Row -->
@@ -655,30 +650,28 @@
                             'row-no-mb': !truckForm.get('companyOwned').value,
                         }"
                     >
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="insurancePolicy"
                             [inputConfig]="{
                                 name: 'insurance-policy',
                                 type: 'text',
                                 label: 'Insurance Policy',
-                                minLength: 8,
                                 maxLength: 14,
                                 textTransform: 'uppercase',
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
 
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="mileage"
                             [inputConfig]="{
                                 name: 'Mileage',
                                 type: 'text',
                                 label: 'Mileage',
-                                minLength: 1,
-                                maxLength: 10,
+                                maxLength: 8,
                                 placeholderText: 'mi',
                                 thousandSeparator: true,
                             }"
-                        ></app-ca-input>
+                        ></ca-input-test>
 
                         <app-ca-input
                             formControlName="fhwaExp"
@@ -711,7 +704,7 @@
                         *ngIf="truckForm.get('companyOwned').value"
                         class="truck-additional-two-columns row-no-mb"
                     >
-                        <app-ca-input
+                        <ca-input-datetime-picker
                             formControlName="purchaseDate"
                             [inputConfig]="{
                                 name: 'datepicker',
@@ -722,7 +715,7 @@
                                 customClass: 'datetimeclass',
                                 isFutureDateDisabled: true,
                             }"
-                        ></app-ca-input>
+                        ></ca-input-datetime-picker>
                         <app-ca-input
                             formControlName="purchasePrice"
                             [inputConfig]="{

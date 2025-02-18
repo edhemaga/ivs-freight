@@ -12,25 +12,22 @@
     [disabledCard]="!_cardData?.bank?.name"
     [animationMarginParams]="{
         marginTop: '0px',
-        marginBottom: '8px'
+        marginBottom: '8px',
     }"
     (onOpenCard)="handleBankCardOpen($event)"
 >
     <div class="shop-details-bank">
-        <ng-container
-            *ngFor="
-                let bankInfoItem of _cardData?.bankInfo;
-                let first = first;
-                let last = last;
-                trackBy: trackByIdentity
-            "
-        >
+        @for (
+            bankInfoItem of _cardData?.bankInfo;
+            let first = $first, last = $last;
+            track bankInfoItem?.title
+        ) {
             <div class="d-flex flex-column justify-content-center">
                 <p class="m-0 ta-font-bold text-size-11 text-color-black">
                     {{ bankInfoItem?.title }}
                 </p>
 
-                <ng-container *ngIf="first; else account">
+                @if (first) {
                     <svg-icon
                         [src]="
                             bankInfoItem?.value &&
@@ -38,23 +35,19 @@
                                 bankInfoItem?.value
                         "
                     ></svg-icon>
-                </ng-container>
-
-                <ng-template #account>
-                    <ng-container *ngIf="last; else routing">
+                } @else {
+                    @if (last) {
                         <app-ta-password-account-hidden-characters
                             [passwordOrAccount]="bankInfoItem?.value"
                             [isRightSideIcon]="true"
                         ></app-ta-password-account-hidden-characters>
-                    </ng-container>
-                </ng-template>
-
-                <ng-template #routing>
-                    <p class="m-0 text-size-14 text-color-black-2">
-                        {{ bankInfoItem?.value }}
-                    </p>
-                </ng-template>
+                    } @else {
+                        <p class="m-0 text-size-14 text-color-black-2">
+                            {{ bankInfoItem?.value }}
+                        </p>
+                    }
+                }
             </div>
-        </ng-container>
+        }
     </div>
 </app-ta-custom-card>

@@ -50,10 +50,6 @@ export class RepairShopDetailsOpenHoursCardComponent {
 
     public isOpenHoursCardOpen: boolean = true;
 
-    public trackByIdentity(index: number): number {
-        return index;
-    }
-
     public handleOpenHoursCardOpen(isOpen: boolean): void {
         this.isOpenHoursCardOpen = isOpen;
     }

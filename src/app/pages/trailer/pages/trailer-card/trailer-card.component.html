@@ -78,17 +78,15 @@
                     <!-- Card body front-->
 
                     <div class="card-body-content flipped">
-                        <ng-container
-                            *ngFor="
-                                let cardRow of displayRowsFront
-                                    | flipCards
-                                        : i
-                                        : isCardFlippedCheckInCards
-                                        : isAllCardsFlipp
-                                        : displayRowsBack;
-                                trackBy: trackCard
-                            "
-                        >
+                        @for (
+                            cardRow of displayRowsFront
+                                | flipCards
+                                    : i
+                                    : isCardFlippedCheckInCards
+                                    : isAllCardsFlipp
+                                    : displayRowsBack;
+                            track cardRow.title
+                        ) {
                             <div class="one-row">
                                 <div class="item-body">
                                     <div class="top-item-body">
@@ -267,7 +265,7 @@
                                     }
                                 </div>
                             </div>
-                        </ng-container>
+                        }
                     </div>
                 </div>
 

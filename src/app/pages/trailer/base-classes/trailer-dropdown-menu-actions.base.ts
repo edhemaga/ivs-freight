@@ -14,45 +14,45 @@ export abstract class TrailerDropdownMenuActionsBase extends DropdownMenuActions
     }
 
     protected handleDropdownMenuActions<T extends TrailerMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
-    ) {
-        const { type } = event;
+    ): void {
+        const { type } = action;
 
-        const tabSelected = event.data?.status
+        const tabSelected = action.data?.status
             ? TableStringEnum.ACTIVE
             : TableStringEnum.INACTIVE;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_TYPE:
-                this.handleTrailerEditAction(event, tableType, tabSelected);
+                this.handleTrailerEditAction(action, tableType, tabSelected);
 
                 break;
             case DropdownMenuStringEnum.REGISTRATION_TYPE:
             case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
             case DropdownMenuStringEnum.TITLE_TYPE:
-                this.handleTrailerAddActions(event, tableType, tabSelected);
+                this.handleTrailerAddActions(action, tableType, tabSelected);
 
                 break;
             case DropdownMenuStringEnum.ACTIVATE_TYPE:
             case DropdownMenuStringEnum.DEACTIVATE_TYPE:
-                this.handleTrailerActivateDeactivateAction(event, tableType);
+                this.handleTrailerActivateDeactivateAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleTrailerDeleteAction(event, tableType);
+                this.handleTrailerDeleteAction(action, tableType);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
     }
 
     private handleTrailerEditAction<T extends TrailerMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string,
         tabSelected: string
     ): void {
@@ -60,16 +60,16 @@ export abstract class TrailerDropdownMenuActionsBase extends DropdownMenuActions
             tabSelected,
         };
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             ...additionalProperties,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleTrailerAddActions<T>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string,
         tabSelected: string
     ): void {
@@ -78,27 +78,27 @@ export abstract class TrailerDropdownMenuActionsBase extends DropdownMenuActions
             tabSelected,
         };
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             ...additionalProperties,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleTrailerActivateDeactivateAction<T extends TrailerMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { trailerNumber, tableVin, tableTrailerTypeIcon, vin },
             type,
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data: {
-                ...event.data,
+                ...action.data,
                 number: trailerNumber,
                 vin: tableVin
                     ? tableVin?.regularText + tableVin?.boldText
@@ -118,22 +118,22 @@ export abstract class TrailerDropdownMenuActionsBase extends DropdownMenuActions
             svg: true,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleTrailerDeleteAction<T extends TrailerMapped>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { trailerNumber, tableVin, tableTrailerTypeIcon, vin },
             type,
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data: {
-                ...event.data,
+                ...action.data,
                 number: trailerNumber,
                 vin: tableVin
                     ? tableVin?.regularText + tableVin?.boldText
@@ -145,6 +145,6 @@ export abstract class TrailerDropdownMenuActionsBase extends DropdownMenuActions
             svg: true,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 }

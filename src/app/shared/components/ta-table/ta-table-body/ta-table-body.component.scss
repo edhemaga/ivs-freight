@@ -780,6 +780,22 @@ table.truckassist-table-body-style {
                                     }
                                 }
                             }
+
+                            .integrated-fuel-transaction {
+                                svg {
+                                    circle {
+                                        fill: $ta-green;
+                                    }
+                                }
+                            }
+
+                            .manual-fuel-transaction {
+                                svg {
+                                    circle {
+                                        fill: $ta-light-grey-6;
+                                    }
+                                }
+                            }
                         }
 
                         .has-details-page {
@@ -1533,7 +1549,8 @@ table.truckassist-table-body-style {
                             border-radius: 2px;
                             color: $ta-blue-18;
                             cursor: pointer;
-                            transition: background 0.2s ease-in,
+                            transition:
+                                background 0.2s ease-in,
                                 color 0.2s ease-in;
 
                             &:hover {
@@ -2837,7 +2854,8 @@ table.truckassist-table-body-style {
             }
         }
 
-        tr, tr:hover {
+        tr,
+        tr:hover {
             .columns-container {
                 .not-pined-columns {
                     .not-pined-td {
@@ -3177,7 +3195,9 @@ table.truckassist-table-body-style {
 .add-animation {
     position: relative !important;
     z-index: -1;
-    animation: drop-new-row 0.3s ease-out, show-new-row 0.25s ease-out;
+    animation:
+        drop-new-row 0.3s ease-out,
+        show-new-row 0.25s ease-out;
 
     .columns-container {
         animation: hide-new-row-background 2s ease-in 0.3s;
@@ -3232,7 +3252,8 @@ table.truckassist-table-body-style {
 .deactivate-animation {
     position: relative;
 
-    animation: deactivate-row-move-right 0.3s ease-in 0.3s,
+    animation:
+        deactivate-row-move-right 0.3s ease-in 0.3s,
         deactivate-row-visibility 0.25s ease-in 0.3s,
         deactivate-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3244,7 +3265,8 @@ table.truckassist-table-body-style {
 .multiple-deactivate-animation {
     position: relative;
 
-    animation: deactivate-row-move-right 0.3s ease-in 0.3s,
+    animation:
+        deactivate-row-move-right 0.3s ease-in 0.3s,
         deactivate-row-visibility 0.25s ease-in 0.3s,
         deactivate-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3315,8 +3337,10 @@ table.truckassist-table-body-style {
 .activate-animation {
     position: relative;
 
-    animation: activate-row-move-right 0.3s ease-in 0.3s,
-        activate-row-visibility 0.25s cubic-bezier(0.5, 1, 0.89, 1), 0.3s,
+    animation:
+        activate-row-move-right 0.3s ease-in 0.3s,
+        activate-row-visibility 0.25s cubic-bezier(0.5, 1, 0.89, 1),
+        0.3s,
         activate-row-decrease-height 0.3s ease-in 0.6s;
 
     .columns-container {
@@ -3327,7 +3351,8 @@ table.truckassist-table-body-style {
 .multiple-activate-animation {
     position: relative;
 
-    animation: activate-row-move-right 0.3s ease-in 0.3s,
+    animation:
+        activate-row-move-right 0.3s ease-in 0.3s,
         activate-row-visibility 0.25s ease-in 0.3s,
         activate-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3399,7 +3424,8 @@ table.truckassist-table-body-style {
     overflow: hidden !important;
     min-height: unset !important;
 
-    animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+    animation:
+        deleting-row-decrease-size 0.3s ease-in 0.3s,
         deleting-row-visibility 0.3s ease-in 0.3s,
         deleting-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3412,7 +3438,8 @@ table.truckassist-table-body-style {
     overflow: hidden !important;
     min-height: unset !important;
 
-    animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+    animation:
+        deleting-row-decrease-size 0.3s ease-in 0.3s,
         deleting-row-visibility 0.3s ease-in 0.3s,
         deleting-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3488,6 +3515,10 @@ table.truckassist-table-body-style {
         right: -3px;
         bottom: -3px;
     }
+}
+
+.lh-0 {
+    line-height: 0px;
 }
 
 .lh-1 {

@@ -28,14 +28,14 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
     }
 
     protected handleDropdownMenuActions<T extends CompanyUserResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const { id, type } = event;
+        const { id, type } = action;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_TYPE:
-                this.handleUserEditAction(event, tableType);
+                this.handleUserEditAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.RESET_PASSWORD_TYPE:
@@ -48,31 +48,31 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
                 break;
             case DropdownMenuStringEnum.ACTIVATE_TYPE:
             case DropdownMenuStringEnum.DEACTIVATE_TYPE:
-                this.handleUserActivateDeactivateAction(event, tableType);
+                this.handleUserActivateDeactivateAction(action, tableType);
 
                 break;
             case DropdownMenuStringEnum.DELETE_TYPE:
-                this.handleUserDeleteAction(event, tableType);
+                this.handleUserDeleteAction(action, tableType);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
     }
 
     private handleUserEditAction<T extends CompanyUserResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { userStatus },
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             disableButton:
                 userStatus !== TableStringEnum.OWNER &&
                 userStatus !== DropdownMenuStringEnum.EXPIRED &&
@@ -80,7 +80,7 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
             isDeactivateOnly: true,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     private handleResetPasswordAction(): void {}
@@ -99,15 +99,15 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
     }
 
     private handleUserActivateDeactivateAction<T extends CompanyUserResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { firstName, lastName, deactivatedAt, ...rest },
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data: {
                 ...rest,
                 name: `${firstName} ${lastName}`,
@@ -119,7 +119,7 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
             ConfirmationActivationModalComponent,
             { size: TableStringEnum.SMALL },
             {
-                ...adjustedEvent,
+                ...adjustedAction,
                 template: TableStringEnum.USER,
                 subType: TableStringEnum.USER,
                 type: !!deactivatedAt
@@ -131,15 +131,15 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
     }
 
     private handleUserDeleteAction<T extends CompanyUserResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ): void {
         const {
             data: { firstName, lastName, ...rest },
-        } = event;
+        } = action;
 
-        const adjustedEvent = {
-            ...event,
+        const adjustedAction = {
+            ...action,
             data: {
                 ...rest,
                 name: `${firstName} ${lastName}`,
@@ -147,7 +147,7 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
             image: true,
         };
 
-        super.handleSharedDropdownMenuActions(adjustedEvent, tableType);
+        super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
     // protected abstract - dependency

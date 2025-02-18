@@ -20,5 +20,6 @@ export interface UpdateFactoringCompanyCommand {
     address?: AddressEntity;
     noticeOfAssigment?: string | null;
     note?: string | null;
+    poBox?: string | null;
 }
 

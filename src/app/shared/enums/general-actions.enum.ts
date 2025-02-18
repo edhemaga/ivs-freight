@@ -1,0 +1,15 @@
+export enum eGeneralActions {
+    ADD = 'add',
+    UPDATE = 'update',
+    DELETE = 'delete',
+    EDIT = 'edit',
+    CANCEL = 'cancel',
+    ENTER = 'Enter',
+    ESCAPE = 'Escape',
+    CONFIRM = 'confirm',
+    ACTIVATE = 'activate',
+    DEACTIVATE = 'deactivate',
+    CLOSE = 'close',
+    OPEN = 'open',
+    SAVE = 'save',
+}

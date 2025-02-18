@@ -35,6 +35,7 @@ export class CompanyRepairShopResolver {
                 undefined,
                 undefined,
                 undefined,
+                undefined,
                 1,
                 25
             )

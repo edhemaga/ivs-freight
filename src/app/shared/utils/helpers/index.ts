@@ -13,3 +13,4 @@ export * from './methods-calculations.helper';
 export * from './methods-global.helper';
 export * from './timespan-convert.helper';
 export * from './filter-helper';
+export * from './sorting.helper';

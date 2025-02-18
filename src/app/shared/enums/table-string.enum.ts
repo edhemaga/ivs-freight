@@ -81,7 +81,6 @@ export enum TableStringEnum {
     DATE_FORMAT = 'MM/dd/yy',
     HOURS = 'h',
     MINUTES = 'min',
-    PM = 'pm',
     PM_2 = 'PM',
 
     // Distance
@@ -464,8 +463,6 @@ export enum TableStringEnum {
     SSN_2 = 'SSN',
     SSN_EIN = 'ssnEin',
     CHANGE = 'Change',
-    // Links
-    LOAD_DETAILS = '/list/load/',
 
     // reset modal
     RESET_MODAL_CONTACTS_TITLE = 'List | Contacts',
@@ -526,4 +523,5 @@ export enum TableStringEnum {
     ADD_PM_ITEM = 'ADD_PM_ITEM',
     TRUCK_PM_SETTINGS = 'Truck PM Settings',
     TRAILER_PM_SETTINGS = 'Trailer PM Settings',
+    LOAD_DETAILS= "Load Details"
 }

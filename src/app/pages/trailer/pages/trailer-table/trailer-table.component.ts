@@ -80,7 +80,7 @@ export class TrailerTableComponent
     extends TrailerDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
 
@@ -515,33 +515,6 @@ export class TrailerTableComponent
         this.trailerData = this.viewData;
     }
 
-    private setTrailerTooltipColor(trailerName: string): string {
-        switch (trailerName) {
-            case TrailerNameStringEnum.FLAT_BED:
-            case TrailerNameStringEnum.STEP_DECK:
-            case TrailerNameStringEnum.LOW_BOY_RGN:
-            case TrailerNameStringEnum.CHASSIS:
-            case TrailerNameStringEnum.CONESTOGA:
-            case TrailerNameStringEnum.SIDE_KIT:
-            case TrailerNameStringEnum.CONTAINER:
-                return TooltipColorsStringEnum.BLUE;
-            case TrailerNameStringEnum.DRY_VAN:
-            case TrailerNameStringEnum.REEFER:
-                return TooltipColorsStringEnum.YELLOW;
-            case TrailerNameStringEnum.END_DUMP:
-            case TrailerNameStringEnum.BOTTOM_DUMP:
-            case TrailerNameStringEnum.HOPPER:
-            case TrailerNameStringEnum.TANKER:
-            case TrailerNameStringEnum.PNEUMATIC_TANKER:
-                return TooltipColorsStringEnum.RED;
-            case TrailerNameStringEnum.CAR_HAULER:
-            case TrailerNameStringEnum.CAR_HAULER_STINGER:
-                return TooltipColorsStringEnum.LIGHT_GREEN;
-            default:
-                return;
-        }
-    }
-
     private mapTrailerData(data: TrailerMapped): any {
         const {
             id,
@@ -593,7 +566,7 @@ export class TrailerTableComponent
             isSelected: false,
             tableTrailerTypeIcon: trailerType.logoName,
             tableTrailerName: trailerType.name,
-            tableTrailerColor: this.setTrailerTooltipColor(trailerType.name),
+            tableTrailerColor: MethodsGlobalHelper.getTrailerTooltipColor(trailerType.name),
             tableVin: {
                 regularText: vin
                     ? vin.substr(0, vin.length - 6)
@@ -723,7 +696,7 @@ export class TrailerTableComponent
     }
 
     public getTrailerDropdownContent(): DropdownMenuItem[] {
-        return DropdownMenuContentHelper.getTrailerDropdownContent(
+        return DropdownMenuContentHelper.getTruckTrailerDropdownContent(
             this.selectedTab
         );
     }

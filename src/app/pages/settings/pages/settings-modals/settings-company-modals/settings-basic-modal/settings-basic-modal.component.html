@@ -3,7 +3,7 @@
         editData.type === 'new-division'
             ? 'Add Division Company'
             : editData.type === 'edit-division'
-              ? 'Division Company'
+              ? 'Update Division Company'
               : this.editData?.type === 'edit-company-first-login'
                 ? 'Setup Company'
                 : 'Update Company'
@@ -37,7 +37,7 @@
     (action)="onModalAction($event)"
 >
     <div origin>
-        <ng-contaniner *ngIf="!isSetupCompany">
+        @if (!isSetupCompany) {
             <app-ta-tab-switch
                 [tabs]="
                     editData.type === 'new-division' ||
@@ -49,8 +49,7 @@
                 [type]="'type1-modal-popup'"
             >
             </app-ta-tab-switch>
-        </ng-contaniner>
-
+        }
         <form
             [formGroup]="companyForm"
             class="form-container"
@@ -62,13 +61,13 @@
             >
                 <!-- Basic Tab -->
 
-                <ng-container *ngIf="selectedTab === 1">
+                @if (selectedTab === 1) {
                     <div class="m-tab">
                         <!-- Business Name -->
 
                         <div class="row">
                             <div class="col-12">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="name"
                                     [inputConfig]="{
                                         name: 'Company name',
@@ -89,7 +88,7 @@
                                             ? true
                                             : false,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -97,7 +96,7 @@
 
                         <div class="row">
                             <div class="col-4">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="usDot"
                                     [inputConfig]="{
                                         name: 'USDOT',
@@ -108,11 +107,11 @@
                                         minLength: 6,
                                         maxLength: 8,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
 
                             <div class="col-4">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="ein"
                                     [inputConfig]="{
                                         name: 'EIN',
@@ -125,11 +124,11 @@
                                         mask: '00-0000000',
                                         maxLength: 10,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
 
                             <div class="col-4">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="mc"
                                     [inputConfig]="{
                                         name: 'MC/FF',
@@ -139,7 +138,7 @@
                                         maxLength: 6,
                                         minLength: 5,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -147,7 +146,7 @@
 
                         <div class="row">
                             <div class="col-5">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="phone"
                                     [inputConfig]="{
                                         name: 'Phone',
@@ -157,11 +156,11 @@
                                         mask: '(000) 000-0000',
                                         maxLength: 14,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
 
                             <div class="col-7">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="email"
                                     [inputConfig]="{
                                         name: 'Email',
@@ -180,7 +179,7 @@
                                         maxLength: 64,
                                         textTransform: 'lowercase',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -188,7 +187,7 @@
 
                         <div class="row">
                             <div class="col-5">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="fax"
                                     [inputConfig]="{
                                         name: 'Fax',
@@ -197,11 +196,11 @@
                                         mask: '(000) 000-0000',
                                         placeholderIcon: 'fax',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
 
                             <div class="col-7">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="webUrl"
                                     [inputConfig]="{
                                         name: 'Url',
@@ -211,7 +210,7 @@
                                         maxLength: 255,
                                         placeholderIcon: 'hyperlink',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
@@ -237,17 +236,13 @@
                                     (selectedAddress)="onHandleAddress($event)"
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
-                                    (sentAddressData)="
-                                        onAddressChange($event)
-                                    "
-                                    (sentAddressValue)="
-                                        getAddressData($event)
-                                    "
+                                    (sentAddressData)="onAddressChange($event)"
+                                    (sentAddressValue)="getAddressData($event)"
                                 ></app-ca-input-address-dropdown>
                             </div>
 
                             <div class="col-2">
-                                <app-ta-input
+                                <ca-input-test
                                     formControlName="addressUnit"
                                     [inputConfig]="{
                                         name: 'address-unit',
@@ -257,14 +252,14 @@
                                         minLength: 1,
                                         maxLength: 10,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-test>
                             </div>
                         </div>
 
                         <!-- Irp, Ifta, Toll, Scac -->
 
                         <div class="company-irp-ifta-toll-scac">
-                            <app-ta-input
+                            <ca-input-test
                                 formControlName="irp"
                                 [inputConfig]="{
                                     name: 'IRP',
@@ -273,9 +268,9 @@
                                     minLength: 5,
                                     maxLength: 5,
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-test>
 
-                            <app-ta-input
+                            <ca-input-test
                                 formControlName="ifta"
                                 [inputConfig]="{
                                     name: 'IFTA',
@@ -285,9 +280,9 @@
                                     minLength: 13,
                                     maxLength: 13,
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-test>
 
-                            <app-ta-input
+                            <ca-input-test
                                 formControlName="toll"
                                 [inputConfig]="{
                                     name: 'TOLL',
@@ -296,9 +291,9 @@
                                     minLength: 8,
                                     maxLength: 8,
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-test>
 
-                            <app-ta-input
+                            <ca-input-test
                                 formControlName="scac"
                                 [inputConfig]="{
                                     name: 'SCAC',
@@ -308,7 +303,7 @@
                                     minLength: 2,
                                     maxLength: 4,
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-test>
                         </div>
 
                         <!-- TimeZone, Currency -->
@@ -384,7 +379,7 @@
                             </div>
 
                             <div class="col-6">
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="dateOfIncorporation"
                                     [inputConfig]="{
                                         id: 'Date of Incorporation',
@@ -395,60 +390,26 @@
                                         placeholderIcon: 'date',
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                         </div>
 
                         <app-ta-custom-card
                             [cardName]="'Logo'"
                             [isCardOpen]="true"
-                            [hasDeleteAction]="displayDeleteAction"
+                            [hasDeleteAction]="hasDisplayDeleteAction"
                             [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="handleDeleteClick($event)"
                         >
                             <app-ca-upload-files
-                                [isVisibleCropAndDrop]="
-                                    uploadOptionsConstants.isVisibleCropAndDrop
-                                "
-                                [files]="[
-                                    { url: editData?.company?.logoFile?.url },
-                                ]"
-                                [slider]="uploadOptionsConstants.slider"
-                                [carouselConfig]="
-                                    uploadOptionsConstants.carouselConfig
-                                "
-                                [hasCrop]="uploadOptionsConstants.hasCrop"
-                                [isRoundCrop]="
-                                    uploadOptionsConstants.isRoundCrop
-                                "
-                                [containWithinAspectRatio]="
-                                    uploadOptionsConstants.containWithinAspectRatio
-                                "
-                                [aspectRatio]="
-                                    uploadOptionsConstants.aspectRatio
-                                "
-                                [initialCropperPosition]="
-                                    uploadOptionsConstants.initialCropperPosition
-                                "
-                                [dropzoneCustomWidth]="
-                                    uploadOptionsConstants.dropzoneCustomWidth
-                                "
-                                [dropzoneConf]="
-                                    uploadOptionsConstants.dropzoneConf
-                                "
-                                [review]="uploadOptionsConstants.review"
-                                [configFile]="uploadOptionsConstants.configFile"
-                                [size]="uploadOptionsConstants.size"
-                                [slideWidth]="uploadOptionsConstants.slideWidth"
+                                [uploadFilesConfig]="uploadFilesConfig"
                                 (onFileEvent)="onUploadImage($event)"
                             ></app-ca-upload-files>
                         </app-ta-custom-card>
                     </div>
-                </ng-container>
-
+                }
                 <!-- Additional Tab -->
-
-                <ng-container *ngIf="selectedTab === 2">
+                @if (selectedTab === 2) {
                     <div class="m-tab">
                         <!-- Department Contact -->
 
@@ -467,7 +428,7 @@
                             [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="addDepartmentContacts($event)"
                         >
-                            <ng-container *ngIf="departmentContacts.length">
+                            @if (departmentContacts.length) {
                                 <div
                                     formArrayName="departmentContacts"
                                     class="common-fake-table-modal common-fake-table-modal-department-company"
@@ -480,108 +441,109 @@
                                     </div>
 
                                     <div class="common-fake-table-body">
-                                        <div
-                                            *ngFor="
-                                                let departmentContact of departmentContacts.controls;
-                                                let ind = index
-                                            "
-                                        >
-                                            <div
-                                                [formGroupName]="ind"
-                                                class="common-fake-table-card"
-                                            >
-                                                <app-ta-input-dropdown
-                                                    formControlName="departmentId"
-                                                    [inputConfig]="{
-                                                        id:
-                                                            'Input Dropdown Dep' +
-                                                            ind,
-                                                        name: 'Input Dropdown Department',
-                                                        minLength: 2,
-                                                        maxLength: 36,
-                                                        textTransform:
-                                                            'capitalize',
-                                                        type: 'text',
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-120',
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        hideRequiredCheck: true,
-                                                    }"
-                                                    [options]="departments"
-                                                    [activeItem]="
-                                                        selectedDepartmentFormArray[
-                                                            ind
-                                                        ]
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectFakeTableData(
-                                                            $event,
-                                                            ind,
-                                                            'department'
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
-
-                                                <app-ta-input
-                                                    formControlName="phone"
-                                                    [inputConfig]="{
-                                                        id: 'Phone' + ind,
-                                                        name: 'Phone',
-                                                        type: 'text',
-                                                        mask: '(000) 000-0000',
-                                                        maxLength: 14,
-                                                    }"
-                                                ></app-ta-input>
-                                                <app-ta-input
-                                                    formControlName="extensionPhone"
-                                                    [inputConfig]="{
-                                                        id:
-                                                            'Phone Extension' +
-                                                            ind,
-                                                        name: 'phone-extension',
-                                                        type: 'text',
-                                                        minLength: 1,
-                                                        maxLength: 8,
-                                                        hideRequiredCheck: true,
-                                                    }"
-                                                ></app-ta-input>
-                                                <app-ta-input
-                                                    formControlName="email"
-                                                    [inputConfig]="{
-                                                        id: 'Email' + ind,
-                                                        name: 'Email',
-                                                        type: 'text',
-                                                        minLength: 5,
-                                                        maxLength: 64,
-                                                        textTransform:
-                                                            'lowercase',
-                                                    }"
-                                                ></app-ta-input>
+                                        @for (
+                                            departmentContact of departmentContacts.controls;
+                                            let ind = $index;
+                                            track ind
+                                        ) {
+                                            <div>
                                                 <div
-                                                    ngbTooltip
-                                                    mainTooltip="Delete"
-                                                    tooltipBackground="#EF5350"
-                                                    position="top"
-                                                    class="common-fake-table-delete"
-                                                    (click)="
-                                                        removeDepartmentContacts(
-                                                            ind
-                                                        )
-                                                    "
+                                                    [formGroupName]="ind"
+                                                    class="common-fake-table-card"
                                                 >
-                                                    <svg-icon
-                                                        [src]="
-                                                            svgRoutes.iconTrashSvgRoute
+                                                    <app-ta-input-dropdown
+                                                        formControlName="departmentId"
+                                                        [inputConfig]="{
+                                                            id:
+                                                                'Input Dropdown Dep' +
+                                                                ind,
+                                                            name: 'Input Dropdown Department',
+                                                            minLength: 2,
+                                                            maxLength: 36,
+                                                            textTransform:
+                                                                'capitalize',
+                                                            type: 'text',
+                                                            isDropdown: true,
+                                                            dropdownWidthClass:
+                                                                'w-col-120',
+                                                            hideErrorMessage: true,
+                                                            blackInput: true,
+                                                            hideRequiredCheck: true,
+                                                        }"
+                                                        [options]="departments"
+                                                        [activeItem]="
+                                                            selectedDepartmentFormArray[
+                                                                ind
+                                                            ]
                                                         "
-                                                    ></svg-icon>
+                                                        (selectedItem)="
+                                                            onSelectFakeTableData(
+                                                                $event,
+                                                                ind,
+                                                                'department'
+                                                            )
+                                                        "
+                                                    ></app-ta-input-dropdown>
+
+                                                    <app-ta-input
+                                                        formControlName="phone"
+                                                        [inputConfig]="{
+                                                            id: 'Phone' + ind,
+                                                            name: 'Phone',
+                                                            type: 'text',
+                                                            mask: '(000) 000-0000',
+                                                            maxLength: 14,
+                                                        }"
+                                                    ></app-ta-input>
+                                                    <app-ta-input
+                                                        formControlName="extensionPhone"
+                                                        [inputConfig]="{
+                                                            id:
+                                                                'Phone Extension' +
+                                                                ind,
+                                                            name: 'phone-extension',
+                                                            type: 'text',
+                                                            minLength: 1,
+                                                            maxLength: 8,
+                                                            hideRequiredCheck: true,
+                                                        }"
+                                                    ></app-ta-input>
+                                                    <app-ta-input
+                                                        formControlName="email"
+                                                        [inputConfig]="{
+                                                            id: 'Email' + ind,
+                                                            name: 'Email',
+                                                            type: 'text',
+                                                            minLength: 5,
+                                                            maxLength: 64,
+                                                            textTransform:
+                                                                'lowercase',
+                                                        }"
+                                                    ></app-ta-input>
+                                                    <div
+                                                        ngbTooltip
+                                                        mainTooltip="Delete"
+                                                        tooltipBackground="#EF5350"
+                                                        position="top"
+                                                        class="common-fake-table-delete"
+                                                        (click)="
+                                                            removeDepartmentContacts(
+                                                                ind
+                                                            )
+                                                        "
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                svgRoutes.iconTrashSvgRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
                                     </div>
                                 </div>
-                            </ng-container>
+                            }
                         </app-ta-custom-card>
 
                         <!-- Bank Account -->
@@ -599,7 +561,7 @@
                             [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="addBankAccount($event)"
                         >
-                            <ng-container *ngIf="bankAccounts.length">
+                            @if (bankAccounts.length) {
                                 <div
                                     formArrayName="bankAccounts"
                                     class="common-fake-table-modal common-fake-table-modal-company-banks hide-overflow-x"
@@ -610,128 +572,164 @@
                                         <p>ACCOUNT <span>*</span></p>
                                     </div>
                                     <div class="common-fake-table-body">
-                                        <div
-                                            *ngFor="
-                                                let bankAccount of bankAccounts.controls;
-                                                let ind = index
-                                            "
-                                        >
-                                            <div
-                                                [formGroupName]="ind"
-                                                class="common-fake-table-card"
-                                            >
-                                                <app-ta-input-dropdown
-                                                    formControlName="bankId"
-                                                    [template]="'svg-template'"
-                                                    [inputConfig]="{
-                                                        id:
-                                                            'Input Dropdown Bank Name' +
-                                                            ind,
-                                                        name: 'Input Dropdown',
-                                                        type: 'text',
-                                                        minLength: 2,
-                                                        maxLength: 64,
-                                                        textTransform:
-                                                            'uppercase',
-                                                        isDropdown: true,
-                                                        dropdownWidthClass:
-                                                            'w-col-162',
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        hideRequiredCheck: true,
-                                                    }"
-                                                    [canAddNew]="true"
-                                                    [options]="banks"
-                                                    [activeItem]="
-                                                        selectedBankAccountFormArray[
-                                                            ind
-                                                        ]
-                                                    "
-                                                    (selectedItem)="
-                                                        onSelectFakeTableData(
-                                                            $event,
-                                                            ind,
-                                                            'bankAccounts'
-                                                        )
-                                                    "
-                                                    (saveItem)="
-                                                        onSaveNewBank(
-                                                            $event,
-                                                            ind
-                                                        )
-                                                    "
-                                                ></app-ta-input-dropdown>
-
-                                                <app-ta-input
-                                                    formControlName="routing"
-                                                    [inputConfig]="{
-                                                        id:
-                                                            'Routing Number' +
-                                                            ind,
-                                                        name: 'routing-bank',
-                                                        type: 'text',
-                                                        isDisabled:
-                                                            !isBankSelectedFormArray[
-                                                                ind
-                                                            ],
-                                                        minLength: 9,
-                                                        maxLength: 9,
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <app-ta-input
-                                                    formControlName="account"
-                                                    [inputConfig]="{
-                                                        id:
-                                                            'Account Number' +
-                                                            ind,
-                                                        name: 'account-bank',
-                                                        type: 'password',
-                                                        placeholderIcon:
-                                                            'password',
-                                                        isDisabled:
-                                                            !isBankSelectedFormArray[
-                                                                ind
-                                                            ],
-                                                        maxLength: 17,
-                                                        minLength: 5,
-                                                    }"
-                                                ></app-ta-input>
-
-                                                <svg-icon
-                                                    class="common-fake-table-check"
-                                                    [src]="
-                                                        svgRoutes.iconConfirmSvgRoute
-                                                    "
-                                                ></svg-icon>
-
+                                        @for (
+                                            bankAccount of bankAccounts.value;
+                                            let ind = $index;
+                                            track ind
+                                        ) {
+                                            <div>
                                                 <div
-                                                    class="common-fake-table-status common-fake-table-status-pending"
+                                                    [formGroupName]="ind"
+                                                    class="common-fake-table-card"
                                                 >
-                                                    Pending
-                                                </div>
-
-                                                <div
-                                                    class="common-fake-table-delete"
-                                                    (click)="
-                                                        removeBankAccount(ind)
-                                                    "
-                                                    ngbTooltip
-                                                    mainTooltip="Delete"
-                                                    tooltipBackground="#EF5350"
-                                                    position="top"
-                                                >
-                                                    <svg-icon
-                                                        [src]="
-                                                            svgRoutes.iconTrashSvgRoute
+                                                    <app-ta-input-dropdown
+                                                        formControlName="bankId"
+                                                        [template]="
+                                                            'svg-template'
                                                         "
-                                                    ></svg-icon>
+                                                        [inputConfig]="{
+                                                            id:
+                                                                'Input Dropdown Bank Name' +
+                                                                ind,
+                                                            name: 'Input Dropdown',
+                                                            type: 'text',
+                                                            minLength: 2,
+                                                            maxLength: 64,
+                                                            textTransform:
+                                                                'uppercase',
+                                                            isDropdown: true,
+                                                            dropdownWidthClass:
+                                                                'w-col-162',
+                                                            hideErrorMessage: true,
+                                                            blackInput: true,
+                                                            hideRequiredCheck: true,
+                                                        }"
+                                                        [canAddNew]="true"
+                                                        [options]="banks"
+                                                        [activeItem]="
+                                                            selectedBankAccountFormArray[
+                                                                ind
+                                                            ]
+                                                        "
+                                                        (selectedItem)="
+                                                            onSelectFakeTableData(
+                                                                $event,
+                                                                ind,
+                                                                'bankAccounts'
+                                                            )
+                                                        "
+                                                        (saveItem)="
+                                                            onSaveNewBank(
+                                                                $event,
+                                                                ind
+                                                            )
+                                                        "
+                                                    ></app-ta-input-dropdown>
+
+                                                    <app-ta-input
+                                                        formControlName="routing"
+                                                        [inputConfig]="{
+                                                            id:
+                                                                'Routing Number' +
+                                                                ind,
+                                                            name: 'routing-bank',
+                                                            type: 'text',
+                                                            isDisabled:
+                                                                !isBankSelectedFormArray[
+                                                                    ind
+                                                                ],
+                                                            minLength: 9,
+                                                            maxLength: 9,
+                                                        }"
+                                                    ></app-ta-input>
+
+                                                    <app-ta-input
+                                                        formControlName="account"
+                                                        [inputConfig]="{
+                                                            id:
+                                                                'Account Number' +
+                                                                ind,
+                                                            name: 'account-bank',
+                                                            type: 'password',
+                                                            placeholderIcon:
+                                                                'password',
+                                                            isDisabled:
+                                                                !isBankSelectedFormArray[
+                                                                    ind
+                                                                ],
+                                                            maxLength: 17,
+                                                            minLength: 5,
+                                                        }"
+                                                    ></app-ta-input>
+
+                                                    @let bankStatus =
+                                                        bankAccount?.status
+                                                            | settingsBankAccountStatus
+                                                                : ind ===
+                                                                      focusedBankAccount;
+                                                    <div
+                                                        class="common-fake-table-status status text-size-14 ta-font-bold"
+                                                        [class.pending]="
+                                                            bankStatus ===
+                                                            EBankAccountStatus.PENDING
+                                                        "
+                                                        [class.text-color-green]="
+                                                            bankStatus ===
+                                                            EBankAccountStatus.VERIFIED
+                                                        "
+                                                        [class.text-color-light-grey-6]="
+                                                            bankStatus ===
+                                                            EBankAccountStatus.VERIFY
+                                                        "
+                                                        [class.text-color-red-10]="
+                                                            bankStatus ===
+                                                            EBankAccountStatus.FAILED
+                                                        "
+                                                        (click)="
+                                                            bankStatus !==
+                                                                EBankAccountStatus.VERIFIED &&
+                                                                verifyBankAccount(
+                                                                    ind
+                                                                )
+                                                        "
+                                                        (mouseenter)="
+                                                            focusBankAccount(
+                                                                ind
+                                                            )
+                                                        "
+                                                        (mouseleave)="
+                                                            focusBankAccount(
+                                                                null
+                                                            )
+                                                        "
+                                                    >
+                                                        {{ bankStatus }}
+                                                    </div>
+
+                                                    <div
+                                                        class="common-fake-table-delete"
+                                                        (click)="
+                                                            removeBankAccount(
+                                                                ind
+                                                            )
+                                                        "
+                                                        ngbTooltip
+                                                        mainTooltip="Delete"
+                                                        tooltipBackground="#EF5350"
+                                                        position="top"
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                svgRoutes.iconTrashSvgRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
                                     </div>
                                 </div>
-                            </ng-container>
+                            }
                         </app-ta-custom-card>
 
                         <!-- Bank Card -->
@@ -749,7 +747,7 @@
                             [disableAnimation]="isCardAnimationDisabled"
                             (onActionEvent)="addBankCard($event)"
                         >
-                            <ng-container *ngIf="bankCards.length">
+                            @if (bankCards.length) {
                                 <div
                                     formArrayName="bankCards"
                                     class="common-fake-table-modal common-fake-table-modal-bank-cards hide-overflow-x"
@@ -769,118 +767,126 @@
                                     </div>
 
                                     <div class="common-fake-table-body">
-                                        <div
-                                            *ngFor="
-                                                let bankCard of bankCards.controls;
-                                                let ind = index
-                                            "
-                                        >
-                                            <div
-                                                [formGroupName]="ind"
-                                                class="common-fake-table-card"
-                                            >
+                                        @for (
+                                            bankCard of bankCards.controls;
+                                            let ind = $index;
+                                            track ind
+                                        ) {
+                                            <div>
                                                 <div
-                                                    class="common-fake-table-card-number"
+                                                    [formGroupName]="ind"
+                                                    class="common-fake-table-card"
                                                 >
-                                                    {{ ind + 1 }}
-                                                </div>
-                                                <app-ta-input
-                                                    formControlName="nickname"
-                                                    [inputConfig]="{
-                                                        id: 'Nickname' + ind,
-                                                        name: 'Nickname',
-                                                        type: 'text',
-                                                        label: 'Nickname',
-                                                        placeholderInsteadOfLabel: true,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        isRequired: true,
-                                                        minLength: 2,
-                                                        maxLength: 128,
-                                                    }"
-                                                ></app-ta-input>
+                                                    <div
+                                                        class="common-fake-table-card-number"
+                                                    >
+                                                        {{ ind + 1 }}
+                                                    </div>
+                                                    <app-ta-input
+                                                        formControlName="nickname"
+                                                        [inputConfig]="{
+                                                            id:
+                                                                'Nickname' +
+                                                                ind,
+                                                            name: 'Nickname',
+                                                            type: 'text',
+                                                            label: 'Nickname',
+                                                            placeholderInsteadOfLabel: true,
+                                                            hideErrorMessage: true,
+                                                            blackInput: true,
+                                                            isRequired: true,
+                                                            minLength: 2,
+                                                            maxLength: 128,
+                                                        }"
+                                                    ></app-ta-input>
 
-                                                <app-ta-input
-                                                    formControlName="card"
-                                                    [inputConfig]="{
-                                                        id: 'Card Number' + ind,
-                                                        name: 'Card Number',
-                                                        type: 'text',
-                                                        placeholderIcon:
-                                                            bankCardTypes[
-                                                                ind
-                                                            ] &&
-                                                            bankCardTypes[
-                                                                ind
-                                                            ] !== 'unknown'
-                                                                ? bankCardTypes[
-                                                                      ind
-                                                                  ]
-                                                                : 'password',
-                                                        label: 'Card No.',
-                                                        placeholderInsteadOfLabel: true,
-                                                        maxLength: 16,
-                                                        minLength: 15,
-                                                        hideErrorMessage: true,
-                                                        isRequired: true,
-                                                        blackInput: true,
-                                                    }"
-                                                ></app-ta-input>
+                                                    <app-ta-input
+                                                        formControlName="card"
+                                                        [inputConfig]="{
+                                                            id:
+                                                                'Card Number' +
+                                                                ind,
+                                                            name: 'Card Number',
+                                                            type: 'text',
+                                                            placeholderIcon:
+                                                                bankCardTypes[
+                                                                    ind
+                                                                ] &&
+                                                                bankCardTypes[
+                                                                    ind
+                                                                ] !== 'unknown'
+                                                                    ? bankCardTypes[
+                                                                          ind
+                                                                      ]
+                                                                    : 'password',
+                                                            label: 'Card No.',
+                                                            placeholderInsteadOfLabel: true,
+                                                            maxLength: 16,
+                                                            minLength: 15,
+                                                            hideErrorMessage: true,
+                                                            isRequired: true,
+                                                            blackInput: true,
+                                                        }"
+                                                    ></app-ta-input>
 
-                                                <app-ta-input
-                                                    formControlName="cvc"
-                                                    [inputConfig]="{
-                                                        id: 'CVC' + ind,
-                                                        name: 'CVC',
-                                                        type: 'text',
-                                                        placeholderIcon:
-                                                            'password',
-                                                        label: 'CVC',
-                                                        placeholderInsteadOfLabel: true,
-                                                        maxLength: 4,
-                                                        minLength: 3,
-                                                        hideErrorMessage: true,
-                                                        blackInput: true,
-                                                        isRequired: true,
-                                                    }"
-                                                ></app-ta-input>
-                                                <app-ta-input
-                                                    formControlName="expireDate"
-                                                    [inputConfig]="{
-                                                        id: 'Datepicker' + ind,
-                                                        name: 'datepickerBankCard',
-                                                        type: 'text',
-                                                        isDropdown: true,
-                                                        placeholderIcon: 'date',
-                                                        label: 'Exp.',
-                                                        placeholderInsteadOfLabel: true,
-                                                        customClass:
-                                                            'datetimeclass',
-                                                        expiredDateInvalid: true,
-                                                        hideErrorMessage: true,
-                                                    }"
-                                                ></app-ta-input>
-                                                <div
-                                                    ngbTooltip
-                                                    mainTooltip="Delete"
-                                                    tooltipBackground="#EF5350"
-                                                    position="top"
-                                                    class="common-fake-table-delete"
-                                                    (click)="
-                                                        removeBankCard(ind)
-                                                    "
-                                                >
-                                                    <svg-icon
-                                                        [src]="
-                                                            svgRoutes.iconTrashSvgRoute
+                                                    <app-ta-input
+                                                        formControlName="cvc"
+                                                        [inputConfig]="{
+                                                            id: 'CVC' + ind,
+                                                            name: 'CVC',
+                                                            type: 'text',
+                                                            placeholderIcon:
+                                                                'password',
+                                                            label: 'CVC',
+                                                            placeholderInsteadOfLabel: true,
+                                                            maxLength: 4,
+                                                            minLength: 3,
+                                                            hideErrorMessage: true,
+                                                            blackInput: true,
+                                                            isRequired: true,
+                                                        }"
+                                                    ></app-ta-input>
+                                                    <app-ta-input
+                                                        formControlName="expireDate"
+                                                        [inputConfig]="{
+                                                            id:
+                                                                'Datepicker' +
+                                                                ind,
+                                                            name: 'datepickerBankCard',
+                                                            type: 'text',
+                                                            isDropdown: true,
+                                                            placeholderIcon:
+                                                                'date',
+                                                            label: 'Exp.',
+                                                            placeholderInsteadOfLabel: true,
+                                                            customClass:
+                                                                'datetimeclass',
+                                                            expiredDateInvalid: true,
+                                                            hideErrorMessage: true,
+                                                        }"
+                                                    ></app-ta-input>
+                                                    <div
+                                                        ngbTooltip
+                                                        mainTooltip="Delete"
+                                                        tooltipBackground="#EF5350"
+                                                        position="top"
+                                                        class="common-fake-table-delete"
+                                                        (click)="
+                                                            removeBankCard(ind)
                                                         "
-                                                    ></svg-icon>
+                                                    >
+                                                        <svg-icon
+                                                            [src]="
+                                                                svgRoutes.iconTrashSvgRoute
+                                                            "
+                                                        ></svg-icon>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        }
                                     </div>
                                 </div>
-                            </ng-container>
+                            }
                         </app-ta-custom-card>
 
                         <ng-container>
@@ -1176,14 +1182,12 @@
                             </div>
                         </ng-container>
                     </div>
-                </ng-container>
+                }
 
                 <!-- Payroll Tab -->
-
-                <ng-container *ngIf="selectedTab === 3">
+                @if (selectedTab === 3) {
                     <div class="m-tab">
                         <!-- ACH Payout-->
-
                         <app-ta-checkbox-card
                             formControlName="useACHPayout"
                             [label]="'Use ACH Payout'"
@@ -1281,13 +1285,11 @@
                             <div class="paytype-permile active">
                                 <!-- Solo -->
 
-                                <ng-container
-                                    *ngIf="
-                                        ['Solo', 'Combined'].includes(
-                                            selectedFleetType
-                                        )
-                                    "
-                                >
+                                @if (
+                                    ['Solo', 'Combined'].includes(
+                                        selectedFleetType
+                                    )
+                                ) {
                                     <div
                                         class="permile-fields"
                                         [ngClass]="{
@@ -1306,71 +1308,56 @@
                                                 ).value,
                                         }"
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                selectedFleetType === 'Combined'
-                                            "
-                                        >
+                                        @if (selectedFleetType === 'Combined') {
                                             <p>SOLO</p>
-                                        </ng-container>
+                                        }
 
-                                        <app-ta-input
-                                            *ngIf="
-                                                !this.companyForm.get(
-                                                    'loadedAndEmptySameRate'
-                                                ).value
-                                            "
-                                            formControlName="soloEmptyMile"
-                                            [inputConfig]="{
-                                                id: 'Solo Empty Mile',
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Empty Mile',
-                                                placeholderIcon: 'dollar',
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4,
-                                            }"
-                                        ></app-ta-input>
-
-                                        <app-ta-input
-                                            *ngIf="
-                                                !this.companyForm.get(
-                                                    'loadedAndEmptySameRate'
-                                                ).value
-                                            "
-                                            formControlName="soloLoadedMile"
-                                            [inputConfig]="{
-                                                id: 'Solo Loaded Mile',
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Loaded Mile',
-                                                placeholderIcon: 'dollar',
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4,
-                                            }"
-                                        ></app-ta-input>
-
-                                        <app-ta-input
-                                            *ngIf="
-                                                this.companyForm.get(
-                                                    'loadedAndEmptySameRate'
-                                                ).value
-                                            "
-                                            formControlName="perMileSolo"
-                                            [inputConfig]="{
-                                                id: 'Solo Per Mile',
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Per Mile',
-                                                placeholderIcon: 'dollar',
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4,
-                                            }"
-                                        ></app-ta-input>
-
+                                        @if (
+                                            !this.companyForm.get(
+                                                'loadedAndEmptySameRate'
+                                            ).value
+                                        ) {
+                                            <app-ta-input
+                                                formControlName="soloEmptyMile"
+                                                [inputConfig]="{
+                                                    id: 'Solo Empty Mile',
+                                                    name: 'Per Mile',
+                                                    type: 'text',
+                                                    label: 'Empty Mile',
+                                                    placeholderIcon: 'dollar',
+                                                    min: 0,
+                                                    max: 10,
+                                                    maxLength: 4,
+                                                }"
+                                            ></app-ta-input>
+                                            <app-ta-input
+                                                formControlName="soloLoadedMile"
+                                                [inputConfig]="{
+                                                    id: 'Solo Loaded Mile',
+                                                    name: 'Per Mile',
+                                                    type: 'text',
+                                                    label: 'Loaded Mile',
+                                                    placeholderIcon: 'dollar',
+                                                    min: 0,
+                                                    max: 10,
+                                                    maxLength: 4,
+                                                }"
+                                            ></app-ta-input>
+                                        } @else {
+                                            <app-ta-input
+                                                formControlName="perMileSolo"
+                                                [inputConfig]="{
+                                                    id: 'Solo Per Mile',
+                                                    name: 'Per Mile',
+                                                    type: 'text',
+                                                    label: 'Per Mile',
+                                                    placeholderIcon: 'dollar',
+                                                    min: 0,
+                                                    max: 10,
+                                                    maxLength: 4,
+                                                }"
+                                            ></app-ta-input>
+                                        }
                                         <app-ta-input
                                             formControlName="soloPerStop"
                                             [inputConfig]="{
@@ -1399,17 +1386,14 @@
                                             }"
                                         ></app-ta-input>
                                     </div>
-                                </ng-container>
-
+                                }
                                 <!-- Team -->
 
-                                <ng-container
-                                    *ngIf="
-                                        ['Team', 'Combined'].includes(
-                                            selectedFleetType
-                                        )
-                                    "
-                                >
+                                @if (
+                                    ['Team', 'Combined'].includes(
+                                        selectedFleetType
+                                    )
+                                ) {
                                     <div
                                         class="permile-fields"
                                         [ngClass]="{
@@ -1428,70 +1412,67 @@
                                                 ).value,
                                         }"
                                     >
-                                        <ng-container
-                                            *ngIf="
-                                                selectedFleetType === 'Combined'
-                                            "
-                                        >
+                                        @if (selectedFleetType === 'Combined') {
                                             <p>TEAM</p>
-                                        </ng-container>
+                                        }
+                                        @if (
+                                            !this.companyForm.get(
+                                                'loadedAndEmptySameRate'
+                                            ).value
+                                        ) {
+                                            <app-ta-input
+                                                formControlName="teamEmptyMile"
+                                                [inputConfig]="{
+                                                    id: 'Team Empty Mile',
+                                                    name: 'Per Mile',
+                                                    type: 'text',
+                                                    label: 'Empty Mile',
+                                                    placeholderIcon: 'dollar',
+                                                    min: 0,
+                                                    max: 10,
+                                                    maxLength: 4,
+                                                }"
+                                            ></app-ta-input>
+                                        }
 
-                                        <app-ta-input
-                                            *ngIf="
-                                                !this.companyForm.get(
-                                                    'loadedAndEmptySameRate'
-                                                ).value
-                                            "
-                                            formControlName="teamEmptyMile"
-                                            [inputConfig]="{
-                                                id: 'Team Empty Mile',
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Empty Mile',
-                                                placeholderIcon: 'dollar',
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4,
-                                            }"
-                                        ></app-ta-input>
-
-                                        <app-ta-input
-                                            *ngIf="
-                                                !this.companyForm.get(
-                                                    'loadedAndEmptySameRate'
-                                                ).value
-                                            "
-                                            formControlName="teamLoadedMile"
-                                            [inputConfig]="{
-                                                id: 'Team Loaded Mile',
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Loaded Mile',
-                                                placeholderIcon: 'dollar',
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4,
-                                            }"
-                                        ></app-ta-input>
-
-                                        <app-ta-input
-                                            *ngIf="
-                                                this.companyForm.get(
-                                                    'loadedAndEmptySameRate'
-                                                ).value
-                                            "
-                                            formControlName="perMileTeam"
-                                            [inputConfig]="{
-                                                id: 'Team Per Mile',
-                                                name: 'Per Mile',
-                                                type: 'text',
-                                                label: 'Per Mile',
-                                                placeholderIcon: 'dollar',
-                                                min: 0,
-                                                max: 10,
-                                                maxLength: 4,
-                                            }"
-                                        ></app-ta-input>
+                                        @if (
+                                            !this.companyForm.get(
+                                                'loadedAndEmptySameRate'
+                                            ).value
+                                        ) {
+                                            <app-ta-input
+                                                formControlName="teamLoadedMile"
+                                                [inputConfig]="{
+                                                    id: 'Team Loaded Mile',
+                                                    name: 'Per Mile',
+                                                    type: 'text',
+                                                    label: 'Loaded Mile',
+                                                    placeholderIcon: 'dollar',
+                                                    min: 0,
+                                                    max: 10,
+                                                    maxLength: 4,
+                                                }"
+                                            ></app-ta-input>
+                                        }
+                                        @if (
+                                            this.companyForm.get(
+                                                'loadedAndEmptySameRate'
+                                            ).value
+                                        ) {
+                                            <app-ta-input
+                                                formControlName="perMileTeam"
+                                                [inputConfig]="{
+                                                    id: 'Team Per Mile',
+                                                    name: 'Per Mile',
+                                                    type: 'text',
+                                                    label: 'Per Mile',
+                                                    placeholderIcon: 'dollar',
+                                                    min: 0,
+                                                    max: 10,
+                                                    maxLength: 4,
+                                                }"
+                                            ></app-ta-input>
+                                        }
 
                                         <app-ta-input
                                             formControlName="teamPerStop"
@@ -1521,7 +1502,7 @@
                                             }"
                                         ></app-ta-input>
                                     </div>
-                                </ng-container>
+                                }
                             </div>
 
                             <div>
@@ -1535,13 +1516,11 @@
                                 ></app-ta-checkbox>
 
                                 <div class="row last-row">
-                                    <ng-container
-                                        *ngIf="
-                                            ['Solo', 'Combined'].includes(
-                                                selectedFleetType
-                                            )
-                                        "
-                                    >
+                                    @if (
+                                        ['Solo', 'Combined'].includes(
+                                            selectedFleetType
+                                        )
+                                    ) {
                                         <div
                                             class="{{
                                                 ['Solo'].includes(
@@ -1575,15 +1554,13 @@
                                                 "
                                             ></app-ta-ngx-slider>
                                         </div>
-                                    </ng-container>
+                                    }
 
-                                    <ng-container
-                                        *ngIf="
-                                            ['Team', 'Combined'].includes(
-                                                selectedFleetType
-                                            )
-                                        "
-                                    >
+                                    @if (
+                                        ['Team', 'Combined'].includes(
+                                            selectedFleetType
+                                        )
+                                    ) {
                                         <div
                                             class="{{
                                                 ['Team'].includes(
@@ -1617,7 +1594,7 @@
                                                 "
                                             ></app-ta-ngx-slider>
                                         </div>
-                                    </ng-container>
+                                    }
 
                                     <div
                                         class="{{
@@ -2336,7 +2313,7 @@
                             </div>
                         </app-ta-custom-card>
                     </div>
-                </ng-container>
+                }
             </div>
         </form>
     </div>

@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 
 // rxjs
-import { Observable } from 'rxjs';
+import { filter, Observable, take } from 'rxjs';
 
 // store
 import { select, Store } from '@ngrx/store';
@@ -27,8 +27,9 @@ import {
     LoadStatusType,
     RevertLoadStatusCommand,
     UpdateLoadStatusCommand,
+    LoadTemplateListResponse
 } from 'appcoretruckassist';
-import { Load } from '@pages/load/models';
+ import { Load } from '@pages/load/models';
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
 
 // selectors
@@ -38,6 +39,7 @@ import {
     columnsSelector,
     getDispatcherListSelector,
     getStatusListSelector,
+    getSelector,
     selectedTabSelector,
     tableDataSelector,
     tableOptionsSelector,
@@ -60,6 +62,12 @@ import { DispatcherFilter } from '@shared/models/filters';
 export class LoadStoreService {
     constructor(private store: Store) {}
 
+    public resolveInitialData$: Observable<LoadListResponse | LoadTemplateListResponse> = this.store.pipe(
+        select(getSelector),
+        filter(data =>  !!data),
+        take(1)
+    );
+    
     public viewData$: Observable<ILoadGridItem[]> = this.store.pipe(
         select(viewDataSelector)
     );

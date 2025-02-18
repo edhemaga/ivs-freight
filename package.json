@@ -57,7 +57,7 @@
         "angular-gridster2": "^18.0.1",
         "angular-svg-icon": "^18.0.0",
         "angular-svg-icon-preloader": "^8.0.0",
-        "bank-routing-number-validator": "0.0.4",
+        "bank-routing-number-validator": "0.0.4", 
         "bootstrap": "^5.2.3",
         "ca-components": "file:../carriera-components-library/dist/ca-components",
         "chart.js": "^4.4.5",

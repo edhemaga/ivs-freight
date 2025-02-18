@@ -78,7 +78,7 @@ export class TruckTableComponent
     extends TruckDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
 
@@ -791,7 +791,7 @@ export class TruckTableComponent
     }
 
     private getTruckDropdownContent(): DropdownMenuItem[] {
-        return DropdownMenuContentHelper.getTruckDropdownContent(
+        return DropdownMenuContentHelper.getTruckTrailerDropdownContent(
             this.selectedTab
         );
     }

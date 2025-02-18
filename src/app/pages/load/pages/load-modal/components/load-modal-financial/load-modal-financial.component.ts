@@ -51,7 +51,7 @@ export class LoadModalFinancialComponent implements OnChanges {
     @Input() paymentCount: number;
     @Input() thirdHeaderTitle: string;
     @Input() billing: string;
-    @Input() set adjusted (value: number) {
+    @Input() set adjusted(value: number) {
         this._adjusted = value;
     };
     @Input() payment: string;
@@ -86,11 +86,11 @@ export class LoadModalFinancialComponent implements OnChanges {
     public revisedDifference: number = 0;
 
     ngOnChanges(changes: SimpleChanges): void {
-        const pay = MethodsCalculationsHelper.convertThousanSepInNumber(
+        const pay = MethodsCalculationsHelper.convertThousandSepInNumber(
             this.payment?.substring(1)
         );
 
-        const bill = MethodsCalculationsHelper.convertThousanSepInNumber(
+        const bill = MethodsCalculationsHelper.convertThousandSepInNumber(
             this.billing?.substring(1)
         );
         if (this.tonu) {

@@ -31,6 +31,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // components
 import {
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
@@ -44,6 +45,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -71,6 +73,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaInputNoteComponent,
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         FormatDatePipe,
@@ -191,15 +194,15 @@ export class TtRegistrationModalComponent implements OnInit, OnDestroy {
     public onFilesEvent(event: any) {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case eGeneralActions.ADD: {
                 this.registrationForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case 'delete': {
+            case eGeneralActions.DELETE: {
                 this.registrationForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

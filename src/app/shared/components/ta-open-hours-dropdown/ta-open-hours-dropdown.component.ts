@@ -8,14 +8,17 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// helpers
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
 // svg routes
 import { OpenHoursDropdownSvgRoutes } from '@shared/components/ta-open-hours-dropdown/utils/svg-routes';
 
+// enums
+import { OpenHoursDropdownStringEnum } from '@shared/components/ta-open-hours-dropdown/enums';
+
 // models
-import { RepairShopOpenHoursCommand } from 'appcoretruckassist';
+import {
+    OpenHoursTodayResponse,
+    RepairShopOpenHoursResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-open-hours-dropdown',
@@ -33,50 +36,36 @@ import { RepairShopOpenHoursCommand } from 'appcoretruckassist';
     ],
 })
 export class TaOpenHoursDropdownComponent {
-    @Input() componentData: {
+    @Input() dropdownConfig: {
         rowId?: number;
         width?: number;
-        openHours: RepairShopOpenHoursCommand[];
-        openHoursToday: any; // w8 for back
+        openHours: RepairShopOpenHoursResponse[];
+        openHoursToday: OpenHoursTodayResponse;
     };
 
     public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
+    public openHoursDropdownStringEnum = OpenHoursDropdownStringEnum;
 
     public openHoursDropdownActiveId: number = -1;
-
-    public trackByIdentity = <T>(index: number, _: T): number => index;
 
     public onShowOpenHoursDropdown(popover: NgbPopover): void {
         let data = [];
 
-        this.componentData?.openHours?.forEach(
-            (dayOfWeek: RepairShopOpenHoursCommand) => {
-                const startTime =
-                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
-                        dayOfWeek?.startTime
-                    );
-                const endTime =
-                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
-                        dayOfWeek?.endTime
-                    );
+        this.dropdownConfig?.openHours?.forEach((workingDay) => {
+            const { dayOfWeek, startTime, endTime } = workingDay;
 
-                const workingHourItem = {
-                    workingDays: dayOfWeek?.dayOfWeek,
-                    workingHours: `${startTime} - ${endTime}`,
-                };
+            const workingHourItem = {
+                workingDays: dayOfWeek,
+                workingHours: `${startTime} - ${endTime}`,
+            };
 
-                data = [...data, workingHourItem];
-            }
-        );
+            data = [...data, workingHourItem];
+        });
 
-        if (popover.isOpen()) {
-            popover.close();
+        this.openHoursDropdownActiveId = popover.isOpen()
+            ? -1
+            : this.dropdownConfig?.rowId;
 
-            this.openHoursDropdownActiveId = -1;
-        } else {
-            popover.open({ data });
-
-            this.openHoursDropdownActiveId = this.componentData?.rowId;
-        }
+        popover.isOpen() ? popover.close() : popover.open({ data });
     }
 }

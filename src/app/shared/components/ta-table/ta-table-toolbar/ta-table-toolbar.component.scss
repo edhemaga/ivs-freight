@@ -416,13 +416,13 @@
             width: 36px;
             padding: 8px;
             border-radius: 3px;
+            transition: $transition;
 
             &:hover {
                 height: 44px;
                 width: 44px;
                 padding: 12px;
                 background: $ta-blue-15;
-                transition: 0.25s;
             }
 
             svg-icon {

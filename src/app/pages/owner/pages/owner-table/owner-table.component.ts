@@ -66,7 +66,7 @@ export class OwnerTableComponent
     extends OwnerDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
 
@@ -645,6 +645,7 @@ export class OwnerTableComponent
                 tableConfiguration: TableStringEnum.OWNER_2,
                 isActive: this.selectedTab === TableStringEnum.INACTIVE,
                 gridColumns: this.getGridColumns(TableStringEnum.OWNER_2),
+                inactive: !ownerCount.inactive,
             },
         ];
 
@@ -663,6 +664,7 @@ export class OwnerTableComponent
 
         updatedTableData[0].length = ownerCount.active;
         updatedTableData[1].length = ownerCount.inactive;
+        updatedTableData[1].inactive = !ownerCount.inactive;
 
         this.tableData = [...updatedTableData];
     }

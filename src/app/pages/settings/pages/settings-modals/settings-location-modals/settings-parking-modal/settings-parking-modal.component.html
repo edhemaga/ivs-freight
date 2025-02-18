@@ -40,7 +40,9 @@
                             <div class="phone-field">
                                 <app-ca-input
                                     formControlName="phone"
-                                    [inputConfig]="phoneConfig"
+                                    [inputConfig]="
+                                        'phone' | settingsParkingConfig
+                                    "
                                 ></app-ca-input>
                             </div>
                             @if (!isPhoneExtExist) {
@@ -59,14 +61,16 @@
                             } @else {
                                 <app-ca-input
                                     formControlName="extensionPhone"
-                                    [inputConfig]="phoneExtConfig"
+                                    [inputConfig]="
+                                        'phoneExt' | settingsParkingConfig
+                                    "
                                 ></app-ca-input>
                             }
                         </div>
                         <div class="email-field">
                             <app-ca-input
                                 formControlName="email"
-                                [inputConfig]="emailConfig"
+                                [inputConfig]="'email' | settingsParkingConfig"
                             ></app-ca-input>
                         </div>
                     </div>
@@ -75,24 +79,24 @@
                         <div class="col-10">
                             <app-ca-input-address-dropdown
                                 formControlName="address"
-                                [inputConfig]="addressConfig"
+                                [inputConfig]="
+                                    'address' | settingsParkingConfig
+                                "
                                 [placeholderType]="'longAddress'"
                                 [activeAddress]="selectedAddress"
                                 (selectedAddress)="onHandleAddress($event)"
                                 [receivedAddressList]="addressList"
                                 [receivedAddressData]="addressData"
-                                (sentAddressData)="
-                                    onAddressChange($event)
-                                "
-                                (sentAddressValue)="
-                                    getAddressData($event)
-                                "
+                                (sentAddressData)="onAddressChange($event)"
+                                (sentAddressValue)="getAddressData($event)"
                             ></app-ca-input-address-dropdown>
                         </div>
                         <div class="col-2">
                             <app-ca-input
                                 formControlName="addressUnit"
-                                [inputConfig]="addressUnitConfig"
+                                [inputConfig]="
+                                    'addressUnit' | settingsParkingConfig
+                                "
                             ></app-ca-input>
                         </div>
                     </div>
@@ -153,7 +157,9 @@
                                 <div class="location-parking-financial-card">
                                     <app-ca-input-dropdown
                                         formControlName="payPeriod"
-                                        [inputConfig]="payPeriodConfig"
+                                        [inputConfig]="
+                                            'payPeriod' | settingsParkingConfig
+                                        "
                                         [options]="payPeriods"
                                         [activeItem]="selectedPayPeriod"
                                         (selectedItem)="
@@ -166,10 +172,11 @@
                                     <app-ca-input-dropdown
                                         formControlName="monthlyDay"
                                         [inputConfig]="
-                                            formConfig.getMonthlyDayConfig(
-                                                parkingForm.get('payPeriod')
-                                                    .value
-                                            )
+                                            'monthlyDay'
+                                                | settingsParkingConfig
+                                                    : parkingForm.get(
+                                                          'payPeriod'
+                                                      ).value
                                         "
                                         [options]="
                                             selectedPayPeriod?.name === 'Weekly'
@@ -184,7 +191,9 @@
 
                                     <app-ca-input
                                         formControlName="rent"
-                                        [inputConfig]="rentConfig"
+                                        [inputConfig]="
+                                            'rent' | settingsParkingConfig
+                                        "
                                     ></app-ca-input>
                                 </div>
                             </div>
@@ -214,7 +223,10 @@
                                 <div class="col-12">
                                     <app-ca-input
                                         formControlName="parkingSlot"
-                                        [inputConfig]="parkingSlotConfig"
+                                        [inputConfig]="
+                                            'parkingSlot'
+                                                | settingsParkingConfig
+                                        "
                                     ></app-ca-input>
                                 </div>
                             </div>
@@ -222,7 +234,10 @@
                                 <div class="col-12">
                                     <app-ca-input
                                         formControlName="fullParkingSlot"
-                                        [inputConfig]="fullParkingSlotConfig"
+                                        [inputConfig]="
+                                            'fullParkingSlot'
+                                                | settingsParkingConfig
+                                        "
                                     ></app-ca-input>
                                 </div>
                             </div>
