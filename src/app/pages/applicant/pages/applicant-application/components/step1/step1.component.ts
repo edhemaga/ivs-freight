@@ -1287,6 +1287,8 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
 
+        if(!this.isEachPreviousAddressesRowValid) return;
+
         let mappedPreviousAddresses = previousAddresses.map(
             (previousAddress) => {
                 return {
