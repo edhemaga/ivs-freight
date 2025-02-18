@@ -1,0 +1,7 @@
+export enum eTableEmpty {
+    ADD_CLICK = 'ADD_CLICK',
+    IMPORT_LIST_CLICK = 'IMPORT_LIST_CLICK',
+    RESET_FILTERS_CLICK = 'RESET_FILTERS_CLICK',
+
+    ADD = 'Add ',
+}

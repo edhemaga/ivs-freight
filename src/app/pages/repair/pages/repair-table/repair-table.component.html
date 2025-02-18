@@ -115,27 +115,14 @@
     }
 </div>
 
-<ng-template #actionTemplate>
-    <div class="d-flex align-items-center justify-content-center flex-column">
-        <button
-            (click)="onToolBarAction({ action: 'open-modal' })"
-            class="mb-12 ca-btn ca-btn-primary"
-        >
-            Add
-            {{
-                selectedTab === tableStringEnum.REPAIR_SHOP
-                    ? tableStringEnum.SHOP
-                    : tableStringEnum.REPAIR
-            }}
-        </button>
-
-        <button class="ca-btn ca-btn-secondary">Import list</button>
-    </div>
-</ng-template>
-
 <app-ta-table-empty
     [activeViewMode]="activeViewMode"
+    [btnText]="
+        selectedTab === tableStringEnum.REPAIR_SHOP
+            ? tableStringEnum.SHOP
+            : tableStringEnum.REPAIR
+    "
     [filteredResults]="tabResultLength"
     [hasResults]="viewData.length"
-    (resetFilter$)="resetFilter()"
+    (btnClickEmitter)="handleTableEmptyBtnClickEmit($event)"
 ></app-ta-table-empty>

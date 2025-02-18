@@ -37,13 +37,16 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
-import { CaModalComponent, CaModalButtonComponent } from 'ca-components';
+import {
+    CaModalComponent,
+    CaModalButtonComponent,
+    eModalButtonClassType,
+} from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { ModalButtonType } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -107,7 +110,7 @@ export class PmModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public taModalActionEnum = TaModalActionEnum;
     public TableStringEnum = TableStringEnum;
     public activeAction: string;

@@ -31,35 +31,3 @@
         }
     }
 }
-
-.ca-btn {
-    border-radius: 2px;
-    border: 0;
-    height: 32px;
-    min-width: 150px;
-    transition: 0.3s;
-    font-size: 14px;
-    font-weight: 700;
-
-    &-primary {
-        background-color: $ta-blue-14;
-
-        &:hover {
-            background-color: $ta-blue-15;
-        }
-    }
-
-    &-secondary {
-        color: $ta-blue-14;
-        background: none;
-    }
-
-    &-tertiary {
-        color: $white;
-        background-color: $bw6-2;
-
-        &:hover {
-            background-color: $ta-black;
-        }
-    }
-}

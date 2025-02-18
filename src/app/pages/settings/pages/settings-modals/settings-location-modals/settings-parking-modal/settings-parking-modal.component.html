@@ -299,14 +299,14 @@
                     text="Delete"
                     size="Small"
                     (click)="onModalAction(taModalActionEnum.DELETE)"
-                    [type]="modalButtonType.SECONDARY_NEGATIVE"
+                    [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
                 >
                 </app-ca-modal-button>
 
                 <app-ca-modal-button
                     text="Save Changes"
                     [isValid]="parkingForm.valid && isFormDirty"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                     [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
                 >
@@ -320,7 +320,7 @@
                 [isSpinnerShown]="
                     activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
                 "
-                [type]="modalButtonType.SECONDARY_POSITIVE"
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
             >
             </app-ca-modal-button>
             <app-ca-modal-button
@@ -328,7 +328,7 @@
                 [isValid]="parkingForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                [type]="modalButtonType.PRIMARY_POSITIVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
             >
             </app-ca-modal-button>
         }

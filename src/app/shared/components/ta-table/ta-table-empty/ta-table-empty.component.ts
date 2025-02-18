@@ -17,6 +17,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
+// components
+import { CaModalButtonComponent, eModalButtonClassType } from 'ca-components';
+
 // interfaces
 import { IToolbarWidth } from '@shared/interfaces';
 
@@ -25,22 +28,43 @@ import { TableEmptySvgRoutes } from '@shared/components/ta-table/ta-table-empty/
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
+import { eModalButtonText } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-table-empty',
     templateUrl: './ta-table-empty.component.html',
     styleUrls: ['./ta-table-empty.component.scss'],
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule],
+    imports: [
+        // modules
+        CommonModule,
+        AngularSvgIconModule,
+
+        // components
+        CaModalButtonComponent,
+    ],
 })
 export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
     @Input() activeViewMode: TableStringEnum.LIST | TableStringEnum.CARD =
         TableStringEnum.LIST;
 
+    @Input() btnText: string;
+
+    @Output() btnClickEmitter: EventEmitter<string> = new EventEmitter();
+
     private destroy$ = new Subject<void>();
 
     // empty grid
+    public emptyGridPlaceholder: number[] = [];
+
     public toolbarWidth: IToolbarWidth;
+
+    // enums
+    public taStringEnum = TableStringEnum;
+    public eModalButtonClassType = eModalButtonClassType;
+    public emodalButtonText = eModalButtonText;
+    public eTableEmpty = eTableEmpty;
 
     // svg routes
     public tableEmptySvgRoutes = TableEmptySvgRoutes;
@@ -50,13 +74,6 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
     @Input() filteredResults: boolean;
     @Input() hasResults: boolean;
 
-    @Output() resetFilter$: EventEmitter<boolean> = new EventEmitter();
-
-    public emptyGridPlaceholder: number[] = [];
-
-    // enums
-    public taStringEnum = TableStringEnum;
-
     constructor(private tableService: TruckassistTableService) {}
 
     ngOnInit(): void {
@@ -65,6 +82,10 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
 
     ngOnChanges(): void {
         this.fillEmptyGridPlaceholder();
+    }
+
+    public handleBtnClick(btnClickType: string): void {
+        this.btnClickEmitter.emit(btnClickType);
     }
 
     private fillEmptyGridPlaceholder(): void {
@@ -94,10 +115,6 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         return false;
-    }
-
-    public resetFilters(): void {
-        this.resetFilter$.emit(true);
     }
 
     ngOnDestroy(): void {

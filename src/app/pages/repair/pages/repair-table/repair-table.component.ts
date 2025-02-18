@@ -65,7 +65,8 @@ import { DispatchColorFinderPipe } from '@shared/pipes';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
+import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -967,8 +968,19 @@ export class RepairTableComponent
         }, 900);
     }
 
-    public resetFilter(): void {
-        this.tableService.sendCurrentSetTableFilter({});
+    public handleTableEmptyBtnClickEmit(btnClickType: string): void {
+        switch (btnClickType) {
+            case eTableEmpty.ADD_CLICK:
+                this.onToolBarAction({ action: eGeneralActions.OPEN_MODAL });
+
+                break;
+            case eTableEmpty.IMPORT_LIST_CLICK:
+                break;
+            default:
+                this.tableService.sendCurrentSetTableFilter({});
+
+                break;
+        }
     }
 
     public setTableFilter(): void {

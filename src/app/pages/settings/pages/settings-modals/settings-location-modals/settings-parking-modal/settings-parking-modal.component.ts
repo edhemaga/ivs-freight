@@ -44,6 +44,7 @@ import {
     CaModalComponent,
     CaModalButtonComponent,
     CaInputAddressDropdownComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
@@ -58,7 +59,6 @@ import { SettingsParkingConfigPipe } from '@pages/settings/pipes';
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import {
-    ModalButtonType,
     TableStringEnum,
     DropActionsStringEnum,
     eGeneralActions,
@@ -216,7 +216,7 @@ export class SettingsParkingModalComponent
 
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public activeAction!: string;
     public data: ParkingResponse;
 

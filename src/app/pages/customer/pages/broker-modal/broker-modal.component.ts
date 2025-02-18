@@ -75,6 +75,8 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaInputAddressDropdownComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
 // enums
@@ -82,12 +84,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import {
-    eFileFormControls,
-    eGeneralActions,
-    ModalButtonSize,
-    ModalButtonType,
-} from '@shared/enums';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // constants
@@ -229,8 +226,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public activeAction: string;
 
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
 
     public addressList: AddressListResponse;
     public addressListBilling: AddressListResponse;

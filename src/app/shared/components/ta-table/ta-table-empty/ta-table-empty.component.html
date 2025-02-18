@@ -43,13 +43,23 @@
                 No data
             </p>
 
-            <p class="m-0 ta-font-extra-bold text-color-grey text-size-26">
-                addshop
-            </p>
+            <div
+                class="d-flex flex-column justify-content-center table-empty-container-main-inner"
+            >
+                <app-ca-modal-button
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                    [text]="eTableEmpty.ADD + btnText"
+                    (click)="handleBtnClick(eTableEmpty.ADD_CLICK)"
+                >
+                </app-ca-modal-button>
 
-            <p class="m-0 ta-font-extra-bold text-color-grey text-size-26">
-                importlist
-            </p>
+                <app-ca-modal-button
+                    [type]="eModalButtonClassType.PLAIN_TEXT"
+                    [text]="emodalButtonText.IMPORT_LIST"
+                    (click)="handleBtnClick(eTableEmpty.IMPORT_LIST_CLICK)"
+                >
+                </app-ca-modal-button>
+            </div>
         </div>
 
         <!--   <div
