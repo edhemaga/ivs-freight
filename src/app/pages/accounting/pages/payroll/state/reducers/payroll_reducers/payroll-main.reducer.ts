@@ -3,7 +3,7 @@ import { PayrollCountsResponse, RoutingResponse } from 'appcoretruckassist';
 import { PayrollState } from '@pages/accounting/pages/payroll/state/models';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 export const onGetPayrollCounts = (state: PayrollState) => ({
     ...state,
@@ -21,7 +21,7 @@ export const onGetPayrollCountsSuccess = (
 
 export const onSetPayrollopenedTab = (
     state: PayrollState,
-    data: { tabStatus: PayrollTablesStatus }
+    data: { tabStatus: ePayrollTablesStatus }
 ) => ({
     ...state,
     payrollOpenedTab: data.tabStatus,

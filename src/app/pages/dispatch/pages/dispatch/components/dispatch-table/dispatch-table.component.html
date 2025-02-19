@@ -18,39 +18,33 @@
             isDispatchBoardLocked
         "
     >
-        <ng-container *ngIf="isDispatchBoardChangeInProgress">
+        @if (isDispatchBoardChangeInProgress) {
             <div
                 @dispatchBackgroundAnimation
                 class="change-in-progress-background-cover"
             ></div>
-        </ng-container>
+        }
 
         <table>
             <!-- Table Header -->
 
             <thead>
-                <ng-container
-                    *ngIf="
-                        !isAllBoardsList ||
-                        (isAllBoardsList && dispatchData?.teamBoard)
-                    "
-                >
+                @if (
+                    !isAllBoardsList ||
+                    (isAllBoardsList && dispatchData?.teamBoard)
+                ) {
                     <tr class="d-flex">
-                        <ng-container
-                            *ngFor="
-                                let tableHeaderItem of dispatchTableHeaderItems;
-                                let headerItemIndex = index;
-                                trackBy: trackByIdentity
-                            "
-                        >
-                            <ng-container
-                                *ngIf="
-                                    tableHeaderItem.title
-                                        | dispatchTableHeaderShowPipe
-                                            : columnsToShow
-                                            : true
-                                "
-                            >
+                        @for (
+                            tableHeaderItem of dispatchTableHeaderItems;
+                            let headerItemIndex = $index;
+                            track headerItemIndex
+                        ) {
+                            @if (
+                                tableHeaderItem.title
+                                    | dispatchTableHeaderShowPipe
+                                        : columnsToShow
+                                        : true
+                            ) {
                                 <th
                                     class="ta-font-bold"
                                     [ngClass]="{
@@ -154,32 +148,28 @@
                                                     "
                                                 ></svg-icon>
 
-                                                <ng-container
-                                                    *ngIf="
-                                                        (tableHeaderItem?.title !==
-                                                            'INSPECTION' &&
-                                                            tableHeaderItem?.title !==
-                                                                'DISPATCHER' &&
-                                                            tableHeaderItem?.title !==
-                                                                'NOTE') ||
-                                                        (tableHeaderItem?.title ===
-                                                            'NOTE' &&
-                                                            _isNoteExpanded)
-                                                    "
-                                                >
+                                                @if (
+                                                    (tableHeaderItem?.title !==
+                                                        'INSPECTION' &&
+                                                        tableHeaderItem?.title !==
+                                                            'DISPATCHER' &&
+                                                        tableHeaderItem?.title !==
+                                                            'NOTE') ||
+                                                    (tableHeaderItem?.title ===
+                                                        'NOTE' &&
+                                                        _isNoteExpanded)
+                                                ) {
                                                     {{ tableHeaderItem?.title }}
-                                                </ng-container>
+                                                }
                                             </div>
 
-                                            <ng-container
-                                                *ngIf="
-                                                    !isDispatchBoardLocked &&
-                                                        tableHeaderItem.title
-                                                        | dispatchTableHeaderShowPipe
-                                                            : columnsToShow
-                                                            : false
-                                                "
-                                            >
+                                            @if (
+                                                !isDispatchBoardLocked &&
+                                                    tableHeaderItem.title
+                                                    | dispatchTableHeaderShowPipe
+                                                        : columnsToShow
+                                                        : false
+                                            ) {
                                                 <div
                                                     class="pe-auto"
                                                     [ngStyle]="{
@@ -203,12 +193,10 @@
                                                         "
                                                     ></svg-icon>
                                                 </div>
-                                            </ng-container>
+                                            }
                                         </div>
 
-                                        <ng-container
-                                            *ngIf="tableHeaderItem?.secondIcon"
-                                        >
+                                        @if (tableHeaderItem?.secondIcon) {
                                             <div>
                                                 <svg-icon
                                                     class="icon delivery"
@@ -225,17 +213,15 @@
                                                     tableHeaderItem?.secondTitle
                                                 }}
                                             </div>
-                                        </ng-container>
+                                        }
 
                                         <!-- Sort -->
 
-                                        <ng-container
-                                            *ngIf="
-                                                sortBy ===
-                                                    tableHeaderItem?.sortBy &&
-                                                sortDirection
-                                            "
-                                        >
+                                        @if (
+                                            sortBy ===
+                                                tableHeaderItem?.sortBy &&
+                                            sortDirection
+                                        ) {
                                             <div
                                                 class="d-flex justify-content-center align-items-center sort-indicator-container me-2"
                                             >
@@ -251,13 +237,13 @@
                                                     "
                                                 ></svg-icon>
                                             </div>
-                                        </ng-container>
+                                        }
                                     </div>
                                 </th>
-                            </ng-container>
-                        </ng-container>
+                            }
+                        }
                     </tr>
-                </ng-container>
+                }
             </thead>
 
             <!-- Table -->
@@ -265,19 +251,12 @@
             <tbody class="d-flex flex-column">
                 <!-- Locked Table -->
 
-                <ng-container
-                    *ngIf="
-                        dispatchData?.dispatches?.length;
-                        else emptyRowPlaceholderTemplate
-                    "
-                >
-                    <ng-container
-                        *ngFor="
-                            let item of dispatchData.dispatches;
-                            let rowIndex = index;
-                            trackBy: trackByIdentity
-                        "
-                    >
+                @if (dispatchData?.dispatches?.length) {
+                    @for (
+                        item of dispatchData.dispatches;
+                        let rowIndex = $index;
+                        track rowIndex
+                    ) {
                         <tr
                             #tableBodyRow
                             class="reorder-row"
@@ -558,7 +537,7 @@
                                 </div>
                             </td>
 
-                            <ng-container *ngIf="!columnsToShow[10].hidden">
+                            @if (!columnsToShow[10].hidden) {
                                 <td class="pre-trip">
                                     <app-dispatch-table-pre-trip-inspection
                                         [dispatchId]="item?.id"
@@ -574,7 +553,7 @@
                                         [isUnlockable]="_isUnlockable"
                                     ></app-dispatch-table-pre-trip-inspection>
                                 </td>
-                            </ng-container>
+                            }
 
                             <td
                                 #columnField
@@ -670,7 +649,7 @@
                                 ></app-dispatch-table-pickup-delivery>
                             </td>
 
-                            <ng-container *ngIf="!columnsToShow[14].hidden">
+                            @if (!columnsToShow[14].hidden) {
                                 <td
                                     class="progress-field"
                                     [ngStyle]="
@@ -697,13 +676,9 @@
                                             <div
                                                 class="info-item d-block p-0 w-100"
                                             >
-                                                <ng-container
-                                                    *ngIf="
-                                                        progressBarData?.[
-                                                            rowIndex
-                                                        ]
-                                                    "
-                                                >
+                                                @if (
+                                                    progressBarData?.[rowIndex]
+                                                ) {
                                                     <app-ca-progress-bar
                                                         [currentPosition]="
                                                             progressBarData[
@@ -769,14 +744,14 @@
                                                             )
                                                         "
                                                     ></app-ca-progress-bar>
-                                                </ng-container>
+                                                }
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                            </ng-container>
+                            }
 
-                            <ng-container *ngIf="!columnsToShow[15].hidden">
+                            @if (!columnsToShow[15].hidden) {
                                 <td
                                     #columnField
                                     class="parking-field"
@@ -806,9 +781,9 @@
                                         "
                                     ></app-dispatch-table-parking>
                                 </td>
-                            </ng-container>
+                            }
 
-                            <ng-container *ngIf="!columnsToShow[16].hidden">
+                            @if (!columnsToShow[16].hidden) {
                                 <td class="box-item">
                                     <div
                                         class="main_inside"
@@ -829,12 +804,9 @@
                                             <div
                                                 class="info-item justify-content-center"
                                             >
-                                                <ng-container
-                                                    *ngIf="
-                                                        item.dispatcher
-                                                            ?.fullName
-                                                    "
-                                                >
+                                                @if (
+                                                    item.dispatcher?.fullName
+                                                ) {
                                                     <app-ta-profile-images
                                                         [indx]="rowIndex"
                                                         [name]="
@@ -847,14 +819,14 @@
                                                         [isDispatch]="true"
                                                     >
                                                     </app-ta-profile-images>
-                                                </ng-container>
+                                                }
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                            </ng-container>
+                            }
 
-                            <ng-container *ngIf="!columnsToShow[17].hidden">
+                            @if (!columnsToShow[17].hidden) {
                                 <td
                                     class="note-field"
                                     [class.expanded]="_isNoteExpanded"
@@ -881,7 +853,7 @@
                                     >
                                     </app-dispatch-table-note>
                                 </td>
-                            </ng-container>
+                            }
 
                             <td class="box-item">
                                 <div
@@ -912,12 +884,16 @@
                                 </div>
                             </td>
                         </tr>
-                    </ng-container>
-                </ng-container>
+                    }
+                } @else {
+                    <ng-container
+                        *ngTemplateOutlet="emptyRowPlaceholderTemplate"
+                    ></ng-container>
+                }
 
                 <!-- Unlocked Table - Extra Row - Add -->
 
-                <ng-container *ngIf="!isDispatchBoardLocked && !isDrag">
+                @if (!isDispatchBoardLocked && !isDrag) {
                     <tr>
                         <td
                             #columnField
@@ -1028,11 +1004,11 @@
                             </app-dispatch-table-driver>
                         </td>
 
-                        <ng-container *ngIf="!columnsToShow[10].hidden">
+                        @if (!columnsToShow[10].hidden) {
                             <td class="pre-trip">
                                 <app-dispatch-table-pre-trip-inspection></app-dispatch-table-pre-trip-inspection>
                             </td>
-                        </ng-container>
+                        }
 
                         <td
                             #columnField
@@ -1042,12 +1018,7 @@
                                     | dispatchTableColumnWidths: 'city'
                             "
                         >
-                            <ng-container
-                                *ngIf="
-                                    showAddAddressFieldIndex === -2;
-                                    else emptyElement
-                                "
-                            >
+                            @if (showAddAddressFieldIndex === -2) {
                                 <app-dispatch-table-last-location
                                     [rowIndex]="showAddAddressFieldIndex"
                                     [showAddAddressField]="
@@ -1068,13 +1039,11 @@
                                     "
                                 >
                                 </app-dispatch-table-last-location>
-                            </ng-container>
-
-                            <ng-template #emptyElement>
+                            } @else {
                                 <div class="main_inside">
                                     <div class="padding-inside"></div>
                                 </div>
-                            </ng-template>
+                            }
                         </td>
 
                         <td
@@ -1102,7 +1071,7 @@
                             </div>
                         </td>
 
-                        <ng-container *ngIf="!columnsToShow[14].hidden">
+                        @if (!columnsToShow[14].hidden) {
                             <td
                                 class="progress-field"
                                 [ngStyle]="
@@ -1114,9 +1083,9 @@
                                     <div class="padding-inside"></div>
                                 </div>
                             </td>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="!columnsToShow[15].hidden">
+                        @if (!columnsToShow[15].hidden) {
                             <td
                                 #columnField
                                 class="parking-field"
@@ -1130,17 +1099,17 @@
                                     <div class="padding-inside"></div>
                                 </div>
                             </td>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="!columnsToShow[16].hidden">
+                        @if (!columnsToShow[16].hidden) {
                             <td class="box-item">
                                 <div class="main_inside">
                                     <div class="padding-inside"></div>
                                 </div>
                             </td>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="!columnsToShow[17].hidden">
+                        @if (!columnsToShow[17].hidden) {
                             <td
                                 class="note-field"
                                 [class.expanded]="_isNoteExpanded"
@@ -1155,7 +1124,7 @@
                                     <div class="padding-inside"></div>
                                 </div>
                             </td>
-                        </ng-container>
+                        }
 
                         <td class="box-item">
                             <div class="main_inside">
@@ -1163,17 +1132,12 @@
                             </div>
                         </td>
                     </tr>
-                </ng-container>
+                }
 
                 <!-- Empty Rows Placeholders -->
 
                 <ng-template #emptyRowPlaceholderTemplate>
-                    <ng-container
-                        *ngIf="
-                            isAllBoardsList;
-                            else multipleEmptyRowsPlaceholderTemplate
-                        "
-                    >
+                    @if (isAllBoardsList) {
                         <tr class="reorder-row fake-row">
                             <td
                                 #columnField
@@ -1213,11 +1177,11 @@
                                 <div class="main_inside"></div>
                             </td>
 
-                            <ng-container *ngIf="!columnsToShow[10].hidden">
+                            @if (!columnsToShow[10].hidden) {
                                 <td class="pre-trip">
                                     <div class="main_inside"></div>
                                 </td>
-                            </ng-container>
+                            }
 
                             <td
                                 #columnField
@@ -1251,7 +1215,7 @@
                                 <div class="main_inside"></div>
                             </td>
 
-                            <ng-container *ngIf="!columnsToShow[14].hidden">
+                            @if (!columnsToShow[14].hidden) {
                                 <td
                                     class="progress-field"
                                     [ngStyle]="
@@ -1262,9 +1226,9 @@
                                 >
                                     <div class="main_inside"></div>
                                 </td>
-                            </ng-container>
+                            }
 
-                            <ng-container *ngIf="!columnsToShow[15].hidden">
+                            @if (!columnsToShow[15].hidden) {
                                 <td
                                     #columnField
                                     class="parking-field"
@@ -1276,15 +1240,15 @@
                                 >
                                     <div class="main_inside"></div>
                                 </td>
-                            </ng-container>
+                            }
 
-                            <ng-container *ngIf="!columnsToShow[16].hidden">
+                            @if (!columnsToShow[16].hidden) {
                                 <td class="box-item">
                                     <div class="main_inside"></div>
                                 </td>
-                            </ng-container>
+                            }
 
-                            <ng-container *ngIf="!columnsToShow[17].hidden">
+                            @if (!columnsToShow[17].hidden) {
                                 <td
                                     class="note-field"
                                     [class.expanded]="_isNoteExpanded"
@@ -1299,24 +1263,28 @@
                                         <div class="padding-inside"></div>
                                     </div>
                                 </td>
-                            </ng-container>
+                            }
 
                             <td class="box-item">
                                 <div class="main_inside"></div>
                             </td>
                         </tr>
-                    </ng-container>
+                    } @else {
+                        <ng-container
+                            *ngTemplateOutlet="
+                                multipleEmptyRowsPlaceholderTemplate
+                            "
+                        ></ng-container>
+                    }
                 </ng-template>
 
                 <ng-template #multipleEmptyRowsPlaceholderTemplate>
-                    <ng-container *ngIf="isDispatchBoardLocked">
-                        <ng-container
-                            *ngFor="
-                                let row of [].constructor(3);
-                                let i = index;
-                                trackBy: trackByIdentity
-                            "
-                        >
+                    @if (isDispatchBoardLocked) {
+                        @for (
+                            row of [].constructor(3);
+                            let i = $index;
+                            track i
+                        ) {
                             <tr
                                 class="no-data-table-row"
                                 [ngClass]="{
@@ -1325,13 +1293,11 @@
                                     'third-row': i === 2,
                                 }"
                             >
-                                <ng-container
-                                    *ngFor="
-                                        let field of [].constructor(12);
-                                        let ind = index;
-                                        trackBy: trackByIdentity
-                                    "
-                                >
+                                @for (
+                                    field of [].constructor(12);
+                                    let ind = $index;
+                                    track ind
+                                ) {
                                     <td
                                         [ngClass]="{
                                             hidden:
@@ -1356,18 +1322,16 @@
                                     >
                                         <div></div>
                                     </td>
-                                </ng-container>
+                                }
                             </tr>
-                        </ng-container>
-                    </ng-container>
+                        }
+                    }
                 </ng-template>
             </tbody>
 
             <!-- Table Info -->
 
-            <ng-container
-                *ngIf="isAllBoardsList || dispatchData?.dispatches?.length"
-            >
+            @if (isAllBoardsList || dispatchData?.dispatches?.length) {
                 <tfoot>
                     <tr class="d-flex">
                         <td
@@ -1412,12 +1376,7 @@
                             ></app-dispatch-table-info>
                         </td>
 
-                        <ng-container
-                            *ngFor="
-                                let field of shownFields;
-                                trackBy: trackByIdentity
-                            "
-                        >
+                        @for (field of shownFields; track $index) {
                             <td
                                 [ngStyle]="
                                     field
@@ -1425,11 +1384,9 @@
                                             : resizedColumnsWidth
                                 "
                             ></td>
-                        </ng-container>
+                        }
 
-                        <ng-container
-                            *ngIf="!columnsToShow[15].hidden; noParking"
-                        >
+                        @if (!columnsToShow[15].hidden) {
                             <td
                                 [ngStyle]="
                                     resizedColumnsWidth
@@ -1445,14 +1402,12 @@
                                     "
                                 ></app-dispatch-table-info>
                             </td>
-                        </ng-container>
-
-                        <ng-template #noParking>
+                        } @else {
                             <td></td>
-                        </ng-template>
+                        }
 
                         <td colspan="3">
-                            <ng-container *ngIf="isAllBoardsList">
+                            @if (isAllBoardsList) {
                                 <app-dispatch-table-info
                                     [type]="'board'"
                                     [name]="
@@ -1462,22 +1417,20 @@
                                     "
                                     [hasAlignRight]="true"
                                 ></app-dispatch-table-info>
-                            </ng-container>
+                            }
                         </td>
                     </tr>
                 </tfoot>
-            </ng-container>
+            }
         </table>
 
         <!-- No Data -->
 
-        <ng-container
-            *ngIf="
-                !dispatchData?.dispatches?.length &&
-                !isAllBoardsList &&
-                isDispatchBoardLocked
-            "
-        >
+        @if (
+            !dispatchData?.dispatches?.length &&
+            !isAllBoardsList &&
+            isDispatchBoardLocked
+        ) {
             <div class="d-flex align-items-center justify-content-center">
                 <div
                     class="no-data-container d-flex flex-column align-items-center"
@@ -1498,15 +1451,16 @@
                             class="no-data-description ta-font-medium text-center"
                         >
                             There are no entries.
-                            <ng-container *ngIf="dispatchData?.canUnlock">
+
+                            @if (dispatchData?.canUnlock) {
                                 To manage your board, unlock the table and start
                                 <br />
                                 adding new records.
-                            </ng-container>
+                            }
                         </div>
                     </div>
 
-                    <ng-container *ngIf="dispatchData?.canUnlock">
+                    @if (dispatchData?.canUnlock) {
                         <div>
                             <button
                                 type="button"
@@ -1516,9 +1470,9 @@
                                 <p class="m-0 ta-font-bold">Unlock Table</p>
                             </button>
                         </div>
-                    </ng-container>
+                    }
                 </div>
             </div>
-        </ng-container>
+        }
     </div>
 </div>

@@ -12,9 +12,11 @@ import {
 } from 'appcoretruckassist';
 
 // Constants
-import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-miles-table-settings.constants';
-import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
-import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
+import {
+    PayrollDriverMilesTableSettingsConstants,
+    PayrollDriverCommisionTableSettingsConstants,
+    PayrollOwnerTableSettingsConstants,
+} from '@pages/accounting/utils/constants';
 import {
     ICaMapProps,
     IMapMarkers,

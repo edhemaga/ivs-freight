@@ -3,7 +3,8 @@ import { Action, Store } from '@ngrx/store';
 import { map, switchMap, Observable, catchError, of, tap } from 'rxjs';
 
 // Services
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Actions
 import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state/actions';
@@ -11,7 +12,7 @@ import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state
 export function getPayrollMileageClosedPayrollByIdEffect(
     actions$: Actions,
     payrollService: PayrollService,
-    store: Store
+    payrollFacadeService: PayrollFacadeService
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -30,22 +31,11 @@ export function getPayrollMileageClosedPayrollByIdEffect(
                                     }
                                 );
                             }),
-                            tap((data) => {
-                                const mapLocations = JSON.stringify(
-                                    data.payroll.mapLocations.map((item) => {
-                                        return {
-                                            longitude: item.longitude,
-                                            latitude: item.latitude,
-                                        };
-                                    })
-                                );
-
-                                store.dispatch(
-                                    PayrollSoloMileageDriver.getPayrollMapData({
-                                        locations: mapLocations,
-                                    })
-                                );
-                            }),
+                            tap((data) =>
+                                payrollFacadeService.setPayrollMapData(
+                                    data.payroll.mapLocations
+                                )
+                            ),
                             catchError((error) =>
                                 of(
                                     PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayrollError(
@@ -215,7 +205,7 @@ export function closePayrollSoloMileageReportEffect(
 export function getPayrollSoloMileageReportEffect(
     actions$: Actions,
     payrollService: PayrollService,
-    store: Store
+    payrollFacadeService: PayrollFacadeService
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -239,22 +229,11 @@ export function getPayrollSoloMileageReportEffect(
                                     }
                                 );
                             }),
-                            tap((data) => {
-                                const mapLocations = JSON.stringify(
-                                    data.payroll.mapLocations.map((item) => {
-                                        return {
-                                            longitude: item.longitude,
-                                            latitude: item.latitude,
-                                        };
-                                    })
-                                );
-
-                                store.dispatch(
-                                    PayrollSoloMileageDriver.getPayrollMapData({
-                                        locations: mapLocations,
-                                    })
-                                );
-                            }),
+                            tap((data) =>
+                                payrollFacadeService.setPayrollMapData(
+                                    data.payroll.mapLocations
+                                )
+                            ),
                             catchError((error) =>
                                 of(
                                     PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError(

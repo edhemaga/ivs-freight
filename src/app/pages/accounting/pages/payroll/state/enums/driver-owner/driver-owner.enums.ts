@@ -1,4 +1,4 @@
-export enum PayrollOwnerDriverEnum {
+export enum ePayrollOwnerDriver {
     GET_PAYROLL_OWNER_DRIVER = '[Payroll Owner Driver Page] Get Payroll Owner Driver',
     GET_PAYROLL_OWNER_DRIVER_SUCCESS = '[Payroll Owner Driver Page] Get Payroll Owner Driver Success',
     GET_PAYROLL_OWNER_DRIVER_ERROR = '[Payroll Owner Driver Page] Get Payroll Owner Driver Error',

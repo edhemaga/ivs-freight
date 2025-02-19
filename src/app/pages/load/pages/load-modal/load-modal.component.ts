@@ -5430,7 +5430,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             if (index > 0) {
                 const routePath: IMapRoutePath = {
                     path: [],
-                    decodedShape: routingData.legs[index - 1].decodedShape,
+                    decodedShape: routingData?.legs?.[index - 1]?.decodedShape,
                     strokeColor: MapOptionsConstants.routingPathColors.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,

@@ -28,7 +28,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/consts';
 
 // Enums
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
@@ -173,7 +173,7 @@ export class PayrollBaseModalComponent implements OnInit {
         if (!this.isDeductionModal) return;
 
         this.baseForm
-            .get(PayrollStringEnum.RECURRING)
+            .get(ePayrollString.RECURRING)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value) {
@@ -187,27 +187,27 @@ export class PayrollBaseModalComponent implements OnInit {
             });
 
         this.baseForm
-            .get(PayrollStringEnum.AMOUNT)
+            .get(ePayrollString.AMOUNT)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe(() => this.calculateDeductionPayAmmount());
 
         this.baseForm
-            .get(PayrollStringEnum.LIMITED_NUMBER)
+            .get(ePayrollString.LIMITED_NUMBER)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe(() => this.calculateDeductionPayAmmount());
     }
 
     private calculateDeductionPayAmmount(): void {
         const amount = MethodsCalculationsHelper.convertThousandSepInNumber(
-            this.baseForm.get(PayrollStringEnum.AMOUNT).value
+            this.baseForm.get(ePayrollString.AMOUNT).value
         );
         const numberOfPayments =
             MethodsCalculationsHelper.convertThousandSepInNumber(
-                this.baseForm.get(PayrollStringEnum.LIMITED_NUMBER).value
+                this.baseForm.get(ePayrollString.LIMITED_NUMBER).value
             );
 
         this.baseForm
-            .get(PayrollStringEnum.LIMITED_AMOUNT)
+            .get(ePayrollString.LIMITED_AMOUNT)
             .patchValue(
                 MethodsCalculationsHelper.convertNumberInThousandSep(
                     Number((amount / numberOfPayments).toFixed(2))
@@ -263,7 +263,7 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectDriver(driver: PayrollDriver): void {
         this.selectedDriver = driver;
         this.baseForm
-            .get(PayrollStringEnum.SELECTED_DRIVER_ID)
+            .get(ePayrollString.SELECTED_DRIVER_ID)
             .patchValue(driver?.id ?? null);
         this.creditTitle = `${driver?.name} • ${driver?.suffix}`;
         this.driverConfig = {
@@ -307,7 +307,7 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectTruck(truck: any): void {
         this.selectedTruck = truck;
         this.baseForm
-            .get(PayrollStringEnum.SELECTED_TRUCK_ID)
+            .get(ePayrollString.SELECTED_TRUCK_ID)
             .patchValue(truck?.id ?? null);
         this.creditTitle = truck ? `${truck?.name} • ${truck?.suffix}` : null;
 
@@ -339,44 +339,44 @@ export class PayrollBaseModalComponent implements OnInit {
     }
 
     private clearDriverTruckValidators(): void {
-        this.baseForm.get(PayrollStringEnum.DRIVER_ID).clearValidators();
-        this.baseForm.get(PayrollStringEnum.TRUCK_ID).clearValidators();
+        this.baseForm.get(ePayrollString.DRIVER_ID).clearValidators();
+        this.baseForm.get(ePayrollString.TRUCK_ID).clearValidators();
     }
 
     public onDriverTruckTabChange(tab: TabOptions): void {
         this.selectedTab = tab;
         this.baseForm
-            .get(PayrollStringEnum.SELECTED_TYPE_ID)
+            .get(ePayrollString.SELECTED_TYPE_ID)
             .patchValue(tab.name);
 
         this.clearDriverTruckValidators();
 
         if (tab.id === 1) {
             this.baseForm
-                .get(PayrollStringEnum.DRIVER_ID)
+                .get(ePayrollString.DRIVER_ID)
                 .setValidators(Validators.required);
             this.baseForm
-                .get(PayrollStringEnum.SELECTED_TRUCK_ID)
+                .get(ePayrollString.SELECTED_TRUCK_ID)
                 .setValue(null);
         } else if (tab.id === 2) {
             this.baseForm
-                .get(PayrollStringEnum.TRUCK_ID)
+                .get(ePayrollString.TRUCK_ID)
                 .setValidators(Validators.required);
             this.baseForm
-                .get(PayrollStringEnum.SELECTED_DRIVER_ID)
+                .get(ePayrollString.SELECTED_DRIVER_ID)
                 .setValue(null);
         }
 
         // Re-validate the form to apply changes
-        this.baseForm.get(PayrollStringEnum.DRIVER_ID).updateValueAndValidity();
-        this.baseForm.get(PayrollStringEnum.TRUCK_ID).updateValueAndValidity();
+        this.baseForm.get(ePayrollString.DRIVER_ID).updateValueAndValidity();
+        this.baseForm.get(ePayrollString.TRUCK_ID).updateValueAndValidity();
 
         this.creditTitle = null;
     }
 
     public onPeriodTabChange(tab: TabOptions): void {
         this.baseForm
-            .get(PayrollStringEnum.RECURRING_TYPE)
+            .get(ePayrollString.RECURRING_TYPE)
             .patchValue(tab?.value ?? null);
     }
 
@@ -387,27 +387,27 @@ export class PayrollBaseModalComponent implements OnInit {
     public get isNotRecuringPayment(): boolean {
         return (
             this.isDeductionModal &&
-            !this.baseForm.get(PayrollStringEnum.RECURRING)?.value
+            !this.baseForm.get(ePayrollString.RECURRING)?.value
         );
     }
 
     public get isLimitedPayment(): boolean {
         return (
             this.isDeductionModal &&
-            this.baseForm.get(PayrollStringEnum.LIMITED)?.value
+            this.baseForm.get(ePayrollString.LIMITED)?.value
         );
     }
 
     public get isDeductionModal(): boolean {
-        return this.modalType === PayrollStringEnum.MODAL_DEDUCTION;
+        return this.modalType === ePayrollString.MODAL_DEDUCTION;
     }
 
     public get isCreditModal(): boolean {
-        return this.modalType === PayrollStringEnum.MODAL_CREDIT;
+        return this.modalType === ePayrollString.MODAL_CREDIT;
     }
 
     public get isBonusModal(): boolean {
-        return this.modalType === PayrollStringEnum.MODAL_BONUS;
+        return this.modalType === ePayrollString.MODAL_BONUS;
     }
 
     public get isEditMode(): boolean {

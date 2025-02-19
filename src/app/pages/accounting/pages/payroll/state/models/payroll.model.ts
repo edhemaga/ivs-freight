@@ -7,10 +7,10 @@ import {
     PayrollOwnerResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
-import { IDriverCommissionList } from './driver_commission.model';
-import { IDriverOwnerList } from './driver_owner.model';
-import { IDriverFlatRateList } from './driver_flat_rate.model';
-import { PayrollTablesStatus } from '../enums';
+import { IDriverCommissionList } from './driver-commission.model';
+import { IDriverOwnerList } from './driver-owner.model';
+import { IDriverFlatRateList } from './driver-flat-rate.model';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
@@ -41,7 +41,7 @@ export interface PayrollState {
     driverFlatRateExpandedList?: PayrollDriverMileageExpandedListResponse[];
     driverOwnerExpandedList?: PayrollDriverMileageExpandedListResponse[];
     driverFlatRateList?: IDriverFlatRateList;
-    payrollOpenedTab: PayrollTablesStatus;
+    payrollOpenedTab: ePayrollTablesStatus;
 
     payrollMapRoutes: RoutingResponse;
 }
@@ -120,7 +120,7 @@ export interface IPayrollProccessPaymentModal {
     id: number;
     totalEarnings: number;
     payrollNumber: string;
-    selectedTab: PayrollTablesStatus;
+    selectedTab: ePayrollTablesStatus;
     payrollType?: PayrollTypes;
 }
 export interface IAddPayrollClosedPayment {
@@ -160,7 +160,7 @@ export enum PayrollTypes {
 }
 export interface IGetPayrollByIdAndOptions {
     reportId: string;
-    payrollOpenedTab: PayrollTablesStatus;
+    payrollOpenedTab: ePayrollTablesStatus;
     lastLoadDate?: string;
     selectedLoadIds?: number[];
     selectedCreditIds?: number[];

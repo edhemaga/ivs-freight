@@ -1,4 +1,4 @@
 export * from "./payroll.selector";
-export * from "./payroll_driver_flat_rate.selector";
-export * from "./payroll_driver_commision.selector";
-export * from "./payroll_owner.selector";
+export * from "./payroll-driver-flat-rate.selector";
+export * from "./payroll-driver-commision.selector";
+export * from "./payroll-owner.selector";

@@ -1,4 +1,4 @@
-export enum PayrollStringEnum {
+export enum ePayrollString {
     ADD_CREDIT = 'Add credit',
     EDIT_CREDIT = 'Edit credit',
     DRIVER = 'Driver',

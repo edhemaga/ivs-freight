@@ -1,35 +1,34 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
-import { Action, Store } from '@ngrx/store';
+import { Action } from '@ngrx/store';
 
 // ACTIONS
-import * as PayrollCommissionDriverActions from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollOwnerDriverActions from '@pages/accounting/pages/payroll/state/actions';
 
 // SERVICES
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
-export function getPayrollCommissionDriverListEffect(
+export function getPayrollOwnerDriverListEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
     return createEffect(
         (): Observable<Action> =>
             actions$.pipe(
-                ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionDriver
-                ),
-                switchMap((action) => {
-                    return payrollService.getPayrollCommissionDriverList().pipe(
+                ofType(PayrollOwnerDriverActions.getPayrollOwnerDriverList),
+                switchMap((_) => {
+                    return payrollService.getPayrollOwnerDriverList().pipe(
                         map((data) => {
-                            return PayrollCommissionDriverActions.getPayrollCommissionDriverSuccess(
+                            return PayrollOwnerDriverActions.getPayrollOwnerDriverListSuccess(
                                 {
-                                    commissionPayrollList: data,
+                                    ownerPayrollList: data,
                                 }
                             );
                         }),
                         catchError((error) =>
                             of(
-                                PayrollCommissionDriverActions.getPayrollCommissionDriverError(
+                                PayrollOwnerDriverActions.getPayrollOwnerDriverListError(
                                     {
                                         error,
                                     }
@@ -42,54 +41,40 @@ export function getPayrollCommissionDriverListEffect(
     );
 }
 
-export function getPayrollCommissionReportEffect(
+export function getPayrollOwnerReportEffect(
     actions$: Actions,
     payrollService: PayrollService,
-    store: Store
+    payrollFacadeService: PayrollFacadeService
 ) {
     return createEffect(
         (): Observable<Action> =>
             actions$.pipe(
-                ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionReportDriver
-                ),
+                ofType(PayrollOwnerDriverActions.getPayrollOwnerReportDriver),
                 switchMap((action) => {
                     return payrollService
-                        .getPayrollCommissionDriverReport({
+                        .getPayrollOwnerDriverReport({
                             reportId: action.reportId,
                             selectedCreditIds: action.selectedCreditIds,
                             selectedDeductionIds: action.selectedDeductionIds,
                             selectedLoadIds: action.selectedLoadIds,
+                            selectedFuelIds: action.selectedFuelIds,
                         })
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions.getPayrollCommissionReportDriverSuccess(
+                                return PayrollOwnerDriverActions.getPayrollOwnerReportDriverSuccess(
                                     {
-                                        payroll: data,
+                                        ownerPayrollReport: data,
                                     }
                                 );
                             }),
-                            tap((data) => {
-                                const mapLocations = JSON.stringify(
-                                    data.payroll.mapLocations.map((item) => {
-                                        return {
-                                            longitude: item.longitude,
-                                            latitude: item.latitude,
-                                        };
-                                    })
-                                );
-
-                                store.dispatch(
-                                    PayrollCommissionDriverActions.getPayrollMapData(
-                                        {
-                                            locations: mapLocations,
-                                        }
-                                    )
-                                );
-                            }),
+                            tap((data) =>
+                                payrollFacadeService.setPayrollMapData(
+                                    data.ownerPayrollReport.mapLocations
+                                )
+                            ),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.getPayrollCommissionReportDriverError(
+                                    PayrollOwnerDriverActions.getPayrollOwnerReportDriverError(
                                         {
                                             error,
                                         }
@@ -102,34 +87,33 @@ export function getPayrollCommissionReportEffect(
     );
 }
 
-export function closePayrollCommissionReportEffect(
+export function closePayrollOwnerReportEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
     return createEffect(
         (): Observable<Action> =>
             actions$.pipe(
-                ofType(
-                    PayrollCommissionDriverActions.closePayrollCommissionReportDriver
-                ),
+                ofType(PayrollOwnerDriverActions.closePayrollOwnerReportDriver),
                 switchMap((action) => {
                     return payrollService
-                        .closePayrollCommissionDriverReport(
+                        .closePayrollOwnerDriverReport(
                             action.amount,
                             action.reportId,
                             action.selectedLoadIds,
                             action.selectedDeductionIds,
                             action.selectedCreditIds,
+                            action.selectedCreditIds,
                             action.paymentType,
                             action.otherPaymentType
                         )
                         .pipe(
-                            map((data) => {
-                                return PayrollCommissionDriverActions.closePayrollCommissionReportDriverSuccess();
+                            map((_) => {
+                                return PayrollOwnerDriverActions.closePayrollOwnerReportDriverSuccess();
                             }),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.closePayrollCommissionReportDriverError(
+                                    PayrollOwnerDriverActions.closePayrollOwnerReportDriverError(
                                         {
                                             error,
                                         }
@@ -142,7 +126,7 @@ export function closePayrollCommissionReportEffect(
     );
 }
 
-export function getPayrollCommissionDriverCollapsedListEffect(
+export function getPayrollOwnerDriverCollapsedListEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
@@ -150,14 +134,14 @@ export function getPayrollCommissionDriverCollapsedListEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedList
+                    PayrollOwnerDriverActions.getPayrollOwnerDriverCollapsedList
                 ),
                 switchMap(() => {
                     return payrollService
-                        .getPayrollCommissionDriverCollapsedList()
+                        .getPayrollOwnerDriverCollapsedList()
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedListSuccess(
+                                return PayrollOwnerDriverActions.getPayrollOwnerDriverCollapsedListSuccess(
                                     {
                                         data: data,
                                     }
@@ -165,7 +149,7 @@ export function getPayrollCommissionDriverCollapsedListEffect(
                             }),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedListError(
+                                    PayrollOwnerDriverActions.getPayrollOwnerDriverCollapsedListError(
                                         {
                                             error,
                                         }
@@ -178,7 +162,7 @@ export function getPayrollCommissionDriverCollapsedListEffect(
     );
 }
 
-export function getPayrollCommissionDriverExpandedListEffect(
+export function getPayrollOwnerDriverExpandedListEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
@@ -186,14 +170,14 @@ export function getPayrollCommissionDriverExpandedListEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedList
+                    PayrollOwnerDriverActions.getPayrollOwnerDriverExpandedList
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .getPayrollCommissionDriverExpandedList(action.driverId)
+                        .getPayrollOwnerDriverExpandedList(action.trailerId)
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedListSuccess(
+                                return PayrollOwnerDriverActions.getPayrollOwnerDriverExpandedListSuccess(
                                     {
                                         data: data,
                                     }
@@ -201,7 +185,7 @@ export function getPayrollCommissionDriverExpandedListEffect(
                             }),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedListError(
+                                    PayrollOwnerDriverActions.getPayrollOwnerDriverExpandedListError(
                                         {
                                             error,
                                         }
@@ -214,51 +198,36 @@ export function getPayrollCommissionDriverExpandedListEffect(
     );
 }
 
-export function getPayrollCommissionClosedPayrollReportByIdEffect(
+export function getPayrollOwnerClosedPayrollReportByIdEffect(
     actions$: Actions,
     payrollService: PayrollService,
-    store: Store
+    payrollFacadeService: PayrollFacadeService
 ) {
     return createEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayroll
+                    PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayroll
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .getPayrollCommissionDriverClosedReportById(
-                            action.payrollId
-                        )
+                        .getPayrollOwnerDriverClosedReportById(action.payrollId)
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayrollSuccess(
+                                return PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayrollSuccess(
                                     {
                                         payroll: data,
                                     }
                                 );
                             }),
-                            tap((data) => {
-                                const mapLocations = JSON.stringify(
-                                    data.payroll.mapLocations.map((item) => {
-                                        return {
-                                            longitude: item.longitude,
-                                            latitude: item.latitude,
-                                        };
-                                    })
-                                );
-
-                                store.dispatch(
-                                    PayrollCommissionDriverActions.getPayrollMapData(
-                                        {
-                                            locations: mapLocations,
-                                        }
-                                    )
-                                );
-                            }),
+                            tap((data) =>
+                                payrollFacadeService.setPayrollMapData(
+                                    data.payroll.mapLocations
+                                )
+                            ),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayrollError(
+                                    PayrollOwnerDriverActions.getPayrollOwnerDriverClosedReportPayrollError(
                                         {
                                             error,
                                         }
@@ -271,7 +240,7 @@ export function getPayrollCommissionClosedPayrollReportByIdEffect(
     );
 }
 
-export function addPayrollCommissionClosedPayrollPaymentEffect(
+export function addPayrollOwnerClosedPayrollPaymentEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
@@ -279,18 +248,18 @@ export function addPayrollCommissionClosedPayrollPaymentEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.driverCommissionPayrollClosedPayments
+                    PayrollOwnerDriverActions.driverOwnerPayrollClosedPayments
                 ),
                 switchMap((action) => {
                     return payrollService
                         .addPayrollClosedReportPayment(action)
                         .pipe(
                             map((_) => {
-                                return PayrollCommissionDriverActions.driverCommissionPayrollClosedPaymentsSuccess();
+                                return PayrollOwnerDriverActions.driverOwnerPayrollClosedPaymentsSuccess();
                             }),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.driverCommissionPayrollClosedPaymentsError(
+                                    PayrollOwnerDriverActions.driverOwnerPayrollClosedPaymentsError(
                                         {
                                             error,
                                         }

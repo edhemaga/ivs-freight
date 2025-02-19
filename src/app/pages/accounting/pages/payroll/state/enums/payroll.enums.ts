@@ -1,4 +1,4 @@
-export enum PayrollEnum{
+export enum ePayrollEnum {
     GET_PAYROLL_COUNTS = "[Payroll Page] Get Payroll Counts",
     GET_PAYROLL_COUNTS_SUCCESS = "[Payroll Page] Get Payroll Counts Success",
     GET_PAYROLL_COUNTS_ERROR = "[Payroll Page] Get Payroll Counts Error",
@@ -12,7 +12,7 @@ export enum PayrollEnum{
 }
 
 
-export enum PayrollAdditionalTypes{
+export enum ePayrollAdditionalTypes {
     CREDIT = 'Credit',
     BONUS = 'Bonus',
     DEDUCTION = 'Deduction',

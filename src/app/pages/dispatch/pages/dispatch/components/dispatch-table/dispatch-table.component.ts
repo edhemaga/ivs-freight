@@ -1301,17 +1301,15 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         progressIndex: number
     ): void {
         if (!progressData.gpsProgress[1].routeShape) {
-            const mapLocations = progressData.gpsProgress.map(
-                (progressStop) => {
-                    return {
-                        longitude: progressStop.longitude,
-                        latitude: progressStop.latitude,
-                    };
-                }
+            const mapLocations = JSON.stringify(
+                progressData.gpsProgress.map(({ longitude, latitude }) => ({
+                    longitude,
+                    latitude,
+                }))
             );
 
             this.loadService
-                .getRouting(JSON.stringify(mapLocations))
+                .getRouting(mapLocations)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res) => {
@@ -1325,20 +1323,25 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                                                     res.legs?.[index - 1]
                                                         ?.decodedShape;
 
-                                                if (routeShape)
-                                                    item = {
+                                                if (routeShape) {
+                                                    const newItem = {
                                                         ...item,
                                                         routeShape,
                                                     };
+
+                                                    return newItem;
+                                                }
 
                                                 return item;
                                             }
                                         );
 
-                                    progressData = {
+                                    const newProgressData = {
                                         ...progressData,
                                         gpsProgress: gpsProgressData,
                                     };
+
+                                    return newProgressData;
                                 }
 
                                 return progressData;
@@ -1373,14 +1376,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
                 this.refreshDispatchTable(response);
-                console.log(response);
-            });
-
-        this.dispatchHubService
-            .onDispatchBoardChanged()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((response) => {
-                console.log('onDispatchBoardChanged', response);
             });
     }
 

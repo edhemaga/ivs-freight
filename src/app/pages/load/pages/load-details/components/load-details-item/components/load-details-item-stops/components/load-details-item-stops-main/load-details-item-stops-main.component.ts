@@ -327,23 +327,19 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
         const routeMarkers: IMapMarkers[] = [];
         const routePaths: IMapRoutePath[] = [];
 
+        const mapLocations = JSON.stringify(
+            this.loadStopData.map(({ shipper: { longitude, latitude } }) => ({
+                longitude,
+                latitude,
+            }))
+        );
+
         this.loadService
-            .getRouting(
-                JSON.stringify(
-                    this.loadStopData.map((item) => {
-                        return {
-                            longitude: item.shipper.longitude,
-                            latitude: item.shipper.latitude,
-                        };
-                    })
-                )
-            )
+            .getRouting(mapLocations)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: RoutingResponse) => {
                     const routeLegs = res.legs;
-
-                    console.log('getRouting res', res);
 
                     this.loadStopData.forEach((loadStop, index) => {
                         const markerData = {
@@ -353,16 +349,18 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
                             },
                         };
 
+                        const content =
+                            this.markerIconService.getRoutingMarkerIcon(
+                                markerData,
+                                loadStop.stopLoadOrder ?? 0,
+                                loadStop.stopType.name.toLowerCase(),
+                                false,
+                                true
+                            );
+
                         const routeMarker: IMapMarkers = {
                             ...markerData,
-                            content:
-                                this.markerIconService.getRoutingMarkerIcon(
-                                    markerData,
-                                    loadStop.stopLoadOrder ?? 0,
-                                    loadStop.stopType.name.toLowerCase(),
-                                    false,
-                                    true
-                                ),
+                            content,
                         };
 
                         routeMarkers.push(routeMarker);
