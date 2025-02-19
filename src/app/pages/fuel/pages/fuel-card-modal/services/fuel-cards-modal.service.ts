@@ -55,8 +55,6 @@ export class FuelCardsModalService {
             }),
         };
 
-        console.log(tab, 'set for tab');
-
         switch (tab) {
             case TableStringEnum.ACTIVE:
                 this.store.dispatch(setActiveTabCards(sendToStore));

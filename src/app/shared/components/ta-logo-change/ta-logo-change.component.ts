@@ -15,7 +15,11 @@ import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // modules
-import { ImageCroppedEvent, ImageCropperModule, LoadedImage } from 'ngx-image-cropper';
+import {
+    ImageCroppedEvent,
+    ImageCropperModule,
+    LoadedImage,
+} from 'ngx-image-cropper';
 import Croppie from 'croppie';
 
 // services
@@ -51,7 +55,7 @@ import { FormsModule } from '@angular/forms';
         CommonModule,
         FormsModule,
         ImageCropperModule,
-       // CroppieModule,
+        // CroppieModule,
         AngularSvgIconModule,
         NgbModule,
         NgbPopoverModule,
@@ -125,8 +129,6 @@ export class TaLogoChangeComponent
         private uploadFileService: TaUploadFileService,
         private imageBase64Service: ImageBase64Service
     ) {}
-
-
 
     imageChangedEvent: any = '';
     croppedImage: any = '';
@@ -214,10 +216,9 @@ export class TaLogoChangeComponent
     }
 
     public onUploadImage(event: any) {
-        console.log(event);
         this.imageChangedEvent = event.files[0].url;
         if (this.showUploadZone) {
-            this.showUploadZone = false; 
+            this.showUploadZone = false;
             this.imageUrl = null;
 
             const url = event.files[0].url;

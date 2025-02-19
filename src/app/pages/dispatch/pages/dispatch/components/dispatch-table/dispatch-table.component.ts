@@ -565,10 +565,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 (locationValue?.address?.address
                     ? locationValue.address
                     : typeof locationValue === DispatchTableStringEnum.NUMBER
-                    ? null
-                    : locationValue
-                    ? locationValue
-                    : null),
+                      ? null
+                      : locationValue
+                        ? locationValue
+                        : null),
             longitude: longitude || locationValue?.longitude || null,
             latitude: latitude || locationValue?.latitude || null,
             note,
@@ -1167,12 +1167,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             event.column.field === DispatchTableStringEnum.PICKUP_DELIVERY_2
                 ? DispatchTableStringEnum.PICKUP_DELIVERY_3
                 : event.column.field === DispatchTableStringEnum.PROGRESS_2
-                ? DispatchTableStringEnum.PROGRESS_3
-                : event.column.field === DispatchTableStringEnum.DISPATCHER_2
-                ? DispatchTableStringEnum.DISPATCHER
-                : event.column.field === DispatchTableStringEnum.NOTE_2
-                ? DispatchTableStringEnum.NOTE_3
-                : event.column.field;
+                  ? DispatchTableStringEnum.PROGRESS_3
+                  : event.column.field === DispatchTableStringEnum.DISPATCHER_2
+                    ? DispatchTableStringEnum.DISPATCHER
+                    : event.column.field === DispatchTableStringEnum.NOTE_2
+                      ? DispatchTableStringEnum.NOTE_3
+                      : event.column.field;
 
         const maxColWidth =
             event.column.field === DispatchTableStringEnum.DISPATCHER_2
@@ -1310,23 +1310,22 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     private manageDispatchHubListeners(): void {
-        this.dispatchHubService.onDispatchChanged()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(response => {
-            this.refreshDispatchTable(response);
-            console.log(response);
-        });
+        this.dispatchHubService
+            .onDispatchChanged()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                this.refreshDispatchTable(response);
+            });
 
-        this.dispatchHubService.onDispatchBoardChanged()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(response => {
-            console.log('onDispatchBoardChanged', response);
-        });
+        this.dispatchHubService
+            .onDispatchBoardChanged()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
     }
 
     private refreshDispatchTable(dispatchChanged: DispatchResponse): void {
         const { dispatches } = this.dispatchData || {};
-        const index = dispatches?.findIndex(d => d.id === dispatchChanged.id)
+        const index = dispatches?.findIndex((d) => d.id === dispatchChanged.id);
         // let dispatchToChange = dispatches?.find(d => d.id === dispatchChange.id);
 
         if (index >= 0)

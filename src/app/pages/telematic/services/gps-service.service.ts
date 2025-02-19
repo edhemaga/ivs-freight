@@ -38,10 +38,7 @@ export class GpsService {
 
             this.hubConnection
                 .start()
-                .then(() => {
-                    console.log('CONNECTION STARTED');
-                    console.log(this.hubConnection);
-                })
+                .then(() => {})
                 .catch((err) =>
                     console.log('Error while starting connection: ' + err)
                 );
