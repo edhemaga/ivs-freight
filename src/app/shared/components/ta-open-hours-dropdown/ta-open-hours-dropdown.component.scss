@@ -4,7 +4,6 @@
     border-radius: 2px;
     padding: 4px;
     margin-left: -2px;
-    cursor: pointer;
     transition: background 0.2s;
 
     &:hover {
@@ -23,20 +22,9 @@
         position: relative;
         bottom: 1px;
         margin-right: 4px;
-        line-height: 18px;
+    }
 
-        &.closing {
-            svg {
-                circle {
-                    fill: $ta-yellow-1;
-                }
-            }
-        }
-
-        svg {
-            circle {
-                fill: $ta-green;
-            }
-        }
+    p {
+        text-transform: uppercase;
     }
 }

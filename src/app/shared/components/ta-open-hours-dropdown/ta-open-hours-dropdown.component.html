@@ -1,4 +1,10 @@
-@let isCurrentlyNotClosed = dropdownConfig?.openHoursToday?.id !== 3;
+@let isActiveDropdown = openHoursDropdownActiveId === dropdownConfig?.rowId;
+@let isInctiveDropdown = openHoursDropdownActiveId !== dropdownConfig?.rowId;
+
+@let isCurrentlyOpen = dropdownConfig?.openHoursToday?.id === 1;
+@let isCurrentlyClosing = dropdownConfig?.openHoursToday?.id === 2;
+@let isCurrentlyClosed = dropdownConfig?.openHoursToday?.id === 3;
+@let isAlwaysOpen = dropdownConfig?.openAlways;
 
 <div
     [ngStyle]="{ 'width.px': dropdownConfig?.width ?? '100%' }"
@@ -9,18 +15,15 @@
     popoverClass="table-open-hours-popover"
     triggers="manual"
     [autoClose]="'outside'"
-    (hidden)="
-        openHoursDropdownActiveId === dropdownConfig?.rowId
-            ? (openHoursDropdownActiveId = -1)
-            : {}
-    "
-    (click)="onShowOpenHoursDropdown(openHoursPop)"
+    (hidden)="onHideOpenHoursDropdown()"
+    (click)="!isAlwaysOpen && onShowOpenHoursDropdown(openHoursPop)"
 >
     <div
         class="d-flex align-items-center open-hours-container"
         [ngClass]="{
-            active: openHoursDropdownActiveId === dropdownConfig?.rowId,
+            active: isActiveDropdown,
         }"
+        [ngStyle]="{ cursor: isAlwaysOpen ? 'default' : 'pointer' }"
         ngbTooltip
         mainTooltip="Open Hours"
         tooltipBackground="#424242"
@@ -28,30 +31,33 @@
         tooltipMarginTop="-6px"
         position="bottom"
     >
-        @if (isCurrentlyNotClosed) {
-            <svg-icon
-                class="open-hours-icon"
-                [ngClass]="{
-                    closing: dropdownConfig?.openHoursToday?.id === 2,
-                }"
-                [src]="openHoursDropdownSvgRoutes.circleRoute"
-                [svgStyle]="{
-                    'width.px': 10,
-                    'height.px': 10,
-                }"
-            ></svg-icon>
-        }
-
-        <p
-            class="m-0 text-color-black text-size-14"
+        <svg-icon
+            class="svg-size-14 open-hours-icon"
             [ngClass]="{
-                'ta-font-semi-bold': isCurrentlyNotClosed,
+                'svg-fill-green': isInctiveDropdown && isCurrentlyOpen,
+                'svg-fill-green-4': isActiveDropdown && isCurrentlyOpen,
+                'svg-fill-yellow-1': isInctiveDropdown && isCurrentlyClosing,
+                'svg-fill-yellow-4': isActiveDropdown && isCurrentlyClosing,
+                'svg-fill-muted': isInctiveDropdown && isCurrentlyClosed,
+                'svg-fill-light-grey-2': isActiveDropdown && isCurrentlyClosed,
             }"
-        >
+            [src]="
+                openHoursDropdownSvgRoutes[
+                    isCurrentlyOpen
+                        ? 'openRoute'
+                        : isCurrentlyClosing
+                          ? 'closingRoute'
+                          : 'closedRoute'
+                ]
+            "
+        ></svg-icon>
+
+        <p class="m-0 ta-font-bold text-color-black text-size-11">
             {{
-                dropdownConfig?.openHoursToday?.id === 1
-                    ? dropdownConfig?.openHoursToday?.status
-                    : dropdownConfig?.openHoursToday?.info
+                dropdownConfig?.openHoursToday?.status +
+                    (isAlwaysOpen
+                        ? ' ' + dropdownConfig?.openHoursToday?.info
+                        : '')
             }}
         </p>
     </div>

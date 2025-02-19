@@ -38,11 +38,23 @@ export class TaOpenHoursDropdownComponent {
         width?: number;
         openHours: RepairShopOpenHoursResponse[];
         openHoursToday: OpenHoursTodayResponse;
+        openAlways: boolean;
     };
+
+    ngOnInit() {
+        console.log('config', this.dropdownConfig);
+    }
 
     public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
 
     public openHoursDropdownActiveId: number = -1;
+
+    public onHideOpenHoursDropdown(): void {
+        const isActiveDropdown =
+            this.openHoursDropdownActiveId === this.dropdownConfig?.rowId;
+
+        if (isActiveDropdown) this.openHoursDropdownActiveId = -1;
+    }
 
     public onShowOpenHoursDropdown(popover: NgbPopover): void {
         let data = [];

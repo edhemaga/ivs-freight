@@ -1091,7 +1091,7 @@ export class RepairShopModalComponent
             shopServiceType: this.getFromFieldValue(
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
-            openHours: this.isOpenAllDay ? [] : this.formatOpenHours(),
+            openHours: this.formatOpenHours(),
             openAlways: this.getFromFieldValue(
                 RepairShopModalStringEnum.OPEN_ALWAYS
             ),

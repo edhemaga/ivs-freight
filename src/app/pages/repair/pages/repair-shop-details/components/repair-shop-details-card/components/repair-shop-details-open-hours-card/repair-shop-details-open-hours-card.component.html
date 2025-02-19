@@ -1,18 +1,13 @@
 @let openHoursToday = _cardData?.openHoursToday;
+
+@let isCurrentlyOpen = openHoursToday?.id === 1;
+@let isCurrentlyClosing = openHoursToday?.id === 2;
 @let isCurrentlyClosed = _cardData?.openHoursToday?.id === 3;
 @let isAlwaysOpen = _cardData?.openAlways;
 
 <app-ta-custom-card
     [cardName]="'Working Hours'"
-    [subText]="
-        !isOpenHoursCardOpen
-            ? isAlwaysOpen
-                ? 'Open 24/7'
-                : isCurrentlyClosed
-                  ? openHoursToday?.info
-                  : openHoursToday?.status
-            : ''
-    "
+    [subText]="!isOpenHoursCardOpen ? openHoursToday?.status : ''"
     [isCardOpen]="true"
     [bodyTemplate]="'card'"
     [hasDivider]="false"
@@ -33,15 +28,15 @@
         >
             <div class="d-flex align-items-center">
                 <p class="m-0 ta-font-bold text-size-11 text-color-black">
-                    {{ isAlwaysOpen ? 'Open Now' : openHoursToday?.status }}
+                    {{ openHoursToday?.status }}
                 </p>
 
                 <svg-icon
                     class="shop-details-working-hours-header-icon"
                     [ngClass]="
-                        isAlwaysOpen || openHoursToday?.id === 1
+                        isCurrentlyOpen
                             ? 'open'
-                            : openHoursToday?.id === 2
+                            : isCurrentlyClosing
                               ? 'closing'
                               : 'closed'
                     "
@@ -53,12 +48,12 @@
             <p
                 class="m-0 ta-font-medium text-size-18"
                 [ngClass]="
-                    !isCurrentlyClosed || isAlwaysOpen
-                        ? 'text-color-light-black'
-                        : 'text-color-light-grey-2'
+                    isCurrentlyClosed
+                        ? 'text-color-light-grey-2'
+                        : 'text-color-light-black'
                 "
             >
-                {{ isAlwaysOpen ? '24 / 7' : openHoursToday?.info }}
+                {{ openHoursToday?.info }}
             </p>
         </div>
 
