@@ -113,7 +113,7 @@ export class TrailerModalConfig {
             dropdownImageInput: {
                 withText: false,
                 svg: true,
-                image: false, 
+                image: false,
                 iconsPath: '',
                 activeItemIconKey: 'logoName',
                 url: options.selectedTrailerMake?.logoName,
@@ -143,8 +143,7 @@ export class TrailerModalConfig {
                 withText: true,
                 svg: true,
                 image: false,
-                iconsPath:
-                    'ic_color.svg',
+                iconsPath: 'ic_color.svg',
                 activeItemIconKey: '',
                 template: 'color',
             },
