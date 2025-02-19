@@ -60,7 +60,6 @@ export class TruckassistTableService {
     /* Showing Scroll */
     private showingScroll = new BehaviorSubject<boolean>(null);
     public currentShowingScroll = this.showingScroll.asObservable();
-    /* Reset Columns */
 
     // Flip cards
     private flipCards = new BehaviorSubject<boolean>(false);

@@ -943,6 +943,9 @@ export class RepairTableComponent
         this.setRepairData(td);
         this.updateCardView();
 
+        console.log('td', td);
+        console.log('this.viewData', this.viewData);
+
         this.tabResultLength = td.data.length;
     }
 
@@ -978,6 +981,7 @@ export class RepairTableComponent
                 break;
             default:
                 this.tableService.sendCurrentSetTableFilter({});
+                /*    this.tableService.sendResetSpecialFilters(true); */
 
                 break;
         }

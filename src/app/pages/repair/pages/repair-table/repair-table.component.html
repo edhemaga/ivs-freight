@@ -122,7 +122,7 @@
             ? tableStringEnum.SHOP
             : tableStringEnum.REPAIR
     "
-    [filteredResults]="tabResultLength"
     [hasResults]="viewData.length"
+    [filteredResults]="tabResultLength"
     (btnClickEmitter)="handleTableEmptyBtnClickEmit($event)"
 ></app-ta-table-empty>

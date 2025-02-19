@@ -1,4 +1,5 @@
 @let isListView = activeViewMode === taStringEnum.LIST;
+@let isEmptyList = !this.hasResults && this.filteredResults;
 
 @if (!hasResults) {
     <div
@@ -40,25 +41,45 @@
             ></svg-icon>
 
             <p class="m-0 ta-font-extra-bold text-color-grey text-size-26">
-                No data
+                {{
+                    !this.hasResults && this.filteredResults
+                        ? 'No results'
+                        : 'No data'
+                }}
             </p>
 
             <div
                 class="d-flex flex-column justify-content-center table-empty-container-main-inner"
             >
                 <app-ca-modal-button
-                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
-                    [text]="eTableEmpty.ADD + btnText"
-                    (click)="handleBtnClick(eTableEmpty.ADD_CLICK)"
+                    [type]="
+                        !this.hasResults && this.filteredResults
+                            ? eModalButtonClassType.PRIMARY_NEUTRAL
+                            : eModalButtonClassType.PRIMARY_POSITIVE
+                    "
+                    [text]="
+                        !this.hasResults && this.filteredResults
+                            ? emodalButtonText.CLEAR_FILTERS
+                            : eTableEmpty.ADD + btnText
+                    "
+                    (click)="
+                        handleBtnClick(
+                            !this.hasResults && this.filteredResults
+                                ? eTableEmpty.CLEAR_FILTERS_CLICK
+                                : eTableEmpty.ADD_CLICK
+                        )
+                    "
                 >
                 </app-ca-modal-button>
 
-                <app-ca-modal-button
-                    [type]="eModalButtonClassType.PLAIN_TEXT"
-                    [text]="emodalButtonText.IMPORT_LIST"
-                    (click)="handleBtnClick(eTableEmpty.IMPORT_LIST_CLICK)"
-                >
-                </app-ca-modal-button>
+                @if (!isEmptyList) {
+                    <app-ca-modal-button
+                        [type]="eModalButtonClassType.PLAIN_TEXT"
+                        [text]="emodalButtonText.IMPORT_LIST"
+                        (click)="handleBtnClick(eTableEmpty.IMPORT_LIST_CLICK)"
+                    >
+                    </app-ca-modal-button>
+                }
             </div>
         </div>
 

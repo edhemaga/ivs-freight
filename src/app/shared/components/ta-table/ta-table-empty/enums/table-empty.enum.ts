@@ -1,7 +1,7 @@
 export enum eTableEmpty {
-    ADD_CLICK = 'ADD_CLICK',
-    IMPORT_LIST_CLICK = 'IMPORT_LIST_CLICK',
-    RESET_FILTERS_CLICK = 'RESET_FILTERS_CLICK',
+    ADD_CLICK = 'add-click',
+    IMPORT_LIST_CLICK = 'import-list-click',
+    CLEAR_FILTERS_CLICK = 'clear-filters-click',
 
     ADD = 'Add ',
 }

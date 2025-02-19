@@ -81,6 +81,9 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(): void {
+        console.log('filteredResults', this.filteredResults);
+        console.log('hasResults', this.hasResults);
+
         this.fillEmptyGridPlaceholder();
     }
 
@@ -102,19 +105,7 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
     private getToolbarWidth(): void {
         this.tableService.currentToolbarWidth
             .pipe(takeUntil(this.destroy$))
-            .subscribe((toolbarWidth) => {
-                this.toolbarWidth = toolbarWidth;
-            });
-    }
-
-    ////////////////////////////////////////////////////////
-
-    public get isEmptyList(): boolean {
-        if (!this.hasResults && this.filteredResults) {
-            return true;
-        }
-
-        return false;
+            .subscribe((toolbarWidth) => (this.toolbarWidth = toolbarWidth));
     }
 
     ngOnDestroy(): void {

@@ -221,14 +221,6 @@ export class TaLogoChangeComponent
             this.showUploadZone = false;
             this.imageUrl = null;
 
-            const url = event.files[0].url;
-
-            // this.croppieDirective.croppie.bind({
-            //     url: url as string,
-            //     points: [188, 101, 260, 191],
-            //     zoom: this.imageScale,
-            // });
-
             this.isImageValid = false;
             this.validationEvent.emit(this.isImageValid);
         }
