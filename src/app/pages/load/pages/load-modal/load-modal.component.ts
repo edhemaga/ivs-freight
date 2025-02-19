@@ -470,6 +470,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     ) {}
 
     ngOnInit(): void {
+
         this.getCompanyUser();
 
         this.createForm();
@@ -1914,10 +1915,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     })
                     .filter((item) => item.contacts?.length);
 
-                this.labelsBrokerContacts.unshift({
-                    id: 7655,
-                    name: LoadModalStringEnum.ADD_NEW,
-                });
 
                 if (this.labelsBrokerContacts[1]?.contacts[0]) {
                     this.selectedBrokerContact =
@@ -1956,12 +1953,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.selectedBrokerContact = null;
 
-                    this.labelsBrokerContacts = [
-                        {
-                            id: 7655,
-                            name: LoadModalStringEnum.ADD_NEW,
-                        },
-                    ];
 
                     this.loadForm
                         .get(LoadModalStringEnum.BROKER_CONTACT_ID)
@@ -4325,6 +4316,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             };
         });
 
+        console.log(this.labelsBroker, 'this.labelsDispatches');
+
         // broker contacts
         this.labelsBrokerContacts = this.originBrokerContacts =
             modalData.brokerContacts.map((item) => {
@@ -4425,6 +4418,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : null,
             };
         });
+
         this.originalShippers = modalData.shippers;
 
         // shipper contacts

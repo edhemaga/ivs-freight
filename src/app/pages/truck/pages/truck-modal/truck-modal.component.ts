@@ -461,6 +461,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
     }
 
     public onSelectDropdown(event: any, action: string) {
+
         switch (action) {
             case eTruckModalForm.TRUCK_TYPE:
                 this.selectedTruckType = event;
@@ -614,7 +615,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                     model: res?.model ?? null,
                                     year: res?.year?.toString() ?? null,
                                     truckMakeId: res.truckMake
-                                        ? res.truckMake.name
+                                        ? res.truckMake.id
                                         : null,
                                     truckEngineModelId: res.engineModel?.name
                                         ? res.engineModel.name
@@ -706,12 +707,12 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     this.truckForm.patchValue({
                         // Basic Tab
                         ...res,
-                        truckTypeId: res.truckType?.name ?? null,
-                        truckMakeId: res.truckMake?.name ?? null,
+                        truckTypeId: res.truckType?.id ?? null,
+                        truckMakeId: res.truckMake?.id ?? null,
                         year: res.year.toString(),
-                        truckLengthId: res.truckLength?.name ?? null,
-                        colorId: res.color?.name ?? null,
-                        ownerId: res.owner?.name ?? null,
+                        truckLengthId: res.truckLength?.id ?? null,
+                        colorId: res.color?.id ?? null,
+                        ownerId: res.owner?.id ?? null,
                         // Additional Tab
                         purchaseDate: res.purchaseDate
                             ? MethodsCalculationsHelper.convertDateFromBackend(
