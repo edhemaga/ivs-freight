@@ -4315,9 +4315,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                           : null,
             };
         });
-
-        console.log(this.labelsBroker, 'this.labelsDispatches');
-
+        
         // broker contacts
         this.labelsBrokerContacts = this.originBrokerContacts =
             modalData.brokerContacts.map((item) => {
