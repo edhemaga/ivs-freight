@@ -97,6 +97,7 @@ import { FormatDatePipe } from '@shared/pipes';
 
 // SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -221,7 +222,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         return TrailerModalConfig.getTrailerNumberConfig(this.editData);
     }
 
-    get TrailerTypeIdConfig(): ITaInput {
+    get TrailerTypeIdConfig(): ICaInput {
         return TrailerModalConfig.getTrailerTypeIdConfig({
             selectedTrailerType: this.selectedTrailerType,
         });
@@ -241,7 +242,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    get TrailerMakeConfig(): ITaInput {
+    get TrailerMakeConfig(): ICaInput {
         return TrailerModalConfig.getTrailerMakeConfig({
             selectedTrailerMake: this.selectedTrailerMake,
         });
@@ -251,7 +252,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         return TrailerModalConfig.getTrailerModelConfig();
     }
 
-    get TrailerColorConfig(): ITaInput {
+    get TrailerColorConfig(): ICaInput {
         return TrailerModalConfig.getTrailerColorConfig({
             selectedColor: this.selectedColor,
         });
@@ -548,6 +549,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                             logoName: 'ic_color.svg',
                         };
                     });
+
                     this.trailerLengthType = res.trailerLengths;
                     this.ownerType = res.owners;
                     this.suspensionType = res.suspensions;
@@ -825,13 +827,13 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 next: (res: any) => {
                     this.trailerForm.patchValue({
                         ...res,
-                        trailerTypeId: res.trailerType?.name ?? null,
-                        trailerMakeId: res.trailerMake?.name ?? null,
+                        trailerTypeId: res.trailerType?.id ?? null,
+                        trailerMakeId: res.trailerMake?.id ?? null,
                         isLiftgate: res.liftgate ?? false,
-                        colorId: res.color?.name ?? null,
+                        colorId: res.color?.id ?? null,
                         year: res.year.toString(),
                         trailerLengthId: res.trailerLength
-                            ? res.trailerLength.name
+                            ? res.trailerLength.id
                             : null,
                         ownerId: res.companyOwned
                             ? null
@@ -980,8 +982,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                     year: res?.year
                                         ? res.year.toString()
                                         : null,
-                                    trailerMakeId: res.trailerMake?.name
-                                        ? res.trailerMake.name
+                                    trailerMakeId: res.trailerMake?.id
+                                        ? res.trailerMake.id
                                         : null,
                                 });
                                 this.loadingVinDecoder = false;
