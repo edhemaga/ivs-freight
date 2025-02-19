@@ -9,14 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { SplitShiftResponse } from './splitShiftResponse';
 
 
-export interface RepairShopOpenHoursResponse { 
-    dayOfWeek?: string | null;
-    startTime?: string | null;
-    endTime?: string | null;
-    splitShiftTimes?: Array<SplitShiftResponse> | null;
-    isWorking?: boolean;
+export interface SplitShiftResponse { 
+    startSplitTime?: string | null;
+    endSplitTime?: string | null;
 }
 

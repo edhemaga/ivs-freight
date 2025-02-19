@@ -974,6 +974,7 @@ model/sphDrugAndAlcoholResponse.ts
 model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
+model/splitShiftResponse.ts
 model/stateFilter.ts
 model/stateResponse.ts
 model/statusSetCompanyUserCommand.ts

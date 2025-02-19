@@ -898,6 +898,7 @@ export * from './sphDrugAndAlcoholResponse';
 export * from './sphFeedbackResponse';
 export * from './sphPreviousEmployerProspectResponse';
 export * from './splitLoadResponse';
+export * from './splitShiftResponse';
 export * from './stateFilter';
 export * from './stateResponse';
 export * from './statusSetCompanyUserCommand';
