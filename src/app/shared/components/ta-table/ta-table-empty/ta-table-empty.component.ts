@@ -55,8 +55,6 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
 
     @Output() btnClickEmitter: EventEmitter<string> = new EventEmitter();
 
-    private destroy$ = new Subject<void>();
-
     // empty grid
     public emptyGridPlaceholder: number[] = [];
 
@@ -70,6 +68,8 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
 
     // svg routes
     public tableEmptySvgRoutes = TableEmptySvgRoutes;
+
+    private destroy$ = new Subject<void>();
 
     constructor(private tableService: TruckassistTableService) {}
 

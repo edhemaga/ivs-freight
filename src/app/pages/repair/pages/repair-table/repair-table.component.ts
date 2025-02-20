@@ -65,8 +65,13 @@ import { DispatchColorFinderPipe } from '@shared/pipes';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
+import {
+    DropdownMenuStringEnum,
+    eCommonElements,
+    eGeneralActions,
+} from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -102,7 +107,6 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 @Component({
     selector: 'app-repair-table',
@@ -121,6 +125,7 @@ export class RepairTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
+    public eCommonElements = eCommonElements;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;

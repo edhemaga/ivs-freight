@@ -1,3 +1,5 @@
+@let displayRowsAsync = displayRows$ | async;
+
 <div class="table-container">
     <app-ta-table-toolbar
         [options]="tableOptions"
@@ -9,7 +11,7 @@
     ></app-ta-table-toolbar>
 
     @switch (activeViewMode) {
-        @case ('List') {
+        @case (eCommonElements.LIST) {
             <app-ta-table-head
                 [options]="tableOptions"
                 [viewData]="viewData"
@@ -35,13 +37,13 @@
             ></app-ta-table-body>
         }
 
-        @case ('Card') {
+        @case (eCommonElements.CARD) {
             <div class="elements">
                 <app-repair-card
                     [viewData]="viewData"
                     [selectedTab]="selectedTab"
-                    [displayRowsFront]="(displayRows$ | async).displayRowsFront"
-                    [displayRowsBack]="(displayRows$ | async).displayRowsBack"
+                    [displayRowsFront]="displayRowsAsync.displayRowsFront"
+                    [displayRowsBack]="displayRowsAsync.displayRowsBack"
                 >
                 </app-repair-card>
 
@@ -70,7 +72,7 @@
             </div>
         }
 
-        @case ('Map') {
+        @case (eCommonElements.MAP) {
             <div class="customer-map-container">
                 <app-ta-map-list
                     [type]="'repairShop'"

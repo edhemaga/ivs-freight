@@ -1,5 +1,5 @@
 @let isActiveDropdown = openHoursDropdownActiveId === dropdownConfig?.rowId;
-@let isInctiveDropdown = openHoursDropdownActiveId !== dropdownConfig?.rowId;
+@let isInactiveDropdown = openHoursDropdownActiveId !== dropdownConfig?.rowId;
 
 @let isCurrentlyOpen = dropdownConfig?.openHoursToday?.id === 1;
 @let isCurrentlyClosing = dropdownConfig?.openHoursToday?.id === 2;
@@ -34,11 +34,11 @@
         <svg-icon
             class="svg-size-14 open-hours-icon"
             [ngClass]="{
-                'svg-fill-green': isInctiveDropdown && isCurrentlyOpen,
+                'svg-fill-green': isInactiveDropdown && isCurrentlyOpen,
                 'svg-fill-green-4': isActiveDropdown && isCurrentlyOpen,
-                'svg-fill-yellow-1': isInctiveDropdown && isCurrentlyClosing,
+                'svg-fill-yellow-1': isInactiveDropdown && isCurrentlyClosing,
                 'svg-fill-yellow-4': isActiveDropdown && isCurrentlyClosing,
-                'svg-fill-muted': isInctiveDropdown && isCurrentlyClosed,
+                'svg-fill-muted': isInactiveDropdown && isCurrentlyClosed,
                 'svg-fill-light-grey-2': isActiveDropdown && isCurrentlyClosed,
             }"
             [src]="
@@ -56,8 +56,9 @@
             {{
                 dropdownConfig?.openHoursToday?.status +
                     (isAlwaysOpen
-                        ? ' ' + dropdownConfig?.openHoursToday?.info
-                        : '')
+                        ? eStringPlaceholder.WHITESPACE +
+                          dropdownConfig?.openHoursToday?.info
+                        : eStringPlaceholder.EMPTY)
             }}
         </p>
     </div>

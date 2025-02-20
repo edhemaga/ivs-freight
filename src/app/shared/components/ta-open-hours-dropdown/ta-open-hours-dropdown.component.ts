@@ -11,6 +11,9 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // svg routes
 import { OpenHoursDropdownSvgRoutes } from '@shared/components/ta-open-hours-dropdown/utils/svg-routes';
 
+// enums
+import { eStringPlaceholder } from '@shared/enums';
+
 // models
 import {
     OpenHoursTodayResponse,
@@ -41,9 +44,13 @@ export class TaOpenHoursDropdownComponent {
         openAlways: boolean;
     };
 
+    public openHoursDropdownActiveId: number = -1;
+
+    // svg routes
     public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
 
-    public openHoursDropdownActiveId: number = -1;
+    // enums
+    public eStringPlaceholder = eStringPlaceholder;
 
     public onHideOpenHoursDropdown(): void {
         const isActiveDropdown =
