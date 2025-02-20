@@ -11,7 +11,7 @@
             'not-first-or-last': !firstOrLast,
             'not-active-stop': !isCardOpen,
             'destination-disabled': isDestinationTab && disabledCard,
-            'stop-finished': stopFinished
+            'stop-finished': stopFinished,
         }"
         (click)="toggleStop($event)"
     >
@@ -21,25 +21,23 @@
                 'delivery-mode': isDelivery,
                 'finished-mode': stopFinished,
                 'first-or-last-badge': firstOrLast,
-                'enable-hover': !stopFinished
+                'enable-hover': !stopFinished,
             }"
         >
             <div
                 class="d-flex align-items-center justify-content-center load-stop-counter-container"
             >
-                <ng-container *ngIf="!stopFinished">
+                @if (!stopFinished) {
                     <p class="m-0 ta-font-bold">{{ stopNumber }}</p>
-                </ng-container>
-
-                <ng-container *ngIf="stopFinished">
+                } @else {
                     <svg-icon
                         [src]="loadModalSvgRoutes.checkmark"
                         [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
                     ></svg-icon>
-                </ng-container>
+                }
             </div>
 
-            <ng-container *ngIf="!firstOrLast && !stopFinished">
+            @if (!firstOrLast && !stopFinished) {
                 <div
                     class="load-stop-header-remove-btn"
                     ngbTooltip
@@ -60,13 +58,13 @@
                         [svgStyle]="{ 'width.px': '20', 'height.px': '20' }"
                     ></svg-icon>
                 </div>
-            </ng-container>
+            }
         </div>
 
         <div class="load-stop-header-content">
             <!-- Number Of Stop -->
 
-            <ng-container *ngIf="!shipper && state !== 'invalid'">
+            @if (!shipper && state !== 'invalid') {
                 <div
                     class="origin-destination-no-filled-container first-container-required"
                 >
@@ -81,7 +79,7 @@
                         <span class="color-red">*</span>
                     </p>
                 </div>
-            </ng-container>
+            }
 
             <!-- Shipper, Address -->
 
@@ -91,20 +89,18 @@
                     display:
                         (state && state === 'invalid') || shipper
                             ? 'flex'
-                            : 'none'
+                            : 'none',
                 }"
             >
                 <!-- Required Message -->
 
-                <ng-container
-                    *ngIf="
-                        (!shipper &&
-                            !shipperAddress &&
-                            state &&
-                            state === 'invalid') ||
-                        state === 'steps-invalid'
-                    "
-                >
+                @if (
+                    (!shipper &&
+                        !shipperAddress &&
+                        state &&
+                        state === 'invalid') ||
+                    state === 'steps-invalid'
+                ) {
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p [ngStyle]="{ color: '#F44336' }">Required</p>
                     </div>
@@ -113,31 +109,25 @@
                             Fill all necessary fields
                         </p>
                     </div>
-                </ng-container>
+                }
 
                 <!-- Data -->
 
-                <ng-container
-                    *ngIf="
-                        shipper && shipperAddress && state !== 'steps-invalid'
-                    "
-                >
+                @if (shipper && shipperAddress && state !== 'steps-invalid') {
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p>{{ shipper }}</p>
                     </div>
                     <div class="load-stop-content-down">
                         <p>{{ shipperAddress }}</p>
                     </div>
-                </ng-container>
+                }
             </div>
 
             <!-- Date, Time -->
 
             <div class="load-stop-inner-content second-container">
                 <!-- Required Message -->
-                <ng-container
-                    *ngIf="!!shipper && !!shipperAddress && state === 'invalid'"
-                >
+                @if (!!shipper && !!shipperAddress && state === 'invalid') {
                     <div class="load-stop-content-up load-stop-content-up-name">
                         <p [ngStyle]="{ color: '#F44336' }">Required</p>
                     </div>
@@ -146,35 +136,33 @@
                             Fill all necessary fields
                         </p>
                     </div>
-                </ng-container>
+                }
 
                 <!-- Data -->
 
-                <ng-container
-                    *ngIf="dateRange && timeRange && state !== 'invalid'"
-                >
+                @if (dateRange && timeRange && state !== 'invalid') {
                     <div
                         class="load-stop-content-up load-stop-content-up-datetime"
                     >
                         <p [ngClass]="{ 'color-blue': stopFinished }">
                             {{ dateRange }}
 
-                            <ng-container *ngIf="stopFinished && waitTime">
+                            @if (stopFinished && waitTime) {
                                 <span class="color-black"
                                     >• {{ waitTime }}</span
                                 >
-                            </ng-container>
+                            }
                         </p>
                     </div>
                     <div class="load-stop-content-down">
                         <p>
                             {{ timeRange }}
-                            <ng-container *ngIf="appointment">
+                            @if (appointment) {
                                 • <span class="color-orange">Appt.</span>
-                            </ng-container>
+                            }
                         </p>
                     </div>
-                </ng-container>
+                }
             </div>
 
             <!-- Leg, Deadhead, Shipper Contact -->
@@ -186,23 +174,24 @@
                 >
                     <p>
                         <!-- {{ isEmptyLoad ? 'DEADHEAD' : 'LEG' }} -->
-                        <span>{{ legMile | number : '1.2-2' }} mi</span>
+                        <span>{{ legMile | number: '1.2-2' }} mi</span>
                         <span>{{ legTime }}</span>
                     </p>
                 </div>
 
-                <div
-                    *ngIf="shipperContact?.fullName"
-                    class="load-stop-content-down load-stop-content-down-deadhead"
-                >
-                    <svg-icon
-                        [src]="
-                            'assets/svg/common/load/ic_load_shipper_contact_avatar.svg'
-                        "
-                        class="shipperContact-avatar"
-                    ></svg-icon>
-                    <p>{{ shipperContact?.fullName }}</p>
-                </div>
+                @if (shipperContact?.fullName) {
+                    <div
+                        class="load-stop-content-down load-stop-content-down-deadhead"
+                    >
+                        <svg-icon
+                            [src]="
+                                'assets/svg/common/load/ic_load_shipper_contact_avatar.svg'
+                            "
+                            class="shipperContact-avatar"
+                        ></svg-icon>
+                        <p>{{ shipperContact?.fullName }}</p>
+                    </div>
+                }
             </div>
         </div>
     </div>
@@ -211,10 +200,10 @@
 
     <div class="load-stop-body">
         <div
-            [ngStyle]="{animationMarginParams} "
+            [ngStyle]="{ animationMarginParams }"
             [@collapse]="{
                 value: isCardOpen,
-                params: animationMarginParams
+                params: animationMarginParams,
             }"
             class="content-holder"
             [ngClass]="isCardOpen ? 'active' : 'innactive'"
