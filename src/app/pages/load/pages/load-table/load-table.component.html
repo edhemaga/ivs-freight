@@ -123,6 +123,13 @@
 
                 @if (selectedTab !== 'Template') {
                     <app-ca-filter-dropdown
+                        type="TimeFilter"
+                        subType="past"
+                        (setFilter)="setFilters($event)"
+                    >
+                    </app-ca-filter-dropdown>
+
+                    <app-ca-filter-dropdown
                         type="Dispatcher"
                         [list]="store.dispatcherList"
                         (setFilter)="setFilters($event)"
@@ -134,23 +141,11 @@
                         [list]="store.statusList"
                         (setFilter)="setFilters($event)"
                     >
-                    </app-ca-filter-dropdown> 
-                    <app-ca-filter-dropdown
-                        type="TimeFilter"
-                        subType="past"
-                        (setFilter)="setFilters($event)"
-                    >
                     </app-ca-filter-dropdown>
 
                     <app-ca-filter-dropdown
-                        [type]="'moneyFilter'"
-                        [icon]="'dollar'"
-                        [filterTitle]="'Money Filter'"
-                        [subType]="'all'"
-                        [isMoneyFilter]="true"
-                        [isLoadType]="true"
+                        [type]="'MoneyFilter'"
                         (setFilter)="setFilters($event)"
-                        (clearAll)="setFilters($event)"
                     >
                     </app-ca-filter-dropdown>
                 }

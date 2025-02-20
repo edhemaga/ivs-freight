@@ -265,7 +265,7 @@
                         <div class="border-line-left"></div>
 
                         @if (timeFilter) {
-                            <span class="ic-hed"> 
+                            <span class="ic-hed">
                                 <app-ca-filter-dropdown
                                     type="TimeFilter"
                                     timeSubType="past"
@@ -405,22 +405,16 @@
                             </span>
                         </ng-container>
 
-                        <ng-container *ngIf="moneyFilter">
+                        @if (moneyFilter) {
                             <span class="ic-hed">
                                 <!-- MONEY FILTER -->
-                                <app-ca-filter
-                                    [type]="'moneyFilter'"
-                                    [icon]="'dollar'"
-                                    [filterTitle]="'Money Filter'"
-                                    [subType]="'all'"
-                                    [isMoneyFilter]="true"
-                                    [isLoadType]="true"
+                                <app-ca-filter-dropdown
+                                    [type]="'MoneyFilter'"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-dropdown>
                             </span>
-                        </ng-container>
+                        }
                         <ng-container *ngIf="repairOrderFilter">
                             <span class="ic-hed">
                                 <app-ta-special-filter

@@ -348,24 +348,13 @@
     }
 
     <!-- MONEY FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showMoneyFilter"
-        [type]="'moneyFilter'"
-        [icon]="'dollar'"
-        [filterTitle]="'Money Filter'"
-        [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
-        [isMoneyFilter]="true"
-        [isMilesFilter]="false"
-        [isFuelType]="!!options.toolbarActions.fuelMoneyFilter"
-        [isLoadType]="!!options.toolbarActions.loadMoneyFilter"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isRepairFilter]="
-            options.toolbarActions.showTrailerPmFilter ||
-            options.toolbarActions.showTruckPmFilter
-        "
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showMoneyFilter) {
+        <app-ca-filter-dropdown
+            [type]="'MoneyFilter'"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-dropdown>
+    }
 
     <!-- FILTER -->
     <ng-container *ngIf="options.toolbarActions.showLtlFilter">
