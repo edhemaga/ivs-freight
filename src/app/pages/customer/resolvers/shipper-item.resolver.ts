@@ -33,7 +33,7 @@ export class ShipperItemResolver {
 
         const shipperLoads$ = this.shipperService.getShipperLoads(
             null,
-            null,
+            3,
             null,
             null,
             null,
