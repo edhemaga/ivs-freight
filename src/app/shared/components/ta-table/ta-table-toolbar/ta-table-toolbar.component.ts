@@ -789,7 +789,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                                 hidden: !column.hidden,
                             };
 
-                            this.setTableConfig(item, index);
+                            this.setTableConfig(newItem, index);
 
                             return newItem;
                         }
