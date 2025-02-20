@@ -50,6 +50,8 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
         TableStringEnum.LIST;
 
     @Input() btnText: string;
+    @Input() hasResults: boolean;
+    @Input() filteredResults: boolean;
 
     @Output() btnClickEmitter: EventEmitter<string> = new EventEmitter();
 
@@ -69,11 +71,6 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
     // svg routes
     public tableEmptySvgRoutes = TableEmptySvgRoutes;
 
-    ////////////////////////////////////////////////////////////////////////////////////
-
-    @Input() filteredResults: boolean;
-    @Input() hasResults: boolean;
-
     constructor(private tableService: TruckassistTableService) {}
 
     ngOnInit(): void {
@@ -81,9 +78,6 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     ngOnChanges(): void {
-        console.log('filteredResults', this.filteredResults);
-        console.log('hasResults', this.hasResults);
-
         this.fillEmptyGridPlaceholder();
     }
 

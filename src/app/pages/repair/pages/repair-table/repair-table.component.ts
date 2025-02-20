@@ -943,9 +943,6 @@ export class RepairTableComponent
         this.setRepairData(td);
         this.updateCardView();
 
-        console.log('td', td);
-        console.log('this.viewData', this.viewData);
-
         this.tabResultLength = td.data.length;
     }
 
@@ -980,8 +977,7 @@ export class RepairTableComponent
             case eTableEmpty.IMPORT_LIST_CLICK:
                 break;
             default:
-                this.tableService.sendCurrentSetTableFilter({});
-                /*    this.tableService.sendResetSpecialFilters(true); */
+                this.tableService.sendResetSpecialFilters(true);
 
                 break;
         }
