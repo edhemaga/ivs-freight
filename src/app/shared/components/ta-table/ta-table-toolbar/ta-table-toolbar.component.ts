@@ -458,6 +458,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                       ? columnsSumWidth + 26 + TableStringEnum.PX
                       : 100 + '%';
         }
+
+        this.tableService.sendToolbarWidth({
+            width: this.toolbarWidth,
+            maxWidth: this.maxToolbarWidth,
+        });
     }
 
     private setColumnsOptionsGroups(): void {

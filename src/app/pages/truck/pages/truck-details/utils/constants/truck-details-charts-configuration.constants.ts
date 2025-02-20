@@ -16,7 +16,7 @@ export class TruckDetailsChartsConfiguration {
         chartOptions: {},
         showTooltipBackground: false,
         showXAxisLabels: true,
-        hasVerticalDashedAnnotation: true
+        hasVerticalDashedAnnotation: true,
     };
 
     static REVENUE_CHART_CONFIG = {
@@ -31,7 +31,7 @@ export class TruckDetailsChartsConfiguration {
         chartOptions: {},
         showTooltipBackground: false,
         showXAxisLabels: true,
-        hasVerticalDashedAnnotation: true
+        hasVerticalDashedAnnotation: true,
     };
 
     static EXPENSES_CHART_CONFIG = {
@@ -47,6 +47,6 @@ export class TruckDetailsChartsConfiguration {
         showTooltipBackground: false,
         showXAxisLabels: true,
         isStacked: true,
-        hasVerticalDashedAnnotation: true
+        hasVerticalDashedAnnotation: true,
     };
 }

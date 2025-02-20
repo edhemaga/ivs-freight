@@ -3,25 +3,20 @@
     [ngClass]="{
         'tr-height-2':
             tableHeadActionsData?.tableData[0].gridNameTitle
-            | tableDoubleHeadHeight
+            | tableDoubleHeadHeight,
+        'no-data': !tableHeadActionsData?.viewDataLength,
     }"
     [ngStyle]="{
-        'margin-left': isDisplayBorder ? '-4px' : '-12px'
+        'margin-left': isDisplayBorder ? '-4px' : '-12px',
     }"
 >
-    <ng-container
-        *ngFor="
-            let column of tableHeadActionsData?.actionColumns;
-            let i = index;
-            trackBy: trackByIdentity
-        "
-    >
+    @for (column of tableHeadActionsData?.actionColumns; track column.title) {
         <th
             class="d-flex align-items-center justify-content-center"
             [ngStyle]="{
                 width: column.isAction ? column.width + 'px' : '0px',
                 'min-width.px': column?.width ?? 'unset',
-                display: column.isAction ? 'flex' : 'none'
+                display: column.isAction ? 'flex' : 'none',
             }"
         >
             <ng-container *ngIf="column.isAction && column?.headIconStyle">
@@ -29,12 +24,12 @@
                     <svg-icon
                         [svgStyle]="{
                             'width.px': column.headIconStyle.width,
-                            'height.px': column.headIconStyle.height
+                            'height.px': column.headIconStyle.height,
                         }"
                         [src]="column.headIconStyle.imgPath ?? ''"
                     ></svg-icon>
                 </div>
             </ng-container>
         </th>
-    </ng-container>
+    }
 </tr>

@@ -22,10 +22,10 @@ import { CreatePayrollBonusCommand } from 'appcoretruckassist';
 
 // Services
 import { PayrollBonusService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/services/payroll-bonus.service';
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
 // Enums
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -89,21 +89,21 @@ export class PayrollBonusModalComponent implements OnInit {
     private createForm() {
         const data = this.editData ? this.editData.data : {};
         this.payrollCreditForm = this.fb.group({
-            [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
-            [PayrollStringEnum.DATE]: [
+            [ePayrollString.DRIVER_ID]: [data?.driverId ?? null],
+            [ePayrollString.DATE]: [
                 MethodsCalculationsHelper.convertDateFromBackend(data.date) ??
                 new Date(),
                 Validators.required,
             ],
-            [PayrollStringEnum.DESCRIPTION]: [
+            [ePayrollString.DESCRIPTION]: [
                 data.description ?? null,
                 Validators.required,
             ],
-            [PayrollStringEnum.AMOUNT]: [
+            [ePayrollString.AMOUNT]: [
                 data.amount ?? null,
                 Validators.required,
             ],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
+            [ePayrollString.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
         });
 
         if (data.driverId) this.preselectedDriver = true;
@@ -116,16 +116,16 @@ export class PayrollBonusModalComponent implements OnInit {
     private generateCreditModel(): CreatePayrollBonusCommand {
         return {
             driverId: this.payrollCreditForm.get(
-                PayrollStringEnum.SELECTED_DRIVER_ID
+                ePayrollString.SELECTED_DRIVER_ID
             ).value,
             description: this.payrollCreditForm.get(
-                PayrollStringEnum.DESCRIPTION
+                ePayrollString.DESCRIPTION
             ).value,
             date: MethodsCalculationsHelper.convertDateToBackend(
-                this.payrollCreditForm.get(PayrollStringEnum.DATE).value
+                this.payrollCreditForm.get(ePayrollString.DATE).value
             ),
             amount: MethodsCalculationsHelper.convertThousandSepInNumber(
-                this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
+                this.payrollCreditForm.get(ePayrollString.AMOUNT).value
             ),
         };
     }

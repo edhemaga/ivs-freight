@@ -12,7 +12,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { OpenHoursDropdownSvgRoutes } from '@shared/components/ta-open-hours-dropdown/utils/svg-routes';
 
 // enums
-import { OpenHoursDropdownStringEnum } from '@shared/components/ta-open-hours-dropdown/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 // models
 import {
@@ -41,12 +41,23 @@ export class TaOpenHoursDropdownComponent {
         width?: number;
         openHours: RepairShopOpenHoursResponse[];
         openHoursToday: OpenHoursTodayResponse;
+        openAlways: boolean;
     };
 
-    public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
-    public openHoursDropdownStringEnum = OpenHoursDropdownStringEnum;
-
     public openHoursDropdownActiveId: number = -1;
+
+    // svg routes
+    public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
+
+    // enums
+    public eStringPlaceholder = eStringPlaceholder;
+
+    public onHideOpenHoursDropdown(): void {
+        const isActiveDropdown =
+            this.openHoursDropdownActiveId === this.dropdownConfig?.rowId;
+
+        if (isActiveDropdown) this.openHoursDropdownActiveId = -1;
+    }
 
     public onShowOpenHoursDropdown(popover: NgbPopover): void {
         let data = [];

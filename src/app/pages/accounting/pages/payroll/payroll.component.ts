@@ -26,8 +26,8 @@ import { DriverMileageCollapsedTableComponent } from '@pages/accounting/pages/pa
 
 // Enums
 import {
-    PayrollTables,
-    PayrollTablesStatus,
+    ePayrollTable,
+    ePayrollTablesStatus,
 } from '@pages/accounting/pages/payroll/state/enums';
 
 // Components
@@ -56,7 +56,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
     @ViewChildren('container', { read: ViewContainerRef })
     containers!: QueryList<ViewContainerRef>;
 
-    public PayrollTables = PayrollTables;
+    public ePayrollTable = ePayrollTable;
     private componentRef: ComponentRef<any> | null = null;
 
     private environmentInjector = inject(EnvironmentInjector); // Inject the EnvironmentInjector
@@ -68,12 +68,12 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         fullName: string;
         payrollCount: number;
         id: number;
-        title: PayrollTables;
+        title: ePayrollTable;
         hideAvatar?: boolean;
     };
 
-    public selectedTabForReport = PayrollTablesStatus.OPEN;
-    public selectedTab = PayrollTablesStatus.OPEN;
+    public selectedTabForReport = ePayrollTablesStatus.OPEN;
+    public selectedTab = ePayrollTablesStatus.OPEN;
 
     // THIS IS TEST FOR TABLE RESIZER
     private tableContainerWidth: number = 0;
@@ -146,8 +146,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         cointainer.clear();
 
         switch (this.payrollType) {
-            case PayrollTables.DRIVER_MILES:
-                if (this.selectedTab === PayrollTablesStatus.OPEN) {
+            case ePayrollTable.DRIVER_MILES:
+                if (this.selectedTab === ePayrollTablesStatus.OPEN) {
                     this.componentRef = cointainer.createComponent(
                         DriverMileageSoloTableComponent,
                         {
@@ -224,7 +224,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 fullName: event.driver.fullName,
                                 payrollCount: event.payrollCount,
                                 id: event.driver.id,
-                                title: PayrollTables.DRIVER_MILES_TITLE,
+                                title: ePayrollTable.DRIVER_MILES_TITLE,
                             };
 
                             this.handleTableShow();
@@ -232,8 +232,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                 }
                 break;
-            case PayrollTables.DRIVER_FLAT_RATE:
-                if (this.selectedTab === PayrollTablesStatus.OPEN) {
+            case ePayrollTable.DRIVER_FLAT_RATE:
+                if (this.selectedTab === ePayrollTablesStatus.OPEN) {
                     this.componentRef = cointainer.createComponent(
                         DriverFlatRateTableComponent,
                         {
@@ -309,7 +309,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 fullName: event.driver.fullName,
                                 payrollCount: event.payrollCount,
                                 id: event.driver.id,
-                                title: PayrollTables.DRIVER_FLAT_RATE_TITLE,
+                                title: ePayrollTable.DRIVER_FLAT_RATE_TITLE,
                             };
 
                             this.handleTableShow();
@@ -317,8 +317,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                 }
                 break;
-            case PayrollTables.DRIVER_COMMISSION:
-                if (this.selectedTab === PayrollTablesStatus.OPEN) {
+            case ePayrollTable.DRIVER_COMMISSION:
+                if (this.selectedTab === ePayrollTablesStatus.OPEN) {
                     this.componentRef = cointainer.createComponent(
                         DriverCommissionSoloTableComponent,
                         {
@@ -394,7 +394,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 fullName: event.driver.fullName,
                                 payrollCount: event.payrollCount,
                                 id: event.driver.id,
-                                title: PayrollTables.DRIVER_COMMISSION_TITLE,
+                                title: ePayrollTable.DRIVER_COMMISSION_TITLE,
                             };
 
                             this.handleTableShow();
@@ -402,8 +402,8 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                     );
                 }
                 break;
-            case PayrollTables.DRIVER_OWNER:
-                if (this.selectedTab === PayrollTablesStatus.OPEN) {
+            case ePayrollTable.DRIVER_OWNER:
+                if (this.selectedTab === ePayrollTablesStatus.OPEN) {
                     this.componentRef = cointainer.createComponent(
                         DriverOwnerTableComponent,
                         {
@@ -481,7 +481,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
                                 fullName: `${event.truck.truckNumber} - ${event.owner}`,
                                 payrollCount: event.payrollCount,
                                 id: event.truck.id,
-                                title: PayrollTables.DRIVER_OWNER_TITLE,
+                                title: ePayrollTable.DRIVER_OWNER_TITLE,
                                 hideAvatar: true,
                             };
 
@@ -536,7 +536,7 @@ export class PayrollComponent implements OnInit, AfterViewInit, OnDestroy {
         this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
-    public onToolBarAction(tabStatus: PayrollTablesStatus): void {
+    public onToolBarAction(tabStatus: ePayrollTablesStatus): void {
         this.payrollFacadeService.setPayrollOpenedTab(tabStatus);
         this.openedIndex = -1;
         this.expandTable();

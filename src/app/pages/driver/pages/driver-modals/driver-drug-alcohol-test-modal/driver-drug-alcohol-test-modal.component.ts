@@ -32,6 +32,8 @@ import {
     CaModalComponent,
     CaModalButtonComponent,
     CaInputDatetimePickerComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
 // helpers
@@ -39,7 +41,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // enums
 import { DriverDrugAlcoholTestModalStringEnum } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/enums/driver-drug-alcohol-test-modal-string.enum';
-import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
 // models
 import { EnumValue, TestResponse } from 'appcoretruckassist';
@@ -53,7 +54,6 @@ import { FormatDatePipe } from '@shared/pipes';
 
 // config
 import { DrugAlcoholTestModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-drug-alcohol-test-modal/utils/config';
-
 
 @Component({
     selector: 'app-driver-drug-alcohol-test-modal',
@@ -116,12 +116,13 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
     public activeAction!: string;
     public taModalActionEnum = DriverDrugAlcoholTestModalStringEnum;
 
-    public uploadFilesConfig = DrugAlcoholTestModalUploadFilesConfig.DRUG_ALCOHOL_TEST_MODAL_UPLOAD_FILES_CONFIG;
+    public uploadFilesConfig =
+        DrugAlcoholTestModalUploadFilesConfig.DRUG_ALCOHOL_TEST_MODAL_UPLOAD_FILES_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

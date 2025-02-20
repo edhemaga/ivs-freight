@@ -14,5 +14,6 @@ import { AddressEntity } from './addressEntity';
 
 export interface ShipperShortMobileResponse { 
     address?: AddressEntity;
+    businessName?: string | null;
 }
 

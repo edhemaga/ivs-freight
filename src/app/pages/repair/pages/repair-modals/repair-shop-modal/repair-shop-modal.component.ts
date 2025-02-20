@@ -17,9 +17,14 @@ import {
     UntypedFormGroup,
     Validators,
 } from '@angular/forms';
+
 import { Subject, Subscription, forkJoin, of, takeUntil } from 'rxjs';
 
-// Models
+// modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+
+// models
 import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
 import {
     BankResponse,
@@ -48,7 +53,7 @@ import {
     RepairShopContactExtended,
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
 
-// Services
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { BankVerificationService } from '@shared/services/bank-verification.service';
 import { FormService } from '@shared/services/form.service';
@@ -59,7 +64,7 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
-// Validators
+// validators
 import {
     repairShopValidation,
     phoneFaxRegex,
@@ -71,7 +76,7 @@ import {
     accountBankValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-// Helpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { RepairShopHelper } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/helpers';
 import {
@@ -79,10 +84,10 @@ import {
     RepairShopModalUploadFilesConfig,
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
 
-// Animation
+// animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-// Components
+// components
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -97,24 +102,17 @@ import {
     CaUploadFilesComponent,
     CaInputAddressDropdownComponent,
     CaInputDatetimePickerComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
-// Modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-
-// Enums
+// enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import {
-    eGeneralActions,
-    ModalButtonSize,
-    ModalButtonType,
-    TableStringEnum,
-} from '@shared/enums';
+import { eGeneralActions, TableStringEnum } from '@shared/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import {
     ActionTypesEnum,
@@ -123,14 +121,14 @@ import {
     RepairShopModalEnum,
 } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 
-// Constants
+// constants
 import { RepairShopConstants } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/constants';
 
 // SVG Routes
 import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Types
+// types
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
@@ -138,7 +136,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { FormatDatePipe } from '@shared/pipes';
 import { AddressService } from '@shared/services/address.service';
 
-// mixin
+// mixins
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
@@ -275,8 +273,8 @@ export class RepairShopModalComponent
     public svgRoutes = SharedSvgRoutes;
     public activeAction: string;
 
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
 
     public uploadDocumentFilesConfig =
         RepairShopModalUploadFilesConfig.REPAIR_SHOP_MODAL_DOCUMENT_UPLOAD_FILES_CONFIG;
@@ -543,7 +541,8 @@ export class RepairShopModalComponent
                                 repairShop.address.addressUnit,
                             [RepairShopModalStringEnum.ADDRESS]:
                                 repairShop.address.address,
-                            [RepairShopModalStringEnum.OPEN_ALWAYS]: false,
+                            [RepairShopModalStringEnum.OPEN_ALWAYS]:
+                                repairShop.openAlways,
                             [RepairShopModalStringEnum.ACCOUNT]:
                                 repairShop.account,
                             [RepairShopModalStringEnum.NOTE]: repairShop.note,
@@ -572,7 +571,6 @@ export class RepairShopModalComponent
                             [RepairShopModalStringEnum.RENT]: repairShop.rent,
                             [RepairShopModalStringEnum.COVER]: repairShop.cover,
                         });
-
                         this.mapEditData(repairShop);
                         this.isCompanyRelated =
                             this.editData?.companyOwned ||
@@ -838,16 +836,12 @@ export class RepairShopModalComponent
     public toggle247WorkingHours(): void {
         this.openAlways.patchValue(!this.isOpenAllDay);
 
-        const startTime = this.convertTime(
-            this.isOpenAllDay
-                ? OpenWorkingHours.MIDNIGHT
-                : OpenWorkingHours.EIGHTAM
-        );
-        const endTime = this.convertTime(
-            this.isOpenAllDay
-                ? OpenWorkingHours.MIDNIGHT
-                : OpenWorkingHours.FIVEPM
-        );
+        const startTime = this.isOpenAllDay
+            ? OpenWorkingHours.MIDNIGHT
+            : OpenWorkingHours.EIGHTAM;
+        const endTime = this.isOpenAllDay
+            ? OpenWorkingHours.MIDNIGHT
+            : OpenWorkingHours.FIVEPM;
 
         this.openHours.controls.forEach((item, index) => {
             const isPatch = this.openAlways.value || index >= 5;
@@ -867,10 +861,6 @@ export class RepairShopModalComponent
             shiftsArray.clear();
             shiftsArray.push(this.formBuilder.group(newShift));
         });
-    }
-
-    public convertTime(time: string): Date {
-        return MethodsCalculationsHelper.convertTimeFromBackend(time);
     }
 
     public applyMondayToAllDays(): void {
@@ -1084,7 +1074,7 @@ export class RepairShopModalComponent
                     active: item.active,
                 };
             }),
-            bankId: this.selectedBank ? this.selectedBank.id : null,
+            bankId: this.selectedBank?.id ?? null,
             files: this.createDocumentsForRequest(),
             filesForDeleteIds: this.filesForDelete,
             pinned: this.getFromFieldValue(RepairShopModalStringEnum.PINNED),
@@ -1102,6 +1092,9 @@ export class RepairShopModalComponent
                 RepairShopModalStringEnum.SHOP_SERVICE_TYPE
             ),
             openHours: this.formatOpenHours(),
+            openAlways: this.getFromFieldValue(
+                RepairShopModalStringEnum.OPEN_ALWAYS
+            ),
             weeklyDay: !this.getFromFieldValue(
                 RepairShopModalStringEnum.COMPANY_OWNED
             )

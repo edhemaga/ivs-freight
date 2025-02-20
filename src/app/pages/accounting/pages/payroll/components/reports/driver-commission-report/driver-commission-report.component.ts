@@ -17,9 +17,11 @@ import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/pa
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import {
+    PayrollDriverCommissionFacadeService,
+    PayrollFacadeService,
+} from '@pages/accounting/pages/payroll/state/services';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
 // Models
 import {
@@ -42,7 +44,7 @@ import { CommissionLoadShortReponseWithRowType } from '@pages/accounting/pages/p
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
@@ -77,8 +79,8 @@ export class DriverCommissionReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    public _selectedTab: PayrollTablesStatus;
-    @Input() set selectedTab(tab: PayrollTablesStatus) {
+    public _selectedTab: ePayrollTablesStatus;
+    @Input() set selectedTab(tab: ePayrollTablesStatus) {
         this._selectedTab = tab;
 
         this.dropdownMenuOptions =

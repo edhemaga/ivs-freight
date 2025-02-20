@@ -1233,11 +1233,18 @@
                                                     position="bottom"
                                                 >
                                                     @if (
-                                                        row?.tableFuelStopIsClosed
+                                                        row?.tableFuelStopIsClosed ||
+                                                        row?.companyOwned
                                                     ) {
                                                         <svg-icon
+                                                            [ngClass]="{
+                                                                'company-owned-icon':
+                                                                    row?.companyOwned,
+                                                            }"
                                                             [src]="
-                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                                row?.tableFuelStopIsClosed
+                                                                    ? tableBodySvgRoutes.brokerClosedRoute
+                                                                    : tableBodySvgRoutes.companyOwnedRoute
                                                             "
                                                         ></svg-icon>
                                                     }
@@ -3296,6 +3303,7 @@
                                                     openHoursToday:
                                                         row[column.field]
                                                             ?.openHoursToday,
+                                                    openAlways: row?.openAlways,
                                                 }"
                                             ></app-ta-open-hours-dropdown>
                                         </div>
@@ -4106,11 +4114,18 @@
                                                     position="bottom"
                                                 >
                                                     @if (
-                                                        row?.tableFuelStopIsClosed
+                                                        row?.tableFuelStopIsClosed ||
+                                                        row?.companyOwned
                                                     ) {
                                                         <svg-icon
+                                                            [ngClass]="{
+                                                                'company-owned-icon':
+                                                                    row?.companyOwned,
+                                                            }"
                                                             [src]="
-                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                                row?.tableFuelStopIsClosed
+                                                                    ? tableBodySvgRoutes.brokerClosedRoute
+                                                                    : tableBodySvgRoutes.companyOwnedRoute
                                                             "
                                                         ></svg-icon>
                                                     }
@@ -4598,10 +4613,8 @@
                                             popoverClass="table-description-popover"
                                             [ngbPopover]="descriptionPopover"
                                             (click)="
-                                                (column.ngTemplate ===
-                                                    'description' ||
-                                                    column.ngTemplate ===
-                                                        'total') &&
+                                                column.ngTemplate ===
+                                                    'description' &&
                                                     onShowDescriptionDropdown(
                                                         t1,
                                                         tableData[0]
@@ -5346,17 +5359,30 @@
                                                     column?.minWidth ?? 'unset',
                                             }"
                                         >
+
                                             @if (
                                                 row.isIncompleteFuelTransaction &&
                                                 column.title === 'Truck' &&
                                                 !row.truck
                                             ) {
-                                                <svg-icon
-                                                    class="lh-1 mr-1 column-text-svg-transaction-incomplete"
-                                                    [src]="
-                                                        tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
+                                                <div
+                                                    mainTooltip="
+                                                        Truck not Linked
                                                     "
-                                                ></svg-icon>
+                                                    mainContent
+                                                    ngbTooltip
+                                                    tooltipBackground="#424242"
+                                                    tooltipColor="#FFFFFF"
+                                                    position="bottom"
+                                                    tooltipTextAlign="center"
+                                                >
+                                                    <svg-icon
+                                                        class="lh-1 mr-1 column-text-svg-transaction-incomplete"
+                                                        [src]="
+                                                            tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
+                                                        "
+                                                    ></svg-icon>
+                                                </div>
                                             }
 
                                             @if (
@@ -6263,6 +6289,7 @@
                                                     openHoursToday:
                                                         row[column.field]
                                                             ?.openHoursToday,
+                                                    openAlways: row?.openAlways,
                                                 }"
                                             ></app-ta-open-hours-dropdown>
                                         </div>

@@ -198,13 +198,14 @@
                                         <app-ta-open-hours-dropdown
                                             [dropdownConfig]="{
                                                 rowId: card?.id,
-                                                width: 190,
+                                                width: 132,
                                                 openHours:
                                                     card[cardRow.key]
                                                         ?.openHours,
                                                 openHoursToday:
                                                     card[cardRow.key]
                                                         ?.openHoursToday,
+                                                openAlways: card?.openAlways,
                                             }"
                                         ></app-ta-open-hours-dropdown>
                                     }

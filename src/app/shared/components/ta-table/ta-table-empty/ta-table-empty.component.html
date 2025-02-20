@@ -1,61 +1,82 @@
-<ng-container *ngIf="!hasResults">
-    <ng-container>
+@let isListView = activeViewMode === taStringEnum.LIST;
+@let isEmptyList = !hasResults && filteredResults;
+
+@if (!hasResults) {
+    <div
+        class="table-empty-container"
+        [ngStyle]="{
+            'margin-top': isListView ? '80px' : '50px',
+            width: toolbarWidth?.width,
+            'max-width.px': toolbarWidth?.maxWidth,
+        }"
+    >
+        <!-- Empty Grid Placeholder -->
+
         <div
-            class="d-grid empty-column-grid"
-            [ngClass]="
-                view === taStringEnum.LIST
-                    ? 'empty-grid-list'
-                    : 'empty-grid-card'
-            "
+            class="d-grid empty"
+            [ngClass]="isListView ? 'empty-grid-list' : 'empty-grid-card'"
         >
+            @for (
+                emptyBox of emptyGridPlaceholder;
+                let columnIndex = $index;
+                track columnIndex
+            ) {
+                <div
+                    class="empty-column"
+                    [ngClass]="
+                        isListView ? 'empty-column-list' : 'empty-column-card'
+                    "
+                ></div>
+            }
+        </div>
+
+        <!-- Main -->
+
+        <div
+            class="d-flex flex-column justify-content-center align-items-center table-empty-container-main"
+        >
+            <svg-icon
+                class="no-data-icon"
+                [src]="tableEmptySvgRoutes.noDataSvgRoute"
+            ></svg-icon>
+
+            <p class="m-0 ta-font-extra-bold text-color-grey text-size-26">
+                {{ isEmptyList ? 'No results' : 'No data' }}
+            </p>
+
             <div
-                *ngFor="let column of emptyColums"
-                class="empty-column"
-                [ngClass]="
-                    view === taStringEnum.LIST
-                        ? 'empty-column-list'
-                        : 'empty-column-card'
-                "
-            ></div>
-        </div>
-
-        <div
-            class="d-flex align-items-center flex-column text-center"
-            [class.mt-80]="view === taStringEnum.CARD"
-            [class.mt-negative]="view === taStringEnum.LIST"
-        >
-            <p class="text-color-bw-9 text-size-28 ta-font-extra-bold">
-                SUBTLE <br />
-                ILLUSTRATION <br />
-                <span class="ta-font-regular">(Empty State)</span>
-            </p>
-
-            <h4
-                class="text-color-muted text-size-26 ta-font-extra-bold mb-3 mt-80"
+                class="d-flex flex-column justify-content-center table-empty-container-main-inner"
             >
-                {{ !isEmptyList ? 'No data found' : 'No results' }}
-            </h4>
-            <p class="text-color-muted text-size-11 ta-font-medium mb-5">
-                <ng-container *ngIf="!isEmptyList">
-                    This page is currently empty. <br />
-                    Start by adding entries or import from external source.
-                </ng-container>
+                <app-ca-modal-button
+                    [type]="
+                        isEmptyList
+                            ? eModalButtonClassType.PRIMARY_NEUTRAL
+                            : eModalButtonClassType.PRIMARY_POSITIVE
+                    "
+                    [text]="
+                        isEmptyList
+                            ? emodalButtonText.CLEAR_FILTERS
+                            : eTableEmpty.ADD + btnText
+                    "
+                    (click)="
+                        handleBtnClick(
+                            isEmptyList
+                                ? eTableEmpty.CLEAR_FILTERS_CLICK
+                                : eTableEmpty.ADD_CLICK
+                        )
+                    "
+                >
+                </app-ca-modal-button>
 
-                <ng-container *ngIf="isEmptyList">
-                    No entries match your criteria.<br />
-                    Please revise your filters and search again.
-                </ng-container>
-            </p>
-        </div>
-
-        <ng-container *ngIf="!isEmptyList; else noFilterResults">
-            <ng-container *ngTemplateOutlet="actionTemplate"> </ng-container>
-        </ng-container>
-
-        <ng-template #noFilterResults>
-            <div class="d-flex align-items-center justify-content-center">
-                <button class="ca-btn ca-btn-tertiary" (click)="resetFilters()">Clear All</button>
+                @if (!isEmptyList) {
+                    <app-ca-modal-button
+                        [type]="eModalButtonClassType.PLAIN_TEXT"
+                        [text]="emodalButtonText.IMPORT_LIST"
+                        (click)="handleBtnClick(eTableEmpty.IMPORT_LIST_CLICK)"
+                    >
+                    </app-ca-modal-button>
+                }
             </div>
-        </ng-template>
-    </ng-container>
-</ng-container>
+        </div>
+    </div>
+}
