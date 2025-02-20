@@ -1285,6 +1285,7 @@ export class SettingsBasicModalComponent
             },
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
+            companyType: this.selectedCompanyData?.id ?? null,
         };
 
         for (let index = 0; index < departmentContacts.length; index++) {
@@ -1511,6 +1512,7 @@ export class SettingsBasicModalComponent
             },
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
+            companyType: this.selectedCompanyData?.id ?? null,
         };
 
         for (let index = 0; index < departmentContacts.length; index++) {
