@@ -3,6 +3,7 @@ import { TrailerConfigInterface } from '@pages/trailer/pages/trailer-modal/model
 
 // enums
 import { eGeneralActions } from '@shared/enums';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 export class TrailerModalConfig {
     static getVolumenTrailers(): string[] {
@@ -31,7 +32,7 @@ export class TrailerModalConfig {
             autoFocus: options?.editType !== eGeneralActions.EDIT,
         };
     }
-    static getTrailerTypeIdConfig(options: TrailerConfigInterface): ITaInput {
+    static getTrailerTypeIdConfig(options: TrailerConfigInterface): ICaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -42,6 +43,8 @@ export class TrailerModalConfig {
                 withText: true,
                 svg: true,
                 image: false,
+                iconsPath: 'assets/ca-components/svg/common/trailers/',
+                activeItemIconKey: 'logoName',
                 url:
                     options.selectedTrailerType?.logoName &&
                     'assets/svg/common/trailers/' +
@@ -100,7 +103,7 @@ export class TrailerModalConfig {
             },
         };
     }
-    static getTrailerMakeConfig(options: TrailerConfigInterface): ITaInput {
+    static getTrailerMakeConfig(options: TrailerConfigInterface): ICaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -111,6 +114,8 @@ export class TrailerModalConfig {
                 withText: false,
                 svg: true,
                 image: false,
+                iconsPath: '',
+                activeItemIconKey: 'logoName',
                 url: options.selectedTrailerMake?.logoName,
                 class: 'trailer-make',
             },
@@ -128,7 +133,7 @@ export class TrailerModalConfig {
             maxLength: 50,
         };
     }
-    static getTrailerColorConfig(options: TrailerConfigInterface): ITaInput {
+    static getTrailerColorConfig(options: TrailerConfigInterface): ICaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -138,9 +143,9 @@ export class TrailerModalConfig {
                 withText: true,
                 svg: true,
                 image: false,
-                url: options.selectedColor?.code ? 'ic_color.svg' : null,
+                iconsPath: 'ic_color.svg',
+                activeItemIconKey: '',
                 template: 'color',
-                color: options.selectedColor?.code,
             },
             dropdownWidthClass: 'w-col-164',
         };

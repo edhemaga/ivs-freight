@@ -11,7 +11,7 @@ export class LoadModalConfig {
             customClass: 'load-dispatches-ttd',
         },
         isDropdown: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-616  hide-after-arrow',
     };
@@ -25,7 +25,7 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isRequired: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-432',
     };
