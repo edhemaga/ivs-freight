@@ -644,6 +644,7 @@ model/loadModalResponse.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
 model/loadPossibleStatusesResponse.ts
+model/loadProgressMobileResponse.ts
 model/loadProgressResponse.ts
 model/loadRequirementsCommand.ts
 model/loadRequirementsMobileResponse.ts
@@ -665,6 +666,7 @@ model/loadStopItemResponse.ts
 model/loadStopLoadListResponse.ts
 model/loadStopMobileResponse.ts
 model/loadStopMobileShortResponse.ts
+model/loadStopProgressBarMobileResponse.ts
 model/loadStopProgressBarResponse.ts
 model/loadStopResponse.ts
 model/loadStopShortResponse.ts
@@ -719,6 +721,7 @@ model/mobileFuelTransactionResponsePagination.ts
 model/mobileFuelTruckResponse.ts
 model/mobileFuelTruckTrailerResponse.ts
 model/mobileGpsDataCommand.ts
+model/mobileGpsDataItemCommand.ts
 model/mobileRepairShopDetailsResponse.ts
 model/mobileRepairShopDetailsResponsePagination.ts
 model/mobileRepairShopExpensesChartResponse.ts
@@ -971,6 +974,7 @@ model/sphDrugAndAlcoholResponse.ts
 model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
+model/splitShiftResponse.ts
 model/stateFilter.ts
 model/stateResponse.ts
 model/statusSetCompanyUserCommand.ts
@@ -1039,6 +1043,7 @@ model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
 model/trailerMinimalListResponse.ts
+model/trailerMinimalMobileResponse.ts
 model/trailerMinimalResponse.ts
 model/trailerMinimalResponsePagination.ts
 model/trailerResponse.ts
@@ -1068,6 +1073,7 @@ model/truckIntervalResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts
 model/truckMinimalListResponse.ts
+model/truckMinimalMobileResponse.ts
 model/truckMinimalResponse.ts
 model/truckMinimalResponsePagination.ts
 model/truckPerformanceResponse.ts

@@ -52,6 +52,18 @@
         &-blue-26 {
             @include svg-fill($ta-blue-26);
         }
+        &-green {
+            @include svg-fill($ta-green);
+        }
+        &-green-4 {
+            @include svg-fill($ta-green-4);
+        }
+        &-yellow-1 {
+            @include svg-fill($ta-yellow-1);
+        }
+        &-yellow-4 {
+            @include svg-fill($ta-yellow-4);
+        }
     }
 
     // Hovers

@@ -1,6 +1,13 @@
+@let openHoursToday = _cardData?.openHoursToday;
+
+@let isCurrentlyOpen = openHoursToday?.id === 1;
+@let isCurrentlyClosing = openHoursToday?.id === 2;
+@let isCurrentlyClosed = _cardData?.openHoursToday?.id === 3;
+@let isAlwaysOpen = _cardData?.openAlways;
+
 <app-ta-custom-card
     [cardName]="'Working Hours'"
-    [subText]="!isOpenHoursCardOpen ? 'Closed text' : ''"
+    [subText]="!isOpenHoursCardOpen ? openHoursToday?.status : ''"
     [isCardOpen]="true"
     [bodyTemplate]="'card'"
     [hasDivider]="false"
@@ -17,41 +24,61 @@
 
         <div
             class="d-flex flex-column justify-content-center shop-details-working-hours-header"
+            [ngStyle]="{ 'margin-bottom': isAlwaysOpen ? 0 : '12px' }"
         >
             <div class="d-flex align-items-center">
                 <p class="m-0 ta-font-bold text-size-11 text-color-black">
-                    Open Now
+                    {{ openHoursToday?.status }}
                 </p>
 
                 <svg-icon
                     class="shop-details-working-hours-header-icon"
+                    [ngClass]="
+                        isCurrentlyOpen
+                            ? 'open'
+                            : isCurrentlyClosing
+                              ? 'closing'
+                              : 'closed'
+                    "
                     [src]="repairShopDetailsSvgRoutes.circleRoute"
                     [svgStyle]="{ 'width.px': 10, 'height.px': 10 }"
                 ></svg-icon>
             </div>
 
-            <p class="m-0 ta-font-medium text-size-18 text-color-black">
-                08:00 AM - 10:00 PM
+            <p
+                class="m-0 ta-font-medium text-size-18"
+                [ngClass]="
+                    isCurrentlyClosed
+                        ? 'text-color-light-grey-2'
+                        : 'text-color-light-black'
+                "
+            >
+                {{ openHoursToday?.info }}
             </p>
         </div>
 
         <!-- Main -->
 
-        <div class="shop-details-working-hours-main">
-            @for (
-                workingHoursItem of _cardData;
-                track workingHoursItem?.workingDays
-            ) {
-                <div class="d-flex flex-column justify-content-center">
-                    <p class="m-0 ta-font-bold text-size-11 text-color-black">
-                        {{ workingHoursItem?.workingDays }}
-                    </p>
+        @if (!isAlwaysOpen) {
+            <div class="shop-details-working-hours-main">
+                @for (
+                    workingHoursItem of _cardData?.openHours;
+                    let workingHoursItemIndex = $index;
+                    track workingHoursItemIndex
+                ) {
+                    <div class="d-flex flex-column justify-content-center">
+                        <p
+                            class="m-0 ta-font-bold text-size-11 text-color-black"
+                        >
+                            {{ workingHoursItem?.workingDays }}
+                        </p>
 
-                    <p class="m-0 text-size-14 text-color-black-2">
-                        {{ workingHoursItem?.workingHours }}
-                    </p>
-                </div>
-            }
-        </div>
+                        <p class="m-0 text-size-14 text-color-black-2">
+                            {{ workingHoursItem?.workingHours }}
+                        </p>
+                    </div>
+                }
+            </div>
+        }
     </div>
 </app-ta-custom-card>

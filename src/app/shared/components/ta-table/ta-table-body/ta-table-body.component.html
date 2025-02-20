@@ -1233,11 +1233,18 @@
                                                     position="bottom"
                                                 >
                                                     @if (
-                                                        row?.tableFuelStopIsClosed
+                                                        row?.tableFuelStopIsClosed ||
+                                                        row?.companyOwned
                                                     ) {
                                                         <svg-icon
+                                                            [ngClass]="{
+                                                                'company-owned-icon':
+                                                                    row?.companyOwned,
+                                                            }"
                                                             [src]="
-                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                                row?.tableFuelStopIsClosed
+                                                                    ? tableBodySvgRoutes.brokerClosedRoute
+                                                                    : tableBodySvgRoutes.companyOwnedRoute
                                                             "
                                                         ></svg-icon>
                                                     }
@@ -3296,6 +3303,7 @@
                                                     openHoursToday:
                                                         row[column.field]
                                                             ?.openHoursToday,
+                                                    openAlways: row?.openAlways,
                                                 }"
                                             ></app-ta-open-hours-dropdown>
                                         </div>
@@ -4106,11 +4114,18 @@
                                                     position="bottom"
                                                 >
                                                     @if (
-                                                        row?.tableFuelStopIsClosed
+                                                        row?.tableFuelStopIsClosed ||
+                                                        row?.companyOwned
                                                     ) {
                                                         <svg-icon
+                                                            [ngClass]="{
+                                                                'company-owned-icon':
+                                                                    row?.companyOwned,
+                                                            }"
                                                             [src]="
-                                                                tableBodySvgRoutes.brokerClosedRoute
+                                                                row?.tableFuelStopIsClosed
+                                                                    ? tableBodySvgRoutes.brokerClosedRoute
+                                                                    : tableBodySvgRoutes.companyOwnedRoute
                                                             "
                                                         ></svg-icon>
                                                     }
@@ -4598,10 +4613,8 @@
                                             popoverClass="table-description-popover"
                                             [ngbPopover]="descriptionPopover"
                                             (click)="
-                                                (column.ngTemplate ===
-                                                    'description' ||
-                                                    column.ngTemplate ===
-                                                        'total') &&
+                                                column.ngTemplate ===
+                                                    'description' &&
                                                     onShowDescriptionDropdown(
                                                         t1,
                                                         tableData[0]
@@ -6276,6 +6289,7 @@
                                                     openHoursToday:
                                                         row[column.field]
                                                             ?.openHoursToday,
+                                                    openAlways: row?.openAlways,
                                                 }"
                                             ></app-ta-open-hours-dropdown>
                                         </div>

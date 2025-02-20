@@ -2,14 +2,14 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
+
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
 import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// RXJS
-import { Subject } from 'rxjs';
-import { takeUntil } from 'rxjs/operators';
-
-// Models
+// models
 import {
     CommentResponse,
     CreateCommentCommand,
@@ -21,7 +21,7 @@ import {
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
 
-// Components
+// components
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -32,28 +32,25 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
-// Services
+// services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TodoService } from '@pages/to-do/services/to-do.service';
 import { CommentsService } from '@shared/services/comments.service';
 import { FormService } from '@shared/services/form.service';
 
-//  Enums
-import {
-    ModalButtonType,
-    ModalButtonSize,
-    eFileFormControls,
-    eGeneralActions,
-} from '@shared/enums';
+// enums
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
-// Svg routes
+// SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Validators
+// validators
 import {
     departmentValidation,
     descriptionValidation,
@@ -61,10 +58,10 @@ import {
     urlValidation,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-// Helpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// Pipes
+// pipes
 import { FormatDatePipe } from '@shared/pipes';
 
 @Component({
@@ -74,14 +71,14 @@ import { FormatDatePipe } from '@shared/pipes';
     providers: [ModalService, FormService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbTooltipModule,
 
-        // Component
+        // components
         TaAppTooltipV2Component,
         CaModalComponent,
         CaModalButtonComponent,
@@ -91,7 +88,8 @@ import { FormatDatePipe } from '@shared/pipes';
         TaUploadFilesComponent,
         TaUserReviewComponent,
         CaInputDatetimePickerComponent,
-        // Pipes
+
+        // pipes
         FormatDatePipe,
     ],
 })
@@ -127,8 +125,8 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public activeAction: string;
 
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
     public taModalActionEnum = TaModalActionEnum;
     public data: TodoResponse;
 

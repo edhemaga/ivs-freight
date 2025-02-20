@@ -67,7 +67,13 @@ import { DispatchColorFinderPipe } from '@shared/pipes';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import {
+    DropdownMenuStringEnum,
+    eCommonElements,
+    eGeneralActions,
+} from '@shared/enums';
+import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -103,7 +109,6 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 @Component({
     selector: 'app-repair-table',
@@ -122,6 +127,7 @@ export class RepairTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
+    public eCommonElements = eCommonElements;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -275,8 +281,6 @@ export class RepairTableComponent
             this.observTableContainer();
         }, 10);
     }
-
-    public trackByIdentity = (_: number, item: any): number => item?.id;
 
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
@@ -965,8 +969,19 @@ export class RepairTableComponent
         }, 900);
     }
 
-    public resetFilter(): void {
-        this.tableService.sendCurrentSetTableFilter({});
+    public handleTableEmptyBtnClickEmit(btnClickType: string): void {
+        switch (btnClickType) {
+            case eTableEmpty.ADD_CLICK:
+                this.onToolBarAction({ action: eGeneralActions.OPEN_MODAL });
+
+                break;
+            case eTableEmpty.IMPORT_LIST_CLICK:
+                break;
+            default:
+                this.tableService.sendResetSpecialFilters(true);
+
+                break;
+        }
     }
 
     public setTableFilter(): void {
