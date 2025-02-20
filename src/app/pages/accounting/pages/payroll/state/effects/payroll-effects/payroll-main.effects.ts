@@ -6,7 +6,7 @@ import { catchError, map, Observable, of, switchMap } from 'rxjs';
 import * as PayrollActions from '@pages/accounting/pages/payroll/state/actions';
 
 // Services
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
 export function getPayrollCountsEffect(
     actions$: Actions,
@@ -28,6 +28,36 @@ export function getPayrollCountsEffect(
                             catchError((error) =>
                                 of(
                                     PayrollActions.getPayrollCountsError({
+                                        error,
+                                    })
+                                )
+                            )
+                        );
+                })
+            )
+    );
+}
+
+export function getPayrollMapDataEffect(
+    actions$: Actions,
+    payrollService: PayrollService
+) {
+    return createEffect(
+        (): Observable<Action> =>
+            actions$.pipe(
+                ofType(PayrollActions.getPayrollMapData),
+                switchMap((action) => {
+                    return payrollService
+                        .getPayrollMapData(action.locations)
+                        .pipe(
+                            map((data) => {
+                                return PayrollActions.getPayrollMapDataSuccess({
+                                    mapData: data,
+                                });
+                            }),
+                            catchError((error) =>
+                                of(
+                                    PayrollActions.getPayrollMapDataError({
                                         error,
                                     })
                                 )

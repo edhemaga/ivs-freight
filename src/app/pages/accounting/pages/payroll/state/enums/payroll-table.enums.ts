@@ -1,4 +1,4 @@
-export enum PayrollTables {
+export enum ePayrollTable {
     DRIVER_MILES = 'Driver Miles',
     DRIVER_FLAT_RATE = 'Driver Flat Rate',
     DRIVER_COMMISSION = 'Driver Commission',
@@ -10,7 +10,7 @@ export enum PayrollTables {
     DRIVER_OWNER_TITLE = 'Owner'
 }
 
-export enum PayrollTablesStatus {
+export enum ePayrollTablesStatus {
     OPEN = 'open',
     CLOSED = 'closed'
 }

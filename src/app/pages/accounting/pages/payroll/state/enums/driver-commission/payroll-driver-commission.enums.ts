@@ -1,4 +1,4 @@
-export enum PayrollCommissionDriverEnum {
+export enum ePayrollCommissionDriver {
     GET_PAYROLL_COMMISSION_DRIVER = '[Payroll Commission Driver Page] Get Payroll Commission Driver',
     GET_PAYROLL_COMMISSION_DRIVER_SUCCESS = '[Payroll Commission Driver Page] Get Payroll Commission Driver Success',
     GET_PAYROLL_COMMISSION_DRIVER_ERROR = '[Payroll Commission Driver Page] Get Payroll Commission Driver Error',

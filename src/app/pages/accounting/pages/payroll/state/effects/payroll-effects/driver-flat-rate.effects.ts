@@ -3,33 +3,32 @@ import { catchError, map, Observable, of, switchMap, tap } from 'rxjs';
 import { Action } from '@ngrx/store';
 
 // ACTIONS
-import * as PayrollCommissionDriverActions from '@pages/accounting/pages/payroll/state/actions';
+import * as PayrollFlatRateDriverActions from '@pages/accounting/pages/payroll/state/actions';
 
 // SERVICES
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
-export function getPayrollCommissionDriverListEffect(
+export function getPayrollFlatRateDriverListEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
     return createEffect(
         (): Observable<Action> =>
             actions$.pipe(
-                ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionDriver
-                ),
-                switchMap((action) => {
-                    return payrollService.getPayrollCommissionDriverList().pipe(
+                ofType(PayrollFlatRateDriverActions.getPayrollFlatRateDriver),
+                switchMap(() => {
+                    return payrollService.getFlatRatePayrollDriverList().pipe(
                         map((data) => {
-                            return PayrollCommissionDriverActions.getPayrollCommissionDriverSuccess(
+                            return PayrollFlatRateDriverActions.getPayrollFlatRateDriverSuccess(
                                 {
-                                    commissionPayrollList: data,
+                                    flatListPayrollList: data,
                                 }
                             );
                         }),
                         catchError((error) =>
                             of(
-                                PayrollCommissionDriverActions.getPayrollCommissionDriverError(
+                                PayrollFlatRateDriverActions.getPayrollFlatRateDriverError(
                                     {
                                         error,
                                     }
@@ -42,35 +41,42 @@ export function getPayrollCommissionDriverListEffect(
     );
 }
 
-export function getPayrollCommissionReportEffect(
+export function getPayrollFlatRateReportEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    payrollFacadeService: PayrollFacadeService
 ) {
     return createEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionReportDriver
+                    PayrollFlatRateDriverActions.getPayrollFlatRateReportDriver
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .getPayrollCommissionDriverReport({
+                        .getPayrollFlatRateDriverReport({
                             reportId: action.reportId,
                             selectedCreditIds: action.selectedCreditIds,
                             selectedDeductionIds: action.selectedDeductionIds,
                             selectedLoadIds: action.selectedLoadIds,
+                            selectedBonusIds: action.selectedBonusIds,
                         })
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions.getPayrollCommissionReportDriverSuccess(
+                                return PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverSuccess(
                                     {
                                         payroll: data,
                                     }
                                 );
                             }),
+                            tap((data) =>
+                                payrollFacadeService.setPayrollMapData(
+                                    data.payroll.mapLocations
+                                )
+                            ),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.getPayrollCommissionReportDriverError(
+                                    PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverError(
                                         {
                                             error,
                                         }
@@ -83,7 +89,7 @@ export function getPayrollCommissionReportEffect(
     );
 }
 
-export function closePayrollCommissionReportEffect(
+export function closePayrollFlatRateReportEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
@@ -91,14 +97,15 @@ export function closePayrollCommissionReportEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.closePayrollCommissionReportDriver
+                    PayrollFlatRateDriverActions.closePayrollFlatRateReportDriver
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .closePayrollCommissionDriverReport(
+                        .closePayrollFlatRateDriverReport(
                             action.amount,
                             action.reportId,
                             action.selectedLoadIds,
+                            action.selectedBonusIds,
                             action.selectedDeductionIds,
                             action.selectedCreditIds,
                             action.paymentType,
@@ -106,12 +113,11 @@ export function closePayrollCommissionReportEffect(
                         )
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions
-                                    .closePayrollCommissionReportDriverSuccess();
+                                return PayrollFlatRateDriverActions.closePayrollFlatRateReportDriverSuccess();
                             }),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.closePayrollCommissionReportDriverError(
+                                    PayrollFlatRateDriverActions.closePayrollFlatRateReportDriverError(
                                         {
                                             error,
                                         }
@@ -124,7 +130,7 @@ export function closePayrollCommissionReportEffect(
     );
 }
 
-export function getPayrollCommissionDriverCollapsedListEffect(
+export function getPayrollFlatRateDriverCollapsedListEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
@@ -132,14 +138,14 @@ export function getPayrollCommissionDriverCollapsedListEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedList
+                    PayrollFlatRateDriverActions.getPayrollFlatRateDriverCollapsedList
                 ),
                 switchMap(() => {
                     return payrollService
-                        .getPayrollCommissionDriverCollapsedList()
+                        .getPayrollFlatRateDriverCollapsedList()
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedListSuccess(
+                                return PayrollFlatRateDriverActions.getPayrollFlatRateDriverCollapsedListSuccess(
                                     {
                                         data: data,
                                     }
@@ -147,7 +153,7 @@ export function getPayrollCommissionDriverCollapsedListEffect(
                             }),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.getPayrollCommissionDriverCollapsedListError(
+                                    PayrollFlatRateDriverActions.getPayrollFlatRateDriverCollapsedListError(
                                         {
                                             error,
                                         }
@@ -160,7 +166,7 @@ export function getPayrollCommissionDriverCollapsedListEffect(
     );
 }
 
-export function getPayrollCommissionDriverExpandedListEffect(
+export function getPayrollFlatRateDriverExpandedListEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
@@ -168,14 +174,14 @@ export function getPayrollCommissionDriverExpandedListEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedList
+                    PayrollFlatRateDriverActions.getPayrollFlatRateDriverExpandedList
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .getPayrollCommissionDriverExpandedList(action.driverId)
+                        .getPayrollFlatRateDriverExpandedList(action.driverId)
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedListSuccess(
+                                return PayrollFlatRateDriverActions.getPayrollFlatRateDriverExpandedListSuccess(
                                     {
                                         data: data,
                                     }
@@ -183,7 +189,7 @@ export function getPayrollCommissionDriverExpandedListEffect(
                             }),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.getPayrollCommissionDriverExpandedListError(
+                                    PayrollFlatRateDriverActions.getPayrollFlatRateDriverExpandedListError(
                                         {
                                             error,
                                         }
@@ -196,32 +202,38 @@ export function getPayrollCommissionDriverExpandedListEffect(
     );
 }
 
-export function getPayrollCommissionClosedPayrollReportByIdEffect(
+export function getPayrollFlatRateClosedPayrollReportByIdEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    payrollFacadeService: PayrollFacadeService
 ) {
     return createEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayroll
+                    PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverClosedPayroll
                 ),
                 switchMap((action) => {
                     return payrollService
-                        .getPayrollCommissionDriverClosedReportById(
+                        .getPayrollFlatRateDriverClosedReportById(
                             action.payrollId
                         )
                         .pipe(
                             map((data) => {
-                                return PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayrollSuccess(
+                                return PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverClosedPayrollSuccess(
                                     {
                                         payroll: data,
                                     }
                                 );
                             }),
+                            tap((data) =>
+                                payrollFacadeService.setPayrollMapData(
+                                    data.payroll.mapLocations
+                                )
+                            ),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.getPayrollCommissionReportDriverClosedPayrollError(
+                                    PayrollFlatRateDriverActions.getPayrollFlatRateReportDriverClosedPayrollError(
                                         {
                                             error,
                                         }
@@ -234,7 +246,7 @@ export function getPayrollCommissionClosedPayrollReportByIdEffect(
     );
 }
 
-export function addPayrollCommissionClosedPayrollPaymentEffect(
+export function addPayrollFlatRateClosedPayrollPaymentEffect(
     actions$: Actions,
     payrollService: PayrollService
 ) {
@@ -242,18 +254,18 @@ export function addPayrollCommissionClosedPayrollPaymentEffect(
         (): Observable<Action> =>
             actions$.pipe(
                 ofType(
-                    PayrollCommissionDriverActions.driverCommissionPayrollClosedPayments
+                    PayrollFlatRateDriverActions.driverFlatRatePayrollClosedPayments
                 ),
                 switchMap((action) => {
                     return payrollService
                         .addPayrollClosedReportPayment(action)
                         .pipe(
-                            map((_) => {
-                                return PayrollCommissionDriverActions.driverCommissionPayrollClosedPaymentsSuccess();
+                            map((data) => {
+                                return PayrollFlatRateDriverActions.driverFlatRatePayrollClosedPaymentsSuccess();
                             }),
                             catchError((error) =>
                                 of(
-                                    PayrollCommissionDriverActions.driverCommissionPayrollClosedPaymentsError(
+                                    PayrollFlatRateDriverActions.driverFlatRatePayrollClosedPaymentsError(
                                         {
                                             error,
                                         }

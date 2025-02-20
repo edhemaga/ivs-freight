@@ -15,8 +15,10 @@ import { Observable, Subject } from 'rxjs';
 import { ColumnConfig } from 'ca-components';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollDriverFlatRateFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import {
+    PayrollFacadeService,
+    PayrollDriverFlatRateFacadeService,
+} from '@pages/accounting/pages/payroll/state/services';
 
 // Models
 import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models';

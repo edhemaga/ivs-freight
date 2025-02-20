@@ -13,11 +13,14 @@ import {
     PayrollDriverCommissionClosedByIdResponse,
     PayrollDriverFlatRateByIdResponse,
     PayrollDriverFlatRateClosedByIdResponse,
+    PayrollDriverMileageByIdResponse,
     PayrollDriverMileageListResponse,
     PayrollOtherPaymentType,
     PayrollOwnerClosedResponse,
     PayrollOwnerResponse,
     PayrollPaymentType,
+    RoutingResponse,
+    PayrollDriverMileageClosedByIdResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import {
@@ -64,6 +67,12 @@ export class PayrollService {
     ): Observable<PayrollCountsResponse> {
         return this.http.get(
             `${environment.API_ENDPOINT}/api/payroll/counts?ShowOpen=${showOpen}`
+        );
+    }
+
+    public getPayrollMapData(locations: string): Observable<RoutingResponse> {
+        return this.http.get(
+            `${environment.API_ENDPOINT}/api/routing?locations=${locations}`
         );
     }
 
@@ -130,7 +139,9 @@ export class PayrollService {
         );
     }
 
-    public getPayrollSoloMileageDriverClosedById(payrollId: number) {
+    public getPayrollSoloMileageDriverClosedById(
+        payrollId: number
+    ): Observable<PayrollDriverMileageClosedByIdResponse> {
         return this.http.get<any>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/${payrollId}`
         );
@@ -230,7 +241,7 @@ export class PayrollService {
                 selectedDeducionIds.toString()
             );
 
-        return this.http.get<PayrollDriverMileageResponse>(
+        return this.http.get<PayrollDriverMileageByIdResponse>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/${reportId}`,
             { params }
         );

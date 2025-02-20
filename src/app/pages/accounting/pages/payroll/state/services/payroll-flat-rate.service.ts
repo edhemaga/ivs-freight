@@ -29,7 +29,7 @@ import {
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models';
-import { PayrollTablesStatus } from '../enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -82,13 +82,13 @@ export class PayrollDriverFlatRateFacadeService {
         selectedLoadIds,
         selectedCreditIds,
         selectedDeductionIds,
-        payrollOpenedTab
+        payrollOpenedTab,
     }: {
         reportId: string;
         selectedLoadIds?: number[];
         selectedCreditIds?: number[];
         selectedDeductionIds?: number[];
-        payrollOpenedTab: PayrollTablesStatus
+        payrollOpenedTab: ePayrollTablesStatus;
     }): void {
         this.store
             .pipe(select(selectPayrollState), take(1))

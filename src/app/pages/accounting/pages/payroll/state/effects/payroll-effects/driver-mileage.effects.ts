@@ -1,16 +1,18 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { map, switchMap, Observable, catchError, of, tap } from 'rxjs';
 
 // Services
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Actions
 import * as PayrollSoloMileageDriver from '@pages/accounting/pages/payroll/state/actions';
 
 export function getPayrollMileageClosedPayrollByIdEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    payrollFacadeService: PayrollFacadeService
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -29,6 +31,11 @@ export function getPayrollMileageClosedPayrollByIdEffect(
                                     }
                                 );
                             }),
+                            tap((data) =>
+                                payrollFacadeService.setPayrollMapData(
+                                    data.payroll.mapLocations
+                                )
+                            ),
                             catchError((error) =>
                                 of(
                                     PayrollSoloMileageDriver.getPayrollMileageDriverClosedPayrollError(
@@ -197,7 +204,8 @@ export function closePayrollSoloMileageReportEffect(
 
 export function getPayrollSoloMileageReportEffect(
     actions$: Actions,
-    payrollService: PayrollService
+    payrollService: PayrollService,
+    payrollFacadeService: PayrollFacadeService
 ) {
     return createEffect(
         (): Observable<Action> =>
@@ -221,6 +229,11 @@ export function getPayrollSoloMileageReportEffect(
                                     }
                                 );
                             }),
+                            tap((data) =>
+                                payrollFacadeService.setPayrollMapData(
+                                    data.payroll.mapLocations
+                                )
+                            ),
                             catchError((error) =>
                                 of(
                                     PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError(
