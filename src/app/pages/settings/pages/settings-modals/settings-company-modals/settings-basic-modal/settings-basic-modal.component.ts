@@ -1356,6 +1356,9 @@ export class SettingsBasicModalComponent
             },
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
+            companyType: this.selectedCompanyData
+                ? this.selectedCompanyData.id
+                : null,
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
@@ -1560,6 +1563,9 @@ export class SettingsBasicModalComponent
             },
             timeZone: this.selectedTimeZone?.id ?? null,
             currency: this.selectedCurrency?.id ?? null,
+            companyType: this.selectedCompanyData
+                ? this.selectedCompanyData.id
+                : null,
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
