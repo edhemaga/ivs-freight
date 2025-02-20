@@ -40,6 +40,7 @@ import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/com
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { DispatchHubService } from '@shared/services/dispatch-hub.service';
+import { LoadService } from '@shared/services/load.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
@@ -70,6 +71,7 @@ import {
     TruckDispatchModalResponse,
     TrailerDispatchModalResponse,
     DispatchHistoryTruckLastLocationResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -217,7 +219,8 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         // services
         private dispatcherService: DispatcherService,
         private parkingService: ParkingService,
-        private dispatchHubService: DispatchHubService
+        private dispatchHubService: DispatchHubService,
+        private loadService: LoadService
     ) {}
 
     set checkEmptySet(value: string) {
@@ -1203,7 +1206,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.dispatchData.dispatches[index].loadProgress
                         .activeLoadProgressBar;
 
-                let dispatchStopData: IGpsProgress[] =
+                const dispatchStopData: IGpsProgress[] =
                     dispatchLoadProgress.loadStops.map(
                         (stop, index, currentArray) => {
                             const checkedInStop = currentArray.find(
@@ -1293,6 +1296,64 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         });
     }
 
+    public onOpenProgressMap(
+        progressData: DispatchProgressBarData,
+        progressIndex: number
+    ): void {
+        if (!progressData.gpsProgress[1].routeShape) {
+            const mapLocations = JSON.stringify(
+                progressData.gpsProgress.map(({ longitude, latitude }) => ({
+                    longitude,
+                    latitude,
+                }))
+            );
+
+            this.loadService
+                .getRouting(mapLocations)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res) => {
+                        this.progressBarData = this.progressBarData.map(
+                            (progressData, index) => {
+                                if (index === progressIndex) {
+                                    const gpsProgressData =
+                                        progressData.gpsProgress.map(
+                                            (item, index) => {
+                                                const routeShape =
+                                                    res.legs?.[index - 1]
+                                                        ?.decodedShape;
+
+                                                if (routeShape) {
+                                                    const newItem = {
+                                                        ...item,
+                                                        routeShape,
+                                                    };
+
+                                                    return newItem;
+                                                }
+
+                                                return item;
+                                            }
+                                        );
+
+                                    const newProgressData = {
+                                        ...progressData,
+                                        gpsProgress: gpsProgressData,
+                                    };
+
+                                    return newProgressData;
+                                }
+
+                                return progressData;
+                            }
+                        );
+
+                        this.cdRef.detectChanges();
+                    },
+                });
+        }
+    }
+
     private getColumnWidths(): void {
         if (
             localStorage.getItem(
@@ -1316,11 +1377,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             .subscribe((response) => {
                 this.refreshDispatchTable(response);
             });
-
-        this.dispatchHubService
-            .onDispatchBoardChanged()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe();
     }
 
     private refreshDispatchTable(dispatchChanged: DispatchResponse): void {

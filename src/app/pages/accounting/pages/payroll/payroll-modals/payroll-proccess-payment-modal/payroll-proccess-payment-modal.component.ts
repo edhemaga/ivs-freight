@@ -48,15 +48,17 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
-import { PayrollTablesStatus } from '../../state/enums';
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import {
+    ePayrollTablesStatus,
+    ePayrollString,
+} from '@pages/accounting/pages/payroll/state/enums';
 
 // Config
 import {
     dropDownInputConfig,
     dropdownOption,
     inputConfig,
-} from '@pages/accounting/pages/payroll/config/payroll_proccess_payment';
+} from '@pages/accounting/pages/payroll/config';
 
 // Svg
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
@@ -147,7 +149,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
     }
 
     private setAmmoutWatchers() {
-        const ammount = this.paymentForm.get(PayrollStringEnum.AMOUNT);
+        const ammount = this.paymentForm.get(ePayrollString.AMOUNT);
 
         // Manually handle the initial value
         const initialValue =
@@ -166,7 +168,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
         if (convertToNumber > totalEarnings) {
             this.paymentForm
-                .get(PayrollStringEnum.AMOUNT)
+                .get(ePayrollString.AMOUNT)
                 .patchValue(totalEarnings, { emitEvent: false });
         }
         this.isPaidInFull = convertToNumber === totalEarnings;
@@ -243,7 +245,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
         const isOpen = this.modalData.selectedTab;
 
-        if (isOpen === PayrollTablesStatus.OPEN) {
+        if (isOpen === ePayrollTablesStatus.OPEN) {
             this.payrollFacadeService.closePayrollReport({
                 amount: isUnpaid
                     ? 0

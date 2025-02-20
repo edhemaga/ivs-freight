@@ -32,6 +32,7 @@ import {
 import {
     MilesStopShortResponse,
     PayrollDriverMileageListResponse,
+    PayrollMapLocation,
     PayrollOtherPaymentType,
     PayrollPaymentType,
 } from 'appcoretruckassist';
@@ -46,7 +47,7 @@ import {
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { ICaMapProps } from 'ca-components';
 
 @Injectable({
@@ -106,7 +107,7 @@ export class PayrollFacadeService {
         closed: number;
     }> = this.store.pipe(select(seletPayrollTabsCount));
 
-    public selectPayrollOpenedTab$: Observable<PayrollTablesStatus> =
+    public selectPayrollOpenedTab$: Observable<ePayrollTablesStatus> =
         this.store.pipe(select(selectPayrollOpenedTab));
 
     // Select Driver Mileage Solo
@@ -134,7 +135,7 @@ export class PayrollFacadeService {
             });
     }
 
-    public setPayrollOpenedTab(tabStatus: PayrollTablesStatus): void {
+    public setPayrollOpenedTab(tabStatus: ePayrollTablesStatus): void {
         this.store.dispatch(PayrollActions.setPayrollopenedTab({ tabStatus }));
     }
 
@@ -317,5 +318,19 @@ export class PayrollFacadeService {
                     );
                 }
             });
+    }
+    public setPayrollMapData(payrollMapLocations: PayrollMapLocation[]): void {
+        const mapLocations = JSON.stringify(
+            payrollMapLocations.map(({ longitude, latitude }) => ({
+                longitude,
+                latitude,
+            }))
+        );
+
+        this.store.dispatch(
+            PayrollActions.getPayrollMapData({
+                locations: mapLocations,
+            })
+        );
     }
 }

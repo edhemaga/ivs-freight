@@ -2,7 +2,7 @@ import {
     DriverShortResponse,
     PayrollLoadMinimalResponse,
 } from 'appcoretruckassist';
-import { PayrollDeadLine } from './driver_commission.model';
+import { PayrollDeadLine } from './driver-commission.model';
 
 export type IDriverFlatRateList = IDriverFlatRateResponse[];
 

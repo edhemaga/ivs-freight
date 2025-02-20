@@ -1,4 +1,4 @@
-export enum PayrollFlatRateDriverEnum {
+export enum ePayrollFlatRateDriver {
     GET_PAYROLL_FLAT_RATE_DRIVER = '[Payroll Flat Rate Driver Page] Get Payroll Flat Rate Driver',
     GET_PAYROLL_FLAT_RATE_DRIVER_SUCCESS = '[Payroll Flat Rate Driver Page] Get Payroll Flat Rate Driver Success',
     GET_PAYROLL_FLAT_RATE_DRIVER_ERROR = '[Payroll Flat Rate Driver Page] Get Payroll Flat Rate Driver Error',

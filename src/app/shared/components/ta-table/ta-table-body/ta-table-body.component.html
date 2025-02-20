@@ -5359,17 +5359,30 @@
                                                     column?.minWidth ?? 'unset',
                                             }"
                                         >
+
                                             @if (
                                                 row.isIncompleteFuelTransaction &&
                                                 column.title === 'Truck' &&
                                                 !row.truck
                                             ) {
-                                                <svg-icon
-                                                    class="lh-1 mr-1 column-text-svg-transaction-incomplete"
-                                                    [src]="
-                                                        tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
+                                                <div
+                                                    mainTooltip="
+                                                        Truck not Linked
                                                     "
-                                                ></svg-icon>
+                                                    mainContent
+                                                    ngbTooltip
+                                                    tooltipBackground="#424242"
+                                                    tooltipColor="#FFFFFF"
+                                                    position="bottom"
+                                                    tooltipTextAlign="center"
+                                                >
+                                                    <svg-icon
+                                                        class="lh-1 mr-1 column-text-svg-transaction-incomplete"
+                                                        [src]="
+                                                            tableBodySvgRoutes.fuelIncompleteTransactionSvgRoute
+                                                        "
+                                                    ></svg-icon>
+                                                </div>
                                             }
 
                                             @if (

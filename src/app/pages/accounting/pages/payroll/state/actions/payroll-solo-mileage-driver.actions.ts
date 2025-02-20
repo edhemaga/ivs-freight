@@ -1,7 +1,11 @@
 import { createAction, props } from '@ngrx/store';
 
 // MODELS
-import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
+import {
+    PayrollDriverMileageByIdResponse,
+    PayrollDriverMileageClosedByIdResponse,
+    PayrollDriverMileageListResponse,
+} from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import {
     IAddPayrollClosedPayment,
@@ -10,72 +14,74 @@ import {
 } from '@pages/accounting/pages/payroll/state/models';
 
 // ENUMS
-import { PayrollMileageDriverCollapsedListEnum } from '@pages/accounting/pages/payroll/state/enums/driver_mileage/payroll_mileage_driver_collapsed.enums';
-import { PayrollMileageDriverExpandedListEnum } from '@pages/accounting/pages/payroll/state/enums/driver_mileage/payroll_mileage_driver_expanded.enums';
-import { PayrollMileageDriverClosedPayrollEnum } from '@pages/accounting/pages/payroll/state/enums/driver_mileage/payroll_mileage_driver_closed.enums';
-import { PayrollSoloMileageDriverEnum } from '@pages/accounting/pages/payroll/state/enums/driver_mileage/payroll_solo_mileage_driver.enums';
+import {
+    ePayrollMileageDriverCollapsedList,
+    ePayrollMileageDriverExpandedList,
+    ePayrollMileageDriverClosedPayroll,
+    ePayrollSoloMileageDriver,
+} from '@pages/accounting/pages/payroll/state/enums';
 import { IGet_Payroll_Solo_Mileage_Driver_Report } from '@pages/accounting/pages/payroll/state/models';
 
 export const getPayrollSoloMileageDriver = createAction(
-    PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER
+    ePayrollSoloMileageDriver.GET_PAYROLL_SOLO_MILEAGE_DRIVER
 );
 
 export const getPayrollSoloMileageDriverSuccess = createAction(
-    PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_SUCCESS,
+    ePayrollSoloMileageDriver.GET_PAYROLL_SOLO_MILEAGE_DRIVER_SUCCESS,
     props<{ payroll: PayrollDriverMileageListResponse[] }>()
 );
 
 export const getPayrollSoloMileageDriverError = createAction(
-    PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_ERROR,
+    ePayrollSoloMileageDriver.GET_PAYROLL_SOLO_MILEAGE_DRIVER_ERROR,
     props<any>()
 );
 
 // GET DRIVER MILEAGE COLLAPSED LIST
 export const getPayrollMileageDriverCollapsedList = createAction(
-    PayrollMileageDriverCollapsedListEnum.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER
+    ePayrollMileageDriverCollapsedList.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER
 );
 export const getPayrollMileageDriverCollapsedListSuccess = createAction(
-    PayrollMileageDriverCollapsedListEnum.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER_SUCCESS,
+    ePayrollMileageDriverCollapsedList.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER_SUCCESS,
     props<{ data: PayrollDriverMileageCollapsedListResponse[] }>()
 );
 export const getPayrollMileageDriverCollapsedListError = createAction(
-    PayrollMileageDriverCollapsedListEnum.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER_ERROR,
+    ePayrollMileageDriverCollapsedList.GET_PAYROLL_MILEAGE_COLLAPSED_LIST_DRIVER_ERROR,
     props<{ error: string }>()
 );
 
 // GET DRIVER MILEAGE Expanded LIST
 export const getPayrollMileageDriverExpandedList = createAction(
-    PayrollMileageDriverExpandedListEnum.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER,
+    ePayrollMileageDriverExpandedList.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER,
     props<{ driverId: number }>()
 );
 export const getPayrollMileageDriverExpandedListSuccess = createAction(
-    PayrollMileageDriverExpandedListEnum.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER_SUCCESS,
+    ePayrollMileageDriverExpandedList.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER_SUCCESS,
     props<{ data: PayrollDriverMileageExpandedListResponse[] }>()
 );
 export const getPayrollMileageDriverExpandedListError = createAction(
-    PayrollMileageDriverExpandedListEnum.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER_ERROR,
+    ePayrollMileageDriverExpandedList.GET_PAYROLL_MILEAGE_EXPANDED_LIST_DRIVER_ERROR,
     props<{ error: string }>()
 );
 
 // GET DRIVER MILEAGE REPORT
 export const getPayrollSoloMileageReportDriver = createAction(
-    PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT,
+    ePayrollSoloMileageDriver.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT,
     props<IGet_Payroll_Solo_Mileage_Driver_Report>()
 );
 
 export const getPayrollSoloMileageReportDriverSuccess = createAction(
-    PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_SUCCESS,
-    props<{ payroll: PayrollDriverMileageResponse }>()
+    ePayrollSoloMileageDriver.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_SUCCESS,
+    props<{ payroll: PayrollDriverMileageByIdResponse }>()
 );
 
 export const getPayrollSoloMileageReportDriverError = createAction(
-    PayrollSoloMileageDriverEnum.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_ERROR,
+    ePayrollSoloMileageDriver.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_ERROR,
     props<any>()
 );
 
 // GET DRIVER MILEAGE REPORT
 export const closePayrollSoloMileageReportDriver = createAction(
-    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT,
+    ePayrollSoloMileageDriver.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT,
     props<{
         amount: number;
         reportId: number;
@@ -89,38 +95,38 @@ export const closePayrollSoloMileageReportDriver = createAction(
 );
 
 export const closePayrollSoloMileageReportDriverSuccess = createAction(
-    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_SUCCESS,
+    ePayrollSoloMileageDriver.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_SUCCESS,
     props<{ payroll: PayrollDriverMileageResponse }>()
 );
 
 export const closePayrollSoloMileageReportDriverError = createAction(
-    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_ERROR,
+    ePayrollSoloMileageDriver.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_ERROR,
     props<any>()
 );
 
 // GET DRIVER MILEAGE CLOSED PAYROLL
 export const getPayrollMileageDriverClosedPayroll = createAction(
-    PayrollMileageDriverClosedPayrollEnum.GET_PAYROLL_MILEAGE_CLOSED_PAYROLL,
+    ePayrollMileageDriverClosedPayroll.GET_PAYROLL_MILEAGE_CLOSED_PAYROLL,
     props<{ payrollId: number }>()
 );
 export const getPayrollMileageDriverClosedPayrollSuccess = createAction(
-    PayrollMileageDriverClosedPayrollEnum.GET_PAYROLL_MILEAGE_CLOSED_PAYROLL_SUCCESS,
-    props<{ payroll: PayrollDriverMileageResponse }>()
+    ePayrollMileageDriverClosedPayroll.GET_PAYROLL_MILEAGE_CLOSED_PAYROLL_SUCCESS,
+    props<{ payroll: PayrollDriverMileageClosedByIdResponse }>()
 );
 export const getPayrollMileageDriverClosedPayrollError = createAction(
-    PayrollMileageDriverClosedPayrollEnum.GET_PAYROLL_MILEAGE_CLOSED_PAYROLL_ERROR,
+    ePayrollMileageDriverClosedPayroll.GET_PAYROLL_MILEAGE_CLOSED_PAYROLL_ERROR,
     props<{ error: string }>()
 );
 
 // DRIVER MILEAGE PAYROLL CLOSED PAYMENTS
 export const driverMileagePayrollClosedPayments = createAction(
-    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_PAYMENT,
+    ePayrollSoloMileageDriver.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_PAYMENT,
     props<IAddPayrollClosedPayment>()
 );
 export const driverMileagePayrollClosedPaymentsSuccess = createAction(
-    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_PAYMENT_SUCCESS
+    ePayrollSoloMileageDriver.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_PAYMENT_SUCCESS
 );
 export const driverMileagePayrollClosedPaymentsError = createAction(
-    PayrollSoloMileageDriverEnum.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_PAYMENT_ERROR,
+    ePayrollSoloMileageDriver.CLOSE_PAYROLL_SOLO_MILEAGE_DRIVER_PAYMENT_ERROR,
     props<{ error: string }>()
 );

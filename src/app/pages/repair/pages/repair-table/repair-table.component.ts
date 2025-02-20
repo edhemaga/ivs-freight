@@ -29,6 +29,8 @@ import {
     IMapSelectedMarkerData,
     SortColumn,
     MapMarkerIconService,
+    IMapPagination,
+    IMapBounds,
 } from 'ca-components';
 
 // base classes
@@ -185,18 +187,12 @@ export class RepairTableComponent
     public mapListData: MapList[] = [];
     public mapData: ICaMapProps = RepairShopMapConfig.repairShopMapConfig;
 
-    public mapListPagination: { pageIndex: number; pageSize: number } =
+    public mapListPagination: IMapPagination =
         RepairShopMapConfig.repairShopMapListPagination;
-    public mapClustersPagination: { pageIndex: number; pageSize: number } =
+    public mapClustersPagination: IMapPagination =
         RepairShopMapConfig.repairShopMapListPagination;
 
-    public mapClustersObject: {
-        northEastLatitude: number;
-        northEastLongitude: number;
-        southWestLatitude: number;
-        southWestLongitude: number;
-        zoomLevel: number;
-    } = null;
+    public mapClustersObject: IMapBounds = null;
 
     public mapListSearchValue: string | null = null;
     public mapListSortDirection: string | null = null;
@@ -1657,7 +1653,7 @@ export class RepairTableComponent
 
                     this.mapData.clusterMarkers.forEach((clusterMarker) => {
                         const clusterItemIndex =
-                            clusterMarker.data.pagination?.data?.findIndex(
+                            clusterMarker.infoWindowContent?.clusterData?.findIndex(
                                 (clusterItem) => clusterItem.id === markerId
                             );
 
@@ -1795,7 +1791,7 @@ export class RepairTableComponent
                     const clusterMarkers: IMapMarkers[] = [];
                     const markers: IMapMarkers[] = [];
 
-                    clustersResponse?.forEach((data, index) => {
+                    clustersResponse?.forEach((data) => {
                         const previousClusterData =
                             this.mapData.clusterMarkers.find(
                                 (item) =>
