@@ -87,22 +87,6 @@ export class TrailerModalConfig {
             maxLength: 4,
         };
     }
-    static getTrailerVinConfig(options: TrailerConfigInterface): ITaInput {
-        return {
-            name: 'vin-number',
-            type: 'text',
-            label: 'VIN',
-            isRequired: true,
-            textTransform: 'uppercase',
-            maxLength: 17,
-            minLength: 5,
-            loadingSpinner: {
-                size: 'small',
-                color: 'white',
-                isLoading: options.loadingVinDecoder,
-            },
-        };
-    }
     static getTrailerMakeConfig(options: TrailerConfigInterface): ICaInput {
         return {
             name: 'Input Dropdown',
