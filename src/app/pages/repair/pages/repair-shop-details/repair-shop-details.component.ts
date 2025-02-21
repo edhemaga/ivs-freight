@@ -38,6 +38,7 @@ import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repa
 import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
+import { eCommonElements } from '@shared/enums';
 
 // helpers
 import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers';
@@ -49,9 +50,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 
 // models
 import {
-    RepairedVehicleListResponse,
     RepairedVehicleResponse,
-    RepairListResponse,
     RepairResponse,
     RepairShopContactResponse,
     RepairShopResponse,
@@ -71,13 +70,12 @@ import { RepairBackFilter } from '@pages/repair/pages/repair-table/models';
         // modules
         CommonModule,
 
+        // components
         TaDetailsHeaderComponent,
         RepairShopDetailsItemComponent,
     ],
 })
 export class RepairShopDetailsComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
-
     public detailsDropdownOptions: DetailsDropdownOptions;
     public repairShopDetailsConfig: DetailsConfig[] = [];
 
@@ -100,6 +98,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     public backRepairedVehiclesFilterQuery: RepairBackFilter =
         RepairTableBackFilterDataHelper.backRepairedVehiclesFilterData();
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         // router
@@ -474,25 +474,22 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                         .selectEntity(id)
                         .pipe(take(1));
 
-                    query.subscribe((res: ExtendedRepairShopResponse) => {
-                        this.currentIndex = this.repairShopList.findIndex(
-                            (repairShop: RepairShopResponse) =>
-                                repairShop.id === res.id
-                        );
+                    query
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe((res: ExtendedRepairShopResponse) => {
+                            this.getDetailsConfig(res);
+                            this.getDetailsOptions(this.repairShopObject);
 
-                        this.getDetailsConfig(res);
-                        this.getDetailsOptions(this.repairShopObject);
-
-                        if (
-                            this.router.url.includes(
-                                RepairShopDetailsStringEnum.DETAILS
-                            )
-                        ) {
-                            this.router.navigate([
-                                `/list/repair/${res.id}/details`,
-                            ]);
-                        }
-                    });
+                            if (
+                                this.router.url.includes(
+                                    eCommonElements.DETAILS
+                                )
+                            ) {
+                                this.router.navigate([
+                                    `/list/repair/${res.id}/details`,
+                                ]);
+                            }
+                        });
                 } else {
                     this.router.navigate([`/list/repair/${id}/details`]);
                 }

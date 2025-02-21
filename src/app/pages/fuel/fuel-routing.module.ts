@@ -17,12 +17,12 @@ const routes: Routes = [
         path: ':id/details',
         loadComponent: () =>
             import(
-                '@pages/fuel/pages/fuel-details/fuel-details.component'
-            ).then((m) => m.FuelDetailsComponent),
+                '@pages/fuel/pages/fuel-stop-details/fuel-stop-details.component'
+            ).then((m) => m.FuelStopDetailsComponent),
         resolve: {
-            fuelSingle: FuelDetailsResolver,
+            fuelStop: FuelDetailsResolver,
         },
-        data: { title: 'Fuel Details' },
+        data: { title: 'Fuel Stop Details' },
     },
 ];
 

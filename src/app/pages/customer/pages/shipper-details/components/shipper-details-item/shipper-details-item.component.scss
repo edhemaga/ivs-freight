@@ -194,7 +194,6 @@ app-ta-contacts-card .ta-card-header {
     padding: 0 6px;
 }
 
-
 .repair-container {
     padding: 8px 8px 2px 8px;
 
@@ -296,14 +295,7 @@ app-ta-contacts-card .ta-card-header {
             margin-top: 8px;
             margin-bottom: 8px;
             transition: 0.2s ease all;
-            .dots-vertical {
-                height: 20px !important;
-                display: flex;
-                width: 18px;
-                margin-left: 13px;
-                justify-content: flex-end;
-                align-items: center;
-            }
+
             &:hover {
                 background-color: #f3f3f3;
                 margin-bottom: 2px !important;

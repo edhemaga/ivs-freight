@@ -29,6 +29,7 @@ import { LoadItemStore } from '@pages/load/state_old/load-details-state/load-det
 // enums
 import { LoadDetailsStringEnum } from '@pages/load/pages/load-details/enums/load-details-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eCommonElements } from '@shared/enums';
 
 // helpers
 import { LoadDetailsHelper } from '@pages/load/pages/load-details/utils/helpers/load-details.helper';
@@ -277,24 +278,26 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
                         .selectEntity(id)
                         .pipe(take(1));
 
-                    query.subscribe((load: LoadResponse) => {
-                        this.currentIndex = this.loadsList.findIndex(
-                            (driver: LoadResponse) => driver.id === load.id
-                        );
+                    query
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe((load: LoadResponse) => {
+                            this.currentIndex = this.loadsList.findIndex(
+                                (driver: LoadResponse) => driver.id === load.id
+                            );
 
-                        this.getDetailsOptions(load);
-                        this.getDetailsConfig(load);
+                            this.getDetailsOptions(load);
+                            this.getDetailsConfig(load);
 
-                        if (
-                            this.router.url.includes(
-                                LoadDetailsStringEnum.DETAILS
-                            )
-                        ) {
-                            this.router.navigate([
-                                `/list/load/${load.id}/details`,
-                            ]);
-                        }
-                    });
+                            if (
+                                this.router.url.includes(
+                                    eCommonElements.DETAILS
+                                )
+                            ) {
+                                this.router.navigate([
+                                    `/list/load/${load.id}/details`,
+                                ]);
+                            }
+                        });
                 } else {
                     this.router.navigate([`/list/load/${id}/details`]);
                 }
@@ -305,7 +308,6 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
 
     private deleteLoadById(id: number): void {
         const last = this.loadsList.at(-1);
-        const loadStatus = this.loadObject.statusType.name;
 
         if (
             last.id ===

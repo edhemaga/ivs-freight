@@ -1,4 +1,4 @@
-@import 'src/app/pages/fuel/pages/fuel-details/fuel-details.component.scss';
+/* 
 
 app-fuel-details-item {
     .fuel-price-template {
@@ -111,43 +111,7 @@ app-fuel-details-item {
         display: flex !important;
         flex-direction: column;
     }
-    .ppg-icon-fuel {
-        display: flex;
-        align-items: center;
-        .ppg-icon {
-            margin-right: 4px;
-            svg {
-                display: flex;
-                path {
-                    fill: yellow !important;
-                }
-            }
-        }
-    }
-    .blue-background {
-        .items-header-fuel {
-            border-radius: 2px;
-            background-color: #e0eaf8 !important;
-            margin-top: 2px !important;
-            margin-bottom: 2px !important;
-            padding: 4px 4px !important;
-            .unit-fuel {
-                position: relative;
-                line-height: 20px;
-                // top: -1px;
-            }
-            .date-fuel {
-                position: relative;
-                line-height: 20px;
-                // top: -1px;
-            }
-            .cost {
-                position: relative;
-                line-height: 20px;
-                // top: -1px;
-            }
-        }
-    }
+ 
     .note-cards {
         padding: 0px 6px 0px 4px;
         .note-body {
@@ -284,17 +248,7 @@ app-fuel-details-item {
             }
         }
     }
-    .fuel-vehicle-icon {
-        position: relative;
-        bottom: 3px;
-    }
-    .fuel-items {
-        &:last-child {
-            .divider {
-                display: none;
-            }
-        }
-    }
+  
 
     .fuel-price-colors-container {
         .fuel-price-text-container {
@@ -360,3 +314,4 @@ app-fuel-details-item {
         }
     }
 }
+ */

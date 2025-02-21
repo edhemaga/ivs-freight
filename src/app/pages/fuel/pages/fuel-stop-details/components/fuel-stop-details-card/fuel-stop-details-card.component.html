@@ -1,0 +1,223 @@
+CARDS
+
+<!-- <app-ta-details-header-card
+[cardDetailsName]=""
+[cardDetailsDate]="fuel?.data?.createdAt | formatDateP"
+[tooltipNext]="'Next Fuel'"
+[tooltipPrevious]="'Previous Fuel'"
+[searchInputName]="'Search Fuel'"
+[options]="fuelDropdown"
+[optionsSecondInput]="storeDropdown"
+[haveTwoInput]="true"
+[dateChecked]="'5 days ago'"
+>
+<div class="repair-information-wrapper">
+    @if (fuel?.data?.phone) {
+        <div class="repair-information-item">
+            <svg-icon
+                class="repair-icon"
+                src="assets/svg/common/ic_phone.svg"
+            ></svg-icon>
+            <p class="repair-value">
+                {{ fuel?.data?.phone }}
+            </p>
+        </div>
+    }
+
+    @if (fuel?.data?.address?.address) {
+        <div class="repair-information-item address-cont">
+            <svg-icon
+                class="repair-icon"
+                src="assets/svg/common/ic_address.svg"
+            ></svg-icon>
+            <p class="repair-value">
+                {{ fuel?.data?.address?.address }}
+            </p>
+        </div>
+    }
+</div>
+</app-ta-details-header-card>
+
+<div class="repair-cards">
+<app-ta-custom-card
+    [bodyTemplate]="'card'"
+    [hasDivider]="false"
+    [cardName]="'Last Fuel Price'"
+    [isCardOpen]="true"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '10px',
+    }"
+    [customClass]="'detailsPadding'"
+>
+    <div class="fuel-price-template">
+        <div class="fuel-price-wrapper">
+            <div class="fuel-price-name">Diesel</div>
+            <div class="fuel-price-value">$3.567</div>
+            <div class="fuel-price-colors-container">
+                <div class="fuel-price-colors">
+                    <div
+                        class="fuel-price-level first-color"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[0],
+                        }"
+                    ></div>
+                    <div
+                        class="fuel-price-level"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[1],
+                        }"
+                    ></div>
+                    <div
+                        class="fuel-price-level"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[2],
+                        }"
+                    ></div>
+                    <div
+                        class="fuel-price-level"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[3],
+                        }"
+                    ></div>
+                    <div
+                        class="fuel-price-level last-color"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[4],
+                        }"
+                    ></div>
+                    <svg-icon
+                        class="fuel-price-svg"
+                        src="assets/svg/common/ic_owner-status.svg"
+                        [svgStyle]="{
+                            'width.px': 22,
+                            'height.px': 22,
+                        }"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="fuel-price-text-container mg-bottom-4"
+                >
+                    <div class="fuel-price-text">$3.23</div>
+                    <div class="fuel-price-text">$4.18</div>
+                </div>
+            </div>
+        </div>
+        <div class="fuel-price-wrapper">
+            <div class="fuel-price-name">Def</div>
+            <div class="fuel-price-value">$3.799</div>
+            <div class="fuel-price-colors-container">
+                <div class="fuel-price-colors">
+                    <div
+                        class="fuel-price-level first-color"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[0],
+                        }"
+                    ></div>
+                    <div
+                        class="fuel-price-level"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[1],
+                        }"
+                    ></div>
+                    <div
+                        class="fuel-price-level"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[2],
+                        }"
+                    ></div>
+                    <div
+                        class="fuel-price-level"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[3],
+                        }"
+                    ></div>
+                    <div
+                        class="fuel-price-level last-color"
+                        [ngStyle]="{
+                            'background-color':
+                                fuelPriceColors[4],
+                        }"
+                    ></div>
+                    <svg-icon
+                        class="fuel-price-svg"
+                        src="assets/svg/common/ic_owner-status.svg"
+                        [svgStyle]="{
+                            'width.px': 22,
+                            'height.px': 22,
+                        }"
+                    ></svg-icon>
+                </div>
+                <div
+                    class="fuel-price-text-container mg-bottom-4"
+                >
+                    <div class="fuel-price-text">$2.23</div>
+                    <div class="fuel-price-text">$3.18</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</app-ta-custom-card>
+<app-ta-custom-card
+    [bodyTemplate]="'card'"
+    [hasDivider]="true"
+    [cardName]="'Fuel Expense'"
+    [tooltipName]="'View in Modal'"
+    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+    [isCardOpen]="true"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '10px',
+    }"
+    [customClass]="'detailsPadding'"
+>
+    <div class="charts-template perfomance">
+        @if (!fuelLegendHighlightedBackground) {
+            <app-ta-tab-switch
+                [tabs]="tabsFuel"
+                [type]="'type2-modal-popup'"
+                (switchClicked)="changeTab($event)"
+            >
+            </app-ta-tab-switch>
+        }
+        @if (fuelChartConfig?.chartData) {
+            <app-ca-chart
+                [chartConfig]="fuelChartConfig"
+                [legendData]="{
+                    data: fuelChartLegend,
+                    hasHighlightedBackground:
+                        fuelLegendHighlightedBackground,
+                    title: fuelLegendTitle,
+                }"
+                (hoveredIndex)="
+                    setFuelLegendOnHover($event)
+                "
+            >
+            </app-ca-chart>
+        }
+    </div>
+</app-ta-custom-card>
+
+<div class="divider"></div>
+
+<div class="note-cards">
+    <app-ta-input-note
+        [formControl]="noteControl"
+        [isVisibleArrow]="true"
+        [minRows]="1"
+        [isVisibleDivider]="false"
+        [placeholder]="'Write something.'"
+        [customClass]="'note-small'"
+        [noteType]="'details-card'"
+    ></app-ta-input-note>
+</div>
+</div> -->

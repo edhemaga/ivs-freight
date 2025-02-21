@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { FuelDetailsComponent } from '@pages/fuel/pages/fuel-details/fuel-details.component';
+import { FuelStopDetailsComponent } from '@pages/fuel/pages/fuel-stop-details/fuel-stop-details.component';
 
-describe('FuelDetailsComponent', () => {
-    let component: FuelDetailsComponent;
-    let fixture: ComponentFixture<FuelDetailsComponent>;
+describe('FuelStopDetailsComponent', () => {
+    let component: FuelStopDetailsComponent;
+    let fixture: ComponentFixture<FuelStopDetailsComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [FuelDetailsComponent],
+            declarations: [FuelStopDetailsComponent],
         }).compileComponents();
     });
 
     beforeEach(() => {
-        fixture = TestBed.createComponent(FuelDetailsComponent);
+        fixture = TestBed.createComponent(FuelStopDetailsComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

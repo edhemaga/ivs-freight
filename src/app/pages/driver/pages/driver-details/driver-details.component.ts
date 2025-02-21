@@ -34,6 +34,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { DriverDetailsStringEnum } from '@pages/driver/pages/driver-details/enums/driver-details-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { DriverDetailsItemStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-item/enums/driver-details-item-string.enum';
+import { eCommonElements } from '@shared/enums';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -244,24 +245,26 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                         .selectEntity(id)
                         .pipe(take(1));
 
-                    query.subscribe((res: DriverResponse) => {
-                        this.currentIndex = this.driversList.findIndex(
-                            (driver: DriverResponse) => driver.id === res.id
-                        );
+                    query
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe((res: DriverResponse) => {
+                            this.currentIndex = this.driversList.findIndex(
+                                (driver: DriverResponse) => driver.id === res.id
+                            );
 
-                        this.getDetailsOptions(res.status);
-                        this.getDetailsConfig(res);
+                            this.getDetailsOptions(res.status);
+                            this.getDetailsConfig(res);
 
-                        if (
-                            this.router.url.includes(
-                                DriverDetailsStringEnum.DETAILS
-                            )
-                        ) {
-                            this.router.navigate([
-                                `/list/driver/${res.id}/details`,
-                            ]);
-                        }
-                    });
+                            if (
+                                this.router.url.includes(
+                                    eCommonElements.DETAILS
+                                )
+                            ) {
+                                this.router.navigate([
+                                    `/list/driver/${res.id}/details`,
+                                ]);
+                            }
+                        });
                 } else {
                     this.router.navigate([`/list/driver/${id}/details`]);
                 }

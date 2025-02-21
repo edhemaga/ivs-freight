@@ -11,7 +11,8 @@ import { FuelStopResponse } from 'appcoretruckassist';
 import { FuelService } from '@shared/services/fuel.service';
 
 // store
-import { FuelItemStore } from '@pages/fuel/state/fuel-details-state/fuel-details-item.store';
+import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-details-item.store';
+import { FuelDetailsStore } from '@pages/fuel/state/fuel-details-state/fuel-details.store';
 
 @Injectable({
     providedIn: 'root',
@@ -27,21 +28,21 @@ export class FuelDetailsResolver {
         private fuelService: FuelService,
 
         // store
-        private fuelItemStore: FuelItemStore
+        private fuelItemStore: FuelItemStore,
+        private fuelDetailsStore: FuelDetailsStore
     ) {}
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        const id = route.paramMap.get('id');
+        const fuelStopId = +route.paramMap.get('id');
 
-        const fuelId = parseInt(id);
-
-        return this.fuelService.getFuelStopById(fuelId).pipe(
+        return this.fuelService.getFuelStopById(fuelStopId).pipe(
             tap((fuelResponse: FuelStopResponse) => {
+                this.fuelDetailsStore.add(fuelResponse);
                 this.fuelItemStore.set([fuelResponse]);
             }),
             catchError(() => {
                 this.router.navigate(['/fuel']);
 
-                return of('No fuel data for...' + fuelId);
+                return of('No fuel data for...' + fuelStopId);
             })
         );
     }
