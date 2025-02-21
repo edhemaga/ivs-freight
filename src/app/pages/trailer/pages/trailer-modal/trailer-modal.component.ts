@@ -94,6 +94,7 @@ import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes';
+import { TrailerModalInputConfigPipe } from '@pages/trailer/pages/trailer-modal/pipes';
 
 // SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -131,6 +132,7 @@ import { ICaInput } from '@ca-shared/components/ca-input/config';
 
         // Pipes
         FormatDatePipe,
+        TrailerModalInputConfigPipe,
     ],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
@@ -234,12 +236,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     get TrailerYearConfig(): ITaInput {
         return TrailerModalConfig.getTrailerYearConfig();
-    }
-
-    get TrailerVinConfig(): ITaInput {
-        return TrailerModalConfig.getTrailerVinConfig({
-            loadingVinDecoder: this.loadingVinDecoder,
-        });
     }
 
     get TrailerMakeConfig(): ICaInput {
@@ -978,14 +974,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         .subscribe({
                             next: (res: VinDecodeResponse) => {
                                 this.trailerForm.patchValue({
-                                    model: res?.model ?? null,
-                                    year: res?.year
-                                        ? res.year.toString()
-                                        : null,
-                                    trailerMakeId: res.trailerMake?.id
-                                        ? res.trailerMake.id
-                                        : null,
+                                    ...(res?.model && { model: res.model }),
+                                    ...(res?.year && {
+                                        year: res.year.toString(),
+                                    }),
+                                    ...(res?.trailerMake?.id && {
+                                        trailerMakeId: res.trailerMake.id,
+                                    }),
                                 });
+
                                 this.loadingVinDecoder = false;
                                 this.selectedTrailerMake = res.trailerMake;
                             },
