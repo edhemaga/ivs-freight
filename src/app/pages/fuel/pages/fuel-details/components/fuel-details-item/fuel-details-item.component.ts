@@ -22,12 +22,21 @@ import { ChartHelper } from '@shared/utils/helpers';
 
 // enums
 import { eGeneralActions } from '@shared/enums';
+import { CommonModule } from '@angular/common';
+import { SharedModule } from '@shared/shared.module';
+import { FormatDatePipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-fuel-details-item',
     templateUrl: './fuel-details-item.component.html',
     styleUrls: ['./fuel-details-item.component.scss'],
-    encapsulation: ViewEncapsulation.None,
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        FormatDatePipe,
+    ],
 })
 export class FuelDetailsItemComponent implements OnInit {
     private destroy$ = new Subject<void>();

@@ -32,16 +32,16 @@ export class FuelDetailsResolver {
     resolve(route: ActivatedRouteSnapshot): Observable<any> {
         const id = route.paramMap.get('id');
 
-        const fuelid = parseInt(id);
+        const fuelId = parseInt(id);
 
-        return this.fuelService.getFuelStopById(fuelid).pipe(
+        return this.fuelService.getFuelStopById(fuelId).pipe(
+            tap((fuelResponse: FuelStopResponse) => {
+                this.fuelItemStore.set([fuelResponse]);
+            }),
             catchError(() => {
                 this.router.navigate(['/fuel']);
 
-                return of('No fuel data for...' + fuelid);
-            }),
-            tap((fuelResponse: FuelStopResponse) => {
-                this.fuelItemStore.set([fuelResponse]);
+                return of('No fuel data for...' + fuelId);
             })
         );
     }

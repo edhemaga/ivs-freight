@@ -1,8 +1,11 @@
+import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { FuelDetailsItemComponent } from '@pages/fuel/pages/fuel-details/components/fuel-details-item/fuel-details-item.component';
 
 // Enums
 import { eGeneralActions } from '@shared/enums';
+import { SharedModule } from '@shared/shared.module';
 
 // Models
 import { FuelStopResponse } from 'appcoretruckassist';
@@ -11,6 +14,13 @@ import { FuelStopResponse } from 'appcoretruckassist';
     selector: 'app-fuel-details',
     templateUrl: './fuel-details.component.html',
     styleUrls: ['./fuel-details.component.scss'],
+    standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        SharedModule,
+        FuelDetailsItemComponent,
+    ],
 })
 export class FuelDetailsComponent implements OnInit {
     public fuelConfig: any[] = [];
