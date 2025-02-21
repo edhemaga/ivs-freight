@@ -978,14 +978,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         .subscribe({
                             next: (res: VinDecodeResponse) => {
                                 this.trailerForm.patchValue({
-                                    model: res?.model ?? null,
-                                    year: res?.year
-                                        ? res.year.toString()
-                                        : null,
-                                    trailerMakeId: res.trailerMake?.id
-                                        ? res.trailerMake.id
-                                        : null,
+                                    ...(res?.model && { model: res.model }),
+                                    ...(res?.year && {
+                                        year: res.year.toString(),
+                                    }),
+                                    ...(res?.trailerMake?.id && {
+                                        trailerMakeId: res.trailerMake.id,
+                                    }),
                                 });
+
                                 this.loadingVinDecoder = false;
                                 this.selectedTrailerMake = res.trailerMake;
                             },

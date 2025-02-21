@@ -107,17 +107,6 @@
 
                     <div class="d-grid form-container-truck-year mb-32">
                         <ca-input-test
-                            formControlName="year"
-                            [inputConfig]="{
-                                name: 'Year',
-                                type: 'text',
-                                label: 'Year',
-                                isRequired: true,
-                                minLength: 4,
-                                maxLength: 4,
-                            }"
-                        ></ca-input-test>
-                        <ca-input-test
                             formControlName="vin"
                             [inputConfig]="{
                                 name: 'vin-number',
@@ -132,6 +121,17 @@
                                     color: 'white',
                                     isLoading: loadingVinDecoder,
                                 },
+                            }"
+                        ></ca-input-test>
+                        <ca-input-test
+                            formControlName="year"
+                            [inputConfig]="{
+                                name: 'Year',
+                                type: 'text',
+                                label: 'Year',
+                                isRequired: true,
+                                minLength: 4,
+                                maxLength: 4,
                             }"
                         ></ca-input-test>
                         <app-ca-input-dropdown
