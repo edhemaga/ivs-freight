@@ -64,17 +64,26 @@
     </div>
 </div>
 
-<ng-template #openHoursPopover let-data="data">
+<ng-template #openHoursPopover let-openHours="openHours">
     <div class="d-flex flex-column open-hours-dropdown">
-        @for (workingHourItem of data; track workingHourItem?.workingDays) {
+        @for (
+            workingHoursItem of openHours;
+            track workingHoursItem?.workingDays
+        ) {
             <div class="d-flex flex-column open-hours-dropdown-item">
                 <p class="m-0 ta-font-bold text-color-white-4 text-size-11">
-                    {{ workingHourItem?.workingDays }}
+                    {{ workingHoursItem?.workingDays }}
                 </p>
 
                 <span class="text-color-white text-size-14">
-                    {{ workingHourItem?.workingHours }}
+                    {{ workingHoursItem?.workingHours }}
                 </span>
+
+                @if (!!workingHoursItem?.splitShiftWorkingHours) {
+                    <span class="text-color-white text-size-14">
+                        {{ workingHoursItem?.splitShiftWorkingHours }}
+                    </span>
+                }
             </div>
         }
     </div>

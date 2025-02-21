@@ -76,6 +76,12 @@
                         <p class="m-0 text-size-14 text-color-black-2">
                             {{ workingHoursItem?.workingHours }}
                         </p>
+
+                        @if (!!workingHoursItem?.splitShiftWorkingHours) {
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                {{ workingHoursItem?.splitShiftWorkingHours }}
+                            </p>
+                        }
                     </div>
                 }
             </div>
