@@ -13,6 +13,7 @@ import {
     UpdateDivisionCompanyCommand,
     UpdateFactoringCompanyCommand,
 } from 'appcoretruckassist';
+import { SettingsDocumentFilter } from '@pages/settings/pages/settings-document/models';
 
 // components
 import { SettingsBasicModalComponent } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-basic-modal/settings-basic-modal.component';
@@ -363,8 +364,21 @@ export class SettingsCompanyService implements OnDestroy {
         );
     }
 
-    public getCompanyDocuments(): Observable<any> {
-        return this.settingService.apiCompanyDocumentsGet();
+    public getCompanyDocuments(
+        settingsCompanyFilter: SettingsDocumentFilter
+    ): Observable<any> {
+        return this.settingService.apiCompanyDocumentsGet(
+            settingsCompanyFilter.tagId,
+            settingsCompanyFilter.pageIndex,
+            settingsCompanyFilter.pageSize,
+            null,
+            settingsCompanyFilter.sort,
+            null,
+            null,
+            settingsCompanyFilter.searchOne,
+            settingsCompanyFilter.searchTwo,
+            settingsCompanyFilter.searchThree
+        );
     }
 
     public addCompanyDocuments(data: any): Observable<any> {

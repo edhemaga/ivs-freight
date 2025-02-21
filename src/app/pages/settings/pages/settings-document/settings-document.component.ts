@@ -5,11 +5,11 @@ import { Subject, takeUntil } from 'rxjs';
 import { EditTagsService } from '@shared/services/edit-tags.service';
 import { SettingsCompanyService } from '@pages/settings/services/settings-company.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
 
 // model
 import { File } from '@shared/models/card-models/card-table-data.model';
 import { FileEvent } from '@shared/models/file-event.model';
-import { SettingsDocumentStringEnum } from '@pages/settings/pages/settings-document/enums/settings-document-string.enum';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import {
@@ -17,10 +17,23 @@ import {
     FileResponse,
 } from 'appcoretruckassist/model/models';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
-import { DocumentActionConfig } from '@pages/settings/pages/settings-document/models/document-action-config';
+import {
+    DocumentActionConfig,
+    SettingsDocumentFilter,
+} from '@pages/settings/pages/settings-document/models';
 
 // constants
-import { SettingsDocumentsConstants } from '@pages/settings/pages/settings-document/utils/constants/settings-document.constants';
+import {
+    SettingsDocumentsConstants,
+    SettingsDocumentFilterConstants,
+} from '@pages/settings/pages/settings-document/utils/constants';
+
+// helpers
+import { MethodsGlobalHelper } from '@shared/utils/helpers';
+
+// Enums
+import { TableStringEnum } from '@shared/enums';
+import { SettingsDocumentStringEnum } from '@pages/settings/pages/settings-document/enums';
 
 @Component({
     selector: 'app-settings-document',
@@ -34,7 +47,8 @@ export class SettingsDocumentComponent
     constructor(
         private settingsCompanyService: SettingsCompanyService,
         private tagsService: EditTagsService,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService
     ) {}
 
     public documents: File[] = [];
@@ -56,8 +70,13 @@ export class SettingsDocumentComponent
         [SettingsDocumentStringEnum.TAG]: this.tagDocument,
     };
 
-    ngOnInit() {
+    private backFilterQuery: SettingsDocumentFilter =
+        SettingsDocumentFilterConstants.settingsDocumentFilterQuery;
+
+    ngOnInit(): void {
         this.companyDocumentsGet();
+
+        this.toolbarSearchSubscribe();
     }
 
     ngAfterViewInit(): void {
@@ -66,7 +85,7 @@ export class SettingsDocumentComponent
         }, 10);
     }
 
-    observTableContainer() {
+    observTableContainer(): void {
         this.resizeObserver = new ResizeObserver((entries) => {
             entries.forEach((entry) => {
                 this.tableService.sendCurrentSetTableWidth(
@@ -78,16 +97,25 @@ export class SettingsDocumentComponent
         this.resizeObserver.observe(document.querySelector('.table-container'));
     }
 
-    public onToolBarAction(event) {
+    public onToolBarAction(event): void {
         if (event.action === 'open-modal') {
             this.showDropzone = true;
             this.tableOptions.toolbarActions.disableOpenModalButton = true;
         }
     }
 
-    public companyDocumentsGet() {
+    public hideDropzone(): void {
+        this.tableOptions.toolbarActions.disableOpenModalButton = false;
+        this.showDropzone = false;
+    }
+
+    public onFilesEvent(event: FileEvent): void {
+        this.documentActionConfig[event.action].bind(this)(event);
+    }
+
+    private companyDocumentsGet(): void {
         this.settingsCompanyService
-            .getCompanyDocuments()
+            .getCompanyDocuments(this.backFilterQuery)
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.documents = res?.files?.data;
@@ -96,9 +124,34 @@ export class SettingsDocumentComponent
             });
     }
 
-    public hideDropzone() {
-        this.tableOptions.toolbarActions.disableOpenModalButton = false;
-        this.showDropzone = false;
+    private toolbarSearchSubscribe(): void {
+        this.caSearchMultipleStatesService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                console.log('currentSearchTableData res', res);
+
+                if (res) {
+                    const searchEvent = MethodsGlobalHelper.tableSearch(
+                        res,
+                        this.backFilterQuery
+                    );
+
+                    console.log('searchEvent', searchEvent);
+
+                    if (searchEvent) {
+                        if (searchEvent.action === TableStringEnum.STORE) {
+                            console.log('reset query');
+
+                            this.backFilterQuery =
+                                SettingsDocumentFilterConstants.settingsDocumentFilterQuery;
+                        }
+
+                        console.log('backFilterQuery', this.backFilterQuery);
+
+                        this.companyDocumentsGet();
+                    }
+                }
+            });
     }
 
     /**
@@ -121,7 +174,7 @@ export class SettingsDocumentComponent
                         ({
                             ...fileResponse,
                             fileId: fileResponse!.fileId,
-                        } as File)
+                        }) as File
                 );
 
                 this.documents.push(...responseFiles);
@@ -175,10 +228,6 @@ export class SettingsDocumentComponent
         ];
 
         this.tagsService.updateTag({ tags: tags }).subscribe();
-    }
-
-    public onFilesEvent(event: FileEvent): void {
-        this.documentActionConfig[event.action].bind(this)(event);
     }
 
     ngOnDestroy() {

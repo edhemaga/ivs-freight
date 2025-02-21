@@ -161,7 +161,6 @@ export const onGetPayrollOwnerDriverClosedPayrollSuccess = (
             excludedDeductions: [],
             excludedCredits: [],
             excludedLoads: [],
-            includedBonuses: [],
         },
         reportLoading: false,
     };
