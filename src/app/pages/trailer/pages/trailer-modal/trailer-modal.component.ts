@@ -94,6 +94,7 @@ import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes';
+import { TrailerModalInputConfigPipe } from '@pages/trailer/pages/trailer-modal/pipes';
 
 // SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -131,6 +132,7 @@ import { ICaInput } from '@ca-shared/components/ca-input/config';
 
         // Pipes
         FormatDatePipe,
+        TrailerModalInputConfigPipe,
     ],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
@@ -234,12 +236,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     get TrailerYearConfig(): ITaInput {
         return TrailerModalConfig.getTrailerYearConfig();
-    }
-
-    get TrailerVinConfig(): ITaInput {
-        return TrailerModalConfig.getTrailerVinConfig({
-            loadingVinDecoder: this.loadingVinDecoder,
-        });
     }
 
     get TrailerMakeConfig(): ICaInput {

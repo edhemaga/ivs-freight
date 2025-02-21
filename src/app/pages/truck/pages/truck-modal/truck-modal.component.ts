@@ -93,6 +93,7 @@ import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
+import { TruckModalInputConfigPipe } from '@pages/truck/pages/truck-modal/pipes';
 
 // SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -129,6 +130,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
         // Pipes
         FormatDatePipe,
+        TruckModalInputConfigPipe,
     ],
 })
 export class TruckModalComponent implements OnInit, OnDestroy {
@@ -628,7 +630,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                                         )?.name,
                                     }),
                                 });
-                                
+
                                 this.loadingVinDecoder = false;
                                 this.selectedTruckMake = res.truckMake;
                                 this.selectedtruckEngineModelId =

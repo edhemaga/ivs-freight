@@ -108,31 +108,20 @@
                     <div class="d-grid form-container-truck-year mb-32">
                         <ca-input-test
                             formControlName="vin"
-                            [inputConfig]="{
-                                name: 'vin-number',
-                                type: 'text',
-                                label: 'VIN',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                maxLength: 17,
-                                minLength: 5,
-                                loadingSpinner: {
-                                    size: 'small',
-                                    color: 'white',
-                                    isLoading: loadingVinDecoder,
-                                },
-                            }"
+                            [inputConfig]="
+                                {
+                                    configType: 'vinInputConfig',
+                                    loadingVinDecoder: loadingVinDecoder,
+                                } | truckModalInputConfig
+                            "
                         ></ca-input-test>
                         <ca-input-test
                             formControlName="year"
-                            [inputConfig]="{
-                                name: 'Year',
-                                type: 'text',
-                                label: 'Year',
-                                isRequired: true,
-                                minLength: 4,
-                                maxLength: 4,
-                            }"
+                            [inputConfig]="
+                                {
+                                    configType: 'yearInputConfig',
+                                } | truckModalInputConfig
+                            "
                         ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="truckMakeId"

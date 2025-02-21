@@ -1,0 +1,1 @@
+export * from './trailer-modal-input-config.pipe';
