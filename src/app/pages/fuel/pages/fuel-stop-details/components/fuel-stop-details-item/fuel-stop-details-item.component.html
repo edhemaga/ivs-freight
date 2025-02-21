@@ -4,7 +4,9 @@
             <!-- General -->
 
             @case ('general') {
-                <app-fuel-stop-details-card></app-fuel-stop-details-card>
+                <app-fuel-stop-details-card
+                    [fuelStop]="detailsConfig[0]?.data"
+                ></app-fuel-stop-details-card>
             }
 
             <!-- Transaction -->

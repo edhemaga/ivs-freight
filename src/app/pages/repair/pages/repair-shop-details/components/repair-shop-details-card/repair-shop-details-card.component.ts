@@ -72,8 +72,6 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
         this.getRepairShopsDropdownList();
     }
 
-    private destroy$ = new Subject<void>();
-
     public _repairShop: RepairShopResponse;
 
     public repairShopCurrentIndex: number;
@@ -83,6 +81,8 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
 
     // note card
     public noteForm: UntypedFormGroup;
+
+    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -146,10 +146,10 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
                     svg: !status
                         ? RepairShopDetailsStringEnum.CLOSED_ROUTE
                         : companyOwned
-                        ? RepairShopDetailsStringEnum.COMPANY_OWNED_ROUTE
-                        : pinned
-                        ? RepairShopDetailsStringEnum.STAR_ROUTE
-                        : RepairShopDetailsStringEnum.EMPTY_STRING,
+                          ? RepairShopDetailsStringEnum.COMPANY_OWNED_ROUTE
+                          : pinned
+                            ? RepairShopDetailsStringEnum.STAR_ROUTE
+                            : RepairShopDetailsStringEnum.EMPTY_STRING,
                     folder: RepairShopDetailsStringEnum.COMMON,
                 };
             });
