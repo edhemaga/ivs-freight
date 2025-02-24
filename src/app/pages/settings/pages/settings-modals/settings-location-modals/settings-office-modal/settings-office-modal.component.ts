@@ -189,8 +189,6 @@ export class SettingsOfficeModalComponent
     public phoneExtConfig: ITaInput =
         SettingsOfficeConfig.getPhoneExtInputConfig();
     public emailConfig: ITaInput = SettingsOfficeConfig.getEmailInputConfig();
-    public addressConfig: ITaInput =
-        SettingsOfficeConfig.getAddressInputConfig();
     public addressUnitConfig: ITaInput =
         SettingsOfficeConfig.getAddressUnitInputConfig();
     public payPeriodConfig: ITaInput =
@@ -376,14 +374,14 @@ export class SettingsOfficeModalComponent
     }
 
     private updateCompanyOffice(id: number): void {
-        const { addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { address, addressUnit, rent, ...formValues } = this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const updatedOffice: UpdateCompanyOfficeCommand = {
             id,
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: { ...address, addressUnit },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -407,13 +405,13 @@ export class SettingsOfficeModalComponent
     }
 
     private addCompanyOffice(addNew?: boolean): void {
-        const { addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { address, addressUnit, rent, ...formValues } = this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: { ...address, addressUnit },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
