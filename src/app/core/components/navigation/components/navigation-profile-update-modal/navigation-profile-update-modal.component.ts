@@ -347,7 +347,7 @@ export class NavigationProfileUpdateModalComponent
                         lastName: res.lastName,
                         phone: res.phone,
                         email: res.email,
-                        address: res.address.address,
+                        address: res.address.address ? res.address : null,
                         addressUnit: res.address.addressUnit,
                         /*  avatar: res.avatar ? res.avatar : null, */
                     });
@@ -364,11 +364,12 @@ export class NavigationProfileUpdateModalComponent
     }
 
     private updateUserProfile() {
-        const { addressUnit, ...form } = this.profileUserForm.value;
+        const { addressUnit, address, ...form } = this.profileUserForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
+        let updateAddress = address;
+        if (address) {
+            updateAddress = {
+                ...address,
                 addressUnit: addressUnit,
             };
         }
@@ -376,9 +377,7 @@ export class NavigationProfileUpdateModalComponent
         const newData: UpdateUserCommand = {
             id: this.user.userId,
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: updateAddress?.address ? updateAddress : null,
         };
 
         this.userProfileUpdateService

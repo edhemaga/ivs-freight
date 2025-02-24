@@ -120,6 +120,8 @@
                         <div bodyFalse class="row row-no-m">
                             <div class="col-12">
                                 <app-ca-input-dropdown
+                                    [label]="'name'"
+                                    [optionValue]="'id'"
                                     formControlName="ownerId"
                                     [inputConfig]="TrailerOwnerConfig"
                                     [canAddNew]="true"
@@ -192,6 +194,8 @@
                             "
                         >
                             <app-ca-input-dropdown
+                                [label]="'name'"
+                                [optionValue]="'id'"
                                 formControlName="reeferUnit"
                                 [inputConfig]="TrailerReferConfig"
                                 [options]="reeferUnitType"
@@ -221,6 +225,8 @@
                         ></app-ca-input>
 
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="tireSizeId"
                             [inputConfig]="TrailerTireSizeConfig"
                             [options]="tireSize"
@@ -248,6 +254,8 @@
                         ></app-ca-input>
 
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="suspension"
                             [inputConfig]="TrailerSuspensionConfig"
                             [options]="suspensionType"
@@ -265,6 +273,8 @@
                             "
                         >
                             <app-ca-input-dropdown
+                                [label]="'name'"
+                                [optionValue]="'id'"
                                 formControlName="doorType"
                                 [inputConfig]="TrailerDoorTypeConfig"
                                 [options]="doorType"

@@ -30,6 +30,8 @@
                         ></app-ca-input>
                         <app-ca-input-dropdown
                             *ngIf="dropdownOption"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="option"
                             [options]="dropdownOption"
                             [inputConfig]="dropDownInputConfig"

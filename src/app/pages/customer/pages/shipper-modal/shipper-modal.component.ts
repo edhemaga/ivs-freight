@@ -770,7 +770,7 @@ export class ShipperModalComponent
     }
 
     private addShipper(isSaveAndAddNew?: boolean) {
-        const { addressUnit, longitude, latitude, ...form } =
+        const { address, addressUnit, longitude, latitude, ...form } =
             this.shipperForm.value;
 
         const receivingShipping = this.receivingShippingObject();
@@ -787,7 +787,7 @@ export class ShipperModalComponent
         const newData = {
             ...form,
             address: {
-                ...this.selectedAddress,
+                ...address,
                 addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
@@ -845,7 +845,7 @@ export class ShipperModalComponent
     }
 
     private updateShipper(id: number) {
-        const { addressUnit, ...form } = this.shipperForm.value;
+        const { address, addressUnit, ...form } = this.shipperForm.value;
 
         const receivingShipping = this.receivingShippingObject();
 
@@ -862,7 +862,7 @@ export class ShipperModalComponent
             id,
             ...form,
             address: {
-                ...this.selectedAddress,
+                ...address,
                 addressUnit: addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
@@ -1280,10 +1280,6 @@ export class ShipperModalComponent
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
-    }
-
-    get getAddressInputConfig(): ITaInput {
-        return ShipperModalConfig.getAddressInputConfig();
     }
 
     get getAddressUnitInputConfig(): ITaInput {
