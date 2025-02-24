@@ -310,6 +310,8 @@ export class OwnerModalComponent
     }): void {
         if (!event.valid) return;
 
+        console.log(event, 'funkcija za odabir')
+
         this.selectedAddress = event.address;
         this.longitude = event.longLat.longitude;
         this.latitude = event.longLat.latitude;
@@ -448,9 +450,13 @@ export class OwnerModalComponent
             lastName,
             ssn,
             ein,
+            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
+
+        console.log(address, 'adresa kad saljem')
+        console.log({ ...address, addressUnit: addressUnit }, 'zajedno sa unitom')
 
         const newData: any = {
             id: id,
@@ -461,7 +467,7 @@ export class OwnerModalComponent
                     ? bussinesName
                     : firstName.concat(' ', lastName),
             ssnEin: this.selectedTab === 1 ? ein : ssn,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
+            address: { ...address, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             files: this.ownerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
@@ -493,6 +499,7 @@ export class OwnerModalComponent
             lastName,
             ssn,
             ein,
+            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
@@ -505,7 +512,7 @@ export class OwnerModalComponent
                     ? bussinesName
                     : firstName.concat(' ', lastName),
             ssnEin: this.selectedTab === 1 ? ein : ssn,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
+            address: { ...address, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             files: this.ownerForm.value.files,
             longitude: this.longitude,

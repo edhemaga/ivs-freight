@@ -52,20 +52,6 @@ export class SettingsTerminalConfig {
         };
     }
 
-    static getAddressInputConfig(): ITaInput {
-        return {
-            name: 'Address',
-            type: 'text',
-            label: 'Address, City, State Zip',
-            isRequired: true,
-            placeholderIcon: 'address',
-            textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-376',
-            minLength: 6,
-            maxLength: 256,
-        };
-    }
-
     static getAddressUnitInputConfig(): ITaInput {
         return {
             name: 'address-unit',

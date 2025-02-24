@@ -136,6 +136,7 @@
                                         type: 'text',
                                         label: 'Address, City, State Zip',
                                         isRequired: true,
+                                        isAddress: true,
                                         placeholderIcon: 'address',
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-510',
@@ -143,7 +144,6 @@
                                         maxLength: 256,
                                     }"
                                     [placeholderType]="'longAddress'"
-                                    [activeAddress]="selectedAddress"
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
                                     (selectedAddress)="onHandleAddress($event)"
