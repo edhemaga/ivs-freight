@@ -19,7 +19,7 @@ import {
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import {
     DocumentActionConfig,
-    SettingsDocumentFilter,
+    ISettingsDocumentFilter,
 } from '@pages/settings/pages/settings-document/models';
 
 // constants
@@ -70,7 +70,7 @@ export class SettingsDocumentComponent
         [SettingsDocumentStringEnum.TAG]: this.tagDocument,
     };
 
-    private backFilterQuery: SettingsDocumentFilter = {
+    private backFilterQuery: ISettingsDocumentFilter = {
         ...SettingsDocumentFilterConstants.settingsDocumentFilterQuery,
     };
 

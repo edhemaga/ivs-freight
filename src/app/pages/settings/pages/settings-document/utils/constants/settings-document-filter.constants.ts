@@ -1,7 +1,7 @@
-import { SettingsDocumentFilter } from '@pages/settings/pages/settings-document/models/settings-document-filter.model';
+import { ISettingsDocumentFilter } from '@pages/settings/pages/settings-document/models/settings-document-filter.model';
 
 export class SettingsDocumentFilterConstants {
-    static settingsDocumentFilterQuery: SettingsDocumentFilter = {
+    static settingsDocumentFilterQuery: ISettingsDocumentFilter = {
         tagId: null,
         pageIndex: null,
         pageSize: null,

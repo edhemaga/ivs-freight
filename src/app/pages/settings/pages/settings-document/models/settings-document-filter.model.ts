@@ -1,4 +1,4 @@
-export interface SettingsDocumentFilter {
+export interface ISettingsDocumentFilter {
     tagId?: number;
     pageIndex?: number;
     pageSize?: number;
