@@ -17,7 +17,7 @@ import { LoadRequirementsMobileResponse } from './loadRequirementsMobileResponse
 import { LoadStopMobileShortResponse } from './loadStopMobileShortResponse';
 import { EnumValue } from './enumValue';
 import { BrokerShortMobileResponse } from './brokerShortMobileResponse';
-import { LoadProgressResponse } from './loadProgressResponse';
+import { LoadProgressMobileResponse } from './loadProgressMobileResponse';
 import { MilesMobileResponse } from './milesMobileResponse';
 
 
@@ -30,6 +30,7 @@ export interface LoadMobileFullDetailsResponse {
     weight?: number | null;
     loadedMilesRate?: number | null;
     emptyMilesRate?: number | null;
+    milesRate?: number | null;
     extraStopRate?: number | null;
     extraStopsCount?: number;
     commision?: number | null;
@@ -38,7 +39,7 @@ export interface LoadMobileFullDetailsResponse {
     pickup?: LoadStopMobileShortResponse;
     delivery?: LoadStopMobileShortResponse;
     miles?: MilesMobileResponse;
-    loadProgress?: LoadProgressResponse;
+    loadProgress?: LoadProgressMobileResponse;
     statusType?: EnumValue;
     dispatcher?: LoadDispatcherMobileResponse;
     dispatch?: DispatchShortMobileResponse;

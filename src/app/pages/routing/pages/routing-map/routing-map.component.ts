@@ -3369,9 +3369,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                         this.previousFocusedRouteId = route.id;
                     }
                 },
-                error: () => {
-                    console.log('decodeRouteShape error');
-                },
+                error: () => {},
             });
     }
 

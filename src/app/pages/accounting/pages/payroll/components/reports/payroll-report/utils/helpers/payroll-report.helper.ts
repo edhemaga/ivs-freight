@@ -1,4 +1,4 @@
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
@@ -13,7 +13,7 @@ export class PayrollReportHelper {
         isEditLoadDropdownActionActive: boolean,
         loadList?: { id: number; title: string }[]
     ): DropdownMenuItem[] {
-        const isOpenPayroll = selectedTab === PayrollTablesStatus.OPEN;
+        const isOpenPayroll = selectedTab === ePayrollTablesStatus.OPEN;
 
         return isTabChange || !isEditLoadDropdownActionActive
             ? DropdownMenuContentHelper.getPayrollDropdownContent(isOpenPayroll)

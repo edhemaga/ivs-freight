@@ -22,16 +22,16 @@ import { FormService } from '@shared/services/form.service';
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import {
-    CaInputComponent,
     CaUploadFilesComponent,
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
     CaInputDatetimePickerComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
 // helpers
@@ -39,7 +39,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // enums
 import { DriverMedicalModalStringEnum } from '@pages/driver/pages/driver-modals/driver-medical-modal/enums/driver-medical-modal-string.enum';
-import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
 // models
 import { EditData } from '@shared/models/edit-data.model';
@@ -73,7 +72,7 @@ import { MedicalModalUploadFilesConfig } from '@pages/driver/pages/driver-modals
         CaModalButtonComponent,
         CaModalComponent,
         TaCustomCardComponent,
-        
+
         CaInputDatetimePickerComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
@@ -101,12 +100,13 @@ export class DriverMedicalModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
     public activeAction!: string;
     public taModalActionEnum = DriverMedicalModalStringEnum;
 
-    public uploadFilesConfig = MedicalModalUploadFilesConfig.MEDICAL_MODAL_UPLOAD_FILES_CONFIG;
+    public uploadFilesConfig =
+        MedicalModalUploadFilesConfig.MEDICAL_MODAL_UPLOAD_FILES_CONFIG;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

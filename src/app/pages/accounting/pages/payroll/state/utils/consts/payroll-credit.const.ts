@@ -1,5 +1,5 @@
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { PayrollDeductionRecurringType } from 'appcoretruckassist';
 
@@ -7,12 +7,12 @@ export class PayrollCreditConst {
     static tabs: TabOptions[] = [
         {
             id: 1,
-            name: PayrollStringEnum.DRIVER,
+            name: ePayrollString.DRIVER,
             checked: true,
         },
         {
             id: 2,
-            name: PayrollStringEnum.TRUCK,
+            name: ePayrollString.TRUCK,
             checked: false,
         },
     ];

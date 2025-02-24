@@ -10,6 +10,9 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 // svg routes
 import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
 
+// helpers
+import { OpenHoursHelper } from '@shared/utils/helpers';
+
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
 
@@ -28,29 +31,26 @@ import { RepairShopResponse } from 'appcoretruckassist';
     ],
 })
 export class RepairShopDetailsOpenHoursCardComponent {
-    @Input() set cardData(data: RepairShopResponse) {} // w8ing for back
+    @Input() set cardData(data: RepairShopResponse) {
+        this.createOpenHoursCardData(data);
+    }
 
-    public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
-
-    public _cardData /* : RepairShopResponse[]  */ = [
-        // dummy w8ing for back
-        {
-            workingDays: 'Monday - Friday',
-            workingHours: '8:00 AM - 10:00 PM',
-        },
-        {
-            workingDays: 'Saturday',
-            workingHours: '10:00 AM - 4:00 PM',
-        },
-        {
-            workingDays: 'Sunday',
-            workingHours: '8:00 AM - 2:00 PM',
-        },
-    ];
+    public _cardData: RepairShopResponse;
 
     public isOpenHoursCardOpen: boolean = true;
 
+    public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
+
     public handleOpenHoursCardOpen(isOpen: boolean): void {
         this.isOpenHoursCardOpen = isOpen;
+    }
+
+    private createOpenHoursCardData(data: RepairShopResponse): void {
+        const openHours = OpenHoursHelper.createOpenHours(data?.openHours);
+
+        this._cardData = {
+            ...data,
+            openHours,
+        };
     }
 }

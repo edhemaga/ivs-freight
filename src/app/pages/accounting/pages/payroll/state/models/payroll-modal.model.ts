@@ -1,15 +1,15 @@
 import { PayrollCreditType } from 'appcoretruckassist';
-import { PayrollStringEnum } from '../enums';
+import { ePayrollString } from '../enums';
 import { PayrollType } from '@pages/accounting/pages/payroll/state/types/payroll.type';
 
 export type PayrollModalAction =
-    | PayrollStringEnum.EDIT
-    | PayrollStringEnum.CREATE;
+    | ePayrollString.EDIT
+    | ePayrollString.CREATE;
 
 export type PayrollModalType =
-    | PayrollStringEnum.MODAL_DEDUCTION
-    | PayrollStringEnum.MODAL_BONUS
-    | PayrollStringEnum.MODAL_CREDIT;
+    | ePayrollString.MODAL_DEDUCTION
+    | ePayrollString.MODAL_BONUS
+    | ePayrollString.MODAL_CREDIT;
 
 export interface PayrollModal {
     edit: boolean;

@@ -48,6 +48,7 @@ import {
     CaModalComponent,
     CaUploadFilesComponent,
     CaInputAddressDropdownComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -67,7 +68,6 @@ import { NavigationDataUploadFilesConfig } from '@core/components/navigation/uti
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { ModalButtonType } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -131,7 +131,7 @@ export class NavigationProfileUpdateModalComponent
     public activeAction: TaModalActionEnum;
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public displayName: string;
 
     constructor(

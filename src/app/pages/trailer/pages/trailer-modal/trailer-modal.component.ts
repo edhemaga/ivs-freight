@@ -15,9 +15,11 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
 import { skip, Subject, takeUntil, tap } from 'rxjs';
+
+// modules
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -60,6 +62,8 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
@@ -67,9 +71,6 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
-// bootstrap
-import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // models
 import {
@@ -80,7 +81,7 @@ import {
 import type { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/configs/trailer-modal.config';
 
-// Enums
+// enums
 import {
     ETrailerAction,
     TrailerFormFieldEnum,
@@ -89,17 +90,13 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
-import {
-    eFileFormControls,
-    eGeneralActions,
-    ModalButtonSize,
-    ModalButtonType,
-} from '@shared/enums';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
-// Pipes
+// pipes
 import { FormatDatePipe } from '@shared/pipes';
+import { TrailerModalInputConfigPipe } from '@pages/trailer/pages/trailer-modal/pipes';
 
-// Svg routes
+// SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 import { ICaInput } from '@ca-shared/components/ca-input/config';
 
@@ -135,6 +132,7 @@ import { ICaInput } from '@ca-shared/components/ca-input/config';
 
         // Pipes
         FormatDatePipe,
+        TrailerModalInputConfigPipe,
     ],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
@@ -199,8 +197,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public taModalActionEnum = TaModalActionEnum;
     public activeAction: string;
 
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -238,12 +236,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
     get TrailerYearConfig(): ITaInput {
         return TrailerModalConfig.getTrailerYearConfig();
-    }
-
-    get TrailerVinConfig(): ITaInput {
-        return TrailerModalConfig.getTrailerVinConfig({
-            loadingVinDecoder: this.loadingVinDecoder,
-        });
     }
 
     get TrailerMakeConfig(): ICaInput {
@@ -982,14 +974,15 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         .subscribe({
                             next: (res: VinDecodeResponse) => {
                                 this.trailerForm.patchValue({
-                                    model: res?.model ?? null,
-                                    year: res?.year
-                                        ? res.year.toString()
-                                        : null,
-                                    trailerMakeId: res.trailerMake?.id
-                                        ? res.trailerMake.id
-                                        : null,
+                                    ...(res?.model && { model: res.model }),
+                                    ...(res?.year && {
+                                        year: res.year.toString(),
+                                    }),
+                                    ...(res?.trailerMake?.id && {
+                                        trailerMakeId: res.trailerMake.id,
+                                    }),
                                 });
+
                                 this.loadingVinDecoder = false;
                                 this.selectedTrailerMake = res.trailerMake;
                             },

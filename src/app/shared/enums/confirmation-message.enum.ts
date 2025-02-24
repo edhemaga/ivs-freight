@@ -1,4 +1,4 @@
-export enum EConfirmationMessage {
+export enum eConfirmationMessage {
     YES = 'Yes',
     NO = 'No',
 }

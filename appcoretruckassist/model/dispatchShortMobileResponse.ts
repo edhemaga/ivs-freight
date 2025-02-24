@@ -9,15 +9,15 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { TruckMinimalResponse } from './truckMinimalResponse';
-import { TrailerMinimalResponse } from './trailerMinimalResponse';
+import { TruckMinimalMobileResponse } from './truckMinimalMobileResponse';
+import { TrailerMinimalMobileResponse } from './trailerMinimalMobileResponse';
 
 
 export interface DispatchShortMobileResponse { 
     id?: number;
     dispatchBoardId?: number;
     dispatcherId?: number | null;
-    truck?: TruckMinimalResponse;
-    trailer?: TrailerMinimalResponse;
+    truck?: TruckMinimalMobileResponse;
+    trailer?: TrailerMinimalMobileResponse;
 }
 

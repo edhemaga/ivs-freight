@@ -12,9 +12,11 @@ import {
 } from 'appcoretruckassist';
 
 // Constants
-import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-miles-table-settings.constants';
-import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
-import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
+import {
+    PayrollDriverMilesTableSettingsConstants,
+    PayrollDriverCommisionTableSettingsConstants,
+    PayrollOwnerTableSettingsConstants,
+} from '@pages/accounting/utils/constants';
 import {
     ICaMapProps,
     IMapMarkers,
@@ -72,6 +74,8 @@ export const selectPayrollReportMapData = createSelector(
         const mapData = (
             state.payrollOpenedReport || state.ownerPayrollResponse
         )?.mapLocations;
+        const mapRoutes = state.payrollMapRoutes;
+
         mapData?.map((loadStop, index) => {
             const nextLoadNumber = mapData[index]?.loadNumber;
             const routeMarker: IMapMarkers = {
@@ -81,7 +85,7 @@ export const selectPayrollReportMapData = createSelector(
                     loadStop.type.name.toLowerCase(),
                     false,
                     true,
-                    loadStop.loadNumber,
+                    loadStop.loadNumber
                 ),
                 label: loadStop.loadNumber,
             };
@@ -90,13 +94,8 @@ export const selectPayrollReportMapData = createSelector(
 
             if (index > 0) {
                 const routePath: IMapRoutePath = {
-                    path: [
-                        {
-                            lat: mapData[index - 1].latitude!,
-                            lng: mapData[index - 1].longitude!,
-                        },
-                        { lat: loadStop.latitude!, lng: loadStop.longitude! },
-                    ],
+                    path: [],
+                    decodedShape: mapRoutes?.legs?.[index - 1]?.decodedShape,
                     strokeColor: MapOptionsConstants.routingPathColors.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,

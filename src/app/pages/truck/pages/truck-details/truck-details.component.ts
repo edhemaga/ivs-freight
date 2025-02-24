@@ -95,8 +95,8 @@ export class TruckDetailsComponent implements OnInit, OnDestroy {
 
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res: any) => {
-                if (res?.animation) {
+            .subscribe((res) => {
+                if (res?.animation && res?.id === dataId) {
                     this.truckConf(res.data);
                     this.initTableOptions(res.data);
                     this.cdRef.detectChanges();
