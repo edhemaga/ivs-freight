@@ -1,10 +1,13 @@
 import { Constructor } from '@shared/models/mixin.model';
-import { DestroyableMixin } from '../destroyable.mixin';
 import { takeUntil } from 'rxjs';
-import { AddressService } from '@shared/services/address.service';
-import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
-import { AddressListResponse, AddressResponse } from 'appcoretruckassist';
 import { ChangeDetectorRef } from '@angular/core';
+
+// services
+import { AddressService } from '@shared/services/address.service';
+// models
+import { AddressListResponse, AddressResponse } from 'appcoretruckassist';
+import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
+import { DestroyableMixin } from '@shared/mixins/destroyable.mixin';
 
 export function AddressMixin<
     T extends Constructor<{

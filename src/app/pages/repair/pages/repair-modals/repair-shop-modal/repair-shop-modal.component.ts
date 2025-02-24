@@ -81,10 +81,6 @@ import {
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 import { RepairShopHelper } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/helpers';
-import {
-    RepairShopConfig,
-    RepairShopModalUploadFilesConfig,
-} from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
 
 // animation
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -131,8 +127,13 @@ import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repa
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // types
+import {
+    RepairShopConfig,
+    RepairShopModalUploadFilesConfig,
+} from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/config';
 import { OpenedTab } from '@pages/repair/pages/repair-modals/repair-shop-modal/types';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -140,7 +141,6 @@ import { AddressService } from '@shared/services/address.service';
 
 // mixins
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
-import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 @Component({
     selector: 'app-repair-shop-modal',
