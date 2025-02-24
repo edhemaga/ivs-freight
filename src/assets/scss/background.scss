@@ -3,6 +3,9 @@
     &-white {
         background: $white;
     }
+    &-muted {
+        background: $muted;
+    }
     &-black {
         background: $ta-black;
     }
@@ -11,5 +14,9 @@
     }
     &-light-grey {
         background-color: $ta-light-grey;
+
+        &-6 {
+            background-color: $ta-light-grey-6;
+        }
     }
 }

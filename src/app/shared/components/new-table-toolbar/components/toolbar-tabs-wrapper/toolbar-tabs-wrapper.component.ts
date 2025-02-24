@@ -17,6 +17,7 @@ export class ToolbarTabsWrapperComponent {
     @Input() viewMode = eActiveViewMode.List;
     @Input() data: ITableData[];
     @Input() selectedTab: ITableData;
+    
     @Output() onTabChange = new EventEmitter<TableToolbarActions>();
 
     public tableStringEnum = TableStringEnum;

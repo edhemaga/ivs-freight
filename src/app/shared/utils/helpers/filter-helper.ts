@@ -20,16 +20,8 @@ export class FilterHelper {
             res: IFilterAction,
             currentFilters: IStateFilters
         ): IStateFilters {
-            // TODO: Cover all clear cases, extract to helpers
             switch (res.filterType) {
                 case LoadFilterStringEnum.TIME_FILTER: {
-                    if (res.action === 'Clear') {
-                        return {
-                            ...currentFilters,
-                            dateFrom: null,
-                            dateTo: null,
-                        };
-                    }
                     const { fromDate, toDate } =
                         RepairTableDateFormaterHelper.getDateRange(
                             res.queryParams?.timeSelected,
