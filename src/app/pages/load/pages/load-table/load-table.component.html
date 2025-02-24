@@ -22,30 +22,15 @@
             "
         >
             <ng-template #leftSide>
-                <app-toolbar-tabs
+                <app-toolbar-tabs-wrapper
+                    class="d-flex align-items-center"
                     [data]="store.tableData"
                     [selectedTab]="selectedTab"
-                    [variant]="toolbarVariant.Large"
-                    (tabSelected)="
-                        onToolBarAction({
-                            action: tableStringEnum.TAB_SELECTED,
-                            mode: $event,
-                        })
-                    "
-                ></app-toolbar-tabs>
+                    [viewMode]="loadStoreService.activeViewMode$ | async"
+                    (onTabChange)="onToolBarAction($event)"
+                ></app-toolbar-tabs-wrapper>
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
-                <app-toolbar-tabs
-                    [data]="tableViewData"
-                    [selectedTab]="loadStoreService.activeViewMode$ | async"
-                    [variant]="toolbarVariant.Small"
-                    (tabSelected)="
-                        onToolBarAction({
-                            action: tableStringEnum.VIEW_MODE,
-                            mode: $event,
-                        })
-                    "
-                ></app-toolbar-tabs>
-                <ng-container *ngTemplateOutlet="divider"></ng-container>
+
                 <div class="d-flex gap-1 align-items-center">
                     <app-ca-search-multiple-states
                         [searchType]="'tabel'"

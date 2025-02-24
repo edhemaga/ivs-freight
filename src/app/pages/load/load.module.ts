@@ -37,6 +37,7 @@ import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 import { StoreModule } from '@ngrx/store';
 import { loadReducer } from '@pages/load/state/reducers/load.reducer';
 import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/load-card-modal.reducer';
+import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 
 @NgModule({
     declarations: [LoadTableComponent, LoadCardComponent],
@@ -61,6 +62,7 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
         ToolbarTabsComponent,
         CaFilterDropdownComponent,
         CaDropdownMenuComponent,
+        ToolbarTabsWrapperComponent,
 
         // pipes
         FormatDatePipe,

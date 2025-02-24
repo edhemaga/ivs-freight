@@ -32,7 +32,7 @@ import { LoadService } from '@shared/services/load.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
-import { CaSearchMultipleStatesService } from 'ca-components';
+import { CaSearchMultipleStatesService, IFilterAction } from 'ca-components';
 import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
@@ -68,38 +68,17 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 
 // helpers
 import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpers/load-table.helper';
-import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
 // models
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import {
     LoadListDto,
     LoadListResponse,
-    LoadStatusType,
     SortOrder,
 } from 'appcoretruckassist';
 import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
-import { CardRows } from '@shared/models';
-
-export interface IFilterAction {
-    action: string;
-    filterType: string;
-    type: string;
-    queryParams: any;
-}
-
-export interface ILoadStateFilters {
-    dateFrom?: string;
-    dateTo?: string;
-    rateFrom?: number;
-    rateTo?: number;
-    paidFrom?: number;
-    paidTo?: number;
-    dueFrom?: number;
-    dueTo?: number;
-    status?: number[];
-    dispatcherIds?: number[];
-}
+import { CardRows, IStateFilters } from '@shared/models';
+import { FilterHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-load-table',
@@ -126,18 +105,8 @@ export class LoadTableComponent
     public cardTitle: string;
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
-    public displayRows$: Observable<any>; //leave this as any for now
-    // TODO:
-    public tableStringEnum = TableStringEnum;
-    public toolbarVariant = ToolbarVariant;
-    public tableViewData = [
-        {
-            name: 'List',
-        },
-        {
-            name: 'Card',
-        },
-    ];
+    public displayRows$: Observable<any>; //leave this as any for now 
+
 
     // filters
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
@@ -184,51 +153,9 @@ export class LoadTableComponent
 
     private mapFilters(
         res: IFilterAction,
-        currentFilters: ILoadStateFilters
-    ): ILoadStateFilters {
-        // TODO: Cover all clear cases, extract to helpers
-        switch (res.filterType) {
-            case LoadFilterStringEnum.TIME_FILTER: {
-                if (res.action === 'Clear') {
-                    return {
-                        ...currentFilters,
-                        dateFrom: null,
-                        dateTo: null,
-                    };
-                }
-                const { fromDate, toDate } =
-                    RepairTableDateFormaterHelper.getDateRange(
-                        res.queryParams?.timeSelected,
-                        res.queryParams.year ?? null
-                    );
-                return {
-                    ...currentFilters,
-                    dateFrom: fromDate,
-                    dateTo: toDate,
-                };
-            }
-            case LoadFilterStringEnum.MONEY_FILTER: {
-                const moneyArray = res.queryParams?.moneyArray ?? [];
-                return {
-                    ...currentFilters,
-                    rateFrom: moneyArray[0]?.from ?? null,
-                    rateTo: moneyArray[0]?.to ?? null,
-                    paidFrom: moneyArray[1]?.from ?? null,
-                    paidTo: moneyArray[1]?.to ?? null,
-                    dueFrom: moneyArray[2]?.from ?? null,
-                    dueTo: moneyArray[2]?.to ?? null,
-                };
-            }
-            case LoadFilterStringEnum.STATUS_FILTER:
-                return { ...currentFilters, status: res.queryParams as any };
-            case LoadFilterStringEnum.DISPATCHER_FILTER:
-                return {
-                    ...currentFilters,
-                    dispatcherIds: res.queryParams as any,
-                };
-            default:
-                return currentFilters;
-        }
+        currentFilters: IStateFilters
+    ): IStateFilters {
+        return FilterHelper.mapFilters(res, currentFilters);
     }
 
     public setFilters(filters: IFilterAction): void {

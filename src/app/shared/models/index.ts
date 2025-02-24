@@ -75,3 +75,4 @@ export * from './dropdown-menu-edit-action-additonal.model';
 export * from './table-models/current-search-table-data-chip.model';
 export * from './avatar-colors.model';
 export * from './plaid';
+export * from './IStateFilters';
