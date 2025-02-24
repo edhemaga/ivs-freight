@@ -2401,25 +2401,13 @@ export class SettingsBasicModalComponent
         this.plaidService
             .getPlaidVerification()
             .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                ([accessToken, details]: [
-                    AccessTokenResponse,
-                    AccountDetailsResponse,
-                ]) => {
-                    this.plaidService.compareVerificationResults(
-                        details,
-                        addedAccount
-                    );
-                    this.isPlaidAvailable = true;
-                },
-                () => {
-                    this.plaidService.compareVerificationResults(
-                        {},
-                        addedAccount
-                    );
-                    this.isPlaidAvailable = true;
-                }
-            )
+            .subscribe((response: AccountDetailsResponse) => {
+                this.plaidService.compareVerificationResults(
+                    response,
+                    addedAccount
+                );
+                this.isPlaidAvailable = true;
+            })
             .add(() => {
                 this.isPlaidAvailable = true;
             });
