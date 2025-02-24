@@ -70,8 +70,9 @@ export class SettingsDocumentComponent
         [SettingsDocumentStringEnum.TAG]: this.tagDocument,
     };
 
-    private backFilterQuery: SettingsDocumentFilter =
-        SettingsDocumentFilterConstants.settingsDocumentFilterQuery;
+    private backFilterQuery: SettingsDocumentFilter = {
+        ...SettingsDocumentFilterConstants.settingsDocumentFilterQuery,
+    };
 
     ngOnInit(): void {
         this.companyDocumentsGet();
@@ -128,25 +129,17 @@ export class SettingsDocumentComponent
         this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
-                console.log('currentSearchTableData res', res);
-
                 if (res) {
                     const searchEvent = MethodsGlobalHelper.tableSearch(
                         res,
                         this.backFilterQuery
                     );
 
-                    console.log('searchEvent', searchEvent);
-
                     if (searchEvent) {
-                        if (searchEvent.action === TableStringEnum.STORE) {
-                            console.log('reset query');
-
-                            this.backFilterQuery =
-                                SettingsDocumentFilterConstants.settingsDocumentFilterQuery;
-                        }
-
-                        console.log('backFilterQuery', this.backFilterQuery);
+                        if (searchEvent.action === TableStringEnum.STORE)
+                            this.backFilterQuery = {
+                                ...SettingsDocumentFilterConstants.settingsDocumentFilterQuery,
+                            };
 
                         this.companyDocumentsGet();
                     }
