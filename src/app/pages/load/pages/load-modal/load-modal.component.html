@@ -6,7 +6,7 @@
     [specificCaseModalName]="true"
     [isModalValid]="
         loadForm.valid &&
-        isFormDirty &&
+        loadForm.touched &&
         isEachStopItemsRowValid &&
         !reorderingStarted &&
         !isMilesLoading
@@ -109,7 +109,7 @@
                                 @for (
                                     template of labelsTemplate;
                                     let i = $index;
-                                    track trackByIdentity
+                                    track i
                                 ) {
                                     <div
                                         class="popover-item"
@@ -513,7 +513,6 @@
                                 "
                                 [type]="'type2-modal-popup'"
                             ></app-ta-tab-switch>
-
                             <app-ca-input-dropdown
                                 [label]="'name'"
                                 [optionValue]="'id'"
@@ -685,7 +684,7 @@
                             @for (
                                 extraStop of loadExtraStops.controls;
                                 let indx = $index;
-                                track trackByIdentity
+                                track indx
                             ) {
                                 <div
                                     cdkDrag
@@ -1611,8 +1610,8 @@
                             <div formArrayName="additionalBillings">
                                 @for (
                                     additional of additionalBillings().controls;
-                                    track trackByIdentity;
-                                    let indx = $index
+                                    let indx = $index;
+                                    track indx
                                 ) {
                                     <div [ngStyle]="{ 'margin-bottom': '4px' }">
                                         <div [formGroupName]="indx">
@@ -1662,8 +1661,8 @@
                                     @for (
                                         additional of additionalPayments()
                                             .controls;
-                                        track trackByIdentity;
-                                        let indx = $index
+                                        let indx = $index;
+                                        track indx
                                     ) {
                                         <div
                                             [ngStyle]="{
@@ -1848,7 +1847,6 @@
         [ngStyle]="{
             overflow: 'hidden',
             'owerflow-y': 'scroll',
-            height: originHeight + 130 + 'px',
         }"
     >
         <!-- Hazardous -->

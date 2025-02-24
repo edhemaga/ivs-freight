@@ -73,6 +73,8 @@
             <div class="row">
                 <div class="col-12">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="departmentIds"
                         [template]="'multiselect'"
                         [inputConfig]="{
@@ -98,6 +100,8 @@
             <div class="row last-row">
                 <div class="col-12">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="companyUserIds"
                         [template]="'multiselect'"
                         [inputConfig]="{

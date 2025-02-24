@@ -88,7 +88,6 @@
                                 formControlName="address"
                                 [inputConfig]="addressConfig"
                                 [placeholderType]="'longAddress'"
-                                [activeAddress]="selectedAddress"
                                 (selectedAddress)="onHandleAddress($event)"
                                 [receivedAddressList]="addressList"
                                 [receivedAddressData]="addressData"
@@ -121,6 +120,8 @@
                             <div class="mt-3 mb-3">
                                 <div class="location-parking-financial-card">
                                     <app-ca-input-dropdown
+                                        [label]="'name'"
+                                        [optionValue]="'id'"
                                         formControlName="payPeriod"
                                         [inputConfig]="payPeriodConfig"
                                         [options]="payPeriods"
@@ -133,6 +134,8 @@
                                         "
                                     ></app-ca-input-dropdown>
                                     <app-ca-input-dropdown
+                                        [label]="'name'"
+                                        [optionValue]="'id'"
                                         formControlName="monthlyDay"
                                         [inputConfig]="
                                             formConfig.getMonthlyDayConfig(

@@ -72,7 +72,6 @@
                                 formControlName="address"
                                 [inputConfig]="addressConfig"
                                 [placeholderType]="'longAddress'"
-                                [activeAddress]="selectedAddress"
                                 (selectedAddress)="onHandleAddress($event)"
                                 [receivedAddressList]="addressList"
                                 [receivedAddressData]="addressData"
@@ -106,6 +105,8 @@
                                 <div class="row row-no-m">
                                     <div class="col-4">
                                         <app-ca-input-dropdown
+                                            [label]="'name'"
+                                            [optionValue]="'id'"
                                             formControlName="payPeriod"
                                             [inputConfig]="payPeriodConfig"
                                             [options]="payPeriods"
@@ -120,6 +121,8 @@
                                     </div>
                                     <div class="col-4 no-p-left">
                                         <app-ca-input-dropdown
+                                            [label]="'name'"
+                                            [optionValue]="'id'"
                                             formControlName="monthlyDay"
                                             [inputConfig]="
                                                 formConfig.getMonthlyDayConfig(
