@@ -39,7 +39,7 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isDisabled: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-308',
     };
@@ -53,7 +53,7 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isRequired: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'uppercase',
         dropdownWidthClass: 'w-col-608 load-shipper-stops',
     };
@@ -67,7 +67,7 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isDisabled: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-370',
     };
@@ -81,7 +81,7 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isRequired: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'uppercase',
         dropdownWidthClass: 'w-col-608 load-shipper-stops',
     };
@@ -95,7 +95,7 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isDisabled: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-370',
     };
@@ -114,7 +114,7 @@ export class LoadModalConfig {
         label: 'Commodity',
         isDropdown: true,
         dropdownWidthClass: 'w-col-142',
-        blackInput: true,
+        blackInput: false,
         customClass: 'hazardous-dropdown',
     };
 

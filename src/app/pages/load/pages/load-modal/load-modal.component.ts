@@ -158,7 +158,6 @@ import {
     CaMapComponent,
     ICaMapProps,
     CaInputDropdownComponent,
-    CaInputComponent,
     MapOptionsConstants,
     IMapMarkers,
     IMapRoutePath,
@@ -193,7 +192,6 @@ import { eGeneralActions } from '@shared/enums';
         TaInputNoteComponent,
         TaCommentComponent,
         LoadModalHazardousComponent,
-        TaProgresBarComponent,
         LoadModalWaitTimeComponent,
         LoadDetailsItemCommentsComponent,
         TaInputDropdownStatusComponent,
@@ -214,7 +212,7 @@ import { eGeneralActions } from '@shared/enums';
         { provide: CDK_DRAG_CONFIG, useValue: LoadModalDragAndDrop.Config },
     ],
 })
-export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
+export class LoadModalComponent implements OnInit, OnDestroy {
     @ViewChild('originElement') originElement: ElementRef;
     @ViewChild('popover') popover: NgbPopover;
     @ViewChild('trailerInputDropdown')
@@ -470,7 +468,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     ) {}
 
     ngOnInit(): void {
-
         this.getCompanyUser();
 
         this.createForm();
@@ -480,15 +477,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.getLoadDropdowns();
 
         this.trackBillingPayment();
-    }
-
-    ngDoCheck(): void {
-        if (this.originElement) {
-            this.originHeight =
-                this.originElement.nativeElement.getBoundingClientRect().height;
-
-            this.cdRef.detectChanges();
-        }
     }
 
     public get billingCount(): number {
@@ -704,10 +692,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
     public get isRequirementVisible(): boolean {
         return !!(this.selectedTrailerReq || this.selectedTruckReq);
-    }
-
-    public trackByIdentity(_, index: number): number {
-        return index;
     }
 
     public handleTonuRateVisiblity(): void {
@@ -1915,7 +1899,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     })
                     .filter((item) => item.contacts?.length);
 
-
                 if (this.labelsBrokerContacts[1]?.contacts[0]) {
                     this.selectedBrokerContact =
                         this.labelsBrokerContacts[1].contacts[0];
@@ -1952,7 +1935,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     }
                 } else {
                     this.selectedBrokerContact = null;
-
 
                     this.loadForm
                         .get(LoadModalStringEnum.BROKER_CONTACT_ID)
@@ -4227,7 +4209,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
         this.loadForm
             .get(LoadModalStringEnum.DISPATCHER_ID)
-            .patchValue(initialDispatcher.name);
+            .patchValue(initialDispatcher.id);
 
         this.selectedDispatcher = initialDispatcher;
 
@@ -4315,7 +4297,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                           : null,
             };
         });
-        
+
         // broker contacts
         this.labelsBrokerContacts = this.originBrokerContacts =
             modalData.brokerContacts.map((item) => {

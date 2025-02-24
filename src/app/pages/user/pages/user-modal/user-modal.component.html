@@ -79,6 +79,8 @@
                                 "
                             >
                                 <app-ca-input-dropdown
+                                    [label]="'name'"
+                                    [optionValue]="'id'"
                                     formControlName="departmentId"
                                     [inputConfig]="
                                         userModalConfig.departmentInputConfig(
@@ -102,6 +104,8 @@
                         >
                             <div class="col-5" [class.col-7]="!isPhoneExtExist">
                                 <app-ca-input-dropdown
+                                    [label]="'name'"
+                                    [optionValue]="'id'"
                                     formControlName="companyOfficeId"
                                     [inputConfig]="
                                         userModalConfig.companyOfficeInputConfig
@@ -325,6 +329,8 @@
                                     >
                                         <div class="col-5">
                                             <app-ca-input-dropdown
+                                                [label]="'name'"
+                                                [optionValue]="'id'"
                                                 formControlName="paymentType"
                                                 [inputConfig]="{
                                                     name: 'Input Dropdown',
@@ -494,6 +500,8 @@
                                 >
                                     <div class="bank-field">
                                         <app-ca-input-dropdown
+                                            [label]="'name'"
+                                            [optionValue]="'id'"
                                             formControlName="bankId"
                                             [template]="'svg-template'"
                                             [inputConfig]="{

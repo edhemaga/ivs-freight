@@ -89,6 +89,8 @@
                             }"
                         >
                             <app-ca-input-dropdown
+                                [label]="'name'"
+                                [optionValue]="'id'"
                                 formControlName="pm"
                                 [template]="'svgtext-template'"
                                 [inputConfig]="{
@@ -122,6 +124,8 @@
                         </div>
                     } @else {
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [formControl]="repairBillItemRow.get('itemfuel')"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
