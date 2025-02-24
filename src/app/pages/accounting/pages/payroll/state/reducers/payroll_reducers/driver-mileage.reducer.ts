@@ -1,5 +1,8 @@
 // Models
-import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
+import {
+    PayrollDriverMileageClosedByIdResponse,
+    PayrollDriverMileageListResponse,
+} from 'appcoretruckassist';
 import {
     IGet_Payroll_Commission_Driver_Report,
     IGet_Payroll_Solo_Mileage_Driver_Report,
@@ -149,7 +152,7 @@ export const onGetPayrollMileageDriverExpandedListError = (
 
 export const onGetPayrollMileageDriverClosedPayrollSuccess = (
     state: PayrollState,
-    data: { payroll: PayrollDriverMileageResponse }
+    data: { payroll: PayrollDriverMileageClosedByIdResponse }
 ) => ({
     ...state,
     payrollOpenedReport: {
@@ -157,7 +160,7 @@ export const onGetPayrollMileageDriverClosedPayrollSuccess = (
         excludedDeductions: [],
         excludedCredits: [],
         excludedLoads: [],
-        includedBonuses: [],
+        excludedBonuses: [],
     },
     reportLoading: false,
 });
