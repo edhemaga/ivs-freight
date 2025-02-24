@@ -10,6 +10,9 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 // svg routes
 import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
 
+// helpers
+import { OpenHoursHelper } from '@shared/utils/helpers';
+
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
 
@@ -43,18 +46,7 @@ export class RepairShopDetailsOpenHoursCardComponent {
     }
 
     private createOpenHoursCardData(data: RepairShopResponse): void {
-        let openHours = [];
-
-        data?.openHours?.forEach((workingDay) => {
-            const { dayOfWeek, startTime, endTime } = workingDay;
-
-            const workingHourItem = {
-                workingDays: dayOfWeek,
-                workingHours: `${startTime} - ${endTime}`,
-            };
-
-            openHours = [...openHours, workingHourItem];
-        });
+        const openHours = OpenHoursHelper.createOpenHours(data?.openHours);
 
         this._cardData = {
             ...data,

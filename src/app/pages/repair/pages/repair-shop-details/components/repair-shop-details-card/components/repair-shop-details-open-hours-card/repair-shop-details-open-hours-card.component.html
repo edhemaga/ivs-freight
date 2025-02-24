@@ -50,7 +50,7 @@
                 [ngClass]="
                     isCurrentlyClosed
                         ? 'text-color-light-grey-2'
-                        : 'text-color-light-black'
+                        : 'text-color-black'
                 "
             >
                 {{ openHoursToday?.info }}
@@ -76,6 +76,12 @@
                         <p class="m-0 text-size-14 text-color-black-2">
                             {{ workingHoursItem?.workingHours }}
                         </p>
+
+                        @if (!!workingHoursItem?.splitShiftWorkingHours) {
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                {{ workingHoursItem?.splitShiftWorkingHours }}
+                            </p>
+                        }
                     </div>
                 }
             </div>

@@ -14,6 +14,9 @@ import { OpenHoursDropdownSvgRoutes } from '@shared/components/ta-open-hours-dro
 // enums
 import { eStringPlaceholder } from '@shared/enums';
 
+// helpers
+import { OpenHoursHelper } from '@shared/utils/helpers';
+
 // models
 import {
     OpenHoursTodayResponse,
@@ -37,8 +40,8 @@ import {
 })
 export class TaOpenHoursDropdownComponent {
     @Input() dropdownConfig: {
-        rowId?: number;
-        width?: number;
+        rowId: number;
+        width: number;
         openHours: RepairShopOpenHoursResponse[];
         openHoursToday: OpenHoursTodayResponse;
         openAlways: boolean;
@@ -60,23 +63,14 @@ export class TaOpenHoursDropdownComponent {
     }
 
     public onShowOpenHoursDropdown(popover: NgbPopover): void {
-        let data = [];
-
-        this.dropdownConfig?.openHours?.forEach((workingDay) => {
-            const { dayOfWeek, startTime, endTime } = workingDay;
-
-            const workingHourItem = {
-                workingDays: dayOfWeek,
-                workingHours: `${startTime} - ${endTime}`,
-            };
-
-            data = [...data, workingHourItem];
-        });
+        const openHours = OpenHoursHelper.createOpenHours(
+            this.dropdownConfig?.openHours
+        );
 
         this.openHoursDropdownActiveId = popover.isOpen()
             ? -1
             : this.dropdownConfig?.rowId;
 
-        popover.isOpen() ? popover.close() : popover.open({ data });
+        popover.isOpen() ? popover.close() : popover.open({ openHours });
     }
 }
