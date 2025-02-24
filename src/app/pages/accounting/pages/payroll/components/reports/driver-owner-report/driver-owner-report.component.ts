@@ -13,9 +13,11 @@ import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 //Services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import {
+    PayrollFacadeService,
+    PayrollDriverOwnerFacadeService,
+} from '@pages/accounting/pages/payroll/state/services';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
 // Models
 import {
@@ -37,7 +39,7 @@ import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/pa
 import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 
@@ -75,8 +77,8 @@ export class DriverOwnerReportComponent
 
     public dropdownMenuOptions: DropdownMenuItem[] = [];
 
-    public _selectedTab: PayrollTablesStatus;
-    @Input() set selectedTab(tab: PayrollTablesStatus) {
+    public _selectedTab: ePayrollTablesStatus;
+    @Input() set selectedTab(tab: ePayrollTablesStatus) {
         this._selectedTab = tab;
 
         this.dropdownMenuOptions =

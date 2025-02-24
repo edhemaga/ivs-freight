@@ -470,6 +470,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     ) {}
 
     ngOnInit(): void {
+
         this.getCompanyUser();
 
         this.createForm();
@@ -1914,10 +1915,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     })
                     .filter((item) => item.contacts?.length);
 
-                this.labelsBrokerContacts.unshift({
-                    id: 7655,
-                    name: LoadModalStringEnum.ADD_NEW,
-                });
 
                 if (this.labelsBrokerContacts[1]?.contacts[0]) {
                     this.selectedBrokerContact =
@@ -1956,12 +1953,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 } else {
                     this.selectedBrokerContact = null;
 
-                    this.labelsBrokerContacts = [
-                        {
-                            id: 7655,
-                            name: LoadModalStringEnum.ADD_NEW,
-                        },
-                    ];
 
                     this.loadForm
                         .get(LoadModalStringEnum.BROKER_CONTACT_ID)
@@ -3692,7 +3683,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             }),
                         };
 
-                        this.setMapData(routes);
+                        this.setMapData(routes, res);
 
                         if (res?.legs?.length) {
                             res.legs.forEach((item, index) => {
@@ -4324,7 +4315,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                           : null,
             };
         });
-
+        
         // broker contacts
         this.labelsBrokerContacts = this.originBrokerContacts =
             modalData.brokerContacts.map((item) => {
@@ -4425,6 +4416,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : null,
             };
         });
+
         this.originalShippers = modalData.shippers;
 
         // shipper contacts
@@ -5393,7 +5385,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .patchValue(deliveryStopNumber + 1);
     }
 
-    private setMapData(routes: LoadStopRoutes[]): void {
+    private setMapData(
+        routes: LoadStopRoutes[],
+        routingData: RoutingResponse
+    ): void {
         const routeMarkers: IMapMarkers[] = [];
         const routePaths: IMapRoutePath[] = [];
 
@@ -5426,16 +5421,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             if (index > 0) {
                 const routePath: IMapRoutePath = {
-                    path: [
-                        {
-                            lat: routes[index - 1].latitude!,
-                            lng: routes[index - 1].longitude!,
-                        },
-                        {
-                            lat: loadStop.latitude!,
-                            lng: loadStop.longitude!,
-                        },
-                    ],
+                    path: [],
+                    decodedShape: routingData?.legs?.[index - 1]?.decodedShape,
                     strokeColor: MapOptionsConstants.routingPathColors.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,

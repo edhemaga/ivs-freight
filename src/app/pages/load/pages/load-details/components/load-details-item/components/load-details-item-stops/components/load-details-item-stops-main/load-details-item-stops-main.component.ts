@@ -6,7 +6,7 @@ import {
     SimpleChanges,
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Subject } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -40,6 +40,7 @@ import {
     LoadResponse,
     LoadStatusHistoryResponse,
     LoadStopResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 import { StopItemsHeaderItem } from '@pages/load/pages/load-details/components/load-details-item/models/stop-items-header-item.model';
 import { MapRoute } from '@shared/models/map-route.model';
@@ -47,6 +48,9 @@ import { LoadStop } from '@pages/load/pages/load-details/components/load-details
 import { LoadStopItem } from '@pages/load/pages/load-details/components/load-details-item/models/load-stop-item.model';
 import { StopRoutes } from '@shared/models/stop-routes.model';
 import { LoadStopLastStatus } from '@pages/load/pages/load-details/components/load-details-item/models/load-stop-last-status.model';
+
+// services
+import { LoadService } from '@shared/services/load.service';
 
 @Component({
     selector: 'app-load-details-item-stops-main',
@@ -90,7 +94,10 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
     // map
     public mapData: ICaMapProps = MapOptionsConstants.defaultMapConfig;
 
-    constructor(private markerIconService: MapMarkerIconService) {}
+    constructor(
+        private markerIconService: MapMarkerIconService,
+        private loadService: LoadService
+    ) {}
 
     ngAfterViewInit(): void {
         this.addScrollEventListeners();
@@ -105,6 +112,8 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
             this.getStopsData(changes?.stopsData?.currentValue?.stops);
 
             this.getLoadStopRoutes(changes?.stopsData?.currentValue?.stops);
+
+            this.getMapData();
 
             this.stopItemDropdownIndex = -1;
 
@@ -318,55 +327,69 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
         const routeMarkers: IMapMarkers[] = [];
         const routePaths: IMapRoutePath[] = [];
 
-        this.loadStopData.forEach((loadStop, index) => {
-            const markerData = {
-                position: {
-                    lat: loadStop.shipper.latitude,
-                    lng: loadStop.shipper.longitude,
+        const mapLocations = JSON.stringify(
+            this.loadStopData.map(({ shipper: { longitude, latitude } }) => ({
+                longitude,
+                latitude,
+            }))
+        );
+
+        this.loadService
+            .getRouting(mapLocations)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res: RoutingResponse) => {
+                    const routeLegs = res.legs;
+
+                    this.loadStopData.forEach((loadStop, index) => {
+                        const markerData = {
+                            position: {
+                                lat: loadStop.shipper.latitude,
+                                lng: loadStop.shipper.longitude,
+                            },
+                        };
+
+                        const content =
+                            this.markerIconService.getRoutingMarkerIcon(
+                                markerData,
+                                loadStop.stopLoadOrder ?? 0,
+                                loadStop.stopType.name.toLowerCase(),
+                                false,
+                                true
+                            );
+
+                        const routeMarker: IMapMarkers = {
+                            ...markerData,
+                            content,
+                        };
+
+                        routeMarkers.push(routeMarker);
+
+                        if (index > 0) {
+                            const routePath: IMapRoutePath = {
+                                path: [],
+                                decodedShape:
+                                    routeLegs?.[index - 1]?.decodedShape,
+                                strokeColor:
+                                    MapOptionsConstants.routingPathColors.gray,
+                                strokeOpacity: 1,
+                                strokeWeight: 4,
+                                isDashed:
+                                    !this.loadStopData[index - 1].stopType.id,
+                            };
+
+                            routePaths.push(routePath);
+                        }
+                    });
+
+                    this.mapData = {
+                        ...this.mapData,
+                        isZoomShown: true,
+                        routingMarkers: routeMarkers,
+                        routePaths: routePaths,
+                    };
                 },
-            };
-
-            const routeMarker: IMapMarkers = {
-                ...markerData,
-                content: this.markerIconService.getRoutingMarkerIcon(
-                    markerData,
-                    loadStop.stopLoadOrder ?? 0,
-                    loadStop.stopType.name.toLowerCase(),
-                    false,
-                    true,
-                ),
-            };
-
-            routeMarkers.push(routeMarker);
-
-            if (index > 0) {
-                const routePath: IMapRoutePath = {
-                    path: [
-                        {
-                            lat: this.loadStopData[index - 1].shipper.latitude!,
-                            lng: this.loadStopData[index - 1].shipper
-                                .longitude!,
-                        },
-                        {
-                            lat: loadStop.shipper.latitude!,
-                            lng: loadStop.shipper.longitude!,
-                        },
-                    ],
-                    strokeColor: MapOptionsConstants.routingPathColors.gray,
-                    strokeOpacity: 1,
-                    strokeWeight: 4,
-                };
-
-                routePaths.push(routePath);
-            }
-        });
-
-        this.mapData = {
-            ...this.mapData,
-            isZoomShown: true,
-            routingMarkers: routeMarkers,
-            routePaths: routePaths,
-        };
+            });
     }
 
     ngOnDestroy(): void {

@@ -58,6 +58,7 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -70,7 +71,6 @@ import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 import {
     DropActionsStringEnum,
     eGeneralActions,
-    ModalButtonType,
     TableStringEnum,
 } from '@shared/enums';
 
@@ -207,7 +207,7 @@ export class SettingsTerminalModalComponent
     public svgRoutes = SettingsLocationSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutesCommon = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public activeAction!: string;
     public data: TerminalResponse;
 

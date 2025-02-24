@@ -16,15 +16,24 @@ import {
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil, switchMap } from 'rxjs';
 
-// Modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Enums
+// enums
 import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import {
+    eFileFormControls,
+    eGeneralActions,
+    eStringPlaceholder,
+} from '@shared/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
-// Validators
+// validators
 import {
     addressUnitValidation,
     addressValidation,
@@ -37,7 +46,7 @@ import {
     longitudeValidator,
 } from '@shared/validators/long-lat-validations';
 
-// Services
+// services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import {
@@ -51,10 +60,10 @@ import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
-// Animations
+// animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-// Components
+// components
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -70,39 +79,28 @@ import {
     CaInputComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
-// Helpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// Constants
+// constants
 import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants';
 
-// Config
+// config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs';
-
-// Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import {
-    eFileFormControls,
-    eGeneralActions,
-    eStringPlaceholder,
-    ModalButtonSize,
-    ModalButtonType,
-} from '@shared/enums';
-import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Pipes
+// pipes
 import { FormatDatePipe } from '@shared/pipes';
 
-// Models
+// models
 import {
     ShipperModalResponse,
     AddressEntity,
@@ -226,8 +224,8 @@ export class ShipperModalComponent
     public taModalActionEnum = TaModalActionEnum;
 
     public activeAction: string;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
 
     constructor(
         private formBuilder: UntypedFormBuilder,

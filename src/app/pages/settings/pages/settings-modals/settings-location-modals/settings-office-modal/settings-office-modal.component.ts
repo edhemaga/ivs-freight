@@ -38,6 +38,7 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -83,11 +84,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { SettingsOfficeModalStringEnum } from './enums/settings-office-modal-string.enum';
-import {
-    DropActionsStringEnum,
-    ModalButtonType,
-    TableStringEnum,
-} from '@shared/enums';
+import { DropActionsStringEnum, TableStringEnum } from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Pipes
@@ -214,7 +211,7 @@ export class SettingsOfficeModalComponent
 
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public activeAction!: string;
     public data: CompanyOfficeResponse;
 

@@ -105,7 +105,8 @@
                         <p
                             class="repair-shop-template-text ta-font-bold text-size-11 text-color-black-2"
                             [ngClass]="{
-                                'cross-out text-color-light-grey-6': !ser.active
+                                'cross-out text-color-light-grey-6':
+                                    !ser.active,
                             }"
                         >
                             {{ ser.serviceType.name }}
@@ -121,7 +122,26 @@
                 [isCardOpen]="isWorkingCardOpened[i]"
                 (onOpenCard)="isWorkingCardOpened[i] = $event"
             >
-                <div>Time here</div>
+                <div class="working-hours-main">
+                    @for (
+                        workingHoursItem of item?.openHours;
+                        let workingHoursItemIndex = $index;
+                        track workingHoursItemIndex
+                    ) {
+                        <div class="d-flex flex-column justify-content-center">
+                            <p
+                                class="m-0 ta-font-bold text-size-11 text-color-black"
+                            >
+                                {{ workingHoursItem?.dayOfWeek }}
+                            </p>
+
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                {{ workingHoursItem?.startTime }} -
+                                {{ workingHoursItem?.endTime }}
+                            </p>
+                        </div>
+                    }
+                </div>
             </app-ta-custom-card>
 
             <ng-container *ngIf="item.bankResponse">
@@ -190,7 +210,7 @@
                     [hasCounter]="department.value.values.length"
                     [animationMarginParams]="{
                         marginTop: '0',
-                        marginBottom: '0'
+                        marginBottom: '0',
                     }"
                 >
                     <ng-container
@@ -212,7 +232,7 @@
                                         contact.phone,
                                         contact.phoneExt
                                             ? ' x' + contact.phoneExt
-                                            : ''
+                                            : '',
                                     ]"
                                     type="Contacts"
                                 ></app-ta-copy>

@@ -636,9 +636,6 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                         this.currentChildIndex
                     ].comments = todoCom;
                 },
-                error: () => {
-                    console.log('ERROR WHILE DELETING');
-                },
             });
         } else if (event.action == eGeneralActions.UPDATE) {
             this.commentsService

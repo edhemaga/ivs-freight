@@ -458,10 +458,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         return lastSixChars;
     }
 
-    public changeTabPerfomance(event: TabOptions): void {
-        console.log('Selected tab is:', event.name);
-    }
-
     public changeTabFuel(event: TabOptions): void {
         this.getFuelConsumption(event.id);
     }

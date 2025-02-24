@@ -1,5 +1,17 @@
 @import 'src/theme/variables.scss';
 
+.step-btn-next-container {
+    position: fixed;
+    bottom: 50%;
+    right: 42px;
+}
+
+.step-btn-back-container {
+    position: fixed;
+    bottom: 50%;
+    left: 42px;
+}
+
 .step-btn {
     outline: none;
     border: none;
