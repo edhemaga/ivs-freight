@@ -1,14 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // Models
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 @Pipe({
     name: 'settingsParkingConfig',
     standalone: true,
 })
 export class SettingsParkingConfigPipe implements PipeTransform {
-    transform(type: string, value?: boolean): ITaInput {
+    transform(type: string, value?: boolean): ICaInput {
         switch (type) {
             case 'name':
                 return {
@@ -61,6 +61,7 @@ export class SettingsParkingConfigPipe implements PipeTransform {
                     dropdownWidthClass: 'w-col-376',
                     minLength: 6,
                     maxLength: 256,
+                    isAddress: true,
                 };
             case 'addressUnit':
                 return {
