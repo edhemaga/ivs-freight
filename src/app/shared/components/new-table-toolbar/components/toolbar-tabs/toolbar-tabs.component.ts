@@ -3,6 +3,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 // Enums
 import { ToolbarVariant } from '@shared/enums';
+import { IToolbarTabs } from '@shared/models/IToolbarTabs';
 
 // Types
 import { ToolbarVariantType } from '@shared/types';
@@ -15,13 +16,13 @@ import { ToolbarVariantType } from '@shared/types';
   styleUrl: './toolbar-tabs.component.scss'
 })
 export class ToolbarTabsComponent {
-  public toolbarVariant = ToolbarVariant;
-  // TODO: Maybe add type?
-  @Input() data: { title?: string; name?: string; length?: number }[] = [];
+  @Input() data: IToolbarTabs[] = [];
   @Input() selectedTab?: string;
   @Input() variant: ToolbarVariantType = ToolbarVariant.Large;
 
   @Output() tabSelected = new EventEmitter<string>();
+
+  public toolbarVariant = ToolbarVariant;
 
   onTabClick(tab: string) {
       this.tabSelected.emit(tab);

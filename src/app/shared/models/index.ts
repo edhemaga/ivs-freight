@@ -76,3 +76,4 @@ export * from './table-models/current-search-table-data-chip.model';
 export * from './avatar-colors.model';
 export * from './plaid';
 export * from './IStateFilters';
+export * from './IToolbarTabs';

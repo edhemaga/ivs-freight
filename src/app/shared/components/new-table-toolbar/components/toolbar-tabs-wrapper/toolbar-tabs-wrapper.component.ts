@@ -4,6 +4,7 @@ import { ToolbarTabsComponent } from '../toolbar-tabs/toolbar-tabs.component';
 import { TableStringEnum, ToolbarVariant } from '@shared/enums';
 import { ITableData, TableToolbarActions } from '@shared/models';
 import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
+import { TableViewConts } from '@shared/utils/constants';
 
 @Component({
     selector: 'app-toolbar-tabs-wrapper',
@@ -20,14 +21,7 @@ export class ToolbarTabsWrapperComponent {
 
     public tableStringEnum = TableStringEnum;
     public toolbarVariant = ToolbarVariant;
-    public tableViewData = [
-        {
-            name: 'List',
-        },
-        {
-            name: 'Card',
-        },
-    ];
+    public tableViewData = TableViewConts;
 
     public onToolBarAction(event: TableToolbarActions) {
         this.onTabChange.emit(event);
