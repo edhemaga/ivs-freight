@@ -310,8 +310,6 @@ export class OwnerModalComponent
     }): void {
         if (!event.valid) return;
 
-        console.log(event, 'funkcija za odabir')
-
         this.selectedAddress = event.address;
         this.longitude = event.longLat.longitude;
         this.latitude = event.longLat.latitude;
@@ -454,9 +452,6 @@ export class OwnerModalComponent
             addressUnit,
             ...form
         } = this.ownerForm.value;
-
-        console.log(address, 'adresa kad saljem')
-        console.log({ ...address, addressUnit: addressUnit }, 'zajedno sa unitom')
 
         const newData: any = {
             id: id,
