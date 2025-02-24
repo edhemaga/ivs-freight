@@ -8,4 +8,5 @@ export class LoadModalSvgRoutes {
     static checkmark: string = 'assets/svg/common/ic_checkmark.svg';
     static delete: string = 'assets/svg/common/load/ic_load_stop_delete.svg';
     static deleteStopItem: string = 'assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg';
+    static loadShiperContact: string = 'assets/svg/common/load/ic_load_shipper_contact_avatar.svg';
 }
