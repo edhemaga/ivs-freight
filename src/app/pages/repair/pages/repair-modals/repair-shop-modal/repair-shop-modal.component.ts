@@ -22,6 +22,8 @@ import { Subject, Subscription, forkJoin, of, takeUntil } from 'rxjs';
 // Models
 import { AddressEntity } from 'appcoretruckassist/model/addressEntity';
 import {
+    AddressListResponse,
+    AddressResponse,
     BankResponse,
     CreateResponse,
     CreateReviewCommand,
@@ -140,6 +142,7 @@ import { AddressService } from '@shared/services/address.service';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 @Component({
     selector: 'app-repair-shop-modal',
@@ -184,6 +187,9 @@ export class RepairShopModalComponent
     extends AddressMixin(
         class {
             addressService!: AddressService;
+            addressList: AddressListResponse;
+            addressData: AddressResponse;
+            cdr: ChangeDetectorRef;
         }
     )
     implements OnInit, OnDestroy
@@ -217,9 +223,6 @@ export class RepairShopModalComponent
         params: { height: '0px' },
     };
     public animationTabClass = 'animation-three-tabs';
-
-    // Address
-    public selectedAddress: AddressEntity;
 
     // Subject
     public destroy$ = new Subject<void>();
@@ -287,7 +290,7 @@ export class RepairShopModalComponent
         private formBuilder: UntypedFormBuilder,
 
         // change detection
-        private cdr: ChangeDetectorRef,
+        public override cdr: ChangeDetectorRef,
 
         // services
         private shopService: RepairService,
@@ -308,7 +311,7 @@ export class RepairShopModalComponent
     public get isModalValidToSubmit(): boolean {
         return (
             this.repairShopForm.valid &&
-            this.isFormDirty &&
+            this.repairShopForm.touched &&
             this.isEachContactRowValid
         );
     }
@@ -377,7 +380,7 @@ export class RepairShopModalComponent
         return RepairShopConfig.getEmailInputConfig();
     }
 
-    public get addressInputConfig(): ITaInput {
+    public get addressInputConfig(): ICaInput {
         return RepairShopConfig.getAddressInputConfig();
     }
 
@@ -542,7 +545,7 @@ export class RepairShopModalComponent
                             [RepairShopModalStringEnum.ADDRESS_UNIT]:
                                 repairShop.address.addressUnit,
                             [RepairShopModalStringEnum.ADDRESS]:
-                                repairShop.address.address,
+                                repairShop.address,
                             [RepairShopModalStringEnum.OPEN_ALWAYS]: false,
                             [RepairShopModalStringEnum.ACCOUNT]:
                                 repairShop.account,
@@ -590,7 +593,6 @@ export class RepairShopModalComponent
         // This fields are custom and cannot be part of the form so we need to remap it
         this.showPhoneExt = !!res.phoneExt;
         this.services = RepairShopHelper.mapServices(res, false);
-        this.selectedAddress = res.address;
         this.isBankSelected = !!res.bank;
         this.files = res.files;
         this.coverPhoto = res.cover;
@@ -697,7 +699,6 @@ export class RepairShopModalComponent
         longLat: any;
     }): void {
         if (event.valid) {
-            this.selectedAddress = event.address;
             this.repairShopForm
                 .get(RepairShopModalStringEnum.LONGITUDE)
                 .patchValue(event.longLat.longitude);
@@ -908,13 +909,12 @@ export class RepairShopModalComponent
     }
 
     private startFormChanges(): void {
-        this.formService.checkFormChange(this.repairShopForm);
-
-        this.formService.formValueChange$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                (isFormChange: boolean) => (this.isFormDirty = isFormChange)
-            );
+        // this.formService.checkFormChange(this.repairShopForm);
+        // this.formService.formValueChange$
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe(
+        //         (isFormChange: boolean) => (this.isFormDirty = isFormChange)
+        //     );
     }
 
     // Bank
@@ -1073,7 +1073,7 @@ export class RepairShopModalComponent
                 RepairShopModalStringEnum.PHONE_EXT
             ),
             address: {
-                ...this.selectedAddress,
+                ...this.getFromFieldValue(RepairShopModalStringEnum.ADDRESS),
                 addressUnit: this.getFromFieldValue(
                     RepairShopModalStringEnum.ADDRESS_UNIT
                 ),

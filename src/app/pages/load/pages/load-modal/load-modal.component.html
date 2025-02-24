@@ -6,7 +6,7 @@
     [specificCaseModalName]="true"
     [isModalValid]="
         loadForm.valid &&
-        isFormDirty &&
+        loadForm.touched &&
         isEachStopItemsRowValid &&
         !reorderingStarted &&
         !isMilesLoading

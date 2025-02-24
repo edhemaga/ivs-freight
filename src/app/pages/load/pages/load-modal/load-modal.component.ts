@@ -158,7 +158,6 @@ import {
     CaMapComponent,
     ICaMapProps,
     CaInputDropdownComponent,
-    CaInputComponent,
     MapOptionsConstants,
     IMapMarkers,
     IMapRoutePath,
@@ -193,7 +192,6 @@ import { eGeneralActions } from '@shared/enums';
         TaInputNoteComponent,
         TaCommentComponent,
         LoadModalHazardousComponent,
-        TaProgresBarComponent,
         LoadModalWaitTimeComponent,
         LoadDetailsItemCommentsComponent,
         TaInputDropdownStatusComponent,
@@ -957,7 +955,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             pickupDateToControl.errors ||
             pickupTimeFromControl.errors
         )?.required;
-
 
         if (this.selectedStopTimePickup === 5) {
             isFormInvalid =
@@ -4915,7 +4912,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             referenceNumber: referenceNumber ?? null,
             weight: weight ?? null,
             liftgate: loadRequirements?.liftgate,
-            driverMessage: loadRequirements?.driverMessage, 
+            driverMessage: loadRequirements?.driverMessage,
             loadRequirementsId: loadRequirements.id,
             note: note,
             // pickup
