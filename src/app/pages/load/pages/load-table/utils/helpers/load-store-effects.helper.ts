@@ -4,6 +4,7 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 // enums
 import { TableStringEnum } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -11,6 +12,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 
 // models
 import {
+    BrokerByIdResponse,
     DispatcherFilterResponse,
     LoadModalResponse,
     LoadPossibleStatusesResponse,
@@ -19,19 +21,17 @@ import {
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
+import { Load } from '@pages/load/models';
 
 export class LoadStoreEffectsHelper {
     public static getCreateLoadModalData(
-        modalService: ModalService,
-        loadModalData: LoadModalResponse
+        modalService: ModalService
     ): void {
         modalService.openModal(
             LoadModalComponent,
             { size: TableStringEnum.LOAD },
             {
-                loadModalData: {
-                    ...loadModalData,
-                },
+                type: LoadModalStringEnum.CREATE
             }
         );
     }
@@ -39,22 +39,11 @@ export class LoadStoreEffectsHelper {
     public static getLoadOrTemplateByIdEditModal(
         modalService: ModalService,
         selectedTab: eLoadStatusType,
-        eventType: string,
-        response: LoadResponse | LoadTemplateResponse,
-        statusDropdownResponse: LoadPossibleStatusesResponse,
-        modalResponse: LoadModalResponse
+        eventType: string
     ): void {
         const editData = {
-            data: {
-                ...response,
-            },
-            statusDropdownData: {
-                ...statusDropdownResponse,
-            },
-            loadModalData: {
-                ...modalResponse,
-            },
             type: eventType,
+            eventType: eventType,
             selectedTab: eLoadStatusType[selectedTab]?.toLowerCase(),
         };
 
