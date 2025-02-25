@@ -36,6 +36,8 @@ export class FuelStopDetailsCardComponent {
     @Input() set fuelStop(data: FuelStopResponse) {
         this._fuelStop = data;
 
+        console.log('this._fuelStop', this._fuelStop);
+
         /*   this.getFuelStopsDropdownList(); */
     }
 

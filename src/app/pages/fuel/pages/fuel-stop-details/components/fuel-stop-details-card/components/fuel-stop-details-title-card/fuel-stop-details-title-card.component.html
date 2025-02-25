@@ -1,39 +1,85 @@
-<div>TITLE CARD</div>
-
-<!-- <app-ta-details-header-card
-    [cardDetailsName]=""
-    [cardDetailsDate]="fuel?.data?.createdAt | formatDateP"
-    [tooltipNext]="'Next Fuel'"
-    [tooltipPrevious]="'Previous Fuel'"
-    [searchInputName]="'Search Fuel'"
-    [options]="fuelDropdown"
-    [optionsSecondInput]="storeDropdown"
-    [haveTwoInput]="true"
-    [dateChecked]="'5 days ago'"
+<app-ta-details-header-card
+    [ngClass]="{
+        disabedPreviousArrow: [0, -1].includes(fuelStopCurrentIndex),
+        disableNextArrow:
+            fuelStopCurrentIndex === fuelStopDropdownList?.length - 1,
+    }"
+    [tooltipNext]="
+        fuelStopCurrentIndex === fuelStopDropdownList?.length - 1
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.NEXT
+    "
+    [tooltipPrevious]="
+        [0, -1].includes(fuelStopCurrentIndex)
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.PREVIOUS
+    "
+    [cardDetailsDate]="_cardData?.createdAt | formatDateP"
+    [dateChecked]="_cardData?.lastUsed && (_cardData.lastUsed | formatDateP)"
+    [dateClosed]="
+        _cardData?.deactivatedAt && (_cardData.deactivatedAt | formatDateP)
+    "
+    [searchInputName]="eFuelStopDetails.SEARCH_FUEL_STOP"
+    [searchName]="
+        _cardData?.isClosed
+            ? eBusinessStatus.PERMANENTLY_CLOSED
+            : eBusinessStatus.FAVORITE
+    "
+    [options]="fuelStopDropdownList"
+    [currentName]="_cardData?.businessName"
+    [haveDropSVG]="_cardData?.isClosed || _cardData?.favourite"
+    [customPinnedSvg]="
+        _cardData?.isClosed
+            ? fuelStopDetailsSvgRoutes.closedRoute
+            : fuelStopDetailsSvgRoutes.favoriteRoute
+    "
+    [additionalTitle]="eFuelStopDetails.FUEL_STOP_STORE + _cardData?.store"
+    (selectValue)="handleCardChanges($event, eFuelStopDetails.SELECT_FUEL_STOP)"
+    (changeEvent)="handleCardChanges($event, eFuelStopDetails.CHANGE_FUEL_STOP)"
 >
-    <div class="repair-information-wrapper">
-        @if (fuel?.data?.phone) {
-            <div class="repair-information-item">
-                <svg-icon
-                    class="repair-icon"
-                    src="assets/svg/common/ic_phone.svg"
-                ></svg-icon>
-                <p class="repair-value">
-                    {{ fuel?.data?.phone }}
-                </p>
-            </div>
-        }
+    <div class="d-flex flex-column justify-content-center stop-title-card">
+        <!-- Phone -->
 
-        @if (fuel?.data?.address?.address) {
-            <div class="repair-information-item address-cont">
+        <div class="d-flex align-items-center stop-title-card-item">
+            <div
+                ngbTooltip
+                mainTooltip="Phone"
+                position="bottom"
+                tooltipBackground="#424242"
+            >
                 <svg-icon
-                    class="repair-icon"
-                    src="assets/svg/common/ic_address.svg"
+                    class="svg-size-18 svg-fill-muted svg-hover-bw6-2 stop-title-card-item-icon"
+                    [src]="fuelStopDetailsSvgRoutes.phoneRoute"
                 ></svg-icon>
-                <p class="repair-value">
-                    {{ fuel?.data?.address?.address }}
-                </p>
             </div>
-        }
+
+            <app-ta-copy
+                [copyValue]="_cardData?.phone"
+                [textColor]="'#2f2f2f'"
+            ></app-ta-copy>
+        </div>
+
+        <!-- Address -->
+
+        <div
+            class="d-flex align-items-center stop-title-card-item text-truncate"
+        >
+            <div
+                ngbTooltip
+                mainTooltip="Address"
+                position="bottom"
+                tooltipBackground="#424242"
+            >
+                <svg-icon
+                    class="svg-size-18 svg-fill-muted svg-hover-bw6-2 stop-title-card-item-icon"
+                    [src]="fuelStopDetailsSvgRoutes.addressRoute"
+                ></svg-icon>
+            </div>
+
+            <app-ta-copy
+                [copyValue]="_cardData?.address"
+                [textColor]="'#2f2f2f'"
+            ></app-ta-copy>
+        </div>
     </div>
-</app-ta-details-header-card> -->
+</app-ta-details-header-card>

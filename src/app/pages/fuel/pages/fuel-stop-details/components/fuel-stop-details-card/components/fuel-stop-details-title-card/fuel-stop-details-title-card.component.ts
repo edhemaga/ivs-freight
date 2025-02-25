@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
@@ -11,6 +12,20 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes';
+
+// svg routes
+import { FuelStopDetailsSvgRoutes } from '@pages/fuel/pages/fuel-stop-details/utils/svg-routes';
+
+// enums
+import {
+    eBusinessStatus,
+    eGeneralActions,
+    eStringPlaceholder,
+} from '@shared/enums';
+import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
+
+// models
+import { FuelStopResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-details-title-card',
@@ -21,6 +36,7 @@ import { FormatDatePipe } from '@shared/pipes';
         // modules
         CommonModule,
         AngularSvgIconModule,
+        NgbModule,
 
         // components
         TaDetailsHeaderCardComponent,
@@ -31,46 +47,35 @@ import { FormatDatePipe } from '@shared/pipes';
         FormatDatePipe,
     ],
 })
-export class FuelStopDetailsTitleCardComponent implements OnInit {
-    public fuelDropdown: any;
-    public storeDropdown: any;
+export class FuelStopDetailsTitleCardComponent {
+    @Input() set cardData(data: FuelStopResponse) {
+        this._cardData = data;
+
+        console.log('this._cardData', this._cardData);
+    }
+
+    @Input() fuelStopCurrentIndex: number;
+    @Input() fuelStopDropdownList: FuelStopResponse[];
+
+    @Output() cardValuesEmitter = new EventEmitter<{
+        event: any;
+        type: string;
+    }>();
+
+    public _cardData: FuelStopResponse;
+
+    // svg routes
+    public fuelStopDetailsSvgRoutes = FuelStopDetailsSvgRoutes;
+
+    // enums
+    public eGeneralActions = eGeneralActions;
+    public eStringPlaceholder = eStringPlaceholder;
+    public eFuelStopDetails = eFuelStopDetails;
+    public eBusinessStatus = eBusinessStatus;
 
     constructor() {}
 
-    ngOnInit(): void {
-        this.fuelDropDown();
-        this.storeDropDown();
-    }
-
-    public fuelDropDown() {
-        let fuelNames = [
-            { id: 1, name: 'PILOT TRAVEL STOP 1' },
-            { id: 2, name: 'PILOT TRAVEL STOP 2' },
-        ];
-
-        this.fuelDropdown = fuelNames.map((item) => {
-            return {
-                id: item.id,
-                name: item.name,
-                active: item.id,
-            };
-        });
-    }
-
-    public storeDropDown() {
-        let storeNames = [
-            { id: 1, name: 'Store 424', pinned: true },
-            { id: 2, name: 'Store 555', pinned: null },
-        ];
-
-        this.storeDropdown = storeNames.map((item) => {
-            return {
-                id: item.id,
-                name: item.name,
-                svg: item.pinned ? 'ic_star.svg' : null,
-                folder: 'common',
-                active: item.id,
-            };
-        });
+    public handleCardChanges(event: any, type: string): void {
+        this.cardValuesEmitter.emit({ event, type });
     }
 }

@@ -1,12 +1,18 @@
 <app-ta-details-header-card
     [ngClass]="{
         disabedPreviousArrow: [0, -1].includes(driverCurrentIndex),
-        disableNextArrow: driverCurrentIndex === driversDropdownList.length - 1
+        disableNextArrow: driverCurrentIndex === driversDropdownList.length - 1,
     }"
     [tooltipNext]="
-        driverCurrentIndex === driversDropdownList.length - 1 ? '' : 'Next'
+        driverCurrentIndex === driversDropdownList.length - 1
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.NEXT
     "
-    [tooltipPrevious]="[0, -1].includes(driverCurrentIndex) ? '' : 'Previous'"
+    [tooltipPrevious]="
+        [0, -1].includes(driverCurrentIndex)
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.PREVIOUS
+    "
     [cardDetailsDate]="cardData.hiredAt | formatDateP"
     [cardDetailsDateTerminated]="cardData.terminatedAt | formatDateP"
     [options]="driversDropdownList"

@@ -35,7 +35,7 @@ import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/rep
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
 // enums
-import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 import { eCommonElements } from '@shared/enums';
@@ -275,15 +275,12 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    if (res?.type === RepairShopDetailsStringEnum.DELETE) {
-                        if (
-                            res?.template ===
-                            RepairShopDetailsStringEnum.REPAIR_SHOP
-                        ) {
+                    if (res?.type === eRepairShopDetails.DELETE) {
+                        if (res?.template === eRepairShopDetails.REPAIR_SHOP) {
                             this.deleteRepairShop(res?.data?.id);
                         } else if (
                             res?.template ===
-                            RepairShopDetailsStringEnum.REPAIR_SHOP_CONTACT
+                            eRepairShopDetails.REPAIR_SHOP_CONTACT
                         ) {
                             this.deleteRepairShopContact(res?.id);
                         } else {
@@ -303,12 +300,11 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (
-                    res?.subTypeStatus ===
-                        RepairShopDetailsStringEnum.BUSINESS &&
+                    res?.subTypeStatus === eRepairShopDetails.BUSINESS &&
                     [
-                        RepairShopDetailsStringEnum.OPEN,
-                        RepairShopDetailsStringEnum.CLOSE,
-                    ].includes(res?.type as RepairShopDetailsStringEnum)
+                        eRepairShopDetails.OPEN,
+                        eRepairShopDetails.CLOSE,
+                    ].includes(res?.type as eRepairShopDetails)
                 )
                     this.handleOpenCloseRepairShop(res?.id);
             });
@@ -322,19 +318,19 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                     const { searchType } = res;
 
                     switch (searchType) {
-                        case RepairShopDetailsStringEnum.REPAIR:
+                        case eRepairShopDetails.REPAIR:
                             this.handleRepairListSearch(res);
 
                             break;
-                        case RepairShopDetailsStringEnum.VEHICLE:
+                        case eRepairShopDetails.VEHICLE:
                             this.handleRepairedVehicleListSearch(res);
 
                             break;
-                        case RepairShopDetailsStringEnum.CONTACT:
+                        case eRepairShopDetails.CONTACT:
                             this.handleContactListSearch(res);
 
                             break;
-                        case RepairShopDetailsStringEnum.REVIEW:
+                        case eRepairShopDetails.REVIEW:
                             break;
                         default:
                             break;
@@ -565,19 +561,19 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     public onModalAction(action: string): void {
         switch (action) {
-            case RepairShopDetailsStringEnum.REPAIR:
+            case eRepairShopDetails.REPAIR:
                 this.modalService.openModal(RepairOrderModalComponent, {
                     size: TableStringEnum.SMALL,
                 });
 
                 break;
-            case RepairShopDetailsStringEnum.CONTACT:
-            case RepairShopDetailsStringEnum.REVIEW:
+            case eRepairShopDetails.CONTACT:
+            case eRepairShopDetails.REVIEW:
                 const mappedEvent = {
                     id: this.repairShopObject.id,
-                    type: RepairShopDetailsStringEnum.EDIT_2,
+                    type: eRepairShopDetails.EDIT_2,
                     openedTab:
-                        action === RepairShopDetailsStringEnum.CONTACT
+                        action === eRepairShopDetails.CONTACT
                             ? TableStringEnum.CONTACT
                             : TableStringEnum.REVIEW,
                 };
@@ -611,7 +607,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         event: { direction: string },
         type: string
     ): void {
-        if (type === RepairShopDetailsStringEnum.REPAIR) {
+        if (type === eRepairShopDetails.REPAIR) {
             this.backFilterQuery.sort = event.direction;
 
             this.repairBackFilter(this.backFilterQuery);
@@ -629,11 +625,11 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     public onSearchBtnClick(isSearch: boolean, type: string): void {
         const index =
-            type === RepairShopDetailsStringEnum.REPAIR
+            type === eRepairShopDetails.REPAIR
                 ? 0
-                : type === RepairShopDetailsStringEnum.VEHICLE
+                : type === eRepairShopDetails.VEHICLE
                   ? 1
-                  : type === RepairShopDetailsStringEnum.REVIEW
+                  : type === eRepairShopDetails.REVIEW
                     ? 2
                     : 3;
 
@@ -657,9 +653,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .deleteRepairShop(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() =>
-                this.router.navigate([
-                    RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE,
-                ])
+                this.router.navigate([eRepairShopDetails.REPAIR_LIST_ROUTE])
             );
     }
 

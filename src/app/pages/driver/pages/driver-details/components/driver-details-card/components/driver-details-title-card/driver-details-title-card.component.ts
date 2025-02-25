@@ -14,6 +14,9 @@ import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 
+// enums
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
+
 // models
 import { DriverMinimalResponse, DriverResponse } from 'appcoretruckassist';
 
@@ -48,7 +51,11 @@ export class DriverDetailsTitleCardComponent {
         type: string;
     }>();
 
-    constructor() { }
+    // enums
+    public eGeneralActions = eGeneralActions;
+    public eStringPlaceholder = eStringPlaceholder;
+
+    constructor() {}
 
     public handleCardChanges(event: DriverMinimalResponse, type: string): void {
         this.cardValuesEmitter.emit({ event, type });

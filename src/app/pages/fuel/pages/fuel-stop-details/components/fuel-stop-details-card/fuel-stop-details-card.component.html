@@ -2,7 +2,21 @@
     <div class="cards-item-wrapper-1 fuel-stop-details-card">
         <!-- Title Card -->
 
-        <app-fuel-stop-details-title-card></app-fuel-stop-details-title-card>
+        <app-fuel-stop-details-title-card
+            [fuelStopCurrentIndex]="0"
+            [fuelStopDropdownList]="[]"
+            [cardData]="{
+                createdAt: _fuelStop?.createdAt,
+                lastUsed: _fuelStop?.lastUsed,
+                deactivatedAt: _fuelStop?.deactivatedAt,
+                businessName: _fuelStop?.businessName,
+                favourite: _fuelStop?.favourite,
+                isClosed: _fuelStop?.isClosed,
+                phone: _fuelStop?.phone,
+                address: _fuelStop?.address?.address,
+                store: _fuelStop?.store,
+            }"
+        ></app-fuel-stop-details-title-card>
 
         <!-- Additional Cards -->
 

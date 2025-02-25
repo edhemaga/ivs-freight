@@ -1,4 +1,4 @@
-export enum RepairShopDetailsStringEnum {
+export enum eRepairShopDetails {
     BANK = 'Bank',
     ROUTING = 'Routing',
     ACCOUNT = 'Account',
@@ -46,4 +46,6 @@ export enum RepairShopDetailsStringEnum {
     VEHICLE = 'Vehicle',
     REVIEW = 'Review',
     CONTACT = 'Contact',
+
+    SEARCH_REPAIR_SHOP = 'Search Repair Shop',
 }
