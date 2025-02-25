@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-
 import { Observable, forkJoin, tap } from 'rxjs';
 
 // services
@@ -25,6 +24,9 @@ import {
     UpdateCompanyContactCommand,
     UpdateCompanyContactLabelCommand,
 } from 'appcoretruckassist';
+
+// enums
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -80,7 +82,7 @@ export class ContactsService {
                                     );
 
                                     this.tableService.sendActionAnimation({
-                                        animation: 'add',
+                                        animation: eGeneralActions.ADD,
                                         data: contact,
                                         id: contact.id,
                                     });
@@ -111,7 +113,7 @@ export class ContactsService {
                         this.contactStore.add(contact);
 
                         this.tableService.sendActionAnimation({
-                            animation: 'update',
+                            animation: eGeneralActions.UPDATE,
                             data: contact,
                             id: contact.id,
                         });
@@ -179,7 +181,7 @@ export class ContactsService {
                     );
 
                     this.tableService.sendActionAnimation({
-                        animation: 'delete',
+                        animation: eGeneralActions.DELETE,
                         id: contactIds[i],
                     });
                 }
@@ -207,7 +209,7 @@ export class ContactsService {
                 );
 
                 this.tableService.sendActionAnimation({
-                    animation: 'delete',
+                    animation: eGeneralActions.DELETE,
                     id: contactId,
                 });
             })

@@ -29,7 +29,7 @@ export class BankVerificationService {
     constructor(
         private inputService: TaInputService,
         private bankService: BankService
-    ) {}
+    ) { }
 
     public async onSelectBank(
         bankValue: string,
@@ -58,7 +58,6 @@ export class BankVerificationService {
             });
         } else {
             this.inputService.changeValidators(routingControl, false);
-            this.inputService.changeValidators(accountControl, false);
 
             return new Promise((resolve, _) => {
                 const timeout = setTimeout(() => {

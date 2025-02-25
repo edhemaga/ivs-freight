@@ -72,18 +72,14 @@
                             dropdownWidthClass: 'w-col-376',
                             minLength: 6,
                             maxLength: 256,
+                            isAddress: true,
                         }"
                         [placeholderType]="'longAddress'"
-                        [activeAddress]="selectedAddress"
                         (selectedAddress)="onHandleAddress($event)"
                         [receivedAddressList]="addressList"
                         [receivedAddressData]="addressData"
-                        (sentAddressData)="
-                            onAddressChange($event)
-                        "
-                        (sentAddressValue)="
-                            getAddressData($event)
-                        "
+                        (sentAddressData)="onAddressChange($event)"
+                        (sentAddressValue)="getAddressData($event)"
                     ></app-ca-input-address-dropdown>
                 </div>
                 <div class="col-2">
@@ -199,9 +195,9 @@
                 <div>
                     <app-ca-modal-button
                         text="Delete"
-                        [size]="modalButtonSize.SMALL"
+                        [size]="eModalButtonSize.SMALL"
                         (click)="onModalAction(taModalActionEnum.DELETE)"
-                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
                     ></app-ca-modal-button>
                 </div>
                 <app-ca-modal-button
@@ -209,7 +205,7 @@
                     [isValid]="factoringForm.valid && isFormDirty"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
                     [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
             </div>
@@ -219,7 +215,7 @@
                 [isValid]="factoringForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                [type]="modalButtonType.PRIMARY_POSITIVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
             >
             </app-ca-modal-button>
         }

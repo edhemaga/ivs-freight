@@ -105,6 +105,7 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { eGeneralActions } from '@shared/enums/general-actions.enum';
 
 // models
 import { IActiveLoadModalData } from '@pages/load/models';
@@ -167,7 +168,6 @@ import {
     CaMapComponent,
     ICaMapProps,
     CaInputDropdownComponent,
-    CaInputComponent,
     MapOptionsConstants,
     IMapMarkers,
     IMapRoutePath,
@@ -201,7 +201,6 @@ import {
         TaInputNoteComponent,
         TaCommentComponent,
         LoadModalHazardousComponent,
-        TaProgresBarComponent,
         LoadModalWaitTimeComponent,
         LoadDetailsItemCommentsComponent,
         TaInputDropdownStatusComponent,
@@ -222,7 +221,7 @@ import {
         { provide: CDK_DRAG_CONFIG, useValue: LoadModalDragAndDrop.Config },
     ],
 })
-export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
+export class LoadModalComponent implements OnInit, OnDestroy {
     @ViewChild('originElement') originElement: ElementRef;
     @ViewChild('popover') popover: NgbPopover;
     @ViewChild('trailerInputDropdown')
@@ -490,15 +489,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         this.trackBillingPayment();
     }
 
-    ngDoCheck(): void {
-        if (this.originElement) {
-            this.originHeight =
-                this.originElement.nativeElement.getBoundingClientRect().height;
-
-            this.cdRef.detectChanges();
-        }
-    }
-
     public get billingCount(): number {
         // plus 1 from base
         return (
@@ -714,10 +704,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return !!(this.selectedTrailerReq || this.selectedTruckReq);
     }
 
-    public trackByIdentity(_, index: number): number {
-        return index;
-    }
-
     public handleTonuRateVisiblity(): void {
         const show =
             this.selectedStatus &&
@@ -876,7 +862,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 );
             }
 
-            if (this.editData?.type === 'edit' || this.editData?.isEditMode) {
+            if (
+                this.editData?.type === eGeneralActions.EDIT ||
+                this.editData?.isEditMode
+            ) {
                 this.isFormDirty = true;
             } else {
                 this.formService.formValueChange$
@@ -1934,11 +1923,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     })
                     .filter((item) => item.contacts?.length);
 
-                this.labelsBrokerContacts.unshift({
-                    id: 7655,
-                    name: LoadModalStringEnum.ADD_NEW,
-                });
-
                 if (this.labelsBrokerContacts[1]?.contacts[0]) {
                     this.selectedBrokerContact =
                         this.labelsBrokerContacts[1].contacts[0];
@@ -1975,13 +1959,6 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                     }
                 } else {
                     this.selectedBrokerContact = null;
-
-                    this.labelsBrokerContacts = [
-                        {
-                            id: 7655,
-                            name: LoadModalStringEnum.ADD_NEW,
-                        },
-                    ];
 
                     this.loadForm
                         .get(LoadModalStringEnum.BROKER_CONTACT_ID)
@@ -2849,7 +2826,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 const paymentTotals = value.reduce(
                     (acc, val) => {
                         const pay = val.pay
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
                                   val.pay as string
                               )
                             : 0;
@@ -3264,16 +3241,15 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 };
             }
 
-            if (newItem.secure) {
+            if (newItem.secure)
                 newItem = {
                     ...newItem,
                     secure: this.stopItemDropdownLists.secureDropdownList.find(
                         (secure) => secure.name === newItem.secure
                     )?.id,
                 };
-            }
 
-            if (newItem.stackable) {
+            if (newItem.stackable)
                 newItem = {
                     ...newItem,
                     stackable:
@@ -3281,18 +3257,16 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             (stackable) => stackable.name === newItem.stackable
                         )?.id,
                 };
-            }
 
-            if (newItem.tarp) {
+            if (newItem.tarp)
                 newItem = {
                     ...newItem,
                     tarp: this.stopItemDropdownLists.tarpDropdownList.find(
                         (tarp) => tarp.name === newItem.tarp
                     )?.id,
                 };
-            }
 
-            if (newItem.hazardousMaterialId) {
+            if (newItem.hazardousMaterialId)
                 newItem = {
                     ...newItem,
                     description: null,
@@ -3304,12 +3278,11 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                                 newItem.id === hazard.id
                         )?.id,
                 };
-            } else {
+            else
                 newItem = {
                     ...newItem,
                     hazardousMaterialId: null,
                 };
-            }
 
             // Remove null properties from form data
             Object.keys(newItem).forEach((key) => {
@@ -3714,7 +3687,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                             }),
                         };
 
-                        this.setMapData(routes);
+                        this.setMapData(routes, res);
 
                         if (res?.legs?.length) {
                             res.legs.forEach((item, index) => {
@@ -4452,6 +4425,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                         : null,
             };
         });
+
         this.originalShippers = modalData.shippers;
 
         // shipper contacts
@@ -4625,7 +4599,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
         return this.additionalPayments().value.map((payments) => {
             return {
                 ...payments,
-                pay: MethodsCalculationsHelper.convertThousanSepInNumber(
+                pay: MethodsCalculationsHelper.convertThousandSepInNumber(
                     payments.pay
                 ),
                 payDate: MethodsCalculationsHelper.convertDateToBackend(
@@ -4645,7 +4619,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
                 paymentType: this.orginalPaymentTypesDropdownList.find(
                     (pay) => pay.id === payments.paymentType
                 ),
-                pay: MethodsCalculationsHelper.convertThousanSepInNumber(
+                pay: MethodsCalculationsHelper.convertThousandSepInNumber(
                     payments.pay
                 ),
                 payDate: MethodsCalculationsHelper.convertDateToBackend(
@@ -4784,7 +4758,7 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
     }
     private convertNumbers(value: string): number {
         return value
-            ? MethodsCalculationsHelper.convertThousanSepInNumber(value)
+            ? MethodsCalculationsHelper.convertThousandSepInNumber(value)
             : null;
     }
 
@@ -5434,7 +5408,10 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             .patchValue(deliveryStopNumber + 1);
     }
 
-    private setMapData(routes: LoadStopRoutes[]): void {
+    private setMapData(
+        routes: LoadStopRoutes[],
+        routingData: RoutingResponse
+    ): void {
         const routeMarkers: IMapMarkers[] = [];
         const routePaths: IMapRoutePath[] = [];
 
@@ -5467,16 +5444,8 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
 
             if (index > 0) {
                 const routePath: IMapRoutePath = {
-                    path: [
-                        {
-                            lat: routes[index - 1].latitude!,
-                            lng: routes[index - 1].longitude!,
-                        },
-                        {
-                            lat: loadStop.latitude!,
-                            lng: loadStop.longitude!,
-                        },
-                    ],
+                    path: [],
+                    decodedShape: routingData?.legs?.[index - 1]?.decodedShape,
                     strokeColor: MapOptionsConstants.routingPathColors.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,
@@ -5493,6 +5462,23 @@ export class LoadModalComponent implements OnInit, OnDestroy, DoCheck {
             routingMarkers: routeMarkers,
             routePaths: routePaths,
         };
+    }
+
+    private startFormChanges(): void {
+        this.formService.checkFormChange(this.loadForm);
+
+        if (
+            this.editData?.type === eGeneralActions.EDIT ||
+            this.editData?.isEditMode
+        ) {
+            this.isFormDirty = true;
+        } else {
+            this.formService.formValueChange$
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((isFormChange: boolean) => {
+                    this.isFormDirty = isFormChange;
+                });
+        }
     }
 
     private manageSubscriptions(): void {

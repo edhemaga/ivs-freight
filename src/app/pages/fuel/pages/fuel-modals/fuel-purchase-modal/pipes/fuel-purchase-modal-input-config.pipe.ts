@@ -6,6 +6,7 @@ import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/f
 
 // enums
 import { NameInitialsPipe } from '@shared/pipes';
+import { eGeneralActions } from '@shared/enums';
 
 @Pipe({
     standalone: true,
@@ -81,7 +82,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     isRequired: true,
                     isDropdown: true,
                     isDisabled:
-                        editDataType === 'edit' &&
+                        editDataType === eGeneralActions.EDIT &&
                         fuelTransactionTypeName !== 'Manual',
                     customClass: 'datetimeclass',
                 };
@@ -96,7 +97,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     isDropdown: true,
                     isRequired: true,
                     isDisabled:
-                        editDataType === 'edit' &&
+                        editDataType === eGeneralActions.EDIT &&
                         fuelTransactionTypeName !== 'Manual',
                     customClass: 'datetimeclass',
                 };
@@ -133,7 +134,9 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                 break;
             case 'driverDropdownInputConfig':
                 const { logoName: driverLogoName } = selectedDriver || {};
-                const initials: string = this.nameInitialsPipe.transform(driverLogoName ?? fuelCardHolderName);
+                const initials: string = this.nameInitialsPipe.transform(
+                    driverLogoName ?? fuelCardHolderName
+                );
 
                 inputConfig = {
                     name: 'Input Dropdown',

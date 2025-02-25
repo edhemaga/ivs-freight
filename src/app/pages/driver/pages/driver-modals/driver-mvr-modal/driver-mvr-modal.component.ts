@@ -30,17 +30,17 @@ import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/drive
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import {
     CaInputDropdownComponent,
-    CaInputComponent,
     CaUploadFilesComponent,
     CaInputNoteComponent,
     CaModalComponent,
     CaModalButtonComponent,
     CaInputDatetimePickerComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
 // enums
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
-import { ModalButtonType, ModalButtonSize } from '@shared/enums';
 
 // models
 import { EditData } from '@shared/models/edit-data.model';
@@ -50,12 +50,11 @@ import { MvrResponse } from 'appcoretruckassist';
 // constants
 import { DriverMvrModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-mvr-modal/utils/config';
 
-// Pipes
+// pipes
 import { FormatDatePipe } from '@shared/pipes';
 
-// Svg routes
+// svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-
 
 @Component({
     selector: 'app-driver-mvr-modal',
@@ -109,11 +108,12 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
     public svgRoutes = SharedSvgRoutes;
-    public uploadFilesConfig = DriverMvrModalUploadFilesConfig.DRIVER_MVR_MODAL_UPLOAD_FILES_CONFIG;
+    public uploadFilesConfig =
+        DriverMvrModalUploadFilesConfig.DRIVER_MVR_MODAL_UPLOAD_FILES_CONFIG;
 
     private isAddNewCdl: boolean = false;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
     public activeAction!: string;
     public taModalActionEnum = DriverMVrModalStringEnum;
 

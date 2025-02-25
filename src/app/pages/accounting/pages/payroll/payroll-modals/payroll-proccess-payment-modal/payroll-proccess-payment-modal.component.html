@@ -30,10 +30,11 @@
                         ></app-ca-input>
                         <app-ca-input-dropdown
                             *ngIf="dropdownOption"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="option"
                             [options]="dropdownOption"
                             [inputConfig]="dropDownInputConfig"
-                            (selectedItem)="selectedItem($event)"
                         ></app-ca-input-dropdown>
                     </div>
                 </div>

@@ -49,11 +49,13 @@ import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-
 
 // Pipes
 import { payrollReducer } from '@pages/accounting/pages/payroll/state/reducers/payroll.reducer';
-import { PayrollEffect } from '@pages/accounting/pages/payroll/state/effects/payroll.effect';
+import { PayrollEffect } from '@pages/accounting/pages/payroll/state/effects';
 import { DriverMileageSoloTableComponent } from '@pages/accounting/pages/payroll/components/tables/driver-mileage/driver-mileage-solo-table/driver-mileage-solo-table.component';
-import { PayrollTableTotalPipe } from '@pages/accounting/pages/payroll/pipes/payroll-table-total/payroll-table-total.pipe';
+import {
+    PayrollTableTotalPipe,
+    PayrollTableCommissionTotalPipe,
+} from '@pages/accounting/pages/payroll/pipes';
 import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/pipes/list-name-case.pipe';
-import { PayrollTableCommissionTotalPipe } from '@pages/accounting/pages/payroll/pipes/payroll-table-commission-total/payroll-table-commission-total.pipe';
 
 @NgModule({
     declarations: [

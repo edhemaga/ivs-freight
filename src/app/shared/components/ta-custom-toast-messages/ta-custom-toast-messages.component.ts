@@ -27,6 +27,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eFileFormControls } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-custom-toast-messages',
@@ -352,8 +353,8 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                     this.actionType == 'LOGIN'
                         ? ''
                         : this.toastrType == 'toast-error'
-                        ? 'ADD NEW'
-                        : 'ADDED NEW';
+                          ? 'ADD NEW'
+                          : 'ADDED NEW';
                 break;
             case 'GET':
                 this.actionTitle =
@@ -1153,8 +1154,10 @@ export class TaCustomToastMessagesComponent extends Toast implements OnInit {
                     fileName = this.DetailsDataService.documentName;
                 }
 
-                if (this.httpRequest.body.getAll('files')[0]) {
-                    fileName = this.httpRequest.body.getAll('files')[0]['name'];
+                if (this.httpRequest.body.getAll(eFileFormControls.FILES)[0]) {
+                    fileName = this.httpRequest.body.getAll(
+                        eFileFormControls.FILES
+                    )[0]['name'];
                 }
 
                 this.message = fileName;

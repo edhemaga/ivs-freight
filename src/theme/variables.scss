@@ -241,6 +241,9 @@ $ta-orange-7: #ffb74d;
 $ta-purple-1: #b370f0;
 $ta-purple-2: #ba68c8;
 
+$ta-brown-1: #865E3A;
+$ta-brown-2: #865E3A33;
+
 // mixins
 @mixin border($direction, $width: 1px, $style: solid, $color: $gray-300) {
     border-#{$direction}: $width $style $color;

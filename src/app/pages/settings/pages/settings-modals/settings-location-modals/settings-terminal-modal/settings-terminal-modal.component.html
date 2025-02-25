@@ -70,18 +70,24 @@
                         <div class="col-10">
                             <app-ca-input-address-dropdown
                                 formControlName="address"
-                                [inputConfig]="addressConfig"
+                                [inputConfig]="{
+                                    name: 'Address',
+                                    type: 'text',
+                                    label: 'Address, City, State Zip',
+                                    isRequired: true,
+                                    placeholderIcon: 'address',
+                                    textTransform: 'capitalize',
+                                    dropdownWidthClass: 'w-col-376',
+                                    minLength: 6,
+                                    maxLength: 256,
+                                    isAddress: true,
+                                }"
                                 [placeholderType]="'longAddress'"
-                                [activeAddress]="selectedAddress"
                                 (selectedAddress)="onHandleAddress($event)"
                                 [receivedAddressList]="addressList"
                                 [receivedAddressData]="addressData"
-                                (sentAddressData)="
-                                    onAddressChange($event)
-                                "
-                                (sentAddressValue)="
-                                    getAddressData($event)
-                                "
+                                (sentAddressData)="onAddressChange($event)"
+                                (sentAddressValue)="getAddressData($event)"
                             ></app-ca-input-address-dropdown>
                         </div>
                         <div class="col-2">
@@ -110,6 +116,8 @@
                                 <div class="row row-no-m">
                                     <div class="col-4">
                                         <app-ca-input-dropdown
+                                            [label]="'name'"
+                                            [optionValue]="'id'"
                                             formControlName="payPeriod"
                                             [inputConfig]="payPeriodConfig"
                                             [options]="payPeriods"
@@ -124,6 +132,8 @@
                                     </div>
                                     <div class="col-4 no-p-left">
                                         <app-ca-input-dropdown
+                                            [label]="'name'"
+                                            [optionValue]="'id'"
                                             formControlName="monthlyDay"
                                             [inputConfig]="
                                                 formConfig.getMonthlyDayConfig(
@@ -447,13 +457,13 @@
                     text="Delete"
                     size="Small"
                     (click)="onModalAction(taModalActionEnum.DELETE)"
-                    [type]="modalButtonType.SECONDARY_NEGATIVE"
+                    [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
                 >
                 </app-ca-modal-button>
                 <app-ca-modal-button
                     text="Save Changes"
                     [isValid]="terminalForm.valid && isFormDirty"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                     [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
                 >
@@ -467,7 +477,7 @@
                 [isSpinnerShown]="
                     activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
                 "
-                [type]="modalButtonType.SECONDARY_POSITIVE"
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
             >
             </app-ca-modal-button>
             <app-ca-modal-button
@@ -475,7 +485,7 @@
                 [isValid]="terminalForm.valid && isFormDirty"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                [type]="modalButtonType.PRIMARY_POSITIVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
             >
             </app-ca-modal-button>
         }

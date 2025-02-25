@@ -18,34 +18,43 @@ export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBa
     }
 
     protected handleDropdownMenuActions<T extends OwnerResponse>(
-        event: TableCardBodyActions<T>,
+        action: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const { type } = event;
+        const { type, data } = action;
 
         switch (type) {
             case DropdownMenuStringEnum.ADD_TRUCK_TYPE:
             case DropdownMenuStringEnum.ADD_TRAILER_TYPE:
-                this.handleAddTruckTrailerAction(type);
+                this.handleAddTruckTrailerAction(type, data);
 
                 break;
             default:
                 // call the parent class method to handle shared cases
-                super.handleSharedDropdownMenuActions(event, tableType);
+                super.handleSharedDropdownMenuActions(action, tableType);
 
                 break;
         }
     }
 
-    private handleAddTruckTrailerAction(type: string): void {
+    private handleAddTruckTrailerAction(
+        type: string,
+        ownerData: OwnerResponse
+    ): void {
         const addTruckTrailerModalComponent =
             type === DropdownMenuStringEnum.ADD_TRUCK_TYPE
                 ? TruckModalComponent
                 : TrailerModalComponent;
 
-        this.modalService.openModal(addTruckTrailerModalComponent, {
-            size: TableStringEnum.SMALL,
-        });
+        this.modalService.openModal(
+            addTruckTrailerModalComponent,
+            {
+                size: TableStringEnum.SMALL,
+            },
+            {
+                ownerData
+            }
+        );
     }
 }
 
@@ -55,9 +64,9 @@ export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBa
                 ConfirmationModalComponent,
                 { size: TableStringEnum.SMALL },
                 {
-                    ...event,
+                    ...action,
                     template: TableStringEnum.OWNER_3,
-                    type: event.data.isSelected
+                    type: action.data.isSelected
                         ? TableStringEnum.DEACTIVATE
                         : TableStringEnum.ACTIVATE,
                     svg: true,

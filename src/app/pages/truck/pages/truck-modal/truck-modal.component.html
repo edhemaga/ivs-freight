@@ -51,6 +51,8 @@
                         <app-ca-input-dropdown
                             formControlName="truckTypeId"
                             [template]="'svgtext-template'"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -61,10 +63,8 @@
                                     withText: true,
                                     svg: true,
                                     image: false,
-                                    url:
-                                        selectedTruckType?.logoName &&
-                                        'assets/svg/common/trucks/' +
-                                            selectedTruckType?.logoName,
+                                    iconsPath: 'assets/svg/common/trucks/',
+                                    activeItemIconKey: 'logoName',
                                     template: 'truck',
                                     class: selectedTruckType?.name
                                         ?.trim()
@@ -86,6 +86,8 @@
                         <ng-container *ngIf="isLengthRequired">
                             <app-ca-input-dropdown
                                 formControlName="truckLengthId"
+                                [label]="'name'"
+                                [optionValue]="'id'"
                                 [inputConfig]="{
                                     name: 'Input Dropdown',
                                     type: 'text',
@@ -97,7 +99,7 @@
                                 [options]="truckLengths"
                                 [activeItem]="selectedTruckLengthId"
                                 (selectedItem)="
-                                    onSelectDropdown($event, 'truck-length')
+                                    onSelectDropdown($event, 'truckLength')
                                 "
                             ></app-ca-input-dropdown>
                         </ng-container>
@@ -105,36 +107,27 @@
 
                     <div class="d-grid form-container-truck-year mb-32">
                         <ca-input-test
-                            formControlName="year"
-                            [inputConfig]="{
-                                name: 'Year',
-                                type: 'text',
-                                label: 'Year',
-                                isRequired: true,
-                                minLength: 4,
-                                maxLength: 4,
-                            }"
+                            formControlName="vin"
+                            [inputConfig]="
+                                {
+                                    configType: 'vinInputConfig',
+                                    loadingVinDecoder: loadingVinDecoder,
+                                } | truckModalInputConfig
+                            "
                         ></ca-input-test>
                         <ca-input-test
-                            formControlName="vin"
-                            [inputConfig]="{
-                                name: 'vin-number',
-                                type: 'text',
-                                label: 'VIN',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                maxLength: 17,
-                                minLength: 5,
-                                loadingSpinner: {
-                                    size: 'small',
-                                    color: 'white',
-                                    isLoading: loadingVinDecoder,
-                                },
-                            }"
+                            formControlName="year"
+                            [inputConfig]="
+                                {
+                                    configType: 'yearInputConfig',
+                                } | truckModalInputConfig
+                            "
                         ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="truckMakeId"
                             [template]="'svg-template'"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -145,7 +138,8 @@
                                     withText: false,
                                     svg: true,
                                     image: false,
-                                    url: selectedTruckMake?.logoName,
+                                    iconsPath: '',
+                                    activeItemIconKey: 'logoName',
                                     class: 'truck-make',
                                 },
                                 dropdownWidthClass: 'w-col-156',
@@ -153,12 +147,12 @@
                             [options]="truckMakeType"
                             [activeItem]="selectedTruckMake"
                             (selectedItem)="
-                                onSelectDropdown($event, 'truck-make')
+                                onSelectDropdown($event, 'truckMake')
                             "
                         ></app-ca-input-dropdown>
                     </div>
                     <div class="d-grid form-container-truck-model mb-4">
-                        <ca-input-test
+                        <app-ca-input
                             formControlName="model"
                             [inputConfig]="{
                                 name: 'truck-trailer-model',
@@ -169,11 +163,12 @@
                                 minLength: 1,
                                 maxLength: 50,
                             }"
-                            (blurInput)="onBlurTruckModel()"
-                        ></ca-input-test>
+                        ></app-ca-input>
                         <app-ca-input-dropdown
                             formControlName="colorId"
                             [template]="'svgtext-template'"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -183,11 +178,9 @@
                                     withText: true,
                                     svg: true,
                                     image: false,
-                                    url: selectedColor?.code
-                                        ? 'ic_color.svg'
-                                        : null,
+                                    iconsPath: 'ic_color.svg',
+                                    activeItemIconKey: '',
                                     template: 'color',
-                                    color: selectedColor?.code,
                                 },
                                 dropdownWidthClass: 'w-col-148',
                             }"
@@ -223,6 +216,8 @@
                                 <div class="col-12">
                                     <app-ca-input-dropdown
                                         formControlName="ownerId"
+                                        [label]="'name'"
+                                        [optionValue]="'id'"
                                         [inputConfig]="{
                                             name: 'Input Dropdown',
                                             type: 'text',
@@ -314,6 +309,8 @@
                         "
                     >
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="truckGrossWeightId"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -357,6 +354,8 @@
                     <!-- Second Row -->
                     <div class="truck-additional-two-columns">
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="truckEngineModelId"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -373,6 +372,8 @@
                         ></app-ca-input-dropdown>
 
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="engineOilType"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -392,6 +393,8 @@
                     <!-- Third Row -->
                     <div class="truck-additional-three-columns">
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="fuelType"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -417,6 +420,8 @@
                             }"
                         ></app-ca-input>
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="apUnit"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -442,6 +447,8 @@
                             }"
                         ></ca-input-test>
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="shifter"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -455,6 +462,8 @@
                             (selectedItem)="onSelectDropdown($event, 'shifter')"
                         ></app-ca-input-dropdown>
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="gearRatio"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -475,6 +484,8 @@
 
                     <div class="truck-additional-three-columns">
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="tireSizeId"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -498,6 +509,8 @@
                             }"
                         ></ca-input-test>
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="brakes"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -525,6 +538,8 @@
                             }"
                         ></ca-input-test>
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="frontWheels"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -540,6 +555,8 @@
                             "
                         ></app-ca-input-dropdown>
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="rearWheels"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
@@ -617,6 +634,8 @@
                     <!-- Eighth Row -->
                     <div class="truck-additional-two-columns">
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="tollTransponder"
                             [template]="'groups'"
                             [inputConfig]="{

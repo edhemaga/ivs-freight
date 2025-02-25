@@ -21,6 +21,8 @@
             <div class="row">
                 <div class="col-3">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="stateId"
                         [inputConfig]="{
                             name: 'Input Dropdown',
@@ -55,6 +57,8 @@
 
                 <div class="col-3">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="classType"
                         [inputConfig]="{
                             name: 'Input Dropdown',
@@ -110,6 +114,8 @@
             <div class="row">
                 <div class="col-12">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="restrictions"
                         [template]="'multiselect'"
                         [inputConfig]="{
@@ -135,6 +141,8 @@
             <div class="row last-row">
                 <div class="col-12">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="endorsements"
                         [template]="'multiselect'"
                         [inputConfig]="{
@@ -243,13 +251,13 @@
                     <app-ca-modal-button
                         class="mr-12"
                         text="Delete"
-                        [size]="modalButtonSize.SMALL"
+                        [size]="eModalButtonSize.SMALL"
                         (click)="onModalAction(taModalActionEnum.DELETE)"
-                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
                     >
                     </app-ca-modal-button>
                     <app-ca-modal-button
-                        [type]="modalButtonType.SECONDARY_NEUTRAL"
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
                         [text]="'Void'"
                         (click)="onModalAction(taModalActionEnum.VOID)"
                     >
@@ -260,7 +268,7 @@
                     [isValid]="cdlForm.valid && isFormDirty"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
                     [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
             </div>
@@ -271,7 +279,7 @@
                     [isValid]="cdlForm.valid && isFormDirty"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
                     [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
             } @else {
@@ -280,7 +288,7 @@
                     [isValid]="cdlForm.valid && isFormDirty"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
                     [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
             }

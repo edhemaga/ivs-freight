@@ -120,7 +120,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class UserModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnDestroy, OnInit
 {
     @Input() editData: any;
@@ -306,7 +310,6 @@ export class UserModalComponent
                     };
                     this.labelsBank = [...this.labelsBank, this.selectedBank];
                 },
-                error: () => {},
             });
     }
 
@@ -374,6 +377,7 @@ export class UserModalComponent
                 let newData = { data: {} };
                 if (!this.editData?.id) {
                     const {
+                        address,
                         addressUnit,
                         includeInPayroll,
                         salary,
@@ -386,7 +390,10 @@ export class UserModalComponent
                     newData.data = {
                         ...form,
                         phone: form.phone ?? null,
-                        address: this.updateSelectedAddressUnit(addressUnit),
+                        address: {
+                            ...address,
+                            addressUnit: addressUnit,
+                        },
                         departmentId: this.selectedDepartment
                             ? this.selectedDepartment.id
                             : null,
@@ -408,7 +415,7 @@ export class UserModalComponent
                             ? this.selectedPayment.id
                             : null,
                         salary: salary
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
                                   salary
                               )
                             : null,
@@ -422,7 +429,7 @@ export class UserModalComponent
                             : false,
                         bankId: this.selectedBank ? this.selectedBank.id : null,
                         base: base
-                            ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                            ? MethodsCalculationsHelper.convertThousandSepInNumber(
                                   base
                               )
                             : null,
@@ -502,18 +509,6 @@ export class UserModalComponent
                 break;
             }
         }
-    }
-    private updateSelectedAddressUnit(addressUnit: string): AddressEntity {
-        if (this.selectedAddress) {
-            const updatedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-
-            return updatedAddress.address ? updatedAddress : null;
-        }
-
-        return null;
     }
 
     private createForm() {
@@ -657,6 +652,7 @@ export class UserModalComponent
 
     private updateUser(id: number) {
         const {
+            address,
             addressUnit,
             includeInPayroll,
             salary,
@@ -669,7 +665,10 @@ export class UserModalComponent
         const newData: UpdateCompanyUserCommand = {
             id: id,
             ...form,
-            address: this.updateSelectedAddressUnit(addressUnit),
+            address: {
+                ...address,
+                addressUnit: addressUnit,
+            },
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -682,7 +681,7 @@ export class UserModalComponent
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
             salary: salary
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(salary)
                 : null,
             startDate: startDate
                 ? MethodsCalculationsHelper.convertDateToBackend(startDate)
@@ -692,7 +691,7 @@ export class UserModalComponent
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
             base: base
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(base)
                 : null,
             commission: commission ? parseFloat(commission) : null,
         };
@@ -720,6 +719,7 @@ export class UserModalComponent
 
     private addUser() {
         const {
+            address,
             addressUnit,
             includeInPayroll,
             salary,
@@ -731,7 +731,10 @@ export class UserModalComponent
 
         const newData: CreateCompanyUserCommand = {
             ...form,
-            address: this.updateSelectedAddressUnit(addressUnit),
+            address: {
+                ...address,
+                addressUnit: addressUnit,
+            },
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -745,7 +748,7 @@ export class UserModalComponent
             includeInPayroll: includeInPayroll,
             paymentType: this.selectedPayment ? this.selectedPayment.id : null,
             salary: salary
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(salary)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(salary)
                 : null,
             startDate: startDate
                 ? MethodsCalculationsHelper.convertDateToBackend(startDate)
@@ -755,7 +758,7 @@ export class UserModalComponent
                 : false,
             bankId: this.selectedBank ? this.selectedBank.id : null,
             base: base
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(base)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(base)
                 : null,
             commission: commission ? parseFloat(commission) : null,
         };
@@ -781,7 +784,7 @@ export class UserModalComponent
             });
     }
 
-    private deleteUserById(id: number) {
+    private deleteUserById(id: number): void {
         this.companyUserService
             .deleteUserById(
                 id,
@@ -817,7 +820,7 @@ export class UserModalComponent
                     this.userForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
-                        address: res.address?.address,
+                        address: res.address,
                         addressUnit: res.address?.addressUnit,
                         personalPhone: res.personalPhone,
                         personalEmail: res.personalEmail,
@@ -951,7 +954,6 @@ export class UserModalComponent
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -1115,7 +1117,6 @@ export class UserModalComponent
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 

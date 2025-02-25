@@ -1,3 +1,9 @@
+@let areDropdownsDisabled = isFuelTransactionTable &&
+    fuelTransactionType?.id !==
+        fuelTransactionTypeEnum.Manual &&
+    fuelModalActionType ===
+        fuelDataOptionsStringEnum.EDIT;
+
 <form [formGroup]="modalTableForm" class="table-body">
     <div
         class="d-flex flex-column repair-bill-table-container"
@@ -16,12 +22,21 @@
                     class="align-items-center table-item"
                     [ngClass]="{
                         valid: repairBillItemRow.valid,
-                        'hide-delete-icon': isFuelTransactionTableSingleItem,
                     }"
                     [formGroupName]="i"
                 >
                     <div
                         class="d-flex justify-content-center align-items-center table-item-number"
+                        [ngClass]="{
+                            'table-item-number-hover':
+                            (isFuelTransactionTable &&
+                                fuelTransactionType?.id ===
+                                    fuelTransactionTypeEnum.Manual) ||
+                            (isFuelTransactionTable &&
+                                fuelModalActionType ===
+                                    fuelDataOptionsStringEnum.ADD) ||
+                            !isFuelTransactionTable
+                        }"
                     >
                         <p class="m-0 ta-font-medium">{{ i + 1 }}</p>
 
@@ -74,6 +89,8 @@
                             }"
                         >
                             <app-ca-input-dropdown
+                                [label]="'name'"
+                                [optionValue]="'id'"
                                 formControlName="pm"
                                 [template]="'svgtext-template'"
                                 [inputConfig]="{
@@ -107,12 +124,15 @@
                         </div>
                     } @else {
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [formControl]="repairBillItemRow.get('itemfuel')"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
                                 label: 'Item',
                                 isDropdown: true,
+                                isDisabled: areDropdownsDisabled,
                                 placeholderInsteadOfLabel: true,
                                 blackInput: true,
                                 isRequired: true,
@@ -148,6 +168,7 @@
                             minLength: 5,
                             maxLength: 64,
                             isRequired: true,
+                            isDisabled: areDropdownsDisabled,
                             hideErrorMessage: true,
                             hideRequiredCheck: true,
                             priceSeparator: true,
@@ -179,6 +200,7 @@
                                 minLength: 5,
                                 maxLength: 64,
                                 isRequired: true,
+                                isDisabled: areDropdownsDisabled,
                                 hideErrorMessage: true,
                                 hideRequiredCheck: true,
                                 priceSeparator: true,

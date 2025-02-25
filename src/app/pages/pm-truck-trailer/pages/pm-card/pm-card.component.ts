@@ -93,18 +93,18 @@ export class PmCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: PMTruckUnitResponse | PMTrailerUnitResponse
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitEvent, DropdownMenuStringEnum.PM);
+        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.PM);
     }
 
     public handleShowMoreAction(): void {

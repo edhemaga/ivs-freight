@@ -1,10 +1,12 @@
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 export class ContactModalConfig {
-    static NAME_INPUT_CONFIG(
-        isEditMode: boolean,
-    ): ITaInput {
-        return  {
+    static NAME_INPUT_CONFIG(isEditMode: boolean): ICaInput {
+        return {
             name: 'Name',
             type: 'text',
             label: 'Full Name',
@@ -13,8 +15,9 @@ export class ContactModalConfig {
             maxLength: 32,
             textTransform: 'capitalize',
             autoFocus: !isEditMode,
-        }
-    };
+            isAddress: true
+        };
+    }
 
     static COMPANY_NAME_INPUT_CONFIG: ITaInput = {
         name: 'Company name',
@@ -50,7 +53,7 @@ export class ContactModalConfig {
                     name: 'Cancel',
                     backgroundColor: '#2f2f2f',
                 },
-                name: 'cancel',
+                name: eGeneralActions.CANCEL,
                 svg: 'assets/svg/ic_x.svg',
             },
         },

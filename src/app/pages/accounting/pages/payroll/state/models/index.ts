@@ -3,8 +3,8 @@ export * from './payroll-modal.model';
 export * from './payroll-driver.model';
 export * from './payroll-truck.model';
 export * from './payroll-delete-modal.model';
-export * from './driver_commission.model';
-export * from './driver_flat_rate.model';
-export * from './driver_owner.model';
+export * from './driver-commission.model';
+export * from './driver-flat-rate.model';
+export * from './driver-owner.model';
 export * from './payroll.model';
 

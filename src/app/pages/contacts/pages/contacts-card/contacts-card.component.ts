@@ -94,19 +94,19 @@ export class ContactsCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: CompanyContactResponse
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
         this.handleDropdownMenuActions(
-            emitEvent,
+            emitAction,
             DropdownMenuStringEnum.CONTACT
         );
     }

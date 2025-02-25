@@ -295,10 +295,10 @@
     // LOCATION FILTER AND OPEN MODAL BUTTON
     .modal-open-container {
         background: #3074d3;
+        transition: 0.25s;
 
         &:hover {
             background: #536bc2;
-            transition: 0.25s;
         }
 
         svg-icon {

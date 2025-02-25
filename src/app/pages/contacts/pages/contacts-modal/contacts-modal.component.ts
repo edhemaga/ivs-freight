@@ -110,14 +110,19 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class ContactsModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     @Input() editData: EditData;
 
     public destroy$ = new Subject<void>();
 
-    public uploadFilesConfig = ContactsModalUploadFilesConfig.CONTACTS_MODAL_UPLOAD_FILES_CONFIG;
+    public uploadFilesConfig =
+        ContactsModalUploadFilesConfig.CONTACTS_MODAL_UPLOAD_FILES_CONFIG;
     public contactForm: UntypedFormGroup;
     public isFormDirty: boolean;
 
@@ -382,7 +387,7 @@ export class ContactsModalComponent
                             ? res.companyContactLabel.name
                             : null,
                         /*  avatar: res.avatar ? res.avatar : null, */
-                        address: res.address ? res.address.address : null,
+                        address: res.address ? res.address : null,
                         addressUnit: res.address
                             ? res.address.addressUnit
                             : null,
@@ -398,7 +403,6 @@ export class ContactsModalComponent
                     });
 
                     this.selectedContactLabel = res.companyContactLabel;
-                    this.selectedAddress = res.address;
                     this.selectedSharedDepartment = res.departmentContacts;
 
                     this.updatedContactPhones = res.contactPhones;
@@ -426,11 +430,9 @@ export class ContactsModalComponent
         id: number | null,
         isUpdate: boolean
     ): CreateCompanyContactCommand | UpdateCompanyContactCommand {
-        const { addressUnit, ...form } = this.contactForm.value;
+        const { addressUnit, address, ...form } = this.contactForm.value;
 
-        const updatedAddress = this.selectedAddress
-            ? { ...this.selectedAddress, addressUnit }
-            : null;
+        const updatedAddress = address ? { ...address, addressUnit } : null;
 
         const contactPhones = this.contactPhones.map((contactPhone, index) => ({
             ...contactPhone,

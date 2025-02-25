@@ -1,0 +1,1 @@
+export * from './truck-modal-config-args.model';

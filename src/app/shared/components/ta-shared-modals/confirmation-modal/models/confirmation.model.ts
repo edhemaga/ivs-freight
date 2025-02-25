@@ -1,4 +1,4 @@
-import { PayrollDeleteModal } from "@pages/accounting/pages/payroll/state/models";
+import { PayrollDeleteModal } from '@pages/accounting/pages/payroll/state/models';
 
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....

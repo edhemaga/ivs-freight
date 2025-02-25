@@ -197,7 +197,7 @@ export const tableDataSelector = createSelector(
         );
         const tableClosedColumnsConfig = JSON.parse(
             localStorage.getItem(
-                `table-${TableType.LoadTemplate}-Configuration`
+                `table-${TableType.LoadClosed}-Configuration`
             )
         );
         const selectedTabLowerCase =

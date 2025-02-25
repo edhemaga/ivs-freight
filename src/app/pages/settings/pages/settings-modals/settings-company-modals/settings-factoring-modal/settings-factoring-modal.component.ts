@@ -40,7 +40,9 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
-    CaInputAddressDropdownComponent
+    CaInputAddressDropdownComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
 // models
@@ -54,7 +56,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { ModalButtonType, ModalButtonSize } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -91,7 +93,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsFactoringModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnDestroy, OnInit
 {
     public destroy$ = new Subject<void>();
@@ -130,8 +136,8 @@ export class SettingsFactoringModalComponent
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
     public activeAction: string;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
     public company: FactoringCompany;
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -148,7 +154,7 @@ export class SettingsFactoringModalComponent
 
     ngOnInit(): void {
         this.createForm();
-        if (this.editData.type === 'edit') {
+        if (this.editData.type === eGeneralActions.EDIT) {
             this.isCardAnimationDisabled = true;
             this.editFactoringCompany(this.editData.company);
         } else {
@@ -212,7 +218,7 @@ export class SettingsFactoringModalComponent
     }
 
     private updateFactoringCompany(company: any) {
-        const { name, phone, email, addressUnit, noticeOfAssigment, note } =
+        const { name, phone, email, addressUnit, noticeOfAssigment, note, address } =
             this.factoringForm.value;
 
         if (this.selectedAddress) {
@@ -227,9 +233,7 @@ export class SettingsFactoringModalComponent
             name: name,
             phone: phone,
             email: email,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: address,
             noticeOfAssigment: noticeOfAssigment,
             note: note,
         };
@@ -263,7 +267,7 @@ export class SettingsFactoringModalComponent
             name: company.factoringCompany.name,
             phone: company.factoringCompany.phone,
             email: company.factoringCompany.email,
-            address: company.factoringCompany.address.address,
+            address: company.factoringCompany.address,
             addressUnit: company.factoringCompany.address.addressUnit,
             noticeOfAssigment: company.factoringCompany.noticeOfAssigment,
             note: company.factoringCompany.note,

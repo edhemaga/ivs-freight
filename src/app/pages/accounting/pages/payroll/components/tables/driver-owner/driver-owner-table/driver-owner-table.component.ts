@@ -12,8 +12,10 @@ import {
 import { Observable, Subject } from 'rxjs';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import {
+    PayrollFacadeService,
+    PayrollDriverOwnerFacadeService,
+} from '@pages/accounting/pages/payroll/state/services';
 
 // Configs
 import { ColumnConfig } from 'ca-components';
