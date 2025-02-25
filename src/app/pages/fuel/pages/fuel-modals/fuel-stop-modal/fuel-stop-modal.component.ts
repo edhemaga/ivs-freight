@@ -355,7 +355,7 @@ export class FuelStopModalComponent
     }
 
     private updateFuelStop(id: number): void {
-        const { businessName, ...form } = this.fuelStopForm.value;
+        const { address, businessName, ...form } = this.fuelStopForm.value;
 
         let documents = [];
 
@@ -368,7 +368,7 @@ export class FuelStopModalComponent
         const newData: any = {
             id: id,
             ...form,
-            address: this.selectedAddress,
+            address: address,
             businessName: !this.selectedFuelStop ? businessName : null,
             fuelStopFranchiseId: this.selectedFuelStop
                 ? this.selectedFuelStop.id
@@ -401,7 +401,7 @@ export class FuelStopModalComponent
     }
 
     private addFuelStop(): void {
-        const { businessName, ...form } = this.fuelStopForm.value;
+        const { address, businessName, ...form } = this.fuelStopForm.value;
 
         let documents = [];
 
@@ -413,7 +413,7 @@ export class FuelStopModalComponent
 
         const newData: any = {
             ...form,
-            address: this.selectedAddress,
+            address: address,
             businessName: !this.selectedFuelStop ? businessName : null,
             fuelStopFranchiseId: this.selectedFuelStop
                 ? this.selectedFuelStop.id
@@ -457,7 +457,7 @@ export class FuelStopModalComponent
                             : null,
                         favourite: res.favourite,
                         fax: res.fax,
-                        address: res.address.address,
+                        address: res.address,
                         note: res.note,
                     });
 

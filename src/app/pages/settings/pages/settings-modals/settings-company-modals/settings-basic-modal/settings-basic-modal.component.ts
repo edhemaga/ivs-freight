@@ -1328,6 +1328,8 @@ export class SettingsBasicModalComponent
             mvrMonths,
             truckInspectionMonths,
             trailerInspectionMonths,
+            address,
+            dateOfIncorporation,
             ...form
         } = this.companyForm.value;
 
@@ -1351,12 +1353,17 @@ export class SettingsBasicModalComponent
             bankAccounts,
             bankCards,
             address: {
-                ...this.selectedAddress,
+                ...address,
                 addressUnit: addressUnit,
             },
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
             companyType: this.selectedCompanyData?.id ?? null,
+            dateOfIncorporation: dateOfIncorporation
+                ? MethodsCalculationsHelper.convertDateToBackend(
+                      dateOfIncorporation
+                  )
+                : null,
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
@@ -1402,7 +1409,7 @@ export class SettingsBasicModalComponent
         this.companyForm.patchValue({
             // Basic Tab
             ...company,
-            address: company.address?.address,
+            address: company.address,
             addressUnit: company.address?.addressUnit,
             timeZone:
                 company.timeZone?.id !== 0 ? company.timeZone?.name : null,
@@ -1417,6 +1424,19 @@ export class SettingsBasicModalComponent
                       (payTerm) => payTerm.id === additionalInfo?.payTerm
                   )?.name
                 : null,
+            companyType:
+                company.companyType?.id !== 0 ? company.companyType.name : null,
+            mvrMonths: additionalInfo.mvrMonths,
+            prefix: additionalInfo.prefix,
+            starting: additionalInfo.starting,
+            suffix: additionalInfo.sufix,
+            autoInvoicing: additionalInfo.autoInvoicing,
+            preferredLoadType: additionalInfo.preferredLoadType,
+            factorByDefault: additionalInfo.factorByDefault,
+            customerCredit: additionalInfo.customerCredit,
+            truckInspectionMonths: additionalInfo.truckInspectionMonths,
+            trailerInspectionMonths:
+                additionalInfo.trailerInspectionMonths,
         });
 
         this.selectedAddress = this.editData.company.address;
@@ -1434,6 +1454,9 @@ export class SettingsBasicModalComponent
         this.selectedPayTerm = this.payTermOptions?.find(
             (payTerm) => payTerm.id === additionalInfo?.payTerm
         );
+
+        this.selectedCompanyData =
+            company.companyType.id !== 0 ? company.companyType : null;
 
         if (this.editData.company.departmentContacts.length) {
             for (const department of this.editData.company.departmentContacts) {
@@ -1532,6 +1555,8 @@ export class SettingsBasicModalComponent
             mvrMonths,
             truckInspectionMonths,
             trailerInspectionMonths,
+            address,
+            dateOfIncorporation,
             ...form
         } = this.companyForm.value;
 
@@ -1556,12 +1581,17 @@ export class SettingsBasicModalComponent
             bankAccounts,
             bankCards,
             address: {
-                ...this.selectedAddress,
+                ...address,
                 addressUnit: addressUnit,
             },
             timeZone: this.selectedTimeZone?.id ?? null,
             currency: this.selectedCurrency?.id ?? null,
             companyType: this.selectedCompanyData?.id ?? null,
+            dateOfIncorporation: dateOfIncorporation
+                ? MethodsCalculationsHelper.convertDateToBackend(
+                      dateOfIncorporation
+                  )
+                : null,
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
@@ -1663,6 +1693,7 @@ export class SettingsBasicModalComponent
             safetyDefaultBase,
             // Other
             otherDefaultBase,
+            address,
             ...form
         } = this.companyForm.value;
 
@@ -1673,7 +1704,7 @@ export class SettingsBasicModalComponent
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
             address: {
-                ...this.selectedAddress,
+                ...address,
                 addressUnit: addressUnit,
             },
             companyType: this.selectedCompanyData
@@ -1949,7 +1980,7 @@ export class SettingsBasicModalComponent
     private editCompany(data: any): void {
         this.companyForm.patchValue({
             ...data,
-            address: data.address.address,
+            address: data.address,
             addressUnit: data.address.addressUnit,
             timeZone: data.timeZone?.id !== 0 ? data.timeZone.name : null,
             currency: data.currency?.id !== 0 ? data.currency.name : null,
@@ -2398,25 +2429,13 @@ export class SettingsBasicModalComponent
         this.plaidService
             .getPlaidVerification()
             .pipe(takeUntil(this.destroy$))
-            .subscribe(
-                ([accessToken, details]: [
-                    AccessTokenResponse,
-                    AccountDetailsResponse,
-                ]) => {
-                    this.plaidService.compareVerificationResults(
-                        details,
-                        addedAccount
-                    );
-                    this.isPlaidAvailable = true;
-                },
-                () => {
-                    this.plaidService.compareVerificationResults(
-                        {},
-                        addedAccount
-                    );
-                    this.isPlaidAvailable = true;
-                }
-            )
+            .subscribe((response: AccountDetailsResponse) => {
+                this.plaidService.compareVerificationResults(
+                    response,
+                    addedAccount
+                );
+                this.isPlaidAvailable = true;
+            })
             .add(() => {
                 this.isPlaidAvailable = true;
             });

@@ -1,5 +1,5 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 export class RepairShopConfig {
     static getNameInputConfig(): ITaInput {
         return {
@@ -46,7 +46,7 @@ export class RepairShopConfig {
         };
     }
 
-    static getAddressInputConfig(): ITaInput {
+    static getAddressInputConfig(): ICaInput {
         return {
             name: 'Address',
             type: 'text',
@@ -57,6 +57,7 @@ export class RepairShopConfig {
             dropdownWidthClass: 'w-col-376',
             minLength: 6,
             maxLength: 256,
+            isAddress: true,
         };
     }
 

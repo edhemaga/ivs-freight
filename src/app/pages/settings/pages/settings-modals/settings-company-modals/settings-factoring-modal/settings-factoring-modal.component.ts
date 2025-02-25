@@ -218,7 +218,7 @@ export class SettingsFactoringModalComponent
     }
 
     private updateFactoringCompany(company: any) {
-        const { name, phone, email, addressUnit, noticeOfAssigment, note } =
+        const { name, phone, email, addressUnit, noticeOfAssigment, note, address } =
             this.factoringForm.value;
 
         if (this.selectedAddress) {
@@ -233,9 +233,7 @@ export class SettingsFactoringModalComponent
             name: name,
             phone: phone,
             email: email,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: address,
             noticeOfAssigment: noticeOfAssigment,
             note: note,
         };
@@ -269,7 +267,7 @@ export class SettingsFactoringModalComponent
             name: company.factoringCompany.name,
             phone: company.factoringCompany.phone,
             email: company.factoringCompany.email,
-            address: company.factoringCompany.address.address,
+            address: company.factoringCompany.address,
             addressUnit: company.factoringCompany.address.addressUnit,
             noticeOfAssigment: company.factoringCompany.noticeOfAssigment,
             note: company.factoringCompany.note,

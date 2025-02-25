@@ -448,6 +448,7 @@ export class OwnerModalComponent
             lastName,
             ssn,
             ein,
+            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
@@ -461,7 +462,7 @@ export class OwnerModalComponent
                     ? bussinesName
                     : firstName.concat(' ', lastName),
             ssnEin: this.selectedTab === 1 ? ein : ssn,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
+            address: { ...address, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             files: this.ownerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
@@ -493,6 +494,7 @@ export class OwnerModalComponent
             lastName,
             ssn,
             ein,
+            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
@@ -505,7 +507,7 @@ export class OwnerModalComponent
                     ? bussinesName
                     : firstName.concat(' ', lastName),
             ssnEin: this.selectedTab === 1 ? ein : ssn,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
+            address: { ...address, addressUnit: addressUnit },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             files: this.ownerForm.value.files,
             longitude: this.longitude,
@@ -588,7 +590,7 @@ export class OwnerModalComponent
                         lastName: res.ownerType.id === 2 ? splitName[1] : null,
                         ssn: res.ownerType.id === 2 ? res.ssnEin : null,
                         ein: res.ownerType.id === 1 ? res.ssnEin : null,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         bankId: res?.bank?.name ?? null,
                     });

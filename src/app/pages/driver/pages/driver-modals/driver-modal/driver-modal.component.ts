@@ -1899,7 +1899,7 @@ export class DriverModalComponent
             ...form,
 
             dateOfBirth: convertedDate,
-            address: this.selectedAddress,
+            address: address,
 
             isOwner,
             ownerType: conditionalOwnerType,
@@ -2069,7 +2069,7 @@ export class DriverModalComponent
             phone,
             email,
             ssn,
-            address: address?.address,
+            address,
             addressUnit: address?.addressUnit,
 
             isOwner: !!owner,
@@ -2288,7 +2288,7 @@ export class DriverModalComponent
             id,
 
             dateOfBirth: convertedDate,
-            address: this.selectedAddress,
+            address: address,
 
             isOwner,
             ownerType: conditionalOwnerType,
