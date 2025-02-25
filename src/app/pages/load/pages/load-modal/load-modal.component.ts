@@ -4702,7 +4702,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         const newData = this.generateLoadModel(false);
 
         if (this.originalStatus !== this.selectedStatus.valueForRequest) {
-            console.log('LOADDD _____');
             const apiParamStatus = {
                 id,
                 status: valueForRequest,
@@ -4719,7 +4718,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     private handleLoadUpdate(newData: Load, addNew: boolean) {
-        console.log('handleLoadUpdate');
         this.loadStoreService.dispatchUpdateLoad(newData);
         this.setModalSpinner(null, true, true, addNew);
         // TODO: Do we need to check/get before update?
@@ -4913,8 +4911,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         if (deliveryStop) {
             deliveryStop = this.formatStopTimes(deliveryStop);
         }
-
-        console.log('LOADFORMDATA PATCH VALUE', typeof pickupStop.timeFrom);
+        
         // form
         this.loadForm.patchValue({
             id,
