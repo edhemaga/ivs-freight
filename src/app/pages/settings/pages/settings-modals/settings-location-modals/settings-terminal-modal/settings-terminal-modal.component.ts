@@ -596,7 +596,7 @@ export class SettingsTerminalModalComponent
                 next: (res: TerminalResponse) => {
                     this.terminalForm.patchValue({
                         ...res,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         // Additional tab
                         rent: res.rent

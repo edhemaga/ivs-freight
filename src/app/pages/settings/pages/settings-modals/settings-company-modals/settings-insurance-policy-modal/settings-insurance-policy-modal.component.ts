@@ -970,7 +970,7 @@ export class SettingsInsurancePolicyModalComponent
             expires: MethodsCalculationsHelper.convertDateFromBackend(
                 insurance.expires
             ),
-            address: insurance.address.address,
+            address: insurance.address,
             addressUnit: insurance.address.addressUnit,
         });
 

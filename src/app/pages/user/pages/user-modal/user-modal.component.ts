@@ -820,7 +820,7 @@ export class UserModalComponent
                     this.userForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
-                        address: res.address?.address,
+                        address: res.address,
                         addressUnit: res.address?.addressUnit,
                         personalPhone: res.personalPhone,
                         personalEmail: res.personalEmail,
