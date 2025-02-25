@@ -4701,8 +4701,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         const { id } = data || {};
         const newData = this.generateLoadModel(false);
 
-        console.log('LOADDD');
-
         if (this.originalStatus !== this.selectedStatus.valueForRequest) {
             console.log('LOADDD _____');
             const apiParamStatus = {

@@ -1,12 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // models
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
 
 // enums
 import { NameInitialsPipe } from '@shared/pipes';
 import { eGeneralActions } from '@shared/enums';
+
+// config
 import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 @Pipe({
