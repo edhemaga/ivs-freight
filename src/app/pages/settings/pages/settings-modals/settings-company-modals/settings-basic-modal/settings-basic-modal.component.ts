@@ -1329,6 +1329,7 @@ export class SettingsBasicModalComponent
             truckInspectionMonths,
             trailerInspectionMonths,
             address,
+            dateOfIncorporation,
             ...form
         } = this.companyForm.value;
 
@@ -1358,6 +1359,11 @@ export class SettingsBasicModalComponent
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
             companyType: this.selectedCompanyData?.id ?? null,
+            dateOfIncorporation: dateOfIncorporation
+                ? MethodsCalculationsHelper.convertDateToBackend(
+                      dateOfIncorporation
+                  )
+                : null,
         };
 
         departmentContacts.forEach((departmentContact, index: number) => {
