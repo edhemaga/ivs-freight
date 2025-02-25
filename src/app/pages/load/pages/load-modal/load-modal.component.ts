@@ -4126,10 +4126,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     private getLoadDropdowns(
         staticModalData: LoadModalResponse,
-        activeModalData: any
+        activeModalData: IActiveLoadModalData
     ): void {
         const { selectedTab, previousStatus, type } = this.editData || {};
-        const { statusType } = (activeModalData as LoadResponse) || {};
+        const { statusType } = (activeModalData) || {};
         const { name } = statusType || {};
         const { id: loadId } = activeModalData || {};
 
@@ -4138,7 +4138,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             selectedTab !== TableStringEnum.TEMPLATE
         ) {
             const { statusDropdownData } = this.editData || {};
-            const status = (activeModalData as LoadResponse)?.status;
+            const status = activeModalData?.status as LoadStatusResponse;
             const { statusString, statusValue } = status || {};
             const { id: statusId, name } = statusValue || {};
 
@@ -4208,33 +4208,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         });
 
         this.paymentMethodsDropdownList = modalData.paymentMethods;
-
-        // If we are creating new load only enable advace pay
-        // if (!loadId) {
-        //     staticModalData.paymentTypes =
-        //         modalData?.paymentTypes?.filter((payment) => payment.id === 3);
-        // }
-
         this.orginalPaymentTypesDropdownList = modalData.paymentTypes;
         this.paymentTypesDropdownList = modalData.paymentTypes;
-
-        // let initialDispatcher = this.labelsDispatcher.find(
-        //     (item) =>
-        //         item?.name ===
-        //         this.companyUser?.firstName?.concat(
-        //             LoadModalStringEnum.EMPTY_SPACE_STRING,
-        //             this.companyUser?.lastName
-        //         )
-        // );
-
-        // // OVO TREBA PROVERITI, JA SAM USER KOJI JE POZVAN U OVU KOMPANIJU I JA SE NE NALAZIM UNUTAR DISPATCHER LISTE A OVDE SE TRAZI UNUTAR DISPATCHER LISTE KO JE COMPANY OWNER PA PUCA
-        // if (!initialDispatcher) initialDispatcher = this.labelsDispatcher[0];
-
-        // this.loadForm
-        //     .get(LoadModalStringEnum.DISPATCHER_ID)
-        //     .patchValue(initialDispatcher.name);
-
-        // this.selectedDispatcher = initialDispatcher;
 
         if (activeModalData && !!modalData?.companies)
             // division companies
@@ -4582,7 +4557,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             tonuRate,
             revisedRate,
             invoicedDate: this.initialinvoicedDate ?? invoicedDate,
-            statusType: this.loadForm.get('statusType').value,
+            statusType: this.loadForm.get(LoadModalStringEnum.STATUS_TYPE).value,
             loadNumber: this.loadNumber,
         };
 
@@ -5510,7 +5485,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.loadForm
                         .get(LoadModalStringEnum.STATUS_TYPE)
                         .patchValue(statusType?.name || statusType);
-                    this.loadForm.get('id').patchValue(id);
+                    this.loadForm.get(LoadModalStringEnum.ID).patchValue(id);
                     this.generateModalText();
                 }
             });

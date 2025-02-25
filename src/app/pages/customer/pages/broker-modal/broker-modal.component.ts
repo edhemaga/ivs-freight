@@ -88,6 +88,7 @@ import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { eGeneralActions } from '@shared/enums/general-actions.enum';
 import { eFileFormControls } from '@shared/enums/file/file-form-controls.enum';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // constants
 import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/';
@@ -122,7 +123,6 @@ import { AddressProperties } from '@shared/components/ta-input-address-dropdown/
 
 // services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
-import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 @Component({
     selector: 'app-broker-modal',

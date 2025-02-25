@@ -186,7 +186,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
                 const { statusType } = this.loadObject;
                 const status: eLoadStatusType = eLoadStatusType[statusType.name];
 
-                this.loadStoreService.dispatchGetEditLoadModalData(this.loadId, status, 'edit');
+                this.loadStoreService.dispatchGetEditLoadModalData(this.loadId, status, LoadDetailsStringEnum.EDIT);
 
                 break;
             case LoadDetailsStringEnum.DELETE_ITEM:

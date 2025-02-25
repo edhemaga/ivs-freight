@@ -359,7 +359,7 @@ export class ShipperModalComponent
 
         if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
-                case 'load-modal': 
+                case LoadModalStringEnum.LOAD_MODAL: 
                     this.ngbActiveModal.close();
                     this.loadStoreService.dispatchGetCreateLoadModalData();
                     break;
@@ -890,7 +890,7 @@ export class ShipperModalComponent
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'load-modal':
+                            case LoadModalStringEnum.LOAD_MODAL:
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,
