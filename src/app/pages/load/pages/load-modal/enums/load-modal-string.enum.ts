@@ -84,6 +84,7 @@ export enum LoadModalStringEnum {
     DISPATCHES = 'dispatches',
     BROKER = 'broker',
     BROKER_CONTACT = 'broker-contact',
+    BROKER_ID = 'brokerId',
     SHIPPER_PICKUP = 'shipper-pickup',
     SHIPPER_CONTACT_PICKUP = 'shipper-contact-pickup',
     SHIPPER_DELIVERY = 'shipper-delivery',

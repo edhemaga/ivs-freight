@@ -1293,8 +1293,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                 this.isButtonDisabled = true;
 
-                if (this.loadForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.loadForm);
+                if (this.loadForm.invalid || !this.loadForm.touched) {
+                    //this.inputService.markInvalid(this.loadForm);
                     this.isButtonDisabled = false;
                     return;
                 }
@@ -1860,6 +1860,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 event && Object.keys(event).length ? event : null;
 
             if (this.selectedBroker) {
+                this.loadForm
+                    .get(LoadModalStringEnum.BROKER_ID)
+                    .patchValue(this.selectedBroker.id);
+
                 this.loadBrokerInputConfig = {
                     ...this.loadBrokerInputConfig,
                     multipleInputValues: {
@@ -1987,6 +1991,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
         } else {
             this.selectedPickupShipper = event;
+            this.loadForm
+                .get(LoadModalStringEnum.PICKUP_SHIPPER)
+                .patchValue(this.selectedPickupShipper.id);
 
             this.updateShipperWorkingTime(
                 isClick,
@@ -2130,6 +2137,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             });
         } else {
             this.selectedDeliveryShipper = event;
+
+            this.loadForm
+                .get(LoadModalStringEnum.DELIVERY_SHIPPER)
+                .patchValue(this.selectedDeliveryShipper.id);
 
             this.updateShipperWorkingTime(
                 isClick,
@@ -4900,7 +4911,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         if (deliveryStop) {
             deliveryStop = this.formatStopTimes(deliveryStop);
         }
-
+        
         // form
         this.loadForm.patchValue({
             id,
@@ -4922,8 +4933,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             pickupDateTo: pickupStop
                 ? this.convertDate(pickupStop.dateTo)
                 : null,
-            pickupTimeFrom: pickupStop?.timeFrom,
-            pickupTimeTo: pickupStop?.timeTo,
+            pickupTimeFrom:
+                typeof pickupStop?.timeFrom === 'object'
+                    ? MethodsCalculationsHelper.convertDateToTime(
+                          pickupStop?.timeFrom
+                      )
+                    : pickupStop?.timeFrom,
+            pickupTimeTo:
+                typeof pickupStop?.timeTo === 'object'
+                    ? MethodsCalculationsHelper.convertDateToTime(
+                          pickupStop?.timeTo
+                      )
+                    : pickupStop?.timeTo,
             pickuplegMiles: pickupStop?.legMiles,
             pickuplegHours: pickupStop?.legHours,
             pickuplegMinutes: pickupStop?.legMinutes,
@@ -4939,8 +4960,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             deliveryDateTo: deliveryStop
                 ? this.convertDate(deliveryStop.dateTo)
                 : null,
-            deliveryTimeFrom: deliveryStop?.timeFrom,
-            deliveryTimeTo: deliveryStop?.timeTo,
+            deliveryTimeFrom:
+                typeof deliveryStop?.timeFrom === 'object'
+                    ? MethodsCalculationsHelper.convertDateToTime(
+                          deliveryStop?.timeFrom
+                      )
+                    : deliveryStop?.timeFrom,
+            deliveryTimeTo:
+                typeof deliveryStop?.timeTo === 'object'
+                    ? MethodsCalculationsHelper.convertDateToTime(
+                          deliveryStop?.timeTo
+                      )
+                    : deliveryStop?.timeTo,
             deliverylegMiles: deliveryStop?.legMiles,
             deliverylegHours: deliveryStop?.legHours,
             deliverylegMinutes: deliveryStop?.legMinutes,

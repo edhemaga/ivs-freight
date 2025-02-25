@@ -80,7 +80,7 @@
             >
                 <app-ca-input-dropdown
                     [label]="'name'"
-                    [optionValue]="'id'"
+                    [optionValue]="'number'"
                     formControlName="truckId"
                     [template]="'svgtext-template'"
                     [inputConfig]="
@@ -93,7 +93,6 @@
                         } | fuelPurchaseModalInputConfig
                     "
                     [options]="truckType"
-                    [activeItem]="selectedTruckType"
                     (selectedItem)="
                         onSelectDropDown($event, fuelValuesStringEnum.TRUCK)
                     "

@@ -1,12 +1,14 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // models
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
 
 // enums
 import { NameInitialsPipe } from '@shared/pipes';
 import { eGeneralActions } from '@shared/enums';
+
+// config
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 @Pipe({
     standalone: true,
@@ -15,7 +17,7 @@ import { eGeneralActions } from '@shared/enums';
 export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
     constructor(private nameInitialsPipe: NameInitialsPipe) {}
 
-    transform(args: FuelPurchaseModalConfigPipeArgs): ITaInput {
+    transform(args: FuelPurchaseModalConfigPipeArgs): ICaInput {
         const {
             configType,
             editDataType,
@@ -27,7 +29,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
             logoName,
         } = args;
 
-        let inputConfig: ITaInput;
+        let inputConfig: ICaInput;
 
         switch (configType) {
             case 'efsInputConfig':
@@ -114,10 +116,8 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                         withText: true,
                         svg: true,
                         image: false,
-                        url:
-                            selectedTruckType?.logoName &&
-                            'assets/svg/common/trucks/' +
-                                selectedTruckType?.logoName,
+                        iconsPath: '/assets/ca-components/svg/common/trucks/',
+                        activeItemIconKey: 'logoName',
                         template: 'truck',
                         class: selectedTruckType?.name
                             ?.trim()
@@ -148,6 +148,8 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                         withText: true,
                         svg: false,
                         image: true,
+                        iconsPath: '',
+                        activeItemIconKey: "logoName",
                         url: driverLogoName,
                         // TODO: waiting for CAR-3201 to be done
                         // nameInitialsInsteadUrl: driverLogoName ? null : initials,
