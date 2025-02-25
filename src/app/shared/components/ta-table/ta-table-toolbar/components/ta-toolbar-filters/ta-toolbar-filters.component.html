@@ -348,12 +348,24 @@
     }
 
     <!-- MONEY FILTER -->
-    @if (options.toolbarActions.showMoneyFilter) {
-        <app-ca-filter-dropdown
-            [type]="'MoneyFilter'"
+    @if (options.toolbarActions.showMoneyFilter) { 
+        <app-ca-filter
+            [type]="'moneyFilter'"
+            [icon]="'dollar'"
+            [filterTitle]="'Money Filter'"
+            [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
+            [isMoneyFilter]="true"
+            [isMilesFilter]="false"
+            [isFuelType]="!!options.toolbarActions.fuelMoneyFilter"
+            [isLoadType]="!!options.toolbarActions.loadMoneyFilter"
             (setFilter)="onFilter($event)"
+            (clearAll)="onFilter($event)"
+            [isRepairFilter]="
+                options.toolbarActions.showTrailerPmFilter ||
+                options.toolbarActions.showTruckPmFilter
+            "
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter>
     }
 
     <!-- FILTER -->

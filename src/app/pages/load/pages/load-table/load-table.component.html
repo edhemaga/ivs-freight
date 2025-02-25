@@ -62,18 +62,26 @@
                         >
                         </app-ca-filter-dropdown>
 
-                        <app-ca-filter-dropdown
-                            [type]="'MoneyFilter'"
+                        <app-ca-filter
+                            subType="all"
+                            type="moneyFilter"
+                            icon="dollar"
+                            filterTitle="Money Filter"
+                            [isMoneyFilter]="true"
+                            [isLoadType]="true"
                             (setFilter)="setFilters($event)"
+                            (clearAll)="setFilters($event)"
                         >
-                        </app-ca-filter-dropdown>
+                        </app-ca-filter>
                     }
                 </div>
             </ng-template>
 
             <ng-template #divider>
                 <div class="new-table--toolbar-divider">
-                    <div class="new-table--toolbar-divider-border"></div>
+                    <div
+                        class="new-table--toolbar-divider-border background-light-grey-6"
+                    ></div>
                 </div>
             </ng-template>
         </app-new-table-toolbar>

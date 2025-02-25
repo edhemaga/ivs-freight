@@ -20,6 +20,8 @@ export class FilterHelper {
             res: IFilterAction,
             currentFilters: IStateFilters
         ): IStateFilters {
+            if(res.queryParams === null) return null;
+            
             switch (res.filterType) {
                 case LoadFilterStringEnum.TIME_FILTER: {
                     const { fromDate, toDate } =
