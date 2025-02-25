@@ -522,7 +522,7 @@ export class SettingsOfficeModalComponent
                     this.officeForm.patchValue({
                         isOwner: res.isOwner,
                         name: res.name,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         phone: res.phone,
                         extensionPhone: res.extensionPhone,

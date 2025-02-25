@@ -590,7 +590,7 @@ export class OwnerModalComponent
                         lastName: res.ownerType.id === 2 ? splitName[1] : null,
                         ssn: res.ownerType.id === 2 ? res.ssnEin : null,
                         ein: res.ownerType.id === 1 ? res.ssnEin : null,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         bankId: res?.bank?.name ?? null,
                     });

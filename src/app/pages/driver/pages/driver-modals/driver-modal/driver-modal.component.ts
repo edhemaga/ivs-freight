@@ -2069,7 +2069,7 @@ export class DriverModalComponent
             phone,
             email,
             ssn,
-            address: address?.address,
+            address,
             addressUnit: address?.addressUnit,
 
             isOwner: !!owner,

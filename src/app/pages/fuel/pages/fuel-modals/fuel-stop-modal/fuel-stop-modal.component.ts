@@ -457,7 +457,7 @@ export class FuelStopModalComponent
                             : null,
                         favourite: res.favourite,
                         fax: res.fax,
-                        address: res.address.address,
+                        address: res.address,
                         note: res.note,
                     });
 
