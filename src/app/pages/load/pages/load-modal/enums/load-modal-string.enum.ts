@@ -170,6 +170,7 @@ export enum LoadModalStringEnum {
     UPPERCASE = 'uppercase',
     CAPITALIZE = 'capitalize',
     CREATE = 'create',
+    EDIT = 'edit',
     AGE_UNPAID = 'ageUnpaid',
     DAYS_TO_PAY = 'daysToPay',
     STATUS = 'status',

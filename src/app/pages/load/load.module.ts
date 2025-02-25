@@ -60,7 +60,6 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
 
         // store
         StoreModule.forFeature('loadCardData', loadCardModalReducer),
-        StoreModule.forFeature('load', loadReducer),
     ],
 })
 export class LoadModule {}

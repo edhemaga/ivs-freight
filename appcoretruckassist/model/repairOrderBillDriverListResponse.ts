@@ -15,5 +15,6 @@ import { RepairDriverResponse } from './repairDriverResponse';
 export interface RepairOrderBillDriverListResponse { 
     drivers?: Array<RepairDriverResponse> | null;
     isTeamDrivers?: boolean;
+    isDispatchDriver?: boolean;
 }
 

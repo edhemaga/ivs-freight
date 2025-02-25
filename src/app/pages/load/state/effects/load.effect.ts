@@ -1,18 +1,36 @@
 import { Injectable } from '@angular/core';
-import { Actions, createEffect, ofType } from '@ngrx/effects';
+import { act, Actions, createEffect, ofType } from '@ngrx/effects';
 
 // rxjs
-import { catchError, exhaustMap, map, of } from 'rxjs';
+import {
+    catchError,
+    delay,
+    exhaustMap,
+    filter,
+    map,
+    of,
+    tap,
+    withLatestFrom,
+} from 'rxjs';
 
 // services
 import { LoadService as LoadLocalService } from '@shared/services/load.service';
-import { LoadService, UpdateLoadStatusCommand } from 'appcoretruckassist';
+import {
+    LoadService,
+    UpdateLoadStatusCommand,
+} from 'appcoretruckassist';
 import { CommentsService } from '@shared/services/comments.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { BrokerService } from '@pages/customer/services';
 
 // store
 import * as LoadActions from '@pages/load/state/actions/load.action';
+import { Store } from '@ngrx/store';
+import {
+    activeLoadModalDataSelector,
+    staticModalDataSelector,
+} from '@pages/load/state/selectors/load.selector';
 
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
@@ -27,10 +45,14 @@ export class LoadEffect {
 
         // services
         private loadService: LoadLocalService,
+        private brokerService: BrokerService,
         private apiLoadService: LoadService,
         private commentService: CommentsService,
         private modalService: ModalService,
         private tableService: TruckassistTableService,
+
+        // store
+        private store: Store
     ) {}
 
     // #region HTTP READ
@@ -59,7 +81,7 @@ export class LoadEffect {
                             activeCount,
                             closedCount,
                             selectedTab: statusType,
-                            showMore
+                            showMore,
                         });
                     }),
                     catchError((error) =>
@@ -94,7 +116,7 @@ export class LoadEffect {
                             activeCount,
                             closedCount,
                             selectedTab: eLoadStatusType.Template,
-                            showMore
+                            showMore,
                         });
                     }),
                     catchError((error) =>
@@ -105,125 +127,245 @@ export class LoadEffect {
         )
     );
 
-    public getLoadById$ = createEffect(() => 
+    public getLoadById$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.getLoadById),
             exhaustMap((action) => {
                 const { apiParam } = action || {};
 
                 return this.loadService.apiGetLoadById(apiParam).pipe(
-                    map((response) => LoadActions.getLoadByIdSuccess({ load: response })),
-                    catchError((error) => of(LoadActions.getLoadByIdError({ error })))
-                )
+                    map((response) =>
+                        LoadActions.getLoadByIdSuccess({ load: response })
+                    ),
+                    catchError((error) =>
+                        of(LoadActions.getLoadByIdError({ error }))
+                    )
+                );
             })
         )
     );
 
-    public getLoadByIdEditModal$ = createEffect(() => 
+    public getLoadByIdEditModal$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.getEditLoadModalData),
-            exhaustMap((action) => {
+            withLatestFrom(this.store.select(activeLoadModalDataSelector)),
+            tap((data) => {
+                const { selectedTab, eventType } = data[0];
+
+                LoadStoreEffectsHelper.getLoadOrTemplateByIdEditModal(
+                    this.modalService,
+                    selectedTab,
+                    eventType
+                );
+            }),
+            filter((data) => {
+                return !data[1];
+            }),
+            exhaustMap((data) => {
                 return this.loadService.apiGetLoadModal().pipe(
                     exhaustMap((modalResponse) => {
-                        const { apiParam, selectedTab, eventType } = action || {};
+                        const { apiParam } = data[0] || {};
 
-                        return this.loadService.apiGetLoadPossibleStatusesDropdownOptions(apiParam).pipe(
-                            exhaustMap((statusDropdownResponse) => {
-
-                                return this.loadService.apiGetLoadById(apiParam).pipe(
-                                    map((loadResponse) => {
-                                        LoadStoreEffectsHelper.getLoadOrTemplateByIdEditModal(this.modalService, selectedTab, eventType, loadResponse, statusDropdownResponse, modalResponse);
-
-                                        return LoadActions.getEditLoadModalDataSuccess({ load: loadResponse, modal: modalResponse });
-                                    }),
-                                    catchError((error) => of(LoadActions.getEditLoadModalDataError({ error })))
-                                )
-                            })
-                        )
+                        return this.loadService
+                            .apiGetLoadPossibleStatusesDropdownOptions(apiParam)
+                            .pipe(
+                                exhaustMap((statusDropdownResponse) => {
+                                    return this.loadService
+                                        .apiGetLoadById(apiParam)
+                                        .pipe(
+                                            map((loadResponse) => {
+                                                return LoadActions.getEditLoadModalDataSuccess(
+                                                    {
+                                                        load: loadResponse,
+                                                        modal: modalResponse,
+                                                    }
+                                                );
+                                            }),
+                                            catchError((error) =>
+                                                of(
+                                                    LoadActions.getEditLoadModalDataError(
+                                                        { error }
+                                                    )
+                                                )
+                                            )
+                                        );
+                                })
+                            );
                     })
-                )
+                );
             })
         )
     );
 
-    public getTemplateByIdEditModal$ = createEffect(() => 
+    public getTemplateByIdEditModal$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.getEditLoadTemplateModalData),
-            exhaustMap((action) => {
+            withLatestFrom(
+                this.store.select(activeLoadModalDataSelector),
+                this.store.select(staticModalDataSelector),
+            ),
+            tap((data) => {
+                const { selectedTab, eventType } = data[0];
+
+                LoadStoreEffectsHelper.getLoadOrTemplateByIdEditModal(
+                    this.modalService,
+                    selectedTab,
+                    eventType
+                );
+            }),
+            filter(data => {
+                return !data[1];
+            }),
+            exhaustMap((data) => {
                 return this.loadService.apiGetLoadModal().pipe(
                     exhaustMap((modalResponse) => {
-                        const { apiParam, selectedTab, eventType } = action || {};
+                        const { apiParam } = data[0];
 
-                        return this.loadService.apiGetLoadTemplateById(apiParam).pipe(
-                            map((loadResponse) => {
-                                LoadStoreEffectsHelper.getLoadOrTemplateByIdEditModal(this.modalService, selectedTab, eventType, loadResponse, null, modalResponse);
-
-                                return LoadActions.getEditLoadTemplateModalDataSuccess({ loadTemplate: loadResponse, modal: modalResponse });
-                            }),
-                            catchError((error) => of(LoadActions.getEditLoadTemplateModalDataError({ error })))
-                        )
+                        return this.loadService
+                            .apiGetLoadTemplateById(apiParam)
+                            .pipe(
+                                map((loadResponse) => {
+                                    return LoadActions.getEditLoadTemplateModalDataSuccess(
+                                        {
+                                            loadTemplate: loadResponse,
+                                            modal: modalResponse,
+                                        }
+                                    );
+                                }),
+                                catchError((error) =>
+                                    of(
+                                        LoadActions.getEditLoadTemplateModalDataError(
+                                            { error }
+                                        )
+                                    )
+                                )
+                            );
                     })
-                )
+                );
             })
         )
     );
 
-    public getCreateLoadModalData$ = createEffect(() => 
+    public getCreateLoadModalData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.getCreateLoadModalData),
+            withLatestFrom(
+                this.store.select(staticModalDataSelector),
+                this.store.select(activeLoadModalDataSelector)
+            ),
+            tap((data) => {
+                if (!!data[1]) {
+                    LoadStoreEffectsHelper.getCreateLoadModalData(
+                        this.modalService
+                    );
+
+                    this.store.dispatch(LoadActions.getCreateLoadModalDataSuccess({
+                        modal: data[1],
+                        activeLoadModalData: data[2],
+                    }));
+                }
+            }),
+            filter((data) => {
+                return !data[1];
+            }),
             exhaustMap(() => {
                 return this.loadService.apiGetLoadModal().pipe(
+                    tap((response) =>
+                        LoadStoreEffectsHelper.getCreateLoadModalData(
+                            this.modalService
+                        )
+                    ),
                     map((response) => {
-                        LoadStoreEffectsHelper.getCreateLoadModalData(this.modalService, response);
-
-                        return LoadActions.getCreateLoadModalDataSuccess({ modal: response });
+                        return LoadActions.getCreateLoadModalDataSuccess({
+                            modal: response,
+                        });
                     }),
-                    catchError((error) => of(LoadActions.getCreateLoadModalDataError({ error })))
-                )
+                    catchError((error) =>
+                        of(LoadActions.getCreateLoadModalDataError({ error }))
+                    )
+                );
             })
         )
     );
 
-    public getConvertToLoadModalData$ = createEffect(() => 
+    public getConvertToLoadModalData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.getConvertToLoadModalData),
             exhaustMap((action) => {
                 return this.loadService.apiGetLoadModal().pipe(
                     exhaustMap((modalResponse) => {
-                        const { apiParam, selectedTab, eventType } = action || {};
+                        const { apiParam, selectedTab, eventType } =
+                            action || {};
 
-                        return this.loadService.apiGetLoadTemplateById(apiParam).pipe(
-                            map((loadResponse) => {
-                                LoadStoreEffectsHelper.getConvertToLoadOrTemplateModalData(this.modalService, selectedTab, eventType, loadResponse, modalResponse);
+                        return this.loadService
+                            .apiGetLoadTemplateById(apiParam)
+                            .pipe(
+                                map((loadResponse) => {
+                                    LoadStoreEffectsHelper.getConvertToLoadOrTemplateModalData(
+                                        this.modalService,
+                                        selectedTab,
+                                        eventType,
+                                        loadResponse,
+                                        modalResponse
+                                    );
 
-                                return LoadActions.getConvertToLoadModalDataSuccess({ load: loadResponse, modal: modalResponse });
-                            }),
-                            catchError((error) => of(LoadActions.getConvertToLoadModalDataError({ error })))
-                        )
+                                    return LoadActions.getConvertToLoadModalDataSuccess(
+                                        {
+                                            load: loadResponse,
+                                            modal: modalResponse,
+                                        }
+                                    );
+                                }),
+                                catchError((error) =>
+                                    of(
+                                        LoadActions.getConvertToLoadModalDataError(
+                                            { error }
+                                        )
+                                    )
+                                )
+                            );
                     })
-                )
+                );
             })
         )
     );
 
-    public getConvertToTemplateModalData$ = createEffect(() => 
+    public getConvertToTemplateModalData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.getConvertToLoadTemplateModalData),
             exhaustMap((action) => {
                 return this.loadService.apiGetLoadModal().pipe(
                     exhaustMap((modalResponse) => {
-                        const { apiParam, selectedTab, eventType } = action || {};
+                        const { apiParam, selectedTab, eventType } =
+                            action || {};
 
                         return this.loadService.apiGetLoadById(apiParam).pipe(
                             map((loadTemplateResponse) => {
-                                LoadStoreEffectsHelper.getConvertToLoadOrTemplateModalData(this.modalService, selectedTab, eventType, loadTemplateResponse, modalResponse);
+                                LoadStoreEffectsHelper.getConvertToLoadOrTemplateModalData(
+                                    this.modalService,
+                                    selectedTab,
+                                    eventType,
+                                    loadTemplateResponse,
+                                    modalResponse
+                                );
 
-                                return LoadActions.getConvertToLoadTemplateModalDataSuccess({ loadTemplate: loadTemplateResponse, modal: modalResponse });
+                                return LoadActions.getConvertToLoadTemplateModalDataSuccess(
+                                    {
+                                        loadTemplate: loadTemplateResponse,
+                                        modal: modalResponse,
+                                    }
+                                );
                             }),
-                            catchError((error) => of(LoadActions.getConvertToLoadTemplateModalDataError({ error })))
-                        )
+                            catchError((error) =>
+                                of(
+                                    LoadActions.getConvertToLoadTemplateModalDataError(
+                                        { error }
+                                    )
+                                )
+                            )
+                        );
                     })
-                )
+                );
             })
         )
     );
@@ -236,12 +378,20 @@ export class LoadEffect {
 
                 return this.loadService.getLoadStatusFilter(apiParam).pipe(
                     map((dispatcherFilter) => {
-                        LoadStoreEffectsHelper.getLoadStatusFilter(this.tableService, dispatcherFilter, selectedTab);
+                        LoadStoreEffectsHelper.getLoadStatusFilter(
+                            this.tableService,
+                            dispatcherFilter,
+                            selectedTab
+                        );
 
-                        return LoadActions.getLoadStatusFilterSuccess({ dispatcherFilter });
+                        return LoadActions.getLoadStatusFilterSuccess({
+                            dispatcherFilter,
+                        });
                     }),
-                    catchError((error) => of(LoadActions.getLoadStatusFilterError({ error })))
-                )
+                    catchError((error) =>
+                        of(LoadActions.getLoadStatusFilterError({ error }))
+                    )
+                );
             })
         )
     );
@@ -256,18 +406,25 @@ export class LoadEffect {
                 let _apiParam: UpdateLoadStatusCommand;
 
                 if (confirmation)
-                    _apiParam = LoadStoreEffectsHelper.composeUpdateLoadStatusCommand(confirmation);
-                else
-                    _apiParam = apiParam;
+                    _apiParam =
+                        LoadStoreEffectsHelper.composeUpdateLoadStatusCommand(
+                            confirmation
+                        );
+                else _apiParam = apiParam;
 
                 return this.apiLoadService.apiLoadStatusPut(_apiParam).pipe(
                     map((response) => {
                         const { id: loadId } = _apiParam || {};
 
-                        return LoadActions.updateLoadStatusSuccess({ loadId, status: response })
+                        return LoadActions.updateLoadStatusSuccess({
+                            loadId,
+                            status: response,
+                        });
                     }),
-                    catchError((error) => of(LoadActions.updateLoadStatusError({ error })))
-                )
+                    catchError((error) =>
+                        of(LoadActions.updateLoadStatusError({ error }))
+                    )
+                );
             })
         )
     );
@@ -282,10 +439,15 @@ export class LoadEffect {
                     map((response) => {
                         const { id } = apiParam;
 
-                        return LoadActions.revertLoadStatusSuccess({ loadId: id, status: response })
+                        return LoadActions.revertLoadStatusSuccess({
+                            loadId: id,
+                            status: response,
+                        });
                     }),
-                    catchError((error) => of(LoadActions.revertLoadStatusError({ error })))
-                )
+                    catchError((error) =>
+                        of(LoadActions.revertLoadStatusError({ error }))
+                    )
+                );
             })
         )
     );
@@ -304,11 +466,17 @@ export class LoadEffect {
                         const { id } = data || {};
 
                         return this.loadService.apiGetLoadById(id).pipe(
-                            map((getResponse) => LoadActions.createLoadSuccess({ load: getResponse })),
-                            catchError((error) => of(LoadActions.createLoadError({ error })))
-                        )
+                            map((getResponse) =>
+                                LoadActions.createLoadSuccess({
+                                    load: getResponse,
+                                })
+                            ),
+                            catchError((error) =>
+                                of(LoadActions.createLoadError({ error }))
+                            )
+                        );
                     })
-                )
+                );
             })
         )
     );
@@ -323,10 +491,14 @@ export class LoadEffect {
                     map((createResponse) => {
                         const { data } = createResponse || {};
 
-                        return LoadActions.createLoadTemplateSuccess({ loadTemplate: data })
+                        return LoadActions.createLoadTemplateSuccess({
+                            loadTemplate: data,
+                        });
                     }),
-                    catchError((error) => of(LoadActions.createLoadTemplateError({ error })))
-                )
+                    catchError((error) =>
+                        of(LoadActions.createLoadTemplateError({ error }))
+                    )
+                );
             })
         )
     );
@@ -345,12 +517,18 @@ export class LoadEffect {
                             map((getResponse) => {
                                 const { entityTypeId } = apiParam || {};
 
-                                return LoadActions.createCommentSuccess({ loadId: entityTypeId, comment: getResponse, metadata })
+                                return LoadActions.createCommentSuccess({
+                                    loadId: entityTypeId,
+                                    comment: getResponse,
+                                    metadata,
+                                });
                             }),
-                            catchError((error) => of(LoadActions.createCommentError({ error })))
-                        )
+                            catchError((error) =>
+                                of(LoadActions.createCommentError({ error }))
+                            )
+                        );
                     })
-                )
+                );
             })
         )
     );
@@ -365,17 +543,23 @@ export class LoadEffect {
                     exhaustMap((updateResponse) => {
                         const { id } = updateResponse || {};
 
-                        return this.loadService.getLoadList({ loadId: id }).pipe(
-                            map((getResponse) => {
-                                const { pagination } = getResponse || {};
-                                const { data } = pagination || {};
+                        return this.loadService
+                            .getLoadList({ loadId: id })
+                            .pipe(
+                                map((getResponse) => {
+                                    const { pagination } = getResponse || {};
+                                    const { data } = pagination || {};
 
-                                return LoadActions.updateLoadSuccess({ load: data[0] });
-                            }),
-                            catchError((error) => of(LoadActions.updateLoadError({ error })))
-                        )
+                                    return LoadActions.updateLoadSuccess({
+                                        load: data[0],
+                                    });
+                                }),
+                                catchError((error) =>
+                                    of(LoadActions.updateLoadError({ error }))
+                                )
+                            );
                     })
-                )
+                );
             })
         )
     );
@@ -390,10 +574,14 @@ export class LoadEffect {
                     map((updateResponse) => {
                         const { data } = updateResponse || {};
 
-                        return LoadActions.updateLoadTemplateSuccess({ loadTemplate: data })
+                        return LoadActions.updateLoadTemplateSuccess({
+                            loadTemplate: data,
+                        });
                     }),
-                    catchError((error) => of(LoadActions.updateLoadTemplateError({ error })))
-                )
+                    catchError((error) =>
+                        of(LoadActions.updateLoadTemplateError({ error }))
+                    )
+                );
             })
         )
     );
@@ -406,18 +594,35 @@ export class LoadEffect {
 
                 return this.loadService.apiUpdateLoad(apiParamLoad).pipe(
                     exhaustMap(() => {
-                        return this.apiLoadService.apiLoadStatusPut(apiParamStatus).pipe(
-                            exhaustMap((statusResponse) => {
-                                const { id } = apiParamLoad || {};
+                        return this.apiLoadService
+                            .apiLoadStatusPut(apiParamStatus)
+                            .pipe(
+                                exhaustMap((statusResponse) => {
+                                    const { id } = apiParamLoad || {};
 
-                                return this.loadService.getLoadList({ loadId: id }).pipe(
-                                    map((response) => LoadActions.updateLoadAndStatusSuccess({ response, status: statusResponse })),
-                                    catchError((error) => of(LoadActions.updateLoadAndStatusError({ error })))
-                                )
-                            })
-                        )
+                                    return this.loadService
+                                        .getLoadList({ loadId: id })
+                                        .pipe(
+                                            map((response) =>
+                                                LoadActions.updateLoadAndStatusSuccess(
+                                                    {
+                                                        response,
+                                                        status: statusResponse,
+                                                    }
+                                                )
+                                            ),
+                                            catchError((error) =>
+                                                of(
+                                                    LoadActions.updateLoadAndStatusError(
+                                                        { error }
+                                                    )
+                                                )
+                                            )
+                                        );
+                                })
+                            );
                     })
-                )
+                );
             })
         )
     );
@@ -430,18 +635,35 @@ export class LoadEffect {
 
                 return this.loadService.apiUpdateLoad(apiParamLoad).pipe(
                     exhaustMap(() => {
-                        return this.loadService.apiRevertLoadStatus(apiParamStatus).pipe(
-                            exhaustMap((statusResponse) => {
-                                const { id } = apiParamLoad || {};
+                        return this.loadService
+                            .apiRevertLoadStatus(apiParamStatus)
+                            .pipe(
+                                exhaustMap((statusResponse) => {
+                                    const { id } = apiParamLoad || {};
 
-                                return this.loadService.getLoadList({ loadId: id }).pipe(
-                                    map((response) => LoadActions.updateLoadAndRevertStatusSuccess({ response, status: statusResponse })),
-                                    catchError((error) => of(LoadActions.updateLoadAndRevertStatusError({ error })))
-                                )
-                            })
-                        )
+                                    return this.loadService
+                                        .getLoadList({ loadId: id })
+                                        .pipe(
+                                            map((response) =>
+                                                LoadActions.updateLoadAndRevertStatusSuccess(
+                                                    {
+                                                        response,
+                                                        status: statusResponse,
+                                                    }
+                                                )
+                                            ),
+                                            catchError((error) =>
+                                                of(
+                                                    LoadActions.updateLoadAndRevertStatusError(
+                                                        { error }
+                                                    )
+                                                )
+                                            )
+                                        );
+                                })
+                            );
                     })
-                )
+                );
             })
         )
     );
@@ -453,7 +675,9 @@ export class LoadEffect {
                 const { apiParam } = action || {};
 
                 return this.loadService.deleteLoadById(apiParam).pipe(
-                    map(() => LoadActions.deleteLoadByIdSuccess({ loadId: apiParam })),
+                    map(() =>
+                        LoadActions.deleteLoadByIdSuccess({ loadId: apiParam })
+                    ),
                     catchError((error) =>
                         of(LoadActions.deleteLoadByIdError({ error }))
                     )
@@ -488,12 +712,16 @@ export class LoadEffect {
             exhaustMap((action) => {
                 const { apiParam } = action || {};
 
-                return this.loadService.apiDeleteBulkLoadTemplates(apiParam).pipe(
-                    map(() => LoadActions.deleteBulkLoadSuccess({ ids: apiParam })),
-                    catchError((error) =>
-                        of(LoadActions.deleteBulkLoadError({ error }))
-                    )
-                );
+                return this.loadService
+                    .apiDeleteBulkLoadTemplates(apiParam)
+                    .pipe(
+                        map(() =>
+                            LoadActions.deleteBulkLoadSuccess({ ids: apiParam })
+                        ),
+                        catchError((error) =>
+                            of(LoadActions.deleteBulkLoadError({ error }))
+                        )
+                    );
             })
         )
     );
@@ -505,11 +733,15 @@ export class LoadEffect {
                 const { apiParam } = action || {};
 
                 return this.loadService.apiDeleteBulkLoads(apiParam).pipe(
-                    map(() => LoadActions.deleteBulkLoadTemplateSuccess({ ids: apiParam })),
+                    map(() =>
+                        LoadActions.deleteBulkLoadTemplateSuccess({
+                            ids: apiParam,
+                        })
+                    ),
                     catchError((error) =>
                         of(LoadActions.deleteBulkLoadTemplateError({ error }))
                     )
-                )
+                );
             })
         )
     );
@@ -522,8 +754,10 @@ export class LoadEffect {
 
                 return this.commentService.deleteCommentById(apiParam).pipe(
                     map(() => {
-
-                        return LoadActions.deleteCommentByIdSuccess({ loadId, commentId: apiParam });
+                        return LoadActions.deleteCommentByIdSuccess({
+                            loadId,
+                            commentId: apiParam,
+                        });
                     }),
                     catchError((error) =>
                         of(LoadActions.deleteCommentByIdError({ error }))

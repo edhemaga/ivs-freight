@@ -350,3 +350,21 @@ export const activeTableDataSelector = createSelector(
         return result;
     }
 );
+
+export const staticModalDataSelector = createSelector(
+    loadState,
+    (state) => {
+        const { modal } = state;
+
+        return modal;
+    }
+);
+
+export const activeLoadModalDataSelector = createSelector(
+    loadState,
+    (state) => {
+        const { activeModalData } = state;
+
+        return activeModalData;
+    }
+);

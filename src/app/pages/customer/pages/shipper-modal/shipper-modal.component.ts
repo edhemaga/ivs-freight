@@ -23,6 +23,7 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // Enums
 import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // Validators
 import {
@@ -50,6 +51,7 @@ import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -107,6 +109,7 @@ import {
     ShipperResponse,
     ReviewResponse,
     DepartmentResponse,
+    ShipperLoadModalResponse,
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { Tabs } from '@shared/models/tabs.model';
@@ -235,7 +238,8 @@ export class ShipperModalComponent
         public addressService: AddressService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private loadStoreService: LoadStoreService
     ) {
         super();
     }
@@ -350,16 +354,8 @@ export class ShipperModalComponent
         if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
                 case 'load-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: {
-                            key: this.editData?.key,
-                            value: null,
-                        },
-                        component: LoadModalComponent,
-                        size: 'small',
-                        closing: 'fastest',
-                    });
+                    this.ngbActiveModal.close();
+                    this.loadStoreService.dispatchGetCreateLoadModalData();
                     break;
                 }
 
@@ -414,6 +410,8 @@ export class ShipperModalComponent
                 } else {
                     this.addShipper();
                 }
+
+                this.loadStoreService.dispatchGetCreateLoadModalData();
             }
             // Delete
             if (action === TaModalActionEnum.DELETE && this.editData) {
@@ -824,20 +822,20 @@ export class ShipperModalComponent
             .addShipper(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
+                next: (response) => {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         switch (this.editData?.key) {
-                            case 'load-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: LoadModalComponent,
-                                    size: 'small',
-                                    closing: 'slowlest',
-                                });
+                            case LoadModalStringEnum.LOAD_MODAL: {
+                                const { id } = response;
+                                const modalSingleShipperitem: ShipperLoadModalResponse = {
+                                    id,
+                                    ...newData
+                                };
+
+                                this.loadStoreService.dispatchAddnewShipperToStaticModalData(modalSingleShipperitem);
+
+                                this.loadStoreService.dispatchGetCreateLoadModalData();
+
                                 break;
                             }
 
