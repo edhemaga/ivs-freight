@@ -1001,7 +1001,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         ? this.selectedPhysicalPoBox.city
                         : null,
                     state: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.state
+                        ? this.selectedPhysicalPoBox.stateShortName
                         : null,
                     zipCode: this.selectedPhysicalPoBox
                         ? this.selectedPhysicalPoBox.zipCode
