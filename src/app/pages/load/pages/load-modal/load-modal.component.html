@@ -155,7 +155,25 @@
                         [optionValue]="'id'"
                         formControlName="dispatcherId"
                         [template]="'load-dispatcher'"
-                        [inputConfig]="getDispatcherInputConfig()"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Dispatcher',
+                            isDropdown: true,
+                            isRequired: true,
+                            dropdownImageInput: {
+                                withText: true,
+                                svg: false,
+                                image: true,
+                                url: 'logoName',
+                                template: 'user',
+                                iconsPath: '',
+                                activeItemIconKey: 'logoName',
+                            },
+                            textTransform: 'capitalize',
+                            dropdownWidthClass:
+                                'w-col-230 load-dispatcher-wrapper',
+                        }"
                         [options]="labelsDispatcher"
                         [activeItem]="selectedDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
@@ -523,7 +541,6 @@
                                 [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [options]="labelsShipperContacts"
-                                [activeItem]="selectedPickupShipperContact"
                                 (selectedItem)="
                                     onSelectDropdown(
                                         $event,

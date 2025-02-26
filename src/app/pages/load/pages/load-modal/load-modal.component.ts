@@ -166,6 +166,7 @@ import {
     InputTestComponent,
 } from 'ca-components';
 import { eGeneralActions } from '@shared/enums';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 @Component({
     selector: 'app-load-modal',
@@ -325,11 +326,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     // input configurations
     public loadDispatchesTTDInputConfig: ITaInput;
     public loadBrokerInputConfig: ITaInput;
-    public loadBrokerContactsInputConfig: ITaInput;
+    public loadBrokerContactsInputConfig: ICaInput;
     public loadPickupShipperInputConfig: ITaInput;
-    public loadPickupShipperContactsInputConfig: ITaInput;
+    public loadPickupShipperContactsInputConfig: ICaInput;
     public loadDeliveryShipperInputConfig: ITaInput;
-    public loadDeliveryShipperContactsInputConfig: ITaInput;
+    public loadDeliveryShipperContactsInputConfig: ICaInput;
     public loadCompanyInputConfig = LoadModalConfig.LOAD_COMPANY_INPUT_CONFIG;
     public loadCommodityInputConfig = LoadModalConfig.LOAD_COMMODITY_CONFIG;
     public loadWeightInputConfig = LoadModalConfig.LOAD_WEIGHT_CONFIG;
@@ -365,7 +366,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedExtraStopShipper: any[] = [];
     public selectedExtraStopShipperContact: any[] = [];
     public loadExtraStopsShipperInputConfig: ITaInput[] = [];
-    public loadExtraStopsShipperContactsInputConfig: ITaInput[] = [];
+    public loadExtraStopsShipperContactsInputConfig: ICaInput[] = [];
     public loadExtraStopsDateRange: EnumValue[] | boolean[] = [];
     public selectedExtraStopTime: any[] = [];
     public previousDeliveryStopOrder: number;
@@ -1428,23 +1429,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         };
                         this.loadBrokerContactsInputConfig = {
                             ...this.loadBrokerContactsInputConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: event.name,
-                                        logoName: null,
-                                    },
-                                    {
-                                        value: event.originalPhone,
-                                        second_value: event.phoneExtension
-                                            ? `#${event.phoneExtension}`
-                                            : null,
-                                        logoName: null,
-                                    },
-                                ],
-                                customClass:
-                                    LoadModalStringEnum.LOAD_BROKER_CONTACT,
-                            },
                             isDisabled: false,
                         };
                     } else {
@@ -1487,23 +1471,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                         this.loadPickupShipperContactsInputConfig = {
                             ...this.loadPickupShipperContactsInputConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: event.name,
-                                        logoName: null,
-                                    },
-                                    {
-                                        value: event.originalPhone,
-                                        second_value: event.phoneExtension
-                                            ? `#${event.phoneExtension}`
-                                            : null,
-                                        logoName: null,
-                                    },
-                                ],
-                                customClass:
-                                    LoadModalStringEnum.LOAD_SHIPPER_CONTACT,
-                            },
                             isDisabled: false,
                         };
                     } else {
@@ -1910,29 +1877,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     if (this.selectedBrokerContact) {
                         this.loadForm
                             .get(LoadModalStringEnum.BROKER_CONTACT_ID)
-                            .patchValue(this.selectedBrokerContact.fullName);
+                            .patchValue(this.selectedBrokerContact.id);
 
                         this.loadBrokerContactsInputConfig = {
                             ...this.loadBrokerContactsInputConfig,
-                            multipleInputValues: {
-                                options: [
-                                    {
-                                        value: this.selectedBrokerContact.name,
-                                        logoName: null,
-                                    },
-                                    {
-                                        value: this.selectedBrokerContact
-                                            .originalPhone,
-                                        second_value: this.selectedBrokerContact
-                                            .phoneExtension
-                                            ? `#${this.selectedBrokerContact.phoneExtension}`
-                                            : null,
-                                        logoName: null,
-                                    },
-                                ],
-                                customClass:
-                                    LoadModalStringEnum.LOAD_BROKER_CONTACT,
-                            },
                             isDisabled: false,
                             blackInput: false,
                         };
@@ -2038,53 +1986,19 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     })
                     .filter((item) => item.contacts?.length);
 
-                this.labelsShipperContacts.unshift({
-                    id: 7655,
-                    name: LoadModalStringEnum.ADD_NEW,
-                });
-
                 if (this.labelsShipperContacts[1]?.contacts[0]) {
                     this.selectedPickupShipperContact =
                         this.labelsShipperContacts[1].contacts[0];
-
                     this.loadForm
                         .get(LoadModalStringEnum.PICKUP_SHIPPER_CONTACT_ID)
-                        .patchValue(this.selectedPickupShipperContact.fullName);
+                        .patchValue(this.selectedPickupShipperContact.id);
 
                     this.loadPickupShipperContactsInputConfig = {
                         ...this.loadPickupShipperContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedPickupShipperContact
-                                        .name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedPickupShipperContact
-                                        .originalPhone,
-                                    second_value: this
-                                        .selectedPickupShipperContact
-                                        .phoneExtension
-                                        ? `#${this.selectedPickupShipperContact.phoneExtension}`
-                                        : null,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass:
-                                LoadModalStringEnum.LOAD_SHIPPER_CONTACT,
-                        },
                         isDisabled: false,
                     };
                 } else {
                     this.selectedPickupShipperContact = null;
-
-                    this.labelsShipperContacts = [
-                        {
-                            id: 7655,
-                            name: LoadModalStringEnum.ADD_NEW,
-                        },
-                    ];
 
                     this.loadForm
                         .get(LoadModalStringEnum.PICKUP_SHIPPER_CONTACT_ID)
@@ -2185,11 +2099,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     })
                     .filter((item) => item.contacts?.length);
 
-                this.labelsShipperContacts.unshift({
-                    id: 7655,
-                    name: LoadModalStringEnum.ADD_NEW,
-                });
-
                 if (this.labelsShipperContacts[1]?.contacts[0]) {
                     this.selectedDeliveryShipperContact =
                         this.labelsShipperContacts[1].contacts[0];
@@ -2227,13 +2136,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     };
                 } else {
                     this.selectedDeliveryShipperContact = null;
-
-                    this.labelsShipperContacts = [
-                        {
-                            id: 7655,
-                            name: LoadModalStringEnum.ADD_NEW,
-                        },
-                    ];
 
                     this.loadForm
                         .get(LoadModalStringEnum.DELIVERY_SHIPPER_CONTACT_ID)
@@ -2381,11 +2283,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     })
                     .filter((item) => item.contacts?.length);
 
-                this.labelsShipperContacts.unshift({
-                    id: 7655,
-                    name: LoadModalStringEnum.ADD_NEW,
-                });
-
                 if (this.labelsShipperContacts[1]?.contacts[0]) {
                     this.selectedExtraStopShipperContact[index] =
                         this.labelsShipperContacts[1].contacts[0];
@@ -2426,10 +2323,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         isDisabled: false,
                     };
                 } else {
-                    this.labelsShipperContacts = [
-                        { id: 7655, name: LoadModalStringEnum.ADD_NEW },
-                    ];
-
                     this.selectedExtraStopShipperContact[index] = null;
 
                     this.loadExtraStops
@@ -2963,6 +2856,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             blackInput: true,
             textTransform: LoadModalStringEnum.CAPITALIZE,
             dropdownWidthClass: LoadModalStringEnum.DROPDOWN_WIDTH_2,
+            searchinGroupIndex: 'contacts',
         });
 
         // selected
@@ -4068,7 +3962,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         : this.selectedCompany,
                 dispatch: this.selectedDispatches,
                 broker: this.selectedBroker,
-                brokerContactId: this.selectedBrokerContact,
+                brokerContactId: this.selectedBrokerContact.id,
                 referenceNumber: form.referenceNumber,
                 generalCommodity: this.selectedGeneralCommodity,
                 weight: form.weight,
@@ -4911,7 +4805,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         if (deliveryStop) {
             deliveryStop = this.formatStopTimes(deliveryStop);
         }
-        
+
         // form
         this.loadForm.patchValue({
             id,

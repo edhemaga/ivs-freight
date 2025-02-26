@@ -1,4 +1,5 @@
 import { FormControl } from '@angular/forms';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerTypeResponse, TruckTypeResponse } from 'appcoretruckassist';
 
@@ -30,7 +31,7 @@ export class LoadModalConfig {
         dropdownWidthClass: 'w-col-432',
     };
 
-    static LOAD_BROKER_CONTACTS_INPUT_CONFIG: ITaInput = {
+    static LOAD_BROKER_CONTACTS_INPUT_CONFIG: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -42,6 +43,7 @@ export class LoadModalConfig {
         blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-308',
+        searchinGroupIndex: 'contacts',
     };
 
     static LOAD_PICKUP_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -55,10 +57,10 @@ export class LoadModalConfig {
         isRequired: true,
         blackInput: false,
         textTransform: 'uppercase',
-        dropdownWidthClass: 'w-col-608 load-shipper-stops',
+        dropdownWidthClass: 'w-col-608 load-shipper-stops'
     };
 
-    static LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG: ITaInput = {
+    static LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -70,6 +72,7 @@ export class LoadModalConfig {
         blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-370',
+        searchinGroupIndex: 'contacts'
     };
 
     static LOAD_DELIVERY_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -86,7 +89,7 @@ export class LoadModalConfig {
         dropdownWidthClass: 'w-col-608 load-shipper-stops',
     };
 
-    static LOAD_DELIVERY_SHIPPER_CONTACTS_INPUT_CONFIG: ITaInput = {
+    static LOAD_DELIVERY_SHIPPER_CONTACTS_INPUT_CONFIG: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -98,6 +101,7 @@ export class LoadModalConfig {
         blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-370',
+        searchinGroupIndex: 'contacts',
     };
 
     static LOAD_COMPANY_INPUT_CONFIG: ITaInput = {
@@ -476,11 +480,11 @@ export class LoadModalConfig {
                 )
                     ? 'tanker'
                     : selectedTrailerReq?.name?.toLowerCase()?.includes('rgn')
-                    ? 'low-boy-rgn'
-                    : selectedTrailerReq?.name
-                          ?.trim()
-                          .replace(' ', '')
-                          .toLowerCase(),
+                      ? 'low-boy-rgn'
+                      : selectedTrailerReq?.name
+                            ?.trim()
+                            .replace(' ', '')
+                            .toLowerCase(),
             },
             dropdownWidthClass: 'w-col-302',
             customClass: 'truck-trailer-dropdown',
