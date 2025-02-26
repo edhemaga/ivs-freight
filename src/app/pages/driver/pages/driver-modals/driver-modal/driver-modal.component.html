@@ -136,6 +136,7 @@
                                         type: 'text',
                                         label: 'Address, City, State Zip',
                                         isRequired: true,
+                                        isAddress: true,
                                         placeholderIcon: 'address',
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-510',
@@ -143,7 +144,6 @@
                                         maxLength: 256,
                                     }"
                                     [placeholderType]="'longAddress'"
-                                    [activeAddress]="selectedAddress"
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
                                     (selectedAddress)="onHandleAddress($event)"
@@ -201,6 +201,8 @@
                                 >
                                     <div class="row">
                                         <app-ca-input-dropdown
+                                            [label]="'name'"
+                                            [optionValue]="'id'"
                                             formControlName="owner"
                                             [template]="
                                                 'double-column-template'
@@ -274,6 +276,8 @@
                                 ></app-ta-checkbox>
 
                                 <app-ca-input-dropdown
+                                    [label]="'name'"
+                                    [optionValue]="'id'"
                                     formControlName="payType"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
@@ -806,6 +810,8 @@
                             <div class="custom-bank-row custom-bank-row-driver">
                                 <div class="bank-field">
                                     <app-ca-input-dropdown
+                                        [label]="'name'"
+                                        [optionValue]="'id'"
                                         formControlName="bankId"
                                         [template]="'svg-template'"
                                         [inputConfig]="{

@@ -134,7 +134,7 @@ export const onGetPayrollFlatRateDriverClosedPayrollSuccess = (
         excludedDeductions: [],
         excludedCredits: [],
         excludedLoads: [],
-        includedBonuses: [],
+        excludedBonuses: [],
     },
     reportLoading: false,
 });

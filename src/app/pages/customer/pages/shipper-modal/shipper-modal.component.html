@@ -100,9 +100,19 @@
                             <div class="col-10">
                                 <app-ca-input-address-dropdown
                                     formControlName="address"
-                                    [inputConfig]="getAddressInputConfig"
+                                    [inputConfig]="{
+                                        name: 'Address',
+                                        type: 'text',
+                                        label: 'Address, City, State Zip',
+                                        isRequired: true,
+                                        isAddress: true,
+                                        placeholderIcon: 'address',
+                                        textTransform: 'capitalize',
+                                        dropdownWidthClass: 'w-col-510',
+                                        minLength: 6,
+                                        maxLength: 256,
+                                    }"
                                     [placeholderType]="'longAddress'"
-                                    [activeAddress]="selectedAddress"
                                     (selectedAddress)="onHandleAddress($event)"
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"

@@ -71,9 +71,19 @@
             <div class="d-grid gap-12 d-grid-address mb-32">
                 <app-ca-input-address-dropdown
                     formControlName="address"
-                    [inputConfig]="ownerModalConfig.ADDRESS_INPUT_CONFIG"
+                    [inputConfig]="{
+                        name: 'Address',
+                        type: 'text',
+                        label: 'Address, City, State Zip',
+                        isRequired: true,
+                        isAddress: true,
+                        placeholderIcon: 'address',
+                        textTransform: 'capitalize',
+                        dropdownWidthClass: 'w-col-376',
+                        minLength: 6,
+                        maxLength: 256,
+                    }"
                     [placeholderType]="'longAddress'"
-                    [activeAddress]="selectedAddress"
                     [receivedAddressList]="addressList"
                     [receivedAddressData]="addressData"
                     (selectedAddress)="onHandleAddress($event)"
@@ -88,6 +98,8 @@
             <div class="custom-bank-row last-row">
                 <div class="bank-field">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="bankId"
                         [template]="'svg-template'"
                         [inputConfig]="ownerModalConfig.BANK_INPUT_CONFIG"

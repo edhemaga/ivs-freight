@@ -79,7 +79,6 @@ export class NavigationDataConstants {
                     name: 'Fuel',
                     route: '/list/fuel',
                     activeRouteFlegId: 3,
-                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Owner',

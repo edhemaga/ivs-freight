@@ -377,6 +377,7 @@ export class UserModalComponent
                 let newData = { data: {} };
                 if (!this.editData?.id) {
                     const {
+                        address,
                         addressUnit,
                         includeInPayroll,
                         salary,
@@ -389,7 +390,10 @@ export class UserModalComponent
                     newData.data = {
                         ...form,
                         phone: form.phone ?? null,
-                        address: this.updateSelectedAddressUnit(addressUnit),
+                        address: {
+                            ...address,
+                            addressUnit: addressUnit,
+                        },
                         departmentId: this.selectedDepartment
                             ? this.selectedDepartment.id
                             : null,
@@ -505,18 +509,6 @@ export class UserModalComponent
                 break;
             }
         }
-    }
-    private updateSelectedAddressUnit(addressUnit: string): AddressEntity {
-        if (this.selectedAddress) {
-            const updatedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-
-            return updatedAddress.address ? updatedAddress : null;
-        }
-
-        return null;
     }
 
     private createForm() {
@@ -660,6 +652,7 @@ export class UserModalComponent
 
     private updateUser(id: number) {
         const {
+            address,
             addressUnit,
             includeInPayroll,
             salary,
@@ -672,7 +665,10 @@ export class UserModalComponent
         const newData: UpdateCompanyUserCommand = {
             id: id,
             ...form,
-            address: this.updateSelectedAddressUnit(addressUnit),
+            address: {
+                ...address,
+                addressUnit: addressUnit,
+            },
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -723,6 +719,7 @@ export class UserModalComponent
 
     private addUser() {
         const {
+            address,
             addressUnit,
             includeInPayroll,
             salary,
@@ -734,7 +731,10 @@ export class UserModalComponent
 
         const newData: CreateCompanyUserCommand = {
             ...form,
-            address: this.updateSelectedAddressUnit(addressUnit),
+            address: {
+                ...address,
+                addressUnit: addressUnit,
+            },
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
                 : null,
@@ -820,7 +820,7 @@ export class UserModalComponent
                     this.userForm.patchValue({
                         firstName: res.firstName,
                         lastName: res.lastName,
-                        address: res.address?.address,
+                        address: res.address,
                         addressUnit: res.address?.addressUnit,
                         personalPhone: res.personalPhone,
                         personalEmail: res.personalEmail,

@@ -61,7 +61,6 @@
                         formControlName="address"
                         [inputConfig]="contactModalConfig.ADDRESS_INPUT_CONFIG"
                         [placeholderType]="'longAddress'"
-                        [activeAddress]="selectedAddress"
                         (selectedAddress)="onHandleAddress($event)"
                         [receivedAddressList]="addressList"
                         [receivedAddressData]="addressData"
@@ -163,6 +162,8 @@
                 <div body class="row row-no-m mb-0">
                     <div class="col-12">
                         <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                             formControlName="sharedLabelId"
                             [template]="'multiselect'"
                             [multiselectTemplate]="'multiselect-2-columns'"
