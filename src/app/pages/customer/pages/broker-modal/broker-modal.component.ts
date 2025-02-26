@@ -1018,7 +1018,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         ? this.selectedPhysicalPoBox.city
                         : null,
                     state: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.stateShortName
+                        ? this.selectedPhysicalPoBox.stateShortName ||
+                          this.selectedPhysicalPoBox.state
                         : null,
                     zipCode: this.selectedPhysicalPoBox
                         ? this.selectedPhysicalPoBox.zipCode
@@ -1040,7 +1041,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                           : null,
                     state: this.brokerForm.get('isCheckedBillingAddress').value
                         ? this.selectedPhysicalPoBox
-                            ? this.selectedPhysicalPoBox.state
+                            ? this.selectedPhysicalPoBox.stateShortName ||
+                              this.selectedPhysicalPoBox.state
                             : null
                         : this.selectedBillingPoBox
                           ? this.selectedBillingPoBox.state
@@ -1106,7 +1108,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         ? this.selectedPhysicalPoBox.city
                         : null,
                     state: this.selectedPhysicalPoBox
-                        ? this.selectedPhysicalPoBox.state
+                        ? this.selectedPhysicalPoBox.stateShortName ||
+                          this.selectedPhysicalPoBox.state
                         : null,
                     zipCode: this.selectedPhysicalPoBox
                         ? this.selectedPhysicalPoBox.zipCode
@@ -1697,7 +1700,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    
                     this.brokerForm.patchValue({
                         businessName: res.businessName,
                         dbaName: res.dbaName,
@@ -1710,10 +1712,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         physicalAddressUnit:
                             res.mainAddress?.addressUnit ?? null,
                         physicalPoBox: res.mainPoBox?.poBox ?? null,
-                        physicalPoBoxCity: res.mainPoBox.city ? [
-                            res.mainPoBox.city,
-                            res.mainPoBox.state,
-                        ].join(', ') : null,
+                        physicalPoBoxCity: res.mainPoBox.city
+                            ? [res.mainPoBox.city, res.mainPoBox.state].join(
+                                  ', '
+                              )
+                            : null,
                         // Billing Address
                         isCheckedBillingAddress:
                             res.mainAddress.address ===
@@ -1722,7 +1725,12 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         billingAddressUnit:
                             res.billingAddress?.addressUnit ?? null,
                         billingPoBox: res.billingPoBox?.poBox ?? null,
-                        billingPoBoxCity: res.billingPoBox?.city ?? null,
+                        billingPoBoxCity: res.billingPoBox.city
+                            ? [
+                                  res.billingPoBox.city,
+                                  res.billingPoBox.state,
+                              ].join(', ')
+                            : null,
                         creditType: res.creditType,
                         creditLimit:
                             res.creditType.name === BrokerModalStringEnum.CUSTOM
