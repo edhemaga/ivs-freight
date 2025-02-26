@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import {
     ChangeDetectorRef,
     Component,
-    DoCheck,
     ElementRef,
     Input,
     OnDestroy,
@@ -105,7 +104,7 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { eGeneralActions } from '@shared/enums/general-actions.enum';
+import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
 
 // models
 import { IActiveLoadModalData } from '@pages/load/models';
@@ -1318,7 +1317,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.updateLoadTemplate(addNew);
                 else if (this.isConvertedToTemplate) this.saveLoadTemplate();
                 else
-                    this.isActiveLoad
+                    this.editData?.type === eGeneralActions.EDIT
                         ? this.updateLoad(addNew)
                         : this.createNewLoad();
 
@@ -4453,15 +4452,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         ];
         this.originalAdditionalBillingTypes = this.additionalBillingTypes;
 
-        if (!!selectedTab) {
-            this.isConvertedToTemplate =
-                selectedTab === TableStringEnum.TEMPLATE;
-        } else {
-            this.watchFormChanges();
-        }
-
-        this.isActiveLoad = this.checkIfLoadIsActive();
-
         // stop items
         this.stopItemDropdownLists = {
             quantityDropdownList: modalData.loadItemUnits,
@@ -5510,6 +5500,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                 if (!!activeModalData) {
                     const { id, statusType } = activeModalData;
+                    const { type } = this.editData;
 
                     this.activeLoadModalData = activeModalData;
                     this.populateLoadModalData(activeModalData as any); // leave as any for now
@@ -5517,6 +5508,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         .get(LoadModalStringEnum.STATUS_TYPE)
                         .patchValue(statusType?.name || statusType);
                     this.loadForm.get(LoadModalStringEnum.ID).patchValue(id);
+                    this.isConvertedToTemplate =
+                        type === DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE;
+                    this.isActiveLoad = this.checkIfLoadIsActive();
                     this.generateModalText();
                 }
             });
