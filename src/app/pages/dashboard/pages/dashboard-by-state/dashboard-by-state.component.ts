@@ -9,7 +9,7 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { ChartTypesStringEnum } from 'ca-components';
+import { eChartTypesString } from 'ca-components';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
@@ -579,7 +579,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         topPicks: ByStateIntervalResponse[],
         otherPicks: ByStateIntervalResponse[],
         selectedTab: ByStateReportType
-    ): IBaseDataset[] { 
+    ): IBaseDataset[] {
         const topPicksDataset = {
             ...this.byStateChartDatasetConfig,
             label: this.topCategory,

@@ -1,178 +1,193 @@
 // Enums
-import { ChartValueLabelEnum } from "@shared/enums";
-import { ChartTypesStringEnum } from "ca-components";
+import { eChartValueLabel } from '@shared/enums';
+import { eChartTypesString } from 'ca-components';
 
 // Models
-import { ChartTypeProperty } from "@shared/models";
-import { IBrokerPaymentHistory } from "@pages/customer/pages/broker-details/models";
+import { ChartTypeProperty } from '@shared/models';
+import { IBrokerPaymentHistory } from '@pages/customer/pages/broker-details/models';
 
 export class ChartConfiguration {
     public static mileageRateConfiguration: ChartTypeProperty[] = [
         {
-            type: ChartTypesStringEnum.LINE,
+            type: eChartTypesString.LINE,
             color: '#6692F1',
-            value: ChartValueLabelEnum.AVERAGE_RATE,
+            value: eChartValueLabel.AVERAGE_RATE,
         },
         {
-            type: ChartTypesStringEnum.BAR,
+            type: eChartTypesString.BAR,
             color: '#86C9C3',
             color2: '#FAB15C',
-            value: ChartValueLabelEnum.AVERAGE_RATE,
-            maxValue: ChartValueLabelEnum.HIGHEST_RATE,
-            minValue: ChartValueLabelEnum.LOWEST_RARE
-        }
+            value: eChartValueLabel.AVERAGE_RATE,
+            maxValue: eChartValueLabel.HIGHEST_RATE,
+            minValue: eChartValueLabel.LOWEST_RARE,
+        },
     ];
-    public static paymentHistoryConfiguration = (data: IBrokerPaymentHistory): ChartTypeProperty[] => [
+    public static paymentHistoryConfiguration = (
+        data: IBrokerPaymentHistory
+    ): ChartTypeProperty[] => [
         {
-            value: ChartValueLabelEnum.AVERAGE_PAY_PERIOD_DAYS,
-            type: ChartTypesStringEnum.LINE,
+            value: eChartValueLabel.AVERAGE_PAY_PERIOD_DAYS,
+            type: eChartTypesString.LINE,
             color2: '#3074D3',
             colorEdgeValue: data.payTerm,
             color: '#DF3C3C',
             fill: true,
-            shiftValue: data.payTerm
+            shiftValue: data.payTerm,
         },
     ];
     public static driverConfiguration: ChartTypeProperty[] = [
         {
-            value: ChartValueLabelEnum.MILES,
-            type: ChartTypesStringEnum.LINE,
+            value: eChartValueLabel.MILES,
+            type: eChartTypesString.LINE,
             color: '#6692F1',
         },
         {
-            maxValue: ChartValueLabelEnum.EARNINGS,
-            type: ChartTypesStringEnum.BAR,
+            maxValue: eChartValueLabel.EARNINGS,
+            type: eChartTypesString.BAR,
             color: '#FBC88B',
-        }
+        },
     ];
     public static brokerPaidInvoiceConfiguration: ChartTypeProperty[] = [
         {
-            value: ChartValueLabelEnum.COUNT,
-            type: ChartTypesStringEnum.LINE,
+            value: eChartValueLabel.COUNT,
+            type: eChartTypesString.LINE,
             color: '#6692F1',
         },
         {
-            maxValue: ChartValueLabelEnum.REVENUE,
-            value: ChartValueLabelEnum.REVENUE,
-            type: ChartTypesStringEnum.BAR,
+            maxValue: eChartValueLabel.REVENUE,
+            value: eChartValueLabel.REVENUE,
+            type: eChartTypesString.BAR,
             color: '#FBC88B',
         },
     ];
 
     public static truckFuelConsumptionConfiguration: ChartTypeProperty[] = [
         {
-            value: ChartValueLabelEnum.MILES_PER_GALLON,
-            type: ChartTypesStringEnum.LINE,
+            value: eChartValueLabel.MILES_PER_GALLON,
+            type: eChartTypesString.LINE,
             color: '#6692F1',
         },
         {
-            maxValue: ChartValueLabelEnum.COST_PER_GALLON,
-            value: ChartValueLabelEnum.COST_PER_GALLON,
-            type: ChartTypesStringEnum.BAR,
+            maxValue: eChartValueLabel.COST_PER_GALLON,
+            value: eChartValueLabel.COST_PER_GALLON,
+            type: eChartTypesString.BAR,
             color: '#FAB15C',
         },
     ];
 
     public static truckRevenueConfiguration: ChartTypeProperty[] = [
         {
-            value: ChartValueLabelEnum.REVENUE,
-            type: ChartTypesStringEnum.LINE,
+            value: eChartValueLabel.REVENUE,
+            type: eChartTypesString.LINE,
             color: '#6692F1',
         },
         {
-            maxValue: ChartValueLabelEnum.MILES,
-            value: ChartValueLabelEnum.MILES,
-            type: ChartTypesStringEnum.BAR,
+            maxValue: eChartValueLabel.MILES,
+            value: eChartValueLabel.MILES,
+            type: eChartTypesString.BAR,
             color: '#86C9C3',
         },
     ];
 
     public static truckExpensesConfiguration: ChartTypeProperty[] = [
         {
-            maxValue: ChartValueLabelEnum.FUEL_COST,
-            value: ChartValueLabelEnum.FUEL_COST,
-            type: ChartTypesStringEnum.BAR,
+            maxValue: eChartValueLabel.FUEL_COST,
+            value: eChartValueLabel.FUEL_COST,
+            type: eChartTypesString.BAR,
             color: '#FAB15C',
         },
         {
-            maxValue: ChartValueLabelEnum.REPAIR_COST,
-            value: ChartValueLabelEnum.REPAIR_COST,
-            type: ChartTypesStringEnum.BAR,
+            maxValue: eChartValueLabel.REPAIR_COST,
+            value: eChartValueLabel.REPAIR_COST,
+            type: eChartTypesString.BAR,
             color: '#6692F1',
         },
     ];
 
     public static fuelExpensesConfiguration: ChartTypeProperty[] = [
         {
-            maxValue: ChartValueLabelEnum.GALLON,
-            value: ChartValueLabelEnum.GALLON,
-            type: ChartTypesStringEnum.BAR,
+            maxValue: eChartValueLabel.GALLON,
+            value: eChartValueLabel.GALLON,
+            type: eChartTypesString.BAR,
             color: '#FAB15C',
         },
         {
-            value: ChartValueLabelEnum.COST,
-            type: ChartTypesStringEnum.LINE,
+            value: eChartValueLabel.COST,
+            type: eChartTypesString.LINE,
             color: '#6692F1',
         },
     ];
 
     public static trailerFuelExpensesConfiguration: ChartTypeProperty[] = [
         {
-            maxValue: ChartValueLabelEnum.MILES_PER_GALLON,
-            value: ChartValueLabelEnum.MILES_PER_GALLON,
-            type: ChartTypesStringEnum.BAR,
+            maxValue: eChartValueLabel.MILES_PER_GALLON,
+            value: eChartValueLabel.MILES_PER_GALLON,
+            type: eChartTypesString.BAR,
             color: '#FAB15C',
         },
         {
-            value: ChartValueLabelEnum.COST_PER_GALLON,
-            type: ChartTypesStringEnum.LINE,
+            value: eChartValueLabel.COST_PER_GALLON,
+            type: eChartTypesString.LINE,
             color: '#6692F1',
         },
     ];
 
     public static topMileageConfiguration: ChartTypeProperty[] = [
         {
-            type: ChartTypesStringEnum.DOUGHNUT,
-            value: ChartValueLabelEnum.MILEAGE_PERCENTAGE
-        }
+            type: eChartTypesString.DOUGHNUT,
+            value: eChartValueLabel.MILEAGE_PERCENTAGE,
+        },
     ];
 
     public static topRevenueConfiguration: ChartTypeProperty[] = [
         {
-            type: ChartTypesStringEnum.DOUGHNUT,
-            value: ChartValueLabelEnum.REVENUE_PERCENTAGE
-        }
+            type: eChartTypesString.DOUGHNUT,
+            value: eChartValueLabel.REVENUE_PERCENTAGE,
+        },
     ];
 
     public static topCostConfiguration: ChartTypeProperty[] = [
         {
-            type: ChartTypesStringEnum.DOUGHNUT,
-            value: ChartValueLabelEnum.COST_PERCENTAGE
-        }
-    ]
+            type: eChartTypesString.DOUGHNUT,
+            value: eChartValueLabel.COST_PERCENTAGE,
+        },
+    ];
 
     public static topVisitConfiguration: ChartTypeProperty[] = [
         {
-            type: ChartTypesStringEnum.DOUGHNUT,
-            value: ChartValueLabelEnum.VISIT_PERCENTAGE
-        }
+            type: eChartTypesString.DOUGHNUT,
+            value: eChartValueLabel.VISIT_PERCENTAGE,
+        },
     ];
 
     public static topLoadConfiguration: ChartTypeProperty[] = [
         {
-            type: ChartTypesStringEnum.DOUGHNUT,
-            value: ChartValueLabelEnum.LOAD_PERCENTAGE
-        }
+            type: eChartTypesString.DOUGHNUT,
+            value: eChartValueLabel.LOAD_PERCENTAGE,
+        },
     ];
 
-    public static shipperAverageWaitingTimeConfiguration: ChartTypeProperty[] = [
+    public static shipperAverageWaitingTimeConfiguration: ChartTypeProperty[] =
+        [
+            {
+                type: eChartTypesString.BAR,
+                value: eChartValueLabel.AVERAGE_PICKUP_TIME,
+            },
+            {
+                type: eChartTypesString.BAR,
+                value: eChartValueLabel.AVERAGE_DELIVERY_TIME,
+            },
+        ];
+
+    public static repairShopExpensesConfiguration: ChartTypeProperty[] = [
         {
-            type: ChartTypesStringEnum.BAR,
-            value: ChartValueLabelEnum.AVERAGE_PICKUP_TIME
+            type: eChartTypesString.BAR,
+            value: eChartValueLabel.REPAIR,
         },
         {
-            type: ChartTypesStringEnum.BAR,
-            value: ChartValueLabelEnum.AVERAGE_DELIVERY_TIME
-        }
+            type: eChartTypesString.LINE,
+            color: '#6692F1',
+            value: eChartValueLabel.REPAIR_COST,
+        },
     ];
 }
