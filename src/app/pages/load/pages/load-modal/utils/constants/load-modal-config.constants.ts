@@ -57,7 +57,7 @@ export class LoadModalConfig {
         isRequired: true,
         blackInput: false,
         textTransform: 'uppercase',
-        dropdownWidthClass: 'w-col-608 load-shipper-stops'
+        dropdownWidthClass: 'w-col-608 load-shipper-stops',
     };
 
     static LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG: ICaInput = {
@@ -72,7 +72,7 @@ export class LoadModalConfig {
         blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-370',
-        searchinGroupIndex: 'contacts'
+        searchinGroupIndex: 'contacts',
     };
 
     static LOAD_DELIVERY_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -110,6 +110,25 @@ export class LoadModalConfig {
         label: 'Company',
         isDropdown: true,
         dropdownWidthClass: 'w-col-230',
+    };
+
+    static LOAD_DISPATCHER_CONFIG: ICaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Dispatcher',
+        isDropdown: true,
+        isRequired: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: false,
+            image: true,
+            url: 'logoName',
+            template: 'user',
+            iconsPath: '',
+            activeItemIconKey: 'logoName',
+        },
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
     };
 
     static LOAD_COMMODITY_CONFIG: ITaInput = {

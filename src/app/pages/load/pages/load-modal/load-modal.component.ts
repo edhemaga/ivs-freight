@@ -342,6 +342,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public loadDeliveryShipperInputConfig: ITaInput;
     public loadDeliveryShipperContactsInputConfig: ICaInput;
     public loadCompanyInputConfig = LoadModalConfig.LOAD_COMPANY_INPUT_CONFIG;
+
+    public dispatcherConfig = LoadModalConfig.LOAD_DISPATCHER_CONFIG;
     public loadCommodityInputConfig = LoadModalConfig.LOAD_COMMODITY_CONFIG;
     public loadWeightInputConfig = LoadModalConfig.LOAD_WEIGHT_CONFIG;
     public loadTrailerLengthInputConfig =
