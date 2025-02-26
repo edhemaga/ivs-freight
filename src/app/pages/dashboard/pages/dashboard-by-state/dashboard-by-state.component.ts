@@ -62,6 +62,22 @@ import { DashboardByStateSvgRoutes } from '@pages/dashboard/pages/dashboard-by-s
 export class DashboardByStateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
+    //config
+    private byStatechartLables: string[] = [];
+    private initalByStateBarChartConfig: IChartConfiguration;
+    private byStateChartDatasetConfig =
+        DashboardByStateChartDatasetConfiguration.BY_STATE_CHART_DATASET_CONFIG;
+
+    // state
+    private selectedStatesOrder: Map<number, number> = new Map();
+
+    // list
+    private byStateListBeforeSearch: ByStateListItem[] = [];
+
+    // dropdowns
+    private selectedCustomPeriodRange: CustomPeriodRange;
+    private overallCompanyDuration: number;
+
     public byStateForm: UntypedFormGroup;
     public byStateTitle: string = DashboardStringEnum.PICKUP;
 
@@ -76,7 +92,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public byStateList: ByStateListItem[] = [];
     public selectedByStateList: ByStateListItem[] = [];
     public byStateMapList: MapListItem[] = [];
-    private byStateListBeforeSearch: ByStateListItem[] = [];
 
     public byStateListLength: number = 0;
 
@@ -97,9 +112,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public selectedSubPeriod: DropdownListItem;
 
     public isDisplayingCustomPeriodRange: boolean = false;
-    private selectedCustomPeriodRange: CustomPeriodRange;
-
-    private overallCompanyDuration: number;
 
     public selectedDropdownWidthSubPeriod: DropdownListItem;
 
@@ -109,19 +121,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     //chart
     public byStateBarChartConfig: IChartConfiguration =
         DashboardByStateChartsConfiguration.BY_STATE_CHART_CONFIG;
-
-    private byStateChartDatasetConfig =
-        DashboardByStateChartDatasetConfiguration.BY_STATE_CHART_DATASET_CONFIG;
-
     public byStateBarChartTitle: string = DashboardConstants.STRING_EMPTY;
-
     public intervalTooltipLabel: string[] = [];
-
-    private byStatechartLables: string[] = [];
-
-    private selectedStatesOrder: Map<number, number> = new Map();
-
-    private initalByStateBarChartConfig: IChartConfiguration;
 
     get topCategory(): string {
         const lenght = this.byStateList.length;
@@ -397,7 +398,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
             this.selectedStatesOrder.delete(byStateListItem.id);
 
-            if (this.selectedByStateList.length === 0)
+            if (!this.selectedByStateList.length)
                 this.byStateBarChartConfig = {
                     ...this.initalByStateBarChartConfig,
                 };
