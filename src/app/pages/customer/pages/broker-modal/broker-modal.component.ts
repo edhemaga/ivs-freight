@@ -1678,6 +1678,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    
                     this.brokerForm.patchValue({
                         businessName: res.businessName,
                         dbaName: res.dbaName,
@@ -1690,10 +1691,10 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                         physicalAddressUnit:
                             res.mainAddress?.addressUnit ?? null,
                         physicalPoBox: res.mainPoBox?.poBox ?? null,
-                        physicalPoBoxCity: [
+                        physicalPoBoxCity: res.mainPoBox.city ? [
                             res.mainPoBox.city,
                             res.mainPoBox.state,
-                        ].join(', '),
+                        ].join(', ') : null,
                         // Billing Address
                         isCheckedBillingAddress:
                             res.mainAddress.address ===
