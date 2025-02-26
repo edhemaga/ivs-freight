@@ -1,5 +1,5 @@
 //enums
-import { eFilesSize } from 'ca-components';
+import { eDropZoneFileType, eFilesSize, eTemplateType } from 'ca-components';
 
 //models
 import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
@@ -31,10 +31,10 @@ export class SettingsBasicModalUploadFileConfig {
         // Dropzone
         dropzoneConf: [
             {
-                template: 'imageCropTemplate',
+                template: eTemplateType.IMAGE_CROP,
                 config: {
                     dropzone: {
-                        dropZoneType: 'image',
+                        dropZoneType: eDropZoneFileType.IMAGE,
                         multiple: true,
                         globalDropZone: false,
                         dropZonePages: 'cdl',

@@ -32,8 +32,8 @@ import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzo
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
 
 //Enums
-import { eFileTypes } from '@shared/components/ta-upload-files/enums/file-types.enum';
-import { eFilesSize } from '@shared/components/ta-upload-files/enums/files-size.enum';
+import { FileTypesEnum } from '@shared/components/ta-upload-files/enums/file-types.enum';
+import { FilesSizeEnum } from '@shared/components/ta-upload-files/enums/files-size.enum';
 
 @Component({
     selector: 'app-ta-upload-files',
@@ -70,14 +70,14 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     //General
     @Input() set files(value: UploadFile[]) {
         this._files = value;
-        if (this.type == eFileTypes.DETAILS) {
+        if (this.type == FileTypesEnum.DETAILS) {
             this.modalCarousel?.slideToFile(0);
         }
     }
     @Input() customClassName: string;
     @Input() type;
     @Input() hasNumberOfPages: boolean = false;
-    @Input() size: string = eFilesSize.SMALL;
+    @Input() size: string = FilesSizeEnum.SMALL;
     @Input() modalSize: string;
     @Input() isRequired: boolean = false;
     @Input() showRequired: boolean = false;
@@ -167,9 +167,9 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                 this.currentSlide = this._files.length - 1;
 
                 if (
-                    (this.size === eFilesSize.MODAL_LARGE &&
+                    (this.size === FilesSizeEnum.MODAL_LARGE &&
                         this._files.length < 4) ||
-                    (this.size === eFilesSize.MODAL_MEDIUM &&
+                    (this.size === FilesSizeEnum.MODAL_MEDIUM &&
                         this._files.length < 3)
                 ) {
                     this.modalCarousel.currentSlide = 0;
