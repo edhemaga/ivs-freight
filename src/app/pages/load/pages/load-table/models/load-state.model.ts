@@ -1,6 +1,7 @@
 // models
 import { ILoadGridItem, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index"
 import { LoadModalResponse } from "appcoretruckassist";
+import { IActiveLoadModalData } from "@pages/load/models/active-load-modal-data.model";
 
 // enums
 import { eActiveViewMode, eLoadStatusType } from "@pages/load/pages/load-table/enums/index"
@@ -9,6 +10,7 @@ export interface ILoadState {
     data: ILoadGridItem[] | ILoadTemplateGridItem[], // list entity data
 
     modal: LoadModalResponse, // static modal data
+    activeModalData: IActiveLoadModalData,
 
     pendingCount: number,
     activeCount: number,
