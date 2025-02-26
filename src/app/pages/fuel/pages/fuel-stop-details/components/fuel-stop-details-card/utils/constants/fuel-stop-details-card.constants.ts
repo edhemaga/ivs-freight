@@ -13,6 +13,7 @@ export class FuelStopDetailsCardConstants {
         {
             id: 221,
             name: '1M',
+            checked: true,
         },
         {
             id: 511,
@@ -34,5 +35,15 @@ export class FuelStopDetailsCardConstants {
             id: 1902,
             name: 'ALL',
         },
+    ];
+
+    static MAP_LOCATION_COVER_TABS: Tabs[] = [
+        {
+            id: 1,
+            name: 'Location',
+            checked: true,
+        },
+
+        { id: 2, name: 'Cover Photo', checked: false },
     ];
 }

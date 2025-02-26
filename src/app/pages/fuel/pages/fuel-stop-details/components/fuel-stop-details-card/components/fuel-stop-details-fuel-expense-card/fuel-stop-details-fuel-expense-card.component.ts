@@ -55,10 +55,11 @@ export class FuelStopDetailsFuelExpenseCardComponent implements OnDestroy {
     public fuelExpenseChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
     public selectedTab: number;
 
-    public fuelLegendHighlightedBackground!: boolean;
     public fuelChartData!: FuelStopExpensesResponse;
     public fuelChartConfig!: IChartConfiguration;
     public fuelChartLegend!: ChartLegendProperty[];
+
+    public fuelLegendHighlightedBackground!: boolean;
     public fuelLegendTitle!: string;
 
     constructor(private fuelService: FuelService) {}

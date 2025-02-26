@@ -1,1 +1,56 @@
-<div>MAP LOCATION & COVER PHOTO</div>
+<app-ta-custom-card
+    [cardName]="'Map Location & Cover Photo'"
+    [isCardOpen]="false"
+    [bodyTemplate]="'card'"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '8px',
+    }"
+>
+    <div
+        class="d-flex flex-column justify-content-center stop-details-map-location-cover"
+    >
+        <!-- Header -->
+
+        <div class="stop-details-map-location-cover-header">
+            <app-ta-tab-switch
+                [type]="'type2-modal-popup'"
+                [tabs]="mapLocationCoverTabs"
+                (switchClicked)="onTabChange($event)"
+            ></app-ta-tab-switch>
+        </div>
+
+        <!-- Main -->
+
+        <div class="stop-details-map-location-cover-main">
+            <!-- Map -->
+
+            <div
+                class="stop-details-map-location-cover-main-map"
+                [hidden]="selectedTabId === 2"
+            >
+                <!--  <app-ca-map
+                   
+                ></app-ca-map> -->
+            </div>
+
+            <!-- Cover Photo -->
+
+            <div
+                class="stop-details-map-location-cover-main-cover"
+                [hidden]="selectedTabId === 1"
+            >
+                @if (_cardData?.cover) {
+                    <app-ta-upload-files
+                        [files]="[_cardData?.cover]"
+                        [customClassName]="'driver-card-pdf'"
+                        [hasCarouselBottomTabs]="true"
+                        [type]="'details'"
+                        [slideWidth]="428"
+                        [reviewMode]="'REVIEW_MODE'"
+                    ></app-ta-upload-files>
+                }
+            </div>
+        </div>
+    </div>
+</app-ta-custom-card>
