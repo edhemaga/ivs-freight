@@ -11,7 +11,7 @@ import { ChartConstants } from '@shared/utils/constants';
 
 // Enums
 import { eChartTypesString } from 'ca-components';
-import { ChartTabStringEnum } from '@shared/enums';
+import { ChartTabStringEnum, eStringPlaceholder } from '@shared/enums';
 
 export class ChartHelper {
     // Since all chart responses are of the same format, we can use generic type
@@ -66,16 +66,14 @@ export class ChartHelper {
                     ];
                     break;
                 case eChartTypesString.DOUGHNUT:
-                    let datasetColors: string[] = [];
-                    if (colors?.length) {
-                        colors.forEach((color: string) => {
-                            if (color)
-                                datasetColors = [
-                                    ...datasetColors,
-                                    this.hexToRgba(color),
-                                ];
-                        });
-                    }
+                    let datasetColors: string[] = colors?.length
+                        ? colors
+                              .filter((color) => color)
+                              .map((color: string) => {
+                                  return this.hexToRgba(color);
+                              })
+                        : [];
+
                     datasets = [
                         ...datasets,
                         {
@@ -180,7 +178,7 @@ export class ChartHelper {
                         : `${year}`;
                 return label;
             }
-            return '';
+            return eStringPlaceholder.EMPTY;
         });
     }
 
@@ -207,13 +205,13 @@ export class ChartHelper {
     }
 
     private static hexToRgba(colorHex: string, opacity: number = 1): string {
-        colorHex = colorHex.replace(/^#/, '');
+        colorHex = colorHex.replace(/^#/, eStringPlaceholder.EMPTY);
 
         if (colorHex.length === 3) {
             colorHex
-                .split('')
+                .split(eStringPlaceholder.EMPTY)
                 .map((char) => char + char)
-                .join('');
+                .join(eStringPlaceholder.EMPTY);
         }
 
         const bigint = parseInt(colorHex, 16);
@@ -288,7 +286,7 @@ export class ChartHelper {
 
         if (index === null || index < 0) {
             hasHighlightedBackground = false;
-            title = '';
+            title = eStringPlaceholder.EMPTY;
         } else {
             hasHighlightedBackground = true;
             title = labels[index];
