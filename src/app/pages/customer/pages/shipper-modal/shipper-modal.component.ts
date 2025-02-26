@@ -23,15 +23,14 @@ import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 // enums
 import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import {
-    eFileFormControls,
-    eGeneralActions,
-    eStringPlaceholder,
-} from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { eGeneralActions } from '@shared/enums/general-actions.enum';
+import { eStringPlaceholder } from '@shared/enums/string-placeholder.enum';
+import { eFileFormControls } from '@shared/enums/file/file-form-controls.enum';
 
 // validators
 import {
@@ -59,6 +58,7 @@ import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
@@ -111,6 +111,7 @@ import {
     ShipperResponse,
     ReviewResponse,
     DepartmentResponse,
+    ShipperLoadModalResponse,
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { Tabs } from '@shared/models/tabs.model';
@@ -243,7 +244,8 @@ export class ShipperModalComponent
         public addressService: AddressService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private loadStoreService: LoadStoreService
     ) {
         super();
     }
@@ -357,17 +359,9 @@ export class ShipperModalComponent
 
         if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
-                case 'load-modal':
-                    this.modalService.setProjectionModal({
-                        action: eGeneralActions.CLOSE,
-                        payload: {
-                            key: this.editData?.key,
-                            value: null,
-                        },
-                        component: LoadModalComponent,
-                        size: 'small',
-                        closing: 'fastest',
-                    });
+                case LoadModalStringEnum.LOAD_MODAL: 
+                    this.ngbActiveModal.close();
+                    this.loadStoreService.dispatchGetCreateLoadModalData();
                     break;
                 default:
                     this.ngbActiveModal.close();
@@ -416,7 +410,10 @@ export class ShipperModalComponent
                 }
                 if (this.editData?.type.includes(eGeneralActions.EDIT))
                     this.updateShipper(this.editData.id);
-                else this.addShipper();
+                else
+                    this.addShipper();
+
+                this.loadStoreService.dispatchGetCreateLoadModalData();
             }
             // Delete
             if (action === TaModalActionEnum.DELETE && this.editData)
@@ -814,20 +811,20 @@ export class ShipperModalComponent
             .addShipper(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
+                next: (response) => {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         switch (this.editData?.key) {
-                            case 'load-modal':
-                                this.modalService.setProjectionModal({
-                                    action: eGeneralActions.CLOSE,
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: LoadModalComponent,
-                                    size: 'small',
-                                    closing: 'slowlest',
-                                });
+                            case LoadModalStringEnum.LOAD_MODAL:
+                                const { id } = response;
+                                const modalSingleShipperitem: ShipperLoadModalResponse = {
+                                    id,
+                                    ...newData
+                                };
+
+                                this.loadStoreService.dispatchAddnewShipperToStaticModalData(modalSingleShipperitem);
+
+                                this.loadStoreService.dispatchGetCreateLoadModalData();
+
                                 break;
                             default:
                                 break;
@@ -893,7 +890,7 @@ export class ShipperModalComponent
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'load-modal':
+                            case LoadModalStringEnum.LOAD_MODAL:
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,

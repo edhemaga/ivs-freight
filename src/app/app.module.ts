@@ -55,6 +55,9 @@ import { NgIdleModule } from '@ng-idle/core';
 import { provideLottieOptions } from 'ngx-lottie';
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 
+// Store
+import { loadReducer } from '@pages/load/state/reducers/load.reducer';
+
 export const appConfig: ApplicationConfig = {
     providers: [
         provideLottieOptions({
@@ -95,7 +98,7 @@ export const appConfig: ApplicationConfig = {
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }), 
-        StoreModule.forRoot([]),
+        StoreModule.forRoot({ load: loadReducer }),
         EffectsModule.forRoot([LoadEffect]),
         //components
         ReusableTemplatesComponent,

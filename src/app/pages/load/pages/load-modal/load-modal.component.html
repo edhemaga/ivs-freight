@@ -205,7 +205,7 @@
                     [template]="'load-dispatches-ttd'"
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
-                    [activeItem]="selectedDispatches"
+                    [activeItem]="selectedDispatch"
                     (selectedItem)="
                         onSelectDropdown($event, 'dispatches', 0, true)
                     "
@@ -485,7 +485,6 @@
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="labelsShippers"
-                                    [activeItem]="selectedPickupShipper"
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
@@ -1260,7 +1259,6 @@
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="labelsShippers"
-                                    [activeItem]="selectedDeliveryShipper"
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,

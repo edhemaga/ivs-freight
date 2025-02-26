@@ -161,6 +161,13 @@ export class MethodsCalculationsHelper {
         return moment(new Date(date)).format('MM/DD/YY, hh:mm A');
     };
 
+    //------------------------------- CONVERT DATE TO TIME  -------------------------------
+    static convertDateToTime = (
+        date: Date | string
+    ): string => {
+        return moment(new Date(date)).format('hh:mm A');
+    };
+
     //------------------------------- Convert thousand separator in number -------------------------------
     static convertThousandSepInNumber = (value: string): number => {
         if (value) return parseFloat(value.toString().replace(/,/g, ''));

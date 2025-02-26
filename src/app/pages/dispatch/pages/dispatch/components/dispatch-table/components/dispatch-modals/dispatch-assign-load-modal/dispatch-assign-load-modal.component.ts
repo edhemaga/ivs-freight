@@ -22,6 +22,7 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { LoadDetailsItemStringEnum } from '@pages/load/pages/load-details/components/load-details-item/enums/load-details-item-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums/load-filter-string.enum';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // Models
 import {
@@ -43,6 +44,7 @@ import { LoadService } from '@shared/services/load.service';
 import { ModalService } from '@shared/services/modal.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Components
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
@@ -54,6 +56,7 @@ import { DispatchAssignLoadModalHelper } from '@pages/dispatch/pages/dispatch/co
 
 // Consts
 import { DispatchAssignLoadModalConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants/dispatch-assign-load-modal.constants';
+
 @Component({
     selector: 'app-dispatch-assign-load-modal',
     templateUrl: './dispatch-assign-load-modal.component.html',
@@ -124,7 +127,8 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
         private modalService: ModalService,
         private dispatchService: DispatcherService,
         private ngbActiveModal: NgbActiveModal,
-        private tableService: TruckassistTableService
+        private tableService: TruckassistTableService,
+        private loadStoreService: LoadStoreService
     ) {}
 
     ngOnInit(): void {
@@ -469,9 +473,7 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     private createNewLoad(): void {
-        this.modalService.openModal(LoadModalComponent, {
-            size: TableStringEnum.LOAD,
-        });
+        this.loadStoreService.dispatchGetCreateLoadModalData();
     }
 
     private getLoadStopRoutes(stops: LoadStopResponse[]): void {
@@ -669,23 +671,12 @@ export class DispatchAssignLoadModalComponent implements OnInit, OnDestroy {
     }
 
     public editLoad() {
-        this.fetchLoadById(this.selectedLoad.id, (load) => {
-            const editData = {
-                data: {
-                    ...load,
-                },
-                type: TableStringEnum.EDIT,
-                selectedTab: TableStringEnum.PENDING,
-            };
+        const { id, statusType } = this.selectedLoad;
 
-            this.modalService.openModal(
-                LoadModalComponent,
-                { size: TableStringEnum.LOAD },
-                {
-                    ...editData,
-                    disableButton: false,
-                }
-            );
+        this.fetchLoadById(id, (load) => {
+            const status: eLoadStatusType = eLoadStatusType[statusType?.name];
+
+            this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(id, status, TableStringEnum.EDIT);
         });
     }
 
