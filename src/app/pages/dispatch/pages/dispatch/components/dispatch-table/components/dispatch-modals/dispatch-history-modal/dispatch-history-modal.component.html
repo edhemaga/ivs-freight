@@ -18,6 +18,8 @@
 
                 <div class="time-container" (click)="handleTimeDropdown(true)">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="time"
                         [inputConfig]="dispatchHistoryTimeConfig"
                         [options]="timesDropdownList"
@@ -50,6 +52,8 @@
 
                 <div (click)="handleTimeDropdown(true)">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="dispatchBoard"
                         [inputConfig]="dispatchHistoryDispatchBoardConfig"
                         [options]="dispatchBoardsDropdownList"
@@ -68,6 +72,8 @@
 
                 <div (click)="handleTimeDropdown(true)">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="truck"
                         [inputConfig]="dispatchHistoryTruckConfig"
                         [options]="trucksDropdownList"
@@ -86,6 +92,8 @@
 
                 <div (click)="handleTimeDropdown(true)">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="trailer"
                         [inputConfig]="dispatchHistoryTrailerConfig"
                         [options]="trailersDropdownList"
@@ -104,6 +112,8 @@
 
                 <div (click)="handleTimeDropdown(true)">
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="driver"
                         [inputConfig]="dispatchHistoryDriverConfig"
                         [options]="driversDropdownList"

@@ -32,6 +32,8 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaInputDatetimePickerComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
 // helpers
@@ -62,7 +64,6 @@ import { ExtendedStateResponse } from '@pages/driver/pages/driver-modals/driver-
 import { EditData } from '@shared/models/edit-data.model';
 import { FileEvent } from '@shared/models';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { ModalButtonSize, ModalButtonType } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -111,7 +112,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
     private driverStatus: number;
 
-    public uploadFilesConfig = CdlModalUploadFilesConfig.CDL_MODAL_UPLOAD_FILES_CONFIG; 
+    public uploadFilesConfig =
+        CdlModalUploadFilesConfig.CDL_MODAL_UPLOAD_FILES_CONFIG;
 
     // dropdowns
     public stateDropdownList: StateResponse[] = [];
@@ -132,8 +134,8 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
 
     public taModalActionEnum = DriverCdlModalStringEnum;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
     public activeAction!: string;
     public data: CdlResponse;
 

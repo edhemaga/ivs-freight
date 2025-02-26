@@ -62,6 +62,7 @@ import { TitleService } from './api/title.service';
 import { TodoService } from './api/todo.service';
 import { TrailerService } from './api/trailer.service';
 import { TrailerTypeService } from './api/trailerType.service';
+import { TransmissionModelService } from './api/transmissionModel.service';
 import { TruckService } from './api/truck.service';
 import { TruckTypeService } from './api/truckType.service';
 import { UserService } from './api/user.service';

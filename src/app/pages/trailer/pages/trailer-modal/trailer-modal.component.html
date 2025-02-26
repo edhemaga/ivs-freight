@@ -35,6 +35,8 @@
                         <app-ca-input-dropdown
                             formControlName="trailerTypeId"
                             [template]="'svgtext-template'"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [inputConfig]="TrailerTypeIdConfig"
                             [options]="trailerType"
                             [activeItem]="selectedTrailerType"
@@ -45,6 +47,8 @@
                         <app-ca-input-dropdown
                             formControlName="trailerLengthId"
                             [inputConfig]="TrailerLengthConfig"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [options]="trailerLengthType"
                             [activeItem]="selectedTrailerLength"
                             (selectedItem)="
@@ -54,18 +58,29 @@
                     </div>
                     <div class="trailer-modal-second-row d-grid mb-32">
                         <app-ca-input
-                            formControlName="year"
-                            [inputConfig]="TrailerYearConfig"
+                            formControlName="vin"
+                            [inputConfig]="
+                                {
+                                    configType: 'vinInputConfig',
+                                    loadingVinDecoder: loadingVinDecoder,
+                                } | trailerModalInputConfig
+                            "
                         ></app-ca-input>
                         <app-ca-input
-                            formControlName="vin"
-                            [inputConfig]="TrailerVinConfig"
+                            formControlName="year"
+                            [inputConfig]="
+                                {
+                                    configType: 'yearInputConfig',
+                                } | trailerModalInputConfig
+                            "
                         ></app-ca-input>
                         <app-ca-input-dropdown
                             formControlName="trailerMakeId"
                             [template]="'svg-template'"
                             [inputConfig]="TrailerMakeConfig"
                             [options]="trailerMakeType"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [activeItem]="selectedTrailerMake"
                             (selectedItem)="
                                 onSelectDropdown($event, 'trailer-make')
@@ -83,6 +98,8 @@
                             formControlName="colorId"
                             [template]="'svgtext-template'"
                             [inputConfig]="TrailerColorConfig"
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             [options]="colorType"
                             [activeItem]="selectedColor"
                             (selectedItem)="onSelectDropdown($event, 'color')"
@@ -103,6 +120,8 @@
                         <div bodyFalse class="row row-no-m">
                             <div class="col-12">
                                 <app-ca-input-dropdown
+                                    [label]="'name'"
+                                    [optionValue]="'id'"
                                     formControlName="ownerId"
                                     [inputConfig]="TrailerOwnerConfig"
                                     [canAddNew]="true"
@@ -175,6 +194,8 @@
                             "
                         >
                             <app-ca-input-dropdown
+                                [label]="'name'"
+                                [optionValue]="'id'"
                                 formControlName="reeferUnit"
                                 [inputConfig]="TrailerReferConfig"
                                 [options]="reeferUnitType"
@@ -204,6 +225,8 @@
                         ></app-ca-input>
 
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="tireSizeId"
                             [inputConfig]="TrailerTireSizeConfig"
                             [options]="tireSize"
@@ -231,6 +254,8 @@
                         ></app-ca-input>
 
                         <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
                             formControlName="suspension"
                             [inputConfig]="TrailerSuspensionConfig"
                             [options]="suspensionType"
@@ -248,6 +273,8 @@
                             "
                         >
                             <app-ca-input-dropdown
+                                [label]="'name'"
+                                [optionValue]="'id'"
                                 formControlName="doorType"
                                 [inputConfig]="TrailerDoorTypeConfig"
                                 [options]="doorType"
@@ -360,14 +387,14 @@
                     <app-ca-modal-button
                         class="mr-12"
                         text="Delete"
-                        [size]="modalButtonSize.SMALL"
+                        [size]="eModalButtonSize.SMALL"
                         (click)="onModalAction(taModalActionEnum.DELETE)"
-                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
                     >
                     </app-ca-modal-button>
                     <app-ca-modal-button
-                        [type]="modalButtonType.SECONDARY_NEUTRAL"
-                        [size]="modalButtonSize.SMALL"
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                        [size]="eModalButtonSize.SMALL"
                         class="mr-12"
                         text="Deactivate"
                         (click)="onModalAction(taModalActionEnum.DEACTIVATE)"
@@ -379,7 +406,7 @@
                     [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                     [text]="'Save Changes'"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
             </div>
@@ -391,7 +418,7 @@
                 [isSpinnerShown]="
                     activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
                 "
-                [type]="modalButtonType.SECONDARY_POSITIVE"
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
             </app-ca-modal-button>
@@ -399,7 +426,7 @@
                 [isValid]="isModalValidToSubmit"
                 [text]="'Save'"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                [type]="modalButtonType.PRIMARY_POSITIVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
             >
             </app-ca-modal-button>

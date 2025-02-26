@@ -15,7 +15,7 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
 // models
 import {
@@ -36,7 +36,7 @@ import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models'
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
@@ -75,8 +75,8 @@ export class PayrollReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    public _selectedTab: PayrollTablesStatus;
-    @Input() set selectedTab(tab: PayrollTablesStatus) {
+    public _selectedTab: ePayrollTablesStatus;
+    @Input() set selectedTab(tab: ePayrollTablesStatus) {
         this._selectedTab = tab;
 
         this.dropdownMenuOptions =

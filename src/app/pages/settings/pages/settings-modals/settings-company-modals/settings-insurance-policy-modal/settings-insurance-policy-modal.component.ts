@@ -63,10 +63,17 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { CaInputAddressDropdownComponent, CaInputDatetimePickerComponent } from 'ca-components';
+import {
+    CaInputAddressDropdownComponent,
+    CaInputDatetimePickerComponent,
+} from 'ca-components';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
+// Enums
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
+import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 @Component({
     selector: 'app-settings-insurance-policy-modal',
@@ -91,11 +98,15 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
-        CaInputDatetimePickerComponent
+        CaInputDatetimePickerComponent,
     ],
 })
 export class SettingsInsurancePolicyModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     public destroy$ = new Subject<void>();
@@ -132,7 +143,7 @@ export class SettingsInsurancePolicyModalComponent
         private modalService: ModalService,
         private settingsCompanyService: SettingsCompanyService,
         private formService: FormService,
-        public addressService: AddressService,
+        public addressService: AddressService
     ) {
         super();
     }
@@ -201,24 +212,21 @@ export class SettingsInsurancePolicyModalComponent
         });
 
         this.inputService.customInputValidator(
-            this.insurancePolicyForm.get('email'),
-            'email',
+            this.insurancePolicyForm.get(ESettingsFormEnum.EMAIL),
+            ESettingsFormEnum.EMAIL,
             this.destroy$
         );
     }
 
     public onModalAction(data: { action: string; bool: boolean }) {
         switch (data.action) {
-            case 'close': {
-                break;
-            }
-            case 'save': {
+            case eGeneralActions.SAVE:
                 // If Form not valid
                 if (this.insurancePolicyForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.insurancePolicyForm);
                     return;
                 }
-                if (this.editData.type === 'edit') {
+                if (this.editData.type === eGeneralActions.EDIT) {
                     this.updateInsurancePolicy(this.editData.company.id);
                     this.modalService.setModalSpinner({
                         action: null,
@@ -234,76 +242,91 @@ export class SettingsInsurancePolicyModalComponent
                     });
                 }
                 break;
-            }
-            case 'delete': {
+            case eGeneralActions.DELETE:
                 this.deleteInsurancePolicyById(this.editData.company.id);
                 this.modalService.setModalSpinner({
-                    action: 'delete',
+                    action: eGeneralActions.DELETE,
                     status: true,
                     close: false,
                 });
 
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private trackCheckboxValues() {
+    private trackCheckboxValues(): void {
         this.followChangesForChekbox(
-            'commercial',
-            this.insurancePolicyForm.get('commericalGeneralLiability'),
-            this.insurancePolicyForm.get('commericalPolicy'),
-            this.insurancePolicyForm.get('commericalInsurerName'),
-            this.insurancePolicyForm.get('commericalRating'),
-            this.insurancePolicyForm.get('commericalOccurrence'),
-            this.insurancePolicyForm.get('commericalDamage'),
-            this.insurancePolicyForm.get('commericalInj'),
-            this.insurancePolicyForm.get('commericalMedical'),
-            this.insurancePolicyForm.get('commericalGeneralAggregate'),
-            this.insurancePolicyForm.get('commericalProducts')
+            ESettingsFormEnum.COMMERCIAL,
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.COMMERCIAL_GENERAL_LIABILITY
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.COMMERCIAL_POLICY),
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.COMMERCIAL_INSURER_NAME
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.COMMERCIAL_RATING),
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.COMMERCIAL_OCCURRENCE
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.COMMERCIAL_DAMAGE),
+            this.insurancePolicyForm.get(ESettingsFormEnum.COMMERCIAL_INJURY),
+            this.insurancePolicyForm.get(ESettingsFormEnum.COMMERCIAL_MEDICAL),
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.COMMERCIAL_GENERAL_AGGREGATE
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.COMMERCIAL_PRODUCTS)
         );
 
         this.followChangesForChekbox(
-            'automobile',
-            this.insurancePolicyForm.get('automobileLiability'),
-            this.insurancePolicyForm.get('automobilePolicy'),
-            this.insurancePolicyForm.get('automobileInsurerName'),
-            this.insurancePolicyForm.get('automobileRating'),
-            this.insurancePolicyForm.get('automobileAccident'),
-            this.insurancePolicyForm.get('automobileInjuryPerson'),
-            this.insurancePolicyForm.get('automobileLimit'),
-            this.insurancePolicyForm.get('automobileDamage')
+            ESettingsFormEnum.AUTOMOBILE,
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.AUTOMOBILE_LIABILITY
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.AUTOMOBILE_POLICY),
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.AUTOMOBILE_INSURER_NAME
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.AUTOMOBILE_RATING),
+            this.insurancePolicyForm.get(ESettingsFormEnum.AUTOMOBILE_ACCIDENT),
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.AUTOMOBILE_INJURY_PERSON
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.AUTOMOBILE_LIMIT),
+            this.insurancePolicyForm.get(ESettingsFormEnum.AUTOMOBILE_DAMAGE)
         );
 
         this.followChangesForChekbox(
-            'motor',
-            this.insurancePolicyForm.get('motorTruckCargo'),
-            this.insurancePolicyForm.get('motorPolicy'),
-            this.insurancePolicyForm.get('motorInsurerName'),
-            this.insurancePolicyForm.get('motorRating'),
-            this.insurancePolicyForm.get('motorConveyance'),
-            this.insurancePolicyForm.get('motorDeductable')
+            ESettingsFormEnum.MOTOR,
+            this.insurancePolicyForm.get(ESettingsFormEnum.MOTOR_TRUCK_CARGO),
+            this.insurancePolicyForm.get(ESettingsFormEnum.MOTOR_POLICY),
+            this.insurancePolicyForm.get(ESettingsFormEnum.MOTOR_INSURER_NAME),
+            this.insurancePolicyForm.get(ESettingsFormEnum.MOTOR_RATING),
+            this.insurancePolicyForm.get(ESettingsFormEnum.MOTOR_CONVEYANCE),
+            this.insurancePolicyForm.get(ESettingsFormEnum.MOTOR_DEDUCTIBLE)
         );
 
         this.followChangesForChekbox(
-            'physical',
-            this.insurancePolicyForm.get('physicalDamage'),
-            this.insurancePolicyForm.get('physicalPolicy'),
-            this.insurancePolicyForm.get('physicalInsurerName'),
-            this.insurancePolicyForm.get('physicalCollision'),
-            this.insurancePolicyForm.get('physicalDeductable')
+            ESettingsFormEnum.PHYSICAL,
+            this.insurancePolicyForm.get(ESettingsFormEnum.PHYSICAL_DAMAGE),
+            this.insurancePolicyForm.get(ESettingsFormEnum.PHYSICAL_POLICY),
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.PHYSICAL_INSURER_NAME
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.PHYSICAL_COLLISION),
+            this.insurancePolicyForm.get(ESettingsFormEnum.PHYSICAL_DEDUCTIBLE)
         );
 
         this.followChangesForChekbox(
-            'trailer',
-            this.insurancePolicyForm.get('trailerInterchange'),
-            this.insurancePolicyForm.get('trailerPolicy'),
-            this.insurancePolicyForm.get('trailerInsurerName'),
-            this.insurancePolicyForm.get('trailerRating'),
-            this.insurancePolicyForm.get('trailerValue')
+            ESettingsFormEnum.TRAILER,
+            this.insurancePolicyForm.get(ESettingsFormEnum.TRAILER_INTERCHANGE),
+            this.insurancePolicyForm.get(ESettingsFormEnum.TRAILER_POLICY),
+            this.insurancePolicyForm.get(
+                ESettingsFormEnum.TRAILER_INSURER_NAME
+            ),
+            this.insurancePolicyForm.get(ESettingsFormEnum.TRAILER_RATING),
+            this.insurancePolicyForm.get(ESettingsFormEnum.TRAILER_VALUE)
         );
     }
 
@@ -345,29 +368,23 @@ export class SettingsInsurancePolicyModalComponent
                         this.inputService.changeValidators(control_9, false);
 
                     switch (action) {
-                        case 'commercial': {
+                        case 'commercial':
                             this.selectedCommericalRating = null;
                             break;
-                        }
-                        case 'automobile': {
+                        case 'automobile':
                             this.selectedAutomobileRating = null;
                             break;
-                        }
-                        case 'motor': {
+                        case 'motor':
                             this.selectedMotorRating = null;
                             break;
-                        }
-                        case 'physical': {
+                        case 'physical':
                             this.selectedPhysicalDamageRating = null;
                             break;
-                        }
-                        case 'trailer': {
+                        case 'trailer':
                             this.selectedTrailerRating = null;
                             break;
-                        }
-                        default: {
+                        default:
                             break;
-                        }
                     }
                 }
             });
@@ -380,63 +397,51 @@ export class SettingsInsurancePolicyModalComponent
         if (event.valid) this.selectedAddress = event.address;
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: any, action: string): void {
         switch (action) {
-            case 'commercial': {
+            case 'commercial':
                 this.selectedCommericalRating = event;
                 break;
-            }
-            case 'automobile': {
+            case 'automobile':
                 this.selectedAutomobileRating = event;
                 break;
-            }
-            case 'motor': {
+            case 'motor':
                 this.selectedMotorRating = event;
                 break;
-            }
-            case 'physical damage': {
+            case 'physical damage':
                 this.selectedPhysicalDamageRating = event;
                 break;
-            }
-            case 'trailer interchange': {
+            case 'trailer interchange':
                 this.selectedTrailerRating = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files?.length ? event.files : [];
         switch (event.action) {
-            case 'add': {
+            case eGeneralActions.ADD:
                 this.insurancePolicyForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            }
-            case 'delete': {
+            case eGeneralActions.DELETE:
                 this.insurancePolicyForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
                 this.fileModified = true;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private getInsurancePolicyDropdowns() {
+    private getInsurancePolicyDropdowns(): void {
         this.settingsCompanyService
             .getInsurancePolicyModal()
             .pipe(takeUntil(this.destroy$))
@@ -444,20 +449,18 @@ export class SettingsInsurancePolicyModalComponent
                 next: (res: InsurancePolicyModalResponse) => {
                     this.ratings = res.ratings;
 
-                    if (this.editData.type === 'edit') {
+                    if (this.editData.type === eGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
                         this.editInsurancePolicyById(this.editData.company);
-                    } else {
-                        this.startFormChanges();
-                    }
+                    } else this.startFormChanges();
                 },
-                error: () => {},
             });
     }
 
     private addInsurancePolicy(company: any) {
         let {
             addressUnit,
+            address,
             issued,
             expires,
             // Commerical General Liability
@@ -523,9 +526,7 @@ export class SettingsInsurancePolicyModalComponent
             ...form,
             issued: MethodsCalculationsHelper.convertDateToBackend(issued),
             expires: MethodsCalculationsHelper.convertDateToBackend(expires),
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: address,
             files: documents ? documents : this.insurancePolicyForm.value.files,
         };
 
@@ -535,36 +536,34 @@ export class SettingsInsurancePolicyModalComponent
                       commericalGeneralLiability,
                   policy: commericalPolicy,
                   insurerName: commericalInsurerName,
-                  rating: this.selectedCommericalRating
-                      ? this.selectedCommericalRating.id
-                      : null,
+                  rating: this.selectedCommericalRating?.id ?? null,
                   eachOccurrence: commericalOccurrence
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalOccurrence
                         )
                       : null,
                   damageToRentedPremises: commericalDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalDamage
                         )
                       : null,
                   personalAndAdvertisingInjury: commericalInj
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalInj
                         )
                       : null,
                   medicalExpanses: commericalMedical
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalMedical
                         )
                       : null,
                   generalAggregate: commericalGeneralAggregate
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalGeneralAggregate
                         )
                       : null,
                   productsCompOperAggregate: commericalProducts
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalProducts
                         )
                       : null,
@@ -576,26 +575,24 @@ export class SettingsInsurancePolicyModalComponent
                   isAutomobileLiabillityChecked: automobileLiability,
                   policy: automobilePolicy,
                   insurerName: automobileInsurerName,
-                  rating: this.selectedAutomobileRating
-                      ? this.selectedAutomobileRating.id
-                      : null,
+                  rating: this.selectedAutomobileRating?.id ?? null,
                   bodilyInjuryAccident: automobileAccident
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileAccident
                         )
                       : null,
                   bodilyInjuryPerson: automobileInjuryPerson
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileInjuryPerson
                         )
                       : null,
                   combinedSingleLimit: automobileLimit
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileLimit
                         )
                       : null,
                   propertyDamage: automobileDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileDamage
                         )
                       : null,
@@ -612,12 +609,12 @@ export class SettingsInsurancePolicyModalComponent
                       ? this.selectedMotorRating.id
                       : null,
                   singleConveyance: motorConveyance
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             motorConveyance
                         )
                       : null,
                   deductable: motorDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             motorDeductable
                         )
                       : null,
@@ -629,16 +626,14 @@ export class SettingsInsurancePolicyModalComponent
                   isPhysicalDamageChecked: physicalDamage,
                   policy: physicalPolicy,
                   insurerName: physicalInsurerName,
-                  rating: this.selectedPhysicalDamageRating
-                      ? this.selectedPhysicalDamageRating.id
-                      : null,
+                  rating: this.selectedPhysicalDamageRating?.id ?? null,
                   comprehensiveAndCollision: physicalCollision
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             physicalCollision
                         )
                       : null,
                   deductable: physicalDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             physicalDeductable
                         )
                       : null,
@@ -650,11 +645,9 @@ export class SettingsInsurancePolicyModalComponent
                   isTrailerInterchangeChecked: trailerInterchange,
                   policy: trailerPolicy,
                   insurerName: trailerInsurerName,
-                  rating: this.selectedTrailerRating
-                      ? this.selectedTrailerRating.id
-                      : null,
+                  rating: this.selectedTrailerRating?.id ?? null,
                   value: trailerValue
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             trailerValue
                         )
                       : null,
@@ -663,25 +656,15 @@ export class SettingsInsurancePolicyModalComponent
 
         let insurancePolicyAddons = [];
 
-        if (commLiablity) {
-            insurancePolicyAddons.push(commLiablity);
-        }
+        if (commLiablity) insurancePolicyAddons.push(commLiablity);
 
-        if (autoLiability) {
-            insurancePolicyAddons.push(autoLiability);
-        }
+        if (autoLiability) insurancePolicyAddons.push(autoLiability);
 
-        if (motTruckCargo) {
-            insurancePolicyAddons.push(motTruckCargo);
-        }
+        if (motTruckCargo) insurancePolicyAddons.push(motTruckCargo);
 
-        if (physDamage) {
-            insurancePolicyAddons.push(physDamage);
-        }
+        if (physDamage) insurancePolicyAddons.push(physDamage);
 
-        if (trailInterchange) {
-            insurancePolicyAddons.push(trailInterchange);
-        }
+        if (trailInterchange) insurancePolicyAddons.push(trailInterchange);
 
         newData = {
             ...newData,
@@ -712,6 +695,7 @@ export class SettingsInsurancePolicyModalComponent
 
     private updateInsurancePolicy(id: number) {
         let {
+            address,
             addressUnit,
             issued,
             expires,
@@ -759,69 +743,64 @@ export class SettingsInsurancePolicyModalComponent
             ...form
         } = this.insurancePolicyForm.value;
 
-        if (this.selectedAddress) {
+        if (this.selectedAddress)
             this.selectedAddress = {
                 ...this.selectedAddress,
                 addressUnit: addressUnit,
             };
-        }
 
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const documents =
+            this.documents
+                .filter((item) => item.realFile)
+                .map((item) => {
+                    return item.realFile;
+                }) ?? [];
 
         let newData: any = {
-            id: id,
+            id,
             ...form,
             issued: MethodsCalculationsHelper.convertDateToBackend(issued),
             expires: MethodsCalculationsHelper.convertDateToBackend(expires),
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
-            files: documents ? documents : this.insurancePolicyForm.value.files,
+            address: address,
+            files: documents ?? this.insurancePolicyForm.value.files,
             filesForDeleteIds: this.filesForDelete,
         };
 
         const commLiablity = commericalGeneralLiability
             ? {
-                  id: this.idCommercial ? this.idCommercial : 0,
+                  id: this.idCommercial,
                   isCommercialGeneralLiabillityChecked:
                       commericalGeneralLiability,
                   policy: commericalPolicy,
                   insurerName: commericalInsurerName,
-                  rating: this.selectedCommericalRating
-                      ? this.selectedCommericalRating.id
-                      : null,
+                  rating: this.selectedCommericalRating?.id ?? null,
                   eachOccurrence: commericalOccurrence
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalOccurrence
                         )
                       : null,
                   damageToRentedPremises: commericalDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalDamage
                         )
                       : null,
                   personalAndAdvertisingInjury: commericalInj
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalInj
                         )
                       : null,
                   medicalExpanses: commericalMedical
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalMedical
                         )
                       : null,
                   generalAggregate: commericalGeneralAggregate
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalGeneralAggregate
                         )
                       : null,
                   productsCompOperAggregate: commericalProducts
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             commericalProducts
                         )
                       : null,
@@ -830,30 +809,28 @@ export class SettingsInsurancePolicyModalComponent
 
         const autoLiability = automobileLiability
             ? {
-                  id: this.idAutomobile ? this.idAutomobile : 0,
+                  id: this.idAutomobile,
                   isAutomobileLiabillityChecked: automobileLiability,
                   policy: automobilePolicy,
                   insurerName: automobileInsurerName,
-                  rating: this.selectedAutomobileRating
-                      ? this.selectedAutomobileRating.id
-                      : null,
+                  rating: this.selectedAutomobileRating?.id ?? null,
                   bodilyInjuryAccident: automobileAccident
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileAccident
                         )
                       : null,
                   bodilyInjuryPerson: automobileInjuryPerson
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileInjuryPerson
                         )
                       : null,
                   combinedSingleLimit: automobileLimit
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileLimit
                         )
                       : null,
                   propertyDamage: automobileDamage
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             automobileDamage
                         )
                       : null,
@@ -862,21 +839,19 @@ export class SettingsInsurancePolicyModalComponent
 
         const motTruckCargo = motorTruckCargo
             ? {
-                  id: this.idMotor ? this.idMotor : 0,
+                  id: this.idMotor,
                   isMotorTruckChecked: motorTruckCargo,
                   isMotorTruckReeferChecked: motorTruckCargo,
                   policy: motorPolicy,
                   insurerName: motorInsurerName,
-                  rating: this.selectedMotorRating
-                      ? this.selectedMotorRating.id
-                      : null,
+                  rating: this.selectedMotorRating?.id ?? null,
                   singleConveyance: motorConveyance
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             motorConveyance
                         )
                       : null,
                   deductable: motorDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             motorDeductable
                         )
                       : null,
@@ -885,20 +860,18 @@ export class SettingsInsurancePolicyModalComponent
 
         const physDamage = physicalDamage
             ? {
-                  id: this.idPhysicalDamage ? this.idPhysicalDamage : 0,
+                  id: this.idPhysicalDamage,
                   isPhysicalDamageChecked: physicalDamage,
                   policy: physicalPolicy,
                   insurerName: physicalInsurerName,
-                  rating: this.selectedPhysicalDamageRating
-                      ? this.selectedPhysicalDamageRating.id
-                      : null,
+                  rating: this.selectedPhysicalDamageRating?.id ?? null,
                   comprehensiveAndCollision: physicalCollision
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             physicalCollision
                         )
                       : null,
                   deductable: physicalDeductable
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             physicalDeductable
                         )
                       : null,
@@ -907,15 +880,13 @@ export class SettingsInsurancePolicyModalComponent
 
         const trailInterchange = trailerInterchange
             ? {
-                  id: this.idTrailerInterchange ? this.idTrailerInterchange : 0,
+                  id: this.idTrailerInterchange,
                   isTrailerInterchangeChecked: trailerInterchange,
                   policy: trailerPolicy,
                   insurerName: trailerInsurerName,
-                  rating: this.selectedTrailerRating
-                      ? this.selectedTrailerRating.id
-                      : null,
+                  rating: this.selectedTrailerRating?.id ?? null,
                   value: trailerValue
-                      ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                      ? MethodsCalculationsHelper.convertThousandSepInNumber(
                             trailerValue
                         )
                       : null,
@@ -924,25 +895,23 @@ export class SettingsInsurancePolicyModalComponent
 
         let insurancePolicyAddons = [];
 
-        if (commLiablity) {
-            insurancePolicyAddons.push(commLiablity);
-        }
+        if (commLiablity)
+            insurancePolicyAddons = [...insurancePolicyAddons, commLiablity];
 
-        if (autoLiability) {
-            insurancePolicyAddons.push(autoLiability);
-        }
+        if (autoLiability)
+            insurancePolicyAddons = [...insurancePolicyAddons, autoLiability];
 
-        if (motTruckCargo) {
-            insurancePolicyAddons.push(motTruckCargo);
-        }
+        if (motTruckCargo)
+            insurancePolicyAddons = [...insurancePolicyAddons, motTruckCargo];
 
-        if (physDamage) {
-            insurancePolicyAddons.push(physDamage);
-        }
+        if (physDamage)
+            insurancePolicyAddons = [...insurancePolicyAddons, physDamage];
 
-        if (trailInterchange) {
-            insurancePolicyAddons.push(trailInterchange);
-        }
+        if (trailInterchange)
+            insurancePolicyAddons = [
+                ...insurancePolicyAddons,
+                trailInterchange,
+            ];
 
         newData = {
             ...newData,
@@ -977,14 +946,14 @@ export class SettingsInsurancePolicyModalComponent
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: eGeneralActions.DELETE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: 'delete',
+                        action: eGeneralActions.DELETE,
                         status: false,
                         close: false,
                     });
@@ -994,19 +963,15 @@ export class SettingsInsurancePolicyModalComponent
 
     private editInsurancePolicyById(insurance: any) {
         this.insurancePolicyForm.patchValue({
-            producerName: insurance.producerName,
+            ...insurance,
             issued: MethodsCalculationsHelper.convertDateFromBackend(
                 insurance.issued
             ),
             expires: MethodsCalculationsHelper.convertDateFromBackend(
                 insurance.expires
             ),
-            phone: insurance.phone,
-            email: insurance.email,
-            address: insurance.address.address,
+            address: insurance.address,
             addressUnit: insurance.address.addressUnit,
-            note: insurance.note,
-            files: insurance.files,
         });
 
         this.onHandleAddress({
@@ -1019,24 +984,24 @@ export class SettingsInsurancePolicyModalComponent
         if (insurance.insurancePolicyAddons.length) {
             for (const insur of insurance.insurancePolicyAddons) {
                 switch (insur.insurancePolicyAddonType?.name) {
-                    case 'Commercial General Liabillity': {
+                    case ESettingsFormEnum.COMMERCIAL_GENERAL_LIABILITY:
                         this.idCommercial = insur.id;
                         this.insurancePolicyForm
-                            .get('commericalGeneralLiability')
+                            .get(ESettingsFormEnum.COMMERCIAL_GENERAL_LIABILITY)
                             .patchValue(true);
                         this.insurancePolicyForm
-                            .get('commericalPolicy')
+                            .get(ESettingsFormEnum.COMMERCIAL_POLICY)
                             .patchValue(insur.policy);
                         this.insurancePolicyForm
-                            .get('commericalInsurerName')
+                            .get(ESettingsFormEnum.COMMERCIAL_INSURER_NAME)
                             .patchValue(insur.insurerName);
                         this.insurancePolicyForm
-                            .get('commericalRating')
+                            .get(ESettingsFormEnum.COMMERCIAL_RATING)
                             .patchValue(
                                 insur.rating ? insur.rating.name : null
                             );
                         this.insurancePolicyForm
-                            .get('commericalOccurrence')
+                            .get(ESettingsFormEnum.COMMERCIAL_OCCURRENCE)
                             .patchValue(
                                 insur.eachOccurrence
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1045,7 +1010,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('commericalDamage')
+                            .get(ESettingsFormEnum.COMMERCIAL_DAMAGE)
                             .patchValue(
                                 insur.damageToRentedPremises
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1054,7 +1019,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('commericalInj')
+                            .get(ESettingsFormEnum.COMMERCIAL_INJ)
                             .patchValue(
                                 insur.personalAndAdvertisingInjury
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1063,7 +1028,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('commericalMedical')
+                            .get(ESettingsFormEnum.COMMERCIAL_MEDICAL)
                             .patchValue(
                                 insur.medicalExpanses
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1072,7 +1037,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('commericalGeneralAggregate')
+                            .get(ESettingsFormEnum.COMMERCIAL_GENERAL_AGGREGATE)
                             .patchValue(
                                 insur.generalAggregate
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1081,7 +1046,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('commericalProducts')
+                            .get(ESettingsFormEnum.COMMERCIAL_PRODUCTS)
                             .patchValue(
                                 insur.productsCompOperAggregate
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1092,25 +1057,25 @@ export class SettingsInsurancePolicyModalComponent
 
                         this.selectedCommericalRating = insur.rating;
                         break;
-                    }
-                    case 'Autmobile Liabillity': {
+
+                    case ESettingsFormEnum.AUTOMOBILE_LIABILITY:
                         this.idAutomobile = insur.id;
                         this.insurancePolicyForm
-                            .get('automobileLiability')
+                            .get(ESettingsFormEnum.AUTOMOBILE_LIABILITY)
                             .patchValue(true);
                         this.insurancePolicyForm
-                            .get('automobilePolicy')
+                            .get(ESettingsFormEnum.AUTOMOBILE_POLICY)
                             .patchValue(insur.policy);
                         this.insurancePolicyForm
-                            .get('automobileInsurerName')
+                            .get(ESettingsFormEnum.AUTOMOBILE_INSURER_NAME)
                             .patchValue(insur.insurerName);
                         this.insurancePolicyForm
-                            .get('automobileRating')
+                            .get(ESettingsFormEnum.AUTOMOBILE_RATING)
                             .patchValue(
                                 insur.rating ? insur.rating.name : null
                             );
                         this.insurancePolicyForm
-                            .get('automobileAccident')
+                            .get(ESettingsFormEnum.AUTOMOBILE_ACCIDENT)
                             .patchValue(
                                 insur.bodilyInjuryAccident
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1119,7 +1084,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('automobileInjuryPerson')
+                            .get(ESettingsFormEnum.AUTOMOBILE_INJURY_PERSON)
                             .patchValue(
                                 insur.bodilyInjuryPerson
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1128,7 +1093,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('automobileLimit')
+                            .get(ESettingsFormEnum.AUTOMOBILE_LIMIT)
                             .patchValue(
                                 insur.combinedSingleLimit
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1137,7 +1102,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('automobileDamage')
+                            .get(ESettingsFormEnum.AUTOMOBILE_DAMAGE)
                             .patchValue(
                                 insur.propertyDamage
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1147,30 +1112,29 @@ export class SettingsInsurancePolicyModalComponent
                             );
 
                         this.selectedAutomobileRating = insur.rating;
-
                         break;
-                    }
-                    case 'Motor Truck Cargo Breakdown': {
+
+                    case ESettingsFormEnum.MOTOR_TRUCK_CARGO_BREAKDOWN:
                         this.idMotor = insur.id;
                         this.insurancePolicyForm
-                            .get('motorTruckCargo')
+                            .get(ESettingsFormEnum.MOTOR_TRUCK_CARGO)
                             .patchValue(true);
                         this.insurancePolicyForm
-                            .get('reeferBreakdown')
+                            .get(ESettingsFormEnum.REEFER_BREAKDOWN)
                             .patchValue(true);
                         this.insurancePolicyForm
-                            .get('motorPolicy')
+                            .get(ESettingsFormEnum.MOTOR_POLICY)
                             .patchValue(insur.policy);
                         this.insurancePolicyForm
-                            .get('motorInsurerName')
+                            .get(ESettingsFormEnum.MOTOR_INSURER_NAME)
                             .patchValue(insur.insurerName);
                         this.insurancePolicyForm
-                            .get('motorRating')
+                            .get(ESettingsFormEnum.MOTOR_RATING)
                             .patchValue(
                                 insur.rating ? insur.rating.name : null
                             );
                         this.insurancePolicyForm
-                            .get('motorConveyance')
+                            .get(ESettingsFormEnum.MOTOR_CONVEYANCE)
                             .patchValue(
                                 insur.singleConveyance
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1179,7 +1143,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('motorDeductable')
+                            .get(ESettingsFormEnum.MOTOR_DEDUCTIBLE)
                             .patchValue(
                                 insur.deductable
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1187,28 +1151,26 @@ export class SettingsInsurancePolicyModalComponent
                                       )
                                     : null
                             );
-
                         this.selectedMotorRating = insur.rating;
                         break;
-                    }
-                    case 'Physical Damage': {
+                    case ESettingsFormEnum.PHYSICAL_DAMAGE_WITH_WHITESPACE:
                         this.idTrailerInterchange = insur.id;
                         this.insurancePolicyForm
-                            .get('physicalDamage')
+                            .get(ESettingsFormEnum.PHYSICAL_DAMAGE)
                             .patchValue(true);
                         this.insurancePolicyForm
-                            .get('physicalPolicy')
+                            .get(ESettingsFormEnum.PHYSICAL_POLICY)
                             .patchValue(insur.policy);
                         this.insurancePolicyForm
-                            .get('physicalInsurerName')
+                            .get(ESettingsFormEnum.PHYSICAL_INSURER_NAME)
                             .patchValue(insur.insurerName);
                         this.insurancePolicyForm
-                            .get('physicalRating')
+                            .get(ESettingsFormEnum.PHYSICAL_RATING)
                             .patchValue(
                                 insur.rating ? insur.rating.name : null
                             );
                         this.insurancePolicyForm
-                            .get('physicalCollision')
+                            .get(ESettingsFormEnum.PHYSICAL_COLLISION)
                             .patchValue(
                                 insur.comprehensiveAndCollision
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1217,7 +1179,7 @@ export class SettingsInsurancePolicyModalComponent
                                     : null
                             );
                         this.insurancePolicyForm
-                            .get('physicalDeductable')
+                            .get(ESettingsFormEnum.PHYSICAL_DEDUCTIBLE)
                             .patchValue(
                                 insur.deductable
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1228,25 +1190,25 @@ export class SettingsInsurancePolicyModalComponent
 
                         this.selectedPhysicalDamageRating = insur.rating;
                         break;
-                    }
-                    case 'Trailer Interchange': {
+
+                    case ESettingsFormEnum.TRUCK_INTERCHANGE:
                         this.idPhysicalDamage = insur.id;
                         this.insurancePolicyForm
-                            .get('trailerInterchange')
+                            .get(ESettingsFormEnum.TRAILER_INTERCHANGE)
                             .patchValue(true);
                         this.insurancePolicyForm
-                            .get('trailerPolicy')
+                            .get(ESettingsFormEnum.TRAILER_POLICY)
                             .patchValue(insur.policy);
                         this.insurancePolicyForm
-                            .get('trailerInsurerName')
+                            .get(ESettingsFormEnum.TRAILER_INSURER_NAME)
                             .patchValue(insur.insurerName);
                         this.insurancePolicyForm
-                            .get('trailerRating')
+                            .get(ESettingsFormEnum.TRAILER_RATING)
                             .patchValue(
                                 insur.rating ? insur.rating.name : null
                             );
                         this.insurancePolicyForm
-                            .get('trailerValue')
+                            .get(ESettingsFormEnum.TRAILER_VALUE)
                             .patchValue(
                                 insur.value
                                     ? MethodsCalculationsHelper.convertNumberInThousandSep(
@@ -1257,11 +1219,9 @@ export class SettingsInsurancePolicyModalComponent
 
                         this.selectedTrailerRating = insur.rating;
                         break;
-                    }
 
-                    default: {
+                    default:
                         break;
-                    }
                 }
             }
         }
@@ -1271,7 +1231,7 @@ export class SettingsInsurancePolicyModalComponent
         }, 1000);
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.insurancePolicyForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
@@ -1284,42 +1244,55 @@ export class SettingsInsurancePolicyModalComponent
 
     private issueExpireDateChanges(): void {
         this.insurancePolicyForm
-            .get('issued')
+            .get(ESettingsFormEnum.ISSUED)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     moment(
-                        this.insurancePolicyForm.get('expires').value
+                        this.insurancePolicyForm.get(ESettingsFormEnum.EXPIRES)
+                            .value
                     ).isBefore(moment(value)) ||
                     moment(
-                        this.insurancePolicyForm.get('expires').value
+                        this.insurancePolicyForm.get(ESettingsFormEnum.EXPIRES)
+                            .value
                     ).isSame(moment(value))
-                ) {
+                )
                     this.insurancePolicyForm
-                        .get('expires')
+                        .get(ESettingsFormEnum.EXPIRES)
                         .setErrors({ invalid: true });
-                } else {
-                    this.insurancePolicyForm.get('expires').setErrors(null);
-                }
+                else
+                    this.insurancePolicyForm
+                        .get(ESettingsFormEnum.EXPIRES)
+                        .setErrors(null);
             });
 
         this.insurancePolicyForm
-            .get('expires')
+            .get(ESettingsFormEnum.EXPIRES)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (
                     moment(value).isBefore(
-                        moment(this.insurancePolicyForm.get('issued').value)
+                        moment(
+                            this.insurancePolicyForm.get(
+                                ESettingsFormEnum.ISSUED
+                            ).value
+                        )
                     ) ||
                     moment(value).isSame(
-                        moment(this.insurancePolicyForm.get('issued').value)
+                        moment(
+                            this.insurancePolicyForm.get(
+                                ESettingsFormEnum.ISSUED
+                            ).value
+                        )
                     )
                 ) {
                     this.insurancePolicyForm
-                        .get('expires')
+                        .get(ESettingsFormEnum.EXPIRES)
                         .setErrors({ invalid: true });
                 } else {
-                    this.insurancePolicyForm.get('expires').setErrors(null);
+                    this.insurancePolicyForm
+                        .get(ESettingsFormEnum.EXPIRES)
+                        .setErrors(null);
                 }
             });
     }

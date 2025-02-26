@@ -197,7 +197,7 @@ export const tableDataSelector = createSelector(
         );
         const tableClosedColumnsConfig = JSON.parse(
             localStorage.getItem(
-                `table-${TableType.LoadTemplate}-Configuration`
+                `table-${TableType.LoadClosed}-Configuration`
             )
         );
         const selectedTabLowerCase =
@@ -348,5 +348,23 @@ export const activeTableDataSelector = createSelector(
         };
 
         return result;
+    }
+);
+
+export const staticModalDataSelector = createSelector(
+    loadState,
+    (state) => {
+        const { modal } = state;
+
+        return modal;
+    }
+);
+
+export const activeLoadModalDataSelector = createSelector(
+    loadState,
+    (state) => {
+        const { activeModalData } = state;
+
+        return activeModalData;
     }
 );

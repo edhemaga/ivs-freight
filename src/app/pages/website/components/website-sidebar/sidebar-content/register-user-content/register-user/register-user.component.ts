@@ -216,7 +216,7 @@ export class RegisterUserComponent
 
         const saveData: SignupUserCommand = {
             ...registerUserForm,
-            address: this.selectedAddress,
+            address: address,
             code: this.registerUserCode,
         };
 

@@ -61,7 +61,6 @@
                         formControlName="address"
                         [inputConfig]="contactModalConfig.ADDRESS_INPUT_CONFIG"
                         [placeholderType]="'longAddress'"
-                        [activeAddress]="selectedAddress"
                         (selectedAddress)="onHandleAddress($event)"
                         [receivedAddressList]="addressList"
                         [receivedAddressData]="addressData"
@@ -90,6 +89,7 @@
                 [hasCounter]="contactPhones?.length"
                 [cardName]="'Phone'"
                 [headerSvgEnabled]="true"
+                [isActionDisabled]="contactPhones.length >= 3"
                 [hasActionSvg]="true"
                 [subText]="
                     contactPhones?.length &&
@@ -119,6 +119,7 @@
                 [hasCounter]="contactEmails.length"
                 [cardName]="'Email'"
                 [headerSvgEnabled]="true"
+                [isActionDisabled]="contactEmails.length >= 2"
                 [hasActionSvg]="true"
                 [subText]="
                     contactEmails?.length &&
@@ -161,6 +162,8 @@
                 <div body class="row row-no-m mb-0">
                     <div class="col-12">
                         <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                             formControlName="sharedLabelId"
                             [template]="'multiselect'"
                             [multiselectTemplate]="'multiselect-2-columns'"

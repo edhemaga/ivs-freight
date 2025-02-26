@@ -4,7 +4,6 @@
     border-radius: 2px;
     padding: 4px;
     margin-left: -2px;
-    cursor: pointer;
     transition: background 0.2s;
 
     &:hover {
@@ -20,21 +19,18 @@
     }
 
     .open-hours-icon {
+        position: relative;
+        bottom: 1px;
         margin-right: 4px;
-        line-height: 18px;
+    }
 
-        &.closing {
-            svg {
-                circle {
-                    fill: $ta-yellow-1;
-                }
-            }
-        }
+    p {
+        text-transform: uppercase;
+    }
+}
 
-        svg {
-            circle {
-                fill: $ta-green;
-            }
-        }
+.open-hours-dropdown {
+    p {
+        margin-bottom: 2px !important;
     }
 }

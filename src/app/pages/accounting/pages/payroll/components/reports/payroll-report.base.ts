@@ -1,6 +1,6 @@
 // Services
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
 // Models
 import {
@@ -19,8 +19,8 @@ import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payro
 
 // Enums
 import {
-    PayrollAdditionalTypes,
-    PayrollTablesStatus,
+    ePayrollAdditionalTypes,
+    ePayrollTablesStatus,
 } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
@@ -96,7 +96,7 @@ export abstract class PayrollReportBaseComponent<
 
     public openAddNewModal(type: string): void {
         switch (type) {
-            case PayrollAdditionalTypes.CREDIT:
+            case ePayrollAdditionalTypes.CREDIT:
                 this.modalService
                     .openModal(
                         PayrollCreditBonusComponent,
@@ -115,7 +115,7 @@ export abstract class PayrollReportBaseComponent<
                         this.getReportDataResults();
                     });
                 break;
-            case PayrollAdditionalTypes.BONUS:
+            case ePayrollAdditionalTypes.BONUS:
                 this.modalService
                     .openModal(
                         PayrollBonusModalComponent,
@@ -134,7 +134,7 @@ export abstract class PayrollReportBaseComponent<
                         this.getReportDataResults();
                     });
                 return;
-            case PayrollAdditionalTypes.DEDUCTION:
+            case ePayrollAdditionalTypes.DEDUCTION:
                 this.modalService
                     .openModal(
                         PayrollDeductionModalComponent,
@@ -153,7 +153,7 @@ export abstract class PayrollReportBaseComponent<
                         this.getReportDataResults();
                     });
                 break;
-            case PayrollAdditionalTypes.FUEL:
+            case ePayrollAdditionalTypes.FUEL:
                 this.modalService
                     .openModal(
                         FuelPurchaseModalComponent,
@@ -180,7 +180,7 @@ export abstract class PayrollReportBaseComponent<
 
         if (item.$event.type === TableStringEnum.EDIT) {
             switch (item.title) {
-                case PayrollAdditionalTypes.CREDIT:
+                case ePayrollAdditionalTypes.CREDIT:
                     this.modalService
                         .openModal(
                             PayrollCreditBonusComponent,
@@ -201,7 +201,7 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                case PayrollAdditionalTypes.BONUS:
+                case ePayrollAdditionalTypes.BONUS:
                     this.modalService
                         .openModal(
                             PayrollBonusModalComponent,
@@ -222,7 +222,7 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                case PayrollAdditionalTypes.DEDUCTION:
+                case ePayrollAdditionalTypes.DEDUCTION:
                     this.modalService
                         .openModal(
                             PayrollDeductionModalComponent,
@@ -243,7 +243,7 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                case PayrollAdditionalTypes.FUEL:
+                case ePayrollAdditionalTypes.FUEL:
                     this.modalService
                         .openModal(
                             FuelPurchaseModalComponent,
@@ -262,7 +262,7 @@ export abstract class PayrollReportBaseComponent<
             }
         } else if (item.$event.type === TableStringEnum.DELETE) {
             switch (item.title) {
-                case PayrollAdditionalTypes.CREDIT:
+                case ePayrollAdditionalTypes.CREDIT:
                     this.payrollService
                         .raiseDeleteModal(
                             TableStringEnum.CREDIT,
@@ -280,7 +280,7 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                case PayrollAdditionalTypes.DEDUCTION:
+                case ePayrollAdditionalTypes.DEDUCTION:
                     this.payrollService
                         .raiseDeleteModal(
                             TableStringEnum.DEDUCTION,
@@ -300,7 +300,7 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                case PayrollAdditionalTypes.BONUS:
+                case ePayrollAdditionalTypes.BONUS:
                     this.payrollService
                         .raiseDeleteModal(
                             TableStringEnum.BONUS,
@@ -318,7 +318,7 @@ export abstract class PayrollReportBaseComponent<
                             this.getReportDataResults();
                         });
                     break;
-                case PayrollAdditionalTypes.FUEL:
+                case ePayrollAdditionalTypes.FUEL:
                     this.payrollService
                         .raiseDeleteModal(
                             TableStringEnum.FUEL_1,
@@ -353,31 +353,31 @@ export abstract class PayrollReportBaseComponent<
             selectedDeductionIds: null,
             selectedBonusIds: null,
             selectedFuelIds: null,
-            payrollOpenedTab: PayrollTablesStatus.OPEN,
+            payrollOpenedTab: ePayrollTablesStatus.OPEN,
         };
 
-        if (_title === PayrollAdditionalTypes.CREDIT) {
+        if (_title === ePayrollAdditionalTypes.CREDIT) {
             dataSend = {
                 ...dataSend,
                 selectedCreditIds: _included.length
                     ? _included.map((load) => load.id)
                     : [0],
             };
-        } else if (_title === PayrollAdditionalTypes.DEDUCTION) {
+        } else if (_title === ePayrollAdditionalTypes.DEDUCTION) {
             dataSend = {
                 ...dataSend,
                 selectedDeductionIds: _included.length
                     ? _included.map((load) => load.id)
                     : [0],
             };
-        } else if (_title === PayrollAdditionalTypes.BONUS) {
+        } else if (_title === ePayrollAdditionalTypes.BONUS) {
             dataSend = {
                 ...dataSend,
                 selectedBonusIds: _included.length
                     ? _included.map((load) => load.id)
                     : [0],
             };
-        } else if (_title === PayrollAdditionalTypes.FUEL) {
+        } else if (_title === ePayrollAdditionalTypes.FUEL) {
             dataSend = {
                 ...dataSend,
                 selectedFuelIds: _included.length

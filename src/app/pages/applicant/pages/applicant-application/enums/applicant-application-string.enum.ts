@@ -21,7 +21,7 @@ export enum ApplicantApplicationStringEnum {
     MisdemeanorExplain = 'misdemeanorExplain',
     DrunkDrivingExplain = 'drunkDrivingExplain',
     NoWorkExperience = 'noWorkExperience',
-    HasIncorrectValue = 'hasIncorrectValue', 
+    HasIncorrectValue = 'hasIncorrectValue',
     From = 'from',
     To = 'to',
     Address = 'address',

@@ -748,19 +748,22 @@
                         [isCardOpen]="isSpecialChecksOpen"
                     >
                         <div class="violation-special-checks">
-                            <div
-                                (click)="
-                                    specialCheck.active = !specialCheck.active
-                                "
-                                *ngFor="
-                                    let specialCheck of specialChecks;
-                                    trackBy: identity
-                                "
-                                [class.active]="specialCheck.active"
-                                class="violation-special-check"
-                            >
-                                <p>{{ specialCheck.name }}</p>
-                            </div>
+                            @for (
+                                specialCheck of specialChecks;
+                                let ind = $index;
+                                track ind
+                            ) {
+                                <div
+                                    (click)="
+                                        specialCheck.active =
+                                            !specialCheck.active
+                                    "
+                                    [class.active]="specialCheck.active"
+                                    class="violation-special-check"
+                                >
+                                    <p>{{ specialCheck.name }}</p>
+                                </div>
+                            }
                         </div>
                     </app-ta-custom-card>
                 </div>

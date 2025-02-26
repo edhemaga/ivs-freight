@@ -55,6 +55,7 @@ export class SettingsRepairShopComponent
     public isBankingInfoOpened: boolean[] = [];
     public isVisibleNoteCard: boolean[] = [];
     public repairShopForm: UntypedFormGroup;
+
     constructor(
         // Router
         protected activatedRoute: ActivatedRoute,
@@ -155,22 +156,25 @@ export class SettingsRepairShopComponent
 
     private processOfficeData(data: RepairShopListDto[]): RepairShopListDto[] {
         return data.map((office) => {
-            const groupedContacts = office.contacts.reduce((acc, contact) => {
-                const departmentName = contact?.department?.name;
+            const groupedContacts = office.contacts.reduce(
+                (acc, contact) => {
+                    const departmentName = contact?.department?.name;
 
-                if (departmentName) {
-                    if (!acc[departmentName]) {
-                        acc[departmentName] = {
-                            isCardOpen: true,
-                            cardName: departmentName,
-                            values: [],
-                        };
+                    if (departmentName) {
+                        if (!acc[departmentName]) {
+                            acc[departmentName] = {
+                                isCardOpen: true,
+                                cardName: departmentName,
+                                values: [],
+                            };
+                        }
+                        acc[departmentName].values.push(contact);
                     }
-                    acc[departmentName].values.push(contact);
-                }
 
-                return acc;
-            }, {} as Record<string, SettingsDepartmentCardModel>);
+                    return acc;
+                },
+                {} as Record<string, SettingsDepartmentCardModel>
+            );
 
             return {
                 ...office,

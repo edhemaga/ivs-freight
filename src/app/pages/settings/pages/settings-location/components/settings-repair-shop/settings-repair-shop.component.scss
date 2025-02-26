@@ -13,7 +13,7 @@
         align-items: center;
 
         .repair-shop-template-text {
-            margin-left: 6px;  
+            margin-left: 6px;
 
             &.cross-out {
                 text-decoration: line-through;
@@ -27,4 +27,11 @@
     &.no-line {
         margin-bottom: 0px !important;
     }
+}
+
+// Working Hours
+.working-hours-main {
+    display: grid;
+    grid-template-columns: repeat(2, 202px);
+    grid-gap: 12px;
 }

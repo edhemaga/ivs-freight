@@ -2,10 +2,11 @@ import { createAction, props } from "@ngrx/store";
 
 // models
 import { ICreateCommentMetadata, IGetLoadListParam, IGetLoadTemplateParam, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index";
-import { CommentResponse, CreateCommentCommand, CreateLoadTemplateCommand, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatusResponse, LoadStatusType, LoadTemplateResponse, RevertLoadStatusCommand, UpdateLoadStatusCommand } from "appcoretruckassist";
-import { Load } from "@pages/load/models";
+import { BrokerByIdResponse, CommentResponse, CreateCommentCommand, CreateLoadTemplateCommand, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatusResponse, LoadStatusType, LoadTemplateResponse, RevertLoadStatusCommand, ShipperLoadModalResponse, UpdateLoadStatusCommand } from "appcoretruckassist";
+import { IActiveLoadModalData, Load } from "@pages/load/models";
 import { Column, ICurrentSearchTableData, ITableColummn } from "@shared/models";
 import { ConfirmationActivation } from "@shared/components/ta-shared-modals/confirmation-activation-modal/models";
+import { BrokerContactExtended } from "@pages/customer/pages/broker-modal/models";
 
 // constants
 import { LoadStoreConstants } from "@pages/load/pages/load-table/utils/constants/index";
@@ -105,7 +106,7 @@ export const getEditLoadTemplateModalData = createAction(
 
 export const getEditLoadTemplateModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_TEMPLATE_MODAL_DATA_SUCCESS,
-    props<{ loadTemplate: LoadTemplateResponse, modal: LoadModalResponse }>()
+    props<{ loadTemplate?: LoadTemplateResponse, modal?: LoadModalResponse }>()
 );
 
 export const getEditLoadTemplateModalDataError = createAction(
@@ -117,11 +118,12 @@ export const getEditLoadTemplateModalDataError = createAction(
 // #region getCreateLoadModalData
 export const getCreateLoadModalData = createAction(
     LoadStoreConstants.ACTION_GET_CREATE_LOAD_MODAL_DATA,
+    props<{ brokerToAdd?: BrokerByIdResponse }>()
 );
 
 export const getCreateLoadModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_CREATE_LOAD_MODAL_DATA_SUCCESS,
-    props<{ modal: LoadModalResponse }>()
+    props<{ modal: LoadModalResponse, activeLoadModalData?: IActiveLoadModalData }>()
 );
 
 export const getCreateLoadModalDataError = createAction(
@@ -161,6 +163,27 @@ export const getConvertToLoadTemplateModalDataSuccess = createAction(
 export const getConvertToLoadTemplateModalDataError = createAction(
     LoadStoreConstants.ACTION_GET_CONVERT_TO_TEMPLATE_MODAL_DATA_ERROR,
     props<{ error: Error }>()
+);
+// #endregion
+
+// #region addCreatedBrokerStaticModalData
+export const addCreatedBrokerStaticModalData = createAction(
+    LoadStoreConstants.ACTION_ADD_CREATED_BROKER_STATIC_MODAL_DATA,
+    props<{ broker: BrokerByIdResponse }>()
+);
+// #endregion
+
+// #region addCreatedShipperStaticModalData
+export const addCreatedShipperStaticModalData = createAction(
+    LoadStoreConstants.ACTION_ADD_CREATED_SHIPPER_STATIC_MODAL_DATA,
+    props<{ shipper: ShipperLoadModalResponse }>()
+);
+// #endregion
+
+// #region updateEditedBrokerStaticModalData
+export const updateEditedBrokerStaticModalData = createAction(
+    LoadStoreConstants.ACTION_UPDATE_EDITED_BROKER_STATIC_MODAL_DATA,
+    props<{ broker: BrokerByIdResponse, brokerContacts?: BrokerContactExtended[] }>()
 );
 // #endregion
 
@@ -317,6 +340,19 @@ export const setSelectedTab = createAction(
 export const setActiveViewMode = createAction(
     LoadStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
     props<{ activeViewMode: eActiveViewMode }>()
+);
+// #endregion
+
+// #region setActiveLoadModalData
+export const setActveLoadModalData = createAction(
+    LoadStoreConstants.ACTION_SET_ACTIVE_LOAD_MODAL_DATA,
+    props<{ data: IActiveLoadModalData }>()
+);
+// #endregion
+
+// #region resetActiveLoadModalData
+export const resetActiveLoadModalData = createAction(
+    LoadStoreConstants.ACTION_RESET_ACTIVE_LOAD_MODAL_DATA
 );
 // #endregion
 

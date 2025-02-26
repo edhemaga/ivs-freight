@@ -1,4 +1,4 @@
-export enum SettingsModalEnum {
+export enum ESettingsModalEnum {
     NEW_DIVISION = 'new-division',
     EDIT_DIVISION = 'edit-division',
     EDIT_COMPANY = 'edit-company',
@@ -22,6 +22,7 @@ export enum SettingsModalEnum {
     TRUCK_INSPECTION_MONTHS = 'truckInspectionMonths',
     TRAILER_INSPECTION_MONTHS = 'trailerInspectionMonths',
     SOLO = 'Solo',
+    COMBINED = 'Combined',
     WEEKLY = 'Weekly',
     MONDAY = 'Monday',
     EMAIL = 'email',
@@ -29,4 +30,27 @@ export enum SettingsModalEnum {
     URL = 'url',
 
     PAY_TERM = 'pay-term',
+    DRIVER_PAY_PERIOD = 'driver-pay-period',
+    DRIVER_ENDING_IN = 'driver-ending-in',
+    ACCOUNTING_PAY_PERIOD = 'accounting-pay-period',
+    ACCOUNTING_ENDING_IN = 'accounting-ending-in',
+    COMPANY_OWNER_PAY_PERIOD = 'companyOwner-pay-period',
+    COMPANY_OWNER_ENDING_IN = 'companyOwner-ending-in',
+    DISPATCH_PAY_PERIOD = 'dispatch-pay-period',
+    DISPATCH_ENDING_IN = 'dispatch-ending-in',
+    MANAGER_PAY_PERIOD = 'manager-pay-period',
+    MANAGER_ENDING_IN = 'manager-ending-in',
+    RECRUITING_PAY_PERIOD = 'recruiting-pay-period',
+    RECRUITING_ENDING_IN = 'recruiting-ending-in',
+    REPAIR_PAY_PERIOD = 'repair-pay-period',
+    REPAIR_ENDING_IN = 'repair-ending-in',
+    SAFETY_PAY_PERIOD = 'safety-pay-period',
+    SAFETY_ENDING_IN = 'safety-ending-in',
+    OTHER_PAY_PERIOD = 'other-pay-period',
+    OTHER_ENDING_IN = 'other-ending-in',
+    COMPANY_DATA = 'company-data',
+    SEMI_MONTHLY = 'Semi Monthly',
+    MONTHLY = 'Monthly',
+
+    TEAM = 'Team',
 }

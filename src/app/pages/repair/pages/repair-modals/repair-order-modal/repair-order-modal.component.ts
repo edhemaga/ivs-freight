@@ -65,12 +65,7 @@ import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/re
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import {
-    DropdownMenuStringEnum,
-    ModalButtonSize,
-    ModalButtonText,
-    ModalButtonType,
-} from '@shared/enums';
+import { DropdownMenuStringEnum, eModalButtonText } from '@shared/enums';
 
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
@@ -82,6 +77,8 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaInputDatetimePickerComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -101,7 +98,6 @@ import {
     RepairShopShortResponse,
     RepairItemResponse,
     TagResponse,
-    RepairShopService,
     RepairShopMinimalListResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
@@ -230,9 +226,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
-    public modalButtonText = ModalButtonText;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
+    public emodalButtonText = eModalButtonText;
     public taModalActionEnum = TaModalActionEnum;
 
     // config
@@ -253,7 +249,6 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
         // services
         private inputService: TaInputService,
         private repairService: RepairService,
-        private repairShopController: RepairShopService,
         private modalService: ModalService,
         private formService: FormService,
         private detailsDataService: DetailsDataService,
@@ -1007,7 +1002,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             this.repairService
                 .getRepairDriversList(truckId, trailerId, repairDate)
                 .pipe(takeUntil(this.destroy$))
-                .subscribe(({ drivers, isTeamDrivers }) => {
+                .subscribe(({ drivers, isTeamDrivers, isDispatchDriver }) => {
                     this.resetDriverInputField();
 
                     if (drivers?.length) {
@@ -1018,7 +1013,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                             })
                         );
 
-                        this.isDriverDisabled = drivers.length === 1;
+                        this.isDriverDisabled =
+                            drivers.length === 1 && isDispatchDriver;
 
                         if (this.isDriverDisabled || isTeamDrivers)
                             this.selectedDriver = this.driversDropdownList[0];
@@ -1034,7 +1030,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     ): void {
         forkJoin([
             this.repairService.getRepairModalDropdowns(truckId, trailerId),
-            this.repairShopController.apiRepairshopListMinimalGet(),
+            this.repairService.getRepairShopMinimalList(),
         ])
             .pipe(takeUntil(this.destroy$))
             .subscribe((response) => {
@@ -1250,7 +1246,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
                 odometer: odometer
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
                           odometer
                       )
                     : null,
@@ -1501,7 +1497,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 trailerId: conditionaTrailerId,
                 driverId: this.selectedDriver?.id ?? null,
                 odometer: odometer
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
                           odometer
                       )
                     : null,

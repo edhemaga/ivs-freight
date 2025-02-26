@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 
-//Models
+// Enums
+import { eGeneralActions } from '@shared/enums';
+
+// Models
 import { FuelStopResponse } from 'appcoretruckassist';
 
 @Component({
@@ -34,27 +37,9 @@ export class FuelDetailsComponent implements OnInit {
                 minWidth: 60,
             },
             actions: [
-                // {
-                //   title: 'Send Message',
-                //   name: 'dm',
-                //   class: 'regular-text',
-                //   contentType: 'dm',
-                // },
-                // {
-                //   title: 'Print',
-                //   name: 'print',
-                //   class: 'regular-text',
-                //   contentType: 'print',
-                // },
-                // {
-                //   title: 'Deactivate',
-                //   name: 'deactivate',
-                //   class: 'regular-text',
-                //   contentType: 'deactivate',
-                // },
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
                 },

@@ -16,8 +16,10 @@ import { PayrollDriverMileageCollapsedListResponse } from '@pages/accounting/pag
 import { ColumnConfig } from 'ca-components';
 
 // Services
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollDriverOwnerFacadeService } from '@pages/accounting/pages/payroll/state/services';
+import {
+    PayrollFacadeService,
+    PayrollDriverOwnerFacadeService,
+} from '@pages/accounting/pages/payroll/state/services';
 
 @Component({
     selector: 'app-driver-owner-collapsed-table',

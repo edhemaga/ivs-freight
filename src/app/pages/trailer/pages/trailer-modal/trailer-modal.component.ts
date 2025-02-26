@@ -1,5 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { HttpResponseBase } from '@angular/common/http';
 import {
     AbstractControl,
     FormsModule,
@@ -16,9 +15,11 @@ import {
     ViewEncapsulation,
 } from '@angular/core';
 
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
 import { skip, Subject, takeUntil, tap } from 'rxjs';
+
+// modules
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -61,35 +62,43 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
+import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// bootstrap
-import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-
 // models
-import { GetTrailerModalResponse, VinDecodeResponse } from 'appcoretruckassist';
+import {
+    ColorResponse,
+    GetTrailerModalResponse,
+    VinDecodeResponse,
+} from 'appcoretruckassist';
 import type { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerModalConfig } from '@pages/trailer/pages/trailer-modal/utils/configs/trailer-modal.config';
 
-// Enums
-import { TrailerFormFieldEnum } from '@pages/trailer/pages/trailer-modal/enums';
+// enums
+import {
+    ETrailerAction,
+    TrailerFormFieldEnum,
+} from '@pages/trailer/pages/trailer-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
-import { ModalButtonSize, ModalButtonType } from '@shared/enums';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
-// Pipes
+// pipes
 import { FormatDatePipe } from '@shared/pipes';
+import { TrailerModalInputConfigPipe } from '@pages/trailer/pages/trailer-modal/pipes';
 
-// Svg routes
+// SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 @Component({
     selector: 'app-trailer-modal',
@@ -119,9 +128,11 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
         CaInputDropdownComponent,
         TaAppTooltipV2Component,
         CaInputDatetimePickerComponent,
+        CaModalButtonComponent,
 
         // Pipes
         FormatDatePipe,
+        TrailerModalInputConfigPipe,
     ],
 })
 export class TrailerModalComponent implements OnInit, OnDestroy {
@@ -186,8 +197,8 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public taModalActionEnum = TaModalActionEnum;
     public activeAction: string;
 
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -213,7 +224,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         return TrailerModalConfig.getTrailerNumberConfig(this.editData);
     }
 
-    get TrailerTypeIdConfig(): ITaInput {
+    get TrailerTypeIdConfig(): ICaInput {
         return TrailerModalConfig.getTrailerTypeIdConfig({
             selectedTrailerType: this.selectedTrailerType,
         });
@@ -227,13 +238,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         return TrailerModalConfig.getTrailerYearConfig();
     }
 
-    get TrailerVinConfig(): ITaInput {
-        return TrailerModalConfig.getTrailerVinConfig({
-            loadingVinDecoder: this.loadingVinDecoder,
-        });
-    }
-
-    get TrailerMakeConfig(): ITaInput {
+    get TrailerMakeConfig(): ICaInput {
         return TrailerModalConfig.getTrailerMakeConfig({
             selectedTrailerMake: this.selectedTrailerMake,
         });
@@ -243,7 +248,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
         return TrailerModalConfig.getTrailerModelConfig();
     }
 
-    get TrailerColorConfig(): ITaInput {
+    get TrailerColorConfig(): ICaInput {
         return TrailerModalConfig.getTrailerColorConfig({
             selectedColor: this.selectedColor,
         });
@@ -334,7 +339,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private createForm() {
+    private createForm(): void {
         this.trailerForm = this.formBuilder.group({
             companyOwned: [true],
             trailerNumber: [
@@ -380,13 +385,22 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((isCompanyOwned: boolean) => {
                 this.updateOwnerIdValidators(isCompanyOwned, ownerIdControl);
-                if (!isCompanyOwned) {
+                if (!isCompanyOwned)
                     // Clear the owner ID when not company-owned
                     ownerIdControl.patchValue(
                         TableStringEnum.EMPTY_STRING_PLACEHOLDER
                     );
-                }
             });
+
+        if (this.editData?.ownerData) {
+            this.trailerForm
+                .get(TrailerFormFieldEnum.COMPANY_OWNED)
+                .setValue(false);
+            this.onSelectDropdown(
+                this.editData.ownerData,
+                ETrailerAction.OWNER
+            );
+        }
     }
 
     private updateOwnerIdValidators(
@@ -405,11 +419,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public onModalAction(action: string): void {
         this.activeAction = action;
         if (action === TaModalActionEnum.CLOSE) {
-            if (this.editData?.canOpenModal) {
+            if (this.editData?.canOpenModal)
                 switch (this.editData?.key) {
-                    case 'repair-modal': {
+                    case ETrailerAction.REPAIR_MODAL:
                         this.modalService.setProjectionModal({
-                            action: 'close',
+                            action: eGeneralActions.CLOSE,
                             payload: { key: this.editData?.key, value: null },
                             component: RepairOrderModalComponent,
                             size: 'large',
@@ -417,14 +431,12 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                             closing: 'fastest',
                         });
                         break;
-                    }
-                    default: {
+
+                    default:
                         break;
-                    }
                 }
-            } else {
-                this.ngbActiveModal.close();
-            }
+            else this.ngbActiveModal.close();
+
             return;
         } else {
             if (action === TaModalActionEnum.DEACTIVATE && this.editData) {
@@ -473,28 +485,22 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.inputService.markInvalid(this.trailerForm);
                         return;
                     }
-                    if (this.editData?.id) {
-                        this.updateTrailer(this.editData.id);
-                    } else {
-                        this.addTrailer();
-                    }
+                    if (this.editData?.id) this.updateTrailer(this.editData.id);
+                    else this.addTrailer();
                 }
 
                 // Delete
-                if (action === TaModalActionEnum.DELETE && this.editData) {
-                    if (this.editData) {
-                        this.modalService.openModal(
-                            ConfirmationModalComponent,
-                            { size: TableStringEnum.SMALL },
-                            {
-                                ...this.editData,
-                                template: TableStringEnum.TRAILER_2,
-                                type: TableStringEnum.DELETE,
-                                svg: true,
-                            }
-                        );
-                    }
-                }
+                if (action === TaModalActionEnum.DELETE && this.editData)
+                    this.modalService.openModal(
+                        ConfirmationModalComponent,
+                        { size: TableStringEnum.SMALL },
+                        {
+                            ...this.editData,
+                            template: TableStringEnum.TRAILER_2,
+                            type: TableStringEnum.DELETE,
+                            svg: true,
+                        }
+                    );
             }
         }
     }
@@ -531,7 +537,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
 
                     this.trailerMakeType = res.trailerMakes;
 
-                    this.colorType = res.colors.map((item) => {
+                    this.colorType = res.colors.map((item: ColorResponse) => {
                         return {
                             ...item,
                             folder: 'common',
@@ -539,6 +545,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                             logoName: 'ic_color.svg',
                         };
                     });
+
                     this.trailerLengthType = res.trailerLengths;
                     this.ownerType = res.owners;
                     this.suspensionType = res.suspensions;
@@ -546,7 +553,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.doorType = res.doorTypes;
                     this.reeferUnitType = res.reeferUnits;
 
-                    this.trailerForm.get('fhwaExp').patchValue(res.fhwaExp);
+                    this.trailerForm
+                        .get(TrailerFormFieldEnum.FHWA_EXP)
+                        .patchValue(res.fhwaExp);
 
                     this.storedfhwaExpValue = res.fhwaExp;
 
@@ -559,72 +568,83 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.id) {
                         this.skipVinDecocerEdit = true;
                         this.editTrailerById(this.editData.id);
-                    } else {
-                        this.startFormChanges();
-                    }
+                    } else this.startFormChanges();
                 },
-                error: () => {},
             });
     }
 
     private addTrailer(): void {
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const documents =
+            this.documents
+                .filter((item) => item.realFile)
+                .map((item) => {
+                    documents.push(item.realFile);
+                }) ?? [];
 
         const newData: any = {
             ...this.trailerForm.value,
             trailerTypeId: this.selectedTrailerType?.id ?? null,
             trailerMakeId: this.selectedTrailerMake?.id ?? null,
             colorId: this.selectedColor?.id ?? null,
-            year: parseInt(this.trailerForm.get('year').value),
+            year: parseInt(
+                this.trailerForm.get(TrailerFormFieldEnum.YEAR).value
+            ),
             trailerLengthId: this.selectedTrailerLength.id,
-            ownerId: this.trailerForm.get('companyOwned').value
+            ownerId: this.trailerForm.get(TrailerFormFieldEnum.COMPANY_OWNED)
+                .value
                 ? null
-                : this.selectedOwner
-                  ? this.selectedOwner.id
-                  : null,
-            axles: this.trailerForm.get('axles').value
-                ? parseInt(this.trailerForm.get('axles').value)
-                : null,
-            suspension: this.selectedSuspension
-                ? this.selectedSuspension.id
-                : null,
-            tireSizeId: this.selectedTireSize ? this.selectedTireSize.id : null,
-            doorType: this.selectedDoorType ? this.selectedDoorType.id : null,
-            isLiftgate: this.trailerForm.get('isLiftgate').value ?? false,
-            reeferUnit: this.selectedReeferType
-                ? this.selectedReeferType.id
-                : null,
-            emptyWeight: this.trailerForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.trailerForm.get('emptyWeight').value
+                : (this.selectedOwner?.id ?? null),
+            axles: this.trailerForm.get(TrailerFormFieldEnum.AXLES).value
+                ? parseInt(
+                      this.trailerForm.get(TrailerFormFieldEnum.AXLES).value
                   )
                 : null,
-            mileage: this.trailerForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.trailerForm.get('mileage').value
+            suspension: this.selectedSuspension?.id ?? null,
+
+            tireSizeId: this.selectedTireSize?.id ?? null,
+            doorType: this.selectedDoorType?.id ?? null,
+            isLiftgate:
+                this.trailerForm.get(TrailerFormFieldEnum.IS_LIFTGATE).value ??
+                false,
+            reeferUnit: this.selectedReeferType?.id ?? null,
+
+            emptyWeight: this.trailerForm.get(TrailerFormFieldEnum.EMPTY_WEIGHT)
+                .value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.trailerForm.get(TrailerFormFieldEnum.EMPTY_WEIGHT)
+                          .value
                   )
                 : null,
-            volume: this.trailerForm.get('volume').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.trailerForm.get('volume').value
+            mileage: this.trailerForm.get(TrailerFormFieldEnum.MILEAGE).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.trailerForm.get(TrailerFormFieldEnum.MILEAGE).value
                   )
                 : null,
-            purchaseDate: this.trailerForm.get('companyOwned').value
-                ? this.trailerForm.get('purchaseDate').value
+            volume: this.trailerForm.get(TrailerFormFieldEnum.VOLUME).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.trailerForm.get(TrailerFormFieldEnum.VOLUME).value
+                  )
+                : null,
+            purchaseDate: this.trailerForm.get(
+                TrailerFormFieldEnum.COMPANY_OWNED
+            ).value
+                ? this.trailerForm.get(TrailerFormFieldEnum.PURCHASE_DATE).value
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                          this.trailerForm.get('purchaseDate').value
+                          this.trailerForm.get(
+                              TrailerFormFieldEnum.PURCHASE_DATE
+                          ).value
                       )
                     : null
                 : null,
-            purchasePrice: this.trailerForm.get('companyOwned').value
-                ? this.trailerForm.get('purchasePrice').value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                          this.trailerForm.get('purchasePrice').value
+            purchasePrice: this.trailerForm.get(
+                TrailerFormFieldEnum.COMPANY_OWNED
+            ).value
+                ? this.trailerForm.get(TrailerFormFieldEnum.PURCHASE_PRICE)
+                      .value
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                          this.trailerForm.get(
+                              TrailerFormFieldEnum.PURCHASE_PRICE
+                          ).value
                       )
                     : null
                 : null,
@@ -636,11 +656,11 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    if (this.editData?.canOpenModal) {
+                    if (this.editData?.canOpenModal)
                         switch (this.editData?.key) {
-                            case 'repair-modal': {
+                            case ETrailerAction.REPAIR_MODAL:
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -656,19 +676,16 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                                     close: true,
                                 });
                                 break;
-                            }
-                            default: {
+
+                            default:
                                 break;
-                            }
                         }
-                    }
 
                     this.ngbActiveModal.close();
-                    if (this.addNewAfterSave) {
+                    if (this.addNewAfterSave)
                         this.modalService.openModal(TrailerModalComponent, {
                             size: ContactsModalStringEnum.SMALL,
                         });
-                    }
                 },
                 error: () => {
                     this.activeAction = null;
@@ -677,80 +694,82 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private updateTrailer(id: number): void {
-        let documents = [];
-        this.documents.map((item) => {
-            if (item.realFile) {
-                documents.push(item.realFile);
-            }
-        });
+        const documents = this.documents
+            .filter((item) => item.realFile)
+            .map((item) => {
+                return item.realFile;
+            });
 
         const newData: any = {
-            id: id,
+            id,
             ...this.trailerForm.value,
             trailerTypeId: this.selectedTrailerType.id,
             trailerMakeId: this.selectedTrailerMake.id,
-            colorId: this.selectedColor ? this.selectedColor.id : null,
-            year: parseInt(this.trailerForm.get('year').value),
+            colorId: this.selectedColor?.id ?? null,
+            year: parseInt(
+                this.trailerForm.get(TrailerFormFieldEnum.YEAR).value
+            ),
             trailerLengthId: this.selectedTrailerLength.id,
-            ownerId: this.trailerForm.get('companyOwned').value
+            ownerId: this.trailerForm.get(TrailerFormFieldEnum.COMPANY_OWNED)
+                .value
                 ? null
-                : this.selectedOwner
-                  ? this.selectedOwner.id
-                  : null,
-            axles: this.trailerForm.get('axles').value
-                ? parseInt(this.trailerForm.get('axles').value)
+                : (this.selectedOwner?.id ?? null),
+
+            axles: this.trailerForm.get(TrailerFormFieldEnum.AXLES).value
+                ? parseInt(
+                      this.trailerForm.get(TrailerFormFieldEnum.AXLES).value
+                  )
                 : null,
-            suspension: this.selectedSuspension
-                ? this.selectedSuspension.id != 0
-                    ? this.selectedSuspension.id
-                    : null
-                : null,
-            tireSizeId: this.selectedTireSize
-                ? this.selectedTireSize.id != 0
-                    ? this.selectedTireSize.id
-                    : null
-                : null,
-            doorType: this.selectedDoorType
-                ? this.selectedDoorType.id != 0
-                    ? this.selectedDoorType.id
-                    : null
-                : null,
+            suspension: this.selectedSuspension?.id ?? null,
+            tireSizeId: this.selectedTireSize?.id ?? null,
+            doorType: this.selectedDoorType?.id ?? null,
+            isLiftgate:
+                this.trailerForm.get(TrailerFormFieldEnum.IS_LIFTGATE).value ??
+                false,
             reeferUnit: this.selectedReeferType
-                ? this.selectedReeferType.id != 0
-                    ? this.selectedReeferType.id
-                    : null
+                ? this.selectedReeferType.id
                 : null,
-            isLiftgate: this.trailerForm.get('isLiftgate').value ?? false,
-            emptyWeight: this.trailerForm.get('emptyWeight').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.trailerForm.get('emptyWeight').value
+            emptyWeight: this.trailerForm.get(TrailerFormFieldEnum.EMPTY_WEIGHT)
+                .value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.trailerForm.get(TrailerFormFieldEnum.EMPTY_WEIGHT)
+                          .value
                   )
                 : null,
-            mileage: this.trailerForm.get('mileage').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.trailerForm.get('mileage').value
+            mileage: this.trailerForm.get(TrailerFormFieldEnum.MILEAGE).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.trailerForm.get(TrailerFormFieldEnum.MILEAGE).value
                   )
                 : null,
-            volume: this.trailerForm.get('volume').value
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                      this.trailerForm.get('volume').value
+            volume: this.trailerForm.get(TrailerFormFieldEnum.VOLUME).value
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                      this.trailerForm.get(TrailerFormFieldEnum.VOLUME).value
                   )
                 : null,
-            purchaseDate: this.trailerForm.get('companyOwned').value
-                ? this.trailerForm.get('purchaseDate').value
+            purchaseDate: this.trailerForm.get(
+                TrailerFormFieldEnum.COMPANY_OWNED
+            ).value
+                ? this.trailerForm.get(TrailerFormFieldEnum.PURCHASE_DATE).value
                     ? MethodsCalculationsHelper.convertDateToBackend(
-                          this.trailerForm.get('purchaseDate').value
+                          this.trailerForm.get(
+                              TrailerFormFieldEnum.PURCHASE_DATE
+                          ).value
                       )
                     : null
                 : null,
-            purchasePrice: this.trailerForm.get('companyOwned').value
-                ? this.trailerForm.get('purchasePrice').value
-                    ? MethodsCalculationsHelper.convertThousanSepInNumber(
-                          this.trailerForm.get('purchasePrice').value
+            purchasePrice: this.trailerForm.get(
+                TrailerFormFieldEnum.COMPANY_OWNED
+            ).value
+                ? this.trailerForm.get(TrailerFormFieldEnum.PURCHASE_PRICE)
+                      .value
+                    ? MethodsCalculationsHelper.convertThousandSepInNumber(
+                          this.trailerForm.get(
+                              TrailerFormFieldEnum.PURCHASE_PRICE
+                          ).value
                       )
                     : null
                 : null,
-            files: documents ? documents : this.trailerForm.value.files,
+            files: documents ?? this.trailerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
         };
 
@@ -767,60 +786,33 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private populateStorageData(res) {
-        const timeout = setTimeout(() => {
-            this.getTrailerDropdowns();
-            this.trailerForm.patchValue({
-                companyOwned: res.companyOwned,
-                trailerNumber: res.trailerNumber,
-                trailerTypeId: res.trailerTypeId,
-                trailerMakeId: res.trailerMakeId,
-                model: res.model,
-                colorId: res.colorId,
-                year: res.year,
-                trailerLengthId: res.trailerLengthId,
-                ownerId: res.ownerId,
-                note: res.note,
-                axles: res.axles,
-                suspension: res.suspension,
-                tireSizeId: res.tireSizeId,
-                doorType: res.doorType,
-                reeferUnit: res.reeferUnit,
-                emptyWeight: res.emptyWeight,
-                mileage: res.mileage,
-                volume: res.volume,
-                insurancePolicy: res.insurancePolicy,
-                fhwaExp: res.fhwaExp,
-                purchaseDate: res.purchaseDate,
-                purchasePrice: res.purchasePrice,
-            });
+    private populateStorageData(res): void {
+        this.getTrailerDropdowns();
+        this.trailerForm.patchValue({
+            ...res,
+        });
 
-            if (res.id) {
-                this.editData = { ...this.editData, id: res.id };
-            }
+        if (res.id) this.editData = { ...this.editData, id: res.id };
 
-            this.trailerForm
-                .get('vin')
-                .patchValue(res.vin, { emitEvent: false });
+        this.trailerForm
+            .get(TrailerFormFieldEnum.VIN)
+            .patchValue(res.vin, { emitEvent: false });
 
-            this.selectedTrailerType = res.selectedTrailerType;
-            this.selectedTrailerMake = res.selectedTrailerMake;
-            this.selectedColor = res.selectedColor;
-            this.selectedTrailerLength = res.selectedTrailerLength;
-            this.selectedOwner = res.selectedOwner;
-            this.selectedSuspension = res.selectedSuspension;
-            this.selectedTireSize = res.selectedTireSize;
-            this.selectedDoorType = res.selectedDoorType;
-            this.selectedReeferType = res.selectedReeferType;
-            this.trailerStatus = res.trailerStatus;
+        this.selectedTrailerType = res.selectedTrailerType;
+        this.selectedTrailerMake = res.selectedTrailerMake;
+        this.selectedColor = res.selectedColor;
+        this.selectedTrailerLength = res.selectedTrailerLength;
+        this.selectedOwner = res.selectedOwner;
+        this.selectedSuspension = res.selectedSuspension;
+        this.selectedTireSize = res.selectedTireSize;
+        this.selectedDoorType = res.selectedDoorType;
+        this.selectedReeferType = res.selectedReeferType;
+        this.trailerStatus = res.trailerStatus;
 
-            this.modalService.changeModalStatus({
-                name: 'deactivate',
-                status: this.trailerStatus,
-            });
-
-            clearTimeout(timeout);
-        }, 50);
+        this.modalService.changeModalStatus({
+            name: eGeneralActions.DEACTIVATE,
+            status: this.trailerStatus,
+        });
     }
 
     private editTrailerById(id: number): void {
@@ -830,33 +822,22 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res: any) => {
                     this.trailerForm.patchValue({
-                        companyOwned: res.companyOwned,
-                        trailerNumber: res.trailerNumber,
-                        trailerTypeId: res.trailerType
-                            ? res.trailerType.name
-                            : null,
-                        trailerMakeId: res.trailerMake
-                            ? res.trailerMake.name
-                            : null,
-                        model: res.model,
-                        vin: res.vin,
+                        ...res,
+                        trailerTypeId: res.trailerType?.id ?? null,
+                        trailerMakeId: res.trailerMake?.id ?? null,
                         isLiftgate: res.liftgate ?? false,
-                        colorId: res.color ? res.color.name : null,
+                        colorId: res.color?.id ?? null,
                         year: res.year.toString(),
                         trailerLengthId: res.trailerLength
-                            ? res.trailerLength.name
+                            ? res.trailerLength.id
                             : null,
                         ownerId: res.companyOwned
                             ? null
-                            : res.owner
-                              ? res.owner.name
-                              : null,
-                        note: res.note,
-                        axles: res.axles,
-                        suspension: res.suspension ? res.suspension.name : null,
-                        tireSizeId: res.tireSize ? res.tireSize.name : null,
-                        doorType: res.doorType ? res.doorType.name : null,
-                        reeferUnit: res.reeferUnit ? res.reeferUnit.name : null,
+                            : (res.owner?.name ?? null),
+                        suspension: res.suspension?.name ?? null,
+                        tireSizeId: res.tireSize?.name ?? null,
+                        doorType: res.doorType?.name ?? null,
+                        reeferUnit: res.reeferUnit?.name ?? null,
                         emptyWeight: res.emptyWeight
                             ? MethodsCalculationsHelper.convertNumberInThousandSep(
                                   res.emptyWeight
@@ -899,7 +880,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     this.documents = res.files;
 
                     this.modalService.changeModalStatus({
-                        name: 'deactivate',
+                        name: eGeneralActions.DEACTIVATE,
                         status: this.trailerStatus,
                     });
 
@@ -907,36 +888,31 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         this.startFormChanges();
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
-    public onSelectDropdown(event: any, action: string) {
+    public onSelectDropdown(event: any, action: ETrailerAction): void {
         switch (action) {
-            case 'trailer-type': {
+            case ETrailerAction.TRAILER_TYPE:
                 this.selectedTrailerType = event;
                 break;
-            }
-            case 'trailer-make': {
+            case ETrailerAction.TRAILER_MAKE:
                 this.selectedTrailerMake = event;
                 break;
-            }
-            case 'color': {
+            case ETrailerAction.COLOR:
                 this.selectedColor = event;
                 break;
-            }
-            case 'trailer-length': {
+            case ETrailerAction.TRAILER_LENGTH:
                 this.selectedTrailerLength = event;
                 break;
-            }
-            case 'owner': {
+            case ETrailerAction.OWNER:
                 if (event?.canOpenModal) {
                     this.ngbActiveModal.close();
 
                     this.modalService.setProjectionModal({
-                        action: 'open',
+                        action: eGeneralActions.OPEN,
                         payload: {
-                            key: 'trailer-modal',
+                            key: ETrailerAction.TRAILER_MODAL,
                             value: {
                                 ...this.trailerForm.value,
                                 selectedTrailerType: this.selectedTrailerType,
@@ -956,36 +932,28 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         component: OwnerModalComponent,
                         size: 'small',
                     });
-                } else {
-                    this.selectedOwner = event;
-                }
+                } else this.selectedOwner = event;
                 break;
-            }
-            case 'reefer-unit': {
+            case ETrailerAction.REEFER_UNIT:
                 this.selectedReeferType = event;
                 break;
-            }
-            case 'suspension': {
+            case ETrailerAction.SUSPENSION:
                 this.selectedSuspension = event;
                 break;
-            }
-            case 'tire-size': {
+            case ETrailerAction.TIRE_SIZE:
                 this.selectedTireSize = event;
                 break;
-            }
-            case 'door-type': {
+            case ETrailerAction.DOOR_TYPE:
                 this.selectedDoorType = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
     private vinDecoder() {
         this.trailerForm
-            .get('vin')
+            .get(TrailerFormFieldEnum.VIN)
             .valueChanges.pipe(
                 takeUntil(this.destroy$),
                 this.skipVinDecocerEdit ? skip(1) : tap()
@@ -994,7 +962,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                 this.skipVinDecocerEdit = false;
                 if (!(value?.length === 13 || value?.length === 17)) {
                     this.trailerForm
-                        .get('vin')
+                        .get(TrailerFormFieldEnum.VIN)
                         .setErrors({ incorrectVinNumber: true });
                 }
 
@@ -1006,62 +974,56 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                         .subscribe({
                             next: (res: VinDecodeResponse) => {
                                 this.trailerForm.patchValue({
-                                    model: res?.model ? res.model : null,
-                                    year: res?.year
-                                        ? res.year.toString()
-                                        : null,
-                                    trailerMakeId: res.trailerMake?.name
-                                        ? res.trailerMake.name
-                                        : null,
+                                    ...(res?.model && { model: res.model }),
+                                    ...(res?.year && {
+                                        year: res.year.toString(),
+                                    }),
+                                    ...(res?.trailerMake?.id && {
+                                        trailerMakeId: res.trailerMake.id,
+                                    }),
                                 });
+
                                 this.loadingVinDecoder = false;
                                 this.selectedTrailerMake = res.trailerMake;
                             },
-                            error: () => {},
                         });
                 }
             });
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case eGeneralActions.ADD:
                 this.trailerForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            }
-            case 'delete': {
+            case eGeneralActions.DELETE:
                 this.trailerForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
 
                 this.fileModified = true;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onBlurTrailerModel() {
-        const model = this.trailerForm.get('model').value;
-        if (model?.length >= 1) {
+    public onBlurTrailerModel(): void {
+        const model = this.trailerForm.get(TrailerFormFieldEnum.MODEL).value;
+        if (model?.length >= 1)
             this.trailerModalService
                 .autocompleteByTrailerModel(model)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe();
-        }
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.trailerForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))

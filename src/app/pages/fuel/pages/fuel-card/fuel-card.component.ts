@@ -162,19 +162,19 @@ export class FuelCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        event: DropdownMenuOptionEmit,
+        action: DropdownMenuOptionEmit,
         cardData: FuelTransactionResponse | FuelStopResponse
     ): void {
-        const { type } = event;
+        const { type } = action;
 
-        const emitEvent =
-            DropdownMenuActionsHelper.createDropdownMenuActionsEmitEvent(
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
                 type,
                 cardData
             );
 
         this.handleDropdownMenuActions(
-            emitEvent,
+            emitAction,
             this.selectedTab === TableStringEnum.FUEL_STOP
                 ? DropdownMenuStringEnum.FUEL_STOP
                 : DropdownMenuStringEnum.FUEL_TRANSACTION

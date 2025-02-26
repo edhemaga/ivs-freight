@@ -46,6 +46,9 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
+// Enums
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-fuel-stop-modal',
     templateUrl: './fuel-stop-modal.component.html',
@@ -70,7 +73,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class FuelStopModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnDestroy, OnInit
 {
     @Input() editData: any;
@@ -107,7 +114,7 @@ export class FuelStopModalComponent
         private modalService: ModalService,
         private formService: FormService,
         private fuelService: FuelService,
-        public addressService: AddressService,
+        public addressService: AddressService
     ) {
         super();
     }
@@ -141,12 +148,11 @@ export class FuelStopModalComponent
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close':
+            case eGeneralActions.CLOSE:
                 break;
             case 'save':
                 if (this.fuelStopForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.fuelStopForm);
-
                     return;
                 }
 
@@ -247,22 +253,20 @@ export class FuelStopModalComponent
         this.documents = event.files;
 
         switch (event.action) {
-            case 'add':
+            case eGeneralActions.ADD:
                 this.fuelStopForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.fuelStopForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
 
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
 
                 this.fileModified = true;
 
@@ -351,7 +355,7 @@ export class FuelStopModalComponent
     }
 
     private updateFuelStop(id: number): void {
-        const { businessName, ...form } = this.fuelStopForm.value;
+        const { address, businessName, ...form } = this.fuelStopForm.value;
 
         let documents = [];
 
@@ -364,7 +368,7 @@ export class FuelStopModalComponent
         const newData: any = {
             id: id,
             ...form,
-            address: this.selectedAddress,
+            address: address,
             businessName: !this.selectedFuelStop ? businessName : null,
             fuelStopFranchiseId: this.selectedFuelStop
                 ? this.selectedFuelStop.id
@@ -397,7 +401,7 @@ export class FuelStopModalComponent
     }
 
     private addFuelStop(): void {
-        const { businessName, ...form } = this.fuelStopForm.value;
+        const { address, businessName, ...form } = this.fuelStopForm.value;
 
         let documents = [];
 
@@ -409,7 +413,7 @@ export class FuelStopModalComponent
 
         const newData: any = {
             ...form,
-            address: this.selectedAddress,
+            address: address,
             businessName: !this.selectedFuelStop ? businessName : null,
             fuelStopFranchiseId: this.selectedFuelStop
                 ? this.selectedFuelStop.id
@@ -453,7 +457,7 @@ export class FuelStopModalComponent
                             : null,
                         favourite: res.favourite,
                         fax: res.fax,
-                        address: res.address.address,
+                        address: res.address,
                         note: res.note,
                     });
 
@@ -521,7 +525,7 @@ export class FuelStopModalComponent
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
 
-                    if (this.editData?.type === 'edit') {
+                    if (this.editData?.type === eGeneralActions.EDIT) {
                         this.isCardAnimationDisabled = true;
 
                         this.getFuelStopById(this.editData.id);

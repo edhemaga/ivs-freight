@@ -38,6 +38,7 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -83,11 +84,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { SettingsOfficeModalStringEnum } from './enums/settings-office-modal-string.enum';
-import {
-    DropActionsStringEnum,
-    ModalButtonType,
-    TableStringEnum,
-} from '@shared/enums';
+import { DropActionsStringEnum, TableStringEnum } from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Pipes
@@ -131,7 +128,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class SettingsOfficeModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     @Input() editData: any;
@@ -188,8 +189,6 @@ export class SettingsOfficeModalComponent
     public phoneExtConfig: ITaInput =
         SettingsOfficeConfig.getPhoneExtInputConfig();
     public emailConfig: ITaInput = SettingsOfficeConfig.getEmailInputConfig();
-    public addressConfig: ITaInput =
-        SettingsOfficeConfig.getAddressInputConfig();
     public addressUnitConfig: ITaInput =
         SettingsOfficeConfig.getAddressUnitInputConfig();
     public payPeriodConfig: ITaInput =
@@ -210,7 +209,7 @@ export class SettingsOfficeModalComponent
 
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public activeAction!: string;
     public data: CompanyOfficeResponse;
 
@@ -375,14 +374,14 @@ export class SettingsOfficeModalComponent
     }
 
     private updateCompanyOffice(id: number): void {
-        const { addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { address, addressUnit, rent, ...formValues } = this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const updatedOffice: UpdateCompanyOfficeCommand = {
             id,
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: { ...address, addressUnit },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -391,7 +390,7 @@ export class SettingsOfficeModalComponent
                 SettingsOfficeModalStringEnum.WEEKLY
             ),
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             departmentContacts,
         };
@@ -406,13 +405,13 @@ export class SettingsOfficeModalComponent
     }
 
     private addCompanyOffice(addNew?: boolean): void {
-        const { addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { address, addressUnit, rent, ...formValues } = this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: { ...address, addressUnit },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -421,7 +420,7 @@ export class SettingsOfficeModalComponent
                 SettingsOfficeModalStringEnum.WEEKLY
             ),
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             departmentContacts,
         };
@@ -523,7 +522,7 @@ export class SettingsOfficeModalComponent
                     this.officeForm.patchValue({
                         isOwner: res.isOwner,
                         name: res.name,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         phone: res.phone,
                         extensionPhone: res.extensionPhone,
@@ -571,7 +570,6 @@ export class SettingsOfficeModalComponent
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 

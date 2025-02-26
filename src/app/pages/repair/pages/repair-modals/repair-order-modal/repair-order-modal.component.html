@@ -34,6 +34,8 @@
                     ></ca-input-datetime-picker>
 
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="payType"
                         [inputConfig]="RepairOrderConfig.PAY_TYPE"
                         [canOpenModal]="true"
@@ -42,12 +44,12 @@
                         (selectedItem)="onSelectDropDown($event, 'pay-type')"
                     ></app-ca-input-dropdown>
 
-                    <app-ca-input
+                    <ca-input-datetime-picker
                         formControlName="datePaid"
                         [inputConfig]="
                             RepairOrderConfig.DATE_PAID(selectedPayType)
                         "
-                    ></app-ca-input>
+                    ></ca-input-datetime-picker>
                 </div>
             }
             <div class="repair-modal-bill-first-row">
@@ -75,6 +77,8 @@
                 <!-- Unit -->
 
                 <app-ca-input-dropdown
+                    [label]="'name'"
+                    [optionValue]="'id'"
                     formControlName="unit"
                     [template]="'svgtext-template'"
                     [inputConfig]="RepairOrderConfig.UNIT"
@@ -87,6 +91,8 @@
 
                 @if (selectedHeaderTab === 1) {
                     <app-ca-input-dropdown
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="driver"
                         [inputConfig]="
                             RepairOrderConfig.DRIVER(isDriverDisabled)
@@ -257,6 +263,8 @@
 
                         @if (!selectedRepairShop) {
                             <app-ca-input-dropdown
+                                [label]="'name'"
+                                [optionValue]="'id'"
                                 formControlName="repairShopId"
                                 [template]="'double-text-template'"
                                 [inputConfig]="
@@ -485,20 +493,20 @@
         @if (!isEditMode) {
             <app-ca-modal-button
                 class="mr-12"
-                [text]="modalButtonText.SAVE_AND_ADD_NEW"
+                [text]="emodalButtonText.SAVE_AND_ADD_NEW"
                 [isValid]="isFormValid"
                 [isSpinnerShown]="
                     activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
                 "
-                [type]="modalButtonType.SECONDARY_POSITIVE"
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
             </app-ca-modal-button>
             <app-ca-modal-button
                 [isValid]="isFormValid"
-                [text]="modalButtonText.SAVE"
+                [text]="emodalButtonText.SAVE"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                [type]="modalButtonType.PRIMARY_POSITIVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
             >
             </app-ca-modal-button>
@@ -507,18 +515,18 @@
                 @if (isEditMode && !isFinishOrder) {
                     <app-ca-modal-button
                         class="mr-12"
-                        [text]="modalButtonText.DELETE"
-                        [size]="modalButtonSize.SMALL"
+                        [text]="emodalButtonText.DELETE"
+                        [size]="eModalButtonSize.SMALL"
                         (click)="onModalAction(taModalActionEnum.DELETE)"
-                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
                     >
                     </app-ca-modal-button>
                 }
 
                 @if (editData?.data?.repairType?.id === 2 && !isFinishOrder) {
                     <app-ca-modal-button
-                        [text]="modalButtonText.FINISH_ORDER"
-                        [type]="modalButtonType.SECONDARY_NEUTRAL"
+                        [text]="emodalButtonText.FINISH_ORDER"
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
                         (click)="onModalAction(taModalActionEnum.FINISH_ORDER)"
                     >
                     </app-ca-modal-button>
@@ -526,9 +534,9 @@
             </div>
             <app-ca-modal-button
                 [isValid]="isFormValid"
-                [text]="modalButtonText.SAVE_CHANGES"
+                [text]="emodalButtonText.SAVE_CHANGES"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                [type]="modalButtonType.PRIMARY_POSITIVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
             >
             </app-ca-modal-button>

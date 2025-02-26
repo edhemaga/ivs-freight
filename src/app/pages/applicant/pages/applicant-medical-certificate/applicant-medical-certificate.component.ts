@@ -24,6 +24,7 @@ import { ApplicantStore } from '@pages/applicant/state/applicant.store';
 // enums
 import { SelectedMode } from '@pages/applicant/enums/selected-mode.enum';
 import { StepAction } from '@pages/applicant/enums/step-action.enum';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -57,7 +58,7 @@ import { SharedModule } from '@shared/shared.module';
         TaInputComponent,
         TaUploadFilesComponent,
         TaCounterComponent,
-        ApplicantNextBackBtnComponent
+        ApplicantNextBackBtnComponent,
     ],
 })
 export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
@@ -185,68 +186,6 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
         });
 
         this.documents = files;
-
-        // if (this.selectedMode === SelectedMode.REVIEW) {
-        //     if (stepValues.files[0].review) {
-        //         this.stepHasReviewValues = true;
-
-        //         /*    const {
-        //             isIssueDateValid,
-        //             isExpireDateValid,
-        //             dateMessage,
-        //             filesReviewMessage,
-        //         } = stepValues.medicalCertificateReview;
-
-        //         this.openAnnotationArray[0] = {
-        //             ...this.openAnnotationArray[0],
-        //             lineInputs: [!isIssueDateValid, !isExpireDateValid],
-        //             displayAnnotationButton:
-        //                 (!isIssueDateValid || !isExpireDateValid) &&
-        //                 !dateMessage
-        //                     ? true
-        //                     : false,
-        //             displayAnnotationTextArea: dateMessage ? true : false,
-        //         }; */
-
-        //         for (let i = 0; i < stepValues.files.length; i++) {
-        //             const isFileValid = stepValues.files[i].review.isValid;
-
-        //             this.openAnnotationArray[1].lineInputs = [
-        //                 ...this.openAnnotationArray[1].lineInputs,
-        //                 !isFileValid,
-        //             ];
-        //         }
-        //         /*
-        //         const filesLineInputItems =
-        //             this.openAnnotationArray[1].lineInputs;
-        //         const isAnyInputInLineIncorrect =
-        //             anyInputInLineIncorrect(filesLineInputItems);
-
-        //          if (isAnyInputInLineIncorrect && !filesReviewMessage) {
-        //             this.openAnnotationArray[1].displayAnnotationButton = true;
-        //         }
-
-        //         if (isAnyInputInLineIncorrect && filesReviewMessage) {
-        //             this.openAnnotationArray[1].displayAnnotationTextArea =
-        //                 true;
-        //         } */
-
-        //         const inputFieldsArray = JSON.stringify(
-        //             this.openAnnotationArray.map((item) => item.lineInputs)
-        //         );
-
-        //         if (inputFieldsArray.includes('true')) {
-        //             this.hasIncorrectFields = true;
-        //         } else {
-        //             this.hasIncorrectFields = false;
-        //         }
-
-        //         /*    this.medicalCertificateForm.patchValue({
-        //             firstRowReview: dateMessage,
-        //             secondRowReview: filesReviewMessage,
-        //         }); */
-        //     }
-        // }
     }
 
     public onFilesAction(event: any): void {
@@ -255,15 +194,15 @@ export class ApplicantMedicalCertificateComponent implements OnInit, OnDestroy {
         this.displayDocumentsRequiredNote = false;
 
         switch (event.action) {
-            case 'add':
+            case eGeneralActions.ADD:
                 this.medicalCertificateForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.medicalCertificateForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );

@@ -808,8 +808,6 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                 endDate: formatedDateAndTimeEnd,
             };
 
-            console.log('data', data);
-
             this.dispatcherService
                 .updateDispatchHistoryGroup(data)
                 .pipe(takeUntil(this.destroy$))
@@ -835,8 +833,6 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
                 endDate: null,
             };
 
-            console.log('data', data);
-
             this.dispatcherService
                 .updateDispatchHistoryGroup(data)
                 .pipe(takeUntil(this.destroy$))
@@ -847,8 +843,6 @@ export class DispatchHistoryModalGroupComponent implements OnInit, OnDestroy {
     private updateGroupHistory(
         dispatchHistoryGroupItems: DispatchHistoryGroupItem[][]
     ): void {
-        console.log('dispatchHistoryGroupItems', dispatchHistoryGroupItems);
-
         if (this.groupIndex >= 0) {
             const selectedGroupItem =
                 dispatchHistoryGroupItems[this.groupIndex][this.itemIndex];

@@ -12,7 +12,10 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { OpenHoursDropdownSvgRoutes } from '@shared/components/ta-open-hours-dropdown/utils/svg-routes';
 
 // enums
-import { OpenHoursDropdownStringEnum } from '@shared/components/ta-open-hours-dropdown/enums';
+import { eStringPlaceholder } from '@shared/enums';
+
+// helpers
+import { OpenHoursHelper } from '@shared/utils/helpers';
 
 // models
 import {
@@ -37,35 +40,37 @@ import {
 })
 export class TaOpenHoursDropdownComponent {
     @Input() dropdownConfig: {
-        rowId?: number;
-        width?: number;
+        rowId: number;
+        width: number;
         openHours: RepairShopOpenHoursResponse[];
         openHoursToday: OpenHoursTodayResponse;
+        openAlways: boolean;
     };
-
-    public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
-    public openHoursDropdownStringEnum = OpenHoursDropdownStringEnum;
 
     public openHoursDropdownActiveId: number = -1;
 
+    // svg routes
+    public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
+
+    // enums
+    public eStringPlaceholder = eStringPlaceholder;
+
+    public onHideOpenHoursDropdown(): void {
+        const isActiveDropdown =
+            this.openHoursDropdownActiveId === this.dropdownConfig?.rowId;
+
+        if (isActiveDropdown) this.openHoursDropdownActiveId = -1;
+    }
+
     public onShowOpenHoursDropdown(popover: NgbPopover): void {
-        let data = [];
-
-        this.dropdownConfig?.openHours?.forEach((workingDay) => {
-            const { dayOfWeek, startTime, endTime } = workingDay;
-
-            const workingHourItem = {
-                workingDays: dayOfWeek,
-                workingHours: `${startTime} - ${endTime}`,
-            };
-
-            data = [...data, workingHourItem];
-        });
+        const openHours = OpenHoursHelper.createOpenHours(
+            this.dropdownConfig?.openHours
+        );
 
         this.openHoursDropdownActiveId = popover.isOpen()
             ? -1
             : this.dropdownConfig?.rowId;
 
-        popover.isOpen() ? popover.close() : popover.open({ data });
+        popover.isOpen() ? popover.close() : popover.open({ openHours });
     }
 }

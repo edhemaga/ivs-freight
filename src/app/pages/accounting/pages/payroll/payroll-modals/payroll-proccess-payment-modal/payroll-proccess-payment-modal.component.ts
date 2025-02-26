@@ -48,15 +48,17 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
-import { PayrollTablesStatus } from '../../state/enums';
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import {
+    ePayrollTablesStatus,
+    ePayrollString,
+} from '@pages/accounting/pages/payroll/state/enums';
 
 // Config
 import {
     dropDownInputConfig,
     dropdownOption,
     inputConfig,
-} from '@pages/accounting/pages/payroll/config/payroll_proccess_payment';
+} from '@pages/accounting/pages/payroll/config';
 
 // Svg
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
@@ -81,7 +83,7 @@ import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
         CaModalComponent,
         CaInputDropdownComponent,
         TaSpinnerComponent,
-        TaAppTooltipV2Component
+        TaAppTooltipV2Component,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -147,27 +149,30 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
     }
 
     private setAmmoutWatchers() {
-        const ammount = this.paymentForm.get(PayrollStringEnum.AMOUNT);
-    
+        const ammount = this.paymentForm.get(ePayrollString.AMOUNT);
+
         // Manually handle the initial value
-        const initialValue = MethodsCalculationsHelper.convertThousanSepInNumber(ammount.value);
+        const initialValue =
+            MethodsCalculationsHelper.convertThousandSepInNumber(ammount.value);
         this.handleAmountChange(initialValue);
-    
+
         ammount.valueChanges.subscribe((val) => {
-            const convertToNumber = MethodsCalculationsHelper.convertThousanSepInNumber(val);
+            const convertToNumber =
+                MethodsCalculationsHelper.convertThousandSepInNumber(val);
             this.handleAmountChange(convertToNumber);
         });
     }
-    
+
     private handleAmountChange(convertToNumber: number) {
         const totalEarnings = this.modalData?.totalEarnings;
-    
+
         if (convertToNumber > totalEarnings) {
-            this.paymentForm.get(PayrollStringEnum.AMOUNT).patchValue(totalEarnings, { emitEvent: false });
+            this.paymentForm
+                .get(ePayrollString.AMOUNT)
+                .patchValue(totalEarnings, { emitEvent: false });
         }
         this.isPaidInFull = convertToNumber === totalEarnings;
     }
-    
 
     private subscribeToStore(): void {
         this.payrollFacadeService.selectPayrollReportStates$
@@ -240,11 +245,11 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
         const isOpen = this.modalData.selectedTab;
 
-        if (isOpen === PayrollTablesStatus.OPEN) {
+        if (isOpen === ePayrollTablesStatus.OPEN) {
             this.payrollFacadeService.closePayrollReport({
                 amount: isUnpaid
                     ? 0
-                    : MethodsCalculationsHelper.convertThousanSepInNumber(
+                    : MethodsCalculationsHelper.convertThousandSepInNumber(
                           formData.amount
                       ),
                 reportId: this.modalData.id,
@@ -259,7 +264,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         } else {
             this.payrollFacadeService.addPayrollClosedPayment(
                 {
-                    amount: MethodsCalculationsHelper.convertThousanSepInNumber(
+                    amount: MethodsCalculationsHelper.convertThousandSepInNumber(
                         formData.amount
                     ),
                     paymentType:
@@ -274,8 +279,6 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
             );
         }
     }
-
-    selectedItem(dd: any) {}
 
     get modalData(): IPayrollProccessPaymentModal {
         return this.editData.data as IPayrollProccessPaymentModal;

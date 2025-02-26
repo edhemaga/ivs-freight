@@ -75,6 +75,8 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaInputAddressDropdownComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
 // enums
@@ -82,8 +84,11 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { ModalButtonSize, ModalButtonType } from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+import { eGeneralActions } from '@shared/enums/general-actions.enum';
+import { eFileFormControls } from '@shared/enums/file/file-form-controls.enum';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // constants
 import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/constants/';
@@ -91,12 +96,11 @@ import { BrokerModalConstants } from '@pages/customer/pages/broker-modal/utils/c
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// models
-import { ReviewComment } from '@shared/models/review-comment.model';
-
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
 
+// models
+import { ReviewComment } from '@shared/models/review-comment.model';
 import {
     BrokerAvailableCreditResponse,
     BrokerResponse,
@@ -110,11 +114,15 @@ import {
     DepartmentResponse,
     AddressListResponse,
     AddressResponse,
+    BrokerByIdResponse,
 } from 'appcoretruckassist';
 import { AnimationOptions } from '@shared/models/animation-options.model';
 import { Tabs } from '@shared/models/tabs.model';
-import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models/';
+import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models';
 import { AddressProperties } from '@shared/components/ta-input-address-dropdown/models/address-properties';
+
+// services
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
     selector: 'app-broker-modal',
@@ -225,8 +233,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public svgRoutes = SharedSvgRoutes;
     public activeAction: string;
 
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
 
     public addressList: AddressListResponse;
     public addressListBilling: AddressListResponse;
@@ -256,7 +264,8 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         private formService: FormService,
         private confirmationService: ConfirmationService,
         private confirmationMoveService: ConfirmationMoveService,
-        private addressService: AddressService
+        private addressService: AddressService,
+        private loadStoreService: LoadStoreService
     ) {}
 
     ngOnInit() {
@@ -587,7 +596,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(action: string): void {
+    public onModalAction(action: string, cancelWrapper): void {
         if (this.isUploadInProgress) return;
 
         this.activeAction = action;
@@ -653,21 +662,30 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         } else {
             if (action === TaModalActionEnum.CLOSE) {
                 if (this.editData?.canOpenModal) {
-                    if (this.editData?.key === 'load-modal')
-                        this.modalService.setProjectionModal({
-                            action: 'close',
-                            payload: {
-                                key: this.editData?.key,
-                                value: null,
-                            },
-                            component: LoadModalComponent,
-                            size: 'small',
-                            closing: 'fastest',
-                        });
-                } else {
-                    this.ngbActiveModal.close();
+                    const { key } = this.editData;
+
+                    if (key === LoadModalStringEnum.LOAD_MODAL) {
+                        const payloadValue = JSON.parse(
+                            sessionStorage.getItem(
+                                LoadModalStringEnum.LOAD_MODAL
+                            )
+                        );
+                        const { id, data } = payloadValue;
+                        const selectedTab: eLoadStatusType =
+                            eLoadStatusType[data.statusType as string];
+
+                        if (!!id)
+                            this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(
+                                id,
+                                selectedTab,
+                                LoadModalStringEnum.EDIT
+                            );
+                        else
+                            this.loadStoreService.dispatchGetCreateLoadModalData();
+                    }
                 }
 
+                this.ngbActiveModal.close();
                 return;
             }
             // Save And Add New
@@ -693,7 +711,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.isUploadInProgress = true;
 
-                    if (this.editData?.type.includes('edit')) {
+                    if (this.editData?.type.includes(eGeneralActions.EDIT)) {
                         this.updateBroker(this.editData.id);
                     } else {
                         this.addBroker();
@@ -769,15 +787,15 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         this.documents = event.files;
 
         switch (event.action) {
-            case 'add':
+            case eGeneralActions.ADD:
                 this.brokerForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.brokerForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
@@ -796,7 +814,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         let limit = this.brokerForm.get('creditLimit').value;
 
         if (limit) {
-            limit = MethodsCalculationsHelper.convertThousanSepInNumber(limit);
+            limit = MethodsCalculationsHelper.convertThousandSepInNumber(limit);
 
             const data = {
                 id: this.editData?.id ?? null,
@@ -1284,21 +1302,17 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.deleteReview(true, review);
-
                 break;
-            case 'add':
+            case eGeneralActions.ADD:
                 this.addReview(review);
-
                 break;
-            case 'update':
+            case eGeneralActions.UPDATE:
                 this.updateReview(review);
-
                 break;
-            case 'cancel':
+            case eGeneralActions.CANCEL:
                 this.reviews = this.reviews.filter((review) => review.id);
-
                 break;
             default:
                 break;
@@ -1569,7 +1583,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
         const brokerContacts = this.mapContacts(this.brokerContacts);
 
-        const newData = {
+        const newData: BrokerByIdResponse = {
             ...form,
             mainAddress: addresses.mainAddress,
             mainPoBox: addresses.mainPoBox,
@@ -1590,19 +1604,26 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
             .addBroker(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    if (this.editData?.canOpenModal && !isSaveAndAddNew) {
-                        if (this.editData?.key === 'load-modal')
-                            this.modalService.setProjectionModal({
-                                action: 'close',
-                                payload: {
-                                    key: this.editData?.key,
-                                    value: null,
-                                },
-                                component: LoadModalComponent,
-                                size: 'small',
-                                closing: 'slowlest',
-                            });
+                next: (response) => {
+                    if (!!this.editData) {
+                        const { canOpenModal, key, type } = this.editData;
+
+                        if (canOpenModal && !isSaveAndAddNew) {
+                            if (key === LoadModalStringEnum.LOAD_MODAL) {
+                                const modalSingleBrokerItem: BrokerByIdResponse =
+                                    {
+                                        id: response.id,
+                                        ...newData,
+                                    };
+
+                                if (type)
+                                    this.loadStoreService.dispatchAddNewBrokerToStaticModalData(modalSingleBrokerItem);
+
+                                    this.loadStoreService.dispatchGetCreateLoadModalData(
+                                        modalSingleBrokerItem
+                                    );
+                            }
+                        }
                     }
 
                     this.ngbActiveModal.close();
@@ -1650,18 +1671,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
                             case 'load-modal': {
-                                this.setModalSpinner(null, false, true);
+                                const { canOpenModal, key } = this.editData;
 
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: LoadModalComponent,
-                                    size: 'small',
-                                    closing: 'slowlest',
-                                });
+                                if (canOpenModal && key) {
+                                    this.loadStoreService.dispatchUpdateEditedBrokerStaticModalData(newData, brokerContacts);
+                                    this.loadStoreService.dispatchGetCreateLoadModalData(newData);
+                                }
+
                                 break;
                             }
 
