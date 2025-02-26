@@ -31,7 +31,7 @@ import { ShipperService as ShipperMainService } from 'appcoretruckassist';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { eGeneralActions } from '@shared/enums';
+import { eGeneralActions } from '@shared/enums/general-actions.enum';
 
 @Injectable({
     providedIn: 'root',
