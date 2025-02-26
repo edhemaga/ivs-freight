@@ -1,23 +1,21 @@
-<div>FUEL EXPENSE</div>
-<!-- <app-ta-custom-card
-    [bodyTemplate]="'card'"
-    [hasDivider]="true"
-    [cardName]="'Fuel Expense'"
-    [tooltipName]="'View in Modal'"
-    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+<app-ta-custom-card
+    [cardName]="'Fuel Expenses'"
     [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+    [tooltipName]="'View in Modal'"
+    [hasDivider]="true"
     [animationMarginParams]="{
         marginTop: '0px',
-        marginBottom: '10px',
+        marginBottom: '8px',
     }"
-    [customClass]="'detailsPadding'"
 >
     <div class="charts-template perfomance">
         @if (!fuelLegendHighlightedBackground) {
             <app-ta-tab-switch
-                [tabs]="tabsFuel"
+                [tabs]="fuelExpenseChartTabs"
                 [type]="'type2-modal-popup'"
-                (switchClicked)="changeTab($event)"
+                (switchClicked)="onChartTabChange($event)"
             >
             </app-ta-tab-switch>
         }
@@ -36,4 +34,3 @@
         }
     </div>
 </app-ta-custom-card>
- -->

@@ -68,7 +68,7 @@ export class FuelStopDetailsLastFuelPriceCardComponent {
 
     private getConstantData(): void {
         this.lastFuelPriceColors =
-            FuelStopDetailsCardConstants.lastFuelPriceColors;
+            FuelStopDetailsCardConstants.LAST_FUEL_PRICE_COLORS;
     }
 
     private createLastFuelPriceCardData(data: FuelStopResponse): void {
