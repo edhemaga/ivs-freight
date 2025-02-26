@@ -4787,6 +4787,11 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         const selectedDispatcher = this.labelsDispatcher.find(
             (dispatch) => dispatch.id === dispatcher?.id
         );
+
+        this.loadForm
+            .get(LoadModalStringEnum.DISPATCHER_ID)
+            .patchValue(selectedDispatcher?.id);
+
         const editedDispatcher = selectedDispatcher
             ? {
                   ...selectedDispatcher,
