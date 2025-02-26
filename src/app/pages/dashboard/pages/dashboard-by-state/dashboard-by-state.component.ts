@@ -134,7 +134,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dashboardByStateService: DashboardByStateService,
-        private dashboardService: DashboardService,
+        private dashboardService: DashboardService
     ) {}
 
     ngOnInit(): void {
@@ -443,9 +443,9 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 const value =
                     interval[propertyKey as keyof ByStateIntervalResponse];
 
-                if (typeof value === 'number' && value !== null) {
+                //for some reason this doesn't work as enum, so it should stay like string
+                if (typeof value === 'number' && value !== null)
                     dataSetData.push(value);
-                }
             });
             const order =
                 this.selectedStatesOrder.get(selectedStateItem.id) ?? 0;
