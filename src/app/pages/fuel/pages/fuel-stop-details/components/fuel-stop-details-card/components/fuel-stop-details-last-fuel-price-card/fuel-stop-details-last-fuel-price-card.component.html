@@ -1,117 +1,77 @@
-<div>LAST FUEL PRICE</div>
-
-<!-- <app-ta-custom-card
-    [bodyTemplate]="'card'"
-    [hasDivider]="false"
+<app-ta-custom-card
     [cardName]="'Last Fuel Price'"
+    [subText]="!isLastFuelPriceCardOpen && 'Diesel $3.345 | DEF $3.544'"
     [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+    [disabledCard]="false"
+    [hasDivider]="false"
     [animationMarginParams]="{
         marginTop: '0px',
-        marginBottom: '10px',
+        marginBottom: '8px',
     }"
-    [customClass]="'detailsPadding'"
+    (onOpenCard)="handleLastFuelPriceCardOpen($event)"
 >
-    <div class="fuel-price-template">
-        <div class="fuel-price-wrapper">
-            <div class="fuel-price-name">Diesel</div>
-            <div class="fuel-price-value">$3.567</div>
-            <div class="fuel-price-colors-container">
-                <div class="fuel-price-colors">
+    <div class="d-grid align-items-center last-fuel-price">
+        @for (
+            fuelPrice of fuelPriceConfig;
+            let i = $index;
+            track fuelPrice.title
+        ) {
+            <div
+                class="d-flex flex-column justify-content-center last-fuel-price-item"
+                [ngClass]="{ disabled: i === 1 }"
+            >
+                <p class="m-0 ta-font-bold text-size-11 text-color-black">
+                    {{ fuelPrice.title }}
+                </p>
+
+                <span
+                    class="ta-font-medium text-size-18 tet-color-black total-value"
+                    >${{ fuelPrice.totalValue }}
+                </span>
+
+                <!-- Progress -->
+
+                <div
+                    class="d-flex flex-column justify-content-center last-fuel-price-item-progress"
+                >
                     <div
-                        class="fuel-price-level first-color"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[0],
-                        }"
-                    ></div>
+                        class="d-grid align-items-center last-fuel-price-item-progress-bar"
+                    >
+                        @for (
+                            fuelPriceColor of lastFuelPriceColors;
+                            track fuelPriceColor
+                        ) {
+                            <div
+                                class="last-fuel-price-item-progress-bar-box"
+                                [ngStyle]="{
+                                    'background-color': fuelPriceColor,
+                                }"
+                            ></div>
+                        }
+
+                        <!-- Progress Icon -->
+
+                        <svg-icon
+                            class="svg-size-22 progress-icon fuel-color-3"
+                            [src]="fuelStopDetailsSvgRoutes.progressIconRoute"
+                        ></svg-icon>
+                    </div>
+
                     <div
-                        class="fuel-price-level"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[1],
-                        }"
-                    ></div>
-                    <div
-                        class="fuel-price-level"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[2],
-                        }"
-                    ></div>
-                    <div
-                        class="fuel-price-level"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[3],
-                        }"
-                    ></div>
-                    <div
-                        class="fuel-price-level last-color"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[4],
-                        }"
-                    ></div>
-                    <svg-icon
-                        class="fuel-price-svg"
-                        src="assets/svg/common/ic_owner-status.svg"
-                        [svgStyle]="{
-                            'width.px': 22,
-                            'height.px': 22,
-                        }"
-                    ></svg-icon>
-                </div>
-                <div class="fuel-price-text-container mg-bottom-4">
-                    <div class="fuel-price-text">$3.23</div>
-                    <div class="fuel-price-text">$4.18</div>
-                </div>
-            </div>
-        </div>
-        <div class="fuel-price-wrapper">
-            <div class="fuel-price-name">Def</div>
-            <div class="fuel-price-value">$3.799</div>
-            <div class="fuel-price-colors-container">
-                <div class="fuel-price-colors">
-                    <div
-                        class="fuel-price-level first-color"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[0],
-                        }"
-                    ></div>
-                    <div
-                        class="fuel-price-level"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[1],
-                        }"
-                    ></div>
-                    <div
-                        class="fuel-price-level"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[2],
-                        }"
-                    ></div>
-                    <div
-                        class="fuel-price-level"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[3],
-                        }"
-                    ></div>
-                    <div
-                        class="fuel-price-level last-color"
-                        [ngStyle]="{
-                            'background-color': fuelPriceColors[4],
-                        }"
-                    ></div>
-                    <svg-icon
-                        class="fuel-price-svg"
-                        src="assets/svg/common/ic_owner-status.svg"
-                        [svgStyle]="{
-                            'width.px': 22,
-                            'height.px': 22,
-                        }"
-                    ></svg-icon>
-                </div>
-                <div class="fuel-price-text-container mg-bottom-4">
-                    <div class="fuel-price-text">$2.23</div>
-                    <div class="fuel-price-text">$3.18</div>
+                        class="d-flex align-items-center justify-content-between"
+                    >
+                        <span
+                            class="ta-font-medium text-size-11 text-color-black-2"
+                            >${{ fuelPrice.minValue }}</span
+                        >
+                        <span
+                            class="ta-font-medium text-size-11 text-color-black-2"
+                            >${{ fuelPrice.maxValue }}</span
+                        >
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </app-ta-custom-card>
- -->

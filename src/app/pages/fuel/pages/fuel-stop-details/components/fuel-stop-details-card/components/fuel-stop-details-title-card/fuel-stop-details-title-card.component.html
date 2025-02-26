@@ -1,16 +1,19 @@
+@let isFirstFuelStopInList = [0, -1].includes(fuelStopCurrentIndex);
+@let isLastFuelStopInList =
+    fuelStopCurrentIndex === fuelStopDropdownList?.length - 1;
+
+@let isClosedBusiness = _cardData?.isClosed;
+
 <app-ta-details-header-card
     [ngClass]="{
-        disabedPreviousArrow: [0, -1].includes(fuelStopCurrentIndex),
-        disableNextArrow:
-            fuelStopCurrentIndex === fuelStopDropdownList?.length - 1,
+        disabedPreviousArrow: isFirstFuelStopInList,
+        disableNextArrow: isLastFuelStopInList,
     }"
     [tooltipNext]="
-        fuelStopCurrentIndex === fuelStopDropdownList?.length - 1
-            ? eStringPlaceholder.EMPTY
-            : eGeneralActions.NEXT
+        isLastFuelStopInList ? eStringPlaceholder.EMPTY : eGeneralActions.NEXT
     "
     [tooltipPrevious]="
-        [0, -1].includes(fuelStopCurrentIndex)
+        isFirstFuelStopInList
             ? eStringPlaceholder.EMPTY
             : eGeneralActions.PREVIOUS
     "
@@ -21,15 +24,15 @@
     "
     [searchInputName]="eFuelStopDetails.SEARCH_FUEL_STOP"
     [searchName]="
-        _cardData?.isClosed
+        isClosedBusiness
             ? eBusinessStatus.PERMANENTLY_CLOSED
             : eBusinessStatus.FAVORITE
     "
     [options]="fuelStopDropdownList"
     [currentName]="_cardData?.businessName"
-    [haveDropSVG]="_cardData?.isClosed || _cardData?.favourite"
+    [haveDropSVG]="isClosedBusiness || _cardData?.favourite"
     [customPinnedSvg]="
-        _cardData?.isClosed
+        isClosedBusiness
             ? fuelStopDetailsSvgRoutes.closedRoute
             : fuelStopDetailsSvgRoutes.favoriteRoute
     "

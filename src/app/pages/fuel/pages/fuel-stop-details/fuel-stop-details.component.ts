@@ -40,14 +40,14 @@ import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
     ],
 })
 export class FuelStopDetailsComponent implements OnInit {
+    private destroy$ = new Subject<void>();
+
     public detailsDropdownOptions: DetailsDropdownOptions;
     public fuelDetailsConfig: DetailsConfig[] = [];
 
     public fuelStopObject: FuelStopResponse;
 
     public newFuelStopId: number;
-
-    private destroy$ = new Subject<void>();
 
     constructor(
         // router
@@ -66,27 +66,17 @@ export class FuelStopDetailsComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
-        this.getFuelStopData();
-
         this.getStoreData();
 
         this.handleRepairShopIdRouteChange();
     }
 
-    private getFuelStopData(): void {
+    private getStoreData(): void {
         const dataId = this.activatedRoute.snapshot.params.id;
 
-        const fuelStopData = {
-            ...this.fuelItemStore?.getValue()?.entities[dataId],
-        };
+        const storeData$ = this.fuelItemStore._select((state) => state);
 
         this.newFuelStopId = dataId;
-
-        this.getDetailsConfig(fuelStopData);
-    }
-
-    private getStoreData(): void {
-        const storeData$ = this.fuelItemStore._select((state) => state);
 
         storeData$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
             const newFuelStopData = {

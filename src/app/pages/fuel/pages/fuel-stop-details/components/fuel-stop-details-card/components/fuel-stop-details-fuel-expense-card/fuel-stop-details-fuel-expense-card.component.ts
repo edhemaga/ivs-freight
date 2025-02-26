@@ -39,6 +39,8 @@ import { FuelStopExpensesResponse } from 'appcoretruckassist';
 export class FuelStopDetailsFuelExpenseCardComponent
     implements OnInit, OnDestroy
 {
+    private destroy$ = new Subject<void>();
+
     public fuelLegendHighlightedBackground!: boolean;
     public fuelChartData!: FuelStopExpensesResponse;
     public fuelChartConfig!: IChartConfiguration;
@@ -48,8 +50,6 @@ export class FuelStopDetailsFuelExpenseCardComponent
     public tabsFuel: Tabs[] = ChartHelper.generateTimeTabs();
 
     public selectedTab: number;
-
-    private destroy$ = new Subject<void>();
 
     constructor(private fuelService: FuelService) {}
 
