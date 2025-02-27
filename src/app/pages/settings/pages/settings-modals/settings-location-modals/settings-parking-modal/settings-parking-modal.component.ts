@@ -407,8 +407,8 @@ export class SettingsParkingModalComponent
             id: id,
             ...form,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                address,
+                addressUnit,
             },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
@@ -458,8 +458,8 @@ export class SettingsParkingModalComponent
         const newData: CreateParkingCommand = {
             ...form,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                address,
+                addressUnit,
             },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)

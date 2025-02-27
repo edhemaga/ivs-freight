@@ -1353,8 +1353,8 @@ export class SettingsBasicModalComponent
             bankAccounts,
             bankCards,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                address,
+                addressUnit,
             },
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
@@ -1581,8 +1581,8 @@ export class SettingsBasicModalComponent
             bankAccounts,
             bankCards,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                address,
+                addressUnit,
             },
             timeZone: this.selectedTimeZone?.id ?? null,
             currency: this.selectedCurrency?.id ?? null,
@@ -1704,8 +1704,8 @@ export class SettingsBasicModalComponent
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                address,
+                addressUnit,
             },
             companyType: this.selectedCompanyData
                 ? this.selectedCompanyData.id
