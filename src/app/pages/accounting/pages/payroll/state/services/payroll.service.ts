@@ -320,6 +320,7 @@ export class PayrollFacadeService {
             });
     }
     public setPayrollMapData(payrollMapLocations: PayrollMapLocation[]): void {
+        if (!payrollMapLocations) return;
         const mapLocations = JSON.stringify(
             payrollMapLocations.map(({ longitude, latitude }) => ({
                 longitude,
