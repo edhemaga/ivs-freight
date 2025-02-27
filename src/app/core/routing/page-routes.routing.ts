@@ -16,6 +16,7 @@ import { MilesResolver } from '@pages/miles/resolvers/miles.resolver';
 import { TodoResolver } from '@pages/to-do/resolvers/to-do.resolver';
 import { RoutingStateResolver } from '@pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from '@pages/telematic/resolvers/telematic-state.resolver';
+import { MilesComponent } from '@pages/miles/miles.component';
 
 export class PageRoutes {
     static routes = [
@@ -96,10 +97,10 @@ export class PageRoutes {
         },
         {
             path: 'tools/miles',
-            loadChildren: () =>
-                import('@pages/miles/miles.module').then((m) => m.MilesModule),
+            component: MilesComponent,
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: { miles: MilesResolver },
+            data: { title: 'Miles' },
         },
         {
             path: 'tools/calendar',

@@ -16,8 +16,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '@shared/shared.module';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { ToastrModule } from 'ngx-toastr';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
 
 // Routing
 import { AppRoutingModule } from '@app/app-routing.module';
@@ -54,6 +52,14 @@ import { NgIdleModule } from '@ng-idle/core';
 
 import { provideLottieOptions } from 'ngx-lottie';
 import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
+
+// NGRX
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { MilesEffects } from '@pages/miles/state/effects/miles.effects';
+import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
+// import { MilesEffects } from '@pages/miles/state/effects/miles.effects';
+// import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -96,7 +102,8 @@ export const appConfig: ApplicationConfig = {
             warnOnNgModelWithFormControl: 'never',
         }), 
         StoreModule.forRoot([]),
-        EffectsModule.forRoot([LoadEffect]),
+        StoreModule.forFeature('miles', milesReducer),
+        EffectsModule.forRoot([LoadEffect, MilesEffects]),
         //components
         ReusableTemplatesComponent,
         // routing
