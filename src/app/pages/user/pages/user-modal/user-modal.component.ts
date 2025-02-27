@@ -391,8 +391,8 @@ export class UserModalComponent
                         ...form,
                         phone: form.phone ?? null,
                         address: {
-                            ...address,
-                            addressUnit: addressUnit,
+                            address,
+                            addressUnit,
                         },
                         departmentId: this.selectedDepartment
                             ? this.selectedDepartment.id
@@ -666,8 +666,8 @@ export class UserModalComponent
             id: id,
             ...form,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                address,
+                addressUnit,
             },
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id
@@ -732,8 +732,8 @@ export class UserModalComponent
         const newData: CreateCompanyUserCommand = {
             ...form,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                address,
+                addressUnit,
             },
             departmentId: this.selectedDepartment
                 ? this.selectedDepartment.id

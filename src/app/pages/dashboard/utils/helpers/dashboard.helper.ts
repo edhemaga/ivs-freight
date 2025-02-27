@@ -18,7 +18,7 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
 import { FilteredSubperiod } from '@pages/dashboard/models/filtered-subperiod.model';
 import { ByStateListItem } from '@pages/dashboard/pages/dashboard-by-state/models/by-state-list-item.model';
 import { IStateConfiguration } from '@pages/dashboard/pages/dashboard-by-state/models';
-import { ByStateReportType } from 'appcoretruckassist';
+import { AccidentByStateResponse, ByStateReportType, FuelByStateResponse, PickupDeliveryByStateResponse, RepairByStateResponse, RoadsideByStateResponse, ViolationByStateResponse } from 'appcoretruckassist';
 
 export class DashboardHelper {
     static ConvertMainPeriod(mainPeriod: string) {
@@ -212,7 +212,7 @@ export class DashboardHelper {
                 serviceMethod: dashboardByStateService.getPickupByState.bind(
                     dashboardByStateService
                 ),
-                dataTransform: (pickup, index) => ({
+                dataTransform: (pickup: PickupDeliveryByStateResponse, index: number) => ({
                     id: index + 1,
                     state: pickup.stateShortName,
                     value:
@@ -225,13 +225,14 @@ export class DashboardHelper {
                             : pickup.revenuePercentage.toString(),
                     isSelected: false,
                     selectedColor: null,
-                }),
+                    intervals: pickup.intervals
+                } as ByStateListItem),
             },
             [DashboardStringEnum.DELIVERY]: {
                 serviceMethod: dashboardByStateService.getDeliveryByState.bind(
                     dashboardByStateService
                 ),
-                dataTransform: (delivery, index) => ({
+                dataTransform: (delivery: PickupDeliveryByStateResponse, index: number) => ({
                     id: index + 1,
                     state: delivery.stateShortName,
                     value:
@@ -244,13 +245,14 @@ export class DashboardHelper {
                             : delivery.revenuePercentage.toString(),
                     isSelected: false,
                     selectedColor: null,
+                    intervals: delivery.intervals
                 }),
             },
             [DashboardStringEnum.ROADSIDE]: {
                 serviceMethod: dashboardByStateService.getRoadsideByState.bind(
                     dashboardByStateService
                 ),
-                dataTransform: (rodeside, index) => ({
+                dataTransform: (rodeside: RoadsideByStateResponse, index: number) => ({
                     id: index + 1,
                     state: rodeside.stateShortName,
                     value:
@@ -263,13 +265,14 @@ export class DashboardHelper {
                             : rodeside.severityWeightPercentage.toString(),
                     isSelected: false,
                     selectedColor: null,
+                    intervals: rodeside.intervals
                 }),
             },
             [DashboardStringEnum.VIOLATION_2]: {
                 serviceMethod: dashboardByStateService.getViolationByState.bind(
                     dashboardByStateService
                 ),
-                dataTransform: (violation, index) => ({
+                dataTransform: (violation: ViolationByStateResponse, index: number) => ({
                     id: index + 1,
                     state: violation.stateShortName,
                     value:
@@ -282,13 +285,14 @@ export class DashboardHelper {
                             : violation.severityWeightPercentage.toString(),
                     isSelected: false,
                     selectedColor: null,
+                    intervals: violation.intervals
                 }),
             },
             [DashboardStringEnum.ACCIDENT_2]: {
                 serviceMethod: dashboardByStateService.getAccidentByState.bind(
                     dashboardByStateService
                 ),
-                dataTransform: (accident, index) => ({
+                dataTransform: (accident: AccidentByStateResponse, index: number) => ({
                     id: index + 1,
                     state: accident.stateShortName,
                     value:
@@ -301,13 +305,14 @@ export class DashboardHelper {
                             : accident.severityWeightPercentage.toString(),
                     isSelected: false,
                     selectedColor: null,
+                    intervals: accident.intervals
                 }),
             },
             [DashboardStringEnum.REPAIR]: {
                 serviceMethod: dashboardByStateService.getRepairByState.bind(
                     dashboardByStateService
                 ),
-                dataTransform: (repair, index) => ({
+                dataTransform: (repair: RepairByStateResponse, index: number) => ({
                     id: index + 1,
                     state: repair.stateShortName,
                     value:
@@ -320,13 +325,14 @@ export class DashboardHelper {
                             : repair.costPercentage.toString(),
                     isSelected: false,
                     selectedColor: null,
+                    intervals: repair.intervals
                 }),
             },
             [DashboardStringEnum.FUEL]: {
                 serviceMethod: dashboardByStateService.getFuelByState.bind(
                     dashboardByStateService
                 ),
-                dataTransform: (fuel, index) => ({
+                dataTransform: (fuel: FuelByStateResponse, index: number) => ({
                     id: index + 1,
                     state: fuel.stateShortName,
                     value:
@@ -339,6 +345,7 @@ export class DashboardHelper {
                             : fuel.costPercentage.toString(),
                     isSelected: false,
                     selectedColor: null,
+                    intervals: fuel.intervals
                 }),
             },
         };

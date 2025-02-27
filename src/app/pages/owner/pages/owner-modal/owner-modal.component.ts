@@ -462,7 +462,10 @@ export class OwnerModalComponent
                     ? bussinesName
                     : firstName.concat(' ', lastName),
             ssnEin: this.selectedTab === 1 ? ein : ssn,
-            address: { ...address, addressUnit: addressUnit },
+            address: {
+                address,
+                addressUnit,
+            },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             files: this.ownerForm.value.files,
             filesForDeleteIds: this.filesForDelete,
@@ -507,7 +510,10 @@ export class OwnerModalComponent
                     ? bussinesName
                     : firstName.concat(' ', lastName),
             ssnEin: this.selectedTab === 1 ? ein : ssn,
-            address: { ...address, addressUnit: addressUnit },
+            address: {
+                address,
+                addressUnit,
+            },
             bankId: this.selectedBank ? this.selectedBank.id : null,
             files: this.ownerForm.value.files,
             longitude: this.longitude,
