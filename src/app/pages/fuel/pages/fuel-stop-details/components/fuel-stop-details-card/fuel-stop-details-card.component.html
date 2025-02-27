@@ -3,8 +3,8 @@
         <!-- Title Card -->
 
         <app-fuel-stop-details-title-card
-            [fuelStopCurrentIndex]="0"
-            [fuelStopDropdownList]="[]"
+            [fuelStopCurrentIndex]="fuelStopCurrentIndex"
+            [fuelStopDropdownList]="fuelStopDropdownList"
             [cardData]="{
                 createdAt: _fuelStop?.createdAt,
                 lastUsed: _fuelStop?.lastUsed,
@@ -16,6 +16,7 @@
                 address: _fuelStop?.address?.address,
                 store: _fuelStop?.store,
             }"
+            (cardValuesEmitter)="handleFuelStopDetailsTitleCardEmit($event)"
         ></app-fuel-stop-details-title-card>
 
         <!-- Additional Cards -->
@@ -41,17 +42,24 @@
 
                 <!-- Note Card -->
 
-                <!--    <div class="note-cards">
-                                    <app-ta-input-note
-                                        [formControl]="noteControl"
-                                        [isVisibleArrow]="true"
-                                        [minRows]="1"
-                                        [isVisibleDivider]="false"
-                                        [placeholder]="'Write something.'"
-                                        [customClass]="'note-small'"
-                                        [noteType]="'details-card'"
-                                    ></app-ta-input-note>
-                                </div> -->
+                <div [formGroup]="noteForm">
+                    <app-ta-input-note
+                        formControlName="note"
+                        [isVisibleNote]="
+                            _fuelStop?.note && _fuelStop?.note !== 'null'
+                                ? _fuelStop?.note
+                                : false
+                        "
+                        [note]="
+                            _fuelStop?.note && _fuelStop?.note !== 'null'
+                                ? _fuelStop?.note
+                                : ''
+                        "
+                        [noteType]="'details-card'"
+                        [entityId]="_fuelStop?.id"
+                        [entityType]="'FuelStopStore'"
+                    ></app-ta-input-note>
+                </div>
             </div>
         </div>
     </div>

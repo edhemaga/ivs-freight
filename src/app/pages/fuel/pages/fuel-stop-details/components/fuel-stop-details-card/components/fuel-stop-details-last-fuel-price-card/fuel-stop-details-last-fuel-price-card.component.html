@@ -17,17 +17,30 @@
             let i = $index;
             track fuelPrice.title
         ) {
+            @let isDisabled = i === 1;
+
             <div
                 class="d-flex flex-column justify-content-center last-fuel-price-item"
-                [ngClass]="{ disabled: i === 1 }"
+                [ngClass]="{ disabled: isDisabled }"
             >
-                <p class="m-0 ta-font-bold text-size-11 text-color-black">
+                <p
+                    class="m-0 ta-font-bold text-size-11"
+                    [ngClass]="
+                        isDisabled ? 'text-color-bw6-2' : 'text-color-black'
+                    "
+                >
                     {{ fuelPrice.title }}
                 </p>
 
                 <span
-                    class="ta-font-medium text-size-18 tet-color-black total-value"
-                    >${{ fuelPrice.totalValue }}
+                    class="ta-font-medium text-size-18 total-value"
+                    [ngClass]="
+                        isDisabled
+                            ? 'text-color-light-grey-2'
+                            : 'text-color-black'
+                    "
+                >
+                    ${{ fuelPrice.totalValue }}
                 </span>
 
                 <!-- Progress -->
@@ -62,13 +75,24 @@
                         class="d-flex align-items-center justify-content-between"
                     >
                         <span
-                            class="ta-font-medium text-size-11 text-color-black-2"
-                            >${{ fuelPrice.minValue }}</span
-                        >
+                            class="ta-font-medium text-size-11"
+                            [ngClass]="
+                                isDisabled
+                                    ? 'text-color-muted'
+                                    : 'text-color-black-2'
+                            "
+                            >${{ fuelPrice.minValue }}
+                        </span>
+
                         <span
-                            class="ta-font-medium text-size-11 text-color-black-2"
-                            >${{ fuelPrice.maxValue }}</span
-                        >
+                            class="ta-font-medium text-size-11"
+                            [ngClass]="
+                                isDisabled
+                                    ? 'text-color-muted'
+                                    : 'text-color-black-2'
+                            "
+                            >${{ fuelPrice.maxValue }}
+                        </span>
                     </div>
                 </div>
             </div>

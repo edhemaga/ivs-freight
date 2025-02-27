@@ -72,6 +72,8 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
         this.getRepairShopsDropdownList();
     }
 
+    private destroy$ = new Subject<void>();
+
     public _repairShop: RepairShopResponse;
 
     public repairShopCurrentIndex: number;
@@ -81,8 +83,6 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
 
     // note card
     public noteForm: UntypedFormGroup;
-
-    private destroy$ = new Subject<void>();
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -98,8 +98,6 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
 
     ngOnInit(): void {
         this.createForm();
-
-        this.getRepairShopsDropdownList();
 
         this.getCurrentIndex();
     }
@@ -118,7 +116,7 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
         this.repairShopCurrentIndex = currentIndex;
     }
 
-    public getRepairShopsDropdownList(): void {
+    private getRepairShopsDropdownList(): void {
         this.repairShopDropdownList = this.repairMinimalListQuery
             .getAll()
             .map((repairShop: RepairShopShortResponse) => {
@@ -160,12 +158,12 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
             );
     }
 
-    public onSelectedShop(event: RepairShopResponse): void {
+    private onSelectedShop(event: RepairShopResponse): void {
         if (event?.id !== this._repairShop.id)
             this.detailsPageService.getDataDetailId(event.id);
     }
 
-    public onChangeShop(action: string): void {
+    private onChangeShop(action: string): void {
         let currentIndex = this.repairShopDropdownList?.findIndex(
             (repairShop) => repairShop.id === this._repairShop.id
         );

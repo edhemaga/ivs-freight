@@ -12,18 +12,6 @@
         &.disabled {
             pointer-events: none !important;
 
-            p {
-                color: $bw6-2 !important;
-            }
-
-            .total-value {
-                color: $ta-light-grey-2 !important;
-            }
-
-            span {
-                color: $bw5 !important;
-            }
-
             .last-fuel-price-item-progress {
                 &-bar {
                     &-box {
