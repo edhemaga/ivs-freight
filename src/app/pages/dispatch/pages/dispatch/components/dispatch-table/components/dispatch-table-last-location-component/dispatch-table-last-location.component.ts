@@ -24,6 +24,7 @@ import { AddressService } from '@shared/services/address.service';
 export class DispatchTableLastLocationComponentComponent extends AddressMixin(
     class {
         addressService!: AddressService;
+        public handleSelectedAddress(): void {}
     }
 ) {
     @Input() set parkingList(value: DispatchBoardParking[]) {
@@ -63,28 +64,28 @@ export class DispatchTableLastLocationComponentComponent extends AddressMixin(
         );
     }
 
-    public handleInputSelect(event: AddressData): void {
-        if (event.valid) {
-            const addressData = {
-                address: event.address,
-                longitude: event.longLat.longitude,
-                latitude: event.longLat.latitude,
-                valid: event.valid,
-            };
-
-            this.updateLastLocationEmit.emit(addressData);
-        }
-
-        if (!this.truckAddressControl.value) this.isDropdownHidden.emit(true);
-    }
-
     public onHideDropdown(): void {
-        if (!this.truckAddressControl.value) this.isDropdownHidden.emit(true);
+        setTimeout(() => {
+            if (!this.truckAddressControl.value)
+                this.isDropdownHidden.emit(true);
+        }, 500);
     }
 
     public checkParkingLocation(parkings: DispatchBoardParking[]): void {
         this.isDisplayParkingIcon = parkings.some(
             (parking) => parking.address.county === this.address.county
         );
+    }
+
+    override handleSelectedAddress(): void {
+        const addressData = {
+            address: this.addressData.address,
+            longitude: this.addressData.longLat.longitude,
+            latitude: this.addressData.longLat.latitude,
+            valid: true,
+        };
+
+        this.updateLastLocationEmit.emit(addressData);
+        this.isDropdownHidden.emit(true);
     }
 }
