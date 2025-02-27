@@ -7,7 +7,7 @@ import { ChartTypeProperty } from '@shared/models';
 import { IBrokerPaymentHistory } from '@pages/customer/pages/broker-details/models';
 
 export class ChartConfiguration {
-    public static mileageRateConfiguration: ChartTypeProperty[] = [
+    public static MILEAGE_RATE_CONFIGURATION: ChartTypeProperty[] = [
         {
             type: eChartTypesString.LINE,
             color: '#6692F1',
@@ -22,7 +22,7 @@ export class ChartConfiguration {
             minValue: eChartValueLabel.LOWEST_RARE,
         },
     ];
-    public static paymentHistoryConfiguration = (
+    public static PAYMENT_HISTORY_CONFIGURATION = (
         data: IBrokerPaymentHistory
     ): ChartTypeProperty[] => [
         {
@@ -35,7 +35,7 @@ export class ChartConfiguration {
             shiftValue: data.payTerm,
         },
     ];
-    public static driverConfiguration: ChartTypeProperty[] = [
+    public static DRIVER_CONFIGURATION: ChartTypeProperty[] = [
         {
             value: eChartValueLabel.MILES,
             type: eChartTypesString.LINE,
@@ -47,7 +47,7 @@ export class ChartConfiguration {
             color: '#FBC88B',
         },
     ];
-    public static brokerPaidInvoiceConfiguration: ChartTypeProperty[] = [
+    public static BROKER_PAID_INVOICE_CONFIGURATION: ChartTypeProperty[] = [
         {
             value: eChartValueLabel.COUNT,
             type: eChartTypesString.LINE,
@@ -61,7 +61,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static truckFuelConsumptionConfiguration: ChartTypeProperty[] = [
+    public static TRUCK_FUEL_CONSUMPTION_CONFIGURATION: ChartTypeProperty[] = [
         {
             value: eChartValueLabel.MILES_PER_GALLON,
             type: eChartTypesString.LINE,
@@ -75,7 +75,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static truckRevenueConfiguration: ChartTypeProperty[] = [
+    public static TRUCK_REVENUE_CONFIGURATION: ChartTypeProperty[] = [
         {
             value: eChartValueLabel.REVENUE,
             type: eChartTypesString.LINE,
@@ -89,7 +89,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static truckExpensesConfiguration: ChartTypeProperty[] = [
+    public static TRUCK_EXPENSES_CONFIGURATION: ChartTypeProperty[] = [
         {
             maxValue: eChartValueLabel.FUEL_COST,
             value: eChartValueLabel.FUEL_COST,
@@ -104,7 +104,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static fuelExpensesConfiguration: ChartTypeProperty[] = [
+    public static FUEL_EXPENSES_CONFIGURATION: ChartTypeProperty[] = [
         {
             maxValue: eChartValueLabel.GALLON,
             value: eChartValueLabel.GALLON,
@@ -118,7 +118,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static trailerFuelExpensesConfiguration: ChartTypeProperty[] = [
+    public static TRAILER_FUEL_EXPENSES_CONFIGURATION: ChartTypeProperty[] = [
         {
             maxValue: eChartValueLabel.MILES_PER_GALLON,
             value: eChartValueLabel.MILES_PER_GALLON,
@@ -132,28 +132,28 @@ export class ChartConfiguration {
         },
     ];
 
-    public static topMileageConfiguration: ChartTypeProperty[] = [
+    public static TOP_MILEAGE_CONFIGURATION: ChartTypeProperty[] = [
         {
             type: eChartTypesString.DOUGHNUT,
             value: eChartValueLabel.MILEAGE_PERCENTAGE,
         },
     ];
 
-    public static topRevenueConfiguration: ChartTypeProperty[] = [
+    public static TOP_REVENUE_CONFIGURATION: ChartTypeProperty[] = [
         {
             type: eChartTypesString.DOUGHNUT,
             value: eChartValueLabel.REVENUE_PERCENTAGE,
         },
     ];
 
-    public static topCostConfiguration: ChartTypeProperty[] = [
+    public static TOP_COST_CONFIGURATION: ChartTypeProperty[] = [
         {
             type: eChartTypesString.DOUGHNUT,
             value: eChartValueLabel.COST_PERCENTAGE,
         },
     ];
 
-    public static topVisitConfiguration: ChartTypeProperty[] = [
+    public static TOP_VISIT_CONFIGURATION: ChartTypeProperty[] = [
         {
             type: eChartTypesString.DOUGHNUT,
             value: eChartValueLabel.VISIT_PERCENTAGE,
@@ -167,7 +167,7 @@ export class ChartConfiguration {
         },
     ];
 
-    public static shipperAverageWaitingTimeConfiguration: ChartTypeProperty[] =
+    public static SHIPPER_AVERAGE_WAITING_TIME_CONFIGURATION: ChartTypeProperty[] =
         [
             {
                 type: eChartTypesString.BAR,
@@ -179,7 +179,7 @@ export class ChartConfiguration {
             },
         ];
 
-    public static repairShopExpensesConfiguration: ChartTypeProperty[] = [
+    public static REPAIR_SHOP_EXPENSES_CONFIGURATION: ChartTypeProperty[] = [
         {
             type: eChartTypesString.BAR,
             value: eChartValueLabel.REPAIR,

@@ -14,11 +14,18 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 // services
 import { RepairService } from '@shared/services/repair.service';
 
+// helpers
+import { ChartHelper } from '@shared/utils/helpers';
+
 // constants
 import {
     RepairExpenseCartConstants,
     RepairShopChartsConfiguration,
 } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration,
+} from '@shared/utils/constants';
 
 // models
 import {
@@ -28,11 +35,6 @@ import {
 import { Tabs } from '@shared/models/tabs.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { ChartHelper } from '@shared/utils/helpers';
-import {
-    ChartConfiguration,
-    ChartLegendConfiguration,
-} from '@shared/utils/constants';
 import { ChartLegendProperty } from '@shared/models';
 
 @Component({
@@ -110,7 +112,10 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         chartType: number,
         timeFilter?: number
     ): void {
-        if (id == this.repairCall.id && chartType == this.repairCall.chartType)
+        if (
+            id === this.repairCall.id &&
+            chartType === this.repairCall.chartType
+        )
             return;
 
         this.repairService
@@ -154,7 +159,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                             ChartHelper.generateDataByDateTime<RepairShopExpensesResponse>(
                                 this.repairShopChartData
                                     .repairShopExpensesChartResponse,
-                                ChartConfiguration.repairShopExpensesConfiguration,
+                                ChartConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION,
                                 timeFilter
                             ),
                     };
@@ -164,7 +169,8 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.cdRef.detectChanges();
     }
 
-    public setRepairShopExpensesLegendOnHover(index: any): void {
+    public setRepairShopExpensesLegendOnHover(index: number): void {
+        console.log(index);
         const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
             index,
             this.repairShopChartConfig.chartData.labels
@@ -182,7 +188,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                   ];
 
         this.repairShopExpensesChartLegendData =
-            ChartLegendConfiguration.repairShopExpensesConfiguration(
+            ChartLegendConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION(
                 dataForLegend
             );
     }

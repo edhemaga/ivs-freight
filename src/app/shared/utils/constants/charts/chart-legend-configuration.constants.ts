@@ -107,7 +107,7 @@ export class ChartLegendConfiguration {
         },
     ];
 
-    public static truckFuelConsumptionConfiguration = (
+    public static TRUCK_FUEL_CONSUMPTION_CONFIGURATION = (
         data: TruckFuelConsumptionChartResponse
     ): ChartLegendProperty[] => [
         {
@@ -124,7 +124,7 @@ export class ChartLegendConfiguration {
         },
     ];
 
-    public static truckRevenueConfiguration = (
+    public static TRUCK_REVENUE_CONFIGURATION = (
         data: TruckRevenueChartResponse
     ): ChartLegendProperty[] => [
         {
@@ -141,7 +141,7 @@ export class ChartLegendConfiguration {
         },
     ];
 
-    public static truckExpensesConfiguration = (
+    public static TRUCK_EXPENSES_CONFIGURATION = (
         data: TruckExpensesChartResponse
     ): ChartLegendProperty[] => [
         {
@@ -183,7 +183,7 @@ export class ChartLegendConfiguration {
         },
     ];
 
-    public static shipperAverageWaitingTimeConfiguration = (
+    public static SHIPPER_AVERAGE_WAITING_TIME_CONFIGURATION = (
         data: ShipperAverageWaitingTimeResponse
     ): ChartLegendProperty[] => [
         {
@@ -202,7 +202,7 @@ export class ChartLegendConfiguration {
         },
     ];
 
-    public static repairShopExpensesConfiguration = (
+    public static REPAIR_SHOP_EXPENSES_CONFIGURATION = (
         data: RepairShopExpensesResponse
     ): ChartLegendProperty[] => [
         {
