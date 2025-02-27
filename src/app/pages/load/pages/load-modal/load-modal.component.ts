@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import {
-    ChangeDetectorRef,
     Component,
     ElementRef,
     Input,
@@ -18,14 +17,7 @@ import {
     FormControl,
 } from '@angular/forms';
 
-import {
-    debounceTime,
-    Subject,
-    take,
-    takeUntil,
-    tap,
-    withLatestFrom,
-} from 'rxjs';
+import { debounceTime, Subject, takeUntil, tap, withLatestFrom } from 'rxjs';
 
 // moment
 import moment from 'moment';
@@ -56,7 +48,6 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -476,7 +467,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         private markerIconService: MapMarkerIconService,
         private ngbActiveModal: NgbActiveModal,
         public financialCalculationPipe: FinancialCalculationPipe,
-        private cdRef: ChangeDetectorRef,
         private loadStoreService: LoadStoreService
     ) {}
 
@@ -748,7 +738,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             loadTemplateId: [null],
             dispatcherId: [null, Validators.required],
             status: [null],
-            companyId: [this.companyUser.companyName, Validators.required],
+            companyId: [null, Validators.required],
             brokerId: [null, Validators.required],
             brokerContactId: [null],
             referenceNumber: [null, Validators.required],
@@ -4118,7 +4108,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.orginalPaymentTypesDropdownList = modalData.paymentTypes;
         this.paymentTypesDropdownList = modalData.paymentTypes;
 
-        if (activeModalData && !!modalData?.companies)
+        if (!!modalData?.companies) {
             // division companies
             this.labelsCompanies = modalData.companies.map((item) => {
                 return {
@@ -4127,12 +4117,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 };
             });
 
+            this.loadForm
+                .get(LoadModalStringEnum.COMPANY_ID)
+                .patchValue(modalData.companies[0].id);
+            this.selectedCompany = this.labelsCompanies[0];
+        }
+
         if (
             type === LoadModalStringEnum.EDIT &&
             this.labelsCompanies.length > 1
         )
-            this.selectedCompany = this.labelsCompanies.find(
-                (item) => item.name === this.companyUser.companyName
+            this.selectedCompany = modalData?.companies.find(
+                (item) => item.companyName === this.companyUser.companyName
             );
 
         // dispatches
@@ -5416,6 +5412,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     this.isActiveLoad = this.checkIfLoadIsActive();
                     this.generateModalText();
                 }
+
+                this.loadCompanyInputConfig.isDisabled =
+                    this.editData?.type === LoadModalStringEnum.CREATE;
             });
     }
 
