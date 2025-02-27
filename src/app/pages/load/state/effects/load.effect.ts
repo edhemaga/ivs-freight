@@ -4,7 +4,6 @@ import { act, Actions, createEffect, ofType } from '@ngrx/effects';
 // rxjs
 import {
     catchError,
-    delay,
     exhaustMap,
     filter,
     map,
@@ -15,10 +14,7 @@ import {
 
 // services
 import { LoadService as LoadLocalService } from '@shared/services/load.service';
-import {
-    LoadService,
-    UpdateLoadStatusCommand,
-} from 'appcoretruckassist';
+import { LoadService, UpdateLoadStatusCommand } from 'appcoretruckassist';
 import { CommentsService } from '@shared/services/comments.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -202,7 +198,7 @@ export class LoadEffect {
             ofType(LoadActions.getEditLoadTemplateModalData),
             withLatestFrom(
                 this.store.select(activeLoadModalDataSelector),
-                this.store.select(staticModalDataSelector),
+                this.store.select(staticModalDataSelector)
             ),
             tap((data) => {
                 const { selectedTab, eventType } = data[0];
@@ -213,7 +209,7 @@ export class LoadEffect {
                     eventType
                 );
             }),
-            filter(data => {
+            filter((data) => {
                 return !data[1];
             }),
             exhaustMap((data) => {
@@ -259,10 +255,12 @@ export class LoadEffect {
                         this.modalService
                     );
 
-                    this.store.dispatch(LoadActions.getCreateLoadModalDataSuccess({
-                        modal: data[1],
-                        activeLoadModalData: data[2],
-                    }));
+                    this.store.dispatch(
+                        LoadActions.getCreateLoadModalDataSuccess({
+                            modal: data[1],
+                            activeLoadModalData: data[2],
+                        })
+                    );
                 }
             }),
             filter((data) => {
@@ -291,24 +289,24 @@ export class LoadEffect {
     public getConvertToLoadModalData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.getConvertToLoadModalData),
+            tap((action) => {
+                const { selectedTab, eventType } = action;
+
+                LoadStoreEffectsHelper.getConvertToLoadOrTemplateModalData(
+                    this.modalService,
+                    selectedTab,
+                    eventType
+                );
+            }),
             exhaustMap((action) => {
                 return this.loadService.apiGetLoadModal().pipe(
                     exhaustMap((modalResponse) => {
-                        const { apiParam, selectedTab, eventType } =
-                            action || {};
+                        const { apiParam } = action || {};
 
                         return this.loadService
                             .apiGetLoadTemplateById(apiParam)
                             .pipe(
                                 map((loadResponse) => {
-                                    LoadStoreEffectsHelper.getConvertToLoadOrTemplateModalData(
-                                        this.modalService,
-                                        selectedTab,
-                                        eventType,
-                                        loadResponse,
-                                        modalResponse
-                                    );
-
                                     return LoadActions.getConvertToLoadModalDataSuccess(
                                         {
                                             load: loadResponse,
@@ -333,22 +331,22 @@ export class LoadEffect {
     public getConvertToTemplateModalData$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.getConvertToLoadTemplateModalData),
+            tap((action) => {
+                const { selectedTab, eventType } = action;
+
+                LoadStoreEffectsHelper.getConvertToLoadOrTemplateModalData(
+                    this.modalService,
+                    selectedTab,
+                    eventType
+                );
+            }),
             exhaustMap((action) => {
                 return this.loadService.apiGetLoadModal().pipe(
                     exhaustMap((modalResponse) => {
-                        const { apiParam, selectedTab, eventType } =
-                            action || {};
+                        const { apiParam } = action || {};
 
                         return this.loadService.apiGetLoadById(apiParam).pipe(
                             map((loadTemplateResponse) => {
-                                LoadStoreEffectsHelper.getConvertToLoadOrTemplateModalData(
-                                    this.modalService,
-                                    selectedTab,
-                                    eventType,
-                                    loadTemplateResponse,
-                                    modalResponse
-                                );
-
                                 return LoadActions.getConvertToLoadTemplateModalDataSuccess(
                                     {
                                         loadTemplate: loadTemplateResponse,

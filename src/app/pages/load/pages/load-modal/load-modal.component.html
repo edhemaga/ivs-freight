@@ -155,11 +155,10 @@
                         [optionValue]="'id'"
                         formControlName="dispatcherId"
                         [template]="'load-dispatcher'"
-                        [inputConfig]="getDispatcherInputConfig()"
+                        [inputConfig]="dispatcherConfig"
                         [options]="labelsDispatcher"
-                        [activeItem]="selectedDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
-                    ></app-ca-input-dropdown>
+                   ></app-ca-input-dropdown>
                 </div>
 
                 <!-- Truck -->
@@ -523,7 +522,6 @@
                                 [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [options]="labelsShipperContacts"
-                                [activeItem]="selectedPickupShipperContact"
                                 (selectedItem)="
                                     onSelectDropdown(
                                         $event,
