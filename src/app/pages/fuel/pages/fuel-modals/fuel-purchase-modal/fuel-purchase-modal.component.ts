@@ -397,7 +397,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             total: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.total as any
             ),
-            fuelItems: this.fuelItems,
+            fuelItems: this.convertItems(),
             files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
@@ -417,6 +417,18 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     });
                 },
             });
+    }
+
+    private convertItems() : FuelItemResponse[]{
+        return this.fuelItems.map((item) => {
+            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(item.qty as any);
+            const price = MethodsCalculationsHelper.convertThousandSepInNumber(item.price as any);
+
+            return {
+                ...item,
+                subtotal: qty * price
+            }
+        });
     }
 
     private updateFuelEFS(id: number): void {
@@ -471,7 +483,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             total: MethodsCalculationsHelper.convertThousandSepInNumber(
                 this.total as any
             ),
-            fuelItems: this.fuelItems,
+            fuelItems: this.convertItems(),
             files: this.mapDocuments(),
             filesForDeleteIds: [],
             payrollOwnerId: this.editData?.payrollOwnerId,
