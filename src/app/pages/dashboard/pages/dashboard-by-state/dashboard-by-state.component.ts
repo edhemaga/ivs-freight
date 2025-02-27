@@ -444,8 +444,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 const value =
                     interval[propertyKey as keyof ByStateIntervalResponse];
 
-                //for some reason this doesn't work as enum, so it should stay like string
-                if (typeof value === 'number' && value !== null)
+                if (typeof value === 'number')
                     dataSetData.push(value);
             });
             const order =
@@ -454,7 +453,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 ...this.byStateChartDatasetConfig,
                 label: selectedStateItem.state,
                 data: dataSetData,
-                order: order,
+                order,
                 backgroundColor: selectedStateItem.selectedColor,
                 hoverBackgroundColor: selectedStateItem.selectedColor,
                 borderColor: selectedStateItem.selectedColor,
