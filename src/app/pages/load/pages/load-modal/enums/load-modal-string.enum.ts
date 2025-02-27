@@ -80,6 +80,7 @@ export enum LoadModalStringEnum {
     USER = 'user',
     DISPATCHER = 'dispatcher',
     COMPANY = 'company',
+    COMPANY_ID = 'companyId',
     GENERAL_COMMODITY = 'general-commodity',
     DISPATCHES = 'dispatches',
     BROKER = 'broker',
