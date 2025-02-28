@@ -19,9 +19,10 @@ import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/n
 // Feature Services
 import { MilesStoreService } from './state/services/miles-store.service';
 
-// Enums 
+// Enums
 import { eMileTabs } from '@pages/miles/enums';
 import { TableStringEnum } from '@shared/enums';
+import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Models
 import { MilesByUnitResponse } from 'appcoretruckassist';
@@ -43,7 +44,7 @@ export class MilesComponent implements OnInit {
     public selectedTabData$: Observable<any>;
     public miles$: Observable<MilesByUnitResponse[]>;
     public selectedTab$: Observable<eMileTabs>;
-    public activeViewMode$: Observable<string>
+    public activeViewMode$: Observable<string>;
     constructor(
         private store: Store<IMilesState>,
         private milesStoreService: MilesStoreService
@@ -53,18 +54,20 @@ export class MilesComponent implements OnInit {
         this.storeSubscription();
     }
 
-    public onToolBarAction(event: {mode: eMileTabs, action: string}): void {
+    public onToolBarAction(event: { mode: eMileTabs; action: string }): void {
         const { action, mode } = event || {};
-       if (action === TableStringEnum.TAB_SELECTED) {
-           this.milesStoreService.listChange(mode);
-       }  else if (action === TableStringEnum.VIEW_MODE) {
-       
-    }
+        if (action === TableStringEnum.TAB_SELECTED) {
+            this.milesStoreService.listChange(mode);
+        } else if (action === TableStringEnum.VIEW_MODE) {
+            this.milesStoreService.dispatchSetActiveViewMode(
+                eActiveViewMode[mode]
+            );
+        }
     }
 
     private storeSubscription(): void {
         this.miles$ = this.store.select(selectMilesItems);
-        this.activeViewMode$ = this.store.select(activeViewModeSelector);
+        this.activeViewMode$ = this.store.select(activeViewModeSelector); 
         this.tableViewData$ = this.store.select(selectTableViewData);
         this.selectedTab$ = this.store.select(selectSelectedTab);
     }

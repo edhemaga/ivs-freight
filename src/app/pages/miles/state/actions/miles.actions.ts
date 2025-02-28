@@ -6,6 +6,7 @@ import { MilesStoreConstants } from '@pages/miles/consts';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
+import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Models
 import { MilesByUnitResponse } from 'appcoretruckassist';
@@ -37,4 +38,9 @@ export const milesTabChange = createAction(
 export const updateTruckCounts = createAction(
   MilesStoreConstants.UPDATE_TRUCK_COUNTS, 
   props<{ activeTruckCount: number, inactiveTruckCount: number }>()
+);
+
+export const activeViewMode = createAction(
+  MilesStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
+    props<{ activeViewMode: eActiveViewMode }>()
 );

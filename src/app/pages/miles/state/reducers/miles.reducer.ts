@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 // Feature Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
-import { loadMilesSuccess, milesTabChange, updateTruckCounts } from '@pages/miles/state/actions/miles.actions';
+import { activeViewMode, loadMilesSuccess, milesTabChange, updateTruckCounts } from '@pages/miles/state/actions/miles.actions';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -47,6 +47,10 @@ export const milesReducer = createReducer(
     on(milesTabChange, (state, { selectedTab }) => ({
         ...state,
         selectedTab: selectedTab,
+    })),
+    on(activeViewMode, (state, { activeViewMode }) => ({
+        ...state,
+        activeViewMode
     })),
     on(
         updateTruckCounts,

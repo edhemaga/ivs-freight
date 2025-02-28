@@ -7,6 +7,7 @@ import { MilesByUnitListResponse, MilesService } from 'appcoretruckassist';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
+import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Constants
 import { MilesStoreConstants } from '@pages/miles/consts';
@@ -42,6 +43,13 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.LOAD_MILES_SUCCESS,
             miles: data.pagination.data,
+        });
+    }
+
+    public dispatchSetActiveViewMode(activeViewMode: eActiveViewMode): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
+            activeViewMode,
         });
     }
 }
