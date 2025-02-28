@@ -1,15 +1,16 @@
-//enums
-import { eDropZoneFileType, eFilesSize, eTemplateType } from 'ca-components';
-
-//models
-import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
+import {
+    eDropZoneFileType,
+    eFileSize,
+    eReviewState,
+    eTemplateType,
+    IUploadFilesConfig,
+} from 'ca-components';
 
 export class SettingsBasicModalUploadFileConfig {
     static SETTINGS_BASIC_MODAL_UPLOAD_FILES_CONFIG: IUploadFilesConfig = {
-
         //Files
-        files:[],
-        
+        files: [],
+
         // Carousel
         slider: {
             dontUseSlider: false,
@@ -29,26 +30,24 @@ export class SettingsBasicModalUploadFileConfig {
         onlyOneTagFile: false,
 
         // Dropzone
-        dropzoneConf: [
-            {
-                template: eTemplateType.IMAGE_CROP,
-                config: {
-                    dropzone: {
-                        dropZoneType: eDropZoneFileType.IMAGE,
-                        multiple: true,
-                        globalDropZone: false,
-                        dropZonePages: 'cdl',
-                    },
-                    dropzoneOption: {
-                        customClassName: 'documents-dropzone',
-                        size: 'medium',
-                        modalSize: 'lg',
-                        showDropzone: true,
-                        dropzoneClose: false,
-                    },
+        dropZoneConfig: {
+            template: eTemplateType.IMAGE_CROP,
+            config: {
+                dropzone: {
+                    dropZoneType: eDropZoneFileType.IMAGE,
+                    multiple: true,
+                    globalDropZone: false,
+                    dropZonePages: 'cdl',
+                },
+                dropzoneOption: {
+                    customClassName: 'documents-dropzone',
+                    size: 'medium',
+                    modalSize: 'lg',
+                    showDropzone: true,
+                    dropzoneClose: false,
                 },
             },
-        ],
+        },
         dropzoneCustomWidth: '603px',
         isVisibleCropAndDrop: true,
 
@@ -65,7 +64,7 @@ export class SettingsBasicModalUploadFileConfig {
         // Review
         review: {
             isReview: true,
-            reviewMode: 'REVIEW_MODE',
+            reviewMode: eReviewState.REVIEW_MODE,
             feedbackText: 'Sample feedback text',
             categoryTag: 'General',
         },
@@ -98,7 +97,7 @@ export class SettingsBasicModalUploadFileConfig {
             ],
         },
 
-        size: eFilesSize.MEDIUM,
+        size: eFileSize.MEDIUM,
         slideWidth: 180,
     };
 }

@@ -1,15 +1,16 @@
-//enums
-import { eDropZoneFileType, eFilesSize, eTemplateType } from 'ca-components';
-
-//models
-import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
+import {
+    eDropZoneFileType,
+    eFileSize,
+    eReviewState,
+    eTemplateType,
+    IUploadFilesConfig,
+} from 'ca-components';
 
 export class MedicalModalUploadFilesConfig {
     static MEDICAL_MODAL_UPLOAD_FILES_CONFIG: IUploadFilesConfig = {
-        
         //Files
-        files:[],
-        
+        files: [],
+
         // Carousel
         slider: {
             dontUseSlider: false,
@@ -29,28 +30,26 @@ export class MedicalModalUploadFilesConfig {
         onlyOneTagFile: false,
 
         // Dropzone
-        dropzoneConf: [
-            {
-                template: eTemplateType.DOCUMENTS,
-                config: {
-                    dropzone: {
-                        dropZoneType: eDropZoneFileType.FILES,
-                        multiple: true,
-                        globalDropZone: false,
-                        dropZonePages: 'tools_todo',
-                    },
-                    dropzoneOption: {
-                        customClassName: 'documents-dropzone',
-                        size: 'medium',
-                        modalSize: 'lg',
-                        showDropzone: true,
-                        filesLength: 2,
-                        isRequired: true,
-                        dropzoneClose: false,
-                    },
+        dropZoneConfig: {
+            template: eTemplateType.DOCUMENTS,
+            config: {
+                dropzone: {
+                    dropZoneType: eDropZoneFileType.FILES,
+                    multiple: true,
+                    globalDropZone: false,
+                    dropZonePages: 'tools_todo',
+                },
+                dropzoneOption: {
+                    customClassName: 'documents-dropzone',
+                    size: 'medium',
+                    modalSize: 'lg',
+                    showDropzone: true,
+                    filesLength: 2,
+                    isRequired: true,
+                    dropzoneClose: false,
                 },
             },
-        ],
+        },
         dropzoneCustomWidth: '',
         isVisibleCropAndDrop: true,
 
@@ -67,7 +66,7 @@ export class MedicalModalUploadFilesConfig {
         // Review
         review: {
             isReview: false,
-            reviewMode: 'FEEDBACK_MODE',
+            reviewMode: eReviewState.FEEDBACK_MODE,
             feedbackText: 'Sample feedback text',
             categoryTag: 'General',
         },
@@ -92,7 +91,7 @@ export class MedicalModalUploadFilesConfig {
                 { tagName: 'Unsafe Driving AGT', checked: false },
             ],
         },
-        size: eFilesSize.MEDIUM,
+        size: eFileSize.MEDIUM,
         slideWidth: 180,
     };
 }

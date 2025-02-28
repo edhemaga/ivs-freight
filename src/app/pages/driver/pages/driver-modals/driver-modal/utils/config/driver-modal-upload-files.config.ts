@@ -1,14 +1,15 @@
-//enums
-import { eDropZoneFileType, eFilesSize, eTemplateType } from 'ca-components';
-
-//models
-import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
+import {
+    eDropZoneFileType,
+    eFileSize,
+    eReviewState,
+    eTemplateType,
+    IUploadFilesConfig,
+} from 'ca-components';
 
 export class DriverModalUploadFilesConfig {
-    static DRIVER_MODAL_DOCUMENTS_UPLOAD_FILES_CONFIG: IUploadFilesConfig = 
-    {
+    static DRIVER_MODAL_DOCUMENTS_UPLOAD_FILES_CONFIG: IUploadFilesConfig = {
         //Files
-        files:[],
+        files: [],
 
         // Carousel
         slider: {
@@ -29,28 +30,26 @@ export class DriverModalUploadFilesConfig {
         onlyOneTagFile: false,
 
         // Dropzone
-        dropzoneConf: [
-            {
-                template: eTemplateType.DOCUMENTS,
-                config: {
-                    dropzone: {
-                        dropZoneType: eDropZoneFileType.FILES,
-                        multiple: true,
-                        globalDropZone: false,
-                        dropZonePages: 'tools_todo',
-                    },
-                    dropzoneOption: {
-                        customClassName: 'documents-dropzone',
-                        size: 'medium',
-                        modalSize: 'lg',
-                        showDropzone: true,
-                        filesLength: 2,
-                        isRequired: true,
-                        dropzoneClose: false,
-                    },
+        dropZoneConfig: {
+            template: eTemplateType.DOCUMENTS,
+            config: {
+                dropzone: {
+                    dropZoneType: eDropZoneFileType.FILES,
+                    multiple: true,
+                    globalDropZone: false,
+                    dropZonePages: 'tools_todo',
+                },
+                dropzoneOption: {
+                    customClassName: 'documents-dropzone',
+                    size: 'medium',
+                    modalSize: 'lg',
+                    showDropzone: true,
+                    filesLength: 2,
+                    isRequired: true,
+                    dropzoneClose: false,
                 },
             },
-        ],
+        },
         dropzoneCustomWidth: '603px',
         isVisibleCropAndDrop: true,
 
@@ -67,7 +66,7 @@ export class DriverModalUploadFilesConfig {
         // Review
         review: {
             isReview: false,
-            reviewMode: 'FEEDBACK_MODE',
+            reviewMode: eReviewState.FEEDBACK_MODE,
             feedbackText: 'Sample feedback text',
             categoryTag: 'General',
         },
@@ -98,15 +97,15 @@ export class DriverModalUploadFilesConfig {
                 },
             ],
         },
-        size: eFilesSize.MEDIUM,
+        size: eFileSize.MEDIUM,
         slideWidth: 180,
     };
 
     static DRIVER_MODAL_PROFILE_PICTURE_UPLOAD_FILES_CONFIG: IUploadFilesConfig =
         {
             //Files
-            files:[],
-            
+            files: [],
+
             // Carousel
             slider: {
                 dontUseSlider: false,
@@ -126,26 +125,24 @@ export class DriverModalUploadFilesConfig {
             onlyOneTagFile: false,
 
             // Dropzone
-            dropzoneConf: [
-                {
-                    template: eTemplateType.IMAGE_CROP,
-                    config: {
-                        dropzone: {
-                            dropZoneType: eDropZoneFileType.IMAGE,
-                            multiple: true,
-                            globalDropZone: false,
-                            dropZonePages: 'cdl',
-                        },
-                        dropzoneOption: {
-                            customClassName: 'documents-dropzone',
-                            size: 'medium',
-                            modalSize: 'lg',
-                            showDropzone: true,
-                            dropzoneClose: false,
-                        },
+            dropZoneConfig: {
+                template: eTemplateType.IMAGE_CROP,
+                config: {
+                    dropzone: {
+                        dropZoneType: eDropZoneFileType.IMAGE,
+                        multiple: true,
+                        globalDropZone: false,
+                        dropZonePages: 'cdl',
+                    },
+                    dropzoneOption: {
+                        customClassName: 'documents-dropzone',
+                        size: 'medium',
+                        modalSize: 'lg',
+                        showDropzone: true,
+                        dropzoneClose: false,
                     },
                 },
-            ],
+            },
             dropzoneCustomWidth: '603px',
             isVisibleCropAndDrop: true,
 
@@ -162,7 +159,7 @@ export class DriverModalUploadFilesConfig {
             // Review
             review: {
                 isReview: true,
-                reviewMode: 'REVIEW_MODE',
+                reviewMode: eReviewState.REVIEW_MODE,
                 feedbackText: 'Sample feedback text',
                 categoryTag: 'General',
             },
@@ -195,7 +192,7 @@ export class DriverModalUploadFilesConfig {
                 ],
             },
 
-            size: eFilesSize.MEDIUM,
+            size: eFileSize.MEDIUM,
             slideWidth: 180,
         };
 }
