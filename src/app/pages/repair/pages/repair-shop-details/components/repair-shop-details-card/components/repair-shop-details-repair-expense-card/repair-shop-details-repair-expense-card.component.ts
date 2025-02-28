@@ -170,7 +170,6 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
     }
 
     public setRepairShopExpensesLegendOnHover(index: number): void {
-        console.log(index);
         const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
             index,
             this.repairShopChartConfig.chartData.labels
