@@ -43,7 +43,7 @@
                     [displayRowsBack]="(displayRows$ | async).displayRowsBack"
                 ></app-fuel-card>
 
-                <ng-container *ngIf="viewData?.length">
+                @if (viewData?.length) {
                     <div
                         class="show-more-container d-flex align-items-center justify-content-between"
                         [ngStyle]="{ 'width.px': tableWidth }"
@@ -54,18 +54,16 @@
                             {{ viewData?.length }} OF
                             {{ tableDataLength }}
                         </div>
-                        <ng-container
-                            *ngIf="viewData?.length < tableDataLength"
-                        >
+                        @if (viewData?.length < tableDataLength) {
                             <div
                                 class="show-more ta-font-bold text-color-black w-fit-content align-items-center d-flex justify-content-between"
                                 (click)="handleShowMoreAction()"
                             >
                                 SHOW MORE
                             </div>
-                        </ng-container>
+                        }
                     </div>
-                </ng-container>
+                }
             </div>
         }
         @case (commonElements.MAP) {

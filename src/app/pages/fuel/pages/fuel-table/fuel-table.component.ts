@@ -1185,15 +1185,14 @@ export class FuelTableComponent
     }
 
     private openCreateModalBySelectedTab(): void {
-        if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION) {
+        if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION)
             this.modalService.openModal(FuelPurchaseModalComponent, {
                 size: TableStringEnum.SMALL,
             });
-        } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
+        else if (this.selectedTab === TableStringEnum.FUEL_STOP)
             this.modalService.openModal(FuelStopModalComponent, {
                 size: TableStringEnum.SMALL,
             });
-        }
     }
 
     ngOnDestroy(): void {
