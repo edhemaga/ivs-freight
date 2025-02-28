@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
+
+// NgRx Imports
 import { Actions, ofType, createEffect } from '@ngrx/effects';
+import { Store } from '@ngrx/store';
 import { of } from 'rxjs';
 import { catchError, map, exhaustMap, take } from 'rxjs/operators';
 
@@ -8,9 +11,10 @@ import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
 // Services
 import { MilesService } from 'appcoretruckassist';
+
+// Enums and Selectors
 import { eMileTabs } from '@pages/miles/enums';
 import { selectSelectedTab } from '../selectors/miles.selectors';
-import { Store } from '@ngrx/store';
 
 @Injectable()
 export class MilesEffects {
@@ -20,45 +24,35 @@ export class MilesEffects {
         private store: Store
     ) {}
 
+    // Centralized method to fetch miles data based on the tab and filters
+    private fetchMilesData(tab: eMileTabs, dateFrom: string | null, dateTo: string | null) {
+        const tabValue = tab === eMileTabs.Active ? 1 : 0;  
+        return this.milesService.apiMilesListGet(null, tabValue, dateFrom, dateTo).pipe(
+            map((response) => MilesAction.loadMilesSuccess({ miles: response.pagination.data })),
+            catchError((error) => of(MilesAction.getLoadsPayloadError({ error })))
+        );
+    }
+
+    // Effect to get initial miles data default to Active tab and no date filters
     public getInitalMilesList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.getLoadsPayload),
-            exhaustMap(() => {
-                return this.milesService.apiMilesListGet(null, 1).pipe(
-                    map((response) => {
-                        return MilesAction.getLoadsPayloadSuccess({
-                            miles: response.pagination.data,
-                        });
-                    }),
-                    catchError((error) => {
-                        return of(MilesAction.getLoadsPayloadError({ error }));
-                    })
-                );
-            })
+            exhaustMap(() => this.fetchMilesData(eMileTabs.Active, null, null)) 
         )
     );
 
+    // Effect to fetch miles data on tab change
     public getMilesListOnTabChange$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.milesTabChange),
-            exhaustMap((tabs) => {
-                const tab = tabs.selectedTab === eMileTabs.Active ? 1 : 0;
-
-                return this.milesService.apiMilesListGet(null, tab).pipe(
-                    map((response) => {
-                        return MilesAction.loadMilesSuccess({
-                            miles: response.pagination.data,
-                        });
-                    }),
-                    catchError((error) => {
-                        console.error(error);
-                        return of(MilesAction.getLoadsPayloadError({ error }));
-                    })
-                );
+            exhaustMap((action) => {
+                const tab = action.selectedTab;
+                return this.fetchMilesData(tab, null, null); 
             })
         )
     );
 
+    // Effect to fetch miles data on filter change
     public getMilesListOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.filters),
@@ -67,26 +61,9 @@ export class MilesEffects {
                 const { dateFrom, dateTo } = filters;
 
                 return this.store.select(selectSelectedTab).pipe(
-                    take(1), 
+                    take(1), // Get the current selected tab only once
                     exhaustMap((selectedTab) => {
-                        const tab = selectedTab === eMileTabs.Active ? 1 : 0;
-
-                        return this.milesService
-                            .apiMilesListGet(null, tab, dateFrom, dateTo)
-                            .pipe(
-                                map((response) => {
-                                    return MilesAction.loadMilesSuccess({
-                                        miles: response.pagination.data
-                                    });
-                                }),
-                                catchError((error) => {
-                                    return of(
-                                        MilesAction.getLoadsPayloadError({
-                                            error,
-                                        })
-                                    ); 
-                                })
-                            );
+                        return this.fetchMilesData(selectedTab, dateFrom, dateTo);
                     })
                 );
             })
