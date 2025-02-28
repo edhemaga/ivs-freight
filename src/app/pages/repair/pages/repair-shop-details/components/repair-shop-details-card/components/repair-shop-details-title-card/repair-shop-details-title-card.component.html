@@ -6,35 +6,34 @@
     }"
     [tooltipNext]="
         repairShopCurrentIndex === repairShopDropdownList?.length - 1
-            ? ''
-            : 'Next'
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.NEXT
     "
     [tooltipPrevious]="
-        [0, -1].includes(repairShopCurrentIndex) ? '' : 'Previous'
+        [0, -1].includes(repairShopCurrentIndex)
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.PREVIOUS
     "
     [cardDetailsDate]="_cardData?.createdAt | formatDateP"
     [dateChecked]="
-        _cardData?.lastVisited ? (_cardData?.lastVisited | formatDateP) : false
+        _cardData?.lastVisited && (_cardData.lastVisited | formatDateP)
     "
     [dateClosed]="
-        _cardData?.dateDeactivated
-            ? (_cardData?.dateDeactivated | formatDateP)
-            : false
+        _cardData?.dateDeactivated && (_cardData?.dateDeactivated | formatDateP)
     "
-    [searchInputName]="'Search Repair Shop'"
+    [searchInputName]="eRepairShopDetails.SEARCH_REPAIR_SHOP"
     [searchName]="
         !_cardData?.status
-            ? 'Permanently Closed'
+            ? eBusinessStatus.PERMANENTLY_CLOSED
             : _cardData?.companyOwned
-              ? 'Company Owned'
-              : 'Favorite'
+              ? eBusinessStatus.COMPANY_OWNED
+              : eBusinessStatus.FAVORITE
     "
     [options]="repairShopDropdownList"
     [currentName]="_cardData?.name"
     [haveDropSVG]="
         !_cardData?.status || _cardData?.pinned || _cardData?.companyOwned
     "
-    [repairHeader]="true"
     [customPinnedSvg]="
         !_cardData?.status
             ? repairShopDetailsSvgRoutes.closedRoute
@@ -42,8 +41,12 @@
               ? repairShopDetailsSvgRoutes.companyOwnedRoute
               : repairShopDetailsSvgRoutes.favoriteRoute
     "
-    (selectValue)="handleCardChanges($event, 'select-repair-shop')"
-    (changeEvent)="handleCardChanges($event, 'change-repair-shop')"
+    (selectValue)="
+        handleCardChanges($event, eRepairShopDetails.SELECT_REPAIR_SHOP)
+    "
+    (changeEvent)="
+        handleCardChanges($event, eRepairShopDetails.CHANGE_REPAIR_SHOP)
+    "
 >
     <div class="d-flex flex-column justify-content-center shop-title-card">
         <!-- Phone -->
