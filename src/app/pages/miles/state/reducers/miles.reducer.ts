@@ -1,39 +1,25 @@
+// External Libraries
 import { createReducer, on } from '@ngrx/store';
-import * as MilesAction from '../actions/miles.actions';
-import {
-    loadMilesSuccess,
-    milesTabChange,
-    updateTruckCounts,
-} from '../actions/miles.actions';
-import { MilesByUnitResponse } from 'appcoretruckassist';
+
+// Feature Actions
+import * as MilesAction from '@pages/miles/state/actions/miles.actions';
+import { loadMilesSuccess, milesTabChange, updateTruckCounts } from '@pages/miles/state/actions/miles.actions';
+
+// Enums
 import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
-export interface MilesState {
-    items: MilesByUnitResponse[];
-    loading: boolean;
-    error: any;
-    tableViewData: any[];
-    selectedTab: eMileTabs;
-    activeViewMode: eActiveViewMode, 
-}
+// Constants
+import { MilesToolbarTabs } from '@pages/miles/consts';
 
-export const initialState: MilesState = {
+// Models
+import { IMilesState } from '@pages/miles/models';
+
+export const initialState: IMilesState = {
     items: [],
     loading: false,
     error: null,
-    tableViewData: [
-        {
-            title: eMileTabs.Active,
-            value: eMileTabs.Active,
-            length: 0,
-        },
-        {
-            title: eMileTabs.Inactive,
-            value: eMileTabs.Inactive,
-            length: 0,
-        },
-    ],
+    tableViewData: MilesToolbarTabs,
     selectedTab: eMileTabs.Active,
     activeViewMode: eActiveViewMode.List
 };

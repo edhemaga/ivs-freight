@@ -1,8 +1,12 @@
 export class MilesStoreConstants {
-    public static MILES_ITEMS = 'MILES_ITEMS';
-    public static MILES_ITEMS_SUCCESS = 'MILES_ITEMS_SUCCESS';
-    public static MILES_ITEMS_FAILURE = 'MILES_ITEMS_FAILURE';
-    public static MILES_ITEMS_RESET = 'MILES_ITEMS_RESET';
+    static COMPONENT_NAME_KEY = '[Miles Table Component]';
 
-    public static MILES_TAB_CHANGE = 'MILES_TAB_CHANGE';
+    public static LOAD_MILES_INITAL = `${ this.COMPONENT_NAME_KEY } LOAD_MILES_INITAL`;
+    public static LOAD_MILES_SUCCESS = `${ this.COMPONENT_NAME_KEY } LOAD_MILES_SUCCESS`;
+    public static LOAD_MILES_FAILURE = `${ this.COMPONENT_NAME_KEY } LOAD_MILES_FAILURE`;
+    public static LOAD_MILES_RESET = `${ this.COMPONENT_NAME_KEY } LOAD_MILES_RESET`;
+
+    public static MILES_TAB_CHANGE = `${ this.COMPONENT_NAME_KEY } MILES_TAB_CHANGE`;
+
+    public static UPDATE_TRUCK_COUNTS = `${ this.COMPONENT_NAME_KEY } UPADE_TRUCK_COUNTS`;
 }

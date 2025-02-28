@@ -1,7 +1,19 @@
-import { ITableData } from "@shared/models";
-import { MilesByUnitListResponse } from "appcoretruckassist";
+// Feature Enums
+import { eActiveViewMode } from "@pages/load/pages/load-table/enums";
+import { eMileTabs } from "@pages/miles/enums";
 
-export interface IMilesInitalState{
-    tableTabs: ITableData;
-    items: MilesByUnitListResponse;
+// Shared Models
+import { ITableData } from "@shared/models";
+
+// External Services or Models
+import { MilesByUnitResponse } from "appcoretruckassist";
+
+
+export interface IMilesState {
+    items: MilesByUnitResponse[];
+    loading: boolean;
+    error: any;
+    tableViewData: ITableData[];
+    selectedTab: eMileTabs;
+    activeViewMode: eActiveViewMode, 
 }

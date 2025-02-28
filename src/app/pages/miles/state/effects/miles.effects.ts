@@ -1,9 +1,15 @@
+// External Libraries
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { catchError, map, exhaustMap } from 'rxjs/operators';
-import * as MilesAction from '../actions/miles.actions';
-import { MilesService } from 'appcoretruckassist';  // Tvoj servis za API pozive
+
+// Actions
+import * as MilesAction from '@pages/miles/state/actions/miles.actions';
+
+// Services
+import { MilesService } from 'appcoretruckassist';
+  
 
 @Injectable()
 export class MilesEffects {
@@ -12,7 +18,7 @@ export class MilesEffects {
     private milesService: MilesService
   ) {}
 
-  loadItems$ = createEffect(() =>
+  public loadItems$ = createEffect(() =>
     this.actions$.pipe(
       ofType(MilesAction.getLoadsPayload),  
       exhaustMap(() =>  

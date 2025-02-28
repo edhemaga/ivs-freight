@@ -1,34 +1,40 @@
+// External Libraries
 import { createAction, props } from '@ngrx/store';
+
+// Constants 
 import { MilesStoreConstants } from '@pages/miles/consts';
+
+// Enums
 import { eMileTabs } from '@pages/miles/enums';
-import {  MilesByUnitResponse, MilesByUnitResponsePagination } from 'appcoretruckassist';
+
+// Models
+import { MilesByUnitResponse } from 'appcoretruckassist';
 
 export const getLoadsPayload = createAction(
-  '[Miles] Get Miles List'
+  MilesStoreConstants.LOAD_MILES_INITAL,
 );
 
 export const getLoadsPayloadSuccess = createAction(
-  '[Miles] Get Miles List Success',
+  MilesStoreConstants.LOAD_MILES_SUCCESS,
   props<{ params: any }>() 
 );
 
 export const getLoadsPayloadError = createAction(
-  '[Miles] Get Miles List Error',
+  MilesStoreConstants.LOAD_MILES_FAILURE,
   props<{ error: any }>()
 );
 
 export const loadMilesSuccess = createAction(
-  '[Miles] Load Miles Success',
+  MilesStoreConstants.LOAD_MILES_SUCCESS,
   props<{ miles: MilesByUnitResponse[] }>() 
 );
 
-
 export const milesTabChange = createAction(
   MilesStoreConstants.MILES_TAB_CHANGE,
-  props<{ selectedTab: eMileTabs }>() // Passing the selectedTab as a payload
+  props<{ selectedTab: eMileTabs }>() 
 );
 
 export const updateTruckCounts = createAction(
-  '[Miles] Update Truck Counts', 
+  MilesStoreConstants.UPDATE_TRUCK_COUNTS, 
   props<{ activeTruckCount: number, inactiveTruckCount: number }>()
 );

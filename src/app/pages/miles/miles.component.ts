@@ -1,21 +1,31 @@
+// External Libraries
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { CommonModule } from '@angular/common';
+
+// Feature Selectors
 import {
     selectTableViewData,
     selectSelectedTab,
     selectMilesItems,
     activeViewModeSelector,
 } from '@pages/miles/state/selectors/miles.selectors';
-import { MilesState } from './state/reducers/miles.reducer';
-import { CommonModule } from '@angular/common';
+
+// Shared Components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
-import { MilesByUnitResponse } from 'appcoretruckassist';
+
+// Feature Services
 import { MilesStoreService } from './state/services/miles-store.service';
-import { eMileTabs } from './enums';
-import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
+
+// Enums 
+import { eMileTabs } from '@pages/miles/enums';
 import { TableStringEnum } from '@shared/enums';
+
+// Models
+import { MilesByUnitResponse } from 'appcoretruckassist';
+import { IMilesState } from '@pages/miles/models';
 
 @Component({
     selector: 'app-miles',
@@ -35,7 +45,7 @@ export class MilesComponent implements OnInit {
     public selectedTab$: Observable<eMileTabs>;
     public activeViewMode$: Observable<string>
     constructor(
-        private store: Store<MilesState>,
+        private store: Store<IMilesState>,
         private milesStoreService: MilesStoreService
     ) {}
 

@@ -1,32 +1,29 @@
-import { createSelector } from '@ngrx/store';
-import { MilesState } from '../reducers/miles.reducer';
+// External Libraries
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+
+// Enums 
 import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
-export const selectMilesState = (state: any) => state.miles;
+// Models
+import { IMilesState } from '@pages/miles/models';
 
-export const getMilesListSelector = createSelector(
-  selectMilesState,
-  (state: MilesState) => state.items
-);
+export const milesFeatureKey: string = 'miles';
 
-export const selectMilesLoading = createSelector(
-  selectMilesState,
-  (state: MilesState) => state.loading
-);
+export const selectMilesState = createFeatureSelector<IMilesState>(milesFeatureKey);
 
 export const selectMilesItems = createSelector(
   selectMilesState,
-  (state: MilesState) => state.items  
+  (state: IMilesState) => state.items  
 )
 
 export const selectTableViewData = createSelector(
   selectMilesState,
-  (state: MilesState) => state.tableViewData  
+  (state: IMilesState) => state.tableViewData  
 );
 
 export const selectSelectedTab = createSelector(
   selectMilesState,
-  (state: MilesState) => state.selectedTab 
+  (state: IMilesState) => state.selectedTab 
 );
 
 export const activeViewModeSelector = createSelector(selectMilesState, (state) => {

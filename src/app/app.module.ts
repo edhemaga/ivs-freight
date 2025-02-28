@@ -57,9 +57,7 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MilesEffects } from '@pages/miles/state/effects/miles.effects';
-import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
-// import { MilesEffects } from '@pages/miles/state/effects/miles.effects';
-// import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
+import { milesReducer } from '@pages/miles/state/reducers/miles.reducer'; 
 
 export const appConfig: ApplicationConfig = {
     providers: [
