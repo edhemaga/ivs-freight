@@ -30,7 +30,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 
 // enums
-import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
 // helpers
 import { RepairShopDetailsCardHelper } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/helpers';
@@ -99,8 +99,6 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createForm();
 
-        this.getRepairShopsDropdownList();
-
         this.getCurrentIndex();
     }
 
@@ -118,7 +116,7 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
         this.repairShopCurrentIndex = currentIndex;
     }
 
-    public getRepairShopsDropdownList(): void {
+    private getRepairShopsDropdownList(): void {
         this.repairShopDropdownList = this.repairMinimalListQuery
             .getAll()
             .map((repairShop: RepairShopShortResponse) => {
@@ -144,13 +142,13 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
                     status,
                     isRepairShopDetails: true,
                     svg: !status
-                        ? RepairShopDetailsStringEnum.CLOSED_ROUTE
+                        ? eRepairShopDetails.CLOSED_ROUTE
                         : companyOwned
-                        ? RepairShopDetailsStringEnum.COMPANY_OWNED_ROUTE
-                        : pinned
-                        ? RepairShopDetailsStringEnum.STAR_ROUTE
-                        : RepairShopDetailsStringEnum.EMPTY_STRING,
-                    folder: RepairShopDetailsStringEnum.COMMON,
+                          ? eRepairShopDetails.COMPANY_OWNED_ROUTE
+                          : pinned
+                            ? eRepairShopDetails.STAR_ROUTE
+                            : eRepairShopDetails.EMPTY_STRING,
+                    folder: eRepairShopDetails.COMMON,
                 };
             });
 
@@ -160,18 +158,18 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
             );
     }
 
-    public onSelectedShop(event: RepairShopResponse): void {
+    private onSelectedShop(event: RepairShopResponse): void {
         if (event?.id !== this._repairShop.id)
             this.detailsPageService.getDataDetailId(event.id);
     }
 
-    public onChangeShop(action: string): void {
+    private onChangeShop(action: string): void {
         let currentIndex = this.repairShopDropdownList?.findIndex(
             (repairShop) => repairShop.id === this._repairShop.id
         );
 
         switch (action) {
-            case RepairShopDetailsStringEnum.PREVIOUS:
+            case eRepairShopDetails.PREVIOUS:
                 currentIndex = --currentIndex;
 
                 if (currentIndex !== -1) {
@@ -183,7 +181,7 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
                 }
 
                 break;
-            case RepairShopDetailsStringEnum.NEXT:
+            case eRepairShopDetails.NEXT:
                 currentIndex = ++currentIndex;
 
                 if (
@@ -208,10 +206,10 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
         type: string;
     }): void {
         switch (event.type) {
-            case RepairShopDetailsStringEnum.SELECT_REPAIR_SHOP:
-                if (event.event.name === RepairShopDetailsStringEnum.ADD_NEW) {
+            case eRepairShopDetails.SELECT_REPAIR_SHOP:
+                if (event.event.name === eRepairShopDetails.ADD_NEW) {
                     this.modalService.openModal(RepairShopModalComponent, {
-                        size: RepairShopDetailsStringEnum.MEDIUM,
+                        size: eRepairShopDetails.MEDIUM,
                     });
 
                     return;
@@ -220,7 +218,7 @@ export class RepairShopDetailsCard implements OnInit, OnDestroy {
                 this.onSelectedShop(event.event);
 
                 break;
-            case RepairShopDetailsStringEnum.CHANGE_REPAIR_SHOP:
+            case eRepairShopDetails.CHANGE_REPAIR_SHOP:
                 this.onChangeShop(event.event as string);
 
                 break;

@@ -1,0 +1,19 @@
+<div class="fuel-stop-details-container">
+    @for (item of fuelDetailsConfig; track item.id) {
+        <app-ta-details-header
+            [route]="'/list/fuel'"
+            [tooltipHeaderName]="'Back to List'"
+            [headerText]="item.name"
+            [hasIcon]="item.icon"
+            [counterData]="item.length"
+            [options]="detailsDropdownOptions"
+            [customText]="item.customText"
+            [statusInactive]="item.status"
+            [hasDateArrow]="true"
+        >
+        </app-ta-details-header>
+    }
+
+    <app-fuel-stop-details-item [detailsConfig]="fuelDetailsConfig">
+    </app-fuel-stop-details-item>
+</div>

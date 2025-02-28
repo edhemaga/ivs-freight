@@ -22,7 +22,7 @@ import { MapsService } from '@shared/services/maps.service';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
@@ -134,6 +134,6 @@ export class RepairShopDetailsMapCoverCardComponent implements AfterViewInit {
             JSON.stringify(repairTableView)
         );
 
-        this.router.navigate([RepairShopDetailsStringEnum.REPAIR_LIST_ROUTE]);
+        this.router.navigate([eRepairShopDetails.REPAIR_LIST_ROUTE]);
     }
 }
