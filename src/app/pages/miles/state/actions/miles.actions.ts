@@ -10,14 +10,16 @@ import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Models
 import { MilesByUnitResponse } from 'appcoretruckassist';
+import { IStateFilters } from '@shared/models'; 
 
 export const getLoadsPayload = createAction(
   MilesStoreConstants.LOAD_MILES_INITAL,
+  props<{ filter: IStateFilters }>() 
 );
 
 export const getLoadsPayloadSuccess = createAction(
   MilesStoreConstants.LOAD_MILES_SUCCESS,
-  props<{ params: any }>() 
+  props<{ miles: MilesByUnitResponse[] }>() 
 );
 
 export const getLoadsPayloadError = createAction(
@@ -43,4 +45,9 @@ export const updateTruckCounts = createAction(
 export const activeViewMode = createAction(
   MilesStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
     props<{ activeViewMode: eActiveViewMode }>()
+);
+
+export const filters = createAction(
+  MilesStoreConstants.ACTION_SET_FILTERS,
+    props<{ filters: IStateFilters, selectedTab: eMileTabs }>()
 );

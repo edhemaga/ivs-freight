@@ -3,7 +3,7 @@ import { eActiveViewMode } from "@pages/load/pages/load-table/enums";
 import { eMileTabs } from "@pages/miles/enums";
 
 // Shared Models
-import { ITableData } from "@shared/models";
+import { IStateFilters, ITableData } from "@shared/models";
 
 // External Services or Models
 import { MilesByUnitResponse } from "appcoretruckassist";
@@ -16,4 +16,5 @@ export interface IMilesState {
     tableViewData: ITableData[];
     selectedTab: eMileTabs;
     activeViewMode: eActiveViewMode, 
+    filters: IStateFilters
 }

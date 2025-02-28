@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 // Feature Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
-import { activeViewMode, loadMilesSuccess, milesTabChange, updateTruckCounts } from '@pages/miles/state/actions/miles.actions';
+import { activeViewMode, filters, milesTabChange, updateTruckCounts } from '@pages/miles/state/actions/miles.actions';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -13,7 +13,7 @@ import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 import { MilesToolbarTabs } from '@pages/miles/consts';
 
 // Models
-import { IMilesState } from '@pages/miles/models';
+import { IMilesState } from '@pages/miles/models'; 
 
 export const initialState: IMilesState = {
     items: [],
@@ -21,7 +21,8 @@ export const initialState: IMilesState = {
     error: null,
     tableViewData: MilesToolbarTabs,
     selectedTab: eMileTabs.Active,
-    activeViewMode: eActiveViewMode.List
+    activeViewMode: eActiveViewMode.List,
+    filters: {}
 };
 
 export const milesReducer = createReducer(
@@ -30,17 +31,19 @@ export const milesReducer = createReducer(
         ...state,
         loading: true,
     })),
-    on(MilesAction.getLoadsPayloadSuccess, (state, { params }) => ({
-        ...state,
-        items: params,
-        loading: false,
-    })),
+    on(MilesAction.getLoadsPayloadSuccess, (state, { miles }) => {
+        return ({
+            ...state,
+            items: miles,
+            loading: false,
+        })
+    }),
     on(MilesAction.getLoadsPayloadError, (state, { error }) => ({
         ...state,
         loading: false,
         error,
     })),
-    on(loadMilesSuccess, (state, { miles }) => ({
+    on(MilesAction.loadMilesSuccess, (state, { miles }) => ({
         ...state,
         items: miles,
     })),
@@ -52,6 +55,11 @@ export const milesReducer = createReducer(
         ...state,
         activeViewMode
     })),
+    on(filters, (state, { filters, selectedTab }) => ({
+        ...state,
+        filters,
+        selectedTab
+    })), 
     on(
         updateTruckCounts,
         (state, { activeTruckCount, inactiveTruckCount }) => ({

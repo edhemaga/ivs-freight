@@ -30,3 +30,8 @@ export const activeViewModeSelector = createSelector(selectMilesState, (state) =
     const { activeViewMode } = state || {};
     return eActiveViewMode[activeViewMode];
 });
+
+export const filterSelector = createSelector(selectMilesState, (state) => {
+  const { filters } = state || {};
+  return filters;
+});

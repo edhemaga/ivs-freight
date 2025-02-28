@@ -3,7 +3,8 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 // Models
-import { MilesByUnitListResponse, MilesService } from 'appcoretruckassist';
+import { MilesByUnitListResponse } from 'appcoretruckassist';
+import { IFilterAction } from 'ca-components';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -11,14 +12,14 @@ import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Constants
 import { MilesStoreConstants } from '@pages/miles/consts';
+import { FilterHelper } from '@shared/utils/helpers';
 
 @Injectable({
     providedIn: 'root',
 })
 export class MilesStoreService {
     constructor(
-        private store: Store,
-        private milesStoreService: MilesService
+        private store: Store
     ) {}
 
     public listChange(selectedTab: eMileTabs): void {
@@ -26,10 +27,6 @@ export class MilesStoreService {
             type: MilesStoreConstants.MILES_TAB_CHANGE,
             selectedTab,
         });
-        const tab = selectedTab === eMileTabs.Active ? 1 : 0;
-        this.milesStoreService
-            .apiMilesListGet(null, tab)
-            .subscribe((response) => this.getList(response));
     }
 
     public getList(data: MilesByUnitListResponse): void {
@@ -50,6 +47,14 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
             activeViewMode,
+        });
+    }
+
+    public dispatchFilters(filters: IFilterAction, oldFilter: {}, selectedTab: eMileTabs): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SET_FILTERS,
+            filters: FilterHelper.mapFilters(filters, oldFilter),
+            selectedTab
         });
     }
 }

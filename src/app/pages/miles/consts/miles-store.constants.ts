@@ -11,4 +11,6 @@ export class MilesStoreConstants {
     public static UPDATE_TRUCK_COUNTS = `${this.COMPONENT_NAME_KEY} UPADE_TRUCK_COUNTS`;
 
     static ACTION_SET_ACTIVE_VIEW_MODE = `${this.COMPONENT_NAME_KEY} SET ACTIVE VIEW MODE`;
+
+    static ACTION_SET_FILTERS = `${this.COMPONENT_NAME_KEY} SET FILTERS`;
 }

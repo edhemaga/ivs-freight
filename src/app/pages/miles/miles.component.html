@@ -1,4 +1,8 @@
-<app-new-table-toolbar [title]="'Miles'" [leftSide]="leftSide">
+<app-new-table-toolbar
+    [title]="'Miles'"
+    [leftSide]="leftSide"
+    [showPlusIcon]="false"
+>
     <ng-template #leftSide>
         <app-toolbar-tabs-wrapper
             [data]="tableViewData$ | async"
@@ -8,35 +12,21 @@
             (onTabChange)="onToolBarAction($event)"
             class="d-flex align-items-center"
         ></app-toolbar-tabs-wrapper>
-        <ng-container *ngTemplateOutlet="divider"></ng-container>
-
-        <!-- <div class="d-flex gap-1 align-items-center">
-        <app-ca-search-multiple-states
-            [searchType]="'tabel'"
-            [selectedTabData]="store?.activeTableData"
-            [toolbarSearch]="true"
-        ></app-ca-search-multiple-states>
 
         <ng-container *ngTemplateOutlet="divider"></ng-container>
 
-        @if (selectedTab !== 'Template') {
+        <div class="d-flex gap-1 align-items-center">
+            <app-ca-search-multiple-states
+                [searchType]="'tabel'"
+                [selectedTabData]="store?.activeTableData"
+                [toolbarSearch]="true"
+            ></app-ca-search-multiple-states>
+
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+
             <app-ca-filter-dropdown
                 type="TimeFilter"
                 subType="past"
-                (setFilter)="setFilters($event)"
-            >
-            </app-ca-filter-dropdown>
-
-            <app-ca-filter-dropdown
-                type="Dispatcher"
-                [list]="store.dispatcherList"
-                (setFilter)="setFilters($event)"
-            >
-            </app-ca-filter-dropdown>
-
-            <app-ca-filter-dropdown
-                type="Status"
-                [list]="store.statusList"
                 (setFilter)="setFilters($event)"
             >
             </app-ca-filter-dropdown>
@@ -47,13 +37,12 @@
                 icon="dollar"
                 filterTitle="Money Filter"
                 [isMoneyFilter]="true"
-                [isLoadType]="true"
+                [isLoadType]="false"
                 (setFilter)="setFilters($event)"
                 (clearAll)="setFilters($event)"
             >
             </app-ca-filter>
-        }
-    </div> -->
+        </div>
     </ng-template>
 
     <ng-template #divider>
@@ -65,8 +54,7 @@
     </ng-template>
 </app-new-table-toolbar>
 
-
 @for (mile of miles$ | async; track mile.id) {
-    {{mile.id}}: {{mile.truck.truckNumber}}
+    {{ mile.id }}: {{ mile.truck.truckNumber }}
     <br />
 }
