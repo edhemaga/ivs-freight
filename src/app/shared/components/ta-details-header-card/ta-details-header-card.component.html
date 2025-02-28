@@ -1,7 +1,4 @@
-<div
-    class="details-header-wrapper"
-    [class.details-header-wrapper-repair-shop]="repairHeader"
->
+<div class="details-header-wrapper">
     <div class="details-header-wrapper-switcher">
         <div class="inactive-icon-input">
             <div
@@ -9,7 +6,7 @@
                 class="current-active-item"
                 [ngClass]="{
                     'single-data': options.length === 1,
-                    closed: searchName.includes('Closed')
+                    closed: searchName.includes('Closed'),
                 }"
                 (click)="onPickItem()"
                 [ngbTooltip]="showDropdownTooltip"
@@ -66,7 +63,7 @@
                             class="current-active-owner"
                             [ngClass]="{
                                 'company-owned': searchName === 'Company Owned',
-                                closed: searchName.includes('Closed')
+                                closed: searchName.includes('Closed'),
                             }"
                             src="{{
                                 customPinnedSvg
@@ -91,7 +88,7 @@
                     dropdownWidthClass: 'w-col-366',
                     textTransform: 'capitalize',
                     blackInput: true,
-                    customClass: 'input-32-font-20 details-pages'
+                    customClass: 'input-32-font-20 details-pages',
                 }"
                 [options]="options"
                 [activeItem]="activeItem ?? options[0]"
@@ -99,7 +96,7 @@
                 [isDetailsPages]="selectedDropdown"
                 [canAddNew]="true"
                 [canOpenModal]="true"
-                (selectedItem)="onSelecItem($event)"
+                (selectedItem)="onSelectItem($event)"
             >
             </app-ta-input-dropdown>
         </div>
@@ -147,80 +144,16 @@
         </div>
     </div>
 
-    <!-- Second Input -->
-    <div *ngIf="haveTwoInput" class="details-header-wrapper-switcher">
-        <div class="inactive-icon-input">
-            <div
-                *ngIf="!selectedDropdownSecond"
-                class="current-active-item"
-                [ngClass]="{ 'single-data': optionsSecondInput.length == 1 }"
-                (click)="onPickSecondInput()"
-                ngbTooltip
-                [mainTooltip]="'Search Store'"
-                position="top"
-                tooltipBackground="#6C6C6C"
-            >
-                >
-                <p class="ta-font-bold text-color-black current-active-name">
-                    {{ (optionsSecondInput | detailActiveItem).name }}
-                </p>
-                <span
-                    ngbTooltip
-                    [mainTooltip]="'Pinned'"
-                    position="top"
-                    [tooltipBackground]="'#6C6C6C'"
-                >
-                    <svg-icon
-                        class="current-active-owner"
-                        src="{{ (optionsSecondInput | detailActiveItem).svg }}"
-                    ></svg-icon>
-                </span>
-            </div>
-            <app-ta-input-dropdown
-                class="dropInput"
-                *ngIf="selectedDropdownSecond && optionsSecondInput.length > 1"
-                [formControl]="inputFormControl"
-                [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-366',
-                    textTransform: 'capitalize',
-                    customClass: 'input-32-font-20 details-pages'
-                }"
-                [options]="optionsSecondInput"
-                [template]="'details-template'"
-                [isDetailsPages]="selectedDropdownSecond"
-                (selectedItem)="onSelectItem($event)"
-            >
-            </app-ta-input-dropdown>
+    <!-- Additional Title -->
+
+    @if (additionalTitle) {
+        <div class="d-flex align-items-center additional-title-container">
+            <p class="m-0 ta-font-semi-bold text-color-black text-size-18">
+                {{ additionalTitle }}
+            </p>
         </div>
-        <div class="arrows" *ngIf="optionsSecondInput.length > 1">
-            <span
-                ngbTooltip
-                [mainTooltip]="tooltipPrevious"
-                position="top"
-                tooltipBackground="#6C6C6C"
-            >
-                <svg-icon
-                    class="arrow-left"
-                    src="assets/svg/common/arrow-left.svg"
-                >
-                </svg-icon>
-            </span>
-            <span
-                tooltipBackground="#6C6C6C"
-                ngbTooltip
-                [mainTooltip]="tooltipNext"
-                position="top"
-            >
-                <svg-icon
-                    class="arrow-right"
-                    src="assets/svg/common/arrow-left.svg"
-                ></svg-icon>
-            </span>
-        </div>
-    </div>
+    }
+
     <div class="details-header-wrapper-container">
         <div class="details-header-wrapper">
             <ng-content></ng-content>
@@ -300,27 +233,6 @@
                     </div>
                 </span>
             </ng-container>
-
-            <span
-                style="margin-left: 130px"
-                *ngIf="lastEdit"
-                tooltipBackground="#6C6C6C"
-                ngbTooltip
-                mainTooltip="Last Used"
-                [tooltipMarginTop]="'6px'"
-                position="bottom"
-            >
-                <div
-                    *ngIf="lastEdit"
-                    class="details-header-wrapper-data-item bottom"
-                >
-                    <svg-icon
-                        class="date-terminated"
-                        src="assets/svg/common/ic_violation_last-edit.svg"
-                    ></svg-icon>
-                    <span class="vin-text">{{ lastEdit }}</span>
-                </div>
-            </span>
         </div>
     </div>
 </div>

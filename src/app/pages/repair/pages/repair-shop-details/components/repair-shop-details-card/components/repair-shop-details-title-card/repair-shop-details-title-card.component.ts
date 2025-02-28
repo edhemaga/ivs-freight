@@ -16,6 +16,14 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 // pipes
 import { FormatDatePipe } from '@shared/pipes';
 
+// enums
+import {
+    eBusinessStatus,
+    eGeneralActions,
+    eStringPlaceholder,
+} from '@shared/enums';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
+
 // models
 import {
     RepairShopListDto,
@@ -56,9 +64,16 @@ export class RepairShopDetailsTitleCardComponent {
         type: string;
     }>();
 
+    public _cardData: RepairShopListDto;
+
+    // svg routes
     public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
 
-    public _cardData: RepairShopListDto;
+    // enums
+    public eGeneralActions = eGeneralActions;
+    public eStringPlaceholder = eStringPlaceholder;
+    public eBusinessStatus = eBusinessStatus;
+    public eRepairShopDetails = eRepairShopDetails;
 
     public handleCardChanges(
         event: RepairShopMinimalResponse,

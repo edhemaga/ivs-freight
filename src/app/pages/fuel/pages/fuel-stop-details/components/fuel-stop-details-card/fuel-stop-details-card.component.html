@@ -1,0 +1,66 @@
+@if (_fuelStop) {
+    <div class="cards-item-wrapper-1 fuel-stop-details-card">
+        <!-- Title Card -->
+
+        <app-fuel-stop-details-title-card
+            [fuelStopCurrentIndex]="fuelStopCurrentIndex"
+            [fuelStopDropdownList]="fuelStopDropdownList"
+            [cardData]="{
+                createdAt: _fuelStop?.createdAt,
+                lastUsed: _fuelStop?.lastUsed,
+                deactivatedAt: _fuelStop?.deactivatedAt,
+                businessName: _fuelStop?.businessName,
+                favourite: _fuelStop?.favourite,
+                isClosed: _fuelStop?.isClosed,
+                phone: _fuelStop?.phone,
+                address: _fuelStop?.address?.address,
+                store: _fuelStop?.store,
+            }"
+            (cardValuesEmitter)="handleFuelStopDetailsTitleCardEmit($event)"
+        ></app-fuel-stop-details-title-card>
+
+        <!-- Additional Cards -->
+
+        <div class="additional-cards-container">
+            <div class="fuel-stop-details-cards">
+                <!-- Last Fuel Price Card -->
+
+                <app-fuel-stop-details-last-fuel-price-card>
+                </app-fuel-stop-details-last-fuel-price-card>
+
+                <!-- Fuel Expense Card -->
+
+                <app-fuel-stop-details-fuel-expense-card
+                    [cardData]="{ id: _fuelStop?.id }"
+                >
+                </app-fuel-stop-details-fuel-expense-card>
+
+                <!-- Map & Cover Photo Card -->
+
+                <app-fuel-stop-details-map-cover-card [cardData]="_fuelStop">
+                </app-fuel-stop-details-map-cover-card>
+
+                <!-- Note Card -->
+
+                <div [formGroup]="noteForm">
+                    <app-ta-input-note
+                        formControlName="note"
+                        [isVisibleNote]="
+                            _fuelStop?.note && _fuelStop?.note !== 'null'
+                                ? _fuelStop?.note
+                                : false
+                        "
+                        [note]="
+                            _fuelStop?.note && _fuelStop?.note !== 'null'
+                                ? _fuelStop?.note
+                                : eStringPlaceholder.EMPTY
+                        "
+                        [noteType]="'details-card'"
+                        [entityId]="_fuelStop?.id"
+                        [entityType]="'FuelStopStore'"
+                    ></app-ta-input-note>
+                </div>
+            </div>
+        </div>
+    </div>
+}
