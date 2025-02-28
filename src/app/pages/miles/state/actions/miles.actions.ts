@@ -49,5 +49,5 @@ export const activeViewMode = createAction(
 
 export const filters = createAction(
   MilesStoreConstants.ACTION_SET_FILTERS,
-    props<{ filters: IStateFilters, selectedTab: eMileTabs }>()
+    props<{ filters: IStateFilters }>()
 );

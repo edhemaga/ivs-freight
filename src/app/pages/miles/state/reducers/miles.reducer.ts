@@ -55,10 +55,9 @@ export const milesReducer = createReducer(
         ...state,
         activeViewMode
     })),
-    on(filters, (state, { filters, selectedTab }) => ({
+    on(filters, (state, { filters }) => ({
         ...state,
-        filters,
-        selectedTab
+        filters
     })), 
     on(
         updateTruckCounts,

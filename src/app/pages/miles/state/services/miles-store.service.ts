@@ -5,6 +5,7 @@ import { Store } from '@ngrx/store';
 // Models
 import { MilesByUnitListResponse } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
+import { IStateFilters } from '@shared/models';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -50,11 +51,10 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchFilters(filters: IFilterAction, oldFilter: {}, selectedTab: eMileTabs): void {
+    public dispatchFilters(filters: IFilterAction, currentFilter: IStateFilters): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SET_FILTERS,
-            filters: FilterHelper.mapFilters(filters, oldFilter),
-            selectedTab
+            filters: FilterHelper.mapFilters(filters, currentFilter)
         });
     }
 }

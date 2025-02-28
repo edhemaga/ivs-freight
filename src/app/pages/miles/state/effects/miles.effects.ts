@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { catchError, map, exhaustMap } from 'rxjs/operators';
+import { catchError, map, exhaustMap, take } from 'rxjs/operators';
 
 // Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
@@ -9,12 +9,15 @@ import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 // Services
 import { MilesService } from 'appcoretruckassist';
 import { eMileTabs } from '@pages/miles/enums';
+import { selectSelectedTab } from '../selectors/miles.selectors';
+import { Store } from '@ngrx/store';
 
 @Injectable()
 export class MilesEffects {
     constructor(
         private actions$: Actions,
-        private milesService: MilesService
+        private milesService: MilesService,
+        private store: Store
     ) {}
 
     public getInitalMilesList$ = createEffect(() =>
@@ -41,21 +44,17 @@ export class MilesEffects {
             exhaustMap((tabs) => {
                 const tab = tabs.selectedTab === eMileTabs.Active ? 1 : 0;
 
-                return this.milesService
-                    .apiMilesListGet(null, tab)
-                    .pipe(
-                        map((response) => {
-                            return MilesAction.loadMilesSuccess({
-                                miles: response.pagination.data,
-                            });
-                        }),
-                        catchError((error) => {
-                            console.error(error);
-                            return of(
-                                MilesAction.getLoadsPayloadError({ error })
-                            );
-                        })
-                    );
+                return this.milesService.apiMilesListGet(null, tab).pipe(
+                    map((response) => {
+                        return MilesAction.loadMilesSuccess({
+                            miles: response.pagination.data,
+                        });
+                    }),
+                    catchError((error) => {
+                        console.error(error);
+                        return of(MilesAction.getLoadsPayloadError({ error }));
+                    })
+                );
             })
         )
     );
@@ -64,25 +63,32 @@ export class MilesEffects {
         this.actions$.pipe(
             ofType(MilesAction.filters),
             exhaustMap((action) => {
-                const { filters, selectedTab } = action;
+                const { filters } = action;
                 const { dateFrom, dateTo } = filters;
-                const tab = selectedTab === eMileTabs.Active ? 1 : 0; 
-                
-                return this.milesService
-                    .apiMilesListGet(null, tab, dateFrom, dateTo)
-                    .pipe(
-                        map((response) => {
-                            return MilesAction.loadMilesSuccess({
-                                miles: response.pagination.data,
-                            });
-                        }),
-                        catchError((error) => {
-                            console.error(error);
-                            return of(
-                                MilesAction.getLoadsPayloadError({ error })
+
+                return this.store.select(selectSelectedTab).pipe(
+                    take(1), 
+                    exhaustMap((selectedTab) => {
+                        const tab = selectedTab === eMileTabs.Active ? 1 : 0;
+
+                        return this.milesService
+                            .apiMilesListGet(null, tab, dateFrom, dateTo)
+                            .pipe(
+                                map((response) => {
+                                    return MilesAction.loadMilesSuccess({
+                                        miles: response.pagination.data
+                                    });
+                                }),
+                                catchError((error) => {
+                                    return of(
+                                        MilesAction.getLoadsPayloadError({
+                                            error,
+                                        })
+                                    ); 
+                                })
                             );
-                        })
-                    );
+                    })
+                );
             })
         )
     );

@@ -57,7 +57,6 @@ export class MilesComponent implements OnInit {
     public selectedTab$: Observable<eMileTabs>;
     public activeViewMode$: Observable<string>;
     private filter: IStateFilters = {};
-    private selectedTab: eMileTabs;
     constructor(
         private store: Store<IMilesState>,
         private milesStoreService: MilesStoreService
@@ -82,11 +81,10 @@ export class MilesComponent implements OnInit {
         this.miles$ = this.store.select(selectMilesItems);
         this.activeViewMode$ = this.store.select(activeViewModeSelector);
         this.tableViewData$ = this.store.select(selectTableViewData);
-        this.selectedTab$ = this.store.select(selectSelectedTab);
-        this.selectedTab$.subscribe(val => this.selectedTab = val) 
+        this.selectedTab$ = this.store.select(selectSelectedTab); 
     }
 
     public setFilters(filters: IFilterAction): void {
-        this.milesStoreService.dispatchFilters(filters, this.filter, this.selectedTab);
+        this.milesStoreService.dispatchFilters(filters, this.filter);
     }
 }
