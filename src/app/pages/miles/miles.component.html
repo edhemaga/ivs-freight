@@ -4,6 +4,7 @@
             [data]="tableViewData$ | async"
             [selectedTab]="selectedTab$ | async"
             [viewMode]="activeViewMode$ | async"
+            [shouldAddMap]="true"
             (onTabChange)="onToolBarAction($event)"
             class="d-flex align-items-center"
         ></app-toolbar-tabs-wrapper>
