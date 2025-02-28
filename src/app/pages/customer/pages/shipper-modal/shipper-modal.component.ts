@@ -357,7 +357,7 @@ export class ShipperModalComponent
     public onModalAction(action: string): void {
         this.activeAction = action;
 
-        if (action === TaModalActionEnum.CLOSE) {
+        if (action === TaModalActionEnum.CLOSE) {   
             switch (this.editData?.key) {
                 case LoadModalStringEnum.LOAD_MODAL: 
                     this.ngbActiveModal.close();
@@ -412,8 +412,6 @@ export class ShipperModalComponent
                     this.updateShipper(this.editData.id);
                 else
                     this.addShipper();
-
-                this.loadStoreService.dispatchGetCreateLoadModalData();
             }
             // Delete
             if (action === TaModalActionEnum.DELETE && this.editData)

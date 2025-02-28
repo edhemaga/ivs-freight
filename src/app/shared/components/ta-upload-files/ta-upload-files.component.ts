@@ -10,31 +10,31 @@ import {
     ViewChildren,
     ViewEncapsulation,
 } from '@angular/core';
-import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
-//Modules
+import { Subject, takeUntil } from 'rxjs';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-//Components
+// components
 import { TaUploadDropzoneComponent } from '@shared/components/ta-upload-files/components/ta-upload-dropzone/ta-upload-dropzone.component';
 import { TaUploadFileComponent } from '@shared/components/ta-upload-files/components/ta-upload-file/ta-upload-file.component';
 import { TaUploadFilesCarouselComponent } from '@shared/components/ta-upload-files/components/ta-upload-files-carousel/ta-upload-files-carousel.component';
 
-//Models
+// models
 import { FileEvent } from '@shared/models/file-event.model';
 import { Tags } from '@shared/models/tags.model';
 import { UploadFile } from '@shared/components/ta-upload-files/models/upload-file.model';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 
-//Services
+// services
 import { TaUploadFileService } from '@shared/components/ta-upload-files/services/ta-upload-file.service';
 
-//Enums
-import { FileTypesEnum } from '@shared/components/ta-upload-files/enums/file-types.enum';
+// enums
 import { FilesSizeEnum } from '@shared/components/ta-upload-files/enums/files-size.enum';
-import { eGeneralActions } from '@shared/enums';
+import { eCommonElements, eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-upload-files',
@@ -71,7 +71,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     //General
     @Input() set files(value: UploadFile[]) {
         this._files = value;
-        if (this.type == FileTypesEnum.DETAILS) {
+        if (this.type === eCommonElements.DETAILS) {
             this.modalCarousel?.slideToFile(0);
         }
     }

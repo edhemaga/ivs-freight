@@ -781,6 +781,7 @@
                                         >
                                             @if (
                                                 row.isIncompleteFuelTransaction &&
+                                                row.isIntegratedFuelTransaction &&
                                                 column.name === 'Driver' &&
                                                 !row.driver
                                             ) {
@@ -3830,6 +3831,7 @@
                                     >
                                         @if (
                                             row.isIncompleteFuelTransaction &&
+                                            row.isIntegratedFuelTransaction &&
                                             column.name === 'Driver' &&
                                             !row.driver
                                         ) {
@@ -5359,7 +5361,6 @@
                                                     column?.minWidth ?? 'unset',
                                             }"
                                         >
-
                                             @if (
                                                 row.isIncompleteFuelTransaction &&
                                                 column.title === 'Truck' &&

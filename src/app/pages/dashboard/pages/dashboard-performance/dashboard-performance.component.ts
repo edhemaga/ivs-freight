@@ -530,6 +530,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 data: [...values],
                 type: ChartTypesStringEnum.BAR,
                 barPercentage: 0.9,
+                barThickness: 22,
                 categoryPercentage: 0.5,
                 minBarLength: 0.5,
                 order:

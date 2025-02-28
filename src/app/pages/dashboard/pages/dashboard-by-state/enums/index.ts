@@ -1,1 +1,1 @@
-export * from './by-state-heat-map-colors.enum'
+export * from './by-state-heat-map-colors.enum';

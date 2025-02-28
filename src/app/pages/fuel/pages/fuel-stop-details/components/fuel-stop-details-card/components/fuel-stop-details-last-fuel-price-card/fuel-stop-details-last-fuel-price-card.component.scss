@@ -1,0 +1,98 @@
+@import 'src/theme/variables';
+
+.last-fuel-price {
+    grid-template-columns: repeat(2, 202px);
+    grid-gap: 12px;
+
+    &-item {
+        .total-value {
+            margin-top: 2px;
+        }
+
+        &.disabled {
+            pointer-events: none !important;
+
+            .last-fuel-price-item-progress {
+                &-bar {
+                    &-box {
+                        background: $dark-2 !important;
+                    }
+
+                    .progress-icon {
+                        display: none !important;
+                    }
+                }
+            }
+        }
+
+        .last-fuel-price-item-progress {
+            margin-top: 12px;
+
+            &-bar {
+                position: relative;
+                grid-template-columns: repeat(5, 39px);
+                grid-gap: 2px;
+                margin-bottom: 4px;
+
+                &-box {
+                    height: 8px;
+
+                    &:first-of-type {
+                        border-top-left-radius: 2px;
+                        border-bottom-left-radius: 2px;
+                    }
+
+                    &:last-of-type {
+                        border-top-right-radius: 2px;
+                        border-bottom-right-radius: 2px;
+                    }
+                }
+
+                .progress-icon {
+                    position: absolute;
+                    left: 50%;
+                    top: 50%;
+
+                    transform: translate(-50%, -50%);
+
+                    svg {
+                        circle,
+                        g {
+                            fill: $white;
+                        }
+                    }
+
+                    &.fuel-color-1 {
+                        svg g {
+                            stroke: $ta-green;
+                        }
+                    }
+
+                    &.fuel-color-2 {
+                        svg g {
+                            stroke: $ta-green-6;
+                        }
+                    }
+
+                    &.fuel-color-3 {
+                        svg g {
+                            stroke: $ta-yellow-1;
+                        }
+                    }
+
+                    &.fuel-color-4 {
+                        svg g {
+                            stroke: $ta-orange-4;
+                        }
+                    }
+
+                    &.fuel-color-5 {
+                        svg g {
+                            stroke: $ta-red-10;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

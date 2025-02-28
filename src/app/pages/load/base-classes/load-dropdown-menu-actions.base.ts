@@ -36,6 +36,7 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
                 break;
             case DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE:
             case DropdownMenuStringEnum.CREATE_LOAD_TYPE:
+            case DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE:
                 this.handleCreateLoadOrTemplateAction(action, selectedTab);
 
                 break;

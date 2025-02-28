@@ -21,7 +21,7 @@
                             type: companyData?.divisions?.length
                                 ? 'edit-company'
                                 : 'edit-division',
-                            company: companyData
+                            company: companyData,
                         })
                     "
                 ></svg-icon>
@@ -45,7 +45,7 @@
                         onAction({
                             modalName: 'basic',
                             type: 'new-division',
-                            company: companyData
+                            company: companyData,
                         })
                     "
                 ></svg-icon>
@@ -61,7 +61,7 @@
                         *ngIf="!selectedDropdown"
                         class="current-active-item"
                         [ngClass]="{
-                            'single-data': _optionsCompany?.length === 1
+                            'single-data': _optionsCompany?.length === 1,
                         }"
                         (click)="showDropdown()"
                     >
@@ -101,7 +101,7 @@
                                     : 'w-col-366',
                             textTransform: 'capitalize',
                             customClass:
-                                'input-32 input-32-font-20 details-pages'
+                                'input-32 input-32-font-20 details-pages',
                         }"
                         [options]="_optionsCompany"
                         [template]="'details-template'"
@@ -126,8 +126,8 @@
                             [mainTooltip]="
                                 currentCompanyIndex === 0 ||
                                 currentCompanyIndex === -1
-                                    ? ' '
-                                    : 'Previous'
+                                    ? eStringPlaceholder.EMPTY
+                                    : eGeneralActions.PREVIOUS
                             "
                             position="top"
                             [tooltipBackground]="
@@ -150,8 +150,8 @@
                             [mainTooltip]="
                                 currentCompanyIndex ===
                                 _optionsCompany?.length - 1
-                                    ? ''
-                                    : 'Next'
+                                    ? eStringPlaceholder.EMPTY
+                                    : eGeneralActions.NEXT
                             "
                             [tooltipBackground]="
                                 currentCompanyIndex ===
@@ -278,7 +278,7 @@
             "
             [animationMarginParams]="{
                 marginTop: '0px',
-                marginBottom: '10px'
+                marginBottom: '10px',
             }"
             [customClass]="'detailsPadding'"
         >
@@ -379,7 +379,7 @@
             [hasCounter]="companyData?.departmentContacts?.length"
             [animationMarginParams]="{
                 marginTop: '0px',
-                marginBottom: '10px'
+                marginBottom: '10px',
             }"
             [customClass]="'detailsPadding'"
         >
@@ -427,7 +427,7 @@
             *ngIf="companyData?.bankAccounts?.length"
             [animationMarginParams]="{
                 marginTop: '0px',
-                marginBottom: '10px'
+                marginBottom: '10px',
             }"
             [customClass]="'detailsPadding'"
         >
@@ -478,7 +478,7 @@
             [textBottomPossiton]="'-1px'"
             [animationMarginParams]="{
                 marginTop: '0px',
-                marginBottom: '10px'
+                marginBottom: '10px',
             }"
             [customClass]="'detailsPadding'"
         >
@@ -509,21 +509,21 @@
                                 [src]="
                                     bankC.cardType
                                         | bankCardTypesPipe
-                                        | taSvg : 'common'
+                                        | taSvg: 'common'
                                 "
                             ></svg-icon>
 
                             <p class="item-body-cvc">
-                                {{ bankC?.card | hidePassword : 'card' }}
+                                {{ bankC?.card | hidePassword: 'card' }}
                             </p>
                         </div>
 
                         <p class="item-body-cvc">
-                            {{ bankC?.cvc | hidePassword : 'cvc' }}
+                            {{ bankC?.cvc | hidePassword: 'cvc' }}
                         </p>
                         <p class="item-body-nick-name">
                             {{
-                                bankC?.expireDate | formatDateP : 'short-format'
+                                bankC?.expireDate | formatDateP: 'short-format'
                             }}
                         </p>
                     </div>
@@ -536,7 +536,7 @@
             [isCardOpen]="true"
             [animationMarginParams]="{
                 marginTop: '0px',
-                marginBottom: '10px'
+                marginBottom: '10px',
             }"
             [customClass]="'detailsPadding'"
         >
@@ -616,7 +616,7 @@
             [isCardOpen]="true"
             [animationMarginParams]="{
                 marginTop: '0px',
-                marginBottom: '10px'
+                marginBottom: '10px',
             }"
             [customClass]="'detailsPadding'"
         >

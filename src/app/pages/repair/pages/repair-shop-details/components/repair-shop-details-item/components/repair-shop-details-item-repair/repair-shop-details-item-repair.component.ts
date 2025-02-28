@@ -30,7 +30,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
-import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // pipes
@@ -78,7 +78,8 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
     public _repairList: RepairResponse[] = [];
 
     public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
-    public repairShopDetailsStringEnum = RepairShopDetailsStringEnum;
+
+    public eRepairShopDetails = eRepairShopDetails;
 
     public repairHeaderItems: string[] = [];
     public repairDropdownHeaderItems: string[] = [];
@@ -107,7 +108,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
             .subscribe({
                 next: (res) => {
                     if (
-                        res?.type === RepairShopDetailsStringEnum.DELETE &&
+                        res?.type === eRepairShopDetails.DELETE &&
                         res?.template === TableStringEnum.REPAIR_2
                     )
                         this.resetIndexes();
@@ -167,13 +168,13 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
 
     public handleActionClick(type: string, index?: number): void {
         switch (type) {
-            case RepairShopDetailsStringEnum.FINISH_ORDER:
+            case eRepairShopDetails.FINISH_ORDER:
                 const repair = this._repairList[index];
 
                 this.handleFinishOrderClick(repair);
 
                 break;
-            case RepairShopDetailsStringEnum.DOCUMENT:
+            case eRepairShopDetails.DOCUMENT:
                 this.handleDocumentDrawerClick(index);
 
                 break;
@@ -294,19 +295,19 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         this.repairItemOptionsDropdownIndex = -1;
 
         switch (option.type) {
-            case RepairShopDetailsStringEnum.OPEN_2:
+            case eRepairShopDetails.OPEN_2:
                 this.handleOptionsDropdownClick(index, repair);
 
                 break;
-            case RepairShopDetailsStringEnum.EDIT:
+            case eRepairShopDetails.EDIT:
                 this.handleEditRepairClick(repair);
 
                 break;
-            case RepairShopDetailsStringEnum.FINISH_ORDER_2:
+            case eRepairShopDetails.FINISH_ORDER_2:
                 this.handleFinishOrderClick(repair);
 
                 break;
-            case RepairShopDetailsStringEnum.DELETE_2:
+            case eRepairShopDetails.DELETE_2:
                 this.handleDeleteRepairClick(repair);
 
                 break;
