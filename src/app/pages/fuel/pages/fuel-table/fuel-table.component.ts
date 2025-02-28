@@ -66,7 +66,11 @@ import {
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
-import { DropActionsStringEnum, DropdownMenuStringEnum } from '@shared/enums';
+import {
+    DropActionsStringEnum,
+    DropdownMenuStringEnum,
+    eCommonElements,
+} from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
@@ -85,9 +89,7 @@ import { AvatarColors } from '@shared/models';
 @Component({
     selector: 'app-fuel-table',
     templateUrl: './fuel-table.component.html',
-    styleUrls: [
-        './fuel-table.component.scss',
-    ],
+    styleUrls: ['./fuel-table.component.scss'],
     providers: [ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe],
 })
 export class FuelTableComponent
@@ -98,6 +100,7 @@ export class FuelTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
+    public commonElements = eCommonElements;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -349,6 +352,10 @@ export class FuelTableComponent
                     fuelStopIds.forEach((id) => this.updateFuelStopStatus(id));
                 }
             });
+    }
+
+    public handleTableEmptyBtnClickEmit(): void {
+        this.openCreateModalBySelectedTab();
     }
 
     public updateFuelStopStatus(fuelStopId: number): void {
@@ -833,8 +840,7 @@ export class FuelTableComponent
                   address?.stateShortName !== TableStringEnum.NULL
                       ? address?.stateShortName + null
                       : null) +
-                  (address?.zipCode &&
-                  address?.zipCode !== TableStringEnum.NULL
+                  (address?.zipCode && address?.zipCode !== TableStringEnum.NULL
                       ? address?.zipCode
                       : null)
                 : null,
@@ -884,15 +890,7 @@ export class FuelTableComponent
 
     public onToolBarAction(event: any): void {
         if (event.action === TableStringEnum.OPEN_MODAL) {
-            if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION) {
-                this.modalService.openModal(FuelPurchaseModalComponent, {
-                    size: TableStringEnum.SMALL,
-                });
-            } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
-                this.modalService.openModal(FuelStopModalComponent, {
-                    size: TableStringEnum.SMALL,
-                });
-            }
+            this.openCreateModalBySelectedTab();
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
             const {
                 integratedFuelTransactionsCount,
@@ -1184,6 +1182,18 @@ export class FuelTableComponent
 
     public handleShowMoreAction(): void {
         this.fetchApiDataPaginated();
+    }
+
+    private openCreateModalBySelectedTab(): void {
+        if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION) {
+            this.modalService.openModal(FuelPurchaseModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
+            this.modalService.openModal(FuelStopModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        }
     }
 
     ngOnDestroy(): void {

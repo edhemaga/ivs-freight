@@ -8,7 +8,7 @@
         [activeViewMode]="activeViewMode"
     ></app-ta-table-toolbar>
 
-    <ng-container *ngIf="activeViewMode === 'List'">
+    @if (activeViewMode === commonElements.LIST) {
         <app-ta-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -32,9 +32,9 @@
                 )
             "
         ></app-ta-table-body>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="activeViewMode === 'Card'">
+    @if (activeViewMode === commonElements.CARD) {
         <div class="elements">
             <app-fuel-card
                 [viewData]="viewData"
@@ -63,9 +63,9 @@
                 </div>
             </ng-container>
         </div>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="activeViewMode === 'Map'">
+    @if (activeViewMode === commonElements.MAP) {
         <div class="customer-map-container">
             <app-ta-map-list
                 [type]="'fuelStop'"
@@ -100,5 +100,16 @@
                 (resetSelectedMarkerItem)="onResetSelectedMarkerItem($event)"
             ></app-ca-map> -->
         </div>
-    </ng-container>
+    }
 </div>
+
+<app-ta-table-empty
+    [activeViewMode]="activeViewMode"
+    [btnText]="
+        selectedTab === tableStringEnum.FUEL_TRANSACTION
+            ? tableStringEnum.TRANSACTION
+            : tableStringEnum.STOP
+    "
+    [hasResults]="!!viewData.length"
+    (btnClickEmitter)="handleTableEmptyBtnClickEmit()"
+></app-ta-table-empty>
