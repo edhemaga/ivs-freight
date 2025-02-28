@@ -23,6 +23,7 @@ import { ModalService } from '@shared/services/modal.service';
 
 // enums
 import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 // models
 import { FuelStopResponse } from 'appcoretruckassist';
@@ -50,8 +51,6 @@ export class FuelStopDetailsCardComponent {
     @Input() set fuelStop(data: FuelStopResponse) {
         this._fuelStop = data;
 
-        console.log('this._fuelStop', this._fuelStop);
-
         this.getFuelStopsDropdownList();
     }
 
@@ -60,6 +59,9 @@ export class FuelStopDetailsCardComponent {
     public _fuelStop: FuelStopResponse;
 
     public fuelStopCurrentIndex: number;
+
+    // enums
+    public eStringPlaceholder = eStringPlaceholder;
 
     // fuel stop dropdown
     public fuelStopDropdownList: FuelStopResponse[] = [];

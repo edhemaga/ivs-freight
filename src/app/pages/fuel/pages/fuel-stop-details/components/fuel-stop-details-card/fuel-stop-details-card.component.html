@@ -53,7 +53,7 @@
                         [note]="
                             _fuelStop?.note && _fuelStop?.note !== 'null'
                                 ? _fuelStop?.note
-                                : ''
+                                : eStringPlaceholder.EMPTY
                         "
                         [noteType]="'details-card'"
                         [entityId]="_fuelStop?.id"

@@ -147,17 +147,12 @@ export class FuelStopDetailsComponent implements OnInit {
         this.detailsPageService.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                let query;
-
                 this.newFuelStopId = id;
 
                 if (this.fuelDetailsQuery.hasEntity(id)) {
-                    query = this.fuelDetailsQuery
+                    this.fuelDetailsQuery
                         .selectEntity(id)
-                        .pipe(take(1));
-
-                    query
-                        .pipe(takeUntil(this.destroy$))
+                        .pipe(take(1), takeUntil(this.destroy$))
                         .subscribe((res: FuelStopResponse) => {
                             this.getDetailsConfig(res);
                             this.getDetailsOptions(this.fuelStopObject);
@@ -172,9 +167,7 @@ export class FuelStopDetailsComponent implements OnInit {
                                 ]);
                             }
                         });
-                } else {
-                    this.router.navigate([`/list/fuel/${id}/details`]);
-                }
+                } else this.router.navigate([`/list/fuel/${id}/details`]);
 
                 this.cdRef.detectChanges();
             });

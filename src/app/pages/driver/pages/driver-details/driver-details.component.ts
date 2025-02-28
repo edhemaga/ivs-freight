@@ -236,17 +236,12 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
         this.detailsPageDriverService.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
             .subscribe((id) => {
-                let query;
-
                 this.newDriverId = id;
 
                 if (this.driverDetailsQuery.hasEntity(id)) {
-                    query = this.driverDetailsQuery
+                    this.driverDetailsQuery
                         .selectEntity(id)
-                        .pipe(take(1));
-
-                    query
-                        .pipe(takeUntil(this.destroy$))
+                        .pipe(take(1), takeUntil(this.destroy$))
                         .subscribe((res: DriverResponse) => {
                             this.currentIndex = this.driversList.findIndex(
                                 (driver: DriverResponse) => driver.id === res.id
@@ -265,9 +260,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                                 ]);
                             }
                         });
-                } else {
-                    this.router.navigate([`/list/driver/${id}/details`]);
-                }
+                } else this.router.navigate([`/list/driver/${id}/details`]);
 
                 this.cdRef.detectChanges();
             });

@@ -52,12 +52,12 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
     ],
 })
 export class TaDetailsHeaderCardComponent {
-    @Input() public customPinnedSvg: string = '';
+    @Input() public customPinnedSvg: string;
     @Input() public cardDetailsDate: any;
-    @Input() public cardDetailsDateTerminated: string = null;
-    @Input() public tooltipNext: string = '';
-    @Input() public tooltipPrevious: string = '';
-    @Input() public searchName: string = '';
+    @Input() public cardDetailsDateTerminated: string;
+    @Input() public tooltipNext: string;
+    @Input() public tooltipPrevious: string;
+    @Input() public searchName: string;
     @Input() public options: any = [];
     @Input() public statusInactive: number = 1;
     @Input() public additionalTitle: boolean;
