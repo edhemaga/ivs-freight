@@ -12,7 +12,8 @@ import {
     activeViewModeSelector,
     filterSelector,
     statesSelector,
-    selectedRowsSelector
+    selectedRowsSelector,
+    tableColumnsSelector
 } from '@pages/miles/state/selectors/miles.selectors';
 
 // Shared Components
@@ -36,13 +37,15 @@ import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 // Models
 import { MilesByUnitResponse, MilesStateFilterResponse } from 'appcoretruckassist';
 import { IMilesState } from '@pages/miles/models';
-import { IStateFilters } from '@shared/models';
+import { IStateFilters, ITableColumn } from '@shared/models';
+import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 
 @Component({
     selector: 'app-miles',
     standalone: true,
     imports: [
         CommonModule,
+        NewTableComponent,
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
 
@@ -62,6 +65,7 @@ export class MilesComponent implements OnInit {
     private filter: IStateFilters = {};
     statesSelector$: Observable<MilesStateFilterResponse[]>;
     selectedRowsSelector$: Observable<number>;
+    columns$: Observable<ITableColumn[]>;
     constructor(
         private store: Store<IMilesState>,
         private milesStoreService: MilesStoreService
@@ -89,6 +93,7 @@ export class MilesComponent implements OnInit {
         this.selectedTab$ = this.store.select(selectSelectedTab); 
         this.statesSelector$ = this.store.select(statesSelector); 
         this.selectedRowsSelector$ = this.store.select(selectedRowsSelector);
+        this.columns$ = this.store.select(tableColumnsSelector);
         // TODO: Maybe this is not good, check
         this.store.select(filterSelector).subscribe(res =>this.filter = res);
     }

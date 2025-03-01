@@ -78,7 +78,21 @@
     </ng-template>
 </app-new-table-toolbar>
 
-@for (mile of miles$ | async; track mile.id) {
+<app-new-table
+    [columns]="columns$ | async"
+    [rows]="miles$ | async"
+    [templates]="{ select: loadSelectTemplate }"
+>
+    <ng-template #loadSelectTemplate let-data="data">
+        <input
+            type="checkbox"
+            [checked]="data.selected"
+            (change)="selectRow(data)"
+        />
+    </ng-template>
+</app-new-table>
+
+<!-- @for (mile of miles$ | async; track mile.id) {
     {{ mile.id }}: {{ mile.truck.truckNumber }}
     <br />
-}
+} -->

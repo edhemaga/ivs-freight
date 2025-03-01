@@ -1,0 +1,241 @@
+<!-- TODO: REMOVE MARGIN -->
+<div class="table-container">
+    <div class="custom-table w-full test-margin">
+        <!-- Header -->
+        <div class="d-flex" #header style="overflow-x: hidden">
+            <div class="d-flex new-table--pinned-left">
+                @for (column of leftPinnedColumns; track column.key) {
+                <ng-container
+                    *ngTemplateOutlet="
+                        columnTemplate;
+                        context: { column: column }
+                    "
+                ></ng-container>
+                }
+            </div>
+            @for (column of mainColumns; track column.key) {
+            <ng-container
+                *ngTemplateOutlet="columnTemplate; context: { column: column }"
+            ></ng-container>
+            }
+            <div class="d-flex new-table--pinned-right">
+                @for (column of rightPinnedColumns; track column.key) {
+                <ng-container
+                    *ngTemplateOutlet="
+                        columnTemplate;
+                        context: { column: column }
+                    "
+                ></ng-container>
+                }
+            </div>
+        </div>
+
+        <!-- Body -->
+        <div>
+            <cdk-virtual-scroll-viewport
+                #virtualScrollViewport
+                (scroll)="onScroll($event)"
+                [itemSize]="34"
+                class="table-virtual-scroll-viewport"
+                style="
+                    height: 500px;
+                    overflow-y: auto !important;
+                    overflow-x: scroll;
+                    scrollbar-width: thin !important;
+                "
+            >
+                <div
+                    *cdkVirtualFor="
+                        let row of rows;
+                        trackBy: trackTableRow;
+                        let i = index
+                    "
+                >
+                    @if (row) {
+                    <div
+                        class="d-flex align-items-center new-table--row background-white p-x-4 p-y-4 m-b-2 br-3"
+                        [class.background-light-grey]="row.selected"
+                    >
+                        <!-- Left Pinned Columns -->
+                        <div class="d-flex new-table--pinned-left">
+                            @for ( column of leftPinnedColumns; track column.key
+                            ) {
+                            <ng-container
+                                *ngTemplateOutlet="
+                                            cellTemplate;
+                                            context: {
+                                                column: column,
+                                                row: row,
+                                            }
+                                        "
+                            ></ng-container>
+                            }
+                        </div>
+
+                        <!-- Main Columns -->
+                        @for (column of mainColumns; track column.key) {
+                        <ng-container
+                            *ngTemplateOutlet="
+                                cellTemplate;
+                                context: { column: column, row: row }
+                            "
+                        ></ng-container>
+                        }
+
+                        <!-- Right Pinned Columns -->
+                        <div class="d-flex new-table--pinned-right">
+                            @for ( column of rightPinnedColumns; track
+                            column.key ) {
+                            <ng-container
+                                *ngTemplateOutlet="
+                                            cellTemplate;
+                                            context: {
+                                                column: column,
+                                                row: row,
+                                            }
+                                        "
+                            ></ng-container>
+                            }
+                        </div>
+                    </div>
+
+                    <!-- Expanded Row -->
+                    @if (isRowExpanded(row.id)) {
+                    <div
+                        class="expanded-row background-light-grey p-x-8 p-y-8 m-b-2 br-3 pos-relative"
+                        style="width: 100%"
+                    >
+                        @if (templates['expandedRow']) {
+                        <ng-container
+                            [ngTemplateOutlet]="templates['expandedRow']"
+                            [ngTemplateOutletContext]="{
+                                            data: row,
+                                        }"
+                        ></ng-container>
+                        }
+                    </div>
+                    } }
+                </div>
+            </cdk-virtual-scroll-viewport>
+        </div>
+    </div>
+</div>
+
+<ng-template #columnTemplate let-column="column">
+    <ng-container>
+        @if (!column.hidden) {
+        <div
+            class="new-table--row-heading d-flex align-items-center"
+            [ngClass]="{
+                'c-pointer new-table--row-heading-sortable':
+                    column.sort && !isTableLocked,
+                'new-table--row-heading-sorting-active':
+                    column.direction && !isTableLocked,
+                'new-table--row-heading-unlocked c-poiner justify-content-between':
+                    isTableLocked
+            }"
+            [style.min-width]="column.width + 'px'"
+            [style.width]="column.width + 'px'"
+            (click)="setSorting(column)"
+        >
+            <!-- Prikazivanje custom header template-a ako postoji -->
+            @if (headerTemplates[column.key]) {
+            <ng-container
+                *ngTemplateOutlet="headerTemplates[column.key]"
+            ></ng-container>
+            } @else {
+            <!-- Default sadržaj header-a ako nema custom template-a -->
+            <span
+                class="text-size-11 ta-font-bold color-inherit text-uppercase"
+            >
+                {{ column.label }}
+            </span>
+            } @if(isTableLocked) {
+            <div class="d-flex">
+                <div
+                    class="c-pointer"
+                    [ngClass]="{
+                        'svg-hover-black': !column.pinned,
+                        'svg-hover-blue-15 svg-fill-blue-13': column.pinned
+                    }"
+                    ngbTooltip
+                    [mainTooltip]="column.pinned ? 'Remove Pin' : 'Pin Column'"
+                    tooltipBackground="#424242"
+                    position="bottom"
+                >
+                    <svg-icon
+                        [svgStyle]="{
+                            'width.px': 14,
+                            'height.px': 14,
+                        }"
+                        class="new-table--row-heading-arrow mr-1"
+                        src="assets/svg/truckassist-table/pin.svg"
+                        (click)="pinColumn(column)"
+                    ></svg-icon>
+                </div>
+
+                @if(!column.pinned) {
+                <div
+                    class="svg-hover-black c-pointer"
+                    ngbTooltip
+                    mainTooltip="Remove Column"
+                    tooltipBackground="#424242"
+                    position="bottom"
+                >
+                    <svg-icon
+                        [svgStyle]="{
+                                'width.px': 14,
+                                'height.px': 14,
+                            }"
+                        class="new-table--row-heading-arrow"
+                        src="assets/svg/applicant/close-x.svg"
+                    ></svg-icon>
+                </div>
+                }
+            </div>
+            } @else {
+            <!-- Show this on hover if column.direction is not null -->
+            <svg-icon
+                [svgStyle]="{
+                        'width.px': 12,
+                        'height.px': 12,
+                    }"
+                class="new-table--row-heading-arrow ml-1"
+                [ngClass]="column.direction ? 'd-flex' : 'd-none'"
+                [src]="
+                    column.direction === 'Ascending' || !column.direction
+                        ? 'assets/svg/common/sortArrow_filter.svg'
+                        : ' assets/svg/common/sortArrow_filter-asc.svg'
+                "
+            ></svg-icon>
+            }
+        </div>
+        }
+    </ng-container>
+</ng-template>
+
+<ng-template #cellTemplate let-column="column" let-row="row">
+    <ng-container>
+        @if (!column.hidden) {
+        <div
+            [style.min-width]="column.width + 'px'"
+            [style.width]="column.width + 'px'"
+        >
+            <!-- Prikazivanje custom template-a ako postoji -->
+            @if (templates[column.key]) {
+            <ng-container
+                *ngTemplateOutlet="
+                    templates[column.key];
+                    context: { data: row }
+                "
+            ></ng-container>
+            } @else {
+            <!-- Default sadržaj ako nema custom template-a -->
+            <p class="text-size-14 text-color-black-2 ta-font-regular">
+                {{ row[column.key] }}
+            </p>
+            }
+        </div>
+        }
+    </ng-container>
+</ng-template>

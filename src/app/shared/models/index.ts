@@ -77,3 +77,5 @@ export * from './avatar-colors.model';
 export * from './plaid';
 export * from './IStateFilters';
 export * from './IToolbarTabs';
+export * from './ITableColumn';
+export * from './ILoadDisplay';

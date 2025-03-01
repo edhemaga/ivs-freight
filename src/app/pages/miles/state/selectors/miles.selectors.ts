@@ -45,3 +45,8 @@ export const selectedRowsSelector = createSelector(selectMilesState, (state) => 
   const { selectedRows } = state || {};
   return selectedRows;
 });
+
+export const tableColumnsSelector = createSelector(selectMilesState, (state) => {
+  const { columns } = state || {};
+  return columns;
+});

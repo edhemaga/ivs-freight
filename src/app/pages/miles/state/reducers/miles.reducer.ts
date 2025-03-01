@@ -10,7 +10,7 @@ import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Constants
-import { MilesToolbarTabs } from '@pages/miles/consts';
+import { MilesTableColumns, MilesToolbarTabs } from '@pages/miles/consts';
 
 // Models
 import { IMilesState } from '@pages/miles/models'; 
@@ -24,7 +24,10 @@ export const initialState: IMilesState = {
     activeViewMode: eActiveViewMode.List,
     filters: {},
     states: [],
-    selectedRows: 0
+    selectedRows: 0,
+    
+    // Table
+    columns: MilesTableColumns
 };
 
 export const milesReducer = createReducer(
