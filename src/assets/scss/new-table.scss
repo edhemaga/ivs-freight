@@ -7,9 +7,18 @@
         margin-top: 17px !important;
     }
 
+    &--row {
+        &-heading {
+            &-group {
+                height: 30px;
+                border-left: 1px solid $ta-light-grey-6;
+            }
+        }
+    }
+
     &--toolbar {
         height: 34px;
-        // Extract to radius            	
+        // Extract to radius
         border-radius: 3px 0 0 3px;
         width: 100%;
 
@@ -18,7 +27,7 @@
             border-radius: 3px;
             line-height: 20px !important;
 
-             &-counter {
+            &-counter {
                 font-size: 11px;
                 line-height: 18px;
                 height: 18px;
@@ -27,7 +36,6 @@
                 padding: 0px 5px;
                 transition: 0.25s;
                 text-align: center;
-
             }
         }
 

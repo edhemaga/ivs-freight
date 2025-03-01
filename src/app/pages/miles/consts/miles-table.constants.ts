@@ -36,7 +36,7 @@ const stopsDelivery: ITableColumn = {
     label: 'DELIVERY',
     width: 90,
 };
-
+ 
 // Adding the new columns
 const fuel: ITableColumn = {
     key: 'fuelCount',
@@ -52,7 +52,7 @@ const parking: ITableColumn = {
 
 const deadHead: ITableColumn = {
     key: 'deadHeadCount',
-    label: 'DEAD HEAD',
+    label: 'D-HEAD',
     width: 90,
 };
 
@@ -92,6 +92,12 @@ const fuelMpg: ITableColumn = {
     width: 64,
 };
 
+const fuelGroup = {
+    key: 'fuel',
+    label: 'Fuel',
+    columns: [fuelGalons, fuelCost, fuelMpg], 
+};
+
 const milesLoaded: ITableColumn = {
     key: 'milesLoaded',
     label: 'LOADED',
@@ -116,24 +122,39 @@ const revenue: ITableColumn = {
     width: 78,
 };
 
+const milesGroup = {
+    key: 'miles',
+    label: 'Miles',
+    columns: [milesLoaded, milesEmpty, milesTotal], 
+};
+
+
+const stops = {
+    key: 'stops',
+    label: 'Stop',
+    columns: [stopsCount, stopsPickup, stopsDelivery, fuel, parking, deadHead, repair, towing], 
+};
+
+const loadGroup = {
+    key: 'load',
+    label: '',
+    columns: [loadCount]
+}
+
+const revenueGroup = {
+    key: 'revenueGroup',
+    label: '',
+    columns: [revenue]
+}
+
+
 export const MilesTableColumns: ITableColumn[] = [
     checkbox,
     unit,
     truckType,
-    stopsCount,
-    stopsPickup,
-    stopsDelivery,
-    fuel,
-    parking,
-    deadHead,
-    repair,
-    towing,
-    loadCount,
-    fuelGalons,
-    fuelCost,
-    fuelMpg,
-    milesLoaded,
-    milesEmpty,
-    milesTotal,
-    revenue
+    stops,
+    loadGroup,
+    fuelGroup,
+    milesGroup,
+    revenueGroup
 ];

@@ -132,10 +132,31 @@
 </div>
 
 <ng-template #columnTemplate let-column="column">
-    <ng-container>
+    @if (column.columns?.length) {
+        <div class="new-table--row-heading-group d-flex">
+            @for (
+                _column of column.columns;
+                track _column.key;
+                let isFirst = $first
+            ) {
+                <ng-container
+                    *ngTemplateOutlet="
+                        columnDisplay;
+                        context: { column: _column, isFirst: isFirst, isGroup: true, label: column.label }
+                    "
+                ></ng-container>
+            }
+        </div>
+    } @else {
+        <ng-container
+            *ngTemplateOutlet="columnDisplay; context: { column: column }"
+        ></ng-container>
+    }
+
+    <ng-template #columnDisplay let-column="column" let-isFirst="isFirst" let-isGroup="isGroup" let-label="label">
         @if (!column.hidden) {
             <div
-                class="new-table--row-heading d-flex align-items-center"
+                class="new-table--row-heading d-flex flex-row"
                 [ngClass]="{
                     'c-pointer new-table--row-heading-sortable':
                         column.sort && !isTableLocked,
@@ -143,11 +164,18 @@
                         column.direction && !isTableLocked,
                     'new-table--row-heading-unlocked c-poiner justify-content-between':
                         isTableLocked,
+                    'flex-column align-items-start mt-auto': isGroup,
+                    'align-items-end' : !isGroup
                 }"
                 [style.min-width]="column.width + 'px'"
                 [style.width]="column.width + 'px'"
                 (click)="setSorting(column)"
             >
+                @if (isFirst) {
+                    <div class="text-size-11 ta-font-extra-bold text-color-light-grey-2 text-uppercase">
+                        {{ label }}
+                    </div>
+                }
                 <!-- Prikazivanje custom header template-a ako postoji -->
                 @if (headerTemplates[column.key]) {
                     <ng-container
@@ -226,11 +254,25 @@
                 }
             </div>
         }
-    </ng-container>
+    </ng-template>
 </ng-template>
 
 <ng-template #cellTemplate let-column="column" let-row="row">
-    <ng-container>
+    @if (column.columns?.length) {
+        @for (_column of column.columns; track _column.key) {
+            <ng-container
+                *ngTemplateOutlet="
+                    cellColumnTemplate;
+                    context: { column: _column }
+                "
+            ></ng-container>
+        }
+    } @else {
+        <ng-container
+            *ngTemplateOutlet="cellColumnTemplate; context: { column: column }"
+        ></ng-container>
+    }
+    <ng-template #cellColumnTemplate let-column="column">
         @if (!column.hidden) {
             <div
                 [style.min-width]="column.width + 'px'"
@@ -252,5 +294,5 @@
                 }
             </div>
         }
-    </ng-container>
+    </ng-template>
 </ng-template>
