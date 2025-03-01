@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Store } from '@ngrx/store';
 
 // Models
-import { MilesByUnitListResponse } from 'appcoretruckassist';
+import { MilesByUnitListResponse, MilesStateFilterResponse } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
 import { IStateFilters } from '@shared/models';
 
@@ -22,6 +22,14 @@ export class MilesStoreService {
     constructor(
         private store: Store
     ) {}
+
+    
+    public setStates(states: MilesStateFilterResponse[]) {
+        this.store.dispatch({
+            type: MilesStoreConstants.SET_STATES,
+            states,
+        });
+    }
 
     public listChange(selectedTab: eMileTabs): void {
         this.store.dispatch({

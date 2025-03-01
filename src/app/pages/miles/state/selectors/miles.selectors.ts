@@ -35,3 +35,13 @@ export const filterSelector = createSelector(selectMilesState, (state) => {
   const { filters } = state || {};
   return filters;
 });
+
+export const statesSelector = createSelector(selectMilesState, (state) => {
+  const { states } = state || {};
+  return states;
+});
+
+export const selectedRowsSelector = createSelector(selectMilesState, (state) => {
+  const { selectedRows } = state || {};
+  return selectedRows;
+});

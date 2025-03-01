@@ -24,6 +24,19 @@
 
             <ng-container *ngTemplateOutlet="divider"></ng-container>
 
+            <!-- // TODO: -->
+            <app-ca-filter
+                [type]="'stateFilter'"
+                [icon]="'state'"
+                [filterTitle]="'State / Province Filter'"
+                [leftSideIcon]="true"
+                (setFilter)="onFilter($event)"
+                (clearAll)="onFilter($event)"
+                [usaStates]="(statesSelector$ | async)[0].states"
+                [canadaStates]="(statesSelector$ | async)[1].states"
+            >
+            </app-ca-filter>
+
             <app-ca-filter-dropdown
                 type="TimeFilter"
                 subType="past"
@@ -32,16 +45,27 @@
             </app-ca-filter-dropdown>
 
             <app-ca-filter
-                subType="all"
                 type="moneyFilter"
                 icon="dollar"
                 filterTitle="Money Filter"
                 [isMoneyFilter]="true"
+                [isMilesFilter]="false"
+                [isFuelType]="false"
                 [isLoadType]="false"
+                [isRepairFilter]="true"
                 (setFilter)="setFilters($event)"
                 (clearAll)="setFilters($event)"
             >
             </app-ca-filter>
+            @let selectedRows = selectedRowsSelector$ | async;
+            @if (selectedRows) {
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+                <div
+                    class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                >
+                    {{ selectedRows }} Selected
+                </div>
+            }
         </div>
     </ng-template>
 

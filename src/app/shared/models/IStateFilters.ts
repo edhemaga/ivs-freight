@@ -9,4 +9,6 @@ export interface IStateFilters {
     dueTo?: number;
     status?: number[];
     dispatcherIds?: number[];
+    revenueFrom?: number;
+    revenueTo?: number;
 }

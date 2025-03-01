@@ -10,6 +10,9 @@ import {
     selectSelectedTab,
     selectMilesItems,
     activeViewModeSelector,
+    filterSelector,
+    statesSelector,
+    selectedRowsSelector
 } from '@pages/miles/state/selectors/miles.selectors';
 
 // Shared Components
@@ -31,7 +34,7 @@ import { TableStringEnum } from '@shared/enums';
 import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Models
-import { MilesByUnitResponse } from 'appcoretruckassist';
+import { MilesByUnitResponse, MilesStateFilterResponse } from 'appcoretruckassist';
 import { IMilesState } from '@pages/miles/models';
 import { IStateFilters } from '@shared/models';
 
@@ -57,6 +60,8 @@ export class MilesComponent implements OnInit {
     public selectedTab$: Observable<eMileTabs>;
     public activeViewMode$: Observable<string>;
     private filter: IStateFilters = {};
+    statesSelector$: Observable<MilesStateFilterResponse[]>;
+    selectedRowsSelector$: Observable<number>;
     constructor(
         private store: Store<IMilesState>,
         private milesStoreService: MilesStoreService
@@ -82,6 +87,10 @@ export class MilesComponent implements OnInit {
         this.activeViewMode$ = this.store.select(activeViewModeSelector);
         this.tableViewData$ = this.store.select(selectTableViewData);
         this.selectedTab$ = this.store.select(selectSelectedTab); 
+        this.statesSelector$ = this.store.select(statesSelector); 
+        this.selectedRowsSelector$ = this.store.select(selectedRowsSelector);
+        // TODO: Maybe this is not good, check
+        this.store.select(filterSelector).subscribe(res =>this.filter = res);
     }
 
     public setFilters(filters: IFilterAction): void {

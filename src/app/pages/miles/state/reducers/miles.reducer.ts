@@ -3,7 +3,7 @@ import { createReducer, on } from '@ngrx/store';
 
 // Feature Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
-import { activeViewMode, filters, milesTabChange, updateTruckCounts } from '@pages/miles/state/actions/miles.actions';
+import { activeViewMode, filters, milesTabChange, setStates, updateTruckCounts } from '@pages/miles/state/actions/miles.actions';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -22,7 +22,9 @@ export const initialState: IMilesState = {
     tableViewData: MilesToolbarTabs,
     selectedTab: eMileTabs.Active,
     activeViewMode: eActiveViewMode.List,
-    filters: {}
+    filters: {},
+    states: [],
+    selectedRows: 0
 };
 
 export const milesReducer = createReducer(
@@ -58,6 +60,10 @@ export const milesReducer = createReducer(
     on(filters, (state, { filters }) => ({
         ...state,
         filters
+    })), 
+    on(setStates, (state, { states }) => ({
+        ...state,
+        states
     })), 
     on(
         updateTruckCounts,

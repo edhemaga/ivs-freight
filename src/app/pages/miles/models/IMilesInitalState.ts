@@ -6,7 +6,7 @@ import { eMileTabs } from "@pages/miles/enums";
 import { IStateFilters, ITableData } from "@shared/models";
 
 // External Services or Models
-import { MilesByUnitResponse } from "appcoretruckassist";
+import { MilesByUnitResponse, MilesStateFilterResponse } from "appcoretruckassist";
 
 
 export interface IMilesState {
@@ -16,5 +16,7 @@ export interface IMilesState {
     tableViewData: ITableData[];
     selectedTab: eMileTabs;
     activeViewMode: eActiveViewMode, 
-    filters: IStateFilters
+    filters: IStateFilters,
+    states: MilesStateFilterResponse[],
+    selectedRows: number;
 }

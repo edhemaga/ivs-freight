@@ -1,6 +1,6 @@
 // External Libraries
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, forkJoin } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 // Feature Services
@@ -17,12 +17,13 @@ export class MilesResolver {
     ) {}
 
     resolve(): Observable<MilesByUnitListResponse> {
-      // SHOULD WE READ THIS 1 FROM STORE?
         const activeList = this.milesStoreService.apiMilesListGet(null, 1);
+        const states = this.milesStoreService.apiMilesStateFilterGet();
 
-        return activeList.pipe(
-            map((response: MilesByUnitListResponse) => {
+        return forkJoin([activeList, states]).pipe(
+            map(([response, _states]) => {
                 this.milesService.getList(response);
+                this.milesService.setStates(_states);
                 return response;
             })
         );

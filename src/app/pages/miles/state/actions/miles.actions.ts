@@ -9,7 +9,7 @@ import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Models
-import { MilesByUnitResponse } from 'appcoretruckassist';
+import { MilesByUnitResponse, MilesStateFilterResponse } from 'appcoretruckassist';
 import { IStateFilters } from '@shared/models'; 
 
 export const getLoadsPayload = createAction(
@@ -50,4 +50,10 @@ export const activeViewMode = createAction(
 export const filters = createAction(
   MilesStoreConstants.ACTION_SET_FILTERS,
     props<{ filters: IStateFilters }>()
+);
+
+
+export const setStates = createAction(
+  MilesStoreConstants.SET_STATES,
+    props<{ states: MilesStateFilterResponse[] }>()
 );

@@ -13,4 +13,6 @@ export class MilesStoreConstants {
     static ACTION_SET_ACTIVE_VIEW_MODE = `${this.COMPONENT_NAME_KEY} SET ACTIVE VIEW MODE`;
 
     static ACTION_SET_FILTERS = `${this.COMPONENT_NAME_KEY} SET FILTERS`;
+
+    public static SET_STATES = `${this.COMPONENT_NAME_KEY} SET_STATES`
 }

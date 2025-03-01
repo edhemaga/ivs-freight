@@ -36,7 +36,16 @@ export class FilterHelper {
                     };
                 }
                 case LoadFilterStringEnum.MONEY_FILTER: {
-                    const moneyArray = res.queryParams?.moneyArray ?? [];
+                    const moneyArray = res.queryParams?.moneyArray ?? []; 
+                    
+                    if(res.queryParams.from) {
+                        return {
+                            ...currentFilters,
+                            revenueFrom: res.queryParams.from,
+                            revenueTo: res.queryParams.to
+                        }
+                    }
+
                     return {
                         ...currentFilters,
                         rateFrom: moneyArray[0]?.from ?? null,
