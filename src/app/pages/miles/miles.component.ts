@@ -39,6 +39,7 @@ import { MilesByUnitResponse, MilesStateFilterResponse } from 'appcoretruckassis
 import { IMilesState } from '@pages/miles/models';
 import { IStateFilters, ITableColumn } from '@shared/models';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
 @Component({
     selector: 'app-miles',
@@ -48,6 +49,7 @@ import { NewTableComponent } from '@shared/components/new-table/new-table.compon
         NewTableComponent,
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
+        TaTruckTrailerIconComponent,
 
         CaFilterComponent,
         CaSearchMultipleStatesComponent,

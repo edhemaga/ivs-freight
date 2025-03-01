@@ -6,11 +6,11 @@ import { eMileTabs } from "@pages/miles/enums";
 import { IStateFilters, ITableColumn, ITableData } from "@shared/models";
 
 // External Services or Models
-import { MilesByUnitResponse, MilesStateFilterResponse } from "appcoretruckassist";
-
+import { MilesStateFilterResponse } from "appcoretruckassist";
+import { IMilesModel } from "./IMilesModel";
 
 export interface IMilesState {
-    items: MilesByUnitResponse[];
+    items: IMilesModel[];
     loading: boolean;
     error: any;
     tableViewData: ITableData[];

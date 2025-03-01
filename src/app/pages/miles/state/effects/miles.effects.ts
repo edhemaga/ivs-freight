@@ -16,6 +16,9 @@ import { MilesService } from 'appcoretruckassist';
 import { eMileTabs } from '@pages/miles/enums';
 import { selectSelectedTab } from '../selectors/miles.selectors';
 
+// Utils
+import { MilesMapper } from '@pages/miles/utils';
+
 @Injectable()
 export class MilesEffects {
     constructor(
@@ -46,7 +49,7 @@ export class MilesEffects {
             .pipe(
                 map((response) =>
                     MilesAction.loadMilesSuccess({
-                        miles: response.pagination.data,
+                        miles: MilesMapper(response.pagination.data)
                     })
                 ),
                 catchError((error) =>

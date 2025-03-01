@@ -9,8 +9,9 @@ import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Models
-import { MilesByUnitResponse, MilesStateFilterResponse } from 'appcoretruckassist';
+import { MilesStateFilterResponse } from 'appcoretruckassist';
 import { IStateFilters } from '@shared/models'; 
+import { IMilesModel } from '@pages/miles/models';
 
 export const getLoadsPayload = createAction(
   MilesStoreConstants.LOAD_MILES_INITAL,
@@ -19,7 +20,7 @@ export const getLoadsPayload = createAction(
 
 export const getLoadsPayloadSuccess = createAction(
   MilesStoreConstants.LOAD_MILES_SUCCESS,
-  props<{ miles: MilesByUnitResponse[] }>() 
+  props<{ miles: IMilesModel[] }>() 
 );
 
 export const getLoadsPayloadError = createAction(
@@ -29,7 +30,7 @@ export const getLoadsPayloadError = createAction(
 
 export const loadMilesSuccess = createAction(
   MilesStoreConstants.LOAD_MILES_SUCCESS,
-  props<{ miles: MilesByUnitResponse[] }>() 
+  props<{ miles: IMilesModel[] }>() 
 );
 
 export const milesTabChange = createAction(

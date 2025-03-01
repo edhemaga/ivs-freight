@@ -81,7 +81,19 @@
 <app-new-table
     [columns]="columns$ | async"
     [rows]="miles$ | async"
-    [templates]="{ select: loadSelectTemplate }"
+    [templates]="{
+        select: loadSelectTemplate,
+        unit: unitTemplate,
+        truckType: truckTypeTemplate,
+        stopsPickup: percentTemplate,
+        stopsDelivery: percentTemplate,
+        fuelCount: percentTemplate,
+        parkingCount: percentTemplate,
+        deadHeadCount: percentTemplate,
+        repairCount: percentTemplate,
+        towingCount: percentTemplate,
+        revenue: revenueTemplate,
+    }"
 >
     <ng-template #loadSelectTemplate let-data="data">
         <input
@@ -90,9 +102,33 @@
             (change)="selectRow(data)"
         />
     </ng-template>
-</app-new-table>
 
-<!-- @for (mile of miles$ | async; track mile.id) {
-    {{ mile.id }}: {{ mile.truck.truckNumber }}
-    <br />
-} -->
+    <ng-template #unitTemplate let-data="data">
+        <div class="text-color-black ta-font-bold text-size-14">
+            {{data.unit}}
+        </div>
+    </ng-template>
+
+    <ng-template #truckTypeTemplate let-data="data">
+        <app-ta-truck-trailer-icon
+            iconType="truck"
+            [inputData]="data.truckType"
+        ></app-ta-truck-trailer-icon>
+    </ng-template>
+
+    <ng-template #percentTemplate let-data="data" let-key="key">
+        <p class="text-size-14 text-color-black-2 ta-font-regular">
+            {{ data[key]?.count }}
+            <span class="text-color-muted text-size-11 ta-font-semi-bold">
+                
+                {{ data[key]?.percent }}%
+            </span>
+        </p>
+    </ng-template>
+
+    <ng-template #revenueTemplate let-data="data">
+        <div class="text-color-black ta-font-semi-bold">
+            {{data.revenue}}$
+        </div>
+    </ng-template>
+</app-new-table>

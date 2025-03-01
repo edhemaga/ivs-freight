@@ -13,7 +13,10 @@ import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Constants
 import { MilesStoreConstants } from '@pages/miles/consts';
+
 import { FilterHelper } from '@shared/utils/helpers';
+
+import { MilesMapper } from '@pages/miles/utils';
 
 @Injectable({
     providedIn: 'root',
@@ -48,7 +51,7 @@ export class MilesStoreService {
 
         this.store.dispatch({
             type: MilesStoreConstants.LOAD_MILES_SUCCESS,
-            miles: data.pagination.data,
+            miles: MilesMapper(data.pagination.data),
         });
     }
 
