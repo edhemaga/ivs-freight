@@ -1,7 +1,8 @@
 @import 'src/theme/variables';
 
 @mixin svg-fill($color) {
-    svg path {
+    svg path,
+    svg circle {
         fill: $color !important;
     }
 }
@@ -90,6 +91,9 @@
 
     // Sizes
     &-size {
+        &-10 {
+            @include svg-size(10px, 10px);
+        }
         &-12 {
             @include svg-size(12px, 12px);
         }

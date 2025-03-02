@@ -38,7 +38,7 @@ import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repa
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import { eCommonElements } from '@shared/enums';
+import { eCommonElement } from '@shared/enums';
 
 // helpers
 import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers';
@@ -477,9 +477,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                             this.getDetailsOptions(this.repairShopObject);
 
                             if (
-                                this.router.url.includes(
-                                    eCommonElements.DETAILS
-                                )
+                                this.router.url.includes(eCommonElement.DETAILS)
                             ) {
                                 this.router.navigate([
                                     `/list/repair/${res.id}/details`,

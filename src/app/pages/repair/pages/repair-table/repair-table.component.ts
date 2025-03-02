@@ -69,7 +69,7 @@ import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-m
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 import {
     DropdownMenuStringEnum,
-    eCommonElements,
+    eCommonElement,
     eGeneralActions,
 } from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
@@ -127,7 +127,7 @@ export class RepairTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
-    public eCommonElements = eCommonElements;
+    public eCommonElement = eCommonElement;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;

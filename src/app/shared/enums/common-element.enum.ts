@@ -1,4 +1,4 @@
-export enum eCommonElements {
+export enum eCommonElement {
     LIST = 'List',
     CARD = 'Card',
     MAP = 'Map',

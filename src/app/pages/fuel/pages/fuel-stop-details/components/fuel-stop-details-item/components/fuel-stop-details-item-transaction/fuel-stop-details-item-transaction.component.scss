@@ -1,0 +1,62 @@
+@import 'src/theme/variables';
+
+.stop-details-item-transaction {
+    border-radius: 3px;
+    background: $white;
+    padding: 6px;
+
+    /* Search */
+
+    /* Header */
+
+    &-header {
+        grid-template-columns:
+            126px repeat(2, 68px)
+            80px 128px 214px 62px 70px 90px auto;
+        grid-gap: 4px;
+        padding: 6px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid $bw-9;
+    }
+
+    /* Main */
+
+    &-main {
+        /* Main Item */
+
+        &-item {
+            transition: background 0.2s ease-in;
+            cursor: pointer;
+            position: relative;
+
+            &:hover {
+                background: $bw2;
+            }
+
+            &-left {
+                grid-template-columns:
+                    126px repeat(2, 68px)
+                    80px 128px 214px 62px 70px 90px auto;
+                grid-gap: 4px;
+                padding: 4px 6px;
+
+                .circle-container {
+                    .invoice {
+                        max-width: 115px;
+                    }
+
+                    .circle-icon {
+                        position: relative;
+                        bottom: 1px;
+                        margin-right: 6px;
+                    }
+                }
+            }
+
+            .actions-container {
+                grid-template-columns: repeat(2, 26px);
+                grid-gap: 4px;
+            }
+        }
+    }
+}

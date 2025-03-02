@@ -1,1 +1,197 @@
-<div>TRANSACTION</div>
+@if (_transactionList.length) {
+    <div
+        class="d-flex flex-column justify-content-center stop-details-item-transaction"
+    >
+        <!-- Search -->
+
+        <!-- Header -->
+
+        <div
+            class="d-grid align-items-center stop-details-item-transaction-header"
+        >
+            @for (
+                headerItem of transactionHeaderItems;
+                let headerIndex = $index;
+                track headerItem
+            ) {
+                <div
+                    class="d-flex align-items-center stop-details-item-transaction-header-item"
+                    [ngClass]="{
+                        'justify-content-end':
+                            headerIndex >= transactionHeaderItems.length - 3,
+                    }"
+                >
+                    <p class="m-0 ta-font-bold text-size-11 text-color-bw6-2">
+                        {{ headerItem }}
+                    </p>
+                </div>
+            }
+        </div>
+
+        <!-- Main -->
+
+        <div
+            class="d-flex flex-column justify-content-center stop-details-item-transaction-main"
+        >
+            @for (
+                transaction of _transactionList;
+                let transactionIndex = $index;
+                track transaction.id
+            ) {
+                <!-- Transaction Item -->
+
+                <div
+                    class="d-flex align-items-center stop-details-item-transaction-main-item"
+                >
+                    <div
+                        class="d-grid align-items-center stop-details-item-transaction-main-item-left"
+                    >
+                        <!-- Invoice -->
+
+                        <div class="d-flex align-items-center circle-container">
+                            <svg-icon
+                                class="svg-size-10 circle-icon svg-fill-light-grey-6"
+                                [ngClass]="{
+                                    'svg-fill-green':
+                                        transaction?.fuelTransactionType?.id !==
+                                        eFuelTransactionType.Manual,
+                                }"
+                                [src]="fuelStopDetailsSvgRoutes.circleRoute"
+                            ></svg-icon>
+
+                            <p
+                                class="m-0 ta-font-bold text-size-14 text-color-black d-inline-block text-truncate invoice"
+                            >
+                                {{ transaction?.invoice }}
+                            </p>
+                        </div>
+
+                        <!-- Date -->
+
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                {{ transaction?.transactionDate | formatDateP }}
+                            </p>
+                        </div>
+
+                        <!-- Time -->
+
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                {{ transaction?.transactionDate | formatTime }}
+                            </p>
+                        </div>
+
+                        <!-- Truck -->
+
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                {{ transaction?.truck?.truckNumber }}
+                            </p>
+                        </div>
+
+                        <!-- Driver -->
+
+                        <div class="d-flex align-items-center">
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                {{
+                                    transaction?.driver?.firstName +
+                                        ' ' +
+                                        transaction?.driver?.lastName
+                                }}
+                            </p>
+                        </div>
+
+                        <!-- Category -->
+
+                        <div
+                            class="d-flex align-items-center"
+                            [appDescriptionItemsTextCount]="
+                                transaction?.filteredItemNames
+                            "
+                            [containerWidth]="214"
+                        ></div>
+
+                        <!-- Gallon -->
+
+                        <div
+                            class="d-flex align-items-center justify-content-end"
+                        >
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                {{ transaction?.gallon | thousandSeparator }}
+                            </p>
+                        </div>
+
+                        <!-- PPG -->
+
+                        <div
+                            class="d-flex align-items-center justify-content-end circle-container"
+                        >
+                            <svg-icon
+                                class="svg-size-10 circle-icon"
+                                [src]="fuelStopDetailsSvgRoutes.circleRoute"
+                            ></svg-icon>
+
+                            <p class="m-0 text-size-14 text-color-black-2">
+                                ${{
+                                    transaction?.pricePerGallon
+                                        | thousandSeparator
+                                }}
+                            </p>
+                        </div>
+
+                        <!-- Cost -->
+
+                        <div
+                            class="d-flex align-items-center justify-content-end"
+                        >
+                            <p
+                                class="m-0 ta-font-bold text-size-14 text-color-black"
+                            >
+                                ${{ transaction?.total | thousandSeparator }}
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Actions -->
+
+                    <div class="d-grid align-items-center actions-container">
+                        <!-- Document -->
+
+                        <app-ta-documents-drawer
+                            [isActive]="
+                                transactionIndex ===
+                                transactionItemDocumentsDrawerIndex
+                            "
+                            [options]="transactionItemOptions"
+                            (actionsEmitter)="
+                                handleDocumentDrawerClick(transactionIndex)
+                            "
+                            (dropdownEmitter)="
+                                handleDropdownOptionClick(
+                                    $event,
+                                    transactionIndex
+                                )
+                            "
+                        ></app-ta-documents-drawer>
+
+                        <!-- Options -->
+
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="transactionItemOptions"
+                            (dropdownOptionEmitter)="
+                                handleDropdownOptionClick(
+                                    $event,
+                                    transactionIndex
+                                )
+                            "
+                        >
+                        </ca-dropdown-menu>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+}

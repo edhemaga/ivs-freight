@@ -16,7 +16,7 @@ import { FuelStopDetailsItemComponent } from '@pages/fuel/pages/fuel-stop-detail
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 
 // enums
-import { eCommonElements, eGeneralActions } from '@shared/enums';
+import { eCommonElement, eGeneralActions } from '@shared/enums';
 
 // helpers
 import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils/helpers';
@@ -158,9 +158,7 @@ export class FuelStopDetailsComponent implements OnInit {
                             this.getDetailsOptions(this.fuelStopObject);
 
                             if (
-                                this.router.url.includes(
-                                    eCommonElements.DETAILS
-                                )
+                                this.router.url.includes(eCommonElement.DETAILS)
                             ) {
                                 this.router.navigate([
                                     `/list/fuel/${res.id}/details`,

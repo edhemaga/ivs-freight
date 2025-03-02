@@ -94,6 +94,8 @@ export class TaDocumentsDrawerComponent implements OnInit {
         action: string,
         index?: number
     ): void {
+        return; // w8 for drawer component
+
         event.preventDefault();
         event.stopPropagation();
 

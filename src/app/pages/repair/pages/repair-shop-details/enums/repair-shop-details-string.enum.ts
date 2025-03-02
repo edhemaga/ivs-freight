@@ -16,7 +16,6 @@ export enum eRepairShopDetails {
     EMPTY_STRING = '',
 
     OPEN = 'open',
-    OPEN_2 = 'Open',
     CLOSE = 'close',
     EDIT = 'Edit',
     EDIT_2 = 'edit',

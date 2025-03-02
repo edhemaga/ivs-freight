@@ -12,7 +12,10 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaDocumentsDrawerComponent } from '@shared/components/ta-documents-drawer/ta-documents-drawer.component';
 import { TaDropdownOptionsComponent } from '@shared/components/ta-dropdown-options/ta-dropdown-options.component';
-import { CaSearchMultipleStatesComponent } from 'ca-components';
+import {
+    CaDropdownMenuComponent,
+    CaSearchMultipleStatesComponent,
+} from 'ca-components';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -32,6 +35,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 // enums
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eGeneralActions } from '@shared/enums';
 
 // pipes
 import { FormatDatePipe, ThousandSeparatorPipe } from '@shared/pipes';
@@ -40,8 +44,8 @@ import { FormatDatePipe, ThousandSeparatorPipe } from '@shared/pipes';
 import { DescriptionItemsTextCountDirective } from '@shared/directives';
 
 // models
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
 import { RepairResponse } from 'appcoretruckassist';
+import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
 @Component({
     selector: 'app-repair-shop-details-item-repair',
@@ -58,6 +62,7 @@ import { RepairResponse } from 'appcoretruckassist';
         TaNoteComponent,
         TaDocumentsDrawerComponent,
         CaSearchMultipleStatesComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         FormatDatePipe,
@@ -88,7 +93,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
     public repairItemOptionsDropdownIndex: number = -1;
     public repairItemDocumentsDrawerIndex: number = -1;
 
-    public repairItemOptions: DropdownItem[] = [];
+    public repairItemOptions: DropdownMenuItem[] = [];
 
     constructor(
         private modalService: ModalService,
@@ -295,7 +300,7 @@ export class RepairShopDetailsItemRepairComponent implements OnInit {
         this.repairItemOptionsDropdownIndex = -1;
 
         switch (option.type) {
-            case eRepairShopDetails.OPEN_2:
+            case eGeneralActions.OPEN_CAPITALIZED:
                 this.handleOptionsDropdownClick(index, repair);
 
                 break;
