@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, tap } from 'rxjs';
+import { Observable, forkJoin, of, tap } from 'rxjs';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -141,7 +141,7 @@ export class ContactsService {
         search1?: string,
         search2?: string
     ): Observable<GetCompanyContactListResponse> {
-        return this.contactService.apiCompanycontactListGet(
+        return of(null); /* this.contactService.apiCompanycontactListGet(
             labelId,
             pageIndex,
             pageSize,
@@ -152,7 +152,7 @@ export class ContactsService {
             search,
             search1,
             search2
-        );
+        ); */
     }
 
     // company contact modal
