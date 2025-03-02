@@ -74,6 +74,7 @@ import {
 } from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -1613,7 +1614,7 @@ export class RepairTableComponent
                             array: mappedRes,
                             template:
                                 this.selectedTab !== TableStringEnum.REPAIR_SHOP
-                                    ? TableStringEnum.REPAIR_2
+                                    ? eRepairShopDetails.REPAIR_LOWERCASE
                                     : TableStringEnum.REPAIR_SHOP_3,
                             type:
                                 mappedRes?.length > 1

@@ -10,4 +10,12 @@ export class FuelStopDetailsItemConstants {
         'PPG',
         'COST',
     ];
+
+    static TRANSACTION_DROPDOWN_HEADER_ITEMS: string[] = [
+        '#',
+        'ITEM',
+        'QTY',
+        'PRICE',
+        'TOTAL',
+    ];
 }

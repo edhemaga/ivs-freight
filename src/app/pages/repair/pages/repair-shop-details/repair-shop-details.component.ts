@@ -38,7 +38,7 @@ import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repa
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import { eCommonElement } from '@shared/enums';
+import { eCommonElement, eGeneralActions } from '@shared/enums';
 
 // helpers
 import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers';
@@ -76,6 +76,8 @@ import { RepairBackFilter } from '@pages/repair/pages/repair-table/models';
     ],
 })
 export class RepairShopDetailsComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<void>();
+
     public detailsDropdownOptions: DetailsDropdownOptions;
     public repairShopDetailsConfig: DetailsConfig[] = [];
 
@@ -98,8 +100,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     public backRepairedVehiclesFilterQuery: RepairBackFilter =
         RepairTableBackFilterDataHelper.backRepairedVehiclesFilterData();
-
-    private destroy$ = new Subject<void>();
 
     constructor(
         // router
@@ -275,7 +275,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    if (res?.type === eRepairShopDetails.DELETE) {
+                    if (res?.type === eGeneralActions.DELETE) {
                         if (res?.template === eRepairShopDetails.REPAIR_SHOP) {
                             this.deleteRepairShop(res?.data?.id);
                         } else if (

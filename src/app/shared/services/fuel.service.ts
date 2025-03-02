@@ -24,6 +24,8 @@ import { FormDataService } from '@shared/services/form-data.service';
 
 // store
 import { FuelStore } from '@pages/fuel/state/fuel-state/fuel-state.store';
+import { FuelDetailsStore } from '@pages/fuel/state/fuel-details-state/fuel-details.store';
+import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-details-item.store';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -38,7 +40,9 @@ export class FuelService {
         private formDataService: FormDataService,
 
         // store
-        private fuelStore: FuelStore
+        private fuelStore: FuelStore,
+        private fuelDetailsStore: FuelDetailsStore,
+        private fuelItemStore: FuelItemStore
     ) {}
 
     set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
@@ -174,28 +178,42 @@ export class FuelService {
         return this.fuelService.apiFuelEfsTransactionPut();
     }
 
-    public deleteFuelTransactionsList(ids: number[]): Observable<void> {
+    public deleteFuelTransactionsList(
+        ids: number[],
+        fuelStopId?: number
+    ): Observable<void> {
         return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
             tap(() => {
                 ids.forEach((id) => {
-                        this.fuelStore.update((store) => ({
-                            fuelTransactions: {
-                                ...store.fuelTransactions,
-                                pagination: {
-                                    ...store.fuelTransactions?.pagination,
-                                    data: store.fuelTransactions?.pagination?.data?.filter(
-                                        (transaction) => transaction.id !== id
-                                    ),
-                                },
+                    this.fuelStore.update((store) => ({
+                        fuelTransactions: {
+                            ...store.fuelTransactions,
+                            pagination: {
+                                ...store.fuelTransactions?.pagination,
+                                data: store.fuelTransactions?.pagination?.data?.filter(
+                                    (transaction) => transaction.id !== id
+                                ),
                             },
+                        },
+                    }));
+
+                    const updateStore = (store) =>
+                        store.update(fuelStopId, (entity) => ({
+                            ...entity,
+                            transactionList: entity.transactionList.filter(
+                                (transaction) => transaction.id !== id
+                            ),
                         }));
+
+                    updateStore(this.fuelDetailsStore);
+                    updateStore(this.fuelItemStore);
                 });
 
                 const tableCount = JSON.parse(
                     localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
                 );
 
-                if(tableCount) {
+                if (tableCount) {
                     tableCount.fuelTransactions -= ids.length;
 
                     localStorage.setItem(

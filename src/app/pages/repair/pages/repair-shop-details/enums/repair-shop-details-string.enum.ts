@@ -17,13 +17,11 @@ export enum eRepairShopDetails {
 
     OPEN = 'open',
     CLOSE = 'close',
-    EDIT = 'Edit',
+
     EDIT_2 = 'edit',
 
     NEXT = 'next',
     PREVIOUS = 'previous',
-    DELETE = 'delete',
-    DELETE_2 = 'Delete',
 
     SELECT_REPAIR_SHOP = 'select-repair-shop',
     CHANGE_REPAIR_SHOP = 'change-repair-shop',
@@ -37,11 +35,11 @@ export enum eRepairShopDetails {
     REPAIR_SHOP_CONTACT = 'repair shop contact',
 
     FINISH_ORDER = 'finish-order',
-    FINISH_ORDER_2 = 'Finish Order',
     DOCUMENT = 'Document',
     NOTE = 'Note',
 
     REPAIR = 'Repair',
+    REPAIR_LOWERCASE = 'repair',
     VEHICLE = 'Vehicle',
     REVIEW = 'Review',
     CONTACT = 'Contact',

@@ -69,7 +69,7 @@ import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
     DropdownMenuStringEnum,
-    eCommonElements,
+    eCommonElement,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
@@ -100,7 +100,7 @@ export class FuelTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
-    public commonElements = eCommonElements;
+    public eCommonElement = eCommonElement;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
