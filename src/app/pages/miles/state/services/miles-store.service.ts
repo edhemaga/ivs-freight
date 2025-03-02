@@ -17,7 +17,7 @@ import { MilesStoreConstants } from '@pages/miles/consts';
 import { FilterHelper } from '@shared/utils/helpers';
 
 import { MilesMapper } from '@pages/miles/utils';
-import { IMilesModel, IMilesState } from '@pages/miles/models';
+import { IMilesModel } from '@pages/miles/models';
 
 @Injectable({
     providedIn: 'root',
@@ -70,12 +70,10 @@ export class MilesStoreService {
         });
     }
     
-    public dispatchSelectingRow(mile: IMilesModel): void { 
+    public dispatchSelectOneRow(mile: IMilesModel): void { 
         this.store.dispatch({
-            type: MilesStoreConstants.ACTION_SELECT_ROW,
+            type: MilesStoreConstants.ACTION_SELECT_ONE_ROW,
             mile
         });
     }
- 
-
 }

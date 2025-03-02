@@ -80,9 +80,9 @@ export class MilesEffects {
     // Effect to fetch miles data on filter change
     public getMilesListOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(MilesAction.filters),
+            ofType(MilesAction.changeFilters),
             exhaustMap((action) => {
-                const { filters } = action;
+                const { filters } = action || {};
                 const { dateFrom, dateTo, revenueFrom, revenueTo } = filters;
                 
                 // TODO: Maybe this is not good, check

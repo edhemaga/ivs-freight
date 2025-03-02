@@ -2,14 +2,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 // Feature Actions
-import * as MilesAction from '@pages/miles/state/actions/miles.actions';
-import {
-    activeViewMode,
-    filters,
-    milesTabChange,
-    setStates,
-    updateTruckCounts,
-} from '@pages/miles/state/actions/miles.actions';
+import * as MilesAction from '@pages/miles/state/actions/miles.actions'; 
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -58,41 +51,15 @@ export const milesReducer = createReducer(
         ...state,
         items: miles,
     })),
-    on(milesTabChange, (state, { selectedTab }) => ({
+    
+    // #region Table tab
+    on(MilesAction.milesTabChange, (state, { selectedTab }) => ({
         ...state,
         selectedTab: selectedTab,
     })),
-    on(activeViewMode, (state, { activeViewMode }) => ({
-        ...state,
-        activeViewMode,
-    })),
-    on(filters, (state, { filters }) => ({
-        ...state,
-        filters,
-    })),
-    on(setStates, (state, { states }) => ({
-        ...state,
-        states,
-    })),
-    on(MilesAction.selectRow, (state, { mile }) => {
-        // Update select one only
-        const updatedItems = state.items.map((item) =>
-            item.id === mile.id
-                ? { ...item, selected: !item.selected }
-                : item
-        );
-    
-        // new selected count
-        const newSelectedCount = updatedItems.filter(item => item.selected).length;
-    
-        return {
-            ...state,
-            items: updatedItems,
-            selectedRows: newSelectedCount,
-        };
-    }),
+
     on(
-        updateTruckCounts,
+        MilesAction.updateTruckCounts,
         (state, { activeTruckCount, inactiveTruckCount }) => ({
             ...state,
             tableViewData: [
@@ -100,5 +67,44 @@ export const milesReducer = createReducer(
                 { ...state.tableViewData[1], length: inactiveTruckCount },
             ],
         })
-    )
+    ),
+
+    on(MilesAction.activeViewMode, (state, { activeViewMode }) => ({
+        ...state,
+        activeViewMode,
+    })),
+    // #endregion
+
+    
+    // #region Table filters
+    on(MilesAction.changeFilters, (state, { filters }) => ({
+        ...state,
+        filters,
+    })),
+    on(MilesAction.setStates, (state, { states }) => ({
+        ...state,
+        states,
+    })),
+    // #endregion
+
+
+    // #region Checkbox selection
+    on(MilesAction.selectOneRow, (state, { mile }) => {
+        // Update select one only
+        const updatedItems = state.items.map((item) =>
+            item.id === mile.id ? { ...item, selected: !item.selected } : item
+        );
+
+        // new selected count
+        const newSelectedCount = updatedItems.filter(
+            (item) => item.selected
+        ).length;
+
+        return {
+            ...state,
+            items: updatedItems,
+            selectedRows: newSelectedCount,
+        };
+    })
+    // #endregion
 );

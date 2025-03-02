@@ -48,7 +48,7 @@ export const activeViewMode = createAction(
     props<{ activeViewMode: eActiveViewMode }>()
 );
 
-export const filters = createAction(
+export const changeFilters = createAction(
   MilesStoreConstants.ACTION_SET_FILTERS,
     props<{ filters: IStateFilters }>()
 );
@@ -58,7 +58,7 @@ export const setStates = createAction(
     props<{ states: MilesStateFilterResponse[] }>()
 );
 
-export const selectRow = createAction(
-  MilesStoreConstants.ACTION_SELECT_ROW,
+export const selectOneRow = createAction(
+  MilesStoreConstants.ACTION_SELECT_ONE_ROW,
     props<{ mile: IMilesModel }>()
 );

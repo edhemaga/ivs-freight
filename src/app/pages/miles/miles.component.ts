@@ -65,9 +65,9 @@ export class MilesComponent implements OnInit {
     public selectedTab$: Observable<eMileTabs>;
     public activeViewMode$: Observable<string>;
     private filter: IStateFilters = {};
-    statesSelector$: Observable<MilesStateFilterResponse[]>;
-    selectedRowsSelector$: Observable<number>;
-    columns$: Observable<ITableColumn[]>;
+    public statesSelector$: Observable<MilesStateFilterResponse[]>;
+    public selectedRowsSelector$: Observable<number>;
+    public columns$: Observable<ITableColumn[]>;
     constructor(
         private store: Store<IMilesState>,
         private milesStoreService: MilesStoreService
@@ -105,6 +105,6 @@ export class MilesComponent implements OnInit {
     }
 
     public selectRow(mile: IMilesModel) : void {
-        this.milesStoreService.dispatchSelectingRow(mile);
+        this.milesStoreService.dispatchSelectOneRow(mile);
     }
 }
