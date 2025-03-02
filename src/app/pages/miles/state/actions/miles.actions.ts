@@ -53,8 +53,12 @@ export const filters = createAction(
     props<{ filters: IStateFilters }>()
 );
 
-
 export const setStates = createAction(
   MilesStoreConstants.SET_STATES,
     props<{ states: MilesStateFilterResponse[] }>()
+);
+
+export const selectRow = createAction(
+  MilesStoreConstants.ACTION_SELECT_ROW,
+    props<{ mile: IMilesModel }>()
 );

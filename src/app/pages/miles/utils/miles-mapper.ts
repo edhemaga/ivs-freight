@@ -2,50 +2,49 @@ import { MilesByUnitResponse } from 'appcoretruckassist';
 import { IMilesModel } from '@pages/miles/models';
 
 export function MilesMapper(miles: MilesByUnitResponse[]): IMilesModel[] {
-    const a = miles.map((miles) => {
+    return miles.map((mile) => {
         return {
-            unit: miles.truck?.truckNumber,
-            truckType: miles.truck?.truckType,
-            stopsCount: miles.stopsCount,
+            unit: mile.truck?.truckNumber,
+            truckType: mile.truck?.truckType,
+            stopsCount: mile.stopsCount,
             stopsPickup: {
-                count: miles.pickupCount,
-                percent: miles.pickupPercentage
+                count: mile.pickupCount,
+                percent: mile.pickupPercentage,
             },
             stopsDelivery: {
-                count: miles.deliveryCount,
-                percent: miles.deliveryPercentage
+                count: mile.deliveryCount,
+                percent: mile.deliveryPercentage,
             },
             fuelCount: {
-                count: miles.fuelCount,
-                percent: miles.fuelPercentage
+                count: mile.fuelCount,
+                percent: mile.fuelPercentage,
             },
             parkingCount: {
-                count: miles.parkingCount,
-                percent: miles.parkingPercentage
+                count: mile.parkingCount,
+                percent: mile.parkingPercentage,
             },
             deadHeadCount: {
-                count: miles.deadHeadCount,
-                percent: miles.deadHeadPercentage
+                count: mile.deadHeadCount,
+                percent: mile.deadHeadPercentage,
             },
             repairCount: {
-                count: miles.repairCount,
-                percent: miles.repairPercentage
+                count: mile.repairCount,
+                percent: mile.repairPercentage,
             },
             towingCount: {
-                count: miles.towingCount,
-                percent: miles.towingPercentage
+                count: mile.towingCount,
+                percent: mile.towingPercentage,
             },
-            loadCount: miles.loadCount,
-            fuelGalons: miles.fuelTotalGalons,
-            fuelCost: miles.fuelCost,
-            fuelMpg: miles.milesPerGalon,
-            milesLoaded: miles.loadedMiles,
-            milesEmpty: miles.emptyMiles,
-            milesTotal: miles.totalMiles,
-            revenue: miles.revenue
+            loadCount: mile.loadCount,
+            fuelGalons: mile.fuelTotalGalons,
+            fuelCost: mile.fuelCost,
+            fuelMpg: mile.milesPerGalon,
+            milesLoaded: mile.loadedMiles,
+            milesEmpty: mile.emptyMiles,
+            milesTotal: mile.totalMiles,
+            revenue: mile.revenue,
+            id: mile.id,
+            selected: false,
         };
     });
-
-    console.log(a);
-    return a;
 }

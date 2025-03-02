@@ -3,7 +3,13 @@ import { createReducer, on } from '@ngrx/store';
 
 // Feature Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
-import { activeViewMode, filters, milesTabChange, setStates, updateTruckCounts } from '@pages/miles/state/actions/miles.actions';
+import {
+    activeViewMode,
+    filters,
+    milesTabChange,
+    setStates,
+    updateTruckCounts,
+} from '@pages/miles/state/actions/miles.actions';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -13,7 +19,7 @@ import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 import { MilesTableColumns, MilesToolbarTabs } from '@pages/miles/consts';
 
 // Models
-import { IMilesState } from '@pages/miles/models'; 
+import { IMilesState } from '@pages/miles/models';
 
 export const initialState: IMilesState = {
     items: [],
@@ -25,9 +31,9 @@ export const initialState: IMilesState = {
     filters: {},
     states: [],
     selectedRows: 0,
-    
+
     // Table
-    columns: MilesTableColumns
+    columns: MilesTableColumns,
 };
 
 export const milesReducer = createReducer(
@@ -37,11 +43,11 @@ export const milesReducer = createReducer(
         loading: true,
     })),
     on(MilesAction.getLoadsPayloadSuccess, (state, { miles }) => {
-        return ({
+        return {
             ...state,
             items: miles,
             loading: false,
-        })
+        };
     }),
     on(MilesAction.getLoadsPayloadError, (state, { error }) => ({
         ...state,
@@ -58,16 +64,33 @@ export const milesReducer = createReducer(
     })),
     on(activeViewMode, (state, { activeViewMode }) => ({
         ...state,
-        activeViewMode
+        activeViewMode,
     })),
     on(filters, (state, { filters }) => ({
         ...state,
-        filters
-    })), 
+        filters,
+    })),
     on(setStates, (state, { states }) => ({
         ...state,
-        states
-    })), 
+        states,
+    })),
+    on(MilesAction.selectRow, (state, { mile }) => {
+        // Update select one only
+        const updatedItems = state.items.map((item) =>
+            item.id === mile.id
+                ? { ...item, selected: !item.selected }
+                : item
+        );
+    
+        // new selected count
+        const newSelectedCount = updatedItems.filter(item => item.selected).length;
+    
+        return {
+            ...state,
+            items: updatedItems,
+            selectedRows: newSelectedCount,
+        };
+    }),
     on(
         updateTruckCounts,
         (state, { activeTruckCount, inactiveTruckCount }) => ({

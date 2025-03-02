@@ -14,5 +14,7 @@ export class MilesStoreConstants {
 
     static ACTION_SET_FILTERS = `${this.COMPONENT_NAME_KEY} SET FILTERS`;
 
-    public static SET_STATES = `${this.COMPONENT_NAME_KEY} SET_STATES`
+    public static SET_STATES = `${this.COMPONENT_NAME_KEY} SET_STATES`;
+
+    public static ACTION_SELECT_ROW = `${this.COMPONENT_NAME_KEY} ACTION_SELECT_ROW`
 }

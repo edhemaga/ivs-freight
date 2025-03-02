@@ -36,7 +36,7 @@ import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
 
 // Models
 import { MilesByUnitResponse, MilesStateFilterResponse } from 'appcoretruckassist';
-import { IMilesState } from '@pages/miles/models';
+import { IMilesModel, IMilesState } from '@pages/miles/models';
 import { IStateFilters, ITableColumn } from '@shared/models';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
@@ -61,7 +61,7 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
 export class MilesComponent implements OnInit {
     public tableViewData$: Observable<any[]>;
     public selectedTabData$: Observable<any>;
-    public miles$: Observable<MilesByUnitResponse[]>;
+    public miles$: Observable<IMilesModel[]>;
     public selectedTab$: Observable<eMileTabs>;
     public activeViewMode$: Observable<string>;
     private filter: IStateFilters = {};
@@ -102,5 +102,9 @@ export class MilesComponent implements OnInit {
 
     public setFilters(filters: IFilterAction): void {
         this.milesStoreService.dispatchFilters(filters, this.filter);
+    }
+
+    public selectRow(mile: IMilesModel) : void {
+        this.milesStoreService.dispatchSelectingRow(mile);
     }
 }
