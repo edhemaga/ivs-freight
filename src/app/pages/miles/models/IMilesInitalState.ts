@@ -20,4 +20,5 @@ export interface IMilesState {
     states: MilesStateFilterResponse[],
     selectedRows: number;
     columns: ITableColumn[];
+    areAllItemsSelected: boolean;
 }

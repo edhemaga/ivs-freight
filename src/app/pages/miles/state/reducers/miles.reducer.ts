@@ -2,7 +2,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 // Feature Actions
-import * as MilesAction from '@pages/miles/state/actions/miles.actions'; 
+import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -24,6 +24,7 @@ export const initialState: IMilesState = {
     filters: {},
     states: [],
     selectedRows: 0,
+    areAllItemsSelected: false,
 
     // Table
     columns: MilesTableColumns,
@@ -51,7 +52,7 @@ export const milesReducer = createReducer(
         ...state,
         items: miles,
     })),
-    
+
     // #region Table tab
     on(MilesAction.milesTabChange, (state, { selectedTab }) => ({
         ...state,
@@ -75,7 +76,6 @@ export const milesReducer = createReducer(
     })),
     // #endregion
 
-    
     // #region Table filters
     on(MilesAction.changeFilters, (state, { filters }) => ({
         ...state,
@@ -86,7 +86,6 @@ export const milesReducer = createReducer(
         states,
     })),
     // #endregion
-
 
     // #region Checkbox selection
     on(MilesAction.selectOneRow, (state, { mile }) => {
@@ -104,6 +103,24 @@ export const milesReducer = createReducer(
             ...state,
             items: updatedItems,
             selectedRows: newSelectedCount,
+        };
+    }),
+
+    on(MilesAction.selectAll, (state) => { 
+        const areAllItemsSelected = !state.areAllItemsSelected;
+
+        const updatedItems = state.items.map((item) =>{
+            return {
+                ...item,
+                selected: areAllItemsSelected
+            }
+        }); 
+
+        return {
+            ...state,
+            items: updatedItems,
+            selectedRows: areAllItemsSelected ? updatedItems.length : 0,
+            areAllItemsSelected
         };
     })
     // #endregion

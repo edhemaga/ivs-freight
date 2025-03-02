@@ -107,4 +107,8 @@ export class MilesComponent implements OnInit {
     public selectRow(mile: IMilesModel) : void {
         this.milesStoreService.dispatchSelectOneRow(mile);
     }
+
+    public selectAll() : void {
+        this.milesStoreService.dispatchSelectAll();
+    }
 }

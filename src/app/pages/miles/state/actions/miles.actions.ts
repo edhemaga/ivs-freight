@@ -62,3 +62,7 @@ export const selectOneRow = createAction(
   MilesStoreConstants.ACTION_SELECT_ONE_ROW,
     props<{ mile: IMilesModel }>()
 );
+
+export const selectAll = createAction(
+  MilesStoreConstants.ACTION_SELECT_ALL_ROWS
+)

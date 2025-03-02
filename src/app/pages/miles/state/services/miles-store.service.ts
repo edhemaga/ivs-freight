@@ -76,4 +76,10 @@ export class MilesStoreService {
             mile
         });
     }
+    
+    public dispatchSelectAll(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
+        });
+    }
 }
