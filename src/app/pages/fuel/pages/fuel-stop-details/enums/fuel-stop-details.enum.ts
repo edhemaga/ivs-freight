@@ -9,4 +9,7 @@ export enum eFuelStopDetails {
 
     NEXT = 'next',
     PREVIOUS = 'previous',
+
+    DIESEL = 'Diesel',
+    DEF = 'DEF',
 }

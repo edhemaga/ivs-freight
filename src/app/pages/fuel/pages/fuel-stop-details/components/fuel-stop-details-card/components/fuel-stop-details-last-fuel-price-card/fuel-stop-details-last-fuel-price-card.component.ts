@@ -13,8 +13,16 @@ import { FuelStopDetailsCardConstants } from '@pages/fuel/pages/fuel-stop-detail
 // svg routes
 import { FuelStopDetailsSvgRoutes } from '@pages/fuel/pages/fuel-stop-details/utils/svg-routes';
 
+// enums
+import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
+
+// pipes
+import { ThousandSeparatorPipe } from '@shared/pipes';
+import { LastFuelPriceCardTitlePipe } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/pipes/last-fuel-price-card-title.pipe';
+
 // models
 import { FuelStopResponse } from 'appcoretruckassist';
+import { ExtendedFuelStopResponse } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/models';
 
 @Component({
     selector: 'app-fuel-stop-details-last-fuel-price-card',
@@ -28,37 +36,26 @@ import { FuelStopResponse } from 'appcoretruckassist';
 
         // components
         TaCustomCardComponent,
+
+        // pipes
+        ThousandSeparatorPipe,
+        LastFuelPriceCardTitlePipe,
     ],
+    providers: [ThousandSeparatorPipe],
 })
 export class FuelStopDetailsLastFuelPriceCardComponent {
     @Input() set cardData(data: FuelStopResponse) {
         this.createLastFuelPriceCardData(data);
     }
 
-    public _cardData: FuelStopResponse;
+    public _cardData: ExtendedFuelStopResponse;
 
-    // dummy w8 for back
-    public fuelPriceConfig = [
-        {
-            title: 'Diesel',
-            totalValue: 3.358,
-            minValue: 3.23,
-            maxValue: 4.18,
-        },
-        {
-            title: 'DEF',
-            totalValue: 2.358,
-            minValue: 2.13,
-            maxValue: 5.18,
-        },
-    ];
+    // svg routes
+    public fuelStopDetailsSvgRoutes = FuelStopDetailsSvgRoutes;
 
     public isLastFuelPriceCardOpen: boolean = true;
 
     public lastFuelPriceColors: string[] = [];
-
-    // svg routes
-    public fuelStopDetailsSvgRoutes = FuelStopDetailsSvgRoutes;
 
     constructor() {}
 
@@ -72,10 +69,93 @@ export class FuelStopDetailsLastFuelPriceCardComponent {
     }
 
     private createLastFuelPriceCardData(data: FuelStopResponse): void {
-        this._cardData = data;
+        const {
+            pricePerGallon,
+            lowestPricePerGallon,
+            highestPricePerGallon,
+            defPrice,
+            defLowestPrice,
+            defHighestPrice,
+        } = data;
+
+        const lastFuelPriceConfig = [
+            {
+                title: eFuelStopDetails.DIESEL,
+                totalValue: pricePerGallon,
+                minValue: lowestPricePerGallon,
+                maxValue: highestPricePerGallon,
+            },
+            {
+                title: eFuelStopDetails.DEF,
+                totalValue: defPrice,
+                minValue: defLowestPrice,
+                maxValue: defHighestPrice,
+            },
+        ];
+
+        this._cardData = {
+            ...data,
+            lastFuelPriceConfig,
+        };
+
+        console.log('this._cardData ', this._cardData);
     }
 
     public handleLastFuelPriceCardOpen(isOpen: boolean): void {
         this.isLastFuelPriceCardOpen = isOpen;
+    }
+
+    //////////////////////////  TO COMPONENT
+
+    public getSvgClassFromValue(
+        minValue: number,
+        maxValue: number,
+        totalValue: number
+    ): string {
+        // calculate percentage of cost in relation to min and max values
+        const percentage =
+            ((totalValue - minValue) / (maxValue - minValue)) * 100;
+
+        // ensure percentage is within the range [0, 100]
+        const clampedPercentage = Math.min(Math.max(percentage, 0), 100);
+
+        // find the section based on percentage (0-20, 21-40, etc.)
+        const colorSection = Math.floor(clampedPercentage / 20); // 5 color sections
+
+        // adjust logic: if the progress is close to the end of a section, use the current section's color
+        if (percentage === 100) return `fuel-color-5`; // if it's exactly 100%, it's the last color
+
+        // return the appropriate class based on the section
+        return `fuel-color-${colorSection + 1}`;
+    }
+
+    public calculateSvgPosition(
+        minValue: number,
+        maxValue: number,
+        totalValue: number
+    ): { svgPosition: number; svgClass: string } {
+        // calculate percentage of cost in relation to min and max values
+        const percentage =
+            ((totalValue - minValue) / (maxValue - minValue)) * 100;
+
+        // calculate the position based on the 5 equal sections (20% per section)
+        const svgPosition = (percentage / 100) * 100; // Percentage of progress
+
+        // use the utility function to get the appropriate class for the SVG based on the value range
+        const svgClass = this.getSvgClassFromValue(
+            minValue,
+            maxValue,
+            totalValue
+        );
+
+        return { svgPosition, svgClass };
+    }
+
+    get svgData() {
+        const minValue = 3.23; // Example min value
+        const maxValue = 4.18; // Example max value
+        const totalValue = 3.359; // Example cost (current value)
+
+        return this.calculateSvgPosition(minValue, maxValue, totalValue);
     }
 }
