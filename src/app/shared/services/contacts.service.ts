@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, tap } from 'rxjs';
-
-// services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-
-// store
-import { ContactStore } from '@pages/contacts/state/contact.store';
+import { Observable } from 'rxjs';
 
 // models
 import {
@@ -25,17 +19,12 @@ import {
     UpdateCompanyContactLabelCommand,
 } from 'appcoretruckassist';
 
-// enums
-import { eGeneralActions } from '@shared/enums';
-
 @Injectable({
     providedIn: 'root',
 })
 export class ContactsService {
     constructor(
-        private contactStore: ContactStore,
         private contactService: CompanyContactService,
-        private tableService: TruckassistTableService,
         private companyLabelService: CompanyContactLabelService
     ) {}
 
@@ -43,58 +32,7 @@ export class ContactsService {
     public addCompanyContact(
         data: CreateCompanyContactCommand
     ): Observable<CreateResponse> {
-        return this.contactService.apiCompanycontactPost(data).pipe(
-            tap((res) => {
-                this.getCompanyContactById(res.id).subscribe({
-                    next: (contact: CompanyContactResponse) => {
-                        forkJoin([
-                            this.companyContactLabelsColorList(),
-                            this.getCompanyContactModal(),
-                        ])
-                            .pipe(
-                                tap(([colorRes, { labels }]) => {
-                                    labels = labels.map((label) => {
-                                        return {
-                                            ...label,
-                                            dropLabel: true,
-                                        };
-                                    });
-
-                                    const newContact = {
-                                        ...contact,
-                                        colorLabels: labels,
-                                        colorRes,
-                                    };
-
-                                    const contactCount = JSON.parse(
-                                        localStorage.getItem(
-                                            'contactTableCount'
-                                        )
-                                    );
-
-                                    contactCount.contact++;
-
-                                    localStorage.setItem(
-                                        'contactTableCount',
-                                        JSON.stringify({
-                                            contact: contactCount.contact,
-                                        })
-                                    );
-
-                                    this.tableService.sendActionAnimation({
-                                        animation: eGeneralActions.ADD,
-                                        data: contact,
-                                        id: contact.id,
-                                    });
-
-                                    this.contactStore.add(newContact);
-                                })
-                            )
-                            .subscribe();
-                    },
-                });
-            })
-        );
+        return this.contactService.apiCompanycontactPost(data);
     }
 
     // update contact
@@ -103,24 +41,7 @@ export class ContactsService {
         colors?: Array<AccountColorResponse>,
         colorLabels?: Array<CompanyAccountLabelResponse>
     ): Observable<any> {
-        return this.contactService.apiCompanycontactPut(data).pipe(
-            tap(() => {
-                this.getCompanyContactById(data.id).subscribe({
-                    next: (contact: CompanyContactResponse | any) => {
-                        this.contactStore.remove(({ id }) => id === data.id);
-                        colors && (contact.colorRes = colors);
-                        colorLabels && (contact.colorLabels = colorLabels);
-                        this.contactStore.add(contact);
-
-                        this.tableService.sendActionAnimation({
-                            animation: eGeneralActions.UPDATE,
-                            data: contact,
-                            id: contact.id,
-                        });
-                    },
-                });
-            })
-        );
+        return this.contactService.apiCompanycontactPut(data);
     }
 
     // get contact by id
@@ -161,59 +82,13 @@ export class ContactsService {
     }
 
     // delete contact list
-    public deleteAccountList(contactIds: number[]): Observable<any> {
-        return this.contactService.apiCompanycontactListDelete(contactIds).pipe(
-            tap(() => {
-                for (let i = 0; i < contactIds.length; i++) {
-                    this.contactStore.remove(({ id }) => id === contactIds[i]);
-
-                    const contactCount = JSON.parse(
-                        localStorage.getItem('contactTableCount')
-                    );
-
-                    contactCount.contact--;
-
-                    localStorage.setItem(
-                        'contactTableCount',
-                        JSON.stringify({
-                            contact: contactCount.contact,
-                        })
-                    );
-
-                    this.tableService.sendActionAnimation({
-                        animation: eGeneralActions.DELETE,
-                        id: contactIds[i],
-                    });
-                }
-            })
-        );
+    public deleteContactList(contactIds: number[]): Observable<any> {
+        return this.contactService.apiCompanycontactListDelete(contactIds);
     }
 
     // delete contact by id
     public deleteCompanyContactById(contactId: number): Observable<any> {
-        return this.contactService.apiCompanycontactIdDelete(contactId).pipe(
-            tap(() => {
-                this.contactStore.remove(({ id }) => id === contactId);
-
-                const contactCount = JSON.parse(
-                    localStorage.getItem('contactTableCount')
-                );
-
-                contactCount.contact--;
-
-                localStorage.setItem(
-                    'contactTableCount',
-                    JSON.stringify({
-                        contact: contactCount.contact,
-                    })
-                );
-
-                this.tableService.sendActionAnimation({
-                    animation: eGeneralActions.DELETE,
-                    id: contactId,
-                });
-            })
-        );
+        return this.contactService.apiCompanycontactIdDelete(contactId);
     }
 
     // --------------------- Contact LABEL ---------------------

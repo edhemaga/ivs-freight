@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
+import { DepartmentResponse } from './departmentResponse';
 
 
-export interface ShipperShortMobileResponse { 
-    id?: number;
-    address?: AddressEntity;
-    businessName?: string | null;
+export interface ShipperContactShortMobileResponse { 
+    fullName?: string | null;
+    department?: DepartmentResponse;
+    phone?: string | null;
 }
 

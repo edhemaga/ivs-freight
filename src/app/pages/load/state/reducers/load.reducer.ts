@@ -8,7 +8,8 @@ import { ILoadState } from '@pages/load/pages/load-table/models/load-state.model
 import * as LoadActions from '@pages/load/state/actions/load.action';
 
 // enums
-import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eActiveViewMode } from '@shared/enums';
 
 // functions
 import * as Functions from '@pages/load/pages/load-table/utils/functions/load-reducer.functions';

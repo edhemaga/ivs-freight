@@ -9,12 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { AddressEntity } from './addressEntity';
 
 
-export interface ShipperShortMobileResponse { 
-    id?: number;
-    address?: AddressEntity;
-    businessName?: string | null;
-}
+export type BrokerShipperContact = 'Broker' | 'Shipper';
+
+export const BrokerShipperContact = {
+    Broker: 'Broker' as BrokerShipperContact,
+    Shipper: 'Shipper' as BrokerShipperContact
+};
 

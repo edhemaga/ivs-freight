@@ -230,6 +230,7 @@ model/brokerPaymentHistoryChartResponse.ts
 model/brokerPaymentHistoryResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
+model/brokerShipperContact.ts
 model/brokerShortMobileResponse.ts
 model/brokerShortResponse.ts
 model/byStateReportType.ts
@@ -662,8 +663,11 @@ model/loadStopCommand.ts
 model/loadStopInfo.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
+model/loadStopItemMobileResponse.ts
 model/loadStopItemResponse.ts
 model/loadStopLoadListResponse.ts
+model/loadStopMobileByLoadIdResponse.ts
+model/loadStopMobileListResponse.ts
 model/loadStopMobileResponse.ts
 model/loadStopMobileShortResponse.ts
 model/loadStopProgressBarMobileResponse.ts
@@ -947,6 +951,7 @@ model/shipperAverageWaitingTimeResponse.ts
 model/shipperContactCommand.ts
 model/shipperContactGroupResponse.ts
 model/shipperContactResponse.ts
+model/shipperContactShortMobileResponse.ts
 model/shipperContactShortResponse.ts
 model/shipperIntervalResponse.ts
 model/shipperListResponse.ts
@@ -1046,6 +1051,8 @@ model/trailerMinimalListResponse.ts
 model/trailerMinimalMobileResponse.ts
 model/trailerMinimalResponse.ts
 model/trailerMinimalResponsePagination.ts
+model/trailerModelListResponse.ts
+model/trailerModelResponse.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
