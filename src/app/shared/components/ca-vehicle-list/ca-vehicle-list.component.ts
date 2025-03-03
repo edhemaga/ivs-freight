@@ -21,11 +21,9 @@ import { DispatchColorFinderPipe, ThousandSeparatorPipe } from '@shared/pipes';
 // svg routes
 import { VehicleListSvgRoutes } from '@shared/components/ca-vehicle-list/utils/svg-routes';
 
-// types
-import { VehicleListType } from '@shared/components/ca-vehicle-list/types';
-
 // interfaces
 import { IVehicleListActionsEmit } from '@shared/components/ca-vehicle-list/interfaces/vehicle-list-actions-emit.interface';
+import { IVehicleListConfig } from '@shared/components/ca-vehicle-list/interfaces';
 
 // models
 import {
@@ -54,20 +52,17 @@ import {
     ],
 })
 export class CaVehicleListComponent implements OnInit {
-    @Input() set vehicleList(
-        data: (RepairedVehicleResponse | FuelledVehicleResponse)[]
-    ) {
-        this._vehicleList = data;
+    @Input() set vehicleListConfig(data: IVehicleListConfig) {
+        this._vehicleListConfig = data;
     }
-
-    @Input() vehicleListType!: VehicleListType;
-    @Input() isVehicleListSearchActive: boolean = false;
 
     @Output() vehicleListActionsEmitter =
         new EventEmitter<IVehicleListActionsEmit>();
 
     public _vehicleList: (RepairedVehicleResponse | FuelledVehicleResponse)[] =
         [];
+
+    public _vehicleListConfig: IVehicleListConfig;
 
     // svg routes
     public vehicleListSvgRoutes = VehicleListSvgRoutes;

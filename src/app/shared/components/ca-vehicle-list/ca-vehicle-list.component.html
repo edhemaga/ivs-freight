@@ -1,7 +1,7 @@
 <div class="d-flex flex-column justify-content-center vehicle-list-container">
     <!-- Search -->
 
-    @if (isVehicleListSearchActive) {
+    @if (_vehicleListConfig?.isSearchActive) {
         <div class="vehicle-list-search">
             <app-ca-search-multiple-states
                 [searchType]="'Vehicle'"
@@ -38,7 +38,7 @@
                     <svg-icon
                         class="svg-size-14 svg-fill-muted"
                         [src]="
-                            vehicleListType ===
+                            _vehicleListConfig?.type ===
                             eVehicleList.REPAIRED_VEHICLE_LIST
                                 ? vehicleListSvgRoutes.repairedVehicleListSvgRoute
                                 : vehicleListSvgRoutes.fuelledVehicleListSvgRoute
@@ -53,7 +53,7 @@
 
     <div class="d-flex flex-column justify-content-center vehicle-list-body">
         @for (
-            vehicle of _vehicleList;
+            vehicle of _vehicleListConfig.list;
             let vehicleIndex = $index;
             track vehicle.unitId
         ) {
@@ -144,8 +144,8 @@
         class="d-flex align-items-center justify-content-between vehicle-list-footer"
     >
         <p class="m-0 ta-font-semi-bold text-size-11 text-color-bw6-2">
-            {{ _vehicleList.length }} OF
-            {{ _vehicleList.length }}
+            {{ _vehicleListConfig?.list.length }} OF
+            {{ _vehicleListConfig?.list.length }}
         </p>
     </div>
 </div>
