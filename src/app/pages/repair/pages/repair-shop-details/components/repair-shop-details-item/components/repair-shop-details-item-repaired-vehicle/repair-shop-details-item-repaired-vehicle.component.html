@@ -159,4 +159,13 @@
             </p>
         </div>
     </div>
+
+    <!-- COMPONENT -->
+
+    <app-ca-vehicle-list
+        [vehicleListType]="eVehicleList.REPAIRED_VEHICLE_LIST"
+        [vehicleList]="_repairedVehicleList"
+        [isVehicleListSearchActive]="searchConfig[1]"
+        (vehicleListActionsEmitter)="handleVehicleListActionsEmit($event)"
+    ></app-ca-vehicle-list>
 }

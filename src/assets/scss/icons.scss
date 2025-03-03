@@ -47,6 +47,9 @@
         &-blue-13 {
             @include svg-fill($ta-blue-13);
         }
+        &-blue-14 {
+            @include svg-fill($ta-blue-14);
+        }
         &-blue-19 {
             @include svg-fill($ta-blue-19);
         }
@@ -56,6 +59,9 @@
         &-green {
             @include svg-fill($ta-green);
         }
+        &-green-2 {
+            @include svg-fill($ta-green-2);
+        }
         &-green-4 {
             @include svg-fill($ta-green-4);
         }
@@ -64,6 +70,12 @@
         }
         &-yellow-4 {
             @include svg-fill($ta-yellow-4);
+        }
+        &-yellow-5 {
+            @include svg-fill($ta-yellow-5);
+        }
+        &-red-11 {
+            @include svg-fill($ta-red-11);
         }
     }
 

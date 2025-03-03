@@ -1,22 +1,25 @@
 @import 'src/theme/variables';
 
-.repaired-vehicle-list-container {
+.vehicle-list-container {
     padding: 6px;
     border-radius: 3px;
     background: $white;
 
     /* Search */
 
-    .repaired-vehicle-list-search {
+    .vehicle-list-search {
         margin-bottom: 4px;
+    }
+
+    .vehicle-list-header,
+    .vehicle-list-body-item {
+        grid-template-columns: 60px 42px 34px auto;
+        grid-gap: 27px;
     }
 
     /* Header */
 
-    .repaired-vehicle-list-header {
-        display: grid;
-        grid-template-columns: 60px 42px 34px 72px;
-        grid-gap: 27px;
+    .vehicle-list-header {
         padding: 6px;
         border-bottom: 1px solid $bw-9;
         margin-bottom: 6px;
@@ -24,11 +27,8 @@
 
     /* Body */
 
-    .repaired-vehicle-list-body {
+    .vehicle-list-body {
         &-item {
-            display: grid;
-            grid-template-columns: 60px 42px 34px 72px;
-            grid-gap: 27px;
             padding: 8px 6px;
             margin-bottom: 2px;
             border-radius: 2px;
@@ -66,7 +66,7 @@
 
     /* Footer */
 
-    .repaired-vehicle-list-footer {
+    .vehicle-list-footer {
         padding: 6px 6px 0 6px;
         margin-top: 4px;
         border-top: 1px solid $bw-9;

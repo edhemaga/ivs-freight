@@ -1,4 +1,4 @@
-@let isOutdated = _cardData.priceOutDated || _cardData.defPriceOutDated;
+@let isOutdated = _cardData.priceOutDated && _cardData.defPriceOutDated;
 
 <app-ta-custom-card
     [cardName]="'Last Fuel Price'"

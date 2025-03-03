@@ -1,0 +1,151 @@
+<div class="d-flex flex-column justify-content-center vehicle-list-container">
+    <!-- Search -->
+
+    @if (isVehicleListSearchActive) {
+        <div class="vehicle-list-search">
+            <app-ca-search-multiple-states
+                [searchType]="'Vehicle'"
+                [toolbarSearch]="false"
+                [isDetailsPageSearch]="true"
+                [selectedTabData]="{
+                    gridNameTitle: 'Vehicle',
+                }"
+                (close)="handleClickActions({ isCloseSearch: true })"
+            ></app-ca-search-multiple-states>
+        </div>
+    }
+
+    <!-- Header -->
+
+    <div class="d-grid align-items-center vehicle-list-header">
+        @for (
+            headerItem of vehicleListHeaderItems;
+            let headerItemIndex = $index;
+            track headerItem
+        ) {
+            <div
+                class="d-flex align-items-center"
+                [ngClass]="{
+                    'justify-content-center': headerItemIndex === 2,
+                    'justify-content-end': headerItemIndex === 3,
+                }"
+            >
+                @if (headerItem) {
+                    <p class="m-0 ta-font-bold text-size-11 text-color-bw6-2">
+                        {{ headerItem }}
+                    </p>
+                } @else {
+                    <svg-icon
+                        class="svg-size-14 svg-fill-muted"
+                        [src]="
+                            vehicleListType ===
+                            eVehicleList.REPAIRED_VEHICLE_LIST
+                                ? vehicleListSvgRoutes.repairedVehicleListSvgRoute
+                                : vehicleListSvgRoutes.fuelledVehicleListSvgRoute
+                        "
+                    ></svg-icon>
+                }
+            </div>
+        }
+    </div>
+
+    <!-- Body -->
+
+    <div class="d-flex flex-column justify-content-center vehicle-list-body">
+        @for (
+            vehicle of _vehicleList;
+            let vehicleIndex = $index;
+            track vehicle.unitId
+        ) {
+            <div class="d-grid align-items-center vehicle-list-body-item">
+                <!-- Unit -->
+
+                <div
+                    class="d-flex align-items-center vehicle-unit-container"
+                    ngbTooltip
+                    mainTooltip="View Detail"
+                    position="bottom"
+                    tooltipBackground="#424242"
+                    (click)="
+                        handleClickActions({
+                            unitType: vehicle?.unitType,
+                            unitId: vehicle?.unitId,
+                        })
+                    "
+                >
+                    <p class="m-0 ta-font-bold text-size-14 text-color-black">
+                        {{ vehicle?.unitNumber }}
+                    </p>
+                </div>
+
+                <!-- Type -->
+
+                <div
+                    class="d-flex align-items-center vehicle-type-container"
+                    ngbTooltip
+                    [mainTooltip]="vehicle?.vehicleName"
+                    position="bottom"
+                    [tooltipBackground]="
+                        vehicleHoverIndex === vehicleIndex
+                            ? (vehicle?.vehicleTypeId
+                              | dispatchColorFinder
+                                  : vehicle?.unitType.toLowerCase()
+                                  : true)
+                            : 'transparent'
+                    "
+                    (mouseenter)="handleVehicleTypeHoverAction(vehicleIndex)"
+                    (mouseleave)="handleVehicleTypeHoverAction(-1)"
+                >
+                    <svg-icon
+                        class="d-flex align-items-center vehicle-icon"
+                        [ngClass]="
+                            vehicleHoverIndex === vehicleIndex
+                                ? (vehicle?.vehicleTypeId
+                                  | dispatchColorFinder
+                                      : vehicle?.unitType.toLowerCase())
+                                : ''
+                        "
+                        [src]="
+                            vehicle?.unitType === 'Truck'
+                                ? vehicleListSvgRoutes.trucksRoute +
+                                  vehicle?.logoName
+                                : vehicleListSvgRoutes.trailersRoute +
+                                  vehicle?.logoName
+                        "
+                    ></svg-icon>
+                </div>
+
+                <!-- Count -->
+
+                <div class="d-flex justify-content-center align-items-center">
+                    <p class="m-0 text-size-14 text-color-black-2">
+                        {{
+                            vehicle?.totalRepairs || vehicle?.numberOfRefueling
+                        }}
+                    </p>
+                </div>
+
+                <!-- Cost -->
+
+                <div class="d-flex align-items-center justify-content-end">
+                    <p
+                        class="m-0 ta-font-semi-bold text-size-14 text-color-black"
+                    >
+                        ${{ vehicle?.totalCost | thousandSeparator }}
+                    </p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- Footer -->
+
+    <div
+        class="d-flex align-items-center justify-content-between vehicle-list-footer"
+    >
+        <p class="m-0 ta-font-semi-bold text-size-11 text-color-bw6-2">
+            {{ _vehicleList.length }} OF
+            {{ _vehicleList.length }}
+        </p>
+    </div>
+</div>

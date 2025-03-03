@@ -15,12 +15,19 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { CaSearchMultipleStatesComponent } from 'ca-components';
+import { CaVehicleListComponent } from '@shared/components/ca-vehicle-list/ca-vehicle-list.component';
 
 // constants
 import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
 
 // pipes
 import { DispatchColorFinderPipe, ThousandSeparatorPipe } from '@shared/pipes';
+
+// enums
+import { eVehicleList } from '@shared/components/ca-vehicle-list/enums';
+
+// interfaces
+import { IVehicleListActionsEmit } from '@shared/components/ca-vehicle-list/interfaces/vehicle-list-actions-emit.interface';
 
 // models
 import { RepairedVehicleResponse } from 'appcoretruckassist';
@@ -39,6 +46,7 @@ import { RepairedVehicleResponse } from 'appcoretruckassist';
         // components
         TaAppTooltipV2Component,
         CaSearchMultipleStatesComponent,
+        CaVehicleListComponent,
 
         // pipes
         ThousandSeparatorPipe,
@@ -57,6 +65,9 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
 
     public repairedVehicleListHeaderItems: string[];
 
+    // enums
+    public eVehicleList = eVehicleList;
+
     constructor(
         private router: Router,
 
@@ -73,8 +84,14 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
             RepairShopDetailsItemConstants.REPAIRED_VEHICLES_LIST_HEADER_ITEMS;
     }
 
-    public handleViewDetailClick(unitType: string, id: number): void {
-        this.router.navigate([`/list/${unitType.toLowerCase()}/${id}/details`]);
+    public handleVehicleListActionsEmit(action: IVehicleListActionsEmit): void {
+        const { unitType, unitId, isCloseSearch } = action;
+
+        isCloseSearch
+            ? this.repairShopDetailsService.setCloseSearchStatus(1)
+            : this.router.navigate([
+                  `/list/${unitType.toLowerCase()}/${unitId}/details`,
+              ]);
     }
 
     public handleCloseSearchEmit(): void {

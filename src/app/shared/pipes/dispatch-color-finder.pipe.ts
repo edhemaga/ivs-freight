@@ -12,23 +12,23 @@ export class DispatchColorFinderPipe implements PipeTransform {
                 case 2:
                     if (isTooltip) return '#3B73ED';
 
-                    return 'blue';
+                    return 'svg-fill-blue-14';
                 case 3:
                 case 4:
                 case 5:
                     if (isTooltip) return '#F89B2E';
 
-                    return 'yellow';
+                    return 'svg-fill-yellow-5';
                 case 6:
                 case 7:
                 case 8:
                     if (isTooltip) return '#DF3C3C ';
 
-                    return 'red';
+                    return 'svg-fill-red-11';
                 default:
                     if (isTooltip) return '#259F94';
 
-                    return 'green';
+                    return 'svg-fill-green-2';
             }
         } else {
             switch (id) {
@@ -41,12 +41,12 @@ export class DispatchColorFinderPipe implements PipeTransform {
                 case 7:
                     if (isTooltip) return '#3B73ED';
 
-                    return 'blue';
+                    return 'svg-fill-blue-14';
                 case 8:
                 case 9:
                     if (isTooltip) return '#F89B2E';
 
-                    return 'yellow';
+                    return 'svg-fill-yellow-5';
                 case 10:
                 case 11:
                 case 12:
@@ -54,11 +54,11 @@ export class DispatchColorFinderPipe implements PipeTransform {
                 case 14:
                     if (isTooltip) return '#DF3C3C ';
 
-                    return 'red';
+                    return 'svg-fill-red-11';
                 default:
                     if (isTooltip) return '#259F94';
 
-                    return 'green';
+                    return 'svg-fill-green-2';
             }
         }
     }
