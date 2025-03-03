@@ -31,7 +31,6 @@ export function AddressMixin<
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     this.addressList = res;
-                    this.cdr?.detectChanges();
                 });
         }
 
@@ -41,8 +40,6 @@ export function AddressMixin<
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     this.addressData = res;
-                    this.handleSelectedAddress?.();
-                    this.cdr?.detectChanges();
                 });
         }
     };

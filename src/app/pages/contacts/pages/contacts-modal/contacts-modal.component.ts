@@ -430,9 +430,11 @@ export class ContactsModalComponent
         id: number | null,
         isUpdate: boolean
     ): CreateCompanyContactCommand | UpdateCompanyContactCommand {
-        const { addressUnit, address, ...form } = this.contactForm.value;
+        const { addressUnit, ...form } = this.contactForm.value;
 
-        const updatedAddress = address ? { address, addressUnit } : null;
+        const updatedAddress = this.selectedAddress
+            ? { ...this.selectedAddress, addressUnit }
+            : null;
 
         const contactPhones = this.contactPhones.map((contactPhone, index) => ({
             ...contactPhone,
