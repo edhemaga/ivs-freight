@@ -3,7 +3,7 @@
 
     <div class="d-flex">
         <div class="group date-group">
-            <app-ta-input
+            <ca-input-datetime-picker
                 formControlName="accidentDate"
                 [inputConfig]="{
                     name: 'datepicker',
@@ -13,7 +13,7 @@
                     isRequired: true,
                     customClass: 'datetimeclass'
                 }"
-            ></app-ta-input>
+            ></ca-input-datetime-picker>
         </div>
         <div class="group location-group">
             <app-ta-input-address-dropdown
