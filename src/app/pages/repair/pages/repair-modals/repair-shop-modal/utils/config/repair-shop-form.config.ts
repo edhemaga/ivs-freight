@@ -56,8 +56,7 @@ export class RepairShopConfig {
             textTransform: 'capitalize',
             dropdownWidthClass: 'w-col-376',
             minLength: 6,
-            maxLength: 256,
-            isAddress: true,
+            maxLength: 256
         };
     }
 

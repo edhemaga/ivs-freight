@@ -1,12 +1,12 @@
 import {
     ChartImagesStringEnum,
-    ChartTypesStringEnum
+    eChartTypesString
 } from "ca-components";
 
 export class BrokerChartsConfiguration {
 
     static INVOICE_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],
@@ -26,7 +26,7 @@ export class BrokerChartsConfiguration {
     };
 
     static MILEAGE_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],
@@ -41,7 +41,7 @@ export class BrokerChartsConfiguration {
     };
 
     static PAYMENT_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],

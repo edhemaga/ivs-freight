@@ -1,6 +1,6 @@
 import {
     ChartImagesStringEnum,
-    ChartTypesStringEnum,
+    eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
 
 import {
@@ -9,7 +9,7 @@ import {
 
 export class DashboardPerformanceChartsConfiguration {
     public static LINE_CHART_PERFORMANCE_CONFIG: IChartConfiguration = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],
@@ -28,7 +28,7 @@ export class DashboardPerformanceChartsConfiguration {
         isDashboardChart: true
     };
     public static BAR_CHART_PERFORMANCE_CONFIG: IChartConfiguration = {
-        chartType: ChartTypesStringEnum.BAR,
+        chartType: eChartTypesString.BAR,
         chartData: {
             labels: [],
             datasets: [],

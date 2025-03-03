@@ -1,9 +1,9 @@
-import { ChartImagesStringEnum, ChartTypesStringEnum } from "ca-components";
+import { ChartImagesStringEnum, eChartTypesString } from "ca-components";
 
 export class TrailerDetailsChartsConfiguration {
 
   static PAYROLL_CHART_CONFIG = {
-    chartType: ChartTypesStringEnum.LINE,
+    chartType: eChartTypesString.LINE,
     chartData: {
       labels: [],
       datasets: [],

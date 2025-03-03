@@ -12,8 +12,6 @@
                 <ng-container *ngIf="isDropdownEnabled && isBonusModal">
                     <div class="payroll-mb-32">
                         <app-ca-input-dropdown
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             formControlName="driverId"
                             [template]="'load-dispatcher'"
                             [inputConfig]="driverConfig"
@@ -41,8 +39,6 @@
                                 *ngIf="selectedTab?.id === 1; else showTruck"
                             >
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="driverId"
                                     [template]="'load-dispatcher'"
                                     [inputConfig]="driverConfig"
@@ -54,8 +50,6 @@
 
                             <ng-template #showTruck>
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="truckId"
                                     [template]="'payroll-trucks'"
                                     [inputConfig]="truckConfig"

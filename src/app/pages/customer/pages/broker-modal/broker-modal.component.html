@@ -154,8 +154,7 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-510',
                                         minLength: 6,
-                                        maxLength: 256,
-                                        isAddress: true,
+                                        maxLength: 256
                                     }"
                                     [placeholderType]="'longAddress'"
                                     (selectedAddress)="
@@ -232,8 +231,7 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-414',
                                         minLength: 6,
-                                        maxLength: 256,
-                                        isAddress: true,
+                                        maxLength: 256
                                     }"
                                     [placeholderType]="'shortAddress'"
                                     (selectedAddress)="
@@ -301,8 +299,7 @@
                                             textTransform: 'capitalize',
                                             dropdownWidthClass: 'w-col-510',
                                             minLength: 6,
-                                            maxLength: 256,
-                                            isAddress: true,
+                                            maxLength: 256
                                         }"
                                         [placeholderType]="'longAddress'"
                                         (selectedAddress)="
@@ -382,8 +379,7 @@
                                             textTransform: 'capitalize',
                                             dropdownWidthClass: 'w-col-414',
                                             minLength: 6,
-                                            maxLength: 256,
-                                            isAddress: true,
+                                            maxLength: 256
                                         }"
                                         [placeholderType]="'shortAddress'"
                                         [activeAddress]="selectedBillingPoBox"
@@ -474,8 +470,6 @@
 
                             <div class="broker-billing-field">
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="payTerm"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',

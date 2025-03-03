@@ -1,11 +1,11 @@
 import {
     ChartImagesStringEnum,
-    ChartTypesStringEnum,
+    eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
 
 export class DashboardTopRatedChartsConfiguration {
     static DOUGHNUT_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.DOUGHNUT,
+        chartType: eChartTypesString.DOUGHNUT,
         chartData: {
             labels: [],
             datasets: [],
@@ -18,7 +18,7 @@ export class DashboardTopRatedChartsConfiguration {
     };
 
     static BAR_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],

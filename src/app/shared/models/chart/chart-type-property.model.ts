@@ -1,8 +1,8 @@
 // Enums
-import { ChartTypesStringEnum } from "ca-components/lib/components/ca-chart/enums";
+import { eChartTypesString } from "ca-components/lib/components/ca-chart/enums";
 
 export interface ChartTypeProperty {
-    type: ChartTypesStringEnum;
+    type: eChartTypesString;
     color?: string;
     // colorEdgeValue is used to distinguish where the color should transition to another
     // If no transition is required, leave empty

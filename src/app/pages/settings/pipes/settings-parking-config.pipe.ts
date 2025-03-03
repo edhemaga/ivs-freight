@@ -60,8 +60,7 @@ export class SettingsParkingConfigPipe implements PipeTransform {
                     textTransform: 'capitalize',
                     dropdownWidthClass: 'w-col-376',
                     minLength: 6,
-                    maxLength: 256,
-                    isAddress: true,
+                    maxLength: 256
                 };
             case 'addressUnit':
                 return {

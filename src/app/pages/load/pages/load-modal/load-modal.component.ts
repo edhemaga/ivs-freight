@@ -166,6 +166,7 @@ import {
     MapMarkerIconService,
     CaInputDatetimePickerComponent,
     InputTestComponent,
+    CaInputComponent,
 } from 'ca-components';
 
 @Component({
@@ -368,7 +369,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedExtraStopShipper: any[] = [];
     public selectedExtraStopShipperContact: any[] = [];
     public loadExtraStopsShipperInputConfig: ITaInput[] = [];
-    public loadExtraStopsShipperContactsInputConfig: ICaInput[] = [];
+    public loadExtraStopsShipperContactsInputConfig: ITaInput[] = [];
     public loadExtraStopsDateRange: EnumValue[] | boolean[] = [];
     public selectedExtraStopTime: any[] = [];
     public previousDeliveryStopOrder: number;
@@ -2872,7 +2873,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             blackInput: true,
             textTransform: LoadModalStringEnum.CAPITALIZE,
             dropdownWidthClass: LoadModalStringEnum.DROPDOWN_WIDTH_2,
-            searchinGroupIndex: 'contacts',
         });
 
         // selected

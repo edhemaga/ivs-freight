@@ -1,9 +1,9 @@
-import { ChartTypesStringEnum } from 'ca-components';
+import { eChartTypesString } from 'ca-components';
 
 export class DashboardByStateChartDatasetConfiguration {
     public static get BY_STATE_CHART_DATASET_CONFIG() {
         return {
-            type: ChartTypesStringEnum.BAR,
+            type: eChartTypesString.BAR,
         barPercentage: 0.9,
         categoryPercentage: 0.5,
         minBarLength: 0.5,

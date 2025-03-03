@@ -35,8 +35,6 @@
                         <app-ca-input-dropdown
                             formControlName="trailerTypeId"
                             [template]="'svgtext-template'"
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             [inputConfig]="TrailerTypeIdConfig"
                             [options]="trailerType"
                             [activeItem]="selectedTrailerType"
@@ -47,8 +45,6 @@
                         <app-ca-input-dropdown
                             formControlName="trailerLengthId"
                             [inputConfig]="TrailerLengthConfig"
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             [options]="trailerLengthType"
                             [activeItem]="selectedTrailerLength"
                             (selectedItem)="
@@ -79,8 +75,6 @@
                             [template]="'svg-template'"
                             [inputConfig]="TrailerMakeConfig"
                             [options]="trailerMakeType"
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             [activeItem]="selectedTrailerMake"
                             (selectedItem)="
                                 onSelectDropdown($event, 'trailer-make')
@@ -98,8 +92,6 @@
                             formControlName="colorId"
                             [template]="'svgtext-template'"
                             [inputConfig]="TrailerColorConfig"
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             [options]="colorType"
                             [activeItem]="selectedColor"
                             (selectedItem)="onSelectDropdown($event, 'color')"
@@ -120,8 +112,6 @@
                         <div bodyFalse class="row row-no-m">
                             <div class="col-12">
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="ownerId"
                                     [inputConfig]="TrailerOwnerConfig"
                                     [canAddNew]="true"
@@ -194,8 +184,6 @@
                             "
                         >
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="reeferUnit"
                                 [inputConfig]="TrailerReferConfig"
                                 [options]="reeferUnitType"
@@ -225,8 +213,6 @@
                         ></app-ca-input>
 
                         <app-ca-input-dropdown
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             formControlName="tireSizeId"
                             [inputConfig]="TrailerTireSizeConfig"
                             [options]="tireSize"
@@ -254,8 +240,6 @@
                         ></app-ca-input>
 
                         <app-ca-input-dropdown
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             formControlName="suspension"
                             [inputConfig]="TrailerSuspensionConfig"
                             [options]="suspensionType"
@@ -273,8 +257,6 @@
                             "
                         >
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="doorType"
                                 [inputConfig]="TrailerDoorTypeConfig"
                                 [options]="doorType"

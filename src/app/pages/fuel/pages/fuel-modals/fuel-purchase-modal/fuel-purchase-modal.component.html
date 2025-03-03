@@ -79,8 +79,6 @@
                 class="d-grid row-columns"
             >
                 <app-ca-input-dropdown
-                    [label]="'name'"
-                    [optionValue]="'number'"
                     formControlName="truckId"
                     [template]="'svgtext-template'"
                     [inputConfig]="
@@ -100,8 +98,6 @@
 
                 @if (fuelForm.get(fuelValuesStringEnum.TRAILER_ID).value) {
                     <app-ca-input-dropdown
-                        [label]="'name'"
-                        [optionValue]="'id'"
                         formControlName="trailerId"
                         [template]="'svgtext-template'"
                         [activeItem]="selectedTrailerType"
@@ -132,8 +128,6 @@
                     ></app-ca-input>
                 } @else {
                     <app-ca-input-dropdown
-                        [label]="'name'"
-                        [optionValue]="'id'"
                         formControlName="driverFullName"
                         [template]="'load-dispatcher'"
                         [inputConfig]="

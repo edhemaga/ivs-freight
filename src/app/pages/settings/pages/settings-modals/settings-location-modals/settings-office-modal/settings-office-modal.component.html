@@ -95,8 +95,7 @@
                                     textTransform: 'capitalize',
                                     dropdownWidthClass: 'w-col-376',
                                     minLength: 6,
-                                    maxLength: 256,
-                                    isAddress: true,
+                                    maxLength: 256
                                 }"
                                 [placeholderType]="'longAddress'"
                                 (selectedAddress)="onHandleAddress($event)"
@@ -131,8 +130,6 @@
                             <div class="mt-3 mb-3">
                                 <div class="location-parking-financial-card">
                                     <app-ca-input-dropdown
-                                        [label]="'name'"
-                                        [optionValue]="'id'"
                                         formControlName="payPeriod"
                                         [inputConfig]="payPeriodConfig"
                                         [options]="payPeriods"
@@ -145,8 +142,6 @@
                                         "
                                     ></app-ca-input-dropdown>
                                     <app-ca-input-dropdown
-                                        [label]="'name'"
-                                        [optionValue]="'id'"
                                         formControlName="monthlyDay"
                                         [inputConfig]="
                                             formConfig.getMonthlyDayConfig(

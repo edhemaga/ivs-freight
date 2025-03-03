@@ -28,7 +28,7 @@ import {
     DashboardChartStringEnum,
     DashboardStringEnum,
 } from '@pages/dashboard/enums';
-import { ChartTypesStringEnum } from 'ca-components';
+import { eChartTypesString } from 'ca-components';
 
 // Models
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
@@ -528,7 +528,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             .map(([key, values]) => ({
                 label: key,
                 data: [...values],
-                type: ChartTypesStringEnum.BAR,
+                type: eChartTypesString.BAR,
                 barPercentage: 0.9,
                 barThickness: 22,
                 categoryPercentage: 0.5,
@@ -575,7 +575,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             .map(([key, values]) => ({
                 label: key,
                 data: [...values],
-                type: ChartTypesStringEnum.LINE,
+                type: eChartTypesString.LINE,
                 hidden: true,
                 isCurrency: DashboardHelper.isCurrency(key),
             }));

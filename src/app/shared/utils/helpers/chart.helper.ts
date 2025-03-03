@@ -10,7 +10,7 @@ import {
 import { ChartConstants } from '@shared/utils/constants';
 
 // Enums
-import { ChartTypesStringEnum } from 'ca-components';
+import { eChartTypesString } from 'ca-components';
 import { ChartTabStringEnum } from '@shared/enums';
 
 export class ChartHelper {
@@ -36,20 +36,20 @@ export class ChartHelper {
         chartTypeProperties?.forEach((property: ChartTypeProperty) => {
             let properties: IBaseDataset = {
                 type: property?.type,
-                order: property?.type === ChartTypesStringEnum.BAR ? 2 : 1,
+                order: property?.type === eChartTypesString.BAR ? 2 : 1,
                 label: property.value,
                 borderWidth: property?.borderWidth || 2,
                 data: [],
                 color: property?.color,
                 color2: property?.color2 || property.color,
-                shiftValue: property.shiftValue
+                shiftValue: property.shiftValue,
             };
 
             // Since there are unique use cases for the usage that are not applicable to other types of graphs, special checks were performed
             // For example line can accept list of numbers as values, but bar chart can accept array of numbers that contain upper and lower values
             // See data property assignment
             switch (property.type) {
-                case ChartTypesStringEnum.LINE:
+                case eChartTypesString.LINE:
                     datasets = [
                         ...datasets,
                         {
@@ -57,42 +57,55 @@ export class ChartHelper {
                             borderColor: property.color,
                             fill: property.fill,
                             colorEdgeValue: property.colorEdgeValue,
-                            data: [...rawData.map((item: T) => {
-                                return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
-                            })],
+                            data: [
+                                ...rawData.map((item: T) => {
+                                    return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                }),
+                            ],
                         },
                     ];
                     break;
-                case ChartTypesStringEnum.DOUGHNUT:
+                case eChartTypesString.DOUGHNUT:
                     let datasetColors: string[] = [];
                     if (colors?.length) {
                         colors.forEach((color: string) => {
-                            if (color) datasetColors = [...datasetColors, this.hexToRgba(color)]
+                            if (color)
+                                datasetColors = [
+                                    ...datasetColors,
+                                    this.hexToRgba(color),
+                                ];
                         });
                     }
                     datasets = [
                         ...datasets,
                         {
                             ...properties,
-                            data: [...rawData.map((item: T) => {
-                                return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
-                            })],
-                            backgroundColor: [...datasetColors, this.hexToRgba('#cccccc')]
+                            data: [
+                                ...rawData.map((item: T) => {
+                                    return item[property.value] || 0; // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                }),
+                            ],
+                            backgroundColor: [
+                                ...datasetColors,
+                                this.hexToRgba('#cccccc'),
+                            ],
                         },
                     ];
                     break;
-                case ChartTypesStringEnum.BAR:
+                case eChartTypesString.BAR:
                     datasets = [
                         ...datasets,
                         {
                             ...properties,
                             borderWidth: 0, // Adjust if needed, for the time being no borders were used for bar charts
-                            data: [...rawData.map((item: T): [number, number] => {
-                                return [
-                                    item[property.minValue] || 0, // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
-                                    item[property.maxValue] || 0 // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
-                                ]
-                            })],
+                            data: [
+                                ...rawData.map((item: T): [number, number] => {
+                                    return [
+                                        item[property.minValue] || 0, // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                        item[property.maxValue] || 0, // For mock purposes replace '|| 0' with '|| Math.random() * 10'; use bigger values for random if needed
+                                    ];
+                                }),
+                            ],
                         },
                     ];
                     break;
@@ -111,7 +124,6 @@ export class ChartHelper {
         return chartData;
     }
 
-
     // Helper that generate tabs with corresponding values for the picker component, see implementation in any component where it is used
     public static generateTimeTabs(): Tabs[] {
         return Object.keys(ChartTabStringEnum)?.map(
@@ -129,8 +141,8 @@ export class ChartHelper {
     /**
      * Generates formatted labels for the X-axis of a chart based on the provided data and time filter.
      *
-     * The function processes an array of objects, where each object is expected to 
-     * contain `day`, `month`, and `year` properties. Depending on the `timeFilter` value, 
+     * The function processes an array of objects, where each object is expected to
+     * contain `day`, `month`, and `year` properties. Depending on the `timeFilter` value,
      * it formats the labels for individual days, months, or years using abbreviated month names.
      *
      * - If `timeFilter` corresponds to daily or weekly views (values 1, 2, 3, 6, or empty ),
@@ -139,14 +151,13 @@ export class ChartHelper {
      * - For January (`month === 1`), it shows the year ("exp. 2023").
      * - For other months, it shows the abbreviated month ("exp. DEC").
      * - For unsupported `timeFilter` values, it returns an empty string.
-     * 
-     * ---The logic is changed for some scenarios it has to be updated, also response from BE will heve to be reworked 
+     *
+     * ---The logic is changed for some scenarios it has to be updated, also response from BE will heve to be reworked
      */
     private static getXAxisFormatedLabels<T>(
         rawData: T[],
         timeFilter: number
     ): string[] {
-
         return rawData.map((item: T) => {
             const day = item['day'] as number;
             const month = item['month'] as number;
@@ -159,11 +170,14 @@ export class ChartHelper {
             )
                 return `${day} ${ChartConstants.MONTH_NAMES_SHORT[month - 1]}`;
             else if (timeFilter === 4 || timeFilter === 5)
-                return month === 1 ? `${year}` : ChartConstants.MONTH_NAMES_SHORT[month - 1];
+                return month === 1
+                    ? `${year}`
+                    : ChartConstants.MONTH_NAMES_SHORT[month - 1];
             else if (timeFilter === 6) {
-                const label = month !== null ?
-                    `${ChartConstants.MONTH_NAMES_SHORT[month - 1]} ${year}` :
-                    `${year}`
+                const label =
+                    month !== null
+                        ? `${ChartConstants.MONTH_NAMES_SHORT[month - 1]} ${year}`
+                        : `${year}`;
                 return label;
             }
             return '';
@@ -220,61 +234,62 @@ export class ChartHelper {
             {
                 value: `${totalPercentage.toFixed(2)}%`,
                 position: {
-                    top: -14
-                }
+                    top: -14,
+                },
             },
             {
                 value: `${total.toFixed(2)}`,
                 fontSize: 14,
                 position: {
-                    top: -14
-                }
+                    top: -14,
+                },
             },
             {
                 value: `Top ${count}`,
                 fontSize: 11,
                 color: '#AAAAAA',
                 position: {
-                    top: -14
-                }
+                    top: -14,
+                },
             },
             {
-                value: `${((100 - totalPercentage)).toFixed(2)}%`,
+                value: `${(100 - totalPercentage).toFixed(2)}%`,
                 position: {
-                    top: 14
-                }
+                    top: 14,
+                },
             },
             {
                 value: `${otherCount.toFixed(2)}`,
                 fontSize: 14,
                 position: {
-                    top: 14
-                }
+                    top: 14,
+                },
             },
             {
                 value: `All others`,
                 fontSize: 11,
                 color: '#AAAAAA',
                 position: {
-                    top: 14
-                }
+                    top: 14,
+                },
             },
         ];
     }
 
-    public static setChartLegend(index: number, labels: string[]): {
-        hasHighlightedBackground: boolean,
-        title: string
+    public static setChartLegend(
+        index: number,
+        labels: string[]
+    ): {
+        hasHighlightedBackground: boolean;
+        title: string;
     } {
-
         let hasHighlightedBackground: boolean = false;
         let title: string;
 
         if (index === null || index < 0) {
             hasHighlightedBackground = false;
             title = '';
-        }
-        else {
+        } else {
             hasHighlightedBackground = true;
             title = labels[index];
         }
