@@ -83,6 +83,7 @@
                         maxLength: 256,
                     }"
                     [placeholderType]="'longAddress'"
+                    [activeAddress]="selectedAddress"
                     [receivedAddressList]="addressList"
                     [receivedAddressData]="addressData"
                     (selectedAddress)="onHandleAddress($event)"

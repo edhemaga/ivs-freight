@@ -206,6 +206,7 @@
                                                 maxLength: 256,
                                             }"
                                             [placeholderType]="'city'"
+                                            [activeAddress]="selectedAddress"
                                             (selectedAddress)="
                                                 handleLocationSelect($event)
                                             "
