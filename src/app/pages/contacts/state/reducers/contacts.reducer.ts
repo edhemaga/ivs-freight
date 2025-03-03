@@ -2,7 +2,7 @@
 import { createReducer, on } from '@ngrx/store';
 
 // models
-import { IContactState } from '@pages/contacts/pages/contacts-table/models/contact-state.model';
+import { IContactState } from '@pages/contacts/pages/contacts-table/interfaces/contact-state.interface';
 
 // actions
 import * as ContactActions from '@pages/contacts/state/actions/contacts.action';
@@ -31,11 +31,11 @@ export const contactReducer = createReducer(
 
 // #region GET
     on(ContactActions.getContactsPayload, (state) => ({ ...state })),
-    on(ContactActions.getContactsPayloadSuccess, (state, { data, tableCount, showMore }) => Functions.getContactsPayloadSuccessResult(state, data, tableCount, showMore)),
+    on(ContactActions.getContactsPayloadSuccess, (state, { data, tableCount, isShowMore }) => Functions.getContactsPayloadSuccessResult(state, data, tableCount, isShowMore)),
     on(ContactActions.getContactsPayloadError, (state) => ({ ...state })),
 
     on(ContactActions.getInitialContacts, (state) => ({ ...state })),
-    on(ContactActions.getInitialContactsSuccess, (state, { data, contactColors, contactLabels, tableCount,  showMore }) => Functions.getInitialContactsPayloadSuccessResult(state, data, contactColors, contactLabels, tableCount, showMore)),
+    on(ContactActions.getInitialContactsSuccess, (state, { inititalContactsData }) => Functions.getInitialContactsPayloadSuccessResult(state, inititalContactsData)),
     on(ContactActions.getInitialContactsError, (state) => ({ ...state })),
 
     on(ContactActions.getContactColorLabelsList, (state) => ({ ...state })),

@@ -7,7 +7,7 @@ import { filter, Observable, take } from 'rxjs';
 import { select, Store } from '@ngrx/store';
 
 // models
-import { IContactsViewModelData } from '../pages/contacts-table/models/contacts-view-data.model';
+import { IContactsViewModelData } from '../pages/contacts-table/interfaces/contacts-view-data.interface';
 import { ContactsBackFilter } from '../pages/contacts-table/models/contacts-back-filter.model';
 import { ITableData } from '@shared/models/table-data.model';
 import { Column, ITableColummn, ITableOptions } from '@shared/models';
@@ -17,6 +17,7 @@ import {
     CreateCompanyContactCommand,
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
+import { IContactsInitialData } from '@pages/contacts/pages/contacts-table/interfaces'
 
 // selectors
 import {
@@ -31,10 +32,11 @@ import {
 } from '@pages/contacts/state/selectors/contacts.selector';
 
 // constants
-import { ContactsStoreConstants } from '../utils/constants';
+import { ContactsStoreConstants } from '@pages/contacts/utils/constants';
 
 // enums
 import { eActiveViewMode } from '@shared/enums';
+
 
 @Injectable({
     providedIn: 'root',
@@ -42,7 +44,7 @@ import { eActiveViewMode } from '@shared/enums';
 export class ContactStoreService {
     constructor(private store: Store) {}
 
-    public resolveInitialData$: Observable<any> = this.store.pipe(
+    public resolveInitialData$: Observable<IContactsInitialData> = this.store.pipe(
         select(getSelector),
         filter((data) => !!data),
         take(1)
@@ -82,12 +84,12 @@ export class ContactStoreService {
 
     public dispatchGetContactList(
         onSearch?: ContactsBackFilter,
-        showMore?: boolean
+        isShowMore?: boolean
     ): void {
         this.store.dispatch({
             type: ContactsStoreConstants.ACTION_GET_TABLE_COMPONENT_CONTACT_LIST,
             onSearch,
-            showMore,
+            isShowMore,
         });
     }
 

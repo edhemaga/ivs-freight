@@ -1,38 +1,35 @@
+@let tableOptions = contactStoreService.tableOptions$ | async;
+@let tableData = contactStoreService.tableData$ | async;
+@let columns = contactStoreService.columns$ | async;
+@let viewData = contactStoreService.viewData$ | async;
+@let activeViewMode = contactStoreService.activeViewMode$ | async;
+
 <div class="table-container">
-    @if (
-        {
-            tableOptions: contactStoreService.tableOptions$ | async,
-            tableData: contactStoreService.tableData$ | async,
-            columns: contactStoreService.columns$ | async,
-            viewData: contactStoreService.viewData$ | async,
-            activeViewMode: contactStoreService.activeViewMode$ | async,
-        };
-        as store
-    ) {
-        <app-ta-table-toolbar
-            (toolBarAction)="onToolBarAction($event)"
-            [options]="store?.tableOptions"
-            [tableData]="store?.tableData"
-            [selectedTab]="selectedTab"
-            [columns]="store?.columns"
-            [activeViewMode]="store?.activeViewMode"
-        ></app-ta-table-toolbar>
-    
-        <ng-container *ngIf="store?.activeViewMode === 'List'">
+    <app-ta-table-toolbar
+        (toolBarAction)="onToolBarAction($event)"
+        [options]="tableOptions"
+        [tableData]="tableData"
+        [selectedTab]="selectedTab"
+        [columns]="columns"
+        [activeViewMode]="activeViewMode"
+    ></app-ta-table-toolbar>
+
+    @switch (activeViewMode) {
+        @case (eCommonElements.LIST) {
             <app-ta-table-head
-                [options]="store?.tableOptions"
-                [viewData]="store?.viewData"
-                [columns]="store?.columns"
-                [tableData]="store?.tableData"
+                [options]="tableOptions"
+                [viewData]="viewData"
+                [columns]="columns"
+                [tableData]="tableData"
                 (headActions)="onTableHeadActions($event)"
             ></app-ta-table-head>
     
             <app-ta-table-body
-                [viewData]="store?.viewData"
-                [columns]="store?.columns"
-                [options]="store?.tableOptions"
+                [viewData]="viewData"
+                [columns]="columns"
+                [options]="tableOptions"
                 [selectedTab]="selectedTab"
-                [tableData]="store?.tableData"
+                [tableData]="tableData"
                 (tableBodyActions)="
                     handleDropdownMenuActions(
                         $event,
@@ -40,15 +37,16 @@
                     )
                 "
             ></app-ta-table-body>
-        </ng-container>
-    
-        <ng-container *ngIf="store?.activeViewMode === 'Card'">
+        }
+
+        @case (eCommonElements.CARD) {
             <div class="elements">
                 <app-contacts-card
-                    [viewData]="store?.viewData"
+                    [viewData]="viewData"
                     [displayRowsFront]="sendDataToCardsFront"
                     [displayRowsBack]="sendDataToCardsBack"
-                ></app-contacts-card></div
-        ></ng-container>
+                ></app-contacts-card>
+            </div>
+        }
     }
 </div>

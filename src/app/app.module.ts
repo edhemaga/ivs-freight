@@ -46,8 +46,6 @@ import { configFactory } from '@core/configs/app.config';
 import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
-import { LoadEffect } from '@pages/load/state/effects/load.effect';
-import { ContactEffect } from '@pages/contacts/state/effects/contacts.effect';
 
 // Lottie
 import player from 'lottie-web';
@@ -60,6 +58,7 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 // Store
 import { loadReducer } from '@pages/load/state/reducers/load.reducer';
 import { contactReducer } from '@pages/contacts/state/reducers/contacts.reducer';
+import { LoadEffect } from '@pages/load/state/effects/load.effect';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -101,8 +100,8 @@ export const appConfig: ApplicationConfig = {
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }), 
-        StoreModule.forRoot({ load: loadReducer, contact: contactReducer }),
-        EffectsModule.forRoot([LoadEffect, ContactEffect]),
+        StoreModule.forRoot({ load: loadReducer}),
+        EffectsModule.forRoot([LoadEffect]),
         StoreDevtoolsModule.instrument({
             name: 'Carriera App',
         }),

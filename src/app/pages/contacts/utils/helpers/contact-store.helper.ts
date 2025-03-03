@@ -7,7 +7,7 @@ import {
 
 // models
 import { CompanyContactResponse } from 'appcoretruckassist';
-import { IContactsViewModelData } from '@pages/contacts/pages/contacts-table/models/contacts-view-data.model';
+import { IContactsViewModelData } from '@pages/contacts/pages/contacts-table/interfaces/contacts-view-data.interface';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes';

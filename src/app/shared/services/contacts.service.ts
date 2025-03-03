@@ -1,11 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin, tap } from 'rxjs';
-
-// services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-
-// store
-import { ContactStore } from '@pages/contacts/state_old/contact.store';
+import { Observable } from 'rxjs';
 
 // models
 import {

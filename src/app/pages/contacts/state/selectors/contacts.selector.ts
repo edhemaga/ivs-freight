@@ -3,7 +3,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 // models
 import { ITableData } from '@shared/models/table-data.model';
 import { ITableOptions } from '@shared/models';
-import { IContactState } from '@pages/contacts/pages/contacts-table/models/contact-state.model';
+import { IContactState } from '@pages/contacts/pages/contacts-table/interfaces/contact-state.interface';
 
 // enums
 import { eActiveViewMode, TableStringEnum } from '@shared/enums';

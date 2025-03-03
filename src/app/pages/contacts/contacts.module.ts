@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 // modules
 import { ContactsRoutingModule } from '@pages/contacts/contacts-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
+import { EffectsModule } from '@ngrx/effects';
 
 // components
 import { ContactsTableComponent } from '@pages/contacts/pages/contacts-table/contacts-table.component';
@@ -18,7 +19,9 @@ import { CaDropdownMenuComponent } from 'ca-components';
 
 // store
 import { StoreModule } from '@ngrx/store';
-import { contactReducer } from './state/reducers/contacts.reducer';
+import { contactReducer } from '@pages/contacts/state/reducers/contacts.reducer';
+import { ContactEffect } from '@pages/contacts/state/effects/contacts.effect';
+
 
 @NgModule({
     declarations: [ContactsTableComponent, ContactsCardComponent],
@@ -39,6 +42,7 @@ import { contactReducer } from './state/reducers/contacts.reducer';
 
         // store
         StoreModule.forFeature('contact', contactReducer),
+        EffectsModule.forFeature([ContactEffect]),
     ],
 })
 export class ContactsModule {}

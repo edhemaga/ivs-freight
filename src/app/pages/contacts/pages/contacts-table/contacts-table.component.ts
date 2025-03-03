@@ -6,7 +6,6 @@ import { Subject, takeUntil } from 'rxjs';
 import { ContactsDropdownMenuActionsBase } from '@pages/contacts/base-classes';
 
 // components
-import { ContactsModalComponent } from '@pages/contacts/pages/contacts-modal/contacts-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
 // services
@@ -16,10 +15,6 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
-
-// store
-import { ContactState } from '@pages/contacts/state_old/contact.store';
-import { ContactQuery } from '@pages/contacts/state_old/contact.query';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -31,7 +26,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { DropdownMenuStringEnum, eCommonElements } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums/active-view-mode.enum';
 
 // constants
@@ -39,7 +34,7 @@ import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-
 
 // models
 import { ContactsTableToolbarAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-toolbar-action.model';
-import { ContactsTableHeadAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-head-action.model';
+import { IContactsTableHeadAction } from '@pages/contacts/pages/contacts-table/interfaces/contacts-table-head-action.interface';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 
@@ -70,6 +65,8 @@ export class ContactsTableComponent
     public sendDataToCardsBack: CardRows[] =
         ContactsCardData.displayRowsBackContacts;
 
+    public eCommonElements = eCommonElements;
+
     // filters
     public filter = {
         labelId: undefined,
@@ -86,14 +83,14 @@ export class ContactsTableComponent
         // services
         protected modalService: ModalService,
         protected contactsService: ContactsService,
-        
+
         private tableService: TruckassistTableService,
-        
+
         private confirmationService: ConfirmationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
-        
+
         // store
-        protected contactStoreService: ContactStoreService,
+        protected contactStoreService: ContactStoreService
     ) {
         super();
     }
@@ -275,7 +272,7 @@ export class ContactsTableComponent
         }
     }
 
-    public onTableHeadActions(event: ContactsTableHeadAction) {
+    public onTableHeadActions(event: IContactsTableHeadAction) {
         if (event.action === TableStringEnum.SORT) {
             const { direction } = event || {};
 

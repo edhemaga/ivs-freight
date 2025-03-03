@@ -34,6 +34,8 @@ export interface UpdateDivisionCompanyCommand {
     timeZone?: number | null;
     currency?: number | null;
     logo?: string | null;
+    dateOfIncorporation?: string | null;
+    companyType?: number | null;
     additionalInfo?: CompanyAdditionalInfo;
     departmentContacts?: Array<UpdateDepartmentContactCommand> | null;
     bankAccounts?: Array<UpdateBankAccountCommand> | null;

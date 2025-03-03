@@ -9,6 +9,7 @@ import {
     UpdateCompanyContactCommand,
 } from 'appcoretruckassist';
 import { Column, ICurrentSearchTableData, ITableColummn } from '@shared/models';
+import { IContactsInitialData } from '@pages/contacts/pages/contacts-table/interfaces';
 
 // constants
 import { ContactsStoreConstants } from '@pages/contacts/utils/constants';
@@ -21,7 +22,7 @@ import { ContactsBackFilter } from '@pages/contacts/pages/contacts-table/models/
 // #region contactList
 export const getContactsPayload = createAction(
     ContactsStoreConstants.ACTION_GET_TABLE_COMPONENT_CONTACT_LIST,
-    props<{ onSearch?: ContactsBackFilter; showMore?: boolean }>()
+    props<{ onSearch?: ContactsBackFilter; isShowMore?: boolean }>()
 );
 
 export const getContactsPayloadSuccess = createAction(
@@ -29,7 +30,7 @@ export const getContactsPayloadSuccess = createAction(
     props<{
         data: CompanyContactResponse[];
         tableCount: number;
-        showMore?: boolean;
+        isShowMore?: boolean;
     }>()
 );
 
@@ -42,17 +43,13 @@ export const getContactsPayloadError = createAction(
 // #region contactListInitial
 export const getInitialContacts = createAction(
     ContactsStoreConstants.ACTION_GET_TABLE_COMPONENT_INITIAL_CONTACT_LIST,
-    props<{ showMore?: boolean; onSearch?: ICurrentSearchTableData }>()
+    props<{ isShowMore?: boolean; onSearch?: ICurrentSearchTableData }>()
 );
 
 export const getInitialContactsSuccess = createAction(
     ContactsStoreConstants.ACTION_GET_TABLE_COMPONENT_INITIAL_CONTACT_LIST_SUCCESS,
     props<{
-        data: CompanyContactResponse[];
-        contactColors: ContactColorResponse[];
-        contactLabels: CompanyContactModalResponse;
-        tableCount: number;
-        showMore?: boolean;
+        inititalContactsData: IContactsInitialData
     }>()
 );
 

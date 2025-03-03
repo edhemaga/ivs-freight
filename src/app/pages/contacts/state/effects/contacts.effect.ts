@@ -22,14 +22,16 @@ import { ContactsService } from '@shared/services/contacts.service';
 // store
 import * as ContactActions from '@pages/contacts/state/actions/contacts.action';
 import { Store } from '@ngrx/store';
-
-// helpers
-import { ContactStoreEffectsHelper } from '@pages/contacts/utils/helpers/contact-store-effects.helper';
-import { eGeneralActions } from '@shared/enums';
 import {
     contactLabelsColorSelector,
     modalDataSelector,
-} from '../selectors/contacts.selector';
+} from '@pages/contacts/state/selectors/contacts.selector';
+
+// helpers
+import { ContactStoreEffectsHelper } from '@pages/contacts/utils/helpers/contact-store-effects.helper';
+
+// enums
+import { eGeneralActions } from '@shared/enums';
 
 @Injectable()
 export class ContactEffect {
@@ -50,7 +52,7 @@ export class ContactEffect {
         this.actions$.pipe(
             ofType(ContactActions.getContactsPayload),
             exhaustMap((action) => {
-                const { onSearch, showMore } = action || {};
+                const { onSearch, isShowMore } = action || {};
 
                 return this.contactsService
                     .getContacts(
@@ -65,13 +67,14 @@ export class ContactEffect {
                     )
                     .pipe(
                         map((contactPagination) => {
-                            const { pagination } = contactPagination || {};
+                            const { pagination, count } =
+                                contactPagination || {};
                             const { data } = pagination || {};
 
                             return ContactActions.getContactsPayloadSuccess({
                                 data,
-                                tableCount: contactPagination.count,
-                                showMore,
+                                tableCount: count,
+                                isShowMore,
                             });
                         }),
                         catchError((error) =>
@@ -90,7 +93,7 @@ export class ContactEffect {
         this.actions$.pipe(
             ofType(ContactActions.getInitialContacts),
             exhaustMap((action) => {
-                const { showMore } = action || {};
+                const { isShowMore } = action || {};
 
                 return forkJoin([
                     this.contactsService.getContacts(null, 1, 25),
@@ -98,15 +101,19 @@ export class ContactEffect {
                     this.contactsService.getCompanyContactModal(),
                 ]).pipe(
                     map(([contactPagination, contactColors, contactLabels]) => {
-                        const { pagination } = contactPagination || {};
+                        const { pagination, count } = contactPagination || {};
                         const { data } = pagination || {};
 
-                        return ContactActions.getInitialContactsSuccess({
+                        const inititalContactsData = {
                             data,
                             contactColors,
                             contactLabels,
-                            tableCount: contactPagination.count,
-                            showMore,
+                            tableCount: count,
+                            isShowMore,
+                        }
+
+                        return ContactActions.getInitialContactsSuccess({
+                            inititalContactsData
                         });
                     }),
                     catchError((error) =>
@@ -161,12 +168,13 @@ export class ContactEffect {
             ofType(ContactActions.getCreateContactModalData),
             exhaustMap(() => {
                 return this.contactsService.getCompanyContactModal().pipe(
-                    map((response) => {
+                    tap((response) => {
                         ContactStoreEffectsHelper.getCreateContactModalData(
                             this.modalService,
                             response
                         );
-
+                    }),
+                    map((response) => {
                         return ContactActions.getCreateContactModalDataSuccess({
                             modal: response,
                         });
@@ -298,13 +306,14 @@ export class ContactEffect {
                         return this.contactsService
                             .getCompanyContactById(id)
                             .pipe(
-                                map((getResponse: CompanyContactResponse) => {
+                                tap((getResponse: CompanyContactResponse) => {
                                     this.tableService.sendActionAnimation({
                                         animation: eGeneralActions.UPDATE,
                                         data: getResponse,
                                         id: getResponse.id,
                                     });
-
+                                }),
+                                map((getResponse: CompanyContactResponse) => {
                                     return ContactActions.updateContactSuccess({
                                         contact: getResponse,
                                     });
@@ -332,12 +341,13 @@ export class ContactEffect {
                 return this.contactsService
                     .deleteCompanyContactById(apiParam)
                     .pipe(
-                        map(() => {
+                        tap(() => {
                             this.tableService.sendActionAnimation({
                                 animation: eGeneralActions.DELETE,
                                 id: apiParam,
                             });
-
+                        }),
+                        map(() => {
                             return ContactActions.deleteContactByIdSuccess({
                                 contactId: apiParam,
                             });

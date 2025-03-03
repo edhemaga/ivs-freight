@@ -19,6 +19,7 @@ import { NavigationDataConstants } from '@core/components/navigation/utils/const
 import { NavigationService } from '@core/components/navigation/services/navigation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
@@ -44,7 +45,6 @@ import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
 
 @Component({
     selector: 'app-navigation-modals',

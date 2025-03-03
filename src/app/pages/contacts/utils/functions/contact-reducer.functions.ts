@@ -7,22 +7,22 @@ import {
 } from 'appcoretruckassist';
 
 // models
-import { IContactState } from '@pages/contacts/pages/contacts-table/models/contact-state.model';
+import { IContactState } from '@pages/contacts/pages/contacts-table/interfaces/contact-state.interface';
 import { ITableColummn } from '@shared/models';
+import { IContactsInitialData } from '@pages/contacts/pages/contacts-table/interfaces';
 
 // enums
 import { ContactsTableData } from '@pages/contacts/pages/contacts-table/models/contacts-table-data.model';
 
 export const getInitialContactsPayloadSuccessResult = function (
     state: IContactState,
-    data: CompanyContactResponse[],
-    contactColors: ContactColorResponse[],
-    contactLabels: CompanyContactModalResponse,
-    tableCount: number,
-    showMore?: boolean
+    inititalContactsData: IContactsInitialData
 ): IContactState {
     const { data: stateData } = state || {};
-    let _data: CompanyContactResponse[] = showMore
+    const { isShowMore, contactColors, contactLabels, data, tableCount } =
+        inititalContactsData || {};
+
+    let _data: CompanyContactResponse[] = isShowMore
         ? [...stateData, ...data]
         : [...data];
 
@@ -51,10 +51,10 @@ export const getContactsPayloadSuccessResult = function (
     state: IContactState,
     data: CompanyContactResponse[],
     tableCount: number,
-    showMore?: boolean
+    isShowMore?: boolean
 ): IContactState {
     const { data: stateData } = state || {};
-    const _data: CompanyContactResponse[] = showMore
+    const _data: CompanyContactResponse[] = isShowMore
         ? [...stateData, ...data]
         : [...data];
 

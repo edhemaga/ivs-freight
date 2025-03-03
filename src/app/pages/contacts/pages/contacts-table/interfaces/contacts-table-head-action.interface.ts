@@ -1,6 +1,6 @@
 import { SortOrder } from "appcoretruckassist";
 
-export interface ContactsTableHeadAction {
+export interface IContactsTableHeadAction {
     action?: string;
     direction?: string;
     sortOrder: SortOrder;

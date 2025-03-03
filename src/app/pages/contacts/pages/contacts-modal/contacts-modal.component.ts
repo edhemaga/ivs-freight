@@ -167,12 +167,12 @@ export class ContactsModalComponent
         private changeDetector: ChangeDetectorRef,
 
         // services
+        protected contactStoreService: ContactStoreService,
         private inputService: TaInputService,
         private modalService: ModalService,
         private contactService: ContactsService,
         private formService: FormService,
-        protected contactStoreService: ContactStoreService,
-
+        
         public addressService: AddressService
     ) {
         super();
@@ -379,9 +379,11 @@ export class ContactsModalComponent
     }
 
     private listenToStoreContactLabelsColor(): void {
-        this.contactStoreService.contactLabelsColor$.subscribe((colors) => {
-            this.colors = colors;
-        });
+        this.contactStoreService.contactLabelsColor$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((colors) => {
+                this.colors = colors;
+            });
     }
 
     private manageSubscriptions(): void {
