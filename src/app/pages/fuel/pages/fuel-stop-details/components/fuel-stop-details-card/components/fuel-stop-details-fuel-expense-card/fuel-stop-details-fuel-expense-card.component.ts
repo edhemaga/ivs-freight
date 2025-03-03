@@ -88,7 +88,7 @@ export class FuelStopDetailsFuelExpenseCardComponent implements OnDestroy {
                     ...FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime(
                         this.fuelChartData.fuelStopExpensesChartResponse,
-                        ChartConfiguration.fuelExpensesConfiguration
+                        ChartConfiguration.FUEL_EXPENSES_CONFIGURATION
                     ),
                 };
 
