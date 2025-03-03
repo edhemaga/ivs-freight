@@ -12,7 +12,8 @@ import { BrokerContactExtended } from "@pages/customer/pages/broker-modal/models
 import { LoadStoreConstants } from "@pages/load/pages/load-table/utils/constants/index";
 
 // enums
-import { eLoadStatusType, eActiveViewMode } from "@pages/load/pages/load-table/enums/index";
+import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index";
+import { eActiveViewMode } from "@shared/enums";
 
 // #region loadList
 export const getLoadsPayload = createAction(

@@ -44,6 +44,7 @@ import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/
 import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-bonus-modal/payroll-bonus-modal.component';
 import { PayrollCreditBonusComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/payroll-credit-bonus.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
 
 @Component({
     selector: 'app-navigation-modals',
@@ -94,7 +95,9 @@ export class NavigationModalsComponent {
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService,
-        private loadStoreService: LoadStoreService
+        private loadStoreService: LoadStoreService,
+        private contactStoreService: ContactStoreService
+
     ) {}
 
     public OpenMainModal(openClose: boolean): void {
@@ -168,9 +171,7 @@ export class NavigationModalsComponent {
                 break;
             }
             case 'contact': {
-                this.modalService.openModal(ContactsModalComponent, {
-                    size: 'small',
-                });
+                this.contactStoreService.dispatchGetCreateContactModalData()
                 break;
             }
             case 'account': {

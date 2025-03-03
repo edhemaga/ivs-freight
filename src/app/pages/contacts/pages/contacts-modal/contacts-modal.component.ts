@@ -49,6 +49,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { ContactsService } from '@shared/services/contacts.service';
 import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
+import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
 
 // enums
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums/contacts-modal-string.enum';
@@ -170,6 +171,8 @@ export class ContactsModalComponent
         private modalService: ModalService,
         private contactService: ContactsService,
         private formService: FormService,
+        protected contactStoreService: ContactStoreService,
+
         public addressService: AddressService
     ) {
         super();
@@ -177,6 +180,8 @@ export class ContactsModalComponent
 
     ngOnInit() {
         this.createForm();
+
+        this.manageSubscriptions();
 
         this.getCompanyContactModal();
 
@@ -233,7 +238,7 @@ export class ContactsModalComponent
                 }
 
                 this.isUploadInProgress = true;
-                if (this.editData) {
+                if (this.editData?.id) {
                     this.saveCompanyContact(this.editData.id, true);
                 } else {
                     this.saveCompanyContact();
@@ -353,18 +358,17 @@ export class ContactsModalComponent
         }
     }
 
-    private getCompanyContactModal(): void {
-        this.contactService
-            .getCompanyContactModal()
+    private listenToStoreContactModal(): void {
+        this.contactStoreService.modalData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.contactLabels = res.labels.map((item) => {
+            .subscribe((data) => {
+                this.contactLabels = data.labels.map((item) => {
                     return { ...item, dropLabel: true };
                 });
 
-                this.sharedDepartments = res.departments;
+                this.sharedDepartments = data.departments;
 
-                if (this.editData) {
+                if (this.editData.id) {
                     this.isCardAnimationDisabled = true;
 
                     this.getCompanyContactById(this.editData.id);
@@ -372,6 +376,21 @@ export class ContactsModalComponent
                     this.startFormChanges();
                 }
             });
+    }
+
+    private listenToStoreContactLabelsColor(): void {
+        this.contactStoreService.contactLabelsColor$.subscribe((colors) => {
+            this.colors = colors;
+        });
+    }
+
+    private manageSubscriptions(): void {
+        this.listenToStoreContactModal();
+        this.listenToStoreContactLabelsColor();
+    }
+
+    private getCompanyContactModal(): void {
+        this.contactStoreService.dispatchGetContactModalData();
     }
 
     private getCompanyContactById(id: number): void {
@@ -387,7 +406,7 @@ export class ContactsModalComponent
                             ? res.companyContactLabel.name
                             : null,
                         /*  avatar: res.avatar ? res.avatar : null, */
-                        address: res.address ? res.address : null,
+                        address: res.address.address ? res.address : null,
                         addressUnit: res.address
                             ? res.address.addressUnit
                             : null,
@@ -473,24 +492,13 @@ export class ContactsModalComponent
         id: number | null = null,
         isUpdate: boolean = false
     ): void {
-        const newData = this.prepareCompanyContactData(id, isUpdate);
+        const mappedContactData = this.prepareCompanyContactData(id, isUpdate);
 
-        const saveOperation = isUpdate
-            ? this.contactService.updateCompanyContact(
-                  newData as UpdateCompanyContactCommand
-              )
-            : this.contactService.addCompanyContact(
-                  newData as CreateCompanyContactCommand
-              );
+        isUpdate
+            ? this.contactStoreService.dispatchUpdateContact(mappedContactData)
+            : this.contactStoreService.dispatchCreateContact(mappedContactData);
 
-        saveOperation.pipe(takeUntil(this.destroy$)).subscribe({
-            next: () => {
-                this.setModalSpinner(null, isUpdate, true, true);
-            },
-            error: () => {
-                this.setModalSpinner(null, false, false, true);
-            },
-        });
+        this.setModalSpinner(null, isUpdate, true, true);
     }
 
     private enableSaving(): void {
@@ -572,12 +580,7 @@ export class ContactsModalComponent
     }
 
     private getCompanyContactColorLabels(): void {
-        this.contactService
-            .companyContactLabelsColorList()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.colors = res;
-            });
+        this.contactStoreService.dispatchGetContactColorLabels();
     }
 
     public onPickExistLabel(event: EnumValue): void {

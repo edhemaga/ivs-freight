@@ -1,53 +1,17 @@
 import { Injectable } from '@angular/core';
-
-import { forkJoin, Observable, tap } from 'rxjs';
-
-// services
-import { ContactsService } from '@shared/services/contacts.service';
+import { Observable } from 'rxjs';
 
 // store
-import { ContactStore } from '@pages/contacts/state/contact.store';
-
-// models
-import { ContactsTableData } from '@pages/contacts/pages/contacts-table/models/contacts-table-data.model';
+import { ContactStoreService } from '../services/contact-store.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class ContactsResolver {
-    constructor(
-        private contactService: ContactsService,
-        private contactStore: ContactStore
-    ) {}
+    constructor(private contactStoreService: ContactStoreService) {}
     resolve(): Observable<any> {
-        return forkJoin([
-            this.contactService.getContacts(null, 1, 25),
-            this.contactService.companyContactLabelsColorList(),
-            this.contactService.getCompanyContactModal(),
-        ]).pipe(
-            tap(([contactPagination, colorRes, contactLabels]) => {
-                localStorage.setItem(
-                    'contactTableCount',
-                    JSON.stringify({
-                        contact: contactPagination.count,
-                    })
-                );
+        this.contactStoreService.dispatchInitialContactList();
 
-                const mappedContactLabels = contactLabels.labels.map((item) => {
-                    return { ...item, dropLabel: true };
-                });
-
-                const contactTableData = contactPagination.pagination.data;
-
-                contactTableData.map(
-                    (e: ContactsTableData) => (
-                        (e.colorRes = colorRes),
-                        (e.colorLabels = mappedContactLabels)
-                    )
-                );
-
-                this.contactStore.set(contactTableData);
-            })
-        );
+        return this.contactStoreService.resolveInitialData$;
     }
 }

@@ -1,43 +1,54 @@
 <div class="table-container">
-    <app-ta-table-toolbar
-        (toolBarAction)="onToolBarAction($event)"
-        [options]="tableOptions"
-        [tableData]="tableData"
-        [selectedTab]="selectedTab"
-        [columns]="columns"
-        [activeViewMode]="activeViewMode"
-    ></app-ta-table-toolbar>
-
-    <ng-container *ngIf="activeViewMode === 'List'">
-        <app-ta-table-head
-            [options]="tableOptions"
-            [viewData]="viewData"
-            [columns]="columns"
-            [tableData]="tableData"
-            (headActions)="onTableHeadActions($event)"
-        ></app-ta-table-head>
-
-        <app-ta-table-body
-            [viewData]="viewData"
-            [columns]="columns"
-            [options]="tableOptions"
+    @if (
+        {
+            tableOptions: contactStoreService.tableOptions$ | async,
+            tableData: contactStoreService.tableData$ | async,
+            columns: contactStoreService.columns$ | async,
+            viewData: contactStoreService.viewData$ | async,
+            activeViewMode: contactStoreService.activeViewMode$ | async,
+        };
+        as store
+    ) {
+        <app-ta-table-toolbar
+            (toolBarAction)="onToolBarAction($event)"
+            [options]="store?.tableOptions"
+            [tableData]="store?.tableData"
             [selectedTab]="selectedTab"
-            [tableData]="tableData"
-            (tableBodyActions)="
-                handleDropdownMenuActions(
-                    $event,
-                    dropdownMenuStringEnum.CONTACT
-                )
-            "
-        ></app-ta-table-body>
-    </ng-container>
-
-    <ng-container *ngIf="activeViewMode === 'Card'">
-        <div class="elements">
-            <app-contacts-card
-                [viewData]="viewData"
-                [displayRowsFront]="sendDataToCardsFront"
-                [displayRowsBack]="sendDataToCardsBack"
-            ></app-contacts-card></div
-    ></ng-container>
+            [columns]="store?.columns"
+            [activeViewMode]="store?.activeViewMode"
+        ></app-ta-table-toolbar>
+    
+        <ng-container *ngIf="store?.activeViewMode === 'List'">
+            <app-ta-table-head
+                [options]="store?.tableOptions"
+                [viewData]="store?.viewData"
+                [columns]="store?.columns"
+                [tableData]="store?.tableData"
+                (headActions)="onTableHeadActions($event)"
+            ></app-ta-table-head>
+    
+            <app-ta-table-body
+                [viewData]="store?.viewData"
+                [columns]="store?.columns"
+                [options]="store?.tableOptions"
+                [selectedTab]="selectedTab"
+                [tableData]="store?.tableData"
+                (tableBodyActions)="
+                    handleDropdownMenuActions(
+                        $event,
+                        dropdownMenuStringEnum.CONTACT
+                    )
+                "
+            ></app-ta-table-body>
+        </ng-container>
+    
+        <ng-container *ngIf="store?.activeViewMode === 'Card'">
+            <div class="elements">
+                <app-contacts-card
+                    [viewData]="store?.viewData"
+                    [displayRowsFront]="sendDataToCardsFront"
+                    [displayRowsBack]="sendDataToCardsBack"
+                ></app-contacts-card></div
+        ></ng-container>
+    }
 </div>

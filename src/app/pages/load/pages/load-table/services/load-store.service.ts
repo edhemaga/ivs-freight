@@ -38,7 +38,8 @@ import {
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
 // enums
-import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eActiveViewMode } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',

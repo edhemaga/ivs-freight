@@ -16,6 +16,10 @@ import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropd
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { CaDropdownMenuComponent } from 'ca-components';
 
+// store
+import { StoreModule } from '@ngrx/store';
+import { contactReducer } from './state/reducers/contacts.reducer';
+
 @NgModule({
     declarations: [ContactsTableComponent, ContactsCardComponent],
     imports: [
@@ -32,6 +36,9 @@ import { CaDropdownMenuComponent } from 'ca-components';
         TaInputDropdownTableComponent,
         TaInputDropdownLabelComponent,
         CaDropdownMenuComponent,
+
+        // store
+        StoreModule.forFeature('contact', contactReducer),
     ],
 })
 export class ContactsModule {}
