@@ -1,9 +1,4 @@
-import {
-    Component,
-    OnDestroy,
-    OnInit,
-    ViewEncapsulation,
-} from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
 import { UntypedFormBuilder, UntypedFormGroup } from '@angular/forms';
 
 import { Subject, takeUntil, tap } from 'rxjs';
@@ -62,8 +57,10 @@ import {
     IChartCenterLabel,
     IChartConfiguration,
     IChartData,
-    IBaseDataset
+    IBaseDataset,
 } from 'ca-components/lib/components/ca-chart/models';
+import { DashboardConstants } from '@pages/dashboard/utils/constants';
+import { DashboardByStateChartDatasetConfiguration } from '../dashboard-by-state/utils/constants';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -125,14 +122,20 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public doughnutCenterLabels!: IChartCenterLabel[];
     public doughnutChartDataHoveredIndex!: number | null;
 
-    public barChartConfig: IChartConfiguration =
+    public byStateBarChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
+    public intervalTooltipLabel: string[] = [];
+    private byStateChartDatasetConfig =
+        DashboardByStateChartDatasetConfiguration.BY_STATE_CHART_DATASET_CONFIG;
+
+    private initalByStateBarChartConfig: IChartConfiguration;
+    private byStatechartLables: string[] = [];
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private dashboardTopRatedService: DashboardTopRatedService,
         private dashboardService: DashboardService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -156,7 +159,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     public trackById(item: TopRatedListItem): number {
         return item?.id;
-    };
+    }
+
+    private getTopCategory(): string {
+        const lenght = this.topRatedList.length;
+        if (lenght <= 10) return DashboardConstants.BAR_CHART_LABEL_TOP_3;
+        else if (lenght > 10 && lenght <= 30)
+            return DashboardConstants.BAR_CHART_LABEL_TOP_5;
+        else return DashboardConstants.BAR_CHART_LABEL_TOP_10;
+    }
 
     public resetSelectedValues(): void {
         this.selectedTopRatedList = [];
@@ -287,9 +298,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
             if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM)
                 this.getTopRatedListData(this.selectedCustomPeriodRange);
-            else
-                this.getTopRatedListData();
-
+            else this.getTopRatedListData();
         }
     }
 
@@ -339,9 +348,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM)
             this.getTopRatedListData(this.selectedCustomPeriodRange);
-        else
-            this.getTopRatedListData();
-
+        else this.getTopRatedListData();
     }
 
     public handleShowMoreClick(): void {
@@ -349,9 +356,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
         if (this.selectedMainPeriod.name === DashboardStringEnum.CUSTOM)
             this.getTopRatedListData(this.selectedCustomPeriodRange);
-        else
-            this.getTopRatedListData();
-
+        else this.getTopRatedListData();
     }
 
     public handleCustomPeriodRangeSubperiodEmit(
@@ -581,16 +586,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ...filteredIntervalValues,
                                 selectedTab === DashboardStringEnum.LOAD
                                     ? dispatcher.intervals[i]
-                                        .dispatcherLoadCount
+                                          .dispatcherLoadCount
                                     : dispatcher.intervals[i].dispatcherRevenue,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
                                 selectedTab === DashboardStringEnum.LOAD
                                     ? dispatcher.intervals[i]
-                                        .dispatcherLoadPercentage
+                                          .dispatcherLoadPercentage
                                     : dispatcher.intervals[i]
-                                        .dispatcherRevenuePercentage,
+                                          .dispatcherRevenuePercentage,
                             ];
                         }
 
@@ -629,37 +634,45 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((driverData: TopDriverListResponse) => {
-                const takeNumber: number =
-                    ChartHelper.takeDoughnutData(driverData.pagination.count);
+                const takeNumber: number = ChartHelper.takeDoughnutData(
+                    driverData.pagination.count
+                );
 
                 const mileageProperties = [
                     DashboardChartStringEnum.MILEAGE_PERCENTAGE,
                     DashboardChartStringEnum.MILEAGE,
-                    DashboardChartStringEnum.DRIVER_MILEAGE
+                    DashboardChartStringEnum.DRIVER_MILEAGE,
                 ];
                 const revenueProperties = [
                     DashboardChartStringEnum.REVENUE_PERCENTAGE,
                     DashboardChartStringEnum.REVENUE,
-                    DashboardChartStringEnum.DRIVER_REVENUE
+                    DashboardChartStringEnum.DRIVER_REVENUE,
                 ];
 
                 let properties = [];
                 let chartConfiguration;
 
-                if (this.currentActiveTab.name === DashboardStringEnum.REVENUE) {
-                    chartConfiguration = ChartConfiguration.topRevenueConfiguration;
+                if (
+                    this.currentActiveTab.name === DashboardStringEnum.REVENUE
+                ) {
+                    chartConfiguration =
+                        ChartConfiguration.topRevenueConfiguration;
                     properties = [...revenueProperties];
                 }
-                if (this.currentActiveTab.name === DashboardStringEnum.MILEAGE) {
+                if (
+                    this.currentActiveTab.name === DashboardStringEnum.MILEAGE
+                ) {
                     properties = [...mileageProperties];
-                    chartConfiguration = ChartConfiguration.topMileageConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topMileageConfiguration;
                 }
 
                 const { totalPercentage, total } =
                     driverData.pagination.data.reduce(
                         (accumulator, item, indx) => {
                             if (indx < takeNumber) {
-                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.totalPercentage +=
+                                    item[properties[0]];
                                 accumulator.total += item[properties[1]];
                             }
                             return accumulator;
@@ -667,23 +680,25 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         { totalPercentage: 0, total: 0 }
                     );
 
-                const allOther: number = driverData
-                    .allOthers
-                    .reduce((accumulator, item) => {
+                const allOther: number = driverData.allOthers.reduce(
+                    (accumulator, item) => {
                         return (accumulator += item[properties[2]]);
-                    }, 0);
-
-                this.doughnutCenterLabels = ChartHelper.generateDoughnutCenterLabelData(
-                    totalPercentage,
-                    total,
-                    driverData.pagination.count,
-                    allOther
+                    },
+                    0
                 );
+
+                this.doughnutCenterLabels =
+                    ChartHelper.generateDoughnutCenterLabelData(
+                        totalPercentage,
+                        total,
+                        driverData.pagination.count,
+                        allOther
+                    );
 
                 let topDrivers: TopDriverResponse[] = [];
                 let others: TopDriverResponse = {
                     mileagePercentage: 0,
-                    revenuePercentage: 0
+                    revenuePercentage: 0,
                 };
 
                 driverData.pagination.data.forEach((item, index: number) => {
@@ -693,28 +708,57 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         others.revenuePercentage += item.revenuePercentage;
                     }
                     if (index === driverData.pagination.data.length - 1) {
-                        topDrivers = [
-                            ...topDrivers,
-                            others,
-                        ];
+                        topDrivers = [...topDrivers, others];
                     }
                 });
 
-                const chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
-                    topDrivers,
-                    chartConfiguration,
-                    null,
-                    this.mainColorsPalette?.
-                        map((color: TopRatedMainColorsPalette, index: number) => {
-                            if (index < takeNumber) return color.code;
-                        })
-                );
+                const chartData: IChartData<IBaseDataset> =
+                    ChartHelper.generateDataByDateTime(
+                        topDrivers,
+                        chartConfiguration,
+                        null,
+                        this.mainColorsPalette?.map(
+                            (
+                                color: TopRatedMainColorsPalette,
+                                index: number
+                            ) => {
+                                if (index < takeNumber) return color.code;
+                            }
+                        )
+                    );
 
                 this.doughnutChartConfig = {
                     ...this.doughnutChartConfig,
                     chartData,
-                    centerLabels: this.doughnutCenterLabels
-                }
+                    centerLabels: this.doughnutCenterLabels,
+                };
+
+                this.byStatechartLables = driverData.intervalLabels.map(
+                    (item) => item.label || DashboardConstants.STRING_EMPTY
+                );
+
+                const byStateBarChartData = this.setByStateBarChartData(
+                    driverData.topDrivers,
+                    driverData.allOthers,
+                    selectedTab
+                );
+
+                console.log(
+                    byStateBarChartData,
+                    'byStateBarChartDatabyStateBarChartData'
+                );
+
+                this.byStateBarChartConfig = {
+                    ...this.byStateBarChartConfig,
+                    chartData: {
+                        labels: this.byStatechartLables,
+                        datasets: byStateBarChartData,
+                    },
+                };
+
+                this.initalByStateBarChartConfig = {
+                    ...this.byStateBarChartConfig,
+                };
 
                 // top rated list and single selection data
                 this.topRatedList = driverData.pagination.data.map((driver) => {
@@ -759,8 +803,64 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             });
     }
 
+    private setByStateBarChartData(
+        topPicks: any[],
+        otherPicks: any[],
+        selectedTab: DashboardTopReportType
+    ): IBaseDataset[] {
+        const topPicksDataset = {
+            ...this.byStateChartDatasetConfig,
+            label: this.getTopCategory(),
+            data: topPicks.map((item) =>
+                this.getValueBySelectedTab(item, selectedTab)
+            ),
+            order: 1,
+            backgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            hoverBackgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            hoverBorderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            borderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+        };
+
+        const othersDataset = {
+            ...this.byStateChartDatasetConfig,
+            label: DashboardConstants.BAR_CHART_LABEL_ALL_OTHERS,
+            data: otherPicks.map((item) =>
+                this.getValueBySelectedTab(item, selectedTab)
+            ),
+            order: 2,
+            backgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            hoverBackgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            hoverBorderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            borderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+        };
+
+        return [topPicksDataset, othersDataset];
+    }
+
+    private getValueBySelectedTab(
+        intervalResponse: any,
+        selectedTab: DashboardTopReportType
+    ): number {
+        const propertyKey =
+            DashboardTopRatedConstants.REPORT_TYPE_MAP[selectedTab];
+        console.log(propertyKey, intervalResponse, 'PROPERTY IN INTERVAL');
+        if (propertyKey in intervalResponse) {
+            return intervalResponse[propertyKey] ?? 0;
+        }
+        return 0;
+    }
+
     public setDoughnutHoveredIndex(event: number | null): void {
-        if (event >= ChartHelper.takeDoughnutData(this.topRatedList.length)) return;
+        if (event >= ChartHelper.takeDoughnutData(this.topRatedList.length))
+            return;
         this.doughnutChartDataHoveredIndex = event;
 
         if (event === null) {
@@ -774,23 +874,23 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             {
                 value: `${topRatedListItem.percent}%`,
                 position: {
-                    top: 24
-                }
+                    top: 24,
+                },
             },
             {
                 value: `$${topRatedListItem.value}`,
                 fontSize: 14,
                 position: {
-                    top: 24
-                }
+                    top: 24,
+                },
             },
             {
                 value: `${topRatedListItem.name}`,
                 fontSize: 11,
                 color: '#AAAAAA',
                 position: {
-                    top: 24
-                }
+                    top: 24,
+                },
             },
         ];
     }
@@ -806,38 +906,45 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((truckData: TopTruckListResponse) => {
-
-                const takeNumber: number =
-                    ChartHelper.takeDoughnutData(truckData.pagination.count);
+                const takeNumber: number = ChartHelper.takeDoughnutData(
+                    truckData.pagination.count
+                );
 
                 const mileageProperties = [
                     DashboardChartStringEnum.MILEAGE_PERCENTAGE,
                     DashboardChartStringEnum.MILEAGE,
-                    DashboardChartStringEnum.TRUCK_MILEAGE
+                    DashboardChartStringEnum.TRUCK_MILEAGE,
                 ];
                 const revenueProperties = [
                     DashboardChartStringEnum.REVENUE_PERCENTAGE,
                     DashboardChartStringEnum.REVENUE,
-                    DashboardChartStringEnum.TRUCK_REVENUE
+                    DashboardChartStringEnum.TRUCK_REVENUE,
                 ];
 
                 let properties = [];
                 let chartConfiguration;
 
-                if (this.currentActiveTab.name === DashboardStringEnum.REVENUE) {
+                if (
+                    this.currentActiveTab.name === DashboardStringEnum.REVENUE
+                ) {
                     properties = [...revenueProperties];
-                    chartConfiguration = ChartConfiguration.topRevenueConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topRevenueConfiguration;
                 }
-                if (this.currentActiveTab.name === DashboardStringEnum.MILEAGE) {
+                if (
+                    this.currentActiveTab.name === DashboardStringEnum.MILEAGE
+                ) {
                     properties = [...mileageProperties];
-                    chartConfiguration = ChartConfiguration.topMileageConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topMileageConfiguration;
                 }
 
                 const { totalPercentage, total } =
                     truckData.pagination.data.reduce(
                         (accumulator, item, indx) => {
                             if (indx < takeNumber) {
-                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.totalPercentage +=
+                                    item[properties[0]];
                                 accumulator.total += item[properties[1]];
                             }
                             return accumulator;
@@ -845,55 +952,59 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         { totalPercentage: 0, total: 0 }
                     );
 
-                const allOther: number = truckData
-                    .allOthers
-                    .reduce((accumulator, item) => {
+                const allOther: number = truckData.allOthers.reduce(
+                    (accumulator, item) => {
                         return (accumulator += item[properties[3]]);
-                    }, 0);
-
-
-                this.doughnutCenterLabels = ChartHelper.generateDoughnutCenterLabelData(
-                    totalPercentage,
-                    total,
-                    truckData.pagination.count,
-                    allOther
+                    },
+                    0
                 );
+
+                this.doughnutCenterLabels =
+                    ChartHelper.generateDoughnutCenterLabelData(
+                        totalPercentage,
+                        total,
+                        truckData.pagination.count,
+                        allOther
+                    );
 
                 let topRatedData: TopDriverResponse[] = [];
                 let others: TopDriverResponse = {
                     mileagePercentage: 0,
-                    revenuePercentage: 0
+                    revenuePercentage: 0,
                 };
 
                 truckData.pagination.data.forEach((item, index: number) => {
-                    if (index < takeNumber) topRatedData = [...topRatedData, item];
+                    if (index < takeNumber)
+                        topRatedData = [...topRatedData, item];
                     else {
                         others.mileagePercentage += item.mileagePercentage;
                         others.revenuePercentage += item.revenuePercentage;
                     }
                     if (index === truckData.pagination.data.length - 1) {
-                        topRatedData = [
-                            ...topRatedData,
-                            others,
-                        ];
+                        topRatedData = [...topRatedData, others];
                     }
                 });
 
-                const chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
-                    topRatedData,
-                    chartConfiguration,
-                    null,
-                    this.mainColorsPalette?.
-                        map((color: TopRatedMainColorsPalette, index: number) => {
-                            if (index < takeNumber) return color.code;
-                        })
-                );
+                const chartData: IChartData<IBaseDataset> =
+                    ChartHelper.generateDataByDateTime(
+                        topRatedData,
+                        chartConfiguration,
+                        null,
+                        this.mainColorsPalette?.map(
+                            (
+                                color: TopRatedMainColorsPalette,
+                                index: number
+                            ) => {
+                                if (index < takeNumber) return color.code;
+                            }
+                        )
+                    );
 
                 this.doughnutChartConfig = {
                     ...this.doughnutChartConfig,
                     chartData,
-                    centerLabels: this.doughnutCenterLabels
-                }
+                    centerLabels: this.doughnutCenterLabels,
+                };
 
                 // top rated list and single selection data
                 this.topRatedList = truckData.pagination.data.map((truck) => {
@@ -949,61 +1060,70 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((brokerData: TopBrokersListResponse) => {
-                const takeNumber: number =
-                    ChartHelper.takeDoughnutData(brokerData.pagination.count);
+                const takeNumber: number = ChartHelper.takeDoughnutData(
+                    brokerData.pagination.count
+                );
 
                 const mileageProperties = [
                     DashboardChartStringEnum.LOAD_PERCENTAGE,
                     DashboardChartStringEnum.LOADS_COUNT,
-                    DashboardChartStringEnum.BROKER_LOAD_COUNT
+                    DashboardChartStringEnum.BROKER_LOAD_COUNT,
                 ];
                 const revenueProperties = [
                     DashboardChartStringEnum.REVENUE_PERCENTAGE,
                     DashboardChartStringEnum.REVENUE,
-                    DashboardChartStringEnum.BROKER_REVENUE
+                    DashboardChartStringEnum.BROKER_REVENUE,
                 ];
 
                 let properties = [];
                 let chartConfiguration;
 
-                if (this.currentActiveTab.name === DashboardStringEnum.REVENUE) {
+                if (
+                    this.currentActiveTab.name === DashboardStringEnum.REVENUE
+                ) {
                     properties = [...revenueProperties];
-                    chartConfiguration = ChartConfiguration.topRevenueConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topRevenueConfiguration;
                 }
-                if (this.currentActiveTab.name === DashboardStringEnum.MILEAGE) {
+                if (
+                    this.currentActiveTab.name === DashboardStringEnum.MILEAGE
+                ) {
                     properties = [...mileageProperties];
-                    chartConfiguration = ChartConfiguration.topRevenueConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topRevenueConfiguration;
                 }
 
                 const { totalPercentage, total } =
                     brokerData.pagination.data.reduce(
                         (accumulator, item, indx) => {
                             if (indx < takeNumber) {
-                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.totalPercentage +=
+                                    item[properties[0]];
                                 accumulator.total += item[properties[1]];
                             }
                             return accumulator;
                         },
                         { totalPercentage: 0, total: 0 }
                     );
-                const allOther: number = brokerData
-                    .allOthers
-                    .reduce((accumulator, item) => {
+                const allOther: number = brokerData.allOthers.reduce(
+                    (accumulator, item) => {
                         return (accumulator += item[properties[2]]);
-                    }, 0);
-
-                this.doughnutCenterLabels = ChartHelper.generateDoughnutCenterLabelData(
-                    totalPercentage,
-                    total,
-                    brokerData.pagination.count,
-                    allOther
+                    },
+                    0
                 );
 
+                this.doughnutCenterLabels =
+                    ChartHelper.generateDoughnutCenterLabelData(
+                        totalPercentage,
+                        total,
+                        brokerData.pagination.count,
+                        allOther
+                    );
 
                 let topBrokers: TopBrokersResponse[] = [];
                 let others: TopBrokersResponse = {
                     loadPercentage: 0,
-                    revenuePercentage: 0
+                    revenuePercentage: 0,
                 };
 
                 brokerData.pagination.data.forEach((item, index: number) => {
@@ -1013,28 +1133,30 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         others.revenuePercentage += item.revenuePercentage;
                     }
                     if (index === brokerData.pagination.data.length - 1) {
-                        topBrokers = [
-                            ...topBrokers,
-                            others,
-                        ];
+                        topBrokers = [...topBrokers, others];
                     }
                 });
 
-                const chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
-                    topBrokers,
-                    chartConfiguration,
-                    null,
-                    this.mainColorsPalette?.
-                        map((color: TopRatedMainColorsPalette, index: number) => {
-                            if (index < takeNumber) return color.code;
-                        })
-                );
+                const chartData: IChartData<IBaseDataset> =
+                    ChartHelper.generateDataByDateTime(
+                        topBrokers,
+                        chartConfiguration,
+                        null,
+                        this.mainColorsPalette?.map(
+                            (
+                                color: TopRatedMainColorsPalette,
+                                index: number
+                            ) => {
+                                if (index < takeNumber) return color.code;
+                            }
+                        )
+                    );
 
                 this.doughnutChartConfig = {
                     ...this.doughnutChartConfig,
                     chartData,
-                    centerLabels: this.doughnutCenterLabels
-                }
+                    centerLabels: this.doughnutCenterLabels,
+                };
 
                 // top rated list and single selection data
                 this.topRatedList = brokerData.pagination.data.map((broker) => {
@@ -1093,15 +1215,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((shipperData: TopShipperListResponse) => {
-
-                const takeNumber: number =
-                    ChartHelper.takeDoughnutData(shipperData.pagination.count);
+                const takeNumber: number = ChartHelper.takeDoughnutData(
+                    shipperData.pagination.count
+                );
 
                 const { totalPercentage, total } =
                     shipperData.pagination.data.reduce(
                         (accumulator, item, indx) => {
                             if (indx < takeNumber) {
-                                accumulator.totalPercentage += item.loadPercentage;
+                                accumulator.totalPercentage +=
+                                    item.loadPercentage;
                                 accumulator.total += item.loadsCount;
                             }
                             return accumulator;
@@ -1109,18 +1232,20 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         { totalPercentage: 0, total: 0 }
                     );
 
-                const allOther: number = shipperData
-                    .allOthers
-                    .reduce((accumulator, item) => {
+                const allOther: number = shipperData.allOthers.reduce(
+                    (accumulator, item) => {
                         return (accumulator += item.shipperLoadCount);
-                    }, 0);
-
-                this.doughnutCenterLabels = ChartHelper.generateDoughnutCenterLabelData(
-                    totalPercentage,
-                    total,
-                    shipperData.pagination.count,
-                    allOther
+                    },
+                    0
                 );
+
+                this.doughnutCenterLabels =
+                    ChartHelper.generateDoughnutCenterLabelData(
+                        totalPercentage,
+                        total,
+                        shipperData.pagination.count,
+                        allOther
+                    );
 
                 let topRatedData: TopShipperResponse[] = [];
                 let others: TopShipperResponse = {
@@ -1128,33 +1253,36 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 };
 
                 shipperData.pagination.data.forEach((item, index: number) => {
-                    if (index < takeNumber) topRatedData = [...topRatedData, item];
+                    if (index < takeNumber)
+                        topRatedData = [...topRatedData, item];
                     else {
                         others.loadPercentage += item.loadPercentage;
                     }
                     if (index === shipperData.pagination.data.length - 1) {
-                        topRatedData = [
-                            ...topRatedData,
-                            others,
-                        ];
+                        topRatedData = [...topRatedData, others];
                     }
                 });
 
-                const chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
-                    topRatedData,
-                    ChartConfiguration.topLoadConfiguration,
-                    null,
-                    this.mainColorsPalette?.
-                        map((color: TopRatedMainColorsPalette, index: number) => {
-                            if (index < takeNumber) return color.code;
-                        })
-                );
+                const chartData: IChartData<IBaseDataset> =
+                    ChartHelper.generateDataByDateTime(
+                        topRatedData,
+                        ChartConfiguration.topLoadConfiguration,
+                        null,
+                        this.mainColorsPalette?.map(
+                            (
+                                color: TopRatedMainColorsPalette,
+                                index: number
+                            ) => {
+                                if (index < takeNumber) return color.code;
+                            }
+                        )
+                    );
 
                 this.doughnutChartConfig = {
                     ...this.doughnutChartConfig,
                     chartData,
-                    centerLabels: this.doughnutCenterLabels
-                }
+                    centerLabels: this.doughnutCenterLabels,
+                };
                 // top rated list and single selection data
                 this.topRatedList = shipperData.pagination.data.map(
                     (shipper) => {
@@ -1199,38 +1327,43 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((ownerData: TopOwnerListResponse) => {
-
-                const takeNumber: number =
-                    ChartHelper.takeDoughnutData(ownerData.pagination.count);
+                const takeNumber: number = ChartHelper.takeDoughnutData(
+                    ownerData.pagination.count
+                );
 
                 const loadProperties = [
                     DashboardChartStringEnum.LOAD_PERCENTAGE,
                     DashboardChartStringEnum.LOAD,
-                    DashboardChartStringEnum.OWNER_LOAD_PERCENTAGE
+                    DashboardChartStringEnum.OWNER_LOAD_PERCENTAGE,
                 ];
                 const revenueProperties = [
                     DashboardChartStringEnum.REVENUE_PERCENTAGE,
                     DashboardChartStringEnum.REVENUE,
-                    DashboardChartStringEnum.OWNER_LOAD_PERCENTAGE
+                    DashboardChartStringEnum.OWNER_LOAD_PERCENTAGE,
                 ];
 
                 let properties = [];
                 let chartConfiguration;
 
-                if (this.currentActiveTab.name === DashboardStringEnum.REVENUE) {
+                if (
+                    this.currentActiveTab.name === DashboardStringEnum.REVENUE
+                ) {
                     properties = [...revenueProperties];
-                    chartConfiguration = ChartConfiguration.topRevenueConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topRevenueConfiguration;
                 }
                 if (this.currentActiveTab.name === DashboardStringEnum.LOAD) {
                     properties = [...loadProperties];
-                    chartConfiguration = ChartConfiguration.topLoadConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topLoadConfiguration;
                 }
 
                 const { totalPercentage, total } =
                     ownerData.pagination.data.reduce(
                         (accumulator, item, indx) => {
                             if (indx < takeNumber) {
-                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.totalPercentage +=
+                                    item[properties[0]];
                                 accumulator.total += item[properties[1]];
                             }
                             return accumulator;
@@ -1238,54 +1371,59 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         { totalPercentage: 0, total: 0 }
                     );
 
-                const allOther: number = ownerData
-                    .allOthers
-                    .reduce((accumulator, item) => {
+                const allOther: number = ownerData.allOthers.reduce(
+                    (accumulator, item) => {
                         return (accumulator += item[properties[2]]);
-                    }, 0);
-
-                this.doughnutCenterLabels = ChartHelper.generateDoughnutCenterLabelData(
-                    totalPercentage,
-                    total,
-                    ownerData.pagination.count,
-                    allOther
+                    },
+                    0
                 );
+
+                this.doughnutCenterLabels =
+                    ChartHelper.generateDoughnutCenterLabelData(
+                        totalPercentage,
+                        total,
+                        ownerData.pagination.count,
+                        allOther
+                    );
 
                 let topRatedData: TopOwnerResponse[] = [];
                 let others: TopOwnerResponse = {
                     loadPercentage: 0,
-                    revenuePercentage: 0
+                    revenuePercentage: 0,
                 };
 
                 ownerData.pagination.data.forEach((item, index: number) => {
-                    if (index < takeNumber) topRatedData = [...topRatedData, item];
+                    if (index < takeNumber)
+                        topRatedData = [...topRatedData, item];
                     else {
                         others.loadPercentage += item.loadPercentage;
                         others.revenuePercentage += item.revenuePercentage;
                     }
                     if (index === ownerData.pagination.data.length - 1) {
-                        topRatedData = [
-                            ...topRatedData,
-                            others,
-                        ];
+                        topRatedData = [...topRatedData, others];
                     }
                 });
 
-                const chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
-                    topRatedData,
-                    chartConfiguration,
-                    null,
-                    this.mainColorsPalette?.
-                        map((color: TopRatedMainColorsPalette, index: number) => {
-                            if (index < takeNumber) return color.code;
-                        })
-                );
+                const chartData: IChartData<IBaseDataset> =
+                    ChartHelper.generateDataByDateTime(
+                        topRatedData,
+                        chartConfiguration,
+                        null,
+                        this.mainColorsPalette?.map(
+                            (
+                                color: TopRatedMainColorsPalette,
+                                index: number
+                            ) => {
+                                if (index < takeNumber) return color.code;
+                            }
+                        )
+                    );
 
                 this.doughnutChartConfig = {
                     ...this.doughnutChartConfig,
                     chartData,
-                    centerLabels: this.doughnutCenterLabels
-                }
+                    centerLabels: this.doughnutCenterLabels,
+                };
 
                 // top rated list and single selection data
                 this.topRatedList = ownerData.pagination.data.map((owner) => {
@@ -1341,18 +1479,19 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((repairShopData: TopRepairShopListResponse) => {
-                const takeNumber: number =
-                    ChartHelper.takeDoughnutData(repairShopData.pagination.count);
+                const takeNumber: number = ChartHelper.takeDoughnutData(
+                    repairShopData.pagination.count
+                );
 
                 const costProperties = [
                     DashboardChartStringEnum.COST_PERCENTAGE,
                     DashboardChartStringEnum.COST,
-                    DashboardChartStringEnum.COST_PERCENTAGE
+                    DashboardChartStringEnum.COST_PERCENTAGE,
                 ];
                 const visitProperties = [
                     DashboardChartStringEnum.VISIT_PERCENTAGE,
                     DashboardChartStringEnum.REVENUE,
-                    DashboardChartStringEnum.COUNT_PERCENTAGE
+                    DashboardChartStringEnum.COUNT_PERCENTAGE,
                 ];
 
                 let properties = [];
@@ -1360,18 +1499,21 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
                 if (this.currentActiveTab.name === DashboardStringEnum.COST) {
                     properties = [...costProperties];
-                    chartConfiguration = ChartConfiguration.topCostConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topCostConfiguration;
                 }
                 if (this.currentActiveTab.name === DashboardStringEnum.VISIT) {
                     properties = [...visitProperties];
-                    chartConfiguration = ChartConfiguration.topVisitConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topVisitConfiguration;
                 }
 
                 const { totalPercentage, total } =
                     repairShopData.pagination.data.reduce(
                         (accumulator, item, indx) => {
                             if (indx < takeNumber) {
-                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.totalPercentage +=
+                                    item[properties[0]];
                                 accumulator.total += item[properties[1]];
                             }
                             return accumulator;
@@ -1379,54 +1521,64 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         { totalPercentage: 0, total: 0 }
                     );
 
-                const allOther: number = repairShopData
-                    .allOther
-                    .reduce((accumulator, item) => {
+                const allOther: number = repairShopData.allOther.reduce(
+                    (accumulator, item) => {
                         return (accumulator += item[properties[2]]);
-                    }, 0);
-
-                this.doughnutCenterLabels = ChartHelper.generateDoughnutCenterLabelData(
-                    totalPercentage,
-                    total,
-                    repairShopData.pagination.count,
-                    allOther
+                    },
+                    0
                 );
+
+                this.doughnutCenterLabels =
+                    ChartHelper.generateDoughnutCenterLabelData(
+                        totalPercentage,
+                        total,
+                        repairShopData.pagination.count,
+                        allOther
+                    );
 
                 let topRatedData: TopRepairShopResponse[] = [];
                 let others: TopRepairShopResponse = {
                     visitPercentage: 0,
-                    costPercentage: 0
+                    costPercentage: 0,
                 };
 
-                repairShopData.pagination.data.forEach((item, index: number) => {
-                    if (index < takeNumber) topRatedData = [...topRatedData, item];
-                    else {
-                        others.visitPercentage += item.visitPercentage;
-                        others.costPercentage += item.costPercentage;
+                repairShopData.pagination.data.forEach(
+                    (item, index: number) => {
+                        if (index < takeNumber)
+                            topRatedData = [...topRatedData, item];
+                        else {
+                            others.visitPercentage += item.visitPercentage;
+                            others.costPercentage += item.costPercentage;
+                        }
+                        if (
+                            index ===
+                            repairShopData.pagination.data.length - 1
+                        ) {
+                            topRatedData = [...topRatedData, others];
+                        }
                     }
-                    if (index === repairShopData.pagination.data.length - 1) {
-                        topRatedData = [
-                            ...topRatedData,
-                            others,
-                        ];
-                    }
-                });
-
-                const chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
-                    topRatedData,
-                    chartConfiguration,
-                    null,
-                    this.mainColorsPalette?.
-                        map((color: TopRatedMainColorsPalette, index: number) => {
-                            if (index < takeNumber) return color.code;
-                        })
                 );
+
+                const chartData: IChartData<IBaseDataset> =
+                    ChartHelper.generateDataByDateTime(
+                        topRatedData,
+                        chartConfiguration,
+                        null,
+                        this.mainColorsPalette?.map(
+                            (
+                                color: TopRatedMainColorsPalette,
+                                index: number
+                            ) => {
+                                if (index < takeNumber) return color.code;
+                            }
+                        )
+                    );
 
                 this.doughnutChartConfig = {
                     ...this.doughnutChartConfig,
                     chartData,
-                    centerLabels: this.doughnutCenterLabels
-                }
+                    centerLabels: this.doughnutCenterLabels,
+                };
 
                 // top rated list and single selection data
                 this.topRatedList = repairShopData.pagination.data.map(
@@ -1484,19 +1636,19 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 tap(() => (this.isLoading = false))
             )
             .subscribe((fuelStopData: TopFuelStopListResponse) => {
-
-                const takeNumber: number =
-                    ChartHelper.takeDoughnutData(fuelStopData.pagination.count);
+                const takeNumber: number = ChartHelper.takeDoughnutData(
+                    fuelStopData.pagination.count
+                );
 
                 const costProperties = [
                     DashboardChartStringEnum.COST_PERCENTAGE,
                     DashboardChartStringEnum.COST,
-                    DashboardChartStringEnum.COST_PERCENTAGE
+                    DashboardChartStringEnum.COST_PERCENTAGE,
                 ];
                 const visitProperties = [
                     DashboardChartStringEnum.VISIT_PERCENTAGE,
                     DashboardChartStringEnum.VISIT_COUNT,
-                    DashboardChartStringEnum.VISIT_PERCENTAGE
+                    DashboardChartStringEnum.VISIT_PERCENTAGE,
                 ];
 
                 let properties = [];
@@ -1504,18 +1656,21 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
                 if (this.currentActiveTab.name === DashboardStringEnum.COST) {
                     properties = [...costProperties];
-                    chartConfiguration = ChartConfiguration.topCostConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topCostConfiguration;
                 }
                 if (this.currentActiveTab.name === DashboardStringEnum.VISIT) {
                     properties = [...visitProperties];
-                    chartConfiguration = ChartConfiguration.topVisitConfiguration;
+                    chartConfiguration =
+                        ChartConfiguration.topVisitConfiguration;
                 }
 
                 const { totalPercentage, total } =
                     fuelStopData.pagination.data.reduce(
                         (accumulator, item, indx) => {
                             if (indx < takeNumber) {
-                                accumulator.totalPercentage += item[properties[0]];
+                                accumulator.totalPercentage +=
+                                    item[properties[0]];
                                 accumulator.total += item[properties[1]];
                             }
                             return accumulator;
@@ -1523,55 +1678,59 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         { totalPercentage: 0, total: 0 }
                     );
 
-                const allOther: number = fuelStopData
-                    .allOthers
-                    .reduce((accumulator, item) => {
+                const allOther: number = fuelStopData.allOthers.reduce(
+                    (accumulator, item) => {
                         return (accumulator += item[properties[2]]);
-                    }, 0);
-
-
-                this.doughnutCenterLabels = ChartHelper.generateDoughnutCenterLabelData(
-                    totalPercentage,
-                    total,
-                    fuelStopData.pagination.count,
-                    allOther
+                    },
+                    0
                 );
+
+                this.doughnutCenterLabels =
+                    ChartHelper.generateDoughnutCenterLabelData(
+                        totalPercentage,
+                        total,
+                        fuelStopData.pagination.count,
+                        allOther
+                    );
 
                 let topRatedData: TopFuelStopResponse[] = [];
                 let others: TopFuelStopResponse = {
                     costPercentage: 0,
-                    visitPercentage: 0
+                    visitPercentage: 0,
                 };
 
                 fuelStopData.pagination.data.forEach((item, index: number) => {
-                    if (index < takeNumber) topRatedData = [...topRatedData, item];
+                    if (index < takeNumber)
+                        topRatedData = [...topRatedData, item];
                     else {
                         others.costPercentage += item.costPercentage;
                         others.visitPercentage += item.visitPercentage;
                     }
                     if (index === fuelStopData.pagination.data.length - 1) {
-                        topRatedData = [
-                            ...topRatedData,
-                            others,
-                        ];
+                        topRatedData = [...topRatedData, others];
                     }
                 });
 
-                const chartData: IChartData<IBaseDataset> = ChartHelper.generateDataByDateTime(
-                    topRatedData,
-                    chartConfiguration,
-                    null,
-                    this.mainColorsPalette?.
-                        map((color: TopRatedMainColorsPalette, index: number) => {
-                            if (index < takeNumber) return color.code;
-                        })
-                );
+                const chartData: IChartData<IBaseDataset> =
+                    ChartHelper.generateDataByDateTime(
+                        topRatedData,
+                        chartConfiguration,
+                        null,
+                        this.mainColorsPalette?.map(
+                            (
+                                color: TopRatedMainColorsPalette,
+                                index: number
+                            ) => {
+                                if (index < takeNumber) return color.code;
+                            }
+                        )
+                    );
 
                 this.doughnutChartConfig = {
                     ...this.doughnutChartConfig,
                     chartData,
-                    centerLabels: this.doughnutCenterLabels
-                }
+                    centerLabels: this.doughnutCenterLabels,
+                };
                 // top rated list and single selection data
                 this.topRatedList = fuelStopData.pagination.data.map(
                     (fuelStop) => {

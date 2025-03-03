@@ -6,6 +6,7 @@ import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.mod
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { TopRatedListItem } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
+import { DashboardTopReportType } from 'appcoretruckassist';
 
 export class DashboardTopRatedConstants {
     static TOP_RATED_DROPDOWN_DATA: DropdownItem[] = [
@@ -154,5 +155,13 @@ export class DashboardTopRatedConstants {
         value: null,
         percent: null,
         isSelected: false,
+    };
+
+    static REPORT_TYPE_MAP: Record<DashboardTopReportType, string> = {
+        Cost: 'Cost',
+        Visit: 'Visit',
+        Load: 'Load',
+        Revenue: 'driverRevenue',
+        Mileage: 'driverMileage',
     };
 }

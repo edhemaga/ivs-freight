@@ -18,15 +18,19 @@ export class DashboardTopRatedChartsConfiguration {
     };
 
     static BAR_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: ChartTypesStringEnum.BAR,
         chartData: {
             labels: [],
             datasets: [],
         },
         height: 260,
         width: 100,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
+        isMultiYAxis: false,
+        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
-        showXAxisLabels: true
+        showXAxisLabels: true,
+        isTooltipItemInSelectedItems: true,
+        showTooltipBackground: true,
+        isDashboardChart: true,
     };
 }
