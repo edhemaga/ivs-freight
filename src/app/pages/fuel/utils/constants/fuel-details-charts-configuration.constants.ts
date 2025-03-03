@@ -16,6 +16,6 @@ export class FuelDetailsChartsConfiguration {
         chartOptions: {},
         showTooltipBackground: false,
         showXAxisLabels: true,
-        hasVerticalDashedAnnotation: true
+        hasVerticalDashedAnnotation: true,
     };
 }

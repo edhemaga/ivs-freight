@@ -12,7 +12,7 @@ import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top
 import {
     DashboardPerformanceChartsConfiguration,
     DashboardPerformanceConstants,
-    DashboardPerformanceIconRoutes
+    DashboardPerformanceIconRoutes,
 } from '@pages/dashboard/pages/dashboard-performance/utils/constants';
 import {
     DashboardConstants,
@@ -101,7 +101,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private dashboardService: DashboardService,
         private dashboardPerformanceService: DashboardPerformanceService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -259,7 +259,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         if (
             this.selectedPerformanceDataCount ===
-            this.maxPerformanceDataItemsSelected &&
+                this.maxPerformanceDataItemsSelected &&
             !performanceDataItem.isSelected
         ) {
             return;
@@ -540,27 +540,27 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 backgroundColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
-                            .color
+                              .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
-                            .color,
+                              .color,
                 hoverBackgroundColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
-                            .color
+                              .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
-                            .color,
+                              .color,
                 hoverBorderColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
-                            .color
+                              .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
-                            .color,
+                              .color,
                 borderColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
-                            .color
+                              .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
-                            .color,
+                              .color,
                 borderRadius: {
                     topLeft: 2,
                     topRight: 2,

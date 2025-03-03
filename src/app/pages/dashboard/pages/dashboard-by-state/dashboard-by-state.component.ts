@@ -9,6 +9,7 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
+import { eChartTypesString } from 'ca-components';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
@@ -444,8 +445,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 const value =
                     interval[propertyKey as keyof ByStateIntervalResponse];
 
-                if (typeof value === 'number')
-                    dataSetData.push(value);
+                if (typeof value === 'number') dataSetData.push(value);
             });
             const order =
                 this.selectedStatesOrder.get(selectedStateItem.id) ?? 0;

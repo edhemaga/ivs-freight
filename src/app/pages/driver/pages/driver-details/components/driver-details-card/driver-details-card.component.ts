@@ -58,17 +58,17 @@ import {
     DriverMinimalResponse,
     DriverPayrollChartResponse,
     DriverPayrollResponse,
-    DriverResponse
+    DriverResponse,
 } from 'appcoretruckassist';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
 
 // Enums
-import { } from '@shared/enums';
+import {} from '@shared/enums';
 import {
     ChartConfiguration,
-    ChartLegendConfiguration
+    ChartLegendConfiguration,
 } from '@shared/utils/constants';
 
 @Component({
@@ -101,7 +101,8 @@ import {
     ],
 })
 export class DriverDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() driver: DriverResponse;
 
     private destroy$ = new Subject<void>();
@@ -133,7 +134,7 @@ export class DriverDetailsCardComponent
 
         // Store
         private driverMinimalQuery: DriversMinimalListQuery
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -164,41 +165,37 @@ export class DriverDetailsCardComponent
 
                 this.payrollChartConfig = {
                     ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
-                    chartData: ChartHelper
-                        .generateDataByDateTime<DriverPayrollChartResponse>(
+                    chartData:
+                        ChartHelper.generateDataByDateTime<DriverPayrollChartResponse>(
                             this.driverChartData.getDriverPayrollChartResponse,
-                            ChartConfiguration.driverConfiguration,
+                            ChartConfiguration.DRIVER_CONFIGURATION,
                             timeFilter
-                        )
+                        ),
                 };
 
                 this.driverLegendConfig =
-                    ChartLegendConfiguration.
-                        driverLegendConfiguration(this.driverChartData);
-            })
+                    ChartLegendConfiguration.driverLegendConfiguration(
+                        this.driverChartData
+                    );
+            });
     }
 
     public setDriverLegendOnHover(index: number | null): void {
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend(index,
-                this.payrollChartConfig
-                    .chartData
-                    .labels);
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.payrollChartConfig.chartData.labels
+        );
 
         this.driverLegendHighlightedBackground = hasHighlightedBackground;
         this.driverLegendTitle = title;
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.driverChartData :
-                this.driverChartData.
-                    getDriverPayrollChartResponse[index]
+            isNaN(index) || index < 0
+                ? this.driverChartData
+                : this.driverChartData.getDriverPayrollChartResponse[index];
 
-        this.driverLegendConfig = ChartLegendConfiguration
-            .driverLegendConfiguration(dataForLegend);
+        this.driverLegendConfig =
+            ChartLegendConfiguration.driverLegendConfiguration(dataForLegend);
     }
 
     private createForm(): void {
@@ -249,8 +246,8 @@ export class DriverDetailsCardComponent
                     active: id === this.driver.id,
                     hiredAt: hiredAt
                         ? MethodsCalculationsHelper.convertDateFromBackend(
-                            hiredAt
-                        )
+                              hiredAt
+                          )
                         : null,
                 };
             });

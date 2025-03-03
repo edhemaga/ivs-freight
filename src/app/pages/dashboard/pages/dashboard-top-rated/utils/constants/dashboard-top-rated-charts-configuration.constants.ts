@@ -14,7 +14,7 @@ export class DashboardTopRatedChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
-        showXAxisLabels: false
+        showXAxisLabels: false,
     };
 
     static BAR_CHART_CONFIG = {
@@ -27,6 +27,6 @@ export class DashboardTopRatedChartsConfiguration {
         width: 100,
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
         chartOptions: {},
-        showXAxisLabels: true
+        showXAxisLabels: true,
     };
 }

@@ -1,5 +1,5 @@
 // Enums
-import { eChartTypesString } from "ca-components/lib/components/ca-chart/enums";
+import { eChartTypesString } from 'ca-components/lib/components/ca-chart/enums';
 
 export interface ChartTypeProperty {
     type: eChartTypesString;
@@ -21,4 +21,4 @@ export interface ChartTypeProperty {
     // See Payment History Chart, the idea is to have a value until a certain style is applied
     // Needs to be reworked, initial idea
     shiftValue?: number;
-};
+}
