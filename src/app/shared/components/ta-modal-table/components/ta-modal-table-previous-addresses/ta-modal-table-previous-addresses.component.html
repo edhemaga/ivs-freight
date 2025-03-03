@@ -43,8 +43,7 @@
                             previousAddressRow.valid && !isInputHoverRows[i][0],
                         blackInput:
                             formArray.at(i).get('address').value &&
-                            !isInputHoverRows[i][0],
-                        isAddress: true,
+                            !isInputHoverRows[i][0]
                     }"
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress[i]"
