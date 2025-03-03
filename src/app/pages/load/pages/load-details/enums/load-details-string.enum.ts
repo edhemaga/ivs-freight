@@ -1,6 +1,4 @@
 export enum LoadDetailsStringEnum {
-    DETAILS = 'details',
-
     EMPTY_SPACE = ' ',
 
     DELETE_ITEM = 'delete-item',

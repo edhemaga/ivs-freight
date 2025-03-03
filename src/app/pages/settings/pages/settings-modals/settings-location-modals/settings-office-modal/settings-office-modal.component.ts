@@ -381,7 +381,10 @@ export class SettingsOfficeModalComponent
         const updatedOffice: UpdateCompanyOfficeCommand = {
             id,
             ...formValues,
-            address: { ...address, addressUnit },
+            address: {
+                address,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -411,7 +414,10 @@ export class SettingsOfficeModalComponent
 
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
-            address: { ...address, addressUnit },
+            address: {
+                address,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY

@@ -22,5 +22,4 @@ export enum DriverDetailsStringEnum {
     DELETE = 'delete',
 
     LIST_DRIVER_ROUTE = '/list/driver',
-    DETAILS = 'details',
 }

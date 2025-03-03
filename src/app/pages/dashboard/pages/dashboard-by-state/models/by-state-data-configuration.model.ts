@@ -1,9 +1,10 @@
 import { Observable } from "rxjs";
 
 //models
-import { ByStateResponse, IStateDataTransform } from "@pages/dashboard/pages/dashboard-by-state/models";
+import { ByStateIntervalResponse, ByStateListItem, ByStateResponse } from "@pages/dashboard/pages/dashboard-by-state/models";
+import { ByStateReportType } from "appcoretruckassist";
 
 export interface IStateConfiguration {
     serviceMethod: () => Observable<ByStateResponse>; 
-    dataTransform: (item: any, index: number) => IStateDataTransform;
+    dataTransform: (item: ByStateResponse, index: number, selectedTab: ByStateReportType, intervals?: Array<ByStateIntervalResponse> | null) => ByStateListItem;
 }

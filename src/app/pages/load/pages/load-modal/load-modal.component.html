@@ -155,9 +155,8 @@
                         [optionValue]="'id'"
                         formControlName="dispatcherId"
                         [template]="'load-dispatcher'"
-                        [inputConfig]="getDispatcherInputConfig()"
+                        [inputConfig]="dispatcherConfig"
                         [options]="labelsDispatcher"
-                        [activeItem]="selectedDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
                     ></app-ca-input-dropdown>
                 </div>
@@ -173,26 +172,15 @@
                             [inputConfig]="loadTemplateInputConfig"
                         ></ca-input-test>
                     } @else {
-                        <!-- Only One Company -->
-                        @if (labelsCompanies.length <= 1) {
-                            <ca-input-test
-                                formControlName="companyId"
-                                [inputConfig]="loadMainCompanyInputConfig"
-                            ></ca-input-test>
-                        } @else {
-                            <!-- Multiple Companies -->
-                            <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
-                                formControlName="companyId"
-                                [inputConfig]="loadCompanyInputConfig"
-                                [options]="labelsCompanies"
-                                [activeItem]="selectedCompany"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'company')
-                                "
-                            ></app-ca-input-dropdown>
-                        }
+                        <app-ca-input-dropdown
+                            [label]="'name'"
+                            [optionValue]="'id'"
+                            formControlName="companyId"
+                            [inputConfig]="loadCompanyInputConfig"
+                            [options]="labelsCompanies"
+                            [activeItem]="selectedCompany"
+                            (selectedItem)="onSelectDropdown($event, 'company')"
+                        ></app-ca-input-dropdown>
                     }
                 </div>
             </div>
@@ -523,7 +511,6 @@
                                 [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [options]="labelsShipperContacts"
-                                [activeItem]="selectedPickupShipperContact"
                                 (selectedItem)="
                                     onSelectDropdown(
                                         $event,

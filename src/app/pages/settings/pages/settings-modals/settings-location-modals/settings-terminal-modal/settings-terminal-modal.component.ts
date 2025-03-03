@@ -466,7 +466,10 @@ export class SettingsTerminalModalComponent
         const newData: UpdateTerminalCommand = {
             id: id,
             ...form,
-            address: { ...address, addressUnit: addressUnit },
+            address: {
+                address,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
@@ -518,7 +521,10 @@ export class SettingsTerminalModalComponent
 
         const newData: CreateTerminalCommand = {
             ...form,
-            address: { ...address, addressUnit: addressUnit },
+            address: {
+                address,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
