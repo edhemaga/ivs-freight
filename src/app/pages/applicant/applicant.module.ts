@@ -72,6 +72,7 @@ import { CaInputDatetimePickerComponent } from 'ca-components';
         TaCustomCardComponent,
         TaModalTableComponent,
         CaInputDatetimePickerComponent,
+        CaInputDatetimePickerComponent,
         /* PIPES */
         SumArraysPipe], providers: [provideHttpClient(withInterceptorsFromDi())] })
 export class ApplicantModule {}

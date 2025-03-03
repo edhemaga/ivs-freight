@@ -280,7 +280,7 @@
 
                         <div class="d-flex">
                             <div class="group date-group">
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="accidentDate"
                                     [inputConfig]="{
                                         name: 'datepicker',
@@ -291,7 +291,7 @@
                                         customClass: 'datetimeclass',
                                         isDisabled: true
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="group location-group">
                                 <app-ta-input-address-dropdown
@@ -478,7 +478,7 @@
                     <div class="d-flex align-items-center date-container">
                         <p class="m-0 ta-font-regular">Dates of employment</p>
                         <div class="date-group">
-                            <app-ta-input
+                            <ca-input-datetime-picker
                                 formControlName="employmentFromDate"
                                 [inputConfig]="{
                                     name: 'datepicker',
@@ -489,10 +489,10 @@
                                     customClass: 'datetimeclass',
                                     isDisabled: true
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-datetime-picker>
                         </div>
                         <div class="date-group">
-                            <app-ta-input
+                            <ca-input-datetime-picker
                                 formControlName="employmentToDate"
                                 [inputConfig]="{
                                     name: 'datepicker',
@@ -503,7 +503,7 @@
                                     customClass: 'datetimeclass',
                                     isDisabled: true
                                 }"
-                            ></app-ta-input>
+                            ></ca-input-datetime-picker>
                         </div>
                     </div>
 

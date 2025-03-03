@@ -116,8 +116,10 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                         withText: true,
                         svg: true,
                         image: false,
-                        iconsPath: '/assets/ca-components/svg/common/trucks/',
-                        activeItemIconKey: 'logoName',
+                        url:
+                            selectedTruckType?.logoName &&
+                            'assets/svg/common/trucks/' +
+                                selectedTruckType?.logoName,
                         template: 'truck',
                         class: selectedTruckType?.name
                             ?.trim()
@@ -148,8 +150,6 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                         withText: true,
                         svg: false,
                         image: true,
-                        iconsPath: '',
-                        activeItemIconKey: "logoName",
                         url: driverLogoName,
                         // TODO: waiting for CAR-3201 to be done
                         // nameInitialsInsteadUrl: driverLogoName ? null : initials,

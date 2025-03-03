@@ -374,7 +374,7 @@ export class SettingsOfficeModalComponent
     }
 
     private updateCompanyOffice(id: number): void {
-        const { address, addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { addressUnit, rent, ...formValues } = this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
@@ -382,7 +382,7 @@ export class SettingsOfficeModalComponent
             id,
             ...formValues,
             address: {
-                address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             payPeriod: this.selectedPayPeriod?.id || null,
@@ -408,14 +408,15 @@ export class SettingsOfficeModalComponent
     }
 
     private addCompanyOffice(addNew?: boolean): void {
-        const { address, addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { addressUnit, rent, ...formValues } =
+            this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
             address: {
-                address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             payPeriod: this.selectedPayPeriod?.id || null,

@@ -975,6 +975,8 @@ export * from './trailerMinimalListResponse';
 export * from './trailerMinimalMobileResponse';
 export * from './trailerMinimalResponse';
 export * from './trailerMinimalResponsePagination';
+export * from './trailerModelListResponse';
+export * from './trailerModelResponse';
 export * from './trailerResponse';
 export * from './trailerShortResponse';
 export * from './trailerShortResponsePagination';

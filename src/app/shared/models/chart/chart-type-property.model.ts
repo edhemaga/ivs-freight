@@ -1,8 +1,8 @@
 // Enums
-import { ChartTypesStringEnum } from "ca-components/lib/components/ca-chart/enums";
+import { eChartTypesString } from 'ca-components/lib/components/ca-chart/enums';
 
 export interface ChartTypeProperty {
-    type: ChartTypesStringEnum;
+    type: eChartTypesString;
     color?: string;
     // colorEdgeValue is used to distinguish where the color should transition to another
     // If no transition is required, leave empty
@@ -21,4 +21,4 @@ export interface ChartTypeProperty {
     // See Payment History Chart, the idea is to have a value until a certain style is applied
     // Needs to be reworked, initial idea
     shiftValue?: number;
-};
+}

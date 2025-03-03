@@ -166,6 +166,7 @@ import {
     MapMarkerIconService,
     CaInputDatetimePickerComponent,
     InputTestComponent,
+    CaInputComponent,
 } from 'ca-components';
 
 @Component({
@@ -368,7 +369,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public selectedExtraStopShipper: any[] = [];
     public selectedExtraStopShipperContact: any[] = [];
     public loadExtraStopsShipperInputConfig: ITaInput[] = [];
-    public loadExtraStopsShipperContactsInputConfig: ICaInput[] = [];
+    public loadExtraStopsShipperContactsInputConfig: ITaInput[] = [];
     public loadExtraStopsDateRange: EnumValue[] | boolean[] = [];
     public selectedExtraStopTime: any[] = [];
     public previousDeliveryStopOrder: number;
@@ -1440,6 +1441,23 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         };
                         this.loadBrokerContactsInputConfig = {
                             ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: event.name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: event.originalPhone,
+                                        second_value: event.phoneExtension
+                                            ? `#${event.phoneExtension}`
+                                            : null,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass:
+                                    LoadModalStringEnum.LOAD_BROKER_CONTACT,
+                            },
                             isDisabled: false,
                         };
                     } else {
@@ -1910,8 +1928,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     this.loadBrokerContactsInputConfig = {
                         ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: null,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedBrokerContact.name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedBrokerContact
+                                        .originalPhone,
+                                    second_value: this.selectedBrokerContact
+                                        .phoneExtension
+                                        ? `#${this.selectedBrokerContact.phoneExtension}`
+                                        : null,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass:
+                                LoadModalStringEnum.LOAD_BROKER_CONTACT,
+                        },
                         isDisabled: false,
+                        blackInput: false,
                     };
                 }
             }
@@ -2872,7 +2909,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             blackInput: true,
             textTransform: LoadModalStringEnum.CAPITALIZE,
             dropdownWidthClass: LoadModalStringEnum.DROPDOWN_WIDTH_2,
-            searchinGroupIndex: 'contacts',
         });
 
         // selected

@@ -128,9 +128,9 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-376',
                                         minLength: 6,
-                                        maxLength: 256,
-                                        isAddress: true,
+                                        maxLength: 256
                                     }"
+                                    [activeAddress]="selectedAddress"
                                     [placeholderType]="'longAddress'"
                                     [formControlName]="
                                         RepairShopModalStringEnum.ADDRESS
@@ -176,8 +176,6 @@
                                     <div class="row">
                                         <div class="col-4">
                                             <app-ca-input-dropdown
-                                                [label]="'name'"
-                                                [optionValue]="'id'"
                                                 [canAddNew]="true"
                                                 [inputConfig]="payPeriodConfig"
                                                 [options]="payPeriodsDropdown"
@@ -195,8 +193,6 @@
                                         <div class="col-4">
                                             @if (isMonthlyPeriodSeleced) {
                                                 <app-ca-input-dropdown
-                                                    [label]="'name'"
-                                                    [optionValue]="'id'"
                                                     [canAddNew]="false"
                                                     [inputConfig]="
                                                         payMonthlyConfig
@@ -220,8 +216,6 @@
                                                 ></app-ca-input-dropdown>
                                             } @else {
                                                 <app-ca-input-dropdown
-                                                    [label]="'name'"
-                                                    [optionValue]="'id'"
                                                     [canAddNew]="false"
                                                     [inputConfig]="payDayConfig"
                                                     [options]="
@@ -559,8 +553,6 @@
                                 class="custom-bank-row custom-bank-row-repair-shop"
                             >
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     (saveItem)="onSaveNewBank($event)"
                                     (selectedItem)="onBankSelected($event)"
                                     [activeItem]="selectedBank"

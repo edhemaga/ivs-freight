@@ -21,9 +21,8 @@ import {
 import { ITableOptions } from '@shared/models';
 
 // enums
-import { TableStringEnum } from '@shared/enums';
+import { eActiveViewMode, TableStringEnum } from '@shared/enums';
 import {
-    eActiveViewMode,
     eLoadStatusType,
 } from '@pages/load/pages/load-table/enums/index';
 
@@ -283,7 +282,7 @@ export const columnsSelector = createSelector(
     selectedTabSelector,
     (tableData, selectedTab) => {
         const selectedTabLowerCase =
-            eLoadStatusType[selectedTab]?.toLowerCase();
+        eLoadStatusType[selectedTab]?.toLowerCase();
         const tableDataSelectedItem = tableData?.find(
             (item) => item.field === selectedTabLowerCase
         );

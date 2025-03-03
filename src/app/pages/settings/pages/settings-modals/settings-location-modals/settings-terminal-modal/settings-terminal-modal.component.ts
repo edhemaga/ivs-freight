@@ -461,13 +461,13 @@ export class SettingsTerminalModalComponent
     }
 
     private updateTerminal(id: number): void {
-        const { address, addressUnit, rent, ...form } = this.terminalForm.value;
+        const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: UpdateTerminalCommand = {
             id: id,
             ...form,
             address: {
-                address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             rent: rent
@@ -517,12 +517,12 @@ export class SettingsTerminalModalComponent
     }
 
     private addTerminal(addNew?: boolean): void {
-        const { address, addressUnit, rent, ...form } = this.terminalForm.value;
+        const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: CreateTerminalCommand = {
             ...form,
             address: {
-                address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             rent: rent

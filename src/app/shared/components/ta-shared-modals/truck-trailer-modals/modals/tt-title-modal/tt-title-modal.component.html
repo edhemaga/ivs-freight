@@ -27,8 +27,6 @@
                 </div>
                 <div class="col-6">
                     <app-ca-input-dropdown
-                        [label]="'name'"
-                        [optionValue]="'id'"
                         (selectedItem)="onSelectDropdown($event, 'state')"
                         [activeItem]="selectedStateType"
                         [template]="'svgtext-template'"

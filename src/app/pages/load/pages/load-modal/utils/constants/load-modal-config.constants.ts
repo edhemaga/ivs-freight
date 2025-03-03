@@ -42,8 +42,7 @@ export class LoadModalConfig {
         isDisabled: true,
         blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-308',
-        searchinGroupIndex: 'contacts',
+        dropdownWidthClass: 'w-col-308'
     };
 
     static LOAD_PICKUP_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -71,8 +70,7 @@ export class LoadModalConfig {
         isDisabled: true,
         blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-370',
-        searchinGroupIndex: 'contacts',
+        dropdownWidthClass: 'w-col-370'
     };
 
     static LOAD_DELIVERY_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -100,8 +98,7 @@ export class LoadModalConfig {
         isDisabled: true,
         blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-370',
-        searchinGroupIndex: 'contacts',
+        dropdownWidthClass: 'w-col-370'
     };
 
     static LOAD_COMPANY_INPUT_CONFIG: ITaInput = {

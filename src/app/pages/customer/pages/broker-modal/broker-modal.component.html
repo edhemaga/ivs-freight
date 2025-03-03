@@ -155,8 +155,8 @@
                                         dropdownWidthClass: 'w-col-510',
                                         minLength: 6,
                                         maxLength: 256,
-                                        isAddress: true,
                                     }"
+                                    [activeAddress]="selectedPhysicalAddress"
                                     [placeholderType]="'longAddress'"
                                     (selectedAddress)="
                                         onHandleAddress(
@@ -233,8 +233,8 @@
                                         dropdownWidthClass: 'w-col-414',
                                         minLength: 6,
                                         maxLength: 256,
-                                        isAddress: true,
                                     }"
+                                    [activeAddress]="selectedPhysicalPoBox"
                                     [placeholderType]="'shortAddress'"
                                     (selectedAddress)="
                                         onHandleAddress(
@@ -302,9 +302,9 @@
                                             dropdownWidthClass: 'w-col-510',
                                             minLength: 6,
                                             maxLength: 256,
-                                            isAddress: true,
                                         }"
                                         [placeholderType]="'longAddress'"
+                                        [activeAddress]="selectedBillingAddress"
                                         (selectedAddress)="
                                             onHandleAddress(
                                                 $event,
@@ -383,7 +383,6 @@
                                             dropdownWidthClass: 'w-col-414',
                                             minLength: 6,
                                             maxLength: 256,
-                                            isAddress: true,
                                         }"
                                         [placeholderType]="'shortAddress'"
                                         [activeAddress]="selectedBillingPoBox"
@@ -474,8 +473,6 @@
 
                             <div class="broker-billing-field">
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="payTerm"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',

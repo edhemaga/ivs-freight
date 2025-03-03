@@ -1051,6 +1051,8 @@ model/trailerMinimalListResponse.ts
 model/trailerMinimalMobileResponse.ts
 model/trailerMinimalResponse.ts
 model/trailerMinimalResponsePagination.ts
+model/trailerModelListResponse.ts
+model/trailerModelResponse.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts

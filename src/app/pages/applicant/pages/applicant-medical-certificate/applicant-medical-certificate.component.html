@@ -31,7 +31,7 @@
                     <form [formGroup]="medicalCertificateForm">
                         <div class="d-flex line-container">
                             <div class="date-group">
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="fromDate"
                                     [inputConfig]="{
                                         name: 'datepicker',
@@ -52,10 +52,10 @@
                                     (incorrectEvent)="
                                         incorrectInput($event, 0, 0)
                                     "
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="date-group date-exp-group">
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="toDate"
                                     [inputConfig]="{
                                         name: 'datepicker',
@@ -76,7 +76,7 @@
                                     (incorrectEvent)="
                                         incorrectInput($event, 1, 0)
                                     "
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
 
                             <!-- REVIEW AND FEEDBACK -->
