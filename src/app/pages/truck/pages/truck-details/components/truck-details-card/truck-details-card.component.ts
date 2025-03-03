@@ -254,12 +254,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     chartData:
                         ChartHelper.generateDataByDateTime<TruckFuelConsumptionChartResponse>(
                             response.truckFuelConsumptionCharts,
-                            ChartConfiguration.truckFuelConsumptionConfiguration,
+                            ChartConfiguration.TRUCK_FUEL_CONSUMPTION_CONFIGURATION,
                             timeFilter
                         ),
                 };
                 this.fuelConsumptionChartLegend =
-                    ChartLegendConfiguration.truckFuelConsumptionConfiguration(
+                    ChartLegendConfiguration.TRUCK_FUEL_CONSUMPTION_CONFIGURATION(
                         response
                     );
             });
@@ -278,12 +278,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     chartData:
                         ChartHelper.generateDataByDateTime<TruckRevenueChartResponse>(
                             response.truckRevenueCharts,
-                            ChartConfiguration.truckRevenueConfiguration,
+                            ChartConfiguration.TRUCK_REVENUE_CONFIGURATION,
                             timeFilter
                         ),
                 };
                 this.revenueChartLegend =
-                    ChartLegendConfiguration.truckRevenueConfiguration(
+                    ChartLegendConfiguration.TRUCK_REVENUE_CONFIGURATION(
                         response
                     );
             });
@@ -302,12 +302,12 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                     chartData:
                         ChartHelper.generateDataByDateTime<TruckExpensesChartResponse>(
                             response.truckExpensesCharts,
-                            ChartConfiguration.truckExpensesConfiguration,
+                            ChartConfiguration.TRUCK_EXPENSES_CONFIGURATION,
                             timeFilter
                         ),
                 };
                 this.expensesChartLegend =
-                    ChartLegendConfiguration.truckExpensesConfiguration(
+                    ChartLegendConfiguration.TRUCK_EXPENSES_CONFIGURATION(
                         response
                     );
             });
@@ -488,7 +488,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                   ];
 
         this.fuelConsumptionChartLegend =
-            ChartLegendConfiguration.truckFuelConsumptionConfiguration(
+            ChartLegendConfiguration.TRUCK_FUEL_CONSUMPTION_CONFIGURATION(
                 dataForLegend
             );
     }
@@ -504,7 +504,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
         if (index === null || index === undefined) {
             this.expensesChartLegend =
-                ChartLegendConfiguration.truckExpensesConfiguration(
+                ChartLegendConfiguration.TRUCK_EXPENSES_CONFIGURATION(
                     this.expensesChartData
                 );
             return;
@@ -516,7 +516,9 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 : this.expensesChartData?.truckExpensesCharts[index];
 
         this.expensesChartLegend =
-            ChartLegendConfiguration.truckExpensesConfiguration(dataForLegend);
+            ChartLegendConfiguration.TRUCK_EXPENSES_CONFIGURATION(
+                dataForLegend
+            );
     }
 
     public setRevenueLegendOnHover(index: number | null): void {
@@ -533,6 +535,6 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
                 : this.revenueChartData?.truckRevenueCharts[index];
 
         this.revenueChartLegend =
-            ChartLegendConfiguration.truckRevenueConfiguration(dataForLegend);
+            ChartLegendConfiguration.TRUCK_REVENUE_CONFIGURATION(dataForLegend);
     }
 }

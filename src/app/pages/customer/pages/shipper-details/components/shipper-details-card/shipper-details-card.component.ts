@@ -23,7 +23,10 @@ import { ModalService } from '@shared/services/modal.service';
 
 // Constants
 import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/constants';
-import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration,
+} from '@shared/utils/constants';
 
 // Components
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
@@ -46,7 +49,8 @@ import { ChartHelper, TimespanConvertHelper } from '@shared/utils/helpers';
     styleUrls: ['./shipper-details-card.component.scss'],
 })
 export class ShipperDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     private destroy$ = new Subject<void>();
     @Input() shipper: any;
     @Input() templateCard: boolean;
@@ -94,7 +98,7 @@ export class ShipperDetailsCardComponent
 
         // Store
         private shipperMinimalListQuery: ShipperMinimalListQuery
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
@@ -109,7 +113,6 @@ export class ShipperDetailsCardComponent
         }
     }
     ngOnInit(): void {
-
         let currentIndex = this.shipperList.findIndex(
             (shipper) => shipper.id === this.shipper.id
         );
@@ -219,12 +222,14 @@ export class ShipperDetailsCardComponent
             .getShipperChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item: ShipperAverageWaitingTimeResponse) => {
-                let avgPickupTime = TimespanConvertHelper.convertTimeSpanToMinutes(
-                    item.avgPickupTime
-                ),
-                    avgDeliveryTime = TimespanConvertHelper.convertTimeSpanToMinutes(
-                        item.avgDeliveryTime
-                    );
+                let avgPickupTime =
+                        TimespanConvertHelper.convertTimeSpanToMinutes(
+                            item.avgPickupTime
+                        ),
+                    avgDeliveryTime =
+                        TimespanConvertHelper.convertTimeSpanToMinutes(
+                            item.avgDeliveryTime
+                        );
 
                 let milesPerGallon = [],
                     costPerGallon = [],
@@ -235,9 +240,10 @@ export class ShipperDetailsCardComponent
                     let pickup = TimespanConvertHelper.convertTimeSpanToMinutes(
                         data.avgPickupTime
                     );
-                    let delivery = TimespanConvertHelper.convertTimeSpanToMinutes(
-                        data.avgDeliveryTime
-                    );
+                    let delivery =
+                        TimespanConvertHelper.convertTimeSpanToMinutes(
+                            data.avgDeliveryTime
+                        );
 
                     if (delivery + pickup > maxValue) {
                         maxValue =
@@ -257,37 +263,35 @@ export class ShipperDetailsCardComponent
                 this.payrollChartData = item;
                 this.payrollChartConfig = {
                     ...ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime(this.
-                        payrollChartData.
-                        shipperAverageWaitingTimeChartResponse,
-                        ChartConfiguration.shipperAverageWaitingTimeConfiguration
-                    )
-                }
+                    chartData: ChartHelper.generateDataByDateTime(
+                        this.payrollChartData
+                            .shipperAverageWaitingTimeChartResponse,
+                        ChartConfiguration.SHIPPER_AVERAGE_WAITING_TIME_CONFIGURATION
+                    ),
+                };
             });
     }
 
     public setPayrollLegendOnHover(index: number | null): void {
-
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend
-                (index,
-                    this.payrollChartConfig.chartData.labels
-                );
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.payrollChartConfig.chartData.labels
+        );
 
         this.payrollLegendHighlightedBackground = hasHighlightedBackground;
         this.payrollLegendTitle = title;
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.payrollChartData :
-                this.payrollChartData?.
-                    shipperAverageWaitingTimeChartResponse[index]
+            isNaN(index) || index < 0
+                ? this.payrollChartData
+                : this.payrollChartData?.shipperAverageWaitingTimeChartResponse[
+                      index
+                  ];
 
-        this.payrollChartLegend = ChartLegendConfiguration
-            .shipperAverageWaitingTimeConfiguration(dataForLegend);
+        this.payrollChartLegend =
+            ChartLegendConfiguration.SHIPPER_AVERAGE_WAITING_TIME_CONFIGURATION(
+                dataForLegend
+            );
     }
 
     ngOnDestroy(): void {

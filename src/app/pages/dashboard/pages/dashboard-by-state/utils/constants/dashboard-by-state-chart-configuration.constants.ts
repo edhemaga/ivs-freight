@@ -4,12 +4,12 @@ import { IChartConfiguration } from '@ca-shared/components/ca-chart/models';
 //enums
 import {
     ChartImagesStringEnum,
-    ChartTypesStringEnum,
+    eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
 
 export class DashboardByStateChartsConfiguration {
     public static BY_STATE_CHART_CONFIG: IChartConfiguration = {
-        chartType: ChartTypesStringEnum.BAR,
+        chartType: eChartTypesString.BAR,
         chartData: {
             labels: [],
             datasets: [],
