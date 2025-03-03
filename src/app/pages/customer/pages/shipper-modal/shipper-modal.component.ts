@@ -77,6 +77,7 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 import {
     CaInputAddressDropdownComponent,
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaModalButtonComponent,
     CaModalComponent,
     eModalButtonClassType,
@@ -149,6 +150,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         TaModalTableComponent,
         CaInputComponent,
         CaModalButtonComponent,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         FormatDatePipe,

@@ -1441,6 +1441,23 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         };
                         this.loadBrokerContactsInputConfig = {
                             ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: event.name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: event.originalPhone,
+                                        second_value: event.phoneExtension
+                                            ? `#${event.phoneExtension}`
+                                            : null,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass:
+                                    LoadModalStringEnum.LOAD_BROKER_CONTACT,
+                            },
                             isDisabled: false,
                         };
                     } else {
@@ -1911,8 +1928,27 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     this.loadBrokerContactsInputConfig = {
                         ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: null,
+                        multipleInputValues: {
+                            options: [
+                                {
+                                    value: this.selectedBrokerContact.name,
+                                    logoName: null,
+                                },
+                                {
+                                    value: this.selectedBrokerContact
+                                        .originalPhone,
+                                    second_value: this.selectedBrokerContact
+                                        .phoneExtension
+                                        ? `#${this.selectedBrokerContact.phoneExtension}`
+                                        : null,
+                                    logoName: null,
+                                },
+                            ],
+                            customClass:
+                                LoadModalStringEnum.LOAD_BROKER_CONTACT,
+                        },
                         isDisabled: false,
+                        blackInput: false,
                     };
                 }
             }
