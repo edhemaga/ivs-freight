@@ -34,8 +34,6 @@
                     ></ca-input-datetime-picker>
 
                     <app-ca-input-dropdown
-                        [label]="'name'"
-                        [optionValue]="'id'"
                         formControlName="payType"
                         [inputConfig]="RepairOrderConfig.PAY_TYPE"
                         [canOpenModal]="true"
@@ -77,8 +75,6 @@
                 <!-- Unit -->
 
                 <app-ca-input-dropdown
-                    [label]="'name'"
-                    [optionValue]="'id'"
                     formControlName="unit"
                     [template]="'svgtext-template'"
                     [inputConfig]="RepairOrderConfig.UNIT"
@@ -91,8 +87,6 @@
 
                 @if (selectedHeaderTab === 1) {
                     <app-ca-input-dropdown
-                        [label]="'name'"
-                        [optionValue]="'id'"
                         formControlName="driver"
                         [inputConfig]="
                             RepairOrderConfig.DRIVER(isDriverDisabled)
@@ -263,8 +257,6 @@
 
                         @if (!selectedRepairShop) {
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="repairShopId"
                                 [template]="'double-text-template'"
                                 [inputConfig]="

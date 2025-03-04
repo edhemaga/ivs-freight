@@ -369,8 +369,8 @@ export class NavigationProfileUpdateModalComponent
         let updateAddress = address;
         if (address) {
             updateAddress = {
-                ...address,
-                addressUnit: addressUnit,
+                ...this.selectedAddress,
+                addressUnit,
             };
         }
 

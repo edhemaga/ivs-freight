@@ -401,14 +401,14 @@ export class SettingsParkingModalComponent
     }
 
     private updateParking(id: number) {
-        const { address, addressUnit, rent, ...form } = this.parkingForm.value;
+        const { addressUnit, rent, ...form } = this.parkingForm.value;
 
         const newData: UpdateParkingCommand = {
             id: id,
             ...form,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                ...this.selectedAddress,
+                addressUnit,
             },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
@@ -453,13 +453,13 @@ export class SettingsParkingModalComponent
     }
 
     private addParking(addNew?: boolean) {
-        const { address, addressUnit, rent, ...form } = this.parkingForm.value;
+        const { addressUnit, rent, ...form } = this.parkingForm.value;
 
         const newData: CreateParkingCommand = {
             ...form,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                ...this.selectedAddress,
+                addressUnit,
             },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)

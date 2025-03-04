@@ -14,8 +14,7 @@ export class ContactModalConfig {
             minLength: 2,
             maxLength: 32,
             textTransform: 'capitalize',
-            autoFocus: !isEditMode,
-            isAddress: true
+            autoFocus: !isEditMode
         };
     }
 

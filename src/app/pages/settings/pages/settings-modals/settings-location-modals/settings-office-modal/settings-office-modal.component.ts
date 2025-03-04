@@ -374,14 +374,17 @@ export class SettingsOfficeModalComponent
     }
 
     private updateCompanyOffice(id: number): void {
-        const { address, addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { addressUnit, rent, ...formValues } = this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const updatedOffice: UpdateCompanyOfficeCommand = {
             id,
             ...formValues,
-            address: { ...address, addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -405,13 +408,17 @@ export class SettingsOfficeModalComponent
     }
 
     private addCompanyOffice(addNew?: boolean): void {
-        const { address, addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { addressUnit, rent, ...formValues } =
+            this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
-            address: { ...address, addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY

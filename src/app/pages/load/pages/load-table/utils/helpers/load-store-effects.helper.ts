@@ -12,16 +12,10 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 
 // models
 import {
-    BrokerByIdResponse,
     DispatcherFilterResponse,
-    LoadModalResponse,
-    LoadPossibleStatusesResponse,
-    LoadResponse,
-    LoadTemplateResponse,
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
-import { Load } from '@pages/load/models';
 
 export class LoadStoreEffectsHelper {
     public static getCreateLoadModalData(
@@ -61,16 +55,8 @@ export class LoadStoreEffectsHelper {
         modalService: ModalService,
         selectedTab: eLoadStatusType,
         eventType: string,
-        response: LoadResponse | LoadTemplateResponse,
-        modalResponse: LoadModalResponse
     ): void {
         const editData = {
-            data: {
-                ...response,
-            },
-            loadModalData: {
-                ...modalResponse,
-            },
             type: eventType,
             selectedTab: eLoadStatusType[selectedTab]?.toLowerCase(),
         };

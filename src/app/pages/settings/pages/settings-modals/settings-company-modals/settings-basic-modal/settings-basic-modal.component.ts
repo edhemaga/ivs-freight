@@ -1328,7 +1328,6 @@ export class SettingsBasicModalComponent
             mvrMonths,
             truckInspectionMonths,
             trailerInspectionMonths,
-            address,
             dateOfIncorporation,
             ...form
         } = this.companyForm.value;
@@ -1353,8 +1352,8 @@ export class SettingsBasicModalComponent
             bankAccounts,
             bankCards,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                ...this.selectedAddress,
+                addressUnit,
             },
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
@@ -1555,7 +1554,6 @@ export class SettingsBasicModalComponent
             mvrMonths,
             truckInspectionMonths,
             trailerInspectionMonths,
-            address,
             dateOfIncorporation,
             ...form
         } = this.companyForm.value;
@@ -1581,8 +1579,8 @@ export class SettingsBasicModalComponent
             bankAccounts,
             bankCards,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                ...this.selectedAddress,
+                addressUnit,
             },
             timeZone: this.selectedTimeZone?.id ?? null,
             currency: this.selectedCurrency?.id ?? null,
@@ -1693,7 +1691,6 @@ export class SettingsBasicModalComponent
             safetyDefaultBase,
             // Other
             otherDefaultBase,
-            address,
             ...form
         } = this.companyForm.value;
 
@@ -1704,8 +1701,8 @@ export class SettingsBasicModalComponent
             timeZone: this.selectedTimeZone ? this.selectedTimeZone.id : null,
             currency: this.selectedCurrency ? this.selectedCurrency.id : null,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                ...this.selectedAddress,
+                addressUnit,
             },
             companyType: this.selectedCompanyData
                 ? this.selectedCompanyData.id

@@ -74,10 +74,10 @@
                         textTransform: 'capitalize',
                         dropdownWidthClass: 'w-col-384',
                         minLength: 6,
-                        maxLength: 256,
-                        isAddress: true,
+                        maxLength: 256
                     }"
                     [placeholderType]="'longAddress'"
+                    [activeAddress]="selectedAddress"
                     (selectedAddress)="handleAddressChange($event)"
                     [receivedAddressList]="addressList"
                     [receivedAddressData]="addressData"

@@ -461,12 +461,15 @@ export class SettingsTerminalModalComponent
     }
 
     private updateTerminal(id: number): void {
-        const { address, addressUnit, rent, ...form } = this.terminalForm.value;
+        const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: UpdateTerminalCommand = {
             id: id,
             ...form,
-            address: { ...address, addressUnit: addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
@@ -514,11 +517,14 @@ export class SettingsTerminalModalComponent
     }
 
     private addTerminal(addNew?: boolean): void {
-        const { address, addressUnit, rent, ...form } = this.terminalForm.value;
+        const { addressUnit, rent, ...form } = this.terminalForm.value;
 
         const newData: CreateTerminalCommand = {
             ...form,
-            address: { ...address, addressUnit: addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,

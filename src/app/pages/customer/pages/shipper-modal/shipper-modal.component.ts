@@ -77,6 +77,7 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 import {
     CaInputAddressDropdownComponent,
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaModalButtonComponent,
     CaModalComponent,
     eModalButtonClassType,
@@ -149,6 +150,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         TaModalTableComponent,
         CaInputComponent,
         CaModalButtonComponent,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         FormatDatePipe,
@@ -357,9 +359,9 @@ export class ShipperModalComponent
     public onModalAction(action: string): void {
         this.activeAction = action;
 
-        if (action === TaModalActionEnum.CLOSE) {   
+        if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
-                case LoadModalStringEnum.LOAD_MODAL: 
+                case LoadModalStringEnum.LOAD_MODAL:
                     this.ngbActiveModal.close();
                     this.loadStoreService.dispatchGetCreateLoadModalData();
                     break;
@@ -410,8 +412,7 @@ export class ShipperModalComponent
                 }
                 if (this.editData?.type.includes(eGeneralActions.EDIT))
                     this.updateShipper(this.editData.id);
-                else
-                    this.addShipper();
+                else this.addShipper();
             }
             // Delete
             if (action === TaModalActionEnum.DELETE && this.editData)
@@ -765,7 +766,7 @@ export class ShipperModalComponent
     }
 
     private addShipper(isSaveAndAddNew?: boolean) {
-        const { address, addressUnit, longitude, latitude, ...form } =
+        const { addressUnit, longitude, latitude, ...form } =
             this.shipperForm.value;
 
         const receivingShipping = this.receivingShippingObject();
@@ -782,7 +783,7 @@ export class ShipperModalComponent
         const newData = {
             ...form,
             address: {
-                ...address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
@@ -814,12 +815,15 @@ export class ShipperModalComponent
                         switch (this.editData?.key) {
                             case LoadModalStringEnum.LOAD_MODAL:
                                 const { id } = response;
-                                const modalSingleShipperitem: ShipperLoadModalResponse = {
-                                    id,
-                                    ...newData
-                                };
+                                const modalSingleShipperitem: ShipperLoadModalResponse =
+                                    {
+                                        id,
+                                        ...newData,
+                                    };
 
-                                this.loadStoreService.dispatchAddnewShipperToStaticModalData(modalSingleShipperitem);
+                                this.loadStoreService.dispatchAddnewShipperToStaticModalData(
+                                    modalSingleShipperitem
+                                );
 
                                 this.loadStoreService.dispatchGetCreateLoadModalData();
 
@@ -840,7 +844,7 @@ export class ShipperModalComponent
     }
 
     private updateShipper(id: number) {
-        const { address, addressUnit, ...form } = this.shipperForm.value;
+        const { addressUnit, ...form } = this.shipperForm.value;
 
         const receivingShipping = this.receivingShippingObject();
 
@@ -857,8 +861,8 @@ export class ShipperModalComponent
             id,
             ...form,
             address: {
-                ...address,
-                addressUnit: addressUnit,
+                ...this.selectedAddress,
+                addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,

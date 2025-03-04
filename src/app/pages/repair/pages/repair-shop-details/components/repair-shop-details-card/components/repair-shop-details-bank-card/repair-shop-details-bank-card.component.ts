@@ -12,7 +12,7 @@ import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/t
 import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
 
 // enums
-import { RepairShopDetailsStringEnum } from '@pages/repair/pages/repair-shop-details/enums';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
 // models
 import { RepairShopResponse } from 'appcoretruckassist';
@@ -57,11 +57,11 @@ export class RepairShopDetailsBankCardComponent {
             ...this._cardData,
             bankInfo: [
                 {
-                    title: RepairShopDetailsStringEnum.BANK,
+                    title: eRepairShopDetails.BANK,
                     value: bank?.logoName,
                 },
-                { title: RepairShopDetailsStringEnum.ROUTING, value: routing },
-                { title: RepairShopDetailsStringEnum.ACCOUNT, value: account },
+                { title: eRepairShopDetails.ROUTING, value: routing },
+                { title: eRepairShopDetails.ACCOUNT, value: account },
             ],
         };
     }

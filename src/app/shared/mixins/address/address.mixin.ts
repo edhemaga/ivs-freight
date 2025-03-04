@@ -13,6 +13,7 @@ export function AddressMixin<
     T extends Constructor<{
         addressService: AddressService;
         cdr?: ChangeDetectorRef;
+        handleSelectedAddress?(): void
     }>,
 >(Base: T) {
     return class extends DestroyableMixin(Base) {
@@ -30,7 +31,6 @@ export function AddressMixin<
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     this.addressList = res;
-                    this.cdr?.detectChanges();
                 });
         }
 
@@ -40,7 +40,6 @@ export function AddressMixin<
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
                     this.addressData = res;
-                    this.cdr?.detectChanges();
                 });
         }
     };

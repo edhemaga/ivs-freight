@@ -1,0 +1,13 @@
+@import 'src/theme/variables';
+
+.fuel-stop-details-card {
+    .additional-cards-container {
+        .fuel-stop-details-cards {
+            border-radius: 3px;
+            overflow: hidden;
+            padding: 1px 12px 0px 12px;
+            max-width: 440px !important;
+            background: $white;
+        }
+    }
+}

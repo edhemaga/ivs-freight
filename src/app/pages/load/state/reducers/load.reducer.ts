@@ -3,13 +3,13 @@ import { createReducer, on } from '@ngrx/store';
 
 // models
 import { ILoadState } from '@pages/load/pages/load-table/models/load-state.model';
-import { IActiveLoadModalData } from '@pages/load/models';
 
 // actions
 import * as LoadActions from '@pages/load/state/actions/load.action';
 
 // enums
-import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eActiveViewMode } from '@shared/enums';
 
 // functions
 import * as Functions from '@pages/load/pages/load-table/utils/functions/load-reducer.functions';
@@ -57,11 +57,11 @@ export const loadReducer = createReducer(
     on(LoadActions.getCreateLoadModalDataError, (state) => ({ ...state })),
 
     on(LoadActions.getConvertToLoadModalData, (state) => ({ ...state })),
-    on(LoadActions.getConvertToLoadModalDataSuccess, (state, { modal }) => ({ ...state, modal })),
+    on(LoadActions.getConvertToLoadModalDataSuccess, (state, { modal, load }) => Functions.getLoadModalDataSuccessResult(state, modal, load as any)), // leave as any for now
     on(LoadActions.getConvertToLoadModalDataError, (state) => ({ ...state })),
 
     on(LoadActions.getConvertToLoadTemplateModalData, (state) => ({ ...state })),
-    on(LoadActions.getConvertToLoadTemplateModalDataSuccess, (state, { modal }) => ({ ...state, modal })),
+    on(LoadActions.getConvertToLoadTemplateModalDataSuccess, (state, { modal, loadTemplate }) => Functions.getLoadModalDataSuccessResult(state, modal, loadTemplate as any)), // leave as any for now
     on(LoadActions.getConvertToLoadTemplateModalDataError, (state) => ({ ...state })),
 // #endregion
 

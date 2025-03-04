@@ -656,7 +656,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     this.currentActiveTab.name === DashboardStringEnum.REVENUE
                 ) {
                     chartConfiguration =
-                        ChartConfiguration.topRevenueConfiguration;
+                        ChartConfiguration.TOP_REVENUE_CONFIGURATION;
                     properties = [...revenueProperties];
                 }
                 if (
@@ -664,7 +664,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 ) {
                     properties = [...mileageProperties];
                     chartConfiguration =
-                        ChartConfiguration.topMileageConfiguration;
+                        ChartConfiguration.TOP_MILEAGE_CONFIGURATION;
                 }
 
                 const { totalPercentage, total } =
@@ -929,14 +929,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 ) {
                     properties = [...revenueProperties];
                     chartConfiguration =
-                        ChartConfiguration.topRevenueConfiguration;
+                        ChartConfiguration.TOP_REVENUE_CONFIGURATION;
                 }
                 if (
                     this.currentActiveTab.name === DashboardStringEnum.MILEAGE
                 ) {
                     properties = [...mileageProperties];
                     chartConfiguration =
-                        ChartConfiguration.topMileageConfiguration;
+                        ChartConfiguration.TOP_MILEAGE_CONFIGURATION;
                 }
 
                 const { totalPercentage, total } =
@@ -1083,14 +1083,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 ) {
                     properties = [...revenueProperties];
                     chartConfiguration =
-                        ChartConfiguration.topRevenueConfiguration;
+                        ChartConfiguration.TOP_REVENUE_CONFIGURATION;
                 }
                 if (
                     this.currentActiveTab.name === DashboardStringEnum.MILEAGE
                 ) {
                     properties = [...mileageProperties];
                     chartConfiguration =
-                        ChartConfiguration.topRevenueConfiguration;
+                        ChartConfiguration.TOP_REVENUE_CONFIGURATION;
                 }
 
                 const { totalPercentage, total } =
@@ -1350,7 +1350,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 ) {
                     properties = [...revenueProperties];
                     chartConfiguration =
-                        ChartConfiguration.topRevenueConfiguration;
+                        ChartConfiguration.TOP_REVENUE_CONFIGURATION;
                 }
                 if (this.currentActiveTab.name === DashboardStringEnum.LOAD) {
                     properties = [...loadProperties];
@@ -1500,12 +1500,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 if (this.currentActiveTab.name === DashboardStringEnum.COST) {
                     properties = [...costProperties];
                     chartConfiguration =
-                        ChartConfiguration.topCostConfiguration;
+                        ChartConfiguration.TOP_COST_CONFIGURATION;
                 }
                 if (this.currentActiveTab.name === DashboardStringEnum.VISIT) {
                     properties = [...visitProperties];
                     chartConfiguration =
-                        ChartConfiguration.topVisitConfiguration;
+                        ChartConfiguration.TOP_VISIT_CONFIGURATION;
                 }
 
                 const { totalPercentage, total } =
@@ -1657,12 +1657,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                 if (this.currentActiveTab.name === DashboardStringEnum.COST) {
                     properties = [...costProperties];
                     chartConfiguration =
-                        ChartConfiguration.topCostConfiguration;
+                        ChartConfiguration.TOP_COST_CONFIGURATION;
                 }
                 if (this.currentActiveTab.name === DashboardStringEnum.VISIT) {
                     properties = [...visitProperties];
                     chartConfiguration =
-                        ChartConfiguration.topVisitConfiguration;
+                        ChartConfiguration.TOP_VISIT_CONFIGURATION;
                 }
 
                 const { totalPercentage, total } =
