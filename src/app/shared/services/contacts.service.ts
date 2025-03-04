@@ -64,6 +64,8 @@ export class ContactsService {
     ): Observable<GetCompanyContactListResponse> {
         return this.contactService.apiCompanycontactListGet(
             labelId,
+            null,
+            null,
             pageIndex,
             pageSize,
             companyId,
