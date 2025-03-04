@@ -49,7 +49,7 @@ export class OwnerService {
             tap((res: any) => {
                 this.getOwnerById(res.id).subscribe({
                     next: (owner: OwnerResponse | any) => {
-                        this.ownerInactiveStore.add(owner);
+                        this.ownerActiveStore.add(owner);
 
                         const ownerCount = JSON.parse(
                             localStorage.getItem(
@@ -57,7 +57,7 @@ export class OwnerService {
                             )
                         );
 
-                        ownerCount.inactive++;
+                        ownerCount.active++;
 
                         localStorage.setItem(
                             TableActionsStringEnum.OWNER_TABLE_COUNT,

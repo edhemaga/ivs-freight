@@ -21,8 +21,6 @@ export interface CompanyContactResponse {
     id?: number;
     note?: string | null;
     name?: string | null;
-    phone?: string | null;
-    email?: string | null;
     address?: AddressEntity;
     shared?: boolean;
     companyContactLabel?: CompanyContactLabelResponse;
