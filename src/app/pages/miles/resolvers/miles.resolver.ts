@@ -16,17 +16,15 @@ export class MilesResolver {
         private milesService: MilesStoreService
     ) {}
 
-    resolve(): Observable<any> {
-        // const activeList = this.milesStoreService.apiMilesListGet(null, 1);
+    resolve(): Observable<MilesByUnitListResponse> {
+        const activeList = this.milesStoreService.apiMilesListGet(null, 1);
         const states = this.milesStoreService.apiMilesStateFilterGet();
 
-        return forkJoin([ states]).pipe(
-            map(([ _states]) => {
-                // TODO: 
-                // this.milesService.getList(response);
+        return forkJoin([activeList, states]).pipe(
+            map(([response, _states]) => {
+                this.milesService.getList(response);
                 this.milesService.setStates(_states);
-                // return response;
-                return _states;
+                return response;
             })
         );
     }
