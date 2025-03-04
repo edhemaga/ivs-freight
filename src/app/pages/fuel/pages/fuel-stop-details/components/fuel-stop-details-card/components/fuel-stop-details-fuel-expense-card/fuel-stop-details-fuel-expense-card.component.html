@@ -12,12 +12,14 @@
 >
     <div class="charts-template perfomance">
         @if (!fuelLegendHighlightedBackground) {
-            <app-ta-tab-switch
-                [tabs]="fuelExpenseChartTabs"
-                [type]="'type2-modal-popup'"
-                (switchClicked)="onChartTabChange($event)"
-            >
-            </app-ta-tab-switch>
+            <div>
+                <app-ta-tab-switch
+                    [tabs]="fuelExpenseChartTabs"
+                    [type]="'type2-modal-popup'"
+                    (switchClicked)="onChartTabChange($event)"
+                >
+                </app-ta-tab-switch>
+            </div>
         }
 
         @if (fuelChartConfig?.chartData) {

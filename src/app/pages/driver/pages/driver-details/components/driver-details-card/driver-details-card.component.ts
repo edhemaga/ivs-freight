@@ -149,9 +149,8 @@ export class DriverDetailsCardComponent
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (!changes?.driver?.firstChange && changes?.driver.currentValue) {
+        if (!changes?.driver?.firstChange && changes?.driver.currentValue)
             this.getDriversDropdown();
-        }
     }
 
     private getDriverPayroll(timeFilter?: number): void {

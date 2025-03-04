@@ -72,10 +72,9 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
     // Chart
     public repairShopChartData!: RepairShopExpensesResponse;
-    public repairShopChartConfig: IChartConfiguration =
-        RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
+    public repairShopChartConfig: IChartConfiguration;
     public repairShopExpensesChartLegendData!: ChartLegendProperty[];
-    public repairShopExpensesChartTabs: Tabs[];
+    public repairShopExpensesChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
     public repairShopExpensesLegendTitle!: string;
     public repairShopExpensesLegendHighlightedBackground!: boolean;
 
@@ -90,9 +89,6 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.repairCall = RepairExpenseCartConstants.REPAIR_CALL;
 
         this.monthList = RepairExpenseCartConstants.MONTH_LIST;
-
-        this.repairShopExpensesChartTabs =
-            RepairExpenseCartConstants.CHART_TABS;
     }
 
     public createRepairExpenseCardData(data: RepairShopResponse): void {
@@ -100,28 +96,34 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
         this.getConstantData();
 
-        this.getRepairShopChartData(
-            this._cardData?.id,
-            this.repairCall.chartType,
-            1
-        );
+        this.getRepairShopChartData(this._cardData?.id, 1);
     }
 
-    public getRepairShopChartData(
-        id: number,
-        chartType: number,
-        timeFilter?: number
-    ): void {
-        if (
-            id === this.repairCall.id &&
-            chartType === this.repairCall.chartType
-        )
-            return;
-
+    public getRepairShopChartData(id: number, timeFilter?: number): void {
         this.repairService
-            .getRepairShopChart(id, timeFilter)
+            .getRepairShopChart(id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item: RepairShopExpensesResponse) => {
+                this.repairShopExpensesLegendHighlightedBackground = false;
+
+                this.repairShopChartData = item;
+
+                this.repairShopChartConfig = {
+                    ...RepairShopChartsConfiguration.REPAIR_CHART_CONFIG,
+                    chartData:
+                        ChartHelper.generateDataByDateTime<RepairShopExpensesResponse>(
+                            this.repairShopChartData
+                                .repairShopExpensesChartResponse,
+                            ChartConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION,
+                            timeFilter
+                        ),
+                };
+
+                this.repairShopExpensesChartLegendData = [
+                    ...ChartLegendConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION(
+                        this.repairShopChartData
+                    ),
+                ];
                 let milesPerGallon = [],
                     costPerGallon = [],
                     labels = [],
@@ -150,19 +152,6 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                         this.repairShopExpensesChartTabs[
                             timeFilter - 1
                         ].checked = true;
-
-                    this.repairShopChartData = item;
-
-                    this.repairShopChartConfig = {
-                        ...RepairShopChartsConfiguration.REPAIR_CHART_CONFIG,
-                        chartData:
-                            ChartHelper.generateDataByDateTime<RepairShopExpensesResponse>(
-                                this.repairShopChartData
-                                    .repairShopExpensesChartResponse,
-                                ChartConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION,
-                                timeFilter
-                            ),
-                    };
                 });
             });
 
@@ -186,18 +175,15 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                       index
                   ];
 
-        this.repairShopExpensesChartLegendData =
-            ChartLegendConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION(
+        this.repairShopExpensesChartLegendData = [
+            ...ChartLegendConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION(
                 dataForLegend
-            );
+            ),
+        ];
     }
 
     public onTabChange(tab: TabOptions): void {
-        this.getRepairShopChartData(
-            this._cardData?.id,
-            this.repairCall.chartType,
-            tab.id
-        );
+        this.getRepairShopChartData(this._cardData?.id, tab.id);
     }
 
     ngOnDestroy(): void {
