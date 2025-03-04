@@ -408,7 +408,7 @@ export class ContactsModalComponent
                             ? res.companyContactLabel.name
                             : null,
                         /*  avatar: res.avatar ? res.avatar : null, */
-                        address: res.address.address ? res.address : null,
+                        address: res.address?.address,
                         addressUnit: res.address
                             ? res.address.addressUnit
                             : null,
@@ -425,6 +425,7 @@ export class ContactsModalComponent
 
                     this.selectedContactLabel = res.companyContactLabel;
                     this.selectedSharedDepartment = res.departmentContacts;
+                    this.selectedAddress = res.address;
 
                     this.updatedContactPhones = res.contactPhones;
                     this.updatedContactEmails = res.contactEmails;
