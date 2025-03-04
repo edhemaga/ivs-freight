@@ -234,8 +234,6 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         this.checkForInputChanges();
 
         this.calculateRepairBillSubtotal();
-
-        this.initCheckboxListener();
     }
 
     ngOnChanges(changes: SimpleChanges): void {
@@ -1370,20 +1368,12 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
-    private initCheckboxListener(): void {
-        this.modalTableForm.controls[
-            TaModalTableStringEnum.CHECKBOX_HEADER_ITEM
-        ].valueChanges
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                const formArray = this.getFormArray();
+    public onSelectAll(value: boolean): void {
+        const formArray = this.getFormArray();
 
-                formArray.controls.forEach((control: FormGroup) => {
-                    control.controls[TableStringEnum.IS_CHECKED].patchValue(
-                        value
-                    );
-                });
-            });
+        formArray.controls.forEach((control: FormGroup) => {
+            control.controls[TableStringEnum.IS_CHECKED].patchValue(value);
+        });
     }
 
     public calculateRepairBillSubtotal(): void {
