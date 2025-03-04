@@ -17,7 +17,7 @@ export class DashboardByStateChartsConfiguration {
         height: 260,
         width: 100,
         isMultiYAxis: false,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+        noDataImage: '',
         chartOptions: {},
         showXAxisLabels: true,
         isTooltipItemInSelectedItems: true,

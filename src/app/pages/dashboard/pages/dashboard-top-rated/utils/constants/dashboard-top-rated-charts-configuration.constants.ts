@@ -12,7 +12,7 @@ export class DashboardTopRatedChartsConfiguration {
         },
         height: 330,
         width: 100,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+        noDataImage: '',
         chartOptions: {},
         showXAxisLabels: false,
     };
@@ -26,7 +26,7 @@ export class DashboardTopRatedChartsConfiguration {
         height: 260,
         width: 100,
         isMultiYAxis: false,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+        noDataImage: '',
         chartOptions: {},
         showXAxisLabels: true,
         isTooltipItemInSelectedItems: true,
