@@ -45,7 +45,7 @@ import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollb
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { CaFilterComponent, CaFilterDropdownComponent, CaFilterTimeDropdownComponent } from 'ca-components';
+import { CaFilterComponent, CaFilterListDropdownComponent, CaFilterTimeDropdownComponent } from 'ca-components';
 
 // guards
 import { AuthGuard } from '@core/guards/authentication.guard';
@@ -92,8 +92,8 @@ import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/f
         TaSpinnerComponent,
         TaTabSwitchComponent,
         CaFilterComponent,
-        CaFilterDropdownComponent,
         CaFilterTimeDropdownComponent,
+        CaFilterListDropdownComponent,
 
         // directives
         PreventMultipleclicksDirective,

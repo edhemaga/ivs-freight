@@ -20,7 +20,7 @@ import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/t
 import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
-    CaFilterDropdownComponent,
+    CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent
 } from 'ca-components';
 // enums
@@ -57,7 +57,7 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
         TaSpecialFilterComponent,
         CaSearchMultipleStatesComponent,
         CaFilterComponent,
-        CaFilterDropdownComponent,
+        CaFilterListDropdownComponent,
         CaFilterTimeDropdownComponent
     ],
 })

@@ -254,9 +254,9 @@ export class TruckTableComponent
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
             .pipe(skip(1), takeUntil(this.destroy$))
-            .subscribe((res) => {
+            .subscribe((res) => { 
                 if (res?.filterType) {
-                    this.backFilterQuery.truckType = res.queryParams;
+                    this.backFilterQuery.truckType = res.selectedIds;
                     this.truckBackFilter(this.backFilterQuery);
                 }
             });
