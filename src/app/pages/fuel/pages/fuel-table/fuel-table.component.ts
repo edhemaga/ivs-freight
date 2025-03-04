@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -324,17 +324,28 @@ export class FuelTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    const { action } = res;
+
+                    if (action === TableStringEnum.DELETE) return;
+
                     const { template, type } = res;
 
                     if (template) {
+                        const shouldDeleteFuelStop = template
+                            ?.toLowerCase()
+                            ?.includes(TableStringEnum.STOP);
+                        const shouldDeleteFuelTransaction =
+                            template ===
+                                DropdownMenuStringEnum.FUEL_TRANSACTION ||
+                            type === TableStringEnum.MULTIPLE_DELETE;
                         const ids =
                             type === TableStringEnum.DELETE
                                 ? [res.id]
                                 : res.array;
 
-                        template.includes(TableStringEnum.TRANSACTION)
-                            ? this.deleteFuelTransactionList(ids)
-                            : this.deleteFuelStopList(ids);
+                        if (shouldDeleteFuelStop) this.deleteFuelStopList(ids);
+                        if (shouldDeleteFuelTransaction)
+                            this.deleteFuelTransactionList(ids);
                     }
                 },
             });
