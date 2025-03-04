@@ -6,7 +6,7 @@ import { MilesStoreConstants } from '@pages/miles/consts';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // Models
 import { MilesStateFilterResponse } from 'appcoretruckassist';

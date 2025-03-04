@@ -319,7 +319,7 @@ export class TrailerDetailsCardComponent
                         ChartHelper.generateDataByDateTime<TrailerFuelConsumptionChartResponse>(
                             this.fuelConsumptionChartData
                                 .trailerFuelConsumptionCharts,
-                            ChartConfiguration.trailerFuelExpensesConfiguration,
+                            ChartConfiguration.TRAILER_FUEL_EXPENSES_CONFIGURATION,
                             timeFilter
                         ),
                 };

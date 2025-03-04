@@ -38,6 +38,7 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -83,11 +84,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { SettingsOfficeModalStringEnum } from './enums/settings-office-modal-string.enum';
-import {
-    DropActionsStringEnum,
-    ModalButtonType,
-    TableStringEnum,
-} from '@shared/enums';
+import { DropActionsStringEnum, TableStringEnum } from '@shared/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // Pipes
@@ -192,8 +189,6 @@ export class SettingsOfficeModalComponent
     public phoneExtConfig: ITaInput =
         SettingsOfficeConfig.getPhoneExtInputConfig();
     public emailConfig: ITaInput = SettingsOfficeConfig.getEmailInputConfig();
-    public addressConfig: ITaInput =
-        SettingsOfficeConfig.getAddressInputConfig();
     public addressUnitConfig: ITaInput =
         SettingsOfficeConfig.getAddressUnitInputConfig();
     public payPeriodConfig: ITaInput =
@@ -214,7 +209,7 @@ export class SettingsOfficeModalComponent
 
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public activeAction!: string;
     public data: CompanyOfficeResponse;
 
@@ -386,7 +381,10 @@ export class SettingsOfficeModalComponent
         const updatedOffice: UpdateCompanyOfficeCommand = {
             id,
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -410,13 +408,17 @@ export class SettingsOfficeModalComponent
     }
 
     private addCompanyOffice(addNew?: boolean): void {
-        const { addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { addressUnit, rent, ...formValues } =
+            this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -527,7 +529,7 @@ export class SettingsOfficeModalComponent
                     this.officeForm.patchValue({
                         isOwner: res.isOwner,
                         name: res.name,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         phone: res.phone,
                         extensionPhone: res.extensionPhone,

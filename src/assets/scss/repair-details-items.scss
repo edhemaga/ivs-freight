@@ -37,12 +37,6 @@ $transition: all 0.3s ease-in-out;
     row-gap: 12px;
     padding-bottom: 12px;
 }
-.repair-details-cmp {
-    display: grid;
-    grid-template-columns: 440px 732px 340px 280px;
-    column-gap: 12px;
-    row-gap: 12px;
-}
 
 .repair-component {
     display: grid;
@@ -108,124 +102,6 @@ $transition: all 0.3s ease-in-out;
     }
 }
 
-.repaired-vehicle-container {
-    padding: 8px 8px;
-    padding-bottom: 0px;
-    max-width: 340px;
-    background-color: $color-white;
-    border-radius: 3px;
-    .repair-vehicle-header {
-        padding: 0 4px;
-        display: grid;
-        grid-template-columns: 40px 62px 58px 46px;
-        height: 18px;
-        grid-gap: 36px;
-        align-content: center;
-        margin-bottom: 4px;
-        margin-top: 2px;
-        .repaier-headers {
-            font-size: $font-size14;
-            font-weight: $font-bold;
-            color: #2f2f2f;
-            &::-moz-selection {
-                color: #2f2f2f;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: #2f2f2f;
-                background: rgb(183, 183, 183, 0.2);
-            }
-
-            &.last-value-align {
-                text-align: right;
-            }
-        }
-        .repair-svg-holder {
-            svg-icon {
-                svg {
-                    path {
-                        fill: #2f2f2f;
-                    }
-                }
-            }
-        }
-    }
-    .repair-items-vehicle {
-        //padding: 0 4px;
-        .items-vehicle {
-            padding: 0px 4px;
-            display: grid;
-            grid-gap: 15px;
-            grid-template-columns: 61px 84px 16px 110px;
-            margin-top: 8px;
-            margin-bottom: 8px;
-            align-content: center;
-            .truck-icon {
-                position: relative;
-                bottom: 2px;
-            }
-            .vehicle-icon {
-                display: flex;
-                svg {
-                    width: 55px;
-
-                    display: flex;
-                    path {
-                        fill: #aaaaaa;
-                    }
-                }
-            }
-            .unit {
-                font-size: $font-size14;
-                font-weight: $font-bold;
-                color: #2f2f2f;
-                height: 18px;
-                &::-moz-selection {
-                    color: #2f2f2f;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: #2f2f2f;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-            }
-            .date {
-                font-size: $font-size14;
-                font-weight: 400;
-                color: #2f2f2f;
-                height: 18px;
-                &::-moz-selection {
-                    color: #2f2f2f;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: #2f2f2f;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-            }
-            .cost {
-                font-size: $font-size14;
-                font-weight: $font-semibold;
-                color: #2f2f2f;
-                height: 18px;
-                text-align: right;
-                &::-moz-selection {
-                    color: #2f2f2f;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: #2f2f2f;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-            }
-        }
-        &:last-child {
-            .divider {
-                visibility: hidden;
-            }
-        }
-    }
-}
 .vin-text {
     &::-moz-selection {
         color: $color-gray-dark;

@@ -1,5 +1,5 @@
 // Feature Enums
-import { eActiveViewMode } from "@pages/load/pages/load-table/enums";
+import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from "@pages/miles/enums";
 
 // Shared Models

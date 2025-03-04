@@ -6,7 +6,7 @@
     [specificCaseModalName]="true"
     [isModalValid]="
         loadForm.valid &&
-        isFormDirty &&
+        loadForm.touched &&
         isEachStopItemsRowValid &&
         !reorderingStarted &&
         !isMilesLoading
@@ -38,7 +38,7 @@
                 class="align-items-center load-ftl-first-row"
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
-                    'edit-load': !isActiveLoad,
+                    'edit-load': editData.type === 'edit',
                     'select-template':
                         !isConvertedToTemplate &&
                         !isActiveLoad &&
@@ -109,7 +109,7 @@
                                 @for (
                                     template of labelsTemplate;
                                     let i = $index;
-                                    track trackByIdentity
+                                    track i
                                 ) {
                                     <div
                                         class="popover-item"
@@ -155,7 +155,6 @@
                         [template]="'load-dispatcher'"
                         [inputConfig]="getDispatcherInputConfig()"
                         [options]="labelsDispatcher"
-                        [activeItem]="selectedDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
                     ></app-ca-input-dropdown>
                 </div>
@@ -171,24 +170,13 @@
                             [inputConfig]="loadTemplateInputConfig"
                         ></ca-input-test>
                     } @else {
-                        <!-- Only One Company -->
-                        @if (labelsCompanies.length <= 1) {
-                            <ca-input-test
-                                formControlName="companyId"
-                                [inputConfig]="loadMainCompanyInputConfig"
-                            ></ca-input-test>
-                        } @else {
-                            <!-- Multiple Companies -->
-                            <app-ca-input-dropdown
-                                formControlName="companyId"
-                                [inputConfig]="loadCompanyInputConfig"
-                                [options]="labelsCompanies"
-                                [activeItem]="selectedCompany"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'company')
-                                "
-                            ></app-ca-input-dropdown>
-                        }
+                        <app-ca-input-dropdown
+                            formControlName="companyId"
+                            [inputConfig]="loadCompanyInputConfig"
+                            [options]="labelsCompanies"
+                            [activeItem]="selectedCompany"
+                            (selectedItem)="onSelectDropdown($event, 'company')"
+                        ></app-ca-input-dropdown>
                     }
                 </div>
             </div>
@@ -199,7 +187,7 @@
                     [template]="'load-dispatches-ttd'"
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
-                    [activeItem]="selectedDispatches"
+                    [activeItem]="selectedDispatch"
                     (selectedItem)="
                         onSelectDropdown($event, 'dispatches', 0, true)
                     "
@@ -459,7 +447,6 @@
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="labelsShippers"
-                                    [activeItem]="selectedPickupShipper"
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
@@ -487,7 +474,6 @@
                                 "
                                 [type]="'type2-modal-popup'"
                             ></app-ta-tab-switch>
-
                             <app-ca-input-dropdown
                                 formControlName="pickupShipperContactId"
                                 [template]="'load-broker-contact'"
@@ -497,7 +483,6 @@
                                 [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [options]="labelsShipperContacts"
-                                [activeItem]="selectedPickupShipperContact"
                                 (selectedItem)="
                                     onSelectDropdown(
                                         $event,
@@ -657,7 +642,7 @@
                             @for (
                                 extraStop of loadExtraStops.controls;
                                 let indx = $index;
-                                track trackByIdentity
+                                track indx
                             ) {
                                 <div
                                     cdkDrag
@@ -1227,7 +1212,6 @@
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="labelsShippers"
-                                    [activeItem]="selectedDeliveryShipper"
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
@@ -1575,8 +1559,8 @@
                             <div formArrayName="additionalBillings">
                                 @for (
                                     additional of additionalBillings().controls;
-                                    track trackByIdentity;
-                                    let indx = $index
+                                    let indx = $index;
+                                    track indx
                                 ) {
                                     <div [ngStyle]="{ 'margin-bottom': '4px' }">
                                         <div [formGroupName]="indx">
@@ -1624,8 +1608,8 @@
                                     @for (
                                         additional of additionalPayments()
                                             .controls;
-                                        track trackByIdentity;
-                                        let indx = $index
+                                        let indx = $index;
+                                        track indx
                                     ) {
                                         <div
                                             [ngStyle]="{
@@ -1806,7 +1790,6 @@
         [ngStyle]="{
             overflow: 'hidden',
             'owerflow-y': 'scroll',
-            height: originHeight + 130 + 'px',
         }"
     >
         <!-- Hazardous -->

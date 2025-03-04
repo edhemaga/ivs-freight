@@ -135,8 +135,8 @@
                             editData?.type === 'edit' &&
                             !companyId,
                     }"
-                    [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
+                    [placeholderType]="'longAddress'"
                     (selectedAddress)="onHandleAddress($event)"
                     [receivedAddressList]="addressList"
                     [receivedAddressData]="addressData"

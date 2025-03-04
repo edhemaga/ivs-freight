@@ -27,9 +27,10 @@ import { PayrollDeductionService } from '@pages/accounting/pages/payroll/payroll
 import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
 
 // Enums
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
@@ -37,7 +38,6 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Component({
     selector: 'app-payroll-deduction-modal',
@@ -108,33 +108,33 @@ export class PayrollDeductionModalComponent implements OnInit {
             PayrollDeductionRecurringType.Weekly;
 
         this.payrollCreditForm = this.fb.group({
-            [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
-            [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
-            [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
-            [PayrollStringEnum.DATE]: [
+            [ePayrollString.DRIVER_ID]: [data?.driverId ?? null],
+            [ePayrollString.TRUCK_ID]: [data?.truckId ?? null],
+            [ePayrollString.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
+            [ePayrollString.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
+            [ePayrollString.SELECTED_TYPE_ID]: [creditType],
+            [ePayrollString.DATE]: [
                 MethodsCalculationsHelper.convertDateFromBackend(data.date) ??
                 new Date(),
                 Validators.required,
             ],
-            [PayrollStringEnum.DESCRIPTION]: [
+            [ePayrollString.DESCRIPTION]: [
                 data.description ?? null,
                 Validators.required,
             ],
-            [PayrollStringEnum.AMOUNT]: [
+            [ePayrollString.AMOUNT]: [
                 data.amount ?? null,
                 Validators.required,
             ],
-            [PayrollStringEnum.RECURRING]: [
+            [ePayrollString.RECURRING]: [
                 !!this.editData?.data?.recurringType?.name,
             ],
-            [PayrollStringEnum.RECURRING_TYPE]: [recurringType],
-            [PayrollStringEnum.LIMITED]: [
+            [ePayrollString.RECURRING_TYPE]: [recurringType],
+            [ePayrollString.LIMITED]: [
                 (!!data.limitedNumber || !!data.limitedAmount) ?? null,
             ],
-            [PayrollStringEnum.LIMITED_NUMBER]: [data.limitedNumber ?? null],
-            [PayrollStringEnum.LIMITED_AMOUNT]: [data.limitedAmount ?? null],
+            [ePayrollString.LIMITED_NUMBER]: [data.limitedNumber ?? null],
+            [ePayrollString.LIMITED_AMOUNT]: [data.limitedAmount ?? null],
         });
 
         this.setRequiredFields();
@@ -144,13 +144,13 @@ export class PayrollDeductionModalComponent implements OnInit {
 
     private setRequiredFields(): void {
         this.payrollCreditForm
-            .get(PayrollStringEnum.LIMITED)
+            .get(ePayrollString.LIMITED)
             ?.valueChanges.subscribe((isLimited) => {
                 const limitedNumberControl = this.payrollCreditForm.get(
-                    PayrollStringEnum.LIMITED_NUMBER
+                    ePayrollString.LIMITED_NUMBER
                 );
                 const limitedAmountControl = this.payrollCreditForm.get(
-                    PayrollStringEnum.LIMITED_AMOUNT
+                    ePayrollString.LIMITED_AMOUNT
                 );
 
                 if (isLimited) {
@@ -170,42 +170,42 @@ export class PayrollDeductionModalComponent implements OnInit {
 
     private generateModel(): CreatePayrollDeductionCommand {
         const isRecurring = this.payrollCreditForm.get(
-            PayrollStringEnum.RECURRING
+            ePayrollString.RECURRING
         ).value;
         return {
-            type: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_TYPE_ID)
+            type: this.payrollCreditForm.get(ePayrollString.SELECTED_TYPE_ID)
                 .value,
             recurringType: isRecurring
-                ? this.payrollCreditForm.get(PayrollStringEnum.RECURRING_TYPE)
+                ? this.payrollCreditForm.get(ePayrollString.RECURRING_TYPE)
                     .value
                 : null,
             driverId: this.payrollCreditForm.get(
-                PayrollStringEnum.SELECTED_DRIVER_ID
+                ePayrollString.SELECTED_DRIVER_ID
             ).value,
             truckId: this.payrollCreditForm.get(
-                PayrollStringEnum.SELECTED_TRUCK_ID
+                ePayrollString.SELECTED_TRUCK_ID
             ).value,
             description: this.payrollCreditForm.get(
-                PayrollStringEnum.DESCRIPTION
+                ePayrollString.DESCRIPTION
             ).value,
             date: MethodsCalculationsHelper.convertDateToBackend(
-                this.payrollCreditForm.get(PayrollStringEnum.DATE).value
+                this.payrollCreditForm.get(ePayrollString.DATE).value
             ),
             amount: MethodsCalculationsHelper.convertThousandSepInNumber(
-                this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
+                this.payrollCreditForm.get(ePayrollString.AMOUNT).value
             ),
             recurring: isRecurring,
-            limited: this.payrollCreditForm.get(PayrollStringEnum.LIMITED)
+            limited: this.payrollCreditForm.get(ePayrollString.LIMITED)
                 .value,
             limitedAmount: isRecurring
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(
                     this.payrollCreditForm.get(
-                        PayrollStringEnum.LIMITED_AMOUNT
+                        ePayrollString.LIMITED_AMOUNT
                     ).value
                 )
                 : null,
             limitedNumber: isRecurring
-                ? this.payrollCreditForm.get(PayrollStringEnum.LIMITED_NUMBER)
+                ? this.payrollCreditForm.get(ePayrollString.LIMITED_NUMBER)
                     .value
                 : null,
         };

@@ -40,7 +40,11 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     styleUrls: ['./register-user.component.scss'],
 })
 export class RegisterUserComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     @ViewChild('inputAddress', { static: false }) public inputAddress: any;
@@ -65,7 +69,7 @@ export class RegisterUserComponent
         private inputService: TaInputService,
         private websiteActionsService: WebsiteActionsService,
         private websiteAuthService: WebsiteAuthService,
-        public addressService: AddressService,
+        public addressService: AddressService
     ) {
         super();
     }
@@ -205,7 +209,7 @@ export class RegisterUserComponent
 
         this.displaySpinner = true;
 
-        const { address, addressUnit, confirmPassword, ...registerUserForm } =
+        const { addressUnit, confirmPassword, ...registerUserForm } =
             this.registerUserForm.value;
 
         if (this.selectedAddress) {

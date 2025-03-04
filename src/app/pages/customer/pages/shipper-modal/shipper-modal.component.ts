@@ -16,15 +16,23 @@ import {
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil, switchMap } from 'rxjs';
 
-// Modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Enums
+// enums
 import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { eGeneralActions } from '@shared/enums/general-actions.enum';
+import { eStringPlaceholder } from '@shared/enums/string-placeholder.enum';
+import { eFileFormControls } from '@shared/enums/file/file-form-controls.enum';
 
-// Validators
+// validators
 import {
     addressUnitValidation,
     addressValidation,
@@ -37,7 +45,7 @@ import {
     longitudeValidator,
 } from '@shared/validators/long-lat-validations';
 
-// Services
+// services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import {
@@ -50,11 +58,12 @@ import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
-// Animations
+// animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-// Components
+// components
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -68,41 +77,31 @@ import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-moda
 import {
     CaInputAddressDropdownComponent,
     CaInputComponent,
+    CaInputDatetimePickerComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
-// Helpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// Constants
+// constants
 import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants';
 
-// Config
+// config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs';
-
-// Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import {
-    eFileFormControls,
-    eGeneralActions,
-    eStringPlaceholder,
-    ModalButtonSize,
-    ModalButtonType,
-} from '@shared/enums';
-import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Pipes
+// pipes
 import { FormatDatePipe } from '@shared/pipes';
 
-// Models
+// models
 import {
     ShipperModalResponse,
     AddressEntity,
@@ -113,6 +112,7 @@ import {
     ShipperResponse,
     ReviewResponse,
     DepartmentResponse,
+    ShipperLoadModalResponse,
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { Tabs } from '@shared/models/tabs.model';
@@ -150,6 +150,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         TaModalTableComponent,
         CaInputComponent,
         CaModalButtonComponent,
+        CaInputDatetimePickerComponent,
 
         // Pipes
         FormatDatePipe,
@@ -226,8 +227,8 @@ export class ShipperModalComponent
     public taModalActionEnum = TaModalActionEnum;
 
     public activeAction: string;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -245,7 +246,8 @@ export class ShipperModalComponent
         public addressService: AddressService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+        private loadStoreService: LoadStoreService
     ) {
         super();
     }
@@ -359,17 +361,9 @@ export class ShipperModalComponent
 
         if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
-                case 'load-modal':
-                    this.modalService.setProjectionModal({
-                        action: eGeneralActions.CLOSE,
-                        payload: {
-                            key: this.editData?.key,
-                            value: null,
-                        },
-                        component: LoadModalComponent,
-                        size: 'small',
-                        closing: 'fastest',
-                    });
+                case LoadModalStringEnum.LOAD_MODAL:
+                    this.ngbActiveModal.close();
+                    this.loadStoreService.dispatchGetCreateLoadModalData();
                     break;
                 default:
                     this.ngbActiveModal.close();
@@ -816,20 +810,23 @@ export class ShipperModalComponent
             .addShipper(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
+                next: (response) => {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         switch (this.editData?.key) {
-                            case 'load-modal':
-                                this.modalService.setProjectionModal({
-                                    action: eGeneralActions.CLOSE,
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: LoadModalComponent,
-                                    size: 'small',
-                                    closing: 'slowlest',
-                                });
+                            case LoadModalStringEnum.LOAD_MODAL:
+                                const { id } = response;
+                                const modalSingleShipperitem: ShipperLoadModalResponse =
+                                    {
+                                        id,
+                                        ...newData,
+                                    };
+
+                                this.loadStoreService.dispatchAddnewShipperToStaticModalData(
+                                    modalSingleShipperitem
+                                );
+
+                                this.loadStoreService.dispatchGetCreateLoadModalData();
+
                                 break;
                             default:
                                 break;
@@ -865,7 +862,7 @@ export class ShipperModalComponent
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
@@ -895,7 +892,7 @@ export class ShipperModalComponent
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'load-modal':
+                            case LoadModalStringEnum.LOAD_MODAL:
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,
@@ -1282,10 +1279,6 @@ export class ShipperModalComponent
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
-    }
-
-    get getAddressInputConfig(): ITaInput {
-        return ShipperModalConfig.getAddressInputConfig();
     }
 
     get getAddressUnitInputConfig(): ITaInput {

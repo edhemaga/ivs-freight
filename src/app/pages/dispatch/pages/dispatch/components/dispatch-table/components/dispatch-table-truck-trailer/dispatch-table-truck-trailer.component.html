@@ -8,7 +8,7 @@
                 isActiveLoad) ||
             isTrailerAddNewHidden ||
             (isDrag && !isTrailerDropAllowed),
-        'active-load': type === 'trailer' && isActiveLoad
+        'active-load': type === 'trailer' && isActiveLoad,
     }"
 >
     <ng-container
@@ -64,15 +64,15 @@
                             isCircleIconHovering
                                 ? type === 'truck'
                                     ? (truck.truckType.id
-                                      | dispatchColorFinder : 'truck' : true)
+                                      | dispatchColorFinder: 'truck' : true)
                                     : (trailer.trailerType.id
-                                      | dispatchColorFinder : 'trailer' : true)
+                                      | dispatchColorFinder: 'trailer' : true)
                                 : 'transparent'
                         "
                         [ngStyle]="{
                             padding: isBoardLocked
                                 ? '2px 0 1px 6px'
-                                : '0 0 0 6px'
+                                : '0 0 0 6px',
                         }"
                     >
                         <div
@@ -80,7 +80,7 @@
                             [ngStyle]="{
                                 'max-width': isBoardLocked
                                     ? '100%'
-                                    : 'calc( 100% - 26px )'
+                                    : 'calc( 100% - 26px )',
                             }"
                         >
                             <!-- Circle Icon -->
@@ -90,14 +90,14 @@
                                 [ngClass]="
                                     type === 'truck'
                                         ? (truck.truckType.id
-                                          | dispatchColorFinder : 'truck')
+                                          | dispatchColorFinder: 'truck')
                                         : (trailer.trailerType.id
-                                          | dispatchColorFinder : 'trailer')
+                                          | dispatchColorFinder: 'trailer')
                                 "
                                 [src]="dispatchTableSvgRoutes.circleSvgRoute"
                                 [svgStyle]="{
                                     'width.px': '10',
-                                    'height.px': '10'
+                                    'height.px': '10',
                                 }"
                                 (mouseenter)="isCircleIconHovering = true"
                                 (mouseleave)="isCircleIconHovering = false"
@@ -116,12 +116,12 @@
                                     [ngClass]="
                                         type === 'truck'
                                             ? (truck.truckType.id
-                                              | dispatchColorFinder : 'truck')
+                                              | dispatchColorFinder: 'truck')
                                             : (trailer.trailerType.id
-                                              | dispatchColorFinder : 'trailer')
+                                              | dispatchColorFinder: 'trailer')
                                     "
                                     [svgStyle]="{
-                                        'height.px': '18'
+                                        'height.px': '18',
                                     }"
                                     [src]="
                                         type === 'truck'
@@ -151,9 +151,9 @@
                                             type === 'truck' && !!truck.year
                                                 ? '(' + truck.year + ')'
                                                 : type === 'trailer' &&
-                                                  !!trailer.year
-                                                ? '(' + trailer.year + ')'
-                                                : ''
+                                                    !!trailer.year
+                                                  ? '(' + trailer.year + ')'
+                                                  : ''
                                         }}
                                     </span>
                                 </ng-container>
@@ -199,13 +199,19 @@
         <app-ca-input-dropdown
             [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
-            [inputConfig]="truckTrailerInputConfig"
+            [inputConfig]="
+                {
+                    type: type,
+                    truckDropdownWidth: _truckDropdownWidth,
+                    trailerDropdownWidth: _trailerDropdownWidth,
+                } | dispatchConfig: 'trailer'
+            "
             [canAddNew]="hasAddNew"
             [canOpenModal]="true"
             [options]="type === 'truck' ? _truckList : _trailerList"
             (selectedItem)="
                 type === 'truck' ? addTruck($event) : addTrailer($event)
             "
-        ></app-ca-input-dropdown> 
+        ></app-ca-input-dropdown>
     </ng-template>
 </div>

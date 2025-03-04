@@ -7,7 +7,7 @@ import { ToolbarTabsComponent } from '../toolbar-tabs/toolbar-tabs.component';
 
 // Enums 
 import { TableStringEnum, ToolbarVariant } from '@shared/enums'; 
-import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // Models
 import { ITableData, TableToolbarActions } from '@shared/models';

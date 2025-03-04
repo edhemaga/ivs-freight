@@ -1,15 +1,16 @@
-//enums
-import { FilesSizeEnum } from 'ca-components';
-
-//models
-import { IUploadFilesConfig } from '@ca-shared/components/ca-upload-files/models';
+import {
+    eDropZoneFileType,
+    eFileSize,
+    eReviewState,
+    eTemplateType,
+    IUploadFilesConfig,
+} from 'ca-components';
 
 export class ContactsModalUploadFilesConfig {
     static CONTACTS_MODAL_UPLOAD_FILES_CONFIG: IUploadFilesConfig = {
-        
         //Files
-        files:[],
-        
+        files: [],
+
         // Carousel
         slider: {
             dontUseSlider: false,
@@ -29,26 +30,24 @@ export class ContactsModalUploadFilesConfig {
         onlyOneTagFile: false,
 
         // Dropzone
-        dropzoneConf: [
-            {
-                template: 'imageCropTemplate',
-                config: {
-                    dropzone: {
-                        dropZoneType: 'image',
-                        multiple: true,
-                        globalDropZone: false,
-                        dropZonePages: 'cdl',
-                    },
-                    dropzoneOption: {
-                        customClassName: 'documents-dropzone',
-                        size: 'medium',
-                        modalSize: 'lg',
-                        showDropzone: true,
-                        dropzoneClose: false,
-                    },
+        dropZoneConfig: {
+            template: eTemplateType.IMAGE_CROP,
+            config: {
+                dropzone: {
+                    dropZoneType: eDropZoneFileType.IMAGE,
+                    multiple: true,
+                    globalDropZone: false,
+                    dropZonePages: 'cdl',
+                },
+                dropzoneOption: {
+                    customClassName: 'documents-dropzone',
+                    size: 'medium',
+                    modalSize: 'lg',
+                    showDropzone: true,
+                    dropzoneClose: false,
                 },
             },
-        ],
+        },
         dropzoneCustomWidth: '',
         isVisibleCropAndDrop: true,
 
@@ -65,7 +64,7 @@ export class ContactsModalUploadFilesConfig {
         // Review
         review: {
             isReview: true,
-            reviewMode: 'REVIEW_MODE',
+            reviewMode: eReviewState.REVIEW_MODE,
             feedbackText: 'Sample feedback text',
             categoryTag: 'General',
         },
@@ -97,7 +96,7 @@ export class ContactsModalUploadFilesConfig {
                 },
             ],
         },
-        size: FilesSizeEnum.MEDIUM,
+        size: eFileSize.MEDIUM,
         slideWidth: 180,
     };
 }

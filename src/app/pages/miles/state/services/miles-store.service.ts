@@ -9,7 +9,7 @@ import { IStateFilters } from '@shared/models';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // Constants
 import { MilesStoreConstants } from '@pages/miles/consts';

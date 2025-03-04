@@ -78,7 +78,6 @@ import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolba
 
         // store
         StoreModule.forFeature('loadCardData', loadCardModalReducer),
-        StoreModule.forFeature('load', loadReducer),
     ],
 })
 export class LoadModule {}

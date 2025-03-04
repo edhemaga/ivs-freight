@@ -1,9 +1,11 @@
 // appcoretruckassist
-import { CommentResponse, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatus, LoadStatusResponse, LoadTemplateResponse, TableType } from "appcoretruckassist";
+import { BrokerByIdResponse, BrokerContactGroupResponse, CommentResponse, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatus, LoadStatusResponse, LoadTemplateResponse, ShipperLoadModalResponse, TableType } from "appcoretruckassist";
 
 // models
 import { ICreateCommentMetadata, ILoadGridItem, ILoadState, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index";
 import { ITableColummn } from "@shared/models";
+import { IActiveLoadModalData } from "@pages/load/models";
+import { BrokerContactExtended } from "@pages/customer/pages/broker-modal/models";
 
 // enums
 import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index";
@@ -267,9 +269,11 @@ export const initializeLoadGridItem = function(item: LoadResponse | LoadTemplate
     };
 }
 
-export const getLoadModalDataSuccessResult = function(state: ILoadState, modal: LoadModalResponse, load?: LoadResponse): ILoadState {
+export const getLoadModalDataSuccessResult = function(state: ILoadState, modal: LoadModalResponse, activeModalData?: IActiveLoadModalData): ILoadState {    
     const result: ILoadState = {
-        ...state
+        ...state,
+        modal,
+        activeModalData
     }
 
     return result;
@@ -357,6 +361,28 @@ export function mapDispatcherSuccessResult(state: ILoadState, dispatcherList: Di
 
     return result;
 }
+export const addCreatedBrokerStaticModalDataResult = function(state: ILoadState, broker: BrokerByIdResponse): ILoadState {
+    const { modal, activeModalData } = state;
+    let _modal: LoadModalResponse = JSON.parse(JSON.stringify(modal));
+    let _activeModalData = JSON.parse(JSON.stringify(activeModalData));
+
+    if (!!broker) {
+        _modal.brokers = [broker, ...modal.brokers];
+
+        if (!!activeModalData) {
+            _activeModalData.broker = broker;
+            _activeModalData.brokerId = broker.id;
+        }
+    }
+
+    const result: ILoadState = {
+        ...state,
+        modal: _modal,
+        activeModalData: _activeModalData
+    };
+
+    return result;
+}
 
 export function mapStatusFilterSuccessResult(state: ILoadState, statusList: any[]): ILoadState {
     // backend time is not good? 
@@ -368,3 +394,52 @@ export function mapStatusFilterSuccessResult(state: ILoadState, statusList: any[
     return result;
 }
         
+export const addCreatedShipperStaticModalDataResult = function(state: ILoadState, shipper: ShipperLoadModalResponse): ILoadState {
+    const { modal, activeModalData } = state;
+    let _modal: LoadModalResponse = JSON.parse(JSON.stringify(modal));
+    let _activeModalData = JSON.parse(JSON.stringify(activeModalData));
+
+    if (!!shipper) {
+        _modal.shippers = [shipper, ...modal.shippers];
+
+        if (!!activeModalData) {
+            _activeModalData.shipper = shipper;
+            _activeModalData.shipperId = shipper.id;
+        }
+    }
+
+    const result: ILoadState = {
+        ...state,
+        modal: _modal,
+        activeModalData: _activeModalData
+    };
+
+    return result;
+}
+
+export const updateEditedBrokerStaticModalDataResult = function(state: ILoadState, broker: BrokerByIdResponse, brokerContacts?: BrokerContactExtended[]): ILoadState {
+    const { modal, activeModalData } = state;
+    let _modal: LoadModalResponse = JSON.parse(JSON.stringify(modal));
+    let _activeModalData: IActiveLoadModalData = JSON.parse(JSON.stringify(activeModalData));
+
+    if(!!broker) {
+        const index: number = _modal.brokers.findIndex(item => item.id === broker.id);
+        _modal.brokers.splice(index, 1, broker);
+
+        if (!!_activeModalData) {
+            _activeModalData.broker = broker;
+            _activeModalData.brokerId = broker.id;
+        }
+    }
+
+    if (!!brokerContacts) {
+        //TODO: waiting for backend to provide created brokerContact ids
+    }
+
+    const result: ILoadState = {
+        ...state,
+        modal: _modal
+    };
+
+    return result;
+}

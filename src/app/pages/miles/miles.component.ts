@@ -34,7 +34,7 @@ import { MilesStoreService } from './state/services/miles-store.service';
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
 import { TableStringEnum } from '@shared/enums';
-import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // Models
 import { MilesByUnitResponse, MilesStateFilterResponse } from 'appcoretruckassist';

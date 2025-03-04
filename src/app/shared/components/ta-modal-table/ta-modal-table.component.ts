@@ -38,10 +38,10 @@ import { TaModalTableDepartmentComponent } from '@shared/components/ta-modal-tab
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
-import { ContactsService } from '@shared/services/contacts.service';
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 import { DriverService } from '@pages/driver/services/driver.service';
 import { FormService } from '@shared/services/form.service';
+import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
 
 // constants
 import { ModalTableConstants } from '@shared/components/ta-modal-table/utils/constants/';
@@ -216,7 +216,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
         // services
         private inputService: TaInputService,
-        private contactService: ContactsService,
+        private contactStoreService: ContactStoreService,
         private pmService: PmService,
         private driverService: DriverService,
         private formService: FormService
@@ -473,12 +473,17 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private getPhoneEmailDropdownList(): void {
-        this.contactService
-            .getCompanyContactModal()
+        this.contactStoreService.dispatchGetContactModalData();
+
+        this.listenToStoreContactModal();
+    }
+
+    private listenToStoreContactModal(): void {
+        this.contactStoreService.modalData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.contactPhoneTypeOptions = res.contactPhoneType;
-                this.contactEmailTypeOptions = res.contactEmailType;
+            .subscribe((data) => {
+                this.contactPhoneTypeOptions = data.contactPhoneType;
+                this.contactEmailTypeOptions = data.contactEmailType;
             });
     }
 

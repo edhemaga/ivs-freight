@@ -1,8 +1,8 @@
 // External Libraries
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-// Enums 
-import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
+// Enums  
+import { eActiveViewMode } from '@shared/enums';
 
 // Models
 import { IMilesState } from '@pages/miles/models';

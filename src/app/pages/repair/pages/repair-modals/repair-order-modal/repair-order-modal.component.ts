@@ -65,12 +65,7 @@ import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/re
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import {
-    DropdownMenuStringEnum,
-    ModalButtonSize,
-    ModalButtonText,
-    ModalButtonType,
-} from '@shared/enums';
+import { DropdownMenuStringEnum, eModalButtonText } from '@shared/enums';
 
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
@@ -82,6 +77,8 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaInputDatetimePickerComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
@@ -101,7 +98,6 @@ import {
     RepairShopShortResponse,
     RepairItemResponse,
     TagResponse,
-    RepairShopService,
     RepairShopMinimalListResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
@@ -230,9 +226,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
     // enums
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
-    public modalButtonText = ModalButtonText;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
+    public emodalButtonText = eModalButtonText;
     public taModalActionEnum = TaModalActionEnum;
 
     // config

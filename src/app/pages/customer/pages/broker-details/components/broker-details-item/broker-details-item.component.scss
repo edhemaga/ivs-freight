@@ -1,12 +1,5 @@
 @import '../../broker-details.component.scss';
 
-app-broker-details-single {
-    .dots-vertical {
-        position: relative;
-        right: -10px;
-    }
-}
-
 .contact-wrapper {
     background-color: $color-white;
     border-radius: 3px;

@@ -58,6 +58,7 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -70,7 +71,6 @@ import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 import {
     DropActionsStringEnum,
     eGeneralActions,
-    ModalButtonType,
     TableStringEnum,
 } from '@shared/enums';
 
@@ -192,8 +192,6 @@ export class SettingsTerminalModalComponent
     public phoneExtConfig: ITaInput =
         SettingsTerminalConfig.getPhoneExtInputConfig();
     public emailConfig: ITaInput = SettingsTerminalConfig.getEmailInputConfig();
-    public addressConfig: ITaInput =
-        SettingsTerminalConfig.getAddressInputConfig();
     public addressUnitConfig: ITaInput =
         SettingsTerminalConfig.getAddressUnitInputConfig();
     public payPeriodConfig: ITaInput =
@@ -207,7 +205,7 @@ export class SettingsTerminalModalComponent
     public svgRoutes = SettingsLocationSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutesCommon = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public activeAction!: string;
     public data: TerminalResponse;
 
@@ -468,7 +466,10 @@ export class SettingsTerminalModalComponent
         const newData: UpdateTerminalCommand = {
             id: id,
             ...form,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
@@ -520,7 +521,10 @@ export class SettingsTerminalModalComponent
 
         const newData: CreateTerminalCommand = {
             ...form,
-            address: { ...this.selectedAddress, addressUnit: addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
@@ -598,7 +602,7 @@ export class SettingsTerminalModalComponent
                 next: (res: TerminalResponse) => {
                     this.terminalForm.patchValue({
                         ...res,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         // Additional tab
                         rent: res.rent

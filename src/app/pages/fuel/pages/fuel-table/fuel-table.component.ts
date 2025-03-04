@@ -66,7 +66,11 @@ import {
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
-import { DropActionsStringEnum, DropdownMenuStringEnum } from '@shared/enums';
+import {
+    DropActionsStringEnum,
+    DropdownMenuStringEnum,
+    eCommonElements,
+} from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
@@ -81,27 +85,22 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
-import { SortTypes } from '@shared/models/sort-types.model';
 
 @Component({
     selector: 'app-fuel-table',
     templateUrl: './fuel-table.component.html',
-    styleUrls: [
-        './fuel-table.component.scss',
-        '../../../../../assets/scss/maps.scss',
-    ],
+    styleUrls: ['./fuel-table.component.scss'],
     providers: [ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe],
 })
 export class FuelTableComponent
     extends FuelDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    @ViewChild('mapsComponent') public mapsComponent: any;
-
     public destroy$ = new Subject<void>();
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
+    public commonElements = eCommonElements;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -122,10 +121,6 @@ export class FuelTableComponent
     public tableDataLength: number;
 
     // map
-    public sortTypes: SortTypes[] = [];
-    public sortDirection: string = TableStringEnum.ASC;
-    public activeSortType: SortTypes;
-    public sortBy: string;
     public mapListData = [];
 
     private avatarColorMappingIndexByDriverId: { [key: string]: AvatarColors } =
@@ -172,35 +167,17 @@ export class FuelTableComponent
 
         this.openCloseBussinessSelectedRows();
 
-        this.sorting();
-
         this.rowsSelected();
 
         this.confirmationSubscribe();
 
         this.confirmationActivationSubscribe();
-
-        this.setMapSortOptions();
     }
 
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
-    }
-
-    private setMapSortOptions(): void {
-        this.sortTypes = TableDropdownComponentConstants.SORT_TYPES;
-
-        this.activeSortType = this.sortTypes[0];
-    }
-
-    private sorting(): void {
-        this.sortBy = this.sortDirection
-            ? this.activeSortType?.sortName +
-              (this.sortDirection[0]?.toUpperCase() +
-                  this.sortDirection?.substr(1).toLowerCase())
-            : TableStringEnum.EMPTY_STRING_PLACEHOLDER;
     }
 
     private resetColumns(): void {
@@ -375,6 +352,10 @@ export class FuelTableComponent
                     fuelStopIds.forEach((id) => this.updateFuelStopStatus(id));
                 }
             });
+    }
+
+    public handleTableEmptyBtnClickEmit(): void {
+        this.openCreateModalBySelectedTab();
     }
 
     public updateFuelStopStatus(fuelStopId: number): void {
@@ -657,7 +638,6 @@ export class FuelTableComponent
 
         if (td.data?.length) {
             this.viewData = [...td.data];
-            this.mapListData = JSON.parse(JSON.stringify(this.viewData));
 
             this.viewData = this.viewData.map((data) => {
                 return this.selectedTab === TableStringEnum.FUEL_TRANSACTION
@@ -860,8 +840,7 @@ export class FuelTableComponent
                   address?.stateShortName !== TableStringEnum.NULL
                       ? address?.stateShortName + null
                       : null) +
-                  (address?.zipCode &&
-                  address?.zipCode !== TableStringEnum.NULL
+                  (address?.zipCode && address?.zipCode !== TableStringEnum.NULL
                       ? address?.zipCode
                       : null)
                 : null,
@@ -911,15 +890,7 @@ export class FuelTableComponent
 
     public onToolBarAction(event: any): void {
         if (event.action === TableStringEnum.OPEN_MODAL) {
-            if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION) {
-                this.modalService.openModal(FuelPurchaseModalComponent, {
-                    size: TableStringEnum.SMALL,
-                });
-            } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
-                this.modalService.openModal(FuelStopModalComponent, {
-                    size: TableStringEnum.SMALL,
-                });
-            }
+            this.openCreateModalBySelectedTab();
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
             const {
                 integratedFuelTransactionsCount,
@@ -956,55 +927,6 @@ export class FuelTableComponent
                 this.sendFuelData();
             }
         }
-    }
-
-    public selectItem(data: any): void {
-        this.mapsComponent.clickedMarker(data[0]);
-
-        this.mapListData.map((item) => {
-            if (item.id == data[0]) {
-                let itemIndex = this.mapsComponent.viewData.findIndex(
-                    (item2) => item2.id === item.id
-                );
-
-                if (
-                    itemIndex > -1 &&
-                    this.mapsComponent.viewData[itemIndex].showMarker
-                ) {
-                    item.isSelected =
-                        this.mapsComponent.viewData[itemIndex].isSelected;
-                } else {
-                    this.mapsComponent.clusterMarkers.map((cluster) => {
-                        var clusterData = cluster.pagination.data;
-
-                        let clusterItemIndex = clusterData.findIndex(
-                            (item2) => item2.id === data[0]
-                        );
-
-                        if (clusterItemIndex > -1) {
-                            if (!data[1]) {
-                                if (
-                                    !cluster.isSelected ||
-                                    (cluster.isSelected &&
-                                        cluster.detailedInfo?.id == data[0])
-                                ) {
-                                    this.mapsComponent.clickedCluster(cluster);
-                                }
-
-                                if (cluster.isSelected) {
-                                    this.mapsComponent.showClusterItemInfo([
-                                        cluster,
-                                        clusterData[clusterItemIndex],
-                                    ]);
-                                }
-                            }
-
-                            item.isSelected = cluster.isSelected;
-                        }
-                    });
-                }
-            }
-        });
     }
 
     private composeFuelData(
@@ -1260,6 +1182,17 @@ export class FuelTableComponent
 
     public handleShowMoreAction(): void {
         this.fetchApiDataPaginated();
+    }
+
+    private openCreateModalBySelectedTab(): void {
+        if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION)
+            this.modalService.openModal(FuelPurchaseModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        else if (this.selectedTab === TableStringEnum.FUEL_STOP)
+            this.modalService.openModal(FuelStopModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
     }
 
     ngOnDestroy(): void {

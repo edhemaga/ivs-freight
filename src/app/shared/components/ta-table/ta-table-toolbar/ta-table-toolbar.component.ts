@@ -458,6 +458,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                       ? columnsSumWidth + 26 + TableStringEnum.PX
                       : 100 + '%';
         }
+
+        this.tableService.sendToolbarWidth({
+            width: this.toolbarWidth,
+            maxWidth: this.maxToolbarWidth,
+        });
     }
 
     private setColumnsOptionsGroups(): void {
@@ -768,17 +773,22 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.timeOutToaggleColumn = setTimeout(() => {
             if (!column.isPined) {
-                let _column = this.columns.find(
-                    (item) => item.field === column.field
-                );
-                let _columnGroup = this.columnsOptionsWithGroups.find(
-                    (item) => item.field === column.field
+                this.columns = this.columns.map((item) =>
+                    item.field === column.field
+                        ? { ...item, hidden: !column.hidden }
+                        : item
                 );
 
-                _column.hidden = !column.hidden;
-                _columnGroup.hidden = !column.hidden;
-
-                this.setTableConfig(column, index);
+                this.columnsOptionsWithGroups =
+                    this.columnsOptionsWithGroups.map((item) =>
+                        item.field === column.field
+                            ? (this.setTableConfig(
+                                  { ...item, hidden: !column.hidden },
+                                  index
+                              ),
+                              { ...item, hidden: !column.hidden })
+                            : item
+                    );
             }
         }, 10);
     }

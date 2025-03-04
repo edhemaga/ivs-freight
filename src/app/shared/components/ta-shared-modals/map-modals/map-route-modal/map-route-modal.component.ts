@@ -28,6 +28,7 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 
 // enums
 import { eGeneralActions } from '@shared/enums';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-map-route-modal',
@@ -46,6 +47,7 @@ import { eGeneralActions } from '@shared/enums';
         TaInputDropdownComponent,
         TaCheckboxCardComponent,
         TaTabSwitchComponent,
+        CaInputDatetimePickerComponent,
     ],
 })
 export class MapRouteModalComponent implements OnInit, OnDestroy {

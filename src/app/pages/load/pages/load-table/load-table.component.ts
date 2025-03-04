@@ -55,12 +55,10 @@ import {
     TableStringEnum,
     LoadStatusEnum,
     DropdownMenuStringEnum,
-    ToolbarVariant,
+    eActiveViewMode,
 } from '@shared/enums/index';
 import {
-    eActiveViewMode,
     eLoadStatusType,
-    LoadFilterStringEnum,
 } from '@pages/load/pages/load-table/enums/index';
 
 // constants

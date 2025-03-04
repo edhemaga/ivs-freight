@@ -19,6 +19,7 @@ import { NavigationDataConstants } from '@core/components/navigation/utils/const
 import { NavigationService } from '@core/components/navigation/services/navigation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
 
 // components
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
@@ -94,7 +95,9 @@ export class NavigationModalsComponent {
     constructor(
         private modalService: ModalService,
         private navigationService: NavigationService,
-        private loadStoreService: LoadStoreService
+        private loadStoreService: LoadStoreService,
+        private contactStoreService: ContactStoreService
+
     ) {}
 
     public OpenMainModal(openClose: boolean): void {
@@ -168,9 +171,7 @@ export class NavigationModalsComponent {
                 break;
             }
             case 'contact': {
-                this.modalService.openModal(ContactsModalComponent, {
-                    size: 'small',
-                });
+                this.contactStoreService.dispatchGetCreateContactModalData()
                 break;
             }
             case 'account': {

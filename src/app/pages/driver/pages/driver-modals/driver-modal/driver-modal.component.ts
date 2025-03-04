@@ -2059,6 +2059,7 @@ export class DriverModalComponent
 
         // documents
         this.documents = files;
+        this.selectedAddress = address;
 
         // patch form
         this.driverForm.patchValue({
@@ -2069,7 +2070,6 @@ export class DriverModalComponent
             phone,
             email,
             ssn,
-            address: address?.address,
             addressUnit: address?.addressUnit,
 
             isOwner: !!owner,
@@ -2178,7 +2178,6 @@ export class DriverModalComponent
     private updateDriverById(id: number): void {
         const {
             // eslint-disable-next-line no-unused-vars
-            address, // eslint-disable-next-line no-unused-vars
             ownerId, // eslint-disable-next-line no-unused-vars
             payType, // eslint-disable-next-line no-unused-vars
             bankId, // eslint-disable-next-line no-unused-vars

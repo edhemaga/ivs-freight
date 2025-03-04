@@ -4,13 +4,20 @@
     cdkDropListOrientation="horizontal"
     [id]="tableHeadRowsData?.notPinedColumns ? 'scroll' : null"
     [ngClass]="{
-        'pined-columns-container': tableHeadRowsData?.pinedColumns,
-        'not-pined-columns-container': tableHeadRowsData?.notPinedColumns,
+        'pined-columns-container': !!tableHeadRowsData?.pinedColumns,
+        'not-pined-columns-container': !!tableHeadRowsData?.notPinedColumns,
         'tr-height-2':
             tableHeadRowsData?.tableData[0]?.gridNameTitle
             | tableDoubleHeadHeight,
     }"
-    [ngStyle]="{ 'max-width.px': tableHeadRowsData?.notPinedMaxWidth }"
+    [ngStyle]="{
+        'max-width.px': tableHeadRowsData?.notPinedMaxWidth,
+        overflow:
+            !!tableHeadRowsData?.notPinedColumns &&
+            tableHeadRowsData.viewDataLength
+                ? 'hidden'
+                : '',
+    }"
     (cdkDropListDropped)="handleTableHeadRowsActionClick($event, 'reorder')"
 >
     <ng-container
@@ -64,6 +71,7 @@
                     column.ngTemplate !== 'checkbox' &&
                     column.ngTemplate !== 'user-checkbox',
                 'space-left': tableHeadRowsData?.notPinedColumns && i === 0,
+                'no-data': !tableHeadRowsData.viewDataLength,
             }"
             (cdkDragStarted)="
                 tableHeadRowsData?.notPinedColumns &&

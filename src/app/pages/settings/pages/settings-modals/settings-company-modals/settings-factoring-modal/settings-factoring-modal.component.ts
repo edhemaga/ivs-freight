@@ -41,6 +41,8 @@ import {
     CaModalButtonComponent,
     CaModalComponent,
     CaInputAddressDropdownComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
 } from 'ca-components';
 
 // models
@@ -54,11 +56,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import {
-    ModalButtonType,
-    ModalButtonSize,
-    eGeneralActions,
-} from '@shared/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -138,8 +136,8 @@ export class SettingsFactoringModalComponent
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
     public activeAction: string;
-    public modalButtonType = ModalButtonType;
-    public modalButtonSize = ModalButtonSize;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
     public company: FactoringCompany;
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -235,9 +233,7 @@ export class SettingsFactoringModalComponent
             name: name,
             phone: phone,
             email: email,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: this.selectedAddress,
             noticeOfAssigment: noticeOfAssigment,
             note: note,
         };
@@ -271,7 +267,7 @@ export class SettingsFactoringModalComponent
             name: company.factoringCompany.name,
             phone: company.factoringCompany.phone,
             email: company.factoringCompany.email,
-            address: company.factoringCompany.address.address,
+            address: company.factoringCompany.address,
             addressUnit: company.factoringCompany.address.addressUnit,
             noticeOfAssigment: company.factoringCompany.noticeOfAssigment,
             note: company.factoringCompany.note,

@@ -230,6 +230,7 @@ model/brokerPaymentHistoryChartResponse.ts
 model/brokerPaymentHistoryResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
+model/brokerShipperContact.ts
 model/brokerShortMobileResponse.ts
 model/brokerShortResponse.ts
 model/byStateReportType.ts
@@ -644,6 +645,7 @@ model/loadModalResponse.ts
 model/loadPaymentPayCommand.ts
 model/loadPaymentPayResponse.ts
 model/loadPossibleStatusesResponse.ts
+model/loadProgressMobileResponse.ts
 model/loadProgressResponse.ts
 model/loadRequirementsCommand.ts
 model/loadRequirementsMobileResponse.ts
@@ -661,10 +663,14 @@ model/loadStopCommand.ts
 model/loadStopInfo.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
+model/loadStopItemMobileResponse.ts
 model/loadStopItemResponse.ts
 model/loadStopLoadListResponse.ts
+model/loadStopMobileByLoadIdResponse.ts
+model/loadStopMobileListResponse.ts
 model/loadStopMobileResponse.ts
 model/loadStopMobileShortResponse.ts
+model/loadStopProgressBarMobileResponse.ts
 model/loadStopProgressBarResponse.ts
 model/loadStopResponse.ts
 model/loadStopShortResponse.ts
@@ -719,6 +725,7 @@ model/mobileFuelTransactionResponsePagination.ts
 model/mobileFuelTruckResponse.ts
 model/mobileFuelTruckTrailerResponse.ts
 model/mobileGpsDataCommand.ts
+model/mobileGpsDataItemCommand.ts
 model/mobileRepairShopDetailsResponse.ts
 model/mobileRepairShopDetailsResponsePagination.ts
 model/mobileRepairShopExpensesChartResponse.ts
@@ -944,6 +951,7 @@ model/shipperAverageWaitingTimeResponse.ts
 model/shipperContactCommand.ts
 model/shipperContactGroupResponse.ts
 model/shipperContactResponse.ts
+model/shipperContactShortMobileResponse.ts
 model/shipperContactShortResponse.ts
 model/shipperIntervalResponse.ts
 model/shipperListResponse.ts
@@ -971,6 +979,7 @@ model/sphDrugAndAlcoholResponse.ts
 model/sphFeedbackResponse.ts
 model/sphPreviousEmployerProspectResponse.ts
 model/splitLoadResponse.ts
+model/splitShiftResponse.ts
 model/stateFilter.ts
 model/stateResponse.ts
 model/statusSetCompanyUserCommand.ts
@@ -1039,8 +1048,11 @@ model/trailerLengthResponse.ts
 model/trailerListResponse.ts
 model/trailerMakeResponse.ts
 model/trailerMinimalListResponse.ts
+model/trailerMinimalMobileResponse.ts
 model/trailerMinimalResponse.ts
 model/trailerMinimalResponsePagination.ts
+model/trailerModelListResponse.ts
+model/trailerModelResponse.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
@@ -1068,8 +1080,11 @@ model/truckIntervalResponse.ts
 model/truckListResponse.ts
 model/truckMakeResponse.ts
 model/truckMinimalListResponse.ts
+model/truckMinimalMobileResponse.ts
 model/truckMinimalResponse.ts
 model/truckMinimalResponsePagination.ts
+model/truckModelListResponse.ts
+model/truckModelResponse.ts
 model/truckPerformanceResponse.ts
 model/truckResponse.ts
 model/truckRevenueChartResponse.ts

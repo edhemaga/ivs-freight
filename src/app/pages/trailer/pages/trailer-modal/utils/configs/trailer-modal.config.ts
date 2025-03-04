@@ -3,6 +3,7 @@ import { TrailerConfigInterface } from '@pages/trailer/pages/trailer-modal/model
 
 // enums
 import { eGeneralActions } from '@shared/enums';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 
 export class TrailerModalConfig {
     static getVolumenTrailers(): string[] {
@@ -31,7 +32,7 @@ export class TrailerModalConfig {
             autoFocus: options?.editType !== eGeneralActions.EDIT,
         };
     }
-    static getTrailerTypeIdConfig(options: TrailerConfigInterface): ITaInput {
+    static getTrailerTypeIdConfig(options: TrailerConfigInterface): ICaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -84,23 +85,7 @@ export class TrailerModalConfig {
             maxLength: 4,
         };
     }
-    static getTrailerVinConfig(options: TrailerConfigInterface): ITaInput {
-        return {
-            name: 'vin-number',
-            type: 'text',
-            label: 'VIN',
-            isRequired: true,
-            textTransform: 'uppercase',
-            maxLength: 17,
-            minLength: 5,
-            loadingSpinner: {
-                size: 'small',
-                color: 'white',
-                isLoading: options.loadingVinDecoder,
-            },
-        };
-    }
-    static getTrailerMakeConfig(options: TrailerConfigInterface): ITaInput {
+    static getTrailerMakeConfig(options: TrailerConfigInterface): ICaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -128,7 +113,7 @@ export class TrailerModalConfig {
             maxLength: 50,
         };
     }
-    static getTrailerColorConfig(options: TrailerConfigInterface): ITaInput {
+    static getTrailerColorConfig(options: TrailerConfigInterface): ICaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -140,7 +125,6 @@ export class TrailerModalConfig {
                 image: false,
                 url: options.selectedColor?.code ? 'ic_color.svg' : null,
                 template: 'color',
-                color: options.selectedColor?.code,
             },
             dropdownWidthClass: 'w-col-164',
         };

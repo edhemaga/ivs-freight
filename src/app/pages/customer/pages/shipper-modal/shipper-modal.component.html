@@ -100,19 +100,25 @@
                             <div class="col-10">
                                 <app-ca-input-address-dropdown
                                     formControlName="address"
-                                    [inputConfig]="getAddressInputConfig"
                                     [placeholderType]="'longAddress'"
+                                    [inputConfig]="{
+                                        name: 'Address',
+                                        type: 'text',
+                                        label: 'Address, City, State Zip',
+                                        isRequired: true,
+                                        placeholderIcon: 'address',
+                                        textTransform: 'capitalize',
+                                        dropdownWidthClass: 'w-col-510',
+                                        minLength: 6,
+                                        maxLength: 256,
+                                    }"
                                     [activeAddress]="selectedAddress"
                                     (selectedAddress)="onHandleAddress($event)"
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
                                     (selectedAddress)="onHandleAddress($event)"
-                                    (sentAddressData)="
-                                        onAddressChange($event)
-                                    "
-                                    (sentAddressValue)="
-                                        getAddressData($event)
-                                    "
+                                    (sentAddressData)="onAddressChange($event)"
+                                    (sentAddressValue)="getAddressData($event)"
                                 ></app-ca-input-address-dropdown>
                             </div>
                             <div class="col-2">
@@ -173,7 +179,7 @@
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="receivingFrom"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -193,11 +199,11 @@
                                             ).value,
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="receivingTo"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -217,7 +223,7 @@
                                             ).value,
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -261,7 +267,7 @@
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="shippingFrom"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -281,11 +287,11 @@
                                             ).value,
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="shippingTo"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -305,7 +311,7 @@
                                             ).value,
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -473,14 +479,14 @@
                     <app-ca-modal-button
                         class="mr-12"
                         text="Delete"
-                        [size]="modalButtonSize.SMALL"
+                        [size]="eModalButtonSize.SMALL"
                         (click)="onModalAction(taModalActionEnum.DELETE)"
-                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
                     >
                     </app-ca-modal-button>
                     <app-ca-modal-button
-                        [type]="modalButtonType.SECONDARY_NEUTRAL"
-                        [size]="modalButtonSize.SMALL"
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                        [size]="eModalButtonSize.SMALL"
                         class="mr-12"
                         text="Close Business"
                         (click)="
@@ -494,7 +500,7 @@
                     [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
                     [text]="'Save Changes'"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
             </div>
@@ -506,7 +512,7 @@
                 [isSpinnerShown]="
                     activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
                 "
-                [type]="modalButtonType.SECONDARY_POSITIVE"
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
             </app-ca-modal-button>
@@ -514,7 +520,7 @@
                 [isValid]="isModalValidToSubmit"
                 [text]="'Save'"
                 [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
-                [type]="modalButtonType.PRIMARY_POSITIVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
             >
             </app-ca-modal-button>

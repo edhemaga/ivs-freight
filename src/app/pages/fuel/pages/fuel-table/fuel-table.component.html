@@ -8,88 +8,110 @@
         [activeViewMode]="activeViewMode"
     ></app-ta-table-toolbar>
 
-    <ng-container *ngIf="activeViewMode === 'List'">
-        <app-ta-table-head
-            [options]="tableOptions"
-            [viewData]="viewData"
-            [columns]="columns"
-            [tableData]="tableData"
-            (headActions)="onTableHeadActions($event)"
-        ></app-ta-table-head>
-
-        <app-ta-table-body
-            [viewData]="viewData"
-            [columns]="columns"
-            [options]="tableOptions"
-            [selectedTab]="selectedTab"
-            [tableData]="tableData"
-            (tableBodyActions)="
-                handleDropdownMenuActions(
-                    $event,
-                    selectedTab !== tableStringEnum.FUEL_STOP
-                        ? dropdownMenuStringEnum.FUEL_TRANSACTION
-                        : dropdownMenuStringEnum.FUEL_STOP
-                )
-            "
-        ></app-ta-table-body>
-    </ng-container>
-
-    <ng-container *ngIf="activeViewMode === 'Card'">
-        <div class="elements">
-            <app-fuel-card
+    @switch (activeViewMode) {
+        @case (commonElements.LIST) {
+            <app-ta-table-head
+                [options]="tableOptions"
                 [viewData]="viewData"
-                [selectedTab]="selectedTab"
-                [displayRowsFront]="(displayRows$ | async).displayRowsFront"
-                [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-            ></app-fuel-card>
-
-            <ng-container *ngIf="viewData?.length">
-                <div
-                    class="show-more-container d-flex align-items-center justify-content-between"
-                    [ngStyle]="{ 'width.px': tableWidth }"
-                >
-                    <div class="showing ta-font-semi-bold text-color-dark-grey">
-                        {{ viewData?.length }} OF
-                        {{ tableDataLength }}
-                    </div>
-                    <ng-container *ngIf="viewData?.length < tableDataLength">
-                        <div
-                            class="show-more ta-font-bold text-color-black w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="handleShowMoreAction()"
-                        >
-                            SHOW MORE
-                        </div>
-                    </ng-container>
-                </div>
-            </ng-container>
-        </div>
-    </ng-container>
-
-    <ng-container *ngIf="activeViewMode === 'Map'">
-        <div class="customer-map-container">
-            <app-ta-map-list
-                [type]="'fuelStop'"
                 [columns]="columns"
-                [mapListContent]="mapListData"
+                [tableData]="tableData"
                 (headActions)="onTableHeadActions($event)"
-            >
-                <app-ta-map-list-card
-                    *ngFor="let latlong of mapListData; let i = index"
-                    #listCard
-                    [title]="latlong?.businessName"
-                    [isSelected]="latlong?.isSelected"
-                    [status]="latlong?.status"
-                    [item]="latlong"
-                    [index]="i"
-                    [address]="latlong.address"
-                    [rating]="{
-                        up: latlong?.upRatingCount,
-                        down: latlong?.downRatingCount,
-                    }"
+            ></app-ta-table-head>
+
+            <app-ta-table-body
+                [viewData]="viewData"
+                [columns]="columns"
+                [options]="tableOptions"
+                [selectedTab]="selectedTab"
+                [tableData]="tableData"
+                (tableBodyActions)="
+                    handleDropdownMenuActions(
+                        $event,
+                        selectedTab !== tableStringEnum.FUEL_STOP
+                            ? dropdownMenuStringEnum.FUEL_TRANSACTION
+                            : dropdownMenuStringEnum.FUEL_STOP
+                    )
+                "
+            ></app-ta-table-body>
+        }
+        @case (commonElements.CARD) {
+            <div class="elements">
+                <app-fuel-card
+                    [viewData]="viewData"
+                    [selectedTab]="selectedTab"
+                    [displayRowsFront]="(displayRows$ | async).displayRowsFront"
+                    [displayRowsBack]="(displayRows$ | async).displayRowsBack"
+                ></app-fuel-card>
+
+                @if (viewData?.length) {
+                    <div
+                        class="show-more-container d-flex align-items-center justify-content-between"
+                        [ngStyle]="{ 'width.px': tableWidth }"
+                    >
+                        <div
+                            class="showing ta-font-semi-bold text-color-dark-grey"
+                        >
+                            {{ viewData?.length }} OF
+                            {{ tableDataLength }}
+                        </div>
+                        @if (viewData?.length < tableDataLength) {
+                            <div
+                                class="show-more ta-font-bold text-color-black w-fit-content align-items-center d-flex justify-content-between"
+                                (click)="handleShowMoreAction()"
+                            >
+                                SHOW MORE
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        }
+        @case (commonElements.MAP) {
+            <div class="customer-map-container">
+                <app-ta-map-list
                     [type]="'fuelStop'"
-                    (clickedMarker)="selectItem($event)"
-                ></app-ta-map-list-card>
-            </app-ta-map-list>
-        </div>
-    </ng-container>
+                    [columns]="columns"
+                    [mapListContent]="mapListData"
+                    (headActions)="onTableHeadActions($event)"
+                >
+                    <app-ta-map-list-card
+                        *ngFor="let latlong of mapListData; let i = index"
+                        #listCard
+                        [title]="latlong?.businessName"
+                        [isSelected]="latlong?.isSelected"
+                        [status]="latlong?.status"
+                        [item]="latlong"
+                        [index]="i"
+                        [address]="latlong.address"
+                        [rating]="{
+                            up: latlong?.upRatingCount,
+                            down: latlong?.downRatingCount,
+                        }"
+                        [type]="'fuelStop'"
+                        (clickedMarker)="selectItem($event)"
+                    ></app-ta-map-list-card>
+                </app-ta-map-list>
+
+                <!-- <app-ca-map
+                    [data]="mapData"
+                    (clusterMarkerClick)="onClusterMarkerClick($event)"
+                    (clusterListScrollEvent)="onClusterListScroll($event)"
+                    (getInfoWindowData)="onGetInfoWindowData($event)"
+                    (boundsChanged)="onMapBoundsChange($event)"
+                    (resetSelectedMarkerItem)="onResetSelectedMarkerItem($event)"
+                ></app-ca-map> -->
+            </div>
+        }
+    }
 </div>
+
+<app-ta-table-empty
+    [activeViewMode]="activeViewMode"
+    [btnText]="
+        selectedTab === tableStringEnum.FUEL_TRANSACTION
+            ? tableStringEnum.TRANSACTION
+            : tableStringEnum.STOP
+    "
+    [hasResults]="!!viewData.length"
+    (btnClickEmitter)="handleTableEmptyBtnClickEmit()"
+></app-ta-table-empty>

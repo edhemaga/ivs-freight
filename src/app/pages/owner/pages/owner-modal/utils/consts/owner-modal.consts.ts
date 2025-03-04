@@ -78,18 +78,6 @@ export class OwnerModalConfig {
         textTransform: 'lowercase',
     };
 
-    static ADDRESS_INPUT_CONFIG: ITaInput = {
-        name: 'Address',
-        type: 'text',
-        label: 'Address, City, State Zip',
-        isRequired: true,
-        placeholderIcon: 'address',
-        textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-376',
-        minLength: 6,
-        maxLength: 256,
-    };
-
     static ADDRESS_UNIT_INPUT_CONFIG: ITaInput = {
         name: 'address-unit',
         type: 'text',

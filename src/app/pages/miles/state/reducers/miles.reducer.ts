@@ -6,7 +6,7 @@ import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@pages/load/pages/load-table/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // Constants
 import { MilesTableColumns, MilesToolbarTabs } from '@pages/miles/consts';

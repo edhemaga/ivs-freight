@@ -12,4 +12,8 @@ export enum eGeneralActions {
     CLOSE = 'close',
     OPEN = 'open',
     SAVE = 'save',
+    NEXT = 'Next',
+    PREVIOUS = 'Previous',
+
+    OPEN_MODAL = 'open-modal',
 }

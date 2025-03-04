@@ -13,6 +13,8 @@ import {
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
 
+import { Subject, takeUntil } from 'rxjs';
+
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -25,14 +27,13 @@ import { DetailsActiveItemPipe } from '@shared/pipes/details-active-item.pipe';
 // enums
 import { SettingsGeneralStringEnum } from '@pages/settings/enums/settings-general-string.enum';
 import { ArrowActionsStringEnum } from '@shared/enums/arrow-actions-string.enum';
-import { eGeneralActions } from '@shared/enums';
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
 
-//Components
+// components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 
-//Models
+// models
 import { SettingsCompanyProperties } from '@pages/settings/models/settings-company-properties.model';
-import { Subject, takeUntil } from 'rxjs';
 
 // routes
 import { SettingsGeneralSvgRoutes } from '@pages/settings/pages/settings-company/components/settings-general/utils/svg-routes';
@@ -73,6 +74,9 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
     public fontSizeLogo: string;
 
     public svgRoutes = SettingsGeneralSvgRoutes;
+
+    public eGeneralActions = eGeneralActions;
+    public eStringPlaceholder = eStringPlaceholder;
 
     private destroy$ = new Subject<void>();
 

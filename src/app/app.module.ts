@@ -16,6 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '@shared/shared.module';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { ToastrModule } from 'ngx-toastr';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 // Routing
 import { AppRoutingModule } from '@app/app-routing.module';
@@ -43,7 +44,6 @@ import { configFactory } from '@core/configs/app.config';
 import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
-import { LoadEffect } from '@pages/load/state/effects/load.effect';
 
 // Lottie
 import player from 'lottie-web';
@@ -58,6 +58,10 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MilesEffects } from '@pages/miles/state/effects/miles.effects';
 import { milesReducer } from '@pages/miles/state/reducers/miles.reducer'; 
+// Store
+import { loadReducer } from '@pages/load/state/reducers/load.reducer';
+import { contactReducer } from '@pages/contacts/state/reducers/contacts.reducer';
+import { LoadEffect } from '@pages/load/state/effects/load.effect';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -102,6 +106,12 @@ export const appConfig: ApplicationConfig = {
         StoreModule.forRoot([]),
         StoreModule.forFeature('miles', milesReducer),
         EffectsModule.forRoot([LoadEffect, MilesEffects]),
+        StoreModule.forRoot({ load: loadReducer}),
+        EffectsModule.forRoot([LoadEffect]),
+        StoreDevtoolsModule.instrument({
+            name: 'Carriera App',
+        }),
+
         //components
         ReusableTemplatesComponent,
         // routing

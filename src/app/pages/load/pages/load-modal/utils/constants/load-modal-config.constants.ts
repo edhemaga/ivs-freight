@@ -1,4 +1,5 @@
 import { FormControl } from '@angular/forms';
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { TrailerTypeResponse, TruckTypeResponse } from 'appcoretruckassist';
 
@@ -11,7 +12,7 @@ export class LoadModalConfig {
             customClass: 'load-dispatches-ttd',
         },
         isDropdown: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-616  hide-after-arrow',
     };
@@ -25,12 +26,12 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isRequired: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-432',
     };
 
-    static LOAD_BROKER_CONTACTS_INPUT_CONFIG: ITaInput = {
+    static LOAD_BROKER_CONTACTS_INPUT_CONFIG: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -39,9 +40,9 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isDisabled: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-308',
+        dropdownWidthClass: 'w-col-308'
     };
 
     static LOAD_PICKUP_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -53,12 +54,12 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isRequired: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'uppercase',
         dropdownWidthClass: 'w-col-608 load-shipper-stops',
     };
 
-    static LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG: ITaInput = {
+    static LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -67,9 +68,9 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isDisabled: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-370',
+        dropdownWidthClass: 'w-col-370'
     };
 
     static LOAD_DELIVERY_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -81,12 +82,12 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isRequired: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'uppercase',
         dropdownWidthClass: 'w-col-608 load-shipper-stops',
     };
 
-    static LOAD_DELIVERY_SHIPPER_CONTACTS_INPUT_CONFIG: ITaInput = {
+    static LOAD_DELIVERY_SHIPPER_CONTACTS_INPUT_CONFIG: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -95,9 +96,9 @@ export class LoadModalConfig {
         },
         isDropdown: true,
         isDisabled: true,
-        blackInput: true,
+        blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-370',
+        dropdownWidthClass: 'w-col-370'
     };
 
     static LOAD_COMPANY_INPUT_CONFIG: ITaInput = {
@@ -108,13 +109,32 @@ export class LoadModalConfig {
         dropdownWidthClass: 'w-col-230',
     };
 
+    static LOAD_DISPATCHER_CONFIG: ICaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Dispatcher',
+        isDropdown: true,
+        isRequired: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: false,
+            image: true,
+            url: 'logoName',
+            template: 'user',
+            iconsPath: '',
+            activeItemIconKey: 'logoName',
+        },
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
+    };
+
     static LOAD_COMMODITY_CONFIG: ITaInput = {
         name: 'Input Dropdown',
         type: 'text',
         label: 'Commodity',
         isDropdown: true,
         dropdownWidthClass: 'w-col-142',
-        blackInput: true,
+        blackInput: false,
         customClass: 'hazardous-dropdown',
     };
 
@@ -476,11 +496,11 @@ export class LoadModalConfig {
                 )
                     ? 'tanker'
                     : selectedTrailerReq?.name?.toLowerCase()?.includes('rgn')
-                    ? 'low-boy-rgn'
-                    : selectedTrailerReq?.name
-                          ?.trim()
-                          .replace(' ', '')
-                          .toLowerCase(),
+                      ? 'low-boy-rgn'
+                      : selectedTrailerReq?.name
+                            ?.trim()
+                            .replace(' ', '')
+                            .toLowerCase(),
             },
             dropdownWidthClass: 'w-col-302',
             customClass: 'truck-trailer-dropdown',

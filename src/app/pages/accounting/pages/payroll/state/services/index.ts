@@ -1,4 +1,4 @@
 export * from "./payroll.service";
-export * from "./payroll_driver_commision.service";
-export * from "./payroll_flat_rate.service";
-export * from "./payroll_owner.service";
+export * from "./payroll-driver-commision.service";
+export * from "./payroll-flat-rate.service";
+export * from "./payroll-owner.service";

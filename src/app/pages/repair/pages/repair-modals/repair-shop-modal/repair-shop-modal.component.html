@@ -113,15 +113,24 @@
                                 ></app-ca-input>
                             </div>
                         </div>
-
                         <div class="row last-row repair-shop-address d-grid">
                             <div>
                                 <app-ca-input-address-dropdown
                                     (selectedAddress)="
                                         onAddressChangeInit($event)
                                     "
+                                    [inputConfig]="{
+                                        name: 'Address',
+                                        type: 'text',
+                                        label: 'Address, City, State Zip',
+                                        isRequired: true,
+                                        placeholderIcon: 'address',
+                                        textTransform: 'capitalize',
+                                        dropdownWidthClass: 'w-col-376',
+                                        minLength: 6,
+                                        maxLength: 256
+                                    }"
                                     [activeAddress]="selectedAddress"
-                                    [inputConfig]="addressInputConfig"
                                     [placeholderType]="'longAddress'"
                                     [formControlName]="
                                         RepairShopModalStringEnum.ADDRESS
@@ -241,6 +250,7 @@
                         }
 
                         <!-- Repair Shop Services -->
+
                         <app-ta-custom-card
                             [cardName]="'Service'"
                             [hasCounter]="getServiceCounter"
@@ -313,13 +323,13 @@
                                 ) {
                                     @if (openHour.get('id').value !== 7) {
                                         <div
-                                            (click)="toggleWorkingDay(ind)"
+                                            class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
                                             [ngClass]="{
                                                 active: openHour.get(
                                                     RepairShopModalStringEnum.IS_WORKING_DAY
                                                 ).value,
                                             }"
-                                            class="repair-shop-service d-flex align-items-center justify-content-center pl-0"
+                                            (click)="toggleWorkingDay(ind)"
                                         >
                                             <p
                                                 class="ta-font-bold text-uppercase"
@@ -772,13 +782,13 @@
                     <app-ca-modal-button
                         class="mr-12"
                         text="Delete"
-                        [size]="modalButtonSize.SMALL"
+                        [size]="eModalButtonSize.SMALL"
                         (click)="onModalAction(actionTypesEnum.DELETE)"
-                        [type]="modalButtonType.SECONDARY_NEGATIVE"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
                     >
                     </app-ca-modal-button>
                     <app-ca-modal-button
-                        [type]="modalButtonType.SECONDARY_NEUTRAL"
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
                         [text]="
                             businessStatus === 1
                                 ? 'Close Business'
@@ -793,7 +803,7 @@
                     [isSpinnerShown]="activeAction === actionTypesEnum.SAVE"
                     [text]="'Save Changes'"
                     (click)="onModalAction(actionTypesEnum.SAVE)"
-                    [type]="modalButtonType.PRIMARY_POSITIVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 >
                 </app-ca-modal-button>
             </div>
@@ -805,7 +815,7 @@
                 [isSpinnerShown]="
                     activeAction === actionTypesEnum.SAVE_AND_ADD_NEW
                 "
-                [type]="modalButtonType.SECONDARY_POSITIVE"
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
                 (click)="onModalAction(actionTypesEnum.SAVE_AND_ADD_NEW)"
             >
             </app-ca-modal-button>
@@ -813,7 +823,7 @@
                 [isValid]="isModalValidToSubmit"
                 [text]="'Save'"
                 [isSpinnerShown]="activeAction === actionTypesEnum.SAVE"
-                [type]="modalButtonType.PRIMARY_POSITIVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
                 (click)="onModalAction(actionTypesEnum.SAVE)"
             >
             </app-ca-modal-button>

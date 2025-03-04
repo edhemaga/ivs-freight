@@ -21,9 +21,8 @@ import {
 import { ITableOptions } from '@shared/models';
 
 // enums
-import { TableStringEnum } from '@shared/enums';
+import { eActiveViewMode, TableStringEnum } from '@shared/enums';
 import {
-    eActiveViewMode,
     eLoadStatusType,
 } from '@pages/load/pages/load-table/enums/index';
 
@@ -197,7 +196,7 @@ export const tableDataSelector = createSelector(
         );
         const tableClosedColumnsConfig = JSON.parse(
             localStorage.getItem(
-                `table-${TableType.LoadTemplate}-Configuration`
+                `table-${TableType.LoadClosed}-Configuration`
             )
         );
         const selectedTabLowerCase =
@@ -282,7 +281,7 @@ export const columnsSelector = createSelector(
     selectedTabSelector,
     (tableData, selectedTab) => {
         const selectedTabLowerCase =
-            eLoadStatusType[selectedTab]?.toLowerCase();
+        eLoadStatusType[selectedTab]?.toLowerCase();
         const tableDataSelectedItem = tableData?.find(
             (item) => item.field === selectedTabLowerCase
         );
@@ -370,5 +369,23 @@ export const getStatusListSelector = createSelector(
     statusListSelector,
     (statusList) => {
         return statusList;
+    }
+);
+
+export const staticModalDataSelector = createSelector(
+    loadState,
+    (state) => {
+        const { modal } = state;
+
+        return modal;
+    }
+);
+
+export const activeLoadModalDataSelector = createSelector(
+    loadState,
+    (state) => {
+        const { activeModalData } = state;
+
+        return activeModalData;
     }
 );

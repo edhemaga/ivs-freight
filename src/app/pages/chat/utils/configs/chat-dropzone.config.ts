@@ -3,10 +3,12 @@ import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzo
 
 // Assets
 import { ChatSvgRoutes } from '@pages/chat/utils/routes';
+// Enums
+import { eDropZoneFileType } from 'ca-components';
 
 export class ChatDropzone {
     static inputDropzone: DropZoneConfig = {
-        dropZoneType: 'image',
+        dropZoneType: eDropZoneFileType.IMAGE,
         dropZoneSvg: ChatSvgRoutes.dropZoneIcon,
         dropZoneAvailableFiles:
             'application/pdf, application/zip, application/docx, image/png, image/jpeg, image/jpg',

@@ -48,6 +48,7 @@ import {
     CaModalComponent,
     CaUploadFilesComponent,
     CaInputAddressDropdownComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -67,14 +68,12 @@ import { NavigationDataUploadFilesConfig } from '@core/components/navigation/uti
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { ModalButtonType } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
-
 
 @Component({
     selector: 'app-navigation-profile-update-modal',
@@ -104,12 +103,17 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
     ],
 })
 export class NavigationProfileUpdateModalComponent
-    extends AddressMixin(class { addressService!: AddressService; })
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
     public destroy$ = new Subject<void>();
 
-    public uploadFilesConfig = NavigationDataUploadFilesConfig.NAVIGATION_PROFILE_UPLOAD_FILES_CONFIG;
+    public uploadFilesConfig =
+        NavigationDataUploadFilesConfig.NAVIGATION_PROFILE_UPLOAD_FILES_CONFIG;
 
     private user: SignInResponse;
 
@@ -127,7 +131,7 @@ export class NavigationProfileUpdateModalComponent
     public activeAction: TaModalActionEnum;
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public displayName: string;
 
     constructor(
@@ -140,7 +144,7 @@ export class NavigationProfileUpdateModalComponent
         private formService: FormService,
         public addressService: AddressService
     ) {
-        super()
+        super();
     }
 
     ngOnInit() {
@@ -343,7 +347,7 @@ export class NavigationProfileUpdateModalComponent
                         lastName: res.lastName,
                         phone: res.phone,
                         email: res.email,
-                        address: res.address.address,
+                        address: res.address.address ? res.address : null,
                         addressUnit: res.address.addressUnit,
                         /*  avatar: res.avatar ? res.avatar : null, */
                     });
@@ -360,21 +364,20 @@ export class NavigationProfileUpdateModalComponent
     }
 
     private updateUserProfile() {
-        const { addressUnit, ...form } = this.profileUserForm.value;
+        const { addressUnit, address, ...form } = this.profileUserForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
+        let updateAddress = address;
+        if (address) {
+            updateAddress = {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit,
             };
         }
 
         const newData: UpdateUserCommand = {
             id: this.user.userId,
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: updateAddress?.address ? updateAddress : null,
         };
 
         this.userProfileUpdateService

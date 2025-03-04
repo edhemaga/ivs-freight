@@ -35,6 +35,9 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TableHeadStringEnum } from '@shared/components/ta-table/ta-table-head/enums/table-head-string.enum';
 import { SortOrder } from 'appcoretruckassist';
 
+// interfaces
+import { IToolbarWidth } from '@shared/interfaces';
+
 // models
 import { TableHeadRowsActionEmit } from '@shared/components/ta-table/ta-table-head/models/table-head-rows-action-emit.model';
 
@@ -85,6 +88,8 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
     public isRepairShopDetailsStringBoolean: boolean = false;
     public isRepairItemDetailsStringBoolean: boolean = false;
 
+    public toolbarWidth: IToolbarWidth;
+
     public visibleColumns: any[] = [];
     public pinedColumns: any[] = [];
     public pinedWidth: number = 0;
@@ -112,6 +117,8 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
         this.getSelectableRows();
 
         this.getTableWidth();
+
+        this.getToolbarWidth();
 
         this.getTableScroll();
 
@@ -315,15 +322,27 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
             });
     }
 
+    private getToolbarWidth(): void {
+        this.tableService.currentToolbarWidth
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((toolbarWidth) => {
+                this.toolbarWidth = toolbarWidth;
+            });
+    }
+
     private getTableScroll(): void {
         this.tableService.currentScroll
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: number) => {
                 if (this.viewData.length) {
-                    const shadowHost = document.querySelector(`#${TableHeadStringEnum.PARENT_SCROLL}`);
+                    const shadowHost = document.querySelector(
+                        `#${TableHeadStringEnum.PARENT_SCROLL}`
+                    );
                     const shadowRoot = shadowHost.shadowRoot;
-                    const scroll = shadowRoot.querySelector(`#${TableHeadStringEnum.SCROLL}`);
-                    
+                    const scroll = shadowRoot.querySelector(
+                        `#${TableHeadStringEnum.SCROLL}`
+                    );
+
                     if (scroll) scroll.scrollLeft = response;
                 }
             });
@@ -473,13 +492,16 @@ export class TaTableHeadComponent implements OnInit, OnChanges, OnDestroy {
                       column.sortDirection?.substr(1).toLowerCase())
                 : '';
 
-            const sortOrder = this.sortDirection === 'asc' ? SortOrder.Ascending : SortOrder.Descending;
+            const sortOrder =
+                this.sortDirection === 'asc'
+                    ? SortOrder.Ascending
+                    : SortOrder.Descending;
 
             this.headActions.emit({
                 action: TableHeadStringEnum.SORT,
                 direction: directionSort,
                 sortOrder: sortOrder,
-                sortBy: column.sortName
+                sortBy: column.sortName,
             });
 
             this.changeDetectorRef.detectChanges();

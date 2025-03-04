@@ -44,6 +44,7 @@ import {
     CaModalComponent,
     CaModalButtonComponent,
     CaInputAddressDropdownComponent,
+    eModalButtonClassType,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
@@ -58,11 +59,10 @@ import { SettingsParkingConfigPipe } from '@pages/settings/pipes';
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import {
-    ModalButtonType,
     TableStringEnum,
     DropActionsStringEnum,
     eGeneralActions,
-    EConfirmationMessage,
+    eConfirmationMessage,
 } from '@shared/enums';
 import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
@@ -145,7 +145,7 @@ export class SettingsParkingModalComponent
         },
         {
             id: 522,
-            name: EConfirmationMessage.NO,
+            name: eConfirmationMessage.NO,
             checked: true,
         },
     ];
@@ -158,7 +158,7 @@ export class SettingsParkingModalComponent
         },
         {
             id: 367,
-            name: EConfirmationMessage.NO,
+            name: eConfirmationMessage.NO,
             checked: true,
         },
     ];
@@ -216,7 +216,7 @@ export class SettingsParkingModalComponent
 
     public taModalActionEnum = TaModalActionEnum;
     public svgRoutes = SharedSvgRoutes;
-    public modalButtonType = ModalButtonType;
+    public eModalButtonClassType = eModalButtonClassType;
     public activeAction!: string;
     public data: ParkingResponse;
 
@@ -283,7 +283,7 @@ export class SettingsParkingModalComponent
         switch (action) {
             case ESettingsFormEnum.GATE:
                 this.gateBtns = this.gateBtns.map((item) => {
-                    event.name === EConfirmationMessage.NO
+                    event.name === eConfirmationMessage.NO
                         ? this.parkingForm
                               .get(ESettingsFormEnum.GATE)
                               .patchValue(false)
@@ -300,7 +300,7 @@ export class SettingsParkingModalComponent
 
             case 'camera':
                 this.cameraBtns = this.cameraBtns.map((item) => {
-                    event.name === EConfirmationMessage.NO
+                    event.name === eConfirmationMessage.NO
                         ? this.parkingForm
                               .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(false)
@@ -403,19 +403,13 @@ export class SettingsParkingModalComponent
     private updateParking(id: number) {
         const { addressUnit, rent, ...form } = this.parkingForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-        }
-
         const newData: UpdateParkingCommand = {
             id: id,
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
@@ -458,26 +452,15 @@ export class SettingsParkingModalComponent
             });
     }
 
-    private getUpdatedAddress(
-        address: AddressEntity,
-        addressUnit: string
-    ): AddressEntity {
-        return {
-            ...address,
-            addressUnit: addressUnit,
-        };
-    }
-
     private addParking(addNew?: boolean) {
         const { addressUnit, rent, ...form } = this.parkingForm.value;
 
-        const updatedAddress = this.selectedAddress
-            ? this.getUpdatedAddress(this.selectedAddress, addressUnit)
-            : null;
-
         const newData: CreateParkingCommand = {
             ...form,
-            address: updatedAddress?.address ? updatedAddress : null,
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
