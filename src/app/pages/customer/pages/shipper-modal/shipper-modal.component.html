@@ -100,6 +100,7 @@
                             <div class="col-10">
                                 <app-ca-input-address-dropdown
                                     formControlName="address"
+                                    [placeholderType]="'longAddress'"
                                     [inputConfig]="{
                                         name: 'Address',
                                         type: 'text',
@@ -111,7 +112,7 @@
                                         minLength: 6,
                                         maxLength: 256,
                                     }"
-                                    [placeholderType]="'longAddress'"
+                                    [activeAddress]="selectedAddress"
                                     (selectedAddress)="onHandleAddress($event)"
                                     [receivedAddressList]="addressList"
                                     [receivedAddressData]="addressData"
@@ -178,7 +179,7 @@
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="receivingFrom"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -198,11 +199,11 @@
                                             ).value,
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="receivingTo"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -222,7 +223,7 @@
                                             ).value,
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -266,7 +267,7 @@
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="shippingFrom"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -286,11 +287,11 @@
                                             ).value,
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ca-input
+                                <ca-input-datetime-picker
                                     formControlName="shippingTo"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -310,7 +311,7 @@
                                             ).value,
                                         customClass: 'datetimeclass',
                                     }"
-                                ></app-ca-input>
+                                ></ca-input-datetime-picker>
                             </div>
                         </div>
                     </app-ta-custom-card>

@@ -460,7 +460,6 @@ export class SettingsInsurancePolicyModalComponent
     private addInsurancePolicy(company: any) {
         let {
             addressUnit,
-            address,
             issued,
             expires,
             // Commerical General Liability
@@ -526,7 +525,7 @@ export class SettingsInsurancePolicyModalComponent
             ...form,
             issued: MethodsCalculationsHelper.convertDateToBackend(issued),
             expires: MethodsCalculationsHelper.convertDateToBackend(expires),
-            address: address,
+            address: this.selectedAddress,
             files: documents ? documents : this.insurancePolicyForm.value.files,
         };
 
@@ -695,7 +694,6 @@ export class SettingsInsurancePolicyModalComponent
 
     private updateInsurancePolicy(id: number) {
         let {
-            address,
             addressUnit,
             issued,
             expires,
@@ -761,7 +759,7 @@ export class SettingsInsurancePolicyModalComponent
             ...form,
             issued: MethodsCalculationsHelper.convertDateToBackend(issued),
             expires: MethodsCalculationsHelper.convertDateToBackend(expires),
-            address: address,
+            address: this.selectedAddress,
             files: documents ?? this.insurancePolicyForm.value.files,
             filesForDeleteIds: this.filesForDelete,
         };

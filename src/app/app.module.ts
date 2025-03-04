@@ -18,6 +18,7 @@ import { ApiModule, Configuration } from 'appcoretruckassist';
 import { ToastrModule } from 'ngx-toastr';
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 // Routing
 import { AppRoutingModule } from '@app/app-routing.module';
@@ -45,7 +46,6 @@ import { configFactory } from '@core/configs/app.config';
 import { WebsiteUserLoggedService } from '@pages/website/services/website-user-logged.service';
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
 import { StaticInjectorService } from '@core/decorators/titles.decorator';
-import { LoadEffect } from '@pages/load/state/effects/load.effect';
 
 // Lottie
 import player from 'lottie-web';
@@ -57,6 +57,8 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 
 // Store
 import { loadReducer } from '@pages/load/state/reducers/load.reducer';
+import { contactReducer } from '@pages/contacts/state/reducers/contacts.reducer';
+import { LoadEffect } from '@pages/load/state/effects/load.effect';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -98,8 +100,12 @@ export const appConfig: ApplicationConfig = {
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }), 
-        StoreModule.forRoot({ load: loadReducer }),
+        StoreModule.forRoot({ load: loadReducer}),
         EffectsModule.forRoot([LoadEffect]),
+        StoreDevtoolsModule.instrument({
+            name: 'Carriera App',
+        }),
+
         //components
         ReusableTemplatesComponent,
         // routing

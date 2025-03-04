@@ -448,7 +448,6 @@ export class OwnerModalComponent
             lastName,
             ssn,
             ein,
-            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
@@ -463,7 +462,7 @@ export class OwnerModalComponent
                     : firstName.concat(' ', lastName),
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: {
-                address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             bankId: this.selectedBank ? this.selectedBank.id : null,
@@ -497,7 +496,6 @@ export class OwnerModalComponent
             lastName,
             ssn,
             ein,
-            address,
             addressUnit,
             ...form
         } = this.ownerForm.value;
@@ -511,7 +509,7 @@ export class OwnerModalComponent
                     : firstName.concat(' ', lastName),
             ssnEin: this.selectedTab === 1 ? ein : ssn,
             address: {
-                address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             bankId: this.selectedBank ? this.selectedBank.id : null,

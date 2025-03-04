@@ -65,6 +65,7 @@
                         [receivedAddressList]="addressList"
                         [receivedAddressData]="addressData"
                         (selectedAddress)="onHandleAddress($event)"
+                        [activeAddress]="selectedAddress"
                         (sentAddressData)="
                             onAddressChange($event)
                         "

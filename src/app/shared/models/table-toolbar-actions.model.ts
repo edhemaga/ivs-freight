@@ -7,6 +7,7 @@ export interface ITableToolbarActions {
     showStatusFilter?: boolean,
     showMoneyFilter?: boolean,
     loadMoneyFilter?: boolean,
+    showLabelFilter?: boolean,
     hideDeleteButton?: boolean,
     viewModeOptions?: IViewModeOption[],
     showCountSelectedInList?: boolean,

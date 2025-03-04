@@ -39,6 +39,7 @@ import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component
 // modules
 import { ApplicantModule } from '@pages/applicant/applicant.module';
 import { SharedModule } from '@shared/shared.module';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @Component({
     selector: 'app-sph-modal',
@@ -59,6 +60,7 @@ import { SharedModule } from '@shared/shared.module';
         TaInputArrowsComponent,
         TaInputDropdownComponent,
         TaModalComponent,
+        CaInputDatetimePickerComponent,
     ],
 })
 export class ApplicantSphModalComponent implements OnInit, OnDestroy {

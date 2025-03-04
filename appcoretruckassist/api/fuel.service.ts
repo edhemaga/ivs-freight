@@ -1310,127 +1310,6 @@ export class FuelService {
     }
 
     /**
-     * @param fuelStopId 
-     * @param pageIndex 
-     * @param pageSize 
-     * @param companyId 
-     * @param sort 
-     * @param sortOrder 
-     * @param sortBy 
-     * @param search 
-     * @param search1 
-     * @param search2 
-     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-     * @param reportProgress flag to report request and response progress.
-     */
-    public apiFuelFuelledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<FuelledVehicleHistoryListResponse>;
-    public apiFuelFuelledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<FuelledVehicleHistoryListResponse>>;
-    public apiFuelFuelledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<FuelledVehicleHistoryListResponse>>;
-    public apiFuelFuelledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
-
-        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
-        if (fuelStopId !== undefined && fuelStopId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>fuelStopId, 'FuelStopId');
-        }
-        if (pageIndex !== undefined && pageIndex !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageIndex, 'PageIndex');
-        }
-        if (pageSize !== undefined && pageSize !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>pageSize, 'PageSize');
-        }
-        if (companyId !== undefined && companyId !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>companyId, 'CompanyId');
-        }
-        if (sort !== undefined && sort !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sort, 'Sort');
-        }
-        if (sortOrder !== undefined && sortOrder !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sortOrder, 'SortOrder');
-        }
-        if (sortBy !== undefined && sortBy !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>sortBy, 'SortBy');
-        }
-        if (search !== undefined && search !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search, 'Search');
-        }
-        if (search1 !== undefined && search1 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search1, 'Search1');
-        }
-        if (search2 !== undefined && search2 !== null) {
-          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
-            <any>search2, 'Search2');
-        }
-
-        let localVarHeaders = this.defaultHeaders;
-
-        let localVarCredential: string | undefined;
-        // authentication (ApiKeyInQueryParams) required
-        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
-        if (localVarCredential) {
-            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
-        }
-
-        // authentication (bearer) required
-        localVarCredential = this.configuration.lookupCredential('bearer');
-        if (localVarCredential) {
-            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
-        }
-
-        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-        if (localVarHttpHeaderAcceptSelected === undefined) {
-            // to determine the Accept header
-            const httpHeaderAccepts: string[] = [
-                'text/plain',
-                'application/json',
-                'text/json'
-            ];
-            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-        }
-        if (localVarHttpHeaderAcceptSelected !== undefined) {
-            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-        }
-
-        let localVarHttpContext: HttpContext | undefined = options && options.context;
-        if (localVarHttpContext === undefined) {
-            localVarHttpContext = new HttpContext();
-        }
-
-
-        let responseType_: 'text' | 'json' | 'blob' = 'json';
-        if (localVarHttpHeaderAcceptSelected) {
-            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-                responseType_ = 'text';
-            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-                responseType_ = 'json';
-            } else {
-                responseType_ = 'blob';
-            }
-        }
-
-        let localVarPath = `/api/fuel/fuelledvehicle`;
-        return this.httpClient.request<FuelledVehicleHistoryListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
-            {
-                context: localVarHttpContext,
-                params: localVarQueryParameters,
-                responseType: <any>responseType_,
-                withCredentials: this.configuration.withCredentials,
-                headers: localVarHeaders,
-                observe: observe,
-                reportProgress: reportProgress
-            }
-        );
-    }
-
-    /**
      * @param addressEntityCity 
      * @param addressEntityState 
      * @param addressEntityCounty 
@@ -1693,6 +1572,127 @@ export class FuelService {
 
         let localVarPath = `/api/fuel/fuelstop/check/store/${this.configuration.encodeParam({name: "franchiseId", value: franchiseId, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}/${this.configuration.encodeParam({name: "store", value: store, in: "path", style: "simple", explode: false, dataType: "string", dataFormat: undefined})}`;
         return this.httpClient.request<boolean>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * @param fuelStopId 
+     * @param pageIndex 
+     * @param pageSize 
+     * @param companyId 
+     * @param sort 
+     * @param sortOrder 
+     * @param sortBy 
+     * @param search 
+     * @param search1 
+     * @param search2 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiFuelFuelstopFueledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<FuelledVehicleHistoryListResponse>;
+    public apiFuelFuelstopFueledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<FuelledVehicleHistoryListResponse>>;
+    public apiFuelFuelstopFueledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<FuelledVehicleHistoryListResponse>>;
+    public apiFuelFuelstopFueledvehicleGet(fuelStopId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (fuelStopId !== undefined && fuelStopId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>fuelStopId, 'FuelStopId');
+        }
+        if (pageIndex !== undefined && pageIndex !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageIndex, 'PageIndex');
+        }
+        if (pageSize !== undefined && pageSize !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>pageSize, 'PageSize');
+        }
+        if (companyId !== undefined && companyId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>companyId, 'CompanyId');
+        }
+        if (sort !== undefined && sort !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sort, 'Sort');
+        }
+        if (sortOrder !== undefined && sortOrder !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortOrder, 'SortOrder');
+        }
+        if (sortBy !== undefined && sortBy !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>sortBy, 'SortBy');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
+        }
+        if (search1 !== undefined && search1 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search1, 'Search1');
+        }
+        if (search2 !== undefined && search2 !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search2, 'Search2');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/fuel/fuelstop/fueledvehicle`;
+        return this.httpClient.request<FuelledVehicleHistoryListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

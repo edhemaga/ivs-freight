@@ -1899,7 +1899,7 @@ export class DriverModalComponent
             ...form,
 
             dateOfBirth: convertedDate,
-            address: address,
+            address: this.selectedAddress,
 
             isOwner,
             ownerType: conditionalOwnerType,
@@ -2059,6 +2059,7 @@ export class DriverModalComponent
 
         // documents
         this.documents = files;
+        this.selectedAddress = address;
 
         // patch form
         this.driverForm.patchValue({
@@ -2069,7 +2070,6 @@ export class DriverModalComponent
             phone,
             email,
             ssn,
-            address,
             addressUnit: address?.addressUnit,
 
             isOwner: !!owner,
@@ -2178,7 +2178,6 @@ export class DriverModalComponent
     private updateDriverById(id: number): void {
         const {
             // eslint-disable-next-line no-unused-vars
-            address, // eslint-disable-next-line no-unused-vars
             ownerId, // eslint-disable-next-line no-unused-vars
             payType, // eslint-disable-next-line no-unused-vars
             bankId, // eslint-disable-next-line no-unused-vars
@@ -2288,7 +2287,7 @@ export class DriverModalComponent
             id,
 
             dateOfBirth: convertedDate,
-            address: address,
+            address: this.selectedAddress,
 
             isOwner,
             ownerType: conditionalOwnerType,
