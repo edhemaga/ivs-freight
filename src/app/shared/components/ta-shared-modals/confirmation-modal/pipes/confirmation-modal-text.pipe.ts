@@ -110,6 +110,8 @@ export class ConfirmationModalTextPipe implements PipeTransform {
                 subType === DropActionsStringEnum.DELETE_FUEL_TRANSACTION
                     ? DropActionsStringEnum.FUEL_TRANSACTION_TEXT
                     : DropActionsStringEnum.FUEL_STOP_TEXT;
+        } else if (template === TableStringEnum.FUEL_TRANSACTION) {
+            textEnd = DropActionsStringEnum.FUEL_TRANSACTION_TEXT;
         } else {
             textEnd = template;
         }
