@@ -82,10 +82,9 @@ export class MilesEffects {
     public getMilesListOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.changeFilters),
-            exhaustMap((action) => {
+            exhaustMap((action) => { 
                 const { filters } = action || {};
                 const { dateFrom, dateTo, revenueFrom, revenueTo, states } = filters;
-                
                 // TODO: Maybe this is not good, check
                 return this.store.select(selectSelectedTab).pipe(
                     take(1), // Get the current selected tab only once

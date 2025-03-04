@@ -103,11 +103,8 @@ export const appConfig: ApplicationConfig = {
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }), 
-        StoreModule.forRoot([]),
-        StoreModule.forFeature('miles', milesReducer),
         EffectsModule.forRoot([LoadEffect, MilesEffects]),
-        StoreModule.forRoot({ load: loadReducer}),
-        EffectsModule.forRoot([LoadEffect]),
+        StoreModule.forRoot({ load: loadReducer, miles: milesReducer}),
         StoreDevtoolsModule.instrument({
             name: 'Carriera App',
         }),
