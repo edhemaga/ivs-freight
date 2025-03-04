@@ -20,7 +20,9 @@ import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/n
 import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
-    CaFilterDropdownComponent
+    CaFilterDropdownComponent,
+    CaFilterListDropdownComponent,
+    CaFilterTimeDropdownComponent
 } from 'ca-components';
 import { ToolbarTabsComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs/toolbar-tabs.component';
 import { CaDropdownMenuComponent } from 'ca-components';
@@ -63,6 +65,8 @@ import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolba
         CaFilterDropdownComponent,
         CaDropdownMenuComponent,
         ToolbarTabsWrapperComponent,
+        CaFilterListDropdownComponent,
+        CaFilterTimeDropdownComponent,
 
         // pipes
         FormatDatePipe,

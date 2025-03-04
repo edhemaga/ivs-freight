@@ -41,26 +41,26 @@
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
 
                     @if (selectedTab !== 'Template') {
-                        <app-ca-filter-dropdown
+                        <app-ca-filter-time-dropdown
                             type="TimeFilter"
                             subType="past"
                             (setFilter)="setFilters($event)"
                         >
-                        </app-ca-filter-dropdown>
+                        </app-ca-filter-time-dropdown>
 
-                        <app-ca-filter-dropdown
+                        <app-ca-filter-list-dropdown
                             type="Dispatcher"
                             [list]="store.dispatcherList"
                             (setFilter)="setFilters($event)"
                         >
-                        </app-ca-filter-dropdown>
+                        </app-ca-filter-list-dropdown>
 
-                        <app-ca-filter-dropdown
+                        <app-ca-filter-list-dropdown
                             type="Status"
                             [list]="store.statusList"
                             (setFilter)="setFilters($event)"
                         >
-                        </app-ca-filter-dropdown>
+                        </app-ca-filter-list-dropdown>
 
                         <app-ca-filter
                             subType="all"

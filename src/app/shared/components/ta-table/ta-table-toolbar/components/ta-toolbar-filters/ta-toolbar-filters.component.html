@@ -156,12 +156,12 @@
 
     <!-- FUEL STOP FILTER -->
     @if (options.toolbarActions.showFuelStopFilter) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="FuelStop"
             [list]="fuelStopArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- DEPARTMENT FILTER -->
@@ -211,12 +211,12 @@
 
     <!-- TIME FILTER -->
     @if (options.toolbarActions.showTimeFilter) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-time-dropdown
             type="TimeFilter"
             subType="past"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-time-dropdown>
     }
 
     <!-- VACATION FILTER -->
@@ -249,74 +249,74 @@
 
     <!-- PM FILTER -->
     @if (options.toolbarActions.showPMFilter) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="Pm"
             [list]="pmFilterArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- PM FILTER -->
     @if (options.toolbarActions.showCategoryRepairFilter) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="Service"
             [list]="categoryRepairArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- CATEGORY FUEL FILTER -->
     @if (options.toolbarActions.showCategoryFuelFilter) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="FuelItem"
             [list]="categoryFuelArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
     <!-- STATUS FILTER -->
     @if (
         options.toolbarActions.showStatusFilter ||
         options.toolbarActions.showStatusDispatchFilter
     ) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="Status"
             [list]="loadStatusOptionsArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- PARKING FILTER -->
     @if (options.toolbarActions.showParkingFilter) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="Parking"
             [list]="loadParkingOptionsArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- TRUCK TYPE FILTER -->
     @if (options.toolbarActions.showTruckTypeFilter) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="TruckType"
             [list]="truckTypeArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- TRAILER TYPE FILTER -->
     @if (options.toolbarActions.showTrailerTypeFilter) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="TrailerType"
             [list]="trailerTypeArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- TRUCK FILTER -->
@@ -325,12 +325,12 @@
         options.toolbarActions.showTruckPmFilter ||
         options.toolbarActions.showTruckDispatchFilter
     ) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="TruckType"
             [list]="truckTypeArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- TRAILER FILTER -->
@@ -339,16 +339,16 @@
         options.toolbarActions.showTrailerPmFilter ||
         options.toolbarActions.showTrailerDispatchFilter
     ) {
-        <app-ca-filter-dropdown
+        <app-ca-filter-list-dropdown
             type="TrailerType"
             [list]="trailerTypeArray"
             (setFilter)="onFilter($event)"
         >
-        </app-ca-filter-dropdown>
+        </app-ca-filter-list-dropdown>
     }
 
     <!-- MONEY FILTER -->
-    @if (options.toolbarActions.showMoneyFilter) { 
+    @if (options.toolbarActions.showMoneyFilter) {
         <app-ca-filter
             [type]="'moneyFilter'"
             [icon]="'dollar'"

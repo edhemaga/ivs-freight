@@ -175,56 +175,56 @@
 
                     @if (hasFutureTimeFilter) {
                         <div class="me-1">
-                            <app-ca-filter-dropdown
+                            <app-ca-filter-list-dropdown
                                 type="TimeFilter"
                                 subType="future"
                                 (setFilter)="setFilterValue($event)"
                             >
-                            </app-ca-filter-dropdown>
+                            </app-ca-filter-list-dropdown>
                         </div>
                     }
 
                     @if (hasTimeFilter) {
                         <div class="me-1">
-                            <app-ca-filter-dropdown
+                            <app-ca-filter-time-dropdown
                                 type="TimeFilter"
                                 subType="past"
-                                (setFilter)="setFilterValue($event)"
+                                (setFilter)="setFilters($event)"
                             >
-                            </app-ca-filter-dropdown>
+                            </app-ca-filter-time-dropdown>
                         </div>
                     }
 
                     <ng-container *ngIf="hasDispatcherFilter">
                         <div class="me-1">
-                            <app-ca-filter-dropdown
+                            <app-ca-filter-list-dropdown
                                 type="Dispatcher"
                                 [list]="unselectedDispatcher"
                                 (setFilter)="setFilterValue($event)"
                             >
-                            </app-ca-filter-dropdown>
+                            </app-ca-filter-list-dropdown>
                         </div>
                     </ng-container>
 
                     @if (hasTruckTypeFilter) {
                         <div class="me-1">
-                            <app-ca-filter-dropdown
+                            <app-ca-filter-list-dropdown
                                 type="TruckType"
                                 [list]="truckTypeArray"
                                 (setFilter)="onFilter($event)"
                             >
-                            </app-ca-filter-dropdown>
+                            </app-ca-filter-list-dropdown>
                         </div>
                     }
 
                     @if (hasTrailerTypeFilter) {
                         <div class="me-1">
-                            <app-ca-filter-dropdown
+                            <app-ca-filter-list-dropdown
                                 type="TrailerType"
                                 [list]="trailerTypeArray"
                                 (setFilter)="onFilter($event)"
                             >
-                            </app-ca-filter-dropdown>
+                            </app-ca-filter-list-dropdown>
                         </div>
                     }
 

@@ -33,7 +33,8 @@ export class MilesEffects {
         dateFrom: string | null,
         dateTo: string | null,
         revenueFrom?: number,
-        revenueTo?: number
+        revenueTo?: number,
+        states?: string[]
     ) {
         const tabValue = tab === eMileTabs.Active ? 1 : 0;
         return this.milesService
@@ -42,7 +43,7 @@ export class MilesEffects {
                 tabValue,
                 dateFrom,
                 dateTo,
-                [],
+                states,
                 revenueFrom,
                 revenueTo
             )
@@ -83,7 +84,7 @@ export class MilesEffects {
             ofType(MilesAction.changeFilters),
             exhaustMap((action) => {
                 const { filters } = action || {};
-                const { dateFrom, dateTo, revenueFrom, revenueTo } = filters;
+                const { dateFrom, dateTo, revenueFrom, revenueTo, states } = filters;
                 
                 // TODO: Maybe this is not good, check
                 return this.store.select(selectSelectedTab).pipe(
@@ -94,7 +95,8 @@ export class MilesEffects {
                             dateFrom,
                             dateTo,
                             revenueFrom,
-                            revenueTo
+                            revenueTo,
+                            states
                         );
                     })
                 );

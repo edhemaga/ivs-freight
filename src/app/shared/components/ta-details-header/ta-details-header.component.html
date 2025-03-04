@@ -266,34 +266,34 @@
 
                         @if (timeFilter) {
                             <span class="ic-hed">
-                                <app-ca-filter-dropdown
+                                <app-ca-filter-time-dropdown
                                     type="TimeFilter"
-                                    timeSubType="past"
-                                    (setFilter)="setFilterValue($event)"
+                                    subType="past"
+                                    (setFilter)="setFilters($event)"
                                 >
-                                </app-ca-filter-dropdown>
+                                </app-ca-filter-time-dropdown>
                             </span>
                         }
 
                         @if (truckTypeFilter) {
                             <span class="ic-hed">
-                                <app-ca-filter-dropdown
+                                <app-ca-filter-list-dropdown
                                     type="TruckType"
                                     [list]="truckTypeArray"
                                     (setFilter)="setFilterValue($event)"
                                 >
-                                </app-ca-filter-dropdown>
+                                </app-ca-filter-list-dropdown>
                             </span>
                         }
 
                         @if (trailerTypeFilter) {
                             <span class="ic-hed">
-                                <app-ca-filter-dropdown
+                                <app-ca-filter-list-dropdown
                                     type="TrailerType"
                                     [list]="trailerTypeArray"
                                     (setFilter)="setFilterValue($event)"
                                 >
-                                </app-ca-filter-dropdown>
+                                </app-ca-filter-list-dropdown>
                             </span>
                         }
 
@@ -339,24 +339,24 @@
                         <ng-container *ngIf="dispatcherFilter">
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
-                                <app-ca-filter-dropdown
+                                <app-ca-filter-list-dropdown
                                     type="Dispatcher"
                                     [list]="unselectedDispatcher"
                                     (setFilter)="setFilterValue($event)"
                                 >
-                                </app-ca-filter-dropdown>
+                                </app-ca-filter-list-dropdown>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="statusFilter">
                             <span class="ic-hed">
                                 <!-- STATUS FILTER -->
-                                <app-ca-filter-dropdown
+                                <app-ca-filter-list-dropdown
                                     type="Status"
                                     [list]="loadStatusOptionsArray"
                                     (setFilter)="setFilterValue($event)"
                                 >
-                                </app-ca-filter-dropdown>
+                                </app-ca-filter-list-dropdown>
                             </span>
                         </ng-container>
 
@@ -379,12 +379,12 @@
                         <ng-container *ngIf="pmFilter">
                             <span class="ic-hed">
                                 <!-- PM FILTER -->
-                                <app-ca-filter-dropdown
+                                <app-ca-filter-list-dropdown
                                     type="Pm"
                                     [list]="pmFilterArray"
                                     (setFilter)="setFilterValue($event)"
                                 >
-                                </app-ca-filter-dropdown>
+                                </app-ca-filter-list-dropdown>
                             </span>
                         </ng-container>
 

@@ -24,6 +24,8 @@ import {
     CaSearchMultipleStatesComponent,
     CaFilterDropdownComponent,
     IFilterAction,
+    CaFilterStateDropdownComponent,
+    CaFilterTimeDropdownComponent
 } from 'ca-components';
 
 // Feature Services
@@ -54,6 +56,8 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
         CaFilterComponent,
         CaSearchMultipleStatesComponent,
         CaFilterDropdownComponent,
+        CaFilterStateDropdownComponent,
+        CaFilterTimeDropdownComponent,
     ],
     templateUrl: './miles.component.html',
     styleUrls: ['./miles.component.scss'],

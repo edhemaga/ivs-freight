@@ -31,6 +31,7 @@ import {
     CaSortDropdownComponent,
     SortColumn,
     CaFilterDropdownComponent,
+    CaFilterTimeDropdownComponent
 } from 'ca-components';
 
 // icon
@@ -81,6 +82,7 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
         CaFilterComponent,
         CaSortDropdownComponent,
         CaFilterDropdownComponent,
+        CaFilterTimeDropdownComponent,
 
         // pipes
         FormatCurrencyPipe,
