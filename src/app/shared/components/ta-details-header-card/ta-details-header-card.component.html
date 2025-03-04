@@ -6,7 +6,7 @@
                 class="current-active-item"
                 [ngClass]="{
                     'single-data': options.length === 1,
-                    closed: searchName.includes('Closed'),
+                    closed: searchName?.includes('Closed'),
                 }"
                 (click)="onPickItem()"
                 [ngbTooltip]="showDropdownTooltip"
@@ -63,7 +63,7 @@
                             class="current-active-owner"
                             [ngClass]="{
                                 'company-owned': searchName === 'Company Owned',
-                                closed: searchName.includes('Closed'),
+                                closed: searchName?.includes('Closed'),
                             }"
                             src="{{
                                 customPinnedSvg
