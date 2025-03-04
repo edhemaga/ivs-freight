@@ -819,6 +819,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private setByStateBarChartData(
         topPicks: any[],
         otherPicks: any[],
+        //leave these 2 any, waiting backend
         selectedTab: DashboardTopReportType
     ): IBaseDataset[] {
         const topPicksDataset = {
@@ -859,7 +860,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     private getValueBySelectedTab(
-        intervalResponse: any,
+        intervalResponse: any, //waiting backend for this
         selectedTab: DashboardTopReportType
     ): number {
         const propertyKey = this.getTabKeyProp(selectedTab);
