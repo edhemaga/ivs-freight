@@ -22,6 +22,7 @@ export class FilterHelper {
         currentFilters: IStateFilters
     ): IStateFilters {
         // if (res.queryParams === null) return null;
+        
         console.log(res, currentFilters);
         switch (res.filterType) {
             case eFilterDropdownEnum.TIME_FILTER: {
@@ -33,27 +34,27 @@ export class FilterHelper {
                     dateTo: toDate,
                 };
             }
-            // case LoadFilterStringEnum.MONEY_FILTER: {
-            //     const moneyArray = res.queryParams?.moneyArray ?? [];
+            case LoadFilterStringEnum.MONEY_FILTER: {
+                const moneyArray = res.queryParams?.moneyArray ?? [];
 
-            //     if(res.queryParams?.from) {
-            //         return {
-            //             ...currentFilters,
-            //             revenueFrom: res.queryParams.from,
-            //             revenueTo: res.queryParams.to
-            //         }
-            //     }
+                if(res.queryParams?.from) {
+                    return {
+                        ...currentFilters,
+                        revenueFrom: res.queryParams.from,
+                        revenueTo: res.queryParams.to
+                    }
+                }
 
-            //     return {
-            //         ...currentFilters,
-            //         rateFrom: moneyArray[0]?.from ?? null,
-            //         rateTo: moneyArray[0]?.to ?? null,
-            //         paidFrom: moneyArray[1]?.from ?? null,
-            //         paidTo: moneyArray[1]?.to ?? null,
-            //         dueFrom: moneyArray[2]?.from ?? null,
-            //         dueTo: moneyArray[2]?.to ?? null,
-            //     };
-            // }
+                return {
+                    ...currentFilters,
+                    rateFrom: moneyArray[0]?.from ?? null,
+                    rateTo: moneyArray[0]?.to ?? null,
+                    paidFrom: moneyArray[1]?.from ?? null,
+                    paidTo: moneyArray[1]?.to ?? null,
+                    dueFrom: moneyArray[2]?.from ?? null,
+                    dueTo: moneyArray[2]?.to ?? null,
+                };
+            }
             case eFilterDropdownEnum.STATE:
                 return { ...currentFilters, states: res.selectedStates };
 
