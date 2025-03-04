@@ -93,4 +93,21 @@ export class LoadStoreEffectsHelper {
 
         return result;
     }
+
+    public static getLoadStatusFilter(tableService: TruckassistTableService, dispatcherFilterResponse: DispatcherFilterResponse[], selectedTab: eLoadStatusType ): void {
+        const _options = dispatcherFilterResponse.map(_ => {
+            return {
+                ..._,
+                isSelected: false
+            }
+        });
+        const filterOptionsData = {
+            selectedTab: eLoadStatusType[selectedTab],
+            options: [..._options]
+        };
+
+        tableService.sendLoadStatusFilter(
+            filterOptionsData
+        );
+    }
 }
