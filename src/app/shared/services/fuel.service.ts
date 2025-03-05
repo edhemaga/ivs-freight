@@ -180,7 +180,9 @@ export class FuelService {
         );
     }
 
-    public updateFuelTransaction<T>(data: T): Observable<CreateResponse> {
+    public updateFuelTransaction<T>(
+        data: T
+    ): Observable<FuelTransactionResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.fuelService.apiFuelTransactionPut().pipe(
@@ -311,7 +313,7 @@ export class FuelService {
         return this.fuelService.apiFuelFuelstopIdGet(id);
     }
 
-    public addFuelStop<T>(data: T): Observable<CreateResponse> {
+    public addFuelStop<T>(data: T): Observable<FuelStopResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.fuelService.apiFuelFuelstopPost().pipe(
@@ -330,7 +332,7 @@ export class FuelService {
         );
     }
 
-    public updateFuelStop<T>(data: T): Observable<object> {
+    public updateFuelStop<T>(data: T): Observable<FuelStopResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.fuelService.apiFuelFuelstopUpdatePut().pipe(
@@ -401,6 +403,9 @@ export class FuelService {
                             ...store.fuelStops,
                             pagination: {
                                 ...store.fuelStops.pagination,
+                                fuelStopCount:
+                                    store.fuelStops.pagination.fuelStopCount -
+                                    1,
                                 data: store.fuelStops.pagination.data.filter(
                                     (transaction) => transaction.id !== id
                                 ),
