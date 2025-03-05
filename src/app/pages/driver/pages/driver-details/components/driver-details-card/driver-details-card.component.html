@@ -96,7 +96,7 @@
                                 </app-ta-tab-switch>
                             </div>
                         }
-                        <ng-container *ngIf="payrollChartConfig?.chartData">
+                        @if (payrollChartConfig?.chartData) {
                             <app-ca-chart
                                 [chartConfig]="payrollChartConfig"
                                 [legendData]="{
@@ -108,7 +108,7 @@
                                 (hoveredIndex)="setDriverLegendOnHover($event)"
                             >
                             </app-ca-chart>
-                        </ng-container>
+                        }
                     </div>
                 </app-ta-custom-card>
 
