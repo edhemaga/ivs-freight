@@ -11,6 +11,7 @@ export enum TaModalTableStringEnum {
     PREVIOUS_ADDRESSES_TABLE_ITEMS = 'previousAddressesTableItems',
     LOAD_MODAL_TABLE_ITEMS = 'loadModalTableItems',
     DEPARTMENT_CONTACT_ITEMS = 'departmentTableItems',
+    CHECKBOX_HEADER_ITEM = 'checkBoxHeaderItem',
 
     // types
     CONTACT_PHONE_TYPE = 'contact-phone-type',
@@ -35,6 +36,6 @@ export enum TaModalTableStringEnum {
 
     // additional
     VALID = 'VALID',
-
     EMPTY_STRING = '',
+
 }
