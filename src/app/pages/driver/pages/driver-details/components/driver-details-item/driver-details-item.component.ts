@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // decorators
@@ -32,8 +32,10 @@ import { DetailsConfig } from '@shared/models/details-config.model';
         DriverDetailsItemMvrComponent,
     ],
 })
-export class DriverDetailsItemComponent {
+export class DriverDetailsItemComponent implements OnChanges {
     @Input() detailsConfig!: DetailsConfig[];
+
+    public ngOnChanges(changes: SimpleChanges): void {}
 
     constructor() {}
 }
