@@ -3,9 +3,9 @@ import { IChartConfiguration } from '@ca-shared/components/ca-chart/models';
 
 //enums
 import {
-    ChartImagesStringEnum,
     eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 export class DashboardByStateChartsConfiguration {
     public static BY_STATE_CHART_CONFIG: IChartConfiguration = {
@@ -17,7 +17,7 @@ export class DashboardByStateChartsConfiguration {
         height: 260,
         width: 100,
         isMultiYAxis: false,
-        noDataImage: '',
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
         showXAxisLabels: true,
         isTooltipItemInSelectedItems: true,

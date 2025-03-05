@@ -1,5 +1,5 @@
+import { eStringPlaceholder } from '@shared/enums';
 import {
-    ChartImagesStringEnum,
     eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
 
@@ -12,7 +12,7 @@ export class DashboardTopRatedChartsConfiguration {
         },
         height: 330,
         width: 100,
-        noDataImage: '',
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
         showXAxisLabels: false,
     };
@@ -26,7 +26,7 @@ export class DashboardTopRatedChartsConfiguration {
         height: 260,
         width: 100,
         isMultiYAxis: false,
-        noDataImage: '',
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
         showXAxisLabels: true,
         isTooltipItemInSelectedItems: true,

@@ -1,7 +1,5 @@
-import {
-    ChartImagesStringEnum,
-    eChartTypesString,
-} from 'ca-components/lib/components/ca-chart/enums';
+import { eStringPlaceholder } from '@shared/enums';
+import { eChartTypesString } from 'ca-components/lib/components/ca-chart/enums';
 
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
@@ -15,7 +13,7 @@ export class DashboardPerformanceChartsConfiguration {
         height: 350,
         width: 100,
         isMultiYAxis: true,
-        noDataImage: '',
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
         showXAxisLabels: false,
         showTooltipBackground: true,
@@ -33,7 +31,7 @@ export class DashboardPerformanceChartsConfiguration {
         },
         height: 100,
         width: 100,
-        noDataImage: '',
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
         showXAxisLabels: true,
         showTooltipBackground: true,
