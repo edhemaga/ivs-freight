@@ -24,6 +24,7 @@ import { ChartHelper } from '@shared/utils/helpers';
 // Enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 import { DashboardChartStringEnum } from '@pages/dashboard/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 // Models
 import { DropdownItem } from '@shared/models/dropdown-item.model';
@@ -166,11 +167,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopCategory(): string {
         const length = this.topRatedList.length;
-
-        if (length <= 10) return DashboardConstants.BAR_CHART_LABEL_TOP_3;
-        if (length <= 30) return DashboardConstants.BAR_CHART_LABEL_TOP_5;
-
-        return DashboardConstants.BAR_CHART_LABEL_TOP_10;
+        
+        return length <= 10 
+            ? DashboardConstants.BAR_CHART_LABEL_TOP_3 
+            : length <= 30 
+                ? DashboardConstants.BAR_CHART_LABEL_TOP_5 
+                : DashboardConstants.BAR_CHART_LABEL_TOP_10;
     }
 
     public resetSelectedValues(): void {
@@ -795,7 +797,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private updateBarChart(data: ITopRatedTabData): void {
         this.byStatechartLables = data.intervalLabels.map(
-            (item) => item.label || DashboardConstants.STRING_EMPTY
+            (item) => item.label || eStringPlaceholder.EMPTY
         );
 
         const byStateBarChartData = this.setByStateBarChartData(
