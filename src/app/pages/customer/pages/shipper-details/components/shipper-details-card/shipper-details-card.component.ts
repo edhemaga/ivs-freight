@@ -221,55 +221,72 @@ export class ShipperDetailsCardComponent
         this.shipperService
             .getShipperChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item: ShipperAverageWaitingTimeResponse) => {
-                let avgPickupTime =
-                        TimespanConvertHelper.convertTimeSpanToMinutes(
-                            item.avgPickupTime
+            .subscribe(
+                (item: ShipperAverageWaitingTimeResponse) => {
+                    let avgPickupTime =
+                            TimespanConvertHelper.convertTimeSpanToMinutes(
+                                item.avgPickupTime
+                            ),
+                        avgDeliveryTime =
+                            TimespanConvertHelper.convertTimeSpanToMinutes(
+                                item.avgDeliveryTime
+                            );
+
+                    let milesPerGallon = [],
+                        costPerGallon = [],
+                        labels = [],
+                        maxValue = 0;
+
+                    item.shipperAverageWaitingTimeChartResponse.map((data) => {
+                        let pickup =
+                            TimespanConvertHelper.convertTimeSpanToMinutes(
+                                data.avgPickupTime
+                            );
+                        let delivery =
+                            TimespanConvertHelper.convertTimeSpanToMinutes(
+                                data.avgDeliveryTime
+                            );
+
+                        if (delivery + pickup > maxValue) {
+                            maxValue =
+                                delivery +
+                                pickup +
+                                ((delivery + pickup) * 7) / 100;
+                        }
+                        if (data.day) {
+                            labels.push([
+                                data.day,
+                                this.monthList[data.month - 1],
+                            ]);
+                        } else {
+                            labels.push([this.monthList[data.month - 1]]);
+                        }
+
+                        delivery = delivery ? -delivery : 0;
+                        milesPerGallon.push(pickup);
+                        costPerGallon.push(delivery);
+                    });
+
+                    this.payrollChartData = { ...item };
+                    this.payrollChartConfig = {
+                        ...ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: ChartHelper.generateDataByDateTime(
+                            this.payrollChartData
+                                .shipperAverageWaitingTimeChartResponse,
+                            ChartConfiguration.SHIPPER_AVERAGE_WAITING_TIME_CONFIGURATION
                         ),
-                    avgDeliveryTime =
-                        TimespanConvertHelper.convertTimeSpanToMinutes(
-                            item.avgDeliveryTime
-                        );
-
-                let milesPerGallon = [],
-                    costPerGallon = [],
-                    labels = [],
-                    maxValue = 0;
-
-                item.shipperAverageWaitingTimeChartResponse.map((data) => {
-                    let pickup = TimespanConvertHelper.convertTimeSpanToMinutes(
-                        data.avgPickupTime
-                    );
-                    let delivery =
-                        TimespanConvertHelper.convertTimeSpanToMinutes(
-                            data.avgDeliveryTime
-                        );
-
-                    if (delivery + pickup > maxValue) {
-                        maxValue =
-                            delivery + pickup + ((delivery + pickup) * 7) / 100;
-                    }
-                    if (data.day) {
-                        labels.push([data.day, this.monthList[data.month - 1]]);
-                    } else {
-                        labels.push([this.monthList[data.month - 1]]);
-                    }
-
-                    delivery = delivery ? -delivery : 0;
-                    milesPerGallon.push(pickup);
-                    costPerGallon.push(delivery);
-                });
-
-                this.payrollChartData = item;
-                this.payrollChartConfig = {
-                    ...ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime(
-                        this.payrollChartData
-                            .shipperAverageWaitingTimeChartResponse,
-                        ChartConfiguration.SHIPPER_AVERAGE_WAITING_TIME_CONFIGURATION
-                    ),
-                };
-            });
+                    };
+                },
+                () => {
+                    this.payrollChartConfig = {
+                        ...ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     public setPayrollLegendOnHover(index: number | null): void {

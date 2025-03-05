@@ -308,26 +308,37 @@ export class TrailerDetailsCardComponent
         this.trailerService
             .getTrailerFuelConsumption(this.trailer.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: TrailerFuelConsumptionResponse) => {
-                if (timeFilter && this.fuelConsumptionTabs[timeFilter - 1])
-                    this.fuelConsumptionTabs[timeFilter - 1].checked = true;
+            .subscribe(
+                (response: TrailerFuelConsumptionResponse) => {
+                    if (timeFilter && this.fuelConsumptionTabs[timeFilter - 1])
+                        this.fuelConsumptionTabs[timeFilter - 1].checked = true;
 
-                this.fuelConsumptionChartData = response;
-                this.fuelConsumptionChartConfig = {
-                    ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
-                    chartData:
-                        ChartHelper.generateDataByDateTime<TrailerFuelConsumptionChartResponse>(
+                    this.fuelConsumptionChartData = response;
+                    this.fuelConsumptionChartConfig = {
+                        ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<TrailerFuelConsumptionChartResponse>(
+                                this.fuelConsumptionChartData
+                                    .trailerFuelConsumptionCharts,
+                                ChartConfiguration.TRAILER_FUEL_EXPENSES_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+                    this.fuelConsumptionChartLegend =
+                        ChartLegendConfiguration.trailerFuelConsumptionConfiguration(
                             this.fuelConsumptionChartData
-                                .trailerFuelConsumptionCharts,
-                            ChartConfiguration.TRAILER_FUEL_EXPENSES_CONFIGURATION,
-                            timeFilter
-                        ),
-                };
-                this.fuelConsumptionChartLegend =
-                    ChartLegendConfiguration.trailerFuelConsumptionConfiguration(
-                        this.fuelConsumptionChartData
-                    );
-            });
+                        );
+                },
+                () => {
+                    this.fuelConsumptionChartConfig = {
+                        ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     public setFuelConsumptionLegendOnHover(index: number | null): void {

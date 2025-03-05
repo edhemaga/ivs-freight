@@ -103,55 +103,70 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.repairService
             .getRepairShopChart(id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item: RepairShopExpensesResponse) => {
-                if (
-                    timeFilter &&
-                    this.repairShopExpensesChartTabs[timeFilter - 1]
-                )
-                    this.repairShopExpensesChartTabs[timeFilter - 1].checked =
-                        true;
-                this.repairShopExpensesLegendHighlightedBackground = false;
+            .subscribe(
+                (item: RepairShopExpensesResponse) => {
+                    if (
+                        timeFilter &&
+                        this.repairShopExpensesChartTabs[timeFilter - 1]
+                    )
+                        this.repairShopExpensesChartTabs[
+                            timeFilter - 1
+                        ].checked = true;
+                    this.repairShopExpensesLegendHighlightedBackground = false;
 
-                this.repairShopChartData = item;
+                    this.repairShopChartData = item;
 
-                this.repairShopChartConfig = {
-                    ...RepairShopChartsConfiguration.REPAIR_CHART_CONFIG,
-                    chartData:
-                        ChartHelper.generateDataByDateTime<RepairShopExpensesResponse>(
+                    this.repairShopChartConfig = {
+                        ...RepairShopChartsConfiguration.REPAIR_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<RepairShopExpensesResponse>(
+                                this.repairShopChartData
+                                    .repairShopExpensesChartResponse,
+                                ChartConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+
+                    this.repairShopExpensesChartLegendData = [
+                        ...ChartLegendConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION(
                             this.repairShopChartData
-                                .repairShopExpensesChartResponse,
-                            ChartConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION,
-                            timeFilter
                         ),
-                };
+                    ];
+                    let milesPerGallon = [],
+                        costPerGallon = [],
+                        labels = [],
+                        maxValue = 0,
+                        maxValue2 = 0;
 
-                this.repairShopExpensesChartLegendData = [
-                    ...ChartLegendConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION(
-                        this.repairShopChartData
-                    ),
-                ];
-                let milesPerGallon = [],
-                    costPerGallon = [],
-                    labels = [],
-                    maxValue = 0,
-                    maxValue2 = 0;
+                    item?.repairShopExpensesChartResponse?.forEach((data) => {
+                        milesPerGallon.push(data.repair);
+                        costPerGallon.push(data.repairCost);
 
-                item?.repairShopExpensesChartResponse?.forEach((data) => {
-                    milesPerGallon.push(data.repair);
-                    costPerGallon.push(data.repairCost);
+                        if (data.repair > maxValue)
+                            maxValue = data.repair + (data.repair * 7) / 100;
 
-                    if (data.repair > maxValue)
-                        maxValue = data.repair + (data.repair * 7) / 100;
+                        if (data.repairCost > maxValue2)
+                            maxValue2 =
+                                data.repairCost + (data.repairCost * 7) / 100;
 
-                    if (data.repairCost > maxValue2)
-                        maxValue2 =
-                            data.repairCost + (data.repairCost * 7) / 100;
-
-                    if (data.day)
-                        labels.push([data.day, this.monthList[data.month - 1]]);
-                    else labels.push([this.monthList[data.month - 1]]);
-                });
-            });
+                        if (data.day)
+                            labels.push([
+                                data.day,
+                                this.monthList[data.month - 1],
+                            ]);
+                        else labels.push([this.monthList[data.month - 1]]);
+                    });
+                },
+                () => {
+                    this.repairShopChartConfig = {
+                        ...RepairShopChartsConfiguration.REPAIR_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
 
         this.cdRef.detectChanges();
     }
