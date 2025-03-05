@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // decorators
@@ -32,14 +32,8 @@ import { DetailsConfig } from '@shared/models/details-config.model';
         DriverDetailsItemMvrComponent,
     ],
 })
-export class DriverDetailsItemComponent implements OnChanges {
-    @Input() detailsConfig: DetailsConfig;
+export class DriverDetailsItemComponent {
+    @Input() detailsConfig: DetailsConfig[];
 
     constructor() {}
-
-    ngOnChanges(): void {}
-
-    public trackByIdentity(index: number): number {
-        return index;
-    }
 }

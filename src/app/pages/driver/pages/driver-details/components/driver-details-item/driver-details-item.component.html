@@ -1,54 +1,38 @@
 <div class="details-component driver-details-item-container">
-    <ng-container
-        *ngFor="let driverItem of detailsConfig; trackBy: trackByIdentity"
-    >
-        <ng-container [ngSwitch]="driverItem.template">
-            <!-- General -->
-
-            <ng-container *ngSwitchCase="'general'">
+    @for (driverItem of detailsConfig; let ind = $index; track driverItem.id) {
+        @switch (driverItem.template) {
+            @case ('general') {
                 <app-driver-details-card
-                    [driver]="detailsConfig[0]?.data"
+                    [driverData]="detailsConfig[0]?.data"
                 ></app-driver-details-card>
-            </ng-container>
-
-            <!-- Cdl -->
-
-            <ng-container *ngSwitchCase="'cdl'">
+            }
+            @case ('cdl') {
                 <app-driver-details-item-cdl
                     [cdlList]="detailsConfig[1]?.data"
                     [driver]="detailsConfig[0]?.data"
                 ></app-driver-details-item-cdl>
-            </ng-container>
-
-            <!-- Test -->
-
-            <ng-container *ngSwitchCase="'drug-alcohol'">
+            }
+            @case ('drug-alcohol') {
                 <app-driver-details-item-test
                     [testList]="detailsConfig[2]?.data"
                     [driver]="detailsConfig[0]?.data"
                 >
                 </app-driver-details-item-test>
-            </ng-container>
-
-            <!-- Medical -->
-
-            <ng-container *ngSwitchCase="'medical'">
+            }
+            @case ('medical') {
                 <app-driver-details-item-medical
                     [medicalList]="detailsConfig[3]?.data"
                     [driver]="detailsConfig[0]?.data"
                 >
                 </app-driver-details-item-medical>
-            </ng-container>
-
-            <!-- MVR -->
-
-            <ng-container *ngSwitchCase="'mvr'">
+            }
+            @case ('mvr') {
                 <app-driver-details-item-mvr
                     [mvrList]="detailsConfig[4]?.data"
                     [driver]="detailsConfig[0]?.data"
                 >
                 </app-driver-details-item-mvr>
-            </ng-container>
-        </ng-container>
-    </ng-container>
+            }
+        }
+    }
 </div>
