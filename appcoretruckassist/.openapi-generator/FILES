@@ -1083,6 +1083,8 @@ model/truckMinimalListResponse.ts
 model/truckMinimalMobileResponse.ts
 model/truckMinimalResponse.ts
 model/truckMinimalResponsePagination.ts
+model/truckModelListResponse.ts
+model/truckModelResponse.ts
 model/truckPerformanceResponse.ts
 model/truckResponse.ts
 model/truckRevenueChartResponse.ts
