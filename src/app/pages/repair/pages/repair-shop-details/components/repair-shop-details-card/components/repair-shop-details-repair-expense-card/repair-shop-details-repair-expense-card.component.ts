@@ -104,6 +104,12 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
             .getRepairShopChart(id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((item: RepairShopExpensesResponse) => {
+                if (
+                    timeFilter &&
+                    this.repairShopExpensesChartTabs[timeFilter - 1]
+                )
+                    this.repairShopExpensesChartTabs[timeFilter - 1].checked =
+                        true;
                 this.repairShopExpensesLegendHighlightedBackground = false;
 
                 this.repairShopChartData = item;
@@ -144,14 +150,6 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
                     if (data.day)
                         labels.push([data.day, this.monthList[data.month - 1]]);
                     else labels.push([this.monthList[data.month - 1]]);
-
-                    if (
-                        timeFilter &&
-                        this.repairShopExpensesChartTabs[timeFilter - 1]
-                    )
-                        this.repairShopExpensesChartTabs[
-                            timeFilter - 1
-                        ].checked = true;
                 });
             });
 
