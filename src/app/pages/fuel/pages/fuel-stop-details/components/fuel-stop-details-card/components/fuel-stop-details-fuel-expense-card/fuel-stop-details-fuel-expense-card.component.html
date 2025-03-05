@@ -21,18 +21,15 @@
                 </app-ta-tab-switch>
             </div>
         }
-
-        @if (fuelChartConfig?.chartData) {
-            <app-ca-chart
-                [chartConfig]="fuelChartConfig"
-                [legendData]="{
-                    data: fuelChartLegend,
-                    hasHighlightedBackground: fuelLegendHighlightedBackground,
-                    title: fuelLegendTitle,
-                }"
-                (hoveredIndex)="setFuelLegendOnHover($event)"
-            >
-            </app-ca-chart>
-        }
+        <app-ca-chart
+            [chartConfig]="fuelChartConfig"
+            [legendData]="{
+                data: fuelChartLegend,
+                hasHighlightedBackground: fuelLegendHighlightedBackground,
+                title: fuelLegendTitle,
+            }"
+            (hoveredIndex)="setFuelLegendOnHover($event)"
+        >
+        </app-ca-chart>
     </div>
 </app-ta-custom-card>

@@ -976,21 +976,19 @@
                             >
                             </app-ta-tab-switch>
                         }
-                        @if (fuelConsumptionChartConfig?.chartData) {
-                            <app-ca-chart
-                                [chartConfig]="fuelConsumptionChartConfig"
-                                [legendData]="{
-                                    data: fuelConsumptionChartLegend,
-                                    hasHighlightedBackground:
-                                        fuelConsumptionLegendHighlightedBackground,
-                                    title: fuelConsumptionLegendTitle,
-                                }"
-                                (hoveredIndex)="
-                                    setFuelConsumptionLegendOnHover($event)
-                                "
-                            >
-                            </app-ca-chart>
-                        }
+                        <app-ca-chart
+                            [chartConfig]="fuelConsumptionChartConfig"
+                            [legendData]="{
+                                data: fuelConsumptionChartLegend,
+                                hasHighlightedBackground:
+                                    fuelConsumptionLegendHighlightedBackground,
+                                title: fuelConsumptionLegendTitle,
+                            }"
+                            (hoveredIndex)="
+                                setFuelConsumptionLegendOnHover($event)
+                            "
+                        >
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
 
@@ -1012,19 +1010,17 @@
                             >
                             </app-ta-tab-switch>
                         }
-                        @if (revenueChartConfig?.chartData) {
-                            <app-ca-chart
-                                [chartConfig]="revenueChartConfig"
-                                [legendData]="{
-                                    data: revenueChartLegend,
-                                    hasHighlightedBackground:
-                                        revenueLegendHighlightedBackground,
-                                    title: revenueLegendTitle,
-                                }"
-                                (hoveredIndex)="setRevenueLegendOnHover($event)"
-                            >
-                            </app-ca-chart>
-                        }
+                        <app-ca-chart
+                            [chartConfig]="revenueChartConfig"
+                            [legendData]="{
+                                data: revenueChartLegend,
+                                hasHighlightedBackground:
+                                    revenueLegendHighlightedBackground,
+                                title: revenueLegendTitle,
+                            }"
+                            (hoveredIndex)="setRevenueLegendOnHover($event)"
+                        >
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
                 <!----------------->
@@ -1042,22 +1038,20 @@
                             >
                             </app-ta-tab-switch>
                         }
-                        @if (expensesChartConfig?.chartData) {
-                            <app-ca-chart
-                                [chartConfig]="expensesChartConfig"
-                                [legendData]="{
-                                    data: expensesChartLegend,
-                                    hasHighlightedBackground:
-                                        expensesLegendHighlightedBackground,
-                                    title: expensesLegendTitle,
-                                }"
-                                (hoveredIndex)="
-                                    setExpensesRevenueLegendOnHover($event)
-                                "
+                        <app-ca-chart
+                            [chartConfig]="expensesChartConfig"
+                            [legendData]="{
+                                data: expensesChartLegend,
+                                hasHighlightedBackground:
+                                    expensesLegendHighlightedBackground,
+                                title: expensesLegendTitle,
+                            }"
+                            (hoveredIndex)="
+                                setExpensesRevenueLegendOnHover($event)
+                            "
+                        >
                             >
-                                >
-                            </app-ca-chart>
-                        }
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
                 <!--------Owner History--------->

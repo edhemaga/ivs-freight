@@ -149,27 +149,39 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
     private getDriverPayroll(timeFilter?: number): void {
         this.driverService
             .getDriverPayroll(this.driver.id, timeFilter || 1)
-            .subscribe((response: DriverPayrollResponse) => {
-                if (timeFilter && this.barChartTabs[timeFilter - 1])
-                    this.barChartTabs[timeFilter - 1].checked = true;
+            .subscribe(
+                (response: DriverPayrollResponse) => {
+                    if (timeFilter && this.barChartTabs[timeFilter - 1])
+                        this.barChartTabs[timeFilter - 1].checked = true;
 
-                this.driverChartData = response;
+                    this.driverChartData = response;
 
-                this.payrollChartConfig = {
-                    ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
-                    chartData:
-                        ChartHelper.generateDataByDateTime<DriverPayrollChartResponse>(
-                            this.driverChartData.getDriverPayrollChartResponse,
-                            ChartConfiguration.DRIVER_CONFIGURATION,
-                            timeFilter
-                        ),
-                };
+                    this.payrollChartConfig = {
+                        ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<DriverPayrollChartResponse>(
+                                this.driverChartData
+                                    .getDriverPayrollChartResponse,
+                                ChartConfiguration.DRIVER_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
 
-                this.driverLegendConfig =
-                    ChartLegendConfiguration.driverLegendConfiguration(
-                        this.driverChartData
-                    );
-            });
+                    this.driverLegendConfig =
+                        ChartLegendConfiguration.driverLegendConfiguration(
+                            this.driverChartData
+                        );
+                },
+                () => {
+                    this.payrollChartConfig = {
+                        ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     public setDriverLegendOnHover(index: number | null): void {

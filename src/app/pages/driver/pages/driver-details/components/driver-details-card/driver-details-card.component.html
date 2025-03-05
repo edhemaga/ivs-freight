@@ -96,19 +96,17 @@
                                 </app-ta-tab-switch>
                             </div>
                         }
-                        @if (payrollChartConfig?.chartData) {
-                            <app-ca-chart
-                                [chartConfig]="payrollChartConfig"
-                                [legendData]="{
-                                    data: driverLegendConfig,
-                                    hasHighlightedBackground:
-                                        driverLegendHighlightedBackground,
-                                    title: driverLegendTitle,
-                                }"
-                                (hoveredIndex)="setDriverLegendOnHover($event)"
-                            >
-                            </app-ca-chart>
-                        }
+                        <app-ca-chart
+                            [chartConfig]="payrollChartConfig"
+                            [legendData]="{
+                                data: driverLegendConfig,
+                                hasHighlightedBackground:
+                                    driverLegendHighlightedBackground,
+                                title: driverLegendTitle,
+                            }"
+                            (hoveredIndex)="setDriverLegendOnHover($event)"
+                        >
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
 

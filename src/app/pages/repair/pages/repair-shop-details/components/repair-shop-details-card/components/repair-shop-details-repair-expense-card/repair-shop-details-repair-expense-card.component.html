@@ -21,17 +21,15 @@
                 </app-ta-tab-switch>
             </div>
         }
-        @if (repairShopChartConfig?.chartData) {
-            <app-ca-chart
-                [chartConfig]="repairShopChartConfig"
-                [legendData]="{
-                    data: repairShopExpensesChartLegendData,
-                    hasHighlightedBackground:
-                        repairShopExpensesLegendHighlightedBackground,
-                    title: repairShopExpensesLegendTitle,
-                }"
-                (hoveredIndex)="setRepairShopExpensesLegendOnHover($event)"
-            ></app-ca-chart>
-        }
+        <app-ca-chart
+            [chartConfig]="repairShopChartConfig"
+            [legendData]="{
+                data: repairShopExpensesChartLegendData,
+                hasHighlightedBackground:
+                    repairShopExpensesLegendHighlightedBackground,
+                title: repairShopExpensesLegendTitle,
+            }"
+            (hoveredIndex)="setRepairShopExpensesLegendOnHover($event)"
+        ></app-ca-chart>
     </div>
 </app-ta-custom-card>

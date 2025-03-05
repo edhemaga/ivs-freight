@@ -130,19 +130,17 @@
                             </app-ta-tab-switch>
                         </div>
                     }
-                    @if (invoiceChartConfig?.chartData) {
-                        <app-ca-chart
-                            [chartConfig]="invoiceChartConfig"
-                            [legendData]="{
-                                data: invoiceChartLegend,
-                                hasHighlightedBackground:
-                                    invoiceLegendHighlightedBackground,
-                                title: invoiceLegendTitle,
-                            }"
-                            (hoveredIndex)="setInvoiceLegendOnHover($event)"
-                        >
-                        </app-ca-chart>
-                    }
+                    <app-ca-chart
+                        [chartConfig]="invoiceChartConfig"
+                        [legendData]="{
+                            data: invoiceChartLegend,
+                            hasHighlightedBackground:
+                                invoiceLegendHighlightedBackground,
+                            title: invoiceLegendTitle,
+                        }"
+                        (hoveredIndex)="setInvoiceLegendOnHover($event)"
+                    >
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -169,19 +167,17 @@
                             </app-ta-tab-switch>
                         </div>
                     }
-                    @if (mileageChartConfig?.chartData) {
-                        <app-ca-chart
-                            [chartConfig]="mileageChartConfig"
-                            [legendData]="{
-                                data: mileageChartLegendData,
-                                hasHighlightedBackground:
-                                    mileageLegendHighlightedBackground,
-                                title: mileageLegendTitle,
-                            }"
-                            (hoveredIndex)="setMileageLegendOnHover($event)"
-                        >
-                        </app-ca-chart>
-                    }
+                    <app-ca-chart
+                        [chartConfig]="mileageChartConfig"
+                        [legendData]="{
+                            data: mileageChartLegendData,
+                            hasHighlightedBackground:
+                                mileageLegendHighlightedBackground,
+                            title: mileageLegendTitle,
+                        }"
+                        (hoveredIndex)="setMileageLegendOnHover($event)"
+                    >
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -448,21 +444,17 @@
                             </app-ta-tab-switch>
                         </div>
                     }
-                    @if (paymentChartConfig?.chartData) {
-                        <app-ca-chart
-                            [chartConfig]="paymentChartConfig"
-                            [legendData]="{
-                                data: paymentChartLegendData,
-                                hasHighlightedBackground:
-                                    paymentLegendHighlightedBackground,
-                                title: paymentLegendTitle,
-                            }"
-                            (hoveredIndex)="
-                                setPaymentHistoryLegendOnHover($event)
-                            "
-                        >
-                        </app-ca-chart>
-                    }
+                    <app-ca-chart
+                        [chartConfig]="paymentChartConfig"
+                        [legendData]="{
+                            data: paymentChartLegendData,
+                            hasHighlightedBackground:
+                                paymentLegendHighlightedBackground,
+                            title: paymentLegendTitle,
+                        }"
+                        (hoveredIndex)="setPaymentHistoryLegendOnHover($event)"
+                    >
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
 
