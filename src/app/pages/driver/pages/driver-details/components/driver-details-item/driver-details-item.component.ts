@@ -33,7 +33,7 @@ import { DetailsConfig } from '@shared/models/details-config.model';
     ],
 })
 export class DriverDetailsItemComponent {
-    @Input() detailsConfig: DetailsConfig[];
+    @Input() detailsConfig!: DetailsConfig[];
 
     constructor() {}
 }

@@ -95,7 +95,10 @@ import {
 })
 export class DriverDetailsCardComponent implements OnInit, OnDestroy {
     @Input() set driverData(value: DriverResponse) {
-        if (value) this.driver = value;
+        if (value) {
+            this.driver = value;
+            this.getDriversDropdown();
+        }
     }
 
     public driver!: DriverResponse;
