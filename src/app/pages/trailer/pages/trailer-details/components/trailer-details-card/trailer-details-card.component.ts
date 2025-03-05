@@ -311,8 +311,16 @@ export class TrailerDetailsCardComponent
             .subscribe(
                 (response: TrailerFuelConsumptionResponse) => {
                     if (timeFilter && this.fuelConsumptionTabs[timeFilter - 1])
-                        this.fuelConsumptionTabs[timeFilter - 1].checked = true;
-
+                        this.fuelConsumptionTabs =
+                            this.fuelConsumptionTabs?.map(
+                                (tab: Tabs, indx: number) => {
+                                    const tabModified: Tabs = {
+                                        ...tab,
+                                        checked: timeFilter - 1 === indx,
+                                    };
+                                    return tabModified;
+                                }
+                            );
                     this.fuelConsumptionChartData = response;
                     this.fuelConsumptionChartConfig = {
                         ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,

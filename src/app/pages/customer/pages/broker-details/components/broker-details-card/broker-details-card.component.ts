@@ -172,7 +172,15 @@ export class BrokerDetailsCardComponent
             .subscribe(
                 (response: BrokerMileageRateResponse) => {
                     if (timeFilter && this.mileageChartTabs[timeFilter - 1])
-                        this.mileageChartTabs[timeFilter - 1].checked = true;
+                        this.mileageChartTabs = this.mileageChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
 
                     this.mileageChartData = { ...response };
 
@@ -186,10 +194,11 @@ export class BrokerDetailsCardComponent
                                 timeFilter
                             ),
                     };
-                    this.mileageChartLegendData =
-                        ChartLegendConfiguration.mileageLegendConfiguration(
+                    this.mileageChartLegendData = [
+                        ...ChartLegendConfiguration.mileageLegendConfiguration(
                             this.mileageChartData
-                        );
+                        ),
+                    ];
                 },
                 () => {
                     this.mileageChartConfig = {
@@ -210,8 +219,15 @@ export class BrokerDetailsCardComponent
             .subscribe(
                 (response: BrokerPaidInvoiceResponse) => {
                     if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
-                        this.invoiceChartTabs[timeFilter - 1].checked = true;
-
+                        this.invoiceChartTabs = this.invoiceChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
                     this.invoiceChartData = { ...response };
 
                     this.invoiceChartConfig = {
@@ -281,7 +297,15 @@ export class BrokerDetailsCardComponent
             .subscribe(
                 (response: IBrokerPaymentHistory) => {
                     if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
-                        this.invoiceChartTabs[timeFilter - 1].checked = true;
+                        this.invoiceChartTabs = this.invoiceChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
 
                     this.paymentChartData = { ...response };
 

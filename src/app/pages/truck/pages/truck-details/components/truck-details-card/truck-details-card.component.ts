@@ -286,8 +286,16 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe(
                 (response: TruckRevenueResponse) => {
                     if (timeFilter && this.revenueChartTabs[timeFilter - 1])
-                        this.revenueChartTabs[timeFilter - 1].checked = true;
-                    this.revenueChartData = response;
+                        this.revenueChartTabs = this.revenueChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
+                    this.revenueChartData = { ...response };
                     this.revenueChartConfig = {
                         ...TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG,
                         chartData:
@@ -321,8 +329,16 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
             .subscribe(
                 (response: TruckExpensesResponse) => {
                     if (timeFilter && this.expensesChartLegend[timeFilter - 1])
-                        this.expensesChartTabs[timeFilter - 1].checked = true;
-                    this.expensesChartData = response;
+                        this.expensesChartTabs = this.expensesChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
+                    this.expensesChartData = { ...response };
                     this.expensesChartConfig = {
                         ...TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG,
                         chartData:

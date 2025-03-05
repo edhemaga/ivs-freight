@@ -152,8 +152,15 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
             .subscribe(
                 (response: DriverPayrollResponse) => {
                     if (timeFilter && this.barChartTabs[timeFilter - 1])
-                        this.barChartTabs[timeFilter - 1].checked = true;
-
+                        this.barChartTabs = this.barChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
                     this.driverChartData = response;
 
                     this.payrollChartConfig = {

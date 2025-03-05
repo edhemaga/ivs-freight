@@ -72,8 +72,15 @@ export class FuelStopDetailsFuelExpenseCardComponent implements OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: FuelStopExpensesResponse) => {
                 if (timeFilter && this.fuelExpenseChartTabs[timeFilter - 1])
-                    this.fuelExpenseChartTabs[timeFilter - 1].checked = true;
-
+                    this.fuelExpenseChartTabs = this.fuelExpenseChartTabs?.map(
+                        (tab: Tabs, indx: number) => {
+                            const tabModified: Tabs = {
+                                ...tab,
+                                checked: timeFilter - 1 === indx,
+                            };
+                            return tabModified;
+                        }
+                    );
                 this.fuelChartData = response;
 
                 this.fuelChartConfig = {

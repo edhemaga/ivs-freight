@@ -1,32 +1,32 @@
 <div class="details-component driver-details-item-container">
     @for (driverItem of detailsConfig; let ind = $index; track driverItem.id) {
         @switch (driverItem.template) {
-            @case ('general') {
+            @case (eCommonElements.GENERAL) {
                 <app-driver-details-card
                     [driverData]="detailsConfig[0]?.data"
                 ></app-driver-details-card>
             }
-            @case ('cdl') {
+            @case (eCommonElements.CDL) {
                 <app-driver-details-item-cdl
                     [cdlList]="detailsConfig[1]?.data"
                     [driver]="detailsConfig[0]?.data"
                 ></app-driver-details-item-cdl>
             }
-            @case ('drug-alcohol') {
+            @case (eCommonElements.DRUG_ALCOHOL) {
                 <app-driver-details-item-test
                     [testList]="detailsConfig[2]?.data"
                     [driver]="detailsConfig[0]?.data"
                 >
                 </app-driver-details-item-test>
             }
-            @case ('medical') {
+            @case (eCommonElements.MEDICAL) {
                 <app-driver-details-item-medical
                     [medicalList]="detailsConfig[3]?.data"
                     [driver]="detailsConfig[0]?.data"
                 >
                 </app-driver-details-item-medical>
             }
-            @case ('mvr') {
+            @case (eCommonElements.MVR) {
                 <app-driver-details-item-mvr
                     [mvrList]="detailsConfig[4]?.data"
                     [driver]="detailsConfig[0]?.data"
