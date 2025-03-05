@@ -238,7 +238,7 @@ export class ShipperDetailsCardComponent
                         maxValue = 0;
 
                     item.shipperAverageWaitingTimeChartResponse.map((data) => {
-                        let pickup =
+                        const pickup =
                             TimespanConvertHelper.convertTimeSpanToMinutes(
                                 data.avgPickupTime
                             );
@@ -253,14 +253,12 @@ export class ShipperDetailsCardComponent
                                 pickup +
                                 ((delivery + pickup) * 7) / 100;
                         }
-                        if (data.day) {
+                        if (data.day)
                             labels.push([
                                 data.day,
                                 this.monthList[data.month - 1],
                             ]);
-                        } else {
-                            labels.push([this.monthList[data.month - 1]]);
-                        }
+                        else labels.push([this.monthList[data.month - 1]]);
 
                         delivery = delivery ? -delivery : 0;
                         milesPerGallon.push(pickup);
