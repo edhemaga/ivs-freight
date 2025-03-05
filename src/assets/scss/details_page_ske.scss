@@ -343,19 +343,7 @@ p {
         }
     }
 }
-.perfomance {
-    display: flex !important;
-    flex-direction: column;
 
-    .common-template-item-name {
-        font-size: $font-size14 !important;
-        font-weight: $font-semibold !important;
-    }
-    .common-template-item-value {
-        font-size: $font-size18 !important;
-        font-weight: $font-semibold !important;
-    }
-}
 .card-pdf {
     padding: 0 5px;
     margin-bottom: 12px;
@@ -544,74 +532,7 @@ p {
         }
     }
 }
-.charts-template {
-    display: grid;
-    grid-template-columns: 215px 1fr;
-    grid-row-gap: 12px;
-    row-gap: 12px;
-    margin-bottom: 12px;
 
-    .charts-template-item {
-        display: flex;
-        flex-direction: column;
-
-        .icon-name-item {
-            display: flex;
-            align-items: baseline;
-            height: 18px;
-            .charts-template-item-name {
-                margin-right: 4px;
-            }
-        }
-        .charts-template-item-name {
-            font-size: 11px;
-            color: $ta-black;
-            font-weight: $font-bold;
-            line-height: 14px;
-
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-        }
-
-        .charts-template-item-value {
-            font-size: $font-size18;
-            font-weight: $font-medium;
-            color: $ta-black;
-            width: 220px;
-            &::-moz-selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-            &::selection {
-                color: $color-gray-dark;
-                background: rgb(183, 183, 183, 0.2);
-            }
-
-            p {
-                &::-moz-selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-                &::selection {
-                    color: $color-gray-dark;
-                    background: rgb(183, 183, 183, 0.2);
-                }
-            }
-
-            .hidden-svg-eye {
-                margin-left: 6px;
-                position: relative;
-                bottom: 1px;
-            }
-        }
-    }
-}
 .second-progress {
     margin-bottom: 16px;
 }
