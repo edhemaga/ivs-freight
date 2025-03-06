@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { Observable, tap } from 'rxjs';
+import { exhaustMap, Observable, tap } from 'rxjs';
 
 // models
 import {
@@ -17,6 +17,7 @@ import {
     FuelStopFranchiseResponse,
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
+    CreateWithUploadsResponse,
 } from 'appcoretruckassist';
 
 // services
@@ -27,6 +28,9 @@ import { FuelStore } from '@pages/fuel/state/fuel-state/fuel-state.store';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+
+// helpers
+import { FuelServiceHelper } from '@shared/utils/helpers/fuel-service.helper';
 
 @Injectable({
     providedIn: 'root',
@@ -156,16 +160,46 @@ export class FuelService {
         return this.fuelService.apiFuelTransactionIdGet(id);
     }
 
-    public addFuelTransaction<T>(data: T): Observable<CreateResponse> {
+    public addFuelTransaction<T>(data: T): Observable<FuelTransactionResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.fuelService.apiFuelTransactionPost();
+        return this.fuelService.apiFuelTransactionPost().pipe(
+            exhaustMap((response) => {
+                const { id } = response;
+
+                return this.fuelService.apiFuelTransactionIdGet(id).pipe(
+                    tap((apiTransaction) => {
+                        FuelServiceHelper.addFuelTransactionStopToStore(
+                            this.fuelStore,
+                            apiTransaction,
+                            true
+                        );
+                    })
+                );
+            })
+        );
     }
 
-    public updateFuelTransaction<T>(data: T): Observable<CreateResponse> {
+    public updateFuelTransaction<T>(
+        data: T
+    ): Observable<FuelTransactionResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.fuelService.apiFuelTransactionPut();
+        return this.fuelService.apiFuelTransactionPut().pipe(
+            exhaustMap((response) => {
+                const { id } = response;
+
+                return this.fuelService.apiFuelTransactionIdGet(id).pipe(
+                    tap((apiTransaction) => {
+                        FuelServiceHelper.updateFuelTransactionStopInStore(
+                            this.fuelStore,
+                            apiTransaction,
+                            true
+                        );
+                    })
+                );
+            })
+        );
     }
 
     public updateFuelTransactionEFS<T>(data: T): Observable<CreateResponse> {
@@ -178,24 +212,24 @@ export class FuelService {
         return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
             tap(() => {
                 ids.forEach((id) => {
-                        this.fuelStore.update((store) => ({
-                            fuelTransactions: {
-                                ...store.fuelTransactions,
-                                pagination: {
-                                    ...store.fuelTransactions?.pagination,
-                                    data: store.fuelTransactions?.pagination?.data?.filter(
-                                        (transaction) => transaction.id !== id
-                                    ),
-                                },
+                    this.fuelStore.update((store) => ({
+                        fuelTransactions: {
+                            ...store.fuelTransactions,
+                            pagination: {
+                                ...store.fuelTransactions?.pagination,
+                                data: store.fuelTransactions?.pagination?.data?.filter(
+                                    (transaction) => transaction.id !== id
+                                ),
                             },
-                        }));
+                        },
+                    }));
                 });
 
                 const tableCount = JSON.parse(
                     localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
                 );
 
-                if(tableCount) {
+                if (tableCount) {
                     tableCount.fuelTransactions -= ids.length;
 
                     localStorage.setItem(
@@ -279,16 +313,42 @@ export class FuelService {
         return this.fuelService.apiFuelFuelstopIdGet(id);
     }
 
-    public addFuelStop<T>(data: T): Observable<CreateResponse> {
+    public addFuelStop<T>(data: T): Observable<FuelStopResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.fuelService.apiFuelFuelstopPost();
+        return this.fuelService.apiFuelFuelstopPost().pipe(
+            exhaustMap((response) => {
+                const { id } = response;
+
+                return this.fuelService.apiFuelFuelstopIdGet(id).pipe(
+                    tap((apiFuelStop) => {
+                        FuelServiceHelper.addFuelTransactionStopToStore(
+                            this.fuelStore,
+                            apiFuelStop
+                        );
+                    })
+                );
+            })
+        );
     }
 
-    public updateFuelStop<T>(data: T): Observable<object> {
+    public updateFuelStop<T>(data: T): Observable<FuelStopResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
-        return this.fuelService.apiFuelFuelstopUpdatePut();
+        return this.fuelService.apiFuelFuelstopUpdatePut().pipe(
+            exhaustMap((response) => {
+                const { id } = response as CreateWithUploadsResponse;
+
+                return this.fuelService.apiFuelFuelstopIdGet(id).pipe(
+                    tap((apiFuelStop) => {
+                        FuelServiceHelper.updateFuelTransactionStopInStore(
+                            this.fuelStore,
+                            apiFuelStop
+                        );
+                    })
+                );
+            })
+        );
     }
 
     public updateFuelStopFavorite(
@@ -343,6 +403,9 @@ export class FuelService {
                             ...store.fuelStops,
                             pagination: {
                                 ...store.fuelStops.pagination,
+                                fuelStopCount:
+                                    store.fuelStops.pagination.fuelStopCount -
+                                    1,
                                 data: store.fuelStops.pagination.data.filter(
                                     (transaction) => transaction.id !== id
                                 ),

@@ -55,7 +55,7 @@ import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
 import { AccountFilter } from '@pages/account/pages/account-table/models/account-filter.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-account-table',
@@ -464,7 +464,7 @@ export class AccountTableComponent
         };
     }
 
-    private getAccountDropdownContent(url: string): DropdownMenuItem[] {
+    private getAccountDropdownContent(url: string): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getAccountDropdownContent(url);
     }
 

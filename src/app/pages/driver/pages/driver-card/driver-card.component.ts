@@ -22,7 +22,7 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { DriverMapped } from '@pages/driver/models/driver-mapped.model';
 
 // svg routes
@@ -39,7 +39,7 @@ export class DriverCardComponent
     implements OnInit, OnDestroy
 {
     @Input() selectedTab: string;
-    
+
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
@@ -101,7 +101,7 @@ export class DriverCardComponent
     }
 
     public handleToggleDropdownMenuActions<T extends DriverMapped>(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: T
     ): void {
         const { type } = action;

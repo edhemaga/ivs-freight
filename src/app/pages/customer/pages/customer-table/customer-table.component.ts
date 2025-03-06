@@ -98,7 +98,7 @@ import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { MapList } from '@pages/repair/pages/repair-table/models';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-customer-table',
@@ -1638,7 +1638,7 @@ export class CustomerTableComponent
         status: number,
         ban: boolean,
         dnu: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getBrokerDropdownContent(
             status,
             ban,
@@ -1646,7 +1646,7 @@ export class CustomerTableComponent
         );
     }
 
-    private getShipperDropdownContent(status: number): DropdownMenuItem[] {
+    private getShipperDropdownContent(status: number): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getShipperDropdownContent(status);
     }
 

@@ -182,7 +182,8 @@ export class ChartConfiguration {
     public static REPAIR_SHOP_EXPENSES_CONFIGURATION: ChartTypeProperty[] = [
         {
             type: eChartTypesString.BAR,
-            value: eChartValueLabel.REPAIR,
+            maxValue: eChartValueLabel.REPAIR,
+            color: '#FAB15C',
         },
         {
             type: eChartTypesString.LINE,

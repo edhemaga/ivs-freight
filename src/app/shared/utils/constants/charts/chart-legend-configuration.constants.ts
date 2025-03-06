@@ -6,7 +6,7 @@ import {
     BrokerPaidInvoiceChartResponse,
     DriverPayrollResponse,
     FuelStopExpensesResponse,
-    RepairShopExpensesResponse,
+    RepairShopExpensesChartResponse,
     ShipperAverageWaitingTimeResponse,
     TrailerFuelConsumptionChartResponse,
     TruckExpensesChartResponse,
@@ -73,7 +73,7 @@ export class ChartLegendConfiguration {
         },
     ];
 
-    public static fuelExpensesLegend = (
+    public static FUEL_EXPENSES_LEGEND = (
         data: FuelStopExpensesResponse
     ): ChartLegendProperty[] => [
         {
@@ -203,16 +203,16 @@ export class ChartLegendConfiguration {
     ];
 
     public static REPAIR_SHOP_EXPENSES_CONFIGURATION = (
-        data: RepairShopExpensesResponse
+        data: RepairShopExpensesChartResponse
     ): ChartLegendProperty[] => [
         {
             name: 'Repair',
-            value: data?.repair || 0,
+            value: Number(data?.repair) || 0,
             color: '#FAB15C',
         },
         {
             name: 'Cost',
-            value: data?.cost || 0,
+            value: Number(data?.repairCost) || 0,
             color: '#6692F1',
             unit: '$',
         },

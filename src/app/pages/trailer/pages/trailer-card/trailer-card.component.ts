@@ -29,7 +29,7 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { TrailerMapped } from '../trailer-table/models/trailer-mapped.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // svg routes
 import { TrailerCardsSvgRoutes } from '@pages/trailer/pages/trailer-card/utils/svg-routes/trailer-cards-svg-routes';
@@ -114,7 +114,7 @@ export class TrailerCardComponent
     }
 
     public handleToggleDropdownMenuActions<T extends TrailerMapped>(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: T
     ): void {
         const { type } = action;

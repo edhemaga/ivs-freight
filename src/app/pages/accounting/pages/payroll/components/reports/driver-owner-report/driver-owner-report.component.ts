@@ -33,7 +33,7 @@ import {
 } from '@pages/accounting/pages/payroll/state/models';
 
 import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
@@ -75,7 +75,7 @@ export class DriverOwnerReportComponent
     public creditType = PayrollCreditType.Truck;
     public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
 
-    public dropdownMenuOptions: DropdownMenuItem[] = [];
+    public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
     public _selectedTab: ePayrollTablesStatus;
     @Input() set selectedTab(tab: ePayrollTablesStatus) {

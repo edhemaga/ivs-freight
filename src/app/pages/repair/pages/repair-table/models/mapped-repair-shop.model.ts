@@ -1,4 +1,5 @@
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+// models
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import {
     OpenHoursTodayResponse,
     RepairShopContactListResponse,
@@ -35,5 +36,5 @@ export interface MappedRepairShop extends RepairShopListDto {
     tableEdited: string;
     isFavorite: boolean;
     isFavoriteDisabled: boolean;
-    tableDropdownContent: DropdownMenuItem[];
+    tableDropdownContent: IDropdownMenuItem[];
 }

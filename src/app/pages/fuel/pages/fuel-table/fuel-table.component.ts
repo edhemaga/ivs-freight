@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -64,12 +64,12 @@ import {
 } from '@pages/fuel/pages/fuel-card-modal/state';
 
 // enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
     DropdownMenuStringEnum,
     eCommonElements,
+    TableStringEnum,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
@@ -82,7 +82,7 @@ import {
 } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
 
@@ -324,17 +324,29 @@ export class FuelTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    const { action } = res;
+
+                    if (action === TableStringEnum.DELETE) return;
+
                     const { template, type } = res;
 
                     if (template) {
+                        const shouldDeleteFuelStop = template
+                            ?.toLowerCase()
+                            ?.includes(TableStringEnum.STOP_LOWERCASE);
+                        const shouldDeleteFuelTransaction =
+                            template ===
+                                DropdownMenuStringEnum.FUEL_TRANSACTION ||
+                            (type === TableStringEnum.MULTIPLE_DELETE &&
+                                !shouldDeleteFuelStop);
                         const ids =
                             type === TableStringEnum.DELETE
                                 ? [res.id]
                                 : res.array;
 
-                        template.includes(TableStringEnum.TRANSACTION)
-                            ? this.deleteFuelTransactionList(ids)
-                            : this.deleteFuelStopList(ids);
+                        if (shouldDeleteFuelStop) this.deleteFuelStopList(ids);
+                        if (shouldDeleteFuelTransaction)
+                            this.deleteFuelTransactionList(ids);
                     }
                 },
             });
@@ -870,7 +882,7 @@ export class FuelTableComponent
 
     private getFuelTransactionDropdownContent(
         isAutomaticTransaction: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getFuelTransactionDropdownContent(
             isAutomaticTransaction
         );
@@ -880,7 +892,7 @@ export class FuelTableComponent
         isCentralised: boolean,
         isPinned: boolean,
         isOpenBusiness: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getFuelStopDropdownContent(
             isCentralised,
             isPinned,

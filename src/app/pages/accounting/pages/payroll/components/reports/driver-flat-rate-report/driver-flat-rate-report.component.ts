@@ -35,7 +35,7 @@ import {
     PayrollDriverFlatRateByIdResponse,
 } from 'appcoretruckassist';
 import { FlatRateLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // Components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
@@ -68,7 +68,7 @@ export class DriverFlatRateReportComponent
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.FLAT_RATE;
 
-    public dropdownMenuOptions: DropdownMenuItem[] = [];
+    public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;

@@ -61,7 +61,7 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyUserResponse } from 'appcoretruckassist';
 import { UserTableData } from '@pages/user/pages/user-table/models';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { TableColumnConfig } from '@shared/models';
 
 @Component({
@@ -648,7 +648,7 @@ export class UserTableComponent
     public getUserDropdownContent(
         userStatus: string,
         isInvitationSent: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getUserDropdownContent(
             this.selectedTab,
             userStatus,

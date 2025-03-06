@@ -85,7 +85,7 @@
                         marginBottom: '4px',
                     }"
                 >
-                    <div class="charts-template perfomance">
+                    <div>
                         @if (!driverLegendHighlightedBackground) {
                             <div>
                                 <app-ta-tab-switch
@@ -96,19 +96,17 @@
                                 </app-ta-tab-switch>
                             </div>
                         }
-                        <ng-container *ngIf="payrollChartConfig?.chartData">
-                            <app-ca-chart
-                                [chartConfig]="payrollChartConfig"
-                                [legendData]="{
-                                    data: driverLegendConfig,
-                                    hasHighlightedBackground:
-                                        driverLegendHighlightedBackground,
-                                    title: driverLegendTitle,
-                                }"
-                                (hoveredIndex)="setDriverLegendOnHover($event)"
-                            >
-                            </app-ca-chart>
-                        </ng-container>
+                        <app-ca-chart
+                            [chartConfig]="payrollChartConfig"
+                            [legendData]="{
+                                data: driverLegendConfig,
+                                hasHighlightedBackground:
+                                    driverLegendHighlightedBackground,
+                                title: driverLegendTitle,
+                            }"
+                            (hoveredIndex)="setDriverLegendOnHover($event)"
+                        >
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
 

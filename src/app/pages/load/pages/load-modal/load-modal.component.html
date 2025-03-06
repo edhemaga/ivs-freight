@@ -480,9 +480,10 @@
                                 [inputConfig]="
                                     loadPickupShipperContactsInputConfig
                                 "
-                                [canAddNew]="true"
+                                [canAddNew]="true" 
                                 [canOpenModal]="true"
                                 [options]="labelsShipperContacts"
+                                [activeItem]="selectedPickupShipperContact"
                                 (selectedItem)="
                                     onSelectDropdown(
                                         $event,
