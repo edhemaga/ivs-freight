@@ -24,8 +24,7 @@ export const getLoadsPayloadSuccess = createAction(
 );
 
 export const getLoadsPayloadError = createAction(
-  MilesStoreConstants.LOAD_MILES_FAILURE,
-  props<{ error: any }>()
+  MilesStoreConstants.LOAD_MILES_FAILURE
 );
 
 export const loadMilesSuccess = createAction(

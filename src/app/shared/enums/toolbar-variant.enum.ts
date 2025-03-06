@@ -1,4 +1,4 @@
-export enum ToolbarVariant {
+export enum eToolbarVariant {
     Large = 1,
     Small
 }

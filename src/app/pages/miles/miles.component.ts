@@ -14,11 +14,13 @@ import {
     statesSelector,
     selectedRowsSelector,
     tableColumnsSelector
-} from '@pages/miles/state/selectors/miles.selectors';
+} from '@pages/miles/state/selectors/miles.selector';
 
 // Shared Components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
+import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
@@ -29,7 +31,7 @@ import {
 } from 'ca-components';
 
 // Feature Services
-import { MilesStoreService } from './state/services/miles-store.service';
+import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -37,22 +39,21 @@ import { TableStringEnum } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums';
 
 // Models
-import { MilesByUnitResponse, MilesStateFilterResponse } from 'appcoretruckassist';
+import { MilesStateFilterResponse } from 'appcoretruckassist';
 import { IMilesModel, IMilesState } from '@pages/miles/models';
 import { IStateFilters, ITableColumn } from '@shared/models';
-import { NewTableComponent } from '@shared/components/new-table/new-table.component';
-import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
 @Component({
     selector: 'app-miles',
     standalone: true,
     imports: [
         CommonModule,
+
+        // Components
         NewTableComponent,
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
-        TaTruckTrailerIconComponent,
-
+        TaTruckTrailerIconComponent, 
         CaFilterComponent,
         CaSearchMultipleStatesComponent,
         CaFilterDropdownComponent,
@@ -63,18 +64,10 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
     styleUrls: ['./miles.component.scss'],
 })
 export class MilesComponent implements OnInit {
-    public tableViewData$: Observable<any[]>;
-    public selectedTabData$: Observable<any>;
-    public miles$: Observable<IMilesModel[]>;
-    public selectedTab$: Observable<eMileTabs>;
-    public activeViewMode$: Observable<string>;
     private filter: IStateFilters = {};
-    public statesSelector$: Observable<MilesStateFilterResponse[]>;
-    public selectedRowsSelector$: Observable<number>;
-    public columns$: Observable<ITableColumn[]>;
     constructor(
         private store: Store<IMilesState>,
-        private milesStoreService: MilesStoreService
+        public milesStoreService: MilesStoreService
     ) {}
 
     ngOnInit(): void {
@@ -91,19 +84,7 @@ export class MilesComponent implements OnInit {
             );
         }
     }
-
-    private storeSubscription(): void {
-        this.miles$ = this.store.select(selectMilesItems);
-        this.activeViewMode$ = this.store.select(activeViewModeSelector);
-        this.tableViewData$ = this.store.select(selectTableViewData);
-        this.selectedTab$ = this.store.select(selectSelectedTab); 
-        this.statesSelector$ = this.store.select(statesSelector); 
-        this.selectedRowsSelector$ = this.store.select(selectedRowsSelector);
-        this.columns$ = this.store.select(tableColumnsSelector);
-        // TODO: Maybe this is not good, check
-        this.store.select(filterSelector).subscribe(res =>this.filter = res);
-    }
-
+ 
     public setFilters(filters: IFilterAction): void {
         this.milesStoreService.dispatchFilters(filters, this.filter);
     }
@@ -114,5 +95,9 @@ export class MilesComponent implements OnInit {
 
     public selectAll() : void {
         this.milesStoreService.dispatchSelectAll();
+    }
+
+    private storeSubscription(): void {
+        this.milesStoreService.filter$.subscribe(res =>this.filter = res);
     }
 }

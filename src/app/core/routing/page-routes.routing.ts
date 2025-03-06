@@ -1,4 +1,5 @@
 import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
+import { MilesComponent } from '@pages/miles/miles.component';
 
 // guards
 import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
@@ -16,7 +17,6 @@ import { MilesResolver } from '@pages/miles/resolvers/miles.resolver';
 import { TodoResolver } from '@pages/to-do/resolvers/to-do.resolver';
 import { RoutingStateResolver } from '@pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from '@pages/telematic/resolvers/telematic-state.resolver';
-import { MilesComponent } from '@pages/miles/miles.component';
 
 export class PageRoutes {
     static routes = [

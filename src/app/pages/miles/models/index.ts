@@ -1,2 +1,2 @@
-export * from './IMilesInitalState';
-export * from './IMilesModel';
+export * from './miles-state.interface';
+export * from './miles.interface';

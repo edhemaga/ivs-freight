@@ -109,14 +109,16 @@ import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/p
         CaFilterComponent,
         CaFilterDropdownComponent,
         CaFilterListDropdownComponent,
-        EffectsModule.forFeature([PayrollEffect]),
-        StoreModule.forFeature('payroll', payrollReducer),
         CaMainTableComponent,
         CaMapComponent,
         CaMainTableComponent,
         CaPeriodContentComponent,
         CaPayrollListSummaryOverviewComponent,
         CaProfileImageComponent,
+
+        // Store
+        EffectsModule.forFeature([PayrollEffect]),
+        StoreModule.forFeature('payroll', payrollReducer),
     ],
     exports: [],
 })

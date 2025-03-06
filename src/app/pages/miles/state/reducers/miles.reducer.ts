@@ -16,8 +16,7 @@ import { IMilesState } from '@pages/miles/models';
 
 export const initialState: IMilesState = {
     items: [],
-    loading: false,
-    error: null,
+    loading: false, 
     tableViewData: MilesToolbarTabs,
     selectedTab: eMileTabs.Active,
     activeViewMode: eActiveViewMode.List,
@@ -43,10 +42,9 @@ export const milesReducer = createReducer(
             loading: false,
         };
     }),
-    on(MilesAction.getLoadsPayloadError, (state, { error }) => ({
+    on(MilesAction.getLoadsPayloadError, (state) => ({
         ...state,
-        loading: false,
-        error,
+        loading: false
     })),
     on(MilesAction.loadMilesSuccess, (state, { miles }) => ({
         ...state,

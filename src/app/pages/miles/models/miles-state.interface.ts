@@ -7,12 +7,11 @@ import { IStateFilters, ITableColumn, ITableData } from "@shared/models";
 
 // External Services or Models
 import { MilesStateFilterResponse } from "appcoretruckassist";
-import { IMilesModel } from "./IMilesModel";
+import { IMilesModel } from '@pages/miles/models';
 
 export interface IMilesState {
     items: IMilesModel[];
     loading: boolean;
-    error: any;
     tableViewData: ITableData[];
     selectedTab: eMileTabs;
     activeViewMode: eActiveViewMode, 

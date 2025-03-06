@@ -14,7 +14,7 @@ import { MilesService } from 'appcoretruckassist';
 
 // Enums and Selectors
 import { eMileTabs } from '@pages/miles/enums';
-import { selectSelectedTab } from '../selectors/miles.selectors';
+import { selectSelectedTab } from '@pages/miles/state/selectors/miles.selector';
 
 // Utils
 import { MilesMapper } from '@pages/miles/utils';
@@ -53,8 +53,8 @@ export class MilesEffects {
                         miles: MilesMapper(response.pagination.data)
                     })
                 ),
-                catchError((error) =>
-                    of(MilesAction.getLoadsPayloadError({ error }))
+                catchError(() =>
+                    of(MilesAction.getLoadsPayloadError())
                 )
             );
     }

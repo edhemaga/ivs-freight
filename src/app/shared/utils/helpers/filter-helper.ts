@@ -1,8 +1,13 @@
-import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums';
+// Models
 import { IStateFilters } from '@shared/models';
 import { DispatcherFilter } from '@shared/models/filters';
 import { DispatcherFilterResponse } from 'appcoretruckassist';
+
+// Components
 import { IFilterAction, eFilterDropdownEnum } from 'ca-components';
+
+// Enums
+import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums';
 
 export class FilterHelper {
     static dispatcherFilter(

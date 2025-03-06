@@ -9,6 +9,8 @@ import { BrokerContactExtended } from "@pages/customer/pages/broker-modal/models
 
 // enums
 import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index";
+
+// Helpers
 import { FilterHelper } from "@shared/utils/helpers";
 
 export const getLoadsOrTemplatesPayloadSuccessResult = function(state: ILoadState, data: ILoadGridItem[] | ILoadTemplateGridItem[], templateCount: number, pendingCount: number, activeCount: number, closedCount: number, selectedTab: eLoadStatusType, showMore?: boolean): ILoadState {

@@ -6,7 +6,7 @@ import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ToolbarTabsComponent } from '../toolbar-tabs/toolbar-tabs.component';
 
 // Enums 
-import { TableStringEnum, ToolbarVariant } from '@shared/enums'; 
+import { TableStringEnum, eToolbarVariant } from '@shared/enums'; 
 import { eActiveViewMode } from '@shared/enums';
 
 // Models
@@ -32,7 +32,7 @@ export class ToolbarTabsWrapperComponent implements OnInit {
     @Output() onTabChange = new EventEmitter<TableToolbarActions>();
 
     public tableStringEnum = TableStringEnum;
-    public toolbarVariant = ToolbarVariant;
+    public toolbarVariant = eToolbarVariant;
     public tableViewData = [];
 
     ngOnInit() {

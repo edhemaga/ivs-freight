@@ -1,3 +1,3 @@
-import { ToolbarVariant } from "@shared/enums";
+import { eToolbarVariant } from "@shared/enums";
 
-export type ToolbarVariantType = ToolbarVariant.Large | ToolbarVariant.Small;
+export type ToolbarVariantType = eToolbarVariant.Large | eToolbarVariant.Small;

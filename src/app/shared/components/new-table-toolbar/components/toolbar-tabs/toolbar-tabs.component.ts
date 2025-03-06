@@ -2,8 +2,8 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 // Enums
-import { ToolbarVariant } from '@shared/enums';
-import { IToolbarTabs } from '@shared/models/IToolbarTabs';
+import { eToolbarVariant } from '@shared/enums';
+import { IToolbarTabs } from '@shared/models/toolbar-tabs.interface';
 
 // Types
 import { ToolbarVariantType } from '@shared/types';
@@ -18,11 +18,11 @@ import { ToolbarVariantType } from '@shared/types';
 export class ToolbarTabsComponent {
   @Input() data: IToolbarTabs[] = [];
   @Input() selectedTab?: string;
-  @Input() variant: ToolbarVariantType = ToolbarVariant.Large;
+  @Input() variant: ToolbarVariantType = eToolbarVariant.Large;
 
   @Output() tabSelected = new EventEmitter<string>();
 
-  public toolbarVariant = ToolbarVariant;
+  public toolbarVariant = eToolbarVariant;
 
   onTabClick(tab: string) {
       this.tabSelected.emit(tab);

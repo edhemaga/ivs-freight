@@ -43,7 +43,7 @@ import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants
 // enums
 import { DispatcherFilter } from '@shared/models/filters';
 import { eActiveViewMode } from '@shared/enums';
-import { eLoadStatusType } from '../enums';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 @Injectable({
     providedIn: 'root',
