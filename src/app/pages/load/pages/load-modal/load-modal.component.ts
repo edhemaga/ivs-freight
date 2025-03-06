@@ -1904,9 +1904,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     })
                     .filter((item) => item.contacts?.length);
 
-                if (this.labelsBrokerContacts[1]?.contacts[0]) {
+                if (this.labelsBrokerContacts[0]?.contacts[0]) {
                     this.selectedBrokerContact =
-                        this.labelsBrokerContacts[1].contacts[0];
+                        this.labelsBrokerContacts[0].contacts[0];
 
                     if (this.selectedBrokerContact) {
                         this.loadForm
