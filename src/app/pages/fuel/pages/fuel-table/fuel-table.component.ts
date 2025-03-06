@@ -64,12 +64,12 @@ import {
 } from '@pages/fuel/pages/fuel-card-modal/state';
 
 // enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
     DropdownMenuStringEnum,
     eCommonElements,
+    TableStringEnum,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
@@ -333,11 +333,12 @@ export class FuelTableComponent
                     if (template) {
                         const shouldDeleteFuelStop = template
                             ?.toLowerCase()
-                            ?.includes(TableStringEnum.STOP);
+                            ?.includes(TableStringEnum.STOP_LOWERCASE);
                         const shouldDeleteFuelTransaction =
                             template ===
                                 DropdownMenuStringEnum.FUEL_TRANSACTION ||
-                            type === TableStringEnum.MULTIPLE_DELETE;
+                            (type === TableStringEnum.MULTIPLE_DELETE &&
+                                !shouldDeleteFuelStop);
                         const ids =
                             type === TableStringEnum.DELETE
                                 ? [res.id]
