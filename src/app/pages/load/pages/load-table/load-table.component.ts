@@ -108,7 +108,7 @@ export class LoadTableComponent
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
     public displayRows$: Observable<any>; //leave this as any for now 
-
+    public tableStringEnum = TableStringEnum;
 
     // filters
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
