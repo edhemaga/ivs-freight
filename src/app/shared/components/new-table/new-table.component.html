@@ -69,8 +69,8 @@
                                         *ngTemplateOutlet="
                                             cellTemplate;
                                             context: {
-                                                column: column,
-                                                row: row,
+                                                column,
+                                                row,
                                             }
                                         "
                                     ></ng-container>
@@ -82,7 +82,7 @@
                                 <ng-container
                                     *ngTemplateOutlet="
                                         cellTemplate;
-                                        context: { column: column, row: row }
+                                        context: { column, row }
                                     "
                                 ></ng-container>
                             }
@@ -97,8 +97,8 @@
                                         *ngTemplateOutlet="
                                             cellTemplate;
                                             context: {
-                                                column: column,
-                                                row: row,
+                                                column,
+                                                row,
                                             }
                                         "
                                     ></ng-container>
@@ -144,7 +144,7 @@
                         columnDisplay;
                         context: {
                             column: _column,
-                            isFirst: isFirst,
+                            isFirst,
                             isGroup: true,
                             label: column.label,
                         }

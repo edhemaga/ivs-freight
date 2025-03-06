@@ -1,5 +1,5 @@
 import { MilesByUnitResponse } from 'appcoretruckassist';
-import { IMilesModel } from '@pages/miles/models';
+import { IMilesModel } from '@pages/miles/interface';
 
 export function MilesMapper(miles: MilesByUnitResponse[]): IMilesModel[] {
     return miles.map((mile) => {

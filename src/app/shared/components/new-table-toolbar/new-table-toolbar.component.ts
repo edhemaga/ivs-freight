@@ -13,10 +13,10 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-new-table-toolbar',
-    standalone: true,
     imports: [CommonModule, AngularSvgIconModule, SvgIconComponent],
     templateUrl: './new-table-toolbar.component.html',
     styleUrl: './new-table-toolbar.component.scss',
+    standalone: true
 })
 export class NewTableToolbarComponent {
     // Inputs

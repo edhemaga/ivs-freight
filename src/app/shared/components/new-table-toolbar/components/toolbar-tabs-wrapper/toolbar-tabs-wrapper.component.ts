@@ -13,15 +13,15 @@ import { eActiveViewMode } from '@shared/enums';
 import { ITableData, TableToolbarActions } from '@shared/models';
 
 // Shared Utils
-import { createTableViewConts } from '@shared/utils/constants';
+import { TableViewHelper } from '@shared/utils/helpers';
 
 
 @Component({
     selector: 'app-toolbar-tabs-wrapper',
-    standalone: true,
     imports: [CommonModule, ToolbarTabsComponent],
     templateUrl: './toolbar-tabs-wrapper.component.html',
     styleUrl: './toolbar-tabs-wrapper.component.scss',
+    standalone: true
 })
 export class ToolbarTabsWrapperComponent implements OnInit {
     @Input() viewMode = eActiveViewMode.List;
@@ -36,7 +36,7 @@ export class ToolbarTabsWrapperComponent implements OnInit {
     public tableViewData = [];
 
     ngOnInit() {
-        this.tableViewData = createTableViewConts(this.shouldAddMap);
+        this.tableViewData = TableViewHelper.createTableViewConts(this.shouldAddMap);
     }
 
     public onToolBarAction(event: TableToolbarActions) {

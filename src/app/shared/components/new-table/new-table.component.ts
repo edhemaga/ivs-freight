@@ -50,25 +50,10 @@ export class NewTableComponent {
     @Output() onSortingChange$: EventEmitter<any> = new EventEmitter();
 
     public sharedSvgRoutes = SharedSvgRoutes;
-
-    public setSorting(sort) {
-        if (this.isTableLocked) return;
-        this.onSortingChange$.emit(sort);
-    }
-
+ 
     public leftPinnedColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
-
-
-    private processColumns(columns: ITableColumn[]): void {
-        this.leftPinnedColumns = columns.filter((col) => col.pinned === 'left');
-        this.rightPinnedColumns = columns.filter(
-            (col) => col.pinned === 'right'
-        );
-        this.mainColumns = columns.filter((col) => !col.pinned);
-
-    }
 
     public onScroll(event: Event): void {
         const target = event.target as HTMLElement;
@@ -87,5 +72,18 @@ export class NewTableComponent {
 
     public pinColumn(column: ITableColumn): void {
         column.pinned = null;
+    }
+
+    private processColumns(columns: ITableColumn[]): void {
+        this.leftPinnedColumns = columns.filter((col) => col.pinned === 'left');
+        this.rightPinnedColumns = columns.filter(
+            (col) => col.pinned === 'right'
+        );
+        this.mainColumns = columns.filter((col) => !col.pinned);
+    }
+
+    public setSorting(sort: any): void {
+        if (this.isTableLocked) return;
+        this.onSortingChange$.emit(sort);
     }
 }

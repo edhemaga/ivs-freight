@@ -1,5 +1,5 @@
 // Models
-import { IStateFilters } from '@shared/models';
+import { IStateFilters } from '@shared/interfaces';
 import { DispatcherFilter } from '@shared/models/filters';
 import { DispatcherFilterResponse } from 'appcoretruckassist';
 

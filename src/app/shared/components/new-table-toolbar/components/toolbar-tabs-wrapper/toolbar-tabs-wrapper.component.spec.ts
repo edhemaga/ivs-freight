@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ToolbarTabsWrapperComponent } from './toolbar-tabs-wrapper.component';
+import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 
 describe('ToolbarTabsWrapperComponent', () => {
   let component: ToolbarTabsWrapperComponent;

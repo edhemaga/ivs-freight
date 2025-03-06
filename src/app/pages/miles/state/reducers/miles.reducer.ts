@@ -12,7 +12,7 @@ import { eActiveViewMode } from '@shared/enums';
 import { MilesTableColumns, MilesToolbarTabs } from '@pages/miles/consts';
 
 // Models
-import { IMilesState } from '@pages/miles/models';
+import { IMilesState } from '@pages/miles/interface';
 
 export const initialState: IMilesState = {
     items: [],

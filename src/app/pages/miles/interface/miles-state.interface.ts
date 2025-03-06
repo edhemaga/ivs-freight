@@ -3,11 +3,12 @@ import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from "@pages/miles/enums";
 
 // Shared Models
-import { IStateFilters, ITableColumn, ITableData } from "@shared/models";
+import { ITableColumn, ITableData } from "@shared/models";
+import { IStateFilters } from '@shared/interfaces';
 
 // External Services or Models
 import { MilesStateFilterResponse } from "appcoretruckassist";
-import { IMilesModel } from '@pages/miles/models';
+import { IMilesModel } from '@pages/miles/interface';
 
 export interface IMilesState {
     items: IMilesModel[];

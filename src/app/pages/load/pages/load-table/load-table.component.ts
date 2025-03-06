@@ -75,7 +75,9 @@ import {
     SortOrder,
 } from 'appcoretruckassist';
 import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
-import { CardRows, IStateFilters } from '@shared/models';
+import { CardRows } from '@shared/models';
+
+import { IStateFilters } from '@shared/interfaces';
 
 // Helpers
 import { FilterHelper } from '@shared/utils/helpers';

@@ -10,10 +10,10 @@ import { ToolbarVariantType } from '@shared/types';
 
 @Component({
   selector: 'app-toolbar-tabs',
-  standalone: true,
   imports: [CommonModule],
   templateUrl: './toolbar-tabs.component.html',
-  styleUrl: './toolbar-tabs.component.scss'
+  styleUrl: './toolbar-tabs.component.scss',
+  standalone: true
 })
 export class ToolbarTabsComponent {
   @Input() data: IToolbarTabs[] = [];
@@ -24,7 +24,7 @@ export class ToolbarTabsComponent {
 
   public toolbarVariant = eToolbarVariant;
 
-  onTabClick(tab: string) {
+  public onTabClick(tab: string) {
       this.tabSelected.emit(tab);
   }
 }

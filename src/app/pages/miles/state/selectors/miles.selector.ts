@@ -5,7 +5,7 @@ import { createFeatureSelector, createSelector } from '@ngrx/store';
 import { eActiveViewMode } from '@shared/enums';
 
 // Models
-import { IMilesState } from '@pages/miles/models';
+import { IMilesState } from '@pages/miles/interface';
 
 export const milesFeatureKey: string = 'miles';
 

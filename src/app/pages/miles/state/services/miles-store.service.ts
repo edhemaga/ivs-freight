@@ -15,14 +15,14 @@ import {
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
-import { IMilesModel } from '@pages/miles/models';
+import { IMilesModel } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
-import { IStateFilters, ITableColumn, ITableData } from '@shared/models';
-
+import { ITableColumn, ITableData } from '@shared/models';
+import { IStateFilters } from '@shared/interfaces';
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@shared/enums';
@@ -54,7 +54,7 @@ export class MilesStoreService {
     );
     public statesSelector$: Observable<MilesStateFilterResponse[]> =
         this.store.pipe(select(statesSelector));
-        
+
     public selectedRowsSelector$: Observable<number> = this.store.pipe(
         select(selectedRowsSelector)
     );

@@ -9,9 +9,11 @@ import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@shared/enums';
 
 // Models
-import { MilesStateFilterResponse } from 'appcoretruckassist';
-import { IStateFilters } from '@shared/models'; 
-import { IMilesModel } from '@pages/miles/models';
+import { MilesStateFilterResponse } from 'appcoretruckassist'; 
+import { IMilesModel } from '@pages/miles/interface';
+
+// Interface
+import { IStateFilters } from '@shared/interfaces';
 
 export const getLoadsPayload = createAction(
   MilesStoreConstants.LOAD_MILES_INITAL,

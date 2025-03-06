@@ -1,20 +1,7 @@
 // External Libraries
 import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
-
-// Feature Selectors
-import {
-    selectTableViewData,
-    selectSelectedTab,
-    selectMilesItems,
-    activeViewModeSelector,
-    filterSelector,
-    statesSelector,
-    selectedRowsSelector,
-    tableColumnsSelector
-} from '@pages/miles/state/selectors/miles.selector';
 
 // Shared Components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
@@ -38,10 +25,9 @@ import { eMileTabs } from '@pages/miles/enums';
 import { TableStringEnum } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums';
 
-// Models
-import { MilesStateFilterResponse } from 'appcoretruckassist';
-import { IMilesModel, IMilesState } from '@pages/miles/models';
-import { IStateFilters, ITableColumn } from '@shared/models';
+// Models 
+import { IMilesModel, IMilesState } from '@pages/miles/interface'; 
+import { IStateFilters } from '@shared/interfaces';
 
 @Component({
     selector: 'app-miles',
