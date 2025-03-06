@@ -32,7 +32,7 @@ import { LoadService } from '@shared/services/load.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { LoadCardModalService } from '@pages/load/pages/load-card-modal/services/load-card-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
-import { CaSearchMultipleStatesService } from 'ca-components';
+import { CaSearchMultipleStatesService, IFilterAction } from 'ca-components';
 import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
@@ -59,7 +59,6 @@ import {
 } from '@shared/enums/index';
 import {
     eLoadStatusType,
-    LoadFilterStringEnum,
 } from '@pages/load/pages/load-table/enums/index';
 
 // constants
@@ -67,17 +66,21 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants/table-d
 
 // helpers
 import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpers/load-table.helper';
-import { RepairTableDateFormaterHelper } from '@pages/repair/pages/repair-table/utils/helpers/repair-table-date-formater.helper';
 
 // models
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import {
     LoadListDto,
     LoadListResponse,
-    LoadStatusType,
     SortOrder,
 } from 'appcoretruckassist';
 import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
+import { CardRows } from '@shared/models';
+
+import { IStateFilters } from '@shared/interfaces';
+
+// Helpers
+import { FilterHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-load-table',
@@ -100,12 +103,15 @@ export class LoadTableComponent
     public selectedTab: string = TableStringEnum.ACTIVE_2;
 
     public loadingPage: boolean = false;
+    public cardTitleLink: string = TableStringEnum.LOAD_DETAILS;
+    public cardTitle: string;
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
+    public displayRows$: Observable<any>; //leave this as any for now 
+
 
     // filters
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
-
-    // cards
-    public displayRows$: Observable<any>;
 
     constructor(
         // router
@@ -147,85 +153,23 @@ export class LoadTableComponent
         }, 10);
     }
 
-    public setTableFilter(): void {
-        this.tableService.currentSetTableFilter
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                const selectedtab: eLoadStatusType =
-                    eLoadStatusType[this.selectedTab];
-                const { ...params } = filter || {};
+    private mapFilters(
+        res: IFilterAction,
+        currentFilters: IStateFilters
+    ): IStateFilters {
+        return FilterHelper.mapFilters(res, currentFilters);
+    }
 
-                switch (res?.filterType) {
-                    case LoadFilterStringEnum.DISPATCHER_FILTER:
-                        this.filter = {
-                            ...params,
-                            dispatcherIds: res.queryParams ?? null,
-                        };
+    public setFilters(filters: IFilterAction): void {
+        const selectedtab: eLoadStatusType = eLoadStatusType[this.selectedTab];
 
-                        break;
-                    case LoadFilterStringEnum.STATUS_FILTER:
-                        this.filter = {
-                            ...params,
-                            status: res.queryParams ?? null,
-                        };
-
-                        break;
-                    case LoadFilterStringEnum.TIME_FILTER:
-                        if (res.queryParams?.timeSelected) {
-                            const { fromDate, toDate } =
-                                RepairTableDateFormaterHelper.getDateRange(
-                                    res.queryParams?.timeSelected,
-                                    res.queryParams.year ?? null
-                                );
-
-                            this.filter = {
-                                ...params,
-                                dateTo: toDate,
-                                dateFrom: fromDate,
-                            };
-                        } else {
-                            this.filter = {
-                                ...params,
-                                dateTo: null,
-                                dateFrom: null,
-                            };
-                        }
-
-                        break;
-                    case LoadFilterStringEnum.MONEY_FILTER:
-                        this.filter = {
-                            ...params,
-                            rateFrom:
-                                res.queryParams?.moneyArray[0].from ?? null,
-                            rateTo: res.queryParams?.moneyArray[0].to ?? null,
-                            paidFrom:
-                                res.queryParams?.moneyArray[1].from ?? null,
-                            paidTo: res.queryParams?.moneyArray[1].to ?? null,
-                            dueFrom:
-                                res.queryParams?.moneyArray[2].from ?? null,
-                            dueTo: res.queryParams?.moneyArray[2].to ?? null,
-                        };
-
-                        break;
-                    case LoadFilterStringEnum.LOAD_TYPE_FILTER:
-                        this.filter = {
-                            ...params,
-                            loadType: res.queryParams?.loadType ?? null,
-                        };
-
-                        break;
-                    default:
-                        break;
-                }
-
-                this.loadStoreService.dispatchGetList(
-                    {
-                        ...this.filter,
-                        statusType: selectedtab,
-                    },
-                    selectedtab
-                );
-            });
+        this.loadStoreService.dispatchGetList(
+            {
+                ...this.mapFilters(filters, this.filter),
+                statusType: selectedtab,
+            },
+            selectedtab
+        );
     }
 
     public onToolBarAction(event: TableToolbarActions): void {
@@ -234,9 +178,7 @@ export class LoadTableComponent
             this.loadStoreService.dispatchGetCreateLoadModalData();
         } else if (action === TableStringEnum.TAB_SELECTED) {
             const { ...params } = this.filter || {};
-            const { tabData } = event || {};
-            const { field } = tabData || {};
-            const selectedTab = LoadTableHelper.capitalizeFirstLetter(field);
+            const selectedTab = LoadTableHelper.capitalizeFirstLetter(mode);
 
             this.selectedTab = selectedTab;
             this.toolbarComponent?.flipCards(false);
@@ -253,6 +195,7 @@ export class LoadTableComponent
                 this.filter,
                 eLoadStatusType[selectedTab]
             );
+
             this.updateCardView();
         } else if (action === TableStringEnum.VIEW_MODE) {
             this.loadStoreService.dispatchSetActiveViewMode(
@@ -349,8 +292,6 @@ export class LoadTableComponent
         this.onTableUnlock();
         this.onResize();
         this.onSearch();
-
-        this.setTableFilter();
         this.getLoadStatusFilter();
     }
 
@@ -527,9 +468,9 @@ export class LoadTableComponent
 
     private getLoadStatusFilter(): void {
         if (this.selectedTab !== TableStringEnum.TEMPLATE_2)
-            this.loadStoreService.dispatchGetLoadStatusFilter(
-                <LoadStatusType>this.selectedTab
-            );
+            this.loadStoreService.loadDispatchFilters({
+                loadStatusType: this.selectedTab,
+            });
     }
 
     private onResize(): void {
@@ -557,6 +498,7 @@ export class LoadTableComponent
     }
 
     private onSearch(): void {
+        // TODO: WHY NOT USE EMMITER?
         this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
             .subscribe((event) => {

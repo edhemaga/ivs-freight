@@ -271,8 +271,7 @@ export const tableDataSelector = createSelector(
                 gridColumns:
                     tableClosedColumnsConfig ?? getLoadClosedColumnDefinition(),
             },
-        ];
-
+        ]; 
         return tableData;
     }
 );
@@ -302,9 +301,7 @@ export const tableOptionsSelector = createSelector(
 
         const tableOptions: ITableOptions = {
             toolbarActions: {
-                hideActivationButton: true,
-                showDispatcherFilter:
-                    selectedTabKeyLower !== TableStringEnum.TEMPLATE,
+                hideActivationButton: true, 
                 showTimeFilter:
                     selectedTabKeyLower !== TableStringEnum.TEMPLATE,
                 showStatusFilter:
@@ -347,6 +344,31 @@ export const activeTableDataSelector = createSelector(
         };
 
         return result;
+    }
+);
+export const dispatcherListSelector = createSelector(loadState, (state) => {
+    const { dispatcherList } = state || {};
+    
+    return dispatcherList;
+});
+
+export const getDispatcherListSelector = createSelector(
+    dispatcherListSelector,
+    (dispatcherList) => {
+        return dispatcherList;
+    }
+);
+
+export const statusListSelector = createSelector(loadState, (state) => {
+    const { statusList } = state || {};
+    
+    return statusList;
+});
+
+export const getStatusListSelector = createSelector(
+    statusListSelector,
+    (statusList) => {
+        return statusList;
     }
 );
 
