@@ -17,7 +17,7 @@ import { eMileTabs } from '@pages/miles/enums';
 import { selectSelectedTab } from '@pages/miles/state/selectors/miles.selector';
 
 // Utils
-import { MilesMapper } from '@pages/miles/utils';
+import { MilesHelper } from '@pages/miles/utils/helpers';
 
 @Injectable()
 export class MilesEffects {
@@ -50,7 +50,7 @@ export class MilesEffects {
             .pipe(
                 map((response) =>
                     MilesAction.loadMilesSuccess({
-                        miles: MilesMapper(response.pagination.data)
+                        miles: MilesHelper.milesMapper(response.pagination.data)
                     })
                 ),
                 catchError(() =>

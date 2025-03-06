@@ -33,7 +33,7 @@ import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 // Helpers
 import { FilterHelper } from '@shared/utils/helpers';
-import { MilesMapper } from '@pages/miles/utils';
+import { MilesHelper } from '@pages/miles/utils/helpers';
 
 @Injectable({
     providedIn: 'root',
@@ -93,7 +93,7 @@ export class MilesStoreService {
 
         this.store.dispatch({
             type: MilesStoreConstants.LOAD_MILES_SUCCESS,
-            miles: MilesMapper(data.pagination.data),
+            miles: MilesHelper.milesMapper(data.pagination.data),
         });
     }
 
