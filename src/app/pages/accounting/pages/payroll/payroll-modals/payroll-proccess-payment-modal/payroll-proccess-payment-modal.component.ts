@@ -30,7 +30,9 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 import {
     CaInputComponent,
     CaInputDropdownComponent,
+    CaInputDropdownTestComponent,
     CaModalComponent,
+    InputTestComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -81,8 +83,9 @@ import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
         TaTabSwitchComponent,
         CaInputComponent,
         CaModalComponent,
-        CaInputDropdownComponent,
+        CaInputDropdownTestComponent,
         TaSpinnerComponent,
+        InputTestComponent,
         TaAppTooltipV2Component,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,

@@ -2,7 +2,7 @@
     <div class="middle-report-info">
         <div class="report-card">
             <div class="report-card-title d-f-aic-jcb">
-                <ng-container *ngIf="payrollReport$ | async as payroll_report">
+                @if (payrollReport$ | async; as payroll_report) {
                     <div class="d-flex align-items-center">
                         <div class="payroll_report_title">Report</div>
                         <div class="payroll_chip">
@@ -15,13 +15,11 @@
                             {{ payroll_report.loadCount }} LOAD
                         </div>
                     </div>
-                </ng-container>
-                <ng-container
-                    *ngIf="
-                        (payrollReport$ | async)
-                            ?.perMilesEntity as payroll_report
-                    "
-                >
+                }
+                @if (
+                    (payrollReport$ | async)?.perMilesEntity;
+                    as payroll_report
+                ) {
                     <div class="report-count-item-load d-f-aic-jcb">
                         <div class="report-count-item-load-right d-f-aic">
                             <div class="report-tickets d-f-aic-jcc">
@@ -63,10 +61,10 @@
                             </div>
                         </div>
                     </div>
-                </ng-container>
+                }
             </div>
             <div class="small-table-holder-main d-flex">
-                <ng-container *ngIf="!(loading$ | async)">
+                @if (!(loading$ | async)) {
                     <app-ca-main-table
                         [sortPredicate]="customSortPredicate"
                         [columns]="columns"
@@ -77,13 +75,13 @@
                         [transparentTable]="true"
                         (onReorder)="onReorderDone($event)"
                     ></app-ca-main-table>
-                </ng-container>
+                }
             </div>
-            <ng-container *ngIf="showMap">
+            @if (showMap) {
                 <div class="map-holder">
                     <app-ca-map [data]="mapData$ | async"></app-ca-map>
                 </div>
-            </ng-container>
+            }
         </div>
     </div>
     <div class="right-report-info">
@@ -120,11 +118,11 @@
 </ng-template>
 
 <ng-template #customFeeTemplate let-data let-index="index">
-    <ng-container *ngIf="data">
+    @if (data) {
         <div class="custom-fee-template">
             +{{ data | currency: 'USD' : 'symbol' : '1.0-0' }}
         </div>
-    </ng-container>
+    }
 </ng-template>
 
 <ng-template #customLocationTypeLoad let-data let-index="index">
@@ -132,12 +130,12 @@
         class="load-description d-flex align-items-center"
         [class.delivery]="data.stopType.id == 2"
     >
-        <ng-container *ngIf="data.orderNumber">
+        @if (data.orderNumber) {
             <svg-icon
                 [svgClass]="'d-flex'"
                 name="load_order_num_{{ data.orderNumber }}"
             ></svg-icon>
-        </ng-container>
+        }
 
         @if (data.stopType.name === 'Repair') {
             <span
@@ -193,8 +191,8 @@
 </ng-template>
 
 <ng-template #reorderTemplate let-row="row" let-index="index">
-    <ng-container *ngIf="(payrollReport$ | async).sums as payroll_totals">
-        <ng-container *ngIf="selectedTab === 'open'">
+    @if ((payrollReport$ | async).sums; as payroll_totals) {
+        @if (selectedTab === 'open') {
             <td class="text-center">
                 <div class="td-container">
                     <div class="td-content-container">
@@ -205,7 +203,7 @@
                     </div>
                 </div>
             </td>
-        </ng-container>
+        }
 
         <td [attr.colspan]="selectedTab === 'open' ? 4 : 5">
             <div class="td-container">
@@ -255,5 +253,5 @@
                 </div>
             </div>
         </td>
-    </ng-container>
+    }
 </ng-template>

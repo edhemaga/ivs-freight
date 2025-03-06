@@ -229,6 +229,10 @@ export class DriverCommissionReportComponent
         this.payrollCommissionDriverLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$;
 
+            this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(res => {
+                console.log("SUBSS", res);
+            });
+
         this.includedLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
 

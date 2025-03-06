@@ -261,6 +261,20 @@ export const selectDriverMileageExpandedTable = createSelector(
     }
 );
 
+export const selectPayrollLoadListForDropdown = createSelector(
+    selectPayrollState,
+    (state) => {
+        if (!state.payrollOpenedReport) return [];
+        const includedLoads = state.payrollOpenedReport?.includedLoads ?? [];
+
+        return includedLoads;
+
+        // return includedLoads.map((load) => {
+        //     id: load.loadId;
+        // });
+    }
+);
+
 function getPayrollTableItem(
     payrollTitle: string,
     item?: PayrollCountItemResponse

@@ -17,6 +17,7 @@ import {
     selectPayrollCounts,
     selectPayrollDriverMileageStops,
     selectPayrollLoad,
+    selectPayrollLoadListForDropdown,
     selectPayrollOpenedReport,
     selectPayrollOpenedTab,
     selectPayrollReportLoading,
@@ -30,6 +31,7 @@ import {
 
 // MODELS
 import {
+    LoadWithMilesStopResponse,
     MilesStopShortResponse,
     PayrollDriverMileageListResponse,
     PayrollMapLocation,
@@ -122,6 +124,9 @@ export class PayrollFacadeService {
     public selectPayrollDriverMileageExpanded$: Observable<
         PayrollDriverMileageExpandedListResponse[]
     > = this.store.pipe(select(selectDriverMileageExpandedTable));
+
+    public selectPayrollDropdownLoadList$: Observable<LoadWithMilesStopResponse[]> =
+        this.store.pipe(select(selectPayrollLoadListForDropdown));
 
     public getPayrollCounts(): void {
         this.store

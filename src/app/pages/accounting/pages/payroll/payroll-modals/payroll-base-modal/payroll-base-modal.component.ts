@@ -18,7 +18,9 @@ import {
     CaInputComponent,
     CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
+    CaInputDropdownTestComponent,
     CaModalComponent,
+    InputTestComponent,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -60,6 +62,8 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { ICaInput } from '@ca-shared/components/ca-input-test/config';
+import { PayrollSettingsPipe } from '../../pipes/payroll-settings-pipe/payroll-settings-pipe.pipe';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -75,13 +79,15 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         CaModalComponent,
         CaInputComponent,
         TaTabSwitchComponent,
-        CaInputDropdownComponent,
+        CaInputDropdownTestComponent,
         TaCheckboxComponent,
         TaAppTooltipV2Component,
         CaInputDatetimePickerComponent,
+        InputTestComponent,
 
         // Pipes
         FormatDatePipe,
+        PayrollSettingsPipe
     ],
     templateUrl: './payroll-base-modal.component.html',
     styleUrls: ['./payroll-base-modal.component.scss'],
@@ -100,7 +106,7 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectedTab: TabOptions;
 
     // Drivers
-    public driverConfig: ITaInput = this.payrollCreditConst.driverConfig(
+    public driverConfig: ICaInput = this.payrollCreditConst.driverConfig(
         '',
         ''
     );
@@ -268,25 +274,25 @@ export class PayrollBaseModalComponent implements OnInit {
         this.creditTitle = `${driver?.name} • ${driver?.suffix}`;
         this.driverConfig = {
             ...this.driverConfig,
-            multipleInputValues: {
-                options: [
-                    {
-                        value: driver.name,
-                        isImg: true,
-                        isSvg: false,
-                        folder: null,
-                        subFolder: null,
-                        isOwner: false,
-                        logoType: null,
-                        logoName: this.selectedDriver?.logoName,
-                    },
-                    {
-                        value: `${driver.suffix}`,
-                        logoName: null,
-                    },
-                ],
-                customClass: LoadModalStringEnum.TEXT_SUFFIX,
-            },
+            // multipleInputValues: {
+            //     options: [
+            //         {
+            //             value: driver.name,
+            //             isImg: true,
+            //             isSvg: false,
+            //             folder: null,
+            //             subFolder: null,
+            //             isOwner: false,
+            //             logoType: null,
+            //             logoName: this.selectedDriver?.logoName,
+            //         },
+            //         {
+            //             value: `${driver.suffix}`,
+            //             logoName: null,
+            //         },
+            //     ],
+            //     customClass: LoadModalStringEnum.TEXT_SUFFIX,
+            // },
         };
     }
 
@@ -345,9 +351,7 @@ export class PayrollBaseModalComponent implements OnInit {
 
     public onDriverTruckTabChange(tab: TabOptions): void {
         this.selectedTab = tab;
-        this.baseForm
-            .get(ePayrollString.SELECTED_TYPE_ID)
-            .patchValue(tab.name);
+        this.baseForm.get(ePayrollString.SELECTED_TYPE_ID).patchValue(tab.name);
 
         this.clearDriverTruckValidators();
 
@@ -355,16 +359,12 @@ export class PayrollBaseModalComponent implements OnInit {
             this.baseForm
                 .get(ePayrollString.DRIVER_ID)
                 .setValidators(Validators.required);
-            this.baseForm
-                .get(ePayrollString.SELECTED_TRUCK_ID)
-                .setValue(null);
+            this.baseForm.get(ePayrollString.SELECTED_TRUCK_ID).setValue(null);
         } else if (tab.id === 2) {
             this.baseForm
                 .get(ePayrollString.TRUCK_ID)
                 .setValidators(Validators.required);
-            this.baseForm
-                .get(ePayrollString.SELECTED_DRIVER_ID)
-                .setValue(null);
+            this.baseForm.get(ePayrollString.SELECTED_DRIVER_ID).setValue(null);
         }
 
         // Re-validate the form to apply changes
