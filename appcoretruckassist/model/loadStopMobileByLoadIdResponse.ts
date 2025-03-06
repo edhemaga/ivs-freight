@@ -27,6 +27,8 @@ export interface LoadStopMobileByLoadIdResponse {
     shipperContact?: ShipperContactShortMobileResponse;
     dateFrom?: string | null;
     dateTo?: string | null;
+    timeFrom?: string | null;
+    timeTo?: string | null;
     timeType?: EnumValue;
     driverAssist?: boolean;
     duration?: { [key: string]: number; } | null;

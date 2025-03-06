@@ -9,14 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FuelStopMinimalResponse } from './fuelStopMinimalResponse';
 
 
-export interface RepairShopIntervalResponse { 
-    startTime?: string;
-    endTime?: string;
-    cost?: number | null;
-    visitCount?: number | null;
-    costPercentage?: number | null;
-    countPercentage?: number | null;
+export interface FuelStopMinimalResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<FuelStopMinimalResponse> | null;
 }
 
