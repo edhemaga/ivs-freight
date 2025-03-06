@@ -321,7 +321,7 @@ export abstract class PayrollReportBaseComponent<
                 case ePayrollAdditionalTypes.FUEL:
                     this.payrollService
                         .raiseDeleteModal(
-                            TableStringEnum.FUEL_1,
+                            TableStringEnum.FUEL_TRANSACTION,
                             ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION,
                             item.data.id,
                             {

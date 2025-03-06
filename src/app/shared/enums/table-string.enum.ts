@@ -342,6 +342,7 @@ export enum TableStringEnum {
     FUEL_STOP = 'FUEL_STOP',
     FUEL_STOP_2 = 'fuel stop',
     STOP = 'Stop',
+    STOP_LOWERCASE = 'stop',
     TRANSACTIONS = 'Transactions',
     TRANSACTION = 'transaction',
     REGULAR_TEXT = 'regular-text',

@@ -228,19 +228,28 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
                 break;
             case TaModalActionEnum.DELETE:
-                this.payrollService.raiseDeleteModal(
-                    TableStringEnum.FUEL_1,
-                    ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION,
-                    this.editData.data.id,
-                    {
-                        title: this.editData.data.loadInvoice.invoice,
-                        subtitle: this.editData.data.total,
-                        date: this.editData.data.transactionDate,
-                        label: this.editData.data.truck?.truckNumber,
-                        id: this.editData.id,
-                    },
+                const id = this.editData.data?.id ?? this.editData.id;
+                const title = this.fuelForm.get(
+                    FuelValuesStringEnum.INVOICE
+                ).value;
+                const subtitle = this.fuelForm.get(
+                    FuelValuesStringEnum.TOTAL
+                ).value;
+                const date = this.fuelForm.get(
+                    FuelValuesStringEnum.TRANSACTION_DATE
+                ).value;
 
-                    TableStringEnum.FUEL_1
+                this.payrollService.raiseDeleteModal(
+                    TableStringEnum.FUEL_TRANSACTION,
+                    ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION,
+                    id,
+                    {
+                        title,
+                        subtitle,
+                        date,
+                        label: this.selectedTruckType?.number,
+                        id,
+                    }
                 );
 
                 break;
