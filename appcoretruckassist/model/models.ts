@@ -1007,6 +1007,8 @@ export * from './truckMinimalListResponse';
 export * from './truckMinimalMobileResponse';
 export * from './truckMinimalResponse';
 export * from './truckMinimalResponsePagination';
+export * from './truckModelListResponse';
+export * from './truckModelResponse';
 export * from './truckPerformanceResponse';
 export * from './truckResponse';
 export * from './truckRevenueChartResponse';

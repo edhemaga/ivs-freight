@@ -17,7 +17,6 @@ import {
     ChartLegendConfiguration,
 } from '@shared/utils/constants';
 import { FuelDetailsChartsConfiguration } from '@pages/fuel/utils/constants';
-import { FuelStopDetailsCardConstants } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/utils/constants';
 
 // helpers
 import { ChartHelper } from '@shared/utils/helpers';
@@ -43,8 +42,6 @@ import { FuelStopExpensesResponse, FuelStopResponse } from 'appcoretruckassist';
 })
 export class FuelStopDetailsFuelExpenseCardComponent implements OnDestroy {
     @Input() set cardData(data: FuelStopResponse) {
-        this.getConstantData();
-
         this.createFuelExpenseCardData(data);
     }
 
@@ -64,36 +61,39 @@ export class FuelStopDetailsFuelExpenseCardComponent implements OnDestroy {
 
     constructor(private fuelService: FuelService) {}
 
-    private getConstantData(): void {
-        this.fuelExpenseChartTabs = JSON.parse(
-            JSON.stringify(
-                FuelStopDetailsCardConstants.FUEL_EXPENSES_CHART_TABS
-            )
-        );
-    }
-
     private createFuelExpenseCardData(
         data: FuelStopResponse,
-        chartTimeDetailPages: number = 1
+        timeFilter: number = 1
     ): void {
         this._cardData = data;
 
         this.fuelService
-            .getFuelExpenses(this._cardData.id, chartTimeDetailPages)
+            .getFuelExpenses(this._cardData.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
             .subscribe((response: FuelStopExpensesResponse) => {
+                if (timeFilter && this.fuelExpenseChartTabs[timeFilter - 1])
+                    this.fuelExpenseChartTabs = this.fuelExpenseChartTabs?.map(
+                        (tab: Tabs, indx: number) => {
+                            const tabModified: Tabs = {
+                                ...tab,
+                                checked: timeFilter - 1 === indx,
+                            };
+                            return tabModified;
+                        }
+                    );
                 this.fuelChartData = response;
 
                 this.fuelChartConfig = {
                     ...FuelDetailsChartsConfiguration.FUEL_CHART_CONFIG,
                     chartData: ChartHelper.generateDataByDateTime(
                         this.fuelChartData.fuelStopExpensesChartResponse,
-                        ChartConfiguration.FUEL_EXPENSES_CONFIGURATION
+                        ChartConfiguration.FUEL_EXPENSES_CONFIGURATION,
+                        timeFilter
                     ),
                 };
 
                 this.fuelChartLegend =
-                    ChartLegendConfiguration.fuelExpensesLegend(
+                    ChartLegendConfiguration.FUEL_EXPENSES_LEGEND(
                         this.fuelChartData
                     );
             });
@@ -114,12 +114,12 @@ export class FuelStopDetailsFuelExpenseCardComponent implements OnDestroy {
                 : this.fuelChartData?.fuelStopExpensesChartResponse[index];
 
         this.fuelChartLegend =
-            ChartLegendConfiguration.fuelExpensesLegend(dataForLegend);
+            ChartLegendConfiguration.FUEL_EXPENSES_LEGEND(dataForLegend);
     }
 
     public onChartTabChange(tab: Tabs): void {
+        if (this.selectedTab === tab.id) return;
         this.selectedTab = tab.id;
-
         this.createFuelExpenseCardData(this._cardData, this.selectedTab);
     }
 

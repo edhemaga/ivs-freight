@@ -1,11 +1,4 @@
-import {
-    Component,
-    Input,
-    OnChanges,
-    OnDestroy,
-    OnInit,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     ReactiveFormsModule,
@@ -100,10 +93,15 @@ import {
         CaChartComponent,
     ],
 })
-export class DriverDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy
-{
-    @Input() driver: DriverResponse;
+export class DriverDetailsCardComponent implements OnInit, OnDestroy {
+    @Input() set driverData(value: DriverResponse) {
+        if (value) {
+            this.driver = value;
+            this.getDriversDropdown();
+        }
+    }
+
+    public driver!: DriverResponse;
 
     private destroy$ = new Subject<void>();
 
@@ -148,36 +146,49 @@ export class DriverDetailsCardComponent
         this.getDriverPayroll();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (!changes?.driver?.firstChange && changes?.driver.currentValue) {
-            this.getDriversDropdown();
-        }
-    }
-
     private getDriverPayroll(timeFilter?: number): void {
         this.driverService
             .getDriverPayroll(this.driver.id, timeFilter || 1)
-            .subscribe((response: DriverPayrollResponse) => {
-                if (timeFilter && this.barChartTabs[timeFilter - 1])
-                    this.barChartTabs[timeFilter - 1].checked = true;
+            .subscribe(
+                (response: DriverPayrollResponse) => {
+                    if (timeFilter && this.barChartTabs[timeFilter - 1])
+                        this.barChartTabs = this.barChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
+                    this.driverChartData = response;
 
-                this.driverChartData = response;
+                    this.payrollChartConfig = {
+                        ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<DriverPayrollChartResponse>(
+                                this.driverChartData
+                                    .getDriverPayrollChartResponse,
+                                ChartConfiguration.DRIVER_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
 
-                this.payrollChartConfig = {
-                    ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
-                    chartData:
-                        ChartHelper.generateDataByDateTime<DriverPayrollChartResponse>(
-                            this.driverChartData.getDriverPayrollChartResponse,
-                            ChartConfiguration.DRIVER_CONFIGURATION,
-                            timeFilter
-                        ),
-                };
-
-                this.driverLegendConfig =
-                    ChartLegendConfiguration.driverLegendConfiguration(
-                        this.driverChartData
-                    );
-            });
+                    this.driverLegendConfig =
+                        ChartLegendConfiguration.driverLegendConfiguration(
+                            this.driverChartData
+                        );
+                },
+                () => {
+                    this.payrollChartConfig = {
+                        ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     public setDriverLegendOnHover(index: number | null): void {
@@ -205,14 +216,12 @@ export class DriverDetailsCardComponent
     }
 
     private getStoreData(isInit: boolean = false): void {
-        if (isInit) {
-            this.driversDropdownList = this.driverMinimalQuery.getAll();
-        } else {
+        if (isInit) this.driversDropdownList = this.driverMinimalQuery.getAll();
+        else
             this.driverMinimalQuery
                 .selectAll()
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((drivers) => (this.driversDropdownList = drivers));
-        }
     }
 
     private getCurrentIndex(): void {
@@ -262,35 +271,35 @@ export class DriverDetailsCardComponent
     }
 
     public onSelectedDriver(event: DriverMinimalResponse): void {
-        if (event?.id !== this.driver.id) {
-            this.driversDropdownList = this.driverMinimalQuery
-                .getAll()
-                .map((driver) => {
-                    const { id, firstName, lastName, status, owner } = driver;
+        if (event?.id === this.driver.id) return;
 
-                    const fullname =
-                        firstName +
-                        DriverDetailsCardStringEnum.EMPTY_STRING +
-                        lastName;
+        this.driversDropdownList = this.driverMinimalQuery
+            .getAll()
+            .map((driver) => {
+                const { id, firstName, lastName, status, owner } = driver;
 
-                    return {
-                        id,
-                        name: fullname,
-                        status,
-                        svg: owner
-                            ? DriverDetailsCardSvgRoutes.ownerStatusRoute
-                            : null,
-                        folder: DriverDetailsCardStringEnum.COMMON,
-                        active: id === event.id,
-                    };
-                });
+                const fullname =
+                    firstName +
+                    DriverDetailsCardStringEnum.EMPTY_STRING +
+                    lastName;
 
-            this.detailsPageService.getDataDetailId(event.id);
+                return {
+                    id,
+                    name: fullname,
+                    status,
+                    svg: owner
+                        ? DriverDetailsCardSvgRoutes.ownerStatusRoute
+                        : null,
+                    folder: DriverDetailsCardStringEnum.COMMON,
+                    active: id === event.id,
+                };
+            });
 
-            this.driversDropdownList = this.driversDropdownList.sort(
-                (x, y) => Number(y.status) - Number(x.status)
-            );
-        }
+        this.detailsPageService.getDataDetailId(event.id);
+
+        this.driversDropdownList = this.driversDropdownList.sort(
+            (x, y) => Number(y.status) - Number(x.status)
+        );
     }
 
     public onChangeDriver(action: string): void {

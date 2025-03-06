@@ -425,7 +425,7 @@ export class OwnerTableComponent
                 // Add Owner
 
                 if (res?.animation === TableStringEnum.ADD) {
-                    if (this.selectedTab === TableStringEnum.INACTIVE) {
+                    if (this.selectedTab === TableStringEnum.ACTIVE) {
                         this.viewData.push(this.mapOwnerData(res.data));
 
                         this.viewData = this.viewData.map((owner) => {
@@ -701,6 +701,8 @@ export class OwnerTableComponent
     }
 
     private mapOwnerData(data): OwnerTableData {
+        const isAddressObject = data.address instanceof Object;
+
         return {
             ...data,
             isSelected: false,
@@ -710,9 +712,9 @@ export class OwnerTableComponent
             textPhone: data?.phone
                 ? this.phonePipe.transform(data.phone)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textAddress: data?.address
-                ? data.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textAddress: isAddressObject
+                ? data?.address?.address
+                : data?.address,
             textBankName: data?.bankName
                 ? data.bankName
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,

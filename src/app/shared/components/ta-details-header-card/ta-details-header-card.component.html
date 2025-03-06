@@ -63,7 +63,7 @@
                             class="current-active-owner"
                             [ngClass]="{
                                 'company-owned': searchName === 'Company Owned',
-                                closed: searchName.includes('Closed'),
+                                closed: searchName?.includes('Closed'),
                             }"
                             src="{{
                                 customPinnedSvg

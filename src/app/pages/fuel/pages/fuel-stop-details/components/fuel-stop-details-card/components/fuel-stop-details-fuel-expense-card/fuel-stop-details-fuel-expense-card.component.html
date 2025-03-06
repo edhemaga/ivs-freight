@@ -10,27 +10,26 @@
         marginBottom: '8px',
     }"
 >
-    <div class="charts-template perfomance">
+    <div>
         @if (!fuelLegendHighlightedBackground) {
-            <app-ta-tab-switch
-                [tabs]="fuelExpenseChartTabs"
-                [type]="'type2-modal-popup'"
-                (switchClicked)="onChartTabChange($event)"
-            >
-            </app-ta-tab-switch>
+            <div>
+                <app-ta-tab-switch
+                    [tabs]="fuelExpenseChartTabs"
+                    [type]="'type2-modal-popup'"
+                    (switchClicked)="onChartTabChange($event)"
+                >
+                </app-ta-tab-switch>
+            </div>
         }
-
-        @if (fuelChartConfig?.chartData) {
-            <app-ca-chart
-                [chartConfig]="fuelChartConfig"
-                [legendData]="{
-                    data: fuelChartLegend,
-                    hasHighlightedBackground: fuelLegendHighlightedBackground,
-                    title: fuelLegendTitle,
-                }"
-                (hoveredIndex)="setFuelLegendOnHover($event)"
-            >
-            </app-ca-chart>
-        }
+        <app-ca-chart
+            [chartConfig]="fuelChartConfig"
+            [legendData]="{
+                data: fuelChartLegend,
+                hasHighlightedBackground: fuelLegendHighlightedBackground,
+                title: fuelLegendTitle,
+            }"
+            (hoveredIndex)="setFuelLegendOnHover($event)"
+        >
+        </app-ca-chart>
     </div>
 </app-ta-custom-card>

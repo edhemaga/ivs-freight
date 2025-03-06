@@ -1577,13 +1577,11 @@
             </div>
         </ng-container>
 
-        <ng-container
-            *ngIf="
-                ['deduction', 'credit', 'bonus', 'fuel'].includes(
-                    editData?.template
-                )
-            "
-        >
+        @if (
+            ['deduction', 'credit', 'bonus', 'FUEL_TRANSACTION'].includes(
+                editData?.template
+            )
+        ) {
             <div
                 class="d-flex flex-column justify-content-center confirmation-array-body"
             >
@@ -1612,7 +1610,7 @@
                     </div>
                 </div>
             </div>
-        </ng-container>
+        }
 
         <!-- Rating Header -->
 

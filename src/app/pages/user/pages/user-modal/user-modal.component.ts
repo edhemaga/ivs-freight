@@ -652,7 +652,6 @@ export class UserModalComponent
 
     private updateUser(id: number) {
         const {
-            address,
             addressUnit,
             includeInPayroll,
             salary,
@@ -666,7 +665,7 @@ export class UserModalComponent
             id: id,
             ...form,
             address: {
-                address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             departmentId: this.selectedDepartment
@@ -719,7 +718,6 @@ export class UserModalComponent
 
     private addUser() {
         const {
-            address,
             addressUnit,
             includeInPayroll,
             salary,
@@ -732,7 +730,7 @@ export class UserModalComponent
         const newData: CreateCompanyUserCommand = {
             ...form,
             address: {
-                address,
+                ...this.selectedAddress,
                 addressUnit,
             },
             departmentId: this.selectedDepartment
@@ -978,7 +976,7 @@ export class UserModalComponent
                             firstName: this.editData.data.firstName,
                             lastName: this.editData.data.lastName,
                             address:
-                                this.editData.data.address?.address ?? null,
+                                this.editData.data.address ?? null,
                             addressUnit:
                                 this.editData.data.address?.addressUnit ?? null,
                             personalPhone: this.editData.data.personalPhone,

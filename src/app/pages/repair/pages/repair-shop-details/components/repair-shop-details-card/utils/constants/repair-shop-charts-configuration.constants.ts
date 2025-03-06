@@ -5,7 +5,7 @@ import {
 
 export class RepairShopChartsConfiguration {
     static REPAIR_CHART_CONFIG = {
-        chartType: eChartTypesString.LINE,
+        chartType: eChartTypesString.BAR,
         chartData: {
             labels: [],
             datasets: [],
@@ -15,6 +15,7 @@ export class RepairShopChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
         showTooltipBackground: false,
+        isMultiYAxis: true,
         showXAxisLabels: true,
         hasVerticalDashedAnnotation: true,
     };
