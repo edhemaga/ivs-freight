@@ -2039,9 +2039,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     })
                     .filter((item) => item.contacts?.length);
 
-                if (this.labelsShipperContacts[1]?.contacts[0]) {
+                if (this.labelsShipperContacts[0]?.contacts[0]) {
                     this.selectedPickupShipperContact =
-                        this.labelsShipperContacts[1].contacts[0];
+                        this.labelsShipperContacts[0].contacts[0];
                     this.loadForm
                         .get(LoadModalStringEnum.PICKUP_SHIPPER_CONTACT_ID)
                         .patchValue(this.selectedPickupShipperContact.id);
@@ -2152,9 +2152,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     })
                     .filter((item) => item.contacts?.length);
 
-                if (this.labelsShipperContacts[1]?.contacts[0]) {
+                if (this.labelsShipperContacts[0]?.contacts[0]) {
                     this.selectedDeliveryShipperContact =
-                        this.labelsShipperContacts[1].contacts[0];
+                        this.labelsShipperContacts[0].contacts[0];
 
                     this.loadForm
                         .get(LoadModalStringEnum.DELIVERY_SHIPPER_CONTACT_ID)
