@@ -1,1 +1,1 @@
-export * from './miles-tabs.enums'
+export * from './miles-tabs.enum'

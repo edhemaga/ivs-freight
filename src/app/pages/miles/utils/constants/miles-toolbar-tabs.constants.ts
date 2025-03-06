@@ -2,13 +2,13 @@ import { eMileTabs } from '@pages/miles/enums';
 
 export const MilesToolbarTabs = [
     {
-        title: eMileTabs.Active,
-        value: eMileTabs.Active,
+        title: eMileTabs.ACTIVE,
+        value: eMileTabs.ACTIVE,
         length: 0,
     },
     {
-        title: eMileTabs.Inactive,
-        value: eMileTabs.Inactive,
+        title: eMileTabs.INACTIVE,
+        value: eMileTabs.INACTIVE,
         length: 0,
     },
 ];

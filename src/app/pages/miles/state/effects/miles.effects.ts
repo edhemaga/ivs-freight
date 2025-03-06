@@ -36,7 +36,7 @@ export class MilesEffects {
         revenueTo?: number,
         states?: string[]
     ) {
-        const tabValue = tab === eMileTabs.Active ? 1 : 0;
+        const tabValue = tab === eMileTabs.ACTIVE ? 1 : 0;
         return this.milesService
             .apiMilesListGet(
                 null,
@@ -63,7 +63,7 @@ export class MilesEffects {
     public getInitalMilesList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.getLoadsPayload),
-            exhaustMap(() => this.fetchMilesData(eMileTabs.Active, null, null))
+            exhaustMap(() => this.fetchMilesData(eMileTabs.ACTIVE, null, null))
         )
     );
 

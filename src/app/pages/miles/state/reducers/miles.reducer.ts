@@ -18,7 +18,7 @@ export const initialState: IMilesState = {
     items: [],
     loading: false, 
     tableViewData: MilesToolbarTabs,
-    selectedTab: eMileTabs.Active,
+    selectedTab: eMileTabs.ACTIVE,
     activeViewMode: eActiveViewMode.List,
     filters: {},
     states: [],

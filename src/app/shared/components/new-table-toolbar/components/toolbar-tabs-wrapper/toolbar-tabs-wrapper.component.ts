@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 // Shared Components
-import { ToolbarTabsComponent } from '../toolbar-tabs/toolbar-tabs.component';
+import { ToolbarTabsComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs/toolbar-tabs.component';
 
 // Enums 
 import { TableStringEnum, eToolbarVariant } from '@shared/enums'; 
