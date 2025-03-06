@@ -1,7 +1,8 @@
 // External Libraries
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 
 // Shared Components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
@@ -25,7 +26,7 @@ import { eMileTabs } from '@pages/miles/enums';
 import { TableStringEnum } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums';
 
-// Models 
+// Interface 
 import { IMilesModel, IMilesState } from '@pages/miles/interface'; 
 import { IStateFilters } from '@shared/interfaces';
 
@@ -49,7 +50,8 @@ import { IStateFilters } from '@shared/interfaces';
     templateUrl: './miles.component.html',
     styleUrls: ['./miles.component.scss'],
 })
-export class MilesComponent implements OnInit  {
+export class MilesComponent implements OnInit, OnDestroy {
+    private destroy$ = new Subject<void>();
     private filter: IStateFilters = {};
     constructor(
         private store: Store<IMilesState>,
@@ -84,11 +86,11 @@ export class MilesComponent implements OnInit  {
     }
 
     private storeSubscription(): void {
-        this.milesStoreService.filter$.subscribe(res =>this.filter = res);
+        this.milesStoreService.filter$.pipe(takeUntil(this.destroy$)).subscribe(res =>this.filter = res);
     }
-
     
     ngOnDestroy(): void {
-        // Some cleaning code for this class only 
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
