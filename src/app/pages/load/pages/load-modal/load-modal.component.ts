@@ -1947,8 +1947,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     this.loadBrokerContactsInputConfig = {
                         ...this.loadBrokerContactsInputConfig,
+                        multipleInputValues: null,
                         isDisabled: false,
-                        blackInput: false,
                     };
                 }
             }

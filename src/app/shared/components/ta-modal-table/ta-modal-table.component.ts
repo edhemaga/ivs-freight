@@ -35,6 +35,7 @@ import { TaModalTableFuelCardComponent } from '@shared/components/ta-modal-table
 import { TaModalTablePreviousAddressesComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-previous-addresses/ta-modal-table-previous-addresses.component';
 import { TaModalTableLoadItemsComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-load-items/ta-modal-table-load-items.component';
 import { TaModalTableDepartmentComponent } from '@shared/components/ta-modal-table/components/ta-modal-table-department/ta-modal-table-department.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
@@ -120,6 +121,7 @@ import { LoadStopItemDropdownLists } from '@pages/load/pages/load-modal/models';
         TaModalTablePreviousAddressesComponent,
         TaModalTableLoadItemsComponent,
         TaModalTableDepartmentComponent,
+        TaCheckboxComponent,
 
         // pipes
         HeaderRequiredStarPipe,
@@ -338,6 +340,8 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             previousAddressesTableItems: this.formBuilder.array([]),
             loadModalTableItems: this.formBuilder.array([]),
             departmentTableItems: this.formBuilder.array([]),
+
+            checkBoxHeaderItem: this.formBuilder.control(null),
         });
     }
 
@@ -1362,6 +1366,14 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                     this.modalTableValidStatusEmitter.emit(isValid);
                 }
             });
+    }
+
+    public onSelectAll(value: boolean): void {
+        const formArray = this.getFormArray();
+
+        formArray.controls.forEach((control: FormGroup) => {
+            control.controls[TableStringEnum.IS_CHECKED].patchValue(value);
+        });
     }
 
     public calculateRepairBillSubtotal(): void {

@@ -568,7 +568,7 @@ export class PayrollService {
             | TableStringEnum.DEDUCTION
             | TableStringEnum.CREDIT
             | TableStringEnum.BONUS
-            | TableStringEnum.FUEL_1,
+            | TableStringEnum.FUEL_TRANSACTION,
         action:
             | ConfirmationModalStringEnum.DELETE_DEDUCTION
             | ConfirmationModalStringEnum.DELETE_CREDIT
