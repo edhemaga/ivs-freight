@@ -37,14 +37,23 @@ export class FuelDetailsResolver {
             fuelStopId,
         ]);
 
+        const fuelledVehicleList$ = this.fuelService.getFuelStopFuelledcVehicle(
+            fuelStopId,
+            pageIndex,
+            pageSize
+        );
+
         return forkJoin({
             fuelStopData: fuelStopData$,
             transactionList: transactionList$,
+            fuelledVehicleList: fuelledVehicleList$,
         }).pipe(
             tap((data) => {
                 const fuelStopData = {
                     ...data?.fuelStopData,
                     transactionList: data?.transactionList?.pagination?.data,
+                    fuelledVehicleList:
+                        data?.fuelledVehicleList?.pagination?.data,
                 };
 
                 this.fuelDetailsStore.add(fuelStopData);

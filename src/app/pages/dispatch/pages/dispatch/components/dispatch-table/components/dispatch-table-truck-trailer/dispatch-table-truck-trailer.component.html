@@ -64,9 +64,11 @@
                             isCircleIconHovering
                                 ? type === 'truck'
                                     ? (truck.truckType.id
-                                      | dispatchColorFinder: 'truck' : true)
+                                      | truckTrailerColorFinder: 'truck' : true)
                                     : (trailer.trailerType.id
-                                      | dispatchColorFinder: 'trailer' : true)
+                                      | truckTrailerColorFinder
+                                          : 'trailer'
+                                          : true)
                                 : 'transparent'
                         "
                         [ngStyle]="{
@@ -90,9 +92,9 @@
                                 [ngClass]="
                                     type === 'truck'
                                         ? (truck.truckType.id
-                                          | dispatchColorFinder: 'truck')
+                                          | truckTrailerColorFinder: 'truck')
                                         : (trailer.trailerType.id
-                                          | dispatchColorFinder: 'trailer')
+                                          | truckTrailerColorFinder: 'trailer')
                                 "
                                 [src]="dispatchTableSvgRoutes.circleSvgRoute"
                                 [svgStyle]="{
@@ -116,9 +118,11 @@
                                     [ngClass]="
                                         type === 'truck'
                                             ? (truck.truckType.id
-                                              | dispatchColorFinder: 'truck')
+                                              | truckTrailerColorFinder
+                                                  : 'truck')
                                             : (trailer.trailerType.id
-                                              | dispatchColorFinder: 'trailer')
+                                              | truckTrailerColorFinder
+                                                  : 'trailer')
                                     "
                                     [svgStyle]="{
                                         'height.px': '18',

@@ -1,1 +1,6 @@
-<div>VEHICLE</div>
+@if (_fuelledVehicleList?.length) {
+    <app-ca-vehicle-list
+        [vehicleListConfig]="vehicleListConfig"
+        (vehicleListActionsEmitter)="handleVehicleListActionsEmit($event)"
+    ></app-ca-vehicle-list>
+}

@@ -22,7 +22,12 @@
             <!-- Vehilce -->
 
             @case ('fuelled-vehicle') {
-                <app-fuel-stop-details-item-fuelled-vehicle>
+                <app-fuel-stop-details-item-fuelled-vehicle
+                    [fuelledVehicleList]="
+                        detailsConfig[2]?.data?.fuelledVehicleList
+                    "
+                    [searchConfig]="searchConfig"
+                >
                 </app-fuel-stop-details-item-fuelled-vehicle>
             }
         }

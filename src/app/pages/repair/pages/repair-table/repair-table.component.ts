@@ -31,6 +31,7 @@ import {
     MapMarkerIconService,
     IMapPagination,
     IMapBounds,
+    TruckTrailerColorFinderPipe,
 } from 'ca-components';
 
 // base classes
@@ -61,7 +62,6 @@ import {
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
-import { DispatchColorFinderPipe } from '@shared/pipes';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -118,7 +118,7 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
         './repair-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [ThousandSeparatorPipe, DispatchColorFinderPipe],
+    providers: [ThousandSeparatorPipe, TruckTrailerColorFinderPipe],
 })
 export class RepairTableComponent
     extends RepairDropdownMenuActionsBase
@@ -238,7 +238,7 @@ export class RepairTableComponent
         // pipes
         private datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe,
-        private dispatchColorFinderPipe: DispatchColorFinderPipe
+        private truckTrailerColorFinderPipe: TruckTrailerColorFinderPipe
     ) {
         super();
     }
@@ -1422,7 +1422,7 @@ export class RepairTableComponent
                 .toLowerCase(),
             vehicleTooltipTitle:
                 truck?.truckType.name || trailer?.trailerType.name,
-            vehicleTooltipColor: this.dispatchColorFinderPipe.transform(
+            vehicleTooltipColor: this.truckTrailerColorFinderPipe.transform(
                 truck?.truckType.id || trailer?.trailerType.id,
                 unitType?.name?.toLowerCase(),
                 true

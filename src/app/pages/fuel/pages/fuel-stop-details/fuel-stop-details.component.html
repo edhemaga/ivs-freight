@@ -1,5 +1,5 @@
 <div class="fuel-stop-details-container">
-    @for (item of fuelDetailsConfig; track item.id) {
+    @for (item of fuelStopDetailsConfig; track item.id) {
         <app-ta-details-header
             [route]="'/list/fuel'"
             [tooltipHeaderName]="'Back to List'"
@@ -14,6 +14,9 @@
         </app-ta-details-header>
     }
 
-    <app-fuel-stop-details-item [detailsConfig]="fuelDetailsConfig">
+    <app-fuel-stop-details-item
+        [detailsConfig]="fuelStopDetailsConfig"
+        [searchConfig]="searchConfig"
+    >
     </app-fuel-stop-details-item>
 </div>

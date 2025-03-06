@@ -17,6 +17,7 @@ import {
     FuelStopFranchiseResponse,
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
+    FuelledVehicleHistoryListResponse,
 } from 'appcoretruckassist';
 
 // services
@@ -295,6 +296,30 @@ export class FuelService {
 
     public getFuelStopById(id: number): Observable<FuelStopResponse> {
         return this.fuelService.apiFuelFuelstopIdGet(id);
+    }
+
+    public getFuelStopFuelledcVehicle(
+        fuelStopId?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<FuelledVehicleHistoryListResponse> {
+        return this.fuelService.apiFuelFuelstopFueledvehicleGet(
+            fuelStopId,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            null,
+            null,
+            search,
+            search1,
+            search2
+        );
     }
 
     public addFuelStop<T>(data: T): Observable<CreateResponse> {

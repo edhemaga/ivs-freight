@@ -25,6 +25,7 @@ import {
     FormatTimePipe,
     ThousandSeparatorPipe,
 } from '@shared/pipes';
+import { FuelItemQuantityTypePipe } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/pipes';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -68,6 +69,7 @@ import {
         FormatDatePipe,
         FormatTimePipe,
         ThousandSeparatorPipe,
+        FuelItemQuantityTypePipe,
 
         // directives
         DescriptionItemsTextCountDirective,
@@ -228,6 +230,7 @@ export class FuelStopDetailsItemTransactionComponent
         option: { type: string },
         index: number
     ): void {
+        console.log('option', option);
         const transaction = this._transactionList[index];
 
         this.transactionItemDropdownIndex = -1;

@@ -45,11 +45,14 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public detailsDropdownOptions: DetailsDropdownOptions;
-    public fuelDetailsConfig: DetailsConfig[] = [];
+    public fuelStopDetailsConfig: DetailsConfig[] = [];
 
     public fuelStopObject: FuelStopResponse;
 
     public newFuelStopId: number;
+
+    // search
+    public searchConfig: boolean[] = [false, false];
 
     constructor(
         // router
@@ -117,7 +120,7 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
 
         this.getDetailsOptions(fuelStop);
 
-        this.fuelDetailsConfig =
+        this.fuelStopDetailsConfig =
             FuelStopDetailsHelper.getFuelStopDetailsConfig(fuelStop);
 
         this.cdRef.detectChanges();

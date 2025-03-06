@@ -18,7 +18,7 @@ import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
-import { LastFuelPriceCardTitlePipe } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/pipes/last-fuel-price-card-title.pipe';
+import { LastFuelPriceCardTitlePipe } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/pipes';
 
 // models
 import { FuelStopResponse } from 'appcoretruckassist';
@@ -97,8 +97,6 @@ export class FuelStopDetailsLastFuelPriceCardComponent {
             ...data,
             lastFuelPriceConfig,
         };
-
-        console.log('this._cardData ', this._cardData);
     }
 
     public handleLastFuelPriceCardOpen(isOpen: boolean): void {

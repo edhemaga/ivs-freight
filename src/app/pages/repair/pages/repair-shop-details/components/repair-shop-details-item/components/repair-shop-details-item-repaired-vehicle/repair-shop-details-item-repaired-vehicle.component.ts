@@ -1,18 +1,17 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 
 // services
 import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
 
 // components
-import { CaVehicleListComponent } from '@shared/components/ca-vehicle-list/ca-vehicle-list.component';
+import { CaVehicleListComponent } from 'ca-components';
 
 // configs
 import { RepairShopDetailsItemConfig } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/configs';
 
 // interfaces
-import { IVehicleListActionsEmit } from '@shared/components/ca-vehicle-list/interfaces/vehicle-list-actions-emit.interface';
+import { IVehicleListActionsEmit } from '@ca-shared/components/ca-vehicle-list/interfaces';
 
 // models
 import { RepairedVehicleResponse } from 'appcoretruckassist';
@@ -23,9 +22,6 @@ import { RepairedVehicleResponse } from 'appcoretruckassist';
     styleUrls: ['./repair-shop-details-item-repaired-vehicle.component.scss'],
     standalone: true,
     imports: [
-        // modules
-        CommonModule,
-
         // components
         CaVehicleListComponent,
     ],

@@ -1,4 +1,4 @@
-import { eVehicleList } from '@shared/components/ca-vehicle-list/enums';
+import { eVehicleList } from 'ca-components';
 
 // models
 import { RepairedVehicleResponse } from 'appcoretruckassist';
