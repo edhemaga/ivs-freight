@@ -21,6 +21,9 @@ html {
 @import '../node_modules/bootstrap/scss/bootstrap';
 
 @import 'assets/scss/modal';
+@import 'assets/scss/border-radius';
+@import 'assets/scss/background';
+@import 'assets/scss/spacings';
 @import 'assets/scss/form';
 @import 'assets/scss/input-validation';
 @import 'assets/scss/tooltip';
@@ -45,6 +48,7 @@ html {
 @import 'assets/scss/applicant.scss';
 @import 'assets/scss/table-modal';
 @import 'assets//scss/note.scss';
+@import 'assets//scss/new-table.scss';
 @import 'assets/scss/text-selection.scss';
 @import 'assets/scss/text-size.scss';
 @import 'assets/scss/icons.scss';

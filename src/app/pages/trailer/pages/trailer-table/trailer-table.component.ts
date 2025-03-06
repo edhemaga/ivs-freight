@@ -190,7 +190,7 @@ export class TrailerTableComponent
             .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    this.backFilterQuery.trailerTypeIds = res.queryParams;
+                    this.backFilterQuery.trailerTypeIds = res.selectedIds;
                     this.trailerBackFilter(this.backFilterQuery);
                 }
             });

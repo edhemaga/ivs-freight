@@ -524,4 +524,5 @@ export enum TableStringEnum {
     ADD_PM_ITEM = 'ADD_PM_ITEM',
     TRUCK_PM_SETTINGS = 'Truck PM Settings',
     TRAILER_PM_SETTINGS = 'Trailer PM Settings',
+    LOAD_DETAILS= "Load Details"
 }

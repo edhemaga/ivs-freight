@@ -15,7 +15,7 @@ export interface RepairShopIntervalResponse {
     startTime?: string;
     endTime?: string;
     cost?: number | null;
-    count?: number | null;
+    visitCount?: number | null;
     costPercentage?: number | null;
     countPercentage?: number | null;
 }

@@ -1,5 +1,5 @@
 // appcoretruckassist
-import { BrokerByIdResponse, BrokerContactGroupResponse, CommentResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatus, LoadStatusResponse, LoadTemplateResponse, ShipperLoadModalResponse, TableType } from "appcoretruckassist";
+import { BrokerByIdResponse, BrokerContactGroupResponse, CommentResponse, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatus, LoadStatusResponse, LoadTemplateResponse, ShipperLoadModalResponse, TableType } from "appcoretruckassist";
 
 // models
 import { ICreateCommentMetadata, ILoadGridItem, ILoadState, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index";
@@ -9,6 +9,9 @@ import { BrokerContactExtended } from "@pages/customer/pages/broker-modal/models
 
 // enums
 import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index";
+
+// Helpers
+import { FilterHelper } from "@shared/utils/helpers";
 
 export const getLoadsOrTemplatesPayloadSuccessResult = function(state: ILoadState, data: ILoadGridItem[] | ILoadTemplateGridItem[], templateCount: number, pendingCount: number, activeCount: number, closedCount: number, selectedTab: eLoadStatusType, showMore?: boolean): ILoadState {
     const { data: stateData } = state || {};
@@ -352,6 +355,14 @@ export const tableColumnResizeResult = function(state: ILoadState, columns: ITab
     return result;
 }
 
+export function mapDispatcherSuccessResult(state: ILoadState, dispatcherList: DispatcherFilterResponse[]): ILoadState {
+    const result: ILoadState = {
+        ...state,
+        dispatcherList: FilterHelper.dispatcherFilter(dispatcherList)
+    }
+
+    return result;
+}
 export const addCreatedBrokerStaticModalDataResult = function(state: ILoadState, broker: BrokerByIdResponse): ILoadState {
     const { modal, activeModalData } = state;
     let _modal: LoadModalResponse = JSON.parse(JSON.stringify(modal));
@@ -375,6 +386,16 @@ export const addCreatedBrokerStaticModalDataResult = function(state: ILoadState,
     return result;
 }
 
+export function mapStatusFilterSuccessResult(state: ILoadState, statusList: any[]): ILoadState {
+    // backend time is not good? 
+    const result: ILoadState = {
+        ...state,
+        statusList
+    }
+
+    return result;
+}
+        
 export const addCreatedShipperStaticModalDataResult = function(state: ILoadState, shipper: ShipperLoadModalResponse): ILoadState {
     const { modal, activeModalData } = state;
     let _modal: LoadModalResponse = JSON.parse(JSON.stringify(modal));

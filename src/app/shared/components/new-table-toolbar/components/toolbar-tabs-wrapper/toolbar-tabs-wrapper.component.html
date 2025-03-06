@@ -1,0 +1,27 @@
+<app-toolbar-tabs
+    [data]="data"
+    [selectedTab]="selectedTab"
+    [variant]="toolbarVariant.Large"
+    (tabSelected)="
+        onToolBarAction({
+            action: tableStringEnum.TAB_SELECTED,
+            mode: $event,
+        })
+    "
+></app-toolbar-tabs>
+
+<div class="new-table--toolbar-divider">
+    <div class="new-table--toolbar-divider-border background-light-grey-6"></div>
+</div>
+
+<app-toolbar-tabs
+    [data]="tableViewData"
+    [selectedTab]="viewMode"
+    [variant]="toolbarVariant.Small"
+    (tabSelected)="
+        onToolBarAction({
+            action: tableStringEnum.VIEW_MODE,
+            mode: $event,
+        })
+    "
+></app-toolbar-tabs>
