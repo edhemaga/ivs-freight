@@ -5,10 +5,7 @@ import { Router } from '@angular/router';
 import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
 
 // components
-import { CaVehicleListComponent } from 'ca-components';
-
-// configs
-import { RepairShopDetailsItemConfig } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/configs';
+import { CaVehicleListComponent, eVehicleList } from 'ca-components';
 
 // interfaces
 import { IVehicleListActionsEmit } from '@ca-shared/components/ca-vehicle-list/interfaces';
@@ -34,12 +31,7 @@ export class RepairShopDetailsItemRepairedVehicleComponent {
 
     public _repairedVehicleList: RepairedVehicleResponse[] = [];
 
-    get vehicleListConfig() {
-        return RepairShopDetailsItemConfig.getRepairedVehicleListConfig(
-            this._repairedVehicleList,
-            this.searchConfig[1]
-        );
-    }
+    public eVehicleList = eVehicleList;
 
     constructor(
         private router: Router,

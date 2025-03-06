@@ -1,6 +1,10 @@
 @if (_fuelledVehicleList?.length) {
     <app-ca-vehicle-list
-        [vehicleListConfig]="vehicleListConfig"
+        [vehicleListConfig]="{
+            type: eVehicleList.FUELLED_VEHICLE_LIST,
+            list: _fuelledVehicleList,
+            isSearchActive: searchConfig[1],
+        }"
         (vehicleListActionsEmitter)="handleVehicleListActionsEmit($event)"
     ></app-ca-vehicle-list>
 }

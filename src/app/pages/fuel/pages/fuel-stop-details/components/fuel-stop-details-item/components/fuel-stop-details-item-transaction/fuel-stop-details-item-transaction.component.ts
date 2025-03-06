@@ -47,9 +47,9 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 // models
 import { FuelTransactionResponse } from 'appcoretruckassist';
 import {
-    DropdownMenuItem,
-    DropdownMenuOptionEmit,
-} from '@ca-shared/components/ca-dropdown-menu/models';
+    IDropdownMenuItem,
+    IDropdownMenuOptionEmit,
+} from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-fuel-stop-details-item-transaction',
@@ -103,7 +103,7 @@ export class FuelStopDetailsItemTransactionComponent
     public transactionItemOptionsDropdownIndex: number = -1;
     public transactionItemDocumentsDrawerIndex: number = -1;
 
-    public transactionItemOptions: DropdownMenuItem[] = [];
+    public transactionItemOptions: IDropdownMenuItem[] = [];
 
     get viewData() {
         return this._transactionList;
@@ -194,7 +194,7 @@ export class FuelStopDetailsItemTransactionComponent
     }
 
     private handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         transaction: FuelTransactionResponse
     ): void {
         const { type } = action;

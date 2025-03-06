@@ -1,6 +1,10 @@
 @if (_repairedVehicleList?.length) {
     <app-ca-vehicle-list
-        [vehicleListConfig]="vehicleListConfig"
+        [vehicleListConfig]="{
+            type: eVehicleList.REPAIRED_VEHICLE_LIST,
+            list: _repairedVehicleList,
+            isSearchActive: searchConfig[1],
+        }"
         (vehicleListActionsEmitter)="handleVehicleListActionsEmit($event)"
     ></app-ca-vehicle-list>
 }

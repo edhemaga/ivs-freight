@@ -47,9 +47,9 @@ import { DescriptionItemsTextCountDirective } from '@shared/directives';
 // models
 import { RepairResponse } from 'appcoretruckassist';
 import {
-    DropdownMenuItem,
-    DropdownMenuOptionEmit,
-} from '@ca-shared/components/ca-dropdown-menu/models';
+    IDropdownMenuItem,
+    IDropdownMenuOptionEmit,
+} from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-repair-shop-details-item-repair',
@@ -103,7 +103,7 @@ export class RepairShopDetailsItemRepairComponent
     public repairItemOptionsDropdownIndex: number = -1;
     public repairItemDocumentsDrawerIndex: number = -1;
 
-    public repairItemOptions: DropdownMenuItem[] = [];
+    public repairItemOptions: IDropdownMenuItem[] = [];
 
     get viewData() {
         return this._repairList;
@@ -212,7 +212,7 @@ export class RepairShopDetailsItemRepairComponent
     }
 
     private handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         repair: RepairResponse
     ): void {
         const { type } = action;

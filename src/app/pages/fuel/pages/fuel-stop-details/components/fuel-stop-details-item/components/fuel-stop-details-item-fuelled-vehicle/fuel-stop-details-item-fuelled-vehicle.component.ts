@@ -2,10 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 // components
-import { CaVehicleListComponent } from 'ca-components';
-
-// configs
-import { FuelStopDetailsItemConfig } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/utils/configs';
+import { CaVehicleListComponent, eVehicleList } from 'ca-components';
 
 // interfaces
 import { IVehicleListActionsEmit } from '@ca-shared/components/ca-vehicle-list/interfaces';
@@ -31,12 +28,7 @@ export class FuelStopDetailsItemFuelledVehicleComponent {
 
     public _fuelledVehicleList: FuelledVehicleResponse[] = [];
 
-    get vehicleListConfig() {
-        return FuelStopDetailsItemConfig.getFuelledVehicleListConfig(
-            this._fuelledVehicleList,
-            this.searchConfig[1]
-        );
-    }
+    public eVehicleList = eVehicleList;
 
     constructor(private router: Router) {}
 

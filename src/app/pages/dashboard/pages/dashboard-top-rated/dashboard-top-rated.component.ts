@@ -167,12 +167,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopCategory(): string {
         const length = this.topRatedList.length;
-        
-        return length <= 10 
-            ? DashboardConstants.BAR_CHART_LABEL_TOP_3 
-            : length <= 30 
-                ? DashboardConstants.BAR_CHART_LABEL_TOP_5 
-                : DashboardConstants.BAR_CHART_LABEL_TOP_10;
+
+        return length <= 10
+            ? DashboardConstants.BAR_CHART_LABEL_TOP_3
+            : length <= 30
+              ? DashboardConstants.BAR_CHART_LABEL_TOP_5
+              : DashboardConstants.BAR_CHART_LABEL_TOP_10;
     }
 
     public resetSelectedValues(): void {
@@ -1652,9 +1652,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < repairShop.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                selectedTab === DashboardStringEnum.VISIT
+                                /*   selectedTab === DashboardStringEnum.VISIT
                                     ? repairShop.intervals[i].count
-                                    : repairShop.intervals[i].cost,
+                                    : repairShop.intervals[i].cost, */
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
@@ -1667,10 +1667,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         return {
                             id: repairShop.id,
                             name: repairShop.name,
-                            value:
-                                selectedTab === DashboardStringEnum.VISIT
+                            value: null,
+                            /* selectedTab === DashboardStringEnum.VISIT
                                     ? repairShop.visit.toString()
-                                    : repairShop.cost.toString(),
+                                    : repairShop.cost.toString(), */
                             percent:
                                 selectedTab === DashboardStringEnum.VISIT
                                     ? repairShop.visitPercentage.toString()
