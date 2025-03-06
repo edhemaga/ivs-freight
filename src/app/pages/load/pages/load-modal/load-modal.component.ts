@@ -1904,9 +1904,9 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     })
                     .filter((item) => item.contacts?.length);
 
-                if (this.labelsBrokerContacts[1]?.contacts[0]) {
+                if (this.labelsBrokerContacts[0]?.contacts[0]) {
                     this.selectedBrokerContact =
-                        this.labelsBrokerContacts[1].contacts[0];
+                        this.labelsBrokerContacts[0].contacts[0];
 
                     if (this.selectedBrokerContact) {
                         this.loadForm
@@ -1915,6 +1915,25 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                         this.loadBrokerContactsInputConfig = {
                             ...this.loadBrokerContactsInputConfig,
+                            multipleInputValues: {
+                                options: [
+                                    {
+                                        value: this.selectedBrokerContact.name,
+                                        logoName: null,
+                                    },
+                                    {
+                                        value: this.selectedBrokerContact
+                                            .originalPhone,
+                                        second_value: this.selectedBrokerContact
+                                            .phoneExtension
+                                            ? `#${this.selectedBrokerContact.phoneExtension}`
+                                            : null,
+                                        logoName: null,
+                                    },
+                                ],
+                                customClass:
+                                    LoadModalStringEnum.LOAD_BROKER_CONTACT,
+                            },
                             isDisabled: false,
                             blackInput: false,
                         };
@@ -1928,25 +1947,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                     this.loadBrokerContactsInputConfig = {
                         ...this.loadBrokerContactsInputConfig,
-                        multipleInputValues: {
-                            options: [
-                                {
-                                    value: this.selectedBrokerContact.name,
-                                    logoName: null,
-                                },
-                                {
-                                    value: this.selectedBrokerContact
-                                        .originalPhone,
-                                    second_value: this.selectedBrokerContact
-                                        .phoneExtension
-                                        ? `#${this.selectedBrokerContact.phoneExtension}`
-                                        : null,
-                                    logoName: null,
-                                },
-                            ],
-                            customClass:
-                                LoadModalStringEnum.LOAD_BROKER_CONTACT,
-                        },
                         isDisabled: false,
                         blackInput: false,
                     };
