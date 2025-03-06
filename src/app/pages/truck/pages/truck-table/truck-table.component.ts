@@ -66,7 +66,7 @@ import { CardTableData } from '@shared/models/table-models/card-table-data.model
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
 import { TruckFilter } from '@pages/truck/pages/truck-table/models/truck-filter.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-truck-table',
@@ -790,7 +790,7 @@ export class TruckTableComponent
         };
     }
 
-    private getTruckDropdownContent(): DropdownMenuItem[] {
+    private getTruckDropdownContent(): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getTruckTrailerDropdownContent(
             this.selectedTab
         );

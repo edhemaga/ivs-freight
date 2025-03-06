@@ -1,6 +1,7 @@
+// models
 import { TrailerShortResponse } from 'appcoretruckassist';
 import { PmTrailerProgressData } from '@shared/models/card-models/card-table-data.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export interface PmTrailer {
     textUnit: string;
@@ -20,7 +21,7 @@ export interface PmTrailer {
     tableTrailerColor: string;
     tableTrailerTypeClass: string;
     note?: string;
-    tableDropdownContent: DropdownMenuItem[];
+    tableDropdownContent: IDropdownMenuItem[];
     trailer: TrailerShortResponse;
     pmId: number;
 }
