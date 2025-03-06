@@ -55,6 +55,8 @@ export const milesReducer = createReducer(
     on(MilesAction.milesTabChange, (state, { selectedTab }) => ({
         ...state,
         selectedTab: selectedTab,
+        selectedRows: 0,
+        areAllItemsSelected: false
     })),
 
     on(
@@ -71,6 +73,8 @@ export const milesReducer = createReducer(
     on(MilesAction.activeViewMode, (state, { activeViewMode }) => ({
         ...state,
         activeViewMode,
+        selectedRows: 0,
+        areAllItemsSelected: false
     })),
     // #endregion
 
@@ -78,6 +82,8 @@ export const milesReducer = createReducer(
     on(MilesAction.changeFilters, (state, { filters }) => ({
         ...state,
         filters,
+        selectedRows: 0,
+        areAllItemsSelected: false
     })),
     on(MilesAction.setStates, (state, { states }) => ({
         ...state,

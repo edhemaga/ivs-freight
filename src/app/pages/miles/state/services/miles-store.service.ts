@@ -12,6 +12,7 @@ import {
     selectedRowsSelector,
     tableColumnsSelector,
     filterSelector,
+    areAllItemsSelectedSelector
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -65,6 +66,8 @@ export class MilesStoreService {
     public filter$: Observable<IStateFilters> = this.store.pipe(
         select(filterSelector)
     );
+
+    public areAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(select(areAllItemsSelectedSelector))
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({

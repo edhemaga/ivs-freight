@@ -1,5 +1,5 @@
 <!-- TODO: REMOVE MARGIN -->
-<div class="table-container">
+<div class="table-container" #container>
     <div class="custom-table w-full test-margin">
         <!-- Header -->
         <div class="d-flex m-b-6 p-x-4" #header style="overflow-x: hidden">
@@ -36,12 +36,11 @@
         <!-- Body -->
         <div>
             <cdk-virtual-scroll-viewport
-                #virtualScrollViewport
+                #viewport
                 (scroll)="onScroll($event)"
                 [itemSize]="34"
                 class="table-virtual-scroll-viewport"
                 style="
-                    height: 500px;
                     overflow-y: auto !important;
                     overflow-x: scroll;
                     scrollbar-width: thin !important;

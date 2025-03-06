@@ -50,3 +50,8 @@ export const tableColumnsSelector = createSelector(selectMilesState, (state) => 
   const { columns } = state || {};
   return columns;
 });
+
+export const areAllItemsSelectedSelector = createSelector(selectMilesState, (state) => {
+  const { areAllItemsSelected } = state || {};
+  return areAllItemsSelected;
+});

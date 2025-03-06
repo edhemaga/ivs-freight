@@ -6,7 +6,8 @@
         tableViewData: milesStoreService.tableViewData$ | async,
         selectedTab: milesStoreService.selectedTab$ | async,
         activeViewMode: milesStoreService.activeViewMode$ | async,
-        statesSelector: milesStoreService.statesSelector$ | async
+        statesSelector: milesStoreService.statesSelector$ | async,
+        areAllItemsSelected: milesStoreService.areAllItemsSelectedSelector$ | async
     };
     as store
 ) {
@@ -61,7 +62,7 @@
                     (clearAll)="setFilters($event)"
                 >
                 </app-ca-filter>
-                @if (selectedRows) {
+                @if (store.selectedRows) {
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
                     <div
                         class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
@@ -102,7 +103,8 @@
         }"
     >
         <ng-template #selectHeaderTemplate>
-            <input type="checkbox" (change)="selectAll()" />
+            <input type="checkbox" (change)="selectAll()" 
+            [checked]="store.areAllItemsSelected"/>
         </ng-template>
         <ng-template #loadSelectTemplate let-data="data">
             <input
