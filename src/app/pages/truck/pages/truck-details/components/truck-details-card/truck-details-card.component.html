@@ -934,7 +934,7 @@
                     [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                     [customClass]="'detailsPadding'"
                 >
-                    <div class="charts-template perfomance">
+                    <div>
                         <div>
                             <app-ta-tab-switch
                                 [type]="'type2-modal-popup'"
@@ -967,7 +967,7 @@
                     [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
                     [customClass]="'detailsPadding'"
                 >
-                    <div class="charts-template perfomance">
+                    <div>
                         @if (!fuelConsumptionLegendHighlightedBackground) {
                             <app-ta-tab-switch
                                 [type]="'type2-modal-popup'"
@@ -976,21 +976,19 @@
                             >
                             </app-ta-tab-switch>
                         }
-                        @if (fuelConsumptionChartConfig?.chartData) {
-                            <app-ca-chart
-                                [chartConfig]="fuelConsumptionChartConfig"
-                                [legendData]="{
-                                    data: fuelConsumptionChartLegend,
-                                    hasHighlightedBackground:
-                                        fuelConsumptionLegendHighlightedBackground,
-                                    title: fuelConsumptionLegendTitle,
-                                }"
-                                (hoveredIndex)="
-                                    setFuelConsumptionLegendOnHover($event)
-                                "
-                            >
-                            </app-ca-chart>
-                        }
+                        <app-ca-chart
+                            [chartConfig]="fuelConsumptionChartConfig"
+                            [legendData]="{
+                                data: fuelConsumptionChartLegend,
+                                hasHighlightedBackground:
+                                    fuelConsumptionLegendHighlightedBackground,
+                                title: fuelConsumptionLegendTitle,
+                            }"
+                            (hoveredIndex)="
+                                setFuelConsumptionLegendOnHover($event)
+                            "
+                        >
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
 
@@ -1003,7 +1001,7 @@
                     [isCardOpen]="true"
                     [customClass]="'detailsPadding'"
                 >
-                    <div class="charts-template perfomance">
+                    <div>
                         @if (!revenueLegendHighlightedBackground) {
                             <app-ta-tab-switch
                                 [type]="'type2-modal-popup'"
@@ -1012,28 +1010,26 @@
                             >
                             </app-ta-tab-switch>
                         }
-                        @if (revenueChartConfig?.chartData) {
-                            <app-ca-chart
-                                [chartConfig]="revenueChartConfig"
-                                [legendData]="{
-                                    data: revenueChartLegend,
-                                    hasHighlightedBackground:
-                                        revenueLegendHighlightedBackground,
-                                    title: revenueLegendTitle,
-                                }"
-                                (hoveredIndex)="setRevenueLegendOnHover($event)"
-                            >
-                            </app-ca-chart>
-                        }
+                        <app-ca-chart
+                            [chartConfig]="revenueChartConfig"
+                            [legendData]="{
+                                data: revenueChartLegend,
+                                hasHighlightedBackground:
+                                    revenueLegendHighlightedBackground,
+                                title: revenueLegendTitle,
+                            }"
+                            (hoveredIndex)="setRevenueLegendOnHover($event)"
+                        >
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
-                <!--------Perfomance--------->
+                <!----------------->
                 <app-ta-custom-card
                     [cardName]="'Expenses'"
                     [bodyTemplate]="'card'"
                     [isCardOpen]="true"
                 >
-                    <div class="charts-template perfomance">
+                    <div>
                         @if (!expensesLegendHighlightedBackground) {
                             <app-ta-tab-switch
                                 [type]="'type2-modal-popup'"
@@ -1042,22 +1038,20 @@
                             >
                             </app-ta-tab-switch>
                         }
-                        @if (expensesChartConfig?.chartData) {
-                            <app-ca-chart
-                                [chartConfig]="expensesChartConfig"
-                                [legendData]="{
-                                    data: expensesChartLegend,
-                                    hasHighlightedBackground:
-                                        expensesLegendHighlightedBackground,
-                                    title: expensesLegendTitle,
-                                }"
-                                (hoveredIndex)="
-                                    setExpensesRevenueLegendOnHover($event)
-                                "
+                        <app-ca-chart
+                            [chartConfig]="expensesChartConfig"
+                            [legendData]="{
+                                data: expensesChartLegend,
+                                hasHighlightedBackground:
+                                    expensesLegendHighlightedBackground,
+                                title: expensesLegendTitle,
+                            }"
+                            (hoveredIndex)="
+                                setExpensesRevenueLegendOnHover($event)
+                            "
+                        >
                             >
-                                >
-                            </app-ca-chart>
-                        }
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
                 <!--------Owner History--------->
