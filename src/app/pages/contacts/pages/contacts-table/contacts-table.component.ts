@@ -36,7 +36,7 @@ import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-
 import { ContactsTableToolbarAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-toolbar-action.model';
 import { IContactsTableHeadAction } from '@pages/contacts/pages/contacts-table/interfaces/contacts-table-head-action.interface';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-contacts-table',
@@ -257,7 +257,7 @@ export class ContactsTableComponent
             : getToolsContactsColumnDefinition();
     }
 
-    public getContactDropdownContent(): DropdownMenuItem[] {
+    public getContactDropdownContent(): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getContactDropdownContent();
     }
 

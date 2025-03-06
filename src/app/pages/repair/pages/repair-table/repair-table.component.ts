@@ -73,7 +73,6 @@ import {
     eGeneralActions,
 } from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
 // constants
@@ -91,6 +90,9 @@ import {
     RepairTableDateFormaterHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+
+// interfaces
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // models
 import {
@@ -1573,7 +1575,7 @@ export class RepairTableComponent
         };
     }
 
-    private getRepairDropdownContent(repairType: string): DropdownMenuItem[] {
+    private getRepairDropdownContent(repairType: string): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getRepairDropdownContent(
             this.selectedTab,
             repairType
@@ -1584,7 +1586,7 @@ export class RepairTableComponent
         isOpenBusiness: boolean,
         isPinned: boolean,
         isCompanyOwned: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getRepairShopDropdownContent(
             isOpenBusiness,
             isPinned,
