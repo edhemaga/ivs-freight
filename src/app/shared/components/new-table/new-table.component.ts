@@ -18,6 +18,9 @@ import { ILoadDisplay, ITableColumn } from '@shared/models';
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Component({
     selector: 'app-new-table',
     changeDetection: ChangeDetectionStrategy.OnPush,
@@ -45,6 +48,8 @@ export class NewTableComponent {
     }
 
     @Output() onSortingChange$: EventEmitter<any> = new EventEmitter();
+
+    public sharedSvgRoutes = SharedSvgRoutes;
 
     public setSorting(sort) {
         if (this.isTableLocked) return;

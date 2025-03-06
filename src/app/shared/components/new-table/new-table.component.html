@@ -142,7 +142,12 @@
                 <ng-container
                     *ngTemplateOutlet="
                         columnDisplay;
-                        context: { column: _column, isFirst: isFirst, isGroup: true, label: column.label }
+                        context: {
+                            column: _column,
+                            isFirst: isFirst,
+                            isGroup: true,
+                            label: column.label,
+                        }
                     "
                 ></ng-container>
             }
@@ -153,7 +158,13 @@
         ></ng-container>
     }
 
-    <ng-template #columnDisplay let-column="column" let-isFirst="isFirst" let-isGroup="isGroup" let-label="label">
+    <ng-template
+        #columnDisplay
+        let-column="column"
+        let-isFirst="isFirst"
+        let-isGroup="isGroup"
+        let-label="label"
+    >
         @if (!column.hidden) {
             <div
                 class="new-table--row-heading d-flex flex-row"
@@ -165,14 +176,16 @@
                     'new-table--row-heading-unlocked c-poiner justify-content-between':
                         isTableLocked,
                     'flex-column align-items-start mt-auto': isGroup,
-                    'align-items-end' : !isGroup
+                    'align-items-end': !isGroup,
                 }"
                 [style.min-width]="column.width + 'px'"
                 [style.width]="column.width + 'px'"
                 (click)="setSorting(column)"
             >
                 @if (isFirst) {
-                    <div class="text-size-11 ta-font-extra-bold text-color-light-grey-2 text-uppercase">
+                    <div
+                        class="text-size-11 ta-font-extra-bold text-color-light-grey-2 text-uppercase"
+                    >
                         {{ label }}
                     </div>
                 }
@@ -211,7 +224,7 @@
                                     'height.px': 14,
                                 }"
                                 class="new-table--row-heading-arrow mr-1"
-                                src="assets/svg/truckassist-table/pin.svg"
+                                [src]="sharedSvgRoutes.PIN_ICON"
                                 (click)="pinColumn(column)"
                             ></svg-icon>
                         </div>
@@ -230,7 +243,7 @@
                                         'height.px': 14,
                                     }"
                                     class="new-table--row-heading-arrow"
-                                    src="assets/svg/applicant/close-x.svg"
+                                    [src]="sharedSvgRoutes.CLOSE_ICON_NORMAL"
                                 ></svg-icon>
                             </div>
                         }
@@ -247,8 +260,8 @@
                         [src]="
                             column.direction === 'Ascending' ||
                             !column.direction
-                                ? 'assets/svg/common/sortArrow_filter.svg'
-                                : ' assets/svg/common/sortArrow_filter-asc.svg'
+                                ? sharedSvgRoutes.SORT_ICON
+                                : sharedSvgRoutes.SORT_ICON_ASC
                         "
                     ></svg-icon>
                 }

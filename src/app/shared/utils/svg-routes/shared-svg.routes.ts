@@ -12,4 +12,8 @@ export class SharedSvgRoutes {
     static NO_REVIEW_ICON: string = 'assets/svg/common/ic_no_review.svg';
     static TABLE_PLUS_ICON: string =
         'assets/svg/truckassist-table/plus-icon.svg';
+    static PIN_ICON: string = 'assets/svg/truckassist-table/pin.svg';
+    static CLOSE_ICON_NORMAL: string = 'assets/svg/applicant/close-x.svg';
+    static SORT_ICON: string = 'assets/svg/common/sortArrow_filter.svg';
+    static SORT_ICON_ASC: string = 'assets/svg/common/sortArrow_filter-asc.svg';
 }
