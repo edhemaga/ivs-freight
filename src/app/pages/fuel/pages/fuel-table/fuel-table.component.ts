@@ -82,7 +82,7 @@ import {
 } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
 
@@ -882,7 +882,7 @@ export class FuelTableComponent
 
     private getFuelTransactionDropdownContent(
         isAutomaticTransaction: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getFuelTransactionDropdownContent(
             isAutomaticTransaction
         );
@@ -892,7 +892,7 @@ export class FuelTableComponent
         isCentralised: boolean,
         isPinned: boolean,
         isOpenBusiness: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getFuelStopDropdownContent(
             isCentralised,
             isPinned,
