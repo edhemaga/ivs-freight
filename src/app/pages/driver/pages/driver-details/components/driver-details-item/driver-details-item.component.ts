@@ -15,7 +15,7 @@ import { DriverDetailsItemMvrComponent } from '@pages/driver/pages/driver-detail
 import { DetailsConfig } from '@shared/models/details-config.model';
 
 // enums
-import { eCommonElements } from '@shared/enums';
+import { eCommonElement } from '@shared/enums';
 
 @Titles()
 @Component({
@@ -38,7 +38,7 @@ import { eCommonElements } from '@shared/enums';
 export class DriverDetailsItemComponent implements OnChanges {
     @Input() detailsConfig!: DetailsConfig[];
 
-    public eCommonElements = eCommonElements;
+    public eCommonElement = eCommonElement;
 
     public ngOnChanges(changes: SimpleChanges): void {}
 
