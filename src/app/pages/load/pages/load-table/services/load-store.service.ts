@@ -40,10 +40,11 @@ import {
 // constants
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
-// enums
-import { DispatcherFilter } from '@shared/models/filters';
+// enums 
 import { eActiveViewMode } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+
+import {IFilterDropdownList} from 'ca-components';
 
 @Injectable({
     providedIn: 'root',
@@ -85,11 +86,11 @@ export class LoadStoreService {
         select(activeTableDataSelector)
     );
 
-    public dispatcherList$: Observable<DispatcherFilter[]> = this.store.pipe(
+    public dispatcherList$: Observable<IFilterDropdownList[]> = this.store.pipe(
         select(getDispatcherListSelector)
     );
 
-    public statusList$: Observable<DispatcherFilter[]> = this.store.pipe(
+    public statusList$: Observable<IFilterDropdownList[]> = this.store.pipe(
         select(getStatusListSelector)
     );
  

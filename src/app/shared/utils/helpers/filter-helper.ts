@@ -1,10 +1,9 @@
 // Models
 import { IStateFilters } from '@shared/interfaces';
-import { DispatcherFilter } from '@shared/models/filters';
 import { DispatcherFilterResponse } from 'appcoretruckassist';
 
 // Components
-import { IFilterAction, eFilterDropdownEnum } from 'ca-components';
+import { IFilterAction, eFilterDropdownEnum, IFilterDropdownList } from 'ca-components';
 
 // Enums
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums';
@@ -12,11 +11,11 @@ import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums';
 export class FilterHelper {
     static dispatcherFilter(
         res: DispatcherFilterResponse[]
-    ): DispatcherFilter[] {
+    ): IFilterDropdownList[] {
         return res.map((type: DispatcherFilterResponse) => ({
             name: type?.fullName,
             count: type.loadCount,
-            isSelected: false,
+            selected: false,
             avatar: type.avatar,
             id: type.id,
         }));

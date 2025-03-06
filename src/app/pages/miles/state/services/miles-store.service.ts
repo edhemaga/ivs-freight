@@ -28,7 +28,7 @@ import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@shared/enums';
 
 // Constants
-import { MilesStoreConstants } from '@pages/miles/consts';
+import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 // Helpers
 import { FilterHelper } from '@shared/utils/helpers';
@@ -66,21 +66,21 @@ export class MilesStoreService {
         select(filterSelector)
     );
 
-    public setStates(states: MilesStateFilterResponse[]) {
+    public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
             type: MilesStoreConstants.SET_STATES,
             states,
         });
     }
 
-    public listChange(selectedTab: eMileTabs): void {
+    public dispatchListChange(selectedTab: eMileTabs): void {
         this.store.dispatch({
             type: MilesStoreConstants.MILES_TAB_CHANGE,
             selectedTab,
         });
     }
 
-    public getList(data: MilesByUnitListResponse): void {
+    public dispatchInitalList(data: MilesByUnitListResponse): void {
         const { activeTruckCount, inactiveTruckCount } = data;
         this.store.dispatch({
             type: MilesStoreConstants.UPDATE_TRUCK_COUNTS,

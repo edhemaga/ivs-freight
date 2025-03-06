@@ -22,8 +22,8 @@ export class MilesResolver {
 
         return forkJoin([activeList, states]).pipe(
             map(([response, _states]) => {
-                this.milesService.getList(response);
-                this.milesService.setStates(_states);
+                this.milesService.dispatchInitalList(response);
+                this.milesService.dispatchStates(_states);
                 return response;
             })
         );

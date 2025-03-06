@@ -3,7 +3,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 // Enums
 import { eToolbarVariant } from '@shared/enums';
-import { IToolbarTabs } from '@shared/models/toolbar-tabs.interface';
+
+// Interface
+import { IToolbarTabs } from '@shared/interfaces';
 
 // Types
 import { ToolbarVariantType } from '@shared/types';

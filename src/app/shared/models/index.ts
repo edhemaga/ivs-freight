@@ -74,6 +74,5 @@ export * from './dropdown-menu-edit-action-additonal.model';
 export * from './table-models/current-search-table-data-chip.model';
 export * from './avatar-colors.model';
 export * from './plaid'; 
-export * from './toolbar-tabs.interface';
+export * from '../interfaces/toolbar-tabs.interface';
 export * from './table-column.interface';
-export * from './load-display.interface';

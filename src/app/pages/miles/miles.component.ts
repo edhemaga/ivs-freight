@@ -49,7 +49,7 @@ import { IStateFilters } from '@shared/interfaces';
     templateUrl: './miles.component.html',
     styleUrls: ['./miles.component.scss'],
 })
-export class MilesComponent implements OnInit {
+export class MilesComponent implements OnInit  {
     private filter: IStateFilters = {};
     constructor(
         private store: Store<IMilesState>,
@@ -63,7 +63,7 @@ export class MilesComponent implements OnInit {
     public onToolBarAction(event: { mode: eMileTabs; action: string }): void {
         const { action, mode } = event || {};
         if (action === TableStringEnum.TAB_SELECTED) {
-            this.milesStoreService.listChange(mode);
+            this.milesStoreService.dispatchListChange(mode);
         } else if (action === TableStringEnum.VIEW_MODE) {
             this.milesStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
@@ -85,5 +85,10 @@ export class MilesComponent implements OnInit {
 
     private storeSubscription(): void {
         this.milesStoreService.filter$.subscribe(res =>this.filter = res);
+    }
+
+    
+    ngOnDestroy(): void {
+        // Some cleaning code for this class only 
     }
 }

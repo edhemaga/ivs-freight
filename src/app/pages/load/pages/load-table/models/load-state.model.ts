@@ -1,8 +1,8 @@
 // models
 import { ILoadGridItem, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index"
-import { DispatcherFilter } from '@shared/models/filters';
 import { LoadModalResponse } from "appcoretruckassist";
 import { IActiveLoadModalData } from "@pages/load/models/active-load-modal-data.model";
+import {IFilterDropdownList} from 'ca-components';
 
 // enums
 import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index"
@@ -23,6 +23,6 @@ export interface ILoadState {
     selectedTab: eLoadStatusType,
     activeViewMode: eActiveViewMode, 
 
-    dispatcherList: DispatcherFilter[];
-    statusList: DispatcherFilter[];
+    dispatcherList: IFilterDropdownList[];
+    statusList: IFilterDropdownList[];
 }

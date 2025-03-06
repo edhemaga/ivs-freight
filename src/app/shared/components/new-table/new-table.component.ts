@@ -13,7 +13,7 @@ import {
     ViewChild,
 } from '@angular/core';
 
-import { ILoadDisplay, ITableColumn } from '@shared/models';
+import { ITableColumn } from '@shared/models';
 
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -30,6 +30,8 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         ScrollingModule,
         AngularSvgIconModule,
         NgbTooltipModule,
+        
+        // Components
         TaAppTooltipV2Component,
     ],
     templateUrl: './new-table.component.html',
@@ -66,7 +68,7 @@ export class NewTableComponent {
         return this.expandedRows?.has(rowId);
     }
 
-    public trackTableRow(item: ILoadDisplay) {
+    public trackTableRow(item: any) {
         return item.id;
     }
 

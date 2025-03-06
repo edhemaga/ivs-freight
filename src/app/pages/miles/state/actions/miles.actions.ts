@@ -2,7 +2,7 @@
 import { createAction, props } from '@ngrx/store';
 
 // Constants 
-import { MilesStoreConstants } from '@pages/miles/consts';
+import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
