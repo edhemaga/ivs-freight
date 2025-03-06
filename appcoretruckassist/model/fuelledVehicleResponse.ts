@@ -14,9 +14,11 @@ import { RepairUnitType } from './repairUnitType';
 
 export interface FuelledVehicleResponse { 
     unitId?: number | null;
-    unitNumber?: string | null;
     unitType?: RepairUnitType;
-    numberOfRefueling?: number | null;
+    unitNumber?: string | null;
+    totalCount?: number | null;
+    vehicleTypeId?: number | null;
+    vehicleName?: string | null;
     logoName?: string | null;
     totalCost?: number | null;
 }

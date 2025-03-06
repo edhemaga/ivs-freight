@@ -1653,7 +1653,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
                                 selectedTab === DashboardStringEnum.VISIT
-                                    ? repairShop.intervals[i].count
+                                    ? repairShop.intervals[i].visitCount
                                     : repairShop.intervals[i].cost,
                             ];
                             filteredIntervalPercentages = [
@@ -1669,7 +1669,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             name: repairShop.name,
                             value:
                                 selectedTab === DashboardStringEnum.VISIT
-                                    ? repairShop.visit.toString()
+                                    ? repairShop.visitCount.toString()
                                     : repairShop.cost.toString(),
                             percent:
                                 selectedTab === DashboardStringEnum.VISIT

@@ -9,14 +9,10 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FuelStopMinimalResponsePagination } from './fuelStopMinimalResponsePagination';
 
 
-export interface RepairShopIntervalResponse { 
-    startTime?: string;
-    endTime?: string;
-    cost?: number | null;
-    visitCount?: number | null;
-    costPercentage?: number | null;
-    countPercentage?: number | null;
+export interface FuelStopMinimalListResponse { 
+    pagination?: FuelStopMinimalResponsePagination;
 }
 
