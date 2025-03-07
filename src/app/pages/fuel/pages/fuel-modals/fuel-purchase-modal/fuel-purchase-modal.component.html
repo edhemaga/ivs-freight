@@ -105,6 +105,9 @@
                             {
                                 configType: 'trailerInputConfig',
                                 logoName: selectedTrailerType?.logoName,
+                                trailerId: fuelForm.get(
+                                    fuelValuesStringEnum.TRAILER_ID
+                                ).value,
                             } | fuelPurchaseModalInputConfig
                         "
                     ></app-ca-input-dropdown>
@@ -122,8 +125,12 @@
                     <app-ca-input
                         formControlName="driverFullName"
                         [inputConfig]="
-                            { configType: 'driverInputConfig' }
-                                | fuelPurchaseModalInputConfig
+                            {
+                                configType: 'driverInputConfig',
+                                trailerId: fuelForm.get(
+                                    fuelValuesStringEnum.TRAILER_ID
+                                ).value,
+                            } | fuelPurchaseModalInputConfig
                         "
                     ></app-ca-input>
                 } @else {
@@ -133,6 +140,9 @@
                         [inputConfig]="
                             {
                                 configType: 'driverDropdownInputConfig',
+                                trailerId: fuelForm.get(
+                                    fuelValuesStringEnum.TRAILER_ID
+                                ).value,
                                 selectedDriver,
                                 fuelCardHolderName,
                             } | fuelPurchaseModalInputConfig
