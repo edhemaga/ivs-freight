@@ -1,0 +1,172 @@
+@import 'src/theme/variables';
+
+.stop-details-item-transaction {
+    border-radius: 3px;
+    background: $white;
+    padding: 6px;
+
+    /* Search */
+
+    /* Header */
+
+    &-header {
+        grid-template-columns:
+            126px repeat(2, 68px)
+            80px 128px 204px 62px 70px 90px auto;
+        grid-gap: 4px;
+        padding: 6px;
+        margin-bottom: 6px;
+        border-bottom: 1px solid $bw-9;
+    }
+
+    /* Main */
+
+    &-main {
+        &-border {
+            margin-bottom: 2px;
+
+            &.active-drawer {
+                visibility: hidden;
+
+                .stop-details-item-transaction-main-item {
+                    cursor: auto;
+                }
+            }
+        }
+
+        /* Main Item */
+
+        &-item {
+            transition: background 0.2s ease-in;
+            cursor: pointer;
+            position: relative;
+
+            &:hover {
+                background: $bw2;
+            }
+
+            &.active {
+                background: $ta-light-grey-5;
+                margin-bottom: 0;
+            }
+
+            &.active-options {
+                background: $bw2;
+            }
+
+            &-left {
+                grid-template-columns:
+                    126px repeat(2, 68px)
+                    80px 128px 204px 62px 70px 90px auto;
+                grid-gap: 4px;
+                padding: 4px 6px;
+
+                .circle-container {
+                    .invoice {
+                        max-width: 115px;
+                    }
+
+                    .circle-icon {
+                        position: relative;
+                        bottom: 1px;
+                        margin-right: 6px;
+                    }
+                }
+            }
+
+            .actions-container {
+                grid-template-columns: repeat(2, 26px);
+                grid-gap: 4px;
+            }
+        }
+
+        /* Main Dropdown */
+
+        &-dropdown {
+            border-bottom-left-radius: 3px;
+            border-bottom-right-radius: 3px;
+            background: $ta-light-grey-5;
+
+            max-height: 0;
+            overflow: hidden;
+            transition:
+                max-height 0.2s ease-out,
+                padding 0.2s ease-out;
+
+            &.expanded {
+                max-height: 226px;
+                padding: 4px;
+                margin-bottom: 2px;
+            }
+
+            &.dropdown-scroll {
+                overflow-y: scroll;
+
+                &::-webkit-scrollbar {
+                    width: 2px;
+                }
+
+                &::-webkit-scrollbar-thumb {
+                    background: $ta-light-grey-6;
+                    border-radius: 1px;
+                }
+
+                &::-webkit-scrollbar-track {
+                    background: $ta-light-grey-5;
+                }
+            }
+
+            /* Dropdown Header */
+
+            &-header {
+                grid-template-columns: 18px 708px 78px 82px 86px;
+                grid-gap: 4px;
+                padding: 8px 8px 4px 2px;
+                margin-bottom: 2px;
+                border-top: 1px solid $bw-9;
+            }
+
+            /* Dropdown Main */
+
+            &-main {
+                &-item {
+                    grid-template-columns: 18px 708px 78px 82px 86px;
+                    grid-gap: 4px;
+                    padding: 4px 8px 4px 2px;
+                    margin-bottom: 2px;
+                    transition: background 0.2s ease-in;
+
+                    &:hover {
+                        background: $dark-2;
+                    }
+
+                    &:last-of-type {
+                        margin-bottom: 0;
+                    }
+                }
+            }
+        }
+    }
+
+    /* Footer */
+
+    &-footer {
+        padding: 6px 6px 0 6px;
+        margin-top: 4px;
+        border-top: 1px solid $bw-9;
+
+        .show-more-btn {
+            cursor: pointer;
+
+            &:hover {
+                p {
+                    color: $ta-blue-15 !important;
+                }
+            }
+
+            p {
+                transition: color 0.2s ease-in;
+            }
+        }
+    }
+}

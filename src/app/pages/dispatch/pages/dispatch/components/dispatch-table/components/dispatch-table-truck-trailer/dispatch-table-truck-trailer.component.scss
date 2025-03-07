@@ -23,107 +23,11 @@
                     transition: fill 0.2s ease-in;
                 }
             }
-
-            &.blue {
-                svg {
-                    path {
-                        fill: $ta-blue-13 !important;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        path {
-                            fill: $ta-blue-14 !important;
-                        }
-                    }
-                }
-            }
-
-            &.yellow {
-                svg {
-                    path {
-                        fill: $ta-yellow-1 !important;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        path {
-                            fill: $ta-yellow-5 !important;
-                        }
-                    }
-                }
-            }
-
-            &.red {
-                svg {
-                    path {
-                        fill: $ta-red-10 !important;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        path {
-                            fill: $ta-red-11 !important;
-                        }
-                    }
-                }
-            }
-
-            &.green {
-                svg {
-                    path {
-                        fill: $ta-green !important;
-                    }
-                }
-
-                &:hover {
-                    svg {
-                        path {
-                            fill: $ta-green-2 !important;
-                        }
-                    }
-                }
-            }
         }
 
         .truck-trailer-icon {
             position: relative !important;
             bottom: 1px !important;
-
-            &.blue {
-                svg {
-                    path {
-                        fill: $ta-blue-14 !important;
-                    }
-                }
-            }
-
-            &.yellow {
-                svg {
-                    path {
-                        fill: $ta-yellow-5 !important;
-                    }
-                }
-            }
-
-            &.red {
-                svg {
-                    path {
-                        fill: $ta-red-11 !important;
-                    }
-                }
-            }
-
-            &.green {
-                svg {
-                    path {
-                        fill: $ta-green-2 !important;
-                    }
-                }
-            }
         }
 
         p {

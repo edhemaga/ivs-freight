@@ -170,20 +170,6 @@
             }
         }
 
-        &-dark-grey {
-            color: $bw6-2 !important;
-
-            &::-moz-selection {
-                color: $bw6-2 !important;
-                background: rgb(108, 108, 108, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2 !important;
-                background: rgb(108, 108, 108, 0.2) !important;
-            }
-        }
-
         &-bw6-2 {
             color: $bw6-2 !important;
 

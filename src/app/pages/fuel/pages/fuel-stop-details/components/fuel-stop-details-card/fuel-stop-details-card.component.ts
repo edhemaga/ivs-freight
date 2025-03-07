@@ -50,7 +50,6 @@ import { FuelStopResponse } from 'appcoretruckassist';
 export class FuelStopDetailsCardComponent {
     @Input() set fuelStop(data: FuelStopResponse) {
         this._fuelStop = data;
-
         this.getFuelStopsDropdownList();
     }
 

@@ -1,23 +1,26 @@
+@let isOutdated = _cardData.priceOutDated && _cardData.defPriceOutDated;
+
 <app-ta-custom-card
     [cardName]="'Last Fuel Price'"
-    [subText]="!isLastFuelPriceCardOpen && 'Diesel $3.345 | DEF $3.544'"
-    [isCardOpen]="true"
+    [subText]="!isLastFuelPriceCardOpen && (_cardData | lastFuelPriceCardTitle)"
+    [isCardOpen]="!!_cardData?.pricePerGallon || !!_cardData.defPrice"
     [bodyTemplate]="'card'"
-    [disabledCard]="false"
+    [disabledCard]="!_cardData?.pricePerGallon && !_cardData.defPrice"
     [hasDivider]="false"
     [animationMarginParams]="{
         marginTop: '0px',
         marginBottom: '8px',
     }"
+    [hasWeeklyStatus]="isLastFuelPriceCardOpen && isOutdated && 'Outdated'"
     (onOpenCard)="handleLastFuelPriceCardOpen($event)"
 >
     <div class="d-grid align-items-center last-fuel-price">
         @for (
-            fuelPrice of fuelPriceConfig;
+            fuelPrice of _cardData.lastFuelPriceConfig;
             let i = $index;
             track fuelPrice.title
         ) {
-            @let isDisabled = i === 1;
+            @let isDisabled = isOutdated || !fuelPrice?.totalValue;
 
             <div
                 class="d-flex flex-column justify-content-center last-fuel-price-item"
@@ -40,7 +43,12 @@
                             : 'text-color-black'
                     "
                 >
-                    ${{ fuelPrice.totalValue }}
+                    {{
+                        fuelPrice.totalValue
+                            ? eStringPlaceholder.DOLLAR_SIGN +
+                              (fuelPrice.totalValue | thousandSeparator)
+                            : 'None'
+                    }}
                 </span>
 
                 <!-- Progress -->
@@ -66,7 +74,13 @@
                         <!-- Progress Icon -->
 
                         <svg-icon
-                            class="svg-size-22 progress-icon fuel-color-3"
+                            class="svg-size-22 progress-icon"
+                            [ngClass]="svgData.svgClass"
+                            [ngStyle]="{
+                                left:
+                                    svgData.svgPosition +
+                                    eStringPlaceholder.PERCENTAGE_SIGN,
+                            }"
                             [src]="fuelStopDetailsSvgRoutes.progressIconRoute"
                         ></svg-icon>
                     </div>
@@ -81,7 +95,7 @@
                                     ? 'text-color-muted'
                                     : 'text-color-black-2'
                             "
-                            >${{ fuelPrice.minValue }}
+                            >${{ fuelPrice.minValue | thousandSeparator }}
                         </span>
 
                         <span
@@ -91,7 +105,7 @@
                                     ? 'text-color-muted'
                                     : 'text-color-black-2'
                             "
-                            >${{ fuelPrice.maxValue }}
+                            >${{ fuelPrice.maxValue | thousandSeparator }}
                         </span>
                     </div>
                 </div>
