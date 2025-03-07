@@ -556,6 +556,7 @@ export class FuelTableComponent
     private sendFuelData(): void {
         const {
             data,
+            integratedFuelTransactionsFilterActive,
             integratedFuelTransactionsCount,
             incompleteFuelTransactionsCount,
             fuelStopClosedCount,
@@ -567,6 +568,10 @@ export class FuelTableComponent
         const fuelCount = JSON.parse(
             localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
         );
+        const transactionConfigType: string =
+            integratedFuelTransactionsFilterActive
+                ? TableStringEnum.FUEL_TRANSACTION_EFS
+                : TableStringEnum.FUEL_TRANSACTION;
 
         this.tableData = [
             {
@@ -579,9 +584,7 @@ export class FuelTableComponent
                 incompleteDataCount: incompleteFuelTransactionsCount,
                 tableConfiguration: TableStringEnum.FUEL_TRANSACTION,
                 isActive: this.selectedTab === TableStringEnum.FUEL_TRANSACTION,
-                gridColumns: this.getGridColumns(
-                    TableStringEnum.FUEL_TRANSACTION
-                ),
+                gridColumns: this.getGridColumns(transactionConfigType),
             },
             {
                 title: TableStringEnum.STOP,
@@ -640,7 +643,13 @@ export class FuelTableComponent
         );
 
         if (configType === TableStringEnum.FUEL_TRANSACTION)
-            return tableColumnsConfig ?? getFuelTransactionColumnDefinition();
+            return (
+                tableColumnsConfig ?? getFuelTransactionColumnDefinition(false)
+            );
+        else if (configType === TableStringEnum.FUEL_TRANSACTION_EFS)
+            return (
+                tableColumnsConfig ?? getFuelTransactionColumnDefinition(true)
+            );
         else return tableColumnsConfig ?? getFuelStopColumnDefinition();
     }
 
@@ -1067,6 +1076,7 @@ export class FuelTableComponent
             .pipe(takeUntil(this.destroy$))
             .pipe(
                 switchMap((currentFilter) => {
+                    console.log(currentFilter);
                     if (
                         currentFilter?.filterName === TableStringEnum.FUEL_ARRAY
                     )
