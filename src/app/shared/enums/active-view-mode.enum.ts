@@ -1,4 +1,5 @@
 export enum eActiveViewMode {
     List = 1,
-    Card
+    Card,
+    Map
 }

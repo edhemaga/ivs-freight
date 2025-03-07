@@ -1,9 +1,10 @@
+// models
 import {
     FileResponse,
     RepairItemResponse,
     RepairServiceTypeResponse,
 } from 'appcoretruckassist';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export interface MappedRepair {
     tablePaid: string;
@@ -35,5 +36,5 @@ export interface MappedRepair {
     tableAdded: string;
     tableEdited: string;
     tableAttachments: FileResponse[];
-    tableDropdownContent: DropdownMenuItem[];
+    tableDropdownContent: IDropdownMenuItem[];
 }

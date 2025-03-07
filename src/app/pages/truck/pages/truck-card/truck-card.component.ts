@@ -24,7 +24,7 @@ import { TruckCardIcons } from '@pages/truck/pages/truck-card/utils/constants/tr
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { TruckMapped } from '@pages/truck/pages/truck-table/models/truck-mapped.model';
 
 @Component({
@@ -97,7 +97,7 @@ export class TruckCardComponent
     }
 
     public handleToggleDropdownMenuActions<T extends TruckMapped>(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: T
     ): void {
         const { type } = action;
@@ -108,7 +108,10 @@ export class TruckCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.TRUCK);
+        this.handleDropdownMenuActions(
+            emitAction,
+            DropdownMenuStringEnum.TRUCK
+        );
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

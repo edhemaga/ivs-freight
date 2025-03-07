@@ -30,7 +30,7 @@ import {
     PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
 import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
@@ -64,7 +64,7 @@ export class PayrollReportComponent
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.MILEAGE;
 
-    public dropdownMenuOptions: DropdownMenuItem[] = [];
+    public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;

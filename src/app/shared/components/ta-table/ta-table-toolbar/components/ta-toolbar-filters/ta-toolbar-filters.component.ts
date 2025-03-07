@@ -20,6 +20,8 @@ import { TaSpecialFilterComponent } from '@shared/components/ta-special-filter/t
 import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
+    CaFilterListDropdownComponent,
+    CaFilterTimeDropdownComponent
 } from 'ca-components';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -55,6 +57,8 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
         TaSpecialFilterComponent,
         CaSearchMultipleStatesComponent,
         CaFilterComponent,
+        CaFilterListDropdownComponent,
+        CaFilterTimeDropdownComponent
     ],
 })
 export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
@@ -134,9 +138,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
         if (this.options.toolbarActions.showParkingFilter)
             this.filterService.getDispatchFilterData();
-
-        if (this.options.toolbarActions.showDispatcherFilter)
-            this.filterService.getDispatchData();
 
         if (this.options.toolbarActions.showStateFilter)
             this.filterService.getStateData();

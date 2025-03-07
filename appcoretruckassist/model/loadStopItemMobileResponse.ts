@@ -21,7 +21,7 @@ export interface LoadStopItemMobileResponse {
     bolNumber?: string | null;
     appointmentNumber?: string | null;
     pickupNumber?: string | null;
-    poNumber?: string | null;
+    sealNumber?: string | null;
     code?: string | null;
 }
 

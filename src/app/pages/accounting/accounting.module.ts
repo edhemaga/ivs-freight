@@ -20,6 +20,8 @@ import {
     CaSearchMultipleStatesComponent,
     CaFilterComponent,
     CaDropdownMenuComponent,
+    CaFilterDropdownComponent,
+    CaFilterListDropdownComponent
 } from 'ca-components';
 
 import { PayrollComponent } from '@pages/accounting/pages/payroll/payroll.component';
@@ -105,14 +107,18 @@ import { ListNameCasePipe } from '@shared/components/ta-table/ta-table-toolbar/p
         TaProfileImagesComponent,
         TaCustomCardComponent,
         CaFilterComponent,
-        EffectsModule.forFeature([PayrollEffect]),
-        StoreModule.forFeature('payroll', payrollReducer),
+        CaFilterDropdownComponent,
+        CaFilterListDropdownComponent,
         CaMainTableComponent,
         CaMapComponent,
         CaMainTableComponent,
         CaPeriodContentComponent,
         CaPayrollListSummaryOverviewComponent,
         CaProfileImageComponent,
+
+        // Store
+        EffectsModule.forFeature([PayrollEffect]),
+        StoreModule.forFeature('payroll', payrollReducer),
     ],
     exports: [],
 })

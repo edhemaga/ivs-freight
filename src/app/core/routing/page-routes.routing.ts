@@ -1,4 +1,5 @@
 import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
+import { MilesComponent } from '@pages/miles/miles.component';
 
 // guards
 import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
@@ -96,10 +97,10 @@ export class PageRoutes {
         },
         {
             path: 'tools/miles',
-            loadChildren: () =>
-                import('@pages/miles/miles.module').then((m) => m.MilesModule),
+            component: MilesComponent,
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: { miles: MilesResolver },
+            data: { title: 'Miles' },
         },
         {
             path: 'tools/calendar',

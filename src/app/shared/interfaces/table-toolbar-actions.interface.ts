@@ -2,7 +2,6 @@ import { IViewModeOption } from "@shared/models/index";
 
 export interface ITableToolbarActions {
     hideActivationButton?: boolean;
-    showDispatcherFilter?: boolean,
     showTimeFilter?: boolean,
     showStatusFilter?: boolean,
     showMoneyFilter?: boolean,

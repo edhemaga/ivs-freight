@@ -36,7 +36,7 @@ import {
     IGetPayrollByIdAndOptions,
     PayrollTypes,
 } from '@pages/accounting/pages/payroll/state/models';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 import { CommissionLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
 
@@ -68,7 +68,7 @@ export class DriverCommissionReportComponent
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.COMMISSION;
 
-    public dropdownMenuOptions: DropdownMenuItem[] = [];
+    public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;

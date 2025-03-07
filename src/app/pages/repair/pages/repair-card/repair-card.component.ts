@@ -37,7 +37,7 @@ import {
     MappedRepair,
     MappedRepairShop,
 } from '@pages/repair/pages/repair-table/models';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-repair-card',
@@ -182,7 +182,7 @@ export class RepairCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: MappedRepairShop
     ): void {
         const { type } = action;

@@ -28,7 +28,10 @@ export const initialState: ILoadState = {
 
     canDeleteSelectedDataRows: false,
     selectedTab: eLoadStatusType.Active,
-    activeViewMode: eActiveViewMode.List
+    activeViewMode: eActiveViewMode.List,
+
+    dispatcherList: [],
+    statusList: []
 };
 // #endregion
 
@@ -63,6 +66,15 @@ export const loadReducer = createReducer(
     on(LoadActions.getConvertToLoadTemplateModalData, (state) => ({ ...state })),
     on(LoadActions.getConvertToLoadTemplateModalDataSuccess, (state, { modal, loadTemplate }) => Functions.getLoadModalDataSuccessResult(state, modal, loadTemplate as any)), // leave as any for now
     on(LoadActions.getConvertToLoadTemplateModalDataError, (state) => ({ ...state })),
+
+    on(LoadActions.getDispatcherList, (state) => ({ ...state })),
+    on(LoadActions.getDispatcherListSuccess, (state, { dispatcherList }) => Functions.mapDispatcherSuccessResult(state, dispatcherList)),
+    on(LoadActions.getDispatcherListError, (state) => ({ ...state })),
+
+    
+    on(LoadActions.getLoadStatusFilter, (state) => ({ ...state })),
+    on(LoadActions.getLoadStatusFilterSuccess, (state, {statusList}) => Functions.mapStatusFilterSuccessResult(state, statusList)),
+    on(LoadActions.getLoadStatusFilterError, (state) => ({ ...state })),
 // #endregion
 
 // #region CREATE

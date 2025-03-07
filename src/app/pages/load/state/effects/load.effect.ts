@@ -372,24 +372,19 @@ export class LoadEffect {
         this.actions$.pipe(
             ofType(LoadActions.getLoadStatusFilter),
             exhaustMap((action) => {
-                const { apiParam, selectedTab } = action || {};
-
-                return this.loadService.getLoadStatusFilter(apiParam).pipe(
-                    map((dispatcherFilter) => {
-                        LoadStoreEffectsHelper.getLoadStatusFilter(
-                            this.tableService,
-                            dispatcherFilter,
-                            selectedTab
-                        );
-
-                        return LoadActions.getLoadStatusFilterSuccess({
-                            dispatcherFilter,
-                        });
-                    }),
-                    catchError((error) =>
-                        of(LoadActions.getLoadStatusFilterError({ error }))
-                    )
-                );
+                const { loadStatusType } = action || {};
+                return this.loadService
+                    .getLoadStatusFilter(loadStatusType)
+                    .pipe(
+                        map((statusList) => {
+                            return LoadActions.getLoadStatusFilterSuccess({
+                                statusList,
+                            });
+                        }),
+                        catchError((error) =>
+                            of(LoadActions.getLoadStatusFilterError({ error }))
+                        )
+                    );
             })
         )
     );
@@ -761,6 +756,27 @@ export class LoadEffect {
                         of(LoadActions.deleteCommentByIdError({ error }))
                     )
                 );
+            })
+        )
+    );
+
+    public getDispatcherList$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.getDispatcherList),
+            exhaustMap((action) => {
+                const { loadStatusType } = action || {};
+                return this.loadService
+                    .getLoadDispatcherFilter(loadStatusType)
+                    .pipe(
+                        map((dispatcherList) => {
+                            return LoadActions.getDispatcherListSuccess({
+                                dispatcherList,
+                            });
+                        }),
+                        catchError((error) =>
+                            of(LoadActions.getDispatcherListError({ error }))
+                        )
+                    );
             })
         )
     );

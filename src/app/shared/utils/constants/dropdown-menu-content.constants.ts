@@ -1,7 +1,8 @@
+// enums
 import { DropdownMenuStringEnum } from '@shared/enums';
 
 // models
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export class DropdownMenuContentConstants {
     // inner dropdown items
@@ -69,7 +70,7 @@ export class DropdownMenuContentConstants {
     };
 
     // shared items
-    static DROPDOWN_MENU_SHARED_ITEMS: Record<string, DropdownMenuItem> = {
+    static DROPDOWN_MENU_SHARED_ITEMS: Record<string, IDropdownMenuItem> = {
         [DropdownMenuStringEnum.EDIT]: {
             title: DropdownMenuStringEnum.EDIT,
             type: DropdownMenuStringEnum.EDIT_TYPE,
@@ -188,236 +189,237 @@ export class DropdownMenuContentConstants {
     };
 
     // conditional items
-    static DROPDOWN_MENU_CONDITIONAL_ITEMS: Record<string, DropdownMenuItem> = {
-        // contact
-        [DropdownMenuStringEnum.SEND_SMS]: {
-            title: DropdownMenuStringEnum.SEND_SMS,
-            type: DropdownMenuStringEnum.SEND_SMS_TYPE,
-            svgUrl: 'assets/svg/chat/direct-message-icon.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            hasBorder: true,
-        },
+    static DROPDOWN_MENU_CONDITIONAL_ITEMS: Record<string, IDropdownMenuItem> =
+        {
+            // contact
+            [DropdownMenuStringEnum.SEND_SMS]: {
+                title: DropdownMenuStringEnum.SEND_SMS,
+                type: DropdownMenuStringEnum.SEND_SMS_TYPE,
+                svgUrl: 'assets/svg/chat/direct-message-icon.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                hasBorder: true,
+            },
 
-        // account
-        [DropdownMenuStringEnum.GO_TO_LINK]: {
-            title: DropdownMenuStringEnum.GO_TO_LINK,
-            type: DropdownMenuStringEnum.GO_TO_LINK_TYPE,
-            svgUrl: 'assets/svg/common/ic_web.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
-        [DropdownMenuStringEnum.NO_LINK]: {
-            title: DropdownMenuStringEnum.NO_LINK,
-            type: DropdownMenuStringEnum.NO_LINK_TYPE,
-            svgUrl: 'assets/svg/common/ic_web.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            isDisabled: true,
-        },
-        [DropdownMenuStringEnum.COPY_USERNAME]: {
-            title: DropdownMenuStringEnum.COPY_USERNAME,
-            type: DropdownMenuStringEnum.COPY_USERNAME_TYPE,
-            svgUrl: 'assets/svg/applicant/user.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
-        [DropdownMenuStringEnum.COPY_PASSWORD]: {
-            title: DropdownMenuStringEnum.COPY_PASSWORD,
-            type: DropdownMenuStringEnum.COPY_PASSWORD_TYPE,
-            svgUrl: 'assets/svg/common/ic_password.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            hasBorder: true,
-        },
+            // account
+            [DropdownMenuStringEnum.GO_TO_LINK]: {
+                title: DropdownMenuStringEnum.GO_TO_LINK,
+                type: DropdownMenuStringEnum.GO_TO_LINK_TYPE,
+                svgUrl: 'assets/svg/common/ic_web.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
+            [DropdownMenuStringEnum.NO_LINK]: {
+                title: DropdownMenuStringEnum.NO_LINK,
+                type: DropdownMenuStringEnum.NO_LINK_TYPE,
+                svgUrl: 'assets/svg/common/ic_web.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                isDisabled: true,
+            },
+            [DropdownMenuStringEnum.COPY_USERNAME]: {
+                title: DropdownMenuStringEnum.COPY_USERNAME,
+                type: DropdownMenuStringEnum.COPY_USERNAME_TYPE,
+                svgUrl: 'assets/svg/applicant/user.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
+            [DropdownMenuStringEnum.COPY_PASSWORD]: {
+                title: DropdownMenuStringEnum.COPY_PASSWORD,
+                type: DropdownMenuStringEnum.COPY_PASSWORD_TYPE,
+                svgUrl: 'assets/svg/common/ic_password.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                hasBorder: true,
+            },
 
-        // owner
-        [DropdownMenuStringEnum.ADD_TRUCK]: {
-            title: DropdownMenuStringEnum.ADD_TRUCK,
-            type: DropdownMenuStringEnum.ADD_TRUCK_TYPE,
-            svgUrl: 'assets/svg/common/ic_plus.svg',
-            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
-        },
-        [DropdownMenuStringEnum.ADD_TRAILER]: {
-            title: DropdownMenuStringEnum.ADD_TRAILER,
-            type: DropdownMenuStringEnum.ADD_TRAILER_TYPE,
-            svgUrl: 'assets/svg/common/ic_plus.svg',
-            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
-            hasBorder: true,
-        },
+            // owner
+            [DropdownMenuStringEnum.ADD_TRUCK]: {
+                title: DropdownMenuStringEnum.ADD_TRUCK,
+                type: DropdownMenuStringEnum.ADD_TRUCK_TYPE,
+                svgUrl: 'assets/svg/common/ic_plus.svg',
+                svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+            },
+            [DropdownMenuStringEnum.ADD_TRAILER]: {
+                title: DropdownMenuStringEnum.ADD_TRAILER,
+                type: DropdownMenuStringEnum.ADD_TRAILER_TYPE,
+                svgUrl: 'assets/svg/common/ic_plus.svg',
+                svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+                hasBorder: true,
+            },
 
-        // fuel
-        [DropdownMenuStringEnum.ALL_TRANSACTIONS]: {
-            title: DropdownMenuStringEnum.ALL_TRANSACTIONS,
-            type: DropdownMenuStringEnum.ALL_TRANSACTIONS_TYPE,
-            svgUrl: 'assets/svg/common/ic_truck.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            hasBorder: true,
-        },
-        [DropdownMenuStringEnum.ADD_TRANSACTION]: {
-            title: DropdownMenuStringEnum.ADD_TRANSACTION,
-            type: DropdownMenuStringEnum.ADD_TRANSACTION_TYPE,
-            svgUrl: 'assets/svg/common/ic_plus.svg',
-            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
-        },
+            // fuel
+            [DropdownMenuStringEnum.ALL_TRANSACTIONS]: {
+                title: DropdownMenuStringEnum.ALL_TRANSACTIONS,
+                type: DropdownMenuStringEnum.ALL_TRANSACTIONS_TYPE,
+                svgUrl: 'assets/svg/common/ic_truck.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                hasBorder: true,
+            },
+            [DropdownMenuStringEnum.ADD_TRANSACTION]: {
+                title: DropdownMenuStringEnum.ADD_TRANSACTION,
+                type: DropdownMenuStringEnum.ADD_TRANSACTION_TYPE,
+                svgUrl: 'assets/svg/common/ic_plus.svg',
+                svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+            },
 
-        // pm
-        [DropdownMenuStringEnum.CONFIGURE]: {
-            title: DropdownMenuStringEnum.CONFIGURE,
-            type: DropdownMenuStringEnum.CONFIGURE_TYPE,
-            svgUrl: 'assets/svg/common/ic_settings.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
+            // pm
+            [DropdownMenuStringEnum.CONFIGURE]: {
+                title: DropdownMenuStringEnum.CONFIGURE,
+                type: DropdownMenuStringEnum.CONFIGURE_TYPE,
+                svgUrl: 'assets/svg/common/ic_settings.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
 
-        // repair
-        [DropdownMenuStringEnum.ALL_BILLS]: {
-            title: DropdownMenuStringEnum.ALL_BILLS,
-            type: DropdownMenuStringEnum.ALL_BILLS_TYPE,
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            hasBorder: true,
-        },
-        [DropdownMenuStringEnum.ALL_ORDERS]: {
-            title: DropdownMenuStringEnum.ALL_ORDERS,
-            type: DropdownMenuStringEnum.ALL_ORDERS_TYPE,
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            hasBorder: true,
-        },
-        [DropdownMenuStringEnum.FINISH_ORDER]: {
-            title: DropdownMenuStringEnum.FINISH_ORDER,
-            type: DropdownMenuStringEnum.FINISH_ORDER_TYPE,
-            svgUrl: 'assets/svg/common/ic_note_order.svg',
-            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
-        },
+            // repair
+            [DropdownMenuStringEnum.ALL_BILLS]: {
+                title: DropdownMenuStringEnum.ALL_BILLS,
+                type: DropdownMenuStringEnum.ALL_BILLS_TYPE,
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                hasBorder: true,
+            },
+            [DropdownMenuStringEnum.ALL_ORDERS]: {
+                title: DropdownMenuStringEnum.ALL_ORDERS,
+                type: DropdownMenuStringEnum.ALL_ORDERS_TYPE,
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                hasBorder: true,
+            },
+            [DropdownMenuStringEnum.FINISH_ORDER]: {
+                title: DropdownMenuStringEnum.FINISH_ORDER,
+                type: DropdownMenuStringEnum.FINISH_ORDER_TYPE,
+                svgUrl: 'assets/svg/common/ic_note_order.svg',
+                svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+            },
 
-        // truck - trailer
-        [DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER]: {
-            title: DropdownMenuStringEnum.ADD_NEW,
-            type: DropdownMenuStringEnum.ADD_NEW_TYPE,
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            innerDropdownContent:
-                this.DROPDOWN_MENU_INNER_DROPDOWN_ITEMS[
-                    DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER
-                ],
-            hasBorder: true,
-        },
+            // truck - trailer
+            [DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER]: {
+                title: DropdownMenuStringEnum.ADD_NEW,
+                type: DropdownMenuStringEnum.ADD_NEW_TYPE,
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                innerDropdownContent:
+                    this.DROPDOWN_MENU_INNER_DROPDOWN_ITEMS[
+                        DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER
+                    ],
+                hasBorder: true,
+            },
 
-        // driver
-        [DropdownMenuStringEnum.ADD_NEW_DRIVER]: {
-            title: DropdownMenuStringEnum.ADD_NEW,
-            type: DropdownMenuStringEnum.ADD_NEW_TYPE,
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            innerDropdownContent:
-                this.DROPDOWN_MENU_INNER_DROPDOWN_ITEMS[
-                    DropdownMenuStringEnum.ADD_NEW_DRIVER
-                ],
-        },
-        [DropdownMenuStringEnum.REQUEST]: {
-            title: DropdownMenuStringEnum.REQUEST,
-            type: DropdownMenuStringEnum.REQUEST_TYPE,
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            innerDropdownContent:
-                this.DROPDOWN_MENU_INNER_DROPDOWN_ITEMS[
-                    DropdownMenuStringEnum.REQUEST
-                ],
-            hasBorder: true,
-        },
+            // driver
+            [DropdownMenuStringEnum.ADD_NEW_DRIVER]: {
+                title: DropdownMenuStringEnum.ADD_NEW,
+                type: DropdownMenuStringEnum.ADD_NEW_TYPE,
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                innerDropdownContent:
+                    this.DROPDOWN_MENU_INNER_DROPDOWN_ITEMS[
+                        DropdownMenuStringEnum.ADD_NEW_DRIVER
+                    ],
+            },
+            [DropdownMenuStringEnum.REQUEST]: {
+                title: DropdownMenuStringEnum.REQUEST,
+                type: DropdownMenuStringEnum.REQUEST_TYPE,
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                innerDropdownContent:
+                    this.DROPDOWN_MENU_INNER_DROPDOWN_ITEMS[
+                        DropdownMenuStringEnum.REQUEST
+                    ],
+                hasBorder: true,
+            },
 
-        // user
-        [DropdownMenuStringEnum.RESET_PASSWORD]: {
-            title: DropdownMenuStringEnum.RESET_PASSWORD,
-            type: DropdownMenuStringEnum.RESET_PASSWORD_TYPE,
-            svgUrl: 'assets/svg/common/ic_password.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
+            // user
+            [DropdownMenuStringEnum.RESET_PASSWORD]: {
+                title: DropdownMenuStringEnum.RESET_PASSWORD,
+                type: DropdownMenuStringEnum.RESET_PASSWORD_TYPE,
+                svgUrl: 'assets/svg/common/ic_password.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
 
-        // payroll
-        [DropdownMenuStringEnum.EDIT_LOAD]: {
-            title: DropdownMenuStringEnum.EDIT_LOAD,
-            type: DropdownMenuStringEnum.EDIT_LOAD_TYPE,
-            svgUrl: 'assets/svg/common/load/ic_load-.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            isSelectMenuTypeActionItem: true,
-        },
-        [DropdownMenuStringEnum.EDIT_PAYROLL]: {
-            title: DropdownMenuStringEnum.EDIT_PAYROLL,
-            type: DropdownMenuStringEnum.EDIT_PAYROLL_TYPE,
-            svgUrl: 'assets/svg/truckassist-table/driver-violation.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            hasBorder: true,
-        },
-        [DropdownMenuStringEnum.RESEND_REPORT]: {
-            title: DropdownMenuStringEnum.RESEND_REPORT,
-            type: DropdownMenuStringEnum.RESEND_REPORT_TYPE,
-            svgUrl: 'assets/svg/common/ic_resend-invitation.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            hasBorder: true,
-        },
-        [DropdownMenuStringEnum.PREVIEW_REPORT]: {
-            title: DropdownMenuStringEnum.PREVIEW_REPORT,
-            type: DropdownMenuStringEnum.PREVIEW_REPORT_TYPE,
-            svgUrl: 'assets/ca-components/svg/note/note-empty.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
-        [DropdownMenuStringEnum.DOWNLOAD]: {
-            title: DropdownMenuStringEnum.DOWNLOAD,
-            type: DropdownMenuStringEnum.DOWNLOAD_TYPE,
-            svgUrl: 'assets/svg/common/ic_download.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
-        [DropdownMenuStringEnum.EDIT_LOAD_SELECT]: {
-            title: DropdownMenuStringEnum.EDIT_LOAD,
-            type: DropdownMenuStringEnum.EDIT_LOAD_TYPE,
-            titleOptionalClass: 'ca-font-extra-bold',
-            svgUrl: 'assets/ca-components/svg/applicant/close-x.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-            hasBorder: true,
-            isSelectMenuTypeActionItem: true,
-        },
+            // payroll
+            [DropdownMenuStringEnum.EDIT_LOAD]: {
+                title: DropdownMenuStringEnum.EDIT_LOAD,
+                type: DropdownMenuStringEnum.EDIT_LOAD_TYPE,
+                svgUrl: 'assets/svg/common/load/ic_load-.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                isSelectMenuTypeActionItem: true,
+            },
+            [DropdownMenuStringEnum.EDIT_PAYROLL]: {
+                title: DropdownMenuStringEnum.EDIT_PAYROLL,
+                type: DropdownMenuStringEnum.EDIT_PAYROLL_TYPE,
+                svgUrl: 'assets/svg/truckassist-table/driver-violation.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                hasBorder: true,
+            },
+            [DropdownMenuStringEnum.RESEND_REPORT]: {
+                title: DropdownMenuStringEnum.RESEND_REPORT,
+                type: DropdownMenuStringEnum.RESEND_REPORT_TYPE,
+                svgUrl: 'assets/svg/common/ic_resend-invitation.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                hasBorder: true,
+            },
+            [DropdownMenuStringEnum.PREVIEW_REPORT]: {
+                title: DropdownMenuStringEnum.PREVIEW_REPORT,
+                type: DropdownMenuStringEnum.PREVIEW_REPORT_TYPE,
+                svgUrl: 'assets/ca-components/svg/note/note-empty.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
+            [DropdownMenuStringEnum.DOWNLOAD]: {
+                title: DropdownMenuStringEnum.DOWNLOAD,
+                type: DropdownMenuStringEnum.DOWNLOAD_TYPE,
+                svgUrl: 'assets/svg/common/ic_download.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
+            [DropdownMenuStringEnum.EDIT_LOAD_SELECT]: {
+                title: DropdownMenuStringEnum.EDIT_LOAD,
+                type: DropdownMenuStringEnum.EDIT_LOAD_TYPE,
+                titleOptionalClass: 'ca-font-extra-bold',
+                svgUrl: 'assets/ca-components/svg/applicant/close-x.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+                hasBorder: true,
+                isSelectMenuTypeActionItem: true,
+            },
 
-        // load
-        [DropdownMenuStringEnum.CREATE_LOAD]: {
-            title: DropdownMenuStringEnum.CREATE_LOAD,
-            type: DropdownMenuStringEnum.CREATE_LOAD_TYPE,
-            svgUrl: 'assets/svg/common/ic_plus.svg',
-            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
-            hasBorder: true,
-        },
+            // load
+            [DropdownMenuStringEnum.CREATE_LOAD]: {
+                title: DropdownMenuStringEnum.CREATE_LOAD,
+                type: DropdownMenuStringEnum.CREATE_LOAD_TYPE,
+                svgUrl: 'assets/svg/common/ic_plus.svg',
+                svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+                hasBorder: true,
+            },
 
-        [DropdownMenuStringEnum.CREATE_TEMPLATE]: {
-            title: DropdownMenuStringEnum.CREATE_TEMPLATE,
-            type: DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE,
-            svgUrl: 'assets/svg/common/load/ic_load_template_btn.svg',
-            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
-            hasBorder: true,
-        },
+            [DropdownMenuStringEnum.CREATE_TEMPLATE]: {
+                title: DropdownMenuStringEnum.CREATE_TEMPLATE,
+                type: DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE,
+                svgUrl: 'assets/svg/common/load/ic_load_template_btn.svg',
+                svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+                hasBorder: true,
+            },
 
-        // customer
-        [DropdownMenuStringEnum.ADD_CONTACT]: {
-            title: DropdownMenuStringEnum.ADD_CONTACT,
-            type: DropdownMenuStringEnum.ADD_CONTACT_TYPE,
-            svgUrl: 'assets/svg/common/load/ic_load_shipper_contact_avatar.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
-        [DropdownMenuStringEnum.MOVE_TO_BAN_LIST]: {
-            title: DropdownMenuStringEnum.MOVE_TO_BAN_LIST,
-            type: DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE,
-            svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
-        [DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST]: {
-            title: DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST,
-            type: DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE,
-            svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
-            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
-        },
-        [DropdownMenuStringEnum.MOVE_TO_DNU_LIST]: {
-            title: DropdownMenuStringEnum.MOVE_TO_DNU_LIST,
-            type: DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE,
-            svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
-            svgClass: DropdownMenuStringEnum.DELETE_SVG_CLASS,
-            hasBorder: true,
-        },
-        [DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST]: {
-            title: DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST,
-            type: DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE,
-            svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
-            svgClass: DropdownMenuStringEnum.DELETE_SVG_CLASS,
-            hasBorder: true,
-        },
-    };
+            // customer
+            [DropdownMenuStringEnum.ADD_CONTACT]: {
+                title: DropdownMenuStringEnum.ADD_CONTACT,
+                type: DropdownMenuStringEnum.ADD_CONTACT_TYPE,
+                svgUrl: 'assets/svg/common/load/ic_load_shipper_contact_avatar.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
+            [DropdownMenuStringEnum.MOVE_TO_BAN_LIST]: {
+                title: DropdownMenuStringEnum.MOVE_TO_BAN_LIST,
+                type: DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE,
+                svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
+            [DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST]: {
+                title: DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST,
+                type: DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE,
+                svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
+                svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            },
+            [DropdownMenuStringEnum.MOVE_TO_DNU_LIST]: {
+                title: DropdownMenuStringEnum.MOVE_TO_DNU_LIST,
+                type: DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE,
+                svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
+                svgClass: DropdownMenuStringEnum.DELETE_SVG_CLASS,
+                hasBorder: true,
+            },
+            [DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST]: {
+                title: DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST,
+                type: DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE,
+                svgUrl: 'assets/svg/truckassist-table/ban-icon.svg',
+                svgClass: DropdownMenuStringEnum.DELETE_SVG_CLASS,
+                hasBorder: true,
+            },
+        };
 }

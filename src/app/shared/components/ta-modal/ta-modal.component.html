@@ -173,87 +173,60 @@
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="hasFutureTimeFilter">
+                    @if (hasFutureTimeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'timeFilter'"
-                                [icon]="'ic_time'"
-                                [filterTitle]="'Time Filter'"
-                                [timeSubType]="'future'"
+                            <app-ca-filter-list-dropdown
+                                type="TimeFilter"
+                                subType="future"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-list-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
-                    <ng-container *ngIf="hasTimeFilter">
+                    @if (hasTimeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'timeFilter'"
-                                [icon]="'ic_time'"
-                                [filterTitle]="'Time Filter'"
-                                [timeSubType]="'past'"
-                                (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
+                            <app-ca-filter-time-dropdown
+                                type="TimeFilter"
+                                subType="past"
+                                (setFilter)="setFilters($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-time-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
                     <ng-container *ngIf="hasDispatcherFilter">
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'dispatcherFilter'"
-                                [icon]="'user'"
-                                [searchState]="true"
-                                [filterTitle]="'Dispatcher Filter'"
-                                [defFilterHolder]="true"
+                            <app-ca-filter-list-dropdown
+                                type="Dispatcher"
+                                [list]="unselectedDispatcher"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
-                                [unselectedUser]="unselectedDispatcher"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-list-dropdown>
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="hasTruckTypeFilter">
+                    @if (hasTruckTypeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'truckTypeFilter'"
-                                [icon]="'truck'"
-                                [filterTitle]="'Truck Type Filter'"
-                                [defFilterHolder]="true"
-                                [noLeftIcon]="true"
-                                [isAssignLoadModal]="isAssignLoadModal"
-                                [isDispatchFilter]="!isAssignLoadModal"
-                                [isRepairFilter]="false"
-                                (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
-                                [truckTypeArray]="truckTypeArray"
+                            <app-ca-filter-list-dropdown
+                                type="TruckType"
+                                [list]="truckTypeArray"
+                                (setFilter)="onFilter($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-list-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
-                    <ng-container *ngIf="hasTrailerTypeFilter">
+                    @if (hasTrailerTypeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'trailerTypeFilter'"
-                                [icon]="'trailer'"
-                                [filterTitle]="'Trailer Type Filter'"
-                                [defFilterHolder]="true"
-                                [noLeftIcon]="true"
-                                [isAssignLoadModal]="isAssignLoadModal"
-                                [isDispatchFilter]="!isAssignLoadModal"
-                                [isRepairFilter]="false"
-                                (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
-                                [trailerTypeArray]="trailerTypeArray"
+                            <app-ca-filter-list-dropdown
+                                type="TrailerType"
+                                [list]="trailerTypeArray"
+                                (setFilter)="onFilter($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-list-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
                     <ng-container *ngIf="hasLocationFilter">
                         <div class="me-1">

@@ -28,6 +28,9 @@
 .svg {
     // Colors
     &-fill {
+        &-white {
+            @include svg-fill($white);
+        }
         &-black {
             @include svg-fill($black);
         }
