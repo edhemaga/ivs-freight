@@ -26,10 +26,10 @@ export class RepairDetailsResolver {
     ) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<RepairDetailsState> {
-        const pageIndex = 1;
-        const pageSize = 25;
+        const pageIndex: number = 1;
+        const pageSize: number = 25;
 
-        const repairShopId = +route.paramMap.get('id');
+        const repairShopId: number = +route.paramMap.get('id');
 
         const repairShopData$ =
             this.repairService.getRepairShopById(repairShopId);

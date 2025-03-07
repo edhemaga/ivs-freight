@@ -66,6 +66,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { DropdownMenuStringEnum, eModalButtonText } from '@shared/enums';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
 // components
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
@@ -1548,7 +1549,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             { size: TableStringEnum.DELETE },
             {
                 ...data,
-                template: TableStringEnum.REPAIR_2,
+                template: eRepairShopDetails.REPAIR_LOWERCASE,
                 type: TableStringEnum.DELETE,
                 subType:
                     this.repairOrderForm.get(

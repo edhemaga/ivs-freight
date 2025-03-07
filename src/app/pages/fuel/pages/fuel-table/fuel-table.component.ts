@@ -36,7 +36,6 @@ import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/service
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { FuelTableConstants } from '@pages/fuel/pages/fuel-table/utils/constants/fuel-table.constants';
 
 // svg routes
@@ -68,7 +67,7 @@ import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
     DropdownMenuStringEnum,
-    eCommonElements,
+    eCommonElement,
     TableStringEnum,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
@@ -100,7 +99,7 @@ export class FuelTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
-    public commonElements = eCommonElements;
+    public eCommonElement = eCommonElement;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;

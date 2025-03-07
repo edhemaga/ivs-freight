@@ -9,7 +9,7 @@
     ></app-ta-table-toolbar>
 
     @switch (activeViewMode) {
-        @case (commonElements.LIST) {
+        @case (eCommonElement.LIST) {
             <app-ta-table-head
                 [options]="tableOptions"
                 [viewData]="viewData"
@@ -34,7 +34,7 @@
                 "
             ></app-ta-table-body>
         }
-        @case (commonElements.CARD) {
+        @case (eCommonElement.CARD) {
             <div class="elements">
                 <app-fuel-card
                     [viewData]="viewData"
@@ -48,9 +48,7 @@
                         class="show-more-container d-flex align-items-center justify-content-between"
                         [ngStyle]="{ 'width.px': tableWidth }"
                     >
-                        <div
-                            class="showing ta-font-semi-bold text-color-dark-grey"
-                        >
+                        <div class="showing ta-font-semi-bold text-color-bw6-2">
                             {{ viewData?.length }} OF
                             {{ tableDataLength }}
                         </div>
@@ -66,7 +64,7 @@
                 }
             </div>
         }
-        @case (commonElements.MAP) {
+        @case (eCommonElement.MAP) {
             <div class="customer-map-container">
                 <app-ta-map-list
                     [type]="'fuelStop'"

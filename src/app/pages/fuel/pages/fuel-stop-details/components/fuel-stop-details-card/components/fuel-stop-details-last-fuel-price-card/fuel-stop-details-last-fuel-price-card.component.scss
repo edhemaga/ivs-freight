@@ -50,10 +50,10 @@
 
                 .progress-icon {
                     position: absolute;
-                    left: 50%;
                     top: 50%;
+                    line-height: 1px;
 
-                    transform: translate(-50%, -50%);
+                    transform: translateY(-50%);
 
                     svg {
                         circle,

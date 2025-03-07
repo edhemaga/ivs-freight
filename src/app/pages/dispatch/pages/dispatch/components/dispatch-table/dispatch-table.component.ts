@@ -32,7 +32,7 @@ import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-backgro
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // pipes
-import { DispatchColorFinderPipe } from '@shared/pipes';
+import { TruckTrailerColorFinderPipe } from 'ca-components';
 
 // helpers
 import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
@@ -71,7 +71,6 @@ import {
     TruckDispatchModalResponse,
     TrailerDispatchModalResponse,
     DispatchHistoryTruckLastLocationResponse,
-    RoutingResponse,
 } from 'appcoretruckassist';
 import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 import {
@@ -89,7 +88,7 @@ import { IGpsProgress } from 'ca-components/lib/components/ca-progress-bar/model
     styleUrls: ['./dispatch-table.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [DispatchColorFinderPipe],
+    providers: [TruckTrailerColorFinderPipe],
     animations: [dispatchBackgroundAnimation()],
 })
 export class DispatchTableComponent implements OnInit, OnDestroy {
@@ -213,7 +212,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
 
         // pipes
-        private dispatchColorFinderPipe: DispatchColorFinderPipe,
+        private truckTrailerColorFinderPipe: TruckTrailerColorFinderPipe,
         public datePipe: DatePipe,
 
         // services
@@ -286,7 +285,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             return {
                 ...truck,
                 name: truck.truckNumber,
-                class: this.dispatchColorFinderPipe.transform(
+                class: this.truckTrailerColorFinderPipe.transform(
                     truck.truckType.id,
                     DispatchTableStringEnum.TRUCK
                 ),
@@ -300,7 +299,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             return {
                 ...trailer,
                 name: trailer.trailerNumber,
-                class: this.dispatchColorFinderPipe.transform(
+                class: this.truckTrailerColorFinderPipe.transform(
                     trailer.trailerType.id,
                     DispatchTableStringEnum.TRAILER
                 ),
