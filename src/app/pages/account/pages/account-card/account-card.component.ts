@@ -37,7 +37,7 @@ import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CompanyAccountLabelResponse } from 'appcoretruckassist';
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { AccountResponse } from '@pages/account/pages/account-table/models/account-response.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-account-card',
@@ -175,7 +175,7 @@ export class AccountCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: AccountResponse
     ): void {
         const { type } = action;

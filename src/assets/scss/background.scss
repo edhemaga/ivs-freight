@@ -1,0 +1,27 @@
+@import '/src/theme/variables.scss';
+.background {
+    &-white {
+        background: $white;
+    }
+    &-muted {
+        background: $muted;
+    }
+    &-black {
+        background: $ta-black;
+    }
+    &-bw2 {
+        background-color: $bw2;
+    }
+    &-light-grey {
+        background-color: $ta-light-grey;
+
+        &-6 {
+            background-color: $ta-light-grey-6;
+        }
+    }
+    &-blue {
+        &-16 {
+            background-color: $ta-blue-16;
+        }
+    }
+}

@@ -1,42 +1,31 @@
+// External Libraries
 import { Injectable } from '@angular/core';
+import { Observable, forkJoin } from 'rxjs';
+import { map } from 'rxjs/operators';
 
-
-import { forkJoin, Observable, map } from 'rxjs';
-
-// services
-import { MilesStoreService } from '@pages/miles/services/miles-store.service';
-
-//s tore
-import { MilesTableStore } from '@pages/miles/state/miles.store';
+// Feature Services
+import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
+import { MilesByUnitListResponse, MilesService } from 'appcoretruckassist';
 
 @Injectable({
     providedIn: 'root',
 })
-export class MilesResolver  {
+export class MilesResolver {
     constructor(
-        private milesStoreService: MilesStoreService,
-        private store: MilesTableStore
+        private milesStoreService: MilesService,
+        private milesService: MilesStoreService
     ) {}
-    resolve(): Observable<any> {
-        const activeList = this.milesStoreService.getMiles(null, 1);
-        const innactiveList = this.milesStoreService.getMiles(null, 0);
 
-        return forkJoin([activeList, innactiveList]).pipe(
-            map((list: any) => {
-                localStorage.setItem(
-                    'milesTableCount',
-                    JSON.stringify({
-                        active: list[0].activeTruckCount,
-                        inactive: list[0].inactiveTruckCount,
-                    })
-                );
-                this.store.set({
-                    active: list[0].pagination.data,
-                    innactive: list[1].pagination.data,
-                });
-                return list;
+    resolve(): Observable<MilesByUnitListResponse> {
+        const activeList = this.milesStoreService.apiMilesListGet(null, 1);
+        const states = this.milesStoreService.apiMilesStateFilterGet();
+
+        return forkJoin([activeList, states]).pipe(
+            map(([response, _states]) => {
+                this.milesService.dispatchInitalList(response);
+                this.milesService.dispatchStates(_states);
+                return response;
             })
         );
-        //return of();
     }
 }

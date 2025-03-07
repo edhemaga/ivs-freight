@@ -4,15 +4,15 @@ import { DropdownMenuContentConstants } from '@shared/utils/constants';
 import { DropdownMenuStringEnum } from '@shared/enums/dropdown-menu-content-string.enum';
 
 // models
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export class DropdownMenuContentConditionalItemsHelper {
     // conditional items
     static getConditionalItems(
         requestedItemTitles: string[],
         isSharedConditionalItems: boolean,
-        modifiers?: Partial<DropdownMenuItem>[]
-    ): DropdownMenuItem[] {
+        modifiers?: Partial<IDropdownMenuItem>[]
+    ): IDropdownMenuItem[] {
         const dropdownMenuItems = isSharedConditionalItems
             ? DropdownMenuContentConstants.DROPDOWN_MENU_SHARED_ITEMS
             : DropdownMenuContentConstants.DROPDOWN_MENU_CONDITIONAL_ITEMS;
@@ -42,7 +42,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     // owner
     static getOwnerModifierItems(
         isActiveOwner: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.EDIT,
@@ -54,7 +54,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     // fuel transaction
     static getFuelTransactionModifierItems(
         isAutomaticTransaction: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.DELETE,
@@ -66,7 +66,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     // fuel stop
     static getFuelStopModifierItems(
         isOpenBusiness: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.EDIT,
@@ -94,7 +94,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     // repair
     static getRepairModifierItems(
         isTruckRepair: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         const svgUrl = isTruckRepair
             ? 'assets/svg/common/ic_truck.svg'
             : 'assets/svg/common/ic_trailer.svg';
@@ -115,7 +115,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     static getRepairShopModifierItems(
         isOpenBusiness: boolean,
         isCompanyOwned: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.EDIT,
@@ -144,7 +144,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     // truck - trailer
     static getTruckTrailerModifierItems(
         isActiveVehicle: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.EDIT,
@@ -164,7 +164,7 @@ export class DropdownMenuContentConditionalItemsHelper {
         isUserStatusInvited: boolean,
         isUserStatusExpired: boolean,
         isInvitationSent: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.EDIT,
@@ -213,7 +213,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     // driver
     static getDriverModifierItems(
         isActiveDriver: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.EDIT,
@@ -237,7 +237,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     // load
     static getLoadModifierItems(
         isPendingLoad: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.DELETE,
@@ -249,7 +249,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     // shipper
     static getShipperModifierItems(
         isOpenBusiness: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.EDIT,
@@ -274,7 +274,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     static getBrokerModifiedItems(
         isOpenBusiness: boolean,
         isMovedToBanOrDnu: boolean
-    ): Partial<DropdownMenuItem>[] {
+    ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: DropdownMenuStringEnum.EDIT,

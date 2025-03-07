@@ -37,7 +37,7 @@ import { FuelCardSvgRoutes } from '@pages/fuel/pages/fuel-card/utils/svg-routes'
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { MappedRepair } from '@pages/repair/pages/repair-table/models';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { FuelStopResponse, FuelTransactionResponse } from 'appcoretruckassist';
 
 @Component({
@@ -162,7 +162,7 @@ export class FuelCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: FuelTransactionResponse | FuelStopResponse
     ): void {
         const { type } = action;

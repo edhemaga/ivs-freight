@@ -36,5 +36,6 @@ export interface IGetLoadListParam {
     sortBy?: string,
     search?: string,
     search1?: string,
-    search2?: string
+    search2?: string,
+    loadStatusType?: string;
 }

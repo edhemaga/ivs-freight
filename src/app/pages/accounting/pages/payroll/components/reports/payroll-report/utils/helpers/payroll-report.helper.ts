@@ -4,7 +4,7 @@ import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enum
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // models
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export class PayrollReportHelper {
     static getPayrollDropdownContent(
@@ -12,7 +12,7 @@ export class PayrollReportHelper {
         selectedTab: string,
         isEditLoadDropdownActionActive: boolean,
         loadList?: { id: number; title: string }[]
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         const isOpenPayroll = selectedTab === ePayrollTablesStatus.OPEN;
 
         return isTabChange || !isEditLoadDropdownActionActive

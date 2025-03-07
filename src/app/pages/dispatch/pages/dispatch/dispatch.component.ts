@@ -14,7 +14,7 @@ import { Observable, Subject, takeUntil } from 'rxjs';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { ModalService } from '@shared/services/modal.service';
-import { CaSearchMultipleStatesService } from 'ca-components';
+import { CaSearchMultipleStatesService, eFilterDropdownEnum } from 'ca-components';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -137,16 +137,16 @@ export class DispatchComponent
             .subscribe((res) => {
                 if (res?.filterType) {
                     switch (res.filterType) {
-                        case ToolbarFilterStringEnum.TRUCK_TYPE_FILTER:
-                            this.backFilterQuery.truckTypes = res.queryParams;
+                        case eFilterDropdownEnum.TRUCK_TYPE:
+                            this.backFilterQuery.truckTypes = res.selectedIds;
                             break;
 
-                        case ToolbarFilterStringEnum.TRAILER_TYPE_FILTER:
-                            this.backFilterQuery.trailerTypes = res.queryParams;
+                        case eFilterDropdownEnum.TRAILER_TYPE:
+                            this.backFilterQuery.trailerTypes = res.selectedIds;
 
                             break;
-                        case ToolbarFilterStringEnum.STATUS_FILTER:
-                            this.backFilterQuery.statuses = res.queryParams;
+                        case eFilterDropdownEnum.STATUS:
+                            this.backFilterQuery.statuses = res.selectedIds;
                             break;
 
                         case ToolbarFilterStringEnum.PARKING_FILTER:
