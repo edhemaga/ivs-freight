@@ -32,6 +32,7 @@ import {
     IMapPagination,
     IMapBounds,
     TruckTrailerColorFinderPipe,
+    eFilterDropdownEnum,
 } from 'ca-components';
 
 // base classes
@@ -87,7 +88,6 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import {
     RepairShopMapDropdownHelper,
     RepairTableBackFilterDataHelper,
-    RepairTableDateFormaterHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
@@ -1023,80 +1023,51 @@ export class RepairTableComponent
                 if (res) {
                     switch (res.filterType) {
                         case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
-                            this.backFilterQuery.categoryIds = res.queryParams;
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                categoryIds: res.selectedIds,
+                            };
                             break;
-                        case RepairTableStringEnum.PM_FILTER:
-                            this.backFilterQuery.pmTruckTitles =
-                                res.queryParams;
+                        case eFilterDropdownEnum.PM:
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                pmTruckTitles: res.selectedIds,
+                            };
                             break;
-                        case RepairTableStringEnum.TRAILER_TYPE_FILTER:
-                            this.backFilterQuery.trailerNumbers =
-                                res.queryParams;
+                        case eFilterDropdownEnum.TRAILER_TYPE:
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                trailerNumbers: res.selectedIds,
+                            };
                             break;
-                        case RepairTableStringEnum.TRUCK_TYPE_FILTER:
-                            this.backFilterQuery.truckNumbers = res.queryParams;
-
+                        case eFilterDropdownEnum.TRUCK_TYPE:
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                truckNumbers: res.selectedIds,
+                            };
                             break;
-                        case RepairTableStringEnum.TIME_FILTER:
-                            delete this.backFilterQuery.dateTo;
-                            delete this.backFilterQuery.dateFrom;
-                            if (res.queryParams) {
-                                const { fromDate, toDate } =
-                                    RepairTableDateFormaterHelper.getDateRange(
-                                        res.queryParams?.timeSelected
-                                    );
-
-                                this.backFilterQuery.dateTo = toDate;
-                                this.backFilterQuery.dateFrom = fromDate;
-                            }
+                        case eFilterDropdownEnum.TIME_FILTER:
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                dateTo: res.toDate,
+                                dateFrom: res.fromDate,
+                            };
                             break;
-                        case RepairTableStringEnum.STATE_FILTER:
-                            if (res.action === TableStringEnum.SET) {
-                                this.viewData = this.repairTableData?.filter(
-                                    (address) => {
-                                        const inCanadaArray =
-                                            res.queryParams.canadaArray.some(
-                                                (canadaState) =>
-                                                    canadaState.stateName ===
-                                                    address['address']['state']
-                                            );
-
-                                        const inUsaArray =
-                                            res.queryParams.usaArray.some(
-                                                (usaState) =>
-                                                    usaState.stateName ===
-                                                    address['address']['state']
-                                            );
-
-                                        return inCanadaArray || inUsaArray;
-                                    }
-                                );
-
-                                this.mapStateFilter = [
-                                    ...res.queryParams.canadaArray.map(
-                                        (canadaState) => {
-                                            return canadaState.stateName;
-                                        }
-                                    ),
-                                    ...res.queryParams.usaArray.map(
-                                        (usaState) => {
-                                            return usaState.stateName;
-                                        }
-                                    ),
-                                ];
-                            }
-
-                            if (res.action === TableStringEnum.CLEAR) {
-                                this.viewData = this.repairTableData;
-                                this.mapStateFilter = null;
-                            }
-                        case RepairTableStringEnum.MONEY_FILTER:
-                            this.backFilterQuery.costFrom =
-                                res.queryParams?.from;
-                            this.backFilterQuery.costTo = res.queryParams?.to;
+                        case eFilterDropdownEnum.STATE:
+                            // this.backFilterQuery = { ...this.backFilterQuery, states: res.states };
                             break;
-                        default:
-                            this.sendRepairData();
+                        case eFilterDropdownEnum.SERVICE:
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                categoryIds: res.selectedIds,
+                            };
+                            break;
+                        case 'moneyFilter':
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                costFrom: res.queryParams?.from,
+                                costTo: res.queryParams?.to,
+                            };
                             break;
                     }
 

@@ -1652,9 +1652,9 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         for (let i = 0; i < repairShop.intervals.length; i++) {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
-                                /*   selectedTab === DashboardStringEnum.VISIT
-                                    ? repairShop.intervals[i].count
-                                    : repairShop.intervals[i].cost, */
+                                selectedTab === DashboardStringEnum.VISIT
+                                    ? repairShop.intervals[i].visitCount
+                                    : repairShop.intervals[i].cost,
                             ];
                             filteredIntervalPercentages = [
                                 ...filteredIntervalPercentages,
@@ -1667,10 +1667,10 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                         return {
                             id: repairShop.id,
                             name: repairShop.name,
-                            value: null,
-                            /* selectedTab === DashboardStringEnum.VISIT
-                                    ? repairShop.visit.toString()
-                                    : repairShop.cost.toString(), */
+                            value:
+                                selectedTab === DashboardStringEnum.VISIT
+                                    ? repairShop.visitCount.toString()
+                                    : repairShop.cost.toString(),
                             percent:
                                 selectedTab === DashboardStringEnum.VISIT
                                     ? repairShop.visitPercentage.toString()

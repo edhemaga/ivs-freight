@@ -1,7 +1,7 @@
 <div
     class="table-filter-container"
     [ngClass]="{
-        'table-filter-padding': options.toolbarActions.showSearchBorder
+        'table-filter-padding': options.toolbarActions.showSearchBorder,
     }"
 >
     <!-- VIEW MODE SELECT -->
@@ -11,7 +11,7 @@
         <div
             class="money-count-container d-flex justify-content-center align-items-center"
             [ngClass]="{
-                'money-count-select-style': activeTableData.moneyCountSelected
+                'money-count-select-style': activeTableData.moneyCountSelected,
             }"
         >
             <div
@@ -47,7 +47,7 @@
                         'mode-margin':
                             activeTableData.gridNameTitle === 'Account' ||
                             activeTableData.gridNameTitle === 'Contact' ||
-                            activeTableData.gridNameTitle === 'User'
+                            activeTableData.gridNameTitle === 'User',
                     }"
                     (click)="changeModeView(viewMode.name)"
                 >
@@ -75,7 +75,7 @@
     <ng-container *ngIf="!options.toolbarActions.hideSearch">
         <div
             [ngClass]="{
-                'disabled-icon pe-none': options.toolbarActions.disableSearch
+                'disabled-icon pe-none': options.toolbarActions.disableSearch,
             }"
         >
             <app-ca-search-multiple-states
@@ -155,17 +155,14 @@
     </app-ca-filter>
 
     <!-- FUEL STOP FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showFuelStopFilter"
-        [type]="'fuelStopFilter'"
-        [icon]="'fuel'"
-        [filterTitle]="'Fuel Stop Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [unselectedUser]="fuelStopArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showFuelStopFilter) {
+        <app-ca-filter-list-dropdown
+            type="FuelStop"
+            [list]="fuelStopArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
     <!-- DEPARTMENT FILTER -->
     <app-ca-filter
@@ -213,16 +210,14 @@
     ></app-ta-special-filter>
 
     <!-- TIME FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showTimeFilter"
-        [type]="'timeFilter'"
-        [icon]="'ic_time'"
-        [filterTitle]="'Time Filter'"
-        [timeSubType]="'past'"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showTimeFilter) {
+        <app-ca-filter-time-dropdown
+            type="TimeFilter"
+            subType="past"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-time-dropdown>
+    }
 
     <!-- VACATION FILTER -->
     <app-ca-filter
@@ -253,184 +248,125 @@
     </app-ta-filter>
 
     <!-- PM FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showPMFilter"
-        [type]="'pmFilter'"
-        [icon]="'default_pm'"
-        [pmSubtype]="
-            options.toolbarActions.showTrailerPmFilter ? 'trailer' : 'truck'
-        "
-        [filterTitle]="'PM Filter'"
-        [noLeftIcon]="false"
-        [leftSideIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [class]="
-            options?.toolbarActions?.filtersOrder?.pm
-                ? 'order-' + options.toolbarActions.filtersOrder.pm
-                : ''
-        "
-        [pmFilterArray]="pmFilterArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showPMFilter) {
+        <app-ca-filter-list-dropdown
+            type="Pm"
+            [list]="pmFilterArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
-    <!-- CATEGORY REPAIR FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showCategoryRepairFilter"
-        [type]="'categoryRepairFilter'"
-        [icon]="'ic_key-repair'"
-        [filterTitle]="'Service Filter'"
-        [noLeftIcon]="false"
-        [leftSideIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [pmFilterArray]="categoryRepairArray"
-    >
-    </app-ca-filter>
+    <!-- PM FILTER -->
+    @if (options.toolbarActions.showCategoryRepairFilter) {
+        <app-ca-filter-list-dropdown
+            type="Service"
+            [list]="categoryRepairArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
     <!-- CATEGORY FUEL FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showCategoryFuelFilter"
-        [type]="'pmFilter'"
-        [icon]="'funnel'"
-        [filterTitle]="'Fuel Item Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [pmFilterArray]="categoryFuelArray"
-    >
-    </app-ca-filter>
-
-    <!-- DISPECHER FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showDispatcherFilter"
-        [type]="'dispatcherFilter'"
-        [icon]="'user'"
-        [searchState]="true"
-        [filterTitle]="'Dispatcher Filter'"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [unselectedUser]="unselectedDispatcher"
-    >
-    </app-ca-filter>
-
+    @if (options.toolbarActions.showCategoryFuelFilter) {
+        <app-ca-filter-list-dropdown
+            type="FuelItem"
+            [list]="categoryFuelArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
     <!-- STATUS FILTER -->
-    <app-ca-filter
-        *ngIf="
-            options.toolbarActions.showStatusFilter ||
-            options.toolbarActions.showStatusDispatchFilter
-        "
-        [type]="'statusFilter'"
-        [icon]="'broker-half-circle'"
-        [filterTitle]="'Status Filter'"
-        [noLeftIcon]="false"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isDispatchFilter]="options.toolbarActions.showStatusDispatchFilter"
-        [loadStatusOptionsArray]="loadStatusOptionsArray"
-    >
-    </app-ca-filter>
+    @if (
+        options.toolbarActions.showStatusFilter ||
+        options.toolbarActions.showStatusDispatchFilter
+    ) {
+        <app-ca-filter-list-dropdown
+            type="Status"
+            [list]="loadStatusOptionsArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
     <!-- PARKING FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showParkingFilter"
-        [type]="'parkingFilter'"
-        [icon]="'parking'"
-        [filterTitle]="'Parking Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [pmFilterArray]="loadParkingOptionsArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showParkingFilter) {
+        <app-ca-filter-list-dropdown
+            type="Parking"
+            [list]="loadParkingOptionsArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
     <!-- TRUCK TYPE FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showTruckTypeFilter"
-        [type]="'truckTypeFilter'"
-        [icon]="'truck'"
-        [filterTitle]="'Truck Type Filter'"
-        [noLeftIcon]="false"
-        [leftSideIcon]="true"
-        [largeLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [truckTypeArray]="truckTypeArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showTruckTypeFilter) {
+        <app-ca-filter-list-dropdown
+            type="TruckType"
+            [list]="truckTypeArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
     <!-- TRAILER TYPE FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showTrailerTypeFilter"
-        [type]="'trailerTypeFilter'"
-        [icon]="'trailer'"
-        [filterTitle]="'Trailer Type Filter'"
-        [noLeftIcon]="false"
-        [leftSideIcon]="true"
-        [largeLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [trailerTypeArray]="trailerTypeArray"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showTrailerTypeFilter) {
+        <app-ca-filter-list-dropdown
+            type="TrailerType"
+            [list]="trailerTypeArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
     <!-- TRUCK FILTER -->
-    <app-ca-filter
-        *ngIf="
-            options.toolbarActions.showTruckFilter ||
-            options.toolbarActions.showTruckPmFilter ||
-            options.toolbarActions.showTruckDispatchFilter
-        "
-        [type]="'truckTypeFilter'"
-        [icon]="'truck'"
-        [filterTitle]="'Truck Type Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isRepairFilter]="!!options.toolbarActions.showTruckPmFilter"
-        [isDispatchFilter]="options.toolbarActions.showTruckDispatchFilter"
-        [truckTypeArray]="truckTypeArray"
-    >
-    </app-ca-filter>
+    @if (
+        options.toolbarActions.showTruckFilter ||
+        options.toolbarActions.showTruckPmFilter ||
+        options.toolbarActions.showTruckDispatchFilter
+    ) {
+        <app-ca-filter-list-dropdown
+            type="TruckType"
+            [list]="truckTypeArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
     <!-- TRAILER FILTER -->
-    <app-ca-filter
-        *ngIf="
-            options.toolbarActions.showTrailerFilter ||
-            options.toolbarActions.showTrailerPmFilter ||
-            options.toolbarActions.showTrailerDispatchFilter
-        "
-        [type]="'trailerTypeFilter'"
-        [icon]="'trailer'"
-        [filterTitle]="'Trailer Type Filter'"
-        [noLeftIcon]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isRepairFilter]="options.toolbarActions.showTrailerPmFilter"
-        [isDispatchFilter]="options.toolbarActions.showTrailerDispatchFilter"
-        [trailerTypeArray]="trailerTypeArray"
-    >
-    </app-ca-filter>
+    @if (
+        options.toolbarActions.showTrailerFilter ||
+        options.toolbarActions.showTrailerPmFilter ||
+        options.toolbarActions.showTrailerDispatchFilter
+    ) {
+        <app-ca-filter-list-dropdown
+            type="TrailerType"
+            [list]="trailerTypeArray"
+            (setFilter)="onFilter($event)"
+        >
+        </app-ca-filter-list-dropdown>
+    }
 
     <!-- MONEY FILTER -->
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showMoneyFilter"
-        [type]="'moneyFilter'"
-        [icon]="'dollar'"
-        [filterTitle]="'Money Filter'"
-        [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
-        [isMoneyFilter]="true"
-        [isMilesFilter]="false"
-        [isFuelType]="!!options.toolbarActions.fuelMoneyFilter"
-        [isLoadType]="!!options.toolbarActions.loadMoneyFilter"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-        [isRepairFilter]="
-            options.toolbarActions.showTrailerPmFilter ||
-            options.toolbarActions.showTruckPmFilter
-        "
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showMoneyFilter) {
+        <app-ca-filter
+            [type]="'moneyFilter'"
+            [icon]="'dollar'"
+            [filterTitle]="'Money Filter'"
+            [subType]="options.toolbarActions.hideMoneySubType ? '' : 'all'"
+            [isMoneyFilter]="true"
+            [isMilesFilter]="false"
+            [isFuelType]="!!options.toolbarActions.fuelMoneyFilter"
+            [isLoadType]="!!options.toolbarActions.loadMoneyFilter"
+            (setFilter)="onFilter($event)"
+            (clearAll)="onFilter($event)"
+            [isRepairFilter]="
+                options.toolbarActions.showTrailerPmFilter ||
+                options.toolbarActions.showTruckPmFilter
+            "
+        >
+        </app-ca-filter>
+    }
 
     <!-- FILTER -->
     <ng-container *ngIf="options.toolbarActions.showLtlFilter">
@@ -438,7 +374,7 @@
             <div
                 class="no-filter ta-font-extra-bold d-flex justify-content-center align-items-center"
                 [ngClass]="{
-                    'active-options-filter': filterData.active
+                    'active-options-filter': filterData.active,
                 }"
                 (click)="changeFilterView(filterData.name)"
             >
@@ -506,13 +442,13 @@
         [selectedFilter]="this.activeTableData.dnuArray.selectedFilter"
     ></app-ta-special-filter>
 
-    <ng-container 
+    <ng-container
         *ngIf="
-            (options.toolbarActions.showBrokerFilter ||
-                options.toolbarActions.showRepairShop ||
-                options.toolbarActions.showBrokerFilterClosed ||
-                options.toolbarActions.showFuelPermanentlyClosed)
-            "
+            options.toolbarActions.showBrokerFilter ||
+            options.toolbarActions.showRepairShop ||
+            options.toolbarActions.showBrokerFilterClosed ||
+            options.toolbarActions.showFuelPermanentlyClosed
+        "
     >
         <app-ta-special-filter
             [type]="tableStringEnum.FUEL_STOP_FILTER_CLOSED"
@@ -524,7 +460,6 @@
             [selectedFilter]="activeTableData?.closedArray?.selectedFilter"
         ></app-ta-special-filter>
     </ng-container>
-    
 
     <ng-container
         *ngIf="options.toolbarActions.showIntegratedFuelTransactionsFilter"
@@ -547,8 +482,12 @@
             [filterTitle]="'Incomplete Transactions'"
             [dataArray]="activeTableData.data"
             [dataCount]="activeTableData.incompleteDataCount"
-            (setFilter)="onSpecialFilter($event, tableStringEnum.FUEL_INCOMPLETE_ARRAY)"
-            [selectedFilter]="activeTableData?.fuelIncompleteArray?.selectedFilter"
+            (setFilter)="
+                onSpecialFilter($event, tableStringEnum.FUEL_INCOMPLETE_ARRAY)
+            "
+            [selectedFilter]="
+                activeTableData?.fuelIncompleteArray?.selectedFilter
+            "
         ></app-ta-special-filter>
     }
 

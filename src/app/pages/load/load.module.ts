@@ -16,7 +16,17 @@ import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropd
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/ta-profile-images.component';
+import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
+import {
+    CaFilterComponent,
+    CaSearchMultipleStatesComponent,
+    CaFilterDropdownComponent,
+    CaFilterListDropdownComponent,
+    CaFilterTimeDropdownComponent
+} from 'ca-components';
+import { ToolbarTabsComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs/toolbar-tabs.component';
 import { CaDropdownMenuComponent } from 'ca-components';
+import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -27,8 +37,7 @@ import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // store
-import { StoreModule } from '@ngrx/store';
-import { loadReducer } from '@pages/load/state/reducers/load.reducer';
+import { StoreModule } from '@ngrx/store'; 
 import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/load-card-modal.reducer';
 
 @NgModule({
@@ -48,7 +57,15 @@ import { loadCardModalReducer } from '@pages/load/pages/load-card-modal/state/lo
         TaNoteComponent,
         TaAppTooltipV2Component,
         TaProfileImagesComponent,
+        NewTableToolbarComponent,
+        CaFilterComponent,
+        CaSearchMultipleStatesComponent,
+        ToolbarTabsComponent,
+        CaFilterDropdownComponent,
         CaDropdownMenuComponent,
+        ToolbarTabsWrapperComponent,
+        CaFilterListDropdownComponent,
+        CaFilterTimeDropdownComponent,
 
         // pipes
         FormatDatePipe,
