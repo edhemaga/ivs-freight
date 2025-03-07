@@ -174,7 +174,8 @@
                             isBlueText:
                                 repairBillItemRow.valid &&
                                 !isInputHoverRows[i][1] &&
-                                selectedTruckTrailerRepairPm[i],
+                                selectedTruckTrailerRepairPm[i] &&
+                                !isFuelTransactionTable,
                             blackInput:
                                 repairBillItemRow.get(
                                     !isFuelTransactionTable ? 'quantity' : 'qty'
@@ -206,7 +207,8 @@
                                 isBlueText:
                                     repairBillItemRow.valid &&
                                     !isInputHoverRows[i][2] &&
-                                    selectedTruckTrailerRepairPm[i],
+                                    selectedTruckTrailerRepairPm[i] &&
+                                    !isFuelTransactionTable,
                                 blackInput:
                                     repairBillItemRow.get('price').value &&
                                     !isInputHoverRows[i][2],
@@ -218,7 +220,9 @@
                         <div
                             class="subtotal d-flex justify-content-end"
                             [ngClass]="{
-                                valid: selectedTruckTrailerRepairPm[i],
+                                valid:
+                                    selectedTruckTrailerRepairPm[i] &&
+                                    !isFuelTransactionTable,
                             }"
                         >
                             <p class="m-0 ta-font-semi-bold">
