@@ -1,10 +1,4 @@
-import {
-    Component,
-    OnInit,
-    ViewChild,
-    OnDestroy,
-    ChangeDetectorRef,
-} from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -70,9 +64,13 @@ import {
 } from '@pages/fuel/pages/fuel-card-modal/state';
 
 // enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
-import { DropActionsStringEnum, DropdownMenuStringEnum } from '@shared/enums';
+import {
+    DropActionsStringEnum,
+    DropdownMenuStringEnum,
+    eCommonElements,
+    TableStringEnum,
+} from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
@@ -84,23 +82,14 @@ import {
 } from 'appcoretruckassist';
 import { FuelTransactionListResponse } from 'appcoretruckassist';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
-import { MapList } from '@pages/repair/pages/repair-table/models';
-import {
-    ICaMapProps,
-    IMapBoundsZoom,
-    IMapMarkers,
-    IMapSelectedMarkerData,
-    MapMarkerIconService,
-    SortColumn,
-} from 'ca-components';
-import { ShipperMapConfig } from '@pages/customer/pages/customer-table/utils/constants';
+import { MapMarkerIconService } from 'ca-components';
 import { MapsService } from '@shared/services/maps.service';
-import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/utils/helpers';
-import { MapMixin } from '@shared/mixins/map/map.mixin';
-import { FuelMapMixin } from './mixins/fuel-map.mixin';
+
+// mixins
+import { FuelMapMixin } from '@pages/fuel/pages/fuel-table/mixins/fuel-map.mixin';
 
 class ConcreteFuelDropdownMenuActionsBase extends FuelDropdownMenuActionsBase {
     destroy$: Subject<void>;
@@ -127,6 +116,7 @@ export class FuelTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
+    public commonElements = eCommonElements;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -359,17 +349,29 @@ export class FuelTableComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
+                    const { action } = res;
+
+                    if (action === TableStringEnum.DELETE) return;
+
                     const { template, type } = res;
 
                     if (template) {
+                        const shouldDeleteFuelStop = template
+                            ?.toLowerCase()
+                            ?.includes(TableStringEnum.STOP_LOWERCASE);
+                        const shouldDeleteFuelTransaction =
+                            template ===
+                                DropdownMenuStringEnum.FUEL_TRANSACTION ||
+                            (type === TableStringEnum.MULTIPLE_DELETE &&
+                                !shouldDeleteFuelStop);
                         const ids =
                             type === TableStringEnum.DELETE
                                 ? [res.id]
                                 : res.array;
 
-                        template.includes(TableStringEnum.TRANSACTION)
-                            ? this.deleteFuelTransactionList(ids)
-                            : this.deleteFuelStopList(ids);
+                        if (shouldDeleteFuelStop) this.deleteFuelStopList(ids);
+                        if (shouldDeleteFuelTransaction)
+                            this.deleteFuelTransactionList(ids);
                     }
                 },
             });
@@ -387,6 +389,10 @@ export class FuelTableComponent
                     fuelStopIds.forEach((id) => this.updateFuelStopStatus(id));
                 }
             });
+    }
+
+    public handleTableEmptyBtnClickEmit(): void {
+        this.openCreateModalBySelectedTab();
     }
 
     public updateFuelStopStatus(fuelStopId: number): void {
@@ -901,7 +907,7 @@ export class FuelTableComponent
 
     private getFuelTransactionDropdownContent(
         isAutomaticTransaction: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getFuelTransactionDropdownContent(
             isAutomaticTransaction
         );
@@ -911,7 +917,7 @@ export class FuelTableComponent
         isCentralised: boolean,
         isPinned: boolean,
         isOpenBusiness: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getFuelStopDropdownContent(
             isCentralised,
             isPinned,
@@ -921,15 +927,7 @@ export class FuelTableComponent
 
     public onToolBarAction(event: any): void {
         if (event.action === TableStringEnum.OPEN_MODAL) {
-            if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION) {
-                this.modalService.openModal(FuelPurchaseModalComponent, {
-                    size: TableStringEnum.SMALL,
-                });
-            } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
-                this.modalService.openModal(FuelStopModalComponent, {
-                    size: TableStringEnum.SMALL,
-                });
-            }
+            this.openCreateModalBySelectedTab();
         } else if (event.action === TableStringEnum.TAB_SELECTED) {
             const {
                 integratedFuelTransactionsCount,
@@ -1221,6 +1219,17 @@ export class FuelTableComponent
 
     public handleShowMoreAction(): void {
         this.fetchApiDataPaginated();
+    }
+
+    private openCreateModalBySelectedTab(): void {
+        if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION)
+            this.modalService.openModal(FuelPurchaseModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+        else if (this.selectedTab === TableStringEnum.FUEL_STOP)
+            this.modalService.openModal(FuelStopModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
     }
 
     ngOnDestroy(): void {

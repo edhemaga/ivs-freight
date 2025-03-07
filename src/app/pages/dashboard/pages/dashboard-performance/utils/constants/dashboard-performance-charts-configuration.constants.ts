@@ -1,15 +1,11 @@
-import {
-    ChartImagesStringEnum,
-    ChartTypesStringEnum,
-} from 'ca-components/lib/components/ca-chart/enums';
+import { eStringPlaceholder } from '@shared/enums';
+import { eChartTypesString } from 'ca-components/lib/components/ca-chart/enums';
 
-import {
-    IChartConfiguration,
-} from 'ca-components/lib/components/ca-chart/models';
+import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 
 export class DashboardPerformanceChartsConfiguration {
     public static LINE_CHART_PERFORMANCE_CONFIG: IChartConfiguration = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],
@@ -17,7 +13,7 @@ export class DashboardPerformanceChartsConfiguration {
         height: 350,
         width: 100,
         isMultiYAxis: true,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
         showXAxisLabels: false,
         showTooltipBackground: true,
@@ -25,21 +21,21 @@ export class DashboardPerformanceChartsConfiguration {
         isDatasetHoverEnabled: true,
         isTooltipItemInSelectedItems: true,
         showBottomLineOnLineChart: true,
-        isDashboardChart: true
+        isDashboardChart: true,
     };
     public static BAR_CHART_PERFORMANCE_CONFIG: IChartConfiguration = {
-        chartType: ChartTypesStringEnum.BAR,
+        chartType: eChartTypesString.BAR,
         chartData: {
             labels: [],
             datasets: [],
         },
         height: 100,
         width: 100,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_PAY,
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
-        showXAxisLabels: true, 
+        showXAxisLabels: true,
         showTooltipBackground: true,
         verticalyAlignBarChartWithLineCart: true,
-        isDashboardChart: true
+        isDashboardChart: true,
     };
 }

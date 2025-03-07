@@ -9,7 +9,7 @@ import { DashboardService } from '@pages/dashboard/services/dashboard.service';
 
 // enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
-import { ChartTypesStringEnum } from 'ca-components';
+import { eChartTypesString } from 'ca-components';
 
 // helpers
 import { DashboardHelper } from '@pages/dashboard/utils/helpers/dashboard.helper';
@@ -30,7 +30,6 @@ import { DashboardConstants } from '@pages/dashboard/utils/constants';
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
-import { ByStateColorsPallete } from '@pages/dashboard/models/colors-pallete.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import {
     IBaseDataset,
@@ -64,6 +63,22 @@ import { DashboardByStateSvgRoutes } from '@pages/dashboard/pages/dashboard-by-s
 export class DashboardByStateComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
+    //config
+    private byStatechartLables: string[] = [];
+    private initalByStateBarChartConfig: IChartConfiguration;
+    private byStateChartDatasetConfig =
+        DashboardByStateChartDatasetConfiguration.BY_STATE_CHART_DATASET_CONFIG;
+
+    // state
+    private selectedStatesOrder: Map<number, number> = new Map();
+
+    // list
+    private byStateListBeforeSearch: ByStateListItem[] = [];
+
+    // dropdowns
+    private selectedCustomPeriodRange: CustomPeriodRange;
+    private overallCompanyDuration: number;
+
     public byStateForm: UntypedFormGroup;
     public byStateTitle: string = DashboardStringEnum.PICKUP;
 
@@ -78,7 +93,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public byStateList: ByStateListItem[] = [];
     public selectedByStateList: ByStateListItem[] = [];
     public byStateMapList: MapListItem[] = [];
-    private byStateListBeforeSearch: ByStateListItem[] = [];
 
     public byStateListLength: number = 0;
 
@@ -99,9 +113,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     public selectedSubPeriod: DropdownListItem;
 
     public isDisplayingCustomPeriodRange: boolean = false;
-    private selectedCustomPeriodRange: CustomPeriodRange;
-
-    private overallCompanyDuration: number;
 
     public selectedDropdownWidthSubPeriod: DropdownListItem;
 
@@ -111,12 +122,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
     //chart
     public byStateBarChartConfig: IChartConfiguration =
         DashboardByStateChartsConfiguration.BY_STATE_CHART_CONFIG;
-
-    private byStateChartDatasetConfig =
-        DashboardByStateChartDatasetConfiguration.BY_STATE_CHART_DATASET_CONFIG;
-
     public byStateBarChartTitle: string = DashboardConstants.STRING_EMPTY;
-
     public intervalTooltipLabel: string[] = [];
 
     get topCategory(): string {
@@ -149,9 +155,6 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             subPeriod: [null],
         });
     }
-
-    public trackByIdentity = (_: number, item: DropdownItem): string =>
-        item.name;
 
     public resetSelectedValues(): void {
         this.selectedByStateList = [];
@@ -394,6 +397,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 (byStateItem) => byStateItem.id !== byStateListItem.id
             );
 
+            this.selectedStatesOrder.delete(byStateListItem.id);
+
+            if (!this.selectedByStateList.length)
+                this.byStateBarChartConfig = {
+                    ...this.initalByStateBarChartConfig,
+                };
+            else this.displaySelectedStatesInChart(this.selectedByStateList);
             return;
         }
 
@@ -401,10 +411,15 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
 
         byStateListItem.isSelected = true;
 
+        const order = this.selectedByStateList.length;
+        this.selectedStatesOrder.set(byStateListItem.id, order);
+
         this.selectedByStateList = [
             ...this.selectedByStateList,
             byStateListItem,
         ];
+
+        this.displaySelectedStatesInChart(this.selectedByStateList);
 
         this.byStateList.splice(byStateListItemIndex, 1);
         this.byStateList.splice(
@@ -412,6 +427,49 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             0,
             byStateListItem
         );
+    }
+
+    private displaySelectedStatesInChart(
+        selectedByStateList: ByStateListItem[]
+    ): void {
+        const propertyKey =
+            DashboardByStateConstants.BY_STATE_REPORT_TYPE_MAP[
+                this.currentActiveTab.name as ByStateReportType
+            ];
+
+        const extractedBarChartDatasets: IBaseDataset[] = [];
+
+        selectedByStateList.forEach((selectedStateItem) => {
+            const dataSetData: number[] = [];
+            selectedStateItem?.intervals.forEach((interval) => {
+                const value =
+                    interval[propertyKey as keyof ByStateIntervalResponse];
+
+                if (typeof value === 'number') dataSetData.push(value);
+            });
+            const order =
+                this.selectedStatesOrder.get(selectedStateItem.id) ?? 0;
+            const dataset = {
+                ...this.byStateChartDatasetConfig,
+                label: selectedStateItem.state,
+                data: dataSetData,
+                order,
+                backgroundColor: selectedStateItem.selectedColor,
+                hoverBackgroundColor: selectedStateItem.selectedColor,
+                borderColor: selectedStateItem.selectedColor,
+                hoverBorderColor: selectedStateItem.selectedColor,
+                fill: true,
+            };
+            extractedBarChartDatasets.push(dataset);
+        });
+
+        this.byStateBarChartConfig = {
+            ...this.byStateBarChartConfig,
+            chartData: {
+                labels: this.byStatechartLables,
+                datasets: extractedBarChartDatasets,
+            },
+        };
     }
 
     private getConstantData(): void {
@@ -525,7 +583,8 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         dataTransform: (
             response: ByStateResponse,
             index: number,
-            selectedTab: ByStateReportType
+            selectedTab: ByStateReportType,
+            intervals?: Array<ByStateIntervalResponse> | null
         ) => ByStateListItem
     ): void {
         this.isLoading = true;
@@ -538,15 +597,19 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
             .subscribe((responseData) => {
                 this.byStateList = responseData.pagination.data.map(
                     (response, index) =>
-                        dataTransform(response, index, selectedTab)
+                        dataTransform(
+                            response,
+                            index,
+                            selectedTab,
+                            response.intervals
+                        )
                 );
+
                 this.byStateListBeforeSearch = [...this.byStateList];
                 this.byStateListLength = responseData.pagination.count;
 
                 DashboardHelper.setByStateListColorRange(this.byStateList);
                 this.setMapByState(this.byStateList);
-
-                //TODO: Bogdan - chart implementation
 
                 this.byStateBarChartTitle = DashboardHelper.setChartDateTitle(
                     responseData.intervalLabels[0].tooltipLabel,
@@ -555,7 +618,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 );
                 this.setToolTipLables(responseData.intervalLabels);
 
-                const byStatechartLables = responseData.intervalLabels.map(
+                this.byStatechartLables = responseData.intervalLabels.map(
                     (item) => item.label || DashboardConstants.STRING_EMPTY
                 );
 
@@ -568,9 +631,13 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
                 this.byStateBarChartConfig = {
                     ...this.byStateBarChartConfig,
                     chartData: {
-                        labels: byStatechartLables,
+                        labels: this.byStatechartLables,
                         datasets: byStateBarChartData,
                     },
+                };
+
+                this.initalByStateBarChartConfig = {
+                    ...this.byStateBarChartConfig,
                 };
             });
     }
@@ -579,7 +646,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         topPicks: ByStateIntervalResponse[],
         otherPicks: ByStateIntervalResponse[],
         selectedTab: ByStateReportType
-    ): IBaseDataset[] { 
+    ): IBaseDataset[] {
         const topPicksDataset = {
             ...this.byStateChartDatasetConfig,
             label: this.topCategory,

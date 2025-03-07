@@ -3,13 +3,13 @@ import { IChartConfiguration } from '@ca-shared/components/ca-chart/models';
 
 //enums
 import {
-    ChartImagesStringEnum,
-    ChartTypesStringEnum,
+    eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 export class DashboardByStateChartsConfiguration {
     public static BY_STATE_CHART_CONFIG: IChartConfiguration = {
-        chartType: ChartTypesStringEnum.BAR,
+        chartType: eChartTypesString.BAR,
         chartData: {
             labels: [],
             datasets: [],
@@ -17,7 +17,7 @@ export class DashboardByStateChartsConfiguration {
         height: 260,
         width: 100,
         isMultiYAxis: false,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
         showXAxisLabels: true,
         isTooltipItemInSelectedItems: true,

@@ -403,19 +403,13 @@ export class SettingsParkingModalComponent
     private updateParking(id: number) {
         const { addressUnit, rent, ...form } = this.parkingForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-        }
-
         const newData: UpdateParkingCommand = {
             id: id,
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
@@ -458,26 +452,15 @@ export class SettingsParkingModalComponent
             });
     }
 
-    private getUpdatedAddress(
-        address: AddressEntity,
-        addressUnit: string
-    ): AddressEntity {
-        return {
-            ...address,
-            addressUnit: addressUnit,
-        };
-    }
-
     private addParking(addNew?: boolean) {
         const { addressUnit, rent, ...form } = this.parkingForm.value;
 
-        const updatedAddress = this.selectedAddress
-            ? this.getUpdatedAddress(this.selectedAddress, addressUnit)
-            : null;
-
         const newData: CreateParkingCommand = {
             ...form,
-            address: updatedAddress?.address ? updatedAddress : null,
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
                 ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,

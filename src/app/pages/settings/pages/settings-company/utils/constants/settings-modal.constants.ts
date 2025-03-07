@@ -4,6 +4,9 @@ import { Tabs } from '@shared/models/tabs.model';
 import { DropZoneConfig } from '@shared/components/ta-upload-files/models/dropzone-config.model';
 import { AnimationOptions } from '@shared/models/animation-options.model';
 
+// enums
+import { eDropZoneFileType } from 'ca-components';
+
 export class SettingsModalConstants {
     static TABS: Tabs[] = [
         {
@@ -108,7 +111,7 @@ export class SettingsModalConstants {
     };
 
     static DROPZONE_CONFIG: DropZoneConfig = {
-        dropZoneType: 'image',
+        dropZoneType: eDropZoneFileType.IMAGE,
         dropZoneAvailableFiles: 'image/gif, image/jpeg, image/jpg, image/png',
         dropZoneSvg: 'assets/svg/common/ic_image_dropzone.svg',
         multiple: false,

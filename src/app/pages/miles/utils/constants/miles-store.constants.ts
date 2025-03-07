@@ -1,0 +1,21 @@
+export class MilesStoreConstants {
+    static COMPONENT_NAME_KEY = '[Miles Table Component]';
+
+    public static LOAD_MILES_INITAL = `${this.COMPONENT_NAME_KEY} LOAD_MILES_INITAL`;
+    public static LOAD_MILES_SUCCESS = `${this.COMPONENT_NAME_KEY} LOAD_MILES_SUCCESS`;
+    public static LOAD_MILES_FAILURE = `${this.COMPONENT_NAME_KEY} LOAD_MILES_FAILURE`;
+    public static LOAD_MILES_RESET = `${this.COMPONENT_NAME_KEY} LOAD_MILES_RESET`;
+
+    public static MILES_TAB_CHANGE = `${this.COMPONENT_NAME_KEY} MILES_TAB_CHANGE`;
+
+    public static UPDATE_TRUCK_COUNTS = `${this.COMPONENT_NAME_KEY} UPADE_TRUCK_COUNTS`;
+
+    static ACTION_SET_ACTIVE_VIEW_MODE = `${this.COMPONENT_NAME_KEY} SET ACTIVE VIEW MODE`;
+
+    static ACTION_SET_FILTERS = `${this.COMPONENT_NAME_KEY} SET FILTERS`;
+
+    public static SET_STATES = `${this.COMPONENT_NAME_KEY} SET_STATES`;
+
+    public static ACTION_SELECT_ONE_ROW = `${this.COMPONENT_NAME_KEY} ACTION_SELECT_ONE_ROW`;
+    public static ACTION_SELECT_ALL_ROWS =  `${this.COMPONENT_NAME_KEY} ACTION_SELECT_ALL_ROWS`;
+}

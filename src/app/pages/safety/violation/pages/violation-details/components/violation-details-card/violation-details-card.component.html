@@ -4,15 +4,10 @@
         [tooltipNext]="'Next Violation'"
         [tooltipPrevious]="'Previous Violation'"
         [searchInputName]="'Search Violation'"
-        [lastEdit]="'3 days ago'"
         [options]="violationDropdown"
         (selectValue)="onSelectViolation($event)"
         (changeEvent)="onChangeViolation($event)"
     >
-        <!-- 
-    (selectValue)="onSelectedTruck($event)"
-    (changeEvent)="onChangeTruck($event)" -->
-
         <div class="violation-template-data">
             <span
                 tooltipBackground="#3C3C3C"
@@ -118,7 +113,7 @@
                     </div>
                     <div class="violation-card-items">
                         <span class="name">Badge No.</span>
-                        <app-ta-copy 
+                        <app-ta-copy
                             [copyValue]="violationCardData?.badgeNo"
                             [textColor]="'#2f2f2f'"
                         >
@@ -142,9 +137,9 @@
                             class="driver"
                             src="assets/svg/common/ic_phone.svg"
                         ></svg-icon>
-                        <app-ta-copy 
+                        <app-ta-copy
                             [copyValue]="violationCardData?.phone"
-                            [textColor]="'#2f2f2f'"    
+                            [textColor]="'#2f2f2f'"
                         ></app-ta-copy>
                     </div>
                     <div class="violation-driver-item">
@@ -152,9 +147,9 @@
                             class="driver"
                             src="assets/svg/common/ic_fax.svg"
                         ></svg-icon>
-                        <app-ta-copy 
+                        <app-ta-copy
                             [copyValue]="'(123) 333-1344'"
-                            [textColor]="'#2f2f2f'"    
+                            [textColor]="'#2f2f2f'"
                         ></app-ta-copy>
                     </div>
                 </div>
@@ -254,7 +249,8 @@
                         <span
                             class="value-police"
                             [ngClass]="{
-                                'cross-out': !violationCardData?.alcContSubCheck
+                                'cross-out':
+                                    !violationCardData?.alcContSubCheck,
                             }"
                             >Alc/Cont. Sub. Check</span
                         >
@@ -272,7 +268,7 @@
                             class="value-police"
                             [ngClass]="{
                                 'cross-out':
-                                    !violationCardData?.condByLocalJuris
+                                    !violationCardData?.condByLocalJuris,
                             }"
                             >Cond. by Local Juris.</span
                         >
@@ -291,7 +287,7 @@
                             class="value-police"
                             [ngClass]="{
                                 'cross-out':
-                                    !violationCardData?.sizeAndWeightEnf
+                                    !violationCardData?.sizeAndWeightEnf,
                             }"
                             >Size & Weight Enf.</span
                         >
@@ -309,7 +305,7 @@
                             class="value-police"
                             [ngClass]="{
                                 'cross-out':
-                                    !violationCardData?.eScreenInspection
+                                    !violationCardData?.eScreenInspection,
                             }"
                             >eScreen Inspection</span
                         >
@@ -327,7 +323,7 @@
                             class="value-police"
                             [ngClass]="{
                                 'cross-out':
-                                    !violationCardData?.trafficEnforcment
+                                    !violationCardData?.trafficEnforcment,
                             }"
                             >Traffic Enforcement</span
                         >
@@ -346,7 +342,7 @@
                             class="value-police"
                             [ngClass]="{
                                 'cross-out':
-                                    !violationCardData?.pasaConditionInsp
+                                    !violationCardData?.pasaConditionInsp,
                             }"
                             >PASA Cond. Insp.</span
                         >
@@ -365,7 +361,7 @@
                             class="value-police"
                             [ngClass]="{
                                 'cross-out':
-                                    !violationCardData?.drugInterdSearch
+                                    !violationCardData?.drugInterdSearch,
                             }"
                             >Drug Interd. Search</span
                         >
@@ -383,7 +379,7 @@
                             class="value-police"
                             [ngClass]="{
                                 'cross-out':
-                                    !violationCardData?.borderEnfInspection
+                                    !violationCardData?.borderEnfInspection,
                             }"
                             >Border Enf. Insp.</span
                         >
@@ -402,7 +398,7 @@
                             class="value-police"
                             [ngClass]="{
                                 'cross-out':
-                                    !violationCardData?.postCrashInspection
+                                    !violationCardData?.postCrashInspection,
                             }"
                             >Post Crash Insp.</span
                         >
@@ -419,7 +415,7 @@
                         <span
                             class="value-police"
                             [ngClass]="{
-                                'cross-out': !violationCardData?.pbbtInspection
+                                'cross-out': !violationCardData?.pbbtInspection,
                             }"
                             >PBBT Inspection</span
                         >

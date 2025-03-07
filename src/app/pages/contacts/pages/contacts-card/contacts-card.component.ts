@@ -20,7 +20,7 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { CompanyContactResponse } from 'appcoretruckassist';
 
 @Component({
@@ -94,7 +94,7 @@ export class ContactsCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: CompanyContactResponse
     ): void {
         const { type } = action;

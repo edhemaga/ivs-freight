@@ -51,8 +51,6 @@
                         <app-ca-input-dropdown
                             formControlName="truckTypeId"
                             [template]="'svgtext-template'"
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -63,8 +61,10 @@
                                     withText: true,
                                     svg: true,
                                     image: false,
-                                    iconsPath: 'assets/svg/common/trucks/',
-                                    activeItemIconKey: 'logoName',
+                                    url:
+                                        selectedTruckType?.logoName &&
+                                        'assets/svg/common/trucks/' +
+                                            selectedTruckType?.logoName,
                                     template: 'truck',
                                     class: selectedTruckType?.name
                                         ?.trim()
@@ -86,8 +86,6 @@
                         <ng-container *ngIf="isLengthRequired">
                             <app-ca-input-dropdown
                                 formControlName="truckLengthId"
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 [inputConfig]="{
                                     name: 'Input Dropdown',
                                     type: 'text',
@@ -126,8 +124,6 @@
                         <app-ca-input-dropdown
                             formControlName="truckMakeId"
                             [template]="'svg-template'"
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -138,8 +134,7 @@
                                     withText: false,
                                     svg: true,
                                     image: false,
-                                    iconsPath: '',
-                                    activeItemIconKey: 'logoName',
+                                    url: selectedTruckMake?.logoName,
                                     class: 'truck-make',
                                 },
                                 dropdownWidthClass: 'w-col-156',
@@ -167,8 +162,6 @@
                         <app-ca-input-dropdown
                             formControlName="colorId"
                             [template]="'svgtext-template'"
-                            [label]="'name'"
-                            [optionValue]="'id'"
                             [inputConfig]="{
                                 name: 'Input Dropdown',
                                 type: 'text',
@@ -178,9 +171,11 @@
                                     withText: true,
                                     svg: true,
                                     image: false,
-                                    iconsPath: 'ic_color.svg',
-                                    activeItemIconKey: '',
+                                    url: selectedColor?.code
+                                        ? 'ic_color.svg'
+                                        : null,
                                     template: 'color',
+                                    color: selectedColor?.code,
                                 },
                                 dropdownWidthClass: 'w-col-148',
                             }"
@@ -216,8 +211,6 @@
                                 <div class="col-12">
                                     <app-ca-input-dropdown
                                         formControlName="ownerId"
-                                        [label]="'name'"
-                                        [optionValue]="'id'"
                                         [inputConfig]="{
                                             name: 'Input Dropdown',
                                             type: 'text',

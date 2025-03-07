@@ -1,11 +1,11 @@
 import {
     ChartImagesStringEnum,
-    ChartTypesStringEnum,
+    eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
 
 export class DriverDetailsChartsConfiguration {
     static PAYROLL_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],
@@ -16,6 +16,6 @@ export class DriverDetailsChartsConfiguration {
         chartOptions: {},
         showTooltipBackground: false,
         showXAxisLabels: true,
-        hasVerticalDashedAnnotation: true
+        hasVerticalDashedAnnotation: true,
     };
 }

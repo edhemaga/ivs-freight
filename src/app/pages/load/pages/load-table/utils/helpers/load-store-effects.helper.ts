@@ -4,6 +4,7 @@ import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.comp
 // enums
 import { TableStringEnum } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -12,26 +13,19 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 // models
 import {
     DispatcherFilterResponse,
-    LoadModalResponse,
-    LoadPossibleStatusesResponse,
-    LoadResponse,
-    LoadTemplateResponse,
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
 
 export class LoadStoreEffectsHelper {
     public static getCreateLoadModalData(
-        modalService: ModalService,
-        loadModalData: LoadModalResponse
+        modalService: ModalService
     ): void {
         modalService.openModal(
             LoadModalComponent,
             { size: TableStringEnum.LOAD },
             {
-                loadModalData: {
-                    ...loadModalData,
-                },
+                type: LoadModalStringEnum.CREATE
             }
         );
     }
@@ -39,22 +33,11 @@ export class LoadStoreEffectsHelper {
     public static getLoadOrTemplateByIdEditModal(
         modalService: ModalService,
         selectedTab: eLoadStatusType,
-        eventType: string,
-        response: LoadResponse | LoadTemplateResponse,
-        statusDropdownResponse: LoadPossibleStatusesResponse,
-        modalResponse: LoadModalResponse
+        eventType: string
     ): void {
         const editData = {
-            data: {
-                ...response,
-            },
-            statusDropdownData: {
-                ...statusDropdownResponse,
-            },
-            loadModalData: {
-                ...modalResponse,
-            },
             type: eventType,
+            eventType: eventType,
             selectedTab: eLoadStatusType[selectedTab]?.toLowerCase(),
         };
 
@@ -72,16 +55,8 @@ export class LoadStoreEffectsHelper {
         modalService: ModalService,
         selectedTab: eLoadStatusType,
         eventType: string,
-        response: LoadResponse | LoadTemplateResponse,
-        modalResponse: LoadModalResponse
     ): void {
         const editData = {
-            data: {
-                ...response,
-            },
-            loadModalData: {
-                ...modalResponse,
-            },
             type: eventType,
             selectedTab: eLoadStatusType[selectedTab]?.toLowerCase(),
         };
@@ -102,23 +77,6 @@ export class LoadStoreEffectsHelper {
         );
     }
 
-    public static getLoadStatusFilter(tableService: TruckassistTableService, dispatcherFilterResponse: DispatcherFilterResponse[], selectedTab: eLoadStatusType ): void {
-        const _options = dispatcherFilterResponse.map(_ => {
-            return {
-                ..._,
-                isSelected: false
-            }
-        });
-        const filterOptionsData = {
-            selectedTab: eLoadStatusType[selectedTab],
-            options: [..._options]
-        };
-
-        tableService.sendLoadStatusFilter(
-            filterOptionsData
-        );
-    }
-
     public static composeUpdateLoadStatusCommand(param: ConfirmationActivation): UpdateLoadStatusCommand {
         const { data, newLocation, id } = (param as any) || {};
         const { nameBack } = data || {};
@@ -134,5 +92,22 @@ export class LoadStoreEffectsHelper {
         };
 
         return result;
+    }
+
+    public static getLoadStatusFilter(tableService: TruckassistTableService, dispatcherFilterResponse: DispatcherFilterResponse[], selectedTab: eLoadStatusType ): void {
+        const _options = dispatcherFilterResponse.map(_ => {
+            return {
+                ..._,
+                isSelected: false
+            }
+        });
+        const filterOptionsData = {
+            selectedTab: eLoadStatusType[selectedTab],
+            options: [..._options]
+        };
+
+        tableService.sendLoadStatusFilter(
+            filterOptionsData
+        );
     }
 }

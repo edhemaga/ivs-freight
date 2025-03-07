@@ -69,6 +69,7 @@ import { DispatchTableColumnWidthsPipe } from '@pages/dispatch/pages/dispatch/co
 
 // directives
 import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives';
+import { DispatchConfigPipe } from './pages/dispatch/components/dispatch-table/pipes/dispatch-config.pipe';
 
 @NgModule({
     declarations: [
@@ -119,6 +120,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchTableHeaderShowPipe,
         DriverEndorsementsPipe,
         DispatchColorFinderPipe,
+        DispatchConfigPipe,
 
         //directives
         ResizableDirective,

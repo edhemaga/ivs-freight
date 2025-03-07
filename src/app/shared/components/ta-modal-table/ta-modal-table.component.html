@@ -1,4 +1,4 @@
-<div class="modal-table-container">
+<div class="modal-table-container" [formGroup]="modalTableForm">
     <!-- Table Header -->
 
     <div
@@ -40,17 +40,15 @@
                 }"
             >
                 @switch (headerItem) {
-                    @case (modalTableTypeEnum.CHECKBOX) {
-                        <svg-icon
-                            [src]="svgRoutes.checkmarkicon"
-                            [svgStyle]="{
-                                'width.px': 14,
-                                'height.px': 14,
-                            }"
-                        ></svg-icon>
+                    @case (taModalTableStringEnum.CHECKBOX) {
+                        <app-ta-checkbox
+                            formControlName="checkBoxHeaderItem"
+                            class="modal-table-checkbox"
+                            (formArrayAction)="onSelectAll($event)"
+                        ></app-ta-checkbox>
                     }
 
-                    @case (modalTableTypeEnum.SORT) {
+                    @case (taModalTableStringEnum.SORT) {
                         <svg-icon
                             [src]="svgRoutes.sortIcon"
                             [svgStyle]="{

@@ -21,6 +21,7 @@ import {
 } from 'ca-components';
 import { FuelCardComponent } from '@pages/fuel/pages/fuel-card/fuel-card.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 
 // store
 import { fuelCardModalReducer } from '@pages/fuel/pages/fuel-card-modal/state';
@@ -59,6 +60,7 @@ import {
         CaProfileImageComponent,
         CaProgressRangeComponent,
         CaMapComponent,
+        TaTableEmptyComponent,
 
         // pipes
         FormatDatePipe,

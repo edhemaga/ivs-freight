@@ -43,8 +43,6 @@ export class TrailerModalConfig {
                 withText: true,
                 svg: true,
                 image: false,
-                iconsPath: 'assets/ca-components/svg/common/trailers/',
-                activeItemIconKey: 'logoName',
                 url:
                     options.selectedTrailerType?.logoName &&
                     'assets/svg/common/trailers/' +
@@ -98,8 +96,6 @@ export class TrailerModalConfig {
                 withText: false,
                 svg: true,
                 image: false,
-                iconsPath: '',
-                activeItemIconKey: 'logoName',
                 url: options.selectedTrailerMake?.logoName,
                 class: 'trailer-make',
             },
@@ -127,8 +123,7 @@ export class TrailerModalConfig {
                 withText: true,
                 svg: true,
                 image: false,
-                iconsPath: 'ic_color.svg',
-                activeItemIconKey: '',
+                url: options.selectedColor?.code ? 'ic_color.svg' : null,
                 template: 'color',
             },
             dropdownWidthClass: 'w-col-164',

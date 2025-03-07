@@ -230,6 +230,7 @@ model/brokerPaymentHistoryChartResponse.ts
 model/brokerPaymentHistoryResponse.ts
 model/brokerResponse.ts
 model/brokerResponsePagination.ts
+model/brokerShipperContact.ts
 model/brokerShortMobileResponse.ts
 model/brokerShortResponse.ts
 model/byStateReportType.ts
@@ -530,12 +531,17 @@ model/fuelStopFranchiseResponse.ts
 model/fuelStopFranchiseResponsePagination.ts
 model/fuelStopIntervalResponse.ts
 model/fuelStopListResponse.ts
+model/fuelStopMinimalListResponse.ts
+model/fuelStopMinimalResponse.ts
+model/fuelStopMinimalResponsePagination.ts
 model/fuelStopResponse.ts
 model/fuelStopResponsePagination.ts
 model/fuelStopShortResponse.ts
+model/fuelStopSortBy.ts
 model/fuelTransactionListResponse.ts
 model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
+model/fuelTransactionSortBy.ts
 model/fuelType.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
@@ -662,8 +668,11 @@ model/loadStopCommand.ts
 model/loadStopInfo.ts
 model/loadStopItemAutocompleteDescriptionResponse.ts
 model/loadStopItemCommand.ts
+model/loadStopItemMobileResponse.ts
 model/loadStopItemResponse.ts
 model/loadStopLoadListResponse.ts
+model/loadStopMobileByLoadIdResponse.ts
+model/loadStopMobileListResponse.ts
 model/loadStopMobileResponse.ts
 model/loadStopMobileShortResponse.ts
 model/loadStopProgressBarMobileResponse.ts
@@ -947,6 +956,7 @@ model/shipperAverageWaitingTimeResponse.ts
 model/shipperContactCommand.ts
 model/shipperContactGroupResponse.ts
 model/shipperContactResponse.ts
+model/shipperContactShortMobileResponse.ts
 model/shipperContactShortResponse.ts
 model/shipperIntervalResponse.ts
 model/shipperListResponse.ts
@@ -1046,6 +1056,8 @@ model/trailerMinimalListResponse.ts
 model/trailerMinimalMobileResponse.ts
 model/trailerMinimalResponse.ts
 model/trailerMinimalResponsePagination.ts
+model/trailerModelListResponse.ts
+model/trailerModelResponse.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
@@ -1076,6 +1088,8 @@ model/truckMinimalListResponse.ts
 model/truckMinimalMobileResponse.ts
 model/truckMinimalResponse.ts
 model/truckMinimalResponsePagination.ts
+model/truckModelListResponse.ts
+model/truckModelResponse.ts
 model/truckPerformanceResponse.ts
 model/truckResponse.ts
 model/truckRevenueChartResponse.ts

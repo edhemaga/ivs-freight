@@ -20,6 +20,7 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaInputArrowsComponent } from '@shared/components/ta-input-arrows/ta-input-arrows.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -45,6 +46,7 @@ import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-add
         TaInputArrowsComponent,
         TaInputComponent,
         TaInputAddressDropdownComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class ApplicantSphFormModule {}

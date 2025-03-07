@@ -189,8 +189,6 @@ export class SettingsOfficeModalComponent
     public phoneExtConfig: ITaInput =
         SettingsOfficeConfig.getPhoneExtInputConfig();
     public emailConfig: ITaInput = SettingsOfficeConfig.getEmailInputConfig();
-    public addressConfig: ITaInput =
-        SettingsOfficeConfig.getAddressInputConfig();
     public addressUnitConfig: ITaInput =
         SettingsOfficeConfig.getAddressUnitInputConfig();
     public payPeriodConfig: ITaInput =
@@ -383,7 +381,10 @@ export class SettingsOfficeModalComponent
         const updatedOffice: UpdateCompanyOfficeCommand = {
             id,
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -407,13 +408,17 @@ export class SettingsOfficeModalComponent
     }
 
     private addCompanyOffice(addNew?: boolean): void {
-        const { addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { addressUnit, rent, ...formValues } =
+            this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -524,7 +529,7 @@ export class SettingsOfficeModalComponent
                     this.officeForm.patchValue({
                         isOwner: res.isOwner,
                         name: res.name,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         phone: res.phone,
                         extensionPhone: res.extensionPhone,

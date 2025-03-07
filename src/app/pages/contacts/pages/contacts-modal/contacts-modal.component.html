@@ -61,11 +61,11 @@
                         formControlName="address"
                         [inputConfig]="contactModalConfig.ADDRESS_INPUT_CONFIG"
                         [placeholderType]="'longAddress'"
-                        [activeAddress]="selectedAddress"
                         (selectedAddress)="onHandleAddress($event)"
                         [receivedAddressList]="addressList"
                         [receivedAddressData]="addressData"
                         (selectedAddress)="onHandleAddress($event)"
+                        [activeAddress]="selectedAddress"
                         (sentAddressData)="
                             onAddressChange($event)
                         "

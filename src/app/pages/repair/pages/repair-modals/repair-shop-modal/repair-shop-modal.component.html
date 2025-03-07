@@ -113,15 +113,24 @@
                                 ></app-ca-input>
                             </div>
                         </div>
-
                         <div class="row last-row repair-shop-address d-grid">
                             <div>
                                 <app-ca-input-address-dropdown
                                     (selectedAddress)="
                                         onAddressChangeInit($event)
                                     "
+                                    [inputConfig]="{
+                                        name: 'Address',
+                                        type: 'text',
+                                        label: 'Address, City, State Zip',
+                                        isRequired: true,
+                                        placeholderIcon: 'address',
+                                        textTransform: 'capitalize',
+                                        dropdownWidthClass: 'w-col-376',
+                                        minLength: 6,
+                                        maxLength: 256
+                                    }"
                                     [activeAddress]="selectedAddress"
-                                    [inputConfig]="addressInputConfig"
                                     [placeholderType]="'longAddress'"
                                     [formControlName]="
                                         RepairShopModalStringEnum.ADDRESS

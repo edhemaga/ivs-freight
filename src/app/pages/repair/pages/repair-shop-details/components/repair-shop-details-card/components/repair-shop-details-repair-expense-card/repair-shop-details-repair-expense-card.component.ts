@@ -14,16 +14,28 @@ import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-deta
 // services
 import { RepairService } from '@shared/services/repair.service';
 
+// helpers
+import { ChartHelper } from '@shared/utils/helpers';
+
 // constants
 import {
     RepairExpenseCartConstants,
     RepairShopChartsConfiguration,
 } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/utils/constants';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration,
+} from '@shared/utils/constants';
 
 // models
-import { RepairShopResponse } from 'appcoretruckassist';
+import {
+    RepairShopExpensesResponse,
+    RepairShopResponse,
+} from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { ChartLegendProperty } from '@shared/models';
 
 @Component({
     selector: 'app-repair-shop-details-repair-expense-card',
@@ -58,10 +70,13 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
     public currentShopId: number;
 
-    public chartTabs: Tabs[];
-
-    public repairShopChartConfig: IChartConfiguration =
-        RepairShopChartsConfiguration.REPAIR_CHART_CONFIG;
+    // Chart
+    public repairShopChartData!: RepairShopExpensesResponse;
+    public repairShopChartConfig: IChartConfiguration;
+    public repairShopExpensesChartLegendData!: ChartLegendProperty[];
+    public repairShopExpensesChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public repairShopExpensesLegendTitle!: string;
+    public repairShopExpensesLegendHighlightedBackground!: boolean;
 
     constructor(
         private repairService: RepairService,
@@ -74,8 +89,6 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.repairCall = RepairExpenseCartConstants.REPAIR_CALL;
 
         this.monthList = RepairExpenseCartConstants.MONTH_LIST;
-
-        this.chartTabs = RepairExpenseCartConstants.CHART_TABS;
     }
 
     public createRepairExpenseCardData(data: RepairShopResponse): void {
@@ -83,61 +96,108 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
 
         this.getConstantData();
 
-        this.getRepairShopChartData(
-            this._cardData?.id,
-            this.repairCall.chartType,
-            false
-        );
+        this.getRepairShopChartData(this._cardData?.id, 1);
     }
 
-    public getRepairShopChartData(
-        id: number,
-        chartType: number,
-        hideAnimation?: boolean
-    ): boolean {
-        if (
-            id != this.repairCall.id ||
-            chartType != this.repairCall.chartType
-        ) {
-            this.repairCall.id = id;
-            this.repairCall.chartType = chartType;
-        } else {
-            return false;
-        }
-
+    public getRepairShopChartData(id: number, timeFilter?: number): void {
         this.repairService
-            .getRepairShopChart(id, chartType)
+            .getRepairShopChart(id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                let milesPerGallon = [],
-                    costPerGallon = [],
-                    labels = [],
-                    maxValue = 0,
-                    maxValue2 = 0;
+            .subscribe(
+                (item: RepairShopExpensesResponse) => {
+                    if (
+                        timeFilter &&
+                        this.repairShopExpensesChartTabs[timeFilter - 1]
+                    )
+                        this.repairShopExpensesChartTabs[
+                            timeFilter - 1
+                        ].checked = true;
+                    this.repairShopExpensesLegendHighlightedBackground = false;
 
-                item.repairShopExpensesChartResponse.forEach((data) => {
-                    milesPerGallon.push(data.repair);
-                    costPerGallon.push(data.repairCost);
+                    this.repairShopChartData = item;
 
-                    if (data.repair > maxValue)
-                        maxValue = data.repair + (data.repair * 7) / 100;
+                    this.repairShopChartConfig = {
+                        ...RepairShopChartsConfiguration.REPAIR_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<RepairShopExpensesResponse>(
+                                this.repairShopChartData
+                                    .repairShopExpensesChartResponse,
+                                ChartConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
 
-                    if (data.repairCost > maxValue2)
-                        maxValue2 =
-                            data.repairCost + (data.repairCost * 7) / 100;
+                    this.repairShopExpensesChartLegendData = [
+                        ...ChartLegendConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION(
+                            this.repairShopChartData
+                        ),
+                    ];
+                    let milesPerGallon = [],
+                        costPerGallon = [],
+                        labels = [],
+                        maxValue = 0,
+                        maxValue2 = 0;
 
-                    if (data.day) {
-                        labels.push([data.day, this.monthList[data.month - 1]]);
-                    } else {
-                        labels.push([this.monthList[data.month - 1]]);
-                    }
-                });
-            });
+                    item?.repairShopExpensesChartResponse?.forEach((data) => {
+                        milesPerGallon.push(data.repair);
+                        costPerGallon.push(data.repairCost);
+
+                        if (data.repair > maxValue)
+                            maxValue = data.repair + (data.repair * 7) / 100;
+
+                        if (data.repairCost > maxValue2)
+                            maxValue2 =
+                                data.repairCost + (data.repairCost * 7) / 100;
+
+                        if (data.day)
+                            labels.push([
+                                data.day,
+                                this.monthList[data.month - 1],
+                            ]);
+                        else labels.push([this.monthList[data.month - 1]]);
+                    });
+                },
+                () => {
+                    this.repairShopChartConfig = {
+                        ...RepairShopChartsConfiguration.REPAIR_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
 
         this.cdRef.detectChanges();
     }
 
-    public onTabChange(tab: Tabs): void { }
+    public setRepairShopExpensesLegendOnHover(index: number): void {
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.repairShopChartConfig.chartData.labels
+        );
+
+        this.repairShopExpensesLegendHighlightedBackground =
+            hasHighlightedBackground;
+        this.repairShopExpensesLegendTitle = title;
+
+        const dataForLegend =
+            isNaN(index) || index < 0
+                ? this.repairShopChartData
+                : this.repairShopChartData?.repairShopExpensesChartResponse[
+                      index
+                  ];
+
+        this.repairShopExpensesChartLegendData = [
+            ...ChartLegendConfiguration.REPAIR_SHOP_EXPENSES_CONFIGURATION(
+                dataForLegend
+            ),
+        ];
+    }
+
+    public onTabChange(tab: TabOptions): void {
+        this.getRepairShopChartData(this._cardData?.id, tab.id);
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();

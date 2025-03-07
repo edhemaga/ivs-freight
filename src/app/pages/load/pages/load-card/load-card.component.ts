@@ -29,7 +29,7 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // pipes
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
@@ -134,7 +134,7 @@ export class LoadCardComponent
     }
 
     public handleToggleDropdownMenuActions<T>(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: T
     ): void {
         const { type } = action;

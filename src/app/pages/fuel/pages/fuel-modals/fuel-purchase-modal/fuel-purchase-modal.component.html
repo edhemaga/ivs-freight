@@ -85,12 +85,15 @@
                         {
                             configType: 'truckInputConfig',
                             selectedTruckType,
-                            trailerId: fuelForm.get(fuelValuesStringEnum.TRAILER_ID).value,
+                            trailerId: fuelForm.get(
+                                fuelValuesStringEnum.TRAILER_ID
+                            ).value,
                         } | fuelPurchaseModalInputConfig
                     "
                     [options]="truckType"
-                    [activeItem]="selectedTruckType"
-                    (selectedItem)="onSelectDropDown($event, fuelValuesStringEnum.TRUCK)"
+                    (selectedItem)="
+                        onSelectDropDown($event, fuelValuesStringEnum.TRUCK)
+                    "
                 ></app-ca-input-dropdown>
 
                 @if (fuelForm.get(fuelValuesStringEnum.TRAILER_ID).value) {
@@ -108,13 +111,13 @@
                 }
 
                 @if (
-                    modalActionType === fuelDataOptionsStringEnum.ADD || 
-                    fuelTransactionType?.id === eFuelTransactionType.Manual || 
-                    (
-                        fuelTransactionType?.id !== eFuelTransactionType.Manual && 
-                        fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)?.value &&
-                        !fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)?.dirty
-                    )
+                    modalActionType === fuelDataOptionsStringEnum.ADD ||
+                    fuelTransactionType?.id === eFuelTransactionType.Manual ||
+                    (fuelTransactionType?.id !== eFuelTransactionType.Manual &&
+                        fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)
+                            ?.value &&
+                        !fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)
+                            ?.dirty)
                 ) {
                     <app-ca-input
                         formControlName="driverFullName"
@@ -131,7 +134,7 @@
                             {
                                 configType: 'driverDropdownInputConfig',
                                 selectedDriver,
-                                fuelCardHolderName
+                                fuelCardHolderName,
                             } | fuelPurchaseModalInputConfig
                         "
                         [options]="driverOptions"
@@ -218,7 +221,9 @@
                                         (click)="
                                             selectedFuelStop = null;
                                             fuelForm
-                                                .get(fuelValuesStringEnum.FUEL_STOP_STORE_ID)
+                                                .get(
+                                                    fuelValuesStringEnum.FUEL_STOP_STORE_ID
+                                                )
                                                 .patchValue(null)
                                         "
                                     >
@@ -271,7 +276,10 @@
                     fuelItems?.length
                 "
                 (onActionEvent)="addFuelItem()"
-                [disableMultipleReviews]="modalActionType === fuelDataOptionsStringEnum.EDIT && fuelTransactionType?.id !== eFuelTransactionType.Manual"
+                [disableMultipleReviews]="
+                    modalActionType === fuelDataOptionsStringEnum.EDIT &&
+                    fuelTransactionType?.id !== eFuelTransactionType.Manual
+                "
             >
                 <app-ta-modal-table
                     [tableType]="modalTableTypeEnum.REPAIR_BILL"
@@ -366,9 +374,13 @@
     <div class="modal-footer modal-footer-payroll">
         <div class="divider"></div>
         @if (editData?.type === 'edit') {
-            <div 
+            <div
                 class="d-flex w-full"
-                [ngClass]="fuelTransactionType?.id === eFuelTransactionType.Manual ? 'justify-content-between' : 'justify-content-end'"
+                [ngClass]="
+                    fuelTransactionType?.id === eFuelTransactionType.Manual
+                        ? 'justify-content-between'
+                        : 'justify-content-end'
+                "
             >
                 @if (fuelTransactionType?.id === eFuelTransactionType.Manual) {
                     <button
@@ -378,14 +390,12 @@
                         Delete
                     </button>
                 }
-                
+
                 <button
                     class="modal-save-btn ta-font-bold"
                     (click)="onModalAction(taModalActionEnum.SAVE)"
                     [class.valid]="
-                        fuelForm.valid &&
-                        fuelItems.length &&
-                        isEachFuelRowValid
+                        fuelForm.valid && fuelItems.length && isEachFuelRowValid
                     "
                 >
                     Save Changes
@@ -395,9 +405,7 @@
             <button
                 class="ta-font-bold modal-save-btn modal-save-btn-add-new mr-12"
                 [class.valid]="
-                    fuelForm.valid &&
-                    fuelItems.length &&
-                    isEachFuelRowValid
+                    fuelForm.valid && fuelItems.length && isEachFuelRowValid
                 "
                 (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
             >
@@ -407,9 +415,7 @@
                 class="modal-save-btn ta-font-bold"
                 (click)="onModalAction(taModalActionEnum.SAVE)"
                 [class.valid]="
-                    fuelForm.valid &&
-                    fuelItems.length &&
-                    isEachFuelRowValid
+                    fuelForm.valid && fuelItems.length && isEachFuelRowValid
                 "
             >
                 Save

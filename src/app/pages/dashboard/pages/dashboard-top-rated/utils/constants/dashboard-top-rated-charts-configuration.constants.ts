@@ -1,32 +1,36 @@
+import { eStringPlaceholder } from '@shared/enums';
 import {
-    ChartImagesStringEnum,
-    ChartTypesStringEnum,
+    eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
 
 export class DashboardTopRatedChartsConfiguration {
     static DOUGHNUT_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.DOUGHNUT,
+        chartType: eChartTypesString.DOUGHNUT,
         chartData: {
             labels: [],
             datasets: [],
         },
         height: 330,
         width: 100,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
-        showXAxisLabels: false
+        showXAxisLabels: false,
     };
 
     static BAR_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.BAR,
         chartData: {
             labels: [],
             datasets: [],
         },
         height: 260,
         width: 100,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_MIXED,
+        isMultiYAxis: false,
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
-        showXAxisLabels: true
+        showXAxisLabels: true,
+        isTooltipItemInSelectedItems: true,
+        showTooltipBackground: true,
+        isDashboardChart: true,
     };
 }

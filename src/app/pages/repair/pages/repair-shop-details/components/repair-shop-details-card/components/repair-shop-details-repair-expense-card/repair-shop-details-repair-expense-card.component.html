@@ -1,4 +1,5 @@
 <app-ta-custom-card
+    [bodyTemplate]="'card'"
     [cardName]="'Repair Expenses'"
     [isCardOpen]="true"
     [bodyTemplate]="'card'"
@@ -9,19 +10,26 @@
         marginBottom: '8px',
     }"
 >
-    <!-- <div
-        class="charts-template perfomance"
-        [class.p-0]="repairExpensesChart?.hoveringStatus"
-    > -->
     <div [class.d-none]="repairExpensesChart?.hoveringStatus">
-        <app-ta-tab-switch
-            [type]="'type2-modal-popup'"
-            [tabs]="chartTabs"
-            (switchClicked)="onTabChange($event)"
-        >
-        </app-ta-tab-switch>
-
-        <app-ca-chart [chartConfig]="repairShopChartConfig"> </app-ca-chart>
+        @if (!repairShopExpensesLegendHighlightedBackground) {
+            <div>
+                <app-ta-tab-switch
+                    [type]="'type2-modal-popup'"
+                    [tabs]="repairShopExpensesChartTabs"
+                    (switchClicked)="onTabChange($event)"
+                >
+                </app-ta-tab-switch>
+            </div>
+        }
+        <app-ca-chart
+            [chartConfig]="repairShopChartConfig"
+            [legendData]="{
+                data: repairShopExpensesChartLegendData,
+                hasHighlightedBackground:
+                    repairShopExpensesLegendHighlightedBackground,
+                title: repairShopExpensesLegendTitle,
+            }"
+            (hoveredIndex)="setRepairShopExpensesLegendOnHover($event)"
+        ></app-ca-chart>
     </div>
-    <!-- </div> -->
 </app-ta-custom-card>

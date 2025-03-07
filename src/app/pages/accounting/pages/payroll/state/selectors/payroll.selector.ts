@@ -38,6 +38,7 @@ const payrollNamesData = {
 const payrollStatus = {
     Paid: 'success',
     Debt: 'danger',
+    Ready: 'positive',
 };
 
 export const selectPayrollState =

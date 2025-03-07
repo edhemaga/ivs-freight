@@ -1,5 +1,6 @@
 export class LoadStoreConstants {
     static COMPONENT_NAME_KEY = '[Load Table Component]';
+    static LOAD_MODAL_KEY = '[Load Modal Component]';
 
     static ACTION_LOAD_TABLE_COMPONENT_LOAD_LIST = `${ this.COMPONENT_NAME_KEY } Load List`;
     static ACTION_LOAD_TABLE_COMPONENT_LOAD_LIST_SUCCESS = `${ this.COMPONENT_NAME_KEY } Load List Success`;
@@ -70,6 +71,14 @@ export class LoadStoreConstants {
     static ACTION_SET_CLOSED_COUNT_INCREMENT = `${ this.COMPONENT_NAME_KEY } Set Closed Count Increment`;
     static ACTION_SET_CLOSED_COUNT_DECREMENT = `${ this.COMPONENT_NAME_KEY } Set Closed Count Decrement`;
 
+    static ACTION_SET_ACTIVE_LOAD_MODAL_DATA = `${ this.LOAD_MODAL_KEY } Set Active load Modal Data`;
+
+    static ACTION_RESET_ACTIVE_LOAD_MODAL_DATA = `${ this.LOAD_MODAL_KEY } Reset Active Load Modal Data`;
+
+    static ACTION_ADD_CREATED_BROKER_STATIC_MODAL_DATA = `${ this.LOAD_MODAL_KEY } Add Created Broker Static Modal Data`;
+    static ACTION_ADD_CREATED_SHIPPER_STATIC_MODAL_DATA = `${ this.LOAD_MODAL_KEY } Add Created Shipper Static Modal Data`;
+    static ACTION_UPDATE_EDITED_BROKER_STATIC_MODAL_DATA = `${ this.LOAD_MODAL_KEY } Update Edited Broker Static Modal Data`;
+
     static ACTION_UPDATE_LOAD_STATUS = `${ this.COMPONENT_NAME_KEY } Update Load Status`;
     static ACTION_UPDATE_LOAD_STATUS_SUCCESS = `${ this.COMPONENT_NAME_KEY } Update Load Status Success`;
     static ACTION_UPDATE_LOAD_STATUS_ERROR = `${ this.COMPONENT_NAME_KEY } Update Load Status Error`;
@@ -131,4 +140,7 @@ export class LoadStoreConstants {
     static ACTION_DELETE_BULK_LOAD_TEMPLATE_ERROR = `${ this.COMPONENT_NAME_KEY } Delete Bulk Load Template Error`;
 
     static ACTION_CAN_DELETE_SELECTED_DATA_ROWS = `${ this.COMPONENT_NAME_KEY } Can Delete Selected Data Rows`;
+    static ACTION_GET_DISPATCHER_LIST = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List`;
+    static ACTION_GET_DISPATCHER_LIST_SUCCESS = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List Success`;
+    static ACTION_GET_DISPATCHER_LIST_ERROR = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List Error`;
 }

@@ -8,7 +8,8 @@ import { ILoadState } from '@pages/load/pages/load-table/models/load-state.model
 import * as LoadActions from '@pages/load/state/actions/load.action';
 
 // enums
-import { eActiveViewMode, eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eActiveViewMode } from '@shared/enums';
 
 // functions
 import * as Functions from '@pages/load/pages/load-table/utils/functions/load-reducer.functions';
@@ -17,7 +18,8 @@ import * as Functions from '@pages/load/pages/load-table/utils/functions/load-re
 export const initialState: ILoadState = {
     data: [],
 
-    modal: {},
+    modal: null,
+    activeModalData: null,
 
     pendingCount: 0,
     activeCount: 0,
@@ -26,7 +28,10 @@ export const initialState: ILoadState = {
 
     canDeleteSelectedDataRows: false,
     selectedTab: eLoadStatusType.Active,
-    activeViewMode: eActiveViewMode.List
+    activeViewMode: eActiveViewMode.List,
+
+    dispatcherList: [],
+    statusList: []
 };
 // #endregion
 
@@ -47,20 +52,29 @@ export const loadReducer = createReducer(
     on(LoadActions.getLoadByIdError, (state) => ({ ...state })),
 
     on(LoadActions.getEditLoadModalData, (state) => ({ ...state })),
-    on(LoadActions.getEditLoadModalDataSuccess, (state, { load, modal }) => Functions.getLoadModalDataSuccessResult(state, modal, load)),
+    on(LoadActions.getEditLoadModalDataSuccess, (state, { load, modal }) => Functions.getLoadModalDataSuccessResult(state, modal, load as any)), // leave as any for now
     on(LoadActions.getEditLoadModalDataError, (state) => ({ ...state })),
 
     on(LoadActions.getCreateLoadModalData, (state) => ({ ...state })),
-    on(LoadActions.getCreateLoadModalDataSuccess, (state, { modal }) => Functions.getLoadModalDataSuccessResult(state, modal)),
+    on(LoadActions.getCreateLoadModalDataSuccess, (state, { modal, activeLoadModalData }) => Functions.getLoadModalDataSuccessResult(state, modal, activeLoadModalData)),
     on(LoadActions.getCreateLoadModalDataError, (state) => ({ ...state })),
 
     on(LoadActions.getConvertToLoadModalData, (state) => ({ ...state })),
-    on(LoadActions.getConvertToLoadModalDataSuccess, (state, { modal }) => ({ ...state, modal })),
+    on(LoadActions.getConvertToLoadModalDataSuccess, (state, { modal, load }) => Functions.getLoadModalDataSuccessResult(state, modal, load as any)), // leave as any for now
     on(LoadActions.getConvertToLoadModalDataError, (state) => ({ ...state })),
 
     on(LoadActions.getConvertToLoadTemplateModalData, (state) => ({ ...state })),
-    on(LoadActions.getConvertToLoadTemplateModalDataSuccess, (state, { modal }) => ({ ...state, modal })),
+    on(LoadActions.getConvertToLoadTemplateModalDataSuccess, (state, { modal, loadTemplate }) => Functions.getLoadModalDataSuccessResult(state, modal, loadTemplate as any)), // leave as any for now
     on(LoadActions.getConvertToLoadTemplateModalDataError, (state) => ({ ...state })),
+
+    on(LoadActions.getDispatcherList, (state) => ({ ...state })),
+    on(LoadActions.getDispatcherListSuccess, (state, { dispatcherList }) => Functions.mapDispatcherSuccessResult(state, dispatcherList)),
+    on(LoadActions.getDispatcherListError, (state) => ({ ...state })),
+
+    
+    on(LoadActions.getLoadStatusFilter, (state) => ({ ...state })),
+    on(LoadActions.getLoadStatusFilterSuccess, (state, {statusList}) => Functions.mapStatusFilterSuccessResult(state, statusList)),
+    on(LoadActions.getLoadStatusFilterError, (state) => ({ ...state })),
 // #endregion
 
 // #region CREATE
@@ -131,5 +145,11 @@ export const loadReducer = createReducer(
     on(LoadActions.tableColumnReset, (state) => ({ ...state })),
     on(LoadActions.tableUnlockToggle, (state) => ({ ...state })),
     on(LoadActions.tableColumnResize, (state, { columns, width, index }) => Functions.tableColumnResizeResult(state, columns, width, index)),
-    on(LoadActions.setActiveViewMode, (state, { activeViewMode }) => ({ ...state, activeViewMode }))
+    on(LoadActions.setActiveViewMode, (state, { activeViewMode }) => ({ ...state, activeViewMode })),
+
+    on(LoadActions.setActveLoadModalData, (state, { data }) => ({ ...state, activeModalData: data })),
+    on(LoadActions.resetActiveLoadModalData, (state) => ({ ...state, activeModalData: null })),
+    on(LoadActions.addCreatedBrokerStaticModalData, (state, { broker }) => Functions.addCreatedBrokerStaticModalDataResult(state, broker)),
+    on(LoadActions.addCreatedShipperStaticModalData, (state, { shipper }) => Functions.addCreatedShipperStaticModalDataResult(state, shipper)),
+    on(LoadActions.updateEditedBrokerStaticModalData, (state, { broker, brokerContacts }) => Functions.updateEditedBrokerStaticModalDataResult(state, broker, brokerContacts))
 );

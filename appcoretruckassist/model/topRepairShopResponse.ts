@@ -15,7 +15,7 @@ import { RepairShopIntervalResponse } from './repairShopIntervalResponse';
 export interface TopRepairShopResponse { 
     id?: number;
     name?: string | null;
-    visit?: number | null;
+    visitCount?: number | null;
     cost?: number | null;
     visitPercentage?: number | null;
     costPercentage?: number | null;

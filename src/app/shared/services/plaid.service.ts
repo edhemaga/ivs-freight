@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, filter, switchMap, from, forkJoin, mergeMap } from 'rxjs';
+import { Observable, filter, switchMap, from } from 'rxjs';
 
 // Services
 import {
@@ -25,9 +25,7 @@ declare const Plaid: IPlaid;
 })
 export class PlaidService {
     constructor(private companyService: CompanyService) {}
-    public getPlaidVerification(): Observable<
-        [AccessTokenResponse, AccountDetailsResponse]
-    > {
+    public getPlaidVerification(): Observable<AccountDetailsResponse> {
         return this.companyService.apiCompanyPlaidLinkTokenGet().pipe(
             filter((res: LinkTokenResponse) => !!res?.link_token),
             switchMap((res: LinkTokenResponse) => {
@@ -42,18 +40,20 @@ export class PlaidService {
                     })
                 );
             }),
-            mergeMap((publicToken: string) =>
-                forkJoin([
-                    this.companyService.apiCompanyPlaidTokenExchangePost({
-                        publicToken,
-                    }),
-                    this.companyService.apiCompanyPlaidAuthGetPost({
-                        accessToken: publicToken,
-                    }),
-                ])
+            switchMap((publicToken: string) =>
+                this.companyService
+                    .apiCompanyPlaidTokenExchangePost({ publicToken })
+                    .pipe(
+                        switchMap((exchangeResult: AccessTokenResponse) =>
+                            this.companyService.apiCompanyPlaidAuthGetPost({
+                                accessToken: exchangeResult.access_token,
+                            })
+                        )
+                    )
             )
         );
     }
+
     public compareVerificationResults(
         details: AccountDetailsResponse,
         addedAccount: IBankAccount

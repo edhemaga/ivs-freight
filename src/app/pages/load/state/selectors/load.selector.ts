@@ -21,9 +21,8 @@ import {
 import { ITableOptions } from '@shared/models';
 
 // enums
-import { TableStringEnum } from '@shared/enums';
+import { eActiveViewMode, TableStringEnum } from '@shared/enums';
 import {
-    eActiveViewMode,
     eLoadStatusType,
 } from '@pages/load/pages/load-table/enums/index';
 
@@ -272,8 +271,7 @@ export const tableDataSelector = createSelector(
                 gridColumns:
                     tableClosedColumnsConfig ?? getLoadClosedColumnDefinition(),
             },
-        ];
-
+        ]; 
         return tableData;
     }
 );
@@ -283,7 +281,7 @@ export const columnsSelector = createSelector(
     selectedTabSelector,
     (tableData, selectedTab) => {
         const selectedTabLowerCase =
-            eLoadStatusType[selectedTab]?.toLowerCase();
+        eLoadStatusType[selectedTab]?.toLowerCase();
         const tableDataSelectedItem = tableData?.find(
             (item) => item.field === selectedTabLowerCase
         );
@@ -303,9 +301,7 @@ export const tableOptionsSelector = createSelector(
 
         const tableOptions: ITableOptions = {
             toolbarActions: {
-                hideActivationButton: true,
-                showDispatcherFilter:
-                    selectedTabKeyLower !== TableStringEnum.TEMPLATE,
+                hideActivationButton: true, 
                 showTimeFilter:
                     selectedTabKeyLower !== TableStringEnum.TEMPLATE,
                 showStatusFilter:
@@ -348,5 +344,48 @@ export const activeTableDataSelector = createSelector(
         };
 
         return result;
+    }
+);
+export const dispatcherListSelector = createSelector(loadState, (state) => {
+    const { dispatcherList } = state || {};
+    
+    return dispatcherList;
+});
+
+export const getDispatcherListSelector = createSelector(
+    dispatcherListSelector,
+    (dispatcherList) => {
+        return dispatcherList;
+    }
+);
+
+export const statusListSelector = createSelector(loadState, (state) => {
+    const { statusList } = state || {};
+    
+    return statusList;
+});
+
+export const getStatusListSelector = createSelector(
+    statusListSelector,
+    (statusList) => {
+        return statusList;
+    }
+);
+
+export const staticModalDataSelector = createSelector(
+    loadState,
+    (state) => {
+        const { modal } = state;
+
+        return modal;
+    }
+);
+
+export const activeLoadModalDataSelector = createSelector(
+    loadState,
+    (state) => {
+        const { activeModalData } = state;
+
+        return activeModalData;
     }
 );

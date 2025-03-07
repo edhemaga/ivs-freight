@@ -7,11 +7,7 @@ import {
     SimpleChanges,
     OnDestroy,
 } from '@angular/core';
-import {
-    map,
-    Subject,
-    takeUntil
-} from 'rxjs';
+import { map, Subject, takeUntil } from 'rxjs';
 import { UntypedFormControl } from '@angular/forms';
 
 // Store
@@ -38,24 +34,18 @@ import {
 import {
     BrokerDropdown,
     IBrokerPaymentHistory,
-    IBrokerPaymentHistoryChart
+    IBrokerPaymentHistoryChart,
 } from '@pages/customer/pages/broker-details/models/';
 import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
-import {
-    ChartLegendProperty,
-    ChartTypeProperty,
-    Tabs
-} from '@shared/models';
+import { ChartLegendProperty, ChartTypeProperty, Tabs } from '@shared/models';
 
 // Constants
-import {
-    BrokerChartsConfiguration,
-} from '@pages/customer/pages/broker-details/utils/constants/';
+import { BrokerChartsConfiguration } from '@pages/customer/pages/broker-details/utils/constants/';
 import { BrokerInvoiceAgingConstants } from '@pages/customer/pages/broker-details/utils/constants';
 import {
     ChartConfiguration,
-    ChartLegendConfiguration
+    ChartLegendConfiguration,
 } from '@shared/utils/constants';
 
 // Components
@@ -70,10 +60,7 @@ import {
     TableStringEnum,
     ArrowActionsStringEnum,
 } from '@shared/enums';
-import {
-    EChartAnnotationType,
-    EChartEventProperties
-} from 'ca-components';
+import { EChartAnnotationType, EChartEventProperties } from 'ca-components';
 
 // SVG routes
 import { BrokerDetailsSvgRoutes } from '@pages/customer/pages/broker-details/utils/svg-routes/';
@@ -89,7 +76,8 @@ import { ChartHelper } from '@shared/utils/helpers';
     providers: [FormatDatePipe],
 })
 export class BrokerDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() broker: BrokerResponse;
     @Input() templateCard: boolean;
 
@@ -150,7 +138,7 @@ export class BrokerDetailsCardComponent
         private brokerService: BrokerService,
         private modalService: ModalService,
         private tableService: TruckassistTableService
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.broker?.currentValue != changes.broker?.previousValue) {
@@ -178,172 +166,246 @@ export class BrokerDetailsCardComponent
     }
 
     private getMileageRateHistory(timeFilter?: number): void {
-        this.brokerService.getMileageChartData(this.broker.id, timeFilter || 1)
+        this.brokerService
+            .getMileageChartData(this.broker.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: BrokerMileageRateResponse) => {
-                if (timeFilter && this.mileageChartTabs[timeFilter - 1])
-                    this.mileageChartTabs[timeFilter - 1].checked = true;
+            .subscribe(
+                (response: BrokerMileageRateResponse) => {
+                    if (timeFilter && this.mileageChartTabs[timeFilter - 1])
+                        this.mileageChartTabs = this.mileageChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
 
-                this.mileageChartData = { ...response };
+                    this.mileageChartData = { ...response };
 
-                this.mileageChartConfig = {
-                    ...BrokerChartsConfiguration.MILEAGE_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime<BrokerMileageRateChartResponse>(
-                        this.mileageChartData.brokerMileageRateChartResponse,
-                        ChartConfiguration.mileageRateConfiguration,
-                        timeFilter
-                    )
-                };
-                this.mileageChartLegendData =
-                    ChartLegendConfiguration.mileageLegendConfiguration(this.mileageChartData);
-            });
+                    this.mileageChartConfig = {
+                        ...BrokerChartsConfiguration.MILEAGE_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<BrokerMileageRateChartResponse>(
+                                this.mileageChartData
+                                    .brokerMileageRateChartResponse,
+                                ChartConfiguration.MILEAGE_RATE_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+                    this.mileageChartLegendData = [
+                        ...ChartLegendConfiguration.mileageLegendConfiguration(
+                            this.mileageChartData
+                        ),
+                    ];
+                },
+                () => {
+                    this.mileageChartConfig = {
+                        ...BrokerChartsConfiguration.MILEAGE_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     private getInvoiceChartData(timeFilter?: number): void {
-        this.brokerService.getInvoiceChartData(this.broker.id, timeFilter || 1)
+        this.brokerService
+            .getInvoiceChartData(this.broker.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: BrokerPaidInvoiceResponse) => {
-                if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
-                    this.invoiceChartTabs[timeFilter - 1].checked = true;
+            .subscribe(
+                (response: BrokerPaidInvoiceResponse) => {
+                    if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
+                        this.invoiceChartTabs = this.invoiceChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
+                    this.invoiceChartData = { ...response };
 
-                this.invoiceChartData = { ...response };
-
-                this.invoiceChartConfig = {
-                    ...BrokerChartsConfiguration.INVOICE_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime<BrokerPaidInvoiceChartResponse>
-                        (
-                            this.invoiceChartData.brokerPaidInvoiceChartResponse,
-                            ChartConfiguration.brokerPaidInvoiceConfiguration,
-                            timeFilter
-                        )
-                };
-                this.invoiceChartLegend =
-                    ChartLegendConfiguration.invoiceChartLegendConfiguration(this.invoiceChartData);
-            })
+                    this.invoiceChartConfig = {
+                        ...BrokerChartsConfiguration.INVOICE_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<BrokerPaidInvoiceChartResponse>(
+                                this.invoiceChartData
+                                    .brokerPaidInvoiceChartResponse,
+                                ChartConfiguration.BROKER_PAID_INVOICE_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+                    this.invoiceChartLegend =
+                        ChartLegendConfiguration.invoiceChartLegendConfiguration(
+                            this.invoiceChartData
+                        );
+                },
+                () => {
+                    this.invoiceChartConfig = {
+                        ...BrokerChartsConfiguration.INVOICE_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     private getPaymentChartData(timeFilter?: number): void {
-        this.brokerService.getPaymentChartData(this.broker.id, timeFilter || 1)
-            .pipe(takeUntil(this.destroy$),
-                map((data: BrokerPaymentHistoryResponse): IBrokerPaymentHistory => {
-                    const averagePayPeriod: string = String(data.averagePayPeriod);
-                    return {
-                        ...data,
-                        averagePayPeriod: this.timeSpanToDecimal(averagePayPeriod),
-                        brokerPaymentHistoryChartResponse:
-                            [...data.brokerPaymentHistoryChartResponse.map(
-                                (item: BrokerPaymentHistoryChartResponse): IBrokerPaymentHistoryChart => {
-                                    const averagePayPeriodItem: string = String(item.averagePayPeriod);
-                                    return {
-                                        ...item,
-                                        averagePayPeriod: this.timeSpanToDecimal(averagePayPeriodItem)
+        this.brokerService
+            .getPaymentChartData(this.broker.id, timeFilter || 1)
+            .pipe(
+                takeUntil(this.destroy$),
+                map(
+                    (
+                        data: BrokerPaymentHistoryResponse
+                    ): IBrokerPaymentHistory => {
+                        const averagePayPeriod: string = String(
+                            data.averagePayPeriod
+                        );
+                        return {
+                            ...data,
+                            averagePayPeriod:
+                                this.timeSpanToDecimal(averagePayPeriod),
+                            brokerPaymentHistoryChartResponse: [
+                                ...data.brokerPaymentHistoryChartResponse.map(
+                                    (
+                                        item: BrokerPaymentHistoryChartResponse
+                                    ): IBrokerPaymentHistoryChart => {
+                                        const averagePayPeriodItem: string =
+                                            String(item.averagePayPeriod);
+                                        return {
+                                            ...item,
+                                            averagePayPeriod:
+                                                this.timeSpanToDecimal(
+                                                    averagePayPeriodItem
+                                                ),
+                                        };
                                     }
-                                }
-                            )]
+                                ),
+                            ],
+                        };
                     }
-                })
+                )
             )
-            .subscribe((response: IBrokerPaymentHistory) => {
+            .subscribe(
+                (response: IBrokerPaymentHistory) => {
+                    if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
+                        this.invoiceChartTabs = this.invoiceChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
 
-                if (timeFilter && this.invoiceChartTabs[timeFilter - 1])
-                    this.invoiceChartTabs[timeFilter - 1].checked = true;
+                    this.paymentChartData = { ...response };
 
-                this.paymentChartData = { ...response };
+                    const paymentHistoryDataConfig: ChartTypeProperty[] =
+                        ChartConfiguration.PAYMENT_HISTORY_CONFIGURATION(
+                            this.paymentChartData
+                        );
 
-                const paymentHistoryDataConfig: ChartTypeProperty[] =
-                    ChartConfiguration.paymentHistoryConfiguration(this.paymentChartData);
+                    this.paymentChartConfig = {
+                        ...BrokerChartsConfiguration.PAYMENT_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<IBrokerPaymentHistory>(
+                                this.paymentChartData
+                                    .brokerPaymentHistoryChartResponse,
+                                paymentHistoryDataConfig,
+                                timeFilter
+                            ),
+                        annotations: [
+                            {
+                                value: this.paymentChartData.payTerm,
+                                type: EChartAnnotationType.LINE,
+                                axis: EChartEventProperties.Y_AXIS_0,
+                                color: paymentHistoryDataConfig[0].color,
+                            },
+                        ],
+                    };
 
-                this.paymentChartConfig = {
-                    ...BrokerChartsConfiguration.PAYMENT_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime<IBrokerPaymentHistory>
-                        (
-                            this.paymentChartData.brokerPaymentHistoryChartResponse,
-                            paymentHistoryDataConfig,
-                            timeFilter
-                        ),
-                    annotations: [
-                        {
-                            value: this.paymentChartData.payTerm,
-                            type: EChartAnnotationType.LINE,
-                            axis: EChartEventProperties.Y_AXIS_0,
-                            color: paymentHistoryDataConfig[0].color,
-                        }
-                    ]
-                };
-
-                this.paymentChartLegendData = ChartLegendConfiguration
-                    .brokerPaymentHistory(this.paymentChartData);
-            })
+                    this.paymentChartLegendData =
+                        ChartLegendConfiguration.brokerPaymentHistory(
+                            this.paymentChartData
+                        );
+                },
+                () => {
+                    this.paymentChartConfig = {
+                        ...BrokerChartsConfiguration.PAYMENT_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     public setMileageLegendOnHover(index: number): void {
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend(
-                index,
-                this.mileageChartConfig.chartData.labels
-            );
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.mileageChartConfig.chartData.labels
+        );
 
         this.mileageLegendHighlightedBackground = hasHighlightedBackground;
         this.mileageLegendTitle = title;
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.mileageChartData :
-                this.mileageChartData?.
-                    brokerMileageRateChartResponse[index];
+            isNaN(index) || index < 0
+                ? this.mileageChartData
+                : this.mileageChartData?.brokerMileageRateChartResponse[index];
 
-        this.mileageChartLegendData = ChartLegendConfiguration
-            .mileageLegendConfiguration(dataForLegend);
+        this.mileageChartLegendData =
+            ChartLegendConfiguration.mileageLegendConfiguration(dataForLegend);
     }
 
     public setInvoiceLegendOnHover(index: number): void {
-
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend(
-                index,
-                this.invoiceChartConfig.chartData.labels
-            );
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.invoiceChartConfig.chartData.labels
+        );
 
         this.invoiceLegendHighlightedBackground = hasHighlightedBackground;
         this.invoiceLegendTitle = title;
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.invoiceChartData :
-                this.invoiceChartData?.
-                    brokerPaidInvoiceChartResponse[index]
+            isNaN(index) || index < 0
+                ? this.invoiceChartData
+                : this.invoiceChartData?.brokerPaidInvoiceChartResponse[index];
 
-        this.invoiceChartLegend = ChartLegendConfiguration
-            .invoiceChartLegendConfiguration(dataForLegend);
+        this.invoiceChartLegend =
+            ChartLegendConfiguration.invoiceChartLegendConfiguration(
+                dataForLegend
+            );
     }
 
     public setPaymentHistoryLegendOnHover(index: number): void {
-        const {
-            hasHighlightedBackground,
-            title
-        } =
-            ChartHelper.setChartLegend(
-                index,
-                this.paymentChartConfig.chartData.labels
-            );
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.paymentChartConfig.chartData.labels
+        );
 
         this.paymentLegendHighlightedBackground = hasHighlightedBackground;
         this.paymentLegendTitle = title;
 
         const dataForLegend =
-            (isNaN(index) || index < 0) ?
-                this.paymentChartData :
-                this.paymentChartData?.
-                    brokerPaymentHistoryChartResponse[index]
+            isNaN(index) || index < 0
+                ? this.paymentChartData
+                : this.paymentChartData?.brokerPaymentHistoryChartResponse[
+                      index
+                  ];
 
-        this.paymentChartLegendData = ChartLegendConfiguration
-            .brokerPaymentHistory(dataForLegend);
+        this.paymentChartLegendData =
+            ChartLegendConfiguration.brokerPaymentHistory(dataForLegend);
     }
 
     public tabsButton(): void {
@@ -543,8 +605,7 @@ export class BrokerDetailsCardComponent
         let totalDays = days + hoursInDays + minutesInDays + secondsInDays;
 
         // If the original timespan was negative, return the negative value
-        if (isNegative)
-            totalDays = -totalDays;
+        if (isNegative) totalDays = -totalDays;
 
         return Number(totalDays.toFixed(2));
     }

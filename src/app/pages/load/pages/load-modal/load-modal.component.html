@@ -6,7 +6,7 @@
     [specificCaseModalName]="true"
     [isModalValid]="
         loadForm.valid &&
-        isFormDirty &&
+        loadForm.touched &&
         isEachStopItemsRowValid &&
         !reorderingStarted &&
         !isMilesLoading
@@ -109,7 +109,7 @@
                                 @for (
                                     template of labelsTemplate;
                                     let i = $index;
-                                    track trackByIdentity
+                                    track i
                                 ) {
                                     <div
                                         class="popover-item"
@@ -151,13 +151,10 @@
 
                 <div class="dispatcher-container">
                     <app-ca-input-dropdown
-                        [label]="'name'"
-                        [optionValue]="'id'"
                         formControlName="dispatcherId"
                         [template]="'load-dispatcher'"
                         [inputConfig]="getDispatcherInputConfig()"
                         [options]="labelsDispatcher"
-                        [activeItem]="selectedDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
                     ></app-ca-input-dropdown>
                 </div>
@@ -173,39 +170,24 @@
                             [inputConfig]="loadTemplateInputConfig"
                         ></ca-input-test>
                     } @else {
-                        <!-- Only One Company -->
-                        @if (labelsCompanies.length <= 1) {
-                            <ca-input-test
-                                formControlName="companyId"
-                                [inputConfig]="loadMainCompanyInputConfig"
-                            ></ca-input-test>
-                        } @else {
-                            <!-- Multiple Companies -->
-                            <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
-                                formControlName="companyId"
-                                [inputConfig]="loadCompanyInputConfig"
-                                [options]="labelsCompanies"
-                                [activeItem]="selectedCompany"
-                                (selectedItem)="
-                                    onSelectDropdown($event, 'company')
-                                "
-                            ></app-ca-input-dropdown>
-                        }
+                        <app-ca-input-dropdown
+                            formControlName="companyId"
+                            [inputConfig]="loadCompanyInputConfig"
+                            [options]="labelsCompanies"
+                            [activeItem]="selectedCompany"
+                            (selectedItem)="onSelectDropdown($event, 'company')"
+                        ></app-ca-input-dropdown>
                     }
                 </div>
             </div>
 
             <div class="load-ftl-fourth-row">
                 <app-ca-input-dropdown
-                    [label]="'fullName'"
-                    [optionValue]="'id'"
                     formControlName="dispatchId"
                     [template]="'load-dispatches-ttd'"
                     [inputConfig]="loadDispatchesTTDInputConfig"
                     [options]="labelsDispatches"
-                    [activeItem]="selectedDispatches"
+                    [activeItem]="selectedDispatch"
                     (selectedItem)="
                         onSelectDropdown($event, 'dispatches', 0, true)
                     "
@@ -219,8 +201,6 @@
                     [inputConfig]="loadReferenceInputConfig"
                 ></ca-input-test>
                 <app-ca-input-dropdown
-                    [label]="'name'"
-                    [optionValue]="'id'"
                     formControlName="brokerId"
                     [template]="'load-broker'"
                     [inputConfig]="loadBrokerInputConfig"
@@ -236,8 +216,6 @@
 
             <div class="load-ftl-third-row">
                 <app-ca-input-dropdown
-                    [label]="'name'"
-                    [optionValue]="'id'"
                     formControlName="brokerContactId"
                     [template]="'load-broker-contact'"
                     [inputConfig]="loadBrokerContactsInputConfig"
@@ -248,8 +226,6 @@
                     (selectedItem)="onSelectDropdown($event, 'broker-contact')"
                 ></app-ca-input-dropdown>
                 <app-ca-input-dropdown
-                    [label]="'name'"
-                    [optionValue]="'id'"
                     formControlName="generalCommodity"
                     [template]="'svgtext-template'"
                     [inputConfig]="loadCommodityInputConfig"
@@ -283,8 +259,6 @@
                     <div class="pt-3">
                         <div class="load-requirements-load-first-row">
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 #truckInputDropdown
                                 formControlName="truckTypeId"
                                 [template]="'svgtext-template'"
@@ -297,8 +271,6 @@
                             ></app-ca-input-dropdown>
 
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 #trailerInputDropdown
                                 formControlName="trailerTypeId"
                                 [template]="'svgtext-template'"
@@ -313,8 +285,6 @@
 
                         <div class="load-requirements-load-second-row">
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="trailerLengthId"
                                 [inputConfig]="loadTrailerLengthInputConfig"
                                 [options]="labelsTrailerLength"
@@ -325,8 +295,6 @@
                             ></app-ca-input-dropdown>
 
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="doorType"
                                 [inputConfig]="loadDoorTypeInputConfig"
                                 [options]="labelsDoorType"
@@ -337,8 +305,6 @@
                             ></app-ca-input-dropdown>
 
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="suspension"
                                 [inputConfig]="loadSuspensionInputConfig"
                                 [options]="labelsSuspension"
@@ -349,8 +315,6 @@
                             ></app-ca-input-dropdown>
 
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="year"
                                 [inputConfig]="loadYearInputConfig"
                                 [options]="labelsYear"
@@ -477,15 +441,12 @@
                         <div class="row row-no-mt">
                             <div class="col-12">
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="pickupShipper"
                                     [template]="'load-shipper'"
                                     [inputConfig]="loadPickupShipperInputConfig"
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="labelsShippers"
-                                    [activeItem]="selectedPickupShipper"
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
@@ -513,16 +474,13 @@
                                 "
                                 [type]="'type2-modal-popup'"
                             ></app-ta-tab-switch>
-
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="pickupShipperContactId"
                                 [template]="'load-broker-contact'"
                                 [inputConfig]="
                                     loadPickupShipperContactsInputConfig
                                 "
-                                [canAddNew]="true"
+                                [canAddNew]="true" 
                                 [canOpenModal]="true"
                                 [options]="labelsShipperContacts"
                                 [activeItem]="selectedPickupShipperContact"
@@ -685,7 +643,7 @@
                             @for (
                                 extraStop of loadExtraStops.controls;
                                 let indx = $index;
-                                track trackByIdentity
+                                track indx
                             ) {
                                 <div
                                     cdkDrag
@@ -835,8 +793,6 @@
                                                 <div class="row">
                                                     <div class="col-12">
                                                         <app-ca-input-dropdown
-                                                            [label]="'name'"
-                                                            [optionValue]="'id'"
                                                             formControlName="shipperId"
                                                             [template]="
                                                                 'load-shipper'
@@ -902,8 +858,6 @@
                                                     ></app-ta-tab-switch>
 
                                                     <app-ca-input-dropdown
-                                                        [label]="'name'"
-                                                        [optionValue]="'id'"
                                                         formControlName="shipperContactId"
                                                         [template]="
                                                             'load-broker-contact'
@@ -1251,8 +1205,6 @@
                         <div class="row">
                             <div class="col-12">
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="deliveryShipper"
                                     [template]="'load-shipper'"
                                     [inputConfig]="
@@ -1261,7 +1213,6 @@
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="labelsShippers"
-                                    [activeItem]="selectedDeliveryShipper"
                                     (selectedItem)="
                                         onSelectDropdown(
                                             $event,
@@ -1291,8 +1242,6 @@
                             ></app-ta-tab-switch>
 
                             <app-ca-input-dropdown
-                                [label]="'name'"
-                                [optionValue]="'id'"
                                 formControlName="deliveryShipperContactId"
                                 [template]="'load-broker-contact'"
                                 [inputConfig]="
@@ -1611,8 +1560,8 @@
                             <div formArrayName="additionalBillings">
                                 @for (
                                     additional of additionalBillings().controls;
-                                    track trackByIdentity;
-                                    let indx = $index
+                                    let indx = $index;
+                                    track indx
                                 ) {
                                     <div [ngStyle]="{ 'margin-bottom': '4px' }">
                                         <div [formGroupName]="indx">
@@ -1641,8 +1590,6 @@
                             </div>
                             @if (isVisibleBillDropdown) {
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="billingDropdown"
                                     [inputConfig]="
                                         loadBillingDropdownInputConfig
@@ -1662,8 +1609,8 @@
                                     @for (
                                         additional of additionalPayments()
                                             .controls;
-                                        track trackByIdentity;
-                                        let indx = $index
+                                        let indx = $index;
+                                        track indx
                                     ) {
                                         <div
                                             [ngStyle]="{
@@ -1689,8 +1636,6 @@
                                                     ></ca-input-test>
 
                                                     <app-ca-input-dropdown
-                                                        [label]="'name'"
-                                                        [optionValue]="'id'"
                                                         formControlName="displayPaymentType"
                                                         [inputConfig]="
                                                             loadPaymentTypeInputConfig
@@ -1726,8 +1671,6 @@
                                 paymentTypesDropdownList.length
                             ) {
                                 <app-ca-input-dropdown
-                                    [label]="'name'"
-                                    [optionValue]="'id'"
                                     formControlName="paymentDropdown"
                                     [inputConfig]="
                                         loadPaymentDropdownInputConfig
@@ -1848,7 +1791,6 @@
         [ngStyle]="{
             overflow: 'hidden',
             'owerflow-y': 'scroll',
-            height: originHeight + 130 + 'px',
         }"
     >
         <!-- Hazardous -->

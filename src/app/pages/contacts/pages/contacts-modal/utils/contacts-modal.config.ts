@@ -1,10 +1,11 @@
+import { ICaInput } from '@ca-shared/components/ca-input/config';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 // enums
 import { eGeneralActions } from '@shared/enums';
 
 export class ContactModalConfig {
-    static NAME_INPUT_CONFIG(isEditMode: boolean): ITaInput {
+    static NAME_INPUT_CONFIG(isEditMode: boolean): ICaInput {
         return {
             name: 'Name',
             type: 'text',
@@ -13,7 +14,7 @@ export class ContactModalConfig {
             minLength: 2,
             maxLength: 32,
             textTransform: 'capitalize',
-            autoFocus: !isEditMode,
+            autoFocus: !isEditMode
         };
     }
 

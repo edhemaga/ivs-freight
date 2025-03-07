@@ -12,7 +12,7 @@ import { DashboardTopRatedConstants } from '@pages/dashboard/pages/dashboard-top
 import {
     DashboardPerformanceChartsConfiguration,
     DashboardPerformanceConstants,
-    DashboardPerformanceIconRoutes
+    DashboardPerformanceIconRoutes,
 } from '@pages/dashboard/pages/dashboard-performance/utils/constants';
 import {
     DashboardConstants,
@@ -28,7 +28,7 @@ import {
     DashboardChartStringEnum,
     DashboardStringEnum,
 } from '@pages/dashboard/enums';
-import { ChartTypesStringEnum } from 'ca-components';
+import { eChartTypesString } from 'ca-components';
 
 // Models
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
@@ -101,7 +101,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private dashboardService: DashboardService,
         private dashboardPerformanceService: DashboardPerformanceService
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -259,7 +259,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
 
         if (
             this.selectedPerformanceDataCount ===
-            this.maxPerformanceDataItemsSelected &&
+                this.maxPerformanceDataItemsSelected &&
             !performanceDataItem.isSelected
         ) {
             return;
@@ -528,8 +528,9 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             .map(([key, values]) => ({
                 label: key,
                 data: [...values],
-                type: ChartTypesStringEnum.BAR,
+                type: eChartTypesString.BAR,
                 barPercentage: 0.9,
+                barThickness: 22,
                 categoryPercentage: 0.5,
                 minBarLength: 0.5,
                 order:
@@ -539,27 +540,27 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
                 backgroundColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
-                            .color
+                              .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
-                            .color,
+                              .color,
                 hoverBackgroundColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
-                            .color
+                              .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
-                            .color,
+                              .color,
                 hoverBorderColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
-                            .color
+                              .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
-                            .color,
+                              .color,
                 borderColor:
                     key === DashboardChartStringEnum.BAR_LABEL_PER_GALLON
                         ? DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0]
-                            .color
+                              .color
                         : DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1]
-                            .color,
+                              .color,
                 borderRadius: {
                     topLeft: 2,
                     topRight: 2,
@@ -574,7 +575,7 @@ export class DashboardPerformanceComponent implements OnInit, OnDestroy {
             .map(([key, values]) => ({
                 label: key,
                 data: [...values],
-                type: ChartTypesStringEnum.LINE,
+                type: eChartTypesString.LINE,
                 hidden: true,
                 isCurrency: DashboardHelper.isCurrency(key),
             }));

@@ -2,9 +2,6 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 
-// components
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
-
 // base classes
 import { CustomerDropdownMenuActionsBase } from '@pages/customer/base-classes';
 
@@ -28,6 +25,7 @@ import { TableStringEnum } from '@shared/enums';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models';
 import { MappedShipperBroker } from '@pages/customer/pages/customer-table/models/mapped-shipper-broker.model';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-customer-card',
@@ -115,7 +113,7 @@ export class CustomerCardComponent
     }
 
     public handleToggleDropdownMenuActions<T extends MappedShipperBroker>(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: T
     ): void {
         const { type } = action;

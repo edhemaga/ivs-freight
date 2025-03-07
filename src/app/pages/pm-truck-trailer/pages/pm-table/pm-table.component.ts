@@ -70,7 +70,7 @@ import {
 } from 'appcoretruckassist';
 import { PMTruckFilter } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-truck-filter.model';
 import { PMTrailerFilter } from '@pages/pm-truck-trailer/pages/pm-table/models/pm-trailer-filter.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { TableColumnConfig } from '@shared/models';
 
 @Component({
@@ -435,7 +435,7 @@ export class PmTableComponent
             });
     }
 
-    private getPMDropdownContent(): DropdownMenuItem[] {
+    private getPMDropdownContent(): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getPMDropdownContent();
     }
 

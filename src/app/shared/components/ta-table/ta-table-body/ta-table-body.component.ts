@@ -95,7 +95,7 @@ import {
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { TableCardBodyActions } from '@shared/models';
 
 // constants
@@ -776,7 +776,7 @@ export class TaTableBodyComponent<
 
     // Toggle Dropdown
     public handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         rowData: T
     ): void {
         const { type } = action;

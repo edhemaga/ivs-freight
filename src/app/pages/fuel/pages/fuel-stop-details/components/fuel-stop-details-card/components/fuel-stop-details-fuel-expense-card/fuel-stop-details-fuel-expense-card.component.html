@@ -1,0 +1,35 @@
+<app-ta-custom-card
+    [cardName]="'Fuel Expenses'"
+    [isCardOpen]="true"
+    [bodyTemplate]="'card'"
+    [hasHeaderSvg]="'assets/svg/common/arrow_top_right.svg'"
+    [tooltipName]="'View in Modal'"
+    [hasDivider]="true"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '8px',
+    }"
+>
+    <div>
+        @if (!fuelLegendHighlightedBackground) {
+            <div>
+                <app-ta-tab-switch
+                    [tabs]="fuelExpenseChartTabs"
+                    [type]="'type2-modal-popup'"
+                    (switchClicked)="onChartTabChange($event)"
+                >
+                </app-ta-tab-switch>
+            </div>
+        }
+        <app-ca-chart
+            [chartConfig]="fuelChartConfig"
+            [legendData]="{
+                data: fuelChartLegend,
+                hasHighlightedBackground: fuelLegendHighlightedBackground,
+                title: fuelLegendTitle,
+            }"
+            (hoveredIndex)="setFuelLegendOnHover($event)"
+        >
+        </app-ca-chart>
+    </div>
+</app-ta-custom-card>

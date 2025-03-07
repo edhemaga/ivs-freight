@@ -1,10 +1,18 @@
 <app-ta-details-header-card
     [ngClass]="{
         disabedPreviousArrow: loadsDropdownList?.length <= 1,
-        disableNextArrow: loadsDropdownList?.length <= 1
+        disableNextArrow: loadsDropdownList?.length <= 1,
     }"
-    [tooltipNext]="loadsDropdownList?.length <= 1 ? '' : 'Next'"
-    [tooltipPrevious]="loadsDropdownList?.length <= 1 ? '' : 'Back'"
+    [tooltipNext]="
+        loadsDropdownList?.length <= 1
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.NEXT
+    "
+    [tooltipPrevious]="
+        loadsDropdownList?.length <= 1
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.PREVIOUS
+    "
     [cardDetailsDate]="cardData.dateCreated | formatDateP"
     [dateClosed]="
         cardData.loadDeliveryTime
@@ -39,11 +47,11 @@
                         [isDetailsLayout]="true"
                         [status]="{
                             name: cardData.status.statusString,
-                            valueForRequest: cardData.status.statusValue.name
+                            valueForRequest: cardData.status.statusValue.name,
                         }"
                         [statusOrder]="{
                             type: statusOrder?.type,
-                            stopOrder: statusOrder?.stopOrder
+                            stopOrder: statusOrder?.stopOrder,
                         }"
                     ></app-load-status-string>
                 </div>

@@ -8,7 +8,7 @@
 
 @mixin svg-hover($color) {
     svg path {
-        transition: $transition;
+        transition: fill 0.3s ease-in-out;
     }
 
     &:hover {
@@ -28,6 +28,9 @@
 .svg {
     // Colors
     &-fill {
+        &-white {
+            @include svg-fill($white);
+        }
         &-black {
             @include svg-fill($black);
         }
@@ -101,6 +104,9 @@
         }
         &-18 {
             @include svg-size(18px, 18px);
+        }
+        &-22 {
+            @include svg-size(22px, 22px);
         }
         &-44-16 {
             @include svg-size(44px, 16px);

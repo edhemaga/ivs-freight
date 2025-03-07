@@ -10,12 +10,12 @@ import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { LoadService } from '@shared/services/load.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // components
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 import { LoadDetailsItemComponent } from '@pages/load/pages/load-details/components/load-details-item/load-details-item.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 
 // store
 import { LoadDetailsListQuery } from '@pages/load/state_old/load-details-state/load-details-list-state/load-details-list.query';
@@ -29,6 +29,8 @@ import { LoadItemStore } from '@pages/load/state_old/load-details-state/load-det
 // enums
 import { LoadDetailsStringEnum } from '@pages/load/pages/load-details/enums/load-details-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eCommonElements } from '@shared/enums';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // helpers
 import { LoadDetailsHelper } from '@pages/load/pages/load-details/utils/helpers/load-details.helper';
@@ -89,7 +91,8 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
         private loadMinimalListStore: LoadMinimalListStore,
         private loadMinimalListQuery: LoadMinimalListQuery,
         private loadDetailsListQuery: LoadDetailsListQuery,
-        private loadItemStore: LoadItemStore
+        private loadItemStore: LoadItemStore,
+        private loadStoreService: LoadStoreService
     ) {}
 
     ngOnInit(): void {
@@ -181,29 +184,15 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
     public onLoadActions(event: { id: number; type: string }): void {
         switch (event.type) {
             case LoadDetailsStringEnum.EDIT:
-                this.loadService
-                    .getLoadById(event.id)
-                    .pipe(
-                        takeUntil(this.destroy$),
-                        tap((load) => {
-                            const editData = {
-                                data: {
-                                    ...load,
-                                },
-                                type: event.type,
-                            };
+                const { statusType } = this.loadObject;
+                const status: eLoadStatusType =
+                    eLoadStatusType[statusType.name];
 
-                            this.modalService.openModal(
-                                LoadModalComponent,
-                                { size: TableStringEnum.LOAD },
-                                {
-                                    ...editData,
-                                    disableButton: false,
-                                }
-                            );
-                        })
-                    )
-                    .subscribe();
+                this.loadStoreService.dispatchGetEditLoadModalData(
+                    this.loadId,
+                    status,
+                    LoadDetailsStringEnum.EDIT
+                );
 
                 break;
             case LoadDetailsStringEnum.DELETE_ITEM:
@@ -277,24 +266,26 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
                         .selectEntity(id)
                         .pipe(take(1));
 
-                    query.subscribe((load: LoadResponse) => {
-                        this.currentIndex = this.loadsList.findIndex(
-                            (driver: LoadResponse) => driver.id === load.id
-                        );
+                    query
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe((load: LoadResponse) => {
+                            this.currentIndex = this.loadsList.findIndex(
+                                (driver: LoadResponse) => driver.id === load.id
+                            );
 
-                        this.getDetailsOptions(load);
-                        this.getDetailsConfig(load);
+                            this.getDetailsOptions(load);
+                            this.getDetailsConfig(load);
 
-                        if (
-                            this.router.url.includes(
-                                LoadDetailsStringEnum.DETAILS
-                            )
-                        ) {
-                            this.router.navigate([
-                                `/list/load/${load.id}/details`,
-                            ]);
-                        }
-                    });
+                            if (
+                                this.router.url.includes(
+                                    eCommonElements.DETAILS
+                                )
+                            ) {
+                                this.router.navigate([
+                                    `/list/load/${load.id}/details`,
+                                ]);
+                            }
+                        });
                 } else {
                     this.router.navigate([`/list/load/${id}/details`]);
                 }
@@ -305,7 +296,6 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
 
     private deleteLoadById(id: number): void {
         const last = this.loadsList.at(-1);
-        const loadStatus = this.loadObject.statusType.name;
 
         if (
             last.id ===
