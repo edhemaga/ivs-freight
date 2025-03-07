@@ -22,17 +22,17 @@
             [isRound]="false"
             [isHoverEffect]="false"
         ></app-ca-profile-image>
-        <span class="driver-solo-info-text">{{ data.fullName }}</span>
+        <span class="driver-solo-info-text text-color-black">{{ data.fullName }}</span>
     </div>
 </ng-template>
 <ng-template #customText let-data>
-    <div class="custom-text-date">{{ data }}</div>
+    <div class="custom-text-date text-color-black">{{ data }}</div>
 </ng-template>
 
 <ng-template #customMileageHeader let-data>
-    <div class="custom-mileage">
+    <div class="custom-mileage text-color-dark-grey">
         {{ data }}
-        <span>mi</span>
+        <span class="text-color-muted">mi</span>
     </div>
 </ng-template>
 
@@ -65,14 +65,17 @@
         <ng-container *ngIf="data.period !== 'Ready'">
             <div
                 class="custom-status-text"
-                [ngClass]="{ 'past-payment': data.period === 'Past' }"
+                [ngClass]="{ 
+                    'text-color-red-11': data.period === 'Past',
+                    'text-color-dark-grey': data.period !== 'Past'
+                }"
             >
                 {{ Math.abs(data.numberOfDays) }} DAYS
             </div>
         </ng-container>
 
         <ng-container *ngIf="data.period === 'Ready'">
-            <div class="custom-status-text ready-payment">Ready</div>
+            <div class="custom-status-text text-color-green-2">Ready</div>
         </ng-container>
     </div>
 </ng-template>
