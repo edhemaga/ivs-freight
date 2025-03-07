@@ -1,5 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+// enums
+import { eStringPlaceholder } from '@shared/enums';
+
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
 
@@ -26,9 +29,10 @@ export class LastFuelPriceCardTitlePipe implements PipeTransform {
 
         const dieselPriceText = pricePerGallon
             ? `Diesel $${formatPrice(pricePerGallon)}`
-            : '';
-
-        const defPriceText = defPrice ? ` | DEF $${formatPrice(defPrice)}` : '';
+            : eStringPlaceholder.EMPTY;
+        const defPriceText = defPrice
+            ? ` | DEF $${formatPrice(defPrice)}`
+            : eStringPlaceholder.EMPTY;
 
         return dieselPriceText + defPriceText;
     }

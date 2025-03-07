@@ -15,6 +15,7 @@ import { FuelStopDetailsSvgRoutes } from '@pages/fuel/pages/fuel-stop-details/ut
 
 // enums
 import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
@@ -52,6 +53,9 @@ export class FuelStopDetailsLastFuelPriceCardComponent {
 
     // svg routes
     public fuelStopDetailsSvgRoutes = FuelStopDetailsSvgRoutes;
+
+    // enums
+    public eStringPlaceholder = eStringPlaceholder;
 
     public isLastFuelPriceCardOpen: boolean = true;
 

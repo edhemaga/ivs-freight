@@ -230,7 +230,6 @@ export class FuelStopDetailsItemTransactionComponent
         option: { type: string },
         index: number
     ): void {
-        console.log('option', option);
         const transaction = this._transactionList[index];
 
         this.transactionItemDropdownIndex = -1;

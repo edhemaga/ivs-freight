@@ -45,7 +45,8 @@
                 >
                     {{
                         fuelPrice.totalValue
-                            ? '$' + (fuelPrice.totalValue | thousandSeparator)
+                            ? eStringPlaceholder.DOLLAR_SIGN +
+                              (fuelPrice.totalValue | thousandSeparator)
                             : 'None'
                     }}
                 </span>
@@ -76,7 +77,9 @@
                             class="svg-size-22 progress-icon"
                             [ngClass]="svgData.svgClass"
                             [ngStyle]="{
-                                left: svgData.svgPosition + '%',
+                                left:
+                                    svgData.svgPosition +
+                                    eStringPlaceholder.PERCENTAGE_SIGN,
                             }"
                             [src]="fuelStopDetailsSvgRoutes.progressIconRoute"
                         ></svg-icon>

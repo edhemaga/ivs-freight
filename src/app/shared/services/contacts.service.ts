@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Observable } from 'rxjs';
 
 // models
 import {
@@ -62,7 +62,7 @@ export class ContactsService {
         search1?: string,
         search2?: string
     ): Observable<GetCompanyContactListResponse> {
-        return of(null); /* this.contactService.apiCompanycontactListGet(
+        return this.contactService.apiCompanycontactListGet(
             labelId,
             null,
             null,
@@ -75,7 +75,7 @@ export class ContactsService {
             search,
             search1,
             search2
-        ); */
+        );
     }
 
     // company contact modal
