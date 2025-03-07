@@ -30,6 +30,9 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
         } = args;
 
         let inputConfig: ICaInput;
+        let truckTrailerDriverDropdownWidth: string = trailerId
+            ? 'w-col-143'
+            : 'w-col-220';
 
         switch (configType) {
             case 'efsInputConfig':
@@ -126,10 +129,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                             .replace(' ', '')
                             .toLowerCase(),
                     },
-                    dropdownWidthClass:
-                        selectedTruckType?.name === 'Box Truck'
-                            ? 'w-col-188'
-                            : 'w-col-308',
+                    dropdownWidthClass: truckTrailerDriverDropdownWidth,
                     customClass: 'truck-trailer-dropdown',
                 };
 
@@ -145,7 +145,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Driver',
                     isDropdown: true,
-                    dropdownWidthClass: 'w-col-221',
+                    dropdownWidthClass: truckTrailerDriverDropdownWidth,
                     dropdownImageInput: {
                         withText: true,
                         svg: false,
@@ -174,7 +174,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                         url: logoName,
                         template: 'trailer',
                     },
-                    dropdownWidthClass: 'w-col-216',
+                    dropdownWidthClass: truckTrailerDriverDropdownWidth,
                     customClass: 'truck-trailer-dropdown',
                     isDisabled: true,
                 };
