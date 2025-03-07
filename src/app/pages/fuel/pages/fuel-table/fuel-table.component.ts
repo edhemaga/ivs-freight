@@ -1,4 +1,10 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    ViewChild,
+    OnDestroy,
+    ChangeDetectorRef,
+} from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -81,17 +87,40 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
+import { MapList } from '@pages/repair/pages/repair-table/models';
+import {
+    ICaMapProps,
+    IMapBoundsZoom,
+    IMapMarkers,
+    IMapSelectedMarkerData,
+    MapMarkerIconService,
+    SortColumn,
+} from 'ca-components';
+import { ShipperMapConfig } from '@pages/customer/pages/customer-table/utils/constants';
+import { MapsService } from '@shared/services/maps.service';
+import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/utils/helpers';
+import { MapMixin } from '@shared/mixins/map/map.mixin';
+import { FuelMapMixin } from './mixins/fuel-map.mixin';
+
+class ConcreteFuelDropdownMenuActionsBase extends FuelDropdownMenuActionsBase {
+    destroy$: Subject<void>;
+    viewData: any[] = [];
+    fuelService: FuelService;
+    modalService: ModalService;
+
+    handleShowMoreAction(): void {}
+}
+
+const MixedBase = FuelMapMixin(ConcreteFuelDropdownMenuActionsBase);
 
 @Component({
     selector: 'app-fuel-table',
     templateUrl: './fuel-table.component.html',
-    styleUrls: [
-        './fuel-table.component.scss',
-    ],
+    styleUrls: ['./fuel-table.component.scss'],
     providers: [ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe],
 })
 export class FuelTableComponent
-    extends FuelDropdownMenuActionsBase
+    extends MixedBase
     implements OnInit, AfterViewInit, OnDestroy
 {
     public destroy$ = new Subject<void>();
@@ -117,9 +146,6 @@ export class FuelTableComponent
 
     public tableDataLength: number;
 
-    // map
-    public mapListData = [];
-
     private avatarColorMappingIndexByDriverId: { [key: string]: AvatarColors } =
         {};
 
@@ -136,6 +162,9 @@ export class FuelTableComponent
         private tableService: TruckassistTableService,
         private confirmationActivationService: ConfirmationActivationService,
 
+        public mapsService: MapsService,
+        public markerIconService: MapMarkerIconService,
+
         // pipes
         private datePipe: DatePipe,
         private nameInitialsPipe: NameInitialsPipe,
@@ -144,9 +173,12 @@ export class FuelTableComponent
 
         // store
         private store: Store,
-        private fuelQuery: FuelQuery
+        private fuelQuery: FuelQuery,
+
+        // ref
+        public ref: ChangeDetectorRef
     ) {
-        super();
+        super(ref, fuelService, mapsService, markerIconService);
     }
 
     ngOnInit(): void {
@@ -169,6 +201,12 @@ export class FuelTableComponent
         this.confirmationSubscribe();
 
         this.confirmationActivationSubscribe();
+
+        this.addMapListScrollEvent();
+
+        this.addSelectedMarkerListener();
+
+        this.checkSelectedMarker();
     }
 
     ngAfterViewInit(): void {
@@ -833,8 +871,7 @@ export class FuelTableComponent
                   address?.stateShortName !== TableStringEnum.NULL
                       ? address?.stateShortName + null
                       : null) +
-                  (address?.zipCode &&
-                  address?.zipCode !== TableStringEnum.NULL
+                  (address?.zipCode && address?.zipCode !== TableStringEnum.NULL
                       ? address?.zipCode
                       : null)
                 : null,

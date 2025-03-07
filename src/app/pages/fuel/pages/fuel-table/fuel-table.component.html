@@ -70,6 +70,7 @@
             <app-ta-map-list
                 [type]="'fuelStop'"
                 [columns]="columns"
+                [sortColumns]="fuelStopMapListSortColumns"
                 [mapListContent]="mapListData"
                 (headActions)="onTableHeadActions($event)"
             >
@@ -78,27 +79,23 @@
                     #listCard
                     [title]="latlong?.businessName"
                     [isSelected]="latlong?.isSelected"
-                    [status]="latlong?.status"
+                    [status]="!latlong?.tableDeactivated"
                     [item]="latlong"
                     [index]="i"
                     [address]="latlong.address"
-                    [rating]="{
-                        up: latlong?.upRatingCount,
-                        down: latlong?.downRatingCount,
-                    }"
                     [type]="'fuelStop'"
                     (clickedMarker)="selectItem($event)"
                 ></app-ta-map-list-card>
             </app-ta-map-list>
 
-            <!-- <app-ca-map
+            <app-ca-map
                 [data]="mapData"
                 (clusterMarkerClick)="onClusterMarkerClick($event)"
                 (clusterListScrollEvent)="onClusterListScroll($event)"
                 (getInfoWindowData)="onGetInfoWindowData($event)"
                 (boundsChanged)="onMapBoundsChange($event)"
                 (resetSelectedMarkerItem)="onResetSelectedMarkerItem($event)"
-            ></app-ca-map> -->
+            ></app-ca-map>
         </div>
     </ng-container>
 </div>

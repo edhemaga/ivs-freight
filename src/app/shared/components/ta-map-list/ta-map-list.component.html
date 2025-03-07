@@ -47,11 +47,14 @@
                 <div class="marker-divider"></div>
             </div>
         </div>
-        <div class="map-list-body d-flex flex-column" (scroll)="mapListScroll($event)">
+        <div
+            class="map-list-body d-flex flex-column"
+            (scroll)="mapListScroll($event)"
+        >
             <ng-content></ng-content>
         </div>
 
-        <ng-container *ngIf="showExpandButton">
+        @if (showExpandButton) {
             <div class="map-list-resize-button" (click)="resizeMapList()">
                 <svg-icon
                     [src]="mapListSvgRoutes.expandArrowRoute"
@@ -60,6 +63,6 @@
                     [svgStyle]="{ 'width.px': 12, 'height.px': 12 }"
                 ></svg-icon>
             </div>
-        </ng-container>
+        }
     </div>
 </div>

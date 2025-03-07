@@ -17,6 +17,7 @@ import {
     FuelStopFranchiseResponse,
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
+    ClusterResponse,
 } from 'appcoretruckassist';
 
 // services
@@ -178,24 +179,24 @@ export class FuelService {
         return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
             tap(() => {
                 ids.forEach((id) => {
-                        this.fuelStore.update((store) => ({
-                            fuelTransactions: {
-                                ...store.fuelTransactions,
-                                pagination: {
-                                    ...store.fuelTransactions?.pagination,
-                                    data: store.fuelTransactions?.pagination?.data?.filter(
-                                        (transaction) => transaction.id !== id
-                                    ),
-                                },
+                    this.fuelStore.update((store) => ({
+                        fuelTransactions: {
+                            ...store.fuelTransactions,
+                            pagination: {
+                                ...store.fuelTransactions?.pagination,
+                                data: store.fuelTransactions?.pagination?.data?.filter(
+                                    (transaction) => transaction.id !== id
+                                ),
                             },
-                        }));
+                        },
+                    }));
                 });
 
                 const tableCount = JSON.parse(
                     localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
                 );
 
-                if(tableCount) {
+                if (tableCount) {
                     tableCount.fuelTransactions -= ids.length;
 
                     localStorage.setItem(
@@ -277,6 +278,120 @@ export class FuelService {
 
     public getFuelStopById(id: number): Observable<FuelStopResponse> {
         return this.fuelService.apiFuelFuelstopIdGet(id);
+    }
+
+    public getFuelClusters(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        zoomLevel?: number,
+        addedNew?: boolean,
+        shipperLong?: number,
+        shipperLat?: number,
+        shipperDistance?: number,
+        shipperStates?: Array<string>,
+        categoryIds?: Array<number>,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        costFrom?: number,
+        costTo?: number,
+        lastFrom?: number,
+        lastTo?: number,
+        ppgFrom?: number,
+        ppgTo?: number,
+        selectedId?: number,
+        active?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<ClusterResponse[]> {
+        return this.fuelService.apiFuelClustersGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            zoomLevel,
+            addedNew,
+            shipperLong,
+            shipperLat,
+            shipperDistance,
+            shipperStates,
+            categoryIds,
+            _long,
+            lat,
+            distance,
+            costFrom,
+            costTo,
+            lastFrom,
+            lastTo,
+            ppgFrom,
+            ppgTo,
+            selectedId,
+            active,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            null,
+            null,
+            search,
+            search1,
+            search2
+        );
+    }
+
+    public getFuelMapList(
+        northEastLatitude?: number,
+        northEastLongitude?: number,
+        southWestLatitude?: number,
+        southWestLongitude?: number,
+        _long?: number,
+        lat?: number,
+        distance?: number,
+        lastFrom?: number,
+        lastTo?: number,
+        costFrom?: number,
+        costTo?: number,
+        ppgFrom?: number,
+        ppgTo?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ) {
+        return this.fuelService.apiFuelListmapGet(
+            northEastLatitude,
+            northEastLongitude,
+            southWestLatitude,
+            southWestLongitude,
+            _long,
+            lat,
+            distance,
+            lastFrom,
+            lastTo,
+            costFrom,
+            costTo,
+            ppgFrom,
+            ppgTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            null,
+            null,
+            search,
+            search1,
+            search2
+        );
     }
 
     public addFuelStop<T>(data: T): Observable<CreateResponse> {
