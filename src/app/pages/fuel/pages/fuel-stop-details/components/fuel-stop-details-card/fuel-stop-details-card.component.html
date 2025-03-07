@@ -25,7 +25,18 @@
             <div class="fuel-stop-details-cards">
                 <!-- Last Fuel Price Card -->
 
-                <app-fuel-stop-details-last-fuel-price-card>
+                <app-fuel-stop-details-last-fuel-price-card
+                    [cardData]="{
+                        pricePerGallon: _fuelStop?.pricePerGallon,
+                        lowestPricePerGallon: _fuelStop?.lowestPricePerGallon,
+                        highestPricePerGallon: _fuelStop?.highestPricePerGallon,
+                        priceOutDated: false,
+                        defPrice: _fuelStop?.defPrice,
+                        defLowestPrice: _fuelStop?.defLowestPrice,
+                        defHighestPrice: _fuelStop?.defHighestPrice,
+                        defPriceOutDated: false,
+                    }"
+                >
                 </app-fuel-stop-details-last-fuel-price-card>
 
                 <!-- Fuel Expense Card -->

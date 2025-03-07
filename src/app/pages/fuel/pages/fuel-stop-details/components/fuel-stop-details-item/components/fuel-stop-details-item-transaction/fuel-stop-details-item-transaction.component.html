@@ -1,1 +1,392 @@
-<div>TRANSACTION</div>
+@if (_transactionList.length) {
+    <div
+        class="d-flex flex-column justify-content-center stop-details-item-transaction"
+    >
+        <!-- Search -->
+
+        <!-- Header -->
+
+        <div
+            class="d-grid align-items-center stop-details-item-transaction-header"
+        >
+            @for (
+                headerItem of transactionHeaderItems;
+                let headerIndex = $index;
+                track headerItem
+            ) {
+                <div
+                    class="d-flex align-items-center stop-details-item-transaction-header-item"
+                    [ngClass]="{
+                        'justify-content-end':
+                            headerIndex >= transactionHeaderItems.length - 3,
+                    }"
+                >
+                    <p class="m-0 ta-font-bold text-size-11 text-color-bw6-2">
+                        {{ headerItem }}
+                    </p>
+                </div>
+            }
+        </div>
+
+        <!-- Main -->
+
+        <div
+            class="d-flex flex-column justify-content-center stop-details-item-transaction-main"
+        >
+            @for (
+                transaction of _transactionList;
+                let transactionIndex = $index;
+                track transaction.id
+            ) {
+                <div
+                    class="stop-details-item-transaction-main-border"
+                    [ngClass]="{
+                        'active-drawer':
+                            transactionIndex ===
+                            transactionItemDocumentsDrawerIndex,
+                    }"
+                >
+                    <!-- Transaction Item -->
+
+                    <div
+                        class="d-flex align-items-center stop-details-item-transaction-main-item"
+                        [ngClass]="{
+                            active:
+                                transactionIndex ===
+                                transactionItemDropdownIndex,
+                            'active-options':
+                                transactionIndex ===
+                                transactionItemOptionsDropdownIndex,
+                        }"
+                    >
+                        <div
+                            class="d-grid align-items-center stop-details-item-transaction-main-item-left"
+                            (click)="
+                                handleTransactionDropdownClick(transactionIndex)
+                            "
+                        >
+                            <!-- Invoice -->
+
+                            <div
+                                class="d-flex align-items-center circle-container"
+                            >
+                                <svg-icon
+                                    class="svg-size-10 circle-icon svg-fill-light-grey-6"
+                                    [ngClass]="{
+                                        'svg-fill-green':
+                                            transaction?.fuelTransactionType
+                                                ?.id !==
+                                            eFuelTransactionType.Manual,
+                                    }"
+                                    [src]="fuelStopDetailsSvgRoutes.circleRoute"
+                                ></svg-icon>
+
+                                <p
+                                    class="m-0 ta-font-bold text-size-14 text-color-black d-inline-block text-truncate invoice"
+                                >
+                                    {{ transaction?.invoice }}
+                                </p>
+                            </div>
+
+                            <!-- Date -->
+
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 text-size-14 text-color-black-2">
+                                    {{
+                                        transaction?.transactionDate
+                                            | formatDateP
+                                    }}
+                                </p>
+                            </div>
+
+                            <!-- Time -->
+
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 text-size-14 text-color-black-2">
+                                    {{
+                                        transaction?.transactionDate
+                                            | formatTime
+                                    }}
+                                </p>
+                            </div>
+
+                            <!-- Truck -->
+
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 text-size-14 text-color-black-2">
+                                    {{ transaction?.truck?.truckNumber }}
+                                </p>
+                            </div>
+
+                            <!-- Driver -->
+
+                            <div class="d-flex align-items-center">
+                                <p class="m-0 text-size-14 text-color-black-2">
+                                    {{
+                                        transaction?.driver &&
+                                            transaction?.driver?.firstName +
+                                                ' ' +
+                                                transaction?.driver?.lastName
+                                    }}
+                                </p>
+                            </div>
+
+                            <!-- Category -->
+
+                            <div
+                                class="d-flex align-items-center"
+                                [appDescriptionItemsTextCount]="
+                                    transaction?.filteredItemNames
+                                "
+                                [containerWidth]="214"
+                            ></div>
+
+                            <!-- Gallon -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-end"
+                            >
+                                <p class="m-0 text-size-14 text-color-black-2">
+                                    {{
+                                        transaction?.gallon | thousandSeparator
+                                    }}
+                                </p>
+                            </div>
+
+                            <!-- PPG -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-end circle-container"
+                            >
+                                @if (transaction?.pricePerGallon) {
+                                    <svg-icon
+                                        class="svg-size-10 circle-icon"
+                                        [src]="
+                                            fuelStopDetailsSvgRoutes.circleRoute
+                                        "
+                                    ></svg-icon>
+
+                                    <p
+                                        class="m-0 text-size-14 text-color-black-2"
+                                    >
+                                        ${{
+                                            transaction?.pricePerGallon
+                                                | thousandSeparator
+                                        }}
+                                    </p>
+                                }
+                            </div>
+
+                            <!-- Cost -->
+
+                            <div
+                                class="d-flex align-items-center justify-content-end"
+                            >
+                                <p
+                                    class="m-0 ta-font-bold text-size-14 text-color-black"
+                                >
+                                    ${{
+                                        transaction?.total | thousandSeparator
+                                    }}
+                                </p>
+                            </div>
+                        </div>
+
+                        <!-- Actions -->
+
+                        <div
+                            class="d-grid align-items-center actions-container"
+                        >
+                            <!-- Document -->
+
+                            <app-ta-documents-drawer
+                                [isActive]="
+                                    transactionIndex ===
+                                    transactionItemDocumentsDrawerIndex
+                                "
+                                [options]="transactionItemOptions"
+                                (actionsEmitter)="
+                                    handleDocumentDrawerClick(transactionIndex)
+                                "
+                                (dropdownEmitter)="
+                                    handleDropdownOptionClick(
+                                        $event,
+                                        transactionIndex
+                                    )
+                                "
+                            ></app-ta-documents-drawer>
+
+                            <!-- Options -->
+
+                            <ca-dropdown-menu
+                                [type]="'dots-menu-type'"
+                                [placement]="'right-top'"
+                                [options]="transactionItemOptions"
+                                (dropdownOptionEmitter)="
+                                    handleDropdownOptionClick(
+                                        $event,
+                                        transactionIndex
+                                    )
+                                "
+                            >
+                            </ca-dropdown-menu>
+                        </div>
+                    </div>
+
+                    <!-- Transaction Item Dropdown -->
+
+                    <div
+                        class="d-flex flex-column stop-details-item-transaction-main-dropdown"
+                        [ngClass]="{
+                            expanded:
+                                transactionIndex ===
+                                transactionItemDropdownIndex,
+                            'dropdown-scroll':
+                                transaction?.fuelItems?.length >= 8,
+                        }"
+                    >
+                        <!-- Dropdown Header -->
+
+                        <div
+                            class="d-grid align-items-center stop-details-item-transaction-main-dropdown-header"
+                        >
+                            @for (
+                                dropdownHeaderItem of transactionDropdownHeaderItems;
+                                let dropdownHeaderItemIndex = $index;
+                                track dropdownHeaderItem
+                            ) {
+                                <div
+                                    class="d-flex align-items-center stop-details-item-transaction-main-dropdown-header-item"
+                                    [ngClass]="{
+                                        'justify-content-center':
+                                            dropdownHeaderItemIndex === 0,
+                                        'justify-content-end':
+                                            dropdownHeaderItemIndex >=
+                                            transactionDropdownHeaderItems.length -
+                                                3,
+                                    }"
+                                >
+                                    <p
+                                        class="m-0 ta-font-bold text-size-11 text-color-bw6-2"
+                                    >
+                                        {{ dropdownHeaderItem }}
+                                    </p>
+                                </div>
+                            }
+                        </div>
+
+                        <!-- Dropdown Main -->
+
+                        <div
+                            class="d-flex flex-column justify-content-center stop-details-item-transaction-main-dropdown-main"
+                        >
+                            @for (
+                                transactionItem of transaction?.fuelItems;
+                                let transactionItemIndex = $index;
+                                track transactionItem.id
+                            ) {
+                                <!-- Dropdown Main Item -->
+
+                                <div
+                                    class="d-grid align-items-center stop-details-item-transaction-main-dropdown-main-item"
+                                >
+                                    <!-- # -->
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-center"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-medium text-size-11 text-color-grey"
+                                        >
+                                            {{ transactionItemIndex + 1 }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Item Name -->
+
+                                    <div class="d-flex align-items-center">
+                                        <p
+                                            class="m-0 ta-font-medium text-size-11 text-color-black-2"
+                                        >
+                                            {{
+                                                transactionItem?.itemFuel?.name
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Quantity -->
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-end"
+                                    >
+                                        <p
+                                            class="m-0 text-size-11 text-color-black-2"
+                                        >
+                                            {{
+                                                {
+                                                    name: transactionItem
+                                                        ?.itemFuel?.name,
+                                                    quantity:
+                                                        transactionItem?.qty,
+                                                } | fuelItemQuantityType
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Price -->
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-end"
+                                    >
+                                        <p
+                                            class="m-0 text-size-11 text-color-black-2"
+                                        >
+                                            ${{
+                                                transactionItem?.price
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+
+                                    <!-- Total -->
+
+                                    <div
+                                        class="d-flex align-items-center justify-content-end"
+                                    >
+                                        <p
+                                            class="m-0 ta-font-medium text-size-11 text-color-black"
+                                        >
+                                            ${{
+                                                transactionItem?.subtotal
+                                                    | thousandSeparator
+                                            }}
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+
+        <!-- Footer -->
+
+        <div
+            class="d-flex align-items-center justify-content-between stop-details-item-transaction-footer"
+        >
+            <p class="m-0 ta-font-semi-bold text-size-11 text-color-bw6-2">
+                {{ _transactionList.length }} OF {{ _transactionList.length }}
+            </p>
+
+            <div
+                class="d-flex align-items-center show-more-btn"
+                (click)="handleShowMoreAction()"
+            >
+                <p class="m-0 ta-font-bold text-size-11 text-color-black">
+                    SHOW MORE
+                </p>
+            </div>
+        </div>
+    </div>
+}

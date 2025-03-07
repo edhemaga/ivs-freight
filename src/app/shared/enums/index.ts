@@ -12,15 +12,16 @@ export * from './truck-trailer-icon.enum';
 export * from './dropdown-menu-content-string.enum';
 export * from './toolbar-variant.enum';
 export * from './modal-button-text.enum';
-export * from './common-elements.enum';
+export * from './common-element.enum';
 export * from './active-view-mode.enum';
 
 export * from './general-actions.enum';
 export * from './string-placeholder.enum';
 export * from './confirmation-message.enum';
 export * from './modal-button-text.enum';
-export * from './common-elements.enum';
+export * from './common-element.enum';
 export * from './business-status.enum';
+export * from './shared-string.enum';
 
 // Files
 export * from './file/file-form-controls.enum';
