@@ -1026,10 +1026,10 @@ export class RepairTableComponent
                         case eFilterDropdownEnum.PM:
                             this.backFilterQuery = { ...this.backFilterQuery, pmTruckTitles: res.selectedIds };
                             break;
-                        case eFilterDropdownEnum.TRAILER_TYPE:
+                        case eFilterDropdownEnum.TRAILER:
                             this.backFilterQuery = { ...this.backFilterQuery, trailerNumbers: res.selectedIds };
                             break;
-                        case eFilterDropdownEnum.TRUCK_TYPE:
+                        case eFilterDropdownEnum.TRUCK:
                             this.backFilterQuery = { ...this.backFilterQuery, truckNumbers: res.selectedIds };
                             break;
                         case eFilterDropdownEnum.TIME_FILTER:
