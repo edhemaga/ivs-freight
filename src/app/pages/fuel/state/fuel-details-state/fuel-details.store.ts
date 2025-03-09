@@ -4,10 +4,10 @@ import { Injectable } from '@angular/core';
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
 // models
-import { ExtendedFuelStopResponse } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/models';
+import { FuelStopResponse } from 'appcoretruckassist';
 
 export interface FuelDetailsState
-    extends EntityState<ExtendedFuelStopResponse, number> {}
+    extends EntityState<FuelStopResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
 @StoreConfig({ name: 'fuelDetails' })
