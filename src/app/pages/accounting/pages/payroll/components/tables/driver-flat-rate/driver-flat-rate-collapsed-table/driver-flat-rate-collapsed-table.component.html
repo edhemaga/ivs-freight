@@ -21,7 +21,7 @@
             [isRound]="false"
             [isHoverEffect]="false"
         ></app-ca-profile-image>
-        <span class="driver-solo-info-text">{{ data.driver.fullName }}</span>
+        <span class="driver-solo-info-text text-color-black">{{ data.driver.fullName }}</span>
         <div
             class="payroll_count d-flex justify-content-center align-items-center"
         >
@@ -51,21 +51,21 @@
         <ng-container *ngIf="data !== 0">
             <div
                 class="custom-status-text"
-                [ngClass]="{ 'past-payment': data > 0 }"
+                [ngClass]="{ 'text-color-red-11': data > 0 }"
             >
                 {{ Math.abs(data) }} UNPAID
             </div>
         </ng-container>
 
         <ng-container *ngIf="data === 0">
-            <div class="custom-status-text ready-payment">ALL PAID</div>
+            <div class="custom-status-text text-color-green-2">ALL PAID</div>
         </ng-container>
     </div>
 </ng-template>
 
 <ng-template #customMileageHeader let-data>
-    <div class="custom-mileage">
+    <div class="custom-mileage text-color-dark-grey">
         {{ data }}
-        <span>$</span>
+        <span class="text-color-muted">$</span>
     </div>
 </ng-template>

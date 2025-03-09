@@ -33,15 +33,15 @@
         </ng-container>
 
         <ng-container *ngIf="data.name === 'Paid'">
-            <div class="custom-status-text ready-payment">PAID</div>
+            <div class="custom-status-text text-color-green-2">PAID</div>
         </ng-container>
 
         <ng-container *ngIf="data.name === 'ShortPaid'">
-            <div class="custom-status-text past-payment">SHORT-P</div>
+            <div class="custom-status-text text-color-red-11">SHORT-P</div>
         </ng-container>
 
         <ng-container *ngIf="data.name === 'NotPaid'">
-            <div class="custom-status-text past-payment">UNPAID</div>
+            <div class="custom-status-text text-color-red-11">UNPAID</div>
         </ng-container>
     </div>
 </ng-template>

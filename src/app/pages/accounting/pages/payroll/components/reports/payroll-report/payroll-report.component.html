@@ -116,12 +116,12 @@
 
 <!-- TABLE TEMPLATES -->
 <ng-template #customCountTemplate let-data let-index="index">
-    <div class="custom-load-index">{{ index + 1 }}</div>
+    <div class="custom-load-index text-color-black">{{ index + 1 }}</div>
 </ng-template>
 
 <ng-template #customFeeTemplate let-data let-index="index">
     <ng-container *ngIf="data">
-        <div class="custom-fee-template">
+        <div class="custom-fee-template text-color-black">
             +{{ data | currency: 'USD' : 'symbol' : '1.0-0' }}
         </div>
     </ng-container>
@@ -134,19 +134,19 @@
     >
         <ng-container *ngIf="data.orderNumber">
             <svg-icon
-                [svgClass]="'d-flex'"
+                [svgClass]="'d-flex prevent-text-selection'"
                 name="load_order_num_{{ data.orderNumber }}"
             ></svg-icon>
         </ng-container>
 
         @if (data.stopType.name === 'Repair') {
             <span
-                class="load-description-small-icon load-description-small-icon-repair text-size-11 ca-font-bold d-flex align-items-center justify-content-center"
+                class="load-description-small-icon load-description-small-icon-repair text-size-11 ca-font-bold d-flex align-items-center justify-content-center prevent-text-selection"
                 >R</span
             >
         } @else if (data.stopType.name === 'DeadHead') {
             <span
-                class="load-description-small-icon load-description-small-icon-deadhead text-color-bw6-2 text-size-11 ca-font-bold d-flex align-items-center justify-content-center"
+                class="load-description-small-icon load-description-small-icon-deadhead text-color-bw6-2 text-size-11 ca-font-bold d-flex align-items-center justify-content-center prevent-text-selection"
                 >D</span
             >
         }
@@ -158,7 +158,7 @@
                     <span class="load-description-tonu">T</span>
                 }
             </div>
-            <div class="load-description-stop-type">
+            <div class="load-description-stop-type text-color-muted">
                 {{ data.stopType.name }}
             </div>
         </div>
@@ -179,7 +179,7 @@
     <td colspan="4">
         <div class="td-container">
             <div class="td-content-container">
-                <div class="custom-load-index text b-600">Total</div>
+                <div class="custom-load-index text-color-black text b-600">Total</div>
             </div>
         </div>
     </td>
@@ -210,14 +210,14 @@
         <td [attr.colspan]="selectedTab === 'open' ? 4 : 5">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">Total</div>
+                    <div class="custom-load-index text b-600 text-color-black">Total</div>
                 </div>
             </div>
         </td>
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">
+                    <div class="custom-load-index text text-color-black b-600">
                         {{ payroll_totals.totalEmptyMiles | currency }}
                     </div>
                 </div>
@@ -226,7 +226,7 @@
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">
+                    <div class="custom-load-index text text-color-black b-600">
                         {{ payroll_totals.totalLoadedMiles | currency }}
                     </div>
                 </div>
@@ -235,7 +235,7 @@
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">
+                    <div class="custom-load-index text text-color-black b-600">
                         {{ payroll_totals.totalMiles | currency }}
                     </div>
                 </div>
@@ -249,7 +249,7 @@
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">
+                    <div class="custom-load-index text text-color-black b-600">
                         {{ payroll_totals.totalSubtotal | currency }}
                     </div>
                 </div>
