@@ -27,6 +27,7 @@
                     (closeDropdown)="onHideDropdown($event)"
                     [receivedAddressList]="addressList"
                     [receivedAddressData]="addressData"
+                    (selectedAddress)="handleInputSelect($event)"
                     (sentAddressData)="onAddressChange($event)"
                     (sentAddressValue)="getAddressData($event)"
                 ></app-ca-input-address-dropdown>
