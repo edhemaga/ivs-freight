@@ -1,4 +1,4 @@
-@let isOutdated = _cardData.priceOutDated && _cardData.defPriceOutDated;
+@let isOutdated = _cardData.priceOutDated || _cardData.defPriceOutDated;
 
 <app-ta-custom-card
     [cardName]="'Last Fuel Price'"
@@ -14,102 +14,7 @@
     [hasWeeklyStatus]="isLastFuelPriceCardOpen && isOutdated && 'Outdated'"
     (onOpenCard)="handleLastFuelPriceCardOpen($event)"
 >
-    <div class="d-grid align-items-center last-fuel-price">
-        @for (
-            fuelPrice of _cardData.lastFuelPriceConfig;
-            let i = $index;
-            track fuelPrice.title
-        ) {
-            @let isDisabled = isOutdated || !fuelPrice?.totalValue;
-
-            <div
-                class="d-flex flex-column justify-content-center last-fuel-price-item"
-                [ngClass]="{ disabled: isDisabled }"
-            >
-                <p
-                    class="m-0 ta-font-bold text-size-11"
-                    [ngClass]="
-                        isDisabled ? 'text-color-bw6-2' : 'text-color-black'
-                    "
-                >
-                    {{ fuelPrice.title }}
-                </p>
-
-                <span
-                    class="ta-font-medium text-size-18 total-value"
-                    [ngClass]="
-                        isDisabled
-                            ? 'text-color-light-grey-2'
-                            : 'text-color-black'
-                    "
-                >
-                    {{
-                        fuelPrice.totalValue
-                            ? eStringPlaceholder.DOLLAR_SIGN +
-                              (fuelPrice.totalValue | thousandSeparator)
-                            : 'None'
-                    }}
-                </span>
-
-                <!-- Progress -->
-
-                <div
-                    class="d-flex flex-column justify-content-center last-fuel-price-item-progress"
-                >
-                    <div
-                        class="d-grid align-items-center last-fuel-price-item-progress-bar"
-                    >
-                        @for (
-                            fuelPriceColor of lastFuelPriceColors;
-                            track fuelPriceColor
-                        ) {
-                            <div
-                                class="last-fuel-price-item-progress-bar-box"
-                                [ngStyle]="{
-                                    'background-color': fuelPriceColor,
-                                }"
-                            ></div>
-                        }
-
-                        <!-- Progress Icon -->
-
-                        <svg-icon
-                            class="svg-size-22 progress-icon"
-                            [ngClass]="svgData.svgClass"
-                            [ngStyle]="{
-                                left:
-                                    svgData.svgPosition +
-                                    eStringPlaceholder.PERCENTAGE_SIGN,
-                            }"
-                            [src]="fuelStopDetailsSvgRoutes.progressIconRoute"
-                        ></svg-icon>
-                    </div>
-
-                    <div
-                        class="d-flex align-items-center justify-content-between"
-                    >
-                        <span
-                            class="ta-font-medium text-size-11"
-                            [ngClass]="
-                                isDisabled
-                                    ? 'text-color-muted'
-                                    : 'text-color-black-2'
-                            "
-                            >${{ fuelPrice.minValue | thousandSeparator }}
-                        </span>
-
-                        <span
-                            class="ta-font-medium text-size-11"
-                            [ngClass]="
-                                isDisabled
-                                    ? 'text-color-muted'
-                                    : 'text-color-black-2'
-                            "
-                            >${{ fuelPrice.maxValue | thousandSeparator }}
-                        </span>
-                    </div>
-                </div>
-            </div>
-        }
-    </div>
+    <app-ca-last-fuel-price-progress
+        [lastFuelPriceData]="_cardData"
+    ></app-ca-last-fuel-price-progress>
 </app-ta-custom-card>

@@ -36,7 +36,7 @@
             @for (
                 transaction of _transactionList;
                 let transactionIndex = $index;
-                track transaction.id
+                track transaction?.invoice
             ) {
                 <div
                     class="stop-details-item-transaction-main-border"
@@ -161,6 +161,19 @@
                                 @if (transaction?.pricePerGallon) {
                                     <svg-icon
                                         class="svg-size-10 circle-icon"
+                                        [ngClass]="
+                                            {
+                                                minValue:
+                                                    transaction?.fuelStopStore
+                                                        ?.lowestPricePerGallon,
+                                                maxValue:
+                                                    transaction?.fuelStopStore
+                                                        ?.highestPricePerGallon,
+                                                totalValue:
+                                                    transaction?.fuelStopStore
+                                                        ?.pricePerGallon,
+                                            } | lastFuelPriceRangeClassColor
+                                        "
                                         [src]="
                                             fuelStopDetailsSvgRoutes.circleRoute
                                         "
