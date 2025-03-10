@@ -74,7 +74,7 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
     }
 
     public expandTable(): void {
-        this.payrollFacadeService.setPayrollReportTableExpanded(false);
+        this.payrollFacadeService.setPayrollReportTableExpanded(false, '');
     }
 
     public identity(item: {

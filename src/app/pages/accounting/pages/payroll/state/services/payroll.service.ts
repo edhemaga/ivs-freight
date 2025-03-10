@@ -125,16 +125,18 @@ export class PayrollFacadeService {
         PayrollDriverMileageExpandedListResponse[]
     > = this.store.pipe(select(selectDriverMileageExpandedTable));
 
-    public selectPayrollDropdownLoadList$: Observable<LoadWithMilesStopResponse[]> =
-        this.store.pipe(select(selectPayrollLoadListForDropdown));
+    public selectPayrollDropdownLoadList$: Observable<
+        LoadWithMilesStopResponse[]
+    > = this.store.pipe(select(selectPayrollLoadListForDropdown));
 
-    public getPayrollCounts(): void {
+    public getPayrollCounts(showLoading: boolean): void {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
                 this.store.dispatch(
                     PayrollActions.getPayrollCounts({
                         ShowOpen: payrollState.payrollOpenedTab === 'open',
+                        showLoading: showLoading,
                     })
                 );
             });
@@ -164,9 +166,15 @@ export class PayrollFacadeService {
         );
     }
 
-    public setPayrollReportTableExpanded(expanded: boolean): void {
+    public setPayrollReportTableExpanded(
+        expanded: boolean,
+        openedPayrollLeftId: string
+    ): void {
         this.store.dispatch(
-            PayrollActions.setTableReportExpanded({ expanded })
+            PayrollActions.setTableReportExpanded({
+                expanded,
+                openedPayrollLeftId,
+            })
         );
     }
 

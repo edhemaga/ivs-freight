@@ -36,6 +36,7 @@ export const payrollState: PayrollState = {
     closeReportPaymentLoading: false,
     payrollOpenedTab: ePayrollTablesStatus.OPEN,
     payrollMapRoutes: null,
+    openedPayrollLeftId: '',
 };
 
 export const payrollReducer = createReducer(
@@ -83,7 +84,7 @@ export const payrollReducer = createReducer(
     ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess,
-        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriverErrorSuccess
+        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriverSuccess
     ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError,

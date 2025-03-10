@@ -184,7 +184,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
                 if (!loading && !error) {
                     this.loading = false;
                     this.loadingCloseUnpaid = false;
-                    this.payrollFacadeService.getPayrollCounts();
+                    this.payrollFacadeService.getPayrollCounts(true);
                     this.onCloseModal();
                     this.destroy$.next();
                     this.destroy$.complete();

@@ -8,13 +8,11 @@
         </app-payroll-toolbar>
 
         <div class="payroll-tables-holder">
-            <ng-container
-                *ngFor="
-                    let payroll of (payrollCountsResponse$ | async).payrollData;
-                    let indx = index;
-                    trackBy: trackByIndex
-                "
-            >
+            @for (
+                payroll of (payrollCountsResponse$ | async).payrollData;
+                track $index;
+                let indx = $index
+            ) {
                 <div class="card-holder">
                     <app-ca-payroll-list-summary-overview
                         [index]="indx"
@@ -26,42 +24,229 @@
                             selectedOpenFromList && openedIndex === indx
                         "
                     >
-                        <ng-container #container></ng-container>
+                        @if (openedIndex === indx) {
+                            @switch (payrollType) {
+                                @case (ePayrollTable.DRIVER_MILES) {
+                                    @if (
+                                        selectedTab ===
+                                        ePayrollTablesStatus.OPEN
+                                    ) {
+                                        <app-driver-mileage-solo-table
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            #driverMileageSoloTable
+                                            (expandTableEvent)="
+                                                expandFromTables(
+                                                    payrollType,
+                                                    $event,
+                                                    driverMileageSoloTable.expandTable
+                                                )
+                                            "
+                                        ></app-driver-mileage-solo-table>
+                                    } @else if (selectedOpenFromList) {
+                                        <app-driver-mileage-expanded-table
+                                            #driverMileageExpandedTable
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            (expandTableEvent)="
+                                                handleOpenExpandedListReport(
+                                                    $event,
+                                                    driverMileageExpandedTable.expandTable
+                                                )
+                                            "
+                                            [driverId]="selectedOpenFromList.id"
+                                        ></app-driver-mileage-expanded-table>
+                                    } @else {
+                                        <app-driver-mileage-collapsed-table
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            (expandTableEvent)="
+                                                handleOpenExpandedReport(
+                                                    $event,
+                                                    ePayrollTable.DRIVER_MILES_TITLE
+                                                )
+                                            "
+                                        ></app-driver-mileage-collapsed-table>
+                                    }
+                                }
+                                @case (ePayrollTable.DRIVER_FLAT_RATE) {
+                                    @if (
+                                        selectedTab ===
+                                        ePayrollTablesStatus.OPEN
+                                    ) {
+                                        <app-driver-flat-rate-table
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            #driverFlatRateTable
+                                            (expandTableEvent)="
+                                                expandFromTables(
+                                                    payrollType,
+                                                    $event,
+                                                    driverFlatRateTable.expandTable
+                                                )
+                                            "
+                                        ></app-driver-flat-rate-table>
+                                    } @else if (selectedOpenFromList) {
+                                        <app-driver-flat-rate-expanded-table
+                                            #driverFlatRateExpandedTable
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            (expandTableEvent)="
+                                                handleOpenExpandedListReport(
+                                                    $event,
+                                                    driverFlatRateExpandedTable.expandTable
+                                                )
+                                            "
+                                            [driverId]="selectedOpenFromList.id"
+                                        ></app-driver-flat-rate-expanded-table>
+                                    } @else {
+                                        <app-driver-flat-rate-collapsed-table
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            (expandTableEvent)="
+                                                handleOpenExpandedReport(
+                                                    $event,
+                                                    ePayrollTable.DRIVER_FLAT_RATE_TITLE
+                                                )
+                                            "
+                                        ></app-driver-flat-rate-collapsed-table>
+                                    }
+                                }
+                                @case (ePayrollTable.DRIVER_COMMISSION) {
+                                    @if (
+                                        selectedTab ===
+                                        ePayrollTablesStatus.OPEN
+                                    ) {
+                                        <app-driver-commission-solo-table
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            #driverCommissionTable
+                                            (expandTableEvent)="
+                                                expandFromTables(
+                                                    payrollType,
+                                                    $event,
+                                                    driverCommissionTable.expandTable
+                                                )
+                                            "
+                                        ></app-driver-commission-solo-table>
+                                    } @else if (selectedOpenFromList) {
+                                        <app-driver-commission-expanded-table
+                                            #driverCommissionExpandedTable
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            (expandTableEvent)="
+                                                handleOpenExpandedListReport(
+                                                    $event,
+                                                    driverCommissionExpandedTable.expandTable
+                                                )
+                                            "
+                                            [driverId]="selectedOpenFromList.id"
+                                        ></app-driver-commission-expanded-table>
+                                    } @else {
+                                        <app-driver-commission-collapsed-table
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            (expandTableEvent)="
+                                                handleOpenExpandedReport(
+                                                    $event,
+                                                    ePayrollTable.DRIVER_COMMISSION_TITLE
+                                                )
+                                            "
+                                        ></app-driver-commission-collapsed-table>
+                                    }
+                                }
+                                @case (ePayrollTable.DRIVER_OWNER) {
+                                    @if (
+                                        selectedTab ===
+                                        ePayrollTablesStatus.OPEN
+                                    ) {
+                                        <app-driver-owner-table
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            #driverOwnerTable
+                                            (expandTableEvent)="
+                                                expandFromTables(
+                                                    payrollType,
+                                                    $event,
+                                                    driverOwnerTable.expandTable
+                                                )
+                                            "
+                                        ></app-driver-owner-table>
+                                    } @else if (selectedOpenFromList) {
+                                        <app-driver-owner-expanded-table
+                                            #driverOwnerExpandedTable
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            (expandTableEvent)="
+                                                handleOpenExpandedListReport(
+                                                    $event,
+                                                    driverOwnerExpandedTable.expandTable
+                                                )
+                                            "
+                                            [driverId]="selectedOpenFromList.id"
+                                        ></app-driver-owner-expanded-table>
+                                    } @else {
+                                        <app-driver-owner-collapsed-table
+                                            [expandTable]="
+                                                reportTableExpanded$ | async
+                                            "
+                                            (expandTableEvent)="
+                                                handleOpenExpandedReport(
+                                                    $event,
+                                                    ePayrollTable.DRIVER_OWNER_TITLE
+                                                )
+                                            "
+                                        ></app-driver-owner-collapsed-table>
+                                    }
+                                }
+                            }
+                        }
                     </app-ca-payroll-list-summary-overview>
                 </div>
-            </ng-container>
+            }
         </div>
     </div>
-    <ng-container *ngIf="reportTableExpanded$ | async">
+    @if (reportTableExpanded$ | async) {
         <div class="report-hold">
-            <ng-container [ngSwitch]="payrollReportType">
-                <ng-container *ngSwitchCase="ePayrollTable.DRIVER_MILES">
+            @switch (payrollReportType) {
+                @case (ePayrollTable.DRIVER_MILES) {
                     <app-payroll-report
                         [selectedTab]="selectedTabForReport"
                         [reportId]="reportTableDataId"
                     ></app-payroll-report>
-                </ng-container>
-                <ng-container *ngSwitchCase="ePayrollTable.DRIVER_COMMISSION">
+                }
+                @case (ePayrollTable.DRIVER_COMMISSION) {
                     <app-driver-commission-report
                         [selectedTab]="selectedTabForReport"
                         [reportId]="reportTableDataId"
                     ></app-driver-commission-report>
-                </ng-container>
-                <ng-container *ngSwitchCase="ePayrollTable.DRIVER_OWNER">
+                }
+                @case (ePayrollTable.DRIVER_OWNER) {
                     <app-driver-owner-report
                         [selectedTab]="selectedTabForReport"
                         [reportId]="reportTableDataId"
                     ></app-driver-owner-report>
-                </ng-container>
-                <ng-container *ngSwitchCase="ePayrollTable.DRIVER_FLAT_RATE">
+                }
+                @case (ePayrollTable.DRIVER_FLAT_RATE) {
                     <app-driver-flat-rate-report
                         [selectedTab]="selectedTabForReport"
                         [reportId]="reportTableDataId"
                     ></app-driver-flat-rate-report>
-                </ng-container>
-            </ng-container>
+                }
+            }
         </div>
-    </ng-container>
+    }
 </div>
 
 <ng-template #customIndex let-index="index">
@@ -90,18 +275,18 @@
         </div>
 
         <div class="driver-info d-flex">
-            <ng-container *ngIf="!selectedOpenFromList?.hideAvatar">
+            @if (!selectedOpenFromList?.hideAvatar) {
                 <app-ca-profile-image
                     [avatarColor]="{
                         background: '#DFC2F9',
-                        color: '#9E47EC66'
+                        color: '#9E47EC66',
                     }"
                     [textShortName]="'FJ'"
                     [size]="20"
                     [isRound]="false"
                     [isHoverEffect]="false"
                 ></app-ca-profile-image>
-            </ng-container>
+            }
 
             <div class="table-text">
                 {{ selectedOpenFromList?.fullName }}

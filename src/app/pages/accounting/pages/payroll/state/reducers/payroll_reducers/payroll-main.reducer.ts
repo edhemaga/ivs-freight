@@ -5,10 +5,15 @@ import { PayrollState } from '@pages/accounting/pages/payroll/state/models';
 // Enums
 import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
-export const onGetPayrollCounts = (state: PayrollState) => ({
-    ...state,
-    loading: true,
-});
+export const onGetPayrollCounts = (
+    state: PayrollState,
+    data: { showLoading: boolean }
+) => {
+    return {
+        ...state,
+        loading: data.showLoading,
+    };
+};
 
 export const onGetPayrollCountsSuccess = (
     state: PayrollState,
@@ -34,7 +39,7 @@ export const onSetPayrollopenedTab = (
 
 export const onSetTableReportExpanded = (
     state: PayrollState,
-    data: { expanded: boolean }
+    data: { expanded: boolean; openedPayrollLeftId: string }
 ) => {
     if (!data.expanded) {
         return {
@@ -47,12 +52,14 @@ export const onSetTableReportExpanded = (
             selectedLoadIds: undefined,
             expandedReportTable: data.expanded,
             payrollOpenedReport: null,
+            openedPayrollLeftId: '',
         };
     }
     return {
         ...state,
         payrollOpenedReport: null,
         expandedReportTable: data.expanded,
+        openedPayrollLeftId: data.openedPayrollLeftId,
     };
 };
 

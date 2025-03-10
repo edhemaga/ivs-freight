@@ -303,6 +303,7 @@ export class DriverCommissionReportComponent
     }
 
     public getIsEditLoadDropdownActionActive(): void {
+        
         const loadDummyData = [
             // w8 for slavisa
             { id: 1, title: 'INV-162-23' },
