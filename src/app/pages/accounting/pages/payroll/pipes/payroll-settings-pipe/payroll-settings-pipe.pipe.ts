@@ -1,4 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
+
+// Config
 import { ICaInput } from '@ca-shared/components/ca-input-test/config';
 
 @Pipe({

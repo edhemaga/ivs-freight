@@ -1,8 +1,14 @@
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+// Enums
+
 import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+
+// Model
+import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
 import { PayrollDeductionRecurringType } from 'appcoretruckassist';
+
+// Config
 import { ICaInput } from '@ca-shared/components/ca-input-test/config';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
 export class PayrollCreditConst {
     static tabs: TabOptions[] = [
@@ -117,7 +123,7 @@ export class PayrollCreditConst {
             iconIncrementSvgRoute: string;
         },
         isDisabled: boolean
-    ): ICaInput { 
+    ): ICaInput {
         return {
             id: 'No. of Payments',
             name: 'numberOfPayments',

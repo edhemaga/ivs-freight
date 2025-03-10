@@ -223,15 +223,15 @@ export class PayrollReportComponent
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
 
-
-         this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(loadList => {
-            console.log("WHAT IS LOAD LIST HERE", loadList);
-         });
+        this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
+            (loadList) => {
+                //console.log("WHAT IS LOAD LIST HERE", loadList); // CONSOLE LOG FOR TESTING
+            }
+        );
 
         this.payrollFacadeService.selectPayrollOpenedReport$
             .pipe(takeUntil(this.destroy$))
             .subscribe((payroll) => {
-                console.log('what is payroll here', payroll);
                 this.openedPayroll = payroll;
             });
 
@@ -246,7 +246,7 @@ export class PayrollReportComponent
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$
             .pipe(takeUntil(this.destroy$))
             .subscribe((payrollLoadList) => {
-                console.log("PAYROLL ", payrollLoadList);
+                console.log('PAYROLL ', payrollLoadList);
                 const filteredPayrollList = payrollLoadList.filter(
                     (load) => !(load as any).rowType
                 );

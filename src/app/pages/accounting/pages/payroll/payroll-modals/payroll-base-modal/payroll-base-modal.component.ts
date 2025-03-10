@@ -62,8 +62,10 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { ICaInput } from '@ca-shared/components/ca-input-test/config';
 import { PayrollSettingsPipe } from '../../pipes/payroll-settings-pipe/payroll-settings-pipe.pipe';
+
+// Config
+import { ICaInput } from '@ca-shared/components/ca-input-test/config';
 
 @Component({
     selector: 'app-payroll-base-modal',
