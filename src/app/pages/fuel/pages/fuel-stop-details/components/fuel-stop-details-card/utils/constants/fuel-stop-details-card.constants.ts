@@ -1,14 +1,6 @@
 import { Tabs } from '@shared/models';
 
 export class FuelStopDetailsCardConstants {
-    static LAST_FUEL_PRICE_COLORS: string[] = [
-        '#56B4AC',
-        '#77BF56',
-        '#FAB15C',
-        '#FF906D',
-        '#E66767',
-    ];
-
     static FUEL_EXPENSES_CHART_TABS: Tabs[] = [
         {
             id: 221,

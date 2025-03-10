@@ -8,4 +8,6 @@ export enum eStringPlaceholder {
     DOLLAR_SIGN = '$',
     PERCENTAGE_SIGN = '%',
     ELLIPSIS = '...',
+    NA = 'N/A',
+    NONE = 'None',
 }
