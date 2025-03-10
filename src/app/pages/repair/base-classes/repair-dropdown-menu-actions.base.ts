@@ -20,7 +20,10 @@ import { MappedRepairShop } from '@pages/repair/pages/repair-table/models';
 
 export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsBase {
     protected abstract destroy$: Subject<void>;
-    protected abstract viewData: MappedRepairShop[] | CardDetails[];
+    protected abstract viewData:
+        | MappedRepairShop[]
+        | CardDetails[]
+        | RepairResponse[];
 
     // services
     protected abstract repairService: RepairService;

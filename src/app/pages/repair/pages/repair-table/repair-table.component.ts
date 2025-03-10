@@ -31,6 +31,7 @@ import {
     MapMarkerIconService,
     IMapPagination,
     IMapBounds,
+    TruckTrailerColorFinderPipe,
     eFilterDropdownEnum,
 } from 'ca-components';
 
@@ -62,7 +63,6 @@ import {
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
-import { DispatchColorFinderPipe } from '@shared/pipes';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -70,10 +70,11 @@ import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-m
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 import {
     DropdownMenuStringEnum,
-    eCommonElements,
+    eCommonElement,
     eGeneralActions,
 } from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
+import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -87,9 +88,11 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import {
     RepairShopMapDropdownHelper,
     RepairTableBackFilterDataHelper,
-    RepairTableDateFormaterHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+
+// interfaces
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // models
 import {
@@ -109,7 +112,6 @@ import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-a
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-repair-table',
@@ -118,7 +120,7 @@ import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interf
         './repair-table.component.scss',
         '../../../../../assets/scss/maps.scss',
     ],
-    providers: [ThousandSeparatorPipe, DispatchColorFinderPipe],
+    providers: [ThousandSeparatorPipe, TruckTrailerColorFinderPipe],
 })
 export class RepairTableComponent
     extends RepairDropdownMenuActionsBase
@@ -128,7 +130,7 @@ export class RepairTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
-    public eCommonElements = eCommonElements;
+    public eCommonElement = eCommonElement;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -238,7 +240,7 @@ export class RepairTableComponent
         // pipes
         private datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe,
-        private dispatchColorFinderPipe: DispatchColorFinderPipe
+        private truckTrailerColorFinderPipe: TruckTrailerColorFinderPipe
     ) {
         super();
     }
@@ -1021,38 +1023,53 @@ export class RepairTableComponent
                 if (res) {
                     switch (res.filterType) {
                         case RepairTableStringEnum.CATEGORY_REPAIR_FILTER:
-                            this.backFilterQuery = { ...this.backFilterQuery, categoryIds: res.selectedIds };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                categoryIds: res.selectedIds,
+                            };
                             break;
                         case eFilterDropdownEnum.PM:
-                            this.backFilterQuery = { ...this.backFilterQuery, pmTruckTitles: res.selectedIds };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                pmTruckTitles: res.selectedIds,
+                            };
                             break;
                         case eFilterDropdownEnum.TRAILER_TYPE:
-                            this.backFilterQuery = { ...this.backFilterQuery, trailerNumbers: res.selectedIds };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                trailerNumbers: res.selectedIds,
+                            };
                             break;
                         case eFilterDropdownEnum.TRUCK_TYPE:
-                            this.backFilterQuery = { ...this.backFilterQuery, truckNumbers: res.selectedIds };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                truckNumbers: res.selectedIds,
+                            };
                             break;
                         case eFilterDropdownEnum.TIME_FILTER:
-                            this.backFilterQuery = { ...this.backFilterQuery, dateTo: res.toDate, dateFrom: res.fromDate };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                dateTo: res.toDate,
+                                dateFrom: res.fromDate,
+                            };
                             break;
                         case eFilterDropdownEnum.STATE:
                             // this.backFilterQuery = { ...this.backFilterQuery, states: res.states };
                             break;
-                        case eFilterDropdownEnum.SERVICE: 
+                        case eFilterDropdownEnum.SERVICE:
                             this.backFilterQuery = {
                                 ...this.backFilterQuery,
-                                categoryIds: res.selectedIds
-                            }
+                                categoryIds: res.selectedIds,
+                            };
                             break;
                         case 'moneyFilter':
-                            this.backFilterQuery = { 
-                                ...this.backFilterQuery, 
-                                costFrom: res.queryParams?.from, 
-                                costTo: res.queryParams?.to 
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                costFrom: res.queryParams?.from,
+                                costTo: res.queryParams?.to,
                             };
-                            break; 
+                            break;
                     }
-                    
 
                     if (this.selectedTab !== TableStringEnum.REPAIR_SHOP)
                         this.repairBackFilter(this.backFilterQuery);
@@ -1378,7 +1395,7 @@ export class RepairTableComponent
                 .toLowerCase(),
             vehicleTooltipTitle:
                 truck?.truckType.name || trailer?.trailerType.name,
-            vehicleTooltipColor: this.dispatchColorFinderPipe.transform(
+            vehicleTooltipColor: this.truckTrailerColorFinderPipe.transform(
                 truck?.truckType.id || trailer?.trailerType.id,
                 unitType?.name?.toLowerCase(),
                 true
@@ -1570,7 +1587,7 @@ export class RepairTableComponent
                             array: mappedRes,
                             template:
                                 this.selectedTab !== TableStringEnum.REPAIR_SHOP
-                                    ? TableStringEnum.REPAIR_2
+                                    ? eRepairShopDetails.REPAIR_LOWERCASE
                                     : TableStringEnum.REPAIR_SHOP_3,
                             type:
                                 mappedRes?.length > 1

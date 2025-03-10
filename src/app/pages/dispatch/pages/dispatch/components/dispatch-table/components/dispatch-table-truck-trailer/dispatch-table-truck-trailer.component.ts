@@ -20,6 +20,7 @@ import { ModalService } from '@shared/services/modal.service';
 
 // enums
 import { DispatchTableStringEnum } from '@pages/dispatch/pages/dispatch/components/dispatch-table/enums';
+import { eSharedString } from '@shared/enums';
 
 // helpers
 import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
@@ -98,6 +99,8 @@ export class DispatchTableTruckTrailerComponent implements OnChanges {
     public _trailerDropdownWidth: number;
 
     public dispatchTableSvgRoutes = DispatchTableSvgRoutes;
+
+    public eSharedString = eSharedString;
 
     public hasNoResultsTruck: boolean = false;
     public hasNoResultsTrailer: boolean = false;

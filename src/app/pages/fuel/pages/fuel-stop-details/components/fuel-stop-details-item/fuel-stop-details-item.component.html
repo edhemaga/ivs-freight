@@ -12,14 +12,22 @@
             <!-- Transaction -->
 
             @case ('transaction') {
-                <app-fuel-stop-details-item-transaction>
+                <app-fuel-stop-details-item-transaction
+                    [transactionList]="detailsConfig[1]?.data?.transactionList"
+                    [searchConfig]="searchConfig"
+                >
                 </app-fuel-stop-details-item-transaction>
             }
 
             <!-- Vehilce -->
 
             @case ('fuelled-vehicle') {
-                <app-fuel-stop-details-item-fuelled-vehicle>
+                <app-fuel-stop-details-item-fuelled-vehicle
+                    [fuelledVehicleList]="
+                        detailsConfig[2]?.data?.fuelledVehicleList
+                    "
+                    [searchConfig]="searchConfig"
+                >
                 </app-fuel-stop-details-item-fuelled-vehicle>
             }
         }

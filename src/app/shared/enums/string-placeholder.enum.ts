@@ -5,4 +5,8 @@ export enum eStringPlaceholder {
     COMMA_WHITESPACE = ', ',
     DOT = '.',
     FORWARD_SLASH = '/',
+    DOLLAR_SIGN = '$',
+    PERCENTAGE_SIGN = '%',
+    NA = 'N/A',
+    NONE = 'None',
 }

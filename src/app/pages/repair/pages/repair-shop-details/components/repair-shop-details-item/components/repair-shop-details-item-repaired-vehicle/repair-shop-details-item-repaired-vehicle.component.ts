@@ -1,26 +1,14 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
-
-// modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
 
-// svg routes
-import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
-
 // components
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { CaSearchMultipleStatesComponent } from 'ca-components';
+import { CaVehicleListComponent, eVehicleList } from 'ca-components';
 
-// constants
-import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
-
-// pipes
-import { DispatchColorFinderPipe, ThousandSeparatorPipe } from '@shared/pipes';
+// interfaces
+import { IVehicleListActionsEmit } from '@ca-shared/components/ca-vehicle-list/interfaces';
 
 // models
 import { RepairedVehicleResponse } from 'appcoretruckassist';
@@ -31,21 +19,11 @@ import { RepairedVehicleResponse } from 'appcoretruckassist';
     styleUrls: ['./repair-shop-details-item-repaired-vehicle.component.scss'],
     standalone: true,
     imports: [
-        // modules
-        CommonModule,
-        AngularSvgIconModule,
-        NgbModule,
-
         // components
-        TaAppTooltipV2Component,
-        CaSearchMultipleStatesComponent,
-
-        // pipes
-        ThousandSeparatorPipe,
-        DispatchColorFinderPipe,
+        CaVehicleListComponent,
     ],
 })
-export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
+export class RepairShopDetailsItemRepairedVehicleComponent {
     @Input() set repairedVehicleList(data: RepairedVehicleResponse[]) {
         this._repairedVehicleList = data;
     }
@@ -53,9 +31,7 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
 
     public _repairedVehicleList: RepairedVehicleResponse[] = [];
 
-    public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
-
-    public repairedVehicleListHeaderItems: string[];
+    public eVehicleList = eVehicleList;
 
     constructor(
         private router: Router,
@@ -64,22 +40,13 @@ export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
         private repairShopDetailsService: RepairShopDetailsService
     ) {}
 
-    ngOnInit(): void {
-        this.getConstantData();
-    }
+    public handleVehicleListActionsEmit(action: IVehicleListActionsEmit): void {
+        const { unitType, unitId, isCloseSearch } = action;
 
-    private getConstantData(): void {
-        this.repairedVehicleListHeaderItems =
-            RepairShopDetailsItemConstants.REPAIRED_VEHICLES_LIST_HEADER_ITEMS;
-    }
-
-    public handleViewDetailClick(unitType: string, id: number): void {
-        this.router.navigate([`/list/${unitType.toLowerCase()}/${id}/details`]);
-    }
-
-    public handleCloseSearchEmit(): void {
-        const detailsPartIndex = 1;
-
-        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
+        isCloseSearch
+            ? this.repairShopDetailsService.setCloseSearchStatus(1)
+            : this.router.navigate([
+                  `/list/${unitType.toLowerCase()}/${unitId}/details`,
+              ]);
     }
 }

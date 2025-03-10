@@ -1,17 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
-// modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { CaLastFuelPriceProgressComponent } from 'ca-components';
 
-// constants
-import { FuelStopDetailsCardConstants } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/utils/constants';
-
-// svg routes
-import { FuelStopDetailsSvgRoutes } from '@pages/fuel/pages/fuel-stop-details/utils/svg-routes';
+// pipes
+import { LastFuelPriceCardTitlePipe } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/pipes';
 
 // models
 import { FuelStopResponse } from 'appcoretruckassist';
@@ -24,56 +19,25 @@ import { FuelStopResponse } from 'appcoretruckassist';
     imports: [
         // modules
         CommonModule,
-        AngularSvgIconModule,
 
         // components
         TaCustomCardComponent,
+        CaLastFuelPriceProgressComponent,
+
+        // pipes
+        LastFuelPriceCardTitlePipe,
     ],
 })
 export class FuelStopDetailsLastFuelPriceCardComponent {
     @Input() set cardData(data: FuelStopResponse) {
-        this.createLastFuelPriceCardData(data);
+        this._cardData = data;
     }
 
     public _cardData: FuelStopResponse;
 
-    // dummy w8 for back
-    public fuelPriceConfig = [
-        {
-            title: 'Diesel',
-            totalValue: 3.358,
-            minValue: 3.23,
-            maxValue: 4.18,
-        },
-        {
-            title: 'DEF',
-            totalValue: 2.358,
-            minValue: 2.13,
-            maxValue: 5.18,
-        },
-    ];
-
     public isLastFuelPriceCardOpen: boolean = true;
 
-    public lastFuelPriceColors: string[] = [];
-
-    // svg routes
-    public fuelStopDetailsSvgRoutes = FuelStopDetailsSvgRoutes;
-
     constructor() {}
-
-    ngOnInit(): void {
-        this.getConstantData();
-    }
-
-    private getConstantData(): void {
-        this.lastFuelPriceColors =
-            FuelStopDetailsCardConstants.LAST_FUEL_PRICE_COLORS;
-    }
-
-    private createLastFuelPriceCardData(data: FuelStopResponse): void {
-        this._cardData = data;
-    }
 
     public handleLastFuelPriceCardOpen(isOpen: boolean): void {
         this.isLastFuelPriceCardOpen = isOpen;

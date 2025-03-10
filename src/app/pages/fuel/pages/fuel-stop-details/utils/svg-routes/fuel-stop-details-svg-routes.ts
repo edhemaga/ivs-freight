@@ -3,5 +3,5 @@ export class FuelStopDetailsSvgRoutes {
     static addressRoute: string = 'assets/svg/common/ic_address.svg';
     static favoriteRoute: string = 'assets/svg/common/ic_star.svg';
     static closedRoute: string = 'assets/svg/common/ic_permanently_closed.svg';
-    static progressIconRoute: string = 'assets/svg/common/ic_owner-status.svg';
+    static circleRoute: string = 'assets/svg/common/colors/ic_circle.svg';
 }

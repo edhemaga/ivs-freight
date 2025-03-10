@@ -1,48 +1,63 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, Router } from '@angular/router';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
-import { Observable, of } from 'rxjs';
-import { catchError, tap } from 'rxjs/operators';
-
-// models
-import { FuelStopResponse } from 'appcoretruckassist';
-
-// services
-import { FuelService } from '@shared/services/fuel.service';
+import { Observable, tap, forkJoin } from 'rxjs';
 
 // store
 import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-details-item.store';
-import { FuelDetailsStore } from '@pages/fuel/state/fuel-details-state/fuel-details.store';
+import {
+    FuelDetailsState,
+    FuelDetailsStore,
+} from '@pages/fuel/state/fuel-details-state/fuel-details.store';
+
+// services
+import { FuelService } from '@shared/services/fuel.service';
 
 @Injectable({
     providedIn: 'root',
 })
 export class FuelDetailsResolver {
-    public pageIndex: number = 1;
-    public pageSize: number = 25;
-
     constructor(
-        private router: Router,
-
-        // services
         private fuelService: FuelService,
 
         // store
-        private fuelItemStore: FuelItemStore,
-        private fuelDetailsStore: FuelDetailsStore
+        private fuelDetailsStore: FuelDetailsStore,
+        private fuelItemStore: FuelItemStore
     ) {}
-    resolve(route: ActivatedRouteSnapshot): Observable<any> {
-        const fuelStopId = +route.paramMap.get('id');
 
-        return this.fuelService.getFuelStopById(fuelStopId).pipe(
-            tap((fuelResponse: FuelStopResponse) => {
-                this.fuelDetailsStore.add(fuelResponse);
-                this.fuelItemStore.set([fuelResponse]);
-            }),
-            catchError(() => {
-                this.router.navigate(['/fuel']);
+    resolve(route: ActivatedRouteSnapshot): Observable<FuelDetailsState> {
+        const pageIndex: number = 1;
+        const pageSize: number = 25;
 
-                return of('No fuel data for...' + fuelStopId);
+        const fuelStopId: number = +route.paramMap.get('id');
+
+        const fuelStopData$ = this.fuelService.getFuelStopById(fuelStopId);
+
+        const transactionList$ = this.fuelService.getFuelTransactionsList([
+            fuelStopId,
+        ]);
+
+        const fuelledVehicleList$ = this.fuelService.getFuelStopFuelledcVehicle(
+            fuelStopId,
+            pageIndex,
+            pageSize
+        );
+
+        return forkJoin({
+            fuelStopData: fuelStopData$,
+            transactionList: transactionList$,
+            fuelledVehicleList: fuelledVehicleList$,
+        }).pipe(
+            tap((data) => {
+                const fuelStopData = {
+                    ...data?.fuelStopData,
+                    transactionList: data?.transactionList?.pagination?.data,
+                    fuelledVehicleList:
+                        data?.fuelledVehicleList?.pagination?.data,
+                };
+
+                this.fuelDetailsStore.add(fuelStopData);
+                this.fuelItemStore.set([fuelStopData]);
             })
         );
     }
