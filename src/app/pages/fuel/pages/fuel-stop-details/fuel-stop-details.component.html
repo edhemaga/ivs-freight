@@ -1,6 +1,7 @@
 <div class="fuel-stop-details-container">
     @for (item of fuelStopDetailsConfig; track item.id) {
         <app-ta-details-header
+            [isDetailsDropdownImplementation]="true"
             [route]="'/list/fuel'"
             [tooltipHeaderName]="'Back to List'"
             [headerText]="item.name"
@@ -10,6 +11,9 @@
             [customText]="item.customText"
             [statusInactive]="item.status"
             [hasDateArrow]="true"
+            (onDropdownMenuActions)="
+                handleDropdownMenuActions($event, eDropdownMenu.FUEL_STOP)
+            "
         >
         </app-ta-details-header>
     }

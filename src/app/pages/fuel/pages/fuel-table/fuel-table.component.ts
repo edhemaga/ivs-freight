@@ -66,7 +66,7 @@ import {
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
-    DropdownMenuStringEnum,
+    eDropdownMenu,
     eCommonElement,
     TableStringEnum,
 } from '@shared/enums';
@@ -97,7 +97,7 @@ export class FuelTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
     public tableStringEnum = TableStringEnum;
     public eCommonElement = eCommonElement;
 
@@ -304,8 +304,8 @@ export class FuelTableComponent
                         {
                             data: null,
                             array: mappedRes,
-                            template: DropdownMenuStringEnum.FUEL_STOP,
-                            subType: DropdownMenuStringEnum.FUEL_STOP,
+                            template: eDropdownMenu.FUEL_STOP,
+                            subType: eDropdownMenu.FUEL_STOP,
                             subTypeStatus: TableStringEnum.BUSINESS,
                             tableType:
                                 ConfirmationActivationStringEnum.FUEL_STOP_TEXT,
@@ -334,8 +334,7 @@ export class FuelTableComponent
                             ?.toLowerCase()
                             ?.includes(TableStringEnum.STOP_LOWERCASE);
                         const shouldDeleteFuelTransaction =
-                            template ===
-                                DropdownMenuStringEnum.FUEL_TRANSACTION ||
+                            template === eDropdownMenu.FUEL_TRANSACTION ||
                             (type === TableStringEnum.MULTIPLE_DELETE &&
                                 !shouldDeleteFuelStop);
                         const ids =

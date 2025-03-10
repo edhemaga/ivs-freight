@@ -5,7 +5,7 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // helpers
@@ -30,17 +30,17 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
         const { type } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.EDIT_TYPE:
+            case eDropdownMenu.EDIT_TYPE:
                 this.handleLoadEditAction(action, selectedTab);
 
                 break;
-            case DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE:
-            case DropdownMenuStringEnum.CREATE_LOAD_TYPE:
-            case DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE:
+            case eDropdownMenu.CREATE_TEMPLATE_TYPE:
+            case eDropdownMenu.CREATE_LOAD_TYPE:
+            case eDropdownMenu.CREATE_TEMPLATE_TYPE:
                 this.handleCreateLoadOrTemplateAction(action, selectedTab);
 
                 break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
+            case eDropdownMenu.DELETE_TYPE:
                 this.handleLoadDeleteAction(action, tableType, selectedTab);
 
                 break;
@@ -92,7 +92,7 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
 
         const adjustedAction = {
             ...action,
-            template: DropdownMenuStringEnum.LOAD,
+            template: eDropdownMenu.LOAD,
             subType: selectedTab.toLowerCase(),
             modalHeaderTitle,
         };

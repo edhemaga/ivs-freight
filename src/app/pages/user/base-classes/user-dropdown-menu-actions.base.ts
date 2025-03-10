@@ -10,7 +10,7 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 import { UserService } from '@pages/user/services/user.service';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
@@ -34,24 +34,24 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
         const { id, type } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.EDIT_TYPE:
+            case eDropdownMenu.EDIT_TYPE:
                 this.handleUserEditAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.RESET_PASSWORD_TYPE:
+            case eDropdownMenu.RESET_PASSWORD_TYPE:
                 this.handleResetPasswordAction();
 
                 break;
-            case DropdownMenuStringEnum.RESEND_INVITATION_TYPE:
+            case eDropdownMenu.RESEND_INVITATION_TYPE:
                 this.handleResendInvitationAction(id);
 
                 break;
-            case DropdownMenuStringEnum.ACTIVATE_TYPE:
-            case DropdownMenuStringEnum.DEACTIVATE_TYPE:
+            case eDropdownMenu.ACTIVATE_TYPE:
+            case eDropdownMenu.DEACTIVATE_TYPE:
                 this.handleUserActivateDeactivateAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
+            case eDropdownMenu.DELETE_TYPE:
                 this.handleUserDeleteAction(action, tableType);
 
                 break;
@@ -75,8 +75,8 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
             ...action,
             disableButton:
                 userStatus !== TableStringEnum.OWNER &&
-                userStatus !== DropdownMenuStringEnum.EXPIRED &&
-                userStatus !== DropdownMenuStringEnum.INVITED,
+                userStatus !== eDropdownMenu.EXPIRED &&
+                userStatus !== eDropdownMenu.INVITED,
             isDeactivateOnly: true,
         };
 
@@ -123,8 +123,8 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
                 template: TableStringEnum.USER,
                 subType: TableStringEnum.USER,
                 type: !!deactivatedAt
-                    ? DropdownMenuStringEnum.ACTIVATE_TYPE
-                    : DropdownMenuStringEnum.DEACTIVATE_TYPE,
+                    ? eDropdownMenu.ACTIVATE_TYPE
+                    : eDropdownMenu.DEACTIVATE_TYPE,
                 tableType,
             }
         );

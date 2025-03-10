@@ -95,7 +95,7 @@ import {
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
+import { eDropdownMenu, eGeneralActions } from '@shared/enums';
 
 // models
 import { IActiveLoadModalData } from '@pages/load/models';
@@ -5444,7 +5444,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                         .patchValue(statusType?.name || statusType);
                     this.loadForm.get(LoadModalStringEnum.ID).patchValue(id);
                     this.isConvertedToTemplate =
-                        type === DropdownMenuStringEnum.CREATE_TEMPLATE_TYPE;
+                        type === eDropdownMenu.CREATE_TEMPLATE_TYPE;
                     this.isActiveLoad = this.checkIfLoadIsActive();
                     this.generateModalText();
                 }

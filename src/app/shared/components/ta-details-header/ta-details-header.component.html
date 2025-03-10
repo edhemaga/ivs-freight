@@ -66,18 +66,30 @@
                 </div>
             </ng-container>
 
-            <app-ta-details-dropdown
-                (click)="toggleDropdownActions()"
-                [customClassDropDown]="'drop-down-header'"
-                [options]="options?.actions"
-                [id]="optionsId"
-                [leftIcon]="false"
-                [placement]="'right-top right-bottom'"
-                (dropDownActions)="dropAct($event)"
-                (openModalAction)="openModal($event)"
-                [hasVericalDots]="false"
-            >
-            </app-ta-details-dropdown>
+            @if (isDetailsDropdownImplementation) {
+                <ca-dropdown-menu
+                    [type]="'dots-menu-type'"
+                    [placement]="'right-top'"
+                    [options]="options?.actions"
+                    (dropdownOptionEmitter)="
+                        handleToggleDropdownMenuActions($event, options?.data)
+                    "
+                >
+                </ca-dropdown-menu>
+            } @else {
+                <app-ta-details-dropdown
+                    [customClassDropDown]="'drop-down-header'"
+                    [options]="options?.actions"
+                    [id]="optionsId"
+                    [leftIcon]="false"
+                    [placement]="'right-top right-bottom'"
+                    [hasVericalDots]="false"
+                    (dropDownActions)="dropAct($event)"
+                    (openModalAction)="openModal($event)"
+                    (click)="toggleDropdownActions()"
+                >
+                </app-ta-details-dropdown>
+            }
         </div>
     </div>
 
@@ -409,16 +421,16 @@
                             <span class="ic-hed">
                                 <!-- MONEY FILTER -->
                                 <app-ca-filter
-                                [type]="'moneyFilter'"
-                                [icon]="'dollar'"
-                                [filterTitle]="'Money Filter'"
-                                [subType]="'all'"
-                                [isMoneyFilter]="true"
-                                [isLoadType]="true"
-                                (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
-                            >
-                            </app-ca-filter>
+                                    [type]="'moneyFilter'"
+                                    [icon]="'dollar'"
+                                    [filterTitle]="'Money Filter'"
+                                    [subType]="'all'"
+                                    [isMoneyFilter]="true"
+                                    [isLoadType]="true"
+                                    (setFilter)="setFilterValue($event)"
+                                    (clearAll)="setFilterValue($event)"
+                                >
+                                </app-ca-filter>
                             </span>
                         }
                         <ng-container *ngIf="repairOrderFilter">

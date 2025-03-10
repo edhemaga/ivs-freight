@@ -25,7 +25,7 @@ import {
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 import { PayrollTypeEnum } from 'ca-components';
 
 export abstract class PayrollReportBaseComponent<
@@ -67,15 +67,15 @@ export abstract class PayrollReportBaseComponent<
         const { type, isActive } = event;
 
         switch (type) {
-            case DropdownMenuStringEnum.EDIT_LOAD_TYPE:
+            case eDropdownMenu.EDIT_LOAD_TYPE:
                 this.isEditLoadDropdownActionActive = isActive;
 
                 this.getIsEditLoadDropdownActionActive();
 
                 break;
-            case DropdownMenuStringEnum.EDIT_PAYROLL_TYPE:
+            case eDropdownMenu.EDIT_PAYROLL_TYPE:
                 break;
-            case DropdownMenuStringEnum.PREVIEW_REPORT_TYPE:
+            case eDropdownMenu.PREVIEW_REPORT_TYPE:
                 this.modalService.openModal(
                     PayrollPdfReportComponent,
                     {},
@@ -87,7 +87,7 @@ export abstract class PayrollReportBaseComponent<
                     }
                 );
                 break;
-            case DropdownMenuStringEnum.DOWNLOAD_TYPE:
+            case eDropdownMenu.DOWNLOAD_TYPE:
                 break;
             default:
                 break;

@@ -23,7 +23,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
@@ -125,10 +125,7 @@ export class TrailerCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(
-            emitAction,
-            DropdownMenuStringEnum.TRAILER
-        );
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.TRAILER);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

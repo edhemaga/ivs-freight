@@ -2,7 +2,7 @@
 import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
@@ -24,22 +24,22 @@ export abstract class TruckDropdownMenuActionsBase extends DropdownMenuActionsBa
             : TableStringEnum.INACTIVE;
 
         switch (type) {
-            case DropdownMenuStringEnum.EDIT_TYPE:
+            case eDropdownMenu.EDIT_TYPE:
                 this.handleTruckEditAction(action, tableType, tabSelected);
 
                 break;
-            case DropdownMenuStringEnum.REGISTRATION_TYPE:
-            case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
-            case DropdownMenuStringEnum.TITLE_TYPE:
+            case eDropdownMenu.REGISTRATION_TYPE:
+            case eDropdownMenu.FHWA_INSPECTION_TYPE:
+            case eDropdownMenu.TITLE_TYPE:
                 this.handleTruckAddActions(action, tableType, tabSelected);
 
                 break;
-            case DropdownMenuStringEnum.ACTIVATE_TYPE:
-            case DropdownMenuStringEnum.DEACTIVATE_TYPE:
+            case eDropdownMenu.ACTIVATE_TYPE:
+            case eDropdownMenu.DEACTIVATE_TYPE:
                 this.handleTruckActivateDeactivateAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
+            case eDropdownMenu.DELETE_TYPE:
                 this.handleTruckDeleteAction(action, tableType);
 
                 break;

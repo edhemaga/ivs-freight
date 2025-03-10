@@ -5,7 +5,7 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 import { PmModalComponent } from '@pages/pm-truck-trailer/pages/pm-modal/pm-modal.component';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -24,7 +24,7 @@ export abstract class PmDropdownMenuActionsBase extends DropdownMenuActionsBase 
     >(action: TableCardBodyActions<T>, tableType: string) {
         const { data, type } = action;
 
-        type === DropdownMenuStringEnum.CONFIGURE_TYPE
+        type === eDropdownMenu.CONFIGURE_TYPE
             ? this.handleConfigureAction(data)
             : // call the parent class method to handle shared cases
               super.handleSharedDropdownMenuActions(action, tableType);
@@ -47,7 +47,7 @@ export abstract class PmDropdownMenuActionsBase extends DropdownMenuActionsBase 
                 id,
                 data,
                 header,
-                type: DropdownMenuStringEnum.EDIT_TYPE,
+                type: eDropdownMenu.EDIT_TYPE,
                 action: TableStringEnum.UNIT_PM,
             }
         );

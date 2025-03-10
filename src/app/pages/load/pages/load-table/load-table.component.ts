@@ -54,12 +54,10 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import {
     TableStringEnum,
     LoadStatusEnum,
-    DropdownMenuStringEnum,
+    eDropdownMenu,
     eActiveViewMode,
 } from '@shared/enums/index';
-import {
-    eLoadStatusType,
-} from '@pages/load/pages/load-table/enums/index';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -69,11 +67,7 @@ import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpe
 
 // models
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import {
-    LoadListDto,
-    LoadListResponse,
-    SortOrder,
-} from 'appcoretruckassist';
+import { LoadListDto, LoadListResponse, SortOrder } from 'appcoretruckassist';
 import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
 import { CardRows } from '@shared/models';
 
@@ -96,7 +90,7 @@ export class LoadTableComponent
 
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
 
@@ -107,7 +101,7 @@ export class LoadTableComponent
     public cardTitle: string;
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
-    public displayRows$: Observable<any>; //leave this as any for now 
+    public displayRows$: Observable<any>; //leave this as any for now
     public tableStringEnum = TableStringEnum;
 
     // filters

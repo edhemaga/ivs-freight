@@ -1,7 +1,38 @@
-import { DetailsConfig } from '@shared/models';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+
+// models
+import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
 import { FuelStopResponse } from 'appcoretruckassist';
 
 export class FuelStopDetailsHelper {
+    static getDetailsDropdownOptions(
+        fuelStopData: FuelStopResponse
+    ): DetailsDropdownOptions {
+        const { favourite, isClosed } = fuelStopData;
+
+        const actions = DropdownMenuContentHelper.getFuelStopDropdownContent(
+            true,
+            favourite,
+            !isClosed
+        );
+
+        return {
+            disabledMutedStyle: null,
+            toolbarActions: {
+                hideViewMode: false,
+            },
+            config: {
+                showSort: true,
+                sortBy: '',
+                sortDirection: '',
+                disabledColumns: [0],
+                minWidth: 60,
+            },
+            data: fuelStopData,
+            actions,
+            export: true,
+        };
+    }
     static getFuelStopDetailsConfig(
         fuelStopData: FuelStopResponse
     ): DetailsConfig[] {

@@ -24,9 +24,9 @@ import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-detail
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
-import { RepairMinimalListState } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
+import { RepairMinimalListState } from '@pages/repair/state/repair-details-minimal-list-state/repair-minimal-list.store';
 import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
-import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.query';
+import { RepairMinimalListQuery } from '@pages/repair/state/repair-details-minimal-list-state/repair-minimal-list.query';
 
 // components
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';

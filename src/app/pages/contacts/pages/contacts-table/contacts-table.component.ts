@@ -26,7 +26,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum, eCommonElement } from '@shared/enums';
+import { eDropdownMenu, eCommonElement } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums/active-view-mode.enum';
 
 // constants
@@ -50,7 +50,7 @@ export class ContactsTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
 

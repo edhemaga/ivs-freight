@@ -19,6 +19,7 @@ import {
     GetModalFuelStopFranchiseResponse,
     FuelledVehicleHistoryListResponse,
     CreateWithUploadsResponse,
+    FuelStopMinimalListResponse,
 } from 'appcoretruckassist';
 
 // services
@@ -311,6 +312,20 @@ export class FuelService {
             search,
             search1,
             search2
+        );
+    }
+
+    public getFuelStopsMinimalList(
+        fuelStopFranchiseId?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number
+    ): Observable<FuelStopMinimalListResponse> {
+        return this.fuelService.apiFuelFuelstopListMinimalGet(
+            fuelStopFranchiseId,
+            pageIndex,
+            pageSize,
+            companyId
         );
     }
 

@@ -12,7 +12,7 @@ import { FuelService } from '@shared/services/fuel.service';
 // enums
 import {
     DropActionsStringEnum,
-    DropdownMenuStringEnum,
+    eDropdownMenu,
     TableStringEnum,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
@@ -39,27 +39,27 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
         const { id, data, type } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.ALL_TRANSACTIONS_TYPE:
+            case eDropdownMenu.ALL_TRANSACTIONS_TYPE:
                 this.handleAllTransactionsAction();
 
                 break;
-            case DropdownMenuStringEnum.ADD_TRANSACTION_TYPE:
+            case eDropdownMenu.ADD_TRANSACTION_TYPE:
                 this.handleAddTransactionAction(id, type);
 
                 break;
-            case DropdownMenuStringEnum.MARK_AS_FAVORITE_TYPE:
-            case DropdownMenuStringEnum.UNMARK_FAVORITE_TYPE:
+            case eDropdownMenu.MARK_AS_FAVORITE_TYPE:
+            case eDropdownMenu.UNMARK_FAVORITE_TYPE:
                 const { favourite } = data as FuelStopResponse;
 
                 this.handleFavoriteAction(id, !favourite);
 
                 break;
-            case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
-            case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
+            case eDropdownMenu.OPEN_BUSINESS_TYPE:
+            case eDropdownMenu.CLOSE_BUSINESS_TYPE:
                 this.handleFuelStopOpenCloseBusinessAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
+            case eDropdownMenu.DELETE_TYPE:
                 this.handleFuelDeleteAction(action, tableType);
 
                 break;
@@ -93,7 +93,7 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
             .updateFuelStopFavorite(id, isPinned)
             .pipe(takeUntil(this.destroy$))
             .subscribe(() => {
-                this.viewData.sort(
+                this.viewData?.sort(
                     (a, b) => Number(b.favourite) - Number(a.favourite)
                 );
             });
@@ -128,8 +128,7 @@ export abstract class FuelDropdownMenuActionsBase extends DropdownMenuActionsBas
     private handleFuelDeleteAction<
         T extends FuelTransactionResponse | FuelStopResponse,
     >(action: TableCardBodyActions<T>, tableType: string): void {
-        const isFuelTransaction =
-            tableType === DropdownMenuStringEnum.FUEL_TRANSACTION;
+        const isFuelTransaction = tableType === eDropdownMenu.FUEL_TRANSACTION;
 
         const adjustedAction = {
             ...action,

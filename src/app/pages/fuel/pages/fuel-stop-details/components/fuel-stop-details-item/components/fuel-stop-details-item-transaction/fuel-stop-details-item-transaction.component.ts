@@ -38,7 +38,7 @@ import { DescriptionItemsTextCountDirective } from '@shared/directives';
 
 // enums
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
-import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
+import { eDropdownMenu, eGeneralActions } from '@shared/enums';
 import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // helpers
@@ -209,7 +209,7 @@ export class FuelStopDetailsItemTransactionComponent
 
         this.handleDropdownMenuActions(
             emitAction,
-            DropdownMenuStringEnum.FUEL_TRANSACTION
+            eDropdownMenu.FUEL_TRANSACTION
         );
     }
 

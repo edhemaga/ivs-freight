@@ -65,7 +65,7 @@ import { RepairOrderModalStringEnum } from '@pages/repair/pages/repair-modals/re
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { DropdownMenuStringEnum, eModalButtonText } from '@shared/enums';
+import { eDropdownMenu, eModalButtonText } from '@shared/enums';
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
 // components
@@ -345,14 +345,11 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
 
         if (
             !this.editData?.data ||
-            this.editData?.type === DropdownMenuStringEnum.ADD_REPAIR_BILL_SHOP
+            this.editData?.type === eDropdownMenu.ADD_REPAIR_BILL_SHOP
         ) {
             this.onTabChange(this.unitTabs[isTrailer ? 1 : 0]);
 
-            if (
-                this.editData?.type ===
-                DropdownMenuStringEnum.ADD_REPAIR_BILL_SHOP
-            ) {
+            if (this.editData?.type === eDropdownMenu.ADD_REPAIR_BILL_SHOP) {
                 this.selectedRepairShop = { id: this.editData?.data?.id };
 
                 this.getRepairShopById();
@@ -799,7 +796,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public addRepairItemOnInit(): void {
         if (
             !this.editData?.data ||
-            this.editData.type === DropdownMenuStringEnum.ADD_REPAIR_BILL_SHOP
+            this.editData.type === eDropdownMenu.ADD_REPAIR_BILL_SHOP
         )
             setTimeout(() => {
                 this.addRepairItem();
