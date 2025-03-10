@@ -5843,6 +5843,7 @@
                                                     [ngTemplateOutlet]="addPm"
                                                     [ngTemplateOutletContext]="{
                                                         row: row,
+                                                        column: column,
                                                     }"
                                                 ></ng-container>
                                             </ng-container>
@@ -5908,6 +5909,7 @@
                                                 [ngTemplateOutlet]="addPm"
                                                 [ngTemplateOutletContext]="{
                                                     row: row,
+                                                    column: column,
                                                 }"
                                             ></ng-container>
                                         </div>
@@ -7539,10 +7541,10 @@
 
 <!-- Add PM -->
 
-<ng-template #addPm let-row="row">
+<ng-template #addPm let-row="row" let-column="column">
     <div
         class="add-pm-container d-flex align-items-center gap-1"
-        (click)="addPmItem(row)"
+        (click)="addPmItem(row,column)"
     >
         <div class="add-pm-icon"></div>
         <div class="add-pm-text text-color-black text-size-14">Add PM Item</div>
