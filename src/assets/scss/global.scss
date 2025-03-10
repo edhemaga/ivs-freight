@@ -565,3 +565,36 @@ html ngb-modal-backdrop {
 .prevent-text-selection {
     @include prevent-text-selection();
 }
+
+// #region middle ellipsis
+
+.mete {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.mete-start,
+.mete-end {
+    overflow: hidden;
+    height: inherit;
+    flex: 0 1 auto;
+}
+
+.mete-start {
+    word-break: break-all;
+}
+
+.mete-end {
+    white-space: nowrap;
+    direction: rtl;
+    text-overflow: ellipsis;
+}
+
+.mete-end::after {
+    content: '\200E';
+}
+
+// #endregion
