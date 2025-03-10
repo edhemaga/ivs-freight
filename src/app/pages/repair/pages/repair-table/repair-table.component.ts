@@ -1138,6 +1138,7 @@ export class RepairTableComponent
     }
 
     private shopBackFilter(filter: ShopBackFilter, isShowMore?: boolean): void {
+        console.log(filter, 'filteeeeeer')
         this.repairService
             .getRepairShopList(
                 filter.active,
