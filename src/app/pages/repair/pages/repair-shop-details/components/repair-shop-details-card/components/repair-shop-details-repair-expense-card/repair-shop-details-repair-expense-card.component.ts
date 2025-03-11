@@ -34,7 +34,7 @@ import {
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { ChartLegendProperty } from '@shared/models';
 
 @Component({

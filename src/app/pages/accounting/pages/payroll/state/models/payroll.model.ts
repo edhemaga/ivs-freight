@@ -44,6 +44,7 @@ export interface PayrollState {
     payrollOpenedTab: ePayrollTablesStatus;
 
     payrollMapRoutes: RoutingResponse;
+    openedPayrollLeftId: string;
 }
 
 export interface IPayrollCountsSelector {

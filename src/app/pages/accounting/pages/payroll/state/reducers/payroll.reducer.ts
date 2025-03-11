@@ -19,6 +19,7 @@ import * as PayrollFlatRateDriverReducers from '@pages/accounting/pages/payroll/
 
 // Enums
 import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 export const payrollState: PayrollState = {
     payrollCounts: {},
@@ -36,6 +37,7 @@ export const payrollState: PayrollState = {
     closeReportPaymentLoading: false,
     payrollOpenedTab: ePayrollTablesStatus.OPEN,
     payrollMapRoutes: null,
+    openedPayrollLeftId: eStringPlaceholder.EMPTY,
 };
 
 export const payrollReducer = createReducer(
@@ -83,7 +85,7 @@ export const payrollReducer = createReducer(
     ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess,
-        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriverErrorSuccess
+        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriverSuccess
     ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError,

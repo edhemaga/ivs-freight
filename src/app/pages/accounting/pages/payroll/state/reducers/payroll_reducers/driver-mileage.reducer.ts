@@ -1,5 +1,6 @@
 // Models
 import {
+    PayrollDriverMileageByIdResponse,
     PayrollDriverMileageClosedByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
@@ -37,14 +38,36 @@ export const onGetPayrollSoloMileageReportDriver = (
         params.selectedDeductionIds ?? state.selectedDeductionIds,
 });
 
-export const onGetPayrollSoloMileageReportDriverErrorSuccess = (
+export const onGetPayrollSoloMileageReportDriverSuccess = (
     state: PayrollState,
-    data: { payroll: PayrollDriverMileageResponse }
-) => ({
-    ...state,
-    payrollOpenedReport: data.payroll,
-    reportLoading: false,
-});
+    data: { payroll: PayrollDriverMileageByIdResponse }
+) => {
+    const openedPayrollLeftId = +state.openedPayrollLeftId;
+
+    let totalEarnings = 0;
+    const payrollDriverMileage = state.payrollDriverMileage.map(
+        (payrollDriver) => {
+            totalEarnings += payrollDriver.earnings;
+            return payrollDriver.id === openedPayrollLeftId
+                ? { ...payrollDriver, earnings: data.payroll.earnings }
+                : payrollDriver;
+        }
+    );
+
+    return {
+        ...state,
+        payrollOpenedReport: data.payroll,
+        reportLoading: false,
+        payrollDriverMileage,
+        payrollCounts: {
+            ...state.payrollCounts,
+            soloMiles: {
+                ...state.payrollCounts.soloMiles,
+                value: totalEarnings,
+            },
+        },
+    };
+};
 
 export const onGetPayrollSoloMileageReportDriverError = (
     state: PayrollState
