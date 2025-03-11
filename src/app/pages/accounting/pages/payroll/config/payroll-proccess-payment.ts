@@ -6,7 +6,7 @@ export const inputConfig = {
     priceSeparator: true,
     priceSeparatorLimitation: 6,
     placeholderIcon: 'dollar',
-    placeholderIconColor: 'blue'
+    placeholderIconColor: 'blue',
 };
 
 export const dropDownInputConfig = {
@@ -22,43 +22,49 @@ export const dropdownOption = [
     {
         id: 1,
         companyId: null,
-        name: 'WireTransfer',
-        value: 'WireTransfer'
+        name: 'Wire Transfer',
+        value: 'WireTransfer',
     },
     {
         id: 2,
         companyId: null,
         name: 'Cash',
-        value: 'Cash'
+        value: 'Cash',
     },
     {
         id: 3,
         companyId: null,
-        name: 'MoneyCode',
-        value: 'MoneyCode'
+        name: 'Check',
+        value: 'Check',
     },
     {
         id: 4,
         companyId: null,
-        name: 'QuickZelle',
-        value: 'QuickZelle'
+        name: 'Money Code',
+        value: 'MoneyCode',
     },
     {
         id: 5,
         companyId: null,
-        name: 'QuickVenmo',
-        value: 'QuickVenmo'
+        name: 'Quick (Zelle)',
+        value: 'QuickZelle',
     },
     {
         id: 6,
         companyId: null,
-        name: 'QuickCashapp',
-        value: 'QuickCashapp'
+        name: 'Quick (Venmo)',
+        value: 'QuickVenmo',
     },
     {
         id: 7,
         companyId: null,
-        name: 'QuickPaypal',
-        value: 'QuickPaypal'
-    }
+        name: 'Quick (Cashapp)',
+        value: 'QuickCashapp',
+    },
+    {
+        id: 8,
+        companyId: null,
+        name: 'Quick (Paypal)',
+        value: 'QuickPaypal',
+    },
 ];
