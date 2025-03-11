@@ -25,7 +25,7 @@ import {
 import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // models
-import { FuelStopResponse } from 'appcoretruckassist';
+import { FuelStopMinimalResponse, FuelStopResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-details-title-card',
@@ -56,7 +56,7 @@ export class FuelStopDetailsTitleCardComponent {
     @Input() fuelStopDropdownList: FuelStopResponse[];
 
     @Output() cardValuesEmitter = new EventEmitter<{
-        event: any;
+        event: FuelStopMinimalResponse;
         type: string;
     }>();
 
@@ -73,7 +73,10 @@ export class FuelStopDetailsTitleCardComponent {
 
     constructor() {}
 
-    public handleCardChanges(event: any, type: string): void {
+    public handleCardChanges(
+        event: FuelStopMinimalResponse,
+        type: string
+    ): void {
         this.cardValuesEmitter.emit({ event, type });
     }
 }

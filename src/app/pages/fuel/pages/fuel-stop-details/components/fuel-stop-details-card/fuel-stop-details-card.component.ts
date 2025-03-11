@@ -16,6 +16,9 @@ import { FuelStopDetailsMapCoverCardComponent } from '@pages/fuel/pages/fuel-sto
 
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
+// store
+import { FuelMinimalListQuery } from '@pages/fuel/state/fuel-details-minimal-list-state/fuel-minimal-list.query';
+
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -26,7 +29,7 @@ import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
 import { eStringPlaceholder } from '@shared/enums';
 
 // models
-import { FuelStopResponse } from 'appcoretruckassist';
+import { FuelStopMinimalResponse, FuelStopResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-details-card',
@@ -51,7 +54,7 @@ export class FuelStopDetailsCardComponent {
     @Input() set fuelStop(data: FuelStopResponse) {
         this._fuelStop = data;
 
-        this.getFuelStopsDropdownList();
+        this.getFuelStopsFranchiseDropdownList();
     }
 
     private destroy$ = new Subject<void>();
@@ -75,10 +78,10 @@ export class FuelStopDetailsCardComponent {
         // services
         private tableService: TruckassistTableService,
         private detailsPageService: DetailsPageService,
-        private modalService: ModalService
+        private modalService: ModalService,
 
         // store
-        /*  private repairMinimalListQuery: RepairMinimalListQuery */
+        private fuelMinimalListQuery: FuelMinimalListQuery
     ) {}
 
     ngOnInit(): void {
@@ -95,17 +98,19 @@ export class FuelStopDetailsCardComponent {
 
     private getCurrentIndex(): void {
         const currentIndex = this.fuelStopDropdownList?.findIndex(
-            (repairShop) => repairShop.id === this._fuelStop.id
+            (fuelStop) => fuelStop.id === this._fuelStop.id
         );
 
         this.fuelStopCurrentIndex = currentIndex;
     }
 
-    private getFuelStopsDropdownList(): void {
-        /*   this.fuelStopDropdownList = this.repairMinimalListQuery
-                .getAll()
-                .map((repairShop: RepairShopShortResponse) => {
-                    const {
+    private getFuelStopsFranchiseDropdownList(): void {
+        this.fuelStopDropdownList = this.fuelMinimalListQuery
+            .getAll()
+            .map((fuelStop: FuelStopMinimalResponse) => {
+                console.log('fuelStop', fuelStop);
+
+                /*   const {
                         id,
                         companyOwned,
                         name,
@@ -114,7 +119,7 @@ export class FuelStopDetailsCardComponent {
                         repairsCount,
                         cost,
                         status,
-                    } = repairShop;
+                    } = fuelStop;
     
                     return {
                         id,
@@ -134,10 +139,12 @@ export class FuelStopDetailsCardComponent {
                                 ? eFuelStopDetails.STAR_ROUTE
                                 : eFuelStopDetails.EMPTY_STRING,
                         folder: eFuelStopDetails.COMMON,
-                    };
-                });
-    
-            this.fuelStopDropdownList =
+                    }; */
+
+                return fuelStop;
+            });
+
+        /* this.fuelStopDropdownList =
                 RepairShopDetailsCardHelper.sortByPinnedAndFavorite(
                     this.fuelStopDropdownList
                 ); */
@@ -150,7 +157,7 @@ export class FuelStopDetailsCardComponent {
 
     public onChangeShop(action: string): void {
         let currentIndex = this.fuelStopDropdownList?.findIndex(
-            (repairShop) => repairShop.id === this._fuelStop.id
+            (fuelStop) => fuelStop.id === this._fuelStop.id
         );
 
         switch (action) {
@@ -187,29 +194,31 @@ export class FuelStopDetailsCardComponent {
     }
 
     public handleFuelStopDetailsTitleCardEmit(event: {
-        event: any;
+        event: FuelStopMinimalResponse;
         type: string;
     }): void {
-        /*  switch (event.type) {
-                case eFuelStopDetails.SELECT_FUEL_STOP:
-                    if (event.event.name === eFuelStopDetails.ADD_NEW) {
+        console.log('event', event);
+
+        switch (event.type) {
+            case eFuelStopDetails.SELECT_FUEL_STOP:
+                /* if (event.event.name === eFuelStopDetails.ADD_NEW) {
                         this.modalService.openModal(RepairShopModalComponent, {
                             size: eFuelStopDetails.MEDIUM,
                         });
     
                         return;
-                    }
-    
-                    this.onSelectedShop(event.event);
-    
-                    break;
-                case eFuelStopDetails.CHANGE_FUEL_STOP:
-                    this.onChangeShop(event.event as string);
-    
-                    break;
-                default:
-                    break;
-            } */
+                    } */
+
+                this.onSelectedShop(event.event);
+
+                break;
+            case eFuelStopDetails.CHANGE_FUEL_STOP:
+                this.onChangeShop(event.event as string);
+
+                break;
+            default:
+                break;
+        }
     }
 
     ngOnDestroy(): void {

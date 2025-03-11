@@ -24,9 +24,7 @@ import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-detail
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
-import { RepairMinimalListState } from '@pages/repair/state/repair-details-minimal-list-state/repair-minimal-list.store';
 import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
-import { RepairMinimalListQuery } from '@pages/repair/state/repair-details-minimal-list-state/repair-minimal-list.query';
 
 // components
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
@@ -81,12 +79,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     public detailsDropdownOptions: DetailsDropdownOptions;
     public repairShopDetailsConfig: DetailsConfig[] = [];
 
-    public currentIndex: number = 0;
-
-    public repairShopList: RepairMinimalListState;
     public repairShopObject: ExtendedRepairShopResponse;
 
-    public repairShopId: number;
     public newRepairShopId: number;
 
     // search
@@ -123,7 +117,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
         // store
         private repairItemStore: RepairItemStore,
-        private repairMinimalListQuery: RepairMinimalListQuery,
         private repairDetailsQuery: RepairDetailsQuery
     ) {}
 
@@ -133,8 +126,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.getStoreData();
 
         this.setTableFilter();
-
-        this.getRepairShopMinimalList();
 
         this.confirmationSubscribe();
 
@@ -516,10 +507,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getRepairShopMinimalList(): void {
-        this.repairShopList = this.repairMinimalListQuery.getAll();
-    }
-
     private getRepairShopData(): void {
         const dataId = this.activatedRoute.snapshot.params.id;
 
@@ -533,7 +520,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     }
 
     public getDetailsConfig(repairShop: ExtendedRepairShopResponse): void {
-        this.repairShopId = repairShop?.id;
         this.repairShopObject = repairShop;
 
         this.detailsDataService.setNewData(repairShop);
@@ -673,7 +659,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
 
     public deleteRepairShopContact(id: number): void {
         this.repairService
-            .deleteRepairShopContact(id, this.repairShopId)
+            .deleteRepairShopContact(id, this.repairShopObject?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
