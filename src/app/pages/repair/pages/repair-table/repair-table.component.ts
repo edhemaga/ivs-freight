@@ -696,8 +696,8 @@ export class RepairTableComponent
                 showMoneyFilter: true,
                 hideMoneySubType: true,
                 hideActivationButton: true,
-                showTruckPmFilter: this.selectedTab === TableStringEnum.ACTIVE,
-                showTrailerPmFilter:
+                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerFilter:
                     this.selectedTab === TableStringEnum.INACTIVE,
                 showMoneyCount:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
@@ -1034,17 +1034,11 @@ export class RepairTableComponent
                                 pmTruckTitles: res.selectedIds,
                             };
                             break;
-                        case eFilterDropdownEnum.TRAILER_TYPE:
-                            this.backFilterQuery = {
-                                ...this.backFilterQuery,
-                                trailerNumbers: res.selectedIds,
-                            };
+                        case eFilterDropdownEnum.TRAILER:
+                            this.backFilterQuery = { ...this.backFilterQuery, trailerNumbers: res.selectedIds };
                             break;
-                        case eFilterDropdownEnum.TRUCK_TYPE:
-                            this.backFilterQuery = {
-                                ...this.backFilterQuery,
-                                truckNumbers: res.selectedIds,
-                            };
+                        case eFilterDropdownEnum.TRUCK:
+                            this.backFilterQuery = { ...this.backFilterQuery, truckNumbers: res.selectedIds };
                             break;
                         case eFilterDropdownEnum.TIME_FILTER:
                             this.backFilterQuery = {
