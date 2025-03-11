@@ -1,15 +1,17 @@
+@let reportTableExpanded = reportTableExpanded$ | async;
+@let payrolCountsResponse = payrollCountsResponse$ | async;
 <div class="table-container d-flex">
-    <div class="payroll-main" [class.open]="reportTableExpanded$ | async">
+    <div class="payroll-main" [class.open]="reportTableExpanded">
         <app-payroll-toolbar
             [selectedTab]="selectedTab"
             (toolBarAction)="onToolBarAction($event)"
-            [tableExpanded]="reportTableExpanded$ | async"
+            [tableExpanded]="reportTableExpanded"
         >
         </app-payroll-toolbar>
 
         <div class="payroll-tables-holder">
             @for (
-                payroll of (payrollCountsResponse$ | async).payrollData;
+                payroll of payrolCountsResponse.payrollData;
                 track $index;
                 let indx = $index
             ) {
@@ -32,9 +34,7 @@
                                         ePayrollTablesStatus.OPEN
                                     ) {
                                         <app-driver-mileage-solo-table
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             #driverMileageSoloTable
                                             (expandTableEvent)="
                                                 expandFromTables(
@@ -47,9 +47,7 @@
                                     } @else if (selectedOpenFromList) {
                                         <app-driver-mileage-expanded-table
                                             #driverMileageExpandedTable
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             (expandTableEvent)="
                                                 handleOpenExpandedListReport(
                                                     $event,
@@ -60,9 +58,7 @@
                                         ></app-driver-mileage-expanded-table>
                                     } @else {
                                         <app-driver-mileage-collapsed-table
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             (expandTableEvent)="
                                                 handleOpenExpandedReport(
                                                     $event,
@@ -78,9 +74,7 @@
                                         ePayrollTablesStatus.OPEN
                                     ) {
                                         <app-driver-flat-rate-table
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             #driverFlatRateTable
                                             (expandTableEvent)="
                                                 expandFromTables(
@@ -93,9 +87,7 @@
                                     } @else if (selectedOpenFromList) {
                                         <app-driver-flat-rate-expanded-table
                                             #driverFlatRateExpandedTable
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             (expandTableEvent)="
                                                 handleOpenExpandedListReport(
                                                     $event,
@@ -106,9 +98,7 @@
                                         ></app-driver-flat-rate-expanded-table>
                                     } @else {
                                         <app-driver-flat-rate-collapsed-table
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             (expandTableEvent)="
                                                 handleOpenExpandedReport(
                                                     $event,
@@ -124,9 +114,7 @@
                                         ePayrollTablesStatus.OPEN
                                     ) {
                                         <app-driver-commission-solo-table
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             #driverCommissionTable
                                             (expandTableEvent)="
                                                 expandFromTables(
@@ -139,9 +127,7 @@
                                     } @else if (selectedOpenFromList) {
                                         <app-driver-commission-expanded-table
                                             #driverCommissionExpandedTable
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             (expandTableEvent)="
                                                 handleOpenExpandedListReport(
                                                     $event,
@@ -152,9 +138,7 @@
                                         ></app-driver-commission-expanded-table>
                                     } @else {
                                         <app-driver-commission-collapsed-table
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             (expandTableEvent)="
                                                 handleOpenExpandedReport(
                                                     $event,
@@ -170,9 +154,7 @@
                                         ePayrollTablesStatus.OPEN
                                     ) {
                                         <app-driver-owner-table
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             #driverOwnerTable
                                             (expandTableEvent)="
                                                 expandFromTables(
@@ -185,9 +167,7 @@
                                     } @else if (selectedOpenFromList) {
                                         <app-driver-owner-expanded-table
                                             #driverOwnerExpandedTable
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             (expandTableEvent)="
                                                 handleOpenExpandedListReport(
                                                     $event,
@@ -198,9 +178,7 @@
                                         ></app-driver-owner-expanded-table>
                                     } @else {
                                         <app-driver-owner-collapsed-table
-                                            [expandTable]="
-                                                reportTableExpanded$ | async
-                                            "
+                                            [expandTable]="reportTableExpanded"
                                             (expandTableEvent)="
                                                 handleOpenExpandedReport(
                                                     $event,
@@ -217,7 +195,7 @@
             }
         </div>
     </div>
-    @if (reportTableExpanded$ | async) {
+    @if (reportTableExpanded) {
         <div class="report-hold">
             @switch (payrollReportType) {
                 @case (ePayrollTable.DRIVER_MILES) {

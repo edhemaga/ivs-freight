@@ -19,6 +19,7 @@ import {
     PAYROLL_TOOLBAR_STATUS,
     PAYROLL_TOOLBAR_TAB,
 } from '@pages/accounting/pages/payroll/config';
+import { eStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-payroll-toolbar',
@@ -74,7 +75,10 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
     }
 
     public expandTable(): void {
-        this.payrollFacadeService.setPayrollReportTableExpanded(false, '');
+        this.payrollFacadeService.setPayrollReportTableExpanded(
+            false,
+            eStringPlaceholder.EMPTY
+        );
     }
 
     public identity(item: {

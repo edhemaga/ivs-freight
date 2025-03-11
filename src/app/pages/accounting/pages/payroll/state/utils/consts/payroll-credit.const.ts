@@ -3,12 +3,13 @@
 import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
 
 // Model
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { PayrollDeductionRecurringType } from 'appcoretruckassist';
 
 // Config
 import { ICaInput } from '@ca-shared/components/ca-input-test/config';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { eStringPlaceholder } from '@shared/enums';
 
 export class PayrollCreditConst {
     static tabs: TabOptions[] = [
@@ -50,7 +51,7 @@ export class PayrollCreditConst {
                 withText: true,
                 svg: false,
                 image: true,
-                iconsPath: '',
+                iconsPath: eStringPlaceholder.EMPTY,
                 activeItemIconKey: 'logoName',
                 url: logoName,
                 nameInitialsInsteadUrl: !logoName ? name : null,

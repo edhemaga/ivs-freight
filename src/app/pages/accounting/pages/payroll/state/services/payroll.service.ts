@@ -135,8 +135,10 @@ export class PayrollFacadeService {
             .subscribe((payrollState) => {
                 this.store.dispatch(
                     PayrollActions.getPayrollCounts({
-                        ShowOpen: payrollState.payrollOpenedTab === 'open',
-                        showLoading: showLoading,
+                        ShowOpen:
+                            payrollState.payrollOpenedTab ===
+                            ePayrollTablesStatus.OPEN,
+                        showLoading,
                     })
                 );
             });

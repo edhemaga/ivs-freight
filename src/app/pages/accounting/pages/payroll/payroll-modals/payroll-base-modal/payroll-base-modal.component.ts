@@ -38,7 +38,7 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
 
 // Models
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import {
     DriverMinimalResponse,
     EnumValue,

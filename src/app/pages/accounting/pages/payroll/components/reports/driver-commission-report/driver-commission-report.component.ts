@@ -230,7 +230,7 @@ export class DriverCommissionReportComponent
             this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$;
 
             this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(res => {
-                console.log("SUBSS", res);
+                //console.log("SUBSS", res); // CONSOLE LOG FOR DEVELOPMENT
             });
 
         this.includedLoads$ =

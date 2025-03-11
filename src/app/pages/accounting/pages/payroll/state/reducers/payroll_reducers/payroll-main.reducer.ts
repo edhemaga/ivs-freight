@@ -4,6 +4,7 @@ import { PayrollState } from '@pages/accounting/pages/payroll/state/models';
 
 // Enums
 import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 export const onGetPayrollCounts = (
     state: PayrollState,
@@ -52,7 +53,7 @@ export const onSetTableReportExpanded = (
             selectedLoadIds: undefined,
             expandedReportTable: data.expanded,
             payrollOpenedReport: null,
-            openedPayrollLeftId: '',
+            openedPayrollLeftId: eStringPlaceholder.EMPTY,
         };
     }
     return {

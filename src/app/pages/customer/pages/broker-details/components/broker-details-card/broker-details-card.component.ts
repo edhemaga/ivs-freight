@@ -36,7 +36,7 @@ import {
     IBrokerPaymentHistory,
     IBrokerPaymentHistoryChart,
 } from '@pages/customer/pages/broker-details/models/';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, ChartTypeProperty, Tabs } from '@shared/models';
 
