@@ -34,3 +34,4 @@ export * from './track-by-property.pipe';
 export * from './value-by-string-path.pipe';
 export * from './activity-time.pipe';
 export * from './unit-position.pipe';
+export * from './middle-ellipsis.pipe';

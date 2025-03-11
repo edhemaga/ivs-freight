@@ -26,6 +26,7 @@ import {
     ThousandSeparatorPipe,
 } from '@shared/pipes';
 import { FuelItemQuantityTypePipe } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/pipes';
+import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-details/pipes';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
@@ -70,6 +71,7 @@ import {
         FormatTimePipe,
         ThousandSeparatorPipe,
         FuelItemQuantityTypePipe,
+        LastFuelPriceRangeClassColorPipe,
 
         // directives
         DescriptionItemsTextCountDirective,

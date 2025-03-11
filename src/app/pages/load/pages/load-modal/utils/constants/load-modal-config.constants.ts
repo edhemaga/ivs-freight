@@ -1,6 +1,7 @@
 import { FormControl } from '@angular/forms';
 import { ICaInput } from '@ca-shared/components/ca-input/config';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { eStringPlaceholder } from '@shared/enums';
 import { TrailerTypeResponse, TruckTypeResponse } from 'appcoretruckassist';
 
 export class LoadModalConfig {
@@ -121,7 +122,7 @@ export class LoadModalConfig {
             image: true,
             url: 'logoName',
             template: 'user',
-            iconsPath: '',
+            iconsPath: eStringPlaceholder.EMPTY,
             activeItemIconKey: 'logoName',
         },
         textTransform: 'capitalize',

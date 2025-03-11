@@ -70,6 +70,36 @@
                         position: relative;
                         bottom: 1px;
                         margin-right: 6px;
+
+                        &.fuel-color-1 {
+                            circle {
+                                fill: $ta-green;
+                            }
+                        }
+
+                        &.fuel-color-2 {
+                            circle {
+                                fill: $ta-green-6;
+                            }
+                        }
+
+                        &.fuel-color-3 {
+                            circle {
+                                fill: $ta-yellow-1;
+                            }
+                        }
+
+                        &.fuel-color-4 {
+                            circle {
+                                fill: $ta-orange-4;
+                            }
+                        }
+
+                        &.fuel-color-5 {
+                            circle {
+                                fill: $ta-red-10;
+                            }
+                        }
                     }
                 }
             }

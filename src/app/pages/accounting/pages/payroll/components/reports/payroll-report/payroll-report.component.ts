@@ -223,6 +223,12 @@ export class PayrollReportComponent
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
 
+        this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
+            (loadList) => {
+                //console.log("WHAT IS LOAD LIST HERE", loadList); // CONSOLE LOG FOR TESTING
+            }
+        );
+
         this.payrollFacadeService.selectPayrollOpenedReport$
             .pipe(takeUntil(this.destroy$))
             .subscribe((payroll) => {

@@ -7,4 +7,7 @@ export enum eStringPlaceholder {
     FORWARD_SLASH = '/',
     DOLLAR_SIGN = '$',
     PERCENTAGE_SIGN = '%',
+    ELLIPSIS = '...',
+    NA = 'N/A',
+    NONE = 'None',
 }
