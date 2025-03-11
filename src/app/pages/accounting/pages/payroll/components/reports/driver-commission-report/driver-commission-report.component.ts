@@ -25,16 +25,16 @@ import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
 // Models
 import {
-    LoadWithMilesStopResponse,
     PayrollCreditType,
     PayrollDriverCommissionByIdResponse,
-    PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
 import {
     MilesStopShortReponseWithRowType,
     IPayrollProccessPaymentModal,
     IGetPayrollByIdAndOptions,
     PayrollTypes,
+    ILoadWithMilesStopResponseNumberId,
+    PayrollDriverMileageByIdResponseNumberId,
 } from '@pages/accounting/pages/payroll/state/models';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
@@ -50,6 +50,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // helpers
 import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -67,6 +68,11 @@ export class DriverCommissionReportComponent
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.COMMISSION;
+
+    public loadDropdownList: {
+        id: number;
+        title: string;
+    }[];
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
@@ -109,7 +115,7 @@ export class DriverCommissionReportComponent
         CommissionLoadShortReponseWithRowType[]
     >;
 
-    public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    public includedLoads$: Observable<ILoadWithMilesStopResponseNumberId[]>;
 
     // Templates
     @ViewChild('customCountTemplate', { static: false })
@@ -135,9 +141,10 @@ export class DriverCommissionReportComponent
         private payrollCommissionFacadeService: PayrollDriverCommissionFacadeService,
         private payrollFacadeService: PayrollFacadeService,
         modalService: ModalService,
-        payrollService: PayrollService
+        payrollService: PayrollService,
+        public loadStoreService: LoadStoreService
     ) {
-        super(modalService, payrollService);
+        super(modalService, payrollService, loadStoreService);
     }
 
     ngOnInit(): void {
@@ -226,12 +233,21 @@ export class DriverCommissionReportComponent
                 this.openedPayroll = payroll;
             });
 
+        this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
+            (loadList) => {
+                this.loadDropdownList = loadList;
+                //console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
+            }
+        );
+
         this.payrollCommissionDriverLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$;
 
-            this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(res => {
+        this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(
+            (res) => {
                 //console.log("SUBSS", res); // CONSOLE LOG FOR DEVELOPMENT
-            });
+            }
+        );
 
         this.includedLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
@@ -240,7 +256,7 @@ export class DriverCommissionReportComponent
     }
 
     public onProccessPayroll(
-        payrollData: PayrollDriverMileageByIdResponse
+        payrollData: PayrollDriverMileageByIdResponseNumberId
     ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
@@ -303,7 +319,6 @@ export class DriverCommissionReportComponent
     }
 
     public getIsEditLoadDropdownActionActive(): void {
-        
         const loadDummyData = [
             // w8 for slavisa
             { id: 1, title: 'INV-162-23' },
@@ -318,7 +333,7 @@ export class DriverCommissionReportComponent
                 false,
                 this._selectedTab,
                 this.isEditLoadDropdownActionActive,
-                loadDummyData
+                this.loadDropdownList
             );
     }
 

@@ -25,12 +25,12 @@ import { PayrollService } from '@pages/accounting/pages/payroll/services';
 // Models
 import {
     IGetPayrollByIdAndOptions,
+    ILoadWithMilesStopResponseNumberId,
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
     PayrollTypes,
 } from '@pages/accounting/pages/payroll/state/models';
 import {
-    LoadWithMilesStopResponse,
     PayrollCreditType,
     PayrollDriverFlatRateByIdResponse,
 } from 'appcoretruckassist';
@@ -50,6 +50,7 @@ import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/comp
 
 // helpers
 import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
     selector: 'app-driver-flat-rate-report',
@@ -67,6 +68,11 @@ export class DriverFlatRateReportComponent
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.FLAT_RATE;
+
+    public loadDropdownList: {
+        id: number;
+        title: string;
+    }[];
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
@@ -110,7 +116,7 @@ export class DriverFlatRateReportComponent
         FlatRateLoadShortReponseWithRowType[]
     >;
 
-    public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    public includedLoads$: Observable<ILoadWithMilesStopResponseNumberId[]>;
 
     // Templates
     @ViewChild('customCountTemplate', { static: false })
@@ -136,9 +142,10 @@ export class DriverFlatRateReportComponent
         private payrollDriverFlatRateFacadeService: PayrollDriverFlatRateFacadeService,
         private payrollFacadeService: PayrollFacadeService,
         modalService: ModalService,
-        payrollService: PayrollService
+        payrollService: PayrollService,
+        public loadStoreService: LoadStoreService
     ) {
-        super(modalService, payrollService);
+        super(modalService, payrollService, loadStoreService);
     }
 
     ngOnInit(): void {
@@ -223,6 +230,13 @@ export class DriverFlatRateReportComponent
         this.payrollFlatRateDriverLoads$ =
             this.payrollDriverFlatRateFacadeService.selectPayrollReportDriverFlatRateLoads$;
 
+        this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
+            (loadList) => {
+                this.loadDropdownList = loadList;
+               // console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
+            }
+        );
+
         this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
     }
 
@@ -304,7 +318,7 @@ export class DriverFlatRateReportComponent
                 false,
                 this._selectedTab,
                 this.isEditLoadDropdownActionActive,
-                loadDummyData
+                this.loadDropdownList
             );
     }
 

@@ -27,6 +27,11 @@ import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { DropdownMenuStringEnum } from '@shared/enums';
 import { PayrollTypeEnum } from 'ca-components';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 
 export abstract class PayrollReportBaseComponent<
     T extends {
@@ -54,7 +59,8 @@ export abstract class PayrollReportBaseComponent<
 
     constructor(
         protected modalService: ModalService,
-        private payrollService: PayrollService
+        private payrollService: PayrollService,
+        public loadStoreService: LoadStoreService
     ) {}
 
     protected abstract getReportDataResults(
@@ -63,8 +69,12 @@ export abstract class PayrollReportBaseComponent<
 
     protected abstract getIsEditLoadDropdownActionActive(): void;
 
-    public openMenu(event: { type: string; isActive?: boolean }): void {
-        const { type, isActive } = event;
+    public openMenu(event: {
+        type: string;
+        isActive?: boolean;
+        id?: number;
+    }): void {
+        const { type, isActive, id } = event;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_LOAD_TYPE:
@@ -74,6 +84,18 @@ export abstract class PayrollReportBaseComponent<
 
                 break;
             case DropdownMenuStringEnum.EDIT_PAYROLL_TYPE:
+                this.modalService.openModal(
+                    DriverModalComponent,
+                    {
+                        size: DriverDetailsCardStringEnum.MEDIUM,
+                    },
+                    {
+                        data: {
+                            id: this.openedPayroll.driver,
+                        },
+                    }
+                );
+
                 break;
             case DropdownMenuStringEnum.PREVIEW_REPORT_TYPE:
                 this.modalService.openModal(
@@ -91,6 +113,15 @@ export abstract class PayrollReportBaseComponent<
                 break;
             default:
                 break;
+        }
+
+        // Lets assume that if there is only id it is for load edit
+        if (!type && id) {
+            this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(
+                id,
+                eLoadStatusType.Closed,
+                LoadModalStringEnum.EDIT
+            );
         }
     }
 

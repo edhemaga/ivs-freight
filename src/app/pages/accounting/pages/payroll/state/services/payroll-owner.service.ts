@@ -18,11 +18,11 @@ import {
 // Models
 import {
     IDriverOwnerList,
+    ILoadWithMilesStopResponseNumberId,
     OwnerLoadShortReponseWithRowType,
 } from '@pages/accounting/pages/payroll/state/models';
 import { selectPayrollState } from '@pages/accounting/pages/payroll/state/selectors';
 import {
-    LoadWithMilesStopResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageExpandedListResponse } from '@pages/accounting/pages/payroll/state/models';
@@ -72,7 +72,7 @@ export class PayrollDriverOwnerFacadeService {
     > = this.store.pipe(select(selectPayrollDriverOwnerLoads));
 
     public selectPayrollReportOwnerIncludedLoads$: Observable<
-        LoadWithMilesStopResponse[]
+        ILoadWithMilesStopResponseNumberId[]
     > = this.store.pipe(select(selectPayrollReportsIncludedOwnerStops));
 
     public getPayrollDriverOwnerReport({
