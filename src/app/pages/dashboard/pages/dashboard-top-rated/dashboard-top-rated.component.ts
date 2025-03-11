@@ -167,12 +167,12 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     private getTopCategory(): string {
         const length = this.topRatedList.length;
-        
-        return length <= 10 
-            ? DashboardConstants.BAR_CHART_LABEL_TOP_3 
-            : length <= 30 
-                ? DashboardConstants.BAR_CHART_LABEL_TOP_5 
-                : DashboardConstants.BAR_CHART_LABEL_TOP_10;
+
+        return length <= 10
+            ? DashboardConstants.BAR_CHART_LABEL_TOP_3
+            : length <= 30
+              ? DashboardConstants.BAR_CHART_LABEL_TOP_5
+              : DashboardConstants.BAR_CHART_LABEL_TOP_10;
     }
 
     public resetSelectedValues(): void {

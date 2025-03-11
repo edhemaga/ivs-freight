@@ -26,7 +26,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum, eCommonElements } from '@shared/enums';
+import { DropdownMenuStringEnum, eCommonElement } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums/active-view-mode.enum';
 
 // constants
@@ -65,7 +65,7 @@ export class ContactsTableComponent
     public sendDataToCardsBack: CardRows[] =
         ContactsCardData.displayRowsBackContacts;
 
-    public eCommonElements = eCommonElements;
+    public eCommonElement = eCommonElement;
 
     // filters
     public filter = {

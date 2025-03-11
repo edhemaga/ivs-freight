@@ -246,7 +246,7 @@
                     class="weekly-status"
                     [class.disabledWeeklyStatus]="disabledCard"
                 >
-                    <div class="weekly-status-value">
+                    <div class="weekly-status-value text-color-black">
                         {{ hasWeeklyStatus }}
                     </div>
                 </div>
@@ -318,7 +318,7 @@
         [ngClass]="{
             scroll: hasScrollBody,
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
-            'department-contacts-x-axis': isDepartmentContactsCard, 
+            'department-contacts-x-axis': isDepartmentContactsCard,
             'scrollable-element overflow-auto': isInheritingParentSize,
             'set-max-height': isInheritingParentSize,
         }"

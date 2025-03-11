@@ -139,7 +139,7 @@
                                         (click)="
                                             $event.stopPropagation(
                                                 handleActionClick(
-                                                    'finish-order',
+                                                    eRepairShopDetails.FINISH_ORDER,
                                                     repairIndex
                                                 )
                                             )
@@ -196,7 +196,9 @@
 
                             <!-- Options -->
 
-                            <app-ta-dropdown-options
+                            <ca-dropdown-menu
+                                [type]="'dots-menu-type'"
+                                [placement]="'right-top'"
                                 [options]="repairItemOptions"
                                 (dropdownOptionEmitter)="
                                     handleDropdownOptionClick(
@@ -204,7 +206,8 @@
                                         repairIndex
                                     )
                                 "
-                            ></app-ta-dropdown-options>
+                            >
+                            </ca-dropdown-menu>
                         </div>
                     </div>
 
@@ -423,7 +426,7 @@
 
             <div
                 class="d-flex align-items-center show-more-btn"
-                (click)="handleActionClick('show-more')"
+                (click)="handleShowMoreAction()"
             >
                 <p class="m-0 ta-font-bold text-size-11 text-color-black">
                     SHOW MORE

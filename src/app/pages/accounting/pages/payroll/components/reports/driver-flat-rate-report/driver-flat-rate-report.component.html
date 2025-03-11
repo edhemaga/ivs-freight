@@ -91,14 +91,14 @@
 
 <!-- TABLE TEMPLATES -->
 <ng-template #customCountTemplate let-data let-index="index">
-    <div class="custom-load-index">{{ index + 1 }}</div>
+    <div class="custom-load-index text-color-black">{{ index + 1 }}</div>
 </ng-template>
 
 <ng-template #customInvBrk let-data>
     <div class="load-description d-flex align-items-center">
         <div class="load-description-name">
-            <div class="load-description-address">{{ data.loadNumber }}</div>
-            <div class="load-description-stop-type">
+            <div class="load-description-address text-color-black">{{ data.loadNumber }}</div>
+            <div class="load-description-stop-type text-color-muted">
                 {{ data.brokerName }}
             </div>
         </div>
@@ -109,14 +109,14 @@
     <div class="load-description d-flex align-items-center">
         <ng-container *ngIf="data.orderNumber">
             <svg-icon
-                [svgClass]="'d-flex'"
+                [svgClass]="'d-flex prevent-text-selection'"
                 name="load_order_num_{{ data.orderNumber }}"
             ></svg-icon>
         </ng-container>
 
         <div class="load-description-name">
-            <div class="load-description-address">{{ data.address }}</div>
-            <div class="load-description-stop-type">
+            <div class="load-description-address text-color-black">{{ data.address }}</div>
+            <div class="load-description-stop-type text-color-muted">
                 {{ data.stopType.name }}
             </div>
         </div>
@@ -126,13 +126,13 @@
 <ng-template #customPickupHeaderTemplate>
     <div class="custom-load-header d-flex align-items-center pickup">
         <svg-icon [svgClass]="'d-flex'" name="pickup"></svg-icon>
-        <div>Pickup</div>
+        <div class="text-color-bw6-2">Pickup</div>
     </div>
 </ng-template>
 <ng-template #customDeliveryHeaderTemplate>
     <div class="custom-load-header d-flex align-items-center delivery">
         <svg-icon [svgClass]="'d-flex'" name="delivery"></svg-icon>
-        <div>Delivery</div>
+        <div class="text-color-bw6-2">Delivery</div>
     </div>
 </ng-template>
 
@@ -140,19 +140,19 @@
     <div class="load-description d-flex align-items-center normal">
         <ng-container *ngIf="data.length">
             <svg-icon
-                [svgClass]="'d-flex'"
+                [svgClass]="'d-flex prevent-text-selection'"
                 name="load_order_num_{{ data.length }}"
             ></svg-icon>
         </ng-container>
 
         <div class="load-description-name">
-            <div class="load-description-address">
+            <div class="load-description-address text-color-black">
                 {{ data[0].address }}
                 <ng-container *ngIf="data.isTonu"
-                    ><span class="load-description-tonu">T</span></ng-container
+                    ><span class="load-description-tonu prevent-text-selection">T</span></ng-container
                 >
             </div>
-            <div class="load-description-stop-type">
+            <div class="load-description-stop-type text-color-muted">
                 {{ data[0].date | date: 'MM/dd/yy hh:mm a' }}
             </div>
         </div>
@@ -173,7 +173,7 @@
     <td colspan="4">
         <div class="td-container">
             <div class="td-content-container">
-                <div class="custom-load-index text b-600">Total</div>
+                <div class="custom-load-index text-color-black text b-600">Total</div>
             </div>
         </div>
     </td>
@@ -204,14 +204,14 @@
         <td [attr.colspan]="selectedTab === 'open' ? 3 : 4">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">Total</div>
+                    <div class="custom-load-index text-color-black text b-600">Total</div>
                 </div>
             </div>
         </td>
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text">
+                    <div class="custom-load-index text-color-black text">
                         {{ payroll_totals.totalEmptyMiles }}
                     </div>
                 </div>
@@ -219,14 +219,14 @@
         </td>
         <td class="text-right">
             <div class="td-container">
-                <div class="td-content-container">
+                <div class="td-content-container text-color-black">
                     {{ payroll_totals.totalLoadedMiles }}
                 </div>
             </div>
         </td>
         <td class="text-right">
             <div class="td-container">
-                <div class="td-content-container">
+                <div class="td-content-container text-color-black">
                     {{ payroll_totals.totalMiles }}
                 </div>
             </div>
@@ -234,7 +234,7 @@
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">
+                    <div class="custom-load-index text-color-black text b-600">
                         {{ payroll_totals.totalSubtotal | currency }}
                     </div>
                 </div>

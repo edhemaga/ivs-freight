@@ -11,6 +11,7 @@ export enum eGeneralActions {
     DEACTIVATE = 'deactivate',
     CLOSE = 'close',
     OPEN = 'open',
+    OPEN_CAPITALIZED = 'Open',
     SAVE = 'save',
     NEXT = 'Next',
     PREVIOUS = 'Previous',

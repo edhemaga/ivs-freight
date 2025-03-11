@@ -34,7 +34,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { DriverDetailsStringEnum } from '@pages/driver/pages/driver-details/enums/driver-details-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { DriverDetailsItemStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-item/enums/driver-details-item-string.enum';
-import { eCommonElements } from '@shared/enums';
+import { eCommonElement } from '@shared/enums';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -251,9 +251,7 @@ export class DriverDetailsComponent implements OnInit, OnDestroy {
                             this.getDetailsConfig(res);
 
                             if (
-                                this.router.url.includes(
-                                    eCommonElements.DETAILS
-                                )
+                                this.router.url.includes(eCommonElement.DETAILS)
                             ) {
                                 this.router.navigate([
                                     `/list/driver/${res.id}/details`,

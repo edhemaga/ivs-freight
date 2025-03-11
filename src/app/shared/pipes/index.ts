@@ -27,7 +27,6 @@ export * from './safe-html.pipe';
 export * from './sum-arrays.pipe';
 export * from './ta-svg.pipe';
 export * from './table-load-status.pipe';
-export * from './dispatch-color-finder.pipe';
 export * from './thousand-separator.pipe';
 export * from './thousand-to-short-format.pipe';
 export * from './time-format-am-pm.pipe';

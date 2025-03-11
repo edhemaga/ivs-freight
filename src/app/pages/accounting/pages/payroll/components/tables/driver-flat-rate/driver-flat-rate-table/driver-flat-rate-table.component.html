@@ -21,7 +21,7 @@
             [isRound]="false"
             [isHoverEffect]="true"
         ></app-ca-profile-image>
-        <span class="driver-solo-info-text">{{ data.fullName }}</span>
+        <span class="driver-solo-info-text text-color-black">{{ data.fullName }}</span>
     </div>
 </ng-template>
 
@@ -54,21 +54,24 @@
         <ng-container *ngIf="data.period !== 'Ready'">
             <div
                 class="custom-status-text"
-                [ngClass]="{ 'past-payment': data.period === 'Past' }"
+                [ngClass]="{ 
+                    'text-color-red-11': data.period === 'Past',
+                    'text-color-bw6-2': data.period !== 'Past'
+                }"
             >
                 {{ Math.abs(data.numberOfDays) }} DAYS
             </div>
         </ng-container>
 
         <ng-container *ngIf="data.period === 'Ready'">
-            <div class="custom-status-text ready-payment">Ready</div>
+            <div class="custom-status-text text-color-green-2">Ready</div>
         </ng-container>
     </div>
 </ng-template>
 
 <ng-template #customMileageHeader let-data>
-    <div class="custom-mileage">
+    <div class="custom-mileage text-color-bw6-2">
         {{ data }}
-        <span>$</span>
+        <span class="text-color-muted">$</span>
     </div>
 </ng-template>

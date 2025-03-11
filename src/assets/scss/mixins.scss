@@ -32,3 +32,23 @@
 @mixin grid-template-columns($columns) {
     grid-template-columns: $columns;
 }
+
+@mixin text-selection($color, $opacity: 0.2) {
+    &::-moz-selection {
+        background-color: rgb($color, $opacity) !important;
+        color: $color !important;
+    }
+
+    &::selection {
+        background-color: rgb($color, $opacity) !important;
+        color: $color !important;
+    }
+}
+
+@mixin prevent-text-selection() {
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -moz-user-select: none;
+  }
+  

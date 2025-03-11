@@ -5,6 +5,11 @@ export enum eFuelStopDetails {
     SELECT_FUEL_STOP = 'select-fuel-stop',
     CHANGE_FUEL_STOP = 'change-fuel-stop',
 
+    FUEL_TRANSACTION = 'fuel-transaction',
+
     NEXT = 'next',
     PREVIOUS = 'previous',
+
+    DIESEL = 'Diesel',
+    DEF = 'DEF',
 }
