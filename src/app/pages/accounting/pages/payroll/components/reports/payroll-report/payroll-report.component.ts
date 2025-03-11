@@ -246,7 +246,6 @@ export class PayrollReportComponent
         this.payrollFacadeService.selectPayrollReportDriverMileageLoads$
             .pipe(takeUntil(this.destroy$))
             .subscribe((payrollLoadList) => {
-                console.log('PAYROLL ', payrollLoadList);
                 const filteredPayrollList = payrollLoadList.filter(
                     (load) => !(load as any).rowType
                 );

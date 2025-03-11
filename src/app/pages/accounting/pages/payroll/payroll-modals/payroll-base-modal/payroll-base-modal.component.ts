@@ -17,7 +17,6 @@ import { FormatDatePipe } from '@shared/pipes';
 import {
     CaInputComponent,
     CaInputDatetimePickerComponent,
-    CaInputDropdownComponent,
     CaInputDropdownTestComponent,
     CaModalComponent,
     InputTestComponent,
@@ -62,7 +61,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-import { PayrollSettingsPipe } from '../../pipes/payroll-settings-pipe/payroll-settings-pipe.pipe';
+import { PayrollSettingsPipe } from '@pages/accounting/pages/payroll/pipes/payroll-settings-pipe/payroll-settings-pipe.pipe';
 
 // Config
 import { ICaInput } from '@ca-shared/components/ca-input-test/config';
@@ -89,7 +88,7 @@ import { ICaInput } from '@ca-shared/components/ca-input-test/config';
 
         // Pipes
         FormatDatePipe,
-        PayrollSettingsPipe
+        PayrollSettingsPipe,
     ],
     templateUrl: './payroll-base-modal.component.html',
     styleUrls: ['./payroll-base-modal.component.scss'],
@@ -276,25 +275,6 @@ export class PayrollBaseModalComponent implements OnInit {
         this.creditTitle = `${driver?.name} • ${driver?.suffix}`;
         this.driverConfig = {
             ...this.driverConfig,
-            // multipleInputValues: {
-            //     options: [
-            //         {
-            //             value: driver.name,
-            //             isImg: true,
-            //             isSvg: false,
-            //             folder: null,
-            //             subFolder: null,
-            //             isOwner: false,
-            //             logoType: null,
-            //             logoName: this.selectedDriver?.logoName,
-            //         },
-            //         {
-            //             value: `${driver.suffix}`,
-            //             logoName: null,
-            //         },
-            //     ],
-            //     customClass: LoadModalStringEnum.TEXT_SUFFIX,
-            // },
         };
     }
 

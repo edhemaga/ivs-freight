@@ -275,10 +275,6 @@ export const selectPayrollLoadListForDropdown = createSelector(
 
         includedLoads.filter((load) => load.isLoad);
         return includedLoads;
-
-        // return includedLoads.map((load) => {
-        //     id: load.loadId;
-        // });
     }
 );
 
