@@ -59,7 +59,7 @@ import {
 } from 'appcoretruckassist';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';

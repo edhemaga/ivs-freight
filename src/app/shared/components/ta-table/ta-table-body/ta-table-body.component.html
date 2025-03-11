@@ -2476,6 +2476,40 @@
                                         </ng-container>
                                     </div>
 
+                                    <!-- TEXT MIDDLE ELLIPSIS COLUMN -->
+
+                                    @if (
+                                        column.ngTemplate === 'middle-ellipsis'
+                                    ) {
+                                        @let ellipsisValue = row[column.field];
+
+                                        <div [style.width.px]="column.width">
+                                            <span>
+                                                {{
+                                                    ellipsisValue
+                                                        | middleEllipsis
+                                                }}
+                                            </span>
+                                        </div>
+                                    }
+
+                                    <!-- TEXT MASK COLUMN -->
+
+                                    @if (column.ngTemplate === 'text-mask') {
+                                        @let maskValue = row[column.field];
+
+                                        <div [style.width.px]="column.width">
+                                            @if (maskValue) {
+                                                <span>
+                                                    {{
+                                                        row[column.field]
+                                                            | mask: column.mask
+                                                    }}
+                                                </span>
+                                            }
+                                        </div>
+                                    }
+
                                     <!-- TEXT COLUMN -->
 
                                     <div
@@ -5343,6 +5377,40 @@
                                             </ng-container>
                                         </div>
                                     </div>
+
+                                    <!-- TEXT MIDDLE ELLIPSIS COLUMN -->
+
+                                    @if (
+                                        column.ngTemplate === 'middle-ellipsis'
+                                    ) {
+                                        @let ellipsisValue = row[column.field];
+
+                                        <div [style.width.px]="column.width">
+                                            <span>
+                                                {{
+                                                    ellipsisValue
+                                                        | middleEllipsis
+                                                }}
+                                            </span>
+                                        </div>
+                                    }
+
+                                    <!-- TEXT MASK COLUMN -->
+
+                                    @if (column.ngTemplate === 'text-mask') {
+                                        @let maskValue = row[column.field];
+
+                                        <div [style.width.px]="column.width">
+                                            @if (maskValue) {
+                                                <span>
+                                                    {{
+                                                        row[column.field]
+                                                            | mask: column.mask
+                                                    }}
+                                                </span>
+                                            }
+                                        </div>
+                                    }
 
                                     <!-- TEXT COLUMN -->
 

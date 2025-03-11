@@ -53,7 +53,7 @@ import {
     DriverPayrollResponse,
     DriverResponse,
 } from 'appcoretruckassist';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
 
