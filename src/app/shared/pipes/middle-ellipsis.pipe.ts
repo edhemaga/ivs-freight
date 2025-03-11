@@ -11,8 +11,8 @@ export class MiddleEllipsisPipe implements PipeTransform {
     transform(value: string): string {
         if (!value) return eStringPlaceholder.EMPTY;
 
-        const beforeEllipsis: string = value.substring(0, 4);
-        const afterEllipsis: string = value.substring(value.length - 6);
+        const beforeEllipsis: string = value.slice(0, 4);
+        const afterEllipsis: string = value.slice(value.length - 6);
 
         return `${beforeEllipsis}${eStringPlaceholder.ELLIPSIS}${afterEllipsis}`;
     }

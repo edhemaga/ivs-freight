@@ -32,7 +32,11 @@ export class MiddleEllipsisDirective {
             afterEllipsisText
         );
 
-        this.renderer.setAttribute(rootElement, 'class', 'mete');
+        this.renderer.setAttribute(
+            rootElement,
+            'class',
+            'd-flex justify-content-center align-items-baseline mete'
+        );
 
         this.renderer.appendChild(rootElement, beforeEllipsisElement);
         this.renderer.appendChild(rootElement, afterEllipsisElement);
