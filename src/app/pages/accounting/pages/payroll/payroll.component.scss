@@ -386,11 +386,14 @@
         margin-right: 4px;
         border-radius: 1px;
         &-repair {
-            background-color: $ta-brown-2; 
+            background-color: $ta-brown-2;
             color: $ta-brown-1;
         }
         &-deadhead {
-            background-color: $dark-2; 
+            background-color: $dark-2;
+        }
+        &-towing {
+            background-color: $ta-purple-3;
         }
     }
 
@@ -522,7 +525,6 @@
 .custom-text-date {
     font-size: 14px;
 }
-
 
 .payroll_count {
     background-color: #91919133;
