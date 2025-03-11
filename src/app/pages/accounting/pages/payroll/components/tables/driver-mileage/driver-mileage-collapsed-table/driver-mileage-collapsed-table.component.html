@@ -23,7 +23,7 @@
         ></app-ca-profile-image>
         <span class="driver-solo-info-text text-color-black">{{ data.driver.fullName }}</span>
         <div
-            class="payroll_count d-flex justify-content-center align-items-center"
+            class="payroll_count text-color-black d-flex justify-content-center align-items-center"
         >
             {{ data.payrollCount }}
         </div>
@@ -66,8 +66,8 @@
 </ng-template>
 
 <ng-template #customMileageHeader let-data>
-    <div class="custom-mileage">
+    <div class="custom-mileage text-color-bw6-2">
         {{ data }}
-        <span>mi</span>
+        <span class="text-color-muted">mi</span>
     </div>
 </ng-template>
