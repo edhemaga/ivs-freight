@@ -30,7 +30,7 @@
 </ng-template>
 
 <ng-template #customMileageHeader let-data>
-    <div class="custom-mileage text-color-dark-grey">
+    <div class="custom-mileage text-color-bw6-2">
         {{ data }}
         <span class="text-color-muted">mi</span>
     </div>
@@ -67,7 +67,7 @@
                 class="custom-status-text"
                 [ngClass]="{ 
                     'text-color-red-11': data.period === 'Past',
-                    'text-color-dark-grey': data.period !== 'Past'
+                    'text-color-bw6-2': data.period !== 'Past'
                 }"
             >
                 {{ Math.abs(data.numberOfDays) }} DAYS

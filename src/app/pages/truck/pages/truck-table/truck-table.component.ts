@@ -444,7 +444,7 @@ export class TruckTableComponent
     private initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTruckFilter: true,
+                showTruckTypeFilter: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
