@@ -39,6 +39,7 @@ import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/pa
 import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ePayrollTable } from '@pages/accounting/pages/payroll/state/enums/payroll-table.enums';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
@@ -63,6 +64,8 @@ export class PayrollReportComponent
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.MILEAGE;
+
+    public ePayrollTable = ePayrollTable;
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
@@ -111,17 +114,8 @@ export class PayrollReportComponent
     @ViewChild('towingTemplate', { static: false })
     public readonly towingTemplate!: ElementRef;
 
-    @ViewChild('emptyTemplate', { static: false })
-    public readonly emptyTemplate!: ElementRef;
-
-    @ViewChild('milesTemplate', { static: false })
-    public readonly milesTemplate!: ElementRef;
-
     @ViewChild('customFeeTemplate', { static: false })
     public readonly customFeeTemplate!: ElementRef;
-
-    @ViewChild('subtotalTemplate', { static: false })
-    public readonly subtotalTemplate!: ElementRef;
 
     public reportMainData: any = {
         loads: [],
@@ -179,6 +173,7 @@ export class PayrollReportComponent
             {
                 header: 'LEG',
                 row: true,
+                field: 'leg',
                 cellType: 'template',
                 template: this.towingTemplate,
                 cellCustomClasses: 'text-right',
@@ -186,9 +181,10 @@ export class PayrollReportComponent
             {
                 header: 'EMPTY',
                 row: true,
+                field: 'empty',
                 cellType: 'template',
+                template: this.towingTemplate,
                 cellCustomClasses: 'text-right',
-                template: this.emptyTemplate,
             },
             {
                 header: 'LOADED',
@@ -199,9 +195,10 @@ export class PayrollReportComponent
             {
                 header: 'MILES',
                 row: true,
+                field: 'miles',
                 cellType: 'template',
+                template: this.towingTemplate,
                 cellCustomClasses: 'text-right',
-                template: this.milesTemplate,
             },
             {
                 header: '',
@@ -213,12 +210,13 @@ export class PayrollReportComponent
             {
                 header: 'SUBTOTAL',
                 row: true,
+                field: 'subtotal',
                 cellType: 'template', // Pass the template reference
                 pipeType: 'currency',
                 pipeString: 'USD',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
-                template: this.subtotalTemplate,
+                template: this.towingTemplate,
             },
         ];
     }
