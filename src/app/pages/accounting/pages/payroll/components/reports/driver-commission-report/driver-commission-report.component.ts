@@ -229,6 +229,10 @@ export class DriverCommissionReportComponent
         this.payrollCommissionDriverLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$;
 
+            this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(res => {
+                //console.log("SUBSS", res); // CONSOLE LOG FOR DEVELOPMENT
+            });
+
         this.includedLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
 
@@ -299,6 +303,7 @@ export class DriverCommissionReportComponent
     }
 
     public getIsEditLoadDropdownActionActive(): void {
+        
         const loadDummyData = [
             // w8 for slavisa
             { id: 1, title: 'INV-162-23' },

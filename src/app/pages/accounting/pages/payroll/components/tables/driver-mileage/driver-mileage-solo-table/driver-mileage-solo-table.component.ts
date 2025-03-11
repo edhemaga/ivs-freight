@@ -1,5 +1,4 @@
 import {
-    ChangeDetectionStrategy,
     Component,
     ElementRef,
     EventEmitter,
@@ -9,7 +8,7 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AfterViewInit } from '@angular/core';
 
 // Models
@@ -28,7 +27,7 @@ import { ColumnConfig } from 'ca-components';
     styleUrls: [
         '../../../../../payroll/payroll.component.scss',
         './driver-mileage-solo-table.component.scss',
-    ]
+    ],
 })
 export class DriverMileageSoloTableComponent
     implements OnInit, AfterViewInit, OnDestroy
@@ -59,6 +58,7 @@ export class DriverMileageSoloTableComponent
 
     public testTemplate: ElementRef;
     public loading$: Observable<boolean>;
+    public reportTableExpanded$: Observable<boolean>;
 
     constructor(
         // Services
@@ -156,6 +156,9 @@ export class DriverMileageSoloTableComponent
 
     public subscribeToStoreData(): void {
         this.payrollFacadeService.getPayrollDriverMileageSoloList();
+        this.reportTableExpanded$ =
+            this.payrollFacadeService.reportTableExpanded$;
+
         this.tableData$ =
             this.payrollFacadeService.selectPayrollDriverSoloMileage$;
 

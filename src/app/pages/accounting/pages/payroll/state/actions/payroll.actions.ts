@@ -11,7 +11,7 @@ import { PayrollCountsResponse, RoutingResponse } from 'appcoretruckassist';
 
 export const getPayrollCounts = createAction(
     ePayrollEnum.GET_PAYROLL_COUNTS,
-    props<{ ShowOpen: boolean }>()
+    props<{ ShowOpen: boolean, showLoading: boolean }>()
 );
 
 export const getPayrollCountsSuccess = createAction(
@@ -26,7 +26,7 @@ export const getPayrollCountsError = createAction(
 
 export const setTableReportExpanded = createAction(
     ePayrollEnum.SET_TABLE_REPORT_EXPANDED,
-    props<{ expanded: boolean }>()
+    props<{ expanded: boolean; openedPayrollLeftId: string }>()
 );
 
 export const setPayrollopenedTab = createAction(

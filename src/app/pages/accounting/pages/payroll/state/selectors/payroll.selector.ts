@@ -140,6 +140,11 @@ export const selectPayrollOpenedReport = createSelector(
     }
 );
 
+export const selectPayrollOpenedFromLeftListToReport = createSelector(
+    selectPayrollState,
+    (state) => state.openedPayrollLeftId
+);
+
 export const selectPayrollReportsIncludedStops = createSelector(
     selectPayrollState,
     (state) => {
@@ -259,6 +264,17 @@ export const selectDriverMileageExpandedTable = createSelector(
     selectPayrollState,
     (state) => {
         return state.driverMileageExpandedList;
+    }
+);
+
+export const selectPayrollLoadListForDropdown = createSelector(
+    selectPayrollState,
+    (state) => {
+        if (!state.payrollOpenedReport) return [];
+        const includedLoads = state.payrollOpenedReport?.includedLoads ?? [];
+
+        includedLoads.filter((load) => load.isLoad);
+        return includedLoads;
     }
 );
 

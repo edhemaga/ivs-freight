@@ -45,11 +45,20 @@ export const onGetPayrollOwnerReport = (
 export const onGetPayrollOwnerReportSuccess = (
     state: PayrollState,
     data: { ownerPayrollReport: PayrollOwnerResponse }
-) => ({
-    ...state,
-    loading: false,
-    ownerPayrollResponse: data.ownerPayrollReport,
-});
+) => {
+    const openedPayrollLeftId = +state.openedPayrollLeftId;
+    const ownerPayrollList = state.ownerPayrollList.map((payrollDriver) =>
+        payrollDriver.id === openedPayrollLeftId
+            ? { ...payrollDriver, earnings: data.ownerPayrollReport.earnings }
+            : payrollDriver
+    );
+    return {
+        ...state,
+        loading: false,
+        ownerPayrollResponse: data.ownerPayrollReport,
+        ownerPayrollList,
+    };
+};
 
 export const onClosePayrollOwnerReportDriver = (state: PayrollState) => ({
     ...state,
