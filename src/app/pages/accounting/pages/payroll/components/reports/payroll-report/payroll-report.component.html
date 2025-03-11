@@ -146,6 +146,11 @@
                 class="load-description-small-icon load-description-small-icon-deadhead text-color-bw6-2 text-size-11 ca-font-bold d-flex align-items-center justify-content-center prevent-text-selection"
                 >D</span
             >
+        } @else if (data.stopType.name === 'Towing') {
+            <span
+                class="load-description-small-icon load-description-small-icon-towing text-color-special-filter-purple text-size-11 ca-font-bold d-flex align-items-center justify-content-center prevent-text-selection"
+                >T</span
+            >
         }
 
         <div class="load-description-name">
@@ -189,6 +194,54 @@
             </div>
         </div>
     </td>
+</ng-template>
+
+<ng-template #towingTemplate let-data>
+    <div
+        class="text"
+        [class.text-color-special-filter-purple]="
+            data.stopType.name === 'Towing'
+        "
+        [class.ca-font-semi-bold]="data.stopType.name === 'Towing'"
+    >
+        {{ data.leg }}
+    </div>
+</ng-template>
+
+<ng-template #emptyTemplate let-data>
+    <div
+        class="text"
+        [class.text-color-special-filter-purple]="
+            data.stopType.name === 'Towing'
+        "
+        [class.ca-font-semi-bold]="data.stopType.name === 'Towing'"
+    >
+        {{ data.empty }}
+    </div>
+</ng-template>
+
+<ng-template #milesTemplate let-data>
+    <div
+        class="text"
+        [class.text-color-special-filter-purple]="
+            data.stopType.name === 'Towing'
+        "
+        [class.ca-font-semi-bold]="data.stopType.name === 'Towing'"
+    >
+        {{ data.miles }}
+    </div>
+</ng-template>
+
+<ng-template #subtotalTemplate let-data>
+    <div
+        class="text"
+        [class.text-color-special-filter-purple]="
+            data.stopType.name === 'Towing'
+        "
+        [class.ca-font-semi-bold]="data.stopType.name === 'Towing'"
+    >
+        {{ data.subtotal }}
+    </div>
 </ng-template>
 
 <ng-template #reorderTemplate let-row="row" let-index="index">

@@ -108,8 +108,20 @@ export class PayrollReportComponent
     @ViewChild('customLocationTypeLoad', { static: false })
     public readonly customLocationTypeLoad!: ElementRef;
 
+    @ViewChild('towingTemplate', { static: false })
+    public readonly towingTemplate!: ElementRef;
+
+    @ViewChild('emptyTemplate', { static: false })
+    public readonly emptyTemplate!: ElementRef;
+
+    @ViewChild('milesTemplate', { static: false })
+    public readonly milesTemplate!: ElementRef;
+
     @ViewChild('customFeeTemplate', { static: false })
     public readonly customFeeTemplate!: ElementRef;
+
+    @ViewChild('subtotalTemplate', { static: false })
+    public readonly subtotalTemplate!: ElementRef;
 
     public reportMainData: any = {
         loads: [],
@@ -166,15 +178,17 @@ export class PayrollReportComponent
             },
             {
                 header: 'LEG',
-                field: 'leg',
-                cellType: 'text', // Pass the template reference
+                row: true,
+                cellType: 'template',
+                template: this.towingTemplate,
                 cellCustomClasses: 'text-right',
             },
             {
                 header: 'EMPTY',
-                field: 'empty',
-                cellType: 'text', // Pass the template reference
+                row: true,
+                cellType: 'template',
                 cellCustomClasses: 'text-right',
+                template: this.emptyTemplate,
             },
             {
                 header: 'LOADED',
@@ -184,9 +198,10 @@ export class PayrollReportComponent
             },
             {
                 header: 'MILES',
-                field: 'miles',
-                cellType: 'text', // Pass the template reference
+                row: true,
+                cellType: 'template',
                 cellCustomClasses: 'text-right',
+                template: this.milesTemplate,
             },
             {
                 header: '',
@@ -197,12 +212,13 @@ export class PayrollReportComponent
             },
             {
                 header: 'SUBTOTAL',
-                field: 'subtotal',
-                cellType: 'text',
+                row: true,
+                cellType: 'template', // Pass the template reference
                 pipeType: 'currency',
                 pipeString: 'USD',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                template: this.subtotalTemplate,
             },
         ];
     }

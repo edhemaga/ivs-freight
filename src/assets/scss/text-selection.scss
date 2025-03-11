@@ -79,6 +79,11 @@
             @include text-selection($ta-purple-1);
         }
 
+        &-special-filter-purple {
+            color: $special-filter-purple !important;
+            @include text-selection($special-filter-purple);
+        }
+
         &-light-grey {
             color: $ta-light-grey !important;
             @include text-selection($ta-light-grey);
