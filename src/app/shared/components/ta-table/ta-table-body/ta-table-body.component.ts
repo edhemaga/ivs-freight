@@ -70,6 +70,7 @@ import {
     type NgbPopover,
     type NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMaskModule } from 'ngx-mask';
 
 // sanitizer
 import { DomSanitizer } from '@angular/platform-browser';
@@ -80,6 +81,7 @@ import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
+import { MiddleEllipsisPipe } from '@shared/pipes';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -130,6 +132,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbPopoverModule,
+        NgxMaskModule,
 
         // components
         TaCustomScrollbarComponent,
@@ -155,6 +158,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         FormatCurrencyPipe,
         ThousandToShortFormatPipe,
         TableLoadStatusPipe,
+        MiddleEllipsisPipe,
 
         // directives
         PreventMultipleclicksDirective,
