@@ -421,8 +421,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
     private convertItems() : FuelItemResponse[]{
         return this.fuelItems.map((item) => {
-            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(item.qty as any);
-            const price = MethodsCalculationsHelper.convertThousandSepInNumber(item.price as any);
+            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(item.qty.toString());
+            const price = MethodsCalculationsHelper.convertThousandSepInNumber(item.price.toString());
 
             return {
                 ...item,
