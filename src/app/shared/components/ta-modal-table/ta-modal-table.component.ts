@@ -442,7 +442,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     private preselectPMItem(): void {
-        let truckTrailerRepairPm =
+        const truckTrailerRepairPm =
             this.truckTrailerRepairPmOptions?.truckPmDropdownList ||
             this.truckTrailerRepairPmOptions?.trailerPmDropdownList;
 
