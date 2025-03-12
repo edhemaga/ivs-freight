@@ -167,16 +167,21 @@
                                     class="m-0 ta-font-bold text-size-16 text-color-black"
                                 >
                                     Unit
-                                    {{ editData?.data?.tableTruckNumber }} - ${{
-                                        editData?.data.total
+                                    {{
+                                        editData?.data?.tableTruckNumber ||
+                                            editData.data?.truck?.truckNumber
                                     }}
+                                    - ${{ editData?.data.total }}
                                 </p>
                                 <div class="confirmation-text-holder d-flex">
                                     <p
                                         class="m-0 ta-font-medium text-size-14 text-color-grey"
                                     >
                                         {{
-                                            editData?.data?.tableTransactionDate
+                                            editData?.data
+                                                ?.tableTransactionDate ||
+                                                (editData?.data?.transactionDate
+                                                    | formatDateP)
                                         }}
                                     </p>
                                 </div>
@@ -852,7 +857,14 @@
                         <ng-container *ngSwitchCase="'repair'">
                             <div class="confirmation-body-content">
                                 <p class="m-0 text-1 ta-font-bold">
-                                    Unit {{ editData?.data?.tableUnit }}
+                                    Unit
+                                    {{
+                                        editData?.data?.tableUnit ||
+                                            editData?.data?.truck
+                                                ?.truckNumber ||
+                                            editData?.data?.trailer
+                                                ?.trailerNumber
+                                    }}
 
                                     <ng-container
                                         *ngIf="
@@ -861,7 +873,10 @@
                                             else repairOrder
                                         "
                                         >-
-                                        {{ editData.data.tableCost }}
+                                        {{
+                                            editData.data.tableCost ||
+                                                '$' + editData.data.total
+                                        }}
                                     </ng-container>
 
                                     <ng-template #repairOrder>
@@ -877,7 +892,10 @@
                                     </ng-template>
                                 </p>
                                 <p class="m-0 text-2">
-                                    {{ editData?.data?.tableShopName }}
+                                    {{
+                                        editData?.data?.tableShopName ||
+                                            editData?.data?.repairShop?.name
+                                    }}
                                 </p>
                             </div>
                         </ng-container>
@@ -1559,13 +1577,11 @@
             </div>
         </ng-container>
 
-        <ng-container
-            *ngIf="
-                ['deduction', 'credit', 'bonus', 'fuel'].includes(
-                    editData?.template
-                )
-            "
-        >
+        @if (
+            ['deduction', 'credit', 'bonus', 'FUEL_TRANSACTION'].includes(
+                editData?.template
+            )
+        ) {
             <div
                 class="d-flex flex-column justify-content-center confirmation-array-body"
             >
@@ -1594,7 +1610,7 @@
                     </div>
                 </div>
             </div>
-        </ng-container>
+        }
 
         <!-- Rating Header -->
 

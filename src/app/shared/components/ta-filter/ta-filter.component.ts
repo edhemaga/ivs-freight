@@ -2364,10 +2364,6 @@ export class TaFilterComponent implements OnInit, OnDestroy {
                 this.filterService.getDepartmentData();
                 break;
             }
-            case ToolbarFilterStringEnum.USER_FILTER: {
-                //this.filterService.getDispatchData(); - Disable for now
-                break;
-            }
             case ToolbarFilterStringEnum.TRUCK_FILTER: {
                 if (this.isRepairFilter) {
                     this.filterService.getRepairTruckData();

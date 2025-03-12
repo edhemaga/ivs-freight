@@ -1,5 +1,6 @@
-import { DropdownMenuItem } from "@ca-shared/components/ca-dropdown-menu/models";
-import { AvatarColors } from "@shared/models";
+// models
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { AvatarColors } from '@shared/models';
 
 export interface IContactsViewModelData {
     isSelected?: boolean;
@@ -20,5 +21,5 @@ export interface IContactsViewModelData {
     } | null;
     added?: string | null;
     edited?: string | null;
-    tableDropdownContent?: DropdownMenuItem[];
+    tableDropdownContent?: IDropdownMenuItem[];
 }

@@ -531,12 +531,17 @@ model/fuelStopFranchiseResponse.ts
 model/fuelStopFranchiseResponsePagination.ts
 model/fuelStopIntervalResponse.ts
 model/fuelStopListResponse.ts
+model/fuelStopMinimalListResponse.ts
+model/fuelStopMinimalResponse.ts
+model/fuelStopMinimalResponsePagination.ts
 model/fuelStopResponse.ts
 model/fuelStopResponsePagination.ts
 model/fuelStopShortResponse.ts
+model/fuelStopSortBy.ts
 model/fuelTransactionListResponse.ts
 model/fuelTransactionResponse.ts
 model/fuelTransactionResponsePagination.ts
+model/fuelTransactionSortBy.ts
 model/fuelType.ts
 model/fuelledVehicleHistoryListResponse.ts
 model/fuelledVehicleResponse.ts
@@ -553,6 +558,7 @@ model/getDriverModalResponse.ts
 model/getEFSTransactionCommand.ts
 model/getFuelModalResponse.ts
 model/getFuelStopModalResponse.ts
+model/getFuelStopRangeResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
 model/getMobileFuelTransactionTrucksResponse.ts

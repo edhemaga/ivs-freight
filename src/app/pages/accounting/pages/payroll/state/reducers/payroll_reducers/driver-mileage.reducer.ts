@@ -1,16 +1,13 @@
 // Models
+import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import {
-    PayrollDriverMileageClosedByIdResponse,
-    PayrollDriverMileageListResponse,
-} from 'appcoretruckassist';
-import {
-    IGet_Payroll_Commission_Driver_Report,
     IGet_Payroll_Solo_Mileage_Driver_Report,
+    IPayrollDriverMileageClosedByIdResponse,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
 } from '@pages/accounting/pages/payroll/state/models';
-import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 export const onGetPayrollSoloMileageDriver = (state: PayrollState) => ({
     ...state,
@@ -37,14 +34,36 @@ export const onGetPayrollSoloMileageReportDriver = (
         params.selectedDeductionIds ?? state.selectedDeductionIds,
 });
 
-export const onGetPayrollSoloMileageReportDriverErrorSuccess = (
+export const onGetPayrollSoloMileageReportDriverSuccess = (
     state: PayrollState,
-    data: { payroll: PayrollDriverMileageResponse }
-) => ({
-    ...state,
-    payrollOpenedReport: data.payroll,
-    reportLoading: false,
-});
+    data: { payroll: IPayrollDriverMileageByIdResponseNumberId }
+) => {
+    const openedPayrollLeftId = +state.openedPayrollLeftId;
+
+    let totalEarnings = 0;
+    const payrollDriverMileage = state.payrollDriverMileage.map(
+        (payrollDriver) => {
+            totalEarnings += payrollDriver.earnings;
+            return payrollDriver.id === openedPayrollLeftId
+                ? { ...payrollDriver, earnings: data.payroll.earnings }
+                : payrollDriver;
+        }
+    );
+
+    return {
+        ...state,
+        payrollOpenedReport: data.payroll,
+        reportLoading: false,
+        payrollDriverMileage,
+        payrollCounts: {
+            ...state.payrollCounts,
+            soloMiles: {
+                ...state.payrollCounts.soloMiles,
+                value: totalEarnings,
+            },
+        },
+    };
+};
 
 export const onGetPayrollSoloMileageReportDriverError = (
     state: PayrollState
@@ -152,7 +171,7 @@ export const onGetPayrollMileageDriverExpandedListError = (
 
 export const onGetPayrollMileageDriverClosedPayrollSuccess = (
     state: PayrollState,
-    data: { payroll: PayrollDriverMileageClosedByIdResponse }
+    data: { payroll: IPayrollDriverMileageClosedByIdResponse }
 ) => ({
     ...state,
     payrollOpenedReport: {

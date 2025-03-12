@@ -9,12 +9,12 @@ import {
 import { DropdownMenuContentConditionalItemsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // models
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 
 export class DropdownMenuContentHelper {
     // contact
-    static getContactDropdownContent(): DropdownMenuItem[] {
+    static getContactDropdownContent(): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [DropdownMenuStringEnum.SEND_SMS];
 
@@ -42,7 +42,7 @@ export class DropdownMenuContentHelper {
     }
 
     // account
-    static getAccountDropdownContent(url: string): DropdownMenuItem[] {
+    static getAccountDropdownContent(url: string): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [
             url
@@ -74,7 +74,7 @@ export class DropdownMenuContentHelper {
     }
 
     // owner
-    static getOwnerDropdownContent(selectedTab: string): DropdownMenuItem[] {
+    static getOwnerDropdownContent(selectedTab: string): IDropdownMenuItem[] {
         const isActiveOwner = selectedTab === DropdownMenuStringEnum.ACTIVE;
 
         // modifier items
@@ -115,7 +115,7 @@ export class DropdownMenuContentHelper {
     // fuel transaction
     static getFuelTransactionDropdownContent(
         isAutomaticTransaction: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         // modifier items
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getFuelTransactionModifierItems(
@@ -156,7 +156,7 @@ export class DropdownMenuContentHelper {
         isCentralised: boolean,
         isPinned: boolean,
         isOpenBusiness: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         // modifier items
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getFuelStopModifierItems(
@@ -207,7 +207,7 @@ export class DropdownMenuContentHelper {
     }
 
     // pm
-    static getPMDropdownContent(): DropdownMenuItem[] {
+    static getPMDropdownContent(): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [DropdownMenuStringEnum.CONFIGURE];
 
@@ -237,7 +237,7 @@ export class DropdownMenuContentHelper {
     static getRepairDropdownContent(
         selectedTab: string,
         repairType: string
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         const isTruckRepair = selectedTab === DropdownMenuStringEnum.ACTIVE;
 
         // modifier items
@@ -286,7 +286,7 @@ export class DropdownMenuContentHelper {
         isOpenBusiness: boolean,
         isPinned: boolean,
         isCompanyOwned: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         // modifier items
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getRepairShopModifierItems(
@@ -325,7 +325,7 @@ export class DropdownMenuContentHelper {
     // truck and trailer
     static getTruckTrailerDropdownContent(
         selectedTab: string
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         const isActiveTruckTrailer =
             selectedTab === DropdownMenuStringEnum.ACTIVE;
 
@@ -372,7 +372,7 @@ export class DropdownMenuContentHelper {
     }
 
     // driver
-    static getDriverDropdownContent(selectedTab: string): DropdownMenuItem[] {
+    static getDriverDropdownContent(selectedTab: string): IDropdownMenuItem[] {
         const isActiveDriver = selectedTab === DropdownMenuStringEnum.ACTIVE;
 
         // modifier items
@@ -422,7 +422,7 @@ export class DropdownMenuContentHelper {
     }
 
     // load template
-    static getLoadTemplateDropdownContent(): DropdownMenuItem[] {
+    static getLoadTemplateDropdownContent(): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [DropdownMenuStringEnum.CREATE_LOAD];
 
@@ -454,7 +454,7 @@ export class DropdownMenuContentHelper {
     }
 
     // load
-    static getLoadDropdownContent(selectedTab: string): DropdownMenuItem[] {
+    static getLoadDropdownContent(selectedTab: string): IDropdownMenuItem[] {
         const isPendingLoad = selectedTab === DropdownMenuStringEnum.PENDING;
         const isClosedLoad = selectedTab === DropdownMenuStringEnum.CLOSED;
 
@@ -499,7 +499,7 @@ export class DropdownMenuContentHelper {
     }
 
     // shipper
-    static getShipperDropdownContent(status: number): DropdownMenuItem[] {
+    static getShipperDropdownContent(status: number): IDropdownMenuItem[] {
         const isOpenBusiness = !!status;
 
         const modifierItems =
@@ -549,7 +549,7 @@ export class DropdownMenuContentHelper {
         status: number,
         isBrokerBanned?: boolean,
         isBrokerDnu?: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         const isOpenBusiness = !!status;
         const isMovedToBanOrDnu = isBrokerBanned || isBrokerDnu;
 
@@ -612,7 +612,7 @@ export class DropdownMenuContentHelper {
         selectedTab: string,
         userStatus: string,
         isInvitationSent: boolean
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         const isActiveUser = selectedTab === DropdownMenuStringEnum.ACTIVE;
         const isOwnerUser = userStatus === TableStringEnum.OWNER;
 
@@ -675,7 +675,7 @@ export class DropdownMenuContentHelper {
     // payroll
     static getPayrollDropdownContent(
         isOpenPayroll: boolean = false
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = isOpenPayroll
             ? [
@@ -718,7 +718,7 @@ export class DropdownMenuContentHelper {
     // payroll select load
     static getPayrollSelectLoadDropdownContent(
         loadList: { id: number; title: string }[]
-    ): DropdownMenuItem[] {
+    ): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [
             DropdownMenuStringEnum.EDIT_LOAD_SELECT,
@@ -741,7 +741,7 @@ export class DropdownMenuContentHelper {
         archivedDate: string,
         applicationStatus: string,
         review: string
-    ): any[] /* DropdownMenuItem[] */ {
+    ): any[] /* IDropdownMenuItem[] */ {
         return [
             {
                 title: 'Edit',

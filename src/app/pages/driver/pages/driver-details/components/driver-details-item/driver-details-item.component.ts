@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // decorators
@@ -13,6 +13,9 @@ import { DriverDetailsItemMvrComponent } from '@pages/driver/pages/driver-detail
 
 // models
 import { DetailsConfig } from '@shared/models/details-config.model';
+
+// enums
+import { eCommonElement } from '@shared/enums';
 
 @Titles()
 @Component({
@@ -33,13 +36,11 @@ import { DetailsConfig } from '@shared/models/details-config.model';
     ],
 })
 export class DriverDetailsItemComponent implements OnChanges {
-    @Input() detailsConfig: DetailsConfig;
+    @Input() detailsConfig!: DetailsConfig[];
+
+    public eCommonElement = eCommonElement;
+
+    public ngOnChanges(changes: SimpleChanges): void {}
 
     constructor() {}
-
-    ngOnChanges(): void {}
-
-    public trackByIdentity(index: number): number {
-        return index;
-    }
 }

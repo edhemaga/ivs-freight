@@ -13,6 +13,8 @@ import { DashboardColors } from '@pages/dashboard/utils/constants/dashboard-colo
 import { DashboardSubperiodConstants } from '@pages/dashboard/utils/constants/dashboard-subperiod.constants';
 import { DashboardTopRatedChartsConfiguration } from '@pages/dashboard/pages/dashboard-top-rated/utils/constants';
 import { ChartConfiguration } from '@shared/utils/constants';
+import { DashboardConstants } from '@pages/dashboard/utils/constants';
+import { DashboardByStateChartDatasetConfiguration } from '@pages/dashboard/pages/dashboard-by-state/utils/constants';
 
 // Helpers
 import { DashboardArrayHelper } from '@pages/dashboard/utils/helpers/dashboard-array-helper';
@@ -22,12 +24,12 @@ import { ChartHelper } from '@shared/utils/helpers';
 // Enums
 import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enum';
 import { DashboardChartStringEnum } from '@pages/dashboard/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 // Models
 import { DropdownItem } from '@shared/models/dropdown-item.model';
 import { DashboardTab } from '@pages/dashboard/models/dashboard-tab.model';
 import { DropdownListItem } from '@pages/dashboard/models/dropdown-list-item.model';
-import { TopRatedListItem } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-list-item.model';
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
 import {
     TopRatedMainColorsPalette,
@@ -51,14 +53,18 @@ import {
     TopShipperResponse,
     TopTruckListResponse,
 } from 'appcoretruckassist';
-import { TopRatedApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-api-arguments.model';
-import { TopRatedWithoutTabApiArguments } from '@pages/dashboard/pages/dashboard-top-rated/models/top-rated-without-tab-api-arguments.model';
 import {
     IChartCenterLabel,
     IChartConfiguration,
     IChartData,
     IBaseDataset,
 } from 'ca-components/lib/components/ca-chart/models';
+import {
+    ITopRatedTabData,
+    ITopRatedListItem,
+    TopRatedApiArguments,
+    TopRatedWithoutTabApiArguments,
+} from '@pages/dashboard/pages/dashboard-top-rated/models';
 
 @Component({
     selector: 'app-dashboard-top-rated',
@@ -68,6 +74,21 @@ import {
 })
 export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     private destroy$: Subject<void> = new Subject<void>();
+
+    // Search
+    private byStatechartLables: string[] = [];
+    private topRatedListBeforeSearch: ITopRatedListItem[] = [];
+
+    // Tabs
+    private currentActiveTab: DashboardTab;
+    private selectedCustomPeriodRange: CustomPeriodRange;
+
+    // Company
+    private overallCompanyDuration: number;
+
+    // Chart config
+    private byStateChartDatasetConfig =
+        DashboardByStateChartDatasetConfiguration.BY_STATE_CHART_DATASET_CONFIG;
 
     public topRatedForm: UntypedFormGroup;
     public topRatedTitle: string = DashboardStringEnum.DRIVER;
@@ -80,9 +101,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public clearSearchValue: boolean = false;
 
     // List
-    public topRatedList: TopRatedListItem[] = [];
-    public selectedTopRatedList: TopRatedListItem[] = [];
-    private topRatedListBeforeSearch: TopRatedListItem[] = [];
+    public topRatedList: ITopRatedListItem[] = [];
+    public selectedTopRatedList: ITopRatedListItem[] = [];
     public topRatedListSelectedPercentage: number = 100;
 
     public topRatedListLength: number = 0;
@@ -92,7 +112,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     // Tabs
     public topRatedTabs: DashboardTab[] = [];
-    private currentActiveTab: DashboardTab;
 
     // Dropdowns
     public topRatedDropdownList: DropdownItem[] = [];
@@ -104,9 +123,6 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public selectedSubPeriod: DropdownListItem;
 
     public isDisplayingCustomPeriodRange: boolean = false;
-    private selectedCustomPeriodRange: CustomPeriodRange;
-
-    private overallCompanyDuration: number;
 
     public selectedDropdownWidthSubPeriod: DropdownListItem;
 
@@ -120,8 +136,11 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     public doughnutCenterLabels!: IChartCenterLabel[];
     public doughnutChartDataHoveredIndex!: number | null;
 
-    public barChartConfig: IChartConfiguration =
+    public byStateBarChartConfig: IChartConfiguration =
         DashboardTopRatedChartsConfiguration.BAR_CHART_CONFIG;
+    public intervalTooltipLabel: string[] = [];
+
+    public initalByStateBarChartConfig: IChartConfiguration;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -146,11 +165,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         });
     }
 
-    public trackByIdentity = (_: number, item: DropdownItem): string =>
-        item.name;
+    private getTopCategory(): string {
+        const length = this.topRatedList.length;
 
-    public trackById(item: TopRatedListItem): number {
-        return item?.id;
+        return length <= 10
+            ? DashboardConstants.BAR_CHART_LABEL_TOP_3
+            : length <= 30
+              ? DashboardConstants.BAR_CHART_LABEL_TOP_5
+              : DashboardConstants.BAR_CHART_LABEL_TOP_10;
     }
 
     public resetSelectedValues(): void {
@@ -376,7 +398,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
     }
 
     public handleAddSelectedClick(
-        topRatedListItem: TopRatedListItem,
+        topRatedListItem: ITopRatedListItem,
         topRatedListItemIndex: number
     ): void {
         const maxTopRatedItemsSelected = 5;
@@ -394,6 +416,8 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             topRatedListItem,
         ];
 
+        this.displaySelectedStatesInChart(this.selectedTopRatedList);
+
         this.topRatedList.splice(topRatedListItemIndex, 1);
         this.topRatedList.splice(
             this.selectedTopRatedList.length - 1,
@@ -408,7 +432,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
     public handleRemoveSelectedClick(
         event: Event,
-        topRatedListItem: TopRatedListItem,
+        topRatedListItem: ITopRatedListItem,
         topRatedListItemIndex: number
     ): void {
         event.stopPropagation();
@@ -595,6 +619,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                     ? dispatcher.loadPercentage.toString()
                                     : dispatcher.revenuePercentage.toString(),
                             isSelected: false,
+                            intervals: dispatcher.intervals,
                         };
                     }
                 );
@@ -717,6 +742,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     centerLabels: this.doughnutCenterLabels,
                 };
 
+                const updateData = {
+                    topRated: driverData.topDrivers,
+                    allOther: driverData.allOthers,
+                    intervalLabels: driverData.intervalLabels,
+                    selectedTab,
+                };
+
+                this.updateBarChart(updateData);
+
                 // top rated list and single selection data
                 this.topRatedList = driverData.pagination.data.map((driver) => {
                     let filteredIntervalValues: number[] = [];
@@ -749,6 +783,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ? driver.mileagePercentage.toString()
                                 : driver.revenuePercentage.toString(),
                         isSelected: false,
+                        intervals: driver.intervals,
                     };
                 });
 
@@ -758,6 +793,81 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
 
                 // intervals
             });
+    }
+
+    private updateBarChart(data: ITopRatedTabData): void {
+        this.byStatechartLables = data.intervalLabels.map(
+            (item) => item.label || eStringPlaceholder.EMPTY
+        );
+
+        const byStateBarChartData = this.setByStateBarChartData(
+            data.topRated,
+            data.allOther,
+            data.selectedTab
+        );
+
+        this.byStateBarChartConfig = {
+            ...this.byStateBarChartConfig,
+            chartData: {
+                labels: this.byStatechartLables,
+                datasets: byStateBarChartData,
+            },
+        };
+
+        this.initalByStateBarChartConfig = {
+            ...this.byStateBarChartConfig,
+        };
+    }
+
+    private setByStateBarChartData(
+        topPicks: any[],
+        otherPicks: any[],
+        //leave these 2 any, waiting backend
+        selectedTab: DashboardTopReportType
+    ): IBaseDataset[] {
+        const topPicksDataset = {
+            ...this.byStateChartDatasetConfig,
+            label: this.getTopCategory(),
+            data: topPicks.map((item) =>
+                this.getValueBySelectedTab(item, selectedTab)
+            ),
+            order: 1,
+            backgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            hoverBackgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            hoverBorderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+            borderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[0].color,
+        };
+
+        const othersDataset = {
+            ...this.byStateChartDatasetConfig,
+            label: DashboardConstants.BAR_CHART_LABEL_ALL_OTHERS,
+            data: otherPicks.map((item) =>
+                this.getValueBySelectedTab(item, selectedTab)
+            ),
+            order: 2,
+            backgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            hoverBackgroundColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            hoverBorderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+            borderColor:
+                DashboardColors.BAR_PERFORMANCE_COLORS_PALLETE[1].color,
+        };
+
+        return [topPicksDataset, othersDataset];
+    }
+
+    private getValueBySelectedTab(
+        intervalResponse: any, //waiting backend for this
+        selectedTab: DashboardTopReportType
+    ): number {
+        const propertyKey = this.getTabKeyProp(selectedTab);
+        return intervalResponse[propertyKey] ?? 0;
     }
 
     public setDoughnutHoveredIndex(event: number | null): void {
@@ -770,24 +880,24 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
             return;
         }
 
-        const topRatedListItem: TopRatedListItem = this.topRatedList[event];
+        const topRatedListItem: ITopRatedListItem = this.topRatedList[event];
 
         this.doughnutChartConfig.centerLabels = [
             {
-                value: `${topRatedListItem.percent}%`,
+                value: `${topRatedListItem?.percent}%`,
                 position: {
                     top: 24,
                 },
             },
             {
-                value: `$${topRatedListItem.value}`,
+                value: `$${topRatedListItem?.value}`,
                 fontSize: 14,
                 position: {
                     top: 24,
                 },
             },
             {
-                value: `${topRatedListItem.name}`,
+                value: `${topRatedListItem?.name}`,
                 fontSize: 11,
                 color: '#AAAAAA',
                 position: {
@@ -908,6 +1018,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     centerLabels: this.doughnutCenterLabels,
                 };
 
+                const updateData = {
+                    topRated: truckData.topTrucks,
+                    allOther: truckData.allOthers,
+                    intervalLabels: truckData.intervalLabels,
+                    selectedTab,
+                };
+
+                this.updateBarChart(updateData);
+
                 // top rated list and single selection data
                 this.topRatedList = truckData.pagination.data.map((truck) => {
                     let filteredIntervalValues: number[] = [];
@@ -940,6 +1059,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ? truck.mileagePercentage.toString()
                                 : truck.revenuePercentage.toString(),
                         isSelected: false,
+                        intervals: truck.intervals,
                     };
                 });
 
@@ -1060,6 +1180,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     centerLabels: this.doughnutCenterLabels,
                 };
 
+                const updateData = {
+                    topRated: brokerData.topBrokers,
+                    allOther: brokerData.allOthers,
+                    intervalLabels: brokerData.intervalLabels,
+                    selectedTab,
+                };
+
+                this.updateBarChart(updateData);
+
                 // top rated list and single selection data
                 this.topRatedList = brokerData.pagination.data.map((broker) => {
                     let filteredIntervalValues: number[] = [];
@@ -1092,6 +1221,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ? broker.loadPercentage.toString()
                                 : broker.revenuePercentage.toString(),
                         isSelected: false,
+                        intervals: broker.intervals,
                     };
                 });
 
@@ -1185,6 +1315,17 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartData,
                     centerLabels: this.doughnutCenterLabels,
                 };
+
+                const updateData = {
+                    topRated: shipperData.topShippers,
+                    allOther: shipperData.allOthers,
+                    intervalLabels: shipperData.intervalLabels,
+                    selectedTab:
+                        DashboardStringEnum.LOAD as DashboardTopReportType,
+                };
+
+                this.updateBarChart(updateData);
+
                 // top rated list and single selection data
                 this.topRatedList = shipperData.pagination.data.map(
                     (shipper) => {
@@ -1208,6 +1349,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             value: shipper.loadsCount.toString(),
                             percent: shipper.loadPercentage.toString(),
                             isSelected: false,
+                            intervals: shipper.intervals,
                         };
                     }
                 );
@@ -1327,6 +1469,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     centerLabels: this.doughnutCenterLabels,
                 };
 
+                const updateData = {
+                    topRated: ownerData.topOwners,
+                    allOther: ownerData.allOthers,
+                    intervalLabels: ownerData.intervalLabels,
+                    selectedTab,
+                };
+
+                this.updateBarChart(updateData);
+
                 // top rated list and single selection data
                 this.topRatedList = ownerData.pagination.data.map((owner) => {
                     let filteredIntervalValues: number[] = [];
@@ -1359,6 +1510,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                 ? owner.loadPercentage.toString()
                                 : owner.revenuePercentage.toString(),
                         isSelected: false,
+                        intervals: owner.intervals,
                     };
                 });
 
@@ -1482,6 +1634,15 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     centerLabels: this.doughnutCenterLabels,
                 };
 
+                const updateData = {
+                    topRated: repairShopData.topRepairShops,
+                    allOther: repairShopData.allOther,
+                    intervalLabels: repairShopData.intervalLabels,
+                    selectedTab,
+                };
+
+                this.updateBarChart(updateData);
+
                 // top rated list and single selection data
                 this.topRatedList = repairShopData.pagination.data.map(
                     (repairShop: TopRepairShopResponse) => {
@@ -1492,7 +1653,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             filteredIntervalValues = [
                                 ...filteredIntervalValues,
                                 selectedTab === DashboardStringEnum.VISIT
-                                    ? repairShop.intervals[i].count
+                                    ? repairShop.intervals[i].visitCount
                                     : repairShop.intervals[i].cost,
                             ];
                             filteredIntervalPercentages = [
@@ -1508,13 +1669,14 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                             name: repairShop.name,
                             value:
                                 selectedTab === DashboardStringEnum.VISIT
-                                    ? repairShop.visit.toString()
+                                    ? repairShop.visitCount.toString()
                                     : repairShop.cost.toString(),
                             percent:
                                 selectedTab === DashboardStringEnum.VISIT
                                     ? repairShop.visitPercentage.toString()
                                     : repairShop.costPercentage.toString(),
                             isSelected: false,
+                            intervals: repairShop.intervals,
                         };
                     }
                 );
@@ -1633,6 +1795,16 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                     chartData,
                     centerLabels: this.doughnutCenterLabels,
                 };
+
+                const updateData = {
+                    topRated: fuelStopData.topFuelStops,
+                    allOther: fuelStopData.allOthers,
+                    intervalLabels: fuelStopData.intervalLabels,
+                    selectedTab,
+                };
+
+                this.updateBarChart(updateData);
+
                 // top rated list and single selection data
                 this.topRatedList = fuelStopData.pagination.data.map(
                     (fuelStop) => {
@@ -1666,6 +1838,7 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
                                     ? fuelStop.visitPercentage.toString()
                                     : fuelStop.costPercentage.toString(),
                             isSelected: false,
+                            intervals: fuelStop.intervals,
                         };
                     }
                 );
@@ -1686,6 +1859,52 @@ export class DashboardTopRatedComponent implements OnInit, OnDestroy {
         this.selectedSubPeriod = selectedSubPeriod;
 
         this.selectedDropdownWidthSubPeriod = selectedSubPeriod;
+    }
+
+    private displaySelectedStatesInChart(
+        selectedTopRatedList: ITopRatedListItem[]
+    ): void {
+        const propertyKey = this.getTabKeyProp(this.currentActiveTab.name);
+
+        const extractedBarChartDatasets: IBaseDataset[] = [];
+
+        selectedTopRatedList.forEach((selectedStateItem) => {
+            const dataSetData: number[] = [];
+            selectedStateItem?.intervals.forEach((interval) => {
+                const value = interval[propertyKey as keyof any]; //this any has to stay, waiting backend
+
+                if (typeof value === 'number') dataSetData.push(value);
+            });
+            const dataset = {
+                ...this.byStateChartDatasetConfig,
+                label: selectedStateItem.name,
+                data: dataSetData,
+                backgroundColor: selectedStateItem.selectedColor,
+                hoverBackgroundColor: selectedStateItem.selectedColor,
+                borderColor: selectedStateItem.selectedColor,
+                hoverBorderColor: selectedStateItem.selectedColor,
+                fill: true,
+            };
+            extractedBarChartDatasets.push(dataset);
+        });
+
+        this.byStateBarChartConfig = {
+            ...this.byStateBarChartConfig,
+            chartData: {
+                labels: this.byStatechartLables,
+                datasets: extractedBarChartDatasets,
+            },
+        };
+    }
+
+    private getTabKeyProp(selectedTab: string): string {
+        const propertyKey =
+            DashboardTopRatedConstants.REPORT_TYPE_MAP[selectedTab];
+
+        return this.topRatedTitle !== DashboardStringEnum.REPAIR_SHOP &&
+            this.topRatedTitle !== DashboardStringEnum.FUEL_STOP
+            ? this.topRatedTitle.toLowerCase() + propertyKey
+            : propertyKey;
     }
 
     ngOnDestroy(): void {

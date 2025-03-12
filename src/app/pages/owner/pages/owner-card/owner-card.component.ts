@@ -26,7 +26,7 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { OwnerResponse } from 'appcoretruckassist';
 
 @Component({
@@ -108,7 +108,7 @@ export class OwnerCardComponent
     }
 
     public handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         cardData: OwnerResponse
     ): void {
         const { type } = action;
@@ -119,7 +119,10 @@ export class OwnerCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.OWNER);
+        this.handleDropdownMenuActions(
+            emitAction,
+            DropdownMenuStringEnum.OWNER
+        );
     }
 
     public handleShowMoreAction(): void {

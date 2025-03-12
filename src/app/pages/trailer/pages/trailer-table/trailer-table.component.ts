@@ -64,11 +64,10 @@ import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { TrailerMapped } from '@pages/trailer/pages/trailer-table/models/trailer-mapped.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-
 import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-trailer-table',
@@ -191,7 +190,7 @@ export class TrailerTableComponent
             .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    this.backFilterQuery.trailerTypeIds = res.queryParams;
+                    this.backFilterQuery.trailerTypeIds = res.selectedIds;
                     this.trailerBackFilter(this.backFilterQuery);
                 }
             });
@@ -403,7 +402,7 @@ export class TrailerTableComponent
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTrailerFilter: true,
+                showTrailerTypeFilter: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -566,7 +565,9 @@ export class TrailerTableComponent
             isSelected: false,
             tableTrailerTypeIcon: trailerType.logoName,
             tableTrailerName: trailerType.name,
-            tableTrailerColor: MethodsGlobalHelper.getTrailerTooltipColor(trailerType.name),
+            tableTrailerColor: MethodsGlobalHelper.getTrailerTooltipColor(
+                trailerType.name
+            ),
             tableVin: {
                 regularText: vin
                     ? vin.substr(0, vin.length - 6)
@@ -695,7 +696,7 @@ export class TrailerTableComponent
         };
     }
 
-    public getTrailerDropdownContent(): DropdownMenuItem[] {
+    public getTrailerDropdownContent(): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getTruckTrailerDropdownContent(
             this.selectedTab
         );

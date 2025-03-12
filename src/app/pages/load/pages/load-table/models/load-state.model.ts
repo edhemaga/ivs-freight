@@ -2,6 +2,7 @@
 import { ILoadGridItem, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index"
 import { LoadModalResponse } from "appcoretruckassist";
 import { IActiveLoadModalData } from "@pages/load/models/active-load-modal-data.model";
+import {IFilterDropdownList} from 'ca-components';
 
 // enums
 import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index"
@@ -20,5 +21,8 @@ export interface ILoadState {
 
     canDeleteSelectedDataRows: boolean,
     selectedTab: eLoadStatusType,
-    activeViewMode: eActiveViewMode
+    activeViewMode: eActiveViewMode, 
+
+    dispatcherList: IFilterDropdownList[];
+    statusList: IFilterDropdownList[];
 }

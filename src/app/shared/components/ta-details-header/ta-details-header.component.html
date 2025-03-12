@@ -11,7 +11,7 @@
                 'Shipper Detail',
                 'Broker Detail',
                 'Roadside Insp. Detail',
-                'Load Detail'
+                'Load Detail',
             ].includes(headerText)
         "
     >
@@ -58,8 +58,8 @@
                             subText === 'PENDING'
                                 ? '#919191'
                                 : subText === 'ACTIVE'
-                                ? '#6692F1'
-                                : '#56B4AC'
+                                  ? '#6692F1'
+                                  : '#56B4AC',
                     }"
                 >
                     <p class="m-0 ta-font-bold">{{ subText }}</p>
@@ -94,7 +94,7 @@
                     'Shipper Detail',
                     'Broker Detail',
                     'Roadside Insp. Detail',
-                    'Load Detail'
+                    'Load Detail',
                 ].includes(headerText)
             "
         >
@@ -102,7 +102,7 @@
                 class="counter-text"
                 [ngClass]="{
                     'has-counter-header': counterData,
-                    dropOpenedHeader: dropOpened
+                    dropOpenedHeader: dropOpened,
                 }"
             >
                 <div
@@ -254,7 +254,7 @@
                             [searchType]="headerText"
                             [toolbarSearch]="true"
                             [selectedTabData]="{
-                                gridNameTitle: searchPlaceholder
+                                gridNameTitle: searchPlaceholder,
                             }"
                         ></app-ca-search-multiple-states>
                     </span>
@@ -264,45 +264,38 @@
                     <div class="repair-header-icons gap-1">
                         <div class="border-line-left"></div>
 
-                        <ng-container *ngIf="timeFilter">
+                        @if (timeFilter) {
                             <span class="ic-hed">
-                                <app-ca-filter
-                                    [type]="'timeFilter'"
-                                    [icon]="'ic_time'"
-                                    [filterTitle]="'Time Filter'"
-                                    [timeSubType]="'past'"
-                                    (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
+                                <app-ca-filter-time-dropdown
+                                    type="TimeFilter"
+                                    subType="past"
+                                    (setFilter)="setFilters($event)"
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-time-dropdown>
                             </span>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="truckTypeFilter">
+                        @if (truckTypeFilter) {
                             <span class="ic-hed">
-                                <app-ca-filter
-                                    [type]="'truckTypeFilter'"
-                                    [truckTypeArray]="truckTypeArray"
-                                    [filterTitle]="'Truck Type Filter'"
-                                    [icon]="'truck'"
+                                <app-ca-filter-list-dropdown
+                                    type="TruckType"
+                                    [list]="truckTypeArray"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                ></app-ca-filter>
+                                >
+                                </app-ca-filter-list-dropdown>
                             </span>
-                        </ng-container>
+                        }
 
-                        <ng-container *ngIf="trailerTypeFilter">
+                        @if (trailerTypeFilter) {
                             <span class="ic-hed">
-                                <app-ca-filter
-                                    [type]="'trailerTypeFilter'"
-                                    [trailerTypeArray]="trailerTypeArray"
-                                    [filterTitle]="'Trailer Type Filter'"
-                                    [icon]="'trailer'"
+                                <app-ca-filter-list-dropdown
+                                    type="TrailerType"
+                                    [list]="trailerTypeArray"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                ></app-ca-filter>
+                                >
+                                </app-ca-filter-list-dropdown>
                             </span>
-                        </ng-container>
+                        }
 
                         <ng-container *ngIf="pickupFilter">
                             <span class="ic-hed">
@@ -346,34 +339,24 @@
                         <ng-container *ngIf="dispatcherFilter">
                             <span class="ic-hed">
                                 <!-- DISPECHER FILTER -->
-                                <app-ca-filter
-                                    [type]="'dispatcherFilter'"
-                                    [icon]="'user'"
-                                    [searchState]="true"
-                                    [filterTitle]="'Dispatcher Filter'"
+                                <app-ca-filter-list-dropdown
+                                    type="Dispatcher"
+                                    [list]="unselectedDispatcher"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                    [unselectedUser]="unselectedDispatcher"
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-list-dropdown>
                             </span>
                         </ng-container>
 
                         <ng-container *ngIf="statusFilter">
                             <span class="ic-hed">
                                 <!-- STATUS FILTER -->
-                                <app-ca-filter
-                                    [type]="'statusFilter'"
-                                    [icon]="'broker-half-circle'"
-                                    [filterTitle]="'Status Filter'"
-                                    [noLeftIcon]="false"
+                                <app-ca-filter-list-dropdown
+                                    type="Status"
+                                    [list]="loadStatusOptionsArray"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                    [loadStatusOptionsArray]="
-                                        loadStatusOptionsArray
-                                    "
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-list-dropdown>
                             </span>
                         </ng-container>
 
@@ -396,18 +379,12 @@
                         <ng-container *ngIf="pmFilter">
                             <span class="ic-hed">
                                 <!-- PM FILTER -->
-                                <app-ca-filter
-                                    [type]="'pmFilter'"
-                                    [icon]="'default_pm'"
-                                    [filterTitle]="'PM Filter'"
-                                    [pmSubtype]="'truck'"
-                                    [noLeftIcon]="false"
-                                    [leftSideIcon]="true"
+                                <app-ca-filter-list-dropdown
+                                    type="Pm"
+                                    [list]="pmFilterArray"
                                     (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                    [pmFilterArray]="pmFilterArray"
                                 >
-                                </app-ca-filter>
+                                </app-ca-filter-list-dropdown>
                             </span>
                         </ng-container>
 
@@ -428,22 +405,22 @@
                             </span>
                         </ng-container>
 
-                        <ng-container *ngIf="moneyFilter">
+                        @if (moneyFilter) {
                             <span class="ic-hed">
                                 <!-- MONEY FILTER -->
                                 <app-ca-filter
-                                    [type]="'moneyFilter'"
-                                    [icon]="'dollar'"
-                                    [filterTitle]="'Money Filter'"
-                                    [subType]="'all'"
-                                    [isMoneyFilter]="true"
-                                    [isLoadType]="true"
-                                    (setFilter)="setFilterValue($event)"
-                                    (clearAll)="setFilterValue($event)"
-                                >
-                                </app-ca-filter>
+                                [type]="'moneyFilter'"
+                                [icon]="'dollar'"
+                                [filterTitle]="'Money Filter'"
+                                [subType]="'all'"
+                                [isMoneyFilter]="true"
+                                [isLoadType]="true"
+                                (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
+                            >
+                            </app-ca-filter>
                             </span>
-                        </ng-container>
+                        }
                         <ng-container *ngIf="repairOrderFilter">
                             <span class="ic-hed">
                                 <app-ta-special-filter
@@ -482,7 +459,7 @@
                                 [src]="detailsHeaderSvgRoutes.sortRoute"
                                 [svgStyle]="{
                                     'width.px': '18',
-                                    'height.px': '18'
+                                    'height.px': '18',
                                 }"
                                 (click)="handleSortClick(true)"
                             ></svg-icon>

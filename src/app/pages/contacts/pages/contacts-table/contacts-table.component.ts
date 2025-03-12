@@ -26,7 +26,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum, eCommonElements } from '@shared/enums';
+import { DropdownMenuStringEnum, eCommonElement } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums/active-view-mode.enum';
 
 // constants
@@ -36,7 +36,7 @@ import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-
 import { ContactsTableToolbarAction } from '@pages/contacts/pages/contacts-table/models/contacts-table-toolbar-action.model';
 import { IContactsTableHeadAction } from '@pages/contacts/pages/contacts-table/interfaces/contacts-table-head-action.interface';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { DropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-contacts-table',
@@ -65,7 +65,7 @@ export class ContactsTableComponent
     public sendDataToCardsBack: CardRows[] =
         ContactsCardData.displayRowsBackContacts;
 
-    public eCommonElements = eCommonElements;
+    public eCommonElement = eCommonElement;
 
     // filters
     public filter = {
@@ -257,7 +257,7 @@ export class ContactsTableComponent
             : getToolsContactsColumnDefinition();
     }
 
-    public getContactDropdownContent(): DropdownMenuItem[] {
+    public getContactDropdownContent(): IDropdownMenuItem[] {
         return DropdownMenuContentHelper.getContactDropdownContent();
     }
 

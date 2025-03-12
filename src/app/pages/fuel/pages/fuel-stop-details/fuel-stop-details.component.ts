@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject, take, takeUntil } from 'rxjs';
@@ -10,13 +10,15 @@ import { FuelDetailsQuery } from '@pages/fuel/state/fuel-details-state/fuel-deta
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { FuelService } from '@shared/services/fuel.service';
 
 // components
 import { FuelStopDetailsItemComponent } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/fuel-stop-details-item.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 
 // enums
-import { eCommonElements, eGeneralActions } from '@shared/enums';
+import { eCommonElement, eGeneralActions } from '@shared/enums';
 
 // helpers
 import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils/helpers';
@@ -39,15 +41,18 @@ import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
         FuelStopDetailsItemComponent,
     ],
 })
-export class FuelStopDetailsComponent implements OnInit {
+export class FuelStopDetailsComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
 
     public detailsDropdownOptions: DetailsDropdownOptions;
-    public fuelDetailsConfig: DetailsConfig[] = [];
+    public fuelStopDetailsConfig: DetailsConfig[] = [];
 
     public fuelStopObject: FuelStopResponse;
 
     public newFuelStopId: number;
+
+    // search
+    public searchConfig: boolean[] = [false, false];
 
     constructor(
         // router
@@ -56,6 +61,8 @@ export class FuelStopDetailsComponent implements OnInit {
 
         // services
         private detailsPageService: DetailsPageService,
+        private confirmationService: ConfirmationService,
+        private fuelService: FuelService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -68,7 +75,27 @@ export class FuelStopDetailsComponent implements OnInit {
     ngOnInit(): void {
         this.getStoreData();
 
+        this.confirmationSubscribe();
+
         this.handleRepairShopIdRouteChange();
+    }
+
+    private confirmationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe({
+                next: (res) => {
+                    const { id, type } = res;
+
+                    if (type === eGeneralActions.DELETE) {
+                        if (false) {
+                            // delete fuel stop
+                        } else {
+                            this.deleteFuelTransaction(id);
+                        }
+                    }
+                },
+            });
     }
 
     private getStoreData(): void {
@@ -93,7 +120,7 @@ export class FuelStopDetailsComponent implements OnInit {
 
         this.getDetailsOptions(fuelStop);
 
-        this.fuelDetailsConfig =
+        this.fuelStopDetailsConfig =
             FuelStopDetailsHelper.getFuelStopDetailsConfig(fuelStop);
 
         this.cdRef.detectChanges();
@@ -143,6 +170,13 @@ export class FuelStopDetailsComponent implements OnInit {
         };
     }
 
+    private deleteFuelTransaction(ids: number): void {
+        this.fuelService
+            .deleteFuelTransactionsList([ids], this.fuelStopObject?.id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
     private handleRepairShopIdRouteChange(): void {
         this.detailsPageService.pageDetailChangeId$
             .pipe(takeUntil(this.destroy$))
@@ -158,9 +192,7 @@ export class FuelStopDetailsComponent implements OnInit {
                             this.getDetailsOptions(this.fuelStopObject);
 
                             if (
-                                this.router.url.includes(
-                                    eCommonElements.DETAILS
-                                )
+                                this.router.url.includes(eCommonElement.DETAILS)
                             ) {
                                 this.router.navigate([
                                     `/list/fuel/${res.id}/details`,
@@ -171,5 +203,10 @@ export class FuelStopDetailsComponent implements OnInit {
 
                 this.cdRef.detectChanges();
             });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

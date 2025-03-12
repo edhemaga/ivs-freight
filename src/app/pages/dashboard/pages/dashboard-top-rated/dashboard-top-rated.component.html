@@ -437,7 +437,11 @@
 
             <!-- Bar Chart -->
 
-            <app-ca-chart [chartConfig]="barChartConfig"> </app-ca-chart>
+            <app-ca-chart-manager
+                [chartConfigs]="[byStateBarChartConfig]"
+                [tooltipLables]="intervalTooltipLabel"
+            >
+            </app-ca-chart-manager>
         </div>
     </div>
 </div>

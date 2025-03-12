@@ -1,6 +1,7 @@
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Models
 import {
@@ -16,17 +17,20 @@ import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payr
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
-
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 // Enums
 import {
     ePayrollAdditionalTypes,
-    ePayrollTablesStatus,
+    ePayrollTablesStatus, 
 } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { DropdownMenuStringEnum } from '@shared/enums';
 import { PayrollTypeEnum } from 'ca-components';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 
 export abstract class PayrollReportBaseComponent<
     T extends {
@@ -54,8 +58,9 @@ export abstract class PayrollReportBaseComponent<
 
     constructor(
         protected modalService: ModalService,
-        private payrollService: PayrollService
-    ) {}
+        private payrollService: PayrollService,
+        public loadStoreService: LoadStoreService
+    ) { }
 
     protected abstract getReportDataResults(
         getData?: IGetPayrollByIdAndOptions
@@ -63,8 +68,12 @@ export abstract class PayrollReportBaseComponent<
 
     protected abstract getIsEditLoadDropdownActionActive(): void;
 
-    public openMenu(event: { type: string; isActive?: boolean }): void {
-        const { type, isActive } = event;
+    public openMenu(event: {
+        type: string;
+        isActive?: boolean;
+        id?: number;
+    }): void {
+        const { type, isActive, id } = event;
 
         switch (type) {
             case DropdownMenuStringEnum.EDIT_LOAD_TYPE:
@@ -74,6 +83,18 @@ export abstract class PayrollReportBaseComponent<
 
                 break;
             case DropdownMenuStringEnum.EDIT_PAYROLL_TYPE:
+                this.modalService.openModal(
+                    DriverModalComponent,
+                    {
+                        size: DriverDetailsCardStringEnum.MEDIUM,
+                    },
+                    {
+                        data: {
+                            id: this.openedPayroll.driver,
+                        },
+                    }
+                );
+
                 break;
             case DropdownMenuStringEnum.PREVIEW_REPORT_TYPE:
                 this.modalService.openModal(
@@ -91,6 +112,15 @@ export abstract class PayrollReportBaseComponent<
                 break;
             default:
                 break;
+        }
+
+        // Lets assume that if there is only id it is for load edit
+        if (!type && id) {
+            this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(
+                id,
+                eLoadStatusType.Closed,
+                LoadModalStringEnum.EDIT
+            );
         }
     }
 
@@ -321,7 +351,7 @@ export abstract class PayrollReportBaseComponent<
                 case ePayrollAdditionalTypes.FUEL:
                     this.payrollService
                         .raiseDeleteModal(
-                            TableStringEnum.FUEL_1,
+                            TableStringEnum.FUEL_TRANSACTION,
                             ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION,
                             item.data.id,
                             {

@@ -38,6 +38,7 @@ const payrollNamesData = {
 const payrollStatus = {
     Paid: 'success',
     Debt: 'danger',
+    Ready: 'positive',
 };
 
 export const selectPayrollState =
@@ -139,6 +140,11 @@ export const selectPayrollOpenedReport = createSelector(
     }
 );
 
+export const selectPayrollOpenedFromLeftListToReport = createSelector(
+    selectPayrollState,
+    (state) => state.openedPayrollLeftId
+);
+
 export const selectPayrollReportsIncludedStops = createSelector(
     selectPayrollState,
     (state) => {
@@ -181,7 +187,36 @@ export const selectPayrollDriverMileageStops = createSelector(
             rowType: 'reorder',
         };
 
-        return [...includedLoads, reorderRow, ...excludedLoads];
+        let lastLoadId = -Infinity;
+        let hasFoundFirstInRow = false;
+        const finalLoadListFinal = [
+            ...includedLoads,
+            reorderRow,
+            ...excludedLoads,
+        ];
+        const finalLoadList = finalLoadListFinal.map((load, index) => {
+            if (load.loadId > 0) {
+                load = {
+                    ...load,
+                    hasBorderLeft: load.loadId > 0,
+                };
+
+                const nextLoadId = finalLoadListFinal[index + 1]?.loadId;
+
+                if (!hasFoundFirstInRow && lastLoadId !== load.loadId) {
+                    load.firstInRow = true;
+                    hasFoundFirstInRow = true;
+                } else if (hasFoundFirstInRow && nextLoadId !== load.loadId) {
+                    load.lastInRow = true;
+                    hasFoundFirstInRow = false;
+                }
+            }
+
+            lastLoadId = load.loadId;
+            return load;
+        });
+
+        return finalLoadList;
     }
 );
 
@@ -258,6 +293,22 @@ export const selectDriverMileageExpandedTable = createSelector(
     selectPayrollState,
     (state) => {
         return state.driverMileageExpandedList;
+    }
+);
+
+export const selectPayrollLoadListForDropdown = createSelector(
+    selectPayrollState,
+    (state) => {
+        if (!state.payrollOpenedReport) return [];
+        let includedLoads = state.payrollOpenedReport?.includedLoads ?? [];
+
+        const filteredLoads = includedLoads
+            .filter((load) => load.id || typeof load.id === 'undefined')
+            .map((load) => ({
+                id: +load.id,
+                title: load.loadNumber,
+            }));
+        return filteredLoads;
     }
 );
 

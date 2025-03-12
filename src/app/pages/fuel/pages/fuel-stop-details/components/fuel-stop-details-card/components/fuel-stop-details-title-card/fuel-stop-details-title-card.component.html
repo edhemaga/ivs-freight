@@ -36,7 +36,9 @@
             ? fuelStopDetailsSvgRoutes.closedRoute
             : fuelStopDetailsSvgRoutes.favoriteRoute
     "
-    [additionalTitle]="eFuelStopDetails.FUEL_STOP_STORE + _cardData?.store"
+    [additionalTitle]="
+        _cardData?.store && eFuelStopDetails.FUEL_STOP_STORE + _cardData?.store
+    "
     (selectValue)="handleCardChanges($event, eFuelStopDetails.SELECT_FUEL_STOP)"
     (changeEvent)="handleCardChanges($event, eFuelStopDetails.CHANGE_FUEL_STOP)"
 >

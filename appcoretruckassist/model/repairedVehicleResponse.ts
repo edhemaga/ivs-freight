@@ -16,7 +16,7 @@ export interface RepairedVehicleResponse {
     unitId?: number | null;
     unitType?: RepairUnitType;
     unitNumber?: string | null;
-    totalRepairs?: number | null;
+    totalCount?: number | null;
     vehicleTypeId?: number | null;
     vehicleName?: string | null;
     logoName?: string | null;

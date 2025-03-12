@@ -339,9 +339,11 @@ export enum TableStringEnum {
     FUEL = 'FUEL',
     FUEL_1 = 'fuel',
     FUEL_TRANSACTION = 'FUEL_TRANSACTION',
+    FUEL_TRANSACTION_EFS = 'FUEL_TRANSACTION_EFS',
     FUEL_STOP = 'FUEL_STOP',
     FUEL_STOP_2 = 'fuel stop',
     STOP = 'Stop',
+    STOP_LOWERCASE = 'stop',
     TRANSACTIONS = 'Transactions',
     TRANSACTION = 'transaction',
     REGULAR_TEXT = 'regular-text',
@@ -523,4 +525,5 @@ export enum TableStringEnum {
     ADD_PM_ITEM = 'ADD_PM_ITEM',
     TRUCK_PM_SETTINGS = 'Truck PM Settings',
     TRAILER_PM_SETTINGS = 'Trailer PM Settings',
+    LOAD_DETAILS = 'Load Details',
 }

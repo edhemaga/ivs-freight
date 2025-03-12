@@ -70,6 +70,7 @@ import {
     type NgbPopover,
     type NgbTooltip,
 } from '@ng-bootstrap/ng-bootstrap';
+import { NgxMaskModule } from 'ngx-mask';
 
 // sanitizer
 import { DomSanitizer } from '@angular/platform-browser';
@@ -80,6 +81,7 @@ import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
 import { TableLoadStatusPipe } from '@shared/pipes/table-load-status.pipe';
+import { MiddleEllipsisPipe } from '@shared/pipes';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -95,7 +97,7 @@ import {
 import { TableBodyColorLabel } from '@shared/models/table-models/table-body-color-label.model';
 import { TableBodyOptionActions } from '@shared/components/ta-table/ta-table-body/models/table-body-option-actions.model';
 import { TableBodyColumns } from '@shared/components/ta-table/ta-table-body/models/table-body-columns.model';
-import { DropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/models';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { TableCardBodyActions } from '@shared/models';
 
 // constants
@@ -130,6 +132,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         ReactiveFormsModule,
         AngularSvgIconModule,
         NgbPopoverModule,
+        NgxMaskModule,
 
         // components
         TaCustomScrollbarComponent,
@@ -155,6 +158,7 @@ import { TableBodySvgRoutes } from '@shared/components/ta-table/ta-table-body/ut
         FormatCurrencyPipe,
         ThousandToShortFormatPipe,
         TableLoadStatusPipe,
+        MiddleEllipsisPipe,
 
         // directives
         PreventMultipleclicksDirective,
@@ -776,7 +780,7 @@ export class TaTableBodyComponent<
 
     // Toggle Dropdown
     public handleToggleDropdownMenuActions(
-        action: DropdownMenuOptionEmit,
+        action: IDropdownMenuOptionEmit,
         rowData: T
     ): void {
         const { type } = action;

@@ -13,18 +13,18 @@ import {
     PayrollDriverCommissionClosedByIdResponse,
     PayrollDriverFlatRateByIdResponse,
     PayrollDriverFlatRateClosedByIdResponse,
-    PayrollDriverMileageByIdResponse,
     PayrollDriverMileageListResponse,
     PayrollOtherPaymentType,
     PayrollOwnerClosedResponse,
     PayrollOwnerResponse,
     PayrollPaymentType,
-    RoutingResponse,
-    PayrollDriverMileageClosedByIdResponse,
+    RoutingResponse
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import {
     IAddPayrollClosedPayment,
+    IPayrollDriverMileageClosedByIdResponse,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
 } from '@pages/accounting/pages/payroll/state/models';
@@ -141,7 +141,7 @@ export class PayrollService {
 
     public getPayrollSoloMileageDriverClosedById(
         payrollId: number
-    ): Observable<PayrollDriverMileageClosedByIdResponse> {
+    ): Observable<IPayrollDriverMileageClosedByIdResponse> {
         return this.http.get<any>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/${payrollId}`
         );
@@ -241,7 +241,7 @@ export class PayrollService {
                 selectedDeducionIds.toString()
             );
 
-        return this.http.get<PayrollDriverMileageByIdResponse>(
+        return this.http.get<IPayrollDriverMileageByIdResponseNumberId>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/${reportId}`,
             { params }
         );
@@ -568,7 +568,7 @@ export class PayrollService {
             | TableStringEnum.DEDUCTION
             | TableStringEnum.CREDIT
             | TableStringEnum.BONUS
-            | TableStringEnum.FUEL_1,
+            | TableStringEnum.FUEL_TRANSACTION,
         action:
             | ConfirmationModalStringEnum.DELETE_DEDUCTION
             | ConfirmationModalStringEnum.DELETE_CREDIT
