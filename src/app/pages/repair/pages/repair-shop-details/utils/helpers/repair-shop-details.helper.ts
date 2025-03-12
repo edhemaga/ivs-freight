@@ -144,6 +144,12 @@ export class RepairShopDetailsHelper {
                 total: cost,
                 length: repairList?.length || '0',
                 data: repairShopData,
+                timeFilter: true,
+                truckTypeFilter: true,
+                trailerTypeFilter: true,
+                pmFilter: true,
+                moneyFilter: true,
+                repairOrderFilter: true,
             },
             {
                 id: 2,
