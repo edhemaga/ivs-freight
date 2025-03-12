@@ -118,7 +118,7 @@
 
 <ng-template #customFeeTemplate let-data let-index="index">
     @if (data) {
-        <div class="custom-fee-template">
+        <div class="custom-fee-template text-color-black">
             +{{ data | currency: 'USD' : 'symbol' : '1.0-0' }}
         </div>
     }
@@ -198,7 +198,7 @@
 
 <ng-template #towingTemplate let-data let-field="field">
     <div
-        class="text"
+        class="text text-color-black"
         [class.text-color-special-filter-purple]="
             data.stopType.name === ePayrollTable.TOWING
         "
