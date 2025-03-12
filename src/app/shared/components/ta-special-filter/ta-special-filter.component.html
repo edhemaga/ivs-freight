@@ -1,7 +1,7 @@
 <div
     class="user-icon d-flex justify-content-center align-items-center"
     (click)="toggleSpecialFilter()"
-    [ngClass]="type | filterClass : activeFilter : dataArray : dataCount"
+    [ngClass]="type | filterClass: activeFilter : dataArray : dataCount"
     (mouseenter)="activeFilter ? (hoverFilter = true) : (hoverFilter = false)"
     (mouseleave)="hoverFilter = false"
 >
@@ -15,8 +15,8 @@
                         ? 'Remove Filter'
                         : filterTitle
                     : activeFilter
-                    ? 'Remove Filter'
-                    : filterTitle
+                      ? 'Remove Filter'
+                      : filterTitle
                 : 'Remove Filter'
         }}"
         position="bottom"
@@ -26,17 +26,18 @@
         class="main-icon-holder d-flex justify-content-center align-items-center"
     >
         <div>
-            <svg-icon [src]="icon | taSvg : 'common'"></svg-icon>
+            <svg-icon [src]="icon | taSvg: 'common'"></svg-icon>
         </div>
         <div
-            class="filters-selected-value-holder justify-content-center align-items-center show-number ta-font-extra-bold"
+            class="filters-selected-value-holder justify-content-center align-items-center show-number ta-font-extra-bold w-100"
             [ngClass]="{
                 'd-flex': (!activeFilter || !hoverFilter) && !isCountHidden,
-                'd-none': (activeFilter && hoverFilter) || isCountHidden
+                'd-none': (activeFilter && hoverFilter) || isCountHidden,
             }"
         >
             {{
                 dataArray?.filteredArray?.length ?? dataCount ?? 0
+                    | addThousandSign
             }}
         </div>
 
@@ -45,7 +46,7 @@
                 class="filters-selected-value-holder justify-content-center align-items-center clear-filter-icon ta-font-extra-bold"
                 [ngClass]="{
                     'd-none': !hoverFilter,
-                    'd-flex': hoverFilter
+                    'd-flex': hoverFilter,
                 }"
                 (mouseenter)="hoverClose = true"
                 (mouseleave)="hoverClose = false"
@@ -55,6 +56,5 @@
                 ></svg-icon>
             </div>
         }
-
     </div>
 </div>

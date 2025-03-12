@@ -11,7 +11,7 @@ import { DashboardStringEnum } from '@pages/dashboard/enums/dashboard-string.enu
 export class ThousandFormatterPipe implements PipeTransform {
     transform(value: number): string {
         if (+value) {
-            if (value > 100000) {
+            if (value > 1000) {
                 return (
                     (value / 1000).toFixed(1) +
                     DashboardChartStringEnum.THOUSAND_SIGN
