@@ -14,9 +14,9 @@
 
 <ng-template #customCell let-data>
     <div class="driver-solo-info d-flex">
-        <span class="driver-solo-info-text">{{ data.truck.truckNumber }}</span>
+        <span class="driver-solo-info-text text-color-black">{{ 'show this' }}</span>
         <div
-            class="payroll_count d-flex justify-content-center align-items-center"
+            class="payroll_count text-color-black d-flex justify-content-center align-items-center"
         >
             {{ data.payrollCount }}
         </div>
@@ -44,14 +44,14 @@
         <ng-container *ngIf="data !== 0">
             <div
                 class="custom-status-text"
-                [ngClass]="{ 'past-payment': data > 0 }"
+                [ngClass]="{ 'text-color-red-11': data > 0 }"
             >
                 {{ Math.abs(data) }} UNPAID
             </div>
         </ng-container>
 
         <ng-container *ngIf="data === 0">
-            <div class="custom-status-text ready-payment">ALL PAID</div>
+            <div class="custom-status-text text-color-green-2">ALL PAID</div>
         </ng-container>
     </div>
 </ng-template>

@@ -9,20 +9,22 @@
 
         <ng-container *ngIf="baseForm">
             <form [formGroup]="baseForm" class="payroll-credit--body">
-                <ng-container *ngIf="isDropdownEnabled && isBonusModal">
+                @if (isDropdownEnabled && isBonusModal) {
                     <div class="payroll-mb-32">
-                        <app-ca-input-dropdown
+                        <ca-input-dropdown-test
+                            [optionValue]="'id'"
+                            [label]="'name'"
                             formControlName="driverId"
                             [template]="'load-dispatcher'"
                             [inputConfig]="driverConfig"
                             [options]="driversDropdownList"
                             [activeItem]="selectedDriver"
                             (selectedItem)="selectDriver($event)"
-                        ></app-ca-input-dropdown>
+                        ></ca-input-dropdown-test>
                     </div>
-                </ng-container>
+                }
 
-                <ng-container *ngIf="isDropdownEnabled && !isBonusModal">
+                @if (isDropdownEnabled && !isBonusModal) {
                     <div class="payroll-mb-32">
                         <app-ta-tab-switch
                             [tabs]="tabs"
@@ -35,40 +37,36 @@
                     </div>
                     <div class="row">
                         <div class="col-12 payroll-mb-32">
-                            <ng-container
-                                *ngIf="selectedTab?.id === 1; else showTruck"
-                            >
-                                <app-ca-input-dropdown
+                            @if (selectedTab?.id === 1) {
+                                <ca-input-dropdown-test
                                     formControlName="driverId"
                                     [template]="'load-dispatcher'"
                                     [inputConfig]="driverConfig"
                                     [options]="driversDropdownList"
                                     [activeItem]="selectedDriver"
                                     (selectedItem)="selectDriver($event)"
-                                ></app-ca-input-dropdown>
-                            </ng-container>
-
-                            <ng-template #showTruck>
-                                <app-ca-input-dropdown
+                                ></ca-input-dropdown-test>
+                            } @else {
+                                <ca-input-dropdown-test
                                     formControlName="truckId"
                                     [template]="'payroll-trucks'"
                                     [inputConfig]="truckConfig"
                                     [options]="trucksDropdownList"
                                     [activeItem]="selectedTruck"
                                     (selectedItem)="selectTruck($event)"
-                                ></app-ca-input-dropdown>
-                            </ng-template>
+                                ></ca-input-dropdown-test>
+                            }
                         </div>
                     </div>
-                </ng-container>
+                }
 
                 <!-- This part is same for CREDIT/BONUS/DEDUCTION -->
                 <div class="row">
                     <div class="col-12 payroll-mb-32">
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="description"
                             [inputConfig]="payrollCreditConst.descriptionField"
-                        ></app-ca-input>
+                        ></ca-input-test>
                     </div>
                 </div>
 
@@ -81,10 +79,10 @@
                         [inputConfig]="payrollCreditConst.datepickerField"
                     ></ca-input-datetime-picker>
 
-                    <app-ca-input
+                    <ca-input-test
                         formControlName="amount"
                         [inputConfig]="payrollCreditConst.ammountField"
-                    ></app-ca-input>
+                    ></ca-input-test>
                 </div>
 
                 <ng-container *ngIf="isDeductionModal">
@@ -117,21 +115,21 @@
                             [disabled]="isNotRecuringPayment"
                         ></app-ta-checkbox>
 
-                        <app-ca-input
+                        <ca-input-test
                             formControlName="limitedNumber"
                             [inputConfig]="
-                                payrollCreditConst.limitedNumberField(
-                                    svgRoutes,
-                                    isNotRecuringPayment || !isLimitedPayment
-                                )
+                                svgRoutes
+                                    | payrollSettings
+                                        : isNotRecuringPayment ||
+                                              !isLimitedPayment
                             "
-                        ></app-ca-input>
-                        <app-ca-input
+                        ></ca-input-test>
+                        <ca-input-test
                             formControlName="limitedAmount"
                             [inputConfig]="
                                 payrollCreditConst.limitedAmountField(true)
                             "
-                        ></app-ca-input>
+                        ></ca-input-test>
                     </div>
                 </ng-container>
             </form>

@@ -23,6 +23,8 @@ export interface FuelStopMinimalResponse {
     phone?: string | null;
     pricePerGallon?: number | null;
     defPrice?: number | null;
+    totalCost?: number | null;
+    used?: number | null;
     isFranchise?: boolean;
 }
 

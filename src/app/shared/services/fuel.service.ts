@@ -18,6 +18,7 @@ import {
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
     ClusterResponse,
+    FuelledVehicleHistoryListResponse,
     CreateWithUploadsResponse,
 } from 'appcoretruckassist';
 
@@ -26,6 +27,8 @@ import { FormDataService } from '@shared/services/form-data.service';
 
 // store
 import { FuelStore } from '@pages/fuel/state/fuel-state/fuel-state.store';
+import { FuelDetailsStore } from '@pages/fuel/state/fuel-details-state/fuel-details.store';
+import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-details-item.store';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -43,7 +46,9 @@ export class FuelService {
         private formDataService: FormDataService,
 
         // store
-        private fuelStore: FuelStore
+        private fuelStore: FuelStore,
+        private fuelDetailsStore: FuelDetailsStore,
+        private fuelItemStore: FuelItemStore
     ) {}
 
     set updateStoreFuelTransactionsList(data: FuelTransactionListResponse) {
@@ -209,7 +214,10 @@ export class FuelService {
         return this.fuelService.apiFuelEfsTransactionPut();
     }
 
-    public deleteFuelTransactionsList(ids: number[]): Observable<void> {
+    public deleteFuelTransactionsList(
+        ids: number[],
+        fuelStopId?: number
+    ): Observable<void> {
         return this.fuelService.apiFuelTransactionListDelete(ids).pipe(
             tap(() => {
                 ids.forEach((id) => {
@@ -224,6 +232,17 @@ export class FuelService {
                             },
                         },
                     }));
+
+                    const updateStore = (store) =>
+                        store.update(fuelStopId, (entity) => ({
+                            ...entity,
+                            transactionList: entity.transactionList.filter(
+                                (transaction) => transaction.id !== id
+                            ),
+                        }));
+
+                    updateStore(this.fuelDetailsStore);
+                    updateStore(this.fuelItemStore);
                 });
 
                 const tableCount = JSON.parse(
@@ -416,6 +435,30 @@ export class FuelService {
             costTo,
             ppgFrom,
             ppgTo,
+            pageIndex,
+            pageSize,
+            companyId,
+            sort,
+            null,
+            null,
+            search,
+            search1,
+            search2
+        );
+    }
+
+    public getFuelStopFuelledcVehicle(
+        fuelStopId?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number,
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
+    ): Observable<FuelledVehicleHistoryListResponse> {
+        return this.fuelService.apiFuelFuelstopFueledvehicleGet(
+            fuelStopId,
             pageIndex,
             pageSize,
             companyId,

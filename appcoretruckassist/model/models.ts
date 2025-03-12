@@ -483,6 +483,7 @@ export * from './getDriverModalResponse';
 export * from './getEFSTransactionCommand';
 export * from './getFuelModalResponse';
 export * from './getFuelStopModalResponse';
+export * from './getFuelStopRangeResponse';
 export * from './getHazardousMaterialDropdownModalQuery';
 export * from './getMapListResponse';
 export * from './getMobileFuelTransactionTrucksResponse';

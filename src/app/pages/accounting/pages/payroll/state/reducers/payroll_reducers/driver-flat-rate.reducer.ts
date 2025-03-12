@@ -40,17 +40,26 @@ export const onGetPayrollFlatRateReportDriver = (
         params.selectedDeductionIds ?? state.selectedDeductionIds,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
     SelectedBonusIds: params.selectedBonusIds ?? state.selectedBonusIds,
-    selectedFuelIds: params.selectedFuelIds ?? state.selectedFuelIds
+    selectedFuelIds: params.selectedFuelIds ?? state.selectedFuelIds,
 });
 
 export const onGetPayrollFlatRateReportDriverSuccess = (
     state: PayrollState,
     data: { payroll: PayrollDriverFlatRateByIdResponse }
-) => ({
-    ...state,
-    payrollOpenedReport: data.payroll,
-    reportLoading: false,
-});
+) => {
+    const openedPayrollLeftId = +state.openedPayrollLeftId;
+    const driverFlatRateList = state.driverFlatRateList.map((payrollDriver) =>
+        payrollDriver.id === openedPayrollLeftId
+            ? { ...payrollDriver, earnings: data.payroll.earnings }
+            : payrollDriver
+    );
+    return {
+        ...state,
+        payrollOpenedReport: data.payroll,
+        reportLoading: false,
+        driverFlatRateList
+    };
+};
 
 export const onClosePayrollFlatRateReportDriver = (state: PayrollState) => ({
     ...state,
@@ -139,9 +148,7 @@ export const onGetPayrollFlatRateDriverClosedPayrollSuccess = (
     reportLoading: false,
 });
 
-export const onDriverFlatRatePayrollClosedPayments = (
-    state: PayrollState
-) => ({
+export const onDriverFlatRatePayrollClosedPayments = (state: PayrollState) => ({
     ...state,
     closeReportPaymentLoading: true,
     closeReportPaymentError: false,

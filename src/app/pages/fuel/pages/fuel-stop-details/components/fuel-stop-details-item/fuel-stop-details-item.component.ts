@@ -27,7 +27,6 @@ import { DetailsConfig } from '@shared/models';
 export class FuelStopDetailsItemComponent {
     @Input() detailsConfig: DetailsConfig[];
     @Input() searchConfig: boolean[];
-    @Input() searchValue?: string;
 
     constructor() {}
 }

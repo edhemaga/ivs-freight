@@ -1,4 +1,5 @@
 @import 'src/theme/variables';
+@import './mixins.scss';
 
 .chart_custom_tooltip {
     width: 122px;
@@ -560,3 +561,37 @@ html ngb-modal-backdrop {
 .payroll-number.text-color-white {
     color: $white !important;
 }
+
+.prevent-text-selection {
+    @include prevent-text-selection();
+}
+
+// #region middle ellipsis
+
+.mete {
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.mete-start,
+.mete-end {
+    overflow: hidden;
+    height: inherit;
+    flex: 0 1 auto;
+}
+
+.mete-start {
+    word-break: break-all;
+}
+
+.mete-end {
+    white-space: nowrap;
+    direction: rtl;
+    text-overflow: ellipsis;
+}
+
+.mete-end::after {
+    content: '\200E';
+}
+
+// #endregion

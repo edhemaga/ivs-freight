@@ -408,11 +408,17 @@
                         @if (moneyFilter) {
                             <span class="ic-hed">
                                 <!-- MONEY FILTER -->
-                                <app-ca-filter-dropdown
-                                    [type]="'MoneyFilter'"
-                                    (setFilter)="setFilterValue($event)"
-                                >
-                                </app-ca-filter-dropdown>
+                                <app-ca-filter
+                                [type]="'moneyFilter'"
+                                [icon]="'dollar'"
+                                [filterTitle]="'Money Filter'"
+                                [subType]="'all'"
+                                [isMoneyFilter]="true"
+                                [isLoadType]="true"
+                                (setFilter)="setFilterValue($event)"
+                                (clearAll)="setFilterValue($event)"
+                            >
+                            </app-ca-filter>
                             </span>
                         }
                         <ng-container *ngIf="repairOrderFilter">

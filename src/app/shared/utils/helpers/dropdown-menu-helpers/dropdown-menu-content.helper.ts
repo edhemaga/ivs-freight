@@ -741,7 +741,7 @@ export class DropdownMenuContentHelper {
         archivedDate: string,
         applicationStatus: string,
         review: string
-    ): any[] /* DropdownMenuItem[] */ {
+    ): any[] /* IDropdownMenuItem[] */ {
         return [
             {
                 title: 'Edit',

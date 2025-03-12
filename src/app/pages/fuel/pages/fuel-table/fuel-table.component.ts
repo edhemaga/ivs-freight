@@ -36,7 +36,6 @@ import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/service
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { FuelTableConstants } from '@pages/fuel/pages/fuel-table/utils/constants/fuel-table.constants';
 
 // svg routes
@@ -68,7 +67,7 @@ import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
     DropdownMenuStringEnum,
-    eCommonElements,
+    eCommonElement,
     TableStringEnum,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
@@ -116,7 +115,7 @@ export class FuelTableComponent
 
     public dropdownMenuStringEnum = DropdownMenuStringEnum;
     public tableStringEnum = TableStringEnum;
-    public commonElements = eCommonElements;
+    public eCommonElement = eCommonElement;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -582,6 +581,7 @@ export class FuelTableComponent
     private sendFuelData(): void {
         const {
             data,
+            integratedFuelTransactionsFilterActive,
             integratedFuelTransactionsCount,
             incompleteFuelTransactionsCount,
             fuelStopClosedCount,
@@ -593,6 +593,10 @@ export class FuelTableComponent
         const fuelCount = JSON.parse(
             localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
         );
+        const transactionConfigType: string =
+            integratedFuelTransactionsFilterActive
+                ? TableStringEnum.FUEL_TRANSACTION_EFS
+                : TableStringEnum.FUEL_TRANSACTION;
 
         this.tableData = [
             {
@@ -605,9 +609,7 @@ export class FuelTableComponent
                 incompleteDataCount: incompleteFuelTransactionsCount,
                 tableConfiguration: TableStringEnum.FUEL_TRANSACTION,
                 isActive: this.selectedTab === TableStringEnum.FUEL_TRANSACTION,
-                gridColumns: this.getGridColumns(
-                    TableStringEnum.FUEL_TRANSACTION
-                ),
+                gridColumns: this.getGridColumns(transactionConfigType),
             },
             {
                 title: TableStringEnum.STOP,
@@ -666,7 +668,13 @@ export class FuelTableComponent
         );
 
         if (configType === TableStringEnum.FUEL_TRANSACTION)
-            return tableColumnsConfig ?? getFuelTransactionColumnDefinition();
+            return (
+                tableColumnsConfig ?? getFuelTransactionColumnDefinition(false)
+            );
+        else if (configType === TableStringEnum.FUEL_TRANSACTION_EFS)
+            return (
+                tableColumnsConfig ?? getFuelTransactionColumnDefinition(true)
+            );
         else return tableColumnsConfig ?? getFuelStopColumnDefinition();
     }
 
