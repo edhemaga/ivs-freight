@@ -37,4 +37,5 @@ export interface EditData<T = undefined> {
     preSelectedUnit?: number;
     statusDropdownData?: LoadPossibleStatusesResponse;
     loadModalData?: LoadModalResponse;
+    title?: string;
 }
