@@ -18,13 +18,13 @@ import {
 import {
     CommissionLoadShortReponseWithRowType,
     IDriverCommissionList,
+    ILoadWithMilesStopResponseNumberId,
 } from '@pages/accounting/pages/payroll/state/models';
 import {
     selectPayrollOpenedReport,
     selectPayrollState,
 } from '@pages/accounting/pages/payroll/state/selectors';
 import {
-    LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
@@ -48,7 +48,7 @@ export class PayrollDriverCommissionFacadeService {
     > = this.store.pipe(select(selectPayrollDriverCommissionLoads));
 
     public selectPayrollReportIncludedLoads$: Observable<
-        LoadWithMilesStopResponse[]
+        ILoadWithMilesStopResponseNumberId[]
     > = this.store.pipe(select(selectPayrollReportsIncludedCommissionStops));
 
     public selectPayrollDriverCommissionExpanded$: Observable<

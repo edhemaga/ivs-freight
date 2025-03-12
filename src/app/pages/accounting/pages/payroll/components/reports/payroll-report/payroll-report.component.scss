@@ -28,3 +28,36 @@
         --table-preview-row-first-td-padding: 0 8px;
     }
 }
+
+
+.load-description{
+    padding-left: 7px;
+    &.group-loads-with-border-left {
+        &::after {
+            content: '';
+            position: absolute;
+            width: 6px;
+            height: 100%;
+            border-left: 2px solid $ta-light-grey-6;
+            left: -1px;
+        }
+    
+        &.first-in-group::after {
+            border-top: 2px solid $ta-light-grey-6;
+            border-top-left-radius: 2px;
+            margin-top: 6px;
+        }
+    
+        &.last-in-group::after {
+            border-bottom: 2px solid $ta-light-grey-6;
+            border-bottom-left-radius: 2px;
+            margin-bottom: 6px;
+        }
+    }
+    
+}
+
+
+.relative {
+    position: relative;
+}

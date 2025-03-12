@@ -57,7 +57,7 @@ export const onGetPayrollFlatRateReportDriverSuccess = (
         ...state,
         payrollOpenedReport: data.payroll,
         reportLoading: false,
-        driverFlatRateList,
+        driverFlatRateList
     };
 };
 

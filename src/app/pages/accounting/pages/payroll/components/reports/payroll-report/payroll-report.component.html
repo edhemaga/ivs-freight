@@ -128,6 +128,10 @@
     <div
         class="load-description d-flex align-items-center"
         [class.delivery]="data.stopType.id == 2"
+        [class.group-loads-with-border-left]="data.hasBorderLeft"
+        [class.first-in-group]="data.firstInRow"
+        [class.last-in-group]="data.lastInRow"
+
     >
         @if (data.orderNumber) {
             <svg-icon

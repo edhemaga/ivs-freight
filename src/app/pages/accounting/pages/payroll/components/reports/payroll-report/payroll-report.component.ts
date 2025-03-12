@@ -16,18 +16,20 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // models
 import {
+    IDropdownMenuLoadItem,
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollTypes,
 } from '@pages/accounting/pages/payroll/state/models';
 import {
     MilesStopShortResponse,
     PayrollCreditType,
-    PayrollDriverMileageByIdResponse,
 } from 'appcoretruckassist';
 import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -58,7 +60,7 @@ import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayrollReportComponent
-    extends PayrollReportBaseComponent<PayrollDriverMileageByIdResponse>
+    extends PayrollReportBaseComponent<IPayrollDriverMileageByIdResponseNumberId>
     implements OnInit, OnDestroy
 {
     public columns: ColumnConfig[];
@@ -68,6 +70,7 @@ export class PayrollReportComponent
     public ePayrollTable = ePayrollTable;
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
+    public loadDropdownList: IDropdownMenuLoadItem[];
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -94,7 +97,7 @@ export class PayrollReportComponent
         return this._selectedTab;
     }
 
-    public payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
+    public payrollReport$: Observable<IPayrollDriverMileageByIdResponseNumberId>;
     public payrollMileageDriverLoads$: Observable<
         MilesStopShortReponseWithRowType[]
     >;
@@ -139,9 +142,10 @@ export class PayrollReportComponent
         // Services
         private payrollFacadeService: PayrollFacadeService,
         modalService: ModalService,
-        payrollService: PayrollService
+        payrollService: PayrollService,
+        public loadStoreService: LoadStoreService
     ) {
-        super(modalService, payrollService);
+        super(modalService, payrollService, loadStoreService);
     }
 
     ngAfterViewInit(): void {
@@ -158,6 +162,7 @@ export class PayrollReportComponent
                 header: 'LOCATION, TYPE',
                 row: true,
                 cellType: 'template',
+                cellCustomClasses: 'relative',
                 template: this.customLocationTypeLoad, // Pass the template reference
             },
             {
@@ -239,7 +244,8 @@ export class PayrollReportComponent
 
         this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
             (loadList) => {
-                //console.log("WHAT IS LOAD LIST HERE", loadList); // CONSOLE LOG FOR TESTING
+                this.loadDropdownList = loadList;
+                //console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
             }
         );
 
@@ -295,7 +301,7 @@ export class PayrollReportComponent
             const load = [
                 ...this.openedPayroll.includedLoads,
                 ...this.openedPayroll.excludedLoads,
-            ].find((load) => load.loadId == loadId);
+            ].find((load) => load.id == loadId);
             if (load) {
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
@@ -307,7 +313,7 @@ export class PayrollReportComponent
     }
 
     public onProccessPayroll(
-        payrollData: PayrollDriverMileageByIdResponse
+        payrollData: IPayrollDriverMileageByIdResponseNumberId
     ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
@@ -357,7 +363,7 @@ export class PayrollReportComponent
                 false,
                 this._selectedTab,
                 this.isEditLoadDropdownActionActive,
-                loadDummyData
+                this.loadDropdownList
             );
     }
 
