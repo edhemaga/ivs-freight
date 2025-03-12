@@ -63,7 +63,7 @@
                 [ngStyle]="{
                     color: _isCardOpen
                         ? '#424242'
-                        : headerLightColor && hasCounter === -1
+                        : isHeaderLightColor && hasCounter === -1
                           ? '#aaaaaa'
                           : '#6C6C6C',
                 }"
@@ -299,21 +299,8 @@
 
             <!-- Color Picker -->
             @if (_isCardOpen && !doesFileExist) {
-                <app-ca-icon-dropdown
-                    [iconDropdownConfig]="iconDropdownConfig"
-                    (click)="onAction($event, 'custom', 'toggleColorPicker')"
-                >
+                <app-ca-icon-dropdown [iconDropdownConfig]="iconDropdownConfig">
                 </app-ca-icon-dropdown>
-                <!-- <div
-                    class="color-drop-icon-container"
-                    (click)="onAction($event, 'custom', 'toggleColorPicker')"
-                >
-                    <svg-icon
-                        [src]="customCardSvgRoutes.COLOR_DROP"
-                        class="color-drop-icon"
-                    >
-                    </svg-icon>
-                </div> -->
             }
 
             <!-- Arrow -->

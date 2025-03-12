@@ -327,18 +327,18 @@
                 .delete-icon {
                     svg {
                         path {
-                            fill: #919191;
+                            fill: $muted;
                         }
                     }
                 }
 
                 &:hover {
-                    background-color: #FBE9E9;
+                    background-color: $white-6;
                     border-radius: 2px;
 
                     svg {
                         path {
-                            fill: #C20C0C;
+                            fill: $ta-red-14;
                         }
                     }
                 }

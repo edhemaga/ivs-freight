@@ -24,7 +24,7 @@ export class IconDropdownConfig {
         iconActiveBackgroundColor: '#2f2f2f',
         dropdownWidth: '140',
         dropdownItems: this.dropdownItems,
-        tooltipLable: 'Color',
+        tooltipLabel: 'Color',
         placement: [ePlacement.BOTTOM_RIGHT],
     };
 }
