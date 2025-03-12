@@ -20,6 +20,7 @@ export * from './confirmation-message.enum';
 export * from './modal-button-text.enum';
 export * from './common-elements.enum';
 export * from './business-status.enum';
+export * from './avatar-color.enum';
 
 // Files
 export * from './file/file-form-controls.enum';

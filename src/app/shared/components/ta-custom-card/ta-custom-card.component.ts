@@ -33,6 +33,15 @@ import { TaLikeDislikeComponent } from '@shared/components/ta-like-dislike/ta-li
 import { TaNoteContainerComponent } from '@shared/components/ta-note-container/ta-note-container.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
+//svg Routes
+import { CustomCardSvgRoutes } from './utils/svg-routes';
+
+//interfaces
+import { CaIconDropdownComponent, IIconDropdownConfig } from 'ca-components';
+
+//config
+import { IconDropdownConfig } from './utils/config';
+
 @Component({
     selector: 'app-ta-custom-card',
     templateUrl: './ta-custom-card.component.html',
@@ -55,6 +64,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         TaLikeDislikeComponent,
         TaNoteContainerComponent,
         TaAppTooltipV2Component,
+        CaIconDropdownComponent,
     ],
 })
 export class TaCustomCardComponent implements OnInit {
@@ -122,6 +132,7 @@ export class TaCustomCardComponent implements OnInit {
     @Input() isGreyTextWhenDisabled: boolean = false;
     @Input() headerLightColor = false;
     @Input() isActionDisabled = false;
+    @Input() doesFileExist = false;
 
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
@@ -133,6 +144,9 @@ export class TaCustomCardComponent implements OnInit {
     public isHeaderHover: boolean = false;
     public noActive: string = 'innactive';
     public _isCardOpen: string | boolean = 'null';
+    public customCardSvgRoutes = CustomCardSvgRoutes;
+    public iconDropdownConfig: IIconDropdownConfig =
+        IconDropdownConfig.ICON_DROPDOWN_CONFIG;
 
     constructor(private uploadFileService: TaUploadFileService) {}
 
