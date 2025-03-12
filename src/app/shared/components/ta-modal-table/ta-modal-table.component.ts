@@ -447,7 +447,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
             this.truckTrailerRepairPmOptions?.trailerPmDropdownList;
 
         if (truckTrailerRepairPm && this.preselectPm) {
-            let item = truckTrailerRepairPm?.find(
+            const item = truckTrailerRepairPm?.find(
                 (value) =>
                     value.title.toLowerCase() === this.preselectPm.toLowerCase()
             );
