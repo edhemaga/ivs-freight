@@ -685,6 +685,8 @@ export class FuelTableComponent
             pricePerGallon,
             fuelTruckNumber,
             fuelCardHolderName,
+            createdAt,
+            updatedAt,
         } = data;
 
         const driverFullName = !!driver
@@ -787,6 +789,12 @@ export class FuelTableComponent
             tableDropdownContent: this.getFuelTransactionDropdownContent(
                 isIntegratedFuelTransaction
             ),
+            dateAdded: createdAt
+                ? this.datePipe.transform(createdAt, 'MM/dd/yy hh:mm a')
+                : null,
+            dateEdited: updatedAt
+                ? this.datePipe.transform(updatedAt, 'MM/dd/yy hh:mm a')
+                : null,
         };
     }
 
@@ -928,7 +936,7 @@ export class FuelTableComponent
                 incompleteFuelTransactionsFilterActive: false,
                 fuelStopClosedCount,
                 fuelStopClosedFilterActive: false,
-                pageIndex: 0,
+                pageIndex: 1,
             };
 
             this.fetchApiDataPaginated();
@@ -941,11 +949,13 @@ export class FuelTableComponent
     }
 
     public onTableHeadActions(event: any): void {
-        if (event.action === TableStringEnum.SORT) {
-            if (event.direction) {
-            } else {
-                this.sendFuelData();
-            }
+        const { action, sortOrder, sortBy } = event;
+
+        if (action === TableStringEnum.SORT) {
+            this.fuelData.sortOrder = sortOrder;
+            this.fuelData.sortBy = sortBy;
+
+            this.fetchApiDataPaginated();
         }
     }
 
@@ -964,6 +974,7 @@ export class FuelTableComponent
             this.fuelData?.incompleteFuelTransactionsFilterActive ?? false;
         const fuelStopClosedFilterActive =
             this.fuelData?.fuelStopClosedFilterActive ?? false;
+        const { sortOrder, sortBy } = this.fuelData || {};
 
         this.fuelData = {
             data,
@@ -973,12 +984,23 @@ export class FuelTableComponent
             incompleteFuelTransactionsFilterActive,
             fuelStopClosedCount: fuelStopClosedCount,
             fuelStopClosedFilterActive,
+            sortOrder,
+            sortBy,
             pageIndex,
         } as IFuelTableData;
     }
 
-    private fetchApiDataPaginated(): void {
-        this.fuelData.pageIndex++;
+    private fetchApiDataPaginated(isShowMore?: boolean): void {
+        if (isShowMore) this.fuelData.pageIndex++;
+
+        const {
+            integratedFuelTransactionsFilterActive,
+            incompleteFuelTransactionsFilterActive,
+            fuelStopClosedFilterActive,
+            pageIndex,
+            sortOrder,
+            sortBy,
+        } = this.fuelData;
 
         if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION) {
             this.fuelService
@@ -1000,14 +1022,18 @@ export class FuelTableComponent
                     null,
                     null,
                     null,
-                    this.fuelData.integratedFuelTransactionsFilterActive,
-                    this.fuelData.incompleteFuelTransactionsFilterActive,
-                    this.fuelData.pageIndex,
-                    FuelTableConstants.TABLE_PAGE_SIZE
+                    integratedFuelTransactionsFilterActive,
+                    incompleteFuelTransactionsFilterActive,
+                    pageIndex,
+                    FuelTableConstants.TABLE_PAGE_SIZE,
+                    null,
+                    null,
+                    sortOrder,
+                    sortBy
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
-                    this.updateStoreData(response);
+                    this.updateStoreData(response, !isShowMore);
                 });
         } else if (this.selectedTab === TableStringEnum.FUEL_STOP) {
             this.fuelService
@@ -1026,13 +1052,17 @@ export class FuelTableComponent
                     null,
                     null,
                     null,
-                    this.fuelData?.fuelStopClosedFilterActive,
-                    this.fuelData.pageIndex,
-                    FuelTableConstants.TABLE_PAGE_SIZE
+                    fuelStopClosedFilterActive,
+                    pageIndex,
+                    FuelTableConstants.TABLE_PAGE_SIZE,
+                    null,
+                    null,
+                    sortOrder,
+                    sortBy
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
-                    this.updateStoreData(response);
+                    this.updateStoreData(response, !isShowMore);
                 });
         }
     }
@@ -1201,7 +1231,7 @@ export class FuelTableComponent
     }
 
     public handleShowMoreAction(): void {
-        this.fetchApiDataPaginated();
+        this.fetchApiDataPaginated(true);
     }
 
     private openCreateModalBySelectedTab(): void {
