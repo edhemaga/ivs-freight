@@ -21,9 +21,11 @@ import {
 } from '@pages/accounting/pages/payroll/state/services';
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Models
 import {
+    IDropdownMenuLoadItem,
     IGetPayrollByIdAndOptions,
     ILoadWithMilesStopResponseNumberId,
     IPayrollProccessPaymentModal,
@@ -50,7 +52,6 @@ import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/comp
 
 // helpers
 import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
     selector: 'app-driver-flat-rate-report',
@@ -69,10 +70,7 @@ export class DriverFlatRateReportComponent
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.FLAT_RATE;
 
-    public loadDropdownList: {
-        id: number;
-        title: string;
-    }[];
+    public loadDropdownList: IDropdownMenuLoadItem[];
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
@@ -233,7 +231,7 @@ export class DriverFlatRateReportComponent
         this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
             (loadList) => {
                 this.loadDropdownList = loadList;
-               // console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
+                // console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
             }
         );
 

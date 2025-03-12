@@ -1,6 +1,7 @@
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Models
 import {
@@ -16,21 +17,19 @@ import { PayrollBonusModalComponent } from '@pages/accounting/pages/payroll/payr
 import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-deduction-modal/payroll-deduction-modal.component';
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
-
+import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 // Enums
 import {
     ePayrollAdditionalTypes,
-    ePayrollTablesStatus,
+    ePayrollTablesStatus, 
 } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { DropdownMenuStringEnum } from '@shared/enums';
 import { PayrollTypeEnum } from 'ca-components';
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 
 export abstract class PayrollReportBaseComponent<
@@ -61,7 +60,7 @@ export abstract class PayrollReportBaseComponent<
         protected modalService: ModalService,
         private payrollService: PayrollService,
         public loadStoreService: LoadStoreService
-    ) {}
+    ) { }
 
     protected abstract getReportDataResults(
         getData?: IGetPayrollByIdAndOptions

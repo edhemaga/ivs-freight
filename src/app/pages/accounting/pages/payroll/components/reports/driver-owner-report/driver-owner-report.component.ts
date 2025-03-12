@@ -18,18 +18,17 @@ import {
     PayrollDriverOwnerFacadeService,
 } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Models
-import {
-    PayrollCreditType,
-    PayrollOwnerResponse,
-} from 'appcoretruckassist';
+import { PayrollCreditType, PayrollOwnerResponse } from 'appcoretruckassist';
 import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import {
+    IDropdownMenuLoadItem,
     IGetPayrollByIdAndOptions,
     ILoadWithMilesStopResponseNumberId,
     IPayrollProccessPaymentModal,
-    PayrollDriverMileageByIdResponseNumberId,
+    IPayrollDriverMileageByIdResponseNumberId,
 } from '@pages/accounting/pages/payroll/state/models';
 
 import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
@@ -48,7 +47,6 @@ import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/comp
 
 // helpers
 import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
     selector: 'app-driver-owner-report',
@@ -76,10 +74,7 @@ export class DriverOwnerReportComponent
     public creditType = PayrollCreditType.Truck;
     public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
 
-    public loadDropdownList: {
-        id: number;
-        title: string;
-    }[];
+    public loadDropdownList: IDropdownMenuLoadItem[];
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
@@ -260,7 +255,7 @@ export class DriverOwnerReportComponent
     };
 
     public onProccessPayroll(
-        payrollData: PayrollDriverMileageByIdResponseNumberId
+        payrollData: IPayrollDriverMileageByIdResponseNumberId
     ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,

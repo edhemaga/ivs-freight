@@ -16,13 +16,15 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // models
 import {
+    IDropdownMenuLoadItem,
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
-    PayrollDriverMileageByIdResponseNumberId,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollTypes,
 } from '@pages/accounting/pages/payroll/state/models';
 import {
@@ -46,7 +48,6 @@ import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/comp
 
 // helpers
 import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
     selector: 'app-payroll-report',
@@ -59,7 +60,7 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayrollReportComponent
-    extends PayrollReportBaseComponent<PayrollDriverMileageByIdResponseNumberId>
+    extends PayrollReportBaseComponent<IPayrollDriverMileageByIdResponseNumberId>
     implements OnInit, OnDestroy
 {
     public columns: ColumnConfig[];
@@ -69,10 +70,7 @@ export class PayrollReportComponent
     public ePayrollTable = ePayrollTable;
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
-    public loadDropdownList: {
-        id: number;
-        title: string;
-    }[];
+    public loadDropdownList: IDropdownMenuLoadItem[];
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -99,7 +97,7 @@ export class PayrollReportComponent
         return this._selectedTab;
     }
 
-    public payrollReport$: Observable<PayrollDriverMileageByIdResponseNumberId>;
+    public payrollReport$: Observable<IPayrollDriverMileageByIdResponseNumberId>;
     public payrollMileageDriverLoads$: Observable<
         MilesStopShortReponseWithRowType[]
     >;
@@ -315,7 +313,7 @@ export class PayrollReportComponent
     }
 
     public onProccessPayroll(
-        payrollData: PayrollDriverMileageByIdResponseNumberId
+        payrollData: IPayrollDriverMileageByIdResponseNumberId
     ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,

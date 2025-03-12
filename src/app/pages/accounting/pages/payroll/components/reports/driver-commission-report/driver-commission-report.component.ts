@@ -1,3 +1,4 @@
+import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -9,48 +10,47 @@ import {
     ViewChild,
 } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
-import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 
 // Services
-import { ModalService } from '@shared/services/modal.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
 import {
     PayrollDriverCommissionFacadeService,
     PayrollFacadeService,
 } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Models
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import {
+    IDropdownMenuLoadItem,
+    IGetPayrollByIdAndOptions,
+    ILoadWithMilesStopResponseNumberId,
+    IPayrollProccessPaymentModal,
+    MilesStopShortReponseWithRowType,
+    IPayrollDriverMileageByIdResponseNumberId,
+    PayrollTypes,
+} from '@pages/accounting/pages/payroll/state/models';
 import {
     PayrollCreditType,
     PayrollDriverCommissionByIdResponse,
 } from 'appcoretruckassist';
-import {
-    MilesStopShortReponseWithRowType,
-    IPayrollProccessPaymentModal,
-    IGetPayrollByIdAndOptions,
-    PayrollTypes,
-    ILoadWithMilesStopResponseNumberId,
-    PayrollDriverMileageByIdResponseNumberId,
-} from '@pages/accounting/pages/payroll/state/models';
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 import { CommissionLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
-// Enums
 import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // helpers
 import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -69,10 +69,7 @@ export class DriverCommissionReportComponent
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.COMMISSION;
 
-    public loadDropdownList: {
-        id: number;
-        title: string;
-    }[];
+    public loadDropdownList: IDropdownMenuLoadItem[];
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
@@ -256,7 +253,7 @@ export class DriverCommissionReportComponent
     }
 
     public onProccessPayroll(
-        payrollData: PayrollDriverMileageByIdResponseNumberId
+        payrollData: IPayrollDriverMileageByIdResponseNumberId
     ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,

@@ -3,7 +3,7 @@ import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import {
     IGet_Payroll_Solo_Mileage_Driver_Report,
     IPayrollDriverMileageClosedByIdResponse,
-    PayrollDriverMileageByIdResponseNumberId,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
@@ -36,7 +36,7 @@ export const onGetPayrollSoloMileageReportDriver = (
 
 export const onGetPayrollSoloMileageReportDriverSuccess = (
     state: PayrollState,
-    data: { payroll: PayrollDriverMileageByIdResponseNumberId }
+    data: { payroll: IPayrollDriverMileageByIdResponseNumberId }
 ) => {
     const openedPayrollLeftId = +state.openedPayrollLeftId;
 

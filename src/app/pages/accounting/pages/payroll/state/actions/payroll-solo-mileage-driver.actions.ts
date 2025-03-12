@@ -9,7 +9,7 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
 import {
     IAddPayrollClosedPayment,
     IPayrollDriverMileageClosedByIdResponse,
-    PayrollDriverMileageByIdResponseNumberId,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
 } from '@pages/accounting/pages/payroll/state/models';
@@ -72,7 +72,7 @@ export const getPayrollSoloMileageReportDriver = createAction(
 
 export const getPayrollSoloMileageReportDriverSuccess = createAction(
     ePayrollSoloMileageDriver.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_SUCCESS,
-    props<{ payroll: PayrollDriverMileageByIdResponseNumberId }>()
+    props<{ payroll: IPayrollDriverMileageByIdResponseNumberId }>()
 );
 
 export const getPayrollSoloMileageReportDriverError = createAction(

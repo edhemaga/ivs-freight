@@ -24,7 +24,7 @@ import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDr
 import {
     IAddPayrollClosedPayment,
     IPayrollDriverMileageClosedByIdResponse,
-    PayrollDriverMileageByIdResponseNumberId,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
 } from '@pages/accounting/pages/payroll/state/models';
@@ -241,7 +241,7 @@ export class PayrollService {
                 selectedDeducionIds.toString()
             );
 
-        return this.http.get<PayrollDriverMileageByIdResponseNumberId>(
+        return this.http.get<IPayrollDriverMileageByIdResponseNumberId>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/${reportId}`,
             { params }
         );
