@@ -9,16 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { MilesStopShortResponse } from './milesStopShortResponse';
 
 
-export interface LoadWithMilesStopResponse { 
-    id?: string | null;
-    isLoad?: boolean;
-    loadNumber?: string | null;
-    isStartPoint?: boolean;
-    date?: string | null;
-    isFromNextPeriod?: boolean;
-    milesStops?: Array<MilesStopShortResponse> | null;
+export interface GetFuelStopRangeResponse { 
+    dieselMin?: number | null;
+    dieselMax?: number | null;
+    defMin?: number | null;
+    defMax?: number | null;
 }
 

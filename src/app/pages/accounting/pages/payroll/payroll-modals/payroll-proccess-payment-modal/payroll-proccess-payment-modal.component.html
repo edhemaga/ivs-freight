@@ -22,26 +22,32 @@
                 [@animationTabsModal]="animationObject"
             >
                 <!-------------------------------- Basic Tab -------------------------------->
-                <div class="m-tab" *ngIf="selectedTab === 2">
-                    <div class="payroll_procces_input_holder">
-                        <app-ca-input
+                @if (selectedTab === 2) {
+                    <div class="m-tab">
+                        <div class="payroll_procces_input_holder">
+                            <ca-input-test
+                                formControlName="amount"
+                                [inputConfig]="inputConfig"
+                            ></ca-input-test>
+                            @if (dropdownOption) {
+                                <ca-input-dropdown-test
+                                    [optionValue]="'name'"
+                                    [label]="'name'"
+                                    formControlName="option"
+                                    [options]="dropdownOption"
+                                    [inputConfig]="dropDownInputConfig"
+                                ></ca-input-dropdown-test>
+                            }
+                        </div>
+                    </div>
+                } @else {
+                    <div class="m-tab">
+                        <ca-input-test
                             formControlName="amount"
                             [inputConfig]="inputConfig"
-                        ></app-ca-input>
-                        <app-ca-input-dropdown
-                            *ngIf="dropdownOption"
-                            formControlName="option"
-                            [options]="dropdownOption"
-                            [inputConfig]="dropDownInputConfig"
-                        ></app-ca-input-dropdown>
+                        ></ca-input-test>
                     </div>
-                </div>
-                <div class="m-tab" *ngIf="selectedTab === 1">
-                    <app-ca-input
-                        formControlName="amount"
-                        [inputConfig]="inputConfig"
-                    ></app-ca-input>
-                </div>
+                }
             </div>
         </form>
     </div>
@@ -82,13 +88,16 @@
                 type="button"
                 (click)="closePayroll(true)"
             >
-                <div class="d-inline-block" *ngIf="loadingCloseUnpaid">
-                    <app-ta-spinner
-                        [size]="'small'"
-                        [color]="'black'"
-                    ></app-ta-spinner>
-                </div>
-                <span *ngIf="!loadingCloseUnpaid">Close Unpaid</span>
+                @if (loadingCloseUnpaid) {
+                    <div class="d-inline-block">
+                        <app-ta-spinner
+                            [size]="'small'"
+                            [color]="'black'"
+                        ></app-ta-spinner>
+                    </div>
+                } @else {
+                    <span>Close Unpaid</span>
+                }
             </button>
             <button
                 [ngStyle]="{
@@ -99,18 +108,20 @@
                 type="button"
                 [class.modal-blue-btn]="paymentForm.valid"
             >
-                <div class="d-inline-block" *ngIf="loading">
-                    <app-ta-spinner
-                        [size]="'small'"
-                        [color]="'black'"
-                    ></app-ta-spinner>
-                </div>
-                <ng-container *ngIf="isPaidInFull">
+                @if (loading) {
+                    <div class="d-inline-block">
+                        <app-ta-spinner
+                            [size]="'small'"
+                            [color]="'black'"
+                        ></app-ta-spinner>
+                    </div>
+                }
+
+                @if (isPaidInFull) {
                     <span>Pay in Full</span>
-                </ng-container>
-                <ng-container *ngIf="!isPaidInFull">
+                } @else {
                     <span>Short Pay</span>
-                </ng-container>
+                }
             </button>
         </div>
     </div>

@@ -402,7 +402,7 @@ export class TrailerTableComponent
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTrailerFilter: true,
+                showTrailerTypeFilter: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,

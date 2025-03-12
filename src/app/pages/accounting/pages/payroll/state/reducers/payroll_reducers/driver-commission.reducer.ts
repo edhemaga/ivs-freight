@@ -39,17 +39,27 @@ export const onGetPayrollCommissionReportDriver = (
     selectedDeductionIds:
         params.selectedDeductionIds ?? state.selectedDeductionIds,
     selectedCreditIds: params.selectedCreditIds ?? state.selectedCreditIds,
-    selectedFuelIds: params.selectedFuelIds ?? state.selectedFuelIds
+    selectedFuelIds: params.selectedFuelIds ?? state.selectedFuelIds,
 });
 
 export const onGetPayrollCommissionReportDriverSuccess = (
     state: PayrollState,
     data: { payroll: PayrollDriverCommissionByIdResponse }
-) => ({
-    ...state,
-    payrollOpenedReport: data.payroll,
-    reportLoading: false,
-});
+) => {
+    const openedPayrollLeftId = +state.openedPayrollLeftId;
+    const payrollCommissionDriverList = state.payrollCommissionDriverList.map(
+        (payrollDriver) =>
+            payrollDriver.id === openedPayrollLeftId
+                ? { ...payrollDriver, earnings: data.payroll.earnings }
+                : payrollDriver
+    );
+    return {
+        ...state,
+        payrollOpenedReport: data.payroll,
+        reportLoading: false,
+        payrollCommissionDriverList,
+    };
+};
 
 export const onClosePayrollCommissionReportDriver = (state: PayrollState) => ({
     ...state,

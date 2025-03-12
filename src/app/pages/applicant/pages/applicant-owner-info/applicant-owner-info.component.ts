@@ -72,7 +72,7 @@ import {
     CreateCompanyOwnerInfoReviewCommand,
     OwnerType,
 } from 'appcoretruckassist';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { ApplicantDropdownOptions } from '@pages/applicant/pages/applicant-owner-info/models/dropdown-options.model';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { FileEvent } from '@shared/models/file-event.model';

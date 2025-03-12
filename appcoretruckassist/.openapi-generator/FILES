@@ -558,6 +558,7 @@ model/getDriverModalResponse.ts
 model/getEFSTransactionCommand.ts
 model/getFuelModalResponse.ts
 model/getFuelStopModalResponse.ts
+model/getFuelStopRangeResponse.ts
 model/getHazardousMaterialDropdownModalQuery.ts
 model/getMapListResponse.ts
 model/getMobileFuelTransactionTrucksResponse.ts
