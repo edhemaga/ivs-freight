@@ -1156,7 +1156,7 @@ export class RepairTableComponent
                 filter.lat,
                 filter.distance,
                 '',
-                filter.distance,
+                250,
                 filter.costFrom,
                 filter.costTo,
                 filter.visitedByMe,

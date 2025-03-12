@@ -41,8 +41,10 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 import { StateResponse } from 'appcoretruckassist/model/stateResponse';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
-import { AddressMixin } from '@shared/mixins/address/address.mixin';
 import { AddressService } from '@shared/services/address.service';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
