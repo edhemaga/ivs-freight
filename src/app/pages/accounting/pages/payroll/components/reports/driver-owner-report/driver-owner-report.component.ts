@@ -18,18 +18,17 @@ import {
     PayrollDriverOwnerFacadeService,
 } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Models
-import {
-    LoadWithMilesStopResponse,
-    PayrollCreditType,
-    PayrollDriverMileageByIdResponse,
-    PayrollOwnerResponse,
-} from 'appcoretruckassist';
+import { PayrollCreditType, PayrollOwnerResponse } from 'appcoretruckassist';
 import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import {
+    IDropdownMenuLoadItem,
     IGetPayrollByIdAndOptions,
+    ILoadWithMilesStopResponseNumberId,
     IPayrollProccessPaymentModal,
+    IPayrollDriverMileageByIdResponseNumberId,
 } from '@pages/accounting/pages/payroll/state/models';
 
 import { OwnerLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
@@ -75,6 +74,8 @@ export class DriverOwnerReportComponent
     public creditType = PayrollCreditType.Truck;
     public payrollType = PayrollTypeEnum.OWNER_COMMISSION;
 
+    public loadDropdownList: IDropdownMenuLoadItem[];
+
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
     public _selectedTab: ePayrollTablesStatus;
@@ -97,7 +98,7 @@ export class DriverOwnerReportComponent
     public mapData$: Observable<ICaMapProps>;
 
     public loading$: Observable<boolean>;
-    public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    public includedLoads$: Observable<ILoadWithMilesStopResponseNumberId[]>;
 
     private destroy$ = new Subject<void>();
 
@@ -134,9 +135,10 @@ export class DriverOwnerReportComponent
         private payrollDriverOwnerFacadeService: PayrollDriverOwnerFacadeService,
         private payrollFacadeService: PayrollFacadeService,
         modalService: ModalService,
-        payrollService: PayrollService
+        payrollService: PayrollService,
+        public loadStoreService: LoadStoreService
     ) {
-        super(modalService, payrollService);
+        super(modalService, payrollService, loadStoreService);
     }
 
     ngOnInit(): void {
@@ -163,6 +165,13 @@ export class DriverOwnerReportComponent
             .subscribe((owner) => {
                 this.payrollOpenedReport = owner;
             });
+
+        this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
+            (loadList) => {
+                this.loadDropdownList = loadList;
+                //console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
+            }
+        );
 
         this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
     }
@@ -246,7 +255,7 @@ export class DriverOwnerReportComponent
     };
 
     public onProccessPayroll(
-        payrollData: PayrollDriverMileageByIdResponse
+        payrollData: IPayrollDriverMileageByIdResponseNumberId
     ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
@@ -329,7 +338,7 @@ export class DriverOwnerReportComponent
                 false,
                 this._selectedTab,
                 this.isEditLoadDropdownActionActive,
-                loadDummyData
+                this.loadDropdownList
             );
     }
 

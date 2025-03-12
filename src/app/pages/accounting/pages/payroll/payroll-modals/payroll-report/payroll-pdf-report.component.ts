@@ -23,7 +23,7 @@ const DEFAULT_ZOOM: number = 1;
 const MAX_ZOOM: number = 2;
 
 @Component({
-    selector: 'app-payroll-report',
+    selector: 'app-payroll-report-pdf-preview',
     templateUrl: './payroll-pdf-report.component.html',
     styleUrls: ['./payroll-pdf-report.component.scss'],
     standalone: true,

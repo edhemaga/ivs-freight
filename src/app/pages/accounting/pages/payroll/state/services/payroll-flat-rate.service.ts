@@ -18,13 +18,13 @@ import {
 import {
     FlatRateLoadShortReponseWithRowType,
     IDriverFlatRateList,
+    ILoadWithMilesStopResponseNumberId,
 } from '@pages/accounting/pages/payroll/state/models';
 import {
     selectPayrollOpenedReport,
     selectPayrollState,
 } from '@pages/accounting/pages/payroll/state/selectors';
 import {
-    LoadWithMilesStopResponse,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
@@ -48,7 +48,7 @@ export class PayrollDriverFlatRateFacadeService {
     > = this.store.pipe(select(selectPayrollDriverFlatRateLoads));
 
     public selectPayrollReportIncludedLoads$: Observable<
-        LoadWithMilesStopResponse[]
+        ILoadWithMilesStopResponseNumberId[]
     > = this.store.pipe(select(selectPayrollReportsIncludedFlatRateStops));
 
     public selectPayrollDriverFlatRateExpanded$: Observable<

@@ -169,6 +169,7 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     public isFinishOrder: boolean = false;
 
     public hideIconIndex: number = 0;
+    public preselectPm: string;
 
     // cards
     public isCardAnimationDisabled: boolean = false;
@@ -369,6 +370,8 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
             setTimeout(() => {
                 this.loadPreSelected();
             }, 1000);
+
+        this.preselectPm = this.editData?.title ?? null;
     }
 
     private checkIsFinishOrder(): void {

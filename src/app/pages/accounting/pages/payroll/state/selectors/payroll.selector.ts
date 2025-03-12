@@ -187,7 +187,36 @@ export const selectPayrollDriverMileageStops = createSelector(
             rowType: 'reorder',
         };
 
-        return [...includedLoads, reorderRow, ...excludedLoads];
+        let lastLoadId = -Infinity;
+        let hasFoundFirstInRow = false;
+        const finalLoadListFinal = [
+            ...includedLoads,
+            reorderRow,
+            ...excludedLoads,
+        ];
+        const finalLoadList = finalLoadListFinal.map((load, index) => {
+            if (load.loadId > 0) {
+                load = {
+                    ...load,
+                    hasBorderLeft: load.loadId > 0,
+                };
+
+                const nextLoadId = finalLoadListFinal[index + 1]?.loadId;
+
+                if (!hasFoundFirstInRow && lastLoadId !== load.loadId) {
+                    load.firstInRow = true;
+                    hasFoundFirstInRow = true;
+                } else if (hasFoundFirstInRow && nextLoadId !== load.loadId) {
+                    load.lastInRow = true;
+                    hasFoundFirstInRow = false;
+                }
+            }
+
+            lastLoadId = load.loadId;
+            return load;
+        });
+
+        return finalLoadList;
     }
 );
 
@@ -271,10 +300,15 @@ export const selectPayrollLoadListForDropdown = createSelector(
     selectPayrollState,
     (state) => {
         if (!state.payrollOpenedReport) return [];
-        const includedLoads = state.payrollOpenedReport?.includedLoads ?? [];
+        let includedLoads = state.payrollOpenedReport?.includedLoads ?? [];
 
-        includedLoads.filter((load) => load.isLoad);
-        return includedLoads;
+        const filteredLoads = includedLoads
+            .filter((load) => load.id || typeof load.id === 'undefined')
+            .map((load) => ({
+                id: +load.id,
+                title: load.loadNumber,
+            }));
+        return filteredLoads;
     }
 );
 

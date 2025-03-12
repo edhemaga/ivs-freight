@@ -2,13 +2,14 @@ import { createAction, props } from '@ngrx/store';
 
 // MODELS
 import {
-    PayrollDriverMileageByIdResponse,
     PayrollDriverMileageClosedByIdResponse,
     PayrollDriverMileageListResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import {
     IAddPayrollClosedPayment,
+    IPayrollDriverMileageClosedByIdResponse,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
 } from '@pages/accounting/pages/payroll/state/models';
@@ -71,7 +72,7 @@ export const getPayrollSoloMileageReportDriver = createAction(
 
 export const getPayrollSoloMileageReportDriverSuccess = createAction(
     ePayrollSoloMileageDriver.GET_PAYROLL_SOLO_MILEAGE_DRIVER_REPORT_SUCCESS,
-    props<{ payroll: PayrollDriverMileageByIdResponse }>()
+    props<{ payroll: IPayrollDriverMileageByIdResponseNumberId }>()
 );
 
 export const getPayrollSoloMileageReportDriverError = createAction(
@@ -111,7 +112,7 @@ export const getPayrollMileageDriverClosedPayroll = createAction(
 );
 export const getPayrollMileageDriverClosedPayrollSuccess = createAction(
     ePayrollMileageDriverClosedPayroll.GET_PAYROLL_MILEAGE_CLOSED_PAYROLL_SUCCESS,
-    props<{ payroll: PayrollDriverMileageClosedByIdResponse }>()
+    props<{ payroll: IPayrollDriverMileageClosedByIdResponse }>()
 );
 export const getPayrollMileageDriverClosedPayrollError = createAction(
     ePayrollMileageDriverClosedPayroll.GET_PAYROLL_MILEAGE_CLOSED_PAYROLL_ERROR,
