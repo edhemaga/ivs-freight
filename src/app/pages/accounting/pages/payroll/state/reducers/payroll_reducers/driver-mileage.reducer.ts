@@ -1,17 +1,13 @@
 // Models
+import { PayrollDriverMileageListResponse } from 'appcoretruckassist';
 import {
-    PayrollDriverMileageByIdResponse,
-    PayrollDriverMileageClosedByIdResponse,
-    PayrollDriverMileageListResponse,
-} from 'appcoretruckassist';
-import {
-    IGet_Payroll_Commission_Driver_Report,
     IGet_Payroll_Solo_Mileage_Driver_Report,
+    IPayrollDriverMileageClosedByIdResponse,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
     PayrollState,
 } from '@pages/accounting/pages/payroll/state/models';
-import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 export const onGetPayrollSoloMileageDriver = (state: PayrollState) => ({
     ...state,
@@ -40,7 +36,7 @@ export const onGetPayrollSoloMileageReportDriver = (
 
 export const onGetPayrollSoloMileageReportDriverSuccess = (
     state: PayrollState,
-    data: { payroll: PayrollDriverMileageByIdResponse }
+    data: { payroll: IPayrollDriverMileageByIdResponseNumberId }
 ) => {
     const openedPayrollLeftId = +state.openedPayrollLeftId;
 
@@ -175,7 +171,7 @@ export const onGetPayrollMileageDriverExpandedListError = (
 
 export const onGetPayrollMileageDriverClosedPayrollSuccess = (
     state: PayrollState,
-    data: { payroll: PayrollDriverMileageClosedByIdResponse }
+    data: { payroll: IPayrollDriverMileageClosedByIdResponse }
 ) => ({
     ...state,
     payrollOpenedReport: {

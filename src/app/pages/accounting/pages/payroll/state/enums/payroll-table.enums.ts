@@ -7,7 +7,9 @@ export enum ePayrollTable {
     DRIVER_MILES_TITLE = 'Driver (Mile)',
     DRIVER_FLAT_RATE_TITLE = 'Driver (Flat Rate)',
     DRIVER_COMMISSION_TITLE = 'Driver (Commission)',
-    DRIVER_OWNER_TITLE = 'Owner'
+    DRIVER_OWNER_TITLE = 'Owner',
+
+    TOWING = "Towing"
 }
 
 export enum ePayrollTablesStatus {
