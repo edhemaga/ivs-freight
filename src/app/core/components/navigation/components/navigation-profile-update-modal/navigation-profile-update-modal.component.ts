@@ -316,7 +316,7 @@ export class NavigationProfileUpdateModalComponent
         this.profileUserForm.get('avatar').patchValue(base64Data);
         this.profileUserForm.get('avatar').setErrors(null);
         this.uploadFilesConfig.files.push(event);
-        this.doesFileExist = this.uploadFilesConfig.files.length > 0;
+        this.doesFileExist = this.uploadFilesConfig?.files?.length > 0;
     }
 
     public onImageValidation(event: boolean) {

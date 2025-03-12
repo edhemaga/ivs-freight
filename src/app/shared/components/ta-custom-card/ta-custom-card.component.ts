@@ -34,13 +34,13 @@ import { TaNoteContainerComponent } from '@shared/components/ta-note-container/t
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 //svg Routes
-import { CustomCardSvgRoutes } from './utils/svg-routes';
+import { CustomCardSvgRoutes } from '@shared/components/ta-custom-card/utils/svg-routes';
 
 //interfaces
 import { CaIconDropdownComponent, IIconDropdownConfig } from 'ca-components';
 
 //config
-import { IconDropdownConfig } from './utils/config';
+import { IconDropdownConfig } from '@shared/components/ta-custom-card/utils/config';
 
 @Component({
     selector: 'app-ta-custom-card',
@@ -130,9 +130,9 @@ export class TaCustomCardComponent implements OnInit {
     @Input() hasXAxisBottomPadding: boolean = false;
     @Input() isInheritingParentSize: boolean = false;
     @Input() isGreyTextWhenDisabled: boolean = false;
-    @Input() headerLightColor = false;
-    @Input() isActionDisabled = false;
-    @Input() doesFileExist = false;
+    @Input() headerLightColor: boolean = false;
+    @Input() isActionDisabled: boolean = false;
+    @Input() doesFileExist: boolean = false;
 
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
