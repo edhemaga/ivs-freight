@@ -303,7 +303,7 @@ export const selectPayrollLoadListForDropdown = createSelector(
         let includedLoads = state.payrollOpenedReport?.includedLoads ?? [];
 
         const filteredLoads = includedLoads
-            .filter((load) => load.id || typeof load.id === 'undefined')
+            .filter((load) => !isNaN(load.id))
             .map((load) => ({
                 id: +load.id,
                 title: load.loadNumber,
