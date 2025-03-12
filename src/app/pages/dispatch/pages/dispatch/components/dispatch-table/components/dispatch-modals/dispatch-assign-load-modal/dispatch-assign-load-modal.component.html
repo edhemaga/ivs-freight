@@ -46,7 +46,7 @@
                                     [src]="headerItem.svgIcon"
                                     [svgStyle]="{
                                         'width.px': 14,
-                                        'height.px': 14
+                                        'height.px': 14,
                                     }"
                                 ></svg-icon>
                             </span>
@@ -94,11 +94,11 @@
                         [hasXAxisBottomPadding]="false"
                         [isInheritingParentSize]="true"
                         [hasDivider]="false"
-                        [headerLightColor]="true"
+                        [isHeaderLightColor]="true"
                         [cardHeight]="firstElementHeight"
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                         [disabledCard]="!selectedDispatches"
                         (onOpenCard)="toggleAssignList()"
@@ -177,7 +177,7 @@
                         [cardHeight]="secondElementHeight"
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                         [isGreyTextWhenDisabled]="true"
                         (onOpenCard)="toggleUnAssignedList()"
@@ -269,7 +269,7 @@
                             [src]="svgIcons.penIcon"
                             [svgStyle]="{
                                 'width.px': 16,
-                                'height.px': 16
+                                'height.px': 16,
                             }"
                         ></svg-icon>
                     </div>
@@ -280,7 +280,7 @@
                         ngbTooltip
                         position="bottom"
                         [ngClass]="{
-                            'dispatch-table-driver_hover': !isAssignedLoad
+                            'dispatch-table-driver_hover': !isAssignedLoad,
                         }"
                         (click)="
                             changeLoadList(
@@ -321,7 +321,7 @@
                         [hasBodyData]="true"
                         [animationMarginParams]="{
                             marginTop: '10px',
-                            marginBottom: '12px'
+                            marginBottom: '12px',
                         }"
                         [hasXAxisBottomPadding]="true"
                         [hasDivider]="false"
@@ -330,7 +330,7 @@
                         <app-load-details-item-stops-main
                             [stopsData]="{
                                 statusType: selectedLoad?.statusType,
-                                stops: selectedLoad?.stops
+                                stops: selectedLoad?.stops,
                             }"
                             [isMapDisplayed]="false"
                             [isSmallDesign]="true"
@@ -393,7 +393,7 @@
                             [src]="svgIcons.logo"
                             [svgStyle]="{
                                 'width.px': 60,
-                                'height.px': 60
+                                'height.px': 60,
                             }"
                         ></svg-icon>
                         <div class="dispatch-load-map-loader-box-spinner"></div>

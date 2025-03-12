@@ -209,7 +209,9 @@
                     <app-ta-custom-card
                         [cardName]="'Profile Picture'"
                         [disableAnimation]="isCardAnimationDisabled"
+                        [hasDeleteAction]="true"
                         [isCardOpen]="false"
+                        [doesFileExist]="doesFileExist"
                         [animationMarginParams]="{
                             marginTop: '0px',
                             marginBottom: '0px',
