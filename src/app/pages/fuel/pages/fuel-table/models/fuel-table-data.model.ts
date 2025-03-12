@@ -1,4 +1,10 @@
-import { FuelStopResponse, FuelTransactionResponse } from "appcoretruckassist";
+import {
+    FuelStopResponse,
+    FuelTransactionResponse,
+    FuelStopSortBy,
+    FuelTransactionSortBy,
+    SortOrder,
+} from 'appcoretruckassist';
 
 export interface IFuelTableData {
     data: FuelTransactionResponse[] | FuelStopResponse[];
@@ -8,5 +14,7 @@ export interface IFuelTableData {
     incompleteFuelTransactionsFilterActive: boolean;
     fuelStopClosedCount: number;
     fuelStopClosedFilterActive: boolean;
+    sortOrder?: SortOrder;
+    sortBy?: FuelTransactionSortBy | FuelStopSortBy;
     pageIndex: number;
 }

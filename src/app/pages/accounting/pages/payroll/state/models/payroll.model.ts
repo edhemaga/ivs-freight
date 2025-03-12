@@ -16,6 +16,7 @@ import { LoadWithMilesStopResponse } from 'appcoretruckassist';
 
 // Enums
 import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
@@ -196,7 +197,4 @@ export interface IPayrollDriverMileageClosedByIdResponse
     excludedLoads?: Array<ILoadWithMilesStopResponseNumberId> | null;
 }
 
-export interface IDropdownMenuLoadItem {
-    id: number;
-    title: string;
-}
+export interface IDropdownMenuLoadItem extends Pick<IDropdownMenuItem, "id" | "title"> {};
