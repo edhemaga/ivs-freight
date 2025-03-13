@@ -790,10 +790,10 @@ export class FuelTableComponent
                 isIntegratedFuelTransaction
             ),
             dateAdded: createdAt
-                ? this.datePipe.transform(createdAt, 'MM/dd/yy hh:mm a')
+                ? this.datePipe.transform(createdAt, 'MM/dd/yy')
                 : null,
             dateEdited: updatedAt
-                ? this.datePipe.transform(updatedAt, 'MM/dd/yy hh:mm a')
+                ? this.datePipe.transform(updatedAt, 'MM/dd/yy')
                 : null,
         };
     }
