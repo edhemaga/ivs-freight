@@ -8,6 +8,7 @@ export enum RepairTableStringEnum {
     TIME_FILTER = 'timeFilter',
     STATE_FILTER = 'stateFilter',
     MONEY_FILTER = 'moneyFilter',
+    LOCATION_FILTER = 'locationFilter',
     DAY = 'day',
     DAYS = 'days',
     WEEK = 'week',
