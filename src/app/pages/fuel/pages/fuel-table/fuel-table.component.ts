@@ -1140,7 +1140,9 @@ export class FuelTableComponent
                         (currentFilter?.filterName ===
                             TableStringEnum.FUEL_ARRAY ||
                             currentFilter?.filterName ===
-                                TableStringEnum.FUEL_INCOMPLETE_ARRAY)
+                                TableStringEnum.FUEL_INCOMPLETE_ARRAY ||
+                            currentFilter?.filterType ===
+                                TableStringEnum.LOCATION_FILTER)
                     )
                         return this.fuelService.getFuelTransactionsList(
                             null,
@@ -1149,9 +1151,9 @@ export class FuelTableComponent
                             null,
                             null,
                             null,
-                            null,
-                            null,
-                            null,
+                            currentFilter.queryParams?.longValue,
+                            currentFilter.queryParams?.latValue,
+                            currentFilter.queryParams?.rangeValue,
                             null,
                             null,
                             null,
@@ -1168,9 +1170,11 @@ export class FuelTableComponent
                             FuelTableConstants.TABLE_PAGE_SIZE
                         );
                     else if (
-                        !!currentFilter &&
-                        currentFilter?.filterName ===
-                            TableStringEnum.CLOSED_ARRAY
+                        (!!currentFilter &&
+                            currentFilter?.filterName ===
+                                TableStringEnum.CLOSED_ARRAY) ||
+                        currentFilter?.filterType ===
+                            TableStringEnum.LOCATION_FILTER
                     )
                         return this.fuelService.getFuelStopsList(
                             null,
@@ -1178,9 +1182,9 @@ export class FuelTableComponent
                             null,
                             null,
                             null,
-                            null,
-                            null,
-                            null,
+                            currentFilter.queryParams?.longValue,
+                            currentFilter.queryParams?.latValue,
+                            currentFilter.queryParams?.rangeValue,
                             null,
                             null,
                             null,
