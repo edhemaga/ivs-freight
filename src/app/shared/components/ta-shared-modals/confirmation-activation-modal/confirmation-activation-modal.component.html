@@ -339,6 +339,14 @@
                                                 {{ editData.modalTitle }}
                                             </div>
 
+                                            @if(editData?.type === tableStringEnum.ACTIVATE) {
+                                                <svg-icon
+                                                    [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                                                    class="action-div-icon"
+                                                    [src]="confirmationImageRoutes.activationIconSvg"
+                                                ></svg-icon>
+                                            }
+
                                             <ng-container
                                                 *ngIf="
                                                     editData?.type === 'open'
@@ -478,6 +486,14 @@
                                         >
                                             {{ item?.modalTitle }}
                                         </div>
+
+                                        @if(editData?.type === tableStringEnum.ACTIVATE) {
+                                            <svg-icon
+                                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                                                class="action-div-icon"
+                                                [src]="confirmationImageRoutes.activationIconSvg"
+                                            ></svg-icon>
+                                        }
 
                                         <ng-container
                                             *ngIf="editData?.type === 'open'"
