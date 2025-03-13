@@ -224,7 +224,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: EditData;
 
-    public mapData: ICaMapProps = MapOptionsConstants.defaultMapConfig;
+    public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
 
     private destroy$ = new Subject<void>();
 
@@ -5377,7 +5377,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 const routePath: IMapRoutePath = {
                     path: [],
                     decodedShape: routingData?.legs?.[index - 1]?.decodedShape,
-                    strokeColor: MapOptionsConstants.routingPathColors.gray,
+                    strokeColor: MapOptionsConstants.ROUTING_PATH_COLORS.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,
                 };
