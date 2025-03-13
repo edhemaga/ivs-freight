@@ -92,7 +92,7 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
     public itemHoveringIndex: number = -1;
 
     // map
-    public mapData: ICaMapProps = MapOptionsConstants.defaultMapConfig;
+    public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
 
     constructor(
         private markerIconService: MapMarkerIconService,
@@ -371,7 +371,8 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
                                 decodedShape:
                                     routeLegs?.[index - 1]?.decodedShape,
                                 strokeColor:
-                                    MapOptionsConstants.routingPathColors.gray,
+                                    MapOptionsConstants.ROUTING_PATH_COLORS
+                                        .gray,
                                 strokeOpacity: 1,
                                 strokeWeight: 4,
                                 isDashed:
