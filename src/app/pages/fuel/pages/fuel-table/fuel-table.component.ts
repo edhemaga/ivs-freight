@@ -734,6 +734,7 @@ export class FuelTableComponent
             },
             tableDriverName: driverFullName,
             tableFuelCardNumber: fuelCard?.cardNumber ?? null,
+            tableAccount: fuelCard?.accountId,
             tableType,
             tableTransactionDate: transactionDate
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
