@@ -734,6 +734,7 @@ export class FuelTableComponent
             },
             tableDriverName: driverFullName,
             tableFuelCardNumber: fuelCard?.cardNumber ?? null,
+            tableAccount: fuelCard?.accountId,
             tableType,
             tableTransactionDate: transactionDate
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
@@ -790,10 +791,10 @@ export class FuelTableComponent
                 isIntegratedFuelTransaction
             ),
             dateAdded: createdAt
-                ? this.datePipe.transform(createdAt, 'MM/dd/yy hh:mm a')
+                ? this.datePipe.transform(createdAt, 'MM/dd/yy')
                 : null,
             dateEdited: updatedAt
-                ? this.datePipe.transform(updatedAt, 'MM/dd/yy hh:mm a')
+                ? this.datePipe.transform(updatedAt, 'MM/dd/yy')
                 : null,
         };
     }
