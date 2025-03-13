@@ -233,7 +233,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         }
 
         this.skipVinDecocerEdit = true;
-        this.populateStorageData(this.editData.storageData);
+        this.populateStorageData(this.editData);
     }
 
     private confirmationDeactivationSubscribe(): void {
@@ -691,7 +691,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         .patchValue(res.fhwaExp);
 
                     // Edit part
-                    if (!this.editData?.id) {
+                    if (!this.editData?.id || this.editData?.storageData) {
                         this.startFormChanges();
                         return;
                     }
