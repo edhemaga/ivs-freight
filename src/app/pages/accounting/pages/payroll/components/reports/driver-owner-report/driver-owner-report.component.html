@@ -43,7 +43,7 @@
                 }
             </div>
             <div class="small-table-holder-main d-flex">
-                @if (isLoading) {
+                @if (!isLoading) {
                     <app-ca-main-table
                         [sortPredicate]="customSortPredicate"
                         [columns]="columns"
