@@ -44,6 +44,7 @@ import {
     CaInputComponent,
     CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
+    CaInputDropdownTestComponent,
     CaModalComponent,
 } from 'ca-components';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -124,6 +125,7 @@ import moment from 'moment';
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
+        CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
 
         // pipes
@@ -258,7 +260,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSelectDropDown(event: any, action: string, index?: number): void {
+    public onSelectDropDown(
+        event: any,
+        action: string,
+        firstTime?: boolean
+    ): void {
         switch (action) {
             case FuelDropdownOptionsStringEnum.TRUCK:
                 this.selectedTruckType = event;
@@ -286,6 +292,12 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             response?.firstName,
                             response?.lastName
                         );
+
+                        if (firstTime) {
+                            this.fuelForm
+                                .get(FuelValuesStringEnum.TRUCK_ID)
+                                .patchValue(event?.id);
+                        }
 
                         this.fuelForm
                             .get(FuelValuesStringEnum.TRAILER_ID)
@@ -428,15 +440,19 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private convertItems() : FuelItemResponse[]{
+    private convertItems(): FuelItemResponse[] {
         return this.fuelItems.map((item) => {
-            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(item.qty.toString());
-            const price = MethodsCalculationsHelper.convertThousandSepInNumber(item.price.toString());
+            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(
+                item.qty.toString()
+            );
+            const price = MethodsCalculationsHelper.convertThousandSepInNumber(
+                item.price.toString()
+            );
 
             return {
                 ...item,
-                subtotal: qty * price
-            }
+                subtotal: qty * price,
+            };
         });
     }
 
@@ -811,14 +827,18 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
 
+                    console.log("WHAT ARE TRUCK TUYPES", this.truckType);
+
                     if (this.editData?.truckId) {
                         const truck = this.truckType.find(
                             (t) => t.id === this.editData.truckId
                         );
 
+                        console.log("WHAT IS TRUCK", truck);
                         this.onSelectDropDown(
                             truck,
-                            FuelValuesStringEnum.TRUCK
+                            FuelValuesStringEnum.TRUCK,
+                            true
                         );
                     }
                 },
