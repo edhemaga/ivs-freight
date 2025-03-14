@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewLoadDetailsComponent } from './new-load-details.component';
+import { NewLoadDetailsComponent } from '@pages/new-load/pages/new-load-details/new-load-details.component';
 
 describe('NewLoadDetailsComponent', () => {
   let component: NewLoadDetailsComponent;

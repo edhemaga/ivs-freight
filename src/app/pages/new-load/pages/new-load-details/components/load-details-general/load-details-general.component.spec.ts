@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadDetailsGeneralComponent } from './load-details-general.component';
+import { LoadDetailsGeneralComponent } from '@pages/new-load/pages/new-load-details/components/load-details-general/load-details-general.component';
 
 describe('LoadDetailsGeneralComponent', () => {
   let component: LoadDetailsGeneralComponent;

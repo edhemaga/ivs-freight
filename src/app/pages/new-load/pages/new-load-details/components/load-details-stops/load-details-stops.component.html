@@ -1,1 +1,4 @@
-<p>load-details-stops works!</p>
+@let load = loadStoreService.resolveLoadDetails$ | async;
+<div class="background-white p-8 br-3">
+   Stops:  {{ load?.stops?.length }}
+</div>

@@ -14,9 +14,26 @@ import {
     ILoadGridItem,
 } from '@pages/load/pages/load-table/models/index';
 import { ITableData } from '@shared/models/table-data.model';
- 
-import { Column, ICurrentSearchTableData, ITableColummn, ITableOptions } from '@shared/models';
-import { BrokerByIdResponse, CreateCommentCommand, CreateLoadTemplateCommand, LoadListResponse, LoadModalResponse, LoadStatusType, LoadTemplateListResponse, RevertLoadStatusCommand, ShipperLoadModalResponse, UpdateLoadStatusCommand } from 'appcoretruckassist';
+
+import {
+    Column,
+    ICurrentSearchTableData,
+    ITableColummn,
+    ITableOptions,
+} from '@shared/models';
+import {
+    BrokerByIdResponse,
+    CreateCommentCommand,
+    CreateLoadTemplateCommand,
+    LoadListResponse,
+    LoadModalResponse,
+    LoadResponse,
+    LoadStatusType,
+    LoadTemplateListResponse,
+    RevertLoadStatusCommand,
+    ShipperLoadModalResponse,
+    UpdateLoadStatusCommand,
+} from 'appcoretruckassist';
 import { IActiveLoadModalData, Load } from '@pages/load/models';
 import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
 import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models';
@@ -35,16 +52,17 @@ import {
     tableDataSelector,
     tableOptionsSelector,
     viewDataSelector,
+    loadDetailsSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
-// enums 
+// enums
 import { eActiveViewMode } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
-import {IFilterDropdownList} from 'ca-components';
+import { IFilterDropdownList } from 'ca-components';
 
 @Injectable({
     providedIn: 'root',
@@ -52,12 +70,14 @@ import {IFilterDropdownList} from 'ca-components';
 export class LoadStoreService {
     constructor(private store: Store) {}
 
-    public resolveInitialData$: Observable<LoadListResponse | LoadTemplateListResponse> = this.store.pipe(
+    public resolveInitialData$: Observable<
+        LoadListResponse | LoadTemplateListResponse
+    > = this.store.pipe(
         select(getSelector),
-        filter(data =>  !!data),
+        filter((data) => !!data),
         take(1)
     );
-    
+
     public viewData$: Observable<ILoadGridItem[]> = this.store.pipe(
         select(viewDataSelector)
     );
@@ -93,21 +113,35 @@ export class LoadStoreService {
     public statusList$: Observable<IFilterDropdownList[]> = this.store.pipe(
         select(getStatusListSelector)
     );
- 
+
     public staticModalData$: Observable<LoadModalResponse> = this.store.pipe(
         select(staticModalDataSelector)
     );
 
-    public activeLoadModalData$: Observable<IActiveLoadModalData> = this.store.pipe(
-        select(activeLoadModalDataSelector)
+    public activeLoadModalData$: Observable<IActiveLoadModalData> =
+        this.store.pipe(select(activeLoadModalDataSelector));
+
+    public resolveLoadDetails$: Observable<LoadResponse> = this.store.pipe(
+        select(loadDetailsSelector)
     );
 
-    public dispatchLoadList(apiParam: IGetLoadListParam, showMore?: boolean, onSearch?: ICurrentSearchTableData): void {
+    public dispatchLoadList(
+        apiParam: IGetLoadListParam,
+        showMore?: boolean,
+        onSearch?: ICurrentSearchTableData
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_LOAD_TABLE_COMPONENT_LOAD_LIST,
             apiParam,
             showMore,
             onSearch,
+        });
+    }
+
+    public dispatchLoadDetails(loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID,
+            loadId,
         });
     }
 
@@ -450,10 +484,12 @@ export class LoadStoreService {
             this.dispatchGetEditLoadModalData(apiParam, selectedTab, eventType);
     }
 
-    public dispatchGetCreateLoadModalData(brokerToAdd?: BrokerByIdResponse): void {
+    public dispatchGetCreateLoadModalData(
+        brokerToAdd?: BrokerByIdResponse
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_CREATE_LOAD_MODAL_DATA,
-            brokerToAdd
+            brokerToAdd,
         });
     }
 
@@ -505,29 +541,36 @@ export class LoadStoreService {
     public dispatchSetActiveLoadModalData(data: IActiveLoadModalData): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_SET_ACTIVE_LOAD_MODAL_DATA,
-            data
+            data,
         });
     }
 
-    public dispatchAddNewBrokerToStaticModalData(broker: BrokerByIdResponse): void {
+    public dispatchAddNewBrokerToStaticModalData(
+        broker: BrokerByIdResponse
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_ADD_CREATED_BROKER_STATIC_MODAL_DATA,
-            broker
+            broker,
         });
     }
 
-    public dispatchAddnewShipperToStaticModalData(shipper: ShipperLoadModalResponse): void {
+    public dispatchAddnewShipperToStaticModalData(
+        shipper: ShipperLoadModalResponse
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_ADD_CREATED_SHIPPER_STATIC_MODAL_DATA,
-            shipper
+            shipper,
         });
     }
 
-    public dispatchUpdateEditedBrokerStaticModalData(broker: BrokerByIdResponse, brokerContacts: BrokerContactExtended[]): void {
+    public dispatchUpdateEditedBrokerStaticModalData(
+        broker: BrokerByIdResponse,
+        brokerContacts: BrokerContactExtended[]
+    ): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_EDITED_BROKER_STATIC_MODAL_DATA,
             broker,
-            brokerContacts
+            brokerContacts,
         });
     }
 }

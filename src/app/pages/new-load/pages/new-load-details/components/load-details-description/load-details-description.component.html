@@ -1,1 +1,5 @@
-<p>load-details-description works!</p>
+@let load = loadStoreService.resolveLoadDetails$ | async;
+
+<div class="background-white p-8 br-3">
+   Comments: {{ load.commentsCount }}
+</div>

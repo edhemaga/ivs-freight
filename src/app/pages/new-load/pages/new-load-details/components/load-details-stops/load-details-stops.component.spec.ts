@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { LoadDetailsStopsComponent } from './load-details-stops.component';
+import { LoadDetailsStopsComponent } from '@pages/new-load/pages/new-load-details/components/load-details-stops/load-details-stops.component';
 
 describe('LoadDetailsStopsComponent', () => {
   let component: LoadDetailsStopsComponent;

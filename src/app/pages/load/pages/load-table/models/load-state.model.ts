@@ -1,6 +1,6 @@
 // models
 import { ILoadGridItem, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index"
-import { LoadModalResponse } from "appcoretruckassist";
+import { LoadModalResponse, LoadResponse } from "appcoretruckassist";
 import { IActiveLoadModalData } from "@pages/load/models/active-load-modal-data.model";
 import {IFilterDropdownList} from 'ca-components';
 
@@ -25,4 +25,6 @@ export interface ILoadState {
 
     dispatcherList: IFilterDropdownList[];
     statusList: IFilterDropdownList[];
+
+    details: LoadResponse;
 }
