@@ -59,18 +59,16 @@
             &-button {
                 height: 36px;
                 width: 36px;
-                background: $ta-blue-14;
                 padding: 6px;
                 transition:
                     height $transitionDuration ease-in-out,
                     width $transitionDuration ease-in-out,
                     background-color $transitionDuration ease-in-out,
-                    padding $transitionDuration ease-in-out;
+                    padding $transitionDuration ease-in-out !important;
 
                 &:hover {
                     height: 44px;
                     width: 44px;
-                    background: $ta-blue-15;
                     padding: 12px;
                 }
             }
