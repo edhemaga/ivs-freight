@@ -3254,8 +3254,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     private formatStopDateTime(dateFrom: string, timeFrom: string): string {
         let dateTime = moment(dateFrom);
 
-        if (timeFrom) {
-            const [hours, minutes] = timeFrom.split(':');
+        const formattedTimeFrom = this.formatStopTimeToHours(timeFrom);
+
+        if (formattedTimeFrom) {
+            const [hours, minutes] = formattedTimeFrom.split(':');
             dateTime = dateTime
                 .hours(parseInt(hours))
                 .minutes(parseInt(minutes))
@@ -3263,6 +3265,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }
 
         return dateTime.toISOString();
+    }
+
+    private formatStopTimeToHours(timeFrom: string): string {
+        const formattedTimeFrom =
+            MethodsCalculationsHelper.convertDateToTime(timeFrom);
+
+        return formattedTimeFrom !== LoadModalStringEnum.INVALID_DATE
+            ? formattedTimeFrom
+            : timeFrom;
     }
 
     private premmapedStops(saveCurrentLoad?: boolean): LoadStop[] {
@@ -3342,6 +3353,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
 
+                const timeFrom = this.formatStopTimeToHours(
+                    item.get(LoadModalStringEnum.TIME_FROM).value
+                );
+                const timeTo = this.formatStopTimeToHours(
+                    item.get(LoadModalStringEnum.TIME_TO).value
+                );
+
                 stops.push({
                     id: this.isActiveLoad
                         ? (item.get(LoadModalStringEnum.ID).value ?? null)
@@ -3376,8 +3394,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             )?.name === LoadModalStringEnum.APPOINTMENT
                           ? 2
                           : 1,
-                    timeFrom: item.get(LoadModalStringEnum.TIME_FROM).value,
-                    timeTo: item.get(LoadModalStringEnum.TIME_TO).value,
+                    timeFrom: timeFrom,
+                    timeTo: timeTo,
                     arrive: item.get(LoadModalStringEnum.ARIVE).value,
                     depart: item.get(LoadModalStringEnum.DEPART).value,
                     legMiles,
@@ -4463,12 +4481,22 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         const adjustedRate = this.adjustedRate;
         const { documents, tagsArray } = this.mapDocumentsAndTags();
 
+        const statusType = this.loadForm.get(
+            LoadModalStringEnum.STATUS_TYPE
+        ).value;
+
         const commonLoadData: any = {
             company: this.selectedCompany,
             dispatcherId: this.getIdOrNull(this.selectedDispatcher),
             dispatcher: this.selectedDispatcher,
-            dispatchId: this.getIdOrNull(this.selectedDispatch),
-            dispatch: this.selectedDispatch,
+            dispatchId:
+                statusType === TableStringEnum.CLOSED_2
+                    ? null
+                    : this.getIdOrNull(this.selectedDispatch),
+            dispatch:
+                statusType === TableStringEnum.CLOSED_2
+                    ? null
+                    : this.selectedDispatch,
             brokerId: this.getIdOrNull(this.selectedBroker),
             broker: this.selectedBroker,
             brokerContactId: this.getIdOrNull(this.selectedBrokerContact),
