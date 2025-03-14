@@ -827,14 +827,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
 
-                    console.log("WHAT ARE TRUCK TUYPES", this.truckType);
-
                     if (this.editData?.truckId) {
                         const truck = this.truckType.find(
                             (t) => t.id === this.editData.truckId
                         );
 
-                        console.log("WHAT IS TRUCK", truck);
                         this.onSelectDropDown(
                             truck,
                             FuelValuesStringEnum.TRUCK,
