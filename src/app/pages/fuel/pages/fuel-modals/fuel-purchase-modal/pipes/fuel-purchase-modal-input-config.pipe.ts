@@ -119,10 +119,8 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                         withText: true,
                         svg: true,
                         image: false,
-                        url:
-                            selectedTruckType?.logoName &&
-                            'assets/svg/common/trucks/' +
-                                selectedTruckType?.logoName,
+                        iconsPath: 'assets/svg/common/trucks/',
+                        activeItemIconKey: 'logoName',
                         template: 'truck',
                         class: selectedTruckType?.name
                             ?.trim()
