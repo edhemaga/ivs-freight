@@ -263,7 +263,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public onSelectDropDown(
         event: any,
         action: string,
-        firstTime?: boolean
+        isFirstTime?: boolean
     ): void {
         switch (action) {
             case FuelDropdownOptionsStringEnum.TRUCK:
@@ -293,7 +293,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             response?.lastName
                         );
 
-                        if (firstTime) {
+                        if (isFirstTime) {
                             this.fuelForm
                                 .get(FuelValuesStringEnum.TRUCK_ID)
                                 .patchValue(event?.id);
