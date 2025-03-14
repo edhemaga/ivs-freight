@@ -458,6 +458,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public showDriverRate: boolean;
     public showAdjustedRate: boolean;
     public activeLoadModalData: IActiveLoadModalData;
+    public deadHeadLocation: ShipperShortResponse | null = null;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -3516,12 +3517,31 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     public drawStopOnMap(): void {
+        const statusType = this.loadForm.get(
+            LoadModalStringEnum.STATUS_TYPE
+        ).value;
+
         this.isMilesLoading = true;
 
         const routes: LoadStopRoutes[] = [];
 
+        let pickupStopIndex = 0;
+
         // dispatches
-        if (this.selectedDispatch?.currentLocationCoordinates) {
+        if (statusType === TableStringEnum.CLOSED_2 && this.deadHeadLocation) {
+            routes[0] = {
+                longitude: this.deadHeadLocation.longitude,
+                latitude: this.deadHeadLocation.latitude,
+                pickup: false,
+                delivery: false,
+                stopNumber: 0,
+            };
+
+            pickupStopIndex = 1;
+        } else if (
+            statusType !== TableStringEnum.CLOSED_2 &&
+            this.selectedDispatch?.currentLocationCoordinates
+        ) {
             routes[0] = {
                 longitude:
                     this.selectedDispatch.currentLocationCoordinates.longitude,
@@ -3531,18 +3551,19 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 delivery: false,
                 stopNumber: 0,
             };
+
+            pickupStopIndex = 1;
         }
 
         // pickup shipper
         if (this.selectedPickupShipper) {
-            routes[this.selectedDispatch?.currentLocationCoordinates ? 1 : 0] =
-                {
-                    longitude: this.selectedPickupShipper.longitude,
-                    latitude: this.selectedPickupShipper.latitude,
-                    pickup: true,
-                    delivery: false,
-                    stopNumber: 1,
-                };
+            routes[pickupStopIndex] = {
+                longitude: this.selectedPickupShipper.longitude,
+                latitude: this.selectedPickupShipper.latitude,
+                pickup: true,
+                delivery: false,
+                stopNumber: 1,
+            };
         }
 
         // extra stops
@@ -4745,6 +4766,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id,
             statusType,
         } = loadModalData;
+
+        // DeadHead Stop
+        if (loadModalData?.stops?.[0]?.id === 0)
+            this.deadHeadLocation = loadModalData.stops[0].shipper;
 
         this.isEditingMode = true;
         // Check if stops exists and is an array before using it
