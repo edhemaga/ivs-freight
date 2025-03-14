@@ -1,4 +1,5 @@
 import {
+    AbstractControl,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
@@ -271,6 +272,34 @@ export class ShipperModalComponent
             this.shipperForm.valid &&
             this.isFormDirty &&
             this.isEachContactRowValid
+        );
+    }
+
+    get receivingAppointmentControl(): AbstractControl<any, any> {
+        return this.shipperForm.get(ShipperModalString.RECEIVING_APPOINTMENT);
+    }
+
+    get receivingOpenTwentyFourHoursControl(): AbstractControl<any, any> {
+        return this.shipperForm.get(
+            ShipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS
+        );
+    }
+
+    get receivingFromControl(): AbstractControl<any, any> {
+        return this.shipperForm.get(ShipperModalString.RECEIVING_FROM);
+    }
+
+    get receivingToControl(): AbstractControl<any, any> {
+        return this.shipperForm.get(ShipperModalString.RECEIVING_TO);
+    }
+
+    get shippingAppointmentControl(): AbstractControl<any, any> {
+        return this.shipperForm.get(ShipperModalString.SHIPPING_APPOINTMENT);
+    }
+
+    get shippingOpenTwentyFourHoursControl(): AbstractControl<any, any> {
+        return this.shipperForm.get(
+            ShipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS
         );
     }
 
