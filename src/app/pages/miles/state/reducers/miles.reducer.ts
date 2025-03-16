@@ -9,14 +9,17 @@ import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@shared/enums';
 
 // Constants
-import { MilesTableColumns, MilesToolbarTabs } from '@pages/miles/utils/constants';
+import {
+    MilesTableColumns,
+    MilesToolbarTabs,
+} from '@pages/miles/utils/constants';
 
 // Models
 import { IMilesState } from '@pages/miles/interface';
 
 export const initialState: IMilesState = {
     items: [],
-    loading: false, 
+    loading: false,
     tableViewData: MilesToolbarTabs,
     selectedTab: eMileTabs.ACTIVE,
     activeViewMode: eActiveViewMode.List,
@@ -27,6 +30,7 @@ export const initialState: IMilesState = {
 
     // Table
     columns: MilesTableColumns,
+    milesDetails: {},
 };
 
 export const milesReducer = createReducer(
@@ -44,7 +48,7 @@ export const milesReducer = createReducer(
     }),
     on(MilesAction.getLoadsPayloadError, (state) => ({
         ...state,
-        loading: false
+        loading: false,
     })),
     on(MilesAction.loadMilesSuccess, (state, { miles }) => ({
         ...state,
@@ -56,7 +60,7 @@ export const milesReducer = createReducer(
         ...state,
         selectedTab: selectedTab,
         selectedRows: 0,
-        areAllItemsSelected: false
+        areAllItemsSelected: false,
     })),
 
     on(
@@ -74,7 +78,7 @@ export const milesReducer = createReducer(
         ...state,
         activeViewMode,
         selectedRows: 0,
-        areAllItemsSelected: false
+        areAllItemsSelected: false,
     })),
     // #endregion
 
@@ -83,7 +87,7 @@ export const milesReducer = createReducer(
         ...state,
         filters,
         selectedRows: 0,
-        areAllItemsSelected: false
+        areAllItemsSelected: false,
     })),
     on(MilesAction.setStates, (state, { states }) => ({
         ...state,
@@ -110,22 +114,29 @@ export const milesReducer = createReducer(
         };
     }),
 
-    on(MilesAction.selectAll, (state) => { 
+    on(MilesAction.selectAll, (state) => {
         const areAllItemsSelected = !state.areAllItemsSelected;
 
-        const updatedItems = state.items.map((item) =>{
+        const updatedItems = state.items.map((item) => {
             return {
                 ...item,
-                selected: areAllItemsSelected
-            }
-        }); 
+                selected: areAllItemsSelected,
+            };
+        });
 
         return {
             ...state,
             items: updatedItems,
             selectedRows: areAllItemsSelected ? updatedItems.length : 0,
-            areAllItemsSelected
+            areAllItemsSelected,
+        };
+    }),
+    // #endregion
+
+    on(MilesAction.getTotalMilesDetails, (state, { milesDetails }) => {
+        return {
+            ...state,
+            milesDetails,
         };
     })
-    // #endregion
 );
