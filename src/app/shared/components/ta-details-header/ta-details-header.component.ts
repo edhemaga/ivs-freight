@@ -190,8 +190,8 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public isSortDropdownOpen: boolean = false;
     public activeSortType: SortColumn | null = null;
 
-    public loadStatusOptionsArray: ArrayStatus[];
-    public unselectedDispatcher: ArrayStatus[];
+    public loadStatusOptionsArray: ArrayStatus[] = [];
+    public unselectedDispatcher: ArrayStatus[] = [];
     public truckTypeArray: ArrayStatus[];
     public trailerTypeArray: ArrayStatus[];
     public categoryRepairArray: ArrayStatus[];
@@ -229,8 +229,6 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
                 (item) => item.active
             );
         }
-
-        this.handleFilterInitialization();
     }
 
     public handleFilterInitialization(): void {

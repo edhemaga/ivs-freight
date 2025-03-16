@@ -1028,6 +1028,14 @@ export class RepairTableComponent
                                 categoryIds: res.selectedIds,
                             };
                             break;
+                        case RepairTableStringEnum.LOCATION_FILTER:
+                            this.shopFilterQuery = {
+                                ...this.shopFilterQuery,
+                                long: res.queryParams?.longValue,
+                                lat: res.queryParams?.latValue,
+                                distance: res.queryParams?.rangeValue,
+                            };
+                            break;
                         case eFilterDropdownEnum.PM:
                             this.backFilterQuery = {
                                 ...this.backFilterQuery,
@@ -1072,7 +1080,12 @@ export class RepairTableComponent
                             res.filterType !==
                             RepairTableStringEnum.STATE_FILTER
                         )
-                            this.shopBackFilter(this.backFilterQuery);
+                            this.shopBackFilter(
+                                res.filterType ===
+                                    TableStringEnum.LOCATION_FILTER
+                                    ? this.shopFilterQuery
+                                    : this.backFilterQuery
+                            );
 
                         this.isAddedNewRepairShop = true;
                         this.getMapData();

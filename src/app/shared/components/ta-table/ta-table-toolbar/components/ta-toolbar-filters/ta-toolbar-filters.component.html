@@ -142,17 +142,23 @@
 
     <!-- LOCATION FILTER -->
 
-    <app-ca-filter
-        *ngIf="options.toolbarActions.showLocationFilter"
-        [type]="'locationFilter'"
-        [icon]="'address'"
-        [filterTitle]="'Area Filter'"
-        [areaFilter]="true"
-        [locationDefType]="true"
-        (setFilter)="onFilter($event)"
-        (clearAll)="onFilter($event)"
-    >
-    </app-ca-filter>
+    @if (options.toolbarActions.showLocationFilter) {
+        <app-ca-filter
+            [type]="'locationFilter'"
+            [icon]="'address'"
+            [filterTitle]="'Area Filter'"
+            [areaFilter]="true"
+            [locationDefType]="true"
+            (setFilter)="onFilter($event)"
+            (clearAll)="onFilter($event)"
+            [receivedAddressList]="addressList"
+            [receivedAddressData]="addressData"
+            (selectedAddress)="onHandleAddress($event)"
+            (sentAddressData)="onAddressChange($event)"
+            (sentAddressValue)="getAddressData($event)"
+        >
+        </app-ca-filter>
+    }
 
     <!-- FUEL STOP FILTER -->
     @if (options.toolbarActions.showFuelStopFilter) {

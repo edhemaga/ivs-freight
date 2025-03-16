@@ -133,6 +133,7 @@ export class NavigationProfileUpdateModalComponent
     public svgRoutes = SharedSvgRoutes;
     public eModalButtonClassType = eModalButtonClassType;
     public displayName: string;
+    public doesFileExist: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -314,6 +315,8 @@ export class NavigationProfileUpdateModalComponent
         const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
         this.profileUserForm.get('avatar').patchValue(base64Data);
         this.profileUserForm.get('avatar').setErrors(null);
+        this.uploadFilesConfig.files.push(event);
+        this.doesFileExist = !!this.uploadFilesConfig?.files?.length;
     }
 
     public onImageValidation(event: boolean) {
