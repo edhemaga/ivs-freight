@@ -1,13 +1,10 @@
 @if (
     {
-        columns: milesStoreService.columns$ | async,
-        miles: milesStoreService.miles$ | async,
         selectedRows: milesStoreService.selectedRowsSelector$ | async,
         tableViewData: milesStoreService.tableViewData$ | async,
         selectedTab: milesStoreService.selectedTab$ | async,
         activeViewMode: milesStoreService.activeViewMode$ | async,
         statesSelector: milesStoreService.statesSelector$ | async,
-        areAllItemsSelected: milesStoreService.areAllItemsSelectedSelector$ | async
     };
     as store
 ) {
@@ -49,19 +46,21 @@
                 >
                 </app-ca-filter-time-dropdown>
 
-                <app-ca-filter
-                    type="moneyFilter"
-                    icon="dollar"
-                    filterTitle="Money Filter"
-                    [isMoneyFilter]="true"
-                    [isMilesFilter]="false"
-                    [isFuelType]="false"
-                    [isLoadType]="false"
-                    [isRepairFilter]="true"
-                    (setFilter)="setFilters($event)"
-                    (clearAll)="setFilters($event)"
-                >
-                </app-ca-filter>
+                @if (store.activeViewMode !== 'Map') {
+                    <app-ca-filter
+                        type="moneyFilter"
+                        icon="dollar"
+                        filterTitle="Money Filter"
+                        [isMoneyFilter]="true"
+                        [isMilesFilter]="false"
+                        [isFuelType]="false"
+                        [isLoadType]="false"
+                        [isRepairFilter]="true"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
+                    >
+                    </app-ca-filter>
+                }
                 @if (store.selectedRows) {
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
                     <div
@@ -82,64 +81,11 @@
         </ng-template>
     </app-new-table-toolbar>
 
-    <app-new-table
-        [columns]="store.columns"
-        [rows]="store.miles"
-        [templates]="{
-            select: loadSelectTemplate,
-            unit: unitTemplate,
-            truckType: truckTypeTemplate,
-            stopsPickup: percentTemplate,
-            stopsDelivery: percentTemplate,
-            fuelCount: percentTemplate,
-            parkingCount: percentTemplate,
-            deadHeadCount: percentTemplate,
-            repairCount: percentTemplate,
-            towingCount: percentTemplate,
-            revenue: revenueTemplate,
-        }"
-        [headerTemplates]="{
-            select: selectHeaderTemplate,
-        }"
-    >
-        <ng-template #selectHeaderTemplate>
-            <input type="checkbox" (change)="selectAll()" 
-            [checked]="store.areAllItemsSelected"/>
-        </ng-template>
-        <ng-template #loadSelectTemplate let-data="data">
-            <input
-                type="checkbox"
-                [checked]="data.selected"
-                (change)="selectRow(data)"
-            />
-        </ng-template>
-
-        <ng-template #unitTemplate let-data="data">
-            <div class="text-color-black ta-font-bold text-size-14">
-                {{ data.unit }}
-            </div>
-        </ng-template>
-
-        <ng-template #truckTypeTemplate let-data="data">
-            <app-ta-truck-trailer-icon
-                iconType="truck"
-                [inputData]="data.truckType"
-            ></app-ta-truck-trailer-icon>
-        </ng-template>
-
-        <ng-template #percentTemplate let-data="data" let-key="key">
-            <p class="text-size-14 text-color-black-2 ta-font-regular">
-                {{ data[key]?.count }}
-                <span class="text-color-muted text-size-11 ta-font-semi-bold">
-                    {{ data[key]?.percent }}%
-                </span>
-            </p>
-        </ng-template>
-
-        <ng-template #revenueTemplate let-data="data">
-            <div class="text-color-black ta-font-semi-bold">
-                {{ data.revenue }}$
-            </div>
-        </ng-template>
-    </app-new-table>
+    @if (store.activeViewMode === 'Map') {
+        <app-miles-map></app-miles-map>
+    } @else if (store.activeViewMode === 'List') {
+        <app-miles-table></app-miles-table>
+    } @else {
+        <app-miles-card></app-miles-card>
+    }
 }
