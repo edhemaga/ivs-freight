@@ -3394,8 +3394,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             )?.name === LoadModalStringEnum.APPOINTMENT
                           ? 2
                           : 1,
-                    timeFrom: timeFrom,
-                    timeTo: timeTo,
+                    timeFrom,
+                    timeTo,
                     arrive: item.get(LoadModalStringEnum.ARIVE).value,
                     depart: item.get(LoadModalStringEnum.DEPART).value,
                     legMiles,
