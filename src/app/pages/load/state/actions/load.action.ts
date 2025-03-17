@@ -660,3 +660,21 @@ export const getDispatcherListError = createAction(
     props<{ error: Error }>()
 );
 // #endregion
+
+// #region getLoadDetails
+export const getLoadDetailsById = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID,
+    props<{loadId: number}>()
+);
+
+export const getLoadDetails = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID_SUCCESS,
+    props<{details: LoadResponse}>()
+);
+
+export const getLoadDetailsError = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID_ERROR,
+    props<{ error: Error }>()
+);
+// #endregion
+

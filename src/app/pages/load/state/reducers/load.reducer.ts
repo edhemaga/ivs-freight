@@ -31,7 +31,9 @@ export const initialState: ILoadState = {
     activeViewMode: eActiveViewMode.List,
 
     dispatcherList: [],
-    statusList: []
+    statusList: [],
+
+    details: {}
 };
 // #endregion
 
@@ -75,6 +77,9 @@ export const loadReducer = createReducer(
     on(LoadActions.getLoadStatusFilter, (state) => ({ ...state })),
     on(LoadActions.getLoadStatusFilterSuccess, (state, {statusList}) => Functions.mapStatusFilterSuccessResult(state, statusList)),
     on(LoadActions.getLoadStatusFilterError, (state) => ({ ...state })),
+        
+    on(LoadActions.getLoadDetails, (state, {details}) => Functions.getLoadDetails(state, details)),
+    on(LoadActions.getLoadDetailsError, (state) => ({ ...state })),
 // #endregion
 
 // #region CREATE

@@ -389,3 +389,12 @@ export const activeLoadModalDataSelector = createSelector(
         return activeModalData;
     }
 );
+
+export const loadDetailsSelector = createSelector(
+    loadState,
+    (state) => {
+        const { details } = state;
+
+        return details;
+    }
+);
