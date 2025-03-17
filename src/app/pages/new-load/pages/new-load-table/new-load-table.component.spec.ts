@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { NewLoadTableComponent } from './new-load-table.component';
+import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component'
 
 describe('NewLoadTableComponent', () => {
   let component: NewLoadTableComponent;

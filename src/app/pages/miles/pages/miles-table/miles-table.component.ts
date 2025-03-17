@@ -9,13 +9,14 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 
 // Components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
 @Component({
     selector: 'app-miles-table',
-    standalone: true,
-    imports: [CommonModule, NewTableComponent],
     templateUrl: './miles-table.component.html',
     styleUrl: './miles-table.component.scss',
+    standalone: true,
+    imports: [CommonModule, NewTableComponent, TaTruckTrailerIconComponent],
 })
 export class MilesTableComponent {
     constructor(public milesStoreService: MilesStoreService) {}

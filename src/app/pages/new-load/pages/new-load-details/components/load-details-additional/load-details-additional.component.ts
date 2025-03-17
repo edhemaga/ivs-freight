@@ -5,12 +5,12 @@ import { Component } from '@angular/core';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 @Component({
-    selector: 'app-load-details-description',
+    selector: 'app-load-details-additional',
+    templateUrl: './load-details-additional.component.html',
+    styleUrl: './load-details-additional.component.scss',
     standalone: true,
     imports: [CommonModule],
-    templateUrl: './load-details-description.component.html',
-    styleUrl: './load-details-description.component.scss',
 })
-export class LoadDetailsDescriptionComponent {
+export class LoadDetailsAdditionalComponent {
     constructor(protected loadStoreService: LoadStoreService) {}
 }

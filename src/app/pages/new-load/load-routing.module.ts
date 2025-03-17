@@ -20,7 +20,7 @@ const routes: Routes = [
         loadComponent: () =>
             import(
                 '@pages/new-load/pages/new-load-details/new-load-details.component'
-            ).then((m) => m.NewLoadDetailsComponent),
+            ).then((c) => c.NewLoadDetailsComponent),
         resolve: { data: NewLoadDetailsResolver },
     },
 ];

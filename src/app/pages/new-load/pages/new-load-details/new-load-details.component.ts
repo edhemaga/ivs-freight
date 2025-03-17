@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 // Components
-import { LoadDetailsDescriptionComponent } from '@pages/new-load/pages/new-load-details/components/load-details-description/load-details-description.component';
+import { LoadDetailsAdditionalComponent } from '@pages/new-load/pages/new-load-details/components/load-details-additional/load-details-additional.component';
 import { LoadDetailsGeneralComponent } from '@pages/new-load/pages/new-load-details/components/load-details-general/load-details-general.component';
 import { LoadDetailsStopsComponent } from '@pages/new-load/pages/new-load-details/components/load-details-stops/load-details-stops.component';
 
@@ -13,7 +13,7 @@ import { LoadDetailsStopsComponent } from '@pages/new-load/pages/new-load-detail
     imports: [
         LoadDetailsGeneralComponent,
         LoadDetailsStopsComponent,
-        LoadDetailsDescriptionComponent,
+        LoadDetailsAdditionalComponent,
     ],
 })
 export class NewLoadDetailsComponent implements OnInit {

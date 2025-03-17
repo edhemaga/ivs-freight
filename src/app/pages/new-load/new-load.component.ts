@@ -7,10 +7,10 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
 
 @Component({
     selector: 'app-new-load',
-    standalone: true,
-    imports: [CommonModule, RouterLink],
     templateUrl: './new-load.component.html',
     styleUrl: './new-load.component.scss',
+    standalone: true,
+    imports: [CommonModule, RouterLink],
 })
 export class NewLoadComponent {
     constructor(protected loadStoreService: LoadStoreService) {}

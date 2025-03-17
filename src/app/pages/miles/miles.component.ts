@@ -1,25 +1,21 @@
 // External Libraries
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Store } from '@ngrx/store';
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil } from 'rxjs';
 
 // Shared Components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
-import { NewTableComponent } from '@shared/components/new-table/new-table.component';
-import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
-    CaFilterDropdownComponent,
     IFilterAction,
     CaFilterStateDropdownComponent,
     CaFilterTimeDropdownComponent,
 } from 'ca-components';
-import { MilesMapComponent } from '@pages/miles/components/miles-map/miles-map.component';
-import { MilesCardComponent } from '@pages/miles/components/miles-card/miles-card.component';
-import { MilesTableComponent } from '@pages/miles/components/miles-table/miles-table.component';
+import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
+import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
+import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
 
 // Feature Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
@@ -30,23 +26,18 @@ import { TableStringEnum } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums';
 
 // Interface
-import { IMilesModel } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
 
 @Component({
     selector: 'app-miles',
-    standalone: true,
     imports: [
         CommonModule,
 
         // Components
-        NewTableComponent,
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
-        TaTruckTrailerIconComponent,
         CaFilterComponent,
         CaSearchMultipleStatesComponent,
-        CaFilterDropdownComponent,
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
         MilesMapComponent,
@@ -55,6 +46,7 @@ import { IStateFilters } from '@shared/interfaces';
     ],
     templateUrl: './miles.component.html',
     styleUrls: ['./miles.component.scss'],
+    standalone: true,
 })
 export class MilesComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
