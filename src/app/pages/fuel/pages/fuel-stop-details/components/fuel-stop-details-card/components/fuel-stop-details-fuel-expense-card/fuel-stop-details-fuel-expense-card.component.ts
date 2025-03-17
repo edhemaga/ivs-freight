@@ -109,7 +109,7 @@ export class FuelStopDetailsFuelExpenseCardComponent implements OnDestroy {
         this.fuelLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.fuelChartData
                 : this.fuelChartData?.fuelStopExpensesChartResponse[index];
 

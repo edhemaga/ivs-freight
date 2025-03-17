@@ -182,7 +182,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.repairShopExpensesLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.repairShopChartData
                 : this.repairShopChartData?.repairShopExpensesChartResponse[
                       index
