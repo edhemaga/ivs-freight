@@ -15,8 +15,11 @@ import {
     CaFilterDropdownComponent,
     IFilterAction,
     CaFilterStateDropdownComponent,
-    CaFilterTimeDropdownComponent
+    CaFilterTimeDropdownComponent,
 } from 'ca-components';
+import { MilesMapComponent } from '@pages/miles/components/miles-map/miles-map.component';
+import { MilesCardComponent } from '@pages/miles/components/miles-card/miles-card.component';
+import { MilesTableComponent } from '@pages/miles/components/miles-table/miles-table.component';
 
 // Feature Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
@@ -26,8 +29,8 @@ import { eMileTabs } from '@pages/miles/enums';
 import { TableStringEnum } from '@shared/enums';
 import { eActiveViewMode } from '@shared/enums';
 
-// Interface 
-import { IMilesModel, IMilesState } from '@pages/miles/interface'; 
+// Interface
+import { IMilesModel } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
 
 @Component({
@@ -40,12 +43,15 @@ import { IStateFilters } from '@shared/interfaces';
         NewTableComponent,
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
-        TaTruckTrailerIconComponent, 
+        TaTruckTrailerIconComponent,
         CaFilterComponent,
         CaSearchMultipleStatesComponent,
         CaFilterDropdownComponent,
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
+        MilesMapComponent,
+        MilesCardComponent,
+        MilesTableComponent,
     ],
     templateUrl: './miles.component.html',
     styleUrls: ['./miles.component.scss'],
@@ -53,10 +59,8 @@ import { IStateFilters } from '@shared/interfaces';
 export class MilesComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
     private filter: IStateFilters = {};
-    constructor(
-        private store: Store<IMilesState>,
-        public milesStoreService: MilesStoreService
-    ) {}
+
+    constructor(public milesStoreService: MilesStoreService) {}
 
     ngOnInit(): void {
         this.storeSubscription();
@@ -72,23 +76,17 @@ export class MilesComponent implements OnInit, OnDestroy {
             );
         }
     }
- 
+
     public setFilters(filters: IFilterAction): void {
         this.milesStoreService.dispatchFilters(filters, this.filter);
     }
 
-    public selectRow(mile: IMilesModel) : void {
-        this.milesStoreService.dispatchSelectOneRow(mile);
-    }
-
-    public selectAll() : void {
-        this.milesStoreService.dispatchSelectAll();
-    }
-
     private storeSubscription(): void {
-        this.milesStoreService.filter$.pipe(takeUntil(this.destroy$)).subscribe(res =>this.filter = res);
+        this.milesStoreService.filter$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.filter = res));
     }
-    
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

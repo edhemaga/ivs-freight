@@ -50,12 +50,31 @@ export class MilesEffects {
             .pipe(
                 map((response) =>
                     MilesAction.loadMilesSuccess({
-                        miles: MilesHelper.milesMapper(response.pagination.data)
+                        miles: MilesHelper.milesMapper(
+                            response.pagination.data
+                        ),
                     })
                 ),
-                catchError(() =>
-                    of(MilesAction.getLoadsPayloadError())
-                )
+                catchError(() => of(MilesAction.getLoadsPayloadError()))
+            );
+    }
+
+    public fetchTruckTotalMiles(
+        truckId?: number,
+        dateFrom?: string,
+        dateTo?: string,
+        states?: string[]
+    ): void {
+        this.milesService
+            .apiMilesUnitGet(null, 1, truckId, dateFrom, dateTo, states)
+            .pipe(
+                map((response) => {
+                    MilesAction.getTotalMilesDetails({
+                        milesDetails: response,
+                    });
+                    return response;
+                }),
+                catchError(() => of(null))
             );
     }
 
@@ -82,9 +101,10 @@ export class MilesEffects {
     public getMilesListOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.changeFilters),
-            exhaustMap((action) => { 
+            exhaustMap((action) => {
                 const { filters } = action || {};
-                const { dateFrom, dateTo, revenueFrom, revenueTo, states } = filters;
+                const { dateFrom, dateTo, revenueFrom, revenueTo, states } =
+                    filters;
                 // TODO: Maybe this is not good, check
                 return this.store.select(selectSelectedTab).pipe(
                     take(1), // Get the current selected tab only once
