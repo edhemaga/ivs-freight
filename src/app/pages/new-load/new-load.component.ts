@@ -19,9 +19,8 @@ import {
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
 } from 'ca-components';
-import { NewLoadCardsComponent } from './pages/new-load-cards/new-load-cards.component';
-import { NewLoadTableComponent } from './pages/new-load-table/new-load-table.component';
-
+import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
+import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants';
 
