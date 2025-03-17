@@ -2,7 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 // models
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
-import { ITruckModalConfigPipeArgs } from '@pages/truck/pages/truck-modal/models';
+import { ITruckModalConfigPipeArgs } from '@pages/truck/pages/truck-modal/interfaces';
 
 @Pipe({
     standalone: true,
