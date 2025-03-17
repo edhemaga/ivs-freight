@@ -36,12 +36,14 @@
             ></app-ca-checkbox>
         </ng-template>
         <ng-template #loadSelectTemplate let-data="data">
+            @let name = 'miles-row' + data.id;
+
             <app-ca-checkbox
                 [isChecked]="data.selected"
                 [isRegularCheckbox]="false"
                 (columnCheckAction)="selectRow(data)"
                 [itemIndex]="data.id"
-                [name]="'miles-row' + data.id"
+                [name]="name"
             ></app-ca-checkbox>
         </ng-template>
 
