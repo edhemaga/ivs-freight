@@ -3,7 +3,11 @@ import { IStateFilters } from '@shared/interfaces';
 import { DispatcherFilterResponse } from 'appcoretruckassist';
 
 // Components
-import { IFilterAction, eFilterDropdownEnum, IFilterDropdownList } from 'ca-components';
+import {
+    IFilterAction,
+    eFilterDropdownEnum,
+    IFilterDropdownList,
+} from 'ca-components';
 
 // Enums
 import { LoadFilterStringEnum } from '@pages/load/pages/load-table/enums';
@@ -25,9 +29,6 @@ export class FilterHelper {
         res: IFilterAction,
         currentFilters: IStateFilters
     ): IStateFilters {
-        // if (res.queryParams === null) return null;
-        
-        console.log(res, currentFilters);
         switch (res.filterType) {
             case eFilterDropdownEnum.TIME_FILTER: {
                 const { fromDate, toDate } = res.queryParams;
@@ -41,12 +42,12 @@ export class FilterHelper {
             case LoadFilterStringEnum.MONEY_FILTER: {
                 const moneyArray = res.queryParams?.moneyArray ?? [];
 
-                if(res.queryParams?.from) {
+                if (res.queryParams?.from) {
                     return {
                         ...currentFilters,
                         revenueFrom: res.queryParams.from,
-                        revenueTo: res.queryParams.to
-                    }
+                        revenueTo: res.queryParams.to,
+                    };
                 }
 
                 return {
