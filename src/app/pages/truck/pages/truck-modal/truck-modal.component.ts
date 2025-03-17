@@ -90,6 +90,7 @@ import {
 
 // Const
 import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
+import { TruckModalInputConfig } from '@pages/truck/pages/truck-modal/utils/configs';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -200,6 +201,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
+    public truckModalInputConfig = TruckModalInputConfig;
 
     // Clean-up
     private destroy$ = new Subject<void>();
