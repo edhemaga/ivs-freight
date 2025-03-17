@@ -1,6 +1,6 @@
 @let large = variant === toolbarVariant.Large;
 
-<div [ngClass]=" large ? 'd-flex' : 'd-flex gap-1'">
+<div [ngClass]="large ? 'd-flex' : 'd-flex gap-1'">
     @for (item of data; track $index) {
         @let name = item.name;
         @let title = item.title;
@@ -10,11 +10,8 @@
                 'new-table--toolbar-action text-size-16 p-8 d-flex align-items-center':
                     large,
                 'background-black text-color-white':
-                    large &&
-                    selectedTab === title,
-                'text-color-bw6-2':
-                    large &&
-                    selectedTab !== title,
+                    large && selectedTab === title,
+                'text-color-bw6-2': large && selectedTab !== title,
                 'text-size-14 p-x-8 p-y-4': variant === toolbarVariant.Small,
                 'background-bw2 text-color-black':
                     variant === toolbarVariant.Small &&
@@ -22,14 +19,15 @@
                 'text-color-light-grey-2':
                     variant === toolbarVariant.Small &&
                     selectedTab !== item.name,
+                'new-table--toolbar-action-inactive':
+                    (large && selectedTab !== title) ||
+                    (!large && selectedTab !== item.name),
             }"
-            (click)="
-                onTabClick(
-                    large ? title! : item.name!
-                )
-            "
+            (click)="onTabClick(large ? title! : item.name!)"
         >
-            {{ large ? title : item.name }}
+            <span class="new-table--toolbar-action-inactive-title">
+                {{ large ? title : item.name }}</span
+            >
             @if (large) {
                 <span
                     class="new-table--toolbar-action-counter m-l-4"

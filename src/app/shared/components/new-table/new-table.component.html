@@ -2,7 +2,7 @@
 <div class="table-container" #container>
     <div class="custom-table w-full test-margin">
         <!-- Header -->
-        <div class="d-flex m-b-6 p-x-4" #header style="overflow-x: hidden">
+        <div class="d-flex m-b-6 p-x-8" #header style="overflow-x: hidden">
             <div class="d-flex new-table--pinned-left">
                 @for (column of leftPinnedColumns; track column.key) {
                     <ng-container
@@ -52,10 +52,11 @@
                         trackBy: trackTableRow;
                         let i = index
                     "
+                    class="d-flex align-items-center new-table--row background-white p-x-4 br-3 m-b-2"
                 >
                     @if (row) {
                         <div
-                            class="d-flex align-items-center new-table--row background-white p-x-4 p-y-4 m-b-2 br-3"
+                            class="d-flex align-items-center new-table--row p-x-4 br-3 m-t-4 m-b-4 p-y-1 background-hover-light-grey"
                             [class.background-light-grey]="row.selected"
                         >
                             <!-- Left Pinned Columns -->
@@ -295,7 +296,7 @@
                     <ng-container
                         *ngTemplateOutlet="
                             templates[column.key];
-                            context: { data: row, key: column.key }
+                            context: { data: row, key: column.key, index }
                         "
                     ></ng-container>
                 } @else {

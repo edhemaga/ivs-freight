@@ -9,6 +9,9 @@
         &-2 {
             margin-bottom: 2px;
         }
+        &-4 {
+            margin-bottom: 4px;
+        }
         &-6 {
             margin-bottom: 6px;
         }
@@ -22,15 +25,17 @@
         &-4 {
             margin-left: 4px;
         }
-        &-6 {
-            margin-left: 6px;
-        }
         &-auto {
             margin-left: auto;
         }
     }
 }
 .p {
+    &-l {
+        &-4 {
+            padding-left: 4px;
+        }
+    }
     &-x {
         &-4 {
             padding-left: 4px;
@@ -42,13 +47,14 @@
         }
     }
     &-y {
+        &-1 {
+            padding-bottom: 1px;
+            padding-top: 1px;
+        }
         &-4 {
             padding-bottom: 4px;
             padding-top: 4px;
         }
-    }
-    &-6 {
-        padding: 6px;
     }
     &-8 {
         padding: 8px;

@@ -36,6 +36,22 @@
                 padding: 0px 5px;
                 transition: 0.25s;
                 text-align: center;
+                transition: background-color $transitionDuration ease-in-out;
+            }
+
+            &-inactive {
+                &-title {
+                    transition: color $transitionDuration ease-in-out;
+                }
+
+                &:hover {
+                    .new-table--toolbar-action-inactive-title {
+                        color: $ta-black !important;
+                    }
+                    .new-table--toolbar-action-counter {
+                        background-color: $bw6-2 !important;
+                    }
+                }
             }
         }
 
