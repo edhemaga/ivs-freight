@@ -201,7 +201,7 @@ export class DriverDetailsCardComponent implements OnInit, OnDestroy {
         this.driverLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.driverChartData
                 : this.driverChartData.getDriverPayrollChartResponse[index];
 
