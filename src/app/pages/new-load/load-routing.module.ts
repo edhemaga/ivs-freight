@@ -3,18 +3,26 @@ import { RouterModule, Routes } from '@angular/router';
 
 // Resolvers
 import { NewLoadDetailsResolver } from '@pages/new-load/resolvers/new-load-details.resolver';
+import { LoadResolver } from '@pages/load/resolvers/load.resolver';
 
 // resolvers
 const routes: Routes = [
+    {
+        path: '',
+        loadComponent: () =>
+            import('@pages/new-load/new-load.component').then(
+                (c) => c.NewLoadComponent
+            ),
+        resolve: { data: LoadResolver },
+    },
     {
         path: ':id/details',
         loadComponent: () =>
             import(
                 '@pages/new-load/pages/new-load-details/new-load-details.component'
             ).then((m) => m.NewLoadDetailsComponent),
-        resolve: {data: NewLoadDetailsResolver}
-
-        },
+        resolve: { data: NewLoadDetailsResolver },
+    },
 ];
 
 @NgModule({
