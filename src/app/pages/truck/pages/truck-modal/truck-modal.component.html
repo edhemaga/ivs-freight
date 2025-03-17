@@ -37,70 +37,50 @@
                     >
                         <ca-input-test
                             formControlName="truckNumber"
-                            [inputConfig]="{
-                                name: 'vehicle-unit',
-                                type: 'text',
-                                label: 'Unit No.',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                minLength: 1,
-                                maxLength: 8,
-                                autoFocus: editData?.type !== 'edit',
-                            }"
+                            [inputConfig]="
+                                {
+                                    configType: 'truckNumberInputConfig',
+                                    type: editData?.type,
+                                } | truckModalInputConfig
+                            "
                         ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="truckTypeId"
                             [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Type',
-                                isRequired: true,
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: true,
-                                    svg: true,
-                                    image: false,
-                                    url:
-                                        selectedTruckType?.logoName &&
-                                        'assets/svg/common/trucks/' +
-                                            selectedTruckType?.logoName,
-                                    template: 'truck',
-                                    class: selectedTruckType?.name
-                                        ?.trim()
-                                        .replace(' ', '')
-                                        .toLowerCase(),
-                                },
-                                dropdownWidthClass:
-                                    selectedTruckType?.name === 'Box Truck'
-                                        ? 'w-col-188'
-                                        : 'w-col-308',
-                                customClass: 'truck-trailer-dropdown',
-                            }"
+                            [inputConfig]="
+                                {
+                                    configType: 'truckTypeIdInputConfig',
+                                    truckLogoName: selectedTruckType?.logoName,
+                                    truckTypeName: selectedTruckType?.name,
+                                } | truckModalInputConfig
+                            "
                             [options]="truckType"
                             [activeItem]="selectedTruckType"
                             (selectedItem)="
                                 onSelectDropdown($event, 'truck-type')
                             "
                         ></app-ca-input-dropdown>
-                        <ng-container *ngIf="isLengthRequired">
+                        @if (isLengthRequired) {
                             <app-ca-input-dropdown
                                 formControlName="truckLengthId"
-                                [inputConfig]="{
-                                    name: 'Input Dropdown',
-                                    type: 'text',
-                                    label: 'Length',
-                                    isDropdown: true,
-                                    isRequired: true,
-                                    dropdownWidthClass: 'w-col-108',
-                                }"
+                                [inputConfig]="
+                                    {
+                                        configType: 'truckLengthnputConfig',
+                                        truckLogoName:
+                                            selectedTruckType?.logoName,
+                                        truckTypeName: selectedTruckType?.name,
+                                    } | truckModalInputConfig
+                                "
+                                [inputConfig]="
+                                    truckModalInputConfig.TRUCK_LENGTH_INPUT
+                                "
                                 [options]="truckLengths"
                                 [activeItem]="selectedTruckLengthId"
                                 (selectedItem)="
                                     onSelectDropdown($event, 'truckLength')
                                 "
                             ></app-ca-input-dropdown>
-                        </ng-container>
+                        }
                     </div>
 
                     <div class="d-grid form-container-truck-year mb-32">
@@ -124,21 +104,12 @@
                         <app-ca-input-dropdown
                             formControlName="truckMakeId"
                             [template]="'svg-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Make',
-                                isRequired: true,
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: false,
-                                    svg: true,
-                                    image: false,
-                                    url: selectedTruckMake?.logoName,
-                                    class: 'truck-make',
-                                },
-                                dropdownWidthClass: 'w-col-156',
-                            }"
+                            [inputConfig]="
+                                {
+                                    configType: 'truckMakeInputConfig',
+                                    truckLogoName: selectedTruckMake?.logoName,
+                                } | truckModalInputConfig
+                            "
                             [options]="truckMakeType"
                             [activeItem]="selectedTruckMake"
                             (selectedItem)="
@@ -149,36 +120,19 @@
                     <div class="d-grid form-container-truck-model mb-4">
                         <app-ca-input
                             formControlName="model"
-                            [inputConfig]="{
-                                name: 'truck-trailer-model',
-                                type: 'text',
-                                label: 'Model',
-                                isRequired: true,
-                                textTransform: 'uppercase',
-                                minLength: 1,
-                                maxLength: 50,
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.TRUCK_MAKE_INPUT
+                            "
                         ></app-ca-input>
                         <app-ca-input-dropdown
                             formControlName="colorId"
                             [template]="'svgtext-template'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Color',
-                                isDropdown: true,
-                                dropdownImageInput: {
-                                    withText: true,
-                                    svg: true,
-                                    image: false,
-                                    url: selectedColor?.code
-                                        ? 'ic_color.svg'
-                                        : null,
-                                    template: 'color',
+                            [inputConfig]="
+                                {
+                                    configType: 'truckColorInputConfig',
                                     color: selectedColor?.code,
-                                },
-                                dropdownWidthClass: 'w-col-148',
-                            }"
+                                } | truckModalInputConfig
+                            "
                             [options]="colorType"
                             [activeItem]="selectedColor"
                             (selectedItem)="onSelectDropdown($event, 'color')"
@@ -211,14 +165,9 @@
                                 <div class="col-12">
                                     <app-ca-input-dropdown
                                         formControlName="ownerId"
-                                        [inputConfig]="{
-                                            name: 'Input Dropdown',
-                                            type: 'text',
-                                            label: 'Owner',
-                                            isRequired: true,
-                                            isDropdown: true,
-                                            dropdownWidthClass: 'w-col-456',
-                                        }"
+                                        [inputConfig]="
+                                            truckModalInputConfig.OWNER_TYPE_INPUT
+                                        "
                                         [options]="ownerType"
                                         [canAddNew]="true"
                                         [canOpenModal]="true"
@@ -229,26 +178,26 @@
                                     ></app-ca-input-dropdown>
                                 </div>
                             </div>
-                            <div
-                                *ngIf="!truckForm.get('companyOwned').value"
-                                class="row row-no-m"
-                            >
-                                <div class="col-12">
-                                    <app-ta-ngx-slider
-                                        [sliderName]="'Commission'"
-                                        [sliderOptions]="commissionOptions"
-                                        [startedValue]="
-                                            truckForm.get('commission').value
-                                        "
-                                        [customClass]="'custom-truck-modal'"
-                                        (onUserValueChange)="
-                                            truckForm
-                                                .get('commission')
-                                                .setValue($event)
-                                        "
-                                    ></app-ta-ngx-slider>
+                            @if (!truckForm.get('companyOwned').value) {
+                                <div class="row row-no-m">
+                                    <div class="col-12">
+                                        <app-ta-ngx-slider
+                                            [sliderName]="'Commission'"
+                                            [sliderOptions]="commissionOptions"
+                                            [startedValue]="
+                                                truckForm.get('commission')
+                                                    .value
+                                            "
+                                            [customClass]="'custom-truck-modal'"
+                                            (onUserValueChange)="
+                                                truckForm
+                                                    .get('commission')
+                                                    .setValue($event)
+                                            "
+                                        ></app-ta-ngx-slider>
+                                    </div>
                                 </div>
-                            </div>
+                            }
                         </ng-container>
                     </app-ta-checkbox-card>
                     <div class="ta-card-body-overflow-none">
@@ -303,42 +252,28 @@
                     >
                         <app-ca-input-dropdown
                             formControlName="truckGrossWeightId"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Gross Weight',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-196',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.TRUCK_GROSS_WEIGHT_INPUT
+                            "
                             [options]="grossWeight"
                             [activeItem]="selectedTruckGrossWeight"
                             (selectedItem)="
                                 onSelectDropdown($event, 'gross-weight')
                             "
                         ></app-ca-input-dropdown>
-                        <ng-container *ngIf="isSpecialTruckType">
+                        @if (isSpecialTruckType) {
                             <ca-input-test
                                 formControlName="volume"
-                                [inputConfig]="{
-                                    name: 'trailer-volume',
-                                    type: 'text',
-                                    label: 'Volume',
-                                    maxLength: 5,
-                                    priceSeparator: true,
-                                }"
+                                [inputConfig]="
+                                    truckModalInputConfig.TRUCK_VOLUME_INPUT
+                                "
                             ></ca-input-test>
-                        </ng-container>
-
+                        }
                         <ca-input-test
                             formControlName="emptyWeight"
-                            [inputConfig]="{
-                                name: 'Empty Weight',
-                                type: 'text',
-                                label: 'Empty Weight',
-                                maxLength: 5,
-                                placeholderText: 'ibs',
-                                thousandSeparator: true,
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.TRUCK_EMPTY_WEIGHT_INPUT
+                            "
                         ></ca-input-test>
                     </div>
 
@@ -346,13 +281,9 @@
                     <div class="truck-additional-two-columns">
                         <app-ca-input-dropdown
                             formControlName="truckEngineModelId"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Engine Model',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-196',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.TRUCK_ENGINE_INPUT
+                            "
                             [options]="engineModels"
                             [activeItem]="selectedtruckEngineModelId"
                             (selectedItem)="
@@ -362,13 +293,9 @@
 
                         <app-ca-input-dropdown
                             formControlName="engineOilType"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Engine Oil Type',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-248',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.TRUCK_ENGINE_OIL_INPUT
+                            "
                             [options]="engineOilTypes"
                             [activeItem]="selectedEngineOilType"
                             (selectedItem)="
@@ -381,14 +308,13 @@
                     <div class="truck-additional-three-columns">
                         <app-ca-input-dropdown
                             formControlName="fuelType"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Fuel Type',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-164',
-                                isDisabled: !isFuelTypeEnabled,
-                            }"
+                            [inputConfig]="
+                                {
+                                    configType: 'truckFuelInputConfig',
+                                    color: selectedColor?.code,
+                                    isFuelTypeEnabled: isFuelTypeEnabled,
+                                } | truckModalInputConfig
+                            "
                             [options]="fuelTypes"
                             [activeItem]="selectedFuelType"
                             (selectedItem)="
@@ -397,22 +323,13 @@
                         ></app-ca-input-dropdown>
                         <app-ca-input
                             formControlName="fuelTankSize"
-                            [inputConfig]="{
-                                name: 'Fuel Tank Size',
-                                type: 'text',
-                                label: 'Fuel Tank Size',
-                                thousandSeparator: true,
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.FUEL_TANK_INPUT
+                            "
                         ></app-ca-input>
                         <app-ca-input-dropdown
                             formControlName="apUnit"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'AP Unit',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-134',
-                            }"
+                            [inputConfig]="truckModalInputConfig.AP_UNIT_INPUT"
                             [options]="apUnits"
                             [activeItem]="selectedAPUnit"
                             (selectedItem)="onSelectDropdown($event, 'ap-unit')"
@@ -423,34 +340,22 @@
                     <div class="truck-additional-three-columns">
                         <ca-input-test
                             formControlName="transmissionModel"
-                            [inputConfig]="{
-                                name: 'Transmission Model',
-                                type: 'text',
-                                label: 'Transmission Model',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.TRANSMISSION_MODEL_INPUT
+                            "
                         ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="shifter"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Shifter',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-134',
-                            }"
+                            [inputConfig]="truckModalInputConfig.SHIFTER_INPUT"
                             [options]="shifters"
                             [activeItem]="selectedShifter"
                             (selectedItem)="onSelectDropdown($event, 'shifter')"
                         ></app-ca-input-dropdown>
                         <app-ca-input-dropdown
                             formControlName="gearRatio"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Gear Ratio',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-135',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.GEAR_RATIO_INPUT
+                            "
                             [options]="gearRatios"
                             [activeItem]="selectedGearRatio"
                             (selectedItem)="
@@ -464,13 +369,9 @@
                     <div class="truck-additional-three-columns">
                         <app-ca-input-dropdown
                             formControlName="tireSizeId"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Tire Size',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-164',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.TIRE_SIZE_INPUT
+                            "
                             [options]="tireSize"
                             [activeItem]="selectedTireSize"
                             (selectedItem)="
@@ -479,21 +380,11 @@
                         ></app-ca-input-dropdown>
                         <ca-input-test
                             formControlName="axles"
-                            [inputConfig]="{
-                                name: 'Axles',
-                                type: 'number',
-                                label: 'Axle',
-                            }"
+                            [inputConfig]="truckModalInputConfig.AXLES_INPUT"
                         ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="brakes"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Brakes',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-134',
-                            }"
+                            [inputConfig]="truckModalInputConfig.BRAKES_INPUT"
                             [options]="brakes"
                             [activeItem]="selectedBrakes"
                             (selectedItem)="onSelectDropdown($event, 'brakes')"
@@ -504,23 +395,15 @@
                     <div class="truck-additional-three-columns">
                         <ca-input-test
                             formControlName="wheelBase"
-                            [inputConfig]="{
-                                name: 'Wheel Basee',
-                                type: 'text',
-                                label: 'Wheel Base',
-                                maxLength: 8,
-                                thousandSeparator: true,
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.WHEEL_BASE_INPUT
+                            "
                         ></ca-input-test>
                         <app-ca-input-dropdown
                             formControlName="frontWheels"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Front Wheels',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-134',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.FRONT_WHEELS_INPUT
+                            "
                             [options]="frontWheels"
                             [activeItem]="selectedFrontWheels"
                             (selectedItem)="
@@ -529,13 +412,9 @@
                         ></app-ca-input-dropdown>
                         <app-ca-input-dropdown
                             formControlName="rearWheels"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Rear Wheels',
-                                isDropdown: true,
-                                dropdownWidthClass: 'w-col-134',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.REAR_WHEELS_INPUT
+                            "
                             [options]="rearWheels"
                             [activeItem]="selectedRearWheels"
                             (selectedItem)="
@@ -607,14 +486,7 @@
                         <app-ca-input-dropdown
                             formControlName="tollTransponder"
                             [template]="'groups'"
-                            [inputConfig]="{
-                                name: 'Input Dropdown',
-                                type: 'text',
-                                label: 'Toll Transponder',
-                                isDropdown: true,
-                                textTransform: 'capitalize',
-                                dropdownWidthClass: 'w-col-196',
-                            }"
+                            [inputConfig]="truckModalInputConfig.TOLL_INPUT"
                             [options]="tollTransponders"
                             [activeItem]="selectedTollTransponders"
                             (selectedItem)="
@@ -623,12 +495,13 @@
                         ></app-ca-input-dropdown>
                         <ca-input-test
                             formControlName="tollTransponderDeviceNo"
-                            [inputConfig]="{
-                                name: 'Device No',
-                                type: 'text',
-                                label: 'Device No.',
-                                isDisabled: !selectedTollTransponders?.id,
-                            }"
+                            [inputConfig]="
+                                {
+                                    configType: 'tollTransponderDeviceNoConfig',
+                                    selectedTollTransponders:
+                                        selectedTollTransponders?.id,
+                                } | truckModalInputConfig
+                            "
                         ></ca-input-test>
                     </div>
 
@@ -641,50 +514,19 @@
                     >
                         <ca-input-test
                             formControlName="insurancePolicy"
-                            [inputConfig]="{
-                                name: 'insurance-policy',
-                                type: 'text',
-                                label: 'Insurance Policy',
-                                maxLength: 14,
-                                textTransform: 'uppercase',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.INSURANCE_POLICY_INPUT
+                            "
                         ></ca-input-test>
 
                         <ca-input-test
                             formControlName="mileage"
-                            [inputConfig]="{
-                                name: 'Mileage',
-                                type: 'text',
-                                label: 'Mileage',
-                                maxLength: 8,
-                                placeholderText: 'mi',
-                                thousandSeparator: true,
-                            }"
+                            [inputConfig]="truckModalInputConfig.MILEAGE_INPUT"
                         ></ca-input-test>
 
                         <app-ca-input
                             formControlName="fhwaExp"
-                            [inputConfig]="{
-                                name: 'months',
-                                type: 'text',
-                                placeholderText: 'months',
-                                label: 'FHWA Exp.',
-                                isRequired: true,
-                                hideClear: true,
-                                removeLeadingZero: true,
-                                commands: {
-                                    active: true,
-                                    type: 'months',
-                                    firstCommand: {
-                                        name: 'minus',
-                                        svg: 'assets/svg/common/ic_pm_decrement.svg',
-                                    },
-                                    secondCommand: {
-                                        name: 'plus',
-                                        svg: 'assets/svg/common/ic_pm_increment.svg',
-                                    },
-                                },
-                            }"
+                            [inputConfig]="truckModalInputConfig.FHWA_INPUT"
                         ></app-ca-input>
                     </div>
 
@@ -695,26 +537,15 @@
                     >
                         <ca-input-datetime-picker
                             formControlName="purchaseDate"
-                            [inputConfig]="{
-                                name: 'datepicker',
-                                type: 'text',
-                                label: 'Purchase Date',
-                                isDropdown: true,
-                                placeholderIcon: 'date',
-                                customClass: 'datetimeclass',
-                                isFutureDateDisabled: true,
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.PURCHASE_DATE_INPUT
+                            "
                         ></ca-input-datetime-picker>
                         <app-ca-input
                             formControlName="purchasePrice"
-                            [inputConfig]="{
-                                name: 'Purchase Price',
-                                type: 'text',
-                                label: 'Purchase Price',
-                                maxLength: 14,
-                                thousandSeparator: true,
-                                placeholderIcon: 'dollar',
-                            }"
+                            [inputConfig]="
+                                truckModalInputConfig.PURCHASE_PRICE_INPUT
+                            "
                         ></app-ca-input>
                     </div>
                 </div>
