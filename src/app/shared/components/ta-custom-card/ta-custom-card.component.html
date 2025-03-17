@@ -299,7 +299,10 @@
 
             <!-- Color Picker -->
             @if (hasColorIcon && _isCardOpen && !doesFileExist) {
-                <app-ca-icon-dropdown [iconDropdownConfig]="iconDropdownConfig">
+                <app-ca-icon-dropdown
+                    [iconDropdownConfig]="iconDropdownConfig"
+                    (click)="onAction($event, 'custom', customTextAction)"
+                >
                 </app-ca-icon-dropdown>
             }
 
