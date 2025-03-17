@@ -12,6 +12,7 @@
     <app-new-table-toolbar
         [title]="'Load'"
         [leftSide]="leftSide"
+        [rightSide]="rightSide"
         (onPlusClick)="
             onToolBarAction({
                 action: tableStringEnum.OPEN_MODAL,
@@ -26,6 +27,16 @@
                 [viewMode]="loadStoreService.activeViewMode$ | async"
                 (onTabChange)="onToolBarAction($event)"
             ></app-toolbar-tabs-wrapper>
+
+            @if (selectedTab !== 'Template') {
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+                <div
+                    class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                >
+                    $16,425.30
+                </div>
+            }
+
             <ng-container *ngTemplateOutlet="divider"></ng-container>
 
             <div class="d-flex gap-1 align-items-center">
@@ -58,20 +69,37 @@
                         (setFilter)="setFilters($event)"
                     >
                     </app-ca-filter-list-dropdown>
-
-                    <app-ca-filter
-                        subType="all"
-                        type="moneyFilter"
-                        icon="dollar"
-                        filterTitle="Money Filter"
-                        [isMoneyFilter]="true"
-                        [isLoadType]="true"
-                        (setFilter)="setFilters($event)"
-                        (clearAll)="setFilters($event)"
-                    >
-                    </app-ca-filter>
                 }
+                <app-ca-filter
+                    subType="all"
+                    type="moneyFilter"
+                    icon="dollar"
+                    filterTitle="Money Filter"
+                    [isMoneyFilter]="true"
+                    [isLoadType]="true"
+                    (setFilter)="setFilters($event)"
+                    (clearAll)="setFilters($event)"
+                >
+                </app-ca-filter>
             </div>
+
+            @if (selectedTab === 'Template') {
+                <div
+                    class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                >
+                    2 Selected
+                </div>
+            }
+        </ng-template>
+
+        <ng-template #rightSide>
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+            <div
+                class="text-color-white background-bw6-2 text-size-11 ta-font-bold br-2 p-x-8 p-y-4"
+            >
+                LTL BUILDER
+            </div>
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
         </ng-template>
 
         <ng-template #divider>

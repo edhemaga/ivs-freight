@@ -16,6 +16,7 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
+    CaFilterComponent,
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
 } from 'ca-components';
@@ -37,6 +38,7 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants';
         NewLoadCardsComponent,
         NewLoadTableComponent,
         ToolbarTabsWrapperComponent,
+        CaFilterComponent,
         CaFilterTimeDropdownComponent,
         CaFilterListDropdownComponent,
     ],
