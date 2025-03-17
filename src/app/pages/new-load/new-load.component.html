@@ -1,10 +1,91 @@
 @if (
     {
         viewData: loadStoreService.viewData$ | async,
+        tableData: loadStoreService.tableData$ | async,
+        activeTableData: loadStoreService.activeTableData$ | async,
+        activeViewMode: loadStoreService.activeViewMode$ | async,
+        dispatcherList: loadStoreService.dispatcherList$ | async,
+        statusList: loadStoreService.statusList$ | async,
     };
     as store
 ) {
-    @for (load of store.viewData; track load.id) {
-        <div [routerLink]="load.id + '/details'">Load id: {{ load.id }}</div>
+    <app-new-table-toolbar
+        [title]="'Load'"
+        [leftSide]="leftSide"
+        (onPlusClick)="
+            onToolBarAction({
+                action: tableStringEnum.OPEN_MODAL,
+            })
+        "
+    >
+        <ng-template #leftSide>
+            <app-toolbar-tabs-wrapper
+                class="d-flex align-items-center"
+                [data]="store.tableData"
+                [selectedTab]="selectedTab"
+                [viewMode]="loadStoreService.activeViewMode$ | async"
+                (onTabChange)="onToolBarAction($event)"
+            ></app-toolbar-tabs-wrapper>
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+            <div class="d-flex gap-1 align-items-center">
+                <app-ca-search-multiple-states
+                    [searchType]="'tabel'"
+                    [selectedTabData]="store?.activeTableData"
+                    [toolbarSearch]="true"
+                ></app-ca-search-multiple-states>
+
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+                @if (selectedTab !== 'Template') {
+                    <app-ca-filter-time-dropdown
+                        type="TimeFilter"
+                        subType="past"
+                        (setFilter)="setFilters($event)"
+                    >
+                    </app-ca-filter-time-dropdown>
+
+                    <app-ca-filter-list-dropdown
+                        type="Dispatcher"
+                        [list]="store.dispatcherList"
+                        (setFilter)="setFilters($event)"
+                    >
+                    </app-ca-filter-list-dropdown>
+
+                    <app-ca-filter-list-dropdown
+                        type="Status"
+                        [list]="store.statusList"
+                        (setFilter)="setFilters($event)"
+                    >
+                    </app-ca-filter-list-dropdown>
+
+                    <app-ca-filter
+                        subType="all"
+                        type="moneyFilter"
+                        icon="dollar"
+                        filterTitle="Money Filter"
+                        [isMoneyFilter]="true"
+                        [isLoadType]="true"
+                        (setFilter)="setFilters($event)"
+                        (clearAll)="setFilters($event)"
+                    >
+                    </app-ca-filter>
+                }
+            </div>
+        </ng-template>
+
+        <ng-template #divider>
+            <div class="new-table--toolbar-divider">
+                <div
+                    class="new-table--toolbar-divider-border background-light-grey-6"
+                ></div>
+            </div>
+        </ng-template>
+    </app-new-table-toolbar>
+
+    @if (store?.activeViewMode === 'List') {
+        <app-new-load-table></app-new-load-table>
+    } @else {
+        <app-new-load-cards></app-new-load-cards>
     }
 }
