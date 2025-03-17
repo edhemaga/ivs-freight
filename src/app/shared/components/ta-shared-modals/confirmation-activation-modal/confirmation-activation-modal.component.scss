@@ -183,3 +183,13 @@
         }
     }
 }
+
+.action-div-icon {
+    margin-left: 6px;
+    svg {
+        path,
+        rect {
+            fill: $muted !important;
+        }
+    }
+}
