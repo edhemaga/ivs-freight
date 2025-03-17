@@ -360,7 +360,7 @@ export class TrailerDetailsCardComponent
         this.fuelConsumptionLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.fuelConsumptionChartData
                 : this.fuelConsumptionChartData?.trailerFuelConsumptionCharts[
                       index

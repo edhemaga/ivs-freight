@@ -921,10 +921,17 @@ export class TruckTableComponent
                             data: {
                                 ...data,
                                 number: data.truckNumber,
-                                avatar: `assets/svg/common/trucks/${data?.truckType?.logoName}`,
+                                avatarFile: {
+                                    url: data?.truckTypeIcon
+                                        ? `/assets/svg/common/trucks/${data?.truckTypeIcon}`
+                                        : `/assets/svg/common/trucks/${data?.truckType?.logoName}`,
+                                },
                             },
-                            modalTitle: data.truckNumber,
-                            modalSecondTitle: data.vin,
+                            modalTitle: TableStringEnum.UNIT + data?.truckNumber,
+                            modalSecondTitle: data?.tableVin
+                                ? data?.tableVin?.regularText +
+                                  data?.tableVin?.boldText
+                                : data?.vin,
                         });
                     }
                 });
