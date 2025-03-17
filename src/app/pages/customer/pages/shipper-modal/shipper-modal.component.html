@@ -1,3 +1,10 @@
+@let receivingAppointmentControl = this.shipperForm.get(shipperModalString.RECEIVING_APPOINTMENT);
+@let receivingOpenTwentyFourHoursControl = this.shipperForm.get(shipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS);
+@let receivingFromControl = this.shipperForm.get(shipperModalString.RECEIVING_FROM);
+@let receivingToControl = this.shipperForm.get(shipperModalString.RECEIVING_TO);
+@let shippingAppointmentControl = this.shipperForm.get(shipperModalString.SHIPPING_APPOINTMENT);
+@let shippingOpenTwentyFourHoursControl = this.shipperForm.get(shipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS);
+
 <app-ca-modal
     [modalTitle]="
         !editData?.type?.includes('edit') ? 'Add Shipper' : 'Edit Shipper'
