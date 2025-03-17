@@ -85,7 +85,11 @@ import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fue
 import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import {
+    DropdownMenuStringEnum,
+    eGeneralActions,
+    TableStringEnum,
+} from '@shared/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
@@ -428,15 +432,19 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private convertItems() : FuelItemResponse[]{
+    private convertItems(): FuelItemResponse[] {
         return this.fuelItems.map((item) => {
-            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(item.qty.toString());
-            const price = MethodsCalculationsHelper.convertThousandSepInNumber(item.price.toString());
+            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(
+                item.qty.toString()
+            );
+            const price = MethodsCalculationsHelper.convertThousandSepInNumber(
+                item.price.toString()
+            );
 
             return {
                 ...item,
-                subtotal: qty * price
-            }
+                subtotal: qty * price,
+            };
         });
     }
 
@@ -864,7 +872,18 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private createForm(): void {
-        const truckId = this.editData?.truckId ?? null;
+        const { type, data } = this.editData;
+
+        const truckId = data?.truckNumber ?? null;
+        const transactionDate =
+            type === eGeneralActions.EDIT ? data?.transactionDate : null;
+        const transactionTime =
+            type === eGeneralActions.EDIT
+                ? MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                      transactionDate
+                  )
+                : null;
+
         this.fuelForm = this.formBuilder.group({
             efsAccount: [null],
             fuelCard: [null],
@@ -872,8 +891,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             truckId: [truckId, Validators.required],
             trailerId: [null],
             driverFullName: [null, fullNameValidation],
-            transactionDate: [null, Validators.required],
-            transactionTime: [null, Validators.required],
+            transactionDate: [transactionDate, Validators.required],
+            transactionTime: [transactionTime, Validators.required],
             fuelStopStoreId: [null, Validators.required],
             fuelItems: this.formBuilder.array([]),
             total: [null],

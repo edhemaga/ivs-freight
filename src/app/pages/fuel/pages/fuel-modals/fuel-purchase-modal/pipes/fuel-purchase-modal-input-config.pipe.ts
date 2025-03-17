@@ -112,7 +112,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                 inputConfig = {
                     name: 'Input Dropdown',
                     type: 'text',
-                    label: 'Type',
+                    label: 'Truck',
                     isRequired: true,
                     isDropdown: true,
                     dropdownImageInput: {
