@@ -29,6 +29,7 @@ export class FilterHelper {
         res: IFilterAction,
         currentFilters: IStateFilters
     ): IStateFilters {
+        // if (res.queryParams === null) return null;
         switch (res.filterType) {
             case eFilterDropdownEnum.TIME_FILTER: {
                 const { fromDate, toDate } = res.queryParams;

@@ -28,18 +28,23 @@
         }"
     >
         <ng-template #selectHeaderTemplate>
-            <input
-                type="checkbox"
-                (change)="selectAll()"
-                [checked]="store.areAllItemsSelected"
-            />
+            <app-ca-checkbox
+                [isChecked]="store.areAllItemsSelected"
+                [isRegularCheckbox]="false"
+                (columnCheckAction)="selectAll()"
+                name="miles-row-all"
+            ></app-ca-checkbox>
         </ng-template>
         <ng-template #loadSelectTemplate let-data="data">
-            <input
-                type="checkbox"
-                [checked]="data.selected"
-                (change)="selectRow(data)"
-            />
+            @let name = 'miles-row' + data.id;
+
+            <app-ca-checkbox
+                [isChecked]="data.selected"
+                [isRegularCheckbox]="false"
+                (columnCheckAction)="selectRow(data)"
+                [itemIndex]="data.id"
+                [name]="name"
+            ></app-ca-checkbox>
         </ng-template>
 
         <ng-template #unitTemplate let-data="data">
