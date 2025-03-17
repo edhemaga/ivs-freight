@@ -143,4 +143,9 @@ export class LoadStoreConstants {
     static ACTION_GET_DISPATCHER_LIST = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List`;
     static ACTION_GET_DISPATCHER_LIST_SUCCESS = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List Success`;
     static ACTION_GET_DISPATCHER_LIST_ERROR = `${ this.COMPONENT_NAME_KEY } Get Dispatcher List Error`;
+
+    static ACTION_GET_LOAD_DETAILS_BY_ID = `${ this.COMPONENT_NAME_KEY } Get Load Details By Id`;
+    static ACTION_GET_LOAD_DETAILS_BY_ID_SUCCESS = `${ this.COMPONENT_NAME_KEY } Get Load Details By Id Success`;
+    static ACTION_GET_LOAD_DETAILS_BY_ID_ERROR = `${ this.COMPONENT_NAME_KEY } Get Load Details By Id Error`;
+    
 }

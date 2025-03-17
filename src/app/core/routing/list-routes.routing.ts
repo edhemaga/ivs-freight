@@ -32,6 +32,13 @@ export class ListRoutes {
             resolve: { data: LoadResolver }
         },
         {
+            path: 'list/new-load',
+            loadChildren: () =>
+                import('@pages/new-load/new-load.module').then((m) => m.NewLoadModule),
+            canActivate: [AuthGuard, CompanySettingsGuard],
+            resolve: { data: LoadResolver }
+        },
+        {
             path: 'list/customer',
             loadChildren: () =>
                 import('@pages/customer/customer.module').then(

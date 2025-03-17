@@ -44,6 +44,7 @@ import {
     CaInputComponent,
     CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
+    CaInputDropdownTestComponent,
     CaModalComponent,
 } from 'ca-components';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -128,6 +129,7 @@ import moment from 'moment';
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
+        CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
 
         // pipes
@@ -262,7 +264,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSelectDropDown(event: any, action: string, index?: number): void {
+    public onSelectDropDown(
+        event: any,
+        action: string
+    ): void {
         switch (action) {
             case FuelDropdownOptionsStringEnum.TRUCK:
                 this.selectedTruckType = event;

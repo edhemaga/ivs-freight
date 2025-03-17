@@ -35,6 +35,9 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
+// Enums
+import { TableStringEnum } from '@shared/enums';
+
 @Component({
     selector: 'app-confirmation-activation-modal',
     standalone: true,
@@ -64,6 +67,7 @@ export class ConfirmationActivationModalComponent
     public locationForm!: UntypedFormGroup;
 
     public confirmationImageRoutes = ConfirmationActivationModalSvgRoutes;
+    public tableStringEnum = TableStringEnum;
     public isFormDirty: boolean = false;
 
     constructor(

@@ -1038,6 +1038,8 @@
                             [cardName]="'Profile Picture'"
                             [isCardOpen]="!!this.driverForm.get('avatar').value"
                             [disableAnimation]="isCardAnimationDisabled"
+                            [doesFileExist]="doesFileExist"
+                            [hasColorIcon]="true"
                         >
                             <app-ca-upload-files
                                 [uploadFilesConfig]="

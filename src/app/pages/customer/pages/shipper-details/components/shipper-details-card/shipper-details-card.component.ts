@@ -297,7 +297,7 @@ export class ShipperDetailsCardComponent
         this.payrollLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.payrollChartData
                 : this.payrollChartData?.shipperAverageWaitingTimeChartResponse[
                       index

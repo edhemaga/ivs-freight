@@ -78,7 +78,9 @@
                 "
                 class="d-grid row-columns"
             >
-                <app-ca-input-dropdown
+                <ca-input-dropdown-test
+                    [label]="'name'"
+                    [optionValue]="'id'"
                     formControlName="truckId"
                     [template]="'svgtext-template'"
                     [inputConfig]="
@@ -94,7 +96,7 @@
                     (selectedItem)="
                         onSelectDropDown($event, fuelValuesStringEnum.TRUCK)
                     "
-                ></app-ca-input-dropdown>
+                ></ca-input-dropdown-test>
 
                 @if (fuelForm.get(fuelValuesStringEnum.TRAILER_ID).value) {
                     <app-ca-input-dropdown
