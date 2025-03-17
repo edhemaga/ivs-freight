@@ -1,4 +1,12 @@
 @import '/src/theme/variables.scss';
+@mixin hover($color) {
+    transition: background-color $transitionDuration ease-in-out;
+
+    &:hover {
+        background-color: $color !important;
+    }
+}
+
 .background {
     &-white {
         background: $white;
@@ -20,8 +28,19 @@
         }
     }
     &-blue {
+        &-14 {
+            background-color: $ta-blue-14;
+        }
         &-16 {
             background-color: $ta-blue-16;
+        }
+    }
+
+    &-hover {
+        &-blue {
+            &-15 {
+                @include hover($ta-blue-15);
+            }
         }
     }
 }

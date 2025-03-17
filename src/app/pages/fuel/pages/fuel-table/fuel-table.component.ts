@@ -734,6 +734,7 @@ export class FuelTableComponent
             },
             tableDriverName: driverFullName,
             tableFuelCardNumber: fuelCard?.cardNumber ?? null,
+            tableAccount: fuelCard?.accountId,
             tableType,
             tableTransactionDate: transactionDate
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
@@ -790,10 +791,10 @@ export class FuelTableComponent
                 isIntegratedFuelTransaction
             ),
             dateAdded: createdAt
-                ? this.datePipe.transform(createdAt, 'MM/dd/yy hh:mm a')
+                ? this.datePipe.transform(createdAt, 'MM/dd/yy')
                 : null,
             dateEdited: updatedAt
-                ? this.datePipe.transform(updatedAt, 'MM/dd/yy hh:mm a')
+                ? this.datePipe.transform(updatedAt, 'MM/dd/yy')
                 : null,
         };
     }
@@ -1139,7 +1140,9 @@ export class FuelTableComponent
                         (currentFilter?.filterName ===
                             TableStringEnum.FUEL_ARRAY ||
                             currentFilter?.filterName ===
-                                TableStringEnum.FUEL_INCOMPLETE_ARRAY)
+                                TableStringEnum.FUEL_INCOMPLETE_ARRAY ||
+                            currentFilter?.filterType ===
+                                TableStringEnum.LOCATION_FILTER)
                     )
                         return this.fuelService.getFuelTransactionsList(
                             null,
@@ -1148,9 +1151,9 @@ export class FuelTableComponent
                             null,
                             null,
                             null,
-                            null,
-                            null,
-                            null,
+                            currentFilter.queryParams?.longValue,
+                            currentFilter.queryParams?.latValue,
+                            currentFilter.queryParams?.rangeValue,
                             null,
                             null,
                             null,
@@ -1167,9 +1170,11 @@ export class FuelTableComponent
                             FuelTableConstants.TABLE_PAGE_SIZE
                         );
                     else if (
-                        !!currentFilter &&
-                        currentFilter?.filterName ===
-                            TableStringEnum.CLOSED_ARRAY
+                        (!!currentFilter &&
+                            currentFilter?.filterName ===
+                                TableStringEnum.CLOSED_ARRAY) ||
+                        currentFilter?.filterType ===
+                            TableStringEnum.LOCATION_FILTER
                     )
                         return this.fuelService.getFuelStopsList(
                             null,
@@ -1177,9 +1182,9 @@ export class FuelTableComponent
                             null,
                             null,
                             null,
-                            null,
-                            null,
-                            null,
+                            currentFilter.queryParams?.longValue,
+                            currentFilter.queryParams?.latValue,
+                            currentFilter.queryParams?.rangeValue,
                             null,
                             null,
                             null,

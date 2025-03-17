@@ -44,6 +44,7 @@ import {
     CaInputComponent,
     CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
+    CaInputDropdownTestComponent,
     CaModalComponent,
 } from 'ca-components';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
@@ -124,6 +125,7 @@ import moment from 'moment';
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
+        CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
 
         // pipes
@@ -258,7 +260,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSelectDropDown(event: any, action: string, index?: number): void {
+    public onSelectDropDown(
+        event: any,
+        action: string
+    ): void {
         switch (action) {
             case FuelDropdownOptionsStringEnum.TRUCK:
                 this.selectedTruckType = event;
@@ -428,15 +433,19 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private convertItems() : FuelItemResponse[]{
+    private convertItems(): FuelItemResponse[] {
         return this.fuelItems.map((item) => {
-            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(item.qty.toString());
-            const price = MethodsCalculationsHelper.convertThousandSepInNumber(item.price.toString());
+            const qty = MethodsCalculationsHelper.convertThousandSepInNumber(
+                item.qty.toString()
+            );
+            const price = MethodsCalculationsHelper.convertThousandSepInNumber(
+                item.price.toString()
+            );
 
             return {
                 ...item,
-                subtotal: qty * price
-            }
+                subtotal: qty * price,
+            };
         });
     }
 

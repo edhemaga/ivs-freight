@@ -97,7 +97,7 @@ export const selectPayrollReportMapData = createSelector(
                 const routePath: IMapRoutePath = {
                     path: [],
                     decodedShape: mapRoutes?.legs?.[index - 1]?.decodedShape,
-                    strokeColor: MapOptionsConstants.routingPathColors.gray,
+                    strokeColor: MapOptionsConstants.ROUTING_PATH_COLORS.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,
                     isDashed: !!nextLoadNumber,
@@ -108,7 +108,8 @@ export const selectPayrollReportMapData = createSelector(
                 if (index === 1) {
                     routePaths.push({
                         ...routePath,
-                        strokeColor: MapOptionsConstants.routingPathColors.gray,
+                        strokeColor:
+                            MapOptionsConstants.ROUTING_PATH_COLORS.gray,
                         strokeOpacity: 1,
                         strokeWeight: 2,
                     });

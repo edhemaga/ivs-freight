@@ -1,6 +1,5 @@
-$dispatch-status-colors:
-    '919191', '008496', '6C6C6C', 'F276EF', 'FF9800', '3074D3', '62B264',
-    'FF9800', 'D80300', '26A690';
+$dispatch-status-colors: '919191', '008496', '6C6C6C', 'F276EF', 'FF9800',
+    '3074D3', '62B264', 'FF9800', 'D80300', '26A690';
 
 // Color variables
 $white: #ffffff;
@@ -49,7 +48,8 @@ $fallback-font: 'sans-serif';
 // New Color Variables
 $text-color: #656565;
 // Transition variable
-$transition: all 0.3s ease-in-out;
+$transitionDuration: 0.3s;
+$transition: all $transitionDuration ease-in-out;
 
 //Scale size
 $scaleSize: 1.1;
@@ -241,7 +241,7 @@ $ta-orange-7: #ffb74d;
 
 $ta-purple-1: #b370f0;
 $ta-purple-2: #ba68c8;
-$ta-purple-3: #9E47EC33;
+$ta-purple-3: #9e47ec33;
 
 $ta-brown-1: #865e3a;
 $ta-brown-2: #865e3a33;
