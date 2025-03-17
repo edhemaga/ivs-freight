@@ -927,7 +927,7 @@ export class TruckTableComponent
                                         : `/assets/svg/common/trucks/${data?.truckType?.logoName}`,
                                 },
                             },
-                            modalTitle: data.truckNumber,
+                            modalTitle: TableStringEnum.UNIT + data?.truckNumber,
                             modalSecondTitle: data?.tableVin
                                 ? data?.tableVin?.regularText +
                                   data?.tableVin?.boldText
