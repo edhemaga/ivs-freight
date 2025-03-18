@@ -17,4 +17,6 @@ export enum eGeneralActions {
     PREVIOUS = 'Previous',
 
     OPEN_MODAL = 'open-modal',
+    TAB_SELECTED = 'tab-selected',
+    VIEW_MODE = 'view-mode',
 }

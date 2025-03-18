@@ -1,4 +1,4 @@
-export class IFuelPurchaseModalForm {
+export interface IFuelPurchaseModalForm {
     efsAccount?: string;
     fuelCard?: string;
     invoice?: string;
@@ -8,7 +8,7 @@ export class IFuelPurchaseModalForm {
     transactionDate?: string;
     transactionTime?: string;
     fuelStopStoreId?: number;
-    // TODO: leave as any for now as we do not know type for fuelItems
+    // TODO: leave as any for now as we do not know type of fuelItems
     fuelItems?: any[];
     total?: number;
 }
