@@ -56,6 +56,7 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { FuelPurchaseModalSvgRoutes } from './utils/svg-routes';
 
 // models
 import {
@@ -77,7 +78,11 @@ import { PayrollDriver } from '@pages/accounting/pages/payroll/state/models';
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
-import { FormatDatePipe, NameInitialsPipe } from '@shared/pipes';
+import {
+    FormatDatePipe,
+    MiddleEllipsisPipe,
+    NameInitialsPipe,
+} from '@shared/pipes';
 import { FuelPurchaseModalInputConfigPipe } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/pipes';
 
 // enums
@@ -135,6 +140,7 @@ import moment from 'moment';
         // pipes
         FormatDatePipe,
         FuelPurchaseModalInputConfigPipe,
+        MiddleEllipsisPipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
@@ -161,6 +167,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     public updatedFuelItems: FuelItemResponse[] = [];
     public total: number = 0;
     public svgRoutes = SharedSvgRoutes;
+    public modalSvgRoutes = FuelPurchaseModalSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
     public eFuelTransactionType = eFuelTransactionType;
     public modalTableTypeEnum = ModalTableTypeEnum;
@@ -203,6 +210,8 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.confirmationActivationSubscribe();
 
         this.confirmationDeactivationSubscribe();
+
+        console.log(this.editData);
     }
 
     public onModalAction(action: string): void {
@@ -264,10 +273,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSelectDropDown(
-        event: any,
-        action: string
-    ): void {
+    public onSelectDropDown(event: any, action: string): void {
         switch (action) {
             case FuelDropdownOptionsStringEnum.TRUCK:
                 this.selectedTruckType = event;

@@ -1,3 +1,6 @@
+@import '/src/theme/variables.scss';
+@import '/src/assets/scss/fonts.scss';
+
 .fuel-total-row {
     margin: 0 !important;
     text-align: right;
@@ -58,5 +61,14 @@
 
     &-3 {
         grid-template-columns: 143px 143px 143px;
+    }
+}
+
+.efs-account-wrapper {
+    background-color: $bw1;
+    color: $bw5;
+
+    .line-height-26 {
+        line-height: 26px;
     }
 }

@@ -18,16 +18,20 @@
                 editData?.type === 'edit' &&
                 fuelTransactionType?.name !== 'Manual'
             ) {
+                @let accountId =
+                    editData?.data?.fuelCard?.accountId | middleEllipsis;
+
                 <div class="row">
                     <div class="col-6">
-                        <app-ca-input
-                            formControlName="efsAccount"
-                            invoiceInputConfig
-                            [inputConfig]="
-                                { configType: 'efsInputConfig' }
-                                    | fuelPurchaseModalInputConfig
-                            "
-                        ></app-ca-input>
+                        <div
+                            class="d-flex justify-content-between px-2 efs-account-wrapper"
+                        >
+                            <svg-icon [src]="modalSvgRoutes.WEX_EFS"></svg-icon>
+
+                            <div class="font-size-14 line-height-26">
+                                {{ accountId }}
+                            </div>
+                        </div>
                     </div>
                     <div class="col-6">
                         <app-ca-input
