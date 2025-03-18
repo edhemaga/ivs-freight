@@ -265,6 +265,7 @@ model/companyAccountLabelResponse.ts
 model/companyAccountModalResponse.ts
 model/companyAccountResponse.ts
 model/companyAccountResponsePagination.ts
+model/companyAccountSortBy.ts
 model/companyAdditionalInfo.ts
 model/companyAdditionalInfoResponse.ts
 model/companyChannelsConversationResponse.ts
@@ -274,6 +275,7 @@ model/companyContactLabelResponse.ts
 model/companyContactModalResponse.ts
 model/companyContactResponse.ts
 model/companyContactResponsePagination.ts
+model/companyContactSortBy.ts
 model/companyContactUser.ts
 model/companyDocumentsStatisticResponse.ts
 model/companyDurationResponse.ts
@@ -308,6 +310,7 @@ model/companyUserListResponse.ts
 model/companyUserModalResponse.ts
 model/companyUserResponse.ts
 model/companyUserShortResponse.ts
+model/companyUserSortBy.ts
 model/companyWithDotResponse.ts
 model/contactColorResponse.ts
 model/contactEmailResponse.ts
@@ -534,6 +537,7 @@ model/fuelStopListResponse.ts
 model/fuelStopMinimalListResponse.ts
 model/fuelStopMinimalResponse.ts
 model/fuelStopMinimalResponsePagination.ts
+model/fuelStopPayrollResponse.ts
 model/fuelStopResponse.ts
 model/fuelStopResponsePagination.ts
 model/fuelStopShortResponse.ts
@@ -826,6 +830,10 @@ model/payrollLoadMinimalResponse.ts
 model/payrollLoadStopMinimalResponse.ts
 model/payrollMapLocation.ts
 model/payrollMileageTotalSum.ts
+model/payrollMobileClosedListResponse.ts
+model/payrollMobileClosedListSortBy.ts
+model/payrollMobileClosedResponse.ts
+model/payrollMobileClosedResponsePagination.ts
 model/payrollOtherPaymentType.ts
 model/payrollOwnerClosedResponse.ts
 model/payrollOwnerResponse.ts

@@ -9,12 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { PayrollMobileClosedResponse } from './payrollMobileClosedResponse';
 
 
-export type CountryType = 'US' | 'CA';
-
-export const CountryType = {
-    Us: 'US' as CountryType,
-    Ca: 'CA' as CountryType
-};
+export interface PayrollMobileClosedResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<PayrollMobileClosedResponse> | null;
+}
 

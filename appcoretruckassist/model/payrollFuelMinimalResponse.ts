@@ -9,14 +9,16 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { FuelItemResponse } from './fuelItemResponse';
+import { FuelStopPayrollResponse } from './fuelStopPayrollResponse';
 
 
 export interface PayrollFuelMinimalResponse { 
     id?: number;
-    description?: string | null;
+    fuelStop?: FuelStopPayrollResponse;
+    items?: Array<FuelItemResponse> | null;
     galons?: number;
-    pricePerGalon?: number;
-    subtotal?: number;
+    total?: number;
     date?: string;
 }
 
