@@ -1,4 +1,4 @@
-@if (
+@let store =
     {
         viewData: loadStoreService.viewData$ | async,
         tableData: loadStoreService.tableData$ | async,
@@ -7,15 +7,15 @@
         dispatcherList: loadStoreService.dispatcherList$ | async,
         statusList: loadStoreService.statusList$ | async,
     };
-    as store
-) {
+
+@if (store) {
     <app-new-table-toolbar
         [title]="'Load'"
         [leftSide]="leftSide"
         [rightSide]="rightSide"
         (onPlusClick)="
             onToolBarAction({
-                action: tableStringEnum.OPEN_MODAL,
+                action: generalActions.OPEN_MODAL,
             })
         "
     >

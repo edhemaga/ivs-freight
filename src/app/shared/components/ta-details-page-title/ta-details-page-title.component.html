@@ -14,9 +14,17 @@
         {{ title }}
     </div>
 
-    <div class="m-l-auto">
+    <div class="m-l-auto d-flex align-items-center justify-content-center">
         <ng-container *ngIf="rightSide">
             <ng-container *ngTemplateOutlet="rightSide"></ng-container>
         </ng-container>
+
+        <ca-dropdown-menu
+            [type]="'dots-menu-type'"
+            [placement]="'right-top'"
+            [options]="detailsDropdownOptions"
+            class="m-l-8"
+        >
+        </ca-dropdown-menu>
     </div>
 </div>

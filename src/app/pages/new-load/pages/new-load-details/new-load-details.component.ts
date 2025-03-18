@@ -13,6 +13,9 @@ import { TaDetailsPageTitleComponent } from '@shared/components/ta-details-page-
 // Pipes
 import { StatusClassPipe } from '@pages/new-load/pages/new-load-details/pipes/status-class.pipe';
 
+// Models
+import { DetailsDropdownOptions } from '@shared/models';
+
 @Component({
     selector: 'app-new-load-details',
     templateUrl: './new-load-details.component.html',
@@ -30,7 +33,17 @@ import { StatusClassPipe } from '@pages/new-load/pages/new-load-details/pipes/st
     ],
 })
 export class NewLoadDetailsComponent implements OnInit {
+    public detailsDropdownOptions!: DetailsDropdownOptions;
+
     constructor(protected loadStoreService: LoadStoreService) {}
 
-    ngOnInit(): void {}
+    ngOnInit(): void {
+        this.manageSubscriptions();
+    }
+
+    private manageSubscriptions(): void {
+        this.loadStoreService.resolveLoadDetails$.subscribe((load) => {
+            // TODO: Generate dropdown
+        });
+    }
 }
