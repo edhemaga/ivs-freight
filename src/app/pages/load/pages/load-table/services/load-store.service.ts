@@ -53,7 +53,7 @@ import {
     tableOptionsSelector,
     viewDataSelector,
     loadDetailsSelector,
-    areLoadDetailsLoadedSelector,
+    isLoadDetailsLoadedSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -126,8 +126,8 @@ export class LoadStoreService {
         select(loadDetailsSelector)
     );
 
-    public areLoadDetailsLoaded$: Observable<boolean> = this.store.pipe(
-        select(areLoadDetailsLoadedSelector)
+    public isLoadDetailsLoaded$: Observable<boolean> = this.store.pipe(
+        select(isLoadDetailsLoadedSelector)
     );
 
     public dispatchLoadList(

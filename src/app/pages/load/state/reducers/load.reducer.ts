@@ -34,7 +34,7 @@ export const initialState: ILoadState = {
     statusList: [],
 
     details: {},
-    areLoadDetailsLoaded: false,
+    isLoadDetailsLoaded: false,
 };
 // #endregion
 
@@ -162,7 +162,7 @@ export const loadReducer = createReducer(
     on(LoadActions.getLoadDetailsError, (state) => ({ ...state })),
     on(LoadActions.setLoadDetailsToUnload, (state) => ({
         ...state,
-        areLoadDetailsLoaded: false,
+        isLoadDetailsLoaded: false,
     })),
 
     // #endregion

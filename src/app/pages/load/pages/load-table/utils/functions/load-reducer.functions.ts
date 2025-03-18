@@ -584,5 +584,5 @@ export const getLoadDetails = function (
     state: ILoadState,
     details: LoadResponse
 ): ILoadState {
-    return { ...state, details, areLoadDetailsLoaded: true };
+    return { ...state, details, isLoadDetailsLoaded: true };
 };

@@ -30,5 +30,5 @@ export interface ILoadState {
     statusList: IFilterDropdownList[];
 
     details: LoadResponse;
-    areLoadDetailsLoaded: boolean;
+    isLoadDetailsLoaded: boolean;
 }

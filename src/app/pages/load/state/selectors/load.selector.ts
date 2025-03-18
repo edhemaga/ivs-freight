@@ -22,7 +22,7 @@ import { ITableOptions } from '@shared/models';
 
 // enums
 import { eActiveViewMode, TableStringEnum } from '@shared/enums';
-import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // helpers
 import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers/load-store.helper';
@@ -389,11 +389,11 @@ export const loadDetailsSelector = createSelector(loadState, (state) => {
     return details;
 });
 
-export const areLoadDetailsLoadedSelector = createSelector(
+export const isLoadDetailsLoadedSelector = createSelector(
     loadState,
     (state) => {
-        const { areLoadDetailsLoaded } = state;
+        const { isLoadDetailsLoaded } = state;
 
-        return areLoadDetailsLoaded;
+        return isLoadDetailsLoaded;
     }
 );
