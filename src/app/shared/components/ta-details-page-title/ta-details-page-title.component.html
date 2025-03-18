@@ -1,0 +1,22 @@
+<div class="d-flex align-items-center">
+    <div
+        ngbTooltip
+        mainTooltip="Back To List"
+        position="bottom"
+        tooltipBackground="#424242"
+        [routerLink]="routeLink"
+        class="background-bw6-2 background-hover-black svg-fill-bw-9 svg-hover-white svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
+    >
+        <svg-icon [src]="backIcon"></svg-icon>
+    </div>
+
+    <div class="text-color-black text-size-26 ca-font-black m-l-8">
+        {{ title }}
+    </div>
+
+    <div class="m-l-auto">
+        <ng-container *ngIf="rightSide">
+            <ng-container *ngTemplateOutlet="rightSide"></ng-container>
+        </ng-container>
+    </div>
+</div>
