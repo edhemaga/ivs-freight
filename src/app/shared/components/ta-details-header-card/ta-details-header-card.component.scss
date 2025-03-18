@@ -61,17 +61,12 @@ $arrow-default-color: #aaaaaa;
             .arrow-left {
                 cursor: pointer;
                 padding: 0 5px;
-                svg {
-                    position: relative;
-                    top: 2px;
-                }
             }
             .arrow-right {
                 cursor: pointer;
                 padding: 0 5px;
+
                 svg {
-                    position: relative;
-                    top: 2px;
                     transform: rotate(-180deg);
                 }
             }
@@ -87,10 +82,6 @@ $arrow-default-color: #aaaaaa;
         margin-top: 10px;
         margin-bottom: 10px;
     }
-}
-
-.additional-title-container {
-    padding: 8px 12px 0 12px;
 }
 
 // DRIVER GENERAL PERSONAL DATA
@@ -380,11 +371,12 @@ $arrow-default-color: #aaaaaa;
     }
 }
 
-.disabedPreviousArrow {
+.disabedPreviousArrow,
+.disabedPreviousArrowPrevious {
     .arrows {
         .previousArrow {
             opacity: 0.5;
-            cursor: default !important ;
+            cursor: default !important;
 
             svg-icon {
                 cursor: default !important;
@@ -408,7 +400,7 @@ $arrow-default-color: #aaaaaa;
     .arrows {
         .nextArrow {
             opacity: 0.5;
-            cursor: default !important ;
+            cursor: default !important;
 
             svg-icon {
                 cursor: default !important;

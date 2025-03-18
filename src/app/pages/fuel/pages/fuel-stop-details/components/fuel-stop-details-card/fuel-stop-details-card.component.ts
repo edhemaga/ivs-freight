@@ -6,7 +6,7 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 
-import { Subject } from 'rxjs';
+import { retry, Subject, takeUntil } from 'rxjs';
 
 // components
 import { FuelStopDetailsTitleCardComponent } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-card/components/fuel-stop-details-title-card/fuel-stop-details-title-card.component';
@@ -23,6 +23,7 @@ import { FuelMinimalListQuery } from '@pages/fuel/state/fuel-details-minimal-lis
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
+import { FuelService } from '@shared/services/fuel.service';
 
 // enums
 import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
@@ -54,7 +55,9 @@ export class FuelStopDetailsCardComponent {
     @Input() set fuelStop(data: FuelStopResponse) {
         this._fuelStop = data;
 
-        this.getFuelStopsFranchiseDropdownList();
+        console.log('this._fuelStop', this._fuelStop);
+
+        this.getFuelStopsDropdownList();
     }
 
     private destroy$ = new Subject<void>();
@@ -62,12 +65,14 @@ export class FuelStopDetailsCardComponent {
     public _fuelStop: FuelStopResponse;
 
     public fuelStopCurrentIndex: number;
+    public fuelStopStoreCurrentIndex: number = 0;
 
     // enums
     public eStringPlaceholder = eStringPlaceholder;
 
     // fuel stop dropdown
-    public fuelStopDropdownList: FuelStopResponse[] = [];
+    public fuelStopFranchiseDropdownList: FuelStopMinimalResponse[] = [];
+    public fuelStopStoreDropdownList: FuelStopMinimalResponse[] = [];
 
     // note card
     public noteForm: UntypedFormGroup;
@@ -79,6 +84,7 @@ export class FuelStopDetailsCardComponent {
         private tableService: TruckassistTableService,
         private detailsPageService: DetailsPageService,
         private modalService: ModalService,
+        private fuelService: FuelService,
 
         // store
         private fuelMinimalListQuery: FuelMinimalListQuery
@@ -97,19 +103,30 @@ export class FuelStopDetailsCardComponent {
     }
 
     private getCurrentIndex(): void {
-        const currentIndex = this.fuelStopDropdownList?.findIndex(
-            (fuelStop) => fuelStop.id === this._fuelStop.id
+        const fuelStopId =
+            this._fuelStop?.fuelStopFranchise?.id ?? this._fuelStop.id;
+
+        const currentIndex = this.fuelStopFranchiseDropdownList?.findIndex(
+            (fuelStop) => fuelStop.id === fuelStopId
         );
 
         this.fuelStopCurrentIndex = currentIndex;
     }
 
-    private getFuelStopsFranchiseDropdownList(): void {
-        this.fuelStopDropdownList = this.fuelMinimalListQuery
+    private getFuelStopsDropdownList(): void {
+        const isFranchise = !!this._fuelStop?.fuelStopFranchise;
+
+        if (isFranchise) {
+            const fuelStopId = this._fuelStop?.fuelStopFranchise?.id;
+
+            this.getFuelStopStoreDropdownList(fuelStopId);
+        }
+
+        console.log('isFranchise', isFranchise);
+
+        this.fuelStopFranchiseDropdownList = this.fuelMinimalListQuery
             .getAll()
             .map((fuelStop: FuelStopMinimalResponse) => {
-                console.log('fuelStop', fuelStop);
-
                 /*   const {
                         id,
                         companyOwned,
@@ -144,58 +161,104 @@ export class FuelStopDetailsCardComponent {
                 return fuelStop;
             });
 
-        /* this.fuelStopDropdownList =
+        /* this.fuelStopFranchiseDropdownList =
                 RepairShopDetailsCardHelper.sortByPinnedAndFavorite(
-                    this.fuelStopDropdownList
+                    this.fuelStopFranchiseDropdownList
                 ); */
     }
 
-    public onSelectedShop(event: FuelStopResponse): void {
+    private getFuelStopStoreDropdownList(
+        fuelStopId: number,
+        isFuelStopFranchiseChangeClick?: boolean,
+        currentIndex?: number
+    ): void {
+        this.fuelService
+            .getFuelStopsMinimalList(fuelStopId, 1, 25)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(({ pagination: { data } }) => {
+                this.fuelStopStoreDropdownList = data;
+
+                if (isFuelStopFranchiseChangeClick) {
+                    const fuelStopStoreId =
+                        this.fuelStopStoreDropdownList[0].id;
+
+                    this.detailsPageService.getDataDetailId(fuelStopStoreId);
+
+                    this.fuelStopCurrentIndex = currentIndex;
+                }
+
+                console.log(
+                    'this.fuelStopFranchiseDropdownList',
+                    this.fuelStopFranchiseDropdownList
+                );
+
+                console.log(
+                    'this.fuelStopStoreDropdownList',
+                    this.fuelStopStoreDropdownList
+                );
+            });
+    }
+
+    private onSelectedFuelStop(event: FuelStopResponse): void {
         if (event?.id !== this._fuelStop.id)
             this.detailsPageService.getDataDetailId(event.id);
     }
 
-    public onChangeShop(action: string): void {
-        let currentIndex = this.fuelStopDropdownList?.findIndex(
-            (fuelStop) => fuelStop.id === this._fuelStop.id
+    private handleOnChangeFuelStopAction(
+        currentIndex: number,
+        fuelStopId: number
+    ): void {
+        const isFranchise =
+            this.fuelStopFranchiseDropdownList[currentIndex].isFranchise;
+
+        if (isFranchise) {
+            const fuelStopId =
+                this.fuelStopFranchiseDropdownList[currentIndex].id;
+
+            this.getFuelStopStoreDropdownList(fuelStopId, true, currentIndex);
+
+            return;
+        }
+
+        this.detailsPageService.getDataDetailId(fuelStopId);
+
+        this.fuelStopCurrentIndex = currentIndex;
+    }
+
+    private onChangeFuelStop(action: string): void {
+        const fuelStopId =
+            this._fuelStop?.fuelStopFranchise?.id ?? this._fuelStop.id;
+
+        let currentIndex = this.fuelStopFranchiseDropdownList?.findIndex(
+            (fuelStop) => fuelStop.id === fuelStopId
         );
 
-        switch (action) {
-            case eFuelStopDetails.PREVIOUS:
-                currentIndex = --currentIndex;
+        if (action === eFuelStopDetails.PREVIOUS && --currentIndex >= 0) {
+            this.handleOnChangeFuelStopAction(currentIndex, fuelStopId);
+        } else if (
+            action === eFuelStopDetails.NEXT &&
+            ++currentIndex < this.fuelStopFranchiseDropdownList.length
+        ) {
+            this.handleOnChangeFuelStopAction(currentIndex, fuelStopId);
+        }
+    }
 
-                if (currentIndex !== -1) {
-                    this.detailsPageService.getDataDetailId(
-                        this.fuelStopDropdownList[currentIndex].id
-                    );
+    private onChangeFuelStopStore(action: string): void {
+        console.log('action', action);
+        console.log(
+            'this.fuelStopStoreCurrentIndex',
+            this.fuelStopStoreCurrentIndex
+        );
 
-                    this.fuelStopCurrentIndex = currentIndex;
-                }
-
-                break;
-            case eFuelStopDetails.NEXT:
-                currentIndex = ++currentIndex;
-
-                if (
-                    currentIndex !== -1 &&
-                    this.fuelStopDropdownList.length > currentIndex
-                ) {
-                    this.detailsPageService.getDataDetailId(
-                        this.fuelStopDropdownList[currentIndex].id
-                    );
-
-                    this.fuelStopCurrentIndex = currentIndex;
-
-                    break;
-                }
-            default:
-                break;
+        if (action === eFuelStopDetails.PREVIOUS) {
+        } else {
         }
     }
 
     public handleFuelStopDetailsTitleCardEmit(event: {
-        event: FuelStopMinimalResponse;
+        event: string;
         type: string;
+        isAdditionalDropdownAction?: boolean;
     }): void {
         console.log('event', event);
 
@@ -209,11 +272,13 @@ export class FuelStopDetailsCardComponent {
                         return;
                     } */
 
-                this.onSelectedShop(event.event);
+                /* this.onSelectedFuelStop(event.event); */
 
                 break;
             case eFuelStopDetails.CHANGE_FUEL_STOP:
-                this.onChangeShop(event.event as string);
+                event.isAdditionalDropdownAction
+                    ? this.onChangeFuelStopStore(event.event)
+                    : this.onChangeFuelStop(event.event);
 
                 break;
             default:

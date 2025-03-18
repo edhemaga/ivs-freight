@@ -15,17 +15,27 @@ import {
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-
-// modules
 import { NgbModule, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+
+// enums
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
 
 // pipes
 import { DetailsActiveItemPipe } from '@shared/pipes/details-active-item.pipe';
 
-// compoents
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+// configs
+import { DetailsHeaderCardInputConfig } from '@shared/components/ta-details-header-card/utils/configs';
+
+// svg routes
+import { DetailsHeaderCardSvgRoutes } from '@shared/components/ta-details-header-card/utils/svg-routes';
+
+// components
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { CaInputDropdownComponent } from 'ca-components';
+
+// interfaces
+import { IAdditionalChangeEvent } from '@shared/components/ta-details-header-card/interfaces/additional-change-event.interface';
 
 @Component({
     selector: 'app-ta-details-header-card',
@@ -44,23 +54,22 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
         // components
         TaAppTooltipV2Component,
-        TaInputDropdownComponent,
+        CaInputDropdownComponent,
         TaDetailsDropdownComponent,
 
         // pipes
         DetailsActiveItemPipe,
     ],
 })
-export class TaDetailsHeaderCardComponent {
+export class TaDetailsHeaderCardComponent<T> {
     @Input() public customPinnedSvg: string;
     @Input() public cardDetailsDate: any;
     @Input() public cardDetailsDateTerminated: string;
     @Input() public tooltipNext: string;
     @Input() public tooltipPrevious: string;
     @Input() public searchName: string;
-    @Input() public options: any = [];
+    @Input() public options: T[] = [];
     @Input() public statusInactive: number = 1;
-    @Input() public additionalTitle: boolean;
     @Input() public searchInputName: string;
     @Input() public hasArrow: boolean;
     @Input() public optionsId: number;
@@ -73,44 +82,96 @@ export class TaDetailsHeaderCardComponent {
     @Input() public haveDropSVG: boolean;
     @Input() public dateClosed: string;
 
-    @Output() public dropActions = new EventEmitter<any>();
-    @Output() selectValue = new EventEmitter<string>();
-    @Output() changeEvent = new EventEmitter<string>();
+    @Input() public hasMultipleInputs?: boolean;
+    @Input() public optionsSecondInput?: T[] = [];
+    @Input() public secondCurrentName?: string;
+    @Input() public isFirstFuelStopStoreInList?: boolean;
+    @Input() public isLastFuelStopStoreInList?: boolean;
+
+    @Output() public dropActions = new EventEmitter<T>();
+    @Output() public selectValue = new EventEmitter<string>();
+    @Output() public changeEvent = new EventEmitter<string>();
+    @Output() public changeEventAdditional =
+        new EventEmitter<IAdditionalChangeEvent>();
+
+    @Output() selectValueStore = new EventEmitter<string>();
 
     public inputFormControl: UntypedFormControl = new UntypedFormControl();
 
-    public selectedDropdown: boolean = false;
+    public isDropdownItemSelected: boolean = false;
+    public isAdditionalDropdownItemSelected: boolean = false;
 
-    public showDropdownTooltip: boolean = true;
+    public hasTooltip: boolean = true;
 
-    public activeItem: any;
+    public selectedDropdownItem: T;
+    public selectedAdditionalDropdownItem: T;
+
+    // configs
+    public detailsHeaderCardInputConfig = DetailsHeaderCardInputConfig;
+
+    // svg routes
+    public detailsHeaderCardSvgRoutes = DetailsHeaderCardSvgRoutes;
+
+    // enums
+    public eGeneralActions = eGeneralActions;
+    public eStringPlaceholder = eStringPlaceholder;
 
     constructor(private cdRef: ChangeDetectorRef) {}
 
-    public showTooltip(e: boolean) {
-        this.showDropdownTooltip = e;
+    public showTooltip(isDisplayTooltip: boolean): void {
+        this.hasTooltip = isDisplayTooltip;
 
         this.cdRef.detectChanges();
     }
 
-    public onAction(action: string) {
-        this.selectedDropdown = false;
+    public onPreviousNextAction(
+        action: string,
+        isAdditionalDropdownAction: boolean = false
+    ): void {
+        if (isAdditionalDropdownAction) {
+            const emitAction = { action, isAdditionalDropdownAction };
+
+            this.changeEventAdditional.emit(emitAction);
+
+            this.isAdditionalDropdownItemSelected = false;
+
+            return;
+        }
+
+        this.isDropdownItemSelected = false;
 
         this.changeEvent.emit(action);
     }
 
     public onPickItem(): void {
         if (this.options.length > 1) {
-            this.selectedDropdown = true;
+            this.isDropdownItemSelected = true;
+        }
+    }
+
+    public onPickSecondInput(): void {
+        if (this.optionsSecondInput.length > 1) {
+            this.isAdditionalDropdownItemSelected = true;
         }
     }
 
     public onSelectItem(value: any): void {
         if (this.options.length > 1) {
-            this.activeItem = value;
+            this.selectedDropdownItem = value;
 
-            this.selectedDropdown = !this.selectedDropdown;
+            this.isDropdownItemSelected = !this.isDropdownItemSelected;
             this.selectValue.emit(value);
+        }
+    }
+
+    public onSelectSecondItem(value: any): void {
+        if (this.optionsSecondInput.length > 1) {
+            this.selectedAdditionalDropdownItem = value;
+
+            this.isAdditionalDropdownItemSelected =
+                !this.isAdditionalDropdownItemSelected;
+
+            this.selectValueStore.emit(value);
         }
     }
 
