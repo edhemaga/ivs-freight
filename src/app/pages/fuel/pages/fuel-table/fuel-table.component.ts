@@ -47,6 +47,7 @@ import {
     NameInitialsPipe,
     ActivityTimePipe,
 } from '@shared/pipes';
+import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-details/pipes';
 
 // helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -88,11 +89,13 @@ import { MapMarkerIconService } from 'ca-components';
 import { MapsService } from '@shared/services/maps.service';
 
 // mixins
-import { FuelMapMixin } from '@pages/fuel/pages/fuel-table/mixins/fuel-map.mixin';
+import { FuelMapMixin } from '@pages/fuel/pages/fuel-table/mixins';
 
-class ConcreteFuelDropdownMenuActionsBase extends FuelDropdownMenuActionsBase {
+class ConcreteFuelDropdownMenuActionsBase<
+    T,
+> extends FuelDropdownMenuActionsBase {
     destroy$: Subject<void>;
-    viewData: any[] = [];
+    viewData: T[] = [];
     fuelService: FuelService;
     modalService: ModalService;
 
@@ -105,7 +108,12 @@ const MixedBase = FuelMapMixin(ConcreteFuelDropdownMenuActionsBase);
     selector: 'app-fuel-table',
     templateUrl: './fuel-table.component.html',
     styleUrls: ['./fuel-table.component.scss'],
-    providers: [ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe],
+    providers: [
+        ThousandSeparatorPipe,
+        NameInitialsPipe,
+        ActivityTimePipe,
+        LastFuelPriceRangeClassColorPipe,
+    ],
 })
 export class FuelTableComponent
     extends MixedBase
@@ -159,15 +167,16 @@ export class FuelTableComponent
         private nameInitialsPipe: NameInitialsPipe,
         private activityTimePipe: ActivityTimePipe,
         private thousandSeparator: ThousandSeparatorPipe,
+        public fuelPricePipe: LastFuelPriceRangeClassColorPipe,
 
         // store
         private store: Store,
-        private fuelQuery: FuelQuery,
+        public fuelQuery: FuelQuery,
 
         // ref
         public ref: ChangeDetectorRef
     ) {
-        super(ref, fuelService, mapsService, markerIconService);
+        super(ref, fuelService, fuelPricePipe, mapsService, markerIconService);
     }
 
     ngOnInit(): void {
@@ -1225,6 +1234,12 @@ export class FuelTableComponent
             )
             .subscribe((response) => {
                 this.updateStoreData(response, true);
+            });
+
+        this.fuelQuery.fuelPriceRange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.fuelStopPriceRange = res;
             });
     }
 

@@ -20,6 +20,7 @@ import {
     ClusterResponse,
     FuelledVehicleHistoryListResponse,
     CreateWithUploadsResponse,
+    GetFuelStopRangeResponse,
 } from 'appcoretruckassist';
 
 // services
@@ -65,6 +66,15 @@ export class FuelService {
             return {
                 ...store,
                 fuelStops: data,
+            };
+        });
+    }
+
+    set updateStoreFuelStopPriceRange(data: GetFuelStopRangeResponse) {
+        this.fuelStore.update((store) => {
+            return {
+                ...store,
+                fuelPriceRange: data,
             };
         });
     }
@@ -445,6 +455,10 @@ export class FuelService {
             search1,
             search2
         );
+    }
+
+    public getFuelStopPriceRange(): Observable<GetFuelStopRangeResponse> {
+        return this.fuelService.apiFuelFuelstopRangeGet();
     }
 
     public getFuelStopFuelledcVehicle(

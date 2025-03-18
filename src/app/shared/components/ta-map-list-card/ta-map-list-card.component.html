@@ -31,7 +31,9 @@
             </div>
             <div class="d-flex align-items-center gap-1">
                 @if (
-                    selectedSortColumn?.name === 'Favorites' || item?.isFavorite
+                    selectedSortColumn?.name === 'Favorites' ||
+                    item?.isFavorite ||
+                    item?.favourite
                 ) {
                     <div
                         class="d-flex"
@@ -42,7 +44,9 @@
                     >
                         <svg-icon
                             class="d-flex favorite-svg"
-                            [ngClass]="{ active: item?.isFavorite }"
+                            [ngClass]="{
+                                active: item?.isFavorite || item.favourite,
+                            }"
                             [src]="mapListCardSvgRoutes.favoriteRoute"
                             [svgStyle]="{ 'width.px': 14, 'height.px': 14 }"
                         ></svg-icon>
@@ -58,7 +62,9 @@
                     "
                     (click)="showMoreOptions()"
                 >
-                    <app-ta-details-dropdown
+                    <!-- TO DO: Add new dropdown component -->
+
+                    <!-- <app-ta-details-dropdown
                         #detailsDropdown
                         [options]="dropdownActions"
                         [placement]="'right-top right-bottom'"
@@ -68,7 +74,7 @@
                         [leftIcon]="true"
                         [customClassDropDown]="'map-list-card-dropdown'"
                         (dropDownActions)="callBodyAction($event)"
-                    ></app-ta-details-dropdown>
+                    ></app-ta-details-dropdown> -->
                 </div>
             </div>
         </div>
@@ -122,15 +128,29 @@
                         <span>
                             <svg-icon
                                 class="marker-fuel-svg"
+                                [ngClass]="
+                                    {
+                                        minValue: item?.lowestPricePerGallon,
+                                        maxValue: item?.highestPricePerGallon,
+                                        totalValue: item?.pricePerGallon,
+                                    } | lastFuelPriceRangeClassColor
+                                "
                                 [src]="mapListCardSvgRoutes.fuelCircleRoute"
                                 [svgStyle]="{ 'width.px': 10, 'height.px': 10 }"
                             ></svg-icon>
                         </span>
-                        <span class="marker-like-text marker-medium-text">
-                            <span class="marker-bold-text">
-                                ${{ item.pricePerGallon }}
-                            </span>
-                            <!-- - 4 days ago -->
+                        <span
+                            class="marker-like-text text-color-black ta-font-semi-bold"
+                        >
+                            ${{ item.pricePerGallon }}
+
+                            @if (item.lastUsed) {
+                                -
+                                {{
+                                    item.lastUsed
+                                        | dateFromStringPipe: 'time-ago'
+                                }}
+                            }
                         </span>
                     } @else {
                         <span

@@ -1,17 +1,31 @@
-import { MapMixin } from '@shared/mixins/map/map.mixin';
+import { ChangeDetectorRef } from '@angular/core';
+import { takeUntil } from 'rxjs';
+
+// mixin
+import { MapMixin } from '@shared/mixins';
 import { Constructor } from '@shared/models/mixin.model';
+
+// services
 import { FuelService } from '@shared/services/fuel.service';
-import { FuelStopResponse } from 'appcoretruckassist';
+import { MapsService } from '@shared/services/maps.service';
+
+// models
+import { GetFuelStopRangeResponse } from 'appcoretruckassist';
 import {
     IMapMarkers,
     IMapSelectedMarkerData,
     MapMarkerIconService,
     SortColumn,
 } from 'ca-components';
-import { takeUntil } from 'rxjs';
-import { MapsService } from '@shared/services/maps.service';
-import { FuelMapDropdownHelper } from '../utils/helpers/fuel-map-dropdown.helper';
-import { ChangeDetectorRef } from '@angular/core';
+
+// helpers
+import { FuelMapDropdownHelper } from '@pages/fuel/pages/fuel-table/utils/helpers/fuel-map-dropdown.helper';
+
+// constants
+import { FuelMapConstants } from '@pages/fuel/pages/fuel-table/utils/constants';
+
+// pipes
+import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-details/pipes';
 
 export function FuelMapMixin<T extends Constructor>(Base: T) {
     return class extends MapMixin(Base as Constructor) {
@@ -19,42 +33,27 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
         protected mapsService: MapsService;
         protected markerIconService: MapMarkerIconService;
         protected ref: ChangeDetectorRef;
+        protected fuelPricePipe: LastFuelPriceRangeClassColorPipe;
 
-        protected fuelStopMapListSortColumns: SortColumn[] = [
-            {
-                name: 'Business Name',
-                sortName: 'name',
-            },
-            {
-                name: 'Location',
-                sortName: 'location',
-                isDisabled: true,
-            },
-            {
-                name: 'Fuel Price',
-                sortName: 'cost',
-            },
-            {
-                name: 'Last Used Date',
-                sortName: 'last',
-            },
-            {
-                name: 'Purchase Count',
-                sortName: 'used',
-            },
-            {
-                name: 'Total Expense',
-                sortName: 'tableCost',
-            },
-        ];
+        protected fuelStopPriceRange: GetFuelStopRangeResponse;
 
-        constructor(...args: any[]) {
-            super(...args); // Pass all arguments to MapActionsMixin
+        protected fuelStopMapListSortColumns: SortColumn[] =
+            FuelMapConstants.FUEL_STOP_MAP_LIST_SORT_COLUMNS;
 
-            this.ref = args[0];
-            this.fuelService = args[1];
+        constructor(
+            ref: ChangeDetectorRef,
+            fuelService: FuelService,
+            fuelPricePipe: LastFuelPriceRangeClassColorPipe,
+            mapsService: MapsService,
+            markerIconService: MapMarkerIconService
+        ) {
+            super(mapsService, markerIconService); // Pass arguments to MapMixin
+
+            this.ref = ref;
+            this.fuelService = fuelService;
+            this.fuelPricePipe = fuelPricePipe;
         }
-        
+
         protected getClusters(
             isClusterPagination?: boolean,
             selectedMarkerId?: number
@@ -72,7 +71,7 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                     null, // shipperLong
                     null, // shipperLat
                     null, // shipperDistance
-                    this.mapStateFilter, // shipperStates
+                    null, // shipperStates
                     null, // categoryIds?: Array<number>,
                     null, // _long?: number,
                     null, // lat?: number,
@@ -188,7 +187,14 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                                     data,
                                 };
 
-                                console.log('fuel stop data', data);
+                                const fuelMarkerClass =
+                                    this.fuelPricePipe.transform({
+                                        minValue:
+                                            this.fuelStopPriceRange.dieselMin,
+                                        maxValue:
+                                            this.fuelStopPriceRange.dieselMax,
+                                        totalValue: data.pricePerGallon,
+                                    });
 
                                 const markerIcon =
                                     data.count > 1
@@ -200,7 +206,12 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                                               data.id,
                                               data.name,
                                               data.isClosed,
-                                              data.favourite
+                                              data.favourite,
+                                              false,
+                                              fuelMarkerClass,
+                                              data.pricePerGallon
+                                                  ? '$' + data.pricePerGallon
+                                                  : null
                                           );
 
                                 markerData = {
@@ -267,8 +278,6 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                             : mappedListData;
 
                     this.ref.detectChanges();
-
-                    console.log('mapListData', this.mapListData);
                 });
         }
 
@@ -279,8 +288,6 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                 .subscribe({
                     next: (res) => {
                         const fuelStopData = res;
-
-                        console.log('fuelStopData', fuelStopData);
 
                         let selectedMarkerData: IMapSelectedMarkerData | null =
                             null;

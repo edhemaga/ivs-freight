@@ -71,20 +71,27 @@
                     [columns]="columns"
                     [sortColumns]="fuelStopMapListSortColumns"
                     [mapListContent]="mapListData"
+                    (searchEvent)="onMapListSearch($event)"
+                    (sortEvent)="onMapListSort($event)"
                     (headActions)="onTableHeadActions($event)"
                 >
-                    <app-ta-map-list-card
-                        *ngFor="let latlong of mapListData; let i = index"
-                        #listCard
-                        [title]="latlong?.businessName"
-                        [isSelected]="latlong?.isSelected"
-                        [status]="!latlong?.tableDeactivated"
-                        [item]="latlong"
-                        [index]="i"
-                        [address]="latlong.address"
-                        [type]="'fuelStop'"
-                        (clickedMarker)="selectItem($event)"
-                    ></app-ta-map-list-card>
+                    @for (
+                        latlong of mapListData;
+                        let i = $index;
+                        track latlong.id
+                    ) {
+                        <app-ta-map-list-card
+                            #listCard
+                            [title]="latlong?.businessName"
+                            [isSelected]="latlong?.isSelected"
+                            [status]="!latlong?.tableDeactivated"
+                            [item]="latlong"
+                            [index]="i"
+                            [address]="latlong.address"
+                            [type]="'fuelStop'"
+                            (clickedMarker)="selectItem($event)"
+                        ></app-ta-map-list-card>
+                    }
                 </app-ta-map-list>
 
                 <app-ca-map

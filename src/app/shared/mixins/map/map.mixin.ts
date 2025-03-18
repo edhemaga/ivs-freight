@@ -1,5 +1,5 @@
 import { Constructor } from '@shared/models/mixin.model';
-import { DestroyableMixin } from '../destroyable.mixin';
+import { DestroyableMixin } from '@shared/mixins/destroyable.mixin';
 
 import { takeUntil } from 'rxjs';
 
@@ -18,23 +18,17 @@ import {
 } from 'ca-components';
 import { MapsService } from '@shared/services/maps.service';
 
-interface HasMapData {
-    getClusters(isClusterPagination?: boolean, selectedMarkerId?: number): void;
-    getMapList(): void;
-    getMarkerById(): void;
-}
-
 export function MapMixin<T extends Constructor>(Base: T) {
     return class extends DestroyableMixin(Base) {
         protected mapListSortColumns: SortColumn[];
 
         protected mapListData: MapList[] = [];
 
-        protected mapData: ICaMapProps = MapOptionsConstants.defaultMapConfig;
+        protected mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
         protected mapListPagination: IMapPagination =
-            MapOptionsConstants.mapListPagination;
+            MapOptionsConstants.MAP_LIST_PAGINATION;
         protected mapClustersPagination: IMapPagination =
-            MapOptionsConstants.mapListPagination;
+            MapOptionsConstants.MAP_LIST_PAGINATION;
         protected mapClustersObject: IMapBounds = null;
         protected mapListSearchValue: string | null = null;
         protected mapListSortDirection: string | null = null;
@@ -54,11 +48,11 @@ export function MapMixin<T extends Constructor>(Base: T) {
         protected getMapList(): void {} // Declaring the getMapList method
         protected getMarkerById(markerId: number): void {} // Declaring the getMarkerById method
 
-        constructor(...args: any[]) {
+        constructor(...args: [MapsService, MapMarkerIconService]) {
             super(...args); // Forward constructor arguments
 
-            this.mapsService = args[2];
-            this.markerIconService = args[3];
+            this.mapsService = args[0];
+            this.markerIconService = args[1];
         }
 
         protected onMapListSearch(search: string): void {
