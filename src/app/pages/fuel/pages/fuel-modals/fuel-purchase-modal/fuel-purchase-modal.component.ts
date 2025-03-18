@@ -191,17 +191,14 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.setModalActionType();
 
         this.createForm();
+        this.initialPatchForm();
 
         this.getModalDropdowns();
-
         this.getFuelTransactionFranchisesIfNeeded();
-
         this.getTruckList();
-
         this.getDriverTrailerBySelectedTruck();
 
         this.confirmationActivationSubscribe();
-
         this.confirmationDeactivationSubscribe();
     }
 
@@ -264,10 +261,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    public onSelectDropDown(
-        event: any,
-        action: string
-    ): void {
+    public onSelectDropDown(event: any, action: string): void {
         switch (action) {
             case FuelDropdownOptionsStringEnum.TRUCK:
                 this.selectedTruckType = event;
@@ -877,27 +871,15 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private createForm(): void {
-        const { type, data } = this.editData;
-
-        const truckId = data?.truckNumber ?? null;
-        const transactionDate =
-            type === eGeneralActions.EDIT ? data?.transactionDate : null;
-        const transactionTime =
-            type === eGeneralActions.EDIT
-                ? MethodsCalculationsHelper.convertDateToTimeFromBackend(
-                      transactionDate
-                  )
-                : null;
-
         this.fuelForm = this.formBuilder.group({
             efsAccount: [null],
             fuelCard: [null],
             invoice: [null, Validators.required],
-            truckId: [truckId, Validators.required],
+            truckId: [null, Validators.required],
             trailerId: [null],
             driverFullName: [null, fullNameValidation],
-            transactionDate: [transactionDate, Validators.required],
-            transactionTime: [transactionTime, Validators.required],
+            transactionDate: [null, Validators.required],
+            transactionTime: [null, Validators.required],
             fuelStopStoreId: [null, Validators.required],
             fuelItems: this.formBuilder.array([]),
             total: [null],
@@ -929,6 +911,28 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.fuelForm
             .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
             .patchValue(firstName?.concat(' ', lastName) ?? null);
+    }
+
+    private initialPatchForm(): void {
+        const { type, data } = this.editData;
+
+        const truckId = data?.truckNumber ?? null;
+        const transactionDate =
+            type === eGeneralActions.EDIT ? data?.transactionDate : null;
+        const transactionTime =
+            type === eGeneralActions.EDIT
+                ? MethodsCalculationsHelper.convertDateToTimeFromBackend(
+                      transactionDate
+                  )
+                : null;
+
+        this.fuelForm.get(FuelValuesStringEnum.TRUCK_ID).patchValue(truckId);
+        this.fuelForm
+            .get(FuelValuesStringEnum.TRANSACTION_DATE)
+            .patchValue(transactionDate);
+        this.fuelForm
+            .get(FuelValuesStringEnum.TRANSACTION_TIME)
+            .patchValue(transactionTime);
     }
 
     ngOnDestroy(): void {
