@@ -562,10 +562,10 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     // ------- EDIT -------
                     if (this.editData?.storageData) {
                         this.skipVinDecocerEdit = true;
-                        this.populateStorageData(this.editData.storageData);
+                        this.populateStorageData(this.editData);
                     }
 
-                    if (this.editData?.id) {
+                    if (this.editData?.id && !this.editData?.storageData) {
                         this.skipVinDecocerEdit = true;
                         this.editTrailerById(this.editData.id);
                     } else this.startFormChanges();
@@ -787,7 +787,6 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     private populateStorageData(res): void {
-        this.getTrailerDropdowns();
         this.trailerForm.patchValue({
             ...res,
         });

@@ -1,6 +1,14 @@
 @import 'src/theme/variables.scss';
 @import './mixins.scss';
 
+@mixin hover($color) {
+    transition: color $transitionDuration ease-in-out;
+
+    &:hover {
+        color: $color !important;
+    }
+}
+
 .text {
     &-color {
         &-black {
@@ -38,7 +46,6 @@
             @include text-selection($ta-blue-13);
         }
 
-        
         &-blue-16 {
             color: $ta-blue-16 !important;
             @include text-selection($ta-blue-16);
@@ -74,9 +81,14 @@
             @include text-selection($ta-yellow-1);
         }
 
-        &-purple{
+        &-purple {
             color: $ta-purple-1 !important;
             @include text-selection($ta-purple-1);
+        }
+
+        &-special-filter-purple {
+            color: $special-filter-purple !important;
+            @include text-selection($special-filter-purple);
         }
 
         &-light-grey {
@@ -128,6 +140,11 @@
                 @include text-selection($bw5);
             }
         }
+    }
 
+    &-hover {
+        &-black {
+            @include hover($ta-black);
+        }
     }
 }

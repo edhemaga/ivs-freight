@@ -13,7 +13,7 @@ import { MilesStopShortResponse } from './milesStopShortResponse';
 
 
 export interface LoadWithMilesStopResponse { 
-    loadId?: string | null;
+    id?: string | null;
     isLoad?: boolean;
     loadNumber?: string | null;
     isStartPoint?: boolean;

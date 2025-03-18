@@ -11,10 +11,10 @@
  */
 
 
-export type CountryType = 'US' | 'Canada';
+export type CountryType = 'US' | 'CA';
 
 export const CountryType = {
     Us: 'US' as CountryType,
-    Canada: 'Canada' as CountryType
+    Ca: 'CA' as CountryType
 };
 

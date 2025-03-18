@@ -224,4 +224,5 @@ export enum LoadModalStringEnum {
     COMMISSION = 'Commission',
     PERCENT_PAY_TYPE = '%',
     TEXT_SUFFIX = 'text-suffix',
+    INVALID_DATE = 'Invalid date',
 }

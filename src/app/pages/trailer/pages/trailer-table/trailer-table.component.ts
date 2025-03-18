@@ -402,7 +402,7 @@ export class TrailerTableComponent
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTrailerFilter: true,
+                showTrailerTypeFilter: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -828,9 +828,11 @@ export class TrailerTableComponent
                             data: {
                                 ...data,
                                 number: data.trailerNumber,
-                                avatar: data?.tableTrailerTypeIcon
-                                    ? `/assets/svg/common/trailers/${data?.tableTrailerTypeIcon}`
-                                    : `/assets/svg/common/trailers/${data?.trailerType?.logoName}`,
+                                avatarFile: {
+                                    url: data?.tableTrailerTypeIcon
+                                        ? `/assets/svg/common/trailers/${data?.tableTrailerTypeIcon}`
+                                        : `/assets/svg/common/trailers/${data?.trailerType?.logoName}`,
+                                },
                             },
                             modalTitle: ' Unit ' + data?.trailerNumber,
                             modalSecondTitle: data?.tableVin

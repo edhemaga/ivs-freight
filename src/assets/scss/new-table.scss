@@ -36,6 +36,22 @@
                 padding: 0px 5px;
                 transition: 0.25s;
                 text-align: center;
+                transition: background-color $transitionDuration ease-in-out;
+            }
+
+            &-inactive {
+                &-title {
+                    transition: color $transitionDuration ease-in-out;
+                }
+
+                &:hover {
+                    .new-table--toolbar-action-inactive-title {
+                        color: $ta-black !important;
+                    }
+                    .new-table--toolbar-action-counter {
+                        background-color: $bw6-2 !important;
+                    }
+                }
             }
         }
 
@@ -52,20 +68,25 @@
                 border-radius: 1px;
             }
         }
-
         &-plus-icon {
-            background: $ta-blue-14;
             height: 36px;
             width: 36px;
-            padding: 8px;
-            border-radius: 3px;
-            transition: $transition;
 
-            &:hover {
-                height: 44px;
-                width: 44px;
-                padding: 12px;
-                background: $ta-blue-15;
+            &-button {
+                height: 36px;
+                width: 36px;
+                padding: 6px;
+                transition:
+                    height $transitionDuration ease-in-out,
+                    width $transitionDuration ease-in-out,
+                    background-color $transitionDuration ease-in-out,
+                    padding $transitionDuration ease-in-out !important;
+
+                &:hover {
+                    height: 44px;
+                    width: 44px;
+                    padding: 12px;
+                }
             }
         }
     }

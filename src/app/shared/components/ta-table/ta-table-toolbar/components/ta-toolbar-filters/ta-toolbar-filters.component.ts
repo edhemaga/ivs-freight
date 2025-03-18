@@ -21,7 +21,7 @@ import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
     CaFilterListDropdownComponent,
-    CaFilterTimeDropdownComponent
+    CaFilterTimeDropdownComponent,
 } from 'ca-components';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -41,6 +41,10 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 import { StateResponse } from 'appcoretruckassist/model/stateResponse';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
+import { AddressService } from '@shared/services/address.service';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
@@ -58,10 +62,17 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
         CaSearchMultipleStatesComponent,
         CaFilterComponent,
         CaFilterListDropdownComponent,
-        CaFilterTimeDropdownComponent
+        CaFilterTimeDropdownComponent,
     ],
 })
-export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
+export class TaToolbarFiltersComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnChanges, OnDestroy
+{
     @Output() toolbarFilter: EventEmitter<any> = new EventEmitter();
     @Input() options: any;
     @Input() activeTableData: any;
@@ -81,7 +92,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     ];
     public showLtl: boolean = true;
     public showFtl: boolean = true;
-    private destroy$ = new Subject<void>();
+    protected destroy$ = new Subject<void>();
 
     public loadStatusOptionsArray: ArrayStatus[];
     public unselectedDispatcher: ArrayStatus[];
@@ -98,8 +109,11 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         private tableSevice: TruckassistTableService,
-        private filterService: FilterStateService
-    ) {}
+        private filterService: FilterStateService,
+        public addressService: AddressService,
+    ) {
+        super();
+    }
     public customerFilter: {
         filteredArray: any;
         selectedFilter: boolean;
@@ -436,8 +450,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                     event === LoadFilterStringEnum.FTL
                         ? 1
                         : event === LoadFilterStringEnum.LTL
-                        ? 2
-                        : null,
+                          ? 2
+                          : null,
             },
         };
         this.tableSevice.sendCurrentSetTableFilter(mappedEvent);
@@ -469,9 +483,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         if (this.activeTableData?.closedArray)
             this.activeTableData.closedArray.selectedFilter =
                 data == TableStringEnum.CLOSED_ARRAY || false;
-        
+
         if (this.activeTableData?.fuelIncompleteArray)
-            this.activeTableData.fuelIncompleteArray.selectedFilter = 
+            this.activeTableData.fuelIncompleteArray.selectedFilter =
                 data == TableStringEnum.FUEL_INCOMPLETE_ARRAY || false;
 
         if (this.activeTableData?.driverArhivedArray)

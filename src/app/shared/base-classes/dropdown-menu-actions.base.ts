@@ -75,6 +75,7 @@ export abstract class DropdownMenuActionsBase {
 
                 break;
             case eDropdownMenu.ADD_REPAIR_BILL_TYPE:
+            case eDropdownMenu.ADD_PM_ITEM:
                 this.handleAddRepairBillAction(data, tableType);
 
                 break;
@@ -169,6 +170,7 @@ export abstract class DropdownMenuActionsBase {
             type,
             preSelectedUnit: tableType === eDropdownMenu.PM && id,
             data: tableType !== eDropdownMenu.PM && { id: data.id },
+            title: eDropdownMenu.TITLE_TYPE in data ? data.title : null,
         };
 
         this.modalService.openModal(

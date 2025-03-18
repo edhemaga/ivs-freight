@@ -118,7 +118,7 @@
 
 <ng-template #customFeeTemplate let-data let-index="index">
     @if (data) {
-        <div class="custom-fee-template">
+        <div class="custom-fee-template text-color-black">
             +{{ data | currency: 'USD' : 'symbol' : '1.0-0' }}
         </div>
     }
@@ -128,6 +128,10 @@
     <div
         class="load-description d-flex align-items-center"
         [class.delivery]="data.stopType.id == 2"
+        [class.group-loads-with-border-left]="data.hasBorderLeft"
+        [class.first-in-group]="data.firstInRow"
+        [class.last-in-group]="data.lastInRow"
+
     >
         @if (data.orderNumber) {
             <svg-icon
@@ -145,6 +149,11 @@
             <span
                 class="load-description-small-icon load-description-small-icon-deadhead text-color-bw6-2 text-size-11 ca-font-bold d-flex align-items-center justify-content-center prevent-text-selection"
                 >D</span
+            >
+        } @else if (data.stopType.name === ePayrollTable.TOWING) {
+            <span
+                class="load-description-small-icon load-description-small-icon-towing text-color-special-filter-purple text-size-11 ca-font-bold d-flex align-items-center justify-content-center prevent-text-selection"
+                >T</span
             >
         }
 
@@ -189,6 +198,18 @@
             </div>
         </div>
     </td>
+</ng-template>
+
+<ng-template #towingTemplate let-data let-field="field">
+    <div
+        class="text text-color-black"
+        [class.text-color-special-filter-purple]="
+            data.stopType.name === ePayrollTable.TOWING
+        "
+        [class.ca-font-semi-bold]="data.stopType.name === ePayrollTable.TOWING"
+    >
+        {{ data[field] }}
+    </div>
 </ng-template>
 
 <ng-template #reorderTemplate let-row="row" let-index="index">

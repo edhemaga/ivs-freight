@@ -525,7 +525,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.fuelConsumptionLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.fuelConsumptionChartData
                 : this.fuelConsumptionChartData?.truckFuelConsumptionCharts[
                       index
@@ -555,7 +555,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.expensesChartData
                 : this.expensesChartData?.truckExpensesCharts[index];
 
@@ -574,7 +574,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.revenueLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.revenueChartData
                 : this.revenueChartData?.truckRevenueCharts[index];
 

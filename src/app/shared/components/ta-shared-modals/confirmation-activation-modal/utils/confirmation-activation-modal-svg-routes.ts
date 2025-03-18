@@ -7,4 +7,5 @@ export class ConfirmationActivationModalSvgRoutes {
         '/assets/svg/common/confirmation/ic_confirmation_deactivate.svg';
     static confirmationCloseBrokerSvg =
         '/assets/svg/common/ic_closed_broker.svg';
+    static activationIconSvg = 'assets/svg/truckassist-table/activation-icon.svg'
 }

@@ -1,76 +1,132 @@
 // appcoretruckassist
-import { BrokerByIdResponse, BrokerContactGroupResponse, CommentResponse, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatus, LoadStatusResponse, LoadTemplateResponse, ShipperLoadModalResponse, TableType } from "appcoretruckassist";
+import {
+    BrokerByIdResponse,
+    BrokerContactGroupResponse,
+    CommentResponse,
+    DispatcherFilterResponse,
+    LoadListDto,
+    LoadListResponse,
+    LoadModalResponse,
+    LoadResponse,
+    LoadStatus,
+    LoadStatusResponse,
+    LoadTemplateResponse,
+    ShipperLoadModalResponse,
+    TableType,
+} from 'appcoretruckassist';
 
 // models
-import { ICreateCommentMetadata, ILoadGridItem, ILoadState, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index";
-import { ITableColummn } from "@shared/models";
-import { IActiveLoadModalData } from "@pages/load/models";
-import { BrokerContactExtended } from "@pages/customer/pages/broker-modal/models";
+import {
+    ICreateCommentMetadata,
+    ILoadGridItem,
+    ILoadState,
+    ILoadTemplateGridItem,
+} from '@pages/load/pages/load-table/models/index';
+import { ITableColummn } from '@shared/models';
+import { IActiveLoadModalData } from '@pages/load/models';
+import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models';
 
 // enums
-import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index";
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // Helpers
-import { FilterHelper } from "@shared/utils/helpers";
+import { FilterHelper } from '@shared/utils/helpers';
 
-export const getLoadsOrTemplatesPayloadSuccessResult = function(state: ILoadState, data: ILoadGridItem[] | ILoadTemplateGridItem[], templateCount: number, pendingCount: number, activeCount: number, closedCount: number, selectedTab: eLoadStatusType, showMore?: boolean): ILoadState {
+export const getLoadsOrTemplatesPayloadSuccessResult = function (
+    state: ILoadState,
+    data: ILoadGridItem[] | ILoadTemplateGridItem[],
+    templateCount: number,
+    pendingCount: number,
+    activeCount: number,
+    closedCount: number,
+    selectedTab: eLoadStatusType,
+    showMore?: boolean
+): ILoadState {
     const { data: stateData } = state || {};
-    const _data: ILoadGridItem[] | ILoadTemplateGridItem[] = showMore ? [...stateData, ...data] : [...data];
+    const _data: ILoadGridItem[] | ILoadTemplateGridItem[] = showMore
+        ? [...stateData, ...data]
+        : [...data];
 
-    const result: ILoadState = { 
-        ...state, 
-        data: _data, 
-        templateCount, 
-        pendingCount, 
-        activeCount, 
-        closedCount, 
-        selectedTab 
+    const result: ILoadState = {
+        ...state,
+        data: _data,
+        templateCount,
+        pendingCount,
+        activeCount,
+        closedCount,
+        selectedTab,
     };
-    
-    return result;
-}
 
-export const getLoadByIdSuccessResult = function(state: ILoadState, load: LoadListDto): ILoadState {
+    return result;
+};
+
+export const getLoadByIdSuccessResult = function (
+    state: ILoadState,
+    load: LoadListDto
+): ILoadState {
     const { data } = state || {};
 
     const result: ILoadState = {
         ...state,
-        data: [...data, <ILoadGridItem>load]
+        data: [...data, <ILoadGridItem>load],
     };
 
     return result;
-}
+};
 
-export const createLoadSuccessResult = function(state: ILoadState, load: LoadResponse): ILoadState {
+export const createLoadSuccessResult = function (
+    state: ILoadState,
+    load: LoadResponse
+): ILoadState {
     const { data, selectedTab, pendingCount } = state || {};
 
     const result: ILoadState = {
         ...state,
-        data: selectedTab === eLoadStatusType.Pending ? [...data, <ILoadGridItem>load] : data,
-        pendingCount: pendingCount + 1
+        data:
+            selectedTab === eLoadStatusType.Pending
+                ? [...data, <ILoadGridItem>load]
+                : data,
+        pendingCount: pendingCount + 1,
     };
 
     return result;
-}
+};
 
-export const createLoadTemplateSuccessResult = function(state: ILoadState, loadTemplate: LoadTemplateResponse): ILoadState {
+export const createLoadTemplateSuccessResult = function (
+    state: ILoadState,
+    loadTemplate: LoadTemplateResponse
+): ILoadState {
     const { data, selectedTab, templateCount } = state || {};
 
     const result: ILoadState = {
         ...state,
-        data: selectedTab === eLoadStatusType.Template ? [...data, <ILoadTemplateGridItem>loadTemplate] : data,
-        templateCount: templateCount + 1
+        data:
+            selectedTab === eLoadStatusType.Template
+                ? [...data, <ILoadTemplateGridItem>loadTemplate]
+                : data,
+        templateCount: templateCount + 1,
     };
 
     return result;
-}
+};
 
-export const createCommentSuccessResult = function(state: ILoadState, loadId: number, comment: CommentResponse, metadata: ICreateCommentMetadata): ILoadState {
+export const createCommentSuccessResult = function (
+    state: ILoadState,
+    loadId: number,
+    comment: CommentResponse,
+    metadata: ICreateCommentMetadata
+): ILoadState {
     const { data } = state || {};
-    const updatingEntity: ILoadGridItem = (<ILoadGridItem[]>data).find(_ => _.id === loadId);
-    const updatingEntityIndex: number = (<ILoadGridItem[]>data).findIndex(_ => _.id === loadId);
+    const updatingEntity: ILoadGridItem = (<ILoadGridItem[]>data).find(
+        (_) => _.id === loadId
+    );
+    const updatingEntityIndex: number = (<ILoadGridItem[]>data).findIndex(
+        (_) => _.id === loadId
+    );
     const { comments } = updatingEntity || {};
-    let _updatingEntity: ILoadGridItem = JSON.parse(JSON.stringify(updatingEntity));
+    let _updatingEntity: ILoadGridItem = JSON.parse(
+        JSON.stringify(updatingEntity)
+    );
     let _data: ILoadGridItem[] = JSON.parse(JSON.stringify(data));
 
     _updatingEntity.comments = [...comments, comment];
@@ -79,35 +135,51 @@ export const createCommentSuccessResult = function(state: ILoadState, loadId: nu
 
     const result: ILoadState = {
         ...state,
-        data: _data
-    }
+        data: _data,
+    };
 
     return result;
-}
+};
 
-export const updateLoadAndTemplateSuccessResult = function(state: ILoadState, load: LoadListDto | LoadTemplateResponse): ILoadState {
+export const updateLoadAndTemplateSuccessResult = function (
+    state: ILoadState,
+    load: LoadListDto | LoadTemplateResponse
+): ILoadState {
     const { data } = state || {};
     const { id } = load || {};
-    let _data: ILoadGridItem[] | ILoadTemplateGridItem[] = JSON.parse(JSON.stringify(data));
-    const exist: boolean = data.some(_ => _.id === id);
+    let _data: ILoadGridItem[] | ILoadTemplateGridItem[] = JSON.parse(
+        JSON.stringify(data)
+    );
+    const exist: boolean = data.some((_) => _.id === id);
 
     if (exist) {
-        const updatingIndex = data.findIndex(_ => _.id === id);
-        const updatingItem: ILoadGridItem | ILoadTemplateGridItem = initializeLoadGridItem(load);
+        const updatingIndex = data.findIndex((_) => _.id === id);
+        const updatingItem: ILoadGridItem | ILoadTemplateGridItem =
+            initializeLoadGridItem(load);
 
         _data.splice(updatingIndex, 1, updatingItem);
     }
 
     const result: ILoadState = {
         ...state,
-        data: _data
+        data: _data,
     };
 
     return result;
-}
+};
 
-export const updateLoadAndUpdateOrRevertStatusSuccessResult = function(state: ILoadState, response: LoadListResponse, status: LoadStatusResponse): ILoadState {
-    const { pagination, templateCount, pendingCount, activeCount, closedCount } = response || {};
+export const updateLoadAndUpdateOrRevertStatusSuccessResult = function (
+    state: ILoadState,
+    response: LoadListResponse,
+    status: LoadStatusResponse
+): ILoadState {
+    const {
+        pagination,
+        templateCount,
+        pendingCount,
+        activeCount,
+        closedCount,
+    } = response || {};
     const { data } = pagination || {};
     const { id } = data[0] || {};
     let _state = updateLoadStatusSuccessResult(state, id, status);
@@ -118,22 +190,33 @@ export const updateLoadAndUpdateOrRevertStatusSuccessResult = function(state: IL
     _state.closedCount = closedCount;
 
     return updateLoadAndTemplateSuccessResult(_state, data[0]);
-}
+};
 
-export const deleteLoadByIdSuccessResult = function(state: ILoadState, loadId: number): ILoadState {
+export const deleteLoadByIdSuccessResult = function (
+    state: ILoadState,
+    loadId: number
+): ILoadState {
     const {
         data,
-        selectedTab, 
-        templateCount, 
-        pendingCount, 
-        activeCount, 
-        closedCount 
+        selectedTab,
+        templateCount,
+        pendingCount,
+        activeCount,
+        closedCount,
     } = state || {};
-    const updatedData = (<ILoadGridItem[]>data).filter(_ => _.id !== loadId);
-    const _templateCount = selectedTab === eLoadStatusType.Template ? templateCount - 1 : templateCount;
-    const _pendingCount = selectedTab === eLoadStatusType.Pending ? pendingCount - 1 : pendingCount;
-    const _activeCount = selectedTab === eLoadStatusType.Active ? activeCount - 1 : activeCount;
-    const _closedCount = selectedTab === eLoadStatusType.Closed ? closedCount - 1 : closedCount;
+    const updatedData = (<ILoadGridItem[]>data).filter((_) => _.id !== loadId);
+    const _templateCount =
+        selectedTab === eLoadStatusType.Template
+            ? templateCount - 1
+            : templateCount;
+    const _pendingCount =
+        selectedTab === eLoadStatusType.Pending
+            ? pendingCount - 1
+            : pendingCount;
+    const _activeCount =
+        selectedTab === eLoadStatusType.Active ? activeCount - 1 : activeCount;
+    const _closedCount =
+        selectedTab === eLoadStatusType.Closed ? closedCount - 1 : closedCount;
 
     const result: ILoadState = {
         ...state,
@@ -141,45 +224,68 @@ export const deleteLoadByIdSuccessResult = function(state: ILoadState, loadId: n
         templateCount: _templateCount,
         pendingCount: _pendingCount,
         activeCount: _activeCount,
-        closedCount: _closedCount
+        closedCount: _closedCount,
     };
 
     return result;
-}
+};
 
-export const deleteBulkLoadSuccessResult = function(state: ILoadState, ids: number[]): ILoadState {
-    const { data, selectedTab, pendingCount, activeCount, closedCount } = state || {};
+export const deleteBulkLoadSuccessResult = function (
+    state: ILoadState,
+    ids: number[]
+): ILoadState {
+    const { data, selectedTab, pendingCount, activeCount, closedCount } =
+        state || {};
     const result: ILoadState = {
         ...state,
-        data: (<ILoadGridItem[]>data).filter(_ => !ids.includes(_.id)),
-        pendingCount: selectedTab === eLoadStatusType.Pending ? pendingCount - ids?.length : pendingCount,
-        activeCount: selectedTab === eLoadStatusType.Active ? activeCount - ids?.length : activeCount,
-        closedCount: selectedTab === eLoadStatusType.Closed ? closedCount - ids?.length : closedCount
-    }
+        data: (<ILoadGridItem[]>data).filter((_) => !ids.includes(_.id)),
+        pendingCount:
+            selectedTab === eLoadStatusType.Pending
+                ? pendingCount - ids?.length
+                : pendingCount,
+        activeCount:
+            selectedTab === eLoadStatusType.Active
+                ? activeCount - ids?.length
+                : activeCount,
+        closedCount:
+            selectedTab === eLoadStatusType.Closed
+                ? closedCount - ids?.length
+                : closedCount,
+    };
 
     return result;
-}
+};
 
-export const saveNoteResult = function(state: ILoadState, entityId: number, value: string): ILoadState {
+export const saveNoteResult = function (
+    state: ILoadState,
+    entityId: number,
+    value: string
+): ILoadState {
     const { data } = state || {};
-    const updatingEntityIndex = data.findIndex(_ => _.id === entityId);
-    const updatingEntity = (<ILoadGridItem[]>data).find(_ => _.id === entityId);
+    const updatingEntityIndex = data.findIndex((_) => _.id === entityId);
+    const updatingEntity = (<ILoadGridItem[]>data).find(
+        (_) => _.id === entityId
+    );
     const updateEntity: ILoadGridItem | ILoadTemplateGridItem = {
         ...updatingEntity,
-        note: value
+        note: value,
     };
     let _data = [...data];
     _data.splice(updatingEntityIndex, 1, updateEntity);
 
     const result: ILoadState = {
         ...state,
-        data: _data
+        data: _data,
     };
 
     return result;
-}
+};
 
-export const selectedDataRowsChangeResult = function(state: ILoadState, canDeleteSelectedDataRows: boolean, ids: number[]): ILoadState {
+export const selectedDataRowsChangeResult = function (
+    state: ILoadState,
+    canDeleteSelectedDataRows: boolean,
+    ids: number[]
+): ILoadState {
     const { data } = state || {};
     let _data = JSON.parse(JSON.stringify(data));
 
@@ -194,149 +300,157 @@ export const selectedDataRowsChangeResult = function(state: ILoadState, canDelet
     const result: ILoadState = {
         ...state,
         canDeleteSelectedDataRows,
-        data: _data
-    }
+        data: _data,
+    };
 
     return result;
-}
+};
 
-export const updateLoadStatusSuccessResult = function(state: ILoadState, loadId: number, status: LoadStatusResponse): ILoadState {
+export const updateLoadStatusSuccessResult = function (
+    state: ILoadState,
+    loadId: number,
+    status: LoadStatusResponse
+): ILoadState {
     const { data, selectedTab } = state || {};
     const { statusString } = status || {};
     let _data: ILoadGridItem[] = JSON.parse(JSON.stringify(data));
 
     if (
-        (
-            selectedTab === eLoadStatusType.Pending &&
-            (
-                statusString === LoadStatus.Dispatched ||
-                statusString === LoadStatus.Canceled
-            )
-        ) ||
-        (
-            selectedTab === eLoadStatusType.Active &&
-            (
-                statusString === LoadStatus.Assigned ||
+        (selectedTab === eLoadStatusType.Pending &&
+            (statusString === LoadStatus.Dispatched ||
+                statusString === LoadStatus.Canceled)) ||
+        (selectedTab === eLoadStatusType.Active &&
+            (statusString === LoadStatus.Assigned ||
                 statusString === LoadStatus.Delivered ||
                 statusString === LoadStatus.Canceled ||
-                statusString === LoadStatus.LoadCanceled
-            )
-        ) ||
-        (
-            selectedTab === eLoadStatusType.Closed &&
-            (
-                statusString === LoadStatus.Unassigned ||
+                statusString === LoadStatus.LoadCanceled)) ||
+        (selectedTab === eLoadStatusType.Closed &&
+            (statusString === LoadStatus.Unassigned ||
                 statusString === LoadStatus.Assigned ||
-
                 statusString === LoadStatus.ArrivedPickup ||
-                statusString === LoadStatus.ArrivedDelivery || 
-
+                statusString === LoadStatus.ArrivedDelivery ||
                 statusString === LoadStatus.CheckedIn ||
                 statusString === LoadStatus.CheckedInPickup ||
                 statusString === LoadStatus.CheckedInDelivery ||
-
                 statusString === LoadStatus.Offloading ||
                 statusString === LoadStatus.Loading ||
-
-                statusString === LoadStatus.Loaded
-            )
-        )
+                statusString === LoadStatus.Loaded))
     ) {
-            _data = _data.filter(_ => _.id !== loadId);
+        _data = _data.filter((_) => _.id !== loadId);
     } else {
-        let loadUpdated: ILoadGridItem = (<ILoadGridItem[]>_data).find(_ => _.id === loadId);
+        let loadUpdated: ILoadGridItem = (<ILoadGridItem[]>_data).find(
+            (_) => _.id === loadId
+        );
 
         loadUpdated.status = status;
     }
 
     const result: ILoadState = {
         ...state,
-        data: _data
+        data: _data,
     };
 
     return result;
-}
+};
 
-export const initializeLoadGridItems = function(data) {
+export const initializeLoadGridItems = function (data) {
     return data.map((item) => ({
         ...item,
-        isSelected: false       
+        isSelected: false,
     }));
-}
+};
 
-export const initializeLoadGridItem = function(item: LoadResponse | LoadTemplateResponse): ILoadGridItem | ILoadTemplateGridItem {
+export const initializeLoadGridItem = function (
+    item: LoadResponse | LoadTemplateResponse
+): ILoadGridItem | ILoadTemplateGridItem {
     return {
         ...item,
-        isSelected: false       
+        isSelected: false,
     };
-}
+};
 
-export const getLoadModalDataSuccessResult = function(state: ILoadState, modal: LoadModalResponse, activeModalData?: IActiveLoadModalData): ILoadState {    
+export const getLoadModalDataSuccessResult = function (
+    state: ILoadState,
+    modal: LoadModalResponse,
+    activeModalData?: IActiveLoadModalData
+): ILoadState {
     const result: ILoadState = {
         ...state,
         modal,
-        activeModalData
-    }
+        activeModalData,
+    };
 
     return result;
-}
+};
 
-export const deleteCommentByIdSuccessResult = function(state: ILoadState, loadId: number, commentId: number): ILoadState {
+export const deleteCommentByIdSuccessResult = function (
+    state: ILoadState,
+    loadId: number,
+    commentId: number
+): ILoadState {
     const { data } = state || {};
-    const updatingLoadIndex: number = data.findIndex(_ => _.id === loadId);
+    const updatingLoadIndex: number = data.findIndex((_) => _.id === loadId);
     let _data: ILoadGridItem[] = JSON.parse(JSON.stringify(data));
     let _updatingEntity: ILoadGridItem = _data[updatingLoadIndex];
     const { comments } = _updatingEntity || {};
-    const updatingCommentIndex: number = comments.findIndex(_ => _.id === commentId);
+    const updatingCommentIndex: number = comments.findIndex(
+        (_) => _.id === commentId
+    );
 
     _updatingEntity.comments.splice(updatingCommentIndex, 1);
     _updatingEntity.loadCommentsCount--;
 
     const result: ILoadState = {
         ...state,
-        data: _data
+        data: _data,
     };
 
     return result;
-}
+};
 
-export const updateLoadStatusSignalRSuccess = function(state: ILoadState, response: LoadListResponse): ILoadState {
-    const { 
-        pagination, 
+export const updateLoadStatusSignalRSuccess = function (
+    state: ILoadState,
+    response: LoadListResponse
+): ILoadState {
+    const {
+        pagination,
         templateCount,
         pendingCount,
         activeCount,
-        closedCount
+        closedCount,
     } = response || {};
     const { data: responseData } = pagination || {};
     const { id, status } = responseData[0] || {};
     const { data } = state || {};
-    const existOnPage: boolean = data.some(_ => _.id === id);
+    const existOnPage: boolean = data.some((_) => _.id === id);
     let result: ILoadState;
 
-    if (existOnPage)
-        result = updateLoadStatusSuccessResult(state, id, status);
-    else 
+    if (existOnPage) result = updateLoadStatusSuccessResult(state, id, status);
+    else
         result = {
             ...state,
             data: [...data, ...responseData], // responseData will always contain single element,
             templateCount,
             pendingCount,
             activeCount,
-            closedCount
-        }
+            closedCount,
+        };
 
     return result;
-}
+};
 
-export const tableColumnResizeResult = function(state: ILoadState, columns: ITableColummn[], width: number, index: number): ILoadState {
-    let _columns: ITableColummn[] = JSON.parse(localStorage.getItem(`table-${TableType.LoadRegular}-Configuration`));
+export const tableColumnResizeResult = function (
+    state: ILoadState,
+    columns: ITableColummn[],
+    width: number,
+    index: number
+): ILoadState {
+    let _columns: ITableColummn[] = JSON.parse(
+        localStorage.getItem(`table-${TableType.LoadRegular}-Configuration`)
+    );
 
     _columns = _columns.map((column) => {
-        if (
-            column.title ===
-            columns[index].title
-        ) {
+        if (column.title === columns[index].title) {
             column.width = width;
         }
 
@@ -349,21 +463,27 @@ export const tableColumnResizeResult = function(state: ILoadState, columns: ITab
     );
 
     const result: ILoadState = {
-        ...state
+        ...state,
+    };
+
+    return result;
+};
+
+export function mapDispatcherSuccessResult(
+    state: ILoadState,
+    dispatcherList: DispatcherFilterResponse[]
+): ILoadState {
+    const result: ILoadState = {
+        ...state,
+        dispatcherList: FilterHelper.dispatcherFilter(dispatcherList),
     };
 
     return result;
 }
-
-export function mapDispatcherSuccessResult(state: ILoadState, dispatcherList: DispatcherFilterResponse[]): ILoadState {
-    const result: ILoadState = {
-        ...state,
-        dispatcherList: FilterHelper.dispatcherFilter(dispatcherList)
-    }
-
-    return result;
-}
-export const addCreatedBrokerStaticModalDataResult = function(state: ILoadState, broker: BrokerByIdResponse): ILoadState {
+export const addCreatedBrokerStaticModalDataResult = function (
+    state: ILoadState,
+    broker: BrokerByIdResponse
+): ILoadState {
     const { modal, activeModalData } = state;
     let _modal: LoadModalResponse = JSON.parse(JSON.stringify(modal));
     let _activeModalData = JSON.parse(JSON.stringify(activeModalData));
@@ -380,23 +500,29 @@ export const addCreatedBrokerStaticModalDataResult = function(state: ILoadState,
     const result: ILoadState = {
         ...state,
         modal: _modal,
-        activeModalData: _activeModalData
+        activeModalData: _activeModalData,
+    };
+
+    return result;
+};
+
+export function mapStatusFilterSuccessResult(
+    state: ILoadState,
+    statusList: any[]
+): ILoadState {
+    // backend time is not good?
+    const result: ILoadState = {
+        ...state,
+        statusList,
     };
 
     return result;
 }
 
-export function mapStatusFilterSuccessResult(state: ILoadState, statusList: any[]): ILoadState {
-    // backend time is not good? 
-    const result: ILoadState = {
-        ...state,
-        statusList
-    }
-
-    return result;
-}
-        
-export const addCreatedShipperStaticModalDataResult = function(state: ILoadState, shipper: ShipperLoadModalResponse): ILoadState {
+export const addCreatedShipperStaticModalDataResult = function (
+    state: ILoadState,
+    shipper: ShipperLoadModalResponse
+): ILoadState {
     const { modal, activeModalData } = state;
     let _modal: LoadModalResponse = JSON.parse(JSON.stringify(modal));
     let _activeModalData = JSON.parse(JSON.stringify(activeModalData));
@@ -413,19 +539,27 @@ export const addCreatedShipperStaticModalDataResult = function(state: ILoadState
     const result: ILoadState = {
         ...state,
         modal: _modal,
-        activeModalData: _activeModalData
+        activeModalData: _activeModalData,
     };
 
     return result;
-}
+};
 
-export const updateEditedBrokerStaticModalDataResult = function(state: ILoadState, broker: BrokerByIdResponse, brokerContacts?: BrokerContactExtended[]): ILoadState {
+export const updateEditedBrokerStaticModalDataResult = function (
+    state: ILoadState,
+    broker: BrokerByIdResponse,
+    brokerContacts?: BrokerContactExtended[]
+): ILoadState {
     const { modal, activeModalData } = state;
     let _modal: LoadModalResponse = JSON.parse(JSON.stringify(modal));
-    let _activeModalData: IActiveLoadModalData = JSON.parse(JSON.stringify(activeModalData));
+    let _activeModalData: IActiveLoadModalData = JSON.parse(
+        JSON.stringify(activeModalData)
+    );
 
-    if(!!broker) {
-        const index: number = _modal.brokers.findIndex(item => item.id === broker.id);
+    if (!!broker) {
+        const index: number = _modal.brokers.findIndex(
+            (item) => item.id === broker.id
+        );
         _modal.brokers.splice(index, 1, broker);
 
         if (!!_activeModalData) {
@@ -440,8 +574,15 @@ export const updateEditedBrokerStaticModalDataResult = function(state: ILoadStat
 
     const result: ILoadState = {
         ...state,
-        modal: _modal
+        modal: _modal,
     };
 
     return result;
-}
+};
+
+export const getLoadDetails = function (
+    state: ILoadState,
+    details: LoadResponse
+): ILoadState {
+    return { ...state, details, isLoadDetailsLoaded: true };
+};

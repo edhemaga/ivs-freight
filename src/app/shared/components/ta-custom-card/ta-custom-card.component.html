@@ -63,7 +63,7 @@
                 [ngStyle]="{
                     color: _isCardOpen
                         ? '#424242'
-                        : headerLightColor && hasCounter === -1
+                        : isHeaderLightColor && hasCounter === -1
                           ? '#aaaaaa'
                           : '#6C6C6C',
                 }"
@@ -179,9 +179,7 @@
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
                     (click)="onAction($event, 'add')"
                 >
-                    <svg-icon
-                        [src]="'assets/svg/common/ic_history.svg'"
-                    ></svg-icon>
+                    <svg-icon [src]="customCardSvgRoutes.IC_HISTORY"></svg-icon>
                 </div>
             </ng-container>
 
@@ -199,7 +197,7 @@
                 >
                     <svg-icon
                         class="action-plus-icon"
-                        [src]="'assets/svg/common/ic_plus.svg'"
+                        [src]="customCardSvgRoutes.IC_PLUS"
                         [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
                     ></svg-icon>
                 </div>
@@ -218,7 +216,7 @@
                 >
                     <svg-icon
                         class="plus-custom-card"
-                        src="assets/svg/common/ic_plus.svg"
+                        [src]="customCardSvgRoutes.IC_PLUS"
                     ></svg-icon>
                 </div>
             </ng-container>
@@ -271,19 +269,18 @@
                 </button>
             </ng-container>
 
-            <!-- Edit & Delete Actions -->
-
-            <svg-icon
-                *ngIf="hasDeleteAction"
-                class="edit-delete-actions"
-                class="delete-icon"
-                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18,
-                }"
-                (click)="onAction($event, 'delete')"
-            ></svg-icon>
+            <!-- Delete Actions -->
+            @if (_isCardOpen && hasDeleteAction && doesFileExist) {
+                <div
+                    class="delete-icon-container"
+                    (click)="onAction($event, 'delete')"
+                >
+                    <svg-icon
+                        class="delete-icon"
+                        [src]="customCardSvgRoutes.TRASH_BIN"
+                    ></svg-icon>
+                </div>
+            }
 
             <!-- Format Text Actions -->
 
@@ -300,13 +297,21 @@
                 [type]="type"
             ></app-ta-note-container>
 
-            <!-- Arrow -->
+            <!-- Color Picker -->
+            @if (hasColorIcon && _isCardOpen && !doesFileExist) {
+                <app-ca-icon-dropdown
+                    [iconDropdownConfig]="iconDropdownConfig"
+                    (click)="onAction($event, 'custom', customTextAction)"
+                >
+                </app-ca-icon-dropdown>
+            }
 
+            <!-- Arrow -->
             <svg-icon
                 *ngIf="hasArrow && hasBodyData"
                 class="header-arrow"
                 [ngClass]="{ rotate: _isCardOpen && _isCardOpen != 'null' }"
-                src="assets/svg/common/ic_arrow_down_updated.svg"
+                [src]="customCardSvgRoutes.ARROW_DOWN"
             ></svg-icon>
         </div>
     </div>

@@ -1241,9 +1241,9 @@ export class TaTableBodyComponent<
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
-    public addPmItem(row: any): void {
-        this.bodyActions.emit({
-            data: row,
+    public addPmItem(row: any, column: any): void {
+        this.tableBodyActions.emit({
+            data: {...row, title: column.name },
             type: TableStringEnum.ADD_PM_ITEM,
         });
     }

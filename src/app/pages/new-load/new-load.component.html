@@ -1,0 +1,123 @@
+@let store =
+    {
+        viewData: loadStoreService.viewData$ | async,
+        tableData: loadStoreService.tableData$ | async,
+        activeTableData: loadStoreService.activeTableData$ | async,
+        activeViewMode: loadStoreService.activeViewMode$ | async,
+        dispatcherList: loadStoreService.dispatcherList$ | async,
+        statusList: loadStoreService.statusList$ | async,
+    };
+
+@if (store) {
+    <app-new-table-toolbar
+        [title]="'Load'"
+        [leftSide]="leftSide"
+        [rightSide]="rightSide"
+        (onPlusClick)="
+            onToolBarAction({
+                action: generalActions.OPEN_MODAL,
+            })
+        "
+    >
+        <ng-template #leftSide>
+            <app-toolbar-tabs-wrapper
+                class="d-flex align-items-center"
+                [data]="store.tableData"
+                [selectedTab]="selectedTab"
+                [viewMode]="loadStoreService.activeViewMode$ | async"
+                (onTabChange)="onToolBarAction($event)"
+            ></app-toolbar-tabs-wrapper>
+
+            @if (selectedTab !== 'Template') {
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+                <div
+                    class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                >
+                    $16,425.30
+                </div>
+            }
+
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+            <div class="d-flex gap-1 align-items-center">
+                <app-ca-search-multiple-states
+                    [searchType]="'tabel'"
+                    [selectedTabData]="store?.activeTableData"
+                    [toolbarSearch]="true"
+                ></app-ca-search-multiple-states>
+
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+                @if (selectedTab !== 'Template') {
+                    <app-ca-filter-time-dropdown
+                        type="TimeFilter"
+                        subType="past"
+                        [entityType]="selectedTab"
+                        (setFilter)="setFilters($event)"
+                    >
+                    </app-ca-filter-time-dropdown>
+
+                    <app-ca-filter-list-dropdown
+                        type="Dispatcher"
+                        [list]="store.dispatcherList"
+                        [entityType]="selectedTab"
+                        (setFilter)="setFilters($event)"
+                    >
+                    </app-ca-filter-list-dropdown>
+
+                    <app-ca-filter-list-dropdown
+                        type="Status"
+                        [list]="store.statusList"
+                        [entityType]="selectedTab"
+                        (setFilter)="setFilters($event)"
+                    >
+                    </app-ca-filter-list-dropdown>
+                }
+                <app-ca-filter
+                    subType="all"
+                    type="moneyFilter"
+                    icon="dollar"
+                    filterTitle="Money Filter"
+                    [entityType]="selectedTab"
+                    [isMoneyFilter]="true"
+                    [isLoadType]="true"
+                    (setFilter)="setFilters($event)"
+                    (clearAll)="setFilters($event)"
+                >
+                </app-ca-filter>
+            </div>
+
+            @if (selectedTab === 'Template') {
+                <div
+                    class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                >
+                    2 Selected
+                </div>
+            }
+        </ng-template>
+
+        <ng-template #rightSide>
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+            <div
+                class="text-color-white background-bw6-2 text-size-11 ta-font-bold br-2 p-x-8 p-y-4"
+            >
+                LTL BUILDER
+            </div>
+            <ng-container *ngTemplateOutlet="divider"></ng-container>
+        </ng-template>
+
+        <ng-template #divider>
+            <div class="new-table--toolbar-divider">
+                <div
+                    class="new-table--toolbar-divider-border background-light-grey-6"
+                ></div>
+            </div>
+        </ng-template>
+    </app-new-table-toolbar>
+
+    @if (store?.activeViewMode === 'List') {
+        <app-new-load-table></app-new-load-table>
+    } @else {
+        <app-new-load-cards></app-new-load-cards>
+    }
+}

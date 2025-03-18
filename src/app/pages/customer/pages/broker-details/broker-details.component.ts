@@ -12,7 +12,10 @@ import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/con
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { LoadService } from '@shared/services/load.service';
 import { ModalService } from '@shared/services/modal.service';
-import { CaSearchMultipleStatesService } from 'ca-components';
+import {
+    CaSearchMultipleStatesService,
+    eFilterDropdownEnum,
+} from 'ca-components';
 
 // Store
 import { BrokerMinimalListStore } from '@pages/customer/state/broker-details-state/broker-minimal-list-state/broker-minimal-list.store';
@@ -340,8 +343,8 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
             event.type === TableStringEnum.EDIT
                 ? TableStringEnum.BASIC
                 : event.type === TableStringEnum.CONTRACT
-                ? TableStringEnum.ADDITIONAL
-                : TableStringEnum.REVIEW;
+                  ? TableStringEnum.ADDITIONAL
+                  : TableStringEnum.REVIEW;
 
         const eventObject = {
             data: undefined,
@@ -522,27 +525,24 @@ export class BrokerDetailsComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         switch (data?.filterType) {
-            case LoadFilterStringEnum.DISPATCHER_FILTER:
-                this.backLoadFilterQuery.dispatcherIds =
-                    data.queryParams ?? null;
+            case eFilterDropdownEnum.DISPATCHER:
+                this.backLoadFilterQuery = {
+                    ...this.backLoadFilterQuery,
+                    dispatcherIds: data.selectedIds,
+                };
                 break;
-            case LoadFilterStringEnum.STATUS_FILTER:
-                this.backLoadFilterQuery.status = data.queryParams ?? null;
+            case eFilterDropdownEnum.STATUS:
+                this.backLoadFilterQuery = {
+                    ...this.backLoadFilterQuery,
+                    status: data.selectedIds,
+                };
                 break;
-            case LoadFilterStringEnum.TIME_FILTER:
-                if (data.queryParams?.timeSelected) {
-                    const { fromDate, toDate } =
-                        RepairTableDateFormaterHelper.getDateRange(
-                            data.queryParams?.timeSelected,
-                            data.queryParams.year ?? null
-                        );
-
-                    this.backLoadFilterQuery.dateTo = toDate;
-                    this.backLoadFilterQuery.dateFrom = fromDate;
-                } else {
-                    this.backLoadFilterQuery.dateTo = null;
-                    this.backLoadFilterQuery.dateFrom = null;
-                }
+            case eFilterDropdownEnum.TIME_FILTER:
+                this.backLoadFilterQuery = {
+                    ...this.backLoadFilterQuery,
+                    dateTo: data.queryParams.toDate,
+                    dateFrom: data.queryParams.fromDate,
+                };
                 break;
             case LoadFilterStringEnum.MONEY_FILTER:
                 this.backLoadFilterQuery.rateFrom =
