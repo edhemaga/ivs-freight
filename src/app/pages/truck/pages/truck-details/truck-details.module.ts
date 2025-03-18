@@ -23,7 +23,6 @@ import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/t
 import { TaDetailsHeaderCardComponent } from '@shared/components/ta-details-header-card/ta-details-header-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { CaChartComponent } from 'ca-components';
-import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -37,11 +36,14 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
     ],
     exports: [TruckDetailsCardComponent, SharedModule],
     imports: [
+        // modules
         CommonModule,
         TruckDetailsRoutingModule,
-        SharedModule,
         ReactiveFormsModule,
-        FormatDatePipe,
+        SharedModule,
+        AngularSvgIconModule,
+
+        // components
         TaProfileImagesComponent,
         TaCopyComponent,
         TaCustomCardComponent,
@@ -50,16 +52,15 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
         TaCommonCardComponent,
         TaProgressExpirationComponent,
         TaCounterComponent,
-        FormatDatePipe,
         TaDetailsHeaderComponent,
         TaDetailsHeaderCardComponent,
         TaTabSwitchComponent,
-        AngularSvgIconModule,
         CaChartComponent,
-        TaChartLegendComponent,
-        // PIPES
+
+        // pipes
         ThousandSeparatorPipe,
+        FormatDatePipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class TruckDetailsModule { }
+export class TruckDetailsModule {}

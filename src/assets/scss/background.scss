@@ -17,8 +17,14 @@
     &-black {
         background: $ta-black;
     }
+    &-green {
+        background: $ta-green;
+    }
     &-bw2 {
         background-color: $bw2;
+    }
+    &-bw6-2 {
+        background-color: $bw6-2;
     }
     &-light-grey {
         background-color: $ta-light-grey;
@@ -28,6 +34,9 @@
         }
     }
     &-blue {
+        &-13 {
+            background-color: $ta-blue-13;
+        }
         &-14 {
             background-color: $ta-blue-14;
         }
@@ -37,6 +46,9 @@
     }
 
     &-hover {
+        &-black {
+            @include hover($ta-black);
+        }
         &-blue {
             &-15 {
                 @include hover($ta-blue-15);

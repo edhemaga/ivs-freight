@@ -1,0 +1,10 @@
+@if (
+    {
+        viewData: loadStoreService.viewData$ | async,
+    };
+    as store
+) {
+    @for (load of store.viewData; track load.id) {
+        <div [routerLink]="load.id + '/details'">Load id: {{ load.id }}</div>
+    }
+}

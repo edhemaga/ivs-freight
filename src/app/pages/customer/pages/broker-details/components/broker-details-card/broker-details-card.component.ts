@@ -360,7 +360,7 @@ export class BrokerDetailsCardComponent
         this.mileageLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.mileageChartData
                 : this.mileageChartData?.brokerMileageRateChartResponse[index];
 
@@ -378,7 +378,7 @@ export class BrokerDetailsCardComponent
         this.invoiceLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.invoiceChartData
                 : this.invoiceChartData?.brokerPaidInvoiceChartResponse[index];
 
@@ -398,7 +398,7 @@ export class BrokerDetailsCardComponent
         this.paymentLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.paymentChartData
                 : this.paymentChartData?.brokerPaymentHistoryChartResponse[
                       index

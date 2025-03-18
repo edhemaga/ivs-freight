@@ -52,3 +52,20 @@
     -moz-user-select: none;
   }
   
+  @mixin responsive-grid($small, $medium, $large, $small-max: 1280px, $medium-min: 1281px, $medium-max: 1440px, $large-min: 1441px) {
+    display: grid;
+    gap: 12px;
+    padding-right: 12px;
+
+    @media (max-width: $small-max) {
+      grid-template-columns: $small;
+    }
+  
+    @media (min-width: $medium-min) and (max-width: $medium-max) {
+      grid-template-columns: $medium;
+    }
+  
+    @media (min-width: $large-min) {
+      grid-template-columns: $large;
+    }
+  }

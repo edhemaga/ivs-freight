@@ -1,4 +1,3 @@
-
 .mb-12 {
     margin-bottom: 12px !important;
 }
@@ -9,6 +8,9 @@
     &-b {
         &-2 {
             margin-bottom: 2px;
+        }
+        &-4 {
+            margin-bottom: 4px;
         }
         &-6 {
             margin-bottom: 6px;
@@ -23,12 +25,20 @@
         &-4 {
             margin-left: 4px;
         }
+        &-8 {
+            margin-left: 8px;
+        }
         &-auto {
             margin-left: auto;
         }
     }
 }
 .p {
+    &-l {
+        &-4 {
+            padding-left: 4px;
+        }
+    }
     &-x {
         &-4 {
             padding-left: 4px;
@@ -40,6 +50,10 @@
         }
     }
     &-y {
+        &-1 {
+            padding-bottom: 1px;
+            padding-top: 1px;
+        }
         &-4 {
             padding-bottom: 4px;
             padding-top: 4px;
@@ -51,4 +65,15 @@
 }
 .w-full {
     width: 100%;
+}
+
+.h {
+    &-26 {
+        height: 26px;
+    }
+}
+.w {
+    &-26 {
+        width: 26px;
+    }
 }

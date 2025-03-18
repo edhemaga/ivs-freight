@@ -1,4 +1,5 @@
 import {
+    AbstractControl,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
@@ -229,6 +230,7 @@ export class ShipperModalComponent
     public activeAction: string;
     public eModalButtonClassType = eModalButtonClassType;
     public eModalButtonSize = eModalButtonSize;
+    public shipperModalString = ShipperModalString;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
