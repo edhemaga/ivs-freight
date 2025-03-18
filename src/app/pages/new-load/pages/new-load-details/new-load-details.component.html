@@ -1,5 +1,26 @@
+@let load = loadStoreService.resolveLoadDetails$ | async;
+
 <div class="load-details-row">
-    <app-load-details-general></app-load-details-general>
+    <aside>
+        <app-ta-details-page-title
+            title="Load Detail"
+            routeLink="/list/new-load"
+            [detailsDropdownOptions]="detailsDropdownOptions"
+            [rightSide]="rightSide"
+        >
+            <ng-template #rightSide>
+                <div
+                    class="h-26 text-color-white text-size-14 ta-font-bold p-x-8 text-uppercase br-2 d-flex align-items-center justify-content-center"
+                    [ngClass]="load.statusType?.id | statusClass"
+                >
+                    {{ load.statusType?.name }}
+                </div>
+            </ng-template>
+        </app-ta-details-page-title>
+
+        <app-load-details-general> </app-load-details-general>
+    </aside>
+
     <app-load-details-stops></app-load-details-stops>
     <app-load-details-additional></app-load-details-additional>
 </div>

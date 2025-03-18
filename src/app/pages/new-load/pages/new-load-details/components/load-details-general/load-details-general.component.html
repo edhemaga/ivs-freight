@@ -1,4 +1,6 @@
-@let load = loadStoreService.resolveLoadDetails$ | async;
-<div class="background-white p-8 br-3">
-    {{ load.loadNumber }}
+<div class="mt-3">
+    @let load = loadStoreService.resolveLoadDetails$ | async;
+    <div class="background-white p-8 br-3">
+        {{ load.loadNumber }}
+    </div>
 </div>
