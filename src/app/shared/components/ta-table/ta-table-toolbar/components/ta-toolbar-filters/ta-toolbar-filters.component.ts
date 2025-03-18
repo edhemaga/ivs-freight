@@ -110,7 +110,7 @@ export class TaToolbarFiltersComponent
     constructor(
         private tableSevice: TruckassistTableService,
         private filterService: FilterStateService,
-        public addressService: AddressService,
+        public addressService: AddressService
     ) {
         super();
     }
@@ -233,7 +233,7 @@ export class TaToolbarFiltersComponent
                             this.options.toolbarActions.showTruckPmFilter ||
                             this.options.toolbarActions.showTrailerPmFilter
                         ) {
-                            this.truckTypeArray = res.data.map(
+                            this.truckTypeArray = res?.data?.map(
                                 (
                                     type: any
                                     // leave any for now
@@ -243,8 +243,8 @@ export class TaToolbarFiltersComponent
                                     return type;
                                 }
                             );
-                        } else {
-                            this.truckTypeArray = res.data.map((item) => ({
+                        } else
+                            this.truckTypeArray = res?.data?.map((item) => ({
                                 ...item.truckType,
                                 count: item.count,
                                 icon: item.truckType?.logoName
@@ -252,7 +252,6 @@ export class TaToolbarFiltersComponent
                                       item.truckType.logoName
                                     : null,
                             }));
-                        }
                     }
                     if (
                         res?.animation ===
@@ -263,7 +262,7 @@ export class TaToolbarFiltersComponent
                             this.options.toolbarActions.showTruckPmFilter ||
                             this.options.toolbarActions.showTrailerPmFilter
                         ) {
-                            this.trailerTypeArray = res.data.map(
+                            this.trailerTypeArray = res?.data?.map(
                                 (
                                     type: any
                                     // leave any for now
@@ -274,7 +273,7 @@ export class TaToolbarFiltersComponent
                                 }
                             );
                         } else {
-                            this.trailerTypeArray = res.data.map((item) => ({
+                            this.trailerTypeArray = res?.data?.map((item) => ({
                                 ...item.trailerType,
                                 count: item.count,
                                 icon: item.trailerType?.logoName
@@ -289,7 +288,7 @@ export class TaToolbarFiltersComponent
                         ToolbarFilterStringEnum.TRUCK_TYPE_UPDATE
                     ) {
                         this.truckTypeArray = truckResData;
-                        this.truckTypeArray = res.data.map((item) => ({
+                        this.truckTypeArray = res?.data?.map((item) => ({
                             ...item.truckType,
                             count: item.count,
                             icon: item.truckType?.logoName
@@ -303,7 +302,7 @@ export class TaToolbarFiltersComponent
                         ToolbarFilterStringEnum.TRAILER_TYPE_UPDATE
                     ) {
                         this.trailerTypeArray = trailerResData;
-                        this.trailerTypeArray = res.data.map((item) => ({
+                        this.trailerTypeArray = res?.data?.map((item) => ({
                             ...item.trailerType,
                             count: item.count,
                             icon: item.trailerType?.logoName
@@ -322,7 +321,7 @@ export class TaToolbarFiltersComponent
                         res?.animation ===
                         ToolbarFilterStringEnum.FUEL_CATEGORY_UPDATE
                     ) {
-                        this.categoryFuelArray = res.data;
+                        this.categoryFuelArray = res?.data;
                     }
 
                     if (
@@ -345,8 +344,8 @@ export class TaToolbarFiltersComponent
                         res?.animation ===
                         ToolbarFilterStringEnum.PM_TRUCK_DATA_UPDATE
                     ) {
-                        if (res.data.pmTrucks?.length) {
-                            const newData = res.data.pmTrucks.map(
+                        if (res?.data?.pmTrucks?.length) {
+                            const newData = res?.data?.pmTrucks.map(
                                 (
                                     type: any
                                     // leave any for now
@@ -515,20 +514,20 @@ export class TaToolbarFiltersComponent
                 selectedFilter: event.selectedFilter,
             };
 
-            if (event.selectedFilter) {
+            if (event.selectedFilter)
                 event.filteredArray.forEach((item) => {
                     this.customerFilter.filteredArray.push(item);
                 });
-            } else {
+            else
                 this.customerFilter.filteredArray =
-                    this.customerFilter.filteredArray.filter((item) => {
+                    this.customerFilter.filteredArray?.filter((item) => {
                         return !event.filteredArray.some((removeItem) =>
                             Object.entries(removeItem).every(
                                 ([key, value]) => item[key] === value
                             )
                         );
                     });
-            }
+
             if (!this.customerFilter.filteredArray.length) {
                 this.customerFilter.selectedFilter = false;
             }

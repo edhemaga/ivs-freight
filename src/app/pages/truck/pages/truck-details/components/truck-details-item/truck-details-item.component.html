@@ -1,447 +1,519 @@
 <div class="details-component">
-    <div *ngFor="let trucks of truck; trackBy: identity">
-        <div [ngSwitch]="trucks.template">
-            <!---------------------------- GENERAL TEMPLATE ----------------------------->
-            <div *ngSwitchCase="'general'">
+    @for (trucks of truck; let indx = $index; track indx) {
+        @switch (trucks.template) {
+            @case ('general') {
                 <app-truck-details-card [truck]="trucks.data">
                 </app-truck-details-card>
-            </div>
-            <!---------------------------- Registration TEMPLATE ----------------------------->
-            <div class="card-width" *ngSwitchCase="'registration'">
-                <app-ta-common-card
-                    *ngFor="
-                        let reg of trucks?.data;
-                        let i = index;
-                        trackBy: identity
-                    "
-                    [cardDocumentCounter]="
-                        reg?.files?.length ? reg?.files?.length : 0
-                    "
-                    (resizePage)="toggleResizePage(i, 'registration')"
-                    [cardNameCommon]="reg.licensePlate"
-                    [hasCopyIcon]="false"
-                    [options]="dataEdit"
-                    [cardNameCurrent]="'truckRegistration'"
-                    [noteIcons]="
-                        reg.note
-                            ? 'assets/svg/truckassist-table/note/Note.svg'
-                            : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-                    "
-                    [expDateClose]="reg.expDate | formatDateP"
-                    [isCardOpen]="
-                        i == 0 && reg.expDate > currentDate ? true : false
-                    "
-                    [notExpired]="currentDate > reg.expDate ? false : true"
-                    [openCloseStatus]="i !== 0"
-                    [voidedDate]="reg.voidedOn | formatDateP"
-                    [isDeactivated]="reg.voidedOn ? true : false"
-                    [optionsId]="reg.id"
-                    [danger]="true"
-                    (dropActions)="
-                        optionsEvent($event, trucks.data, 'registration')
-                    "
-                >
-                    <div class="card-container">
-                        <div class="card-body-cdl">
-                            <div class="card-row-endor">
-                                <div class="card-item">
-                                    <div class="card-item-name">State</div>
-                                    <div class="card-item-value">
-                                        <app-ta-copy
-                                            [copyValue]="
-                                                reg.state.stateShortName
-                                            "
-                                            [textColor]="'#2f2f2f'"
-                                        >
-                                        </app-ta-copy>
+            }
+            @case ('registration') {
+                <div class="card-width">
+                    @for (reg of trucks?.data; let i = $index; track i) {
+                        <app-ta-common-card
+                            [cardDocumentCounter]="reg?.files?.length ?? 0"
+                            (resizePage)="toggleResizePage(i, 'registration')"
+                            [cardNameCommon]="reg.licensePlate"
+                            [hasCopyIcon]="false"
+                            [options]="dataEdit"
+                            [cardNameCurrent]="'truckRegistration'"
+                            [noteIcons]="
+                                reg.note
+                                    ? 'assets/svg/truckassist-table/note/Note.svg'
+                                    : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+                            "
+                            [expDateClose]="reg.expDate | formatDateP"
+                            [isCardOpen]="i == 0 && reg.expDate > currentDate"
+                            [notExpired]="currentDate > reg.expDate"
+                            [openCloseStatus]="i !== 0"
+                            [voidedDate]="reg.voidedOn | formatDateP"
+                            [isDeactivated]="reg.voidedOn"
+                            [optionsId]="reg.id"
+                            [danger]="true"
+                            (dropActions)="
+                                optionsEvent(
+                                    $event,
+                                    trucks.data,
+                                    'registration'
+                                )
+                            "
+                        >
+                            <div class="card-container">
+                                <div class="card-body-cdl">
+                                    <div class="card-row-endor">
+                                        <div class="card-item">
+                                            <div class="card-item-name">
+                                                State
+                                            </div>
+                                            <div class="card-item-value">
+                                                <app-ta-copy
+                                                    [copyValue]="
+                                                        reg.state.stateShortName
+                                                    "
+                                                    [textColor]="'#2f2f2f'"
+                                                >
+                                                </app-ta-copy>
+                                            </div>
+                                        </div>
+                                        <div class="card-item">
+                                            <div class="card-item-name">
+                                                Issued
+                                            </div>
+                                            <div class="card-item-value">
+                                                <app-ta-copy
+                                                    [copyValue]="
+                                                        formatDate(
+                                                            reg.issueDate
+                                                        )
+                                                    "
+                                                    [textColor]="'#2f2f2f'"
+                                                >
+                                                </app-ta-copy>
+                                            </div>
+                                        </div>
+                                        @if (reg.voidedOn) {
+                                            <div class="card-item">
+                                                <div class="card-item-name">
+                                                    Voided
+                                                </div>
+                                                <div class="card-item-value">
+                                                    {{
+                                                        reg.voidedOn
+                                                            | formatDateP
+                                                    }}
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
-                                </div>
-                                <div class="card-item">
-                                    <div class="card-item-name">Issued</div>
-                                    <div class="card-item-value">
-                                        <app-ta-copy
-                                            [copyValue]="
-                                                formatDate(reg.issueDate)
-                                            "
-                                            [textColor]="'#2f2f2f'"
+                                    <div
+                                        class="card-row-progress second-progress"
+                                    >
+                                        <div
+                                            class="card-details-progress-container"
                                         >
-                                        </app-ta-copy>
-                                    </div>
-                                </div>
-                                <ng-container *ngIf="reg.voidedOn">
-                                    <div class="card-item">
-                                        <div class="card-item-name">Voided</div>
-                                        <div class="card-item-value">
-                                            {{ reg.voidedOn | formatDateP }}
+                                            <app-ta-progress-expiration
+                                                [expireDate]="
+                                                    formatDate(reg.expDate)
+                                                "
+                                                [startDate]="
+                                                    formatDate(reg.issueDate)
+                                                "
+                                                [expiresSettings]="'details'"
+                                                [darkText]="true"
+                                            >
+                                            </app-ta-progress-expiration>
                                         </div>
                                     </div>
-                                </ng-container>
-                            </div>
-                            <div class="card-row-progress second-progress">
-                                <div class="card-details-progress-container">
-                                    <app-ta-progress-expiration
-                                        [expireDate]="formatDate(reg.expDate)"
-                                        [startDate]="formatDate(reg.issueDate)"
-                                        [expiresSettings]="'details'"
-                                        [darkText]="true"
-                                    >
-                                    </app-ta-progress-expiration>
+                                    @if (isVoidActive && reg.voidedOn) {
+                                        <div
+                                            class="void-button"
+                                            (click)="
+                                                chechVoidStatus(
+                                                    reg.id,
+                                                    trucks.data,
+                                                    'registration'
+                                                )
+                                            "
+                                        >
+                                            <p class="ta-font-bold">Activate</p>
+                                        </div>
+                                    }
                                 </div>
-                            </div>
-                            <ng-container *ngIf="isVoidActive && reg.voidedOn">
+
                                 <div
-                                    class="void-button"
-                                    (click)="
-                                        chechVoidStatus(
-                                            reg.id,
-                                            trucks.data,
-                                            'registration'
-                                        )
+                                    [@showHideCardBody]="
+                                        toggler[i + 'registration']
+                                            ? 'true'
+                                            : 'false'
                                     "
                                 >
-                                    <p class="ta-font-bold">Activate</p>
+                                    @let fileCount = reg?.files?.length;
+                                    @if (fileCount) {
+                                        <div class="divider"></div>
+                                        <div
+                                            class="details-document-container"
+                                            [class.disabled]="!fileCount"
+                                            *ngIf="fileCount"
+                                        >
+                                            <div class="icon-counter-wrapper">
+                                                <div
+                                                    class="counter-text-wrapper"
+                                                    [class.disabled]="
+                                                        !fileCount
+                                                    "
+                                                >
+                                                    <p
+                                                        class="details-document-name"
+                                                    >
+                                                        Document
+                                                    </p>
+                                                    <app-ta-counter
+                                                        [countBackground]="
+                                                            '#424242'
+                                                        "
+                                                        [customClass]="
+                                                            'circle_counter'
+                                                        "
+                                                        [countHeight]="'22px'"
+                                                        [countWidth]="'22px'"
+                                                        [count]="fileCount ?? 0"
+                                                    >
+                                                    </app-ta-counter>
+                                                </div>
+                                                <svg-icon
+                                                    (click)="
+                                                        downloadAllFiles(
+                                                            'registration',
+                                                            i
+                                                        )
+                                                    "
+                                                    src="assets/svg/common/ic_download.svg"
+                                                >
+                                                </svg-icon>
+                                            </div>
+                                        </div>
+                                    }
+                                    <div
+                                        class="card-pdf"
+                                        [class.disabled]="!fileCount"
+                                        [class.extended]="fileCount > 1"
+                                    >
+                                        <app-ta-upload-files
+                                            #registrationUpload
+                                            [files]="reg.files ?? []"
+                                            [customClassName]="
+                                                'driver-details-pdf'
+                                            "
+                                            [hasCarouselBottomTabs]="true"
+                                            [type]="'details'"
+                                            [slideWidth]="324"
+                                        ></app-ta-upload-files>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="note-wrapper">
+                                        <app-ta-input-note
+                                            [formControl]="registrationNote"
+                                            [isVisibleDivider]="false"
+                                            [placeholder]="'Write something.'"
+                                            [customClass]="'note-small'"
+                                            [isVisibleArrow]="false"
+                                            [minRows]="1"
+                                            [isVisibleNote]="true"
+                                            [noteType]="'details-card'"
+                                            [note]="reg.note"
+                                            [entityId]="reg.id"
+                                            [entityType]="'Registration'"
+                                        ></app-ta-input-note>
+                                    </div>
                                 </div>
-                            </ng-container>
-                        </div>
-
-                        <div
-                            [@showHideCardBody]="
-                                toggler[i + 'registration'] ? 'true' : 'false'
+                            </div>
+                        </app-ta-common-card>
+                    }
+                </div>
+            }
+            @case ('fhwa-inspection') {
+                <div class="card-width">
+                    @for (fhwa of trucks?.data; let i = $index; track i) {
+                        <app-ta-common-card
+                            [options]="dataFHWA"
+                            [isCardOpen]="
+                                i == 0 && fhwa.expDate > currentDate
+                                    ? true
+                                    : false
+                            "
+                            [cardDocumentCounter]="
+                                fhwa?.files?.length ? fhwa.files.length : 0
+                            "
+                            [noteIcons]="
+                                fhwa.note
+                                    ? 'assets/svg/truckassist-table/note/Note.svg'
+                                    : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+                            "
+                            [cardNameCommon]="formatDate(fhwa.expDate)"
+                            (resizePage)="toggleResizePage(i, 'fhwa')"
+                            [expDateClose]="formatDate(fhwa.expDate)"
+                            [optionsId]="fhwa.id"
+                            [notExpired]="
+                                currentDate > fhwa.expDate ? false : true
+                            "
+                            [openCloseStatus]="i == 0 ? false : true"
+                            (dropActions)="
+                                optionsEvent($event, trucks.data, 'inspection')
                             "
                         >
-                            <div
-                                class="divider"
-                                *ngIf="reg?.files?.length"
-                            ></div>
-                            <div
-                                class="details-document-container"
-                                [class.disabled]="!reg?.files?.length"
-                                *ngIf="reg?.files?.length"
-                            >
-                                <div class="icon-counter-wrapper">
+                            <div class="card-container">
+                                <div class="card-body-cdl">
                                     <div
-                                        class="counter-text-wrapper"
-                                        [class.disabled]="!reg?.files?.length"
+                                        class="card-row-progress second-progress"
                                     >
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
-                                        <app-ta-counter
-                                            [countBackground]="'#424242'"
-                                            [customClass]="'circle_counter'"
-                                            [countHeight]="'22px'"
-                                            [countWidth]="'22px'"
-                                            [count]="
-                                                reg?.files?.length
-                                                    ? reg.files.length
-                                                    : 0
-                                            "
+                                        <div
+                                            class="card-details-progress-container"
                                         >
-                                        </app-ta-counter>
+                                            <app-ta-progress-expiration
+                                                [expireDate]="
+                                                    formatDate(fhwa.expDate)
+                                                "
+                                                [startDate]="
+                                                    formatDate(fhwa.issueDate)
+                                                "
+                                                [expiresSettings]="'details'"
+                                                [darkText]="true"
+                                            >
+                                            </app-ta-progress-expiration>
+                                        </div>
                                     </div>
-                                    <svg-icon
-                                        *ngIf="reg?.files?.length"
-                                        (click)="
-                                            downloadAllFiles('registration', i)
-                                        "
-                                        src="assets/svg/common/ic_download.svg"
-                                    >
-                                    </svg-icon>
                                 </div>
-                            </div>
-                            <div
-                                class="card-pdf"
-                                [class.disabled]="!reg?.files?.length"
-                                [class.extended]="reg.files?.length > 1"
-                            >
-                                <app-ta-upload-files
-                                    #registrationUpload
-                                    [files]="reg.files ? reg.files : []"
-                                    [customClassName]="'driver-details-pdf'"
-                                    [hasCarouselBottomTabs]="true"
-                                    [type]="'details'"
-                                    [slideWidth]="324"
-                                ></app-ta-upload-files>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="note-wrapper">
-                                <app-ta-input-note
-                                    [formControl]="registrationNote"
-                                    [isVisibleDivider]="false"
-                                    [placeholder]="'Write something.'"
-                                    [customClass]="'note-small'"
-                                    [isVisibleArrow]="false"
-                                    [minRows]="1"
-                                    [isVisibleNote]="true"
-                                    [noteType]="'details-card'"
-                                    [note]="reg.note"
-                                    [entityId]="reg.id"
-                                    [entityType]="'Registration'"
-                                ></app-ta-input-note>
-                            </div>
-                        </div>
-                    </div>
-                </app-ta-common-card>
-            </div>
-            <!---------------------------- Fhwa-insepction TEMPLATE ----------------------------->
-            <div class="card-width" *ngSwitchCase="'fhwa-inspection'">
-                <app-ta-common-card
-                    *ngFor="
-                        let fhwa of trucks?.data;
-                        let i = index;
-                        trackBy: identity
-                    "
-                    [options]="dataFHWA"
-                    [isCardOpen]="
-                        i == 0 && fhwa.expDate > currentDate ? true : false
-                    "
-                    [cardDocumentCounter]="
-                        fhwa?.files?.length ? fhwa.files.length : 0
-                    "
-                    [noteIcons]="
-                        fhwa.note
-                            ? 'assets/svg/truckassist-table/note/Note.svg'
-                            : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-                    "
-                    [cardNameCommon]="formatDate(fhwa.expDate)"
-                    (resizePage)="toggleResizePage(i, 'fhwa')"
-                    [expDateClose]="formatDate(fhwa.expDate)"
-                    [optionsId]="fhwa.id"
-                    [notExpired]="currentDate > fhwa.expDate ? false : true"
-                    [openCloseStatus]="i == 0 ? false : true"
-                    (dropActions)="
-                        optionsEvent($event, trucks.data, 'inspection')
-                    "
-                >
-                    <div class="card-container">
-                        <div class="card-body-cdl">
-                            <div class="card-row-progress second-progress">
-                                <div class="card-details-progress-container">
-                                    <app-ta-progress-expiration
-                                        [expireDate]="formatDate(fhwa.expDate)"
-                                        [startDate]="formatDate(fhwa.issueDate)"
-                                        [expiresSettings]="'details'"
-                                        [darkText]="true"
-                                    >
-                                    </app-ta-progress-expiration>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            [@showHideCardBody]="
-                                toggler[i + 'fhwa'] ? 'true' : 'false'
-                            "
-                        >
-                            <div
-                                class="divider"
-                                *ngIf="fhwa?.files?.length"
-                            ></div>
-                            <div
-                                class="details-document-container"
-                                [class.disabled]="!fhwa?.files?.length"
-                                *ngIf="fhwa?.files?.length"
-                            >
-                                <div class="icon-counter-wrapper">
+                                <div
+                                    [@showHideCardBody]="
+                                        toggler[i + 'fhwa'] ? 'true' : 'false'
+                                    "
+                                >
                                     <div
-                                        class="counter-text-wrapper"
-                                        [class.disabled]="!fhwa?.files?.length"
-                                    >
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
-                                        <app-ta-counter
-                                            [countBackground]="'#424242'"
-                                            [customClass]="'circle_counter'"
-                                            [countHeight]="'22px'"
-                                            [countWidth]="'22px'"
-                                            [count]="
-                                                fhwa?.files?.length
-                                                    ? fhwa.files.length
-                                                    : 0
-                                            "
-                                        >
-                                        </app-ta-counter>
-                                    </div>
-                                    <svg-icon
+                                        class="divider"
                                         *ngIf="fhwa?.files?.length"
-                                        (click)="downloadAllFiles('fhwa', i)"
-                                        src="assets/svg/common/ic_download.svg"
-                                    >
-                                    </svg-icon>
-                                </div>
-                            </div>
-                            <div
-                                class="card-pdf"
-                                [class.disabled]="!fhwa?.files?.length"
-                                [class.extended]="fhwa.files?.length > 1"
-                            >
-                                <app-ta-upload-files
-                                    #fhwaUpload
-                                    [files]="fhwa.files ? fhwa.files : []"
-                                    [customClassName]="'driver-details-pdf'"
-                                    [hasCarouselBottomTabs]="true"
-                                    [type]="'details'"
-                                    [slideWidth]="324"
-                                ></app-ta-upload-files>
-                            </div>
-                            <div class="divider"></div>
-                            <div class="note-wrapper">
-                                <app-ta-input-note
-                                    [formControl]="fhwaNote"
-                                    [placeholder]="'Write something.'"
-                                    [isVisibleDivider]="false"
-                                    [customClass]="'note-small'"
-                                    [isVisibleArrow]="false"
-                                    [minRows]="1"
-                                    [isVisibleNote]="true"
-                                    [noteType]="'details-card'"
-                                    [note]="fhwa.note"
-                                    [entityId]="fhwa.id"
-                                    [entityType]="'Inspection'"
-                                ></app-ta-input-note>
-                            </div>
-                        </div>
-                    </div>
-                </app-ta-common-card>
-            </div>
-
-            <!---------------------------- Title TEMPLATE ----------------------------->
-            <div class="card-width" *ngSwitchCase="'title'">
-                <app-ta-common-card
-                    *ngFor="
-                        let title of trucks?.data;
-                        let i = index;
-                        trackBy: identity
-                    "
-                    [cardDocumentCounter]="
-                        title?.files?.length ? title?.files?.length : 0
-                    "
-                    (resizePage)="toggleResizePage(i, 'titles')"
-                    [cardNameCommon]="title.number"
-                    [options]="dataFHWA"
-                    [noteIcons]="
-                        title.note
-                            ? 'assets/svg/truckassist-table/note/Note.svg'
-                            : 'assets/svg/truckassist-table/note/Note - Empty.svg'
-                    "
-                    [optionsId]="title.id"
-                    (dropActions)="optionsEvent($event, trucks.data, 'title')"
-                    [stateTooltipName]="title.state.stateName"
-                    [shortName]="title.state.stateShortName"
-                    [weeklyWidth]="'28'"
-                    [haveHeaderText]="true"
-                >
-                    <div class="card-container">
-                        <div class="card-body-cdl">
-                            <div class="card-row-endor">
-                                <div class="card-item">
-                                    <div class="card-item-name">Purchased</div>
-                                    <div class="card-item-value">
-                                        <app-ta-copy
-                                            [copyValue]="
-                                                formatDate(title.purchaseDate)
-                                            "
-                                            [textColor]="'#2f2f2f'"
-                                        >
-                                        </app-ta-copy>
-                                    </div>
-                                </div>
-                                <div class="card-item">
-                                    <div class="card-item-name">Issued</div>
-                                    <div class="card-item-value">
-                                        <app-ta-copy
-                                            [copyValue]="
-                                                formatDate(title.issueDate)
-                                            "
-                                            [textColor]="'#2f2f2f'"
-                                        >
-                                        </app-ta-copy>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div
-                            [@showHideCardBody]="
-                                toggler[i + 'titles'] ? 'true' : 'false'
-                            "
-                        >
-                            <div
-                                class="divider"
-                                *ngIf="title?.files?.length"
-                            ></div>
-                            <div
-                                class="details-document-container"
-                                [class.disabled]="!title?.files?.length"
-                                *ngIf="title?.files?.length"
-                            >
-                                <div class="icon-counter-wrapper">
+                                    ></div>
                                     <div
-                                        class="counter-text-wrapper"
-                                        [class.disabled]="!title?.files?.length"
+                                        class="details-document-container"
+                                        [class.disabled]="!fhwa?.files?.length"
+                                        *ngIf="fhwa?.files?.length"
                                     >
-                                        <p class="details-document-name">
-                                            Document
-                                        </p>
-                                        <app-ta-counter
-                                            [countBackground]="'#424242'"
-                                            [customClass]="'circle_counter'"
-                                            [countHeight]="'22px'"
-                                            [countWidth]="'22px'"
-                                            [count]="
-                                                title?.files?.length
-                                                    ? title.files.length
-                                                    : 0
-                                            "
-                                        >
-                                        </app-ta-counter>
+                                        <div class="icon-counter-wrapper">
+                                            <div
+                                                class="counter-text-wrapper"
+                                                [class.disabled]="
+                                                    !fhwa?.files?.length
+                                                "
+                                            >
+                                                <p
+                                                    class="details-document-name"
+                                                >
+                                                    Document
+                                                </p>
+                                                <app-ta-counter
+                                                    [countBackground]="
+                                                        '#424242'
+                                                    "
+                                                    [customClass]="
+                                                        'circle_counter'
+                                                    "
+                                                    [countHeight]="'22px'"
+                                                    [countWidth]="'22px'"
+                                                    [count]="
+                                                        fhwa?.files?.length
+                                                            ? fhwa.files.length
+                                                            : 0
+                                                    "
+                                                >
+                                                </app-ta-counter>
+                                            </div>
+                                            <svg-icon
+                                                *ngIf="fhwa?.files?.length"
+                                                (click)="
+                                                    downloadAllFiles('fhwa', i)
+                                                "
+                                                src="assets/svg/common/ic_download.svg"
+                                            >
+                                            </svg-icon>
+                                        </div>
                                     </div>
-                                    <svg-icon
-                                        *ngIf="title?.files?.length"
-                                        (click)="downloadAllFiles('title', i)"
-                                        src="assets/svg/common/ic_download.svg"
+                                    <div
+                                        class="card-pdf"
+                                        [class.disabled]="!fhwa?.files?.length"
+                                        [class.extended]="
+                                            fhwa.files?.length > 1
+                                        "
                                     >
-                                    </svg-icon>
+                                        <app-ta-upload-files
+                                            #fhwaUpload
+                                            [files]="
+                                                fhwa.files ? fhwa.files : []
+                                            "
+                                            [customClassName]="
+                                                'driver-details-pdf'
+                                            "
+                                            [hasCarouselBottomTabs]="true"
+                                            [type]="'details'"
+                                            [slideWidth]="324"
+                                        ></app-ta-upload-files>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="note-wrapper">
+                                        <app-ta-input-note
+                                            [formControl]="fhwaNote"
+                                            [placeholder]="'Write something.'"
+                                            [isVisibleDivider]="false"
+                                            [customClass]="'note-small'"
+                                            [isVisibleArrow]="false"
+                                            [minRows]="1"
+                                            [isVisibleNote]="true"
+                                            [noteType]="'details-card'"
+                                            [note]="fhwa.note"
+                                            [entityId]="fhwa.id"
+                                            [entityType]="'Inspection'"
+                                        ></app-ta-input-note>
+                                    </div>
                                 </div>
                             </div>
-                            <div
-                                class="card-pdf"
-                                [class.disabled]="!title?.files?.length"
-                                [class.extended]="title.files?.length > 1"
-                            >
-                                <app-ta-upload-files
-                                    #titleUpload
-                                    [files]="title.files ? title.files : []"
-                                    [customClassName]="'driver-details-pdf'"
-                                    [hasCarouselBottomTabs]="true"
-                                    [type]="'details'"
-                                    [slideWidth]="324"
-                                ></app-ta-upload-files>
+                        </app-ta-common-card>
+                    }
+                </div>
+            }
+            @case ('title') {
+                <div class="card-width">
+                    @for (title of trucks?.data; let i = $index; track i) {
+                        <app-ta-common-card
+                            [cardDocumentCounter]="
+                                title?.files?.length ? title?.files?.length : 0
+                            "
+                            (resizePage)="toggleResizePage(i, 'titles')"
+                            [cardNameCommon]="title.number"
+                            [options]="dataFHWA"
+                            [noteIcons]="
+                                title.note
+                                    ? 'assets/svg/truckassist-table/note/Note.svg'
+                                    : 'assets/svg/truckassist-table/note/Note - Empty.svg'
+                            "
+                            [optionsId]="title.id"
+                            (dropActions)="
+                                optionsEvent($event, trucks.data, 'title')
+                            "
+                            [stateTooltipName]="title.state.stateName"
+                            [shortName]="title.state.stateShortName"
+                            [weeklyWidth]="'28'"
+                            [haveHeaderText]="true"
+                        >
+                            <div class="card-container">
+                                <div class="card-body-cdl">
+                                    <div class="card-row-endor">
+                                        <div class="card-item">
+                                            <div class="card-item-name">
+                                                Purchased
+                                            </div>
+                                            <div class="card-item-value">
+                                                <app-ta-copy
+                                                    [copyValue]="
+                                                        formatDate(
+                                                            title.purchaseDate
+                                                        )
+                                                    "
+                                                    [textColor]="'#2f2f2f'"
+                                                >
+                                                </app-ta-copy>
+                                            </div>
+                                        </div>
+                                        <div class="card-item">
+                                            <div class="card-item-name">
+                                                Issued
+                                            </div>
+                                            <div class="card-item-value">
+                                                <app-ta-copy
+                                                    [copyValue]="
+                                                        formatDate(
+                                                            title.issueDate
+                                                        )
+                                                    "
+                                                    [textColor]="'#2f2f2f'"
+                                                >
+                                                </app-ta-copy>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div
+                                    [@showHideCardBody]="
+                                        toggler[i + 'titles'] ? 'true' : 'false'
+                                    "
+                                >
+                                    <div
+                                        class="divider"
+                                        *ngIf="title?.files?.length"
+                                    ></div>
+                                    <div
+                                        class="details-document-container"
+                                        [class.disabled]="!title?.files?.length"
+                                        *ngIf="title?.files?.length"
+                                    >
+                                        <div class="icon-counter-wrapper">
+                                            <div
+                                                class="counter-text-wrapper"
+                                                [class.disabled]="
+                                                    !title?.files?.length
+                                                "
+                                            >
+                                                <p
+                                                    class="details-document-name"
+                                                >
+                                                    Document
+                                                </p>
+                                                <app-ta-counter
+                                                    [countBackground]="
+                                                        '#424242'
+                                                    "
+                                                    [customClass]="
+                                                        'circle_counter'
+                                                    "
+                                                    [countHeight]="'22px'"
+                                                    [countWidth]="'22px'"
+                                                    [count]="
+                                                        title?.files?.length
+                                                            ? title.files.length
+                                                            : 0
+                                                    "
+                                                >
+                                                </app-ta-counter>
+                                            </div>
+                                            <svg-icon
+                                                *ngIf="title?.files?.length"
+                                                (click)="
+                                                    downloadAllFiles('title', i)
+                                                "
+                                                src="assets/svg/common/ic_download.svg"
+                                            >
+                                            </svg-icon>
+                                        </div>
+                                    </div>
+                                    <div
+                                        class="card-pdf"
+                                        [class.disabled]="!title?.files?.length"
+                                        [class.extended]="
+                                            title.files?.length > 1
+                                        "
+                                    >
+                                        <app-ta-upload-files
+                                            #titleUpload
+                                            [files]="
+                                                title.files ? title.files : []
+                                            "
+                                            [customClassName]="
+                                                'driver-details-pdf'
+                                            "
+                                            [hasCarouselBottomTabs]="true"
+                                            [type]="'details'"
+                                            [slideWidth]="324"
+                                        ></app-ta-upload-files>
+                                    </div>
+                                    <div class="divider"></div>
+                                    <div class="note-wrapper">
+                                        <app-ta-input-note
+                                            [formControl]="titleNote"
+                                            [placeholder]="'Write something.'"
+                                            [customClass]="'note-small'"
+                                            [isVisibleArrow]="false"
+                                            [minRows]="1"
+                                            [isVisibleDivider]="false"
+                                            [isVisibleNote]="true"
+                                            [noteType]="'details-card'"
+                                            [note]="title.note"
+                                            [entityId]="title.id"
+                                            [entityType]="'Title'"
+                                        ></app-ta-input-note>
+                                    </div>
+                                </div>
                             </div>
-                            <div class="divider"></div>
-                            <div class="note-wrapper">
-                                <app-ta-input-note
-                                    [formControl]="titleNote"
-                                    [placeholder]="'Write something.'"
-                                    [customClass]="'note-small'"
-                                    [isVisibleArrow]="false"
-                                    [minRows]="1"
-                                    [isVisibleDivider]="false"
-                                    [isVisibleNote]="true"
-                                    [noteType]="'details-card'"
-                                    [note]="title.note"
-                                    [entityId]="title.id"
-                                    [entityType]="'Title'"
-                                ></app-ta-input-note>
-                            </div>
-                        </div>
-                    </div>
-                </app-ta-common-card>
-            </div>
-            <!---------------------------- Lease/Purchase TEMPLATE ----------------------------->
-            <ng-container
-                *ngIf="truck.length > 0 && truck.template === 'lease-purchase'"
-            >
-                <div class="card-width" *ngSwitchCase="'lease-purchase'">
+                        </app-ta-common-card>
+                    }
+                </div>
+            }
+            @case ('lease-purchase') {
+                <div class="card-width">
                     <app-ta-common-card
                         [hasSvg]="'assets/svg/common/green_arrow_down.svg'"
                         (resizePage)="toggleResizePage(5, 'lease')"
@@ -558,7 +630,7 @@
                             <div
                                 class="details-progress-container purchase-progress"
                                 [ngClass]="{
-                                    'no-toggler': !toggler[5 + 'lease']
+                                    'no-toggler': !toggler[5 + 'lease'],
                                 }"
                             >
                                 <app-ta-currency-progress-bar
@@ -736,13 +808,13 @@
                                                 {
                                                     name: 'truckassist - 0',
                                                     url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                                                    extension: 'pdf'
+                                                    extension: 'pdf',
                                                 },
                                                 {
                                                     name: 'truckassist - 1',
                                                     url: 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf',
-                                                    extension: 'pdf'
-                                                }
+                                                    extension: 'pdf',
+                                                },
                                             ]"
                                             [customClassName]="
                                                 'driver-details-pdf'
@@ -764,7 +836,7 @@
                         </div>
                     </app-ta-common-card>
                 </div>
-            </ng-container>
-        </div>
-    </div>
+            }
+        }
+    }
 </div>
