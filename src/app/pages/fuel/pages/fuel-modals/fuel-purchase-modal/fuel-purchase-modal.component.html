@@ -116,13 +116,9 @@
                 }
 
                 @if (
-                    modalActionType === fuelDataOptionsStringEnum.ADD ||
-                    fuelTransactionType?.id === eFuelTransactionType.Manual ||
-                    (fuelTransactionType?.id !== eFuelTransactionType.Manual &&
-                        fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)
-                            ?.value &&
-                        !fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)
-                            ?.dirty)
+                    fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)
+                        ?.value &&
+                    !fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)?.dirty
                 ) {
                     <app-ca-input
                         formControlName="driverFullName"

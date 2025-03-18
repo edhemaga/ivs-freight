@@ -25,6 +25,9 @@
         &-4 {
             margin-left: 4px;
         }
+        &-8 {
+            margin-left: 8px;
+        }
         &-auto {
             margin-left: auto;
         }
@@ -62,4 +65,15 @@
 }
 .w-full {
     width: 100%;
+}
+
+.h {
+    &-26 {
+        height: 26px;
+    }
+}
+.w {
+    &-26 {
+        width: 26px;
+    }
 }

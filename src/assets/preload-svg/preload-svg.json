@@ -758,6 +758,10 @@
         {
             "iconName": "ic_route_info",
             "iconPath": "assets/svg/common/routing/ic_route_info.svg"
+        },
+        {
+            "iconName": "ic_details-back-arrow",
+            "iconPath": "assets/svg/common/ic_details-back-arrow.svg"
         }
     ],
     "customIcons": []
