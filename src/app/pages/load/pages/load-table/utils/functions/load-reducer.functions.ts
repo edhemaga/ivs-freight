@@ -55,6 +55,9 @@ export const getLoadsOrTemplatesPayloadSuccessResult = function (
         activeCount,
         closedCount,
         selectedTab,
+        selectLoadCount: 0,
+        selectLoadRateSum: 0,
+        hasAllLoadsSelected: false,
     };
 
     return result;
@@ -586,3 +589,19 @@ export const getLoadDetails = function (
 ): ILoadState {
     return { ...state, details, isLoadDetailsLoaded: true };
 };
+
+export function updateAllLoadsSelectStatus(state: ILoadState): ILoadState {
+    const hasAllLoadsSelected = !state.hasAllLoadsSelected;
+    const { data } = state;
+
+    return {
+        ...state,
+        hasAllLoadsSelected,
+        selectLoadCount: hasAllLoadsSelected ? data.length : 0,
+        selectLoadRateSum: 12345,
+        data: data.map((load: ILoadGridItem[] | ILoadTemplateGridItem[]) => ({
+            ...load,
+            isSelected: hasAllLoadsSelected,
+        })),
+    };
+}

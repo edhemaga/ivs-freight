@@ -708,3 +708,7 @@ export const getLoadDetailsError = createAction(
 export const setLoadDetailsToUnload = createAction(
     LoadStoreConstants.ACTION_SET_LOAD_DETAILS_TO_UNLOAD
 );
+
+export const selectAllRow = createAction(
+    LoadStoreConstants.ACTION_SELECT_ALL_ROWS
+);

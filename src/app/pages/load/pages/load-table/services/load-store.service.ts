@@ -54,6 +54,9 @@ import {
     viewDataSelector,
     loadDetailsSelector,
     isLoadDetailsLoadedSelector,
+    selectedCountSelector,
+    selectLoadRateSumSelector,
+    hasAllLoadsSelectedSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -128,6 +131,18 @@ export class LoadStoreService {
 
     public isLoadDetailsLoaded$: Observable<boolean> = this.store.pipe(
         select(isLoadDetailsLoadedSelector)
+    );
+
+    public selectedCount$: Observable<number> = this.store.pipe(
+        select(selectedCountSelector)
+    );
+
+    public selectLoadRateSum$: Observable<number> = this.store.pipe(
+        select(selectLoadRateSumSelector)
+    );
+
+    public hasAllLoadsSelected$: Observable<boolean> = this.store.pipe(
+        select(hasAllLoadsSelectedSelector)
     );
 
     public dispatchLoadList(
@@ -582,4 +597,11 @@ export class LoadStoreService {
             brokerContacts,
         });
     }
+
+    public dispatchSelectAll(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SELECT_ALL_ROWS,
+        });
+    }
+    public dispatchSelectOneRow(load: any): void {}
 }

@@ -397,3 +397,21 @@ export const isLoadDetailsLoadedSelector = createSelector(
         return isLoadDetailsLoaded;
     }
 );
+
+export const selectedCountSelector = createSelector(loadState, (state) => {
+    const { selectLoadCount } = state;
+    return selectLoadCount;
+});
+
+export const selectLoadRateSumSelector = createSelector(loadState, (state) => {
+    const { selectLoadRateSum } = state;
+    return selectLoadRateSum;
+});
+
+export const hasAllLoadsSelectedSelector = createSelector(
+    loadState,
+    (state) => {
+        const { hasAllLoadsSelected } = state;
+        return hasAllLoadsSelected;
+    }
+);

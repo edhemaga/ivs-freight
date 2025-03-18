@@ -6,6 +6,8 @@
         activeViewMode: loadStoreService.activeViewMode$ | async,
         dispatcherList: loadStoreService.dispatcherList$ | async,
         statusList: loadStoreService.statusList$ | async,
+        selectedCount: loadStoreService.selectedCount$ | async,
+        selectLoadRateSum: loadStoreService.selectLoadRateSum$ | async,
     };
 
 @if (store) {
@@ -28,12 +30,12 @@
                 (onTabChange)="onToolBarAction($event)"
             ></app-toolbar-tabs-wrapper>
 
-            @if (selectedTab !== 'Template') {
+            @if (selectedTab !== 'Template' && store.selectLoadRateSum) {
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
                 <div
                     class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
                 >
-                    $16,425.30
+                    ${{ store.selectLoadRateSum }}
                 </div>
             }
 
@@ -87,11 +89,12 @@
                 </app-ca-filter>
             </div>
 
-            @if (selectedTab === 'Template') {
+            @if (selectedTab === 'Template' && store.selectedCount) {
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
                 <div
                     class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
                 >
-                    2 Selected
+                    {{ store.selectedCount }} Selected
                 </div>
             }
         </ng-template>
