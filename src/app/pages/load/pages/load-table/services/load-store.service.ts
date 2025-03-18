@@ -53,6 +53,7 @@ import {
     tableOptionsSelector,
     viewDataSelector,
     loadDetailsSelector,
+    areLoadDetailsLoadedSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -125,6 +126,10 @@ export class LoadStoreService {
         select(loadDetailsSelector)
     );
 
+    public areLoadDetailsLoaded$: Observable<boolean> = this.store.pipe(
+        select(areLoadDetailsLoadedSelector)
+    );
+
     public dispatchLoadList(
         apiParam: IGetLoadListParam,
         showMore?: boolean,
@@ -139,6 +144,10 @@ export class LoadStoreService {
     }
 
     public dispatchLoadDetails(loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SET_LOAD_DETAILS_TO_UNLOAD,
+        });
+
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID,
             loadId,

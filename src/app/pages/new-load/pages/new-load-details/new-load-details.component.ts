@@ -37,13 +37,5 @@ export class NewLoadDetailsComponent implements OnInit {
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
-    ngOnInit(): void {
-        this.manageSubscriptions();
-    }
-
-    private manageSubscriptions(): void {
-        this.loadStoreService.resolveLoadDetails$.subscribe((load) => {
-            // TODO: Generate dropdown
-        });
-    }
+    ngOnInit(): void {}
 }
