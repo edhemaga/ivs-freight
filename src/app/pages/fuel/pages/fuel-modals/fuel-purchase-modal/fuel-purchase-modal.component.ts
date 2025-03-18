@@ -74,6 +74,7 @@ import {
 import { RepairSubtotal } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 import { FileEvent } from '@shared/models';
 import { PayrollDriver } from '@pages/accounting/pages/payroll/state/models';
+import { IFuelPurchaseModalForm } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/interfaces';
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
@@ -191,7 +192,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         this.setModalActionType();
 
         this.createForm();
-        this.initialPatchForm();
 
         this.getModalDropdowns();
         this.getFuelTransactionFranchisesIfNeeded();
@@ -871,15 +871,18 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private createForm(): void {
+        const initialData: IFuelPurchaseModalForm = this.getInitialFormData();
+        const { ...data } = initialData;
+
         this.fuelForm = this.formBuilder.group({
             efsAccount: [null],
             fuelCard: [null],
             invoice: [null, Validators.required],
-            truckId: [null, Validators.required],
+            truckId: [data.truckId, Validators.required],
             trailerId: [null],
             driverFullName: [null, fullNameValidation],
-            transactionDate: [null, Validators.required],
-            transactionTime: [null, Validators.required],
+            transactionDate: [data.transactionDate, Validators.required],
+            transactionTime: [data.transactionTime, Validators.required],
             fuelStopStoreId: [null, Validators.required],
             fuelItems: this.formBuilder.array([]),
             total: [null],
@@ -913,7 +916,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             .patchValue(firstName?.concat(' ', lastName) ?? null);
     }
 
-    private initialPatchForm(): void {
+    private getInitialFormData(): IFuelPurchaseModalForm {
         const { type, data } = this.editData;
 
         const truckId = data?.truckNumber ?? null;
@@ -926,13 +929,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                   )
                 : null;
 
-        this.fuelForm.get(FuelValuesStringEnum.TRUCK_ID).patchValue(truckId);
-        this.fuelForm
-            .get(FuelValuesStringEnum.TRANSACTION_DATE)
-            .patchValue(transactionDate);
-        this.fuelForm
-            .get(FuelValuesStringEnum.TRANSACTION_TIME)
-            .patchValue(transactionTime);
+        const result: IFuelPurchaseModalForm = {
+            truckId,
+            transactionDate,
+            transactionTime,
+        };
+
+        return result;
     }
 
     ngOnDestroy(): void {
