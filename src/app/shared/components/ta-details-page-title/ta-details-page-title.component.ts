@@ -31,6 +31,7 @@ import { CaDropdownMenuComponent } from 'ca-components';
     ],
 })
 export class TaDetailsPageTitleComponent {
+    @Input() isLoading: boolean;
     @Input() title!: string;
     @Input() routeLink!: string;
     @Input() detailsDropdownOptions!: DetailsDropdownOptions;
