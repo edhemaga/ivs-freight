@@ -2,6 +2,12 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { RouterLink } from '@angular/router';
 
+// Models
+import {
+    ILoadGridItem,
+    ILoadTemplateGridItem,
+} from '@pages/load/pages/load-table/models';
+
 // Services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
@@ -18,7 +24,7 @@ import { CaCheckboxComponent } from 'ca-components';
 export class NewLoadTableComponent {
     constructor(protected loadStoreService: LoadStoreService) {}
 
-    public selectRow(load: any): void {
+    public selectLoad(load: ILoadGridItem | ILoadTemplateGridItem): void {
         this.loadStoreService.dispatchSelectOneRow(load);
     }
 

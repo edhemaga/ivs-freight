@@ -12,6 +12,7 @@ import {
     IGetLoadListParam,
     IGetLoadTemplateParam,
     ILoadGridItem,
+    ILoadTemplateGridItem,
 } from '@pages/load/pages/load-table/models/index';
 import { ITableData } from '@shared/models/table-data.model';
 
@@ -57,6 +58,7 @@ import {
     selectedCountSelector,
     selectLoadRateSumSelector,
     hasAllLoadsSelectedSelector,
+    totalLoadSumSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -143,6 +145,10 @@ export class LoadStoreService {
 
     public hasAllLoadsSelected$: Observable<boolean> = this.store.pipe(
         select(hasAllLoadsSelectedSelector)
+    );
+
+    public totalLoadSum$: Observable<number> = this.store.pipe(
+        select(totalLoadSumSelector)
     );
 
     public dispatchLoadList(
@@ -603,5 +609,12 @@ export class LoadStoreService {
             type: LoadStoreConstants.ACTION_SELECT_ALL_ROWS,
         });
     }
-    public dispatchSelectOneRow(load: any): void {}
+    public dispatchSelectOneRow(
+        load: ILoadGridItem | ILoadTemplateGridItem
+    ): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SELECT_LOAD,
+            load,
+        });
+    }
 }

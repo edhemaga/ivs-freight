@@ -25,7 +25,7 @@ import { eActiveViewMode, TableStringEnum } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // helpers
-import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers/load-store.helper';
+import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers';
 
 export const loadFeatureKey: string = 'load';
 
@@ -415,3 +415,8 @@ export const hasAllLoadsSelectedSelector = createSelector(
         return hasAllLoadsSelected;
     }
 );
+
+export const totalLoadSumSelector = createSelector(loadState, (state) => {
+    const { totalLoadSum } = state;
+    return totalLoadSum;
+});

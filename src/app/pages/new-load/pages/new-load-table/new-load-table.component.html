@@ -2,24 +2,27 @@
     {
         viewData: loadStoreService.viewData$ | async,
         hasAllLoadsSelected: loadStoreService.hasAllLoadsSelected$ | async,
+        selectedTab: loadStoreService.selectedTab$ | async,
     };
 @if (store) {
     <div>
+        @let loadListName = 'List' - store.selectedTab;
         <app-ca-checkbox
             [isRegularCheckbox]="false"
             [isChecked]="store.hasAllLoadsSelected"
+            [name]="loadListName"
             (columnCheckAction)="selectAll()"
-            name="miles-row-all"
         ></app-ca-checkbox>
     </div>
     @for (load of store.viewData; track load.id) {
         <div class="d-flex">
+            @let loadName = 'Load-' + load.id;
             <app-ca-checkbox
                 [isChecked]="load.isSelected"
                 [isRegularCheckbox]="false"
-                (columnCheckAction)="selectRow(load)"
                 [itemIndex]="load.id"
-                [name]="name"
+                [name]="loadName"
+                (columnCheckAction)="selectLoad(load)"
             ></app-ca-checkbox>
             <div [routerLink]="load.id + '/details'">
                 Load id: {{ load.id }}

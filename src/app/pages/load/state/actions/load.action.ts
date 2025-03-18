@@ -5,6 +5,7 @@ import {
     ICreateCommentMetadata,
     IGetLoadListParam,
     IGetLoadTemplateParam,
+    ILoadGridItem,
     ILoadTemplateGridItem,
 } from '@pages/load/pages/load-table/models/index';
 import {
@@ -711,4 +712,9 @@ export const setLoadDetailsToUnload = createAction(
 
 export const selectAllRow = createAction(
     LoadStoreConstants.ACTION_SELECT_ALL_ROWS
+);
+
+export const selectLoad = createAction(
+    LoadStoreConstants.ACTION_SELECT_LOAD,
+    props<{ load: ILoadGridItem | ILoadTemplateGridItem }>()
 );
