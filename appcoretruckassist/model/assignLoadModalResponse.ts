@@ -10,7 +10,9 @@
  * Do not edit the class manually.
  */
 import { AssignedLoadResponse } from './assignedLoadResponse';
+import { TrailerTypeResponse } from './trailerTypeResponse';
 import { EnumValue } from './enumValue';
+import { TruckTypeResponse } from './truckTypeResponse';
 import { CompanyUserShortResponse } from './companyUserShortResponse';
 import { DispatchLoadModalResponse } from './dispatchLoadModalResponse';
 
@@ -21,5 +23,7 @@ export interface AssignLoadModalResponse {
     unassignedLoadsCount?: number;
     unassignedLoads?: Array<AssignedLoadResponse> | null;
     dispatchFutureTimes?: Array<EnumValue> | null;
+    truckTypes?: Array<TruckTypeResponse> | null;
+    trailerTypes?: Array<TrailerTypeResponse> | null;
 }
 
