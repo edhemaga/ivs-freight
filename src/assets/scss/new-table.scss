@@ -46,7 +46,12 @@
 
                 &:hover {
                     .new-table--toolbar-action-inactive-title {
-                        color: $ta-black !important;
+                        &-large {
+                            color: $ta-black !important;
+                        }
+                        &-small {
+                            color: $bw6-2 !important;
+                        }
                     }
                     .new-table--toolbar-action-counter {
                         background-color: $bw6-2 !important;
