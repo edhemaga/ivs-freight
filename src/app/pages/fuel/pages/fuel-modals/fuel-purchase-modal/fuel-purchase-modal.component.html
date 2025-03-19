@@ -26,9 +26,18 @@
                         <div
                             class="d-flex justify-content-between px-2 efs-account-wrapper"
                         >
-                            <svg-icon [src]="modalSvgRoutes.WEX_EFS"></svg-icon>
+                            <span class="fuel-account-label font-size-11">
+                                Fuel Account
+                            </span>
 
-                            <div class="font-size-14 line-height-26">
+                            <svg-icon
+                                class="line-height-22"
+                                [src]="modalSvgRoutes.WEX_EFS"
+                            ></svg-icon>
+
+                            <div
+                                class="fuel-account-id font-size-14 line-height-26"
+                            >
                                 {{ accountId }}
                             </div>
                         </div>

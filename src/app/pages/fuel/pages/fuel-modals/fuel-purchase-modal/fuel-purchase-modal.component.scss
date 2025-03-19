@@ -66,9 +66,15 @@
 
 .efs-account-wrapper {
     background-color: $bw1;
-    color: $bw5;
 
-    .line-height-26 {
-        line-height: 26px;
+    .fuel-account-label {
+        position: absolute;
+        top: 11px;
+        left: 20px;
+        font-weight: 600;
+    }
+
+    .fuel-account-id {
+        color: $bw5;
     }
 }

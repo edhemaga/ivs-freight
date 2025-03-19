@@ -41,4 +41,8 @@
     .font-size-#{$i} {
         font-size: #{$i}px;
     }
+
+    .line-height-#{$i} {
+        line-height: #{$i}px;
+    }
 }
