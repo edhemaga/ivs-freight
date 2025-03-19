@@ -4,17 +4,56 @@
             Total Miles
         </div>
         <div class="text-size-18 ta-font-medium text-color-black m-b-8">
-            43,469.9
+            {{ total.totalMiles }}
         </div>
 
-        <div class="d-flex gap-3">
+        @if (total.totalMiles && total.stops.count) {
+            <div class="d-flex gap-3">
+                <ng-container
+                    *ngTemplateOutlet="
+                        loadedAndEmpty;
+                        context: {
+                            label: 'Loaded',
+                            value: total.loadedMiles,
+                            bgClass: 'background-muted',
+                        }
+                    "
+                >
+                </ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="
+                        loadedAndEmpty;
+                        context: {
+                            label: 'Empty',
+                            value: total.emptyMiles,
+                            bgClass: 'background-dark-2',
+                        }
+                    "
+                >
+                </ng-container>
+            </div>
+            <div class="divider mt-3 mb-2"></div>
+
+            <div class="d-flex align-items-center gap-1">
+                <div class="text-color-black text-size-16 ta-font-extra-bold">
+                    Stop
+                </div>
+                <div
+                    class="d-flex align-items-center text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-5 br-60 h-18"
+                >
+                    {{ total.stops.count }}
+                </div>
+            </div>
             <ng-container
                 *ngTemplateOutlet="
-                    loadedAndEmpty;
+                    milesProgressBar;
                     context: {
-                        label: 'Loaded',
-                        value: '35.767.35',
-                        bgClass: 'background-muted',
+                        label: 'Pickup',
+                        percent: total.pickupPercentage,
+                        count: total.pickupCount,
+                        icon: sharedSvgRoutes.PICKUP_ICON,
+                        color: 'green',
                     }
                 "
             >
@@ -22,119 +61,83 @@
 
             <ng-container
                 *ngTemplateOutlet="
-                    loadedAndEmpty;
+                    milesProgressBar;
                     context: {
-                        label: 'Empty',
-                        value: '7,702.63',
-                        bgClass: 'background-dark-2',
+                        label: 'Delivery',
+                        percent: total.deliveryPercentage,
+                        count: total.deliveryCount,
+                        icon: sharedSvgRoutes.DELIVERY_ICON,
+                        color: 'orange-4',
                     }
                 "
             >
             </ng-container>
-        </div>
 
-        <div class="divider mt-3 mb-2"></div>
-
-        <div class="d-flex align-items-center gap-1">
-            <div class="text-color-black text-size-16 ta-font-extra-bold">
-                Stop
-            </div>
-            <div
-                class="d-flex align-items-center text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-5 br-60 h-18"
+            <ng-container
+                *ngTemplateOutlet="
+                    milesProgressBar;
+                    context: {
+                        label: 'Fuel',
+                        percent: total.fuelPercentage,
+                        count: total.fuelCount,
+                        icon: 'background-dark-2',
+                    }
+                "
             >
-                332
-            </div>
-        </div>
-        <ng-container
-            *ngTemplateOutlet="
-                milesProgressBar;
-                context: {
-                    label: 'Pickup',
-                    percent: total.pickupPercentage,
-                    count: total.pickupCount,
-                    icon: 'background-dark-2',
-                }
-            "
-        >
-        </ng-container>
+            </ng-container>
 
-        <ng-container
-            *ngTemplateOutlet="
-                milesProgressBar;
-                context: {
-                    label: 'Deliver',
-                    percent: total.deliveryPercentage,
-                    count: total.deliveryCount,
-                    icon: 'background-dark-2',
-                }
-            "
-        >
-        </ng-container>
+            <ng-container
+                *ngTemplateOutlet="
+                    milesProgressBar;
+                    context: {
+                        label: 'Deadhead',
+                        percent: total.deadHeadPercentage,
+                        count: total.deadHeadCount,
+                        icon: 'background-dark-2',
+                    }
+                "
+            >
+            </ng-container>
 
-        <ng-container
-            *ngTemplateOutlet="
-                milesProgressBar;
-                context: {
-                    label: 'Fuel',
-                    percent: total.fuelPercentage,
-                    count: total.fuelCount,
-                    icon: 'background-dark-2',
-                }
-            "
-        >
-        </ng-container>
+            <ng-container
+                *ngTemplateOutlet="
+                    milesProgressBar;
+                    context: {
+                        label: 'Parking',
+                        percent: total.parkingPercentage,
+                        count: total.pickupCount,
+                        icon: 'background-dark-2',
+                    }
+                "
+            >
+            </ng-container>
 
-        <ng-container
-            *ngTemplateOutlet="
-                milesProgressBar;
-                context: {
-                    label: 'Deadhead',
-                    percent: total.deadHeadPercentage,
-                    count: total.deadHeadCount,
-                    icon: 'background-dark-2',
-                }
-            "
-        >
-        </ng-container>
+            <ng-container
+                *ngTemplateOutlet="
+                    milesProgressBar;
+                    context: {
+                        label: 'Repair',
+                        percent: total.repairPercentage,
+                        count: total.repairCount,
+                        icon: 'background-dark-2',
+                    }
+                "
+            >
+            </ng-container>
 
-        <ng-container
-            *ngTemplateOutlet="
-                milesProgressBar;
-                context: {
-                    label: 'Parking',
-                    percent: total.parkingPercentage,
-                    count: total.pickupCount,
-                    icon: 'background-dark-2',
-                }
-            "
-        >
-        </ng-container>
-
-        <ng-container
-            *ngTemplateOutlet="
-                milesProgressBar;
-                context: {
-                    label: 'Repair',
-                    percent: total.repairPercentage,
-                    count: total.repairCount,
-                    icon: 'background-dark-2',
-                }
-            "
-        >
-        </ng-container>
-
-        <ng-container
-            *ngTemplateOutlet="
-                milesProgressBar;
-                context: {
-                    label: 'Towing',
-                    percent: total.towingPercentage,
-                    count: total.towingCount,
-                    icon: 'background-dark-2',
-                }
-            "
-        >
-        </ng-container>
+            <ng-container
+                *ngTemplateOutlet="
+                    milesProgressBar;
+                    context: {
+                        label: 'Towing',
+                        percent: total.towingPercentage,
+                        count: total.towingCount,
+                        icon: 'background-dark-2',
+                    }
+                "
+            >
+            </ng-container>
+        }
     </div>
 }
 
@@ -144,8 +147,22 @@
     let-label="label"
     let-percent="percent"
     let-count="count"
+    let-color="color"
 >
-    {{ label }} / {{ count }} // {{ percent }}
+    @let svgClass = 'svg-fill-' + color;
+
+    <div class="d-flex align-items-center justify-content-between">
+        <svg-icon [src]="icon" [class]="svgClass"></svg-icon>
+        <div class="text-size-14 text-color-black-2 m-l-4">{{ label }}</div>
+        <div class="text-size-14 text-right text-muted w-58">
+            {{ percent }}%
+        </div>
+        <div
+            class="text-size-14 text-color-black ta-font-medium text-right w-50"
+        >
+            {{ count }}
+        </div>
+    </div>
 </ng-template>
 
 <ng-template
