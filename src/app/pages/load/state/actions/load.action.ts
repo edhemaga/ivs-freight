@@ -1,19 +1,42 @@
 import { createAction, props } from '@ngrx/store';
 
 // models
-import { ICreateCommentMetadata, IGetLoadListParam, IGetLoadTemplateParam, ILoadTemplateGridItem } from "@pages/load/pages/load-table/models/index";
-import { BrokerByIdResponse, CommentResponse, CreateCommentCommand, CreateLoadTemplateCommand, DispatcherFilterResponse, LoadListDto, LoadListResponse, LoadModalResponse, LoadResponse, LoadStatusResponse, LoadStatusType, LoadTemplateResponse, RevertLoadStatusCommand, ShipperLoadModalResponse, UpdateLoadStatusCommand } from "appcoretruckassist";
-import { IActiveLoadModalData, Load } from "@pages/load/models";
-import { Column, ICurrentSearchTableData, ITableColummn } from "@shared/models";
-import { ConfirmationActivation } from "@shared/components/ta-shared-modals/confirmation-activation-modal/models";
-import { BrokerContactExtended } from "@pages/customer/pages/broker-modal/models";
+import {
+    ICreateCommentMetadata,
+    IGetLoadListParam,
+    IGetLoadTemplateParam,
+    ILoadGridItem,
+    ILoadTemplateGridItem,
+} from '@pages/load/pages/load-table/models/index';
+import {
+    BrokerByIdResponse,
+    CommentResponse,
+    CreateCommentCommand,
+    CreateLoadTemplateCommand,
+    DispatcherFilterResponse,
+    LoadListDto,
+    LoadListResponse,
+    LoadModalResponse,
+    LoadPossibleStatusesResponse,
+    LoadResponse,
+    LoadStatusResponse,
+    LoadStatusType,
+    LoadTemplateResponse,
+    RevertLoadStatusCommand,
+    ShipperLoadModalResponse,
+    UpdateLoadStatusCommand,
+} from 'appcoretruckassist';
+import { IActiveLoadModalData, Load } from '@pages/load/models';
+import { Column, ICurrentSearchTableData, ITableColummn } from '@shared/models';
+import { ConfirmationActivation } from '@shared/components/ta-shared-modals/confirmation-activation-modal/models';
+import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models';
 
 // constants
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
 // enums
-import { eLoadStatusType } from "@pages/load/pages/load-table/enums/index";
-import { eActiveViewMode } from "@shared/enums";
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eActiveViewMode } from '@shared/enums';
 
 // #region loadList
 export const getLoadsPayload = createAction(
@@ -102,7 +125,11 @@ export const getEditLoadModalData = createAction(
 
 export const getEditLoadModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_DATA_SUCCESS,
-    props<{ load: LoadResponse; modal: LoadModalResponse }>()
+    props<{
+        load: LoadResponse;
+        modal: LoadModalResponse;
+        possibleStatuses: LoadPossibleStatusesResponse;
+    }>()
 );
 
 export const getEditLoadModalDataError = createAction(
@@ -123,7 +150,7 @@ export const getEditLoadTemplateModalData = createAction(
 
 export const getEditLoadTemplateModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_TEMPLATE_MODAL_DATA_SUCCESS,
-    props<{ loadTemplate?: LoadTemplateResponse, modal?: LoadModalResponse }>()
+    props<{ loadTemplate?: LoadTemplateResponse; modal?: LoadModalResponse }>()
 );
 
 export const getEditLoadTemplateModalDataError = createAction(
@@ -140,7 +167,10 @@ export const getCreateLoadModalData = createAction(
 
 export const getCreateLoadModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_CREATE_LOAD_MODAL_DATA_SUCCESS,
-    props<{ modal: LoadModalResponse, activeLoadModalData?: IActiveLoadModalData }>()
+    props<{
+        modal: LoadModalResponse;
+        activeLoadModalData?: IActiveLoadModalData;
+    }>()
 );
 
 export const getCreateLoadModalDataError = createAction(
@@ -208,7 +238,10 @@ export const addCreatedShipperStaticModalData = createAction(
 // #region updateEditedBrokerStaticModalData
 export const updateEditedBrokerStaticModalData = createAction(
     LoadStoreConstants.ACTION_UPDATE_EDITED_BROKER_STATIC_MODAL_DATA,
-    props<{ broker: BrokerByIdResponse, brokerContacts?: BrokerContactExtended[] }>()
+    props<{
+        broker: BrokerByIdResponse;
+        brokerContacts?: BrokerContactExtended[];
+    }>()
 );
 // #endregion
 
@@ -664,12 +697,12 @@ export const getDispatcherListError = createAction(
 // #region getLoadDetails
 export const getLoadDetailsById = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID,
-    props<{loadId: number}>()
+    props<{ loadId: number }>()
 );
 
 export const getLoadDetails = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID_SUCCESS,
-    props<{details: LoadResponse}>()
+    props<{ details: LoadResponse }>()
 );
 
 export const getLoadDetailsError = createAction(
@@ -678,3 +711,15 @@ export const getLoadDetailsError = createAction(
 );
 // #endregion
 
+export const setLoadDetailsToUnload = createAction(
+    LoadStoreConstants.ACTION_SET_LOAD_DETAILS_TO_UNLOAD
+);
+
+export const selectAllRow = createAction(
+    LoadStoreConstants.ACTION_SELECT_ALL_ROWS
+);
+
+export const selectLoad = createAction(
+    LoadStoreConstants.ACTION_SELECT_LOAD,
+    props<{ load: ILoadGridItem | ILoadTemplateGridItem }>()
+);

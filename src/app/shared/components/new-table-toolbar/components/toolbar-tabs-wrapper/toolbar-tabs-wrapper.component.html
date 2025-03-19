@@ -11,8 +11,14 @@
 ></app-toolbar-tabs>
 
 <div class="new-table--toolbar-divider">
-    <div class="new-table--toolbar-divider-border background-light-grey-6"></div>
+    <div
+        class="new-table--toolbar-divider-border background-light-grey-6"
+    ></div>
 </div>
+
+@if (betweenTabsTemplate) {
+    <ng-container *ngTemplateOutlet="betweenTabsTemplate"></ng-container>
+}
 
 <app-toolbar-tabs
     [data]="tableViewData"

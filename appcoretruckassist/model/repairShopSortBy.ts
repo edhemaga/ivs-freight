@@ -11,7 +11,7 @@
  */
 
 
-export type RepairShopSortBy = 'Name' | 'Phone' | 'Email' | 'Address' | 'ServiceType' | 'OpenHours' | 'Bill' | 'Order' | 'Bank' | 'Routing' | 'Rating' | 'Contact' | 'Expenses' | 'UsedDate' | 'DeactivatedDate' | 'AddedDate' | 'EditedDate' | 'Cost' | 'Favorites' | 'Distance';
+export type RepairShopSortBy = 'Name' | 'Phone' | 'Email' | 'Address' | 'ServiceType' | 'Status' | 'Bill' | 'Order' | 'Bank' | 'Routing' | 'Rating' | 'Contact' | 'Expenses' | 'UsedDate' | 'DeactivatedDate' | 'AddedDate' | 'EditedDate';
 
 export const RepairShopSortBy = {
     Name: 'Name' as RepairShopSortBy,
@@ -19,7 +19,7 @@ export const RepairShopSortBy = {
     Email: 'Email' as RepairShopSortBy,
     Address: 'Address' as RepairShopSortBy,
     ServiceType: 'ServiceType' as RepairShopSortBy,
-    OpenHours: 'OpenHours' as RepairShopSortBy,
+    Status: 'Status' as RepairShopSortBy,
     Bill: 'Bill' as RepairShopSortBy,
     Order: 'Order' as RepairShopSortBy,
     Bank: 'Bank' as RepairShopSortBy,
@@ -30,9 +30,6 @@ export const RepairShopSortBy = {
     UsedDate: 'UsedDate' as RepairShopSortBy,
     DeactivatedDate: 'DeactivatedDate' as RepairShopSortBy,
     AddedDate: 'AddedDate' as RepairShopSortBy,
-    EditedDate: 'EditedDate' as RepairShopSortBy,
-    Cost: 'Cost' as RepairShopSortBy,
-    Favorites: 'Favorites' as RepairShopSortBy,
-    Distance: 'Distance' as RepairShopSortBy
+    EditedDate: 'EditedDate' as RepairShopSortBy
 };
 

@@ -16,6 +16,9 @@ import { StatusClassPipe } from '@pages/new-load/pages/new-load-details/pipes/st
 // Models
 import { DetailsDropdownOptions } from '@shared/models';
 
+// Enums
+import { eLoadRouting } from '@pages/new-load/enums';
+
 @Component({
     selector: 'app-new-load-details',
     templateUrl: './new-load-details.component.html',
@@ -34,16 +37,9 @@ import { DetailsDropdownOptions } from '@shared/models';
 })
 export class NewLoadDetailsComponent implements OnInit {
     public detailsDropdownOptions!: DetailsDropdownOptions;
+    public eLoadRouting = eLoadRouting;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
-    ngOnInit(): void {
-        this.manageSubscriptions();
-    }
-
-    private manageSubscriptions(): void {
-        this.loadStoreService.resolveLoadDetails$.subscribe((load) => {
-            // TODO: Generate dropdown
-        });
-    }
+    ngOnInit(): void {}
 }

@@ -38,6 +38,7 @@ export interface LoadStopMobileByLoadIdResponse {
     loaded?: string | null;
     offLoading?: string | null;
     offLoaded?: string | null;
+    delivered?: string | null;
     items?: Array<LoadStopItemMobileResponse> | null;
 }
 

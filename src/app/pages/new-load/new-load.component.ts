@@ -3,11 +3,8 @@ import { Component } from '@angular/core';
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import {
-    eActiveViewMode,
-    eGeneralActions,
-    TableStringEnum,
-} from '@shared/enums';
+import { eActiveViewMode, eGeneralActions } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Models
 import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
@@ -23,11 +20,15 @@ import {
     CaFilterComponent,
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
+    IFilterAction,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants';
+
+// Helpers
+import { FilterHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-new-load',
@@ -48,7 +49,8 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants';
     ],
 })
 export class NewLoadComponent {
-    public selectedTab: string = TableStringEnum.ACTIVE_2;
+    public eLoadStatusStringType = eLoadStatusStringType;
+    public selectedTab = eLoadStatusStringType.ACTIVE;
     public generalActions = eGeneralActions;
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
 
@@ -74,12 +76,24 @@ export class NewLoadComponent {
         }
     }
 
+    public setFilters(filters: IFilterAction): void {
+        const selectedtab: eLoadStatusType = eLoadStatusType[this.selectedTab];
+
+        this.loadStoreService.dispatchGetList(
+            {
+                ...FilterHelper.mapFilters(filters, this.filter),
+                statusType: selectedtab,
+            },
+            selectedtab
+        );
+    }
+
     private handleOpenModal(): void {
         // TODO: Denis Implement modal opening logic
     }
 
     private handleTabSelected(mode: string): void {
-        this.selectedTab = mode;
+        this.selectedTab = mode as eLoadStatusStringType;
         this.resetFilters();
         this.getLoadStatusFilter();
     }
@@ -97,7 +111,7 @@ export class NewLoadComponent {
     }
 
     private getLoadStatusFilter(): void {
-        if (this.selectedTab === TableStringEnum.TEMPLATE_2) {
+        if (this.selectedTab === eLoadStatusStringType.TEMPLATE) {
             this.loadStoreService.dispatchLoadTemplateList(this.filter);
         } else {
             this.loadStoreService.loadDispatchFilters({

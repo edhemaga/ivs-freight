@@ -7,7 +7,10 @@
         [routerLink]="routeLink"
         class="background-bw6-2 background-hover-black svg-fill-bw-9 svg-hover-white svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
     >
-        <svg-icon [src]="backIcon"></svg-icon>
+        <svg-icon
+            [src]="backIcon"
+            class="d-flex align-items-center justify-content-center"
+        ></svg-icon>
     </div>
 
     <div class="text-color-black text-size-26 ca-font-black m-l-8">
@@ -19,12 +22,22 @@
             <ng-container *ngTemplateOutlet="rightSide"></ng-container>
         </ng-container>
 
-        <ca-dropdown-menu
-            [type]="'dots-menu-type'"
-            [placement]="'right-top'"
-            [options]="detailsDropdownOptions"
-            class="m-l-8"
-        >
-        </ca-dropdown-menu>
+        <div class="m-l-8">
+            @if (isLoading) {
+                <p class="placeholder-glow">
+                    <span
+                        class="placeholder background-muted br-2"
+                        style="width: 26px; height: 7.2px; min-height: 7.2px"
+                    ></span>
+                </p>
+            } @else {
+                <ca-dropdown-menu
+                    [type]="'dots-menu-type'"
+                    [placement]="'right-top'"
+                    [options]="detailsDropdownOptions"
+                >
+                </ca-dropdown-menu>
+            }
+        </div>
     </div>
 </div>
