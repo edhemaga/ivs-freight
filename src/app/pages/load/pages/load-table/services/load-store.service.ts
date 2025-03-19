@@ -64,6 +64,7 @@ import {
     activeLoadModalPossibleStatusesSelector,
     loadDetailsStopCountSelector,
     loadDetailsExtraStopCountSelector,
+    isLoadDetailsMapOpenSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -169,6 +170,10 @@ export class LoadStoreService {
 
     public loadDetailsExtraStopCount$: Observable<string | false> =
         this.store.pipe(select(loadDetailsExtraStopCountSelector));
+
+    public isLoadDetailsMapOpen$: Observable<boolean> = this.store.pipe(
+        select(isLoadDetailsMapOpenSelector)
+    );
 
     public dispatchLoadList(
         apiParam: IGetLoadListParam,
@@ -641,5 +646,11 @@ export class LoadStoreService {
         this.router.navigate([
             `/${eLoadRouting.LIST}/${id}/${eLoadRouting.DETAILS}`,
         ]);
+    }
+
+    public toggleMap(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_TOGGLE_MAP,
+        });
     }
 }
