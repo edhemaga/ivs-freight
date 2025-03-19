@@ -80,6 +80,9 @@
         &-red-11 {
             @include svg-fill($ta-red-11);
         }
+        &-red-10 {
+            @include svg-fill($ta-red-10);
+        }
     }
 
     // Hovers
