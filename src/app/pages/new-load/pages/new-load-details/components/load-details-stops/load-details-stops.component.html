@@ -1,37 +1,60 @@
-@let load = loadStoreService.resolveLoadDetails$ | async;
 @let stopCount = loadStoreService.loadDetailsStopCount$ | async;
 @let extraStopCount = loadStoreService.loadDetailsExtraStopCount$ | async;
+@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
 
-<div class="load-details-stop-container">
-    <div class="d-flex justify-content-between load-details-stop-header">
-        <div
-            class="d-flex justify-content-between align-items-center gap-1 load-details-stop-header-left"
-        >
-            <div class="stop-text">
-                <p>Stop</p>
+<div
+    class="background-white br-3 p-x-8 d-flex justify-content-between align-items-center h-34"
+>
+    <div class="d-flex align-items-center gap-1">
+        @if (isLoading) {
+            <p class="placeholder-glow">
+                <span
+                    class="placeholder background-muted br-2"
+                    style="width: 40px; height: 16px; min-height: 16px"
+                ></span>
+            </p>
+
+            <p class="placeholder-glow">
+                <span
+                    class="placeholder background-muted br-2 rounded-circle"
+                    style="width: 18px; height: 18px; min-height: 18px"
+                ></span>
+            </p>
+        } @else {
+            <div class="text-color-black text-size-16 ta-font-extra-bold">
+                Stop
             </div>
             <div
-                class="d-flex justify-content-center align-items-center stop-counter"
+                class="d-flex align-items-center text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-5 br-60 h-18"
             >
-                <p>{{ stopCount }}</p>
+                {{ stopCount }}
             </div>
-
             @if (extraStopCount) {
-                <div class="extra-stop-counter">
-                    <p>{{ extraStopCount }}</p>
+                <div
+                    class="text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-6 p-y-2 br-60 h-18"
+                >
+                    {{ extraStopCount }}
                 </div>
             }
-        </div>
-        <div
-            class="d-flex justify-content-between align-items-center gap-1 load-details-stop-header-right"
-        >
-            <div
-                class="d-flex justify-content-center map-button"
-                [class.map-button-active]="isMapOpen"
+        }
+    </div>
+
+    <div class="w-26 h-26 d-flex justify-content-center align-items-center">
+        @if (isLoading) {
+            <p class="placeholder-glow">
+                <span
+                    class="placeholder background-muted br-2 rotate-45"
+                    style="width: 14.46px; height: 14.46px; min-height: 14.46px"
+                ></span>
+            </p>
+        } @else {
+            <svg-icon
+                class="svg-fill-bw-9 w-26 h-26 c-pointer d-flex justify-content-center align-items-center br-2"
+                [src]="sharedSvgRoutes.MAP_ICON"
+                [ngClass]="isMapOpen ? 'background-bw6-2 svg-fill-muted' : ''"
                 (click)="toggleMap()"
             >
-                <svg-icon [src]="sharedSvgRoutes.MAP_ICON"> </svg-icon>
-            </div>
-        </div>
+            </svg-icon>
+        }
     </div>
 </div>
