@@ -126,6 +126,7 @@ import {
     ShipperShortResponse,
     UpdateLoadStatusCommand,
     LoadModalResponse,
+    LoadPossibleStatusesResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -4098,7 +4099,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     private getLoadDropdowns(
         staticModalData: LoadModalResponse,
-        activeModalData: IActiveLoadModalData
+        activeModalData: IActiveLoadModalData,
+        activeModalPossibleStatuses?: LoadPossibleStatusesResponse
     ): void {
         const { selectedTab, previousStatus, type } = this.editData || {};
         const { statusType } = activeModalData || {};
@@ -4109,7 +4111,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             this.isLoadActive(name || (statusType as string)) &&
             selectedTab !== TableStringEnum.TEMPLATE
         ) {
-            const { statusDropdownData } = this.editData || {};
             const status = activeModalData?.status as LoadStatusResponse;
             const { statusString, statusValue } = status || {};
             const { id: statusId, name } = statusValue || {};
@@ -4129,10 +4130,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                 this.statusDropDownList = [this.selectedStatus];
 
-                if (statusDropdownData?.possibleStatuses)
+                if (activeModalPossibleStatuses?.possibleStatuses)
                     this.statusDropDownList = [
                         this.selectedStatus,
-                        ...statusDropdownData?.possibleStatuses.map(
+                        ...activeModalPossibleStatuses?.possibleStatuses.map(
                             (status) => {
                                 return {
                                     name: status?.statusString,
@@ -4144,17 +4145,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     ];
                 else this.statusDropDownList = [this.selectedStatus];
 
-                this.previousStatus = statusDropdownData?.previousStatus
-                    ? {
-                          name: statusDropdownData?.previousStatus
-                              ?.statusString,
-                          id: statusDropdownData?.previousStatus?.statusValue
-                              ?.id,
-                          valueForRequest:
-                              statusDropdownData?.previousStatus?.statusValue
-                                  ?.name,
-                      }
-                    : null;
+                this.previousStatus =
+                    activeModalPossibleStatuses?.previousStatus
+                        ? {
+                              name: activeModalPossibleStatuses?.previousStatus
+                                  ?.statusString,
+                              id: activeModalPossibleStatuses?.previousStatus
+                                  ?.statusValue?.id,
+                              valueForRequest:
+                                  activeModalPossibleStatuses?.previousStatus
+                                      ?.statusValue?.name,
+                          }
+                        : null;
             }
 
             this.originalStatus = name;
@@ -5473,7 +5475,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.loadStoreService.staticModalData$
             .pipe(
                 takeUntil(this.destroy$),
-                withLatestFrom(this.loadStoreService.activeLoadModalData$),
+                withLatestFrom(
+                    this.loadStoreService.activeLoadModalData$,
+                    this.loadStoreService.activeLoadModalPossibleStatuses$
+                ),
                 tap((data) => {
                     if (this.editData?.type === LoadModalStringEnum.CREATE)
                         this.generateModalText();
@@ -5482,9 +5487,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 const staticModalData = data[0];
                 const activeModalData = data[1];
+                const activeModalPossibleStatuses = data[2];
 
                 if (!!staticModalData)
-                    this.getLoadDropdowns(staticModalData, activeModalData);
+                    this.getLoadDropdowns(
+                        staticModalData,
+                        activeModalData,
+                        activeModalPossibleStatuses
+                    );
 
                 if (!!activeModalData) {
                     const { id, statusType } = activeModalData;

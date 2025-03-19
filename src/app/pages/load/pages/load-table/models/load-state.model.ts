@@ -3,7 +3,11 @@ import {
     ILoadGridItem,
     ILoadTemplateGridItem,
 } from '@pages/load/pages/load-table/models/index';
-import { LoadModalResponse, LoadResponse } from 'appcoretruckassist';
+import {
+    LoadModalResponse,
+    LoadPossibleStatusesResponse,
+    LoadResponse,
+} from 'appcoretruckassist';
 import { IActiveLoadModalData } from '@pages/load/models/active-load-modal-data.model';
 import { IFilterDropdownList } from 'ca-components';
 
@@ -16,6 +20,7 @@ export interface ILoadState {
 
     modal: LoadModalResponse; // static modal data
     activeModalData: IActiveLoadModalData;
+    activeModalPossibleStatuses: LoadPossibleStatusesResponse;
 
     pendingCount: number;
     activeCount: number;
@@ -31,4 +36,9 @@ export interface ILoadState {
 
     details: LoadResponse;
     isLoadDetailsLoaded: boolean;
+
+    selectLoadCount: number;
+    selectLoadRateSum: number;
+    totalLoadSum: number;
+    hasAllLoadsSelected: boolean;
 }
