@@ -7,13 +7,15 @@ import {
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Component({
     selector: 'app-miles-map-unit-total',
     standalone: true,
-    imports: [CommonModule, SvgIconComponent],
+    imports: [CommonModule, SvgIconComponent, TaCustomCardComponent],
     templateUrl: './miles-map-unit-total.component.html',
     styleUrl: './miles-map-unit-total.component.scss',
 })
