@@ -6,6 +6,7 @@ import {
     LoadListDto,
     LoadListResponse,
     LoadModalResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatus,
     LoadStatusResponse,
@@ -376,12 +377,14 @@ export const initializeLoadGridItem = function (
 export const getLoadModalDataSuccessResult = function (
     state: ILoadState,
     modal: LoadModalResponse,
-    activeModalData?: IActiveLoadModalData
+    activeModalData?: IActiveLoadModalData,
+    activeModalPossibleStatuses?: LoadPossibleStatusesResponse
 ): ILoadState {
     const result: ILoadState = {
         ...state,
         modal,
         activeModalData,
+        activeModalPossibleStatuses,
     };
 
     return result;

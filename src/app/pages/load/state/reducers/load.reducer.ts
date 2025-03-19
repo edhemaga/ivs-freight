@@ -20,6 +20,7 @@ export const initialState: ILoadState = {
 
     modal: null,
     activeModalData: null,
+    activeModalPossibleStatuses: null,
 
     pendingCount: 0,
     activeCount: 0,
@@ -109,8 +110,15 @@ export const loadReducer = createReducer(
     on(LoadActions.getLoadByIdError, (state) => ({ ...state })),
 
     on(LoadActions.getEditLoadModalData, (state) => ({ ...state })),
-    on(LoadActions.getEditLoadModalDataSuccess, (state, { load, modal }) =>
-        Functions.getLoadModalDataSuccessResult(state, modal, load as any)
+    on(
+        LoadActions.getEditLoadModalDataSuccess,
+        (state, { load, modal, possibleStatuses }) =>
+            Functions.getLoadModalDataSuccessResult(
+                state,
+                modal,
+                load as any,
+                possibleStatuses
+            )
     ), // leave as any for now
     on(LoadActions.getEditLoadModalDataError, (state) => ({ ...state })),
 

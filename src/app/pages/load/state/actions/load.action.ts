@@ -17,6 +17,7 @@ import {
     LoadListDto,
     LoadListResponse,
     LoadModalResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatusResponse,
     LoadStatusType,
@@ -124,7 +125,11 @@ export const getEditLoadModalData = createAction(
 
 export const getEditLoadModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_DATA_SUCCESS,
-    props<{ load: LoadResponse; modal: LoadModalResponse }>()
+    props<{
+        load: LoadResponse;
+        modal: LoadModalResponse;
+        possibleStatuses: LoadPossibleStatusesResponse;
+    }>()
 );
 
 export const getEditLoadModalDataError = createAction(
