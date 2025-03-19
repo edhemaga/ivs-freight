@@ -41,4 +41,5 @@ export interface ILoadState {
     selectLoadRateSum: number;
     totalLoadSum: number;
     hasAllLoadsSelected: boolean;
+    isLoadDetailsMapOpen: boolean;
 }

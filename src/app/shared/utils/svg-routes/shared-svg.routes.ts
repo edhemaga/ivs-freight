@@ -16,6 +16,7 @@ export class SharedSvgRoutes {
     static CLOSE_ICON_NORMAL: string = 'assets/svg/applicant/close-x.svg';
     static SORT_ICON: string = 'assets/svg/common/sortArrow_filter.svg';
     static SORT_ICON_ASC: string = 'assets/svg/common/sortArrow_filter-asc.svg';
+    static MAP_ICON: string = 'assets/svg/common/load/ic_load_map.svg';
     static DETAILS_BACK_BUTTON: string =
         'assets/svg/common/ic_details-back-arrow.svg';
     static DELETE_ICON: string = 'assets/svg/truckassist-table/trash-icon.svg';
@@ -23,4 +24,9 @@ export class SharedSvgRoutes {
     static MENU_ICON: string = 'assets/svg/truckassist-table/burger-icon.svg';
     static PICKUP_ICON: string = 'assets/svg/common/ic_pickup.svg';
     static DELIVERY_ICON: string = 'assets/svg/common/ic_delivery.svg';
+    static MILEAGE_ICON: string = 'assets/svg/common/ic_mileage.svg';
+    static PARKING_ICON: string = 'assets/svg/common/ic_parking.svg';
+    static FUEL_ICON: string = 'assets/svg/common/ic_fuel.svg';
+    static REPAIR_ICON: string = 'assets/svg/common/ic_key-repair.svg';
+    static TOWING_ICON: string = 'assets/svg/common/ic_towing.svg';
 }
