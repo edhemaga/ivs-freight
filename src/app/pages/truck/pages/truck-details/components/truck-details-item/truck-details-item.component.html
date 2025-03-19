@@ -131,7 +131,6 @@
                                         <div
                                             class="details-document-container"
                                             [class.disabled]="!fileCount"
-                                            *ngIf="fileCount"
                                         >
                                             <div class="icon-counter-wrapper">
                                                 <div
@@ -266,66 +265,61 @@
                                         toggler[i + 'fhwa'] ? 'true' : 'false'
                                     "
                                 >
-                                    <div
-                                        class="divider"
-                                        *ngIf="fhwa?.files?.length"
-                                    ></div>
-                                    <div
-                                        class="details-document-container"
-                                        [class.disabled]="!fhwa?.files?.length"
-                                        *ngIf="fhwa?.files?.length"
-                                    >
-                                        <div class="icon-counter-wrapper">
-                                            <div
-                                                class="counter-text-wrapper"
-                                                [class.disabled]="
-                                                    !fhwa?.files?.length
-                                                "
-                                            >
-                                                <p
-                                                    class="details-document-name"
-                                                >
-                                                    Document
-                                                </p>
-                                                <app-ta-counter
-                                                    [countBackground]="
-                                                        '#424242'
-                                                    "
-                                                    [customClass]="
-                                                        'circle_counter'
-                                                    "
-                                                    [countHeight]="'22px'"
-                                                    [countWidth]="'22px'"
-                                                    [count]="
-                                                        fhwa?.files?.length
-                                                            ? fhwa.files.length
-                                                            : 0
+                                    @let fhwaFilesCount = fhwa?.files?.length;
+                                    @if (fhwaFilesCount) {
+                                        <div class="divider"></div>
+                                        <div
+                                            class="details-document-container"
+                                            [class.disabled]="!fhwaFilesCount"
+                                        >
+                                            <div class="icon-counter-wrapper">
+                                                <div
+                                                    class="counter-text-wrapper"
+                                                    [class.disabled]="
+                                                        !fhwaFilesCount
                                                     "
                                                 >
-                                                </app-ta-counter>
+                                                    <p
+                                                        class="details-document-name"
+                                                    >
+                                                        Document
+                                                    </p>
+                                                    <app-ta-counter
+                                                        [countBackground]="
+                                                            '#424242'
+                                                        "
+                                                        [customClass]="
+                                                            'circle_counter'
+                                                        "
+                                                        [countHeight]="'22px'"
+                                                        [countWidth]="'22px'"
+                                                        [count]="
+                                                            fhwaFilesCount ?? 0
+                                                        "
+                                                    >
+                                                    </app-ta-counter>
+                                                </div>
+                                                <svg-icon
+                                                    (click)="
+                                                        downloadAllFiles(
+                                                            'fhwa',
+                                                            i
+                                                        )
+                                                    "
+                                                    src="assets/svg/common/ic_download.svg"
+                                                >
+                                                </svg-icon>
                                             </div>
-                                            <svg-icon
-                                                *ngIf="fhwa?.files?.length"
-                                                (click)="
-                                                    downloadAllFiles('fhwa', i)
-                                                "
-                                                src="assets/svg/common/ic_download.svg"
-                                            >
-                                            </svg-icon>
                                         </div>
-                                    </div>
+                                    }
                                     <div
                                         class="card-pdf"
-                                        [class.disabled]="!fhwa?.files?.length"
-                                        [class.extended]="
-                                            fhwa.files?.length > 1
-                                        "
+                                        [class.disabled]="!fhwaFilesCount"
+                                        [class.extended]="fhwaFilesCount > 1"
                                     >
                                         <app-ta-upload-files
                                             #fhwaUpload
-                                            [files]="
-                                                fhwa.files ? fhwa.files : []
-                                            "
+                                            [files]="fhwa.files ?? []"
                                             [customClassName]="
                                                 'driver-details-pdf'
                                             "
@@ -360,9 +354,7 @@
                 <div class="card-width">
                     @for (title of trucks?.data; let i = $index; track i) {
                         <app-ta-common-card
-                            [cardDocumentCounter]="
-                                title?.files?.length ? title?.files?.length : 0
-                            "
+                            [cardDocumentCounter]="title?.files?.length ?? 0"
                             (resizePage)="toggleResizePage(i, 'titles')"
                             [cardNameCommon]="title.number"
                             [options]="dataFHWA"
@@ -422,66 +414,61 @@
                                         toggler[i + 'titles'] ? 'true' : 'false'
                                     "
                                 >
-                                    <div
-                                        class="divider"
-                                        *ngIf="title?.files?.length"
-                                    ></div>
-                                    <div
-                                        class="details-document-container"
-                                        [class.disabled]="!title?.files?.length"
-                                        *ngIf="title?.files?.length"
-                                    >
-                                        <div class="icon-counter-wrapper">
-                                            <div
-                                                class="counter-text-wrapper"
-                                                [class.disabled]="
-                                                    !title?.files?.length
-                                                "
-                                            >
-                                                <p
-                                                    class="details-document-name"
-                                                >
-                                                    Document
-                                                </p>
-                                                <app-ta-counter
-                                                    [countBackground]="
-                                                        '#424242'
-                                                    "
-                                                    [customClass]="
-                                                        'circle_counter'
-                                                    "
-                                                    [countHeight]="'22px'"
-                                                    [countWidth]="'22px'"
-                                                    [count]="
-                                                        title?.files?.length
-                                                            ? title.files.length
-                                                            : 0
+                                    @let titleFilesCount = title?.files?.length;
+                                    @if (titleFilesCount) {
+                                        <div class="divider"></div>
+                                        <div
+                                            class="details-document-container"
+                                            [class.disabled]="!titleFilesCount"
+                                        >
+                                            <div class="icon-counter-wrapper">
+                                                <div
+                                                    class="counter-text-wrapper"
+                                                    [class.disabled]="
+                                                        !titleFilesCount
                                                     "
                                                 >
-                                                </app-ta-counter>
+                                                    <p
+                                                        class="details-document-name"
+                                                    >
+                                                        Document
+                                                    </p>
+                                                    <app-ta-counter
+                                                        [countBackground]="
+                                                            '#424242'
+                                                        "
+                                                        [customClass]="
+                                                            'circle_counter'
+                                                        "
+                                                        [countHeight]="'22px'"
+                                                        [countWidth]="'22px'"
+                                                        [count]="
+                                                            titleFilesCount ?? 0
+                                                        "
+                                                    >
+                                                    </app-ta-counter>
+                                                </div>
+                                                <svg-icon
+                                                    (click)="
+                                                        downloadAllFiles(
+                                                            'title',
+                                                            i
+                                                        )
+                                                    "
+                                                    src="assets/svg/common/ic_download.svg"
+                                                >
+                                                </svg-icon>
                                             </div>
-                                            <svg-icon
-                                                *ngIf="title?.files?.length"
-                                                (click)="
-                                                    downloadAllFiles('title', i)
-                                                "
-                                                src="assets/svg/common/ic_download.svg"
-                                            >
-                                            </svg-icon>
                                         </div>
-                                    </div>
+                                    }
                                     <div
                                         class="card-pdf"
-                                        [class.disabled]="!title?.files?.length"
-                                        [class.extended]="
-                                            title.files?.length > 1
-                                        "
+                                        [class.disabled]="!titleFilesCount"
+                                        [class.extended]="titleFilesCount > 1"
                                     >
                                         <app-ta-upload-files
                                             #titleUpload
-                                            [files]="
-                                                title.files ? title.files : []
-                                            "
+                                            [files]="title.files ?? []"
                                             [customClassName]="
                                                 'driver-details-pdf'
                                             "
