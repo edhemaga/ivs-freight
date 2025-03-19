@@ -1,12 +1,90 @@
 <div
-    class="background-white br-3"
-    [ngClass]="
-        isStopListExpanded ? 'miles-map-stops-large' : 'miles-map-stops-small'
-    "
+    class="background-white br-3 p-x-6 p-y-6"
+    [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
 >
     <div class="text-size-20 text-color-black ta-font-bold"></div>
 
+    <div
+        class="h-22 d-grid align-items-center p-r-6 gap-1"
+        [ngClass]="
+            isStopListExpanded
+                ? 'stops-container-large'
+                : 'stops-container-small'
+        "
+    >
+        <div class="text-color-muted text-size-11 ta-font-bold text-center">
+            #
+        </div>
+        <div class="text-color-muted text-size-11 ta-font-bold">STOP</div>
+        <div class="text-color-muted text-size-11 ta-font-bold text-right">
+            LEG
+        </div>
+        @if (isStopListExpanded) {
+            <div class="text-color-muted text-size-11 ta-font-bold text-right">
+                LOADED
+            </div>
+            <div class="text-color-muted text-size-11 ta-font-bold text-right">
+                EMPTY
+            </div>
+        }
+        <div class="text-color-muted text-size-11 ta-font-bold text-right">
+            TOTAL
+        </div>
+    </div>
+
+    <div class="divider mt-1 mb-1"></div>
+
+    @for (stop of total?.stops.data; track stop.id) {
+        <ng-container
+            *ngTemplateOutlet="
+                stopRows;
+                context: {
+                    stop,
+                }
+            "
+        >
+        </ng-container>
+    }
+
     <div (click)="toogleStopList()">
-        {{ isStopListExpanded ? 'collapse' : 'expand' }}
+        <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
     </div>
 </div>
+
+<ng-template #resizeButton>
+    <div class="h-26 w-26 background-white">></div>
+</ng-template>
+
+<ng-template #stopRows let-stop="stop">
+    <div
+        class="h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1"
+        [ngClass]="
+            isStopListExpanded
+                ? 'stops-container-large'
+                : 'stops-container-small'
+        "
+    >
+        <div class="text-color-muted text-size-11 text-center">
+            {{ stop.order }}
+        </div>
+        <div class="text-color-black text-size-11 ta-font-bold text-truncate">
+            @let location = stop.location;
+            {{ location.city }}, {{ location.stateShortName }}
+            {{ location.zipCode }}
+        </div>
+        <div class="text-color-black text-size-11 text-right">
+            {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+        </div>
+        @if (isStopListExpanded) {
+            <div class="text-color-black text-size-11 text-right">
+                {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+            </div>
+            <div class="text-color-black text-size-11 text-right">
+                {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+            </div>
+        }
+        <div class="text-color-black text-size-11 ta-font-medium text-right">
+            {{ (stop.totalMiles | thousandSeparator) ?? '0.0' }}
+        </div>
+    </div>
+</ng-template>

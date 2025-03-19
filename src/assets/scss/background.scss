@@ -99,5 +99,9 @@
         &-bw2 {
             @include hover($bw2);
         }
+
+        &-light-grey {
+            @include hover($ta-light-grey);
+        }
     }
 }

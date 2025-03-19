@@ -1,19 +1,12 @@
-.miles-map {
-    &-row {
-        padding-right: 16px;
+@import 'src/theme/variables.scss';
+@import 'src/assets/scss/mixins.scss';
+
+.stops-container {
+    &-small {
+        @include grid-template-columns(24px 160px 60px 60px);
     }
 
-    &-stops {
-        &-large {
-            width: 462px;
-        }
-
-        &-small {
-            width: 334px;
-        }
-    }
-
-    &-total {
-        width: 250px;
+    &-large {
+        @include grid-template-columns(24px 160px 60px 60px 60px 60px);
     }
 }
