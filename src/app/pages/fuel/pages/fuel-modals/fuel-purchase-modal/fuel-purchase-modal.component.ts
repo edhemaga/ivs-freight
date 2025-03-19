@@ -207,8 +207,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
         this.confirmationActivationSubscribe();
         this.confirmationDeactivationSubscribe();
-
-        console.log(this.editData);
     }
 
     public onModalAction(action: string): void {
