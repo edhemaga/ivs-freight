@@ -1,30 +1,5 @@
-@import 'src/theme/variables.scss';
 @import 'src/assets/scss/mixins.scss';
 
 .stops-container {
     @include grid-template-columns(86px 58px 50px);
-}
-
-.miles-map-total {
-    opacity: 0.9;
-}
-
-.miles-map {
-    &-row {
-        padding-right: 16px;
-    }
-
-    &-stops {
-        &-large {
-            width: 462px;
-        }
-
-        &-small {
-            width: 334px;
-        }
-    }
-
-    &-total {
-        width: 250px;
-    }
 }

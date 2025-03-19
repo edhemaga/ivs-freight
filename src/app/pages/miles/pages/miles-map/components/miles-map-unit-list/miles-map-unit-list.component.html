@@ -4,8 +4,19 @@
 >
     <div class="text-size-20 text-color-black ta-font-bold"></div>
 
+    <app-ca-input
+        formControlName="search"
+        [inputConfig]="{
+            name: 'search',
+            type: 'text',
+            label: 'Find Stop',
+            placeholderIcon: 'ic_search',
+            placeholderInsteadOfLabel: true,
+        }"
+    ></app-ca-input>
+
     <div
-        class="h-22 d-grid align-items-center p-r-6 gap-1"
+        class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-6"
         [ngClass]="
             isStopListExpanded
                 ? 'stops-container-large'
@@ -34,17 +45,19 @@
 
     <div class="divider mt-1 mb-1"></div>
 
-    @for (stop of total?.stops.data; track stop.id) {
-        <ng-container
-            *ngTemplateOutlet="
-                stopRows;
-                context: {
-                    stop,
-                }
-            "
-        >
-        </ng-container>
-    }
+    <div class="scrollable-element">
+        @for (stop of total?.stops.data; track stop.id) {
+            <ng-container
+                *ngTemplateOutlet="
+                    stopRows;
+                    context: {
+                        stop,
+                    }
+                "
+            >
+            </ng-container>
+        }
+    </div>
 
     <div (click)="toogleStopList()">
         <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
@@ -57,7 +70,7 @@
 
 <ng-template #stopRows let-stop="stop">
     <div
-        class="h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1"
+        class="h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer"
         [ngClass]="
             isStopListExpanded
                 ? 'stops-container-large'
@@ -67,8 +80,15 @@
         <div class="text-color-muted text-size-11 text-center">
             {{ stop.order }}
         </div>
-        <div class="text-color-black text-size-11 ta-font-bold text-truncate">
+        <div
+            class="text-color-black text-size-11 ta-font-bold text-truncate d-flex"
+        >
             @let location = stop.location;
+            <svg-icon
+                [src]="(stop.type.name | milesIcon).icon"
+                [ngClass]="(stop.type.name | milesIcon).color"
+                class="svg-size-14 d-flex m-r-4"
+            ></svg-icon>
             {{ location.city }}, {{ location.stateShortName }}
             {{ location.zipCode }}
         </div>

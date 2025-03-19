@@ -73,8 +73,6 @@
                             label: 'Pickup',
                             percent: total.pickupPercentage,
                             count: total.pickupCount,
-                            icon: sharedSvgRoutes.PICKUP_ICON,
-                            color: 'green',
                         }
                     "
                 >
@@ -87,8 +85,6 @@
                             label: 'Delivery',
                             percent: total.deliveryPercentage,
                             count: total.deliveryCount,
-                            icon: sharedSvgRoutes.DELIVERY_ICON,
-                            color: 'orange-4',
                         }
                     "
                 >
@@ -101,8 +97,6 @@
                             label: 'Fuel',
                             percent: total.fuelPercentage,
                             count: total.fuelCount,
-                            icon: sharedSvgRoutes.FUEL_ICON,
-                            color: 'blue-13',
                         }
                     "
                 >
@@ -115,8 +109,6 @@
                             label: 'Deadhead',
                             percent: total.deadHeadPercentage,
                             count: total.deadHeadCount,
-                            icon: sharedSvgRoutes.MILEAGE_ICON,
-                            color: 'light-grey-2',
                         }
                     "
                 >
@@ -129,8 +121,6 @@
                             label: 'Parking',
                             percent: total.parkingPercentage,
                             count: total.pickupCount,
-                            icon: sharedSvgRoutes.PARKING_ICON,
-                            color: 'blue-26',
                         }
                     "
                 >
@@ -143,8 +133,6 @@
                             label: 'Repair',
                             percent: total.repairPercentage,
                             count: total.repairCount,
-                            icon: sharedSvgRoutes.REPAIR_ICON,
-                            color: 'orange-5',
                         }
                     "
                 >
@@ -157,8 +145,6 @@
                             label: 'Towing',
                             percent: total.towingPercentage,
                             count: total.towingCount,
-                            icon: sharedSvgRoutes.TOWING_ICON,
-                            color: 'bw-9',
                         }
                     "
                 >
@@ -237,12 +223,12 @@
     let-color="color"
 >
     @if (label) {
-        @let svgClass = percent ? 'svg-fill-' + color : 'svg-fill-bw-9';
+        @let svgClass = percent ? (label | milesIcon).color : 'svg-fill-bw-9';
 
         <div class="gap-3 m-t-3 d-grid stops-container align-items-center">
             <div class="d-flex align-items-center">
                 <svg-icon
-                    [src]="icon"
+                    [src]="(label | milesIcon).icon"
                     [ngClass]="svgClass"
                     class="svg-size-14 d-flex"
                 ></svg-icon>

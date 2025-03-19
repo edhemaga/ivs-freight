@@ -10,6 +10,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -23,6 +24,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 
         // Pipes
         ThousandSeparatorPipe,
+        MilesIconPipe,
 
         // Components
         SvgIconComponent,

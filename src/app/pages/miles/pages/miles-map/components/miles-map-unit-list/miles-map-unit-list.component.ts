@@ -1,5 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+
+// Form
+import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
+
 import {
     MilesByUnitPaginatedStopsResponse,
     MilesService,
@@ -7,6 +11,11 @@ import {
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
+import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
+
+// Components
+import { SvgIconComponent } from 'angular-svg-icon';
+import { CaInputComponent } from 'ca-components';
 
 @Component({
     selector: 'app-miles-map-unit-list',
@@ -15,16 +24,31 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
     standalone: true,
     imports: [
         CommonModule,
+        ReactiveFormsModule,
+
         // Pipes
         ThousandSeparatorPipe,
+        MilesIconPipe,
+
+        // Components
+        SvgIconComponent,
+        CaInputComponent,
     ],
 })
 export class MilesMapUnitListComponent {
     public isStopListExpanded: boolean = false;
 
     total: MilesByUnitPaginatedStopsResponse;
-    constructor(public milesService: MilesService) {
-        this.milesService.apiMilesUnitGet(null, null, 13).subscribe((data) => {
+
+    public searchForm = this.formBuilder.group({
+        search: null,
+    });
+
+    constructor(
+        public milesService: MilesService,
+        private formBuilder: UntypedFormBuilder
+    ) {
+        this.milesService.apiMilesUnitGet(null, null, 368).subscribe((data) => {
             this.total = data;
             console.log(data);
         });
