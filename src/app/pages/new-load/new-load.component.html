@@ -116,11 +116,17 @@
 
         <ng-template #rightSide>
             @if (store.selectedCount) {
-                <svg-icon
-                    [src]="sharedIcons.DELETE_ICON"
-                    class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
-                >
-                </svg-icon>
+                @let isPending = selectedTab === eLoadStatusStringType.PENDING;
+                @let isTemplate =
+                    selectedTab === eLoadStatusStringType.TEMPLATE;
+                <!-- Only template and pending loads can be deleted -->
+                @if (isPending || isTemplate) {
+                    <svg-icon
+                        [src]="sharedIcons.DELETE_ICON"
+                        class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
+                    >
+                    </svg-icon>
+                }
 
                 <svg-icon
                     [src]="sharedIcons.PRINT_ICON"
