@@ -1,0 +1,12 @@
+<div
+    class="background-white br-3"
+    [ngClass]="
+        isStopListExpanded ? 'miles-map-stops-large' : 'miles-map-stops-small'
+    "
+>
+    <div class="text-size-20 text-color-black ta-font-bold"></div>
+
+    <div (click)="toogleStopList()">
+        {{ isStopListExpanded ? 'collapse' : 'expand' }}
+    </div>
+</div>

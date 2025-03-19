@@ -1,20 +1,4 @@
-<div class="d-flex miles-map-row justify-content-between">
-    <div
-        class="background-white br-3"
-        [ngClass]="
-            isStopListExpanded
-                ? 'miles-map-stops-large'
-                : 'miles-map-stops-small'
-        "
-    >
-        Stops list
-
-        <div (click)="toogleStopList()">
-            {{ isStopListExpanded ? 'collapse' : 'expand' }}
-        </div>
-    </div>
-
-    <div class="background-white br-3 p-6 p-y-8 miles-map-total">
-        Total Miles
-    </div>
+<div class="d-flex justify-content-between">
+    <app-miles-map-unit-list></app-miles-map-unit-list>
+    <app-miles-map-unit-total></app-miles-map-unit-total>
 </div>
