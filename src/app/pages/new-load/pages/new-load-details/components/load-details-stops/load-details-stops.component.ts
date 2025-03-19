@@ -1,5 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+
+// Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Svg routes

@@ -443,12 +443,9 @@ export const loadDetailsStopCountSelector = createSelector(
     (loadDetails) => {
         const { stops } = loadDetails;
 
-        if (!stops || stops.length === 0) {
-            return 0;
-        }
+        if (!stops?.length) return 0;
 
-        const stopCount =
-            stops[0].stopType.id === 0 ? stops.length - 1 : stops.length;
+        const stopCount = stops.length - (stops[0].stopType.id === 0 ? 1 : 0);
 
         return stopCount;
     }
