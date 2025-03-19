@@ -768,10 +768,10 @@ export function getRepairShopColumnDefinition() {
         },
         {
             ngTemplate: 'open-hours',
-            title: 'Open Hours',
+            title: 'Status',
             field: 'tableOpenHours',
-            name: 'Open Hours',
-            sortName: RepairShopSortBy.OpenHours,
+            name: 'Status',
+            sortName: RepairShopSortBy.Status,
             hidden: true,
             isPined: false,
             width: 132,
