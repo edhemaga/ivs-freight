@@ -1,1 +1,32 @@
-<p>new-load-table works!</p>
+@let store =
+    {
+        viewData: loadStoreService.viewData$ | async,
+        hasAllLoadsSelected: loadStoreService.hasAllLoadsSelected$ | async,
+        selectedTab: loadStoreService.selectedTab$ | async,
+    };
+@if (store) {
+    <div>
+        @let loadListName = 'List' - store.selectedTab;
+        <app-ca-checkbox
+            [isRegularCheckbox]="false"
+            [isChecked]="store.hasAllLoadsSelected"
+            [name]="loadListName"
+            (columnCheckAction)="selectAll()"
+        ></app-ca-checkbox>
+    </div>
+    @for (load of store.viewData; track load.id) {
+        <div class="d-flex">
+            @let loadName = 'Load-' + load.id;
+            <app-ca-checkbox
+                [isChecked]="load.isSelected"
+                [isRegularCheckbox]="false"
+                [itemIndex]="load.id"
+                [name]="loadName"
+                (columnCheckAction)="selectLoad(load)"
+            ></app-ca-checkbox>
+            <div (click)="navigateToLoadDetails(load.id)">
+                Load id: {{ load.id }}
+            </div>
+        </div>
+    }
+}

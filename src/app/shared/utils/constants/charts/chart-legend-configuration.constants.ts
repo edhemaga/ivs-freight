@@ -1,4 +1,4 @@
-// Models
+// models
 import { IBrokerPaymentHistoryChart } from '@pages/customer/pages/broker-details/models';
 import { ChartLegendProperty } from '@shared/models';
 import {
@@ -13,6 +13,9 @@ import {
     TruckFuelConsumptionChartResponse,
     TruckRevenueChartResponse,
 } from 'appcoretruckassist';
+
+// enums
+import { eUnit } from 'ca-components';
 
 export class ChartLegendConfiguration {
     // In general, functions are used in order to pass corresponding values and not to map them in other place
@@ -30,7 +33,7 @@ export class ChartLegendConfiguration {
             name: 'Earnings',
             value: data?.earnings || 0,
             color: '#FBC88B',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
     ];
     public static mileageLegendConfiguration = (
@@ -41,19 +44,19 @@ export class ChartLegendConfiguration {
             // For some values, BE does not return fully formatted data
             value: Number(data?.averageRate?.toFixed(2) || 0),
             color: '#6692F1',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
         {
             name: 'Highest Rate',
             value: data?.highestRate || 0,
             color: '#86C9C3',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
         {
             name: 'Lowest Rate',
             value: data?.lowestRate || 0,
             color: '#FAB15C',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
     ];
 
@@ -64,7 +67,7 @@ export class ChartLegendConfiguration {
             name: 'Revenue',
             value: data?.revenue || 0,
             color: '#FAB15C',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
         {
             name: 'Load',
@@ -80,13 +83,13 @@ export class ChartLegendConfiguration {
             name: 'Gallon',
             value: data?.gallon || 0,
             color: '#FAB15C',
-            unit: 'gal.',
+            unit: eUnit.GALLON,
         },
         {
-            name: 'Cost per Gallon',
+            name: 'Cost',
             value: data?.cost || 0,
             color: '#6692F1',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
     ];
 
@@ -97,13 +100,13 @@ export class ChartLegendConfiguration {
             name: 'Gallon',
             value: data?.milesPerGallon || 0,
             color: '#FAB15C',
-            unit: 'mi',
+            unit: eUnit.MILE,
         },
         {
             name: 'Cost Per Gallon',
             value: data?.costPerGallon || 0,
             color: '#6692F1',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
     ];
 
@@ -114,13 +117,13 @@ export class ChartLegendConfiguration {
             name: 'Miles per Gallon',
             value: data?.milesPerGallon || 0,
             color: '#FAB15C',
-            unit: 'mi',
+            unit: eUnit.MILE,
         },
         {
             name: 'Cost Per Gallon',
             value: data?.costPerGallon || 0,
             color: '#6692F1',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
     ];
 
@@ -131,13 +134,13 @@ export class ChartLegendConfiguration {
             name: 'Miles',
             value: data?.miles || 0,
             color: '#56B4AC',
-            unit: 'mi',
+            unit: eUnit.MILE,
         },
         {
             name: 'Revenue',
             value: data?.revenue || 0,
             color: '#6692F1',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
     ];
 
@@ -148,19 +151,19 @@ export class ChartLegendConfiguration {
             name: 'Fuel Cost',
             value: data?.fuelCost || 0,
             color: '#FAB15C',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
         {
             name: 'Repair Cost',
             value: data?.repairCost || 0,
             color: '#6692F1',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
         {
             name: 'Total Cost',
             value: data?.fuelCost + data?.repairCost || 0,
             color: '#ffffff',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
     ];
 
@@ -172,14 +175,14 @@ export class ChartLegendConfiguration {
             value: data?.averagePayPeriod || 0,
             // Since 'background' property is set with color, linear gradient can be used as well
             color: 'linear-gradient(135deg, #F77D3B 50%, #6692F1 50%)',
-            unit: 'days',
+            unit: eUnit.DAYS,
         },
         {
             name: 'Pay Term',
             value: data?.payTerm || 0,
             color: '#DF3C3C',
             isLineIndicator: true,
-            unit: 'days',
+            unit: eUnit.DAYS,
         },
     ];
 
@@ -191,14 +194,14 @@ export class ChartLegendConfiguration {
             value: Number(data?.avgPickupTime) || 0,
             // Since 'background' property is set with color, linear gradient can be used as well
             color: '#86C9C3',
-            unit: 'days',
+            unit: eUnit.DAYS,
         },
         {
             name: 'Avg. Delivery Time',
             value: Number(data?.avgDeliveryTime) || 0,
             color: '#ED9292',
             isLineIndicator: true,
-            unit: 'days',
+            unit: eUnit.DAYS,
         },
     ];
 
@@ -214,7 +217,7 @@ export class ChartLegendConfiguration {
             name: 'Cost',
             value: Number(data?.repairCost) || 0,
             color: '#6692F1',
-            unit: '$',
+            unit: eUnit.DOLLAR_SIGN,
         },
     ];
 }

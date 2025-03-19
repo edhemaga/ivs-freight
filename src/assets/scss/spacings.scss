@@ -25,6 +25,9 @@
         &-4 {
             margin-left: 4px;
         }
+        &-8 {
+            margin-left: 8px;
+        }
         &-auto {
             margin-left: auto;
         }
@@ -45,6 +48,10 @@
             padding-left: 8px;
             padding-right: 8px;
         }
+        &-10 {
+            padding-left: 10px;
+            padding-right: 10px;
+        }
     }
     &-y {
         &-1 {
@@ -62,4 +69,15 @@
 }
 .w-full {
     width: 100%;
+}
+
+.h {
+    &-26 {
+        height: 26px;
+    }
+}
+.w {
+    &-26 {
+        width: 26px;
+    }
 }

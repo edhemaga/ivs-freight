@@ -17,4 +17,6 @@ export class SharedSvgRoutes {
     static SORT_ICON: string = 'assets/svg/common/sortArrow_filter.svg';
     static SORT_ICON_ASC: string = 'assets/svg/common/sortArrow_filter-asc.svg';
     static MAP_ICON: string = 'assets/svg/common/load/ic_load_map.svg';
+    static DETAILS_BACK_BUTTON: string =
+        'assets/svg/common/ic_details-back-arrow.svg';
 }
