@@ -16,7 +16,7 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
     imports: [CommonModule, AngularSvgIconModule],
 })
 export class LoadDetailsStopsComponent {
-    public isMapOpen = true;
+    public isMapOpen: boolean = true;
 
     public sharedSvgRoutes = SharedSvgRoutes;
 

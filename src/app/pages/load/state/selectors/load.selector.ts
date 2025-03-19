@@ -452,7 +452,7 @@ export const loadDetailsExtraStopCountSelector = createSelector(
         const { stops } = loadDetails;
 
         if (!stops || stops.length <= 2) {
-            return false;
+            return 0;
         }
 
         const isFirstStopDeathHead = stops[0].stopType.id === 0;
@@ -461,6 +461,6 @@ export const loadDetailsExtraStopCountSelector = createSelector(
             ? stops.length - 3
             : stops.length - 2;
 
-        return extraStopCount > 0 ? `${extraStopCount} EXTRA` : false;
+        return extraStopCount;
     }
 );

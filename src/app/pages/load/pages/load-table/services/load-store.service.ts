@@ -167,8 +167,9 @@ export class LoadStoreService {
         select(loadDetailsStopCountSelector)
     );
 
-    public loadDetailsExtraStopCount$: Observable<string | false> =
-        this.store.pipe(select(loadDetailsExtraStopCountSelector));
+    public loadDetailsExtraStopCount$: Observable<number> = this.store.pipe(
+        select(loadDetailsExtraStopCountSelector)
+    );
 
     public dispatchLoadList(
         apiParam: IGetLoadListParam,
