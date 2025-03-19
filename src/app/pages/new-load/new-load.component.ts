@@ -24,11 +24,16 @@ import {
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
+import { SvgIconComponent } from 'angular-svg-icon';
+
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants';
 
 // Helpers
 import { FilterHelper } from '@shared/utils/helpers';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-new-load',
@@ -46,11 +51,13 @@ import { FilterHelper } from '@shared/utils/helpers';
         CaFilterComponent,
         CaFilterTimeDropdownComponent,
         CaFilterListDropdownComponent,
+        SvgIconComponent,
     ],
 })
 export class NewLoadComponent {
     public eLoadStatusStringType = eLoadStatusStringType;
     public selectedTab = eLoadStatusStringType.ACTIVE;
+    public sharedIcons = SharedSvgRoutes;
     public generalActions = eGeneralActions;
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
 

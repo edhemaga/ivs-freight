@@ -19,4 +19,7 @@ export class SharedSvgRoutes {
     static MAP_ICON: string = 'assets/svg/common/load/ic_load_map.svg';
     static DETAILS_BACK_BUTTON: string =
         'assets/svg/common/ic_details-back-arrow.svg';
+    static DELETE_ICON: string = 'assets/svg/truckassist-table/trash-icon.svg';
+    static PRINT_ICON: string = 'assets/svg/truckassist-table/print-icon.svg';
+    static MENU_ICON: string = 'assets/svg/truckassist-table/burger-icon.svg';
 }

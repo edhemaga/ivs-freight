@@ -49,10 +49,16 @@
         &-black {
             @include hover($ta-black);
         }
+        &-dark-2 {
+            @include hover($dark-2);
+        }
         &-blue {
             &-15 {
                 @include hover($ta-blue-15);
             }
+        }
+        &-bw2 {
+            @include hover($bw2);
         }
     }
 }
