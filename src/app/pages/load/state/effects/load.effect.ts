@@ -174,6 +174,8 @@ export class LoadEffect {
                                                     {
                                                         load: loadResponse,
                                                         modal: modalResponse,
+                                                        possibleStatuses:
+                                                            statusDropdownResponse,
                                                     }
                                                 );
                                             }),
