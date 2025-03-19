@@ -4,7 +4,7 @@
             Total Miles
         </div>
         <div class="text-size-18 ta-font-medium text-color-black m-b-8">
-            {{ total.totalMiles }}
+            {{ total.totalMiles | thousandSeparator }}
         </div>
 
         @if (total.totalMiles || total.stops.count) {
@@ -31,7 +31,7 @@
                         columns;
                         context: {
                             label: 'Loaded',
-                            value: total.loadedMiles,
+                            value: total.loadedMiles | thousandSeparator,
                             bgClass: 'background-muted',
                             showCircle: true,
                         }
@@ -44,7 +44,7 @@
                         columns;
                         context: {
                             label: 'Empty',
-                            value: total.emptyMiles,
+                            value: total.emptyMiles | thousandSeparator,
                             bgClass: 'background-dark-2',
                             showCircle: true,
                         }
@@ -178,12 +178,15 @@
                 }"
             >
                 <div class="d-flex flex-wrap p-b-12">
+                    @let galons =
+                        ((total.fuelTotalGalons | thousandSeparator) ??
+                            total.fuelTotalGalons) + ' gal';
                     <ng-container
                         *ngTemplateOutlet="
                             columns;
                             context: {
                                 label: 'Fuel',
-                                value: total.fuelTotalGalons,
+                                value: galons,
                             }
                         "
                     >
@@ -213,7 +216,8 @@
                             columns;
                             context: {
                                 label: 'Revenue',
-                                value: '$' + total.revenue,
+                                value:
+                                    '$' + (total.revenue | thousandSeparator),
                             }
                         "
                     >
@@ -253,7 +257,7 @@
                 class="text-size-14 text-right"
                 [ngClass]="percent ? 'text-muted' : 'text-color-light-grey-6'"
             >
-                {{ percent }}%
+                {{ percent | number: '1.0-0' }}%
             </div>
             <div
                 class="text-size-14 ta-font-medium text-right"

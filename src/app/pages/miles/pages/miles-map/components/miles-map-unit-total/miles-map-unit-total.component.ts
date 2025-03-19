@@ -5,17 +5,29 @@ import {
     MilesService,
 } from 'appcoretruckassist';
 
-// Components
-import { SvgIconComponent } from 'angular-svg-icon';
-import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+// Pipes
+import { ThousandSeparatorPipe } from '@shared/pipes';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
+// Components
+import { SvgIconComponent } from 'angular-svg-icon';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+
 @Component({
     selector: 'app-miles-map-unit-total',
     standalone: true,
-    imports: [CommonModule, SvgIconComponent, TaCustomCardComponent],
+    imports: [
+        CommonModule,
+
+        // Pipes
+        ThousandSeparatorPipe,
+
+        // Components
+        SvgIconComponent,
+        TaCustomCardComponent,
+    ],
     templateUrl: './miles-map-unit-total.component.html',
     styleUrl: './miles-map-unit-total.component.scss',
 })
