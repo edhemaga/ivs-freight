@@ -231,7 +231,7 @@
                         "
                         position="bottom"
                         [tooltipBackground]="
-                            !isFirstFuelStopStoreInList
+                            isFirstFuelStopStoreInList
                                 ? 'rgba(0,0,0,0)'
                                 : '#424242'
                         "
@@ -254,12 +254,14 @@
                     <span
                         ngbTooltip
                         [mainTooltip]="
-                            isLastFuelStopInList
+                            isLastFuelStopStoreInList
                                 ? eStringPlaceholder.EMPTY
                                 : eGeneralActions.NEXT
                         "
                         [tooltipBackground]="
-                            !isLastFuelStopInList ? 'rgba(0,0,0,0)' : '#424242'
+                            isLastFuelStopStoreInList
+                                ? 'rgba(0,0,0,0)'
+                                : '#424242'
                         "
                         [tooltipMarginTop]="'8px'"
                         position="bottom"
