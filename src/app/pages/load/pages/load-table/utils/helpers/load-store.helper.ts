@@ -519,6 +519,7 @@ export class LoadStoreHelper {
                     (item) => item.isSelected || hasAllValuesNotOnlySelected
                 )
                 .reduce((sum, item) => sum + (item.totalDue || 0), 0)
+                .toFixed(2)
         );
     }
 }

@@ -78,7 +78,10 @@ import { IFilterDropdownList } from 'ca-components';
     providedIn: 'root',
 })
 export class LoadStoreService {
-    constructor(private store: Store) {}
+    constructor(
+        private store: Store,
+        private router: Router
+    ) {}
 
     public resolveInitialData$: Observable<
         LoadListResponse | LoadTemplateListResponse
@@ -625,13 +628,9 @@ export class LoadStoreService {
         });
     }
 
-    public navigateToLoadDetails(
-        id: number,
-        router: Router,
-        route: ActivatedRoute
-    ): void {
-        router.navigate([`${id}/${eLoadRouting.DETAILS}`], {
-            relativeTo: route,
-        });
+    public navigateToLoadDetails(id: number): void {
+        this.router.navigate([
+            `/${eLoadRouting.LIST}/${id}/${eLoadRouting.DETAILS}`,
+        ]);
     }
 }
