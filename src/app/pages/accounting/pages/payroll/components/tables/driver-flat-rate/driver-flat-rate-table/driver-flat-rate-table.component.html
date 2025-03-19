@@ -30,28 +30,28 @@
 
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
-        @if (data.period === 'Ready') {
-            <svg-icon
-                class="payment_done d-flex"
-                [svgClass]="'d-flex'"
-                name="mark-as-done"
-            ></svg-icon>
-        }
-
-        @if (data.period === 'Past') {
-            <svg-icon
-                class="caution d-flex"
-                [svgClass]="'d-flex'"
-                name="incorrect"
-            ></svg-icon>
-        }
-
-        @if (data.period === 'Pending') {
-            <svg-icon
-                class="state d-flex"
-                [svgClass]="'d-flex'"
-                name="ic_clock"
-            ></svg-icon>
+        @switch (data.period) {
+            @case ('Ready') {
+                <svg-icon
+                    class="payment_done d-flex"
+                    [svgClass]="'d-flex'"
+                    name="mark-as-done"
+                ></svg-icon>
+            }
+            @case ('Past') {
+                <svg-icon
+                    class="caution d-flex"
+                    [svgClass]="'d-flex'"
+                    name="incorrect"
+                ></svg-icon>
+            }
+            @case ('Pending') {
+                <svg-icon
+                    class="state d-flex"
+                    [svgClass]="'d-flex'"
+                    name="ic_clock"
+                ></svg-icon>
+            }
         }
 
         @if (data.period !== 'Ready') {
@@ -64,9 +64,7 @@
             >
                 {{ Math.abs(data.numberOfDays) }} DAYS
             </div>
-        }
-
-        @if (data.period === 'Ready') {
+        } @else {
             <div class="custom-status-text text-color-green-2">Ready</div>
         }
     </div>

@@ -1,7 +1,10 @@
+import { tap } from 'rxjs';
+
 // Services
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
 // Models
 import {
@@ -18,6 +21,7 @@ import { PayrollDeductionModalComponent } from '@pages/accounting/pages/payroll/
 import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 // Enums
 import {
     ePayrollAdditionalTypes,
@@ -26,11 +30,10 @@ import {
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { DropActionsStringEnum, DropdownMenuStringEnum } from '@shared/enums';
 import { PayrollTypeEnum } from 'ca-components';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { DriverDetailsCardStringEnum } from '@pages/driver/pages/driver-details/components/driver-details-card/enums/driver-details-card-string.enum';
 
 type TPopup = {
     modalType?:
@@ -58,7 +61,7 @@ export abstract class PayrollReportBaseComponent<
         driver?: { id?: number; fullName?: string | null };
         truck?: { id?: number };
         id?: number;
-        owner?: { name?: string | null };
+        owner?: { id?: number; name?: string | null };
     },
 > {
     public openedPayroll: T;
@@ -80,7 +83,8 @@ export abstract class PayrollReportBaseComponent<
     constructor(
         protected modalService: ModalService,
         private payrollService: PayrollService,
-        public loadStoreService: LoadStoreService
+        public loadStoreService: LoadStoreService,
+        public driverService: DriverService
     ) {}
 
     protected abstract getReportDataResults(
@@ -104,18 +108,7 @@ export abstract class PayrollReportBaseComponent<
 
                 break;
             case DropdownMenuStringEnum.EDIT_PAYROLL_TYPE:
-                this.modalService.openModal(
-                    DriverModalComponent,
-                    {
-                        size: DriverDetailsCardStringEnum.MEDIUM,
-                    },
-                    {
-                        data: {
-                            id: this.openedPayroll.driver,
-                        },
-                    }
-                );
-
+                this.openDriverOrTruckModal(id);
                 break;
             case DropdownMenuStringEnum.PREVIEW_REPORT_TYPE:
                 this.modalService.openModal(
@@ -365,8 +358,8 @@ export abstract class PayrollReportBaseComponent<
                         action: ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION,
                         id: item.data.id,
                         data: {
-                            title: item.data.description,
-                            subtitle: item.data.subtotal,
+                            title: `${item.data.fuelStop.businessName} ${item.data.fuelStop.businessName.store ? ` - ${item.data.fuelStop.businessName.store}` : ''}`,
+                            subtitle: item.data.total,
                             date: item.data.date,
                             label: `${label}`,
                             id: item.data.id,
@@ -376,6 +369,53 @@ export abstract class PayrollReportBaseComponent<
             }
 
             this.openDeleteModal(deleteServiceData);
+        }
+    }
+
+    public openDriverOrTruckModal(id: number) {
+        if (this.openedPayroll.driver?.id) {
+            this.driverService
+                .getDriverById(this.openedPayroll.driver?.id)
+                .pipe(
+                    tap((driver) => {
+                        const editData = {
+                            data: {
+                                ...driver,
+                            },
+                            type: TableStringEnum.EDIT,
+                            id: id,
+                            disableButton: true,
+                        };
+
+                        this.modalService
+                            .openModal(
+                                DriverModalComponent,
+                                { size: TableStringEnum.MEDIUM },
+                                {
+                                    ...editData,
+                                    avatarIndex: 0,
+                                    isDeactivateOnly: true,
+                                }
+                            )
+                            .then(() => {
+                                this.getReportDataResults();
+                            });
+                    })
+                )
+                .subscribe();
+        } else if (this.openedPayroll.owner?.id) {
+            this.modalService
+                .openModal(
+                    TruckModalComponent,
+                    {},
+                    {
+                        id: this.openedPayroll.truck?.id,
+                        type: DropActionsStringEnum.EDIT,
+                    }
+                )
+                .then(() => {
+                    this.getReportDataResults();
+                });
         }
     }
 

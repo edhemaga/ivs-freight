@@ -22,7 +22,9 @@
             [isRound]="false"
             [isHoverEffect]="false"
         ></app-ca-profile-image>
-        <span class="driver-solo-info-text text-color-black">{{ 'asda' }}</span>
+        <span class="driver-solo-info-text text-color-black">{{
+            data.driver.fullName
+        }}</span>
         <div
             class="payroll_count text-color-black d-flex justify-content-center align-items-center"
         >
@@ -33,7 +35,7 @@
 
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
-        @if (data == '0') {
+        @if (data === '0') {
             <svg-icon
                 class="payment_done d-flex"
                 [svgClass]="'d-flex'"
