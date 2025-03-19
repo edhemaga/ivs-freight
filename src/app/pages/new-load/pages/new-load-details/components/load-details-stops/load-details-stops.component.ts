@@ -16,13 +16,11 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
     imports: [CommonModule, AngularSvgIconModule],
 })
 export class LoadDetailsStopsComponent {
-    public isMapOpen: boolean = true;
-
     public sharedSvgRoutes = SharedSvgRoutes;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
     public toggleMap(): void {
-        this.isMapOpen = !this.isMapOpen;
+        this.loadStoreService.toggleMap();
     }
 }

@@ -430,6 +430,14 @@ export const totalLoadSumSelector = createSelector(loadState, (state) => {
     return totalLoadSum;
 });
 
+export const isLoadDetailsMapOpenSelector = createSelector(
+    loadState,
+    (state) => {
+        const { isLoadDetailsMapOpen } = state;
+        return isLoadDetailsMapOpen;
+    }
+);
+
 export const loadDetailsStopCountSelector = createSelector(
     loadDetailsSelector,
     (loadDetails) => {
