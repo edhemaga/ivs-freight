@@ -383,6 +383,15 @@ export const activeLoadModalDataSelector = createSelector(
     }
 );
 
+export const activeLoadModalPossibleStatusesSelector = createSelector(
+    loadState,
+    (state) => {
+        const { activeModalPossibleStatuses } = state;
+
+        return activeModalPossibleStatuses;
+    }
+);
+
 export const loadDetailsSelector = createSelector(loadState, (state) => {
     const { details } = state;
 

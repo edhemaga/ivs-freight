@@ -27,6 +27,7 @@ import {
     CreateLoadTemplateCommand,
     LoadListResponse,
     LoadModalResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatusType,
     LoadTemplateListResponse,
@@ -54,6 +55,7 @@ import {
     viewDataSelector,
     loadDetailsSelector,
     isLoadDetailsLoadedSelector,
+    activeLoadModalPossibleStatusesSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -121,6 +123,9 @@ export class LoadStoreService {
 
     public activeLoadModalData$: Observable<IActiveLoadModalData> =
         this.store.pipe(select(activeLoadModalDataSelector));
+
+    public activeLoadModalPossibleStatuses$: Observable<LoadPossibleStatusesResponse> =
+        this.store.pipe(select(activeLoadModalPossibleStatusesSelector));
 
     public resolveLoadDetails$: Observable<LoadResponse> = this.store.pipe(
         select(loadDetailsSelector)
