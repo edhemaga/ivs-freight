@@ -49,7 +49,8 @@ import { FilterHelper } from '@shared/utils/helpers';
     ],
 })
 export class NewLoadComponent {
-    public selectedTab = eLoadStatusStringType.Active;
+    public eLoadStatusStringType = eLoadStatusStringType;
+    public selectedTab = eLoadStatusStringType.ACTIVE;
     public generalActions = eGeneralActions;
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
 
@@ -110,7 +111,7 @@ export class NewLoadComponent {
     }
 
     private getLoadStatusFilter(): void {
-        if (this.selectedTab === eLoadStatusStringType.Template) {
+        if (this.selectedTab === eLoadStatusStringType.TEMPLATE) {
             this.loadStoreService.dispatchLoadTemplateList(this.filter);
         } else {
             this.loadStoreService.loadDispatchFilters({

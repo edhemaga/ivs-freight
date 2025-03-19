@@ -62,7 +62,7 @@
 
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
-                @if (selectedTab !== 'Template') {
+                @if (selectedTab !== eLoadStatusStringType.TEMPLATE) {
                     <app-ca-filter-time-dropdown
                         type="TimeFilter"
                         subType="past"
@@ -101,7 +101,10 @@
                 </app-ca-filter>
             </div>
 
-            @if (selectedTab === 'Template' && store.selectedCount) {
+            @if (
+                selectedTab === eLoadStatusStringType.TEMPLATE &&
+                store.selectedCount
+            ) {
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
                 <div
                     class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"

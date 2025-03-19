@@ -24,7 +24,7 @@
                 [name]="loadName"
                 (columnCheckAction)="selectLoad(load)"
             ></app-ca-checkbox>
-            <div [routerLink]="load.id + '/details'">
+            <div (click)="navigateToLoadDetails(load.id)">
                 Load id: {{ load.id }}
             </div>
         </div>

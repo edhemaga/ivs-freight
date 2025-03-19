@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // rxjs
 import { filter, Observable, take } from 'rxjs';
@@ -69,6 +70,7 @@ import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants
 // enums
 import { eActiveViewMode } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+import { eLoadRouting } from '@pages/new-load/enums';
 
 import { IFilterDropdownList } from 'ca-components';
 
@@ -620,6 +622,16 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_SELECT_LOAD,
             load,
+        });
+    }
+
+    public navigateToLoadDetails(
+        id: number,
+        router: Router,
+        route: ActivatedRoute
+    ): void {
+        router.navigate([`${id}/${eLoadRouting.DETAILS}`], {
+            relativeTo: route,
         });
     }
 }

@@ -3,9 +3,10 @@
 
 <div class="load-details-row">
     <aside>
+        @let backLink = '/' + eLoadRouting.LIST;
         <app-ta-details-page-title
             title="Load Detail"
-            routeLink="/list/new-load"
+            [routeLink]="backLink"
             [detailsDropdownOptions]="detailsDropdownOptions"
             [isLoading]="isLoading"
             [rightSide]="rightSide"

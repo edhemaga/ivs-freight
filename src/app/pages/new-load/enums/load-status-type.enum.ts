@@ -1,4 +1,4 @@
 export enum eLoadStatusStringType {
-    Active = 'Active',
-    Template = 'Template',
+    ACTIVE = 'Active',
+    TEMPLATE = 'Template',
 }

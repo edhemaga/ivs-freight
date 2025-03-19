@@ -29,12 +29,12 @@ import { TableViewHelper } from '@shared/utils/helpers';
     styleUrl: './toolbar-tabs-wrapper.component.scss',
     standalone: true,
 })
-export class ToolbarTabsWrapperComponent implements OnInit {
+export class ToolbarTabsWrapperComponent<T> implements OnInit {
     @Input() viewMode = eActiveViewMode.List;
     @Input() data: ITableData[];
     @Input() selectedTab: ITableData;
     @Input() shouldAddMap: boolean = false;
-    @Input() betweenTabsTemplate: TemplateRef<any>;
+    @Input() betweenTabsTemplate: TemplateRef<T>;
 
     @Output() onTabChange = new EventEmitter<TableToolbarActions>();
 

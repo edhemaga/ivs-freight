@@ -25,7 +25,7 @@ export class LoadResolver {
         });
 
         this.loadStoreService.loadDispatchFilters({
-            loadStatusType: eLoadStatusStringType.Active,
+            loadStatusType: eLoadStatusStringType.ACTIVE,
         });
 
         return this.loadStoreService.resolveInitialData$;

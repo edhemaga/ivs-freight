@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // Models
 import {
@@ -19,10 +19,14 @@ import { CaCheckboxComponent } from 'ca-components';
     templateUrl: './new-load-table.component.html',
     styleUrl: './new-load-table.component.scss',
     standalone: true,
-    imports: [CommonModule, RouterLink, CaCheckboxComponent],
+    imports: [CommonModule, CaCheckboxComponent],
 })
 export class NewLoadTableComponent {
-    constructor(protected loadStoreService: LoadStoreService) {}
+    constructor(
+        protected loadStoreService: LoadStoreService,
+        private _router: Router,
+        private _route: ActivatedRoute
+    ) {}
 
     public selectLoad(load: ILoadGridItem | ILoadTemplateGridItem): void {
         this.loadStoreService.dispatchSelectOneRow(load);
@@ -30,5 +34,13 @@ export class NewLoadTableComponent {
 
     public selectAll(): void {
         this.loadStoreService.dispatchSelectAll();
+    }
+
+    public navigateToLoadDetails(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(
+            id,
+            this._router,
+            this._route
+        );
     }
 }
