@@ -53,6 +53,8 @@ import {
     tableOptionsSelector,
     viewDataSelector,
     loadDetailsSelector,
+    loadDetailsStopCountSelector,
+    loadDetailsExtraStopCountSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -124,6 +126,13 @@ export class LoadStoreService {
     public resolveLoadDetails$: Observable<LoadResponse> = this.store.pipe(
         select(loadDetailsSelector)
     );
+
+    public loadDetailsStopCount$: Observable<number> = this.store.pipe(
+        select(loadDetailsStopCountSelector)
+    );
+
+    public loadDetailsExtraStopCount$: Observable<string | false> =
+        this.store.pipe(select(loadDetailsExtraStopCountSelector));
 
     public dispatchLoadList(
         apiParam: IGetLoadListParam,

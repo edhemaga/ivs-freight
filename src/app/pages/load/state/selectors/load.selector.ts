@@ -22,9 +22,7 @@ import { ITableOptions } from '@shared/models';
 
 // enums
 import { eActiveViewMode, TableStringEnum } from '@shared/enums';
-import {
-    eLoadStatusType,
-} from '@pages/load/pages/load-table/enums/index';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // helpers
 import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers/load-store.helper';
@@ -195,9 +193,7 @@ export const tableDataSelector = createSelector(
             localStorage.getItem(`table-${TableType.LoadRegular}-Configuration`)
         );
         const tableClosedColumnsConfig = JSON.parse(
-            localStorage.getItem(
-                `table-${TableType.LoadClosed}-Configuration`
-            )
+            localStorage.getItem(`table-${TableType.LoadClosed}-Configuration`)
         );
         const selectedTabLowerCase =
             eLoadStatusType[selectedTab]?.toLowerCase();
@@ -271,7 +267,7 @@ export const tableDataSelector = createSelector(
                 gridColumns:
                     tableClosedColumnsConfig ?? getLoadClosedColumnDefinition(),
             },
-        ]; 
+        ];
         return tableData;
     }
 );
@@ -281,7 +277,7 @@ export const columnsSelector = createSelector(
     selectedTabSelector,
     (tableData, selectedTab) => {
         const selectedTabLowerCase =
-        eLoadStatusType[selectedTab]?.toLowerCase();
+            eLoadStatusType[selectedTab]?.toLowerCase();
         const tableDataSelectedItem = tableData?.find(
             (item) => item.field === selectedTabLowerCase
         );
@@ -301,7 +297,7 @@ export const tableOptionsSelector = createSelector(
 
         const tableOptions: ITableOptions = {
             toolbarActions: {
-                hideActivationButton: true, 
+                hideActivationButton: true,
                 showTimeFilter:
                     selectedTabKeyLower !== TableStringEnum.TEMPLATE,
                 showStatusFilter:
@@ -348,7 +344,7 @@ export const activeTableDataSelector = createSelector(
 );
 export const dispatcherListSelector = createSelector(loadState, (state) => {
     const { dispatcherList } = state || {};
-    
+
     return dispatcherList;
 });
 
@@ -361,7 +357,7 @@ export const getDispatcherListSelector = createSelector(
 
 export const statusListSelector = createSelector(loadState, (state) => {
     const { statusList } = state || {};
-    
+
     return statusList;
 });
 
@@ -372,14 +368,11 @@ export const getStatusListSelector = createSelector(
     }
 );
 
-export const staticModalDataSelector = createSelector(
-    loadState,
-    (state) => {
-        const { modal } = state;
+export const staticModalDataSelector = createSelector(loadState, (state) => {
+    const { modal } = state;
 
-        return modal;
-    }
-);
+    return modal;
+});
 
 export const activeLoadModalDataSelector = createSelector(
     loadState,
@@ -390,11 +383,43 @@ export const activeLoadModalDataSelector = createSelector(
     }
 );
 
-export const loadDetailsSelector = createSelector(
-    loadState,
-    (state) => {
-        const { details } = state;
+export const loadDetailsSelector = createSelector(loadState, (state) => {
+    const { details } = state;
 
-        return details;
+    return details;
+});
+
+export const loadDetailsStopCountSelector = createSelector(
+    loadDetailsSelector,
+    (loadDetails) => {
+        const { stops } = loadDetails;
+
+        if (!stops || stops.length === 0) {
+            return 0;
+        }
+
+        const stopCount =
+            stops[0].stopType.id === 0 ? stops.length - 1 : stops.length;
+
+        return stopCount;
+    }
+);
+
+export const loadDetailsExtraStopCountSelector = createSelector(
+    loadDetailsSelector,
+    (loadDetails) => {
+        const { stops } = loadDetails;
+
+        if (!stops || stops.length <= 2) {
+            return false;
+        }
+
+        const isFirstStopDeathHead = stops[0].stopType.id === 0;
+
+        const extraStopCount = isFirstStopDeathHead
+            ? stops.length - 3
+            : stops.length - 2;
+
+        return extraStopCount > 0 ? `${extraStopCount} EXTRA` : false;
     }
 );

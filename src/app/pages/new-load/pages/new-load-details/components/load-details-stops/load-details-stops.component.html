@@ -1,4 +1,37 @@
 @let load = loadStoreService.resolveLoadDetails$ | async;
-<div class="background-white p-8 br-3">
-   Stops:  {{ load?.stops?.length }}
+@let stopCount = loadStoreService.loadDetailsStopCount$ | async;
+@let extraStopCount = loadStoreService.loadDetailsExtraStopCount$ | async;
+
+<div class="load-details-stop-container">
+    <div class="d-flex justify-content-between load-details-stop-header">
+        <div
+            class="d-flex justify-content-between align-items-center gap-1 load-details-stop-header-left"
+        >
+            <div class="stop-text">
+                <p>Stop</p>
+            </div>
+            <div
+                class="d-flex justify-content-center align-items-center stop-counter"
+            >
+                <p>{{ stopCount }}</p>
+            </div>
+
+            @if (extraStopCount) {
+                <div class="extra-stop-counter">
+                    <p>{{ extraStopCount }}</p>
+                </div>
+            }
+        </div>
+        <div
+            class="d-flex justify-content-between align-items-center gap-1 load-details-stop-header-right"
+        >
+            <div
+                class="d-flex justify-content-center map-button"
+                [class.map-button-active]="isMapOpen"
+                (click)="toggleMap()"
+            >
+                <svg-icon [src]="sharedSvgRoutes.MAP_ICON"> </svg-icon>
+            </div>
+        </div>
+    </div>
 </div>
