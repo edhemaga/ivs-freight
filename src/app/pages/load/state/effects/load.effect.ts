@@ -32,7 +32,7 @@ import {
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // helpers
-import { LoadStoreEffectsHelper } from '@pages/load/pages/load-table/utils/helpers/load-store-effects.helper';
+import { LoadStoreEffectsHelper } from '@pages/load/pages/load-table/utils/helpers';
 
 @Injectable()
 export class LoadEffect {

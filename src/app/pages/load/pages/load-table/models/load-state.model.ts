@@ -36,4 +36,9 @@ export interface ILoadState {
 
     details: LoadResponse;
     isLoadDetailsLoaded: boolean;
+
+    selectLoadCount: number;
+    selectLoadRateSum: number;
+    totalLoadSum: number;
+    hasAllLoadsSelected: boolean;
 }

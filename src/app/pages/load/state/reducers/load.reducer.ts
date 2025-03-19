@@ -36,6 +36,10 @@ export const initialState: ILoadState = {
 
     details: {},
     isLoadDetailsLoaded: false,
+    selectLoadRateSum: 0,
+    selectLoadCount: 0,
+    totalLoadSum: 0,
+    hasAllLoadsSelected: false,
 };
 // #endregion
 
@@ -325,5 +329,11 @@ export const loadReducer = createReducer(
                 broker,
                 brokerContacts
             )
+    ),
+    on(LoadActions.selectAllRow, (state) =>
+        Functions.updateAllLoadsSelectStatus(state)
+    ),
+    on(LoadActions.selectLoad, (state, { load }) =>
+        Functions.updateLoadSelectedStatus(state, load)
     )
 );

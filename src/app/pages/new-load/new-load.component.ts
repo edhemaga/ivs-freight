@@ -3,11 +3,8 @@ import { Component } from '@angular/core';
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import {
-    eActiveViewMode,
-    eGeneralActions,
-    TableStringEnum,
-} from '@shared/enums';
+import { eActiveViewMode, eGeneralActions } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Models
 import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
@@ -52,7 +49,8 @@ import { FilterHelper } from '@shared/utils/helpers';
     ],
 })
 export class NewLoadComponent {
-    public selectedTab: string = TableStringEnum.ACTIVE_2;
+    public eLoadStatusStringType = eLoadStatusStringType;
+    public selectedTab = eLoadStatusStringType.ACTIVE;
     public generalActions = eGeneralActions;
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
 
@@ -95,7 +93,7 @@ export class NewLoadComponent {
     }
 
     private handleTabSelected(mode: string): void {
-        this.selectedTab = mode;
+        this.selectedTab = mode as eLoadStatusStringType;
         this.resetFilters();
         this.getLoadStatusFilter();
     }
@@ -113,7 +111,7 @@ export class NewLoadComponent {
     }
 
     private getLoadStatusFilter(): void {
-        if (this.selectedTab === TableStringEnum.TEMPLATE_2) {
+        if (this.selectedTab === eLoadStatusStringType.TEMPLATE) {
             this.loadStoreService.dispatchLoadTemplateList(this.filter);
         } else {
             this.loadStoreService.loadDispatchFilters({

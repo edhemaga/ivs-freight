@@ -21,6 +21,7 @@ import {
 // models
 import {
     ILoadGridItem,
+    ILoadTemplateGridItem,
     IViewModelData,
     LoadModel,
 } from '@pages/load/pages/load-table/models/index';
@@ -503,5 +504,22 @@ export class LoadStoreHelper {
         });
 
         return stopOrder;
+    }
+
+    public static calculateSelectedLoadsSum(
+        data: (ILoadGridItem | ILoadTemplateGridItem)[],
+        hasAllValuesNotOnlySelected: boolean
+    ): number {
+        const thousandSeparatorPipe: ThousandSeparatorPipe =
+            new ThousandSeparatorPipe();
+        // Sum the totalDue of selected items
+        return thousandSeparatorPipe.transform(
+            data
+                .filter(
+                    (item) => item.isSelected || hasAllValuesNotOnlySelected
+                )
+                .reduce((sum, item) => sum + (item.totalDue || 0), 0)
+                .toFixed(2)
+        );
     }
 }
