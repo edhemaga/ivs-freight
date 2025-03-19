@@ -56,7 +56,7 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { FuelPurchaseModalSvgRoutes } from './utils/svg-routes';
+import { FuelPurchaseModalSvgRoutes } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/utils/svg-routes';
 
 // models
 import {
