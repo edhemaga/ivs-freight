@@ -41,9 +41,7 @@
                 [svgClass]="'d-flex'"
                 name="mark-as-done"
             ></svg-icon>
-        }
-
-        @if (data > 0) {
+        } @else if (data > 0) {
             <svg-icon
                 class="caution d-flex"
                 [svgClass]="'d-flex'"
