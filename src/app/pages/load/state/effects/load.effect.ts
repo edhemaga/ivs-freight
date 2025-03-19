@@ -174,6 +174,8 @@ export class LoadEffect {
                                                     {
                                                         load: loadResponse,
                                                         modal: modalResponse,
+                                                        possibleStatuses:
+                                                            statusDropdownResponse,
                                                     }
                                                 );
                                             }),
@@ -765,18 +767,16 @@ export class LoadEffect {
             ofType(LoadActions.getLoadDetailsById),
             exhaustMap((action) => {
                 const { loadId } = action || {};
-                return this.loadService
-                    .getLoadById(loadId)
-                    .pipe(
-                        map((details) => {
-                            return LoadActions.getLoadDetails({
-                                details,
-                            });
-                        }),
-                        catchError((error) =>
-                            of(LoadActions.getLoadDetailsError({ error }))
-                        )
-                    );
+                return this.loadService.getLoadById(loadId).pipe(
+                    map((details) => {
+                        return LoadActions.getLoadDetails({
+                            details,
+                        });
+                    }),
+                    catchError((error) =>
+                        of(LoadActions.getLoadDetailsError({ error }))
+                    )
+                );
             })
         )
     );

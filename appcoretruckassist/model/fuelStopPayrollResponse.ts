@@ -11,10 +11,9 @@
  */
 
 
-export type CountryType = 'US' | 'CA';
-
-export const CountryType = {
-    Us: 'US' as CountryType,
-    Ca: 'CA' as CountryType
-};
+export interface FuelStopPayrollResponse { 
+    id?: number;
+    businessName?: string | null;
+    store?: string | null;
+}
 

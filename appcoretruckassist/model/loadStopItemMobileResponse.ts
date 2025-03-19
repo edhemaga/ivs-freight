@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
+import { EnumValue } from './enumValue';
 
 
 export interface LoadStopItemMobileResponse { 
     description?: string | null;
     quantity?: number | null;
+    units?: EnumValue;
     temperature?: number | null;
     weight?: number | null;
     length?: number | null;
