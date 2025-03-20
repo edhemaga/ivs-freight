@@ -88,7 +88,7 @@ export class DropdownMenuColumnsActionsHelper {
                 }
 
                 groupedColumns[column.groupName].innerDropdownContent.push(
-                    mappedColumn
+                    mappedColumn as any
                 );
                 groupedColumns[column.groupName].isChecked ||=
                     mappedColumn.isChecked;

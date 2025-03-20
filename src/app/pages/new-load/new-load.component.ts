@@ -24,7 +24,6 @@ import {
     CaFilterComponent,
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
-    CaSearchMultipleStates2Component,
     IFilterAction,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
@@ -59,7 +58,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaFilterComponent,
         CaFilterTimeDropdownComponent,
         CaFilterListDropdownComponent,
-        CaSearchMultipleStates2Component,
         SvgIconComponent,
     ],
 })
