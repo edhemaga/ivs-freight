@@ -22,7 +22,14 @@
             "
             (click)="onTabClick(isLargeLayout ? title! : name!)"
         >
-            <span class="new-table--toolbar-action-inactive-title">
+            <span
+                class="new-table--toolbar-action-inactive-title"
+                [ngClass]="
+                    isLargeLayout
+                        ? 'new-table--toolbar-action-inactive-title-large'
+                        : 'new-table--toolbar-action-inactive-title-small'
+                "
+            >
                 {{ isLargeLayout ? title : name }}</span
             >
             @if (isLargeLayout) {

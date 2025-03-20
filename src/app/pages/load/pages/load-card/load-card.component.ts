@@ -24,7 +24,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -147,7 +147,7 @@ export class LoadCardComponent
 
         this.handleDropdownMenuActions(
             emitAction,
-            DropdownMenuStringEnum.LOAD,
+            eDropdownMenu.LOAD,
             this.selectedTab
         );
     }

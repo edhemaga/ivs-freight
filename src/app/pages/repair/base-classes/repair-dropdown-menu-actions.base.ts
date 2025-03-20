@@ -7,7 +7,7 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 import { RepairService } from '@shared/services/repair.service';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 
 // helpers
@@ -39,31 +39,31 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
         const { id, type } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.ALL_BILLS_TYPE:
+            case eDropdownMenu.ALL_BILLS_TYPE:
                 this.handleAllBillsAction();
 
                 break;
-            case DropdownMenuStringEnum.FINISH_ORDER_TYPE:
-            case DropdownMenuStringEnum.WRITE_REVIEW_TYPE:
+            case eDropdownMenu.FINISH_ORDER_TYPE:
+            case eDropdownMenu.WRITE_REVIEW_TYPE:
                 this.handleConvertedToEditTypeAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.ALL_ORDERS_TYPE:
+            case eDropdownMenu.ALL_ORDERS_TYPE:
                 this.handleAllOrdersAction();
 
                 break;
-            case DropdownMenuStringEnum.MARK_AS_FAVORITE_TYPE:
-            case DropdownMenuStringEnum.UNMARK_FAVORITE_TYPE:
+            case eDropdownMenu.MARK_AS_FAVORITE_TYPE:
+            case eDropdownMenu.UNMARK_FAVORITE_TYPE:
                 this.handleFavoriteAction(id);
 
                 break;
-            case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
-            case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
+            case eDropdownMenu.OPEN_BUSINESS_TYPE:
+            case eDropdownMenu.CLOSE_BUSINESS_TYPE:
                 this.handleRepairShopOpenCloseBusinessAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.RATING_LIKE_TYPE:
-            case DropdownMenuStringEnum.RATING_DISLIKE_TYPE:
+            case eDropdownMenu.RATING_LIKE_TYPE:
+            case eDropdownMenu.RATING_DISLIKE_TYPE:
                 this.handleRepairShopLikeDislikeAction(action, tableType);
 
                 break;
@@ -90,7 +90,7 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
 
         const adjustedAction = {
             ...action,
-            type: DropdownMenuStringEnum.EDIT_TYPE,
+            type: eDropdownMenu.EDIT_TYPE,
             ...additionalProperties,
         };
 
@@ -136,7 +136,7 @@ export abstract class RepairDropdownMenuActionsBase extends DropdownMenuActionsB
     ): void {
         const { id, type, data } = action;
 
-        const thumb = type === DropdownMenuStringEnum.RATING_LIKE_TYPE ? 1 : -1;
+        const thumb = type === eDropdownMenu.RATING_LIKE_TYPE ? 1 : -1;
 
         const rating = {
             entityTypeRatingId: 2,

@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 
 // rxjs
 import { filter, Observable, take } from 'rxjs';
@@ -12,6 +13,7 @@ import {
     IGetLoadListParam,
     IGetLoadTemplateParam,
     ILoadGridItem,
+    ILoadTemplateGridItem,
 } from '@pages/load/pages/load-table/models/index';
 import { ITableData } from '@shared/models/table-data.model';
 
@@ -27,6 +29,7 @@ import {
     CreateLoadTemplateCommand,
     LoadListResponse,
     LoadModalResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatusType,
     LoadTemplateListResponse,
@@ -54,6 +57,14 @@ import {
     viewDataSelector,
     loadDetailsSelector,
     isLoadDetailsLoadedSelector,
+    selectedCountSelector,
+    selectLoadRateSumSelector,
+    hasAllLoadsSelectedSelector,
+    totalLoadSumSelector,
+    activeLoadModalPossibleStatusesSelector,
+    loadDetailsStopCountSelector,
+    loadDetailsExtraStopCountSelector,
+    isLoadDetailsMapOpenSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -62,6 +73,7 @@ import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants
 // enums
 import { eActiveViewMode } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+import { eLoadRouting } from '@pages/new-load/enums';
 
 import { IFilterDropdownList } from 'ca-components';
 
@@ -69,7 +81,10 @@ import { IFilterDropdownList } from 'ca-components';
     providedIn: 'root',
 })
 export class LoadStoreService {
-    constructor(private store: Store) {}
+    constructor(
+        private store: Store,
+        private router: Router
+    ) {}
 
     public resolveInitialData$: Observable<
         LoadListResponse | LoadTemplateListResponse
@@ -122,12 +137,43 @@ export class LoadStoreService {
     public activeLoadModalData$: Observable<IActiveLoadModalData> =
         this.store.pipe(select(activeLoadModalDataSelector));
 
+    public activeLoadModalPossibleStatuses$: Observable<LoadPossibleStatusesResponse> =
+        this.store.pipe(select(activeLoadModalPossibleStatusesSelector));
+
     public resolveLoadDetails$: Observable<LoadResponse> = this.store.pipe(
         select(loadDetailsSelector)
     );
 
     public isLoadDetailsLoaded$: Observable<boolean> = this.store.pipe(
         select(isLoadDetailsLoadedSelector)
+    );
+
+    public selectedCount$: Observable<number> = this.store.pipe(
+        select(selectedCountSelector)
+    );
+
+    public selectLoadRateSum$: Observable<number> = this.store.pipe(
+        select(selectLoadRateSumSelector)
+    );
+
+    public hasAllLoadsSelected$: Observable<boolean> = this.store.pipe(
+        select(hasAllLoadsSelectedSelector)
+    );
+
+    public totalLoadSum$: Observable<number> = this.store.pipe(
+        select(totalLoadSumSelector)
+    );
+
+    public loadDetailsStopCount$: Observable<number> = this.store.pipe(
+        select(loadDetailsStopCountSelector)
+    );
+
+    public loadDetailsExtraStopCount$: Observable<number> = this.store.pipe(
+        select(loadDetailsExtraStopCountSelector)
+    );
+
+    public isLoadDetailsMapOpen$: Observable<boolean> = this.store.pipe(
+        select(isLoadDetailsMapOpenSelector)
     );
 
     public dispatchLoadList(
@@ -580,6 +626,32 @@ export class LoadStoreService {
             type: LoadStoreConstants.ACTION_UPDATE_EDITED_BROKER_STATIC_MODAL_DATA,
             broker,
             brokerContacts,
+        });
+    }
+
+    public dispatchSelectAll(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SELECT_ALL_ROWS,
+        });
+    }
+    public dispatchSelectOneRow(
+        load: ILoadGridItem | ILoadTemplateGridItem
+    ): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SELECT_LOAD,
+            load,
+        });
+    }
+
+    public navigateToLoadDetails(id: number): void {
+        this.router.navigate([
+            `/${eLoadRouting.LIST}/${id}/${eLoadRouting.DETAILS}`,
+        ]);
+    }
+
+    public toggleMap(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_TOGGLE_MAP,
         });
     }
 }

@@ -1,3 +1,6 @@
+@import '/src/theme/variables.scss';
+@import '/src/assets/scss/fonts.scss';
+
 .fuel-total-row {
     margin: 0 !important;
     text-align: right;
@@ -59,4 +62,10 @@
     &-3 {
         grid-template-columns: 143px 143px 143px;
     }
+}
+
+.fuel-account-label {
+    position: absolute;
+    top: 11px;
+    left: 20px;
 }

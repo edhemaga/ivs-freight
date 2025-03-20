@@ -78,7 +78,11 @@ import { IFuelPurchaseModalForm } from '@pages/fuel/pages/fuel-modals/fuel-purch
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
-import { FormatDatePipe, NameInitialsPipe } from '@shared/pipes';
+import {
+    FormatDatePipe,
+    MiddleEllipsisPipe,
+    NameInitialsPipe,
+} from '@shared/pipes';
 import { FuelPurchaseModalInputConfigPipe } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/pipes';
 
 // enums
@@ -87,11 +91,7 @@ import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fue
 import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import {
-    DropdownMenuStringEnum,
-    eGeneralActions,
-    TableStringEnum,
-} from '@shared/enums';
+import { eDropdownMenu, TableStringEnum, eGeneralActions } from '@shared/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
@@ -136,37 +136,44 @@ import moment from 'moment';
         // pipes
         FormatDatePipe,
         FuelPurchaseModalInputConfigPipe,
+        MiddleEllipsisPipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public fuelForm: UntypedFormGroup;
-    public isCardAnimationDisabled: boolean = false;
-    public modalActionType: FuelDataOptionsStringEnum;
+
     public truckType: FuelTruckType[] = [];
     public driverOptions: PayrollDriver[] = [];
-    public fuelCardHolderName: string;
     public fuelStops: ExtendedFuelStopResponse[] = [];
-    public fuelTransactionType: EnumValue;
-    public selectedTruckType: FuelTruckType;
-    public selectedTrailerType: FuelTruckType;
+    public documents: any[] = [];
+
     public selectedFuelStop: ExtendedFuelStopResponse;
     public selectedDispatchHistory: FuelDispatchHistoryResponse;
+    public selectedTruckType: FuelTruckType;
+    public selectedTrailerType: FuelTruckType;
     public selectedDriver: PayrollDriver;
-    public fuelItemsDropdown: EnumValue[] = [];
-    public documents: any[] = [];
+
     public isFuelRowCreated: boolean = false;
     public isEachFuelRowValid: boolean = true;
+
+    public fuelCardHolderName: string;
     public fuelItems: FuelItemResponse[] = [];
+    public isCardAnimationDisabled: boolean = false;
     public updatedFuelItems: FuelItemResponse[] = [];
     public total: number = 0;
-    public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnum = TaModalActionEnum;
+
+    public fuelItemsDropdown: EnumValue[] = [];
     public eFuelTransactionType = eFuelTransactionType;
+    public modalActionType: FuelDataOptionsStringEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
     public fuelDataOptionsStringEnum = FuelDataOptionsStringEnum;
+    public fuelTransactionType: EnumValue;
     public fuelValuesStringEnum = FuelValuesStringEnum;
+
+    public svgRoutes = SharedSvgRoutes;
 
     private destroy$ = new Subject<void>();
 
@@ -485,7 +492,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 : null,
             truckId: this.selectedTruckType ? this.selectedTruckType.id : null,
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
-            trailerId: this.fuelForm.get(FuelValuesStringEnum.TRAILER_ID).value,
+            trailerId: this.selectedTrailerType
+                ? this.selectedTrailerType.id
+                : null,
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.isFranchise
                     ? this.selectedFuelStop.storeId
@@ -676,7 +685,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     } else {
                         if (
                             this.editData?.type ===
-                            DropdownMenuStringEnum.ADD_TRANSACTION_TYPE
+                            eDropdownMenu.ADD_TRANSACTION_TYPE
                         )
                             this.getFuelStopById(this.editData?.data?.id);
 
@@ -917,9 +926,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private getInitialFormData(): IFuelPurchaseModalForm {
+        let result: IFuelPurchaseModalForm = {};
+
+        if (!this.editData) return result;
+
         const { type, data } = this.editData;
 
-        const truckId = data?.truckNumber ?? null;
+        const truckId = data?.truckId ?? null;
         const transactionDate =
             type === eGeneralActions.EDIT ? data?.transactionDate : null;
         const transactionTime =
@@ -929,7 +942,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                   )
                 : null;
 
-        const result: IFuelPurchaseModalForm = {
+        result = {
             truckId,
             transactionDate,
             transactionTime,

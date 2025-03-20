@@ -8,7 +8,7 @@ import { RepairTrailerStore } from '@pages/repair/state/repair-trailer-state/rep
 import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
 import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
-import { RepairMinimalListStore } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
+import { RepairMinimalListStore } from '@pages/repair/state/repair-details-minimal-list-state/repair-minimal-list.store';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';

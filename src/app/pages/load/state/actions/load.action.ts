@@ -5,6 +5,7 @@ import {
     ICreateCommentMetadata,
     IGetLoadListParam,
     IGetLoadTemplateParam,
+    ILoadGridItem,
     ILoadTemplateGridItem,
 } from '@pages/load/pages/load-table/models/index';
 import {
@@ -16,6 +17,7 @@ import {
     LoadListDto,
     LoadListResponse,
     LoadModalResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatusResponse,
     LoadStatusType,
@@ -123,7 +125,11 @@ export const getEditLoadModalData = createAction(
 
 export const getEditLoadModalDataSuccess = createAction(
     LoadStoreConstants.ACTION_GET_EDIT_LOAD_MODAL_DATA_SUCCESS,
-    props<{ load: LoadResponse; modal: LoadModalResponse }>()
+    props<{
+        load: LoadResponse;
+        modal: LoadModalResponse;
+        possibleStatuses: LoadPossibleStatusesResponse;
+    }>()
 );
 
 export const getEditLoadModalDataError = createAction(
@@ -708,3 +714,14 @@ export const getLoadDetailsError = createAction(
 export const setLoadDetailsToUnload = createAction(
     LoadStoreConstants.ACTION_SET_LOAD_DETAILS_TO_UNLOAD
 );
+
+export const selectAllRow = createAction(
+    LoadStoreConstants.ACTION_SELECT_ALL_ROWS
+);
+
+export const selectLoad = createAction(
+    LoadStoreConstants.ACTION_SELECT_LOAD,
+    props<{ load: ILoadGridItem | ILoadTemplateGridItem }>()
+);
+
+export const toggleMap = createAction(LoadStoreConstants.ACTION_TOGGLE_MAP);

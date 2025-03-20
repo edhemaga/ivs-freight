@@ -1,21 +1,23 @@
 <div class="details-container-items">
-    <div *ngFor="let item of truckDetailsConfig; trackBy: identity">
-        <app-ta-details-header
-            [options]="dataTest"
-            [route]="'/list/truck'"
-            [tooltipHeaderName]="'Back to Truck List'"
-            [headerText]="item.name"
-            [counterData]="item.length"
-            [statusInactive]="item.status"
-            [isInactive]="item.status"
-            [optionsId]="truckId"
-            [danger]="item.isExpired || item.voidedDate"
-            [businessOpen]="item.businessOpen"
-            (dropActions)="optionsDrop($event)"
-            (openModalAction)="onModalAction($event)"
-        >
-        </app-ta-details-header>
-    </div>
+    @for (item of truckDetailsConfig; let indx = $index; track indx) {
+        <div>
+            <app-ta-details-header
+                [options]="dataTest"
+                [route]="'/list/truck'"
+                [tooltipHeaderName]="'Back to Truck List'"
+                [headerText]="item.name"
+                [counterData]="item.length"
+                [statusInactive]="item.status"
+                [isInactive]="item.status"
+                [optionsId]="truckId"
+                [danger]="item.isExpired || item.voidedDate"
+                [businessOpen]="item.businessOpen"
+                (dropActions)="optionsDrop($event)"
+                (openModalAction)="onModalAction($event)"
+            >
+            </app-ta-details-header>
+        </div>
+    }
     <app-truck-details-item [truck]="truckDetailsConfig">
     </app-truck-details-item>
 </div>

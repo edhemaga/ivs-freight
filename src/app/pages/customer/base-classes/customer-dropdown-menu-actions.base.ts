@@ -9,7 +9,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 // models
@@ -32,34 +32,34 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         const { type } = action;
 
         const tableType =
-            selectedTab === DropdownMenuStringEnum.ACTIVE
-                ? DropdownMenuStringEnum.BROKER
-                : DropdownMenuStringEnum.SHIPPER;
+            selectedTab === eDropdownMenu.ACTIVE
+                ? eDropdownMenu.BROKER
+                : eDropdownMenu.SHIPPER;
 
         switch (type) {
-            case DropdownMenuStringEnum.EDIT_TYPE:
-            case DropdownMenuStringEnum.ADD_CONTACT_TYPE:
-            case DropdownMenuStringEnum.WRITE_REVIEW_TYPE:
+            case eDropdownMenu.EDIT_TYPE:
+            case eDropdownMenu.ADD_CONTACT_TYPE:
+            case eDropdownMenu.WRITE_REVIEW_TYPE:
                 this.handleShipperBrokerEditAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.CREATE_LOAD_TYPE:
+            case eDropdownMenu.CREATE_LOAD_TYPE:
                 this.handleCreateLoadAction();
 
                 break;
-            case DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE:
-            case DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE:
-            case DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE:
-            case DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST_TYPE:
+            case eDropdownMenu.MOVE_TO_BAN_LIST_TYPE:
+            case eDropdownMenu.REMOVE_FROM_BAN_LIST_TYPE:
+            case eDropdownMenu.MOVE_TO_DNU_LIST_TYPE:
+            case eDropdownMenu.REMOVE_FROM_DNU_LIST_TYPE:
                 this.handleBrokerMoveActions(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
-            case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
+            case eDropdownMenu.CLOSE_BUSINESS_TYPE:
+            case eDropdownMenu.OPEN_BUSINESS_TYPE:
                 this.handleShipperBrokerCloseBusinessActions(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
+            case eDropdownMenu.DELETE_TYPE:
                 this.handleShipperBrokerDeleteAction(action, tableType);
 
                 break;
@@ -80,16 +80,16 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         this.detailsDataService.setNewData(action.data);
 
         const openedTab =
-            type === DropdownMenuStringEnum.ADD_CONTACT_TYPE
-                ? DropdownMenuStringEnum.ADDITIONAL
-                : type === DropdownMenuStringEnum.WRITE_REVIEW_TYPE
-                  ? DropdownMenuStringEnum.REVIEW
-                  : DropdownMenuStringEnum.BASIC;
+            type === eDropdownMenu.ADD_CONTACT_TYPE
+                ? eDropdownMenu.ADDITIONAL
+                : type === eDropdownMenu.WRITE_REVIEW_TYPE
+                  ? eDropdownMenu.REVIEW
+                  : eDropdownMenu.BASIC;
 
         const adjustedAction = {
             ...action,
-            type: DropdownMenuStringEnum.EDIT_TYPE,
-            ...(tableType === DropdownMenuStringEnum.BROKER && {
+            type: eDropdownMenu.EDIT_TYPE,
+            ...(tableType === eDropdownMenu.BROKER && {
                 dnuButton: true,
                 bfbButton: true,
                 tab: 3,
@@ -113,19 +113,19 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         } = action;
 
         const subType =
-            type === DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
-            type === DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST_TYPE
-                ? DropdownMenuStringEnum.BAN
-                : DropdownMenuStringEnum.DNU;
+            type === eDropdownMenu.MOVE_TO_BAN_LIST_TYPE ||
+            type === eDropdownMenu.REMOVE_FROM_BAN_LIST_TYPE
+                ? eDropdownMenu.BAN
+                : eDropdownMenu.DNU;
 
         const modalTitle =
             typeof businessName === 'string' ? businessName : businessName.name;
 
         const modalType =
-            type === DropdownMenuStringEnum.MOVE_TO_BAN_LIST_TYPE ||
-            type === DropdownMenuStringEnum.MOVE_TO_DNU_LIST_TYPE
-                ? DropdownMenuStringEnum.MOVE
-                : DropdownMenuStringEnum.REMOVE;
+            type === eDropdownMenu.MOVE_TO_BAN_LIST_TYPE ||
+            type === eDropdownMenu.MOVE_TO_DNU_LIST_TYPE
+                ? eDropdownMenu.MOVE
+                : eDropdownMenu.REMOVE;
 
         const adjustedAction = {
             ...action,
@@ -137,7 +137,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
 
         this.modalService.openModal(
             ConfirmationMoveModalComponent,
-            { size: DropdownMenuStringEnum.SMALL },
+            { size: eDropdownMenu.SMALL },
             {
                 ...adjustedAction,
                 type: modalType,
@@ -158,9 +158,9 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         } = action;
 
         const subType =
-            tableType === DropdownMenuStringEnum.SHIPPER
-                ? DropdownMenuStringEnum.SHIPPER_2
-                : DropdownMenuStringEnum.BROKER_2;
+            tableType === eDropdownMenu.SHIPPER
+                ? eDropdownMenu.SHIPPER_2
+                : eDropdownMenu.BROKER_2;
 
         const modalTitle =
             typeof businessName === 'string' ? businessName : businessName.name;
@@ -170,9 +170,9 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
 
         const adjustedAction = {
             ...action,
-            template: DropdownMenuStringEnum.INFO,
+            template: eDropdownMenu.INFO,
             subType,
-            subTypeStatus: DropdownMenuStringEnum.BUSINESS,
+            subTypeStatus: eDropdownMenu.BUSINESS,
             tableType,
             modalTitle,
             modalSecondTitle,
@@ -186,7 +186,7 @@ export abstract class CustomerDropdownMenuActionsBase extends DropdownMenuAction
         tableType: string
     ): void {
         const modalHeaderTitle =
-            tableType === DropdownMenuStringEnum.SHIPPER
+            tableType === eDropdownMenu.SHIPPER
                 ? ConfirmationModalStringEnum.DELETE_SHIPPER
                 : ConfirmationModalStringEnum.DELETE_BROKER;
 
