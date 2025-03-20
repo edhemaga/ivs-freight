@@ -31,6 +31,7 @@ export const initialState: IMilesState = {
     // Table
     columns: MilesTableColumns,
     milesDetails: {},
+    milesDetailsFilters: {},
 };
 
 export const milesReducer = createReducer(

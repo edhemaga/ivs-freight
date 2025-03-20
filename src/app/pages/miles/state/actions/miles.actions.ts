@@ -13,7 +13,7 @@ import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
-import { IMilesModel } from '@pages/miles/interface';
+import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
 
 // Interface
 import { IStateFilters } from '@shared/interfaces';
@@ -78,7 +78,7 @@ export const getTotalMilesDetails = createAction(
 
 export const getMilesDetails = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS,
-    props<{ milesDetails: MilesByUnitPaginatedStopsResponse }>()
+    props<{ milesDetailsFilters: IMilesDetailsFilters }>()
 );
 
 export const getMilesDetailsError = createAction(

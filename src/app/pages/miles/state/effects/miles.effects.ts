@@ -110,14 +110,18 @@ export class MilesEffects {
             ofType(MilesAction.getMilesDetails),
             exhaustMap((action) => {
                 // TODO: Add dynamic unit params
-                return this.milesService.apiMilesUnitGet(null, null, 368).pipe(
-                    map((response) =>
-                        MilesAction.getTotalMilesDetails({
-                            milesDetails: response,
-                        })
-                    ),
-                    catchError(() => of(MilesAction.getLoadsPayloadError()))
-                );
+                const { milesDetailsFilters } = action || {};
+                const { pageIndex, pageSize, truckId } = milesDetailsFilters;
+                return this.milesService
+                    .apiMilesUnitGet(pageIndex, pageSize, truckId)
+                    .pipe(
+                        map((response) =>
+                            MilesAction.getTotalMilesDetails({
+                                milesDetails: response,
+                            })
+                        ),
+                        catchError(() => of(MilesAction.getLoadsPayloadError()))
+                    );
             })
         )
     );

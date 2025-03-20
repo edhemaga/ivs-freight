@@ -17,7 +17,7 @@ import {
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
-import { IMilesModel } from '@pages/miles/interface';
+import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
@@ -113,8 +113,17 @@ export class MilesStoreService {
         if (activeViewMode === eActiveViewMode.Map) {
             this.store.dispatch({
                 type: MilesStoreConstants.ACTION_GET_MILES_DETAILS,
+                milesDetailsFilters: this.setTruckInitalFilters(),
             });
         }
+    }
+
+    private setTruckInitalFilters(): IMilesDetailsFilters {
+        return {
+            pageSize: 1,
+            pageIndex: 25,
+            truckId: 368,
+        };
     }
 
     public dispatchFilters(
