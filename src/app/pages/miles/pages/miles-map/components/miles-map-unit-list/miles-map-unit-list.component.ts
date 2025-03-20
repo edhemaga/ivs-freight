@@ -16,6 +16,9 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 import { ThousandSeparatorPipe } from '@shared/pipes';
 import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
 
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaInputComponent } from 'ca-components';
@@ -37,6 +40,8 @@ import { CaInputComponent } from 'ca-components';
 })
 export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
+
+    public sharedSvgRoutes = SharedSvgRoutes;
 
     public isStopListExpanded: boolean = false;
     public isLoading: boolean = false;

@@ -29,4 +29,6 @@ export class SharedSvgRoutes {
     static FUEL_ICON: string = 'assets/svg/common/ic_fuel.svg';
     static REPAIR_ICON: string = 'assets/svg/common/ic_key-repair.svg';
     static TOWING_ICON: string = 'assets/svg/common/ic_towing.svg';
+    static ARROW_LEFT_ICON: string = 'assets/svg/common/arrow-left-grey.svg';
+    static ARROW_RIGHT_ICON: string = 'assets/svg/common/arrow-right-grey.svg';
 }
