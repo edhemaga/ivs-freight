@@ -1,4 +1,5 @@
 @let details = milesStoreService.milesDetailsSelector$ | async;
+@let stops = milesStoreService.stopsSelectors$ | async;
 
 @if (details) {
     <div
@@ -57,11 +58,11 @@
         <div class="scrollable-element">
             <cdk-virtual-scroll-viewport
                 #viewport
-                (scroll)="onScroll($event)"
+                (scroll)="onScrollEvent()"
                 [itemSize]="26"
-                style="height: 500px"
+                style="height: 700px"
             >
-                <div *cdkVirtualFor="let stop of details?.stops?.data">
+                <div *cdkVirtualFor="let stop of stops">
                     <ng-container
                         *ngTemplateOutlet="
                             stopRows;

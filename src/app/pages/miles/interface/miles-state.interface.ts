@@ -10,6 +10,7 @@ import { IStateFilters } from '@shared/interfaces';
 import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
+    MilesStopItemResponse,
 } from 'appcoretruckassist';
 import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
 
@@ -27,4 +28,7 @@ export interface IMilesState {
     milesDetails: MilesByUnitPaginatedStopsResponse;
     milesDetailsFilters: IMilesDetailsFilters;
     isMilesDetailsLoading: boolean;
+    stops: MilesStopItemResponse[];
+    currentPage: number;
+    isUserOnLastPage: boolean;
 }

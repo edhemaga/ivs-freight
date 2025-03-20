@@ -15,14 +15,17 @@ import {
     areAllItemsSelectedSelector,
     milesDetailsSelector,
     isMilesDetailsLoadingSelector,
+    stopsSelectors,
+    isUserOnLastPageSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
-import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
+import { IMilesModel } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
+    MilesStopItemResponse,
 } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
 import { ITableColumn, ITableData } from '@shared/models';
@@ -79,6 +82,14 @@ export class MilesStoreService {
 
     public isMilesDetailsLoadingSelector$: Observable<boolean> =
         this.store.pipe(select(isMilesDetailsLoadingSelector));
+
+    public isUserOnLastPageSelector$: Observable<boolean> = this.store.pipe(
+        select(isUserOnLastPageSelector)
+    );
+
+    public stopsSelectors$: Observable<MilesStopItemResponse[]> =
+        this.store.pipe(select(stopsSelectors));
+
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
             type: MilesStoreConstants.SET_STATES,

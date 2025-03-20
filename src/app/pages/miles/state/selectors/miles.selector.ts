@@ -89,3 +89,16 @@ export const isMilesDetailsLoadingSelector = createSelector(
         return isMilesDetailsLoading;
     }
 );
+
+export const stopsSelectors = createSelector(selectMilesState, (state) => {
+    const { stops } = state || {};
+    return stops;
+});
+
+export const isUserOnLastPageSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { isUserOnLastPage } = state || {};
+        return isUserOnLastPage;
+    }
+);

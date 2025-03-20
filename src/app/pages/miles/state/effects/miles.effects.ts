@@ -117,14 +117,6 @@ export class MilesEffects {
                     exhaustMap((milesDetailsFilters) => {
                         const { pageIndex, pageSize, truckId } =
                             milesDetailsFilters;
-                        console.log(
-                            'pageIndex',
-                            pageIndex,
-                            'pageSize',
-                            pageSize,
-                            'truckId',
-                            truckId
-                        );
                         return this.milesService
                             .apiMilesUnitGet(pageIndex, pageSize, truckId)
                             .pipe(

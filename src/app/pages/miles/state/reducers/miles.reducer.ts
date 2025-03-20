@@ -30,9 +30,14 @@ export const initialState: IMilesState = {
 
     // Table
     columns: MilesTableColumns,
+
+    // Miles Details
     milesDetails: {},
     milesDetailsFilters: { pageSize: 1, pageIndex: 25, truckId: 368 },
     isMilesDetailsLoading: false,
+    stops: [],
+    currentPage: 1,
+    isUserOnLastPage: false,
 };
 
 export const milesReducer = createReducer(
@@ -135,22 +140,32 @@ export const milesReducer = createReducer(
     }),
     // #endregion
     on(MilesAction.getTotalMilesDetails, (state, { milesDetails }) => {
+        const totalPages = Math.ceil(
+            milesDetails.stops.count / milesDetails.stops.pageSize
+        );
+
+        const isUserOnLastPage = milesDetails.stops.pageIndex >= totalPages;
+
         return {
             ...state,
             milesDetails,
+            stops: [...state.stops, ...milesDetails.stops.data],
             isMilesDetailsLoading: false,
+            isUserOnLastPage,
         };
     }),
 
     on(MilesAction.getMilesDetailsNewPage, (state) => {
         const { milesDetailsFilters } = state;
+        const pageSize = state.currentPage + 1;
 
         return {
             ...state,
             isMilesDetailsLoading: true,
+            currentPage: pageSize,
             milesDetailsFilters: {
                 ...milesDetailsFilters,
-                pageSize: milesDetailsFilters.pageIndex + 1,
+                pageSize,
             },
         };
     })

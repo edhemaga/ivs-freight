@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
-import { Subscription } from 'rxjs';
+import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import { Subscription, Subject, forkJoin } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
 import {
-    ScrollingModule,
     CdkVirtualScrollViewport,
+    ScrollingModule,
 } from '@angular/cdk/scrolling';
 
 // Form
@@ -22,7 +23,7 @@ import { CaInputComponent } from 'ca-components';
 @Component({
     selector: 'app-miles-map-unit-list',
     templateUrl: './miles-map-unit-list.component.html',
-    styleUrl: './miles-map-unit-list.component.scss',
+    styleUrls: ['./miles-map-unit-list.component.scss'],
     standalone: true,
     imports: [
         CommonModule,
@@ -36,10 +37,13 @@ import { CaInputComponent } from 'ca-components';
 })
 export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
+
     public isStopListExpanded: boolean = false;
     public isLoading: boolean = false;
+    public isUserOnLastPage: boolean = false;
 
-    private loadingSubscription!: Subscription;
+    private scrollSubject: Subject<void> = new Subject();
+    private subscriptions: Subscription = new Subscription();
 
     public searchForm = this.formBuilder.group({
         search: null,
@@ -54,35 +58,49 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         this.manageSubscriptions();
     }
 
-    private manageSubscriptions() {
-        this.loadingSubscription =
-            this.milesStoreService.isMilesDetailsLoadingSelector$.subscribe(
-                (loading) => {
-                    this.isLoading = loading;
-                }
-            );
+    public onScrollEvent(): void {
+        if (this.isLoading || this.isUserOnLastPage) return;
+        this.scrollSubject.next();
+    }
+
+    public onScroll(): void {
+        const viewport = this.viewport;
+        const scrollOffset = viewport.measureScrollOffset('bottom');
+        const threshold = 100;
+
+        if (scrollOffset < threshold) {
+            this.milesStoreService.dispatchGetNewList();
+        }
     }
 
     public toogleStopList(): void {
         this.isStopListExpanded = !this.isStopListExpanded;
     }
 
-    public onScroll(): void {
-        if (this.isLoading) return;
+    private manageScrollDebounce(): void {
+        this.subscriptions.add(
+            this.scrollSubject
+                .pipe(debounceTime(300))
+                .subscribe(() => this.onScroll())
+        );
+    }
+    private manageSubscriptions(): void {
+        this.subscriptions.add(
+            forkJoin([
+                this.milesStoreService.isMilesDetailsLoadingSelector$,
+                this.milesStoreService.isUserOnLastPageSelector$,
+            ]).subscribe(([loading, isUserOnLastPage]) => {
+                this.isLoading = loading;
+                this.isUserOnLastPage = isUserOnLastPage;
+            })
+        );
 
-        const viewport = this.viewport;
-        const scrollOffset = viewport.measureScrollOffset('bottom');
-        const threshold = 50;
-
-        if (scrollOffset < threshold) {
-            this.milesStoreService.dispatchGetNewList();
-            console.log('Scrolled to bottom');
-        }
+        this.manageScrollDebounce();
     }
 
     ngOnDestroy(): void {
-        if (this.loadingSubscription) {
-            this.loadingSubscription.unsubscribe();
+        if (this.subscriptions) {
+            this.subscriptions.unsubscribe();
         }
     }
 }
