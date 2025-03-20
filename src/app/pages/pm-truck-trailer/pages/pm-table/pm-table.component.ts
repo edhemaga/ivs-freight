@@ -39,7 +39,7 @@ import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // store
 import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.query';
@@ -85,7 +85,7 @@ export class PmTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     private resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -352,8 +352,8 @@ export class PmTableComponent
                 {
                     type:
                         this.selectedTab === TableStringEnum.ACTIVE
-                            ? DropdownMenuStringEnum.ADD_REPAIR_BILL_TRUCK
-                            : DropdownMenuStringEnum.ADD_REPAIR_BILL_TRAILER,
+                            ? eDropdownMenu.ADD_REPAIR_BILL_TRUCK
+                            : eDropdownMenu.ADD_REPAIR_BILL_TRAILER,
                 }
             );
         }

@@ -25,7 +25,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
@@ -197,8 +197,8 @@ export class RepairCardComponent
         this.handleDropdownMenuActions(
             emitAction,
             this.selectedTab === TableStringEnum.REPAIR_SHOP
-                ? DropdownMenuStringEnum.REPAIR_SHOP
-                : DropdownMenuStringEnum.REPAIR
+                ? eDropdownMenu.REPAIR_SHOP
+                : eDropdownMenu.REPAIR
         );
     }
 

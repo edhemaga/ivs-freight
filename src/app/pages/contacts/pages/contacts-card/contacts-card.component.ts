@@ -16,7 +16,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -106,10 +106,7 @@ export class ContactsCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(
-            emitAction,
-            DropdownMenuStringEnum.CONTACT
-        );
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.CONTACT);
     }
 
     public handleShowMoreAction(): void {

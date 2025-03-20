@@ -1,4 +1,4 @@
-export enum DropdownMenuStringEnum {
+export enum eDropdownMenu {
     // titles
     EDIT_LOAD = 'Edit Load',
     EDIT_LOAD_SELECT = 'Edit Load Select',

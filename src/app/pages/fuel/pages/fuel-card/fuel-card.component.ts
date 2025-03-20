@@ -23,7 +23,7 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
@@ -177,8 +177,8 @@ export class FuelCardComponent
         this.handleDropdownMenuActions(
             emitAction,
             this.selectedTab === TableStringEnum.FUEL_STOP
-                ? DropdownMenuStringEnum.FUEL_STOP
-                : DropdownMenuStringEnum.FUEL_TRANSACTION
+                ? eDropdownMenu.FUEL_STOP
+                : eDropdownMenu.FUEL_TRANSACTION
         );
     }
 

@@ -11,7 +11,7 @@ import { ConfirmationActivationModalComponent } from '@shared/components/ta-shar
 import { ColumnsDropdownMenuActionsBase } from './columns-dropdown-menu-actions.base';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -51,57 +51,57 @@ export abstract class DropdownMenuActionsBase extends ColumnsDropdownMenuActions
         const { id, data, type } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.EDIT_TYPE:
+            case eDropdownMenu.EDIT_TYPE:
                 this.handleEditAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
+            case eDropdownMenu.DELETE_TYPE:
                 this.handleDeleteAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.VIEW_DETAILS_TYPE:
+            case eDropdownMenu.VIEW_DETAILS_TYPE:
                 this.handleViewDetailsAction(id, tableType);
 
                 break;
-            case DropdownMenuStringEnum.SHOW_MORE:
+            case eDropdownMenu.SHOW_MORE:
                 this.handleShowMoreAction();
 
                 break;
-            case DropdownMenuStringEnum.SHARE_TYPE:
+            case eDropdownMenu.SHARE_TYPE:
                 this.handleShareAction();
 
                 break;
-            case DropdownMenuStringEnum.PRINT_TYPE:
+            case eDropdownMenu.PRINT_TYPE:
                 this.handlePrintAction();
 
                 break;
-            case DropdownMenuStringEnum.SEND_MESSAGE_TYPE:
+            case eDropdownMenu.SEND_MESSAGE_TYPE:
                 this.handleSendMessageAction();
 
                 break;
-            case DropdownMenuStringEnum.ADD_REPAIR_BILL_TYPE:
-            case DropdownMenuStringEnum.ADD_PM_ITEM:
+            case eDropdownMenu.ADD_REPAIR_BILL_TYPE:
+            case eDropdownMenu.ADD_PM_ITEM:
                 this.handleAddRepairBillAction(data, tableType);
 
                 break;
-            case DropdownMenuStringEnum.OPEN_BUSINESS_TYPE:
-            case DropdownMenuStringEnum.CLOSE_BUSINESS_TYPE:
+            case eDropdownMenu.OPEN_BUSINESS_TYPE:
+            case eDropdownMenu.CLOSE_BUSINESS_TYPE:
                 this.handleOpenCloseBusinessAction(action);
 
                 break;
-            case DropdownMenuStringEnum.ACTIVATE_TYPE:
-            case DropdownMenuStringEnum.DEACTIVATE_TYPE:
+            case eDropdownMenu.ACTIVATE_TYPE:
+            case eDropdownMenu.DEACTIVATE_TYPE:
                 this.handleActivateDeactivateAction(action);
 
                 break;
-            case DropdownMenuStringEnum.REGISTRATION_TYPE:
-            case DropdownMenuStringEnum.FHWA_INSPECTION_TYPE:
-            case DropdownMenuStringEnum.TITLE_TYPE:
+            case eDropdownMenu.REGISTRATION_TYPE:
+            case eDropdownMenu.FHWA_INSPECTION_TYPE:
+            case eDropdownMenu.TITLE_TYPE:
                 this.handleTruckTrailerAddActions(action);
 
                 break;
-            case DropdownMenuStringEnum.RATING_LIKE_TYPE:
-            case DropdownMenuStringEnum.RATING_DISLIKE_TYPE:
+            case eDropdownMenu.RATING_LIKE_TYPE:
+            case eDropdownMenu.RATING_DISLIKE_TYPE:
                 this.handleLikeDislikeAction(action);
 
                 break;
@@ -166,18 +166,17 @@ export abstract class DropdownMenuActionsBase extends ColumnsDropdownMenuActions
         );
 
         const type =
-            tableType === DropdownMenuStringEnum.PM
+            tableType === eDropdownMenu.PM
                 ? isTruckUnit
-                    ? DropdownMenuStringEnum.ADD_REPAIR_BILL_TRUCK
-                    : DropdownMenuStringEnum.ADD_REPAIR_BILL_TRAILER
-                : DropdownMenuStringEnum.ADD_REPAIR_BILL_SHOP;
+                    ? eDropdownMenu.ADD_REPAIR_BILL_TRUCK
+                    : eDropdownMenu.ADD_REPAIR_BILL_TRAILER
+                : eDropdownMenu.ADD_REPAIR_BILL_SHOP;
 
         const modalData = {
             type,
-            preSelectedUnit: tableType === DropdownMenuStringEnum.PM && id,
-            data: tableType !== DropdownMenuStringEnum.PM && { id: data.id },
-            title:
-                DropdownMenuStringEnum.TITLE_TYPE in data ? data.title : null,
+            preSelectedUnit: tableType === eDropdownMenu.PM && id,
+            data: tableType !== eDropdownMenu.PM && { id: data.id },
+            title: eDropdownMenu.TITLE_TYPE in data ? data.title : null,
         };
 
         this.modalService.openModal(
@@ -213,7 +212,7 @@ export abstract class DropdownMenuActionsBase extends ColumnsDropdownMenuActions
     ): void {
         this.modalService.openModal(
             ConfirmationActivationModalComponent,
-            { size: DropdownMenuStringEnum.SMALL },
+            { size: eDropdownMenu.SMALL },
             {
                 ...action,
             }
@@ -232,7 +231,7 @@ export abstract class DropdownMenuActionsBase extends ColumnsDropdownMenuActions
 
         this.modalService.openModal(
             addAdditionalModalComponent,
-            { size: DropdownMenuStringEnum.SMALL },
+            { size: eDropdownMenu.SMALL },
             {
                 ...action,
             }

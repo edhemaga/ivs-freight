@@ -38,7 +38,7 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { AccountStringEnum } from '@pages/account/enums/account-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
@@ -69,7 +69,7 @@ export class AccountTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableActionsStringEnum.LIST;
@@ -315,7 +315,7 @@ export class AccountTableComponent
                         {
                             data: null,
                             array: mappedRes,
-                            template: DropdownMenuStringEnum.ACCOUNT,
+                            template: eDropdownMenu.ACCOUNT,
                             type: TableStringEnum.MULTIPLE_DELETE,
                         }
                     );

@@ -7,7 +7,7 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 import { ContactsService } from '@shared/services/contacts.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
@@ -35,21 +35,21 @@ export abstract class ContactsDropdownMenuActionsBase extends DropdownMenuAction
         const { id, data, type } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.SEND_SMS_TYPE:
+            case eDropdownMenu.SEND_SMS_TYPE:
                 this.handleSendSmsAction();
 
                 break;
-            case DropdownMenuStringEnum.CREATE_LABEL:
+            case eDropdownMenu.CREATE_LABEL:
                 this.handleCreateLabelAction(data);
 
                 break;
-            case DropdownMenuStringEnum.UPDATE_LABEL:
+            case eDropdownMenu.UPDATE_LABEL:
                 const { id: labelId } = data;
 
                 this.handleUpdateLabelAction(id, labelId);
 
                 break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
+            case eDropdownMenu.DELETE_TYPE:
                 this.handleContactDeleteAction(action, tableType);
 
                 break;

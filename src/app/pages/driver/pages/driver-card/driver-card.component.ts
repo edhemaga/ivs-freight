@@ -18,7 +18,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -113,10 +113,7 @@ export class DriverCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(
-            emitAction,
-            DropdownMenuStringEnum.DRIVER
-        );
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.DRIVER);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

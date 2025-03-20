@@ -48,7 +48,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // constants
 import { TruckCardDataConstants } from '@pages/truck/pages/truck-table/utils/constants/truck-card-data.constants';
@@ -81,7 +81,7 @@ export class TruckTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -1047,7 +1047,7 @@ export class TruckTableComponent
 
     public handleShowMoreAction(): void {
         this.backFilterQuery.active =
-            this.selectedTab === DropdownMenuStringEnum.ACTIVE ? 1 : 0;
+            this.selectedTab === eDropdownMenu.ACTIVE ? 1 : 0;
 
         this.backFilterQuery.pageIndex++;
 

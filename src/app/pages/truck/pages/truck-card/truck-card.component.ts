@@ -17,7 +17,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // constants
 import { TruckCardIcons } from '@pages/truck/pages/truck-card/utils/constants/truck-card-icons.constants';
@@ -109,10 +109,7 @@ export class TruckCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(
-            emitAction,
-            DropdownMenuStringEnum.TRUCK
-        );
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.TRUCK);
     }
 
     public goToDetailsPage(card: CardDetails, link: string): void {

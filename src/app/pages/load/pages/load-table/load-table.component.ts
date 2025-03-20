@@ -55,7 +55,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 import {
     TableStringEnum,
     LoadStatusEnum,
-    DropdownMenuStringEnum,
+    eDropdownMenu,
     eActiveViewMode,
 } from '@shared/enums/index';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
@@ -93,7 +93,7 @@ export class LoadTableComponent
 
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
 
@@ -724,12 +724,12 @@ export class LoadTableComponent
         }
 
         switch (action) {
-            case DropdownMenuStringEnum.UNLOCK_TABLE_TYPE:
-            case DropdownMenuStringEnum.LOCK_TABLE_TYPE:
+            case eDropdownMenu.UNLOCK_TABLE_TYPE:
+            case eDropdownMenu.LOCK_TABLE_TYPE:
                 this.updateToolbarDropdownMenuContentUnlockLockAction();
 
                 break;
-            case DropdownMenuStringEnum.COLUMNS_TYPE:
+            case eDropdownMenu.COLUMNS_TYPE:
                 this.updateToolbarDropdownMenuContentColumnsAction();
 
                 break;
@@ -749,7 +749,7 @@ export class LoadTableComponent
         };
         this.handleDropdownMenuActions(
             mappedAction,
-            DropdownMenuStringEnum.LOAD
+            eDropdownMenu.LOAD
         );
     }
 

@@ -4,7 +4,7 @@ import { ITableColummn } from '@shared/models';
 import { TableType, UpdateTableConfigCommand } from 'appcoretruckassist';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // configs
 import {
@@ -16,12 +16,10 @@ import {
 export class DropdownMenuColumnsActionsHelper {
     static getColumnDefinition(tableType: string): ITableColummn[] {
         const columnDefinitionMap: Record<string, ITableColummn[]> = {
-            [DropdownMenuStringEnum.LOAD_TEMPLATE]:
-                getLoadTemplateColumnDefinition(),
-            [DropdownMenuStringEnum.LOAD_REGULAR]:
+            [eDropdownMenu.LOAD_TEMPLATE]: getLoadTemplateColumnDefinition(),
+            [eDropdownMenu.LOAD_REGULAR]:
                 getLoadActiveAndPendingColumnDefinition(),
-            [DropdownMenuStringEnum.LOAD_CLOSED]:
-                getLoadClosedColumnDefinition(),
+            [eDropdownMenu.LOAD_CLOSED]: getLoadClosedColumnDefinition(),
         };
 
         return columnDefinitionMap[tableType];
@@ -29,12 +27,12 @@ export class DropdownMenuColumnsActionsHelper {
 
     static getTableType(selectedTab: string): string {
         switch (selectedTab) {
-            case DropdownMenuStringEnum.TEMPLATE:
+            case eDropdownMenu.TEMPLATE:
                 return 'LOAD_TEMPLATE';
-            case DropdownMenuStringEnum.PENDING:
-            case DropdownMenuStringEnum.ACTIVE_CAPITALIZED:
+            case eDropdownMenu.PENDING:
+            case eDropdownMenu.ACTIVE_CAPITALIZED:
                 return 'LOAD_REGULAR';
-            case DropdownMenuStringEnum.CLOSED:
+            case eDropdownMenu.CLOSED:
                 return 'LOAD_CLOSED';
         }
     }

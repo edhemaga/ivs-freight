@@ -25,7 +25,7 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -148,7 +148,7 @@ export class LoadCardComponent
 
         this.handleDropdownMenuActions(
             emitAction,
-            DropdownMenuStringEnum.LOAD,
+            eDropdownMenu.LOAD,
             this.selectedTab
         );
     }

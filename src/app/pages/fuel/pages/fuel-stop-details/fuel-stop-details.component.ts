@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject, take, takeUntil } from 'rxjs';
 
+// base classes
+import { FuelDropdownMenuActionsBase } from '@pages/fuel/base-classes';
+
 // store
 import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-details-item.store';
 import { FuelDetailsQuery } from '@pages/fuel/state/fuel-details-state/fuel-details.query';
@@ -11,21 +14,24 @@ import { FuelDetailsQuery } from '@pages/fuel/state/fuel-details-state/fuel-deta
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { FuelService } from '@shared/services/fuel.service';
+import { FuelService } from '@shared/services';
+import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // components
 import { FuelStopDetailsItemComponent } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/fuel-stop-details-item.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
 
 // enums
-import { eCommonElement, eGeneralActions } from '@shared/enums';
+import { eDropdownMenu, eCommonElement, eGeneralActions } from '@shared/enums';
 
 // helpers
 import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils/helpers';
 
 // models
-import { FuelStopResponse } from 'appcoretruckassist';
 import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
+import { ExtendedFuelStopResponse } from '@pages/fuel/pages/fuel-stop-details/models';
 
 @Component({
     selector: 'app-fuel-stop-details',
@@ -41,28 +47,43 @@ import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
         FuelStopDetailsItemComponent,
     ],
 })
-export class FuelStopDetailsComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class FuelStopDetailsComponent
+    extends FuelDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
+    public destroy$ = new Subject<void>();
 
     public detailsDropdownOptions: DetailsDropdownOptions;
     public fuelStopDetailsConfig: DetailsConfig[] = [];
 
-    public fuelStopObject: FuelStopResponse;
+    public fuelStopObject: ExtendedFuelStopResponse;
 
     public newFuelStopId: number;
+
+    // enums
+    public eDropdownMenu = eDropdownMenu;
 
     // search
     public searchConfig: boolean[] = [false, false];
 
+    get viewData() {
+        return [];
+    }
+
     constructor(
         // router
-        private router: Router,
+        protected router: Router,
+
         private activatedRoute: ActivatedRoute,
 
         // services
+        protected fuelService: FuelService,
+        protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
+
         private detailsPageService: DetailsPageService,
         private confirmationService: ConfirmationService,
-        private fuelService: FuelService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -70,7 +91,9 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
         // store
         private fuelItemStore: FuelItemStore,
         private fuelDetailsQuery: FuelDetailsQuery
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.getStoreData();
@@ -115,7 +138,7 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getDetailsConfig(fuelStop: FuelStopResponse): void {
+    private getDetailsConfig(fuelStop: ExtendedFuelStopResponse): void {
         this.fuelStopObject = fuelStop;
 
         this.getDetailsOptions(fuelStop);
@@ -126,48 +149,9 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
         this.cdRef.detectChanges();
     }
 
-    private getDetailsOptions(fuelStop: FuelStopResponse): void {
-        /*  const { pinned, status, companyOwned } = fuelStop;
-        
-                this.detailsDropdownOptions =
-                    RepairShopDetailsHelper.getDetailsDropdownOptions(
-                        pinned,
-                        status,
-                        companyOwned
-                    ); */
-
-        this.detailsDropdownOptions = {
-            disabledMutedStyle: null,
-            toolbarActions: {
-                hideViewMode: false,
-            },
-            config: {
-                showSort: true,
-                sortBy: '',
-                sortDirection: '',
-                disabledColumns: [0],
-                minWidth: 60,
-            },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: eGeneralActions.EDIT,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    show: true,
-                },
-
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
-                    text: 'Are you sure you want to delete truck(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
-                    danger: true,
-                    show: true,
-                },
-            ],
-            export: true,
-        };
+    private getDetailsOptions(fuelStop: ExtendedFuelStopResponse): void {
+        this.detailsDropdownOptions =
+            FuelStopDetailsHelper.getDetailsDropdownOptions(fuelStop);
     }
 
     private deleteFuelTransaction(ids: number): void {
@@ -187,7 +171,7 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
                     this.fuelDetailsQuery
                         .selectEntity(id)
                         .pipe(take(1), takeUntil(this.destroy$))
-                        .subscribe((res: FuelStopResponse) => {
+                        .subscribe((res: ExtendedFuelStopResponse) => {
                             this.getDetailsConfig(res);
                             this.getDetailsOptions(this.fuelStopObject);
 
@@ -204,6 +188,10 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
                 this.cdRef.detectChanges();
             });
     }
+
+    public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(action?: string): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

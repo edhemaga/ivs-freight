@@ -45,7 +45,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -80,7 +80,7 @@ export class TrailerTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -1008,7 +1008,7 @@ export class TrailerTableComponent
 
     public handleShowMoreAction(): void {
         this.backFilterQuery.active =
-            this.selectedTab === DropdownMenuStringEnum.ACTIVE ? 1 : 0;
+            this.selectedTab === eDropdownMenu.ACTIVE ? 1 : 0;
 
         this.backFilterQuery.pageIndex++;
 

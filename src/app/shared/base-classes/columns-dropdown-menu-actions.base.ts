@@ -5,7 +5,7 @@ import { ITableColummn, TableCardBodyActions } from '@shared/models';
 
 // enums
 import {
-    DropdownMenuStringEnum,
+    eDropdownMenu,
     eGeneralActions,
     TableStringEnum,
 } from '@shared/enums';
@@ -35,24 +35,24 @@ export abstract class ColumnsDropdownMenuActionsBase {
         const { type, subType, isActive } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.OPEN_TYPE:
+            case eDropdownMenu.OPEN_TYPE:
                 this.updateToolbarDropdownMenuContent();
 
                 break;
-            case DropdownMenuStringEnum.COLUMNS_TYPE:
+            case eDropdownMenu.COLUMNS_TYPE:
                 this.updateToolbarDropdownMenuContent(type);
 
                 break;
-            case DropdownMenuStringEnum.UNLOCK_TABLE_TYPE:
-            case DropdownMenuStringEnum.LOCK_TABLE_TYPE:
+            case eDropdownMenu.UNLOCK_TABLE_TYPE:
+            case eDropdownMenu.LOCK_TABLE_TYPE:
                 this.handleLockUnlockTableAction(type, subType);
 
                 break;
-            case DropdownMenuStringEnum.RESET_TABLE_TYPE:
+            case eDropdownMenu.RESET_TABLE_TYPE:
                 this.handleResetTableAction(subType);
 
                 break;
-            case DropdownMenuStringEnum.RESET_TABLE_CONFIRMED_TYPE:
+            case eDropdownMenu.RESET_TABLE_CONFIRMED_TYPE:
                 this.handleResetTableConfirmedAction(subType);
 
                 break;
@@ -101,7 +101,7 @@ export abstract class ColumnsDropdownMenuActionsBase {
         if (tableConfig) {
             this.modalService.openModal(
                 ConfirmationResetModalComponent,
-                { size: DropdownMenuStringEnum.SMALL },
+                { size: eDropdownMenu.SMALL },
                 {
                     template: eGeneralActions.RESET_MODAL,
                     type: eGeneralActions.RESET,

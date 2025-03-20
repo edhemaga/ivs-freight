@@ -18,7 +18,7 @@ import {
 } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // components
 import { CaDropdownMenuComponent } from 'ca-components';
@@ -66,7 +66,7 @@ export class NewTableToolbarComponent implements OnInit, OnDestroy {
 
     private watchResetConfirmation(): void {
         const action = {
-            type: DropdownMenuStringEnum.RESET_TABLE_CONFIRMED_TYPE,
+            type: eDropdownMenu.RESET_TABLE_CONFIRMED_TYPE,
         };
 
         this.confirmationResetService.getConfirmationResetData$

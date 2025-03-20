@@ -54,7 +54,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -94,7 +94,7 @@ export class DriverTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;

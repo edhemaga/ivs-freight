@@ -25,10 +25,7 @@
             [tableData]="tableData"
             (saveValueNote)="saveValueNote($event)"
             (tableBodyActions)="
-                handleDropdownMenuActions(
-                    $event,
-                    dropdownMenuStringEnum.ACCOUNT
-                )
+                handleDropdownMenuActions($event, eDropdownMenu.ACCOUNT)
             "
         ></app-ta-table-body>
     </ng-container>

@@ -23,10 +23,7 @@
             [options]="tableOptions"
             [selectedTab]="selectedTab"
             (tableBodyActions)="
-                handleDropdownMenuActions(
-                    $event,
-                    dropdownMenuStringEnum.TRAILER
-                )
+                handleDropdownMenuActions($event, eDropdownMenu.TRAILER)
             "
             [tableData]="tableData"
             (saveValueNote)="saveValueNote($event)"
