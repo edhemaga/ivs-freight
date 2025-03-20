@@ -1,9 +1,5 @@
 // enums
-import {
-    DropdownMenuStringEnum,
-    eGeneralActions,
-    TableStringEnum,
-} from '@shared/enums';
+import { eDropdownMenu, eGeneralActions, TableStringEnum } from '@shared/enums';
 
 // helpers
 import { DropdownMenuContentConditionalItemsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -17,13 +13,13 @@ export class DropdownMenuContentHelper {
     // contact
     static getContactDropdownContent(): IDropdownMenuItem[] {
         // requested items
-        const requestedConditionalItems = [DropdownMenuStringEnum.SEND_SMS];
+        const requestedConditionalItems = [eDropdownMenu.SEND_SMS];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            DropdownMenuStringEnum.DELETE,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -46,17 +42,12 @@ export class DropdownMenuContentHelper {
     static getAccountDropdownContent(url: string): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [
-            url
-                ? DropdownMenuStringEnum.GO_TO_LINK
-                : DropdownMenuStringEnum.NO_LINK,
-            DropdownMenuStringEnum.COPY_USERNAME,
-            DropdownMenuStringEnum.COPY_PASSWORD,
+            url ? eDropdownMenu.GO_TO_LINK : eDropdownMenu.NO_LINK,
+            eDropdownMenu.COPY_USERNAME,
+            eDropdownMenu.COPY_PASSWORD,
         ];
 
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.DELETE,
-        ];
+        const requestedSharedItems = [eDropdownMenu.EDIT, eDropdownMenu.DELETE];
 
         // items
         const conditionalItems =
@@ -76,7 +67,7 @@ export class DropdownMenuContentHelper {
 
     // owner
     static getOwnerDropdownContent(selectedTab: string): IDropdownMenuItem[] {
-        const isActiveOwner = selectedTab === DropdownMenuStringEnum.ACTIVE;
+        const isActiveOwner = selectedTab === eDropdownMenu.ACTIVE;
 
         // modifier items
         const modifierItems =
@@ -86,14 +77,11 @@ export class DropdownMenuContentHelper {
 
         // requested items
         const requestedConditionalItems = [
-            DropdownMenuStringEnum.ADD_TRUCK,
-            DropdownMenuStringEnum.ADD_TRAILER,
+            eDropdownMenu.ADD_TRUCK,
+            eDropdownMenu.ADD_TRAILER,
         ];
 
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.DELETE,
-        ];
+        const requestedSharedItems = [eDropdownMenu.EDIT, eDropdownMenu.DELETE];
 
         // items
         const conditionalItems =
@@ -124,15 +112,13 @@ export class DropdownMenuContentHelper {
             );
 
         // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.ALL_TRANSACTIONS,
-        ];
+        const requestedConditionalItems = [eDropdownMenu.ALL_TRANSACTIONS];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            DropdownMenuStringEnum.DELETE,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -156,7 +142,8 @@ export class DropdownMenuContentHelper {
     static getFuelStopDropdownContent(
         isCentralised: boolean,
         isPinned: boolean,
-        isOpenBusiness: boolean
+        isOpenBusiness: boolean,
+        isDetailsPageDropdown: boolean = false
     ): IDropdownMenuItem[] {
         // modifier items
         const modifierItems =
@@ -165,24 +152,22 @@ export class DropdownMenuContentHelper {
             );
 
         // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.ADD_TRANSACTION,
-        ];
+        const requestedConditionalItems = [eDropdownMenu.ADD_TRANSACTION];
 
         const requestedSharedItems = [
             isCentralised
-                ? DropdownMenuStringEnum.EDIT /* DropdownMenuStringEnum.SUGGEST_EDIT */
-                : DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
+                ? eDropdownMenu.EDIT /* eDropdownMenu.SUGGEST_EDIT w8 for back */
+                : eDropdownMenu.EDIT,
+            !isDetailsPageDropdown && eDropdownMenu.VIEW_DETAILS,
             isPinned
-                ? DropdownMenuStringEnum.UNMARK_FAVORITE
-                : DropdownMenuStringEnum.MARK_AS_FAVORITE,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
+                ? eDropdownMenu.UNMARK_FAVORITE
+                : eDropdownMenu.MARK_AS_FAVORITE,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
             isOpenBusiness
-                ? DropdownMenuStringEnum.CLOSE_BUSINESS
-                : DropdownMenuStringEnum.OPEN_BUSINESS,
-            DropdownMenuStringEnum.DELETE,
+                ? eDropdownMenu.CLOSE_BUSINESS
+                : eDropdownMenu.OPEN_BUSINESS,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -210,12 +195,12 @@ export class DropdownMenuContentHelper {
     // pm
     static getPMDropdownContent(): IDropdownMenuItem[] {
         // requested items
-        const requestedConditionalItems = [DropdownMenuStringEnum.CONFIGURE];
+        const requestedConditionalItems = [eDropdownMenu.CONFIGURE];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.ADD_REPAIR_BILL,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
+            eDropdownMenu.ADD_REPAIR_BILL,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
         ];
 
         // items
@@ -239,7 +224,7 @@ export class DropdownMenuContentHelper {
         selectedTab: string,
         repairType: string
     ): IDropdownMenuItem[] {
-        const isTruckRepair = selectedTab === DropdownMenuStringEnum.ACTIVE;
+        const isTruckRepair = selectedTab === eDropdownMenu.ACTIVE;
 
         // modifier items
         const modifierItems =
@@ -249,19 +234,16 @@ export class DropdownMenuContentHelper {
 
         // requested items
         const requestedConditionalItems = [
-            ...(repairType === DropdownMenuStringEnum.ORDER
-                ? [
-                      DropdownMenuStringEnum.FINISH_ORDER,
-                      DropdownMenuStringEnum.ALL_ORDERS,
-                  ]
-                : [DropdownMenuStringEnum.ALL_BILLS]),
+            ...(repairType === eDropdownMenu.ORDER
+                ? [eDropdownMenu.FINISH_ORDER, eDropdownMenu.ALL_ORDERS]
+                : [eDropdownMenu.ALL_BILLS]),
         ];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            DropdownMenuStringEnum.DELETE,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -297,19 +279,19 @@ export class DropdownMenuContentHelper {
 
         // requested items
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
-            DropdownMenuStringEnum.ADD_REPAIR_BILL,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.VIEW_DETAILS,
+            eDropdownMenu.ADD_REPAIR_BILL,
             isPinned
-                ? DropdownMenuStringEnum.UNMARK_FAVORITE
-                : DropdownMenuStringEnum.MARK_AS_FAVORITE,
-            DropdownMenuStringEnum.WRITE_REVIEW,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
+                ? eDropdownMenu.UNMARK_FAVORITE
+                : eDropdownMenu.MARK_AS_FAVORITE,
+            eDropdownMenu.WRITE_REVIEW,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
             isOpenBusiness
-                ? DropdownMenuStringEnum.CLOSE_BUSINESS
-                : DropdownMenuStringEnum.OPEN_BUSINESS,
-            DropdownMenuStringEnum.DELETE,
+                ? eDropdownMenu.CLOSE_BUSINESS
+                : eDropdownMenu.OPEN_BUSINESS,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -327,8 +309,7 @@ export class DropdownMenuContentHelper {
     static getTruckTrailerDropdownContent(
         selectedTab: string
     ): IDropdownMenuItem[] {
-        const isActiveTruckTrailer =
-            selectedTab === DropdownMenuStringEnum.ACTIVE;
+        const isActiveTruckTrailer = selectedTab === eDropdownMenu.ACTIVE;
 
         // modifier items
         const modifierItems =
@@ -337,17 +318,15 @@ export class DropdownMenuContentHelper {
             );
 
         // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.ADD_NEW_TRUCK_TRAILER,
-        ];
+        const requestedConditionalItems = [eDropdownMenu.ADD_NEW_TRUCK_TRAILER];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.VIEW_DETAILS,
             isActiveTruckTrailer
-                ? DropdownMenuStringEnum.DEACTIVATE
-                : DropdownMenuStringEnum.ACTIVATE,
-            DropdownMenuStringEnum.DELETE,
+                ? eDropdownMenu.DEACTIVATE
+                : eDropdownMenu.ACTIVATE,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -374,7 +353,7 @@ export class DropdownMenuContentHelper {
 
     // driver
     static getDriverDropdownContent(selectedTab: string): IDropdownMenuItem[] {
-        const isActiveDriver = selectedTab === DropdownMenuStringEnum.ACTIVE;
+        const isActiveDriver = selectedTab === eDropdownMenu.ACTIVE;
 
         // modifier items
         const modifierItems =
@@ -384,20 +363,18 @@ export class DropdownMenuContentHelper {
 
         // requested items
         const requestedConditionalItems = [
-            DropdownMenuStringEnum.ADD_NEW_DRIVER,
-            DropdownMenuStringEnum.REQUEST,
+            eDropdownMenu.ADD_NEW_DRIVER,
+            eDropdownMenu.REQUEST,
         ];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
-            DropdownMenuStringEnum.SEND_MESSAGE,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            isActiveDriver
-                ? DropdownMenuStringEnum.DEACTIVATE
-                : DropdownMenuStringEnum.ACTIVATE,
-            DropdownMenuStringEnum.DELETE,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.VIEW_DETAILS,
+            eDropdownMenu.SEND_MESSAGE,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
+            isActiveDriver ? eDropdownMenu.DEACTIVATE : eDropdownMenu.ACTIVATE,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -425,13 +402,13 @@ export class DropdownMenuContentHelper {
     // load template
     static getLoadTemplateDropdownContent(): IDropdownMenuItem[] {
         // requested items
-        const requestedConditionalItems = [DropdownMenuStringEnum.CREATE_LOAD];
+        const requestedConditionalItems = [eDropdownMenu.CREATE_LOAD];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            DropdownMenuStringEnum.DELETE,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -456,8 +433,8 @@ export class DropdownMenuContentHelper {
 
     // load
     static getLoadDropdownContent(selectedTab: string): IDropdownMenuItem[] {
-        const isPendingLoad = selectedTab === DropdownMenuStringEnum.PENDING;
-        const isClosedLoad = selectedTab === DropdownMenuStringEnum.CLOSED;
+        const isPendingLoad = selectedTab === eDropdownMenu.PENDING;
+        const isClosedLoad = selectedTab === eDropdownMenu.CLOSED;
 
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getLoadModifierItems(
@@ -465,17 +442,15 @@ export class DropdownMenuContentHelper {
             );
 
         // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.CREATE_TEMPLATE,
-        ];
+        const requestedConditionalItems = [eDropdownMenu.CREATE_TEMPLATE];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
-            isClosedLoad && DropdownMenuStringEnum.EXPORT_BATCH,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            DropdownMenuStringEnum.DELETE,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.VIEW_DETAILS,
+            isClosedLoad && eDropdownMenu.EXPORT_BATCH,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -509,18 +484,18 @@ export class DropdownMenuContentHelper {
             );
 
         // requested items
-        const requestedConditionalItems = [DropdownMenuStringEnum.ADD_CONTACT];
+        const requestedConditionalItems = [eDropdownMenu.ADD_CONTACT];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
-            DropdownMenuStringEnum.WRITE_REVIEW,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.VIEW_DETAILS,
+            eDropdownMenu.WRITE_REVIEW,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
             isOpenBusiness
-                ? DropdownMenuStringEnum.CLOSE_BUSINESS
-                : DropdownMenuStringEnum.OPEN_BUSINESS,
-            DropdownMenuStringEnum.DELETE,
+                ? eDropdownMenu.CLOSE_BUSINESS
+                : eDropdownMenu.OPEN_BUSINESS,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -562,26 +537,26 @@ export class DropdownMenuContentHelper {
 
         // requested items
         const requestedConditionalItems = [
-            DropdownMenuStringEnum.CREATE_LOAD,
-            DropdownMenuStringEnum.ADD_CONTACT,
+            eDropdownMenu.CREATE_LOAD,
+            eDropdownMenu.ADD_CONTACT,
             isBrokerBanned
-                ? DropdownMenuStringEnum.REMOVE_FROM_BAN_LIST
-                : DropdownMenuStringEnum.MOVE_TO_BAN_LIST,
+                ? eDropdownMenu.REMOVE_FROM_BAN_LIST
+                : eDropdownMenu.MOVE_TO_BAN_LIST,
             isBrokerDnu
-                ? DropdownMenuStringEnum.REMOVE_FROM_DNU_LIST
-                : DropdownMenuStringEnum.MOVE_TO_DNU_LIST,
+                ? eDropdownMenu.REMOVE_FROM_DNU_LIST
+                : eDropdownMenu.MOVE_TO_DNU_LIST,
         ];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.VIEW_DETAILS,
-            DropdownMenuStringEnum.WRITE_REVIEW,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.VIEW_DETAILS,
+            eDropdownMenu.WRITE_REVIEW,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
             isOpenBusiness
-                ? DropdownMenuStringEnum.CLOSE_BUSINESS
-                : DropdownMenuStringEnum.OPEN_BUSINESS,
-            DropdownMenuStringEnum.DELETE,
+                ? eDropdownMenu.CLOSE_BUSINESS
+                : eDropdownMenu.OPEN_BUSINESS,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -614,13 +589,11 @@ export class DropdownMenuContentHelper {
         userStatus: string,
         isInvitationSent: boolean
     ): IDropdownMenuItem[] {
-        const isActiveUser = selectedTab === DropdownMenuStringEnum.ACTIVE;
+        const isActiveUser = selectedTab === eDropdownMenu.ACTIVE;
         const isOwnerUser = userStatus === TableStringEnum.OWNER;
 
-        const isUserStatusInvited =
-            userStatus === DropdownMenuStringEnum.INVITED;
-        const isUserStatusExpired =
-            userStatus === DropdownMenuStringEnum.EXPIRED;
+        const isUserStatusInvited = userStatus === eDropdownMenu.INVITED;
+        const isUserStatusExpired = userStatus === eDropdownMenu.EXPIRED;
 
         // modifier items
         const modifierItems =
@@ -633,22 +606,18 @@ export class DropdownMenuContentHelper {
             );
 
         // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.RESET_PASSWORD,
-        ];
+        const requestedConditionalItems = [eDropdownMenu.RESET_PASSWORD];
 
         const requestedSharedItems = [
-            DropdownMenuStringEnum.EDIT,
-            DropdownMenuStringEnum.SEND_MESSAGE,
+            eDropdownMenu.EDIT,
+            eDropdownMenu.SEND_MESSAGE,
             isInvitationSent
-                ? DropdownMenuStringEnum.INVITATION_SENT
-                : DropdownMenuStringEnum.RESEND_INVITATION,
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-            isActiveUser
-                ? DropdownMenuStringEnum.DEACTIVATE
-                : DropdownMenuStringEnum.ACTIVATE,
-            DropdownMenuStringEnum.DELETE,
+                ? eDropdownMenu.INVITATION_SENT
+                : eDropdownMenu.RESEND_INVITATION,
+            eDropdownMenu.SHARE,
+            eDropdownMenu.PRINT,
+            isActiveUser ? eDropdownMenu.DEACTIVATE : eDropdownMenu.ACTIVATE,
+            eDropdownMenu.DELETE,
         ];
 
         // items
@@ -680,21 +649,18 @@ export class DropdownMenuContentHelper {
         // requested items
         const requestedConditionalItems = isOpenPayroll
             ? [
-                  DropdownMenuStringEnum.EDIT_LOAD,
-                  DropdownMenuStringEnum.EDIT_PAYROLL,
-                  DropdownMenuStringEnum.PREVIEW_REPORT,
-                  DropdownMenuStringEnum.DOWNLOAD,
+                  eDropdownMenu.EDIT_LOAD,
+                  eDropdownMenu.EDIT_PAYROLL,
+                  eDropdownMenu.PREVIEW_REPORT,
+                  eDropdownMenu.DOWNLOAD,
               ]
             : [
-                  DropdownMenuStringEnum.RESEND_REPORT,
-                  DropdownMenuStringEnum.PREVIEW_REPORT,
-                  DropdownMenuStringEnum.DOWNLOAD,
+                  eDropdownMenu.RESEND_REPORT,
+                  eDropdownMenu.PREVIEW_REPORT,
+                  eDropdownMenu.DOWNLOAD,
               ];
 
-        const requestedSharedItems = [
-            DropdownMenuStringEnum.SHARE,
-            DropdownMenuStringEnum.PRINT,
-        ];
+        const requestedSharedItems = [eDropdownMenu.SHARE, eDropdownMenu.PRINT];
 
         // items
         const conditionalItems =
@@ -721,9 +687,7 @@ export class DropdownMenuContentHelper {
         loadList: IDropdownMenuLoadItem[]
     ): IDropdownMenuItem[] {
         // requested items
-        const requestedConditionalItems = [
-            DropdownMenuStringEnum.EDIT_LOAD_SELECT,
-        ];
+        const requestedConditionalItems = [eDropdownMenu.EDIT_LOAD_SELECT];
 
         // items
         const conditionalItems =

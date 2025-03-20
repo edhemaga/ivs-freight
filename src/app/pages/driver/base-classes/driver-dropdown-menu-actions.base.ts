@@ -7,7 +7,7 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 import { DriverService } from '@pages/driver/services/driver.service';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -37,23 +37,23 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
             : TableStringEnum.INACTIVE;
 
         switch (type) {
-            case DropdownMenuStringEnum.EDIT_TYPE:
+            case eDropdownMenu.EDIT_TYPE:
                 this.handleDriverEditAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.CDL_TYPE:
-            case DropdownMenuStringEnum.TEST_TYPE:
-            case DropdownMenuStringEnum.MEDICAL_EXAM_TYPE:
-            case DropdownMenuStringEnum.MVR_TYPE:
+            case eDropdownMenu.CDL_TYPE:
+            case eDropdownMenu.TEST_TYPE:
+            case eDropdownMenu.MEDICAL_EXAM_TYPE:
+            case eDropdownMenu.MVR_TYPE:
                 this.handleDriverAddActions(action, tabSelected);
 
                 break;
-            case DropdownMenuStringEnum.ACTIVATE_TYPE:
-            case DropdownMenuStringEnum.DEACTIVATE_TYPE:
+            case eDropdownMenu.ACTIVATE_TYPE:
+            case eDropdownMenu.DEACTIVATE_TYPE:
                 this.handleDriverActivateDeactivateAction(action, tableType);
 
                 break;
-            case DropdownMenuStringEnum.DELETE_TYPE:
+            case eDropdownMenu.DELETE_TYPE:
                 this.handleDriverDeleteAction(action, tableType);
 
                 break;
@@ -117,7 +117,7 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
 
         this.modalService.openModal(
             addAdditionalModalComponent,
-            { size: DropdownMenuStringEnum.SMALL },
+            { size: eDropdownMenu.SMALL },
             { ...action, tableActiveTab: tabSelected }
         );
     }
@@ -161,7 +161,7 @@ export abstract class DriverDropdownMenuActionsBase extends DropdownMenuActionsB
                 ...action.data,
                 name: fullName,
             },
-            template: DropdownMenuStringEnum.DRIVER,
+            template: eDropdownMenu.DRIVER,
             type,
             image: true,
         };

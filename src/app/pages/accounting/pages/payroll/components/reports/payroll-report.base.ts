@@ -22,15 +22,19 @@ import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-p
 import { PayrollPdfReportComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/payroll-pdf-report.component';
 import { DriverModalComponent } from '@pages/driver/pages/driver-modals/driver-modal/driver-modal.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+
 // Enums
 import {
     ePayrollAdditionalTypes,
     ePayrollTablesStatus,
 } from '@pages/accounting/pages/payroll/state/enums';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
-import { DropActionsStringEnum, DropdownMenuStringEnum } from '@shared/enums';
+import {
+    DropActionsStringEnum,
+    eDropdownMenu,
+    TableStringEnum,
+} from '@shared/enums';
 import { PayrollTypeEnum } from 'ca-components';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
@@ -82,7 +86,9 @@ export abstract class PayrollReportBaseComponent<
 
     constructor(
         protected modalService: ModalService,
+
         private payrollService: PayrollService,
+
         public loadStoreService: LoadStoreService,
         public driverService: DriverService
     ) {}
@@ -101,16 +107,16 @@ export abstract class PayrollReportBaseComponent<
         const { type, isActive, id } = event;
 
         switch (type) {
-            case DropdownMenuStringEnum.EDIT_LOAD_TYPE:
+            case eDropdownMenu.EDIT_LOAD_TYPE:
                 this.isEditLoadDropdownActionActive = isActive;
 
                 this.getIsEditLoadDropdownActionActive();
+                break;
+            case eDropdownMenu.EDIT_PAYROLL_TYPE:
+                this.openDriverOrTruckModal(id);
 
                 break;
-            case DropdownMenuStringEnum.EDIT_PAYROLL_TYPE:
-                this.openDriverOrTruckModal(id);
-                break;
-            case DropdownMenuStringEnum.PREVIEW_REPORT_TYPE:
+            case eDropdownMenu.PREVIEW_REPORT_TYPE:
                 this.modalService.openModal(
                     PayrollPdfReportComponent,
                     {},
@@ -121,8 +127,9 @@ export abstract class PayrollReportBaseComponent<
                         },
                     }
                 );
+
                 break;
-            case DropdownMenuStringEnum.DOWNLOAD_TYPE:
+            case eDropdownMenu.DOWNLOAD_TYPE:
                 break;
             default:
                 break;
