@@ -6,7 +6,7 @@
             Total Miles
         </div>
         <div class="text-size-18 ta-font-medium text-color-black m-b-8">
-            {{ total.totalMiles | thousandSeparator }}
+            {{ (total.totalMiles | thousandSeparator) ?? '0.0' }}
         </div>
 
         @if (total?.totalMiles || total?.stops?.count) {
@@ -33,7 +33,7 @@
                         columns;
                         context: {
                             label: 'Loaded',
-                            value: total.loadedMiles | thousandSeparator,
+                            value: (total.loadedMiles | thousandSeparator) ?? 0,
                             bgClass: 'background-muted',
                             showCircle: true,
                         }
@@ -46,7 +46,7 @@
                         columns;
                         context: {
                             label: 'Empty',
-                            value: total.emptyMiles | thousandSeparator,
+                            value: (total.emptyMiles | thousandSeparator) ?? 0,
                             bgClass: 'background-dark-2',
                             showCircle: true,
                         }
@@ -212,7 +212,8 @@
                             context: {
                                 label: 'Revenue',
                                 value:
-                                    '$' + (total.revenue | thousandSeparator),
+                                    '$' +
+                                    ((total.revenue | thousandSeparator) ?? 0),
                             }
                         "
                     >
