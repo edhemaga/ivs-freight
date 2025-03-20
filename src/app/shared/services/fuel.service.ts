@@ -500,7 +500,7 @@ export class FuelService {
         );
     }
 
-    public addFuelStop<T>(data: T): Observable<FuelStopResponse> {
+    public addFuelStop<T>(data: T): Observable<CreateResponse> {
         this.formDataService.extractFormDataFromFunction(data);
 
         return this.fuelService.apiFuelFuelstopPost().pipe(

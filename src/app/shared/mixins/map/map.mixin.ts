@@ -16,6 +16,8 @@ import {
     IMapSelectedMarkerData,
     MapMarkerIconService,
 } from 'ca-components';
+
+// services
 import { MapsService } from '@shared/services/maps.service';
 
 export function MapMixin<T extends Constructor>(Base: T) {
