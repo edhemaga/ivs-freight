@@ -78,7 +78,11 @@ import { IFuelPurchaseModalForm } from '@pages/fuel/pages/fuel-modals/fuel-purch
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
-import { FormatDatePipe, NameInitialsPipe } from '@shared/pipes';
+import {
+    FormatDatePipe,
+    MiddleEllipsisPipe,
+    NameInitialsPipe,
+} from '@shared/pipes';
 import { FuelPurchaseModalInputConfigPipe } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/pipes';
 
 // enums
@@ -136,37 +140,44 @@ import moment from 'moment';
         // pipes
         FormatDatePipe,
         FuelPurchaseModalInputConfigPipe,
+        MiddleEllipsisPipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public fuelForm: UntypedFormGroup;
-    public isCardAnimationDisabled: boolean = false;
-    public modalActionType: FuelDataOptionsStringEnum;
+
     public truckType: FuelTruckType[] = [];
     public driverOptions: PayrollDriver[] = [];
-    public fuelCardHolderName: string;
     public fuelStops: ExtendedFuelStopResponse[] = [];
-    public fuelTransactionType: EnumValue;
-    public selectedTruckType: FuelTruckType;
-    public selectedTrailerType: FuelTruckType;
+    public documents: any[] = [];
+
     public selectedFuelStop: ExtendedFuelStopResponse;
     public selectedDispatchHistory: FuelDispatchHistoryResponse;
+    public selectedTruckType: FuelTruckType;
+    public selectedTrailerType: FuelTruckType;
     public selectedDriver: PayrollDriver;
-    public fuelItemsDropdown: EnumValue[] = [];
-    public documents: any[] = [];
+
     public isFuelRowCreated: boolean = false;
     public isEachFuelRowValid: boolean = true;
+
+    public fuelCardHolderName: string;
     public fuelItems: FuelItemResponse[] = [];
+    public isCardAnimationDisabled: boolean = false;
     public updatedFuelItems: FuelItemResponse[] = [];
     public total: number = 0;
-    public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnum = TaModalActionEnum;
+
+    public fuelItemsDropdown: EnumValue[] = [];
     public eFuelTransactionType = eFuelTransactionType;
+    public modalActionType: FuelDataOptionsStringEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
     public fuelDataOptionsStringEnum = FuelDataOptionsStringEnum;
+    public fuelTransactionType: EnumValue;
     public fuelValuesStringEnum = FuelValuesStringEnum;
+
+    public svgRoutes = SharedSvgRoutes;
 
     private destroy$ = new Subject<void>();
 
