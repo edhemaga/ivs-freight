@@ -34,6 +34,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { FuelService } from '@shared/services/fuel.service';
 import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // constants
 import { FuelTableConstants } from '@pages/fuel/pages/fuel-table/utils/constants/fuel-table.constants';
@@ -132,10 +133,10 @@ export class FuelTableComponent
         // services
         protected modalService: ModalService,
         protected fuelService: FuelService,
-
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private fuelCardsModalService: FuelCardsModalService,
         private confirmationService: ConfirmationService,
-        private tableService: TruckassistTableService,
         private confirmationActivationService: ConfirmationActivationService,
 
         // pipes
@@ -1203,6 +1204,8 @@ export class FuelTableComponent
     public handleShowMoreAction(): void {
         this.fetchApiDataPaginated();
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     private openCreateModalBySelectedTab(): void {
         if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION)

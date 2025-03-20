@@ -186,6 +186,47 @@ export class DropdownMenuContentConstants {
             svgUrl: 'assets/svg/common/ic_document.svg',
             svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
         },
+
+        // toolbar
+        [DropdownMenuStringEnum.COLUMNS]: {
+            title: DropdownMenuStringEnum.COLUMNS,
+            type: DropdownMenuStringEnum.COLUMNS_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/columns-new.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            isSelectMenuTypeActionItem: true,
+        },
+
+        [DropdownMenuStringEnum.COLUMNS_BACK]: {
+            title: DropdownMenuStringEnum.COLUMNS,
+            type: DropdownMenuStringEnum.COLUMNS_TYPE,
+            titleOptionalClass: 'ca-font-extra-bold',
+            svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+            hasBorder: true,
+            isSelectMenuTypeActionItem: true,
+            isColumnDropdown: true,
+        },
+
+        [DropdownMenuStringEnum.UNLOCK_TABLE]: {
+            title: DropdownMenuStringEnum.UNLOCK_TABLE,
+            type: DropdownMenuStringEnum.UNLOCK_TABLE_TYPE,
+            svgUrl: 'assets/svg/common/ic_lock.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+        },
+
+        [DropdownMenuStringEnum.LOCK_TABLE]: {
+            title: DropdownMenuStringEnum.LOCK_TABLE,
+            type: DropdownMenuStringEnum.LOCK_TABLE_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/new-unlocked-table.svg',
+            svgClass: DropdownMenuStringEnum.ACTIVATE_SVG_CLASS,
+        },
+
+        [DropdownMenuStringEnum.RESET_TABLE]: {
+            title: DropdownMenuStringEnum.RESET_TABLE,
+            type: DropdownMenuStringEnum.RESET_TABLE_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
+            svgClass: DropdownMenuStringEnum.REGULAR_SVG_CLASS,
+        },
     };
 
     // conditional items

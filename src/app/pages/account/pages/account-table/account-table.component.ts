@@ -23,6 +23,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { AccountService } from '@pages/account/services/account.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { AccountState } from '@pages/account/state/account.store';
@@ -103,8 +104,8 @@ export class AccountTableComponent
         // services
         protected modalService: ModalService,
         protected accountService: AccountService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private confiramtionService: ConfirmationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
@@ -643,6 +644,8 @@ export class AccountTableComponent
 
         this.accountBackFilter(this.backFilterQuery, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});

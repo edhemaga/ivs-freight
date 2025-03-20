@@ -21,6 +21,7 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
 import { DropdownMenuStringEnum } from '@shared/enums';
@@ -69,8 +70,8 @@ export class TrailerCardComponent
 
         // services
         protected modalService: ModalService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private detailsDataService: DetailsDataService,
 
         // helpers
@@ -138,6 +139,8 @@ export class TrailerCardComponent
     }
 
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

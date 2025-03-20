@@ -300,4 +300,16 @@ export class DropdownMenuContentConditionalItemsHelper {
             },
         ];
     }
+
+    // toolbar
+    static getToolbarColumnsModifierItems(
+        hasConfig: boolean
+    ): Partial<IDropdownMenuItem>[] {
+        return [
+            {
+                title: DropdownMenuStringEnum.RESET_TABLE,
+                isDisabled: !hasConfig,
+            },
+        ];
+    }
 }

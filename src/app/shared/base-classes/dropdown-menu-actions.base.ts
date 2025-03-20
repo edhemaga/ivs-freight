@@ -7,6 +7,9 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/repair-order-modal/repair-order-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
+// base classes
+import { ColumnsDropdownMenuActionsBase } from './columns-dropdown-menu-actions.base';
+
 // enums
 import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
 
@@ -26,7 +29,7 @@ import {
     RepairShopResponse,
 } from 'appcoretruckassist';
 
-export abstract class DropdownMenuActionsBase {
+export abstract class DropdownMenuActionsBase extends ColumnsDropdownMenuActionsBase {
     protected destroy$: Subject<void>;
 
     // router
@@ -37,7 +40,9 @@ export abstract class DropdownMenuActionsBase {
 
     protected reviewsRatingService: ReviewsRatingService;
 
-    constructor() {}
+    constructor() {
+        super();
+    }
 
     protected handleSharedDropdownMenuActions<T>(
         action: TableCardBodyActions<T>,
@@ -100,6 +105,7 @@ export abstract class DropdownMenuActionsBase {
 
                 break;
             default:
+                super.handleColumnsDropdownMenuActions(action);
                 break;
         }
     }

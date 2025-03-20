@@ -26,6 +26,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { DriverCardsModalService } from '@pages/driver/pages/driver-card-modal/services/driver-cards-modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { DriverState } from '@pages/driver/state/driver-state/driver.store';
@@ -148,10 +149,10 @@ export class DriverTableComponent
         // services
         protected modalService: ModalService,
         protected driverService: DriverService,
-
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private addressService: AddressService,
         private applicantService: ApplicantService,
-        private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
         private driverCardsModalService: DriverCardsModalService,
@@ -1506,6 +1507,8 @@ export class DriverTableComponent
             this.driverBackFilter(this.driverBackFilterQuery, true);
         }
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

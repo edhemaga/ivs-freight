@@ -4,4 +4,5 @@ export interface TableCardBodyActions<T> {
     data?: T;
     isFinishOrder?: boolean;
     subType?: string;
+    isActive?: boolean;
 }

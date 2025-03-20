@@ -23,6 +23,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { TruckCardsModalService } from '@pages/truck/pages/truck-card-modal/service/truck-cards-modal.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { TruckActiveQuery } from '@pages/truck/state/truck-active-state/truck-active.query';
@@ -132,8 +133,8 @@ export class TruckTableComponent
 
         // services
         protected modalService: ModalService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private truckService: TruckService,
         private confirmationService: ConfirmationService,
         private truckCardsModalService: TruckCardsModalService,
@@ -254,7 +255,7 @@ export class TruckTableComponent
     public setTableFilter(): void {
         this.tableService.currentSetTableFilter
             .pipe(skip(1), takeUntil(this.destroy$))
-            .subscribe((res) => { 
+            .subscribe((res) => {
                 if (res?.filterType) {
                     this.backFilterQuery.truckType = res.selectedIds;
                     this.truckBackFilter(this.backFilterQuery);
@@ -1045,6 +1046,8 @@ export class TruckTableComponent
 
         this.truckBackFilter(this.backFilterQuery, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

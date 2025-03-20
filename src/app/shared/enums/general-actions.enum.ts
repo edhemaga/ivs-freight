@@ -17,4 +17,6 @@ export enum eGeneralActions {
     PREVIOUS = 'Previous',
 
     OPEN_MODAL = 'open-modal',
+    RESET_MODAL = 'reset modal',
+    RESET = 'reset',
 }
