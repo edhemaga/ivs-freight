@@ -28,8 +28,8 @@ import { eDropdownMenu, eCommonElement, eGeneralActions } from '@shared/enums';
 import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils/helpers';
 
 // models
-import { FuelStopResponse } from 'appcoretruckassist';
 import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
+import { ExtendedFuelStopResponse } from '@pages/fuel/pages/fuel-stop-details/models';
 
 @Component({
     selector: 'app-fuel-stop-details',
@@ -54,7 +54,7 @@ export class FuelStopDetailsComponent
     public detailsDropdownOptions: DetailsDropdownOptions;
     public fuelStopDetailsConfig: DetailsConfig[] = [];
 
-    public fuelStopObject: FuelStopResponse;
+    public fuelStopObject: ExtendedFuelStopResponse;
 
     public newFuelStopId: number;
 
@@ -134,7 +134,7 @@ export class FuelStopDetailsComponent
         });
     }
 
-    private getDetailsConfig(fuelStop: FuelStopResponse): void {
+    private getDetailsConfig(fuelStop: ExtendedFuelStopResponse): void {
         this.fuelStopObject = fuelStop;
 
         this.getDetailsOptions(fuelStop);
@@ -145,7 +145,7 @@ export class FuelStopDetailsComponent
         this.cdRef.detectChanges();
     }
 
-    private getDetailsOptions(fuelStop: FuelStopResponse): void {
+    private getDetailsOptions(fuelStop: ExtendedFuelStopResponse): void {
         this.detailsDropdownOptions =
             FuelStopDetailsHelper.getDetailsDropdownOptions(fuelStop);
     }
@@ -167,7 +167,7 @@ export class FuelStopDetailsComponent
                     this.fuelDetailsQuery
                         .selectEntity(id)
                         .pipe(take(1), takeUntil(this.destroy$))
-                        .subscribe((res: FuelStopResponse) => {
+                        .subscribe((res: ExtendedFuelStopResponse) => {
                             this.getDetailsConfig(res);
                             this.getDetailsOptions(this.fuelStopObject);
 

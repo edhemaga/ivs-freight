@@ -142,7 +142,8 @@ export class DropdownMenuContentHelper {
     static getFuelStopDropdownContent(
         isCentralised: boolean,
         isPinned: boolean,
-        isOpenBusiness: boolean
+        isOpenBusiness: boolean,
+        isDetailsPageDropdown: boolean = false
     ): IDropdownMenuItem[] {
         // modifier items
         const modifierItems =
@@ -155,9 +156,9 @@ export class DropdownMenuContentHelper {
 
         const requestedSharedItems = [
             isCentralised
-                ? eDropdownMenu.EDIT /* eDropdownMenu.SUGGEST_EDIT */
+                ? eDropdownMenu.EDIT /* eDropdownMenu.SUGGEST_EDIT w8 for back */
                 : eDropdownMenu.EDIT,
-            eDropdownMenu.VIEW_DETAILS,
+            !isDetailsPageDropdown && eDropdownMenu.VIEW_DETAILS,
             isPinned
                 ? eDropdownMenu.UNMARK_FAVORITE
                 : eDropdownMenu.MARK_AS_FAVORITE,
