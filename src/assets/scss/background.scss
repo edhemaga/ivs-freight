@@ -1,4 +1,5 @@
 @import '/src/theme/variables.scss';
+
 @mixin hover($color) {
     transition: background-color $transitionDuration ease-in-out;
 
@@ -11,24 +12,31 @@
     &-white {
         background: $white;
     }
+
     &-muted {
         background: $muted;
     }
+
     &-black {
         background: $ta-black;
     }
+
     &-green {
         background: $ta-green;
     }
+
     &-bw1 {
         background-color: $bw1;
     }
+
     &-bw2 {
         background-color: $bw2;
     }
+
     &-bw6-2 {
         background-color: $bw6-2;
     }
+
     &-light-grey {
         background-color: $ta-light-grey;
 
@@ -36,13 +44,16 @@
             background-color: $ta-light-grey-6;
         }
     }
+
     &-blue {
         &-13 {
             background-color: $ta-blue-13;
         }
+
         &-14 {
             background-color: $ta-blue-14;
         }
+
         &-16 {
             background-color: $ta-blue-16;
         }
@@ -52,10 +63,19 @@
         &-black {
             @include hover($ta-black);
         }
+
+        &-dark-2 {
+            @include hover($dark-2);
+        }
+
         &-blue {
             &-15 {
                 @include hover($ta-blue-15);
             }
+        }
+
+        &-bw2 {
+            @include hover($bw2);
         }
     }
 }

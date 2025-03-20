@@ -40,6 +40,7 @@ export const initialState: ILoadState = {
     selectLoadCount: 0,
     totalLoadSum: 0,
     hasAllLoadsSelected: false,
+    isLoadDetailsMapOpen: false,
 };
 // #endregion
 
@@ -335,5 +336,13 @@ export const loadReducer = createReducer(
     ),
     on(LoadActions.selectLoad, (state, { load }) =>
         Functions.updateLoadSelectedStatus(state, load)
-    )
+    ),
+    on(LoadActions.toggleMap, (state) => {
+        const { isLoadDetailsMapOpen } = state;
+
+        return {
+            ...state,
+            isLoadDetailsMapOpen: !isLoadDetailsMapOpen,
+        };
+    })
 );

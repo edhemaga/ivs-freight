@@ -723,3 +723,5 @@ export const selectLoad = createAction(
     LoadStoreConstants.ACTION_SELECT_LOAD,
     props<{ load: ILoadGridItem | ILoadTemplateGridItem }>()
 );
+
+export const toggleMap = createAction(LoadStoreConstants.ACTION_TOGGLE_MAP);
