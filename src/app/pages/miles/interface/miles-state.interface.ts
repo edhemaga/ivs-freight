@@ -31,4 +31,6 @@ export interface IMilesState {
     stops: MilesStopItemResponse[];
     currentPage: number;
     isUserOnLastPage: boolean;
+    isPreviousButtonDisabled: boolean;
+    isNextButtonDisabled: boolean;
 }

@@ -38,6 +38,8 @@ export const initialState: IMilesState = {
     stops: [],
     currentPage: 1,
     isUserOnLastPage: false,
+    isPreviousButtonDisabled: true,
+    isNextButtonDisabled: true,
 };
 
 export const milesReducer = createReducer(
@@ -51,6 +53,7 @@ export const milesReducer = createReducer(
             ...state,
             items: miles,
             loading: false,
+            isNextButtonDisabled: !miles.length,
             milesDetailsFilters: {
                 ...state.milesDetailsFilters,
                 truckId: miles[0].id,

@@ -15,9 +15,11 @@ import {
     areAllItemsSelectedSelector,
     milesDetailsSelector,
     isMilesDetailsLoadingSelector,
-    stopsSelectors,
     isUserOnLastPageSelector,
     truckIdSelector,
+    stopsSelector,
+    isPreviousButtonDisabledSelector,
+    isNextButtonDisabledSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -92,8 +94,15 @@ export class MilesStoreService {
         select(truckIdSelector)
     );
 
-    public stopsSelectors$: Observable<MilesStopItemResponse[]> =
-        this.store.pipe(select(stopsSelectors));
+    public stopsSelector$: Observable<MilesStopItemResponse[]> =
+        this.store.pipe(select(stopsSelector));
+
+    public isPreviousButtonDisabledSelector$: Observable<boolean> =
+        this.store.pipe(select(isPreviousButtonDisabledSelector));
+
+    public isNextButtonDisabledSelector$: Observable<boolean> = this.store.pipe(
+        select(isNextButtonDisabledSelector)
+    );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({

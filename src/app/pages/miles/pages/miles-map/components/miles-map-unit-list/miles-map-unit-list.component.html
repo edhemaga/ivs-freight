@@ -1,5 +1,9 @@
 @let details = milesStoreService.milesDetailsSelector$ | async;
-@let stops = milesStoreService.stopsSelectors$ | async;
+@let stops = milesStoreService.stopsSelector$ | async;
+@let isPreviousButtonDisabled =
+    milesStoreService.isPreviousButtonDisabledSelector$ | async;
+@let isNextButtonDisabled =
+    milesStoreService.isNextButtonDisabledSelector$ | async;
 
 @if (details) {
     <div
@@ -13,21 +17,35 @@
 
             <div class="d-flex gap-1">
                 <div
-                    class="d-flex align-items-center justify-content-center h-26 w-26 br-2 background-white background-hover-bw2 svg-fill-muted svg-hover-black c-pointer"
+                    class="d-flex align-items-center justify-content-center h-26 w-26 br-2 background-white svg-fill-muted"
+                    [ngClass]="
+                        !isPreviousButtonDisabled &&
+                        'c-pointer background-hover-bw2 svg-hover-black'
+                    "
                 >
                     <svg-icon
-                        [src]="sharedSvgRoutes.ARROW_LEFT_ICON"
                         class="svg-size-18"
-                        (click)="getTruckUnit(ArrowActionsStringEnum.PREVIOUS)"
+                        [src]="sharedSvgRoutes.ARROW_LEFT_ICON"
+                        (click)="
+                            !isNextButtonDisabled &&
+                                getTruckUnit(ArrowActionsStringEnum.PREVIOUS)
+                        "
                     ></svg-icon>
                 </div>
                 <div
-                    class="d-flex align-items-center justify-content-center h-26 w-26 br-2 background-hover-bw2 background-white svg-fill-muted svg-hover-black c-pointer"
+                    class="d-flex align-items-center justify-content-center h-26 w-26 br-2 background-white svg-fill-muted"
+                    [ngClass]="
+                        !isNextButtonDisabled &&
+                        'c-pointer background-hover-bw2 svg-hover-black'
+                    "
                 >
                     <svg-icon
                         [src]="sharedSvgRoutes.ARROW_RIGHT_ICON"
                         class="svg-size-18"
-                        (click)="getTruckUnit(ArrowActionsStringEnum.NEXT)"
+                        (click)="
+                            !isNextButtonDisabled &&
+                                getTruckUnit(ArrowActionsStringEnum.NEXT)
+                        "
                     ></svg-icon>
                 </div>
             </div>

@@ -90,7 +90,7 @@ export const isMilesDetailsLoadingSelector = createSelector(
     }
 );
 
-export const stopsSelectors = createSelector(selectMilesState, (state) => {
+export const stopsSelector = createSelector(selectMilesState, (state) => {
     const { stops } = state || {};
     return stops;
 });
@@ -107,3 +107,19 @@ export const truckIdSelector = createSelector(selectMilesState, (state) => {
     const { milesDetailsFilters } = state || {};
     return milesDetailsFilters.truckId;
 });
+
+export const isPreviousButtonDisabledSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { isPreviousButtonDisabled } = state || {};
+        return isPreviousButtonDisabled;
+    }
+);
+
+export const isNextButtonDisabledSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { isNextButtonDisabled } = state || {};
+        return isNextButtonDisabled;
+    }
+);
