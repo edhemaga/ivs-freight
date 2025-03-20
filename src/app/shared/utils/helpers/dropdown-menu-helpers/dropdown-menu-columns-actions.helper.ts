@@ -91,9 +91,7 @@ export class DropdownMenuColumnsActionsHelper {
                 );
                 groupedColumns[column.groupName].isChecked ||=
                     mappedColumn.isChecked;
-            } else {
-                dropdownItems.push(mappedColumn);
-            }
+            } else dropdownItems.push(mappedColumn);
         });
 
         return dropdownItems;

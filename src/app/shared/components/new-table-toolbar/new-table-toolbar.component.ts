@@ -24,7 +24,7 @@ import { DropdownMenuStringEnum } from '@shared/enums';
 import { CaDropdownMenuComponent } from 'ca-components';
 
 // services
-import { ConfirmationResetService } from '../ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';

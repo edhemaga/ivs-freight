@@ -711,21 +711,7 @@ export class LoadTableComponent
     }
 
     public updateToolbarDropdownMenuContent(action?: string): void {
-        if (action) {
-            switch (action) {
-                case DropdownMenuStringEnum.UNLOCK_TABLE_TYPE:
-                case DropdownMenuStringEnum.LOCK_TABLE_TYPE:
-                    this.updateToolbarDropdownMenuContentUnlockLockAction();
-
-                    break;
-                case DropdownMenuStringEnum.COLUMNS_TYPE:
-                    this.updateToolbarDropdownMenuContentColumnsAction();
-
-                    break;
-                default:
-                    break;
-            }
-        } else {
+        if (!action) {
             this.isToolbarDropdownMenuColumnsActive = false;
 
             this.setToolbarDropdownMenuContent(
@@ -733,6 +719,22 @@ export class LoadTableComponent
                 this.isTableLocked,
                 this.isToolbarDropdownMenuColumnsActive
             );
+
+            return;
+        }
+
+        switch (action) {
+            case DropdownMenuStringEnum.UNLOCK_TABLE_TYPE:
+            case DropdownMenuStringEnum.LOCK_TABLE_TYPE:
+                this.updateToolbarDropdownMenuContentUnlockLockAction();
+
+                break;
+            case DropdownMenuStringEnum.COLUMNS_TYPE:
+                this.updateToolbarDropdownMenuContentColumnsAction();
+
+                break;
+            default:
+                break;
         }
     }
 

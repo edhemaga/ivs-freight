@@ -126,13 +126,14 @@ export abstract class ColumnsDropdownMenuActionsBase {
             ? JSON.parse(initialTableConfig)
             : DropdownMenuColumnsActionsHelper.getColumnDefinition(subType);
 
-        config.forEach((column: ITableColummn) => {
-            if (
-                column.field === actionType ||
-                column.groupName === actionType
-            ) {
-                column.hidden = !isChecked;
-            }
+        config = config.map((column: ITableColummn) => {
+            return {
+                ...column,
+                hidden:
+                    (column.field === actionType ||
+                        column.groupName === actionType) &&
+                    !isChecked,
+            };
         });
 
         const tableConfig = {
