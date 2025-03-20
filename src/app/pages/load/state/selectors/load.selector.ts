@@ -429,3 +429,43 @@ export const totalLoadSumSelector = createSelector(loadState, (state) => {
     const { totalLoadSum } = state;
     return totalLoadSum;
 });
+
+export const isLoadDetailsMapOpenSelector = createSelector(
+    loadState,
+    (state) => {
+        const { isLoadDetailsMapOpen } = state;
+        return isLoadDetailsMapOpen;
+    }
+);
+
+export const loadDetailsStopCountSelector = createSelector(
+    loadDetailsSelector,
+    (loadDetails) => {
+        const { stops } = loadDetails;
+
+        if (!stops?.length) return 0;
+
+        const stopCount = stops.length - (stops[0].stopType.id === 0 ? 1 : 0);
+
+        return stopCount;
+    }
+);
+
+export const loadDetailsExtraStopCountSelector = createSelector(
+    loadDetailsSelector,
+    (loadDetails) => {
+        const { stops } = loadDetails;
+
+        if (!stops || stops.length <= 2) {
+            return 0;
+        }
+
+        const isFirstStopDeathHead = stops[0].stopType.id === 0;
+
+        const extraStopCount = isFirstStopDeathHead
+            ? stops.length - 3
+            : stops.length - 2;
+
+        return extraStopCount;
+    }
+);

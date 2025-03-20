@@ -19,6 +19,7 @@ import {
 } from '@pages/accounting/pages/payroll/state/services';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
 // Models
 import { PayrollCreditType, PayrollOwnerResponse } from 'appcoretruckassist';
@@ -136,9 +137,10 @@ export class DriverOwnerReportComponent
         private payrollFacadeService: PayrollFacadeService,
         modalService: ModalService,
         payrollService: PayrollService,
-        public loadStoreService: LoadStoreService
+        public loadStoreService: LoadStoreService,
+        public driverService: DriverService
     ) {
-        super(modalService, payrollService, loadStoreService);
+        super(modalService, payrollService, loadStoreService, driverService);
     }
 
     ngOnInit(): void {
@@ -324,15 +326,6 @@ export class DriverOwnerReportComponent
     }
 
     public getIsEditLoadDropdownActionActive(): void {
-        const loadDummyData = [
-            // w8 for slavisa
-            { id: 1, title: 'INV-162-23' },
-            { id: 2, title: 'INV-162-26' },
-            { id: 3, title: 'INV-162-28' },
-            { id: 4, title: 'INV-162-31' },
-            { id: 5, title: 'INV-162-33' },
-        ];
-
         this.dropdownMenuOptions =
             PayrollReportHelper.getPayrollDropdownContent(
                 false,
