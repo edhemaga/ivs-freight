@@ -16,6 +16,8 @@ import { DetailsPageService } from '@shared/services/details-page.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { FuelService } from '@shared/services';
 import { ModalService } from '@shared/services/modal.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // components
 import { FuelStopDetailsItemComponent } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/fuel-stop-details-item.component';
@@ -77,6 +79,8 @@ export class FuelStopDetailsComponent
         // services
         protected fuelService: FuelService,
         protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
         private detailsPageService: DetailsPageService,
         private confirmationService: ConfirmationService,
@@ -186,6 +190,8 @@ export class FuelStopDetailsComponent
     }
 
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(action?: string): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

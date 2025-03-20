@@ -17,6 +17,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { UserCardsModalService } from '@pages/user/pages/user-card-modal/services/user-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // components
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
@@ -115,9 +116,8 @@ export class UserTableComponent
         // services
         protected modalService: ModalService,
         protected userService: UserService,
-
-        private tableService: TruckassistTableService,
-
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private confirmationService: ConfirmationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private userCardsModalService: UserCardsModalService,
@@ -1025,6 +1025,8 @@ export class UserTableComponent
 
         this.userBackFilter(this.backFilterQuery, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});

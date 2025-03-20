@@ -45,6 +45,7 @@ import {
     MapMarkerIconService,
 } from 'ca-components';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { BrokerState } from '@pages/customer/state/broker-state/broker.store';
@@ -184,10 +185,12 @@ export class CustomerTableComponent
 
         // services
         protected modalService: ModalService,
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected detailsDataService: DetailsDataService,
+        protected confirmationResetService: ConfirmationResetService,
+        protected loadStoreService: LoadStoreService,
         private brokerService: BrokerService,
         private shipperService: ShipperService,
-        protected detailsDataService: DetailsDataService,
         private mapsService: MapsService,
         private confirmationService: ConfirmationService,
         private confirmationMoveService: ConfirmationMoveService,
@@ -195,7 +198,6 @@ export class CustomerTableComponent
         private customerCardsModalService: CustomerCardsModalService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private markerIconService: MapMarkerIconService,
-        protected loadStoreService: LoadStoreService,
 
         // store
         private brokerQuery: BrokerQuery,
@@ -2483,6 +2485,8 @@ export class CustomerTableComponent
             this.shipperBackFilter(this.backShipperFilterQuery, true);
         }
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

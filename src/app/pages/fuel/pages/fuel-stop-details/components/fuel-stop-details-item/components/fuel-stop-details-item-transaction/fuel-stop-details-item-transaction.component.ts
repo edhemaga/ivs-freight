@@ -32,6 +32,8 @@ import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-de
 import { ModalService } from '@shared/services/modal.service';
 import { FuelService } from '@shared/services/fuel.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // directives
 import { DescriptionItemsTextCountDirective } from '@shared/directives';
@@ -115,7 +117,8 @@ export class FuelStopDetailsItemTransactionComponent
         // services
         protected modalService: ModalService,
         protected fuelService: FuelService,
-
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private confirmationService: ConfirmationService
     ) {
         super();
@@ -242,6 +245,8 @@ export class FuelStopDetailsItemTransactionComponent
     }
 
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

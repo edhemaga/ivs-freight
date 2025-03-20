@@ -1,8 +1,16 @@
 // enums
-import { eDropdownMenu, eGeneralActions, TableStringEnum } from '@shared/enums';
+import {
+    eDropdownMenu,
+    eDropdownMenuColumns,
+    eGeneralActions,
+    TableStringEnum,
+} from '@shared/enums';
 
 // helpers
-import { DropdownMenuContentConditionalItemsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import {
+    DropdownMenuColumnsActionsHelper,
+    DropdownMenuContentConditionalItemsHelper,
+} from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // models
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -699,6 +707,54 @@ export class DropdownMenuContentHelper {
         return [...conditionalItems, ...loadList];
     }
 
+    // load toolbar
+    static getLoadToolbarDropdownContent(
+        tableType: string,
+        isTableLocked: boolean
+    ): IDropdownMenuItem[] {
+        const tableColumnsConfig = JSON.parse(
+            DropdownMenuColumnsActionsHelper.getTableConfig(tableType)
+        );
+
+        const modifierItems =
+            DropdownMenuContentConditionalItemsHelper.getToolbarColumnsModifierItems(
+                !!tableColumnsConfig
+            );
+
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS,
+            isTableLocked
+                ? eDropdownMenuColumns.UNLOCK_TABLE
+                : eDropdownMenuColumns.LOCK_TABLE,
+            eDropdownMenuColumns.RESET_TABLE,
+        ];
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true,
+                modifierItems
+            );
+
+        return [...sharedItems];
+    }
+
+    static getLoadToolbarColumnsDropdownContent(
+        loadColumnsList: IDropdownMenuItem[]
+    ): IDropdownMenuItem[] {
+        loadColumnsList = loadColumnsList ?? [];
+
+        const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
+
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...conditionalItems, ...loadColumnsList];
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
 
     // driver applicant
@@ -849,7 +905,7 @@ export class DropdownMenuContentHelper {
     static getTableToolbarDropdownContent(): OptionsPopupContent[] {
         return [
             {
-                text: TableStringEnum.COLUMNS,
+                text: eDropdownMenuColumns.COLUMNS,
                 svgPath: 'assets/svg/truckassist-table/columns-new.svg',
                 active: false,
                 hide: false,
@@ -859,13 +915,13 @@ export class DropdownMenuContentHelper {
                     'assets/svg/truckassist-table/arrow-back-to-list.svg',
             },
             {
-                text: TableStringEnum.UNLOCK_TABLE,
+                text: eDropdownMenuColumns.UNLOCK_TABLE,
                 svgPath: 'assets/svg/truckassist-table/lock-new.svg',
                 active: false,
                 hide: false,
             },
             {
-                text: TableStringEnum.RESET_TABLE,
+                text: eDropdownMenuColumns.RESET_TABLE,
                 svgPath: 'assets/svg/truckassist-table/reset-icon.svg',
                 isInactive: true,
                 active: false,
