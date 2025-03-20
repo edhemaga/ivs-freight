@@ -56,7 +56,7 @@ export const milesReducer = createReducer(
             isNextButtonDisabled: !miles.length,
             milesDetailsFilters: {
                 ...state.milesDetailsFilters,
-                truckId: miles[0].id,
+                truckId: miles[0]?.id,
             },
         };
     }),
