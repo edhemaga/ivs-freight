@@ -1,0 +1,16 @@
+$sizes-height: (7, 15, 18, 26, 34);
+$sizes-width: (15, 18, 26, 40, 70);
+
+@mixin size-classes($class, $property, $sizes) {
+    .#{$class} {
+        @each $size in $sizes {
+            &-#{$size} {
+                #{$property}: #{$size}px;
+                min-#{$property}: #{$size}px !important;
+            }
+        }
+    }
+}
+
+@include size-classes('h', height, $sizes-height);
+@include size-classes('w', width, $sizes-width);

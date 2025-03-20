@@ -22,6 +22,9 @@ import { AccountResolver } from '@pages/account/resolvers/account.resolver';
 import { ContactsResolver } from '@pages/contacts/resolvers/contacts.resolver';
 import { LoadResolver } from '@pages/load/resolvers/load.resolver';
 
+// Enums
+import { eLoadRouting } from '@pages/new-load/enums';
+
 export class ListRoutes {
     static routes = [
         {
@@ -29,7 +32,16 @@ export class ListRoutes {
             loadChildren: () =>
                 import('@pages/load/load.module').then((m) => m.LoadModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
-            resolve: { data: LoadResolver }
+            resolve: { data: LoadResolver },
+        },
+        {
+            path: eLoadRouting.LIST,
+            loadChildren: () =>
+                import('@pages/new-load/new-load.module').then(
+                    (m) => m.NewLoadModule
+                ),
+            canActivate: [AuthGuard, CompanySettingsGuard],
+            resolve: { data: LoadResolver },
         },
         {
             path: 'list/customer',

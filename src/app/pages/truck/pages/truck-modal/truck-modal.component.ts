@@ -90,6 +90,7 @@ import {
 
 // Const
 import { TruckModalConstants } from '@pages/truck/pages/truck-modal/const';
+import { TruckModalInputConfig } from '@pages/truck/pages/truck-modal/utils/configs';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
@@ -200,6 +201,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
 
     public svgRoutes = SharedSvgRoutes;
     public taModalActionEnum = TaModalActionEnum;
+    public truckModalInputConfig = TruckModalInputConfig;
 
     // Clean-up
     private destroy$ = new Subject<void>();
@@ -233,7 +235,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
         }
 
         this.skipVinDecocerEdit = true;
-        this.populateStorageData(this.editData.storageData);
+        this.populateStorageData(this.editData);
     }
 
     private confirmationDeactivationSubscribe(): void {
@@ -691,7 +693,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                         .patchValue(res.fhwaExp);
 
                     // Edit part
-                    if (!this.editData?.id) {
+                    if (!this.editData?.id || this.editData?.storageData) {
                         this.startFormChanges();
                         return;
                     }

@@ -96,6 +96,7 @@ export enum DropdownMenuStringEnum {
     ADD_TRAILER_TYPE = 'add-trailer',
     CONFIGURE_TYPE = 'configure',
     ADD_REPAIR_BILL_TYPE = 'add-repair-bill',
+    ADD_PM_ITEM = 'ADD_PM_ITEM',
     ALL_BILLS_TYPE = 'all-bills',
     ALL_ORDERS_TYPE = 'all-orders',
     FINISH_ORDER_TYPE = 'finish-order',

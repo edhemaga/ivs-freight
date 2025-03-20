@@ -21,16 +21,19 @@ import {
 } from '@pages/accounting/pages/payroll/state/services';
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
 // Models
 import {
+    IDropdownMenuLoadItem,
     IGetPayrollByIdAndOptions,
+    ILoadWithMilesStopResponseNumberId,
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
     PayrollTypes,
 } from '@pages/accounting/pages/payroll/state/models';
 import {
-    LoadWithMilesStopResponse,
     PayrollCreditType,
     PayrollDriverFlatRateByIdResponse,
 } from 'appcoretruckassist';
@@ -67,6 +70,8 @@ export class DriverFlatRateReportComponent
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.FLAT_RATE;
+
+    public loadDropdownList: IDropdownMenuLoadItem[];
 
     public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
@@ -110,7 +115,7 @@ export class DriverFlatRateReportComponent
         FlatRateLoadShortReponseWithRowType[]
     >;
 
-    public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    public includedLoads$: Observable<ILoadWithMilesStopResponseNumberId[]>;
 
     // Templates
     @ViewChild('customCountTemplate', { static: false })
@@ -136,9 +141,11 @@ export class DriverFlatRateReportComponent
         private payrollDriverFlatRateFacadeService: PayrollDriverFlatRateFacadeService,
         private payrollFacadeService: PayrollFacadeService,
         modalService: ModalService,
-        payrollService: PayrollService
+        payrollService: PayrollService,
+        public loadStoreService: LoadStoreService,
+        public driverService: DriverService
     ) {
-        super(modalService, payrollService);
+        super(modalService, payrollService, loadStoreService, driverService);
     }
 
     ngOnInit(): void {
@@ -223,6 +230,13 @@ export class DriverFlatRateReportComponent
         this.payrollFlatRateDriverLoads$ =
             this.payrollDriverFlatRateFacadeService.selectPayrollReportDriverFlatRateLoads$;
 
+        this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
+            (loadList) => {
+                this.loadDropdownList = loadList;
+                // console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
+            }
+        );
+
         this.mapData$ = this.payrollFacadeService.getPayrollReportMapData$;
     }
 
@@ -290,21 +304,12 @@ export class DriverFlatRateReportComponent
     }
 
     public getIsEditLoadDropdownActionActive(): void {
-        const loadDummyData = [
-            // w8 for slavisa
-            { id: 1, title: 'INV-162-23' },
-            { id: 2, title: 'INV-162-26' },
-            { id: 3, title: 'INV-162-28' },
-            { id: 4, title: 'INV-162-31' },
-            { id: 5, title: 'INV-162-33' },
-        ];
-
         this.dropdownMenuOptions =
             PayrollReportHelper.getPayrollDropdownContent(
                 false,
                 this._selectedTab,
                 this.isEditLoadDropdownActionActive,
-                loadDummyData
+                this.loadDropdownList
             );
     }
 

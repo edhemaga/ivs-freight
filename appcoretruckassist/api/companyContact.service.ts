@@ -23,6 +23,8 @@ import { CompanyContactModalResponse } from '../model/companyContactModalRespons
 // @ts-ignore
 import { CompanyContactResponse } from '../model/companyContactResponse';
 // @ts-ignore
+import { CompanyContactSortBy } from '../model/companyContactSortBy';
+// @ts-ignore
 import { CreateCompanyContactCommand } from '../model/createCompanyContactCommand';
 // @ts-ignore
 import { CreateResponse } from '../model/createResponse';
@@ -349,10 +351,10 @@ export class CompanyContactService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiCompanycontactListGet(labelId?: number, companyUserId?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetCompanyContactListResponse>;
-    public apiCompanycontactListGet(labelId?: number, companyUserId?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetCompanyContactListResponse>>;
-    public apiCompanycontactListGet(labelId?: number, companyUserId?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetCompanyContactListResponse>>;
-    public apiCompanycontactListGet(labelId?: number, companyUserId?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiCompanycontactListGet(labelId?: number, companyUserId?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: CompanyContactSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<GetCompanyContactListResponse>;
+    public apiCompanycontactListGet(labelId?: number, companyUserId?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: CompanyContactSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<GetCompanyContactListResponse>>;
+    public apiCompanycontactListGet(labelId?: number, companyUserId?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: CompanyContactSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<GetCompanyContactListResponse>>;
+    public apiCompanycontactListGet(labelId?: number, companyUserId?: number, departmentId?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: CompanyContactSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (labelId !== undefined && labelId !== null) {

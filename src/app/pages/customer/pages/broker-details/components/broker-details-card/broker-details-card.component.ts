@@ -36,7 +36,7 @@ import {
     IBrokerPaymentHistory,
     IBrokerPaymentHistoryChart,
 } from '@pages/customer/pages/broker-details/models/';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, ChartTypeProperty, Tabs } from '@shared/models';
 
@@ -360,7 +360,7 @@ export class BrokerDetailsCardComponent
         this.mileageLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.mileageChartData
                 : this.mileageChartData?.brokerMileageRateChartResponse[index];
 
@@ -378,7 +378,7 @@ export class BrokerDetailsCardComponent
         this.invoiceLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.invoiceChartData
                 : this.invoiceChartData?.brokerPaidInvoiceChartResponse[index];
 
@@ -398,7 +398,7 @@ export class BrokerDetailsCardComponent
         this.paymentLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.paymentChartData
                 : this.paymentChartData?.brokerPaymentHistoryChartResponse[
                       index

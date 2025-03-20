@@ -27,7 +27,6 @@ import { TrailerDetailsItemComponent } from '@pages/trailer/pages/trailer-detail
 import { TrailerDetailsComponent } from '@pages/trailer/pages/trailer-details/trailer-details.component';
 import { CaChartComponent } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
 
 @NgModule({
     declarations: [
@@ -37,8 +36,11 @@ import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-ch
     ],
     exports: [TrailerDetailsCardComponent, SharedModule],
     imports: [
+        // modules
         CommonModule,
         TrailerDetailsRoutingModule,
+
+        // components
         TaCopyComponent,
         TaCustomCardComponent,
         TaUploadFilesComponent,
@@ -54,9 +56,8 @@ import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-ch
         AngularSvgIconModule,
         CaChartComponent,
         TaTabSwitchComponent,
-        TaChartLegendComponent,
 
-        // PIPES
+        // pipes
         ThousandSeparatorPipe,
     ],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],

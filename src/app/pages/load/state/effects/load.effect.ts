@@ -32,7 +32,7 @@ import {
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // helpers
-import { LoadStoreEffectsHelper } from '@pages/load/pages/load-table/utils/helpers/load-store-effects.helper';
+import { LoadStoreEffectsHelper } from '@pages/load/pages/load-table/utils/helpers';
 
 @Injectable()
 export class LoadEffect {
@@ -174,6 +174,8 @@ export class LoadEffect {
                                                     {
                                                         load: loadResponse,
                                                         modal: modalResponse,
+                                                        possibleStatuses:
+                                                            statusDropdownResponse,
                                                     }
                                                 );
                                             }),
@@ -762,6 +764,26 @@ export class LoadEffect {
 
     public getDispatcherList$ = createEffect(() =>
         this.actions$.pipe(
+            ofType(LoadActions.getLoadDetailsById),
+            exhaustMap((action) => {
+                const { loadId } = action || {};
+                return this.loadService.getLoadById(loadId).pipe(
+                    map((details) => {
+                        return LoadActions.getLoadDetails({
+                            details,
+                        });
+                    }),
+                    catchError((error) =>
+                        of(LoadActions.getLoadDetailsError({ error }))
+                    )
+                );
+            })
+        )
+    );
+    // #endregion
+
+    public getLoadDetails$ = createEffect(() =>
+        this.actions$.pipe(
             ofType(LoadActions.getDispatcherList),
             exhaustMap((action) => {
                 const { loadStatusType } = action || {};
@@ -780,5 +802,4 @@ export class LoadEffect {
             })
         )
     );
-    // #endregion
 }

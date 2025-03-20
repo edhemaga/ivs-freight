@@ -4,7 +4,7 @@
     </div>
     <div class="new-table--toolbar d-flex align-items-center background-white">
         <ng-container *ngTemplateOutlet="leftSide"></ng-container>
-        <div class="m-l-auto d-flex">
+        <div class="m-l-auto d-flex align-items-center">
             <ng-container *ngTemplateOutlet="rightSide"></ng-container>
 
             @if (showColumnsDropdown) {
@@ -25,13 +25,17 @@
 
             @if (showPlusIcon) {
                 <div
-                    class="new-table--toolbar-plus-icon d-flex align-items-center justify-content-center c-pointer"
+                    class="new-table--toolbar-plus-icon c-pointer d-flex align-items-center justify-content-center"
                     (click)="onPlusClick.emit(true)"
                 >
-                    <svg-icon
-                        class="svg-fill-white svg-size-18"
-                        [src]="plusIcon"
-                    ></svg-icon>
+                    <div
+                        class="new-table--toolbar-plus-icon-button br-3 d-flex align-items-center justify-content-center background-blue-14 background-hover-blue-15"
+                    >
+                        <svg-icon
+                            class="svg-fill-white svg-size-18"
+                            [src]="plusIcon"
+                        ></svg-icon>
+                    </div>
                 </div>
             }
         </div>

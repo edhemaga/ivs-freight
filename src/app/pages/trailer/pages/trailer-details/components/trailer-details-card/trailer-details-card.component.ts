@@ -51,7 +51,7 @@ import {
 
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 
 // components
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
@@ -360,7 +360,7 @@ export class TrailerDetailsCardComponent
         this.fuelConsumptionLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.fuelConsumptionChartData
                 : this.fuelConsumptionChartData?.trailerFuelConsumptionCharts[
                       index

@@ -151,6 +151,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
     @Input() fuelItemsDropdown: EnumValue[];
     @Input() fuelTransactionType: EnumValue;
     @Input() fuelModalActionType: FuelDataOptionsStringEnum;
+    @Input() preselectPm: string;
 
     @Output() modalTableValueEmitter = new EventEmitter<
         | CreateContactPhoneCommand[]
@@ -184,7 +185,7 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
 
     // repair bill table
     public selectedTruckTrailerRepairPm = [];
-    public truckTrailerRepairPmOptions = [];
+    public truckTrailerRepairPmOptions: TruckTrailerPmDropdownLists;
     public subTotals: RepairSubtotal[] = [];
     public activeFuelItem = [];
     // pm table
@@ -440,8 +441,22 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         }
     }
 
+    private preselectPMItem(): void {
+        const truckTrailerRepairPm =
+            this.truckTrailerRepairPmOptions?.truckPmDropdownList ||
+            this.truckTrailerRepairPmOptions?.trailerPmDropdownList;
+
+        if (truckTrailerRepairPm && this.preselectPm) {
+            const item = truckTrailerRepairPm?.find(
+                (value) =>
+                    value.title.toLowerCase() === this.preselectPm.toLowerCase()
+            );
+            if (item) this.selectedTruckTrailerRepairPm.push(item);
+        }
+    }
+
     private getDropdownLists(
-        dropdownData?: TruckTrailerPmDropdownLists[] | DepartmentResponse[]
+        dropdownData?: TruckTrailerPmDropdownLists | DepartmentResponse[]
     ): void {
         switch (this.tableType) {
             case ModalTableTypeEnum.EMAIL:
@@ -451,8 +466,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                 break;
             case ModalTableTypeEnum.REPAIR_BILL:
             case ModalTableTypeEnum.REPAIR_ORDER:
-                this.truckTrailerRepairPmOptions = dropdownData;
-
+                this.truckTrailerRepairPmOptions =
+                    dropdownData as TruckTrailerPmDropdownLists;
+                this.preselectPMItem();
                 break;
             case ModalTableTypeEnum.CONTACT:
             case ModalTableTypeEnum.DEPARTMENT_CONTACT:
@@ -647,6 +663,15 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isRepairBillTable || this.isRepairOrderTable) {
             modalTableDataValue = modalTableDataValue.map(
                 (itemRow: RepairItemCommand, index: number) => {
+                    const price =
+                        MethodsCalculationsHelper.convertThousandSepInNumber(
+                            itemRow.price?.toString()
+                        );
+
+                    const quantity =
+                        MethodsCalculationsHelper.convertThousandSepInNumber(
+                            itemRow.quantity?.toString()
+                        );
                     return {
                         ...itemRow,
                         ...(this.isRepairBillTable &&
@@ -660,8 +685,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                             this.selectedTruckTrailerRepairPm[index]
                                 ?.trailerId &&
                             this.selectedTruckTrailerRepairPm[index],
-                        quantity: +itemRow.quantity,
-                        price: +itemRow.price,
+                        quantity,
+                        price,
+                        subtotal: price * quantity,
                     };
                 }
             );

@@ -1,16 +1,16 @@
-<ng-container *ngIf="loading$ | async">
+@let isLoading = loading$ | async;
+@if (isLoading) {
     <svg-icon
         [name]="expandTable ? 'payroll_sceleton_collapsed' : 'payroll_sceleton'"
     ></svg-icon>
-</ng-container>
-<ng-container *ngIf="!(loading$ | async)">
+} @else {
     <app-ca-main-table
         [hideFieldsToHide]="!expandTable"
         (onPressEvent)="selectPayrollReport($event)"
         [columns]="columns"
         [data$]="tableData$"
     ></app-ca-main-table>
-</ng-container>
+}
 
 <ng-template #customDriverTemplate let-data>
     <div class="driver-solo-info d-flex">
@@ -21,9 +21,11 @@
             [isRound]="false"
             [isHoverEffect]="false"
         ></app-ca-profile-image>
-        <span class="driver-solo-info-text text-color-black">{{ data.driver.fullName }}</span>
+        <span class="driver-solo-info-text text-color-black">{{
+            data.driver.fullName
+        }}</span>
         <div
-            class="payroll_count d-flex justify-content-center align-items-center"
+            class="payroll_count text-color-black d-flex justify-content-center align-items-center"
         >
             {{ data.payrollCount }}
         </div>
@@ -32,42 +34,38 @@
 
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
-        <ng-container *ngIf="data == '0'">
+        @if (data === '0') {
             <svg-icon
                 class="payment_done d-flex"
                 [svgClass]="'d-flex'"
                 name="mark-as-done"
             ></svg-icon>
-        </ng-container>
-
-        <ng-container *ngIf="data > 0">
+        } @else if (data > 0) {
             <svg-icon
                 class="caution d-flex"
                 [svgClass]="'d-flex'"
                 name="incorrect"
             ></svg-icon>
-        </ng-container>
+        }
 
-        <ng-container *ngIf="data !== 0">
+        @if (data !== 0) {
             <div
                 class="custom-status-text"
                 [ngClass]="{ 'text-color-red-11': data > 0 }"
             >
                 {{ Math.abs(data) }} UNPAID
             </div>
-        </ng-container>
+        }
 
-        <ng-container>
-            <div *ngIf="data === 0" class="custom-status-text text-color-green-2">
-                ALL PAID
-            </div>
-        </ng-container>
+        @if (data === 0) {
+            <div class="custom-status-text text-color-green-2">ALL PAID</div>
+        }
     </div>
 </ng-template>
 
 <ng-template #customMileageHeader let-data>
-    <div class="custom-mileage">
+    <div class="custom-mileage text-color-bw6-2">
         {{ data }}
-        <span>mi</span>
+        <span class="text-color-muted">mi</span>
     </div>
 </ng-template>

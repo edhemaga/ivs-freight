@@ -149,8 +149,8 @@ export class DispatchComponent
                             this.backFilterQuery.statuses = res.selectedIds;
                             break;
 
-                        case ToolbarFilterStringEnum.PARKING_FILTER:
-                            this.backFilterQuery.parkings = res.queryParams;
+                        case eFilterDropdownEnum.PARKING:
+                            this.backFilterQuery.parkings = res.selectedIds;
                             break;
 
                         case ToolbarFilterStringEnum.LOCATION_FILTER:

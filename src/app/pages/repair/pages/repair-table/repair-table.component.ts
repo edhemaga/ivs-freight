@@ -697,8 +697,8 @@ export class RepairTableComponent
                 showMoneyFilter: true,
                 hideMoneySubType: true,
                 hideActivationButton: true,
-                showTruckPmFilter: this.selectedTab === TableStringEnum.ACTIVE,
-                showTrailerPmFilter:
+                showTruckFilter: this.selectedTab === TableStringEnum.ACTIVE,
+                showTrailerFilter:
                     this.selectedTab === TableStringEnum.INACTIVE,
                 showMoneyCount:
                     this.selectedTab !== TableStringEnum.REPAIR_SHOP,
@@ -1029,23 +1029,25 @@ export class RepairTableComponent
                                 categoryIds: res.selectedIds,
                             };
                             break;
+                        case RepairTableStringEnum.LOCATION_FILTER:
+                            this.shopFilterQuery = {
+                                ...this.shopFilterQuery,
+                                long: res.queryParams?.longValue,
+                                lat: res.queryParams?.latValue,
+                                distance: res.queryParams?.rangeValue,
+                            };
+                            break;
                         case eFilterDropdownEnum.PM:
                             this.backFilterQuery = {
                                 ...this.backFilterQuery,
                                 pmTruckTitles: res.selectedIds,
                             };
                             break;
-                        case eFilterDropdownEnum.TRAILER_TYPE:
-                            this.backFilterQuery = {
-                                ...this.backFilterQuery,
-                                trailerNumbers: res.selectedIds,
-                            };
+                        case eFilterDropdownEnum.TRAILER:
+                            this.backFilterQuery = { ...this.backFilterQuery, trailerNumbers: res.selectedIds };
                             break;
-                        case eFilterDropdownEnum.TRUCK_TYPE:
-                            this.backFilterQuery = {
-                                ...this.backFilterQuery,
-                                truckNumbers: res.selectedIds,
-                            };
+                        case eFilterDropdownEnum.TRUCK:
+                            this.backFilterQuery = { ...this.backFilterQuery, truckNumbers: res.selectedIds };
                             break;
                         case eFilterDropdownEnum.TIME_FILTER:
                             this.backFilterQuery = {
@@ -1079,7 +1081,12 @@ export class RepairTableComponent
                             res.filterType !==
                             RepairTableStringEnum.STATE_FILTER
                         )
-                            this.shopBackFilter(this.backFilterQuery);
+                            this.shopBackFilter(
+                                res.filterType ===
+                                    TableStringEnum.LOCATION_FILTER
+                                    ? this.shopFilterQuery
+                                    : this.backFilterQuery
+                            );
 
                         this.isAddedNewRepairShop = true;
                         this.getMapData();

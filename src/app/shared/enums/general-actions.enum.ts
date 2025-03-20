@@ -19,4 +19,6 @@ export enum eGeneralActions {
     OPEN_MODAL = 'open-modal',
     RESET_MODAL = 'reset modal',
     RESET = 'reset',
+    TAB_SELECTED = 'tab-selected',
+    VIEW_MODE = 'view-mode',
 }

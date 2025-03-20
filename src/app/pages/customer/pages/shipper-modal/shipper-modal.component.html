@@ -1,3 +1,10 @@
+@let receivingAppointmentControl = this.shipperForm.get(shipperModalString.RECEIVING_APPOINTMENT);
+@let receivingOpenTwentyFourHoursControl = this.shipperForm.get(shipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS);
+@let receivingFromControl = this.shipperForm.get(shipperModalString.RECEIVING_FROM);
+@let receivingToControl = this.shipperForm.get(shipperModalString.RECEIVING_TO);
+@let shippingAppointmentControl = this.shipperForm.get(shipperModalString.SHIPPING_APPOINTMENT);
+@let shippingOpenTwentyFourHoursControl = this.shipperForm.get(shipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS);
+
 <app-ca-modal
     [modalTitle]="
         !editData?.type?.includes('edit') ? 'Add Shipper' : 'Edit Shipper'
@@ -175,6 +182,7 @@
                                     [name]="'receivingOpenTwentyFourHours'"
                                     [customClass]="'medium'"
                                     [label]="'Open 24h'"
+                                    [disabled]="receivingAppointmentControl.value"
                                 ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
@@ -188,16 +196,12 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            (shipperForm.get(
-                                                'receivingOpenTwentyFourHours'
-                                            ).value &&
-                                                shipperForm.get(
-                                                    'receivingAppointment'
-                                                ).value) ||
-                                            shipperForm.get(
-                                                'receivingOpenTwentyFourHours'
-                                            ).value,
+                                            receivingAppointmentControl.value || 
+                                            receivingOpenTwentyFourHoursControl.value,
                                         customClass: 'datetimeclass',
+                                        isRequired: 
+                                            receivingFromControl.value || 
+                                            receivingToControl.value,
                                     }"
                                 ></ca-input-datetime-picker>
                             </div>
@@ -212,16 +216,12 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            (shipperForm.get(
-                                                'receivingOpenTwentyFourHours'
-                                            ).value &&
-                                                shipperForm.get(
-                                                    'receivingAppointment'
-                                                ).value) ||
-                                            shipperForm.get(
-                                                'receivingOpenTwentyFourHours'
-                                            ).value,
+                                            receivingAppointmentControl.value || 
+                                            receivingOpenTwentyFourHoursControl.value,
                                         customClass: 'datetimeclass',
+                                        isRequired: 
+                                            receivingFromControl.value || 
+                                            receivingToControl.value,
                                     }"
                                 ></ca-input-datetime-picker>
                             </div>
@@ -263,6 +263,7 @@
                                     [name]="'shippingOpenTwentyFourHours'"
                                     [customClass]="'medium'"
                                     [label]="'Open 24h'"
+                                    [disabled]="shippingAppointmentControl.value"
                                 ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
@@ -276,15 +277,8 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            (shipperForm.get(
-                                                'shippingOpenTwentyFourHours'
-                                            ).value &&
-                                                shipperForm.get(
-                                                    'shippingAppointment'
-                                                ).value) ||
-                                            shipperForm.get(
-                                                'shippingOpenTwentyFourHours'
-                                            ).value,
+                                        shippingAppointmentControl.value || 
+                                        shippingOpenTwentyFourHoursControl.value,
                                         customClass: 'datetimeclass',
                                     }"
                                 ></ca-input-datetime-picker>
@@ -300,15 +294,8 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            (shipperForm.get(
-                                                'shippingOpenTwentyFourHours'
-                                            ).value &&
-                                                shipperForm.get(
-                                                    'shippingAppointment'
-                                                ).value) ||
-                                            shipperForm.get(
-                                                'shippingOpenTwentyFourHours'
-                                            ).value,
+                                        shippingAppointmentControl.value || 
+                                        shippingOpenTwentyFourHoursControl.value,
                                         customClass: 'datetimeclass',
                                     }"
                                 ></ca-input-datetime-picker>

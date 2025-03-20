@@ -130,6 +130,8 @@
                         font-size: 11px;
                         line-height: 14px;
                         min-width: 20px;
+
+                        @include prevent-text-selection();
                     }
                 }
             }
@@ -360,7 +362,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 100%;
+            max-width: 150px;
             font-size: 11px;
             font-weight: 600;
             line-height: 12px;
@@ -386,11 +388,14 @@
         margin-right: 4px;
         border-radius: 1px;
         &-repair {
-            background-color: $ta-brown-2; 
+            background-color: $ta-brown-2;
             color: $ta-brown-1;
         }
         &-deadhead {
-            background-color: $dark-2; 
+            background-color: $dark-2;
+        }
+        &-towing {
+            background-color: $ta-purple-3;
         }
     }
 
@@ -522,7 +527,6 @@
 .custom-text-date {
     font-size: 14px;
 }
-
 
 .payroll_count {
     background-color: #91919133;

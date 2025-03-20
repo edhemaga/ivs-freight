@@ -34,7 +34,7 @@ import {
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models/tabs.model';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { ChartLegendProperty } from '@shared/models';
 
 @Component({
@@ -182,7 +182,7 @@ export class RepairShopDetailsRepairExpenseCardComponent implements OnDestroy {
         this.repairShopExpensesLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.repairShopChartData
                 : this.repairShopChartData?.repairShopExpensesChartResponse[
                       index

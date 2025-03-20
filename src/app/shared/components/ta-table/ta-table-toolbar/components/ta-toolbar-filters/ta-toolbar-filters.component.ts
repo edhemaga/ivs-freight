@@ -21,7 +21,7 @@ import {
     CaFilterComponent,
     CaSearchMultipleStatesComponent,
     CaFilterListDropdownComponent,
-    CaFilterTimeDropdownComponent
+    CaFilterTimeDropdownComponent,
 } from 'ca-components';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -41,6 +41,10 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.model';
 import { StateResponse } from 'appcoretruckassist/model/stateResponse';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
+import { AddressService } from '@shared/services/address.service';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-ta-toolbar-filters',
@@ -58,10 +62,17 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
         CaSearchMultipleStatesComponent,
         CaFilterComponent,
         CaFilterListDropdownComponent,
-        CaFilterTimeDropdownComponent
+        CaFilterTimeDropdownComponent,
     ],
 })
-export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
+export class TaToolbarFiltersComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnChanges, OnDestroy
+{
     @Output() toolbarFilter: EventEmitter<any> = new EventEmitter();
     @Input() options: any;
     @Input() activeTableData: any;
@@ -81,7 +92,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
     ];
     public showLtl: boolean = true;
     public showFtl: boolean = true;
-    private destroy$ = new Subject<void>();
+    protected destroy$ = new Subject<void>();
 
     public loadStatusOptionsArray: ArrayStatus[];
     public unselectedDispatcher: ArrayStatus[];
@@ -98,8 +109,11 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
 
     constructor(
         private tableSevice: TruckassistTableService,
-        private filterService: FilterStateService
-    ) {}
+        private filterService: FilterStateService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
     public customerFilter: {
         filteredArray: any;
         selectedFilter: boolean;
@@ -219,7 +233,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                             this.options.toolbarActions.showTruckPmFilter ||
                             this.options.toolbarActions.showTrailerPmFilter
                         ) {
-                            this.truckTypeArray = res.data.map(
+                            this.truckTypeArray = res?.data?.map(
                                 (
                                     type: any
                                     // leave any for now
@@ -229,8 +243,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                                     return type;
                                 }
                             );
-                        } else {
-                            this.truckTypeArray = res.data.map((item) => ({
+                        } else
+                            this.truckTypeArray = res?.data?.map((item) => ({
                                 ...item.truckType,
                                 count: item.count,
                                 icon: item.truckType?.logoName
@@ -238,7 +252,6 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                                       item.truckType.logoName
                                     : null,
                             }));
-                        }
                     }
                     if (
                         res?.animation ===
@@ -249,7 +262,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                             this.options.toolbarActions.showTruckPmFilter ||
                             this.options.toolbarActions.showTrailerPmFilter
                         ) {
-                            this.trailerTypeArray = res.data.map(
+                            this.trailerTypeArray = res?.data?.map(
                                 (
                                     type: any
                                     // leave any for now
@@ -260,7 +273,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                                 }
                             );
                         } else {
-                            this.trailerTypeArray = res.data.map((item) => ({
+                            this.trailerTypeArray = res?.data?.map((item) => ({
                                 ...item.trailerType,
                                 count: item.count,
                                 icon: item.trailerType?.logoName
@@ -275,7 +288,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         ToolbarFilterStringEnum.TRUCK_TYPE_UPDATE
                     ) {
                         this.truckTypeArray = truckResData;
-                        this.truckTypeArray = res.data.map((item) => ({
+                        this.truckTypeArray = res?.data?.map((item) => ({
                             ...item.truckType,
                             count: item.count,
                             icon: item.truckType?.logoName
@@ -289,7 +302,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         ToolbarFilterStringEnum.TRAILER_TYPE_UPDATE
                     ) {
                         this.trailerTypeArray = trailerResData;
-                        this.trailerTypeArray = res.data.map((item) => ({
+                        this.trailerTypeArray = res?.data?.map((item) => ({
                             ...item.trailerType,
                             count: item.count,
                             icon: item.trailerType?.logoName
@@ -308,7 +321,7 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         res?.animation ===
                         ToolbarFilterStringEnum.FUEL_CATEGORY_UPDATE
                     ) {
-                        this.categoryFuelArray = res.data;
+                        this.categoryFuelArray = res?.data;
                     }
 
                     if (
@@ -331,8 +344,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                         res?.animation ===
                         ToolbarFilterStringEnum.PM_TRUCK_DATA_UPDATE
                     ) {
-                        if (res.data.pmTrucks?.length) {
-                            const newData = res.data.pmTrucks.map(
+                        if (res?.data?.pmTrucks?.length) {
+                            const newData = res?.data?.pmTrucks.map(
                                 (
                                     type: any
                                     // leave any for now
@@ -436,8 +449,8 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                     event === LoadFilterStringEnum.FTL
                         ? 1
                         : event === LoadFilterStringEnum.LTL
-                        ? 2
-                        : null,
+                          ? 2
+                          : null,
             },
         };
         this.tableSevice.sendCurrentSetTableFilter(mappedEvent);
@@ -469,9 +482,9 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
         if (this.activeTableData?.closedArray)
             this.activeTableData.closedArray.selectedFilter =
                 data == TableStringEnum.CLOSED_ARRAY || false;
-        
+
         if (this.activeTableData?.fuelIncompleteArray)
-            this.activeTableData.fuelIncompleteArray.selectedFilter = 
+            this.activeTableData.fuelIncompleteArray.selectedFilter =
                 data == TableStringEnum.FUEL_INCOMPLETE_ARRAY || false;
 
         if (this.activeTableData?.driverArhivedArray)
@@ -501,20 +514,20 @@ export class TaToolbarFiltersComponent implements OnInit, OnChanges, OnDestroy {
                 selectedFilter: event.selectedFilter,
             };
 
-            if (event.selectedFilter) {
+            if (event.selectedFilter)
                 event.filteredArray.forEach((item) => {
                     this.customerFilter.filteredArray.push(item);
                 });
-            } else {
+            else
                 this.customerFilter.filteredArray =
-                    this.customerFilter.filteredArray.filter((item) => {
+                    this.customerFilter.filteredArray?.filter((item) => {
                         return !event.filteredArray.some((removeItem) =>
                             Object.entries(removeItem).every(
                                 ([key, value]) => item[key] === value
                             )
                         );
                     });
-            }
+
             if (!this.customerFilter.filteredArray.length) {
                 this.customerFilter.selectedFilter = false;
             }

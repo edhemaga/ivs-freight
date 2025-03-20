@@ -14,6 +14,7 @@ import {
 // models
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
+import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
 
 export class DropdownMenuContentHelper {
     // contact
@@ -720,7 +721,7 @@ export class DropdownMenuContentHelper {
 
     // payroll select load
     static getPayrollSelectLoadDropdownContent(
-        loadList: { id: number; title: string }[]
+        loadList: IDropdownMenuLoadItem[]
     ): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = [

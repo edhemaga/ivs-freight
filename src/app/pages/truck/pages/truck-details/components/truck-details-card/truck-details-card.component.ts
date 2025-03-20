@@ -59,7 +59,7 @@ import {
 } from 'appcoretruckassist';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';
@@ -525,7 +525,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.fuelConsumptionLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.fuelConsumptionChartData
                 : this.fuelConsumptionChartData?.truckFuelConsumptionCharts[
                       index
@@ -555,7 +555,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         }
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.expensesChartData
                 : this.expensesChartData?.truckExpensesCharts[index];
 
@@ -574,7 +574,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.revenueLegendTitle = title;
 
         const dataForLegend =
-            isNaN(index) || index < 0
+            isNaN(index) || index < 0 || index === null
                 ? this.revenueChartData
                 : this.revenueChartData?.truckRevenueCharts[index];
 

@@ -1,6 +1,7 @@
 @import 'src/theme/variables';
 
 @mixin svg-fill($color) {
+
     svg path,
     svg circle {
         fill: $color !important;
@@ -27,58 +28,79 @@
 }
 
 .svg {
+
     // Colors
     &-fill {
         &-white {
             @include svg-fill($white);
         }
+
         &-black {
             @include svg-fill($black);
         }
+
         &-muted {
             @include svg-fill($muted);
         }
+
         &-bw-9 {
             @include svg-fill($bw-9);
         }
+
         &-light-grey-2 {
             @include svg-fill($ta-light-grey-2);
         }
+
         &-light-grey-6 {
             @include svg-fill($ta-light-grey-6);
         }
+
         &-blue-13 {
             @include svg-fill($ta-blue-13);
         }
+
         &-blue-14 {
             @include svg-fill($ta-blue-14);
         }
+
         &-blue-19 {
             @include svg-fill($ta-blue-19);
         }
+
         &-blue-26 {
             @include svg-fill($ta-blue-26);
         }
+
         &-green {
             @include svg-fill($ta-green);
         }
+
         &-green-2 {
             @include svg-fill($ta-green-2);
         }
+
         &-green-4 {
             @include svg-fill($ta-green-4);
         }
+
         &-yellow-1 {
             @include svg-fill($ta-yellow-1);
         }
+
         &-yellow-4 {
             @include svg-fill($ta-yellow-4);
         }
+
         &-yellow-5 {
             @include svg-fill($ta-yellow-5);
         }
+
         &-red-11 {
             @include svg-fill($ta-red-11);
+        }
+
+        &-red-10 {
+            @include svg-fill($ta-red-10);
         }
     }
 
@@ -87,18 +109,23 @@
         &-muted {
             @include svg-hover($muted);
         }
+
         &-black {
             @include svg-hover($ta-black);
         }
+
         &-blue-15 {
             @include svg-hover($ta-blue-15);
         }
+
         &-bw6-2 {
             @include svg-hover($bw6-2);
         }
+
         &-trash-red {
             @include svg-hover($settings-trash-red);
         }
+
         &-red-14 {
             @include svg-hover($ta-red-14);
         }
@@ -109,21 +136,27 @@
         &-10 {
             @include svg-size(10px, 10px);
         }
+
         &-12 {
             @include svg-size(12px, 12px);
         }
+
         &-14 {
             @include svg-size(14px, 14px);
         }
+
         &-16 {
             @include svg-size(16px, 16px);
         }
+
         &-18 {
             @include svg-size(18px, 18px);
         }
+
         &-22 {
             @include svg-size(22px, 22px);
         }
+
         &-44-16 {
             @include svg-size(44px, 16px);
         }

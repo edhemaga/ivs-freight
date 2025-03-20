@@ -128,6 +128,7 @@ export class ModalService {
                                 data.payload.key
                             ),
                             type: data.type,
+                            storageData: true
                         }
                     );
                     this.encryptionDecryptionService.removeItem(

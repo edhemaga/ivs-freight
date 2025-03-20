@@ -126,6 +126,7 @@ import {
     ShipperShortResponse,
     UpdateLoadStatusCommand,
     LoadModalResponse,
+    LoadPossibleStatusesResponse,
 } from 'appcoretruckassist';
 import { LoadStopItemCommand } from 'appcoretruckassist/model/loadStopItemCommand';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
@@ -224,7 +225,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     @Input() editData: EditData;
 
-    public mapData: ICaMapProps = MapOptionsConstants.defaultMapConfig;
+    public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
 
     private destroy$ = new Subject<void>();
 
@@ -458,6 +459,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public showDriverRate: boolean;
     public showAdjustedRate: boolean;
     public activeLoadModalData: IActiveLoadModalData;
+    public deadHeadLocation: ShipperShortResponse | null = null;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -3253,8 +3255,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     private formatStopDateTime(dateFrom: string, timeFrom: string): string {
         let dateTime = moment(dateFrom);
 
-        if (timeFrom) {
-            const [hours, minutes] = timeFrom.split(':');
+        const formattedTimeFrom = this.formatStopTimeToHours(timeFrom);
+
+        if (formattedTimeFrom) {
+            const [hours, minutes] = formattedTimeFrom.split(':');
             dateTime = dateTime
                 .hours(parseInt(hours))
                 .minutes(parseInt(minutes))
@@ -3262,6 +3266,15 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         }
 
         return dateTime.toISOString();
+    }
+
+    private formatStopTimeToHours(timeFrom: string): string {
+        const formattedTimeFrom =
+            MethodsCalculationsHelper.convertDateToTime(timeFrom);
+
+        return formattedTimeFrom !== LoadModalStringEnum.INVALID_DATE
+            ? formattedTimeFrom
+            : timeFrom;
     }
 
     private premmapedStops(saveCurrentLoad?: boolean): LoadStop[] {
@@ -3341,6 +3354,13 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     item.get(LoadModalStringEnum.LEG_MILES).value
                 );
 
+                const timeFrom = this.formatStopTimeToHours(
+                    item.get(LoadModalStringEnum.TIME_FROM).value
+                );
+                const timeTo = this.formatStopTimeToHours(
+                    item.get(LoadModalStringEnum.TIME_TO).value
+                );
+
                 stops.push({
                     id: this.isActiveLoad
                         ? (item.get(LoadModalStringEnum.ID).value ?? null)
@@ -3375,8 +3395,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                             )?.name === LoadModalStringEnum.APPOINTMENT
                           ? 2
                           : 1,
-                    timeFrom: item.get(LoadModalStringEnum.TIME_FROM).value,
-                    timeTo: item.get(LoadModalStringEnum.TIME_TO).value,
+                    timeFrom,
+                    timeTo,
                     arrive: item.get(LoadModalStringEnum.ARIVE).value,
                     depart: item.get(LoadModalStringEnum.DEPART).value,
                     legMiles,
@@ -3516,12 +3536,31 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     }
 
     public drawStopOnMap(): void {
+        const statusType = this.loadForm.get(
+            LoadModalStringEnum.STATUS_TYPE
+        ).value;
+
         this.isMilesLoading = true;
 
         const routes: LoadStopRoutes[] = [];
 
+        let pickupStopIndex = 0;
+
         // dispatches
-        if (this.selectedDispatch?.currentLocationCoordinates) {
+        if (statusType === TableStringEnum.CLOSED_2 && this.deadHeadLocation) {
+            routes[0] = {
+                longitude: this.deadHeadLocation.longitude,
+                latitude: this.deadHeadLocation.latitude,
+                pickup: false,
+                delivery: false,
+                stopNumber: 0,
+            };
+
+            pickupStopIndex = 1;
+        } else if (
+            statusType !== TableStringEnum.CLOSED_2 &&
+            this.selectedDispatch?.currentLocationCoordinates
+        ) {
             routes[0] = {
                 longitude:
                     this.selectedDispatch.currentLocationCoordinates.longitude,
@@ -3531,18 +3570,19 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 delivery: false,
                 stopNumber: 0,
             };
+
+            pickupStopIndex = 1;
         }
 
         // pickup shipper
         if (this.selectedPickupShipper) {
-            routes[this.selectedDispatch?.currentLocationCoordinates ? 1 : 0] =
-                {
-                    longitude: this.selectedPickupShipper.longitude,
-                    latitude: this.selectedPickupShipper.latitude,
-                    pickup: true,
-                    delivery: false,
-                    stopNumber: 1,
-                };
+            routes[pickupStopIndex] = {
+                longitude: this.selectedPickupShipper.longitude,
+                latitude: this.selectedPickupShipper.latitude,
+                pickup: true,
+                delivery: false,
+                stopNumber: 1,
+            };
         }
 
         // extra stops
@@ -4059,7 +4099,8 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
     private getLoadDropdowns(
         staticModalData: LoadModalResponse,
-        activeModalData: IActiveLoadModalData
+        activeModalData: IActiveLoadModalData,
+        activeModalPossibleStatuses?: LoadPossibleStatusesResponse
     ): void {
         const { selectedTab, previousStatus, type } = this.editData || {};
         const { statusType } = activeModalData || {};
@@ -4070,7 +4111,6 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             this.isLoadActive(name || (statusType as string)) &&
             selectedTab !== TableStringEnum.TEMPLATE
         ) {
-            const { statusDropdownData } = this.editData || {};
             const status = activeModalData?.status as LoadStatusResponse;
             const { statusString, statusValue } = status || {};
             const { id: statusId, name } = statusValue || {};
@@ -4090,10 +4130,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
 
                 this.statusDropDownList = [this.selectedStatus];
 
-                if (statusDropdownData?.possibleStatuses)
+                if (activeModalPossibleStatuses?.possibleStatuses)
                     this.statusDropDownList = [
                         this.selectedStatus,
-                        ...statusDropdownData?.possibleStatuses.map(
+                        ...activeModalPossibleStatuses?.possibleStatuses.map(
                             (status) => {
                                 return {
                                     name: status?.statusString,
@@ -4105,17 +4145,18 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     ];
                 else this.statusDropDownList = [this.selectedStatus];
 
-                this.previousStatus = statusDropdownData?.previousStatus
-                    ? {
-                          name: statusDropdownData?.previousStatus
-                              ?.statusString,
-                          id: statusDropdownData?.previousStatus?.statusValue
-                              ?.id,
-                          valueForRequest:
-                              statusDropdownData?.previousStatus?.statusValue
-                                  ?.name,
-                      }
-                    : null;
+                this.previousStatus =
+                    activeModalPossibleStatuses?.previousStatus
+                        ? {
+                              name: activeModalPossibleStatuses?.previousStatus
+                                  ?.statusString,
+                              id: activeModalPossibleStatuses?.previousStatus
+                                  ?.statusValue?.id,
+                              valueForRequest:
+                                  activeModalPossibleStatuses?.previousStatus
+                                      ?.statusValue?.name,
+                          }
+                        : null;
             }
 
             this.originalStatus = name;
@@ -4442,12 +4483,22 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         const adjustedRate = this.adjustedRate;
         const { documents, tagsArray } = this.mapDocumentsAndTags();
 
+        const statusType = this.loadForm.get(
+            LoadModalStringEnum.STATUS_TYPE
+        ).value;
+
         const commonLoadData: any = {
             company: this.selectedCompany,
             dispatcherId: this.getIdOrNull(this.selectedDispatcher),
             dispatcher: this.selectedDispatcher,
-            dispatchId: this.getIdOrNull(this.selectedDispatch),
-            dispatch: this.selectedDispatch,
+            dispatchId:
+                statusType === TableStringEnum.CLOSED_2
+                    ? null
+                    : this.getIdOrNull(this.selectedDispatch),
+            dispatch:
+                statusType === TableStringEnum.CLOSED_2
+                    ? null
+                    : this.selectedDispatch,
             brokerId: this.getIdOrNull(this.selectedBroker),
             broker: this.selectedBroker,
             brokerContactId: this.getIdOrNull(this.selectedBrokerContact),
@@ -4745,6 +4796,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             id,
             statusType,
         } = loadModalData;
+
+        // DeadHead Stop
+        if (loadModalData?.stops?.[0]?.id === 0)
+            this.deadHeadLocation = loadModalData.stops[0].shipper;
 
         this.isEditingMode = true;
         // Check if stops exists and is an array before using it
@@ -5377,7 +5432,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                 const routePath: IMapRoutePath = {
                     path: [],
                     decodedShape: routingData?.legs?.[index - 1]?.decodedShape,
-                    strokeColor: MapOptionsConstants.routingPathColors.gray,
+                    strokeColor: MapOptionsConstants.ROUTING_PATH_COLORS.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,
                 };
@@ -5420,7 +5475,10 @@ export class LoadModalComponent implements OnInit, OnDestroy {
         this.loadStoreService.staticModalData$
             .pipe(
                 takeUntil(this.destroy$),
-                withLatestFrom(this.loadStoreService.activeLoadModalData$),
+                withLatestFrom(
+                    this.loadStoreService.activeLoadModalData$,
+                    this.loadStoreService.activeLoadModalPossibleStatuses$
+                ),
                 tap((data) => {
                     if (this.editData?.type === LoadModalStringEnum.CREATE)
                         this.generateModalText();
@@ -5429,9 +5487,14 @@ export class LoadModalComponent implements OnInit, OnDestroy {
             .subscribe((data) => {
                 const staticModalData = data[0];
                 const activeModalData = data[1];
+                const activeModalPossibleStatuses = data[2];
 
                 if (!!staticModalData)
-                    this.getLoadDropdowns(staticModalData, activeModalData);
+                    this.getLoadDropdowns(
+                        staticModalData,
+                        activeModalData,
+                        activeModalPossibleStatuses
+                    );
 
                 if (!!activeModalData) {
                     const { id, statusType } = activeModalData;
