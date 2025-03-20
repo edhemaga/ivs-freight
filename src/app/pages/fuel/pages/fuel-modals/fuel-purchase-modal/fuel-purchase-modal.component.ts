@@ -492,7 +492,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 : null,
             truckId: this.selectedTruckType ? this.selectedTruckType.id : null,
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
-            trailerId: this.fuelForm.get(FuelValuesStringEnum.TRAILER_ID).value,
+            trailerId: this.selectedTrailerType
+                ? this.selectedTrailerType.id
+                : null,
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.isFranchise
                     ? this.selectedFuelStop.storeId
@@ -924,9 +926,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private getInitialFormData(): IFuelPurchaseModalForm {
+        let result: IFuelPurchaseModalForm = {};
+
+        if (!this.editData) return result;
+
         const { type, data } = this.editData;
 
-        const truckId = data?.truckNumber ?? null;
+        const truckId = data?.truckId ?? null;
         const transactionDate =
             type === eGeneralActions.EDIT ? data?.transactionDate : null;
         const transactionTime =
@@ -936,7 +942,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                   )
                 : null;
 
-        const result: IFuelPurchaseModalForm = {
+        result = {
             truckId,
             transactionDate,
             transactionTime,
