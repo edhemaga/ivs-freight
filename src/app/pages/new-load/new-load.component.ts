@@ -141,7 +141,8 @@ export class NewLoadComponent {
         }
     }
 
-    public handleQueryChange(query: string[]): void {
+    public onSearchQueryChange(query: string[]): void {
+        // TODO remove, for easier emitted data preview
         console.log(query);
     }
 }
