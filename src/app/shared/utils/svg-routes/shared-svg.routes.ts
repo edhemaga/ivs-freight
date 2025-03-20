@@ -22,4 +22,5 @@ export class SharedSvgRoutes {
     static DELETE_ICON: string = 'assets/svg/truckassist-table/trash-icon.svg';
     static PRINT_ICON: string = 'assets/svg/truckassist-table/print-icon.svg';
     static MENU_ICON: string = 'assets/svg/truckassist-table/burger-icon.svg';
+    static WEX_EFS: string = 'assets/svg/fuel/wex-efs.svg';
 }
