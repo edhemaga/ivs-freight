@@ -31,4 +31,5 @@ export class SharedSvgRoutes {
     static TOWING_ICON: string = 'assets/svg/common/ic_towing.svg';
     static ARROW_LEFT_ICON: string = 'assets/svg/common/arrow-left-grey.svg';
     static ARROW_RIGHT_ICON: string = 'assets/svg/common/arrow-right-grey.svg';
+    static DEACTIVATE_ICON: string = 'assets/svg/common/ic_deactivate.svg';
 }

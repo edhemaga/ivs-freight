@@ -11,7 +11,15 @@
         [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
     >
         <div class="d-flex align-items-center p-l-8 justify-content-between">
-            <span class="text-size-20 text-color-black ta-font-bold">
+            <span
+                class="d-flex align-items-center text-size-20 text-color-black ta-font-bold"
+            >
+                @if (!details?.truck?.status) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.DEACTIVATE_ICON"
+                        class="svg-fill-muted svg-size-18 m-r-6 d-flex"
+                    ></svg-icon>
+                }
                 UNIT {{ details?.truck?.truckNumber }}
             </span>
 
