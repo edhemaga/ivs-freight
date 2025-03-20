@@ -18,6 +18,7 @@
                     <svg-icon
                         [src]="sharedSvgRoutes.ARROW_LEFT_ICON"
                         class="svg-size-18"
+                        (click)="getTruckUnit(ArrowActionsStringEnum.PREVIOUS)"
                     ></svg-icon>
                 </div>
                 <div
@@ -26,6 +27,7 @@
                     <svg-icon
                         [src]="sharedSvgRoutes.ARROW_RIGHT_ICON"
                         class="svg-size-18"
+                        (click)="getTruckUnit(ArrowActionsStringEnum.NEXT)"
                     ></svg-icon>
                 </div>
             </div>

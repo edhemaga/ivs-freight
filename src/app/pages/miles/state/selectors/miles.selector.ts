@@ -102,3 +102,8 @@ export const isUserOnLastPageSelector = createSelector(
         return isUserOnLastPage;
     }
 );
+
+export const truckIdSelector = createSelector(selectMilesState, (state) => {
+    const { milesDetailsFilters } = state || {};
+    return milesDetailsFilters.truckId;
+});

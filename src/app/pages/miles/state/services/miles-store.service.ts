@@ -17,6 +17,7 @@ import {
     isMilesDetailsLoadingSelector,
     stopsSelectors,
     isUserOnLastPageSelector,
+    truckIdSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -32,7 +33,7 @@ import { ITableColumn, ITableData } from '@shared/models';
 import { IStateFilters } from '@shared/interfaces';
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@shared/enums';
+import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
 // Constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
@@ -85,6 +86,10 @@ export class MilesStoreService {
 
     public isUserOnLastPageSelector$: Observable<boolean> = this.store.pipe(
         select(isUserOnLastPageSelector)
+    );
+
+    public truckIdSelector$: Observable<number> = this.store.pipe(
+        select(truckIdSelector)
     );
 
     public stopsSelectors$: Observable<MilesStopItemResponse[]> =
@@ -161,6 +166,17 @@ export class MilesStoreService {
     public dispatchSelectAll(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
+        });
+    }
+
+    public dispatchGetNextTruckUnit(
+        truckId: number,
+        direction: ArrowActionsStringEnum
+    ): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_NEXT_UNIT,
+            truckId,
+            direction,
         });
     }
 }

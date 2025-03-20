@@ -1,5 +1,9 @@
+// Moles
 import { MilesByUnitResponse } from 'appcoretruckassist';
 import { IMilesModel } from '@pages/miles/interface';
+
+// Enums
+import { ArrowActionsStringEnum } from '@shared/enums';
 
 export class MilesHelper {
     static milesMapper(miles: MilesByUnitResponse[]): IMilesModel[] {
@@ -46,15 +50,32 @@ export class MilesHelper {
             id: mile.id,
             selected: false,
         }));
-    
-        // For test only
-        if(!mappedMiles.length) return [];
-        
-        const totalResults = [];
-        while (totalResults.length < 1000) {
-            totalResults.push(...mappedMiles);
-        }
-    
-        return totalResults.slice(0, 1000); 
+
+        return mappedMiles;
     }
-} 
+
+    static findAdjacentId(
+        miles: IMilesModel[],
+        currentId: number,
+        direction: ArrowActionsStringEnum
+    ): number | null {
+        const index = miles.findIndex((mile) => mile.id === currentId);
+
+        if (index === -1) {
+            return null;
+        }
+
+        if (
+            direction === ArrowActionsStringEnum.NEXT &&
+            index < miles.length - 1
+        ) {
+            return miles[index + 1].id;
+        }
+
+        if (direction === ArrowActionsStringEnum.PREVIOUS && index > 0) {
+            return miles[index - 1].id;
+        }
+
+        return null;
+    }
+}

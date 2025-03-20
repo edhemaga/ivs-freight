@@ -6,7 +6,7 @@ import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@shared/enums';
+import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
 // Models
 import {
@@ -87,4 +87,23 @@ export const getMilesDetailsError = createAction(
 
 export const getMilesDetailsNewPage = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE
+);
+
+export const getMilesDetailsNextPage = createAction(
+    MilesStoreConstants.ACTION_GET_NEXT_UNIT,
+    props<{ truckId: number; direction: ArrowActionsStringEnum }>()
+);
+
+export const setNewTotalMilesDetails = createAction(
+    MilesStoreConstants.ACTION_SET_TOTAL_MILES_DETAILS,
+    props<{
+        milesDetails: MilesByUnitPaginatedStopsResponse;
+    }>()
+);
+
+export const setNewTotalMilesDetailsError = createAction(
+    MilesStoreConstants.ACTION_SET_TOTAL_MILES_DETAILS_ERROR,
+    props<{
+        truckId: number;
+    }>()
 );

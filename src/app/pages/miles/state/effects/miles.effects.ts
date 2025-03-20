@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { combineLatest, of } from 'rxjs';
 
 // NgRx Imports
 import { Actions, ofType, createEffect } from '@ngrx/effects';
@@ -15,12 +16,13 @@ import { MilesService } from 'appcoretruckassist';
 import { eMileTabs } from '@pages/miles/enums';
 import {
     selectMilesDetailsFilters,
+    selectMilesItems,
     selectSelectedTab,
+    truckIdSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Utils
 import { MilesHelper } from '@pages/miles/utils/helpers';
-import { of } from 'rxjs';
 
 @Injectable()
 export class MilesEffects {
@@ -127,6 +129,47 @@ export class MilesEffects {
                                 ),
                                 catchError(() =>
                                     of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
+                    })
+                );
+            })
+        )
+    );
+
+    public getNextUnit$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getMilesDetailsNextPage),
+            exhaustMap((action) => {
+                const { direction } = action;
+
+                return combineLatest([
+                    this.store.select(selectMilesItems).pipe(take(1)),
+                    this.store.select(truckIdSelector).pipe(take(1)),
+                ]).pipe(
+                    exhaustMap(([milesItems, truckId]) => {
+                        return this.milesService
+                            .apiMilesUnitGet(
+                                25,
+                                1,
+                                MilesHelper.findAdjacentId(
+                                    milesItems,
+                                    truckId,
+                                    direction
+                                )
+                            )
+                            .pipe(
+                                map((response) =>
+                                    MilesAction.setNewTotalMilesDetails({
+                                        milesDetails: response,
+                                    })
+                                ),
+                                catchError(() =>
+                                    of(
+                                        MilesAction.setNewTotalMilesDetailsError(
+                                            { truckId }
+                                        )
+                                    )
                                 )
                             );
                     })

@@ -12,6 +12,7 @@ import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 
 // Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
+
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
 import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
@@ -22,6 +23,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaInputComponent } from 'ca-components';
+
+// Enums
+import { ArrowActionsStringEnum } from '@shared/enums';
 
 @Component({
     selector: 'app-miles-map-unit-list',
@@ -46,6 +50,8 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public isStopListExpanded: boolean = false;
     public isLoading: boolean = false;
     public isUserOnLastPage: boolean = false;
+    public truckId: number;
+    public ArrowActionsStringEnum = ArrowActionsStringEnum;
 
     private scrollSubject: Subject<void> = new Subject();
     private subscriptions: Subscription = new Subscription();
@@ -80,6 +86,13 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     public toogleStopList(): void {
         this.isStopListExpanded = !this.isStopListExpanded;
+    }
+
+    public getTruckUnit(direction: ArrowActionsStringEnum): void {
+        this.milesStoreService.dispatchGetNextTruckUnit(
+            this.truckId,
+            direction
+        );
     }
 
     private manageScrollDebounce(): void {
