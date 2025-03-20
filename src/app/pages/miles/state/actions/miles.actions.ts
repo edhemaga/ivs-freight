@@ -75,3 +75,12 @@ export const getTotalMilesDetails = createAction(
     MilesStoreConstants.ACTION_GET_TOTAL_MILES_DETAILS,
     props<{ milesDetails: MilesByUnitPaginatedStopsResponse }>()
 );
+
+export const getMilesDetails = createAction(
+    MilesStoreConstants.ACTION_GET_MILES_DETAILS,
+    props<{ milesDetails: MilesByUnitPaginatedStopsResponse }>()
+);
+
+export const getMilesDetailsError = createAction(
+    MilesStoreConstants.ACTION_GET_MILES_DETAILS_ERROR
+);

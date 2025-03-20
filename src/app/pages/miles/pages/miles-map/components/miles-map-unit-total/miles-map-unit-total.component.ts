@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import {
-    MilesByUnitPaginatedStopsResponse,
-    MilesService,
-} from 'appcoretruckassist';
+
+// Services
+import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
@@ -35,11 +34,5 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 })
 export class MilesMapUnitTotalComponent {
     public sharedSvgRoutes = SharedSvgRoutes;
-    total: MilesByUnitPaginatedStopsResponse;
-    constructor(public milesService: MilesService) {
-        this.milesService.apiMilesUnitGet(null, null, 13).subscribe((data) => {
-            this.total = data;
-            console.log(data);
-        });
-    }
+    constructor(public milesStoreService: MilesStoreService) {}
 }

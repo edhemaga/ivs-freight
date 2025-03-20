@@ -1,3 +1,5 @@
+@let total = milesStoreService.milesDetailsSelector$ | async;
+
 @if (total) {
     <div class="background-white br-3 p-12 miles-map-total pb-0">
         <div class="text-size-11 ta-font-bold text-color-black m-b-2">
@@ -7,7 +9,7 @@
             {{ total.totalMiles | thousandSeparator }}
         </div>
 
-        @if (total.totalMiles || total.stops.count) {
+        @if (total?.totalMiles || total?.stops?.count) {
             @if (total.totalMiles) {
                 @let totalUnitCount = total.loadedMiles + total.emptyMiles;
                 @let percent = (total.loadedMiles / totalUnitCount) * 100;

@@ -4,11 +4,8 @@ import { Component } from '@angular/core';
 // Form
 import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
 
-import {
-    MilesByUnitPaginatedStopsResponse,
-    MilesService,
-} from 'appcoretruckassist';
-
+// Services
+import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 // Pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
 import { MilesIconPipe } from '@pages/miles/pipes/miles-icon.pipe';
@@ -38,21 +35,14 @@ import { CaInputComponent } from 'ca-components';
 export class MilesMapUnitListComponent {
     public isStopListExpanded: boolean = false;
 
-    total: MilesByUnitPaginatedStopsResponse;
-
     public searchForm = this.formBuilder.group({
         search: null,
     });
 
     constructor(
-        public milesService: MilesService,
-        private formBuilder: UntypedFormBuilder
-    ) {
-        this.milesService.apiMilesUnitGet(null, null, 368).subscribe((data) => {
-            this.total = data;
-            console.log(data);
-        });
-    }
+        private formBuilder: UntypedFormBuilder,
+        public milesStoreService: MilesStoreService
+    ) {}
     public toogleStopList(): void {
         this.isStopListExpanded = !this.isStopListExpanded;
     }

@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 // NgRx Imports
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
 import { catchError, map, exhaustMap, take } from 'rxjs/operators';
 
 // Actions
@@ -18,6 +17,7 @@ import { selectSelectedTab } from '@pages/miles/state/selectors/miles.selector';
 
 // Utils
 import { MilesHelper } from '@pages/miles/utils/helpers';
+import { of } from 'rxjs';
 
 @Injectable()
 export class MilesEffects {
@@ -56,25 +56,6 @@ export class MilesEffects {
                     })
                 ),
                 catchError(() => of(MilesAction.getLoadsPayloadError()))
-            );
-    }
-
-    public fetchTruckTotalMiles(
-        truckId?: number,
-        dateFrom?: string,
-        dateTo?: string,
-        states?: string[]
-    ): void {
-        this.milesService
-            .apiMilesUnitGet(null, 1, truckId, dateFrom, dateTo, states)
-            .pipe(
-                map((response) => {
-                    MilesAction.getTotalMilesDetails({
-                        milesDetails: response,
-                    });
-                    return response;
-                }),
-                catchError(() => of(null))
             );
     }
 
@@ -118,6 +99,24 @@ export class MilesEffects {
                             states
                         );
                     })
+                );
+            })
+        )
+    );
+
+    // Get active unit
+    public getSelectedUnit$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getMilesDetails),
+            exhaustMap((action) => {
+                // TODO: Add dynamic unit params
+                return this.milesService.apiMilesUnitGet(null, null, 368).pipe(
+                    map((response) =>
+                        MilesAction.getTotalMilesDetails({
+                            milesDetails: response,
+                        })
+                    ),
+                    catchError(() => of(MilesAction.getLoadsPayloadError()))
                 );
             })
         )

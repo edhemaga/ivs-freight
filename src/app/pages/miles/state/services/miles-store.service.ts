@@ -12,13 +12,15 @@ import {
     selectedRowsSelector,
     tableColumnsSelector,
     filterSelector,
-    areAllItemsSelectedSelector
+    areAllItemsSelectedSelector,
+    milesDetailsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
 import { IMilesModel } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
+    MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
@@ -67,7 +69,12 @@ export class MilesStoreService {
         select(filterSelector)
     );
 
-    public areAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(select(areAllItemsSelectedSelector))
+    public areAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(
+        select(areAllItemsSelectedSelector)
+    );
+
+    public milesDetailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
+        this.store.pipe(select(milesDetailsSelector));
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -102,6 +109,12 @@ export class MilesStoreService {
             type: MilesStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
             activeViewMode,
         });
+
+        if (activeViewMode === eActiveViewMode.Map) {
+            this.store.dispatch({
+                type: MilesStoreConstants.ACTION_GET_MILES_DETAILS,
+            });
+        }
     }
 
     public dispatchFilters(
