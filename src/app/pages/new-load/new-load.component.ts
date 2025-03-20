@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
+// modules
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import {
@@ -28,6 +32,7 @@ import {
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
+
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants';
 
@@ -40,7 +45,10 @@ import { FilterHelper } from '@shared/utils/helpers';
     styleUrl: './new-load.component.scss',
     standalone: true,
     imports: [
+        // modules
         CommonModule,
+        NgbTooltipModule,
+        AngularSvgIconModule,
 
         // Components
         NewTableToolbarComponent,
@@ -81,14 +89,14 @@ export class NewLoadComponent {
     }
 
     public setFilters(filters: IFilterAction): void {
-        const selectedtab: eLoadStatusType = eLoadStatusType[this.selectedTab];
+        const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
 
         this.loadStoreService.dispatchGetList(
             {
                 ...FilterHelper.mapFilters(filters, this.filter),
-                statusType: selectedtab,
+                statusType: selectedTab,
             },
-            selectedtab
+            selectedTab
         );
     }
 
@@ -127,5 +135,9 @@ export class NewLoadComponent {
                 eLoadStatusType[this.selectedTab]
             );
         }
+    }
+
+    public handleQueryChange(query: string[]): void {
+        console.log(query);
     }
 }
