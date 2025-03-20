@@ -148,26 +148,28 @@ export class MilesEffects {
                     this.store.select(truckIdSelector).pipe(take(1)),
                 ]).pipe(
                     exhaustMap(([milesItems, truckId]) => {
+                        const adjacentId = MilesHelper.findAdjacentId(
+                            milesItems,
+                            truckId,
+                            direction
+                        );
+
                         return this.milesService
-                            .apiMilesUnitGet(
-                                25,
-                                1,
-                                MilesHelper.findAdjacentId(
-                                    milesItems,
-                                    truckId,
-                                    direction
-                                )
-                            )
+                            .apiMilesUnitGet(25, 1, adjacentId.id)
                             .pipe(
                                 map((response) =>
                                     MilesAction.setNewTotalMilesDetails({
                                         milesDetails: response,
+                                        isFirst: adjacentId.isFirst,
+                                        isLast: adjacentId.isLast,
                                     })
                                 ),
                                 catchError(() =>
                                     of(
                                         MilesAction.setNewTotalMilesDetailsError(
-                                            { truckId }
+                                            {
+                                                truckId,
+                                            }
                                         )
                                     )
                                 )

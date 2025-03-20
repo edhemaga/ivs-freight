@@ -58,24 +58,27 @@ export class MilesHelper {
         miles: IMilesModel[],
         currentId: number,
         direction: ArrowActionsStringEnum
-    ): number | null {
+    ): { id: number | null; isFirst: boolean; isLast: boolean } {
         const index = miles.findIndex((mile) => mile.id === currentId);
 
         if (index === -1) {
-            return null;
+            return { id: null, isFirst: false, isLast: false };
         }
 
+        let newIndex = index;
         if (
             direction === ArrowActionsStringEnum.NEXT &&
             index < miles.length - 1
         ) {
-            return miles[index + 1].id;
+            newIndex = index + 1;
+        } else if (direction === ArrowActionsStringEnum.PREVIOUS && index > 0) {
+            newIndex = index - 1;
         }
 
-        if (direction === ArrowActionsStringEnum.PREVIOUS && index > 0) {
-            return miles[index - 1].id;
-        }
-
-        return null;
+        return {
+            id: miles[newIndex].id,
+            isFirst: newIndex === 0,
+            isLast: newIndex === miles.length - 1,
+        };
     }
 }

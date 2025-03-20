@@ -162,26 +162,24 @@ export const milesReducer = createReducer(
         };
     }),
 
-    on(MilesAction.setNewTotalMilesDetails, (state, { milesDetails }) => {
-        const totalPages = Math.ceil(
-            milesDetails.stops.count / milesDetails.stops.pageSize
-        );
-
-        const isUserOnLastPage = milesDetails.stops.pageIndex >= totalPages;
-
-        return {
-            ...state,
-            milesDetails,
-            stops: [...milesDetails.stops.data],
-            isMilesDetailsLoading: false,
-            isUserOnLastPage,
-            milesDetailsFilters: {
-                pageIndex: 1,
-                pageSize: 25,
-                truckId: milesDetails.truck.id,
-            },
-        };
-    }),
+    on(
+        MilesAction.setNewTotalMilesDetails,
+        (state, { milesDetails, isFirst, isLast }) => {
+            return {
+                ...state,
+                milesDetails,
+                stops: [...milesDetails.stops.data],
+                isMilesDetailsLoading: false,
+                isNextButtonDisabled: isLast,
+                isPreviousButtonDisabled: isFirst,
+                milesDetailsFilters: {
+                    pageIndex: 1,
+                    pageSize: 25,
+                    truckId: milesDetails.truck.id,
+                },
+            };
+        }
+    ),
 
     on(MilesAction.getMilesDetailsNewPage, (state) => {
         const { milesDetailsFilters } = state;

@@ -98,6 +98,8 @@ export const setNewTotalMilesDetails = createAction(
     MilesStoreConstants.ACTION_SET_TOTAL_MILES_DETAILS,
     props<{
         milesDetails: MilesByUnitPaginatedStopsResponse;
+        isFirst: boolean;
+        isLast: boolean;
     }>()
 );
 

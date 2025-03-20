@@ -16,7 +16,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     imports: [CommonModule, AngularSvgIconModule, SvgIconComponent],
     templateUrl: './new-table-toolbar.component.html',
     styleUrl: './new-table-toolbar.component.scss',
-    standalone: true
+    standalone: true,
 })
 export class NewTableToolbarComponent {
     // Inputs
@@ -24,6 +24,7 @@ export class NewTableToolbarComponent {
     @Input() leftSide: TemplateRef<any>;
     @Input() rightSide: TemplateRef<any>;
     @Input() showPlusIcon: boolean = true;
+    @Input() isMarginTopDisabled: boolean = false;
 
     // Outputs
     @Output() onPlusClick: EventEmitter<boolean> = new EventEmitter();

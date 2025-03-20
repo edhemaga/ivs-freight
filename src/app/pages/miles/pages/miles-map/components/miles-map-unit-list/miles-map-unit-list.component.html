@@ -7,10 +7,12 @@
 
 @if (details) {
     <div
-        class="background-white br-3 p-x-6 p-y-6 mb-2"
+        class="background-white br-3 p-x-6 mb-2"
         [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
     >
-        <div class="d-flex align-items-center p-l-8 justify-content-between">
+        <div
+            class="h-42 d-flex align-items-center p-l-8 justify-content-between"
+        >
             <span
                 class="d-flex align-items-center text-size-20 text-color-black ta-font-bold"
             >
@@ -60,7 +62,7 @@
         </div>
     </div>
     <div
-        class="background-white br-3 p-x-6 p-y-6"
+        class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
         [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
     >
         <form [formGroup]="searchForm">

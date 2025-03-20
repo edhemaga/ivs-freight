@@ -1,4 +1,7 @@
-<div class="new-table--header m-t-4 d-flex align-items-center">
+<div
+    class="new-table--header m-t-4 d-flex align-items-center"
+    [ngClass]="isMarginTopDisabled && 'mt-0'"
+>
     <div class="text-size-26 ta-font-black text-color-black mr-12">
         {{ title }}
     </div>

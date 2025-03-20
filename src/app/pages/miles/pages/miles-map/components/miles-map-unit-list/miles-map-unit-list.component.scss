@@ -10,3 +10,7 @@
         @include grid-template-columns(24px 160px 60px 60px 60px 60px);
     }
 }
+
+.miles-unit-list {
+    max-height: calc(100vh - 117px);
+}
