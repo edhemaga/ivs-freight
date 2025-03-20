@@ -56,7 +56,6 @@ import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { FuelPurchaseModalSvgRoutes } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/utils/svg-routes';
 
 // models
 import {
@@ -148,32 +147,37 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public fuelForm: UntypedFormGroup;
-    public isCardAnimationDisabled: boolean = false;
-    public modalActionType: FuelDataOptionsStringEnum;
+
     public truckType: FuelTruckType[] = [];
     public driverOptions: PayrollDriver[] = [];
-    public fuelCardHolderName: string;
     public fuelStops: ExtendedFuelStopResponse[] = [];
-    public fuelTransactionType: EnumValue;
-    public selectedTruckType: FuelTruckType;
-    public selectedTrailerType: FuelTruckType;
+    public documents: any[] = [];
+
     public selectedFuelStop: ExtendedFuelStopResponse;
     public selectedDispatchHistory: FuelDispatchHistoryResponse;
+    public selectedTruckType: FuelTruckType;
+    public selectedTrailerType: FuelTruckType;
     public selectedDriver: PayrollDriver;
-    public fuelItemsDropdown: EnumValue[] = [];
-    public documents: any[] = [];
+
     public isFuelRowCreated: boolean = false;
     public isEachFuelRowValid: boolean = true;
+
+    public fuelCardHolderName: string;
     public fuelItems: FuelItemResponse[] = [];
+    public isCardAnimationDisabled: boolean = false;
     public updatedFuelItems: FuelItemResponse[] = [];
     public total: number = 0;
-    public svgRoutes = SharedSvgRoutes;
-    public modalSvgRoutes = FuelPurchaseModalSvgRoutes;
-    public taModalActionEnum = TaModalActionEnum;
+
+    public fuelItemsDropdown: EnumValue[] = [];
     public eFuelTransactionType = eFuelTransactionType;
+    public modalActionType: FuelDataOptionsStringEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
     public fuelDataOptionsStringEnum = FuelDataOptionsStringEnum;
+    public fuelTransactionType: EnumValue;
     public fuelValuesStringEnum = FuelValuesStringEnum;
+
+    public svgRoutes = SharedSvgRoutes;
 
     private destroy$ = new Subject<void>();
 

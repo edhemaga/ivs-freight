@@ -36,13 +36,3 @@
 .ta-font-black {
     font-weight: 900 !important;
 }
-
-@for $i from 1 through 100 {
-    .font-size-#{$i} {
-        font-size: #{$i}px;
-    }
-
-    .line-height-#{$i} {
-        line-height: #{$i}px;
-    }
-}

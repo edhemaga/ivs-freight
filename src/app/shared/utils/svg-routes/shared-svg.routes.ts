@@ -18,4 +18,5 @@ export class SharedSvgRoutes {
     static SORT_ICON_ASC: string = 'assets/svg/common/sortArrow_filter-asc.svg';
     static DETAILS_BACK_BUTTON: string =
         'assets/svg/common/ic_details-back-arrow.svg';
+    static WEX_EFS: string = 'assets/svg/fuel/wex-efs.svg';
 }
