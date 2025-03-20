@@ -1,7 +1,7 @@
 import { DropdownMenuContentConstants } from '@shared/utils/constants';
 
 // enums
-import { eDropdownMenu } from '@shared/enums/dropdown-menu-content-string.enum';
+import { eDropdownMenu, eDropdownMenuColumns } from '@shared/enums';
 
 // models
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -307,7 +307,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: eDropdownMenu.RESET_TABLE,
+                title: eDropdownMenuColumns.RESET_TABLE,
                 isDisabled: !hasConfig,
             },
         ];

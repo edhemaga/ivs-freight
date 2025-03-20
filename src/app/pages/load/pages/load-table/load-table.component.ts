@@ -57,6 +57,7 @@ import {
     LoadStatusEnum,
     eDropdownMenu,
     eActiveViewMode,
+    eDropdownMenuColumns,
 } from '@shared/enums/index';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
@@ -724,12 +725,12 @@ export class LoadTableComponent
         }
 
         switch (action) {
-            case eDropdownMenu.UNLOCK_TABLE_TYPE:
-            case eDropdownMenu.LOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
                 this.updateToolbarDropdownMenuContentUnlockLockAction();
 
                 break;
-            case eDropdownMenu.COLUMNS_TYPE:
+            case eDropdownMenuColumns.COLUMNS_TYPE:
                 this.updateToolbarDropdownMenuContentColumnsAction();
 
                 break;
@@ -747,10 +748,8 @@ export class LoadTableComponent
                 this.selectedTab
             ),
         };
-        this.handleDropdownMenuActions(
-            mappedAction,
-            eDropdownMenu.LOAD
-        );
+
+        this.handleDropdownMenuActions(mappedAction, eDropdownMenu.LOAD);
     }
 
     public ngOnDestroy(): void {

@@ -1,5 +1,10 @@
 // enums
-import { eDropdownMenu, eGeneralActions, TableStringEnum } from '@shared/enums';
+import {
+    eDropdownMenu,
+    eDropdownMenuColumns,
+    eGeneralActions,
+    TableStringEnum,
+} from '@shared/enums';
 
 // helpers
 import {
@@ -717,11 +722,11 @@ export class DropdownMenuContentHelper {
             );
 
         const requestedSharedItems = [
-            eDropdownMenu.COLUMNS,
+            eDropdownMenuColumns.COLUMNS,
             isTableLocked
-                ? eDropdownMenu.UNLOCK_TABLE
-                : eDropdownMenu.LOCK_TABLE,
-            eDropdownMenu.RESET_TABLE,
+                ? eDropdownMenuColumns.UNLOCK_TABLE
+                : eDropdownMenuColumns.LOCK_TABLE,
+            eDropdownMenuColumns.RESET_TABLE,
         ];
 
         const sharedItems =
@@ -739,7 +744,7 @@ export class DropdownMenuContentHelper {
     ): IDropdownMenuItem[] {
         loadColumnsList = loadColumnsList ?? [];
 
-        const requestedSharedItems = [eDropdownMenu.COLUMNS_BACK];
+        const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
 
         const conditionalItems =
             DropdownMenuContentConditionalItemsHelper.getConditionalItems(
@@ -900,7 +905,7 @@ export class DropdownMenuContentHelper {
     static getTableToolbarDropdownContent(): OptionsPopupContent[] {
         return [
             {
-                text: eDropdownMenu.COLUMNS,
+                text: eDropdownMenuColumns.COLUMNS,
                 svgPath: 'assets/svg/truckassist-table/columns-new.svg',
                 active: false,
                 hide: false,
@@ -910,13 +915,13 @@ export class DropdownMenuContentHelper {
                     'assets/svg/truckassist-table/arrow-back-to-list.svg',
             },
             {
-                text: eDropdownMenu.UNLOCK_TABLE,
+                text: eDropdownMenuColumns.UNLOCK_TABLE,
                 svgPath: 'assets/svg/truckassist-table/lock-new.svg',
                 active: false,
                 hide: false,
             },
             {
-                text: eDropdownMenu.RESET_TABLE,
+                text: eDropdownMenuColumns.RESET_TABLE,
                 svgPath: 'assets/svg/truckassist-table/reset-icon.svg',
                 isInactive: true,
                 active: false,

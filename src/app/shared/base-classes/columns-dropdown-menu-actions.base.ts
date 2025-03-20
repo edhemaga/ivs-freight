@@ -6,6 +6,7 @@ import { ITableColummn, TableCardBodyActions } from '@shared/models';
 // enums
 import {
     eDropdownMenu,
+    eDropdownMenuColumns,
     eGeneralActions,
     TableStringEnum,
 } from '@shared/enums';
@@ -35,24 +36,24 @@ export abstract class ColumnsDropdownMenuActionsBase {
         const { type, subType, isActive } = action;
 
         switch (type) {
-            case eDropdownMenu.OPEN_TYPE:
+            case eDropdownMenuColumns.OPEN_TYPE:
                 this.updateToolbarDropdownMenuContent();
 
                 break;
-            case eDropdownMenu.COLUMNS_TYPE:
+            case eDropdownMenuColumns.COLUMNS_TYPE:
                 this.updateToolbarDropdownMenuContent(type);
 
                 break;
-            case eDropdownMenu.UNLOCK_TABLE_TYPE:
-            case eDropdownMenu.LOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
                 this.handleLockUnlockTableAction(type, subType);
 
                 break;
-            case eDropdownMenu.RESET_TABLE_TYPE:
+            case eDropdownMenuColumns.RESET_TABLE_TYPE:
                 this.handleResetTableAction(subType);
 
                 break;
-            case eDropdownMenu.RESET_TABLE_CONFIRMED_TYPE:
+            case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
                 this.handleResetTableConfirmedAction(subType);
 
                 break;
@@ -126,15 +127,11 @@ export abstract class ColumnsDropdownMenuActionsBase {
             ? JSON.parse(initialTableConfig)
             : DropdownMenuColumnsActionsHelper.getColumnDefinition(subType);
 
-        config = config.map((column: ITableColummn) => {
-            return {
-                ...column,
-                hidden:
-                    (column.field === actionType ||
-                        column.groupName === actionType) &&
-                    !isChecked,
-            };
-        });
+        config = config.map((column: ITableColummn) =>
+            column.field === actionType || column.groupName === actionType
+                ? { ...column, hidden: !isChecked }
+                : column
+        );
 
         const tableConfig = {
             tableType,

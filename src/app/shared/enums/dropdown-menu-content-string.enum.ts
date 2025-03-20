@@ -56,11 +56,6 @@ export enum eDropdownMenu {
     MOVE_TO_DNU_LIST = 'Move to DNU List',
     REMOVE_FROM_BAN_LIST = 'Remove from Ban List',
     REMOVE_FROM_DNU_LIST = 'Remove from DNU List',
-    COLUMNS = 'Columns',
-    COLUMNS_BACK = 'Columns back',
-    UNLOCK_TABLE = 'Unlock Table',
-    LOCK_TABLE = 'Lock Table',
-    RESET_TABLE = 'Reset Table',
 
     // types
     EDIT_LOAD_TYPE = 'edit-load',
@@ -121,12 +116,6 @@ export enum eDropdownMenu {
     MOVE_TO_DNU_LIST_TYPE = 'move-to-dnu-list',
     REMOVE_FROM_BAN_LIST_TYPE = 'remove-from-ban-list',
     REMOVE_FROM_DNU_LIST_TYPE = 'remove-from-dnu-list',
-    COLUMNS_TYPE = 'columns',
-    UNLOCK_TABLE_TYPE = 'unlock-table',
-    LOCK_TABLE_TYPE = 'lock-table',
-    RESET_TABLE_TYPE = 'reset-table',
-    RESET_TABLE_CONFIRMED_TYPE = 'reset-table-confirmed',
-    OPEN_TYPE = 'Open',
 
     // table types
     ACCOUNT = 'account',
@@ -145,9 +134,6 @@ export enum eDropdownMenu {
     SHIPPER = 'shipper',
     BROKER = 'broker',
     CUSTOMER = 'customer',
-    LOAD_REGULAR = 'LOAD_REGULAR',
-    LOAD_CLOSED = 'LOAD_CLOSED',
-    LOAD_TEMPLATE = 'LOAD_TEMPLATE',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',

@@ -4,7 +4,7 @@ import { ITableColummn } from '@shared/models';
 import { TableType, UpdateTableConfigCommand } from 'appcoretruckassist';
 
 // enums
-import { eDropdownMenu } from '@shared/enums';
+import { eDropdownMenu, eDropdownMenuColumns } from '@shared/enums';
 
 // configs
 import {
@@ -16,10 +16,11 @@ import {
 export class DropdownMenuColumnsActionsHelper {
     static getColumnDefinition(tableType: string): ITableColummn[] {
         const columnDefinitionMap: Record<string, ITableColummn[]> = {
-            [eDropdownMenu.LOAD_TEMPLATE]: getLoadTemplateColumnDefinition(),
-            [eDropdownMenu.LOAD_REGULAR]:
+            [eDropdownMenuColumns.LOAD_TEMPLATE]:
+                getLoadTemplateColumnDefinition(),
+            [eDropdownMenuColumns.LOAD_REGULAR]:
                 getLoadActiveAndPendingColumnDefinition(),
-            [eDropdownMenu.LOAD_CLOSED]: getLoadClosedColumnDefinition(),
+            [eDropdownMenuColumns.LOAD_CLOSED]: getLoadClosedColumnDefinition(),
         };
 
         return columnDefinitionMap[tableType];
@@ -37,7 +38,9 @@ export class DropdownMenuColumnsActionsHelper {
         }
     }
 
-    static getDropdownMenuColumnsContent(selectedTab: string) {
+    static getDropdownMenuColumnsContent(
+        selectedTab: string
+    ): IDropdownMenuItem[] {
         const tableType = this.getTableType(selectedTab);
 
         const tableColumnsConfig = JSON.parse(
@@ -103,7 +106,10 @@ export class DropdownMenuColumnsActionsHelper {
         return localStorage.getItem(`table-${tableType}-Configuration`);
     }
 
-    static setTableConfig(tableType: string, config: UpdateTableConfigCommand) {
+    static setTableConfig(
+        tableType: string,
+        config: UpdateTableConfigCommand
+    ): void {
         localStorage.setItem(
             `table-${tableType}-Configuration`,
             JSON.stringify(config)

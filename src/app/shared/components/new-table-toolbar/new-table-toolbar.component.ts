@@ -18,7 +18,7 @@ import {
 } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // enums
-import { eDropdownMenu } from '@shared/enums';
+import { eDropdownMenuColumns } from '@shared/enums';
 
 // components
 import { CaDropdownMenuComponent } from 'ca-components';
@@ -46,7 +46,7 @@ export class NewTableToolbarComponent implements OnInit, OnDestroy {
     @Input() title: string;
     @Input() leftSide: TemplateRef<any>;
     @Input() rightSide: TemplateRef<any>;
-    @Input() showColumnsDropdown: boolean = true;
+    @Input() hasColumnsDropdown: boolean = true;
     @Input() showPlusIcon: boolean = true;
     @Input() toolbarDropdownContent: IDropdownMenuItem[];
 
@@ -66,7 +66,7 @@ export class NewTableToolbarComponent implements OnInit, OnDestroy {
 
     private watchResetConfirmation(): void {
         const action = {
-            type: eDropdownMenu.RESET_TABLE_CONFIRMED_TYPE,
+            type: eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE,
         };
 
         this.confirmationResetService.getConfirmationResetData$
