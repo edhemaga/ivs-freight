@@ -14,7 +14,7 @@ import { FuelDetailsQuery } from '@pages/fuel/state/fuel-details-state/fuel-deta
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { FuelService } from '@shared/services/fuel.service';
+import { FuelService } from '@shared/services';
 import { ModalService } from '@shared/services/modal.service';
 
 // components

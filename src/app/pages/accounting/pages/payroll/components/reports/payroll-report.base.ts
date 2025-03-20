@@ -28,10 +28,13 @@ import {
     ePayrollAdditionalTypes,
     ePayrollTablesStatus,
 } from '@pages/accounting/pages/payroll/state/enums';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
-import { DropActionsStringEnum, eDropdownMenu } from '@shared/enums';
+import {
+    DropActionsStringEnum,
+    eDropdownMenu,
+    TableStringEnum,
+} from '@shared/enums';
 import { PayrollTypeEnum } from 'ca-components';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';

@@ -252,7 +252,7 @@ export class FuelStopDetailsCardComponent {
         if (isValidPreviousAction || isValidNextAction) {
             const fuelStopId =
                 this.fuelStopStoreDropdownList[this.fuelStopStoreCurrentIndex]
-                    .id;
+                    ?.id;
 
             this.detailsPageService.getDataDetailId(fuelStopId);
         }

@@ -91,8 +91,7 @@ import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fue
 import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import { eDropdownMenu, TableStringEnum } from '@shared/enums';
-import { eGeneralActions } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum, eGeneralActions } from '@shared/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';

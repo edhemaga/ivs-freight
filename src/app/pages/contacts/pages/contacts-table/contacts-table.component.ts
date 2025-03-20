@@ -26,8 +26,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { eDropdownMenu, eCommonElement } from '@shared/enums';
-import { eActiveViewMode } from '@shared/enums/active-view-mode.enum';
+import { eDropdownMenu, eCommonElement, eActiveViewMode } from '@shared/enums';
 
 // constants
 import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';

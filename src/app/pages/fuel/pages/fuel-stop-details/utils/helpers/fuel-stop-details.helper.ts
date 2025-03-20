@@ -3,6 +3,9 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 // constants
 import { FuelStopDetailsConstants } from '@pages/fuel/pages/fuel-stop-details/utils/constants';
 
+// enums
+import { eStringPlaceholder } from '@shared/enums';
+
 // models
 import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
 import { ExtendedFuelStopResponse } from '@pages/fuel/pages/fuel-stop-details/models';
@@ -27,8 +30,8 @@ export class FuelStopDetailsHelper {
             },
             config: {
                 showSort: true,
-                sortBy: '',
-                sortDirection: '',
+                sortBy: eStringPlaceholder.EMPTY,
+                sortDirection: eStringPlaceholder.EMPTY,
                 disabledColumns: [0],
                 minWidth: 60,
             },

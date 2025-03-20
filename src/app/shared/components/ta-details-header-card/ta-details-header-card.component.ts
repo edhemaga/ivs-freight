@@ -89,12 +89,12 @@ export class TaDetailsHeaderCardComponent<T> {
     @Input() public isLastFuelStopStoreInList?: boolean;
 
     @Output() public dropActions = new EventEmitter<T>();
-    @Output() public selectValue = new EventEmitter<string>();
+    @Output() public selectValue = new EventEmitter<T>();
     @Output() public changeEvent = new EventEmitter<string>();
     @Output() public changeEventAdditional =
         new EventEmitter<IAdditionalChangeEvent>();
 
-    @Output() selectValueStore = new EventEmitter<string>();
+    @Output() selectValueStore = new EventEmitter<T>();
 
     public inputFormControl: UntypedFormControl = new UntypedFormControl();
 
@@ -164,7 +164,7 @@ export class TaDetailsHeaderCardComponent<T> {
         }
     }
 
-    public onSelectSecondItem(value: any): void {
+    public onSelectSecondItem(value: T): void {
         if (this.optionsSecondInput.length > 1) {
             this.selectedAdditionalDropdownItem = value;
 
