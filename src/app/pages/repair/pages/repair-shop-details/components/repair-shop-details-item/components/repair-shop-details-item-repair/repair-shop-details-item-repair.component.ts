@@ -20,7 +20,7 @@ import {
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
+import { DetailsSearchService } from '@shared/services';
 import { RepairService } from '@shared/services/repair.service';
 
 // constants
@@ -115,7 +115,7 @@ export class RepairShopDetailsItemRepairComponent
         protected repairService: RepairService,
 
         private confirmationService: ConfirmationService,
-        private repairShopDetailsService: RepairShopDetailsService
+        private detailsSearchService: DetailsSearchService
     ) {
         super();
     }
@@ -259,7 +259,7 @@ export class RepairShopDetailsItemRepairComponent
     public handleCloseSearchEmit(): void {
         const detailsPartIndex = 0;
 
-        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
+        this.detailsSearchService.setCloseSearchStatus(detailsPartIndex);
     }
 
     ngOnDestroy(): void {

@@ -2,7 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
 // services
-import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
+import { DetailsSearchService } from '@shared/services';
 
 // components
 import { CaVehicleListComponent, eVehicleList } from 'ca-components';
@@ -37,14 +37,14 @@ export class RepairShopDetailsItemRepairedVehicleComponent {
         private router: Router,
 
         // services
-        private repairShopDetailsService: RepairShopDetailsService
+        private detailsSearchService: DetailsSearchService
     ) {}
 
     public handleVehicleListActionsEmit(action: IVehicleListActionsEmit): void {
         const { unitType, unitId, isCloseSearch } = action;
 
         isCloseSearch
-            ? this.repairShopDetailsService.setCloseSearchStatus(1)
+            ? this.detailsSearchService.setCloseSearchStatus(1)
             : this.router.navigate([
                   `/list/${unitType.toLowerCase()}/${unitId}/details`,
               ]);

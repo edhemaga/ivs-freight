@@ -4,6 +4,20 @@
     >
         <!-- Search -->
 
+        @if (searchConfig[0]) {
+            <div class="stop-details-item-transaction-search">
+                <app-ca-search-multiple-states
+                    [searchType]="'Transaction'"
+                    [toolbarSearch]="true"
+                    [isDetailsPageSearch]="true"
+                    [selectedTabData]="{
+                        gridNameTitle: 'Transaction',
+                    }"
+                    (close)="handleCloseSearchEmit()"
+                ></app-ca-search-multiple-states>
+            </div>
+        }
+
         <!-- Header -->
 
         <div

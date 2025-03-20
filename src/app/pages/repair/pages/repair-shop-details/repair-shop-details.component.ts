@@ -20,7 +20,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
-import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
+import { DetailsSearchService } from '@shared/services';
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
@@ -110,7 +110,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         private confirmationActivationService: ConfirmationActivationService,
         private modalService: ModalService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
-        private repairShopDetailsService: RepairShopDetailsService,
+        private detailsSearchService: DetailsSearchService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -121,8 +121,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     ) {}
 
     ngOnInit(): void {
-        this.getRepairShopData();
-
         this.getStoreData();
 
         this.setTableFilter();
@@ -134,10 +132,6 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         this.searchSubscribe();
 
         this.handleRepairShopIdRouteChange();
-    }
-
-    public isEmpty<T>(obj: Record<string, T>): boolean {
-        return !Object.keys(obj).length;
     }
 
     private repairBackFilter(
@@ -330,10 +324,13 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             });
 
         // close search subscribe
-        this.repairShopDetailsService.getCloseSearchStatus$
+        this.detailsSearchService.getCloseSearchStatus$
             .pipe(takeUntil(this.destroy$))
             .subscribe((detailsPartIndex) => {
-                this.searchConfig[detailsPartIndex] = false;
+                this.searchConfig = this.searchConfig.map(
+                    (searchItem, index) =>
+                        index !== detailsPartIndex && searchItem
+                );
 
                 if (detailsPartIndex === 3) this.contactListSearchValue = null;
             });
@@ -491,32 +488,20 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     }
 
     private getStoreData(): void {
+        const dataId = this.activatedRoute.snapshot.params.id;
+
         const storeData$ = this.repairItemStore._select((state) => state);
+
+        this.newRepairShopId = dataId;
 
         storeData$.pipe(takeUntil(this.destroy$)).subscribe((state) => {
             const newRepairShopData = {
                 ...state.entities[this.newRepairShopId],
             };
 
-            if (!this.isEmpty(newRepairShopData)) {
-                this.detailsDataService.setNewData(newRepairShopData);
-
-                this.getDetailsConfig(newRepairShopData);
-                this.getDetailsOptions(newRepairShopData);
-            }
+            this.getDetailsConfig(newRepairShopData);
+            this.getDetailsOptions(newRepairShopData);
         });
-    }
-
-    private getRepairShopData(): void {
-        const dataId = this.activatedRoute.snapshot.params.id;
-
-        const repairShopData = {
-            ...this.repairItemStore?.getValue()?.entities[dataId],
-        };
-
-        this.newRepairShopId = dataId;
-
-        this.getDetailsConfig(repairShopData);
     }
 
     public getDetailsConfig(repairShop: ExtendedRepairShopResponse): void {

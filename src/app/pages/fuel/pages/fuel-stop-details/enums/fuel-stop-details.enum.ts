@@ -7,6 +7,5 @@ export enum eFuelStopDetails {
 
     FUEL_TRANSACTION = 'fuel-transaction',
 
-    NEXT = 'next',
-    PREVIOUS = 'previous',
+    TRANSACTION = 'Transaction',
 }

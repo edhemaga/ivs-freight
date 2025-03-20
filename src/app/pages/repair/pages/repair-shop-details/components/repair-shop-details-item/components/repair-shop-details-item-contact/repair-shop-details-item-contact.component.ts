@@ -6,7 +6,7 @@ import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-
 import { CaSearchMultipleStatesComponent } from 'ca-components';
 
 // services
-import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
+import { DetailsSearchService } from '@shared/services';
 
 // models
 import {
@@ -43,7 +43,7 @@ export class RepairShopDetailsItemContactComponent {
 
     public departmentContacts: DepartmentContacts[];
 
-    constructor(private repairShopDetailsService: RepairShopDetailsService) {}
+    constructor(private detailsSearchService: DetailsSearchService) {}
 
     private orderContacts(contacts: RepairShopContactResponse[]): void {
         this.departmentContacts = [];
@@ -68,6 +68,6 @@ export class RepairShopDetailsItemContactComponent {
     public handleCloseSearchEmit(): void {
         const detailsPartIndex = 3;
 
-        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
+        this.detailsSearchService.setCloseSearchStatus(detailsPartIndex);
     }
 }

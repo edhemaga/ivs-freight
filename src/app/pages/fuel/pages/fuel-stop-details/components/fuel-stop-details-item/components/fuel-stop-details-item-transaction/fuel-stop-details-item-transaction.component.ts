@@ -11,7 +11,10 @@ import { FuelDropdownMenuActionsBase } from '@pages/fuel/base-classes';
 
 // components
 import { TaDocumentsDrawerComponent } from '@shared/components/ta-documents-drawer/ta-documents-drawer.component';
-import { CaDropdownMenuComponent } from 'ca-components';
+import {
+    CaDropdownMenuComponent,
+    CaSearchMultipleStatesComponent,
+} from 'ca-components';
 
 // svg routes
 import { FuelStopDetailsSvgRoutes } from '@pages/fuel/pages/fuel-stop-details/utils/svg-routes';
@@ -32,6 +35,7 @@ import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-de
 import { ModalService } from '@shared/services/modal.service';
 import { FuelService } from '@shared/services/fuel.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DetailsSearchService } from '@shared/services';
 
 // directives
 import { DescriptionItemsTextCountDirective } from '@shared/directives';
@@ -45,12 +49,14 @@ import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// models
-import { FuelTransactionResponse } from 'appcoretruckassist';
+// interfaces
 import {
     IDropdownMenuItem,
     IDropdownMenuOptionEmit,
 } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
+// models
+import { FuelTransactionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-details-item-transaction',
@@ -65,6 +71,7 @@ import {
         // components
         TaDocumentsDrawerComponent,
         CaDropdownMenuComponent,
+        CaSearchMultipleStatesComponent,
 
         // pipes
         FormatDatePipe,
@@ -116,7 +123,8 @@ export class FuelStopDetailsItemTransactionComponent
         protected modalService: ModalService,
         protected fuelService: FuelService,
 
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private detailsSearchService: DetailsSearchService
     ) {
         super();
     }
@@ -242,6 +250,12 @@ export class FuelStopDetailsItemTransactionComponent
     }
 
     public handleShowMoreAction(): void {}
+
+    public handleCloseSearchEmit(): void {
+        const detailsPartIndex = 0;
+
+        this.detailsSearchService.setCloseSearchStatus(detailsPartIndex);
+    }
 
     ngOnDestroy(): void {
         this.destroy$.next();
