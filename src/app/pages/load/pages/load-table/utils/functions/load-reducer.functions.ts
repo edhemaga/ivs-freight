@@ -1,12 +1,12 @@
 // appcoretruckassist
 import {
     BrokerByIdResponse,
-    BrokerContactGroupResponse,
     CommentResponse,
     DispatcherFilterResponse,
     LoadListDto,
     LoadListResponse,
     LoadModalResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatus,
     LoadStatusResponse,
@@ -31,6 +31,7 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
 // Helpers
 import { FilterHelper } from '@shared/utils/helpers';
+import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers';
 
 export const getLoadsOrTemplatesPayloadSuccessResult = function (
     state: ILoadState,
@@ -55,6 +56,10 @@ export const getLoadsOrTemplatesPayloadSuccessResult = function (
         activeCount,
         closedCount,
         selectedTab,
+        selectLoadCount: 0,
+        selectLoadRateSum: 0,
+        totalLoadSum: LoadStoreHelper.calculateSelectedLoadsSum(_data, true),
+        hasAllLoadsSelected: false,
     };
 
     return result;
@@ -372,12 +377,14 @@ export const initializeLoadGridItem = function (
 export const getLoadModalDataSuccessResult = function (
     state: ILoadState,
     modal: LoadModalResponse,
-    activeModalData?: IActiveLoadModalData
+    activeModalData?: IActiveLoadModalData,
+    activeModalPossibleStatuses?: LoadPossibleStatusesResponse
 ): ILoadState {
     const result: ILoadState = {
         ...state,
         modal,
         activeModalData,
+        activeModalPossibleStatuses,
     };
 
     return result;
@@ -586,3 +593,54 @@ export const getLoadDetails = function (
 ): ILoadState {
     return { ...state, details, isLoadDetailsLoaded: true };
 };
+
+export function updateAllLoadsSelectStatus(state: ILoadState): ILoadState {
+    const hasAllLoadsSelected = !state.hasAllLoadsSelected;
+    const { data } = state;
+
+    const loads = data.map(
+        (load: ILoadGridItem[] | ILoadTemplateGridItem[]) => ({
+            ...load,
+            isSelected: hasAllLoadsSelected,
+        })
+    );
+
+    return {
+        ...state,
+        hasAllLoadsSelected,
+        selectLoadCount: hasAllLoadsSelected ? data.length : 0,
+        selectLoadRateSum: LoadStoreHelper.calculateSelectedLoadsSum(
+            loads,
+            false
+        ),
+        data: loads,
+    };
+}
+
+export function updateLoadSelectedStatus(
+    state: ILoadState,
+    load: ILoadGridItem | ILoadTemplateGridItem
+) {
+    const { data } = state;
+
+    const loads = data.map((row: ILoadGridItem | ILoadTemplateGridItem) => {
+        return {
+            ...row,
+            // Toggle current state
+            isSelected: row.id === load.id ? !row.isSelected : row.isSelected,
+        };
+    });
+
+    const selectedCount = loads.filter((loads) => loads.isSelected).length;
+
+    return {
+        ...state,
+        data: loads,
+        selectLoadCount: selectedCount,
+        selectLoadRateSum: LoadStoreHelper.calculateSelectedLoadsSum(
+            loads,
+            false
+        ),
+        hasAllLoadsSelected: selectedCount === loads.length,
+    };
+}

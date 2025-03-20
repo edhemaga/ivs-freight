@@ -31,10 +31,7 @@
                 [selectedTab]="selectedTab"
                 [tableData]="tableData"
                 (tableBodyActions)="
-                    handleDropdownMenuActions(
-                        $event,
-                        dropdownMenuStringEnum.CONTACT
-                    )
+                    handleDropdownMenuActions($event, eDropdownMenu.CONTACT)
                 "
             ></app-ta-table-body>
         }

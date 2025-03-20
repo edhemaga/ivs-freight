@@ -25,7 +25,7 @@ import { eActiveViewMode, TableStringEnum } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // helpers
-import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers/load-store.helper';
+import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers';
 
 export const loadFeatureKey: string = 'load';
 
@@ -383,6 +383,15 @@ export const activeLoadModalDataSelector = createSelector(
     }
 );
 
+export const activeLoadModalPossibleStatusesSelector = createSelector(
+    loadState,
+    (state) => {
+        const { activeModalPossibleStatuses } = state;
+
+        return activeModalPossibleStatuses;
+    }
+);
+
 export const loadDetailsSelector = createSelector(loadState, (state) => {
     const { details } = state;
 
@@ -395,5 +404,68 @@ export const isLoadDetailsLoadedSelector = createSelector(
         const { isLoadDetailsLoaded } = state;
 
         return isLoadDetailsLoaded;
+    }
+);
+
+export const selectedCountSelector = createSelector(loadState, (state) => {
+    const { selectLoadCount } = state;
+    return selectLoadCount;
+});
+
+export const selectLoadRateSumSelector = createSelector(loadState, (state) => {
+    const { selectLoadRateSum } = state;
+    return selectLoadRateSum;
+});
+
+export const hasAllLoadsSelectedSelector = createSelector(
+    loadState,
+    (state) => {
+        const { hasAllLoadsSelected } = state;
+        return hasAllLoadsSelected;
+    }
+);
+
+export const totalLoadSumSelector = createSelector(loadState, (state) => {
+    const { totalLoadSum } = state;
+    return totalLoadSum;
+});
+
+export const isLoadDetailsMapOpenSelector = createSelector(
+    loadState,
+    (state) => {
+        const { isLoadDetailsMapOpen } = state;
+        return isLoadDetailsMapOpen;
+    }
+);
+
+export const loadDetailsStopCountSelector = createSelector(
+    loadDetailsSelector,
+    (loadDetails) => {
+        const { stops } = loadDetails;
+
+        if (!stops?.length) return 0;
+
+        const stopCount = stops.length - (stops[0].stopType.id === 0 ? 1 : 0);
+
+        return stopCount;
+    }
+);
+
+export const loadDetailsExtraStopCountSelector = createSelector(
+    loadDetailsSelector,
+    (loadDetails) => {
+        const { stops } = loadDetails;
+
+        if (!stops || stops.length <= 2) {
+            return 0;
+        }
+
+        const isFirstStopDeathHead = stops[0].stopType.id === 0;
+
+        const extraStopCount = isFirstStopDeathHead
+            ? stops.length - 3
+            : stops.length - 2;
+
+        return extraStopCount;
     }
 );

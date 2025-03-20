@@ -9,7 +9,7 @@ import {
 import { Subject } from 'rxjs';
 
 // store
-import { RepairMinimalListQuery } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.query';
+import { RepairMinimalListQuery } from '@pages/repair/state/repair-details-minimal-list-state/repair-minimal-list.query';
 
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';

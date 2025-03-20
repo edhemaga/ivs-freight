@@ -663,6 +663,15 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
         if (this.isRepairBillTable || this.isRepairOrderTable) {
             modalTableDataValue = modalTableDataValue.map(
                 (itemRow: RepairItemCommand, index: number) => {
+                    const price =
+                        MethodsCalculationsHelper.convertThousandSepInNumber(
+                            itemRow.price?.toString()
+                        );
+
+                    const quantity =
+                        MethodsCalculationsHelper.convertThousandSepInNumber(
+                            itemRow.quantity?.toString()
+                        );
                     return {
                         ...itemRow,
                         ...(this.isRepairBillTable &&
@@ -676,8 +685,9 @@ export class TaModalTableComponent implements OnInit, OnChanges, OnDestroy {
                             this.selectedTruckTrailerRepairPm[index]
                                 ?.trailerId &&
                             this.selectedTruckTrailerRepairPm[index],
-                        quantity: +itemRow.quantity,
-                        price: +itemRow.price,
+                        quantity,
+                        price,
+                        subtotal: price * quantity,
                     };
                 }
             );

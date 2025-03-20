@@ -2,7 +2,10 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // resolvers
-import { FuelDetailsResolver } from '@pages/fuel/resolvers';
+import {
+    FuelDetailsResolver,
+    FuelMinimalResolver,
+} from '@pages/fuel/resolvers';
 
 // components
 import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.component';
@@ -21,6 +24,7 @@ const routes: Routes = [
             ).then((m) => m.FuelStopDetailsComponent),
         resolve: {
             fuelStop: FuelDetailsResolver,
+            fuelStopMinimal: FuelMinimalResolver,
         },
         data: { title: 'Fuel Stop Details' },
     },

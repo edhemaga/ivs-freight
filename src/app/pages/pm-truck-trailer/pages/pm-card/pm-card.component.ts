@@ -6,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { PmDropdownMenuActionsBase } from '@pages/pm-truck-trailer/base-classes';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
@@ -104,7 +104,7 @@ export class PmCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.PM);
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.PM);
     }
 
     public handleShowMoreAction(): void {

@@ -36,7 +36,7 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 // enums
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
+import { eDropdownMenu, eGeneralActions } from '@shared/enums';
 
 // pipes
 import { FormatDatePipe, ThousandSeparatorPipe } from '@shared/pipes';
@@ -223,10 +223,7 @@ export class RepairShopDetailsItemRepairComponent
                 repair
             );
 
-        this.handleDropdownMenuActions(
-            emitAction,
-            DropdownMenuStringEnum.REPAIR
-        );
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.REPAIR);
     }
 
     public handleActionClick(type: string, index?: number): void {

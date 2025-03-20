@@ -12,6 +12,7 @@ export interface DetailsDropdownOptions {
         minWidth: number;
     };
     actions: Action[];
+    data?: any; // TODO fix after details refactor
 }
 
 interface Action {

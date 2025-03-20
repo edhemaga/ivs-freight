@@ -20,6 +20,7 @@ export const initialState: ILoadState = {
 
     modal: null,
     activeModalData: null,
+    activeModalPossibleStatuses: null,
 
     pendingCount: 0,
     activeCount: 0,
@@ -35,6 +36,11 @@ export const initialState: ILoadState = {
 
     details: {},
     isLoadDetailsLoaded: false,
+    selectLoadRateSum: 0,
+    selectLoadCount: 0,
+    totalLoadSum: 0,
+    hasAllLoadsSelected: false,
+    isLoadDetailsMapOpen: false,
 };
 // #endregion
 
@@ -105,8 +111,15 @@ export const loadReducer = createReducer(
     on(LoadActions.getLoadByIdError, (state) => ({ ...state })),
 
     on(LoadActions.getEditLoadModalData, (state) => ({ ...state })),
-    on(LoadActions.getEditLoadModalDataSuccess, (state, { load, modal }) =>
-        Functions.getLoadModalDataSuccessResult(state, modal, load as any)
+    on(
+        LoadActions.getEditLoadModalDataSuccess,
+        (state, { load, modal, possibleStatuses }) =>
+            Functions.getLoadModalDataSuccessResult(
+                state,
+                modal,
+                load as any,
+                possibleStatuses
+            )
     ), // leave as any for now
     on(LoadActions.getEditLoadModalDataError, (state) => ({ ...state })),
 
@@ -317,5 +330,19 @@ export const loadReducer = createReducer(
                 broker,
                 brokerContacts
             )
-    )
+    ),
+    on(LoadActions.selectAllRow, (state) =>
+        Functions.updateAllLoadsSelectStatus(state)
+    ),
+    on(LoadActions.selectLoad, (state, { load }) =>
+        Functions.updateLoadSelectedStatus(state, load)
+    ),
+    on(LoadActions.toggleMap, (state) => {
+        const { isLoadDetailsMapOpen } = state;
+
+        return {
+            ...state,
+            isLoadDetailsMapOpen: !isLoadDetailsMapOpen,
+        };
+    })
 );

@@ -6,7 +6,7 @@ import { Observable, of, catchError, tap } from 'rxjs';
 import { RepairService } from '@shared/services/repair.service';
 
 // store
-import { RepairMinimalListStore } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
+import { RepairMinimalListStore } from '@pages/repair/state/repair-details-minimal-list-state/repair-minimal-list.store';
 
 // models
 import { RepairShopMinimalListResponse } from 'appcoretruckassist';
@@ -22,6 +22,7 @@ export class RepairMinimalResolver {
         private repairService: RepairService,
         private repairMinimalListStore: RepairMinimalListStore
     ) {}
+
     resolve(): Observable<string | RepairShopMinimalListResponse> {
         return this.repairService
             .getRepairShopMinimalList(this.pageIndex, this.pageSize)

@@ -68,11 +68,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import {
-    DropdownMenuStringEnum,
-    eCommonElement,
-    eGeneralActions,
-} from '@shared/enums';
+import { eDropdownMenu, eCommonElement, eGeneralActions } from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
@@ -128,7 +124,7 @@ export class RepairTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
     public tableStringEnum = TableStringEnum;
     public eCommonElement = eCommonElement;
 
@@ -1276,7 +1272,7 @@ export class RepairTableComponent
                         size: TableStringEnum.LARGE,
                     },
                     {
-                        type: DropdownMenuStringEnum.ADD_REPAIR_BILL_TRUCK,
+                        type: eDropdownMenu.ADD_REPAIR_BILL_TRUCK,
                     }
                 );
             } else if (this.selectedTab === TableStringEnum.INACTIVE) {
@@ -1286,7 +1282,7 @@ export class RepairTableComponent
                         size: TableStringEnum.LARGE,
                     },
                     {
-                        type: DropdownMenuStringEnum.ADD_REPAIR_BILL_TRAILER,
+                        type: eDropdownMenu.ADD_REPAIR_BILL_TRAILER,
                     }
                 );
             } else {
@@ -1381,7 +1377,7 @@ export class RepairTableComponent
         return {
             ...repair,
             isSelected: false,
-            isRepairOrder: repairType?.name === DropdownMenuStringEnum.ORDER,
+            isRepairOrder: repairType?.name === eDropdownMenu.ORDER,
             tableIssued: this.datePipe.transform(
                 date,
                 TableStringEnum.DATE_FORMAT

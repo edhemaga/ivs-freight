@@ -21,7 +21,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ModalService } from '@shared/services/modal.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -119,10 +119,7 @@ export class OwnerCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(
-            emitAction,
-            DropdownMenuStringEnum.OWNER
-        );
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.OWNER);
     }
 
     public handleShowMoreAction(): void {

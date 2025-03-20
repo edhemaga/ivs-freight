@@ -4,6 +4,8 @@ import { RouterModule, Routes } from '@angular/router';
 // Resolvers
 import { NewLoadDetailsResolver } from '@pages/new-load/resolvers/new-load-details.resolver';
 import { LoadResolver } from '@pages/load/resolvers/load.resolver';
+// Enums
+import { eLoadRouting } from '@pages/new-load/enums';
 
 // resolvers
 const routes: Routes = [
@@ -16,7 +18,7 @@ const routes: Routes = [
         resolve: { data: LoadResolver },
     },
     {
-        path: ':id/details',
+        path: `:id/${eLoadRouting.DETAILS}`,
         loadComponent: () =>
             import(
                 '@pages/new-load/pages/new-load-details/new-load-details.component'
