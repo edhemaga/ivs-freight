@@ -13,7 +13,8 @@ export class DetailsActiveItemPipe implements PipeTransform {
             folder?: string;
         },
     >(options: T[]): { name?: string; svg?: string; folder?: string } {
-        const { name, svg, folder } = options?.find((item) => item.active);
+        const { name, svg, folder } =
+            options?.find((item) => item.active) || {};
 
         return {
             name,
