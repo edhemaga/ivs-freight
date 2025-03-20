@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
+// modules
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
+
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eActiveViewMode, eGeneralActions } from '@shared/enums';
@@ -20,6 +24,7 @@ import {
     CaFilterComponent,
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
+    CaSearchMultipleStates2Component,
     IFilterAction,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
@@ -41,7 +46,10 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     styleUrl: './new-load.component.scss',
     standalone: true,
     imports: [
+        // modules
         CommonModule,
+        NgbTooltipModule,
+        AngularSvgIconModule,
 
         // Components
         NewTableToolbarComponent,
@@ -51,6 +59,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaFilterComponent,
         CaFilterTimeDropdownComponent,
         CaFilterListDropdownComponent,
+        CaSearchMultipleStates2Component,
         SvgIconComponent,
     ],
 })
@@ -84,14 +93,14 @@ export class NewLoadComponent {
     }
 
     public setFilters(filters: IFilterAction): void {
-        const selectedtab: eLoadStatusType = eLoadStatusType[this.selectedTab];
+        const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
 
         this.loadStoreService.dispatchGetList(
             {
                 ...FilterHelper.mapFilters(filters, this.filter),
-                statusType: selectedtab,
+                statusType: selectedTab,
             },
-            selectedtab
+            selectedTab
         );
     }
 
@@ -130,5 +139,10 @@ export class NewLoadComponent {
                 eLoadStatusType[this.selectedTab]
             );
         }
+    }
+
+    public onSearchQueryChange(query: string[]): void {
+        // TODO remove, for easier emitted data preview
+        console.log(query);
     }
 }
