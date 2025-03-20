@@ -27,6 +27,11 @@ export const selectSelectedTab = createSelector(
     (state: IMilesState) => state.selectedTab
 );
 
+export const selectMilesDetailsFilters = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.milesDetailsFilters
+);
+
 export const activeViewModeSelector = createSelector(
     selectMilesState,
     (state) => {
@@ -74,5 +79,13 @@ export const milesDetailsSelector = createSelector(
     (state) => {
         const { milesDetails } = state || {};
         return milesDetails;
+    }
+);
+
+export const isMilesDetailsLoadingSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { isMilesDetailsLoading } = state || {};
+        return isMilesDetailsLoading;
     }
 );

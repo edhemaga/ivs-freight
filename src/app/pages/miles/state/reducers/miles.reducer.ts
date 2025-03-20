@@ -31,7 +31,8 @@ export const initialState: IMilesState = {
     // Table
     columns: MilesTableColumns,
     milesDetails: {},
-    milesDetailsFilters: {},
+    milesDetailsFilters: { pageSize: 1, pageIndex: 25, truckId: 368 },
+    isMilesDetailsLoading: false,
 };
 
 export const milesReducer = createReducer(
@@ -133,11 +134,24 @@ export const milesReducer = createReducer(
         };
     }),
     // #endregion
-
     on(MilesAction.getTotalMilesDetails, (state, { milesDetails }) => {
         return {
             ...state,
             milesDetails,
+            isMilesDetailsLoading: false,
+        };
+    }),
+
+    on(MilesAction.getMilesDetailsNewPage, (state) => {
+        const { milesDetailsFilters } = state;
+
+        return {
+            ...state,
+            isMilesDetailsLoading: true,
+            milesDetailsFilters: {
+                ...milesDetailsFilters,
+                pageSize: milesDetailsFilters.pageIndex + 1,
+            },
         };
     })
 );

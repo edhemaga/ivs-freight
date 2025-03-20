@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { Subscription } from 'rxjs';
+import {
+    ScrollingModule,
+    CdkVirtualScrollViewport,
+} from '@angular/cdk/scrolling';
 
 // Form
 import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
@@ -22,18 +27,19 @@ import { CaInputComponent } from 'ca-components';
     imports: [
         CommonModule,
         ReactiveFormsModule,
-
-        // Pipes
+        ScrollingModule,
         ThousandSeparatorPipe,
         MilesIconPipe,
-
-        // Components
         SvgIconComponent,
         CaInputComponent,
     ],
 })
-export class MilesMapUnitListComponent {
+export class MilesMapUnitListComponent implements OnInit, OnDestroy {
+    @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
     public isStopListExpanded: boolean = false;
+    public isLoading: boolean = false;
+
+    private loadingSubscription!: Subscription;
 
     public searchForm = this.formBuilder.group({
         search: null,
@@ -43,7 +49,40 @@ export class MilesMapUnitListComponent {
         private formBuilder: UntypedFormBuilder,
         public milesStoreService: MilesStoreService
     ) {}
+
+    ngOnInit(): void {
+        this.manageSubscriptions();
+    }
+
+    private manageSubscriptions() {
+        this.loadingSubscription =
+            this.milesStoreService.isMilesDetailsLoadingSelector$.subscribe(
+                (loading) => {
+                    this.isLoading = loading;
+                }
+            );
+    }
+
     public toogleStopList(): void {
         this.isStopListExpanded = !this.isStopListExpanded;
+    }
+
+    public onScroll(): void {
+        if (this.isLoading) return;
+
+        const viewport = this.viewport;
+        const scrollOffset = viewport.measureScrollOffset('bottom');
+        const threshold = 50;
+
+        if (scrollOffset < threshold) {
+            this.milesStoreService.dispatchGetNewList();
+            console.log('Scrolled to bottom');
+        }
+    }
+
+    ngOnDestroy(): void {
+        if (this.loadingSubscription) {
+            this.loadingSubscription.unsubscribe();
+        }
     }
 }

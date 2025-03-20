@@ -13,7 +13,10 @@ import { MilesService } from 'appcoretruckassist';
 
 // Enums and Selectors
 import { eMileTabs } from '@pages/miles/enums';
-import { selectSelectedTab } from '@pages/miles/state/selectors/miles.selector';
+import {
+    selectMilesDetailsFilters,
+    selectSelectedTab,
+} from '@pages/miles/state/selectors/miles.selector';
 
 // Utils
 import { MilesHelper } from '@pages/miles/utils/helpers';
@@ -109,19 +112,33 @@ export class MilesEffects {
         this.actions$.pipe(
             ofType(MilesAction.getMilesDetails),
             exhaustMap((action) => {
-                // TODO: Add dynamic unit params
-                const { milesDetailsFilters } = action || {};
-                const { pageIndex, pageSize, truckId } = milesDetailsFilters;
-                return this.milesService
-                    .apiMilesUnitGet(pageIndex, pageSize, truckId)
-                    .pipe(
-                        map((response) =>
-                            MilesAction.getTotalMilesDetails({
-                                milesDetails: response,
-                            })
-                        ),
-                        catchError(() => of(MilesAction.getLoadsPayloadError()))
-                    );
+                return this.store.select(selectMilesDetailsFilters).pipe(
+                    take(1),
+                    exhaustMap((milesDetailsFilters) => {
+                        const { pageIndex, pageSize, truckId } =
+                            milesDetailsFilters;
+                        console.log(
+                            'pageIndex',
+                            pageIndex,
+                            'pageSize',
+                            pageSize,
+                            'truckId',
+                            truckId
+                        );
+                        return this.milesService
+                            .apiMilesUnitGet(pageIndex, pageSize, truckId)
+                            .pipe(
+                                map((response) =>
+                                    MilesAction.getTotalMilesDetails({
+                                        milesDetails: response,
+                                    })
+                                ),
+                                catchError(() =>
+                                    of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
+                    })
+                );
             })
         )
     );

@@ -14,6 +14,7 @@ import {
     filterSelector,
     areAllItemsSelectedSelector,
     milesDetailsSelector,
+    isMilesDetailsLoadingSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -76,6 +77,8 @@ export class MilesStoreService {
     public milesDetailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
         this.store.pipe(select(milesDetailsSelector));
 
+    public isMilesDetailsLoadingSelector$: Observable<boolean> =
+        this.store.pipe(select(isMilesDetailsLoadingSelector));
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
             type: MilesStoreConstants.SET_STATES,
@@ -113,17 +116,18 @@ export class MilesStoreService {
         if (activeViewMode === eActiveViewMode.Map) {
             this.store.dispatch({
                 type: MilesStoreConstants.ACTION_GET_MILES_DETAILS,
-                milesDetailsFilters: this.setTruckInitalFilters(),
             });
         }
     }
 
-    private setTruckInitalFilters(): IMilesDetailsFilters {
-        return {
-            pageSize: 1,
-            pageIndex: 25,
-            truckId: 368,
-        };
+    public dispatchGetNewList(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE,
+        });
+
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_MILES_DETAILS,
+        });
     }
 
     public dispatchFilters(

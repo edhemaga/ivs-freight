@@ -26,4 +26,5 @@ export interface IMilesState {
     areAllItemsSelected: boolean;
     milesDetails: MilesByUnitPaginatedStopsResponse;
     milesDetailsFilters: IMilesDetailsFilters;
+    isMilesDetailsLoading: boolean;
 }

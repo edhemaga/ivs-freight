@@ -55,17 +55,24 @@
         <div class="divider mt-1 mb-1"></div>
 
         <div class="scrollable-element">
-            @for (stop of details?.stops?.data; track stop.id) {
-                <ng-container
-                    *ngTemplateOutlet="
-                        stopRows;
-                        context: {
-                            stop,
-                        }
-                    "
-                >
-                </ng-container>
-            }
+            <cdk-virtual-scroll-viewport
+                #viewport
+                (scroll)="onScroll($event)"
+                [itemSize]="26"
+                style="height: 500px"
+            >
+                <div *cdkVirtualFor="let stop of details?.stops?.data">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            stopRows;
+                            context: {
+                                stop,
+                            }
+                        "
+                    >
+                    </ng-container>
+                </div>
+            </cdk-virtual-scroll-viewport>
         </div>
 
         <div (click)="toogleStopList()">

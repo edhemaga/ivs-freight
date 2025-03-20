@@ -84,3 +84,7 @@ export const getMilesDetails = createAction(
 export const getMilesDetailsError = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS_ERROR
 );
+
+export const getMilesDetailsNewPage = createAction(
+    MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE
+);
