@@ -80,15 +80,12 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         const threshold = 100;
 
         if (scrollOffset < threshold) {
-            this.milesStoreService.dispatchGetNewList();
         }
     }
 
     public toogleStopList(): void {
         this.isStopListExpanded = !this.isStopListExpanded;
     }
-
-    public getTruckUnit(direction: ArrowActionsStringEnum): void {}
 
     private manageScrollDebounce(): void {
         this.subscriptions.add(

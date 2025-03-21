@@ -19,16 +19,14 @@ import {
 import { IMilesModel } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
-    MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
-    MilesStopItemResponse,
 } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
 import { ITableColumn, ITableData } from '@shared/models';
 import { IStateFilters } from '@shared/interfaces';
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // Constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
@@ -105,22 +103,6 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
             activeViewMode,
-        });
-
-        if (activeViewMode === eActiveViewMode.Map) {
-            this.store.dispatch({
-                type: MilesStoreConstants.ACTION_GET_MILES_DETAILS,
-            });
-        }
-    }
-
-    public dispatchGetNewList(): void {
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE,
-        });
-
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_GET_MILES_DETAILS,
         });
     }
 
