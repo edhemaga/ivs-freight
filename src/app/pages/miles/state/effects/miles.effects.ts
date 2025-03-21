@@ -126,21 +126,22 @@ export class MilesEffects {
                     switchMap(([milesItems, activeUnitIndex]) => {
                         const { getFollowingUnitDirection } = action;
 
-                        const unitDetails = MilesHelper.findAdjacentId(
-                            milesItems,
-                            activeUnitIndex,
-                            getFollowingUnitDirection
-                        );
+                        const { index, isFirst, isLast, truckId } =
+                            MilesHelper.findAdjacentId(
+                                milesItems,
+                                activeUnitIndex,
+                                getFollowingUnitDirection
+                            );
 
                         return this.milesService
-                            .apiMilesUnitGet(null, null, unitDetails.truckId)
+                            .apiMilesUnitGet(null, null, truckId)
                             .pipe(
                                 map((unitResponse) =>
                                     MilesAction.setFollowingUnitDetails({
-                                        details: unitResponse,
-                                        newIndex: unitDetails.index,
-                                        isFirst: unitDetails.isFirst,
-                                        isLast: unitDetails.isLast,
+                                        unitResponse,
+                                        index,
+                                        isFirst,
+                                        isLast,
                                     })
                                 ),
                                 catchError(() =>

@@ -120,15 +120,15 @@ export const setUnitDetails = function (
 export const setFollowingUnitDetails = function (
     state: IMilesState,
     details: MilesByUnitPaginatedStopsResponse,
-    newIndex: number,
-    isFirst: boolean,
-    isLast: boolean
+    activeUnitIndex: number,
+    isFirstUnit: boolean,
+    isLastUnit: boolean
 ): IMilesState {
     return {
         ...state,
         details,
-        activeUnitIndex: newIndex,
-        isFirstUnit: isFirst,
-        isLastUnit: isLast,
+        activeUnitIndex,
+        isFirstUnit,
+        isLastUnit,
     };
 };

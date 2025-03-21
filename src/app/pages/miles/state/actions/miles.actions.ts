@@ -88,8 +88,8 @@ export const getFollowingUnit = createAction(
 export const setFollowingUnitDetails = createAction(
     MilesStoreConstants.ACTION_SET_FOLLOWING_UNIT,
     props<{
-        details: MilesByUnitPaginatedStopsResponse;
-        newIndex: number;
+        unitResponse: MilesByUnitPaginatedStopsResponse;
+        index: number;
         isFirst: boolean;
         isLast: boolean;
     }>()

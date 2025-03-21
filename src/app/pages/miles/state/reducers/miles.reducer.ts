@@ -99,11 +99,11 @@ export const milesReducer = createReducer(
 
     on(
         MilesAction.setFollowingUnitDetails,
-        (state, { details, newIndex, isFirst, isLast }) =>
+        (state, { unitResponse, index, isFirst, isLast }) =>
             Functions.setFollowingUnitDetails(
                 state,
-                details,
-                newIndex,
+                unitResponse,
+                index,
                 isFirst,
                 isLast
             )
