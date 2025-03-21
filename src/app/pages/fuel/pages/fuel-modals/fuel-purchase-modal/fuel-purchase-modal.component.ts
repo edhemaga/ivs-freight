@@ -40,6 +40,8 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 import {
     CaInputComponent,
     CaInputDatetimePickerComponent,
@@ -47,7 +49,6 @@ import {
     CaInputDropdownTestComponent,
     CaModalComponent,
 } from 'ca-components';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -122,14 +123,15 @@ import moment from 'moment';
 
         // components
         TaAppTooltipV2Component,
-        CaModalComponent,
-        CaInputComponent,
         TaCustomCardComponent,
-        CaInputDropdownComponent,
         TaUploadFilesComponent,
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
+        TaPasswordAccountHiddenCharactersComponent,
+        CaModalComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
         CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
 
