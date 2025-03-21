@@ -18,33 +18,42 @@
                 editData?.type === 'edit' &&
                 fuelTransactionType?.name !== 'Manual'
             ) {
-                @let accountId =
-                    editData?.data?.fuelCard?.accountId | middleEllipsis;
+                @let accountId = editData?.data?.fuelCard?.accountId;
 
-                <div class="row">
-                    <div class="col-6">
+                <div class="row m-0">
+                    <div class="col-6 pl-0">
                         <div
-                            class="d-flex justify-content-between px-2 h-100 background-bw1"
+                            class="d-flex justify-content-between px-2 h-100 background-bw1 position-relative"
                         >
                             <span
-                                class="fuel-account-label ta-font-semi-bold text-size-11"
+                                class="position-absolute ta-font-semi-bold text-size-11 bottom-25"
                             >
-                                Fuel Account
+                                Provider
                             </span>
 
                             <svg-icon
                                 class="line-height-22"
                                 [src]="svgRoutes.WEX_EFS"
                             ></svg-icon>
-
-                            <div
-                                class="font-size-14 line-height-26 text-color-grey"
-                            >
-                                {{ accountId }}
-                            </div>
                         </div>
                     </div>
-                    <div class="col-6">
+                    <div class="col-6 px-2 background-bw1 position-relative">
+                        <span
+                            class="position-absolute ta-font-semi-bold text-size-11 bottom-25 left-35"
+                        >
+                            Account
+                        </span>
+
+                        <app-ta-password-account-hidden-characters
+                            [passwordOrAccount]="accountId"
+                            [isEyeIconVisible]="true"
+                            [isDividerVisible]="true"
+                        ></app-ta-password-account-hidden-characters>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
                         <app-ca-input
                             formControlName="fuelCard"
                             [inputConfig]="

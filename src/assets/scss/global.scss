@@ -161,7 +161,6 @@ body {
 
 html {
     body {
-
         app-ca-modal,
         app-ta-modal {
             .ta-custom-card {
@@ -296,7 +295,6 @@ html {
             background-color: $ta-black-2 !important;
 
             .load-stop-content-up {
-
                 p,
                 span {
                     color: $white !important;
@@ -448,7 +446,6 @@ app-load-modal {
 
         &.nav-item-parent-active {
             &:hover {
-
                 .animation-text,
                 .nav-item-name-active {
                     color: $ta-blue-19 !important;
@@ -533,6 +530,20 @@ app-load-modal {
 .pl {
     &-0 {
         padding-left: 0 !important;
+    }
+
+    &-3 {
+        padding-left: 3px;
+    }
+}
+
+.position {
+    &-relative {
+        position: relative;
+    }
+
+    &-absolute {
+        position: absolute;
     }
 }
 
