@@ -52,14 +52,13 @@
             </ng-template>
 
             <ng-container *ngTemplateOutlet="divider"></ng-container>
+            <!-- TODO Property name 'selectedTab' can be changed, if more use cases come around -->
+            <ca-search-multiple-states-2
+                [selectedTab]="selectedTab"
+                (onSearchQueryChange)="onSearchQueryChange($event)"
+            ></ca-search-multiple-states-2>
 
             <div class="d-flex gap-1 align-items-center">
-                <app-ca-search-multiple-states
-                    [searchType]="'tabel'"
-                    [selectedTabData]="store?.activeTableData"
-                    [toolbarSearch]="true"
-                ></app-ca-search-multiple-states>
-
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
                 @if (selectedTab !== eLoadStatusStringType.TEMPLATE) {

@@ -22,6 +22,8 @@ import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DetailsSearchService } from '@shared/services';
 import { RepairService } from '@shared/services/repair.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // constants
 import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
@@ -113,7 +115,8 @@ export class RepairShopDetailsItemRepairComponent
         // services
         protected modalService: ModalService,
         protected repairService: RepairService,
-
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private confirmationService: ConfirmationService,
         private detailsSearchService: DetailsSearchService
     ) {
@@ -255,6 +258,8 @@ export class RepairShopDetailsItemRepairComponent
     }
 
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     public handleCloseSearchEmit(): void {
         const detailsPartIndex = 0;

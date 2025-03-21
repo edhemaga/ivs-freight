@@ -143,6 +143,7 @@ export enum eDropdownMenu {
 
     // conditions
     ACTIVE = 'active',
+    ACTIVE_CAPITALIZED = 'Active',
     ADD_NEW_DRIVER = 'add-new-driver',
     ADD_NEW_TRUCK_TRAILER = 'add-new-truck-trailer',
     ADD_REPAIR_BILL_TRUCK = 'add-repair-bill-truck',

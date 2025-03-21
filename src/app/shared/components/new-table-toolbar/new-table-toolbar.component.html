@@ -6,6 +6,23 @@
         <ng-container *ngTemplateOutlet="leftSide"></ng-container>
         <div class="m-l-auto d-flex align-items-center">
             <ng-container *ngTemplateOutlet="rightSide"></ng-container>
+
+            @if (hasColumnsDropdown) {
+                <div
+                    class="d-flex align-items-center justify-content-center mr-3"
+                >
+                    <ca-dropdown-menu
+                        [type]="'hamburger-menu-type'"
+                        [placement]="'bottom-right'"
+                        [options]="toolbarDropdownContent"
+                        (dropdownOptionEmitter)="
+                            handleDropdownMenuActions($event)
+                        "
+                    >
+                    </ca-dropdown-menu>
+                </div>
+            }
+
             @if (showPlusIcon) {
                 <div
                     class="new-table--toolbar-plus-icon c-pointer d-flex align-items-center justify-content-center"

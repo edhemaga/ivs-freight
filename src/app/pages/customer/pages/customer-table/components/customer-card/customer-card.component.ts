@@ -14,6 +14,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { DetailsDataService } from '@shared/services/details-data.service';
 import { ModalService } from '@shared/services/modal.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // pipes
 import { FormatCurrencyPipe, TimeFormatPipe } from '@shared/pipes';
@@ -64,8 +65,8 @@ export class CustomerCardComponent
         protected detailsDataService: DetailsDataService,
         protected modalService: ModalService,
         protected loadStoreService: LoadStoreService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
         // router
         protected router: Router,
@@ -128,6 +129,8 @@ export class CustomerCardComponent
     }
 
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();
