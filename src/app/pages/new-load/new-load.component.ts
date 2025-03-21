@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 // modules
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -7,15 +8,23 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eActiveViewMode, eGeneralActions } from '@shared/enums';
+import {
+    eActiveViewMode,
+    eDropdownMenu,
+    eDropdownMenuColumns,
+    eGeneralActions,
+} from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Models
 import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
-import { TableToolbarActions } from '@shared/models';
+import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
 
 // Services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
@@ -35,9 +44,17 @@ import { TableDropdownComponentConstants } from '@shared/utils/constants';
 
 // Helpers
 import { FilterHelper } from '@shared/utils/helpers';
+import { LoadTableHelper } from '@pages/load/pages/load-table/utils/helpers';
+import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Interface
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
+// Base class
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
 @Component({
     selector: 'app-new-load',
@@ -61,14 +78,29 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         SvgIconComponent,
     ],
 })
-export class NewLoadComponent {
+export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     public eLoadStatusStringType = eLoadStatusStringType;
     public selectedTab = eLoadStatusStringType.ACTIVE;
     public sharedIcons = SharedSvgRoutes;
     public generalActions = eGeneralActions;
-    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
+    public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
+    public isTableLocked: boolean = false;
 
-    constructor(protected loadStoreService: LoadStoreService) {}
+    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
+    private isToolbarDropdownMenuColumnsActive: boolean = false;
+
+    constructor(
+        // router
+        protected router: Router,
+
+        // services
+        protected modalService: ModalService,
+        protected loadStoreService: LoadStoreService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService
+    ) {
+        super();
+    }
 
     public onToolBarAction(event: TableToolbarActions): void {
         if (!event) return;
@@ -102,8 +134,93 @@ export class NewLoadComponent {
         );
     }
 
+    public handleToolbarDropdownMenuActions<T>(
+        action: TableCardBodyActions<T>
+    ) {
+        const mappedAction = {
+            ...action,
+            subType: DropdownMenuColumnsActionsHelper.getTableType(
+                this.selectedTab
+            ),
+        };
+
+        this.handleDropdownMenuActions(mappedAction, eDropdownMenu.LOAD);
+    }
+
+    public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(action?: string): void {
+        if (!action) {
+            this.isToolbarDropdownMenuColumnsActive = false;
+
+            this.setToolbarDropdownMenuContent(
+                this.selectedTab,
+                this.isTableLocked,
+                this.isToolbarDropdownMenuColumnsActive
+            );
+
+            return;
+        }
+
+        switch (action) {
+            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
+                this.updateToolbarDropdownMenuContentUnlockLockAction();
+
+                break;
+            case eDropdownMenuColumns.COLUMNS_TYPE:
+                this.updateToolbarDropdownMenuContentColumnsAction();
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    private updateToolbarDropdownMenuContentUnlockLockAction(): void {
+        this.isTableLocked = !this.isTableLocked;
+
+        this.setToolbarDropdownMenuContent(
+            this.selectedTab,
+            this.isTableLocked,
+            this.isToolbarDropdownMenuColumnsActive
+        );
+    }
+
+    private updateToolbarDropdownMenuContentColumnsAction(): void {
+        this.isToolbarDropdownMenuColumnsActive =
+            !this.isToolbarDropdownMenuColumnsActive;
+
+        const loadColumns =
+            DropdownMenuColumnsActionsHelper.getDropdownMenuColumnsContent(
+                this.selectedTab
+            );
+
+        this.setToolbarDropdownMenuContent(
+            this.selectedTab,
+            this.isTableLocked,
+            this.isToolbarDropdownMenuColumnsActive,
+            loadColumns
+        );
+    }
+
     private handleOpenModal(): void {
         // TODO: Denis Implement modal opening logic
+    }
+
+    private setToolbarDropdownMenuContent(
+        selectedTab: string,
+        isTableLocked: boolean,
+        isColumnsDropdownActive: boolean,
+        loadColumnsList?: IDropdownMenuItem[]
+    ): void {
+        this.toolbarDropdownMenuOptions =
+            LoadTableHelper.getToolbarDropdownMenuContent(
+                selectedTab,
+                isTableLocked,
+                isColumnsDropdownActive,
+                loadColumnsList
+            );
     }
 
     private handleTabSelected(mode: string): void {
