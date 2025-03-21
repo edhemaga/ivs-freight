@@ -13,13 +13,6 @@ import {
     tableColumnsSelector,
     filterSelector,
     areAllItemsSelectedSelector,
-    milesDetailsSelector,
-    isMilesDetailsLoadingSelector,
-    isUserOnLastPageSelector,
-    truckIdSelector,
-    stopsSelector,
-    isPreviousButtonDisabledSelector,
-    isNextButtonDisabledSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -78,30 +71,6 @@ export class MilesStoreService {
 
     public areAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(
         select(areAllItemsSelectedSelector)
-    );
-
-    public milesDetailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
-        this.store.pipe(select(milesDetailsSelector));
-
-    public isMilesDetailsLoadingSelector$: Observable<boolean> =
-        this.store.pipe(select(isMilesDetailsLoadingSelector));
-
-    public isUserOnLastPageSelector$: Observable<boolean> = this.store.pipe(
-        select(isUserOnLastPageSelector)
-    );
-
-    public truckIdSelector$: Observable<number> = this.store.pipe(
-        select(truckIdSelector)
-    );
-
-    public stopsSelector$: Observable<MilesStopItemResponse[]> =
-        this.store.pipe(select(stopsSelector));
-
-    public isPreviousButtonDisabledSelector$: Observable<boolean> =
-        this.store.pipe(select(isPreviousButtonDisabledSelector));
-
-    public isNextButtonDisabledSelector$: Observable<boolean> = this.store.pipe(
-        select(isNextButtonDisabledSelector)
     );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
@@ -175,17 +144,6 @@ export class MilesStoreService {
     public dispatchSelectAll(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
-        });
-    }
-
-    public dispatchGetNextTruckUnit(
-        truckId: number,
-        direction: ArrowActionsStringEnum
-    ): void {
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_GET_NEXT_UNIT,
-            truckId,
-            direction,
         });
     }
 }

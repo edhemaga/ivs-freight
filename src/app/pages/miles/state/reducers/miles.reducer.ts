@@ -30,16 +30,6 @@ export const initialState: IMilesState = {
 
     // Table
     columns: MilesTableColumns,
-
-    // Miles Details
-    milesDetails: {},
-    milesDetailsFilters: { pageSize: 1, pageIndex: 25, truckId: 0 },
-    isMilesDetailsLoading: false,
-    stops: [],
-    currentPage: 1,
-    isUserOnLastPage: false,
-    isPreviousButtonDisabled: true,
-    isNextButtonDisabled: true,
 };
 
 export const milesReducer = createReducer(
@@ -53,11 +43,6 @@ export const milesReducer = createReducer(
             ...state,
             items: miles,
             loading: false,
-            isNextButtonDisabled: !miles.length,
-            milesDetailsFilters: {
-                ...state.milesDetailsFilters,
-                truckId: miles[0]?.id,
-            },
         };
     }),
     on(MilesAction.getLoadsPayloadError, (state) => ({
@@ -74,6 +59,7 @@ export const milesReducer = createReducer(
         ...state,
         selectedTab: selectedTab,
         selectedRows: 0,
+        filters: {},
         areAllItemsSelected: false,
     })),
 
@@ -125,6 +111,7 @@ export const milesReducer = createReducer(
             ...state,
             items: updatedItems,
             selectedRows: newSelectedCount,
+            areAllItemsSelected: newSelectedCount === updatedItems.length,
         };
     }),
 
@@ -144,55 +131,6 @@ export const milesReducer = createReducer(
             selectedRows: areAllItemsSelected ? updatedItems.length : 0,
             areAllItemsSelected,
         };
-    }),
-    // #endregion
-    on(MilesAction.getTotalMilesDetails, (state, { milesDetails }) => {
-        const totalPages = Math.ceil(
-            milesDetails.stops.count / milesDetails.stops.pageSize
-        );
-
-        const isUserOnLastPage = milesDetails.stops.pageIndex >= totalPages;
-
-        return {
-            ...state,
-            milesDetails,
-            stops: [...state.stops, ...milesDetails.stops.data],
-            isMilesDetailsLoading: false,
-            isUserOnLastPage,
-        };
-    }),
-
-    on(
-        MilesAction.setNewTotalMilesDetails,
-        (state, { milesDetails, isFirst, isLast }) => {
-            return {
-                ...state,
-                milesDetails,
-                stops: [...milesDetails.stops.data],
-                isMilesDetailsLoading: false,
-                isNextButtonDisabled: isLast,
-                isPreviousButtonDisabled: isFirst,
-                milesDetailsFilters: {
-                    pageIndex: 1,
-                    pageSize: 25,
-                    truckId: milesDetails.truck.id,
-                },
-            };
-        }
-    ),
-
-    on(MilesAction.getMilesDetailsNewPage, (state) => {
-        const { milesDetailsFilters } = state;
-        const pageSize = state.currentPage + 1;
-
-        return {
-            ...state,
-            isMilesDetailsLoading: true,
-            currentPage: pageSize,
-            milesDetailsFilters: {
-                ...milesDetailsFilters,
-                pageSize,
-            },
-        };
     })
+    // #endregion
 );

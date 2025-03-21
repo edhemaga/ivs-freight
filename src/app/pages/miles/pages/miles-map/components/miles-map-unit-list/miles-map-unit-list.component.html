@@ -1,9 +1,7 @@
-@let details = milesStoreService.milesDetailsSelector$ | async;
-@let stops = milesStoreService.stopsSelector$ | async;
-@let isPreviousButtonDisabled =
-    milesStoreService.isPreviousButtonDisabledSelector$ | async;
-@let isNextButtonDisabled =
-    milesStoreService.isNextButtonDisabledSelector$ | async;
+@let details = false;
+@let stops = [];
+@let isPreviousButtonDisabled = false;
+@let isNextButtonDisabled = false;
 
 @if (details) {
     <div class="position-relative z-2">
@@ -128,7 +126,7 @@
                     #viewport
                     (scroll)="onScrollEvent()"
                     [itemSize]="26"
-                    style="height: 700px"
+                    style="height: calc(100vh - 188px)"
                 >
                     <div *cdkVirtualFor="let stop of stops">
                         <ng-container
@@ -152,7 +150,7 @@
 }
 
 <ng-template #resizeButton>
-    <div class="h-26 w-26 background-white">></div>
+    <!-- <div class="h-26 w-26 background-white">></div> -->
 </ng-template>
 
 <ng-template #stopRows let-stop="stop">

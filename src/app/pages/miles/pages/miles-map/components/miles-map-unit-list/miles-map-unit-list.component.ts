@@ -88,12 +88,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         this.isStopListExpanded = !this.isStopListExpanded;
     }
 
-    public getTruckUnit(direction: ArrowActionsStringEnum): void {
-        this.milesStoreService.dispatchGetNextTruckUnit(
-            this.truckId,
-            direction
-        );
-    }
+    public getTruckUnit(direction: ArrowActionsStringEnum): void {}
 
     private manageScrollDebounce(): void {
         this.subscriptions.add(
@@ -103,15 +98,15 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         );
     }
     private manageSubscriptions(): void {
-        this.subscriptions.add(
-            forkJoin([
-                this.milesStoreService.isMilesDetailsLoadingSelector$,
-                this.milesStoreService.isUserOnLastPageSelector$,
-            ]).subscribe(([loading, isUserOnLastPage]) => {
-                this.isLoading = loading;
-                this.isUserOnLastPage = isUserOnLastPage;
-            })
-        );
+        // this.subscriptions.add(
+        //     forkJoin([
+        //         this.milesStoreService.isMilesDetailsLoadingSelector$,
+        //         this.milesStoreService.isUserOnLastPageSelector$,
+        //     ]).subscribe(([loading, isUserOnLastPage]) => {
+        //         this.isLoading = loading;
+        //         this.isUserOnLastPage = isUserOnLastPage;
+        //     })
+        // );
 
         this.manageScrollDebounce();
     }

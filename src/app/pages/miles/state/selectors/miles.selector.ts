@@ -27,11 +27,6 @@ export const selectSelectedTab = createSelector(
     (state: IMilesState) => state.selectedTab
 );
 
-export const selectMilesDetailsFilters = createSelector(
-    selectMilesState,
-    (state: IMilesState) => state.milesDetailsFilters
-);
-
 export const activeViewModeSelector = createSelector(
     selectMilesState,
     (state) => {
@@ -71,55 +66,5 @@ export const areAllItemsSelectedSelector = createSelector(
     (state) => {
         const { areAllItemsSelected } = state || {};
         return areAllItemsSelected;
-    }
-);
-
-export const milesDetailsSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { milesDetails } = state || {};
-        return milesDetails;
-    }
-);
-
-export const isMilesDetailsLoadingSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { isMilesDetailsLoading } = state || {};
-        return isMilesDetailsLoading;
-    }
-);
-
-export const stopsSelector = createSelector(selectMilesState, (state) => {
-    const { stops } = state || {};
-    return stops;
-});
-
-export const isUserOnLastPageSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { isUserOnLastPage } = state || {};
-        return isUserOnLastPage;
-    }
-);
-
-export const truckIdSelector = createSelector(selectMilesState, (state) => {
-    const { milesDetailsFilters } = state || {};
-    return milesDetailsFilters.truckId;
-});
-
-export const isPreviousButtonDisabledSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { isPreviousButtonDisabled } = state || {};
-        return isPreviousButtonDisabled;
-    }
-);
-
-export const isNextButtonDisabledSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { isNextButtonDisabled } = state || {};
-        return isNextButtonDisabled;
     }
 );
