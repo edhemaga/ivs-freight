@@ -25,6 +25,10 @@
 
     &-green {
         background: $ta-green;
+
+        &-7 {
+            background: $ta-green-7;
+        }
     }
 
     &-bw2 {
@@ -61,6 +65,10 @@
 
     &-orange-5 {
         background-color: $ta-orange-5;
+    }
+
+    &-orange-8 {
+        background-color: $ta-orange-8;
     }
 
     &-blue {

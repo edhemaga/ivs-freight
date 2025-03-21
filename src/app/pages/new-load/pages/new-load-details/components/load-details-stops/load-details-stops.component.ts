@@ -10,12 +10,24 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // Services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
+// Pipes
+import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
+
 @Component({
     selector: 'app-load-details-stops',
     templateUrl: './load-details-stops.component.html',
     styleUrl: './load-details-stops.component.scss',
     standalone: true,
-    imports: [CommonModule, AngularSvgIconModule],
+    imports: [
+        CommonModule,
+
+        // Pipes
+        FormatDatePipe,
+        FormatTimePipe,
+
+        // Components
+        AngularSvgIconModule,
+    ],
 })
 export class LoadDetailsStopsComponent {
     public sharedSvgRoutes = SharedSvgRoutes;

@@ -1,0 +1,18 @@
+@import 'src/assets/scss/mixins.scss';
+
+.load-stop-rows {
+    &-not-pending {
+        @include responsive-grid(
+            200px 220px 140px 130px 140px 76px,
+            200px 220px 140px 130px 140px 76px,
+            200px 220px 140px 130px 140px 76px
+        );
+    }
+    &-pending {
+        @include responsive-grid(
+            200px 220px 140px 130px 76px,
+            200px 220px 140px 130px 76px,
+            200px 220px 140px 130px 76px
+        );
+    }
+}

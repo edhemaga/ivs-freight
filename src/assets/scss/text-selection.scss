@@ -81,6 +81,16 @@
             @include text-selection($ta-yellow-1);
         }
 
+        &-yellow-5 {
+            color: $ta-yellow-5 !important;
+            @include text-selection($ta-yellow-5);
+        }
+
+        &-orange-1 {
+            color: $ta-orange-1 !important;
+            @include text-selection($ta-orange-1);
+        }
+
         &-purple {
             color: $ta-purple-1 !important;
             @include text-selection($ta-purple-1);
