@@ -11,7 +11,7 @@ import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
-import { IMilesModel } from '@pages/miles/interface';
+import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -26,8 +26,6 @@ export interface IMilesState {
     areAllItemsSelected: boolean;
 
     // Is used for next, prev icons to navigate throught list
-    activeUnitIndex: number;
     details: MilesByUnitPaginatedStopsResponse;
-    isFirstUnit: boolean;
-    isLastUnit: boolean;
+    unitsPagination: IMilesDetailsFilters;
 }

@@ -24,9 +24,9 @@ import { eMileTabs } from '@pages/miles/enums';
 import {
     activeViewModeSelector,
     filterSelector,
-    selectActiveUnitIndex,
     selectMilesItems,
     selectSelectedTab,
+    unitsPaginationSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Utils
@@ -162,16 +162,17 @@ export class MilesEffects {
             exhaustMap((action) =>
                 combineLatest([
                     this.store.select(selectMilesItems),
-                    this.store.select(selectActiveUnitIndex),
+                    this.store.select(unitsPaginationSelector),
                 ]).pipe(
                     take(1),
-                    switchMap(([milesItems, activeUnitIndex]) => {
+                    switchMap(([milesItems, unitsPagination]) => {
                         const { getFollowingUnitDirection } = action;
+                        // We should first check if user is on last page
 
                         const { index, isFirst, isLast, truckId } =
                             MilesHelper.findAdjacentId(
                                 milesItems,
-                                activeUnitIndex,
+                                unitsPagination.activeUnitIndex,
                                 getFollowingUnitDirection
                             );
 

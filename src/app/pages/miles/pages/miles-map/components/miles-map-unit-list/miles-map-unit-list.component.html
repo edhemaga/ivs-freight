@@ -1,6 +1,7 @@
 @let details = milesStoreService.detailsSelector$ | async;
-@let isPreviousButtonDisabled = milesStoreService.isFirstUnitSelector$ | async;
-@let isNextButtonDisabled = milesStoreService.isLastUnitSelector$ | async;
+@let pagination = milesStoreService.unitsPaginationSelector$ | async;
+@let isPreviousButtonDisabled = pagination.isFirstUnit;
+@let isNextButtonDisabled = pagination.isLastUnit;
 
 @if (details) {
     <div class="position-relative z-2">

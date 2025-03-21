@@ -41,7 +41,10 @@ export const updateMilesData = function (
         ...state,
         items: miles,
         loading: false,
-        activeUnitIndex: 0,
+        unitsPagination: {
+            ...state.unitsPagination,
+            activeUnitIndex: 0,
+        },
     };
 };
 
@@ -114,8 +117,11 @@ export const setUnitDetails = function (
     return {
         ...state,
         details,
-        isLastUnit: isLast,
-        isFirstUnit: true,
+        unitsPagination: {
+            ...state.unitsPagination,
+            isLastUnit: isLast,
+            isFirstUnit: true,
+        },
     };
 };
 export const setFollowingUnitDetails = function (
@@ -125,11 +131,15 @@ export const setFollowingUnitDetails = function (
     isFirstUnit: boolean,
     isLastUnit: boolean
 ): IMilesState {
+    const { unitsPagination } = state;
     return {
         ...state,
         details,
-        activeUnitIndex,
-        isFirstUnit,
-        isLastUnit,
+        unitsPagination: {
+            ...unitsPagination,
+            isFirstUnit,
+            isLastUnit,
+            activeUnitIndex,
+        },
     };
 };

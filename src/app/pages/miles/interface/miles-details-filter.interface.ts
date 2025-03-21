@@ -1,5 +1,7 @@
 export interface IMilesDetailsFilters {
-    pageSize?: number;
-    pageIndex?: number;
-    truckId?: number;
+    currentPage: number;
+    totalPage: number;
+    isFirstUnit: boolean;
+    isLastUnit: boolean;
+    activeUnitIndex: number;
 }

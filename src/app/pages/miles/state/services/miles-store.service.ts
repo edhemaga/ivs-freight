@@ -14,12 +14,11 @@ import {
     filterSelector,
     areAllItemsSelectedSelector,
     detailsSelector,
-    isLastUnitSelector,
-    isFirstUnitSelector,
+    unitsPaginationSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
-import { IMilesModel } from '@pages/miles/interface';
+import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
@@ -76,13 +75,8 @@ export class MilesStoreService {
         select(areAllItemsSelectedSelector)
     );
 
-    public isFirstUnitSelector$: Observable<boolean> = this.store.pipe(
-        select(isFirstUnitSelector)
-    );
-
-    public isLastUnitSelector$: Observable<boolean> = this.store.pipe(
-        select(isLastUnitSelector)
-    );
+    public unitsPaginationSelector$: Observable<IMilesDetailsFilters> =
+        this.store.pipe(select(unitsPaginationSelector));
 
     public detailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
         this.store.pipe(select(detailsSelector));

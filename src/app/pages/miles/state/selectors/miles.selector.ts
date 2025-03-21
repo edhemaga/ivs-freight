@@ -74,17 +74,7 @@ export const detailsSelector = createSelector(selectMilesState, (state) => {
     return details;
 });
 
-export const selectActiveUnitIndex = createSelector(
+export const unitsPaginationSelector = createSelector(
     selectMilesState,
-    (state: IMilesState) => state.activeUnitIndex
-);
-
-export const isFirstUnitSelector = createSelector(
-    selectMilesState,
-    (state: IMilesState) => state.isFirstUnit
-);
-
-export const isLastUnitSelector = createSelector(
-    selectMilesState,
-    (state: IMilesState) => state.isLastUnit
+    (state: IMilesState) => state.unitsPagination
 );

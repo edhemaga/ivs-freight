@@ -35,10 +35,14 @@ export const initialState: IMilesState = {
     columns: MilesTableColumns,
 
     // Unit list
-    activeUnitIndex: 0,
     details: {},
-    isFirstUnit: true,
-    isLastUnit: true,
+    unitsPagination: {
+        activeUnitIndex: 0,
+        currentPage: 1,
+        totalPage: 0,
+        isFirstUnit: true,
+        isLastUnit: true,
+    },
 };
 
 export const milesReducer = createReducer(
