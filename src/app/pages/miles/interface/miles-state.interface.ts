@@ -21,4 +21,7 @@ export interface IMilesState {
     selectedRows: number;
     columns: ITableColumn[];
     areAllItemsSelected: boolean;
+
+    // Is used for next, prev icons to navigate throught list
+    actionUnitIndex: number;
 }

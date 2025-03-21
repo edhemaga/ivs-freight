@@ -33,6 +33,9 @@ export const initialState: IMilesState = {
 
     // Table
     columns: MilesTableColumns,
+
+    // Unit list
+    actionUnitIndex: 0,
 };
 
 export const milesReducer = createReducer(

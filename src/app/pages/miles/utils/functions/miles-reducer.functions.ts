@@ -40,6 +40,7 @@ export const updateMilesData = function (
         ...state,
         items: miles,
         loading: false,
+        actionUnitIndex: 0,
     };
 };
 
