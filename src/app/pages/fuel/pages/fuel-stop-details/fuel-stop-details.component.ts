@@ -19,6 +19,7 @@ import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // components
 import { FuelStopDetailsItemComponent } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/fuel-stop-details-item.component';
@@ -31,12 +32,12 @@ import {
     eCommonElement,
     eGeneralActions,
     TableStringEnum,
+    eSharedString,
 } from '@shared/enums';
 import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // helpers
 import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils/helpers';
-import { MethodsGlobalHelper } from '@shared/utils/helpers';
 
 // models
 import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
@@ -97,6 +98,7 @@ export class FuelStopDetailsComponent
 
         private detailsPageService: DetailsPageService,
         private confirmationService: ConfirmationService,
+        private confirmationActivationService: ConfirmationActivationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private detailsSearchService: DetailsSearchService,
 
@@ -115,6 +117,8 @@ export class FuelStopDetailsComponent
 
         this.confirmationSubscribe();
 
+        this.confirmationActivationSubscribe();
+
         this.searchSubscribe();
 
         this.handleRepairShopIdRouteChange();
@@ -128,13 +132,25 @@ export class FuelStopDetailsComponent
                     const { id, type } = res;
 
                     if (type === eGeneralActions.DELETE) {
-                        if (false) {
-                            // delete fuel stop
-                        } else {
-                            this.deleteFuelTransaction(id);
-                        }
+                        res?.template === eFuelStopDetails.FUEL_STOP
+                            ? this.deleteFuelStop(id)
+                            : this.deleteFuelTransaction(id);
                     }
                 },
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (
+                    res?.subTypeStatus === eSharedString.BUSINESS &&
+                    [eGeneralActions.OPEN, eGeneralActions.CLOSE].includes(
+                        res?.type as eGeneralActions
+                    )
+                )
+                    this.handleOpenCloseFuelStop(res?.id);
             });
     }
 
@@ -193,6 +209,22 @@ export class FuelStopDetailsComponent
     private getDetailsOptions(fuelStop: ExtendedFuelStopResponse): void {
         this.detailsDropdownOptions =
             FuelStopDetailsHelper.getDetailsDropdownOptions(fuelStop);
+    }
+
+    private handleOpenCloseFuelStop(id: number): void {
+        this.fuelService
+            .updateFuelStopStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    public deleteFuelStop(id: number): void {
+        this.fuelService
+            .deleteFuelStopList([id])
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() =>
+                this.router.navigate([eFuelStopDetails.FUEL_LIST_ROUTE])
+            );
     }
 
     private deleteFuelTransaction(ids: number): void {
@@ -330,8 +362,6 @@ export class FuelStopDetailsComponent
 
     public onSearchBtnClick(isSearch: boolean, type: string): void {
         const index = Number(type !== eFuelStopDetails.TRANSACTION);
-
-        console.log('index', index);
 
         this.searchConfig[index] = isSearch;
     }

@@ -36,7 +36,7 @@ import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repa
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import { eCommonElement, eGeneralActions } from '@shared/enums';
+import { eCommonElement, eGeneralActions, eSharedString } from '@shared/enums';
 
 // helpers
 import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers';
@@ -285,11 +285,10 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (
-                    res?.subTypeStatus === eRepairShopDetails.BUSINESS &&
-                    [
-                        eRepairShopDetails.OPEN,
-                        eRepairShopDetails.CLOSE,
-                    ].includes(res?.type as eRepairShopDetails)
+                    res?.subTypeStatus === eSharedString.BUSINESS &&
+                    [eGeneralActions.OPEN, eGeneralActions.CLOSE].includes(
+                        res?.type as eGeneralActions
+                    )
                 )
                     this.handleOpenCloseRepairShop(res?.id);
             });
