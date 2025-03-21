@@ -10,6 +10,7 @@ import { PasswordAccountHiddenCharactersSvgRoutes } from '@shared/components/ta-
 
 // enums
 import { PasswordAccountHiddenCharactersStringEnum } from '@shared/components/ta-password-account-hidden-characters/enums/password-account-hidden-characters-string.enum';
+import { eStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-password-account-hidden-characters',
@@ -22,14 +23,16 @@ export class TaPasswordAccountHiddenCharactersComponent implements OnInit {
     @Input() passwordOrAccount: string;
     @Input() numberOfCharactersToHide: number = 4;
     @Input() isRightSideIcon: boolean = false;
-    @Input() showEyeIcon: boolean = false;
-    @Input() showDivider: boolean = false;
+    @Input() isEyeIconVisible: boolean = false;
+    @Input() isDividerVisible: boolean = false;
 
     public isShowing: boolean = false;
     public isHovered: boolean = false;
 
     public hiddenPart: string;
     public visiblePart: string;
+
+    public eStringPlaceholder = eStringPlaceholder;
 
     public passwordAccountHiddenCharactersSvgRoutes =
         PasswordAccountHiddenCharactersSvgRoutes;
@@ -45,7 +48,7 @@ export class TaPasswordAccountHiddenCharactersComponent implements OnInit {
     }
 
     public handleHover(isHovering: boolean): void {
-        if (this.showEyeIcon) return;
+        if (this.isEyeIconVisible) return;
         this.isHovered = isHovering;
     }
 
@@ -63,6 +66,6 @@ export class TaPasswordAccountHiddenCharactersComponent implements OnInit {
         this.hiddenPart = hiddenPart;
         this.visiblePart = visiblePart;
 
-        if (this.showEyeIcon) this.isHovered = true;
+        if (this.isEyeIconVisible) this.isHovered = true;
     }
 }
