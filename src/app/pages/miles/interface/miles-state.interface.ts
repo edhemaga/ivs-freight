@@ -26,6 +26,8 @@ export interface IMilesState {
     areAllItemsSelected: boolean;
 
     // Is used for next, prev icons to navigate throught list
-    actionUnitIndex: number;
+    activeUnitIndex: number;
     details: MilesByUnitPaginatedStopsResponse;
+    isFirstUnit: boolean;
+    isLastUnit: boolean;
 }

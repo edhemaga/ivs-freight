@@ -16,6 +16,8 @@ import { MilesService } from 'appcoretruckassist';
 import { eMileTabs } from '@pages/miles/enums';
 import {
     filterSelector,
+    selectActiveUnitIndex,
+    selectMilesItems,
     selectSelectedTab,
 } from '@pages/miles/state/selectors/miles.selector';
 
@@ -80,13 +82,72 @@ export class MilesEffects {
         this.actions$.pipe(
             ofType(MilesAction.getInitalUnitDetails),
             exhaustMap(() =>
-                this.milesService.apiMilesUnitGet(null, null, 4).pipe(
-                    map((unitResponse) =>
-                        MilesAction.setUnitDetails({
-                            details: unitResponse,
-                        })
-                    ),
-                    catchError(() => of(MilesAction.getLoadsPayloadError()))
+                this.store.select(selectMilesItems).pipe(
+                    // Select items from the store
+                    take(1), // Take only the first emission (to avoid subscribing to the store indefinitely)
+                    switchMap((milesItems) => {
+                        const firstItemId =
+                            milesItems.length > 0
+                                ? milesItems[0].truckId
+                                : null; // Get the truckId of the first item
+
+                        if (!firstItemId) {
+                            return of(MilesAction.getLoadsPayloadError()); // Handle case where there are no items
+                        }
+
+                        return this.milesService
+                            .apiMilesUnitGet(null, null, firstItemId)
+                            .pipe(
+                                map((unitResponse) =>
+                                    MilesAction.setUnitDetails({
+                                        details: unitResponse,
+                                        isLast: milesItems.length === 1,
+                                    })
+                                ),
+                                catchError(() =>
+                                    of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
+                    })
+                )
+            )
+        )
+    );
+
+    public getFollowingUnitDetails = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getFollowingUnit),
+            exhaustMap((action) =>
+                combineLatest([
+                    this.store.select(selectMilesItems),
+                    this.store.select(selectActiveUnitIndex),
+                ]).pipe(
+                    take(1),
+                    switchMap(([milesItems, activeUnitIndex]) => {
+                        const { getFollowingUnitDirection } = action;
+
+                        const unitDetails = MilesHelper.findAdjacentId(
+                            milesItems,
+                            activeUnitIndex,
+                            getFollowingUnitDirection
+                        );
+
+                        return this.milesService
+                            .apiMilesUnitGet(null, null, unitDetails.truckId)
+                            .pipe(
+                                map((unitResponse) =>
+                                    MilesAction.setFollowingUnitDetails({
+                                        details: unitResponse,
+                                        newIndex: unitDetails.index,
+                                        isFirst: unitDetails.isFirst,
+                                        isLast: unitDetails.isLast,
+                                    })
+                                ),
+                                catchError(() =>
+                                    of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
+                    })
                 )
             )
         )

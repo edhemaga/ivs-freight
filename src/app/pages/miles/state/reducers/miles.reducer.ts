@@ -35,8 +35,10 @@ export const initialState: IMilesState = {
     columns: MilesTableColumns,
 
     // Unit list
-    actionUnitIndex: 0,
+    activeUnitIndex: 0,
     details: {},
+    isFirstUnit: true,
+    isLastUnit: true,
 };
 
 export const milesReducer = createReducer(
@@ -91,8 +93,20 @@ export const milesReducer = createReducer(
     // #endregion
 
     // #region Unit detail
-    on(MilesAction.setUnitDetails, (state, { details }) =>
-        Functions.setUnitDetails(state, details)
+    on(MilesAction.setUnitDetails, (state, { details, isLast }) =>
+        Functions.setUnitDetails(state, details, isLast)
+    ),
+
+    on(
+        MilesAction.setFollowingUnitDetails,
+        (state, { details, newIndex, isFirst, isLast }) =>
+            Functions.setFollowingUnitDetails(
+                state,
+                details,
+                newIndex,
+                isFirst,
+                isLast
+            )
     )
     // #endregion
 );

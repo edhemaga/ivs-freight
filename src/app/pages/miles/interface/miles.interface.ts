@@ -1,4 +1,4 @@
-import { TruckTypeResponse } from "appcoretruckassist";
+import { TruckTypeResponse } from 'appcoretruckassist';
 
 export interface ICountPercent {
     count: number | undefined;
@@ -7,8 +7,9 @@ export interface ICountPercent {
 
 export interface IMilesModel {
     id: number;
-    unit: string | undefined; 
-    truckType: TruckTypeResponse | undefined; 
+    truckId: number;
+    unit: string | undefined;
+    truckType: TruckTypeResponse | undefined;
     stopsCount: number | undefined;
     stopsPickup: ICountPercent;
     stopsDelivery: ICountPercent;
@@ -25,5 +26,5 @@ export interface IMilesModel {
     milesEmpty: number | undefined;
     milesTotal: number | undefined;
     revenue: number | undefined;
-    selected: boolean; 
+    selected: boolean;
 }

@@ -13,7 +13,7 @@ import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
-import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
+import { IMilesModel } from '@pages/miles/interface';
 
 // Interface
 import { IStateFilters } from '@shared/interfaces';
@@ -77,5 +77,20 @@ export const getInitalUnitDetails = createAction(
 
 export const setUnitDetails = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS_SET_PAGE,
-    props<{ details: any }>()
+    props<{ details: MilesByUnitPaginatedStopsResponse; isLast: boolean }>()
+);
+
+export const getFollowingUnit = createAction(
+    MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
+    props<{ getFollowingUnitDirection: ArrowActionsStringEnum }>()
+);
+
+export const setFollowingUnitDetails = createAction(
+    MilesStoreConstants.ACTION_SET_FOLLOWING_UNIT,
+    props<{
+        details: MilesByUnitPaginatedStopsResponse;
+        newIndex: number;
+        isFirst: boolean;
+        isLast: boolean;
+    }>()
 );

@@ -41,7 +41,7 @@ export const updateMilesData = function (
         ...state,
         items: miles,
         loading: false,
-        actionUnitIndex: 0,
+        activeUnitIndex: 0,
     };
 };
 
@@ -108,10 +108,27 @@ export const updateTabSelection = function (
 
 export const setUnitDetails = function (
     state: IMilesState,
-    details: MilesByUnitPaginatedStopsResponse
+    details: MilesByUnitPaginatedStopsResponse,
+    isLast: boolean
 ): IMilesState {
     return {
         ...state,
         details,
+        isLastUnit: isLast,
+    };
+};
+export const setFollowingUnitDetails = function (
+    state: IMilesState,
+    details: MilesByUnitPaginatedStopsResponse,
+    newIndex: number,
+    isFirst: boolean,
+    isLast: boolean
+): IMilesState {
+    return {
+        ...state,
+        details,
+        activeUnitIndex: newIndex,
+        isFirstUnit: isFirst,
+        isLastUnit: isLast,
     };
 };

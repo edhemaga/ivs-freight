@@ -10,6 +10,7 @@ export class MilesHelper {
         const mappedMiles = miles.map((mile) => ({
             unit: mile.truck?.truckNumber,
             truckType: mile.truck?.truckType,
+            truckId: mile.truck.id,
             stopsCount: mile.stopsCount,
             stopsPickup: {
                 count: mile.pickupCount,
@@ -56,27 +57,45 @@ export class MilesHelper {
 
     static findAdjacentId(
         miles: IMilesModel[],
-        currentId: number,
+        currentIndex: number,
         direction: ArrowActionsStringEnum
-    ): { id: number | null; isFirst: boolean; isLast: boolean } {
-        const index = miles.findIndex((mile) => mile.id === currentId);
-
-        if (index === -1) {
-            return { id: null, isFirst: false, isLast: false };
+    ): {
+        index: number | null;
+        isFirst: boolean;
+        isLast: boolean;
+        truckId: number;
+    } {
+        // Ensure the currentIndex is within the bounds of the array
+        if (currentIndex < 0 || currentIndex >= miles.length) {
+            return {
+                index: null,
+                isFirst: false,
+                isLast: false,
+                truckId: null,
+            };
         }
 
-        let newIndex = index;
+        let newIndex = currentIndex;
+
+        // Move to the next or previous index based on the direction
         if (
             direction === ArrowActionsStringEnum.NEXT &&
-            index < miles.length - 1
+            currentIndex < miles.length - 1
         ) {
-            newIndex = index + 1;
-        } else if (direction === ArrowActionsStringEnum.PREVIOUS && index > 0) {
-            newIndex = index - 1;
+            newIndex = currentIndex + 1;
+        } else if (
+            direction === ArrowActionsStringEnum.PREVIOUS &&
+            currentIndex > 0
+        ) {
+            newIndex = currentIndex - 1;
         }
 
+        console.log(newIndex);
+
+        // Return the result with the truckId at the new index
         return {
-            id: miles[newIndex].id,
+            truckId: miles[newIndex]?.truckId ?? null,
+            index: newIndex,
             isFirst: newIndex === 0,
             isLast: newIndex === miles.length - 1,
         };

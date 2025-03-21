@@ -14,6 +14,8 @@ import {
     filterSelector,
     areAllItemsSelectedSelector,
     detailsSelector,
+    isLastUnitSelector,
+    isFirstUnitSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -26,9 +28,10 @@ import {
 import { IFilterAction } from 'ca-components';
 import { ITableColumn, ITableData } from '@shared/models';
 import { IStateFilters } from '@shared/interfaces';
+
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@shared/enums';
+import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
 // Constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
@@ -71,6 +74,14 @@ export class MilesStoreService {
 
     public areAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(
         select(areAllItemsSelectedSelector)
+    );
+
+    public isFirstUnitSelector$: Observable<boolean> = this.store.pipe(
+        select(isFirstUnitSelector)
+    );
+
+    public isLastUnitSelector$: Observable<boolean> = this.store.pipe(
+        select(isLastUnitSelector)
     );
 
     public detailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
@@ -137,6 +148,15 @@ export class MilesStoreService {
     public dispatchSelectAll(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
+        });
+    }
+
+    public dispatchFollowingUnit(
+        getFollowingUnitDirection: ArrowActionsStringEnum
+    ): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
+            getFollowingUnitDirection,
         });
     }
 }

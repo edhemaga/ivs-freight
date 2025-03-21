@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
-import { Subscription, Subject, forkJoin } from 'rxjs';
+import { Subscription, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
     CdkVirtualScrollViewport,
@@ -81,6 +81,12 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
         if (scrollOffset < threshold) {
         }
+    }
+
+    public getTruckUnit(
+        getFollowingUnitDirection: ArrowActionsStringEnum
+    ): void {
+        this.milesStoreService.dispatchFollowingUnit(getFollowingUnitDirection);
     }
 
     public toogleStopList(): void {
