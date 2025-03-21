@@ -675,7 +675,6 @@ export class FuelTableComponent
             truck,
             trailer,
             fuelCard,
-            fuelStopStore,
             transactionDate,
             fuelItems,
             total,
@@ -687,22 +686,27 @@ export class FuelTableComponent
             fuelCardHolderName,
             createdAt,
             updatedAt,
+            fuelStopStore,
         } = data;
-
+        const { address, businessName, phone, fax } = fuelStopStore || {};
         const driverFullName = !!driver
             ? `${driver.firstName} ${driver.lastName}`
             : fuelCardHolderName;
-
         const tableDescriptionDropTotal = total
             ? `$${this.thousandSeparator.transform(total)}`
             : null;
-
         const isIntegratedFuelTransaction =
             fuelTransactionType?.id !== eFuelTransactionType.Manual;
-
         const tableType: string = !!fuelTransactionType
             ? eFuelTransactionType[fuelTransactionType?.id]
             : null;
+        const tableLocation: string = [
+            address?.city,
+            address?.stateShortName,
+            address?.zipCode,
+        ]
+            .filter(Boolean)
+            .join(', ');
 
         if (
             driver &&
@@ -739,21 +743,10 @@ export class FuelTableComponent
             tableTransactionDate: transactionDate
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
                 : null,
-            tableFuelStopName: fuelStopStore?.businessName,
-            phone: fuelStopStore?.phone,
-            fax: fuelStopStore?.fax,
-            tableLocation: fuelStopStore?.address
-                ? fuelStopStore?.address.city +
-                  TableStringEnum.COMA +
-                  (fuelStopStore?.address.stateShortName &&
-                  fuelStopStore?.address.stateShortName !== TableStringEnum.NULL
-                      ? fuelStopStore?.address.stateShortName + null
-                      : null) +
-                  (fuelStopStore?.address.zipCode &&
-                  fuelStopStore?.address.zipCode !== TableStringEnum.NULL
-                      ? fuelStopStore?.address.zipCode
-                      : null)
-                : null,
+            tableFuelStopName: businessName,
+            phone: phone,
+            fax: fax,
+            tableLocation,
             tableAddress: fuelStopStore?.address?.address ?? null,
             tableDescription: fuelItems
                 ? fuelItems.map((item) => {
