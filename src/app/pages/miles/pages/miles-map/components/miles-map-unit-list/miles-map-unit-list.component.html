@@ -6,135 +6,147 @@
     milesStoreService.isNextButtonDisabledSelector$ | async;
 
 @if (details) {
-    <div
-        class="background-white br-3 p-x-6 mb-2"
-        [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
-    >
+    <div class="position-relative z-2">
         <div
-            class="h-42 d-flex align-items-center p-l-8 justify-content-between"
+            class="background-white br-3 p-x-6 mb-2"
+            [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
         >
-            <span
-                class="d-flex align-items-center text-size-20 text-color-black ta-font-bold"
+            <div
+                class="h-42 d-flex align-items-center p-l-8 justify-content-between"
             >
-                @if (!details?.truck?.status) {
-                    <svg-icon
-                        [src]="sharedSvgRoutes.DEACTIVATE_ICON"
-                        class="svg-fill-muted svg-size-18 m-r-6 d-flex"
-                    ></svg-icon>
-                }
-                UNIT {{ details?.truck?.truckNumber }}
-            </span>
-
-            <div class="d-flex gap-1">
-                <div
-                    class="d-flex align-items-center justify-content-center h-26 w-26 br-2 background-white svg-fill-muted"
-                    [ngClass]="
-                        !isPreviousButtonDisabled &&
-                        'c-pointer background-hover-bw2 svg-hover-black'
-                    "
+                <span
+                    class="d-flex align-items-center text-size-20 text-color-black ta-font-bold"
                 >
-                    <svg-icon
-                        class="svg-size-18"
-                        [src]="sharedSvgRoutes.ARROW_LEFT_ICON"
-                        (click)="
+                    @if (!details?.truck?.status) {
+                        <svg-icon
+                            [src]="sharedSvgRoutes.DEACTIVATE_ICON"
+                            class="svg-fill-muted svg-size-18 m-r-6 d-flex"
+                        ></svg-icon>
+                    }
+                    UNIT {{ details?.truck?.truckNumber }}
+                </span>
+
+                <div class="d-flex gap-1">
+                    <div
+                        class="d-flex align-items-center justify-content-center h-26 w-26 br-2 background-white svg-fill-muted"
+                        [ngClass]="
                             !isPreviousButtonDisabled &&
-                                getTruckUnit(ArrowActionsStringEnum.PREVIOUS)
-                        "
-                    ></svg-icon>
-                </div>
-                <div
-                    class="d-flex align-items-center justify-content-center h-26 w-26 br-2 background-white svg-fill-muted"
-                    [ngClass]="
-                        !isNextButtonDisabled &&
-                        'c-pointer background-hover-bw2 svg-hover-black'
-                    "
-                >
-                    <svg-icon
-                        [src]="sharedSvgRoutes.ARROW_RIGHT_ICON"
-                        class="svg-size-18"
-                        (click)="
-                            !isNextButtonDisabled &&
-                                getTruckUnit(ArrowActionsStringEnum.NEXT)
-                        "
-                    ></svg-icon>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div
-        class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
-        [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
-    >
-        <form [formGroup]="searchForm">
-            <app-ca-input
-                formControlName="search"
-                [inputConfig]="{
-                    name: 'search',
-                    type: 'text',
-                    label: 'Find Stop',
-                    placeholderIcon: 'ic_search',
-                    placeholderInsteadOfLabel: true,
-                }"
-            ></app-ca-input>
-        </form>
-
-        <div
-            class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-6"
-            [ngClass]="
-                isStopListExpanded
-                    ? 'stops-container-large'
-                    : 'stops-container-small'
-            "
-        >
-            <div class="text-color-muted text-size-11 ta-font-bold text-center">
-                #
-            </div>
-            <div class="text-color-muted text-size-11 ta-font-bold">STOP</div>
-            <div class="text-color-muted text-size-11 ta-font-bold text-right">
-                LEG
-            </div>
-            @if (isStopListExpanded) {
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-right"
-                >
-                    LOADED
-                </div>
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-right"
-                >
-                    EMPTY
-                </div>
-            }
-            <div class="text-color-muted text-size-11 ta-font-bold text-right">
-                TOTAL
-            </div>
-        </div>
-
-        <div class="divider mt-1 mb-1"></div>
-
-        <div class="scrollable-element">
-            <cdk-virtual-scroll-viewport
-                #viewport
-                (scroll)="onScrollEvent()"
-                [itemSize]="26"
-                style="height: 700px"
-            >
-                <div *cdkVirtualFor="let stop of stops">
-                    <ng-container
-                        *ngTemplateOutlet="
-                            stopRows;
-                            context: {
-                                stop,
-                            }
+                            'c-pointer background-hover-bw2 svg-hover-black'
                         "
                     >
-                    </ng-container>
+                        <svg-icon
+                            class="svg-size-18"
+                            [src]="sharedSvgRoutes.ARROW_LEFT_ICON"
+                            (click)="
+                                !isPreviousButtonDisabled &&
+                                    getTruckUnit(
+                                        ArrowActionsStringEnum.PREVIOUS
+                                    )
+                            "
+                        ></svg-icon>
+                    </div>
+                    <div
+                        class="d-flex align-items-center justify-content-center h-26 w-26 br-2 background-white svg-fill-muted"
+                        [ngClass]="
+                            !isNextButtonDisabled &&
+                            'c-pointer background-hover-bw2 svg-hover-black'
+                        "
+                    >
+                        <svg-icon
+                            [src]="sharedSvgRoutes.ARROW_RIGHT_ICON"
+                            class="svg-size-18"
+                            (click)="
+                                !isNextButtonDisabled &&
+                                    getTruckUnit(ArrowActionsStringEnum.NEXT)
+                            "
+                        ></svg-icon>
+                    </div>
                 </div>
-            </cdk-virtual-scroll-viewport>
+            </div>
         </div>
+        <div
+            class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
+            [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
+        >
+            <form [formGroup]="searchForm">
+                <app-ca-input
+                    formControlName="search"
+                    [inputConfig]="{
+                        name: 'search',
+                        type: 'text',
+                        label: 'Find Stop',
+                        placeholderIcon: 'ic_search',
+                        placeholderInsteadOfLabel: true,
+                    }"
+                ></app-ca-input>
+            </form>
 
-        <div (click)="toogleStopList()">
-            <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
+            <div
+                class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-6"
+                [ngClass]="
+                    isStopListExpanded
+                        ? 'stops-container-large'
+                        : 'stops-container-small'
+                "
+            >
+                <div
+                    class="text-color-muted text-size-11 ta-font-bold text-center"
+                >
+                    #
+                </div>
+                <div class="text-color-muted text-size-11 ta-font-bold">
+                    STOP
+                </div>
+                <div
+                    class="text-color-muted text-size-11 ta-font-bold text-right"
+                >
+                    LEG
+                </div>
+                @if (isStopListExpanded) {
+                    <div
+                        class="text-color-muted text-size-11 ta-font-bold text-right"
+                    >
+                        LOADED
+                    </div>
+                    <div
+                        class="text-color-muted text-size-11 ta-font-bold text-right"
+                    >
+                        EMPTY
+                    </div>
+                }
+                <div
+                    class="text-color-muted text-size-11 ta-font-bold text-right"
+                >
+                    TOTAL
+                </div>
+            </div>
+
+            <div class="divider mt-1 mb-1"></div>
+
+            <div class="scrollable-element">
+                <cdk-virtual-scroll-viewport
+                    #viewport
+                    (scroll)="onScrollEvent()"
+                    [itemSize]="26"
+                    style="height: 700px"
+                >
+                    <div *cdkVirtualFor="let stop of stops">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                stopRows;
+                                context: {
+                                    stop,
+                                }
+                            "
+                        >
+                        </ng-container>
+                    </div>
+                </cdk-virtual-scroll-viewport>
+            </div>
+
+            <div (click)="toogleStopList()">
+                <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
+            </div>
         </div>
     </div>
 }

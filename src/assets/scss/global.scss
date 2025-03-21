@@ -161,7 +161,6 @@ body {
 
 html {
     body {
-
         app-ca-modal,
         app-ta-modal {
             .ta-custom-card {
@@ -296,7 +295,6 @@ html {
             background-color: $ta-black-2 !important;
 
             .load-stop-content-up {
-
                 p,
                 span {
                     color: $white !important;
@@ -448,7 +446,6 @@ app-load-modal {
 
         &.nav-item-parent-active {
             &:hover {
-
                 .animation-text,
                 .nav-item-name-active {
                     color: $ta-blue-19 !important;
@@ -610,3 +607,12 @@ html ngb-modal-backdrop {
 }
 
 // #endregion
+.map-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    padding-left: 0px;
+    z-index: 1;
+}

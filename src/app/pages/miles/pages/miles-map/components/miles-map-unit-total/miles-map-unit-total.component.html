@@ -1,7 +1,9 @@
 @let total = milesStoreService.milesDetailsSelector$ | async;
 
 @if (total) {
-    <div class="background-white br-3 p-12 miles-map-total pb-0">
+    <div
+        class="background-white br-3 p-12 miles-map-total pb-0 position-relative z-2"
+    >
         <div class="text-size-11 ta-font-bold text-color-black m-b-2">
             Total Miles
         </div>
