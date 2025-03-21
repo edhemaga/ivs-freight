@@ -1,7 +1,6 @@
 export class MilesStoreConstants {
     static COMPONENT_NAME_KEY = '[Miles Table Component]';
 
-    public static LOAD_MILES_INITAL = `${this.COMPONENT_NAME_KEY} LOAD_MILES_INITAL`;
     public static LOAD_MILES_SUCCESS = `${this.COMPONENT_NAME_KEY} LOAD_MILES_SUCCESS`;
     public static LOAD_MILES_FAILURE = `${this.COMPONENT_NAME_KEY} LOAD_MILES_FAILURE`;
 

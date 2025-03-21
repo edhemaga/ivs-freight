@@ -48,7 +48,6 @@ export const initialState: IMilesState = {
 export const milesReducer = createReducer(
     initialState,
     // #region Get miles
-    on(MilesAction.getLoadsPayload, (state) => ({ ...state, loading: true })),
     on(MilesAction.getLoadsPayloadSuccess, (state, { miles }) =>
         Functions.updateMilesData(state, miles)
     ),

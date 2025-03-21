@@ -119,11 +119,7 @@ export class MilesEffects {
 
     public loadMilesEffect$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(
-                MilesAction.getLoadsPayload,
-                MilesAction.milesTabChange,
-                MilesAction.changeFilters
-            ),
+            ofType(MilesAction.milesTabChange, MilesAction.changeFilters),
             exhaustMap(() =>
                 this.store.select(activeViewModeSelector).pipe(
                     take(1),

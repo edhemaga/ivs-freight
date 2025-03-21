@@ -18,11 +18,6 @@ import { IMilesModel } from '@pages/miles/interface';
 // Interface
 import { IStateFilters } from '@shared/interfaces';
 
-export const getLoadsPayload = createAction(
-    MilesStoreConstants.LOAD_MILES_INITAL,
-    props<{ filter: IStateFilters }>()
-);
-
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
     props<{ miles: IMilesModel[] }>()
