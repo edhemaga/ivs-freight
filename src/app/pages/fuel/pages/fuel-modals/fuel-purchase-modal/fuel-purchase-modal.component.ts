@@ -400,9 +400,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: id,
             truckId: this.selectedTruckType.id,
-            trailerId: this.selectedTrailerType
-                ? this.selectedTrailerType.id
-                : null,
+            trailerId: this.selectedTrailerType?.id ?? null,
             driverId: this.selectedDispatchHistory?.driverId,
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.isFranchise
@@ -460,9 +458,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: id,
             truckId: this.selectedTruckType.id,
-            trailerId: this.selectedTrailerType
-                ? this.selectedTrailerType.id
-                : null,
+            trailerId: this.selectedTrailerType?.id ?? null,
             driverId: this.selectedDispatchHistory?.driverId,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
@@ -489,14 +485,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         const { ...form } = this.fuelForm.value;
 
         const newData: any = {
-            driverId: this.selectedDispatchHistory
-                ? this.selectedDispatchHistory.driverId
-                : null,
-            truckId: this.selectedTruckType ? this.selectedTruckType.id : null,
+            driverId: this.selectedDispatchHistory?.driverId ?? null,
+            truckId: this.selectedTruckType?.id ?? null,
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
-            trailerId: this.selectedTrailerType
-                ? this.selectedTrailerType.id
-                : null,
+            trailerId: this.selectedTrailerType?.id ?? null,
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.isFranchise
                     ? this.selectedFuelStop.storeId
@@ -565,9 +557,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.fuelForm.patchValue({
                         efsAccount: null,
                         fuelCard: fuelCard?.cardNumber,
-                        truckId: truck ? truck.truckNumber : null,
+                        truckId: truck?.id ?? null,
                         invoice: invoice,
-                        trailerId: trailer ? trailer.trailerNumber : null,
+                        trailerId: trailer?.trailerNumber ?? null,
                         driverFullName: driver
                             ? driver.firstName?.concat(' ', driver.lastName)
                             : null,
@@ -936,7 +928,11 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
         const truckId = data?.truckId ?? null;
         const transactionDate =
-            type === eGeneralActions.EDIT ? data?.transactionDate : null;
+            type === eGeneralActions.EDIT
+                ? MethodsCalculationsHelper.convertDateFromBackend(
+                      data?.transactionDate
+                  )
+                : null;
         const transactionTime =
             type === eGeneralActions.EDIT
                 ? MethodsCalculationsHelper.convertDateToTimeFromBackend(
