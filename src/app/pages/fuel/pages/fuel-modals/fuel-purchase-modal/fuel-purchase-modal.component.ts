@@ -565,7 +565,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.fuelForm.patchValue({
                         efsAccount: null,
                         fuelCard: fuelCard?.cardNumber,
-                        truckId: truck ? truck.id : null,
+                        truckId: truck?.id ?? null,
                         invoice: invoice,
                         trailerId: trailer ? trailer.trailerNumber : null,
                         driverFullName: driver
