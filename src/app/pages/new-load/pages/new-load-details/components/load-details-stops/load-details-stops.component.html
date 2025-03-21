@@ -78,14 +78,14 @@
                 "
             >
                 <div
-                    class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold"
+                    class="d-flex align-items-center text-size-11 ta-font-bold"
                 >
                     <div
-                        class="h-18 w-18 d-flex align-items-center justify-content-center"
+                        class="h-18 w-18 d-flex align-items-center justify-content-center text-color-bw6-2"
                     >
                         #
                     </div>
-                    <div class="m-l-8">LOCATION • TYPE</div>
+                    <div class="m-l-8 text-color-bw6-2">LOCATION • TYPE</div>
                 </div>
                 <div
                     class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold"
@@ -147,14 +147,14 @@
                         </div>
 
                         <div class="m-l-8">
-                            <div
-                                class="text-color-black text-size-11 ta-font-semi-bold d-flex align-items-center"
-                            >
-                                <span class="text-truncate">
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="text-color-black text-size-11 ta-font-semi-bold text-truncate"
+                                >
                                     {{ stop.shipper.address.city }},
                                     {{ stop.shipper.address.stateShortName }},
                                     {{ stop.shipper.address.zipCode }}
-                                </span>
+                                </div>
 
                                 @if (stop.arrive) {
                                     <svg-icon
