@@ -115,6 +115,7 @@ export const setUnitDetails = function (
         ...state,
         details,
         isLastUnit: isLast,
+        isFirstUnit: true,
     };
 };
 export const setFollowingUnitDetails = function (

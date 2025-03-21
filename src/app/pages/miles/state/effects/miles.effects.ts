@@ -4,7 +4,14 @@ import { combineLatest, of } from 'rxjs';
 // NgRx Imports
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Store } from '@ngrx/store';
-import { catchError, map, exhaustMap, take, switchMap } from 'rxjs/operators';
+import {
+    catchError,
+    map,
+    exhaustMap,
+    take,
+    switchMap,
+    startWith,
+} from 'rxjs/operators';
 
 // Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
@@ -15,6 +22,7 @@ import { MilesService } from 'appcoretruckassist';
 // Enums and Selectors
 import { eMileTabs } from '@pages/miles/enums';
 import {
+    activeViewModeSelector,
     filterSelector,
     selectActiveUnitIndex,
     selectMilesItems,
@@ -23,6 +31,7 @@ import {
 
 // Utils
 import { MilesHelper } from '@pages/miles/utils/helpers';
+import { eActiveViewMode } from '@shared/enums';
 
 @Injectable()
 export class MilesEffects {
@@ -32,7 +41,7 @@ export class MilesEffects {
         private store: Store
     ) {}
 
-    private fetchMilesData() {
+    private fetchMilesData(fetchInitialUnitDetails: boolean = false) {
         return combineLatest([
             this.store.select(selectSelectedTab),
             this.store.select(filterSelector),
@@ -54,11 +63,51 @@ export class MilesEffects {
                         revenueTo
                     )
                     .pipe(
-                        map((response) =>
-                            MilesAction.loadMilesSuccess({
-                                miles: MilesHelper.milesMapper(
-                                    response.pagination.data
-                                ),
+                        map((response) => {
+                            const miles = MilesHelper.milesMapper(
+                                response.pagination.data
+                            );
+                            return {
+                                miles,
+                                action: MilesAction.loadMilesSuccess({ miles }),
+                            };
+                        }),
+                        catchError(() =>
+                            of({
+                                miles: [],
+                                action: MilesAction.getLoadsPayloadError(),
+                            })
+                        ),
+                        switchMap(({ miles, action }) =>
+                            fetchInitialUnitDetails
+                                ? this.fetchInitialUnitDetails(miles).pipe(
+                                      startWith(action)
+                                  )
+                                : of(action)
+                        )
+                    );
+            })
+        );
+    }
+
+    private fetchInitialUnitDetails(milesItems: any[]) {
+        return of(milesItems).pipe(
+            take(1),
+            switchMap((milesItems) => {
+                const firstItemId =
+                    milesItems.length > 0 ? milesItems[0].truckId : null;
+
+                if (!firstItemId) {
+                    return of(MilesAction.getLoadsPayloadError());
+                }
+
+                return this.milesService
+                    .apiMilesUnitGet(null, null, firstItemId)
+                    .pipe(
+                        map((unitResponse) =>
+                            MilesAction.setUnitDetails({
+                                details: unitResponse,
+                                isLast: milesItems.length === 1,
                             })
                         ),
                         catchError(() => of(MilesAction.getLoadsPayloadError()))
@@ -74,41 +123,28 @@ export class MilesEffects {
                 MilesAction.milesTabChange,
                 MilesAction.changeFilters
             ),
-            exhaustMap(() => this.fetchMilesData())
+            exhaustMap(() =>
+                this.store.select(activeViewModeSelector).pipe(
+                    take(1),
+                    switchMap((activeViewMode) =>
+                        this.fetchMilesData(
+                            activeViewMode ===
+                                eActiveViewMode[eActiveViewMode.Map]
+                        )
+                    )
+                )
+            )
         )
     );
-
     public loadInitialUnitDetails = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.getInitalUnitDetails),
             exhaustMap(() =>
                 this.store.select(selectMilesItems).pipe(
-                    // Select items from the store
-                    take(1), // Take only the first emission (to avoid subscribing to the store indefinitely)
-                    switchMap((milesItems) => {
-                        const firstItemId =
-                            milesItems.length > 0
-                                ? milesItems[0].truckId
-                                : null; // Get the truckId of the first item
-
-                        if (!firstItemId) {
-                            return of(MilesAction.getLoadsPayloadError()); // Handle case where there are no items
-                        }
-
-                        return this.milesService
-                            .apiMilesUnitGet(null, null, firstItemId)
-                            .pipe(
-                                map((unitResponse) =>
-                                    MilesAction.setUnitDetails({
-                                        details: unitResponse,
-                                        isLast: milesItems.length === 1,
-                                    })
-                                ),
-                                catchError(() =>
-                                    of(MilesAction.getLoadsPayloadError())
-                                )
-                            );
-                    })
+                    take(1),
+                    switchMap((milesItems) =>
+                        this.fetchInitialUnitDetails(milesItems)
+                    )
                 )
             )
         )
