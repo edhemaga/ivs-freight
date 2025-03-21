@@ -94,6 +94,7 @@ export class MilesEffects {
         return of(milesItems).pipe(
             take(1),
             switchMap((milesItems) => {
+                // Take first item from list and get unit details for that id
                 const firstItemId =
                     milesItems.length > 0 ? milesItems[0].truckId : null;
 
@@ -127,6 +128,7 @@ export class MilesEffects {
                 this.store.select(activeViewModeSelector).pipe(
                     take(1),
                     switchMap((activeViewMode) =>
+                        // If we are on map view we need to get units again since list is changed
                         this.fetchMilesData(
                             activeViewMode ===
                                 eActiveViewMode[eActiveViewMode.Map]
@@ -136,6 +138,8 @@ export class MilesEffects {
             )
         )
     );
+
+    // This is only for getting unit first time when user comes to map
     public loadInitialUnitDetails = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.getInitalUnitDetails),
@@ -149,6 +153,8 @@ export class MilesEffects {
             )
         )
     );
+
+    // When the user navigates back and forth between units through the list, we need to fetch a new list to update the current items and refresh pagination.
 
     public getFollowingUnitDetails = createEffect(() =>
         this.actions$.pipe(
