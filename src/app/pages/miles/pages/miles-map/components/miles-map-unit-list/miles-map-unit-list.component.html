@@ -1,5 +1,4 @@
-@let details = false;
-@let stops = [];
+@let details = milesStoreService.detailsSelector$ | async;
 @let isPreviousButtonDisabled = false;
 @let isNextButtonDisabled = false;
 
@@ -128,7 +127,7 @@
                     [itemSize]="26"
                     style="height: calc(100vh - 188px)"
                 >
-                    <div *cdkVirtualFor="let stop of stops">
+                    <div *cdkVirtualFor="let stop of details?.stops?.data">
                         <ng-container
                             *ngTemplateOutlet="
                                 stopRows;

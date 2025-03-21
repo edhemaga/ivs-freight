@@ -7,7 +7,10 @@ import { ITableColumn, ITableData } from '@shared/models';
 import { IStateFilters } from '@shared/interfaces';
 
 // External Services or Models
-import { MilesStateFilterResponse } from 'appcoretruckassist';
+import {
+    MilesByUnitPaginatedStopsResponse,
+    MilesStateFilterResponse,
+} from 'appcoretruckassist';
 import { IMilesModel } from '@pages/miles/interface';
 
 export interface IMilesState {
@@ -24,4 +27,5 @@ export interface IMilesState {
 
     // Is used for next, prev icons to navigate throught list
     actionUnitIndex: number;
+    details: MilesByUnitPaginatedStopsResponse;
 }

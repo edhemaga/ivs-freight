@@ -36,6 +36,7 @@ export const initialState: IMilesState = {
 
     // Unit list
     actionUnitIndex: 0,
+    details: {},
 };
 
 export const milesReducer = createReducer(
@@ -86,9 +87,12 @@ export const milesReducer = createReducer(
         Functions.toggleRowSelection(state, mile)
     ),
 
-    on(MilesAction.selectAll, (state) => Functions.toggleSelectAll(state))
+    on(MilesAction.selectAll, (state) => Functions.toggleSelectAll(state)),
     // #endregion
 
     // #region Unit detail
+    on(MilesAction.setUnitDetails, (state, { details }) =>
+        Functions.setUnitDetails(state, details)
+    )
     // #endregion
 );

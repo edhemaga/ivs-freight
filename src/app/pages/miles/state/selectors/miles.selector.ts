@@ -68,3 +68,8 @@ export const areAllItemsSelectedSelector = createSelector(
         return areAllItemsSelected;
     }
 );
+
+export const detailsSelector = createSelector(selectMilesState, (state) => {
+    const { details } = state || {};
+    return details;
+});

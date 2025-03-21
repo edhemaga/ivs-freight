@@ -13,12 +13,14 @@ import {
     tableColumnsSelector,
     filterSelector,
     areAllItemsSelectedSelector,
+    detailsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
 import { IMilesModel } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
+    MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
@@ -71,6 +73,9 @@ export class MilesStoreService {
         select(areAllItemsSelectedSelector)
     );
 
+    public detailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
+        this.store.pipe(select(detailsSelector));
+
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
             type: MilesStoreConstants.SET_STATES,
@@ -104,6 +109,12 @@ export class MilesStoreService {
             type: MilesStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
             activeViewMode,
         });
+
+        if (activeViewMode === eActiveViewMode.Map) {
+            this.store.dispatch({
+                type: MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE,
+            });
+        }
     }
 
     public dispatchFilters(

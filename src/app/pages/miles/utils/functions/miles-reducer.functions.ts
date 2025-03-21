@@ -1,6 +1,7 @@
 // Interface
 import { IMilesModel, IMilesState } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
+import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
 
 // Enums
 import { eActiveViewMode } from '@shared/enums';
@@ -102,5 +103,15 @@ export const updateTabSelection = function (
         selectedRows: 0,
         filters: {},
         areAllItemsSelected: false,
+    };
+};
+
+export const setUnitDetails = function (
+    state: IMilesState,
+    details: MilesByUnitPaginatedStopsResponse
+): IMilesState {
+    return {
+        ...state,
+        details,
     };
 };

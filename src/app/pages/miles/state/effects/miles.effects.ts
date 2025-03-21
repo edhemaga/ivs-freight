@@ -75,4 +75,20 @@ export class MilesEffects {
             exhaustMap(() => this.fetchMilesData())
         )
     );
+
+    public loadInitialUnitDetails = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getInitalUnitDetails),
+            exhaustMap(() =>
+                this.milesService.apiMilesUnitGet(null, null, 4).pipe(
+                    map((unitResponse) =>
+                        MilesAction.setUnitDetails({
+                            details: unitResponse,
+                        })
+                    ),
+                    catchError(() => of(MilesAction.getLoadsPayloadError()))
+                )
+            )
+        )
+    );
 }

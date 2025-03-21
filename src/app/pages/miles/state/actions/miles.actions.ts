@@ -70,3 +70,12 @@ export const selectOneRow = createAction(
 export const selectAll = createAction(
     MilesStoreConstants.ACTION_SELECT_ALL_ROWS
 );
+
+export const getInitalUnitDetails = createAction(
+    MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE
+);
+
+export const setUnitDetails = createAction(
+    MilesStoreConstants.ACTION_GET_MILES_DETAILS_SET_PAGE,
+    props<{ details: any }>()
+);
