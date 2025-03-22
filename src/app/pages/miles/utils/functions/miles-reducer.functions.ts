@@ -30,6 +30,10 @@ export const changeViewMode = function (
         activeViewMode,
         selectedRows: 0,
         areAllItemsSelected: false,
+        unitsPagination: {
+            ...state.unitsPagination,
+            activeUnitIndex: 0,
+        },
     };
 };
 
