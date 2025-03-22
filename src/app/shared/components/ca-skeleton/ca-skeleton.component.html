@@ -1,0 +1,13 @@
+@if (isLoading) {
+    <p class="placeholder-glow">
+        <span
+            class="placeholder background-muted"
+            [class.br-2]="!isCircle"
+            [ngStyle]="{ width: width + 'px', height: height + 'px' }"
+            [ngClass]="isCircle && 'rotate-45 br-5'"
+        >
+        </span>
+    </p>
+} @else {
+    <ng-container *ngTemplateOutlet="contentTemplate"></ng-container>
+}
