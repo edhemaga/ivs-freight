@@ -31,10 +31,15 @@ import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
 })
 export class LoadDetailsStopsComponent {
     public sharedSvgRoutes = SharedSvgRoutes;
+    public openStopIndex: number = -1;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
     public toggleMap(): void {
         this.loadStoreService.toggleMap();
+    }
+
+    public toggleStopDetails(newIndex: number): void {
+        this.openStopIndex = this.openStopIndex === newIndex ? -1 : newIndex;
     }
 }

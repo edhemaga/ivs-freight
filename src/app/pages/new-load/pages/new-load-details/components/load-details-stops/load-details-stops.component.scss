@@ -15,4 +15,8 @@
             200px 220px 140px 130px 76px
         );
     }
+
+    &-items {
+        grid-template-columns: 180px 74px 34px 50px 34px 34px 34px 34px 56px 80px 90px 60px 60px;
+    }
 }
