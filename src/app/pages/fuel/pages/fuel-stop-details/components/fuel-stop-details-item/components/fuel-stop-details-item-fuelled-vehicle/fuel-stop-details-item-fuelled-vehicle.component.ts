@@ -4,6 +4,12 @@ import { Router } from '@angular/router';
 // components
 import { CaVehicleListComponent, eVehicleList } from 'ca-components';
 
+// services
+import { DetailsSearchService } from '@shared/services';
+
+// enums
+import { eFuelDetailsSearchIndex } from '@pages/fuel/pages/fuel-stop-details/enums';
+
 // interfaces
 import { IVehicleListActionsEmit } from '@ca-shared/components/ca-vehicle-list/interfaces';
 
@@ -30,13 +36,21 @@ export class FuelStopDetailsItemFuelledVehicleComponent {
 
     public eVehicleList = eVehicleList;
 
-    constructor(private router: Router) {}
+    // enums
+    public eFuelDetailsSearchIndex = eFuelDetailsSearchIndex;
+
+    constructor(
+        private router: Router,
+        private detailsSearchService: DetailsSearchService
+    ) {}
 
     public handleVehicleListActionsEmit(action: IVehicleListActionsEmit): void {
         const { unitType, unitId, isCloseSearch } = action;
 
         isCloseSearch
-            ? null /* this.repairShopDetailsService.setCloseSearchStatus(1) */
+            ? this.detailsSearchService.setCloseSearchStatus(
+                  eFuelDetailsSearchIndex.VEHICLE_INDEX
+              )
             : this.router.navigate([
                   `/list/${unitType.toLowerCase()}/${unitId}/details`,
               ]);
