@@ -22,9 +22,10 @@ import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { RepairService } from '@shared/services/repair.service';
 import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
@@ -87,8 +88,8 @@ export class RepairCardComponent
         // services
         protected modalService: ModalService,
         protected repairService: RepairService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
         // helpers
         private cardHelper: CardHelper
@@ -196,12 +197,14 @@ export class RepairCardComponent
         this.handleDropdownMenuActions(
             emitAction,
             this.selectedTab === TableStringEnum.REPAIR_SHOP
-                ? DropdownMenuStringEnum.REPAIR_SHOP
-                : DropdownMenuStringEnum.REPAIR
+                ? eDropdownMenu.REPAIR_SHOP
+                : eDropdownMenu.REPAIR
         );
     }
 
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

@@ -47,6 +47,7 @@ import { MapsService } from '@shared/services/maps.service';
 import { RepairCardsModalService } from '@pages/repair/pages/repair-card-modal/services/repair-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { RepairShopQuery } from '@pages/repair/state/repair-shop-state/repair-shop.query';
@@ -68,11 +69,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import {
-    DropdownMenuStringEnum,
-    eCommonElement,
-    eGeneralActions,
-} from '@shared/enums';
+import { eDropdownMenu, eCommonElement, eGeneralActions } from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
 
@@ -128,7 +125,7 @@ export class RepairTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
     public tableStringEnum = TableStringEnum;
     public eCommonElement = eCommonElement;
 
@@ -218,8 +215,8 @@ export class RepairTableComponent
         protected modalService: ModalService,
         protected repairService: RepairService,
         protected reviewsRatingService: ReviewsRatingService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private mapsService: MapsService,
         private confirmationService: ConfirmationService,
         private repairCardsModalService: RepairCardsModalService,
@@ -1276,7 +1273,7 @@ export class RepairTableComponent
                         size: TableStringEnum.LARGE,
                     },
                     {
-                        type: DropdownMenuStringEnum.ADD_REPAIR_BILL_TRUCK,
+                        type: eDropdownMenu.ADD_REPAIR_BILL_TRUCK,
                     }
                 );
             } else if (this.selectedTab === TableStringEnum.INACTIVE) {
@@ -1286,7 +1283,7 @@ export class RepairTableComponent
                         size: TableStringEnum.LARGE,
                     },
                     {
-                        type: DropdownMenuStringEnum.ADD_REPAIR_BILL_TRAILER,
+                        type: eDropdownMenu.ADD_REPAIR_BILL_TRAILER,
                     }
                 );
             } else {
@@ -1381,7 +1378,7 @@ export class RepairTableComponent
         return {
             ...repair,
             isSelected: false,
-            isRepairOrder: repairType?.name === DropdownMenuStringEnum.ORDER,
+            isRepairOrder: repairType?.name === eDropdownMenu.ORDER,
             tableIssued: this.datePipe.transform(
                 date,
                 TableStringEnum.DATE_FORMAT
@@ -2070,6 +2067,8 @@ export class RepairTableComponent
             ? this.shopBackFilter(filterQuery, true)
             : this.repairBackFilter(filterQuery, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

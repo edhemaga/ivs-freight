@@ -531,6 +531,20 @@ app-load-modal {
     &-0 {
         padding-left: 0 !important;
     }
+
+    &-3 {
+        padding-left: 3px;
+    }
+}
+
+.position {
+    &-relative {
+        position: relative;
+    }
+
+    &-absolute {
+        position: absolute;
+    }
 }
 
 // Use case for deleting modal opening from modal

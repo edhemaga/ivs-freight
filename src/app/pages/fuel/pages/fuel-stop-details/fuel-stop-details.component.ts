@@ -4,6 +4,9 @@ import { ActivatedRoute, Router } from '@angular/router';
 
 import { Subject, take, takeUntil } from 'rxjs';
 
+// base classes
+import { FuelDropdownMenuActionsBase } from '@pages/fuel/base-classes';
+
 // store
 import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-details-item.store';
 import { FuelDetailsQuery } from '@pages/fuel/state/fuel-details-state/fuel-details.query';
@@ -11,21 +14,41 @@ import { FuelDetailsQuery } from '@pages/fuel/state/fuel-details-state/fuel-deta
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { FuelService } from '@shared/services/fuel.service';
+import { DetailsSearchService, FuelService } from '@shared/services';
+import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // components
 import { FuelStopDetailsItemComponent } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/fuel-stop-details-item.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
 // enums
-import { eCommonElement, eGeneralActions } from '@shared/enums';
+import {
+    eDropdownMenu,
+    eCommonElement,
+    eGeneralActions,
+    TableStringEnum,
+    eSharedString,
+} from '@shared/enums';
+import {
+    eFuelDetailsPartIndex,
+    eFuelStopDetails,
+} from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // helpers
 import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils/helpers';
 
 // models
-import { FuelStopResponse } from 'appcoretruckassist';
 import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
+import { ExtendedFuelStopResponse } from '@pages/fuel/pages/fuel-stop-details/models';
+import {
+    FuelledVehicleResponse,
+    FuelTransactionResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-details',
@@ -41,28 +64,46 @@ import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
         FuelStopDetailsItemComponent,
     ],
 })
-export class FuelStopDetailsComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class FuelStopDetailsComponent
+    extends FuelDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
+    public destroy$ = new Subject<void>();
 
     public detailsDropdownOptions: DetailsDropdownOptions;
     public fuelStopDetailsConfig: DetailsConfig[] = [];
 
-    public fuelStopObject: FuelStopResponse;
+    public fuelStopObject: ExtendedFuelStopResponse;
 
     public newFuelStopId: number;
+
+    // enums
+    public eDropdownMenu = eDropdownMenu;
 
     // search
     public searchConfig: boolean[] = [false, false];
 
+    get viewData() {
+        return [];
+    }
+
     constructor(
         // router
-        private router: Router,
+        protected router: Router,
+
         private activatedRoute: ActivatedRoute,
 
         // services
+        protected fuelService: FuelService,
+        protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
+
         private detailsPageService: DetailsPageService,
         private confirmationService: ConfirmationService,
-        private fuelService: FuelService,
+        private confirmationActivationService: ConfirmationActivationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private detailsSearchService: DetailsSearchService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -70,12 +111,18 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
         // store
         private fuelItemStore: FuelItemStore,
         private fuelDetailsQuery: FuelDetailsQuery
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.getStoreData();
 
         this.confirmationSubscribe();
+
+        this.confirmationActivationSubscribe();
+
+        this.searchSubscribe();
 
         this.handleRepairShopIdRouteChange();
     }
@@ -88,13 +135,49 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
                     const { id, type } = res;
 
                     if (type === eGeneralActions.DELETE) {
-                        if (false) {
-                            // delete fuel stop
-                        } else {
-                            this.deleteFuelTransaction(id);
-                        }
+                        res?.template === eFuelStopDetails.FUEL_STOP
+                            ? this.deleteFuelStop(id)
+                            : this.deleteFuelTransaction(id);
                     }
                 },
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (
+                    res?.subTypeStatus === eSharedString.BUSINESS &&
+                    [eGeneralActions.OPEN, eGeneralActions.CLOSE].includes(
+                        res?.type as eGeneralActions
+                    )
+                )
+                    this.handleOpenCloseFuelStop(res?.id);
+            });
+    }
+
+    private searchSubscribe(): void {
+        this.caSearchMultipleStatesService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const { searchType } = res;
+
+                    searchType === eFuelStopDetails.TRANSACTION
+                        ? this.handleTransactionListSearch(res)
+                        : this.handleFuelledVehicleListSearch(res);
+                }
+            });
+
+        // close search subscribe
+        this.detailsSearchService.getCloseSearchStatus$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((detailsPartIndex) => {
+                this.searchConfig = this.searchConfig.map(
+                    (searchItem, index) =>
+                        index !== detailsPartIndex && searchItem
+                );
             });
     }
 
@@ -115,7 +198,7 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
         });
     }
 
-    private getDetailsConfig(fuelStop: FuelStopResponse): void {
+    private getDetailsConfig(fuelStop: ExtendedFuelStopResponse): void {
         this.fuelStopObject = fuelStop;
 
         this.getDetailsOptions(fuelStop);
@@ -126,48 +209,25 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
         this.cdRef.detectChanges();
     }
 
-    private getDetailsOptions(fuelStop: FuelStopResponse): void {
-        /*  const { pinned, status, companyOwned } = fuelStop;
-        
-                this.detailsDropdownOptions =
-                    RepairShopDetailsHelper.getDetailsDropdownOptions(
-                        pinned,
-                        status,
-                        companyOwned
-                    ); */
+    private getDetailsOptions(fuelStop: ExtendedFuelStopResponse): void {
+        this.detailsDropdownOptions =
+            FuelStopDetailsHelper.getDetailsDropdownOptions(fuelStop);
+    }
 
-        this.detailsDropdownOptions = {
-            disabledMutedStyle: null,
-            toolbarActions: {
-                hideViewMode: false,
-            },
-            config: {
-                showSort: true,
-                sortBy: '',
-                sortDirection: '',
-                disabledColumns: [0],
-                minWidth: 60,
-            },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: eGeneralActions.EDIT,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    show: true,
-                },
+    private handleOpenCloseFuelStop(id: number): void {
+        this.fuelService
+            .updateFuelStopStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
 
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    type: 'truck',
-                    text: 'Are you sure you want to delete truck(s)?',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
-                    danger: true,
-                    show: true,
-                },
-            ],
-            export: true,
-        };
+    public deleteFuelStop(id: number): void {
+        this.fuelService
+            .deleteFuelStopList([id])
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() =>
+                this.router.navigate([eFuelStopDetails.FUEL_LIST_ROUTE])
+            );
     }
 
     private deleteFuelTransaction(ids: number): void {
@@ -175,6 +235,76 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
             .deleteFuelTransactionsList([ids], this.fuelStopObject?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    private handleTransactionListSearch<T>(res: T): void {
+        // w8 for back
+        /*  this.backFilterQuery.pageIndex = 1;
+    
+            const searchEvent = MethodsGlobalHelper.tableSearch(
+                res,
+                this.backFilterQuery
+            );
+    
+            if (searchEvent) {
+                searchEvent.action === TableStringEnum.API
+                    ? this.fuelBackFilter(this.backFilterQuery)
+                    : this.handleTransactionListSearchData(
+                          this.fuelStopObject.transactionList
+                      );
+            } */
+    }
+
+    private handleFuelledVehicleListSearch<T>(res: T): void {
+        // w8 for back
+        /*  this.backFuelledVehiclesFilterQuery.pageIndex = 1;
+
+        const searchEvent = MethodsGlobalHelper.tableSearch(
+            res,
+            this.backFuelledVehiclesFilterQuery
+        );
+
+        if (searchEvent) {
+            searchEvent.action === TableStringEnum.API
+                ? this.fuelledVehiclesBackFilter(
+                      this.backFuelledVehiclesFilterQuery
+                  )
+                : this.handleFuelledVehicleListSearchData(
+                      this.fuelStopObject.fuelledVehicleList
+                  );
+        } */
+    }
+
+    private handleTransactionListSearchData(
+        transactionList: FuelTransactionResponse[]
+    ): void {
+        this.fuelStopDetailsConfig = this.fuelStopDetailsConfig.map(
+            (item, index) =>
+                index === eFuelDetailsPartIndex.TRANSACTION_INDEX
+                    ? {
+                          ...item,
+                          data: { ...item.data, transactionList },
+                      }
+                    : item
+        );
+
+        this.cdRef.detectChanges();
+    }
+
+    private handleFuelledVehicleListSearchData(
+        fuelledVehicleList: FuelledVehicleResponse[]
+    ): void {
+        this.fuelStopDetailsConfig = this.fuelStopDetailsConfig.map(
+            (item, index) =>
+                index === eFuelDetailsPartIndex.VEHICLE_INDEX
+                    ? {
+                          ...item,
+                          data: { ...item.data, fuelledVehicleList },
+                      }
+                    : item
+        );
+
+        this.cdRef.detectChanges();
     }
 
     private handleRepairShopIdRouteChange(): void {
@@ -187,7 +317,7 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
                     this.fuelDetailsQuery
                         .selectEntity(id)
                         .pipe(take(1), takeUntil(this.destroy$))
-                        .subscribe((res: FuelStopResponse) => {
+                        .subscribe((res: ExtendedFuelStopResponse) => {
                             this.getDetailsConfig(res);
                             this.getDetailsOptions(this.fuelStopObject);
 
@@ -204,6 +334,44 @@ export class FuelStopDetailsComponent implements OnInit, OnDestroy {
                 this.cdRef.detectChanges();
             });
     }
+
+    public onModalAction(action: string): void {
+        if (action === eFuelStopDetails.TRANSACTION)
+            this.modalService.openModal(FuelPurchaseModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+    }
+
+    public onFuelStopSortActions(
+        event: { direction: string },
+        type: string
+    ): void {
+        if (type === eFuelStopDetails.TRANSACTION) {
+            // w8 for back
+            /*  this.backFilterQuery.sort = event.direction;
+    
+                this.repairBackFilter(this.backFilterQuery); */
+        } else {
+            /*   this.backRepairedVehiclesFilterQuery.repairShopId =
+                    this.repairShopObject.id;
+    
+                this.backRepairedVehiclesFilterQuery.sort = event.direction;
+    
+                this.repairedVehiclesBackFilter(
+                    this.backRepairedVehiclesFilterQuery
+                ); */
+        }
+    }
+
+    public onSearchBtnClick(isSearch: boolean, type: string): void {
+        const index = Number(type !== eFuelStopDetails.TRANSACTION);
+
+        this.searchConfig[index] = isSearch;
+    }
+
+    public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(action?: string): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

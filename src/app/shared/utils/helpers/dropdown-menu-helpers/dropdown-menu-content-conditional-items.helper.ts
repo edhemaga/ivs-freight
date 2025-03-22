@@ -1,7 +1,7 @@
 import { DropdownMenuContentConstants } from '@shared/utils/constants';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums/dropdown-menu-content-string.enum';
+import { eDropdownMenu, eDropdownMenuColumns } from '@shared/enums';
 
 // models
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -45,7 +45,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.EDIT,
+                title: eDropdownMenu.EDIT,
                 isDisabled: !isActiveOwner,
             },
         ];
@@ -57,7 +57,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.DELETE,
+                title: eDropdownMenu.DELETE,
                 isDisabled: isAutomaticTransaction,
             },
         ];
@@ -69,23 +69,23 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.EDIT,
+                title: eDropdownMenu.EDIT,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.SUGGEST_EDIT,
+                title: eDropdownMenu.SUGGEST_EDIT,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.ADD_TRANSACTION,
+                title: eDropdownMenu.ADD_TRANSACTION,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.MARK_AS_FAVORITE,
+                title: eDropdownMenu.MARK_AS_FAVORITE,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.UNMARK_FAVORITE,
+                title: eDropdownMenu.UNMARK_FAVORITE,
                 isDisabled: !isOpenBusiness,
             },
         ];
@@ -101,11 +101,11 @@ export class DropdownMenuContentConditionalItemsHelper {
 
         return [
             {
-                title: DropdownMenuStringEnum.ALL_ORDERS,
+                title: eDropdownMenu.ALL_ORDERS,
                 svgUrl,
             },
             {
-                title: DropdownMenuStringEnum.ALL_BILLS,
+                title: eDropdownMenu.ALL_BILLS,
                 svgUrl,
             },
         ];
@@ -118,24 +118,24 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.EDIT,
+                title: eDropdownMenu.EDIT,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.ADD_REPAIR_BILL,
+                title: eDropdownMenu.ADD_REPAIR_BILL,
                 isDisabled: !isOpenBusiness,
                 hasBorder: false,
             },
             {
-                title: DropdownMenuStringEnum.MARK_AS_FAVORITE,
+                title: eDropdownMenu.MARK_AS_FAVORITE,
                 isDisabled: !isOpenBusiness || isCompanyOwned,
             },
             {
-                title: DropdownMenuStringEnum.UNMARK_FAVORITE,
+                title: eDropdownMenu.UNMARK_FAVORITE,
                 isDisabled: !isOpenBusiness || isCompanyOwned,
             },
             {
-                title: DropdownMenuStringEnum.WRITE_REVIEW,
+                title: eDropdownMenu.WRITE_REVIEW,
                 isDisabled: !isOpenBusiness,
             },
         ];
@@ -147,11 +147,11 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.EDIT,
+                title: eDropdownMenu.EDIT,
                 isDisabled: !isActiveVehicle,
             },
             {
-                title: DropdownMenuStringEnum.ADD_NEW,
+                title: eDropdownMenu.ADD_NEW,
                 isDisabled: !isActiveVehicle,
             },
         ];
@@ -167,11 +167,11 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.EDIT,
+                title: eDropdownMenu.EDIT,
                 isDisabled: !isActiveUser,
             },
             {
-                title: DropdownMenuStringEnum.SEND_MESSAGE,
+                title: eDropdownMenu.SEND_MESSAGE,
                 isDisabled:
                     isUserStatusInvited ||
                     isUserStatusExpired ||
@@ -179,7 +179,7 @@ export class DropdownMenuContentConditionalItemsHelper {
                     !isActiveUser,
             },
             {
-                title: DropdownMenuStringEnum.RESET_PASSWORD,
+                title: eDropdownMenu.RESET_PASSWORD,
                 isDisabled:
                     isUserStatusInvited ||
                     isUserStatusExpired ||
@@ -187,16 +187,16 @@ export class DropdownMenuContentConditionalItemsHelper {
                     !isActiveUser,
             },
             {
-                title: DropdownMenuStringEnum.RESEND_INVITATION,
+                title: eDropdownMenu.RESEND_INVITATION,
                 isDisabled:
                     !isUserStatusExpired || !isActiveUser || isOwnerUser,
             },
             {
-                title: DropdownMenuStringEnum.INVITATION_SENT,
+                title: eDropdownMenu.INVITATION_SENT,
                 isDisabled: isInvitationSent,
             },
             {
-                title: DropdownMenuStringEnum.DEACTIVATE,
+                title: eDropdownMenu.DEACTIVATE,
                 isDisabled:
                     isUserStatusInvited ||
                     isUserStatusExpired ||
@@ -204,7 +204,7 @@ export class DropdownMenuContentConditionalItemsHelper {
                     isOwnerUser,
             },
             {
-                title: DropdownMenuStringEnum.DELETE,
+                title: eDropdownMenu.DELETE,
                 isDisabled: isOwnerUser,
             },
         ];
@@ -216,19 +216,19 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.EDIT,
+                title: eDropdownMenu.EDIT,
                 isDisabled: !isActiveDriver,
             },
             {
-                title: DropdownMenuStringEnum.SEND_MESSAGE,
+                title: eDropdownMenu.SEND_MESSAGE,
                 isDisabled: !isActiveDriver,
             },
             {
-                title: DropdownMenuStringEnum.ADD_NEW,
+                title: eDropdownMenu.ADD_NEW,
                 isDisabled: !isActiveDriver,
             },
             {
-                title: DropdownMenuStringEnum.REQUEST,
+                title: eDropdownMenu.REQUEST,
                 isDisabled: !isActiveDriver,
             },
         ];
@@ -240,7 +240,7 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.DELETE,
+                title: eDropdownMenu.DELETE,
                 isDisabled: !isPendingLoad,
             },
         ];
@@ -252,19 +252,19 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.EDIT,
+                title: eDropdownMenu.EDIT,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.ADD_CONTACT,
+                title: eDropdownMenu.ADD_CONTACT,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.WRITE_REVIEW,
+                title: eDropdownMenu.WRITE_REVIEW,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.REQUEST,
+                title: eDropdownMenu.REQUEST,
                 isDisabled: !isOpenBusiness,
             },
         ];
@@ -277,26 +277,38 @@ export class DropdownMenuContentConditionalItemsHelper {
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
-                title: DropdownMenuStringEnum.EDIT,
+                title: eDropdownMenu.EDIT,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.CREATE_LOAD,
+                title: eDropdownMenu.CREATE_LOAD,
                 isDisabled: isMovedToBanOrDnu,
                 hasBorder: false,
             },
             {
-                title: DropdownMenuStringEnum.ADD_CONTACT,
+                title: eDropdownMenu.ADD_CONTACT,
                 isDisabled: !isOpenBusiness,
             },
             {
-                title: DropdownMenuStringEnum.WRITE_REVIEW,
+                title: eDropdownMenu.WRITE_REVIEW,
                 isDisabled: !isOpenBusiness,
                 hasBorder: false,
             },
             {
-                title: DropdownMenuStringEnum.MOVE_TO_BAN_LIST,
+                title: eDropdownMenu.MOVE_TO_BAN_LIST,
                 isDisabled: !isOpenBusiness,
+            },
+        ];
+    }
+
+    // toolbar
+    static getToolbarColumnsModifierItems(
+        hasConfig: boolean
+    ): Partial<IDropdownMenuItem>[] {
+        return [
+            {
+                title: eDropdownMenuColumns.RESET_TABLE,
+                isDisabled: !hasConfig,
             },
         ];
     }

@@ -24,8 +24,11 @@ import {
 } from '@shared/enums';
 import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
 
+// interfaces
+import { IAdditionalChangeEvent } from '@shared/components/ta-details-header-card/interfaces/additional-change-event.interface';
+
 // models
-import { FuelStopResponse } from 'appcoretruckassist';
+import { FuelStopMinimalResponse, FuelStopResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-details-title-card',
@@ -53,10 +56,17 @@ export class FuelStopDetailsTitleCardComponent {
     }
 
     @Input() fuelStopCurrentIndex: number;
-    @Input() fuelStopDropdownList: FuelStopResponse[];
+    @Input() fuelStopStoreCurrentIndex: number;
+    @Input() fuelStopFranchiseDropdownList: FuelStopMinimalResponse[];
+    @Input() fuelStopStoreDropdownList: FuelStopMinimalResponse[];
 
     @Output() cardValuesEmitter = new EventEmitter<{
-        event: any;
+        event: IAdditionalChangeEvent | string;
+        type: string;
+        isAdditionalDropdownAction?: boolean;
+    }>();
+    @Output() cardValuesAdditionalEmitter = new EventEmitter<{
+        event: IAdditionalChangeEvent | string;
         type: string;
     }>();
 
@@ -73,7 +83,20 @@ export class FuelStopDetailsTitleCardComponent {
 
     constructor() {}
 
-    public handleCardChanges(event: any, type: string): void {
-        this.cardValuesEmitter.emit({ event, type });
+    public handleCardChanges(
+        event: IAdditionalChangeEvent | string,
+        type: string,
+        isAdditionalDropdownChange: boolean = false
+    ): void {
+        const payload = isAdditionalDropdownChange
+            ? {
+                  event: (event as IAdditionalChangeEvent).action,
+                  type,
+                  isAdditionalDropdownAction: (event as IAdditionalChangeEvent)
+                      .isAdditionalDropdownAction,
+              }
+            : { event, type };
+
+        this.cardValuesEmitter.emit(payload);
     }
 }

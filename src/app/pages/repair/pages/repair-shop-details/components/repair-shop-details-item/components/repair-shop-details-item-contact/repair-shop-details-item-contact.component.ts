@@ -6,7 +6,10 @@ import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-
 import { CaSearchMultipleStatesComponent } from 'ca-components';
 
 // services
-import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
+import { DetailsSearchService } from '@shared/services';
+
+// enums
+import { eRepairShopDetailsSearchIndex } from '@pages/repair/pages/repair-shop-details/enums';
 
 // models
 import {
@@ -43,7 +46,10 @@ export class RepairShopDetailsItemContactComponent {
 
     public departmentContacts: DepartmentContacts[];
 
-    constructor(private repairShopDetailsService: RepairShopDetailsService) {}
+    // enums
+    public eRepairShopDetailsSearchIndex = eRepairShopDetailsSearchIndex;
+
+    constructor(private detailsSearchService: DetailsSearchService) {}
 
     private orderContacts(contacts: RepairShopContactResponse[]): void {
         this.departmentContacts = [];
@@ -66,8 +72,8 @@ export class RepairShopDetailsItemContactComponent {
     }
 
     public handleCloseSearchEmit(): void {
-        const detailsPartIndex = 3;
-
-        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
+        this.detailsSearchService.setCloseSearchStatus(
+            eRepairShopDetailsSearchIndex.CONTACT_INDEX
+        );
     }
 }

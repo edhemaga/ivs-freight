@@ -23,7 +23,7 @@ import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipp
 import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-modal.component';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // types
 import {
@@ -59,7 +59,7 @@ export class DropdownMenuActionsHelper {
         type: string
     ): DropdownMenuEditActionAdditional {
         const additionalProperty =
-            type === DropdownMenuStringEnum.FINISH_ORDER_TYPE
+            type === eDropdownMenu.FINISH_ORDER_TYPE
                 ? { isFinishOrder: true }
                 : { openedTab: TableStringEnum.REVIEW };
 
@@ -68,25 +68,25 @@ export class DropdownMenuActionsHelper {
 
     static createViewDetailsActionLink(id: number, tableType: string): string {
         let adjustedTableType: string;
-        let detailsPath = DropdownMenuStringEnum.DETAILS;
+        let detailsPath = eDropdownMenu.DETAILS;
 
         switch (tableType) {
-            case DropdownMenuStringEnum.REPAIR_SHOP:
-                adjustedTableType = DropdownMenuStringEnum.REPAIR;
+            case eDropdownMenu.REPAIR_SHOP:
+                adjustedTableType = eDropdownMenu.REPAIR;
 
                 break;
-            case DropdownMenuStringEnum.FUEL_STOP:
-                adjustedTableType = DropdownMenuStringEnum.FUEL;
+            case eDropdownMenu.FUEL_STOP:
+                adjustedTableType = eDropdownMenu.FUEL;
 
                 break;
-            case DropdownMenuStringEnum.SHIPPER:
-                adjustedTableType = DropdownMenuStringEnum.CUSTOMER;
-                detailsPath = DropdownMenuStringEnum.SHIPPER_DETAILS;
+            case eDropdownMenu.SHIPPER:
+                adjustedTableType = eDropdownMenu.CUSTOMER;
+                detailsPath = eDropdownMenu.SHIPPER_DETAILS;
 
                 break;
-            case DropdownMenuStringEnum.BROKER:
-                adjustedTableType = DropdownMenuStringEnum.CUSTOMER;
-                detailsPath = DropdownMenuStringEnum.BROKER_DETAILS;
+            case eDropdownMenu.BROKER:
+                adjustedTableType = eDropdownMenu.CUSTOMER;
+                detailsPath = eDropdownMenu.BROKER_DETAILS;
 
                 break;
             default:
@@ -103,20 +103,19 @@ export class DropdownMenuActionsHelper {
             string,
             Type<DropdownEditActionModal>
         > = {
-            [DropdownMenuStringEnum.CONTACT]: ContactsModalComponent,
-            [DropdownMenuStringEnum.ACCOUNT]: AccountModalComponent,
-            [DropdownMenuStringEnum.OWNER]: OwnerModalComponent,
-            [DropdownMenuStringEnum.REPAIR]: RepairOrderModalComponent,
-            [DropdownMenuStringEnum.REPAIR_SHOP]: RepairShopModalComponent,
-            [DropdownMenuStringEnum.USER]: UserModalComponent,
-            [DropdownMenuStringEnum.FUEL_TRANSACTION]:
-                FuelPurchaseModalComponent,
-            [DropdownMenuStringEnum.FUEL_STOP]: FuelStopModalComponent,
-            [DropdownMenuStringEnum.TRUCK]: TruckModalComponent,
-            [DropdownMenuStringEnum.TRAILER]: TrailerModalComponent,
-            [DropdownMenuStringEnum.DRIVER]: DriverModalComponent,
-            [DropdownMenuStringEnum.SHIPPER]: ShipperModalComponent,
-            [DropdownMenuStringEnum.BROKER]: BrokerModalComponent,
+            [eDropdownMenu.CONTACT]: ContactsModalComponent,
+            [eDropdownMenu.ACCOUNT]: AccountModalComponent,
+            [eDropdownMenu.OWNER]: OwnerModalComponent,
+            [eDropdownMenu.REPAIR]: RepairOrderModalComponent,
+            [eDropdownMenu.REPAIR_SHOP]: RepairShopModalComponent,
+            [eDropdownMenu.USER]: UserModalComponent,
+            [eDropdownMenu.FUEL_TRANSACTION]: FuelPurchaseModalComponent,
+            [eDropdownMenu.FUEL_STOP]: FuelStopModalComponent,
+            [eDropdownMenu.TRUCK]: TruckModalComponent,
+            [eDropdownMenu.TRAILER]: TrailerModalComponent,
+            [eDropdownMenu.DRIVER]: DriverModalComponent,
+            [eDropdownMenu.SHIPPER]: ShipperModalComponent,
+            [eDropdownMenu.BROKER]: BrokerModalComponent,
         };
 
         return modalComponentMap[tableType];
@@ -129,12 +128,10 @@ export class DropdownMenuActionsHelper {
             string,
             Type<DropdownDriverAddAdditionalActionModal>
         > = {
-            [DropdownMenuStringEnum.CDL_TYPE]: DriverCdlModalComponent,
-            [DropdownMenuStringEnum.TEST_TYPE]:
-                DriverDrugAlcoholTestModalComponent,
-            [DropdownMenuStringEnum.MEDICAL_EXAM_TYPE]:
-                DriverMedicalModalComponent,
-            [DropdownMenuStringEnum.MVR_TYPE]: DriverMvrModalComponent,
+            [eDropdownMenu.CDL_TYPE]: DriverCdlModalComponent,
+            [eDropdownMenu.TEST_TYPE]: DriverDrugAlcoholTestModalComponent,
+            [eDropdownMenu.MEDICAL_EXAM_TYPE]: DriverMedicalModalComponent,
+            [eDropdownMenu.MVR_TYPE]: DriverMvrModalComponent,
         };
 
         return modalComponentMap[type];
@@ -147,11 +144,10 @@ export class DropdownMenuActionsHelper {
             string,
             Type<DropdownTruckTrailerAddAdditionalActionModal>
         > = {
-            [DropdownMenuStringEnum.REGISTRATION_TYPE]:
-                TtRegistrationModalComponent,
-            [DropdownMenuStringEnum.FHWA_INSPECTION_TYPE]:
+            [eDropdownMenu.REGISTRATION_TYPE]: TtRegistrationModalComponent,
+            [eDropdownMenu.FHWA_INSPECTION_TYPE]:
                 TtFhwaInspectionModalComponent,
-            [DropdownMenuStringEnum.TITLE_TYPE]: TtTitleModalComponent,
+            [eDropdownMenu.TITLE_TYPE]: TtTitleModalComponent,
         };
 
         return modalComponentMap[type];
@@ -161,7 +157,7 @@ export class DropdownMenuActionsHelper {
         data: PMTruckUnitResponse | PMTrailerUnitResponse,
         tableType?: string
     ): { id: number; isTruckUnit: boolean } {
-        if (tableType === DropdownMenuStringEnum.REPAIR_SHOP)
+        if (tableType === eDropdownMenu.REPAIR_SHOP)
             return { id: null, isTruckUnit: null };
 
         const checkIsTruckOrTrailerUnit = (

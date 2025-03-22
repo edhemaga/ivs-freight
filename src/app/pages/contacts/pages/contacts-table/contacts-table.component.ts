@@ -15,6 +15,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -26,8 +27,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum, eCommonElement } from '@shared/enums';
-import { eActiveViewMode } from '@shared/enums/active-view-mode.enum';
+import { eDropdownMenu, eCommonElement, eActiveViewMode } from '@shared/enums';
 
 // constants
 import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';
@@ -50,7 +50,7 @@ export class ContactsTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
 
@@ -83,9 +83,8 @@ export class ContactsTableComponent
         // services
         protected modalService: ModalService,
         protected contactsService: ContactsService,
-
-        private tableService: TruckassistTableService,
-
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private confirmationService: ConfirmationService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
@@ -302,6 +301,8 @@ export class ContactsTableComponent
 
         this.contactStoreService.dispatchGetContactList(this.filter, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});

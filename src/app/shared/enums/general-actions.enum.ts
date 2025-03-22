@@ -14,9 +14,13 @@ export enum eGeneralActions {
     OPEN_CAPITALIZED = 'Open',
     SAVE = 'save',
     NEXT = 'Next',
+    NEXT_LOWERCASE = 'next',
     PREVIOUS = 'Previous',
+    PREVIOUS_LOWERCASE = 'previous',
 
     OPEN_MODAL = 'open-modal',
+    RESET_MODAL = 'reset modal',
+    RESET = 'reset',
     TAB_SELECTED = 'tab-selected',
     VIEW_MODE = 'view-mode',
 }

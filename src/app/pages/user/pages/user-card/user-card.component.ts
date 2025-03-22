@@ -13,9 +13,10 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { UserService } from '@pages/user/services/user.service';
 import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
@@ -56,8 +57,8 @@ export class UserCardComponent
         // services
         protected modalService: ModalService,
         protected userService: UserService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
         // helpers
         private cardHelper: CardHelper
@@ -108,10 +109,12 @@ export class UserCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.USER);
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.USER);
     }
 
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

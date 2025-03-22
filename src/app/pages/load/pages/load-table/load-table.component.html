@@ -15,11 +15,13 @@
         <app-new-table-toolbar
             [title]="'Load'"
             [leftSide]="leftSide"
+            [toolbarDropdownContent]="toolbarDropdownMenuOptions"
             (onPlusClick)="
                 onToolBarAction({
                     action: tableStringEnum.OPEN_MODAL,
                 })
             "
+            (toolbarDropdownAction)="handleToolbarDropdownMenuActions($event)"
         >
             <ng-template #leftSide>
                 <app-toolbar-tabs-wrapper
@@ -103,7 +105,7 @@
                 (tableBodyActions)="
                     handleDropdownMenuActions(
                         $event,
-                        dropdownMenuStringEnum.LOAD,
+                        eDropdownMenu.LOAD,
                         selectedTab
                     )
                 "

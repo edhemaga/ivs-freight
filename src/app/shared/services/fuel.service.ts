@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { exhaustMap, Observable, tap } from 'rxjs';
+import { exhaustMap, Observable, switchMap, tap } from 'rxjs';
 
 // models
 import {
@@ -19,6 +19,7 @@ import {
     GetModalFuelStopFranchiseResponse,
     FuelledVehicleHistoryListResponse,
     CreateWithUploadsResponse,
+    FuelStopMinimalListResponse,
 } from 'appcoretruckassist';
 
 // services
@@ -33,7 +34,7 @@ import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-de
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // helpers
-import { FuelServiceHelper } from '@shared/utils/helpers/fuel-service.helper';
+import { FuelServiceHelper } from '@pages/fuel/utils/helpers';
 
 @Injectable({
     providedIn: 'root',
@@ -314,6 +315,20 @@ export class FuelService {
         );
     }
 
+    public getFuelStopsMinimalList(
+        fuelStopFranchiseId?: number,
+        pageIndex?: number,
+        pageSize?: number,
+        companyId?: number
+    ): Observable<FuelStopMinimalListResponse> {
+        return this.fuelService.apiFuelFuelstopListMinimalGet(
+            fuelStopFranchiseId,
+            pageIndex,
+            pageSize,
+            companyId
+        );
+    }
+
     public getFuelStopModalDropdowns(
         pageIndex: number = 1,
         pageSize: number = 25
@@ -386,7 +401,9 @@ export class FuelService {
                     tap((apiFuelStop) => {
                         FuelServiceHelper.updateFuelTransactionStopInStore(
                             this.fuelStore,
-                            apiFuelStop
+                            apiFuelStop,
+                            false,
+                            [this.fuelDetailsStore, this.fuelItemStore]
                         );
                     })
                 );
@@ -399,7 +416,8 @@ export class FuelService {
         isPinned: boolean
     ): Observable<object> {
         return this.fuelService.apiFuelFuelstopPut(id, isPinned).pipe(
-            tap(() => {
+            switchMap(() => this.getFuelStopById(id)),
+            tap((fuelStop) => {
                 this.fuelStore.update((store) => ({
                     fuelStops: {
                         ...store.fuelStops,
@@ -413,13 +431,19 @@ export class FuelService {
                         },
                     },
                 }));
+
+                FuelServiceHelper.handleUpdateDetailsStore(fuelStop, [
+                    this.fuelDetailsStore,
+                    this.fuelItemStore,
+                ]);
             })
         );
     }
 
-    public updateFuelStopStatus(id: number): Observable<void> {
+    public updateFuelStopStatus(id: number): Observable<FuelStopResponse> {
         return this.fuelService.apiFuelFuelstopStatusIdPut(id).pipe(
-            tap(() => {
+            switchMap(() => this.getFuelStopById(id)),
+            tap((fuelStop) => {
                 this.fuelStore.update((store) => ({
                     fuelStops: {
                         ...store.fuelStops,
@@ -433,6 +457,11 @@ export class FuelService {
                         },
                     },
                 }));
+
+                FuelServiceHelper.handleUpdateDetailsStore(fuelStop, [
+                    this.fuelDetailsStore,
+                    this.fuelItemStore,
+                ]);
             })
         );
     }

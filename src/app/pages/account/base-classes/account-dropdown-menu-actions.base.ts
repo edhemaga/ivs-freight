@@ -9,7 +9,7 @@ import { DropdownMenuActionsBase } from '@shared/base-classes';
 import { AccountService } from '@pages/account/services/account.service';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // helpers
 import { AccountHelper } from '@pages/account/utils/helpers';
@@ -46,29 +46,29 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
         const { id, data, type } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.GO_TO_LINK_TYPE:
+            case eDropdownMenu.GO_TO_LINK_TYPE:
                 const { url } = data;
 
                 this.handleGoToLinkAction(url);
 
                 break;
-            case DropdownMenuStringEnum.COPY_USERNAME_TYPE:
+            case eDropdownMenu.COPY_USERNAME_TYPE:
                 const { username } = data;
 
                 this.handleCopyAction(username);
 
                 break;
-            case DropdownMenuStringEnum.COPY_PASSWORD_TYPE:
+            case eDropdownMenu.COPY_PASSWORD_TYPE:
                 const { password } = data;
 
                 this.handleCopyAction(password);
 
                 break;
-            case DropdownMenuStringEnum.CREATE_LABEL:
+            case eDropdownMenu.CREATE_LABEL:
                 this.handleCreateLabelAction(data);
 
                 break;
-            case DropdownMenuStringEnum.UPDATE_LABEL:
+            case eDropdownMenu.UPDATE_LABEL:
                 const { id: labelId } = data;
 
                 this.handleUpdateLabelAction(id, labelId);
@@ -85,10 +85,7 @@ export abstract class AccountDropdownMenuActionsBase extends DropdownMenuActions
     private handleGoToLinkAction(url: string): void {
         const linkUrl = AccountHelper.generateLinkUrl(url);
 
-        this.documentRef.defaultView.open(
-            linkUrl,
-            DropdownMenuStringEnum.BLANK
-        );
+        this.documentRef.defaultView.open(linkUrl, eDropdownMenu.BLANK);
     }
 
     private handleCopyAction(usernameOrPassword: string): void {

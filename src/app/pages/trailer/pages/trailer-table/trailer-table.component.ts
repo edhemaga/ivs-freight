@@ -22,6 +22,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { TrailerCardsModalService } from '@pages/trailer/pages/trailer-card-modal/services/trailer-cards-modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { DetailsDataService } from '@shared/services/details-data.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
@@ -44,9 +45,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
-import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
@@ -81,7 +80,7 @@ export class TrailerTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -134,10 +133,13 @@ export class TrailerTableComponent
     );
 
     constructor(
+        // router
         protected router: Router,
-        //Services
+
+        // services
         protected modalService: ModalService,
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private trailerService: TrailerService,
         private confirmationService: ConfirmationService,
         private trailerCardsModalService: TrailerCardsModalService,
@@ -145,14 +147,14 @@ export class TrailerTableComponent
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private detailsDataService: DetailsDataService,
 
-        //Store
+        // store
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
         private trailerInactiveStore: TrailerInactiveStore,
         private trailerActiveStore: TrailerActiveStore,
         private store: Store,
 
-        //Pipes
+        // pipes
         public datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe
     ) {
@@ -1006,12 +1008,14 @@ export class TrailerTableComponent
 
     public handleShowMoreAction(): void {
         this.backFilterQuery.active =
-            this.selectedTab === DropdownMenuStringEnum.ACTIVE ? 1 : 0;
+            this.selectedTab === eDropdownMenu.ACTIVE ? 1 : 0;
 
         this.backFilterQuery.pageIndex++;
 
         this.trailerBackFilter(this.backFilterQuery, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});

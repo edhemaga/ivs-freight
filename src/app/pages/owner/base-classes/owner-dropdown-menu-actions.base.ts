@@ -6,7 +6,7 @@ import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // models
 import { TableCardBodyActions } from '@shared/models';
@@ -24,8 +24,8 @@ export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBa
         const { type, data } = action;
 
         switch (type) {
-            case DropdownMenuStringEnum.ADD_TRUCK_TYPE:
-            case DropdownMenuStringEnum.ADD_TRAILER_TYPE:
+            case eDropdownMenu.ADD_TRUCK_TYPE:
+            case eDropdownMenu.ADD_TRAILER_TYPE:
                 this.handleAddTruckTrailerAction(type, data);
 
                 break;
@@ -42,7 +42,7 @@ export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBa
         ownerData: OwnerResponse
     ): void {
         const addTruckTrailerModalComponent =
-            type === DropdownMenuStringEnum.ADD_TRUCK_TYPE
+            type === eDropdownMenu.ADD_TRUCK_TYPE
                 ? TruckModalComponent
                 : TrailerModalComponent;
 
@@ -52,7 +52,7 @@ export abstract class OwnerDropdownMenuActionsBase extends DropdownMenuActionsBa
                 size: TableStringEnum.SMALL,
             },
             {
-                ownerData
+                ownerData,
             }
         );
     }
