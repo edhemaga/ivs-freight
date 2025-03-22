@@ -1,5 +1,6 @@
 @let load = loadStoreService.resolveLoadDetails$ | async;
 @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
+@let isSpacingBottom = true;
 
 <div class="m-t-16">
     <div class="background-white p-8 br-3">
@@ -28,7 +29,7 @@
                             icon: sharedIcons.STATUS_ICON,
                             text: load.status?.statusString,
                             isLoading,
-                            isSpacingBottom: true,
+                            isSpacingBottom,
                             width: 110,
                             colWidth: 'col-6',
                         }
@@ -42,7 +43,7 @@
                             icon: sharedIcons.COMPANY_ICON,
                             text: load.company?.companyName,
                             isLoading,
-                            isSpacingBottom: true,
+                            isSpacingBottom,
                             width: 140,
                             colWidth: 'col-6',
                         }
@@ -56,7 +57,7 @@
                             icon: sharedIcons.TIME_ICON,
                             text: load.company?.companyName,
                             isLoading,
-                            isSpacingBottom: true,
+                            isSpacingBottom,
                             width: 130,
                             colWidth: 'col-6',
                         }
@@ -70,7 +71,7 @@
                             icon: sharedIcons.USER_ICON,
                             text: load.dispatcher?.fullName,
                             isLoading,
-                            isSpacingBottom: true,
+                            isSpacingBottom,
                             width: 120,
                             colWidth: 'col-6',
                         }
@@ -151,7 +152,7 @@
                             icon: sharedIcons.USER_CIRCLE_ICON,
                             text: load.brokerContact?.contactName,
                             isLoading,
-                            isSpacingBottom: true,
+                            isSpacingBottom,
                             width: 160,
                             colWidth: 'col-6',
                             textColorClass: 'text-color-black-2',
@@ -166,10 +167,10 @@
                             icon: sharedIcons.PHONE_ICON,
                             text: load.brokerContact?.phone,
                             isLoading,
-                            isSpacingBottom: true,
+                            isSpacingBottom,
                             width: 140,
                             colWidth: 'col-6',
-                            ext: load.brokerContact?.extensionPhone,
+                            extension: load.brokerContact?.extensionPhone,
                             textColorClass: 'text-color-black-2',
                         }
                     "
@@ -182,7 +183,7 @@
                             icon: sharedIcons.EMAIL_ICON,
                             text: load.brokerContact?.email,
                             isLoading,
-                            isSpacingBottom: true,
+                            isSpacingBottom,
                             width: 180,
                             colWidth: 'col-12',
                             textColorClass: 'text-color-black-2',
@@ -203,7 +204,7 @@
     let-width="width"
     let-isSpacingBottom="isSpacingBottom"
     let-colWidth="colWidth"
-    let-ext="ext"
+    let-extension="extension"
     let-textColorClass="textColorClass"
 >
     <div
@@ -240,8 +241,8 @@
                     [ngClass]="textColorClass || 'text-color-black'"
                 >
                     {{ text }}
-                    @if (ext) {
-                        <span class="text-color-grey">x{{ ext }} </span>
+                    @if (extension) {
+                        <span class="text-color-grey">x{{ extension }} </span>
                     }
                 </div>
             </ng-template>

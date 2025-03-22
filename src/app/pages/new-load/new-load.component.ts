@@ -79,15 +79,23 @@ import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
     ],
 })
 export class NewLoadComponent extends LoadDropdownMenuActionsBase {
+    // enums
     public eLoadStatusStringType = eLoadStatusStringType;
-    public selectedTab = eLoadStatusStringType.ACTIVE;
-    public sharedIcons = SharedSvgRoutes;
     public generalActions = eGeneralActions;
-    public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
+
+    public selectedTab = eLoadStatusStringType.ACTIVE;
+
+    // filter
+    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
+
+    private isToolbarDropdownMenuColumnsActive: boolean = false;
     public isTableLocked: boolean = false;
 
-    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
-    private isToolbarDropdownMenuColumnsActive: boolean = false;
+    // 
+    public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
+
+    // icons
+    public sharedIcons = SharedSvgRoutes;
 
     constructor(
         // router

@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CaSkeletonComponent } from './ca-skeleton.component';
+import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.component';
 
 describe('CaSkeletonComponent', () => {
   let component: CaSkeletonComponent;
