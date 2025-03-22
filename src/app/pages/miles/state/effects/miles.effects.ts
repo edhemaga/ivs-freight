@@ -11,6 +11,7 @@ import {
     take,
     switchMap,
     startWith,
+    mergeMap,
 } from 'rxjs/operators';
 
 // Actions
@@ -31,7 +32,7 @@ import {
 
 // Utils
 import { MilesHelper } from '@pages/miles/utils/helpers';
-import { eActiveViewMode } from '@shared/enums';
+import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
 @Injectable()
 export class MilesEffects {
@@ -64,12 +65,17 @@ export class MilesEffects {
                     )
                     .pipe(
                         map((response) => {
+                            const totalResultsCount = response.pagination.count;
+
                             const miles = MilesHelper.milesMapper(
                                 response.pagination.data
                             );
                             return {
                                 miles,
-                                action: MilesAction.loadMilesSuccess({ miles }),
+                                action: MilesAction.loadMilesSuccess({
+                                    miles,
+                                    totalResultsCount,
+                                }),
                             };
                         }),
                         catchError(() =>
@@ -163,14 +169,79 @@ export class MilesEffects {
                     take(1),
                     switchMap(([milesItems, unitsPagination]) => {
                         const { getFollowingUnitDirection } = action;
-                        // We should first check if user is on last page
+                        const { totalResultsCount, currentPage } =
+                            unitsPagination;
 
-                        const { index, isFirst, isLast, truckId } =
-                            MilesHelper.findAdjacentId(
-                                milesItems,
-                                unitsPagination.activeUnitIndex,
-                                getFollowingUnitDirection
-                            );
+                        console.log(milesItems.length);
+                        if (
+                            unitsPagination.isLastInCurrentList &&
+                            getFollowingUnitDirection ===
+                                ArrowActionsStringEnum.NEXT
+                        ) {
+                            // TODO: GET resulst for selected filter
+                            return this.milesService
+                                .apiMilesListGet(
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    null,
+                                    currentPage + 1
+                                )
+                                .pipe(
+                                    switchMap((response) => {
+                                        const miles = MilesHelper.milesMapper(
+                                            response.pagination.data
+                                        );
+                                        const newTruckId = miles[0]?.truckId;
+
+                                        return this.milesService
+                                            .apiMilesUnitGet(
+                                                null,
+                                                null,
+                                                newTruckId
+                                            )
+                                            .pipe(
+                                                mergeMap((unitResponse) => [
+                                                    MilesAction.updateMilesList(
+                                                        { miles }
+                                                    ),
+                                                    MilesAction.setFollowingUnitDetails(
+                                                        {
+                                                            unitResponse,
+                                                            index: milesItems.length,
+                                                            isFirst: true,
+                                                            isLast:
+                                                                miles.length ===
+                                                                1,
+                                                            isLastInCurrentList:
+                                                                miles.length ===
+                                                                1,
+                                                        }
+                                                    ),
+                                                ])
+                                            );
+                                    }),
+                                    catchError(() =>
+                                        of(MilesAction.getLoadsPayloadError())
+                                    )
+                                );
+                        }
+
+                        const {
+                            index,
+                            isFirst,
+                            isLast,
+                            truckId,
+                            isLastInCurrentList,
+                        } = MilesHelper.findAdjacentId(
+                            milesItems,
+                            unitsPagination.activeUnitIndex,
+                            getFollowingUnitDirection,
+                            totalResultsCount
+                        );
 
                         return this.milesService
                             .apiMilesUnitGet(null, null, truckId)
@@ -181,6 +252,7 @@ export class MilesEffects {
                                         index,
                                         isFirst,
                                         isLast,
+                                        isLastInCurrentList,
                                     })
                                 ),
                                 catchError(() =>

@@ -58,12 +58,14 @@ export class MilesHelper {
     static findAdjacentId(
         miles: IMilesModel[],
         currentIndex: number,
-        direction: ArrowActionsStringEnum
+        direction: ArrowActionsStringEnum,
+        totalResultsCount: number
     ): {
         index: number | null;
         isFirst: boolean;
         isLast: boolean;
         truckId: number;
+        isLastInCurrentList: boolean;
     } {
         // Ensure the currentIndex is within the bounds of the array
         if (currentIndex < 0 || currentIndex >= miles.length) {
@@ -71,6 +73,7 @@ export class MilesHelper {
                 index: null,
                 isFirst: false,
                 isLast: false,
+                isLastInCurrentList: false,
                 truckId: null,
             };
         }
@@ -97,7 +100,8 @@ export class MilesHelper {
             truckId: miles[newIndex]?.truckId ?? null,
             index: newIndex,
             isFirst: newIndex === 0,
-            isLast: newIndex === miles.length - 1,
+            isLastInCurrentList: newIndex === miles.length - 1,
+            isLast: newIndex === totalResultsCount - 1,
         };
     }
 }

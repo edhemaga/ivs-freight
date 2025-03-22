@@ -106,6 +106,7 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.LOAD_MILES_SUCCESS,
             miles: MilesHelper.milesMapper(data.pagination.data),
+            totalResultsCount: data.pagination.count,
         });
     }
 

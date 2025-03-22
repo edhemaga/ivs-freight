@@ -35,7 +35,8 @@ export const changeViewMode = function (
 
 export const updateMilesData = function (
     state: IMilesState,
-    miles: IMilesModel[]
+    miles: IMilesModel[],
+    totalResultsCount: number
 ): IMilesState {
     return {
         ...state,
@@ -44,6 +45,21 @@ export const updateMilesData = function (
         unitsPagination: {
             ...state.unitsPagination,
             activeUnitIndex: 0,
+            totalResultsCount,
+        },
+    };
+};
+
+export const updateMilesListData = function (
+    state: IMilesState,
+    miles: IMilesModel[]
+): IMilesState {
+    return {
+        ...state,
+        items: [...state.items, ...miles],
+        unitsPagination: {
+            ...state.unitsPagination,
+            currentPage: state.unitsPagination.currentPage + 1,
         },
     };
 };
@@ -129,7 +145,8 @@ export const setFollowingUnitDetails = function (
     details: MilesByUnitPaginatedStopsResponse,
     activeUnitIndex: number,
     isFirstUnit: boolean,
-    isLastUnit: boolean
+    isLastUnit: boolean,
+    isLastInCurrentList: boolean
 ): IMilesState {
     const { unitsPagination } = state;
     return {
@@ -140,6 +157,7 @@ export const setFollowingUnitDetails = function (
             isFirstUnit,
             isLastUnit,
             activeUnitIndex,
+            isLastInCurrentList,
         },
     };
 };

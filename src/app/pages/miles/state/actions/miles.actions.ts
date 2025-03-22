@@ -20,7 +20,7 @@ import { IStateFilters } from '@shared/interfaces';
 
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
-    props<{ miles: IMilesModel[] }>()
+    props<{ miles: IMilesModel[]; totalResultsCount: number }>()
 );
 
 export const getLoadsPayloadError = createAction(
@@ -29,6 +29,11 @@ export const getLoadsPayloadError = createAction(
 
 export const loadMilesSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
+    props<{ miles: IMilesModel[]; totalResultsCount: number }>()
+);
+
+export const updateMilesList = createAction(
+    MilesStoreConstants.UPDATE_MILES_LIST,
     props<{ miles: IMilesModel[] }>()
 );
 
@@ -87,5 +92,6 @@ export const setFollowingUnitDetails = createAction(
         index: number;
         isFirst: boolean;
         isLast: boolean;
+        isLastInCurrentList: boolean;
     }>()
 );
