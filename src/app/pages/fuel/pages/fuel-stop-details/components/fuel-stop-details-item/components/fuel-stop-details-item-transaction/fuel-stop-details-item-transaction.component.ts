@@ -45,7 +45,10 @@ import { DescriptionItemsTextCountDirective } from '@shared/directives';
 // enums
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import { eDropdownMenu, eGeneralActions } from '@shared/enums';
-import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
+import {
+    eFuelDetailsSearchIndex,
+    eFuelStopDetails,
+} from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
@@ -104,6 +107,7 @@ export class FuelStopDetailsItemTransactionComponent
 
     // enums
     public eFuelTransactionType = eFuelTransactionType;
+    public eFuelDetailsSearchIndex = eFuelDetailsSearchIndex;
 
     // headers
     public transactionHeaderItems: string[] = [];
@@ -256,9 +260,9 @@ export class FuelStopDetailsItemTransactionComponent
     public handleShowMoreAction(): void {}
 
     public handleCloseSearchEmit(): void {
-        const detailsPartIndex = 0;
-
-        this.detailsSearchService.setCloseSearchStatus(detailsPartIndex);
+        this.detailsSearchService.setCloseSearchStatus(
+            eFuelDetailsSearchIndex.TRANSACTION_INDEX
+        );
     }
 
     public updateToolbarDropdownMenuContent(): void {}

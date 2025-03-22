@@ -3,7 +3,8 @@
         [vehicleListConfig]="{
             type: eVehicleList.REPAIRED_VEHICLE_LIST,
             list: _repairedVehicleList,
-            isSearchActive: searchConfig[1],
+            isSearchActive:
+                searchConfig[eRepairShopDetailsSearchIndex.VEHICLE_INDEX],
         }"
         (vehicleListActionsEmitter)="handleVehicleListActionsEmit($event)"
     ></app-ca-vehicle-list>

@@ -34,7 +34,10 @@ import {
     TableStringEnum,
     eSharedString,
 } from '@shared/enums';
-import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
+import {
+    eFuelDetailsPartIndex,
+    eFuelStopDetails,
+} from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // helpers
 import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils/helpers';
@@ -277,7 +280,7 @@ export class FuelStopDetailsComponent
     ): void {
         this.fuelStopDetailsConfig = this.fuelStopDetailsConfig.map(
             (item, index) =>
-                index === 1
+                index === eFuelDetailsPartIndex.TRANSACTION_INDEX
                     ? {
                           ...item,
                           data: { ...item.data, transactionList },
@@ -293,7 +296,7 @@ export class FuelStopDetailsComponent
     ): void {
         this.fuelStopDetailsConfig = this.fuelStopDetailsConfig.map(
             (item, index) =>
-                index === 2
+                index === eFuelDetailsPartIndex.VEHICLE_INDEX
                     ? {
                           ...item,
                           data: { ...item.data, fuelledVehicleList },

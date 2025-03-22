@@ -33,7 +33,11 @@ import { RepairOrderModalComponent } from '@pages/repair/pages/repair-modals/rep
 import { RepairShopModalComponent } from '@pages/repair/pages/repair-modals/repair-shop-modal/repair-shop-modal.component';
 
 // enums
-import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
+import {
+    eRepairShopDetails,
+    eRepairShopDetailsPartIndex,
+    eRepairShopDetailsSearchIndex,
+} from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
 import { eCommonElement, eGeneralActions, eSharedString } from '@shared/enums';
@@ -331,7 +335,11 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                         index !== detailsPartIndex && searchItem
                 );
 
-                if (detailsPartIndex === 3) this.contactListSearchValue = null;
+                if (
+                    detailsPartIndex ===
+                    eRepairShopDetailsSearchIndex.CONTACT_INDEX
+                )
+                    this.contactListSearchValue = null;
             });
     }
 
@@ -396,7 +404,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     private handleRepairListSearchData(repairList: RepairResponse[]): void {
         this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
             (item, index) =>
-                index === 1
+                index === eRepairShopDetailsPartIndex.REPAIR_INDEX
                     ? {
                           ...item,
                           data: { ...item.data, repairList },
@@ -412,7 +420,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     ): void {
         this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
             (item, index) =>
-                index === 2
+                index === eRepairShopDetailsPartIndex.VEHICLE_INDEX
                     ? {
                           ...item,
                           data: { ...item.data, repairedVehicleList },
@@ -428,7 +436,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     ): void {
         this.repairShopDetailsConfig = this.repairShopDetailsConfig.map(
             (item, index) =>
-                index === 3
+                index === eRepairShopDetailsPartIndex.CONTACT_INDEX
                     ? {
                           ...item,
                           data: {

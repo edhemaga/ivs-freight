@@ -7,6 +7,9 @@ import { DetailsSearchService } from '@shared/services';
 // components
 import { CaVehicleListComponent, eVehicleList } from 'ca-components';
 
+// enums
+import { eRepairShopDetailsSearchIndex } from '@pages/repair/pages/repair-shop-details/enums';
+
 // interfaces
 import { IVehicleListActionsEmit } from '@ca-shared/components/ca-vehicle-list/interfaces';
 
@@ -33,6 +36,9 @@ export class RepairShopDetailsItemRepairedVehicleComponent {
 
     public eVehicleList = eVehicleList;
 
+    // enums
+    public eRepairShopDetailsSearchIndex = eRepairShopDetailsSearchIndex;
+
     constructor(
         private router: Router,
 
@@ -44,7 +50,9 @@ export class RepairShopDetailsItemRepairedVehicleComponent {
         const { unitType, unitId, isCloseSearch } = action;
 
         isCloseSearch
-            ? this.detailsSearchService.setCloseSearchStatus(1)
+            ? this.detailsSearchService.setCloseSearchStatus(
+                  eRepairShopDetailsSearchIndex.VEHICLE_INDEX
+              )
             : this.router.navigate([
                   `/list/${unitType.toLowerCase()}/${unitId}/details`,
               ]);

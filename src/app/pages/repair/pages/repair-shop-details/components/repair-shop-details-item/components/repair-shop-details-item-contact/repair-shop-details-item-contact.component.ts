@@ -8,6 +8,9 @@ import { CaSearchMultipleStatesComponent } from 'ca-components';
 // services
 import { DetailsSearchService } from '@shared/services';
 
+// enums
+import { eRepairShopDetailsSearchIndex } from '@pages/repair/pages/repair-shop-details/enums';
+
 // models
 import {
     RepairShopContactResponse,
@@ -43,6 +46,9 @@ export class RepairShopDetailsItemContactComponent {
 
     public departmentContacts: DepartmentContacts[];
 
+    // enums
+    public eRepairShopDetailsSearchIndex = eRepairShopDetailsSearchIndex;
+
     constructor(private detailsSearchService: DetailsSearchService) {}
 
     private orderContacts(contacts: RepairShopContactResponse[]): void {
@@ -66,8 +72,8 @@ export class RepairShopDetailsItemContactComponent {
     }
 
     public handleCloseSearchEmit(): void {
-        const detailsPartIndex = 3;
-
-        this.detailsSearchService.setCloseSearchStatus(detailsPartIndex);
+        this.detailsSearchService.setCloseSearchStatus(
+            eRepairShopDetailsSearchIndex.CONTACT_INDEX
+        );
     }
 }

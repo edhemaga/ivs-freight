@@ -36,7 +36,10 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // enums
-import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
+import {
+    eRepairShopDetails,
+    eRepairShopDetailsSearchIndex,
+} from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eDropdownMenu, eGeneralActions } from '@shared/enums';
 
@@ -95,6 +98,7 @@ export class RepairShopDetailsItemRepairComponent
 
     // enums
     public eRepairShopDetails = eRepairShopDetails;
+    public eRepairShopDetailsSearchIndex = eRepairShopDetailsSearchIndex;
 
     // headers
     public repairHeaderItems: string[] = [];
@@ -262,9 +266,9 @@ export class RepairShopDetailsItemRepairComponent
     public updateToolbarDropdownMenuContent(): void {}
 
     public handleCloseSearchEmit(): void {
-        const detailsPartIndex = 0;
-
-        this.detailsSearchService.setCloseSearchStatus(detailsPartIndex);
+        this.detailsSearchService.setCloseSearchStatus(
+            eRepairShopDetailsSearchIndex.REPAIR_INDEX
+        );
     }
 
     ngOnDestroy(): void {
