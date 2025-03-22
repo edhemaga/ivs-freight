@@ -13,6 +13,13 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
 // Pipes
 import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
 
+// COmponents
+import {
+    CaMapComponent,
+    ICaMapProps,
+    MapOptionsConstants,
+} from 'ca-components';
+
 @Component({
     selector: 'app-load-details-stops',
     templateUrl: './load-details-stops.component.html',
@@ -27,10 +34,12 @@ import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
 
         // Components
         AngularSvgIconModule,
+        CaMapComponent,
     ],
 })
 export class LoadDetailsStopsComponent {
     public sharedSvgRoutes = SharedSvgRoutes;
+    public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
     public openStopIndex: number = -1;
 
     constructor(protected loadStoreService: LoadStoreService) {}
