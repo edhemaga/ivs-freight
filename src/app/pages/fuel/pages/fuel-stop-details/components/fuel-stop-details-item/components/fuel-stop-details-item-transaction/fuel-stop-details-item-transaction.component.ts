@@ -292,6 +292,8 @@ export class FuelStopDetailsItemTransactionComponent
             )
             .pipe(takeUntil(this.destroy$))
             .subscribe(({ pagination: { data } }) => {
+                if (!data.length) return;
+
                 this._transactionList = [...this._transactionList, ...data];
             });
     }
