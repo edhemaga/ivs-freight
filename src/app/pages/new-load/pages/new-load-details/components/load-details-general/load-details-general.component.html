@@ -212,61 +212,43 @@
 
             <div class="row gutter-x-12">
                 @let isLoadAssigned = load.dispatch;
-
                 <div class="col-6">
-                    <ng-container
-                        *ngTemplateOutlet="
-                            itemTemplate;
-                            context: {
-                                item: load.dispatch?.truck,
-                                type: types.TRUCK,
-                                iconPath:
-                                    'assets/svg/common/trucks/' +
-                                    load.dispatch?.truck?.truckType.logoName,
-                                label: load.dispatch?.truck?.truckNumber,
-                                noItemText: 'No Truck',
-                                id: load.dispatch?.truck?.id,
-                            }
-                        "
-                    ></ng-container>
+                    <app-ca-unit-info-box
+                        [id]="load.dispatch?.truck?.id"
+                        [type]="types.TRUCK"
+                        [iconPath]="load.dispatch?.truck?.truckType.logoName"
+                        [label]="load.dispatch?.truck?.truckNumber"
+                        [isUnitAssigned]="isLoadAssigned"
+                        [isSvgIcon]="true"
+                    ></app-ca-unit-info-box>
                 </div>
 
                 <div class="col-6">
-                    <ng-container
-                        *ngTemplateOutlet="
-                            itemTemplate;
-                            context: {
-                                item: load.dispatch?.trailer,
-                                type: types.TRAILER,
-                                iconPath:
-                                    'assets/svg/common/trailers/' +
-                                    load.dispatch?.trailer?.trailerType
-                                        .logoName,
-                                label: load.dispatch?.trailer?.trailerNumber,
-                                id: load.dispatch?.trailer?.id,
-                                noItemText: 'No Trailer',
-                            }
+                    <app-ca-unit-info-box
+                        [id]="load.dispatch?.trailer?.id"
+                        [type]="types.TRAILER"
+                        [iconPath]="
+                            load.dispatch?.trailer?.trailerType.logoName
                         "
-                    ></ng-container>
+                        [label]="load.dispatch?.trailer?.trailerNumber"
+                        [isUnitAssigned]="isLoadAssigned"
+                        [isSvgIcon]="true"
+                    ></app-ca-unit-info-box>
                 </div>
 
                 <div class="col-12">
                     <div class="m-t-12">
-                        <ng-container
-                            *ngTemplateOutlet="
-                                itemTemplate;
-                                context: {
-                                    item: load.dispatch?.driver,
-                                    type: types.DRIVER,
-                                    label:
-                                        load.dispatch?.driver?.firstName +
-                                        ' ' +
-                                        load.dispatch?.driver?.lastName,
-                                    id: load.dispatch?.driver?.id,
-                                    noItemText: 'No Driver',
-                                }
+                        <app-ca-unit-info-box
+                            [id]="load.dispatch?.driver?.id"
+                            [type]="types.DRIVER"
+                            [label]="
+                                load.dispatch?.driver?.firstName +
+                                ' ' +
+                                load.dispatch?.driver?.lastName
                             "
-                        ></ng-container>
+                            [isUnitAssigned]="isLoadAssigned"
+                            [isImage]="true"
+                        ></app-ca-unit-info-box>
                     </div>
                 </div>
             </div>
@@ -325,54 +307,5 @@
                 </div>
             </ng-template>
         </app-ca-skeleton>
-    </div>
-</ng-template>
-
-<ng-template
-    #itemTemplate
-    let-id="id"
-    let-item="item"
-    let-type="type"
-    let-iconPath="iconPath"
-    let-label="label"
-    let-noItemText="noItemText"
->
-    <div
-        class="background-bw2 h-26 br-2 p-x-6 p-y-1 d-flex align-items-center"
-        [ngClass]="isLoadAssigned && item && 'box-unit-list'"
-    >
-        @if (isLoadAssigned && item) {
-            @if (iconPath) {
-                <div class="h-18 w-42 d-flex mr-1">
-                    <svg-icon
-                        [src]="iconPath"
-                        class="h-18 w-42 d-flex"
-                    ></svg-icon>
-                </div>
-            }
-
-            <span class="text-color-black text-size-14 ta-font-medium">{{
-                label
-            }}</span>
-
-            <div
-                class="m-l-auto"
-                ngbTooltip
-                mainTooltip="View Details"
-                position="bottom"
-                tooltipBackground="#424242"
-            >
-                <svg-icon
-                    class="svg-size-14 d-flex c-pointer box-unit-list-icon"
-                    [src]="sharedIcons.TOP_RIGHT_ARROW"
-                    (click)="handleViewDetailsClick(type, id)"
-                ></svg-icon>
-            </div>
-        } @else {
-            <span
-                class="text-color-light-grey-2 text-size-14 ta-font-medium ml-1"
-                >{{ noItemText }}</span
-            >
-        }
     </div>
 </ng-template>

@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
@@ -18,7 +17,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 // Components
 import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.component';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
 
 @Component({
     selector: 'app-load-details-general',
@@ -35,25 +34,12 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         // Components
         CaSkeletonComponent,
         SvgIconComponent,
-        TaAppTooltipV2Component,
+        CaUnitInfoBoxComponent,
     ],
 })
 export class LoadDetailsGeneralComponent {
     public sharedIcons = SharedSvgRoutes;
     public types = eSharedString;
 
-    constructor(
-        protected loadStoreService: LoadStoreService,
-        private router: Router
-    ) {}
-
-    public handleViewDetailsClick(type: eSharedString, id: number): void {
-        if (type === eSharedString.TRUCK) {
-            this.router.navigate([`/list/truck/${id}/details`]);
-        } else if (type === eSharedString.TRAILER) {
-            this.router.navigate([`/list/trailer/${id}/details`]);
-        } else {
-            this.router.navigate([`/list/driver/${id}/details`]);
-        }
-    }
+    constructor(protected loadStoreService: LoadStoreService) {}
 }
