@@ -219,12 +219,13 @@
                             itemTemplate;
                             context: {
                                 item: load.dispatch?.truck,
-                                type: 'truck',
+                                type: types.TRUCK,
                                 iconPath:
                                     'assets/svg/common/trucks/' +
                                     load.dispatch?.truck?.truckType.logoName,
                                 label: load.dispatch?.truck?.truckNumber,
                                 noItemText: 'No Truck',
+                                id: load.dispatch?.truck?.id,
                             }
                         "
                     ></ng-container>
@@ -236,12 +237,13 @@
                             itemTemplate;
                             context: {
                                 item: load.dispatch?.trailer,
-                                type: 'trailer',
+                                type: types.TRAILER,
                                 iconPath:
                                     'assets/svg/common/trailers/' +
                                     load.dispatch?.trailer?.trailerType
                                         .logoName,
                                 label: load.dispatch?.trailer?.trailerNumber,
+                                id: load.dispatch?.trailer?.id,
                                 noItemText: 'No Trailer',
                             }
                         "
@@ -255,11 +257,12 @@
                                 itemTemplate;
                                 context: {
                                     item: load.dispatch?.driver,
-                                    type: 'driver',
+                                    type: types.DRIVER,
                                     label:
                                         load.dispatch?.driver?.firstName +
                                         ' ' +
                                         load.dispatch?.driver?.lastName,
+                                    id: load.dispatch?.driver?.id,
                                     noItemText: 'No Driver',
                                 }
                             "
@@ -327,6 +330,7 @@
 
 <ng-template
     #itemTemplate
+    let-id="id"
     let-item="item"
     let-type="type"
     let-iconPath="iconPath"
@@ -351,10 +355,17 @@
                 label
             }}</span>
 
-            <div class="m-l-auto">
+            <div
+                class="m-l-auto"
+                ngbTooltip
+                mainTooltip="View Details"
+                position="bottom"
+                tooltipBackground="#424242"
+            >
                 <svg-icon
                     class="svg-size-14 d-flex c-pointer box-unit-list-icon"
                     [src]="sharedIcons.TOP_RIGHT_ARROW"
+                    (click)="handleViewDetailsClick(type, id)"
                 ></svg-icon>
             </div>
         } @else {
