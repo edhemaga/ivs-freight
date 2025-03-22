@@ -20,8 +20,10 @@ import {
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
+import { DetailsSearchService } from '@shared/services';
 import { RepairService } from '@shared/services/repair.service';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // constants
 import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
@@ -34,9 +36,12 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // enums
-import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
+import {
+    eRepairShopDetails,
+    eRepairShopDetailsSearchIndex,
+} from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
+import { eDropdownMenu, eGeneralActions } from '@shared/enums';
 
 // pipes
 import { FormatDatePipe, ThousandSeparatorPipe } from '@shared/pipes';
@@ -93,6 +98,7 @@ export class RepairShopDetailsItemRepairComponent
 
     // enums
     public eRepairShopDetails = eRepairShopDetails;
+    public eRepairShopDetailsSearchIndex = eRepairShopDetailsSearchIndex;
 
     // headers
     public repairHeaderItems: string[] = [];
@@ -113,9 +119,10 @@ export class RepairShopDetailsItemRepairComponent
         // services
         protected modalService: ModalService,
         protected repairService: RepairService,
-
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private confirmationService: ConfirmationService,
-        private repairShopDetailsService: RepairShopDetailsService
+        private detailsSearchService: DetailsSearchService
     ) {
         super();
     }
@@ -223,10 +230,7 @@ export class RepairShopDetailsItemRepairComponent
                 repair
             );
 
-        this.handleDropdownMenuActions(
-            emitAction,
-            DropdownMenuStringEnum.REPAIR
-        );
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.REPAIR);
     }
 
     public handleActionClick(type: string, index?: number): void {
@@ -259,10 +263,12 @@ export class RepairShopDetailsItemRepairComponent
 
     public handleShowMoreAction(): void {}
 
-    public handleCloseSearchEmit(): void {
-        const detailsPartIndex = 0;
+    public updateToolbarDropdownMenuContent(): void {}
 
-        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
+    public handleCloseSearchEmit(): void {
+        this.detailsSearchService.setCloseSearchStatus(
+            eRepairShopDetailsSearchIndex.REPAIR_INDEX
+        );
     }
 
     ngOnDestroy(): void {

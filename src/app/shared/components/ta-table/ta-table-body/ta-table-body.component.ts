@@ -85,7 +85,7 @@ import { MiddleEllipsisPipe } from '@shared/pipes';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
+import { eDropdownMenu, eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -715,8 +715,8 @@ export class TaTableBodyComponent<
     // RATING
     public onLikeDislike(isLike: boolean, rowData: T): void {
         const type = isLike
-            ? DropdownMenuStringEnum.RATING_LIKE_TYPE
-            : DropdownMenuStringEnum.RATING_DISLIKE_TYPE;
+            ? eDropdownMenu.RATING_LIKE_TYPE
+            : eDropdownMenu.RATING_DISLIKE_TYPE;
 
         const emitAction =
             DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
@@ -744,8 +744,8 @@ export class TaTableBodyComponent<
         if (isDisabled) return;
 
         const type = isFavorite
-            ? DropdownMenuStringEnum.UNMARK_FAVORITE_TYPE
-            : DropdownMenuStringEnum.MARK_AS_FAVORITE_TYPE;
+            ? eDropdownMenu.UNMARK_FAVORITE_TYPE
+            : eDropdownMenu.MARK_AS_FAVORITE_TYPE;
 
         const data = {
             favourite: isFavorite,
@@ -1156,7 +1156,7 @@ export class TaTableBodyComponent<
     public onFinishOrder(rowData: T): void {
         const emitAction =
             DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
-                DropdownMenuStringEnum.FINISH_ORDER_TYPE,
+                eDropdownMenu.FINISH_ORDER_TYPE,
                 rowData
             );
 
@@ -1199,7 +1199,7 @@ export class TaTableBodyComponent<
         };
 
         this.tableBodyActions.emit({
-            type: data.data?.action || DropdownMenuStringEnum.CREATE_LABEL,
+            type: data.data?.action || eDropdownMenu.CREATE_LABEL,
             data: this.selectedContactLabel[index] as T,
             id: this.viewData[index].id,
         });
@@ -1215,7 +1215,7 @@ export class TaTableBodyComponent<
             {
                 data: {
                     name: this.selectedContactLabel[index].name,
-                    action: DropdownMenuStringEnum.UPDATE_LABEL,
+                    action: eDropdownMenu.UPDATE_LABEL,
                 },
             },
             index

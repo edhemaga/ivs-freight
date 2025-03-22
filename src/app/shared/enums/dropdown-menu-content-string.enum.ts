@@ -1,4 +1,4 @@
-export enum DropdownMenuStringEnum {
+export enum eDropdownMenu {
     // titles
     EDIT_LOAD = 'Edit Load',
     EDIT_LOAD_SELECT = 'Edit Load Select',
@@ -143,6 +143,7 @@ export enum DropdownMenuStringEnum {
 
     // conditions
     ACTIVE = 'active',
+    ACTIVE_CAPITALIZED = 'Active',
     ADD_NEW_DRIVER = 'add-new-driver',
     ADD_NEW_TRUCK_TRAILER = 'add-new-truck-trailer',
     ADD_REPAIR_BILL_TRUCK = 'add-repair-bill-truck',

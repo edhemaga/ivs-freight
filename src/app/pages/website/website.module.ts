@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 // modules
 import { WebsiteRoutingModule } from '@pages/website/website-routing.module';
 import { SharedModule } from '@shared/shared.module';
-//import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 // components
 import { WebsiteMainComponent } from '@pages/website/pages/website-main/website-main.component';
@@ -44,7 +43,11 @@ import { StoreModule } from '@ngrx/store';
 
 // ngrx reducers
 import { authReducer } from '@pages/website/state/auth.reducer';
-import { CaInputAddressDropdownComponent, CaProfileImageComponent, InputTestComponent } from 'ca-components';
+import {
+    CaInputAddressDropdownComponent,
+    CaProfileImageComponent,
+    InputTestComponent,
+} from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -89,7 +92,7 @@ import { CaInputAddressDropdownComponent, CaProfileImageComponent, InputTestComp
         CaInputAddressDropdownComponent,
         InputTestComponent,
 
-       // CaComponentsLibModule,
+        // CaComponentsLibModule,
         // ngrx effects
         EffectsModule.forFeature([AuthEffect]),
         //ngrx reducers

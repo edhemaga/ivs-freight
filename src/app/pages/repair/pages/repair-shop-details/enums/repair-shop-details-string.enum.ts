@@ -31,7 +31,6 @@ export enum eRepairShopDetails {
     REPAIR_LIST_ROUTE = '/list/repair',
 
     REPAIR_SHOP = 'repair_shop',
-    BUSINESS = 'business',
     REPAIR_SHOP_CONTACT = 'repair shop contact',
 
     FINISH_ORDER = 'finish-order',

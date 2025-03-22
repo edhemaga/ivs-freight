@@ -40,6 +40,8 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
+import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 import {
     CaInputComponent,
     CaInputDatetimePickerComponent,
@@ -47,7 +49,6 @@ import {
     CaInputDropdownTestComponent,
     CaModalComponent,
 } from 'ca-components';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -78,7 +79,11 @@ import { IFuelPurchaseModalForm } from '@pages/fuel/pages/fuel-modals/fuel-purch
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
-import { FormatDatePipe, NameInitialsPipe } from '@shared/pipes';
+import {
+    FormatDatePipe,
+    MiddleEllipsisPipe,
+    NameInitialsPipe,
+} from '@shared/pipes';
 import { FuelPurchaseModalInputConfigPipe } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/pipes';
 
 // enums
@@ -87,11 +92,7 @@ import { FuelDropdownOptionsStringEnum } from '@pages/fuel/pages/fuel-modals/fue
 import { FuelValuesStringEnum } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/enums';
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-import {
-    DropdownMenuStringEnum,
-    eGeneralActions,
-    TableStringEnum,
-} from '@shared/enums';
+import { eDropdownMenu, TableStringEnum, eGeneralActions } from '@shared/enums';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
@@ -122,51 +123,59 @@ import moment from 'moment';
 
         // components
         TaAppTooltipV2Component,
-        CaModalComponent,
-        CaInputComponent,
         TaCustomCardComponent,
-        CaInputDropdownComponent,
         TaUploadFilesComponent,
         TaModalTableComponent,
         TaCopyComponent,
         TaInputDropdownComponent,
+        TaPasswordAccountHiddenCharactersComponent,
+        CaModalComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
         CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
 
         // pipes
         FormatDatePipe,
         FuelPurchaseModalInputConfigPipe,
+        MiddleEllipsisPipe,
     ],
 })
 export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     @Input() editData: any;
 
     public fuelForm: UntypedFormGroup;
-    public isCardAnimationDisabled: boolean = false;
-    public modalActionType: FuelDataOptionsStringEnum;
+
     public truckType: FuelTruckType[] = [];
     public driverOptions: PayrollDriver[] = [];
-    public fuelCardHolderName: string;
     public fuelStops: ExtendedFuelStopResponse[] = [];
-    public fuelTransactionType: EnumValue;
-    public selectedTruckType: FuelTruckType;
-    public selectedTrailerType: FuelTruckType;
+    public documents: any[] = [];
+
     public selectedFuelStop: ExtendedFuelStopResponse;
     public selectedDispatchHistory: FuelDispatchHistoryResponse;
+    public selectedTruckType: FuelTruckType;
+    public selectedTrailerType: FuelTruckType;
     public selectedDriver: PayrollDriver;
-    public fuelItemsDropdown: EnumValue[] = [];
-    public documents: any[] = [];
+
     public isFuelRowCreated: boolean = false;
     public isEachFuelRowValid: boolean = true;
+
+    public fuelCardHolderName: string;
     public fuelItems: FuelItemResponse[] = [];
+    public isCardAnimationDisabled: boolean = false;
     public updatedFuelItems: FuelItemResponse[] = [];
     public total: number = 0;
-    public svgRoutes = SharedSvgRoutes;
-    public taModalActionEnum = TaModalActionEnum;
+
+    public fuelItemsDropdown: EnumValue[] = [];
     public eFuelTransactionType = eFuelTransactionType;
+    public modalActionType: FuelDataOptionsStringEnum;
+    public taModalActionEnum = TaModalActionEnum;
     public modalTableTypeEnum = ModalTableTypeEnum;
     public fuelDataOptionsStringEnum = FuelDataOptionsStringEnum;
+    public fuelTransactionType: EnumValue;
     public fuelValuesStringEnum = FuelValuesStringEnum;
+
+    public svgRoutes = SharedSvgRoutes;
 
     private destroy$ = new Subject<void>();
 
@@ -391,9 +400,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: id,
             truckId: this.selectedTruckType.id,
-            trailerId: this.selectedTrailerType
-                ? this.selectedTrailerType.id
-                : null,
+            trailerId: this.selectedTrailerType?.id ?? null,
             driverId: this.selectedDispatchHistory?.driverId,
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.isFranchise
@@ -451,9 +458,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         const newData: any = {
             id: id,
             truckId: this.selectedTruckType.id,
-            trailerId: this.selectedTrailerType
-                ? this.selectedTrailerType.id
-                : null,
+            trailerId: this.selectedTrailerType?.id ?? null,
             driverId: this.selectedDispatchHistory?.driverId,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
@@ -480,12 +485,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         const { ...form } = this.fuelForm.value;
 
         const newData: any = {
-            driverId: this.selectedDispatchHistory
-                ? this.selectedDispatchHistory.driverId
-                : null,
-            truckId: this.selectedTruckType ? this.selectedTruckType.id : null,
+            driverId: this.selectedDispatchHistory?.driverId ?? null,
+            truckId: this.selectedTruckType?.id ?? null,
             invoice: this.fuelForm.get(FuelValuesStringEnum.INVOICE).value,
-            trailerId: this.fuelForm.get(FuelValuesStringEnum.TRAILER_ID).value,
+            trailerId: this.selectedTrailerType?.id ?? null,
             fuelStopStoreId: this.selectedFuelStop
                 ? this.selectedFuelStop.isFranchise
                     ? this.selectedFuelStop.storeId
@@ -554,9 +557,9 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     this.fuelForm.patchValue({
                         efsAccount: null,
                         fuelCard: fuelCard?.cardNumber,
-                        truckId: truck ? truck.truckNumber : null,
+                        truckId: truck?.id ?? null,
                         invoice: invoice,
-                        trailerId: trailer ? trailer.trailerNumber : null,
+                        trailerId: trailer?.trailerNumber ?? null,
                         driverFullName: driver
                             ? driver.firstName?.concat(' ', driver.lastName)
                             : null,
@@ -676,7 +679,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                     } else {
                         if (
                             this.editData?.type ===
-                            DropdownMenuStringEnum.ADD_TRANSACTION_TYPE
+                            eDropdownMenu.ADD_TRANSACTION_TYPE
                         )
                             this.getFuelStopById(this.editData?.data?.id);
 
@@ -917,11 +920,19 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private getInitialFormData(): IFuelPurchaseModalForm {
+        let result: IFuelPurchaseModalForm = {};
+
+        if (!this.editData) return result;
+
         const { type, data } = this.editData;
 
-        const truckId = data?.truckNumber ?? null;
+        const truckId = data?.truckId ?? null;
         const transactionDate =
-            type === eGeneralActions.EDIT ? data?.transactionDate : null;
+            type === eGeneralActions.EDIT
+                ? MethodsCalculationsHelper.convertDateFromBackend(
+                      data?.transactionDate
+                  )
+                : null;
         const transactionTime =
             type === eGeneralActions.EDIT
                 ? MethodsCalculationsHelper.convertDateToTimeFromBackend(
@@ -929,7 +940,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                   )
                 : null;
 
-        const result: IFuelPurchaseModalForm = {
+        result = {
             truckId,
             transactionDate,
             transactionTime,

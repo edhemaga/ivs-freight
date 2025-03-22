@@ -23,12 +23,13 @@ import { CardHelper } from '@shared/utils/helpers/card-helper';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // enums
-import { DropdownMenuStringEnum, TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FuelService } from '@shared/services/fuel.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // svg routes
 import { FuelCardSvgRoutes } from '@pages/fuel/pages/fuel-card/utils/svg-routes';
@@ -84,8 +85,8 @@ export class FuelCardComponent
         // services
         protected modalService: ModalService,
         protected fuelService: FuelService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
         // helpers
         private cardHelper: CardHelper
@@ -176,12 +177,14 @@ export class FuelCardComponent
         this.handleDropdownMenuActions(
             emitAction,
             this.selectedTab === TableStringEnum.FUEL_STOP
-                ? DropdownMenuStringEnum.FUEL_STOP
-                : DropdownMenuStringEnum.FUEL_TRANSACTION
+                ? eDropdownMenu.FUEL_STOP
+                : eDropdownMenu.FUEL_TRANSACTION
         );
     }
 
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

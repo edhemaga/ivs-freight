@@ -6,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { PmDropdownMenuActionsBase } from '@pages/pm-truck-trailer/base-classes';
 
 // enums
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
@@ -15,6 +15,7 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -52,8 +53,8 @@ export class PmCardComponent
     constructor(
         // services
         protected modalService: ModalService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
         // helpers
         private cardHelper: CardHelper
@@ -104,7 +105,7 @@ export class PmCardComponent
                 cardData
             );
 
-        this.handleDropdownMenuActions(emitAction, DropdownMenuStringEnum.PM);
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.PM);
     }
 
     public handleShowMoreAction(): void {
@@ -112,6 +113,8 @@ export class PmCardComponent
            
                    this.accountBackFilter(this.backFilterQuery, true); */
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

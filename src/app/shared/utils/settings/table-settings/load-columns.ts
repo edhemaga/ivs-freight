@@ -5,7 +5,7 @@ import { LoadSortBy } from 'appcoretruckassist';
 import { ITableColummn } from '@shared/models';
 
 // LOAD COLUMN DEFINITION
-export function getLoadTemplateColumnDefinition() {
+export function getLoadTemplateColumnDefinition(): ITableColummn[] {
     return [
         {
             ngTemplate: 'checkbox',
@@ -840,7 +840,7 @@ export function getLoadTemplateColumnDefinition() {
     ];
 }
 
-export function getLoadActiveAndPendingColumnDefinition() {
+export function getLoadActiveAndPendingColumnDefinition(): ITableColummn[] {
     return [
         {
             ngTemplate: 'checkbox',

@@ -40,4 +40,5 @@ export class SharedSvgRoutes {
     static HEIGHT_ICON: string = 'assets/svg/common/load/ic_height.svg';
     static TARP_ICON: string = 'assets/svg/common/load/ic_tarp.svg';
     static STACKABLE_ICON: string = 'assets/svg/common/load/ic_stackable.svg';
+    static WEX_EFS: string = 'assets/svg/fuel/wex-efs.svg';
 }

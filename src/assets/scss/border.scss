@@ -1,0 +1,17 @@
+@import 'src/theme/variables';
+
+.border {
+    &-left {
+        &-bw3 {
+            border-left: 1px solid $bw3;
+        }
+
+        &-bw4 {
+            border-left: 1px solid $bw4;
+        }
+
+        &-bw5 {
+            border-left: 1px solid $bw5;
+        }
+    }
+}

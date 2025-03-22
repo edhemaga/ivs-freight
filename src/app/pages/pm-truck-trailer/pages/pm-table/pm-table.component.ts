@@ -26,6 +26,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { PmService } from '@pages/pm-truck-trailer/services/pm.service';
 import { PMCardsModalService } from '@pages/pm-truck-trailer/pages/pm-card-modal/service/pm-cards-modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // constants
 import { PmCardDataConfigConstants } from '@pages/pm-truck-trailer/pages/pm-table/utils/constants/pm-card-data-config.constants';
@@ -35,11 +36,10 @@ import { PMTrailerFilterConstants } from '@pages/pm-truck-trailer/pages/pm-table
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckNameStringEnum } from '@shared/enums/truck-name-string.enum';
-import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
 import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
-import { DropdownMenuStringEnum } from '@shared/enums';
+import { eDropdownMenu } from '@shared/enums';
 
 // store
 import { PmTruckQuery } from '@pages/pm-truck-trailer/state/pm-truck-state/pm-truck.query';
@@ -85,7 +85,7 @@ export class PmTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public dropdownMenuStringEnum = DropdownMenuStringEnum;
+    public eDropdownMenu = eDropdownMenu;
 
     private resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
@@ -122,8 +122,8 @@ export class PmTableComponent
     constructor(
         // services
         protected modalService: ModalService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private pmService: PmService,
         private pmCardsModalService: PMCardsModalService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
@@ -352,8 +352,8 @@ export class PmTableComponent
                 {
                     type:
                         this.selectedTab === TableStringEnum.ACTIVE
-                            ? DropdownMenuStringEnum.ADD_REPAIR_BILL_TRUCK
-                            : DropdownMenuStringEnum.ADD_REPAIR_BILL_TRAILER,
+                            ? eDropdownMenu.ADD_REPAIR_BILL_TRUCK
+                            : eDropdownMenu.ADD_REPAIR_BILL_TRAILER,
                 }
             );
         }
@@ -949,6 +949,8 @@ export class PmTableComponent
             ? this.pmTruckBackFilter(filterQuery, true)
             : this.pmTrailerBackFilter(filterQuery, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

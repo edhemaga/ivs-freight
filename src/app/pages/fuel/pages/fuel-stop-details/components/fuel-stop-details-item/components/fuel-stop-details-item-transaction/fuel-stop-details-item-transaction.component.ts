@@ -11,7 +11,10 @@ import { FuelDropdownMenuActionsBase } from '@pages/fuel/base-classes';
 
 // components
 import { TaDocumentsDrawerComponent } from '@shared/components/ta-documents-drawer/ta-documents-drawer.component';
-import { CaDropdownMenuComponent } from 'ca-components';
+import {
+    CaDropdownMenuComponent,
+    CaSearchMultipleStatesComponent,
+} from 'ca-components';
 
 // svg routes
 import { FuelStopDetailsSvgRoutes } from '@pages/fuel/pages/fuel-stop-details/utils/svg-routes';
@@ -32,25 +35,33 @@ import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-de
 import { ModalService } from '@shared/services/modal.service';
 import { FuelService } from '@shared/services/fuel.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { DetailsSearchService } from '@shared/services';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // directives
 import { DescriptionItemsTextCountDirective } from '@shared/directives';
 
 // enums
 import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
-import { DropdownMenuStringEnum, eGeneralActions } from '@shared/enums';
-import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
+import { eDropdownMenu, eGeneralActions } from '@shared/enums';
+import {
+    eFuelDetailsSearchIndex,
+    eFuelStopDetails,
+} from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// models
-import { FuelTransactionResponse } from 'appcoretruckassist';
+// interfaces
 import {
     IDropdownMenuItem,
     IDropdownMenuOptionEmit,
 } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
+// models
+import { FuelTransactionResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-details-item-transaction',
@@ -65,6 +76,7 @@ import {
         // components
         TaDocumentsDrawerComponent,
         CaDropdownMenuComponent,
+        CaSearchMultipleStatesComponent,
 
         // pipes
         FormatDatePipe,
@@ -95,6 +107,7 @@ export class FuelStopDetailsItemTransactionComponent
 
     // enums
     public eFuelTransactionType = eFuelTransactionType;
+    public eFuelDetailsSearchIndex = eFuelDetailsSearchIndex;
 
     // headers
     public transactionHeaderItems: string[] = [];
@@ -115,8 +128,11 @@ export class FuelStopDetailsItemTransactionComponent
         // services
         protected modalService: ModalService,
         protected fuelService: FuelService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
-        private confirmationService: ConfirmationService
+        private confirmationService: ConfirmationService,
+        private detailsSearchService: DetailsSearchService
     ) {
         super();
     }
@@ -209,7 +225,7 @@ export class FuelStopDetailsItemTransactionComponent
 
         this.handleDropdownMenuActions(
             emitAction,
-            DropdownMenuStringEnum.FUEL_TRANSACTION
+            eDropdownMenu.FUEL_TRANSACTION
         );
     }
 
@@ -242,6 +258,14 @@ export class FuelStopDetailsItemTransactionComponent
     }
 
     public handleShowMoreAction(): void {}
+
+    public handleCloseSearchEmit(): void {
+        this.detailsSearchService.setCloseSearchStatus(
+            eFuelDetailsSearchIndex.TRANSACTION_INDEX
+        );
+    }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

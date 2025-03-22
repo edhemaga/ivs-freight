@@ -1,156 +1,285 @@
 <div class="details-header-wrapper">
     <div class="details-header-wrapper-switcher">
         <div class="inactive-icon-input">
-            <div
-                *ngIf="!selectedDropdown"
-                class="current-active-item"
-                [ngClass]="{
-                    'single-data': options.length === 1,
-                    closed: searchName?.includes('Closed'),
-                }"
-                (click)="onPickItem()"
-                [ngbTooltip]="showDropdownTooltip"
-                [mainTooltip]="options.length > 1 ? searchInputName : ''"
-                position="top"
-                [tooltipBackground]="options.length > 1 ? '#424242' : '#eeeeee'"
-                tooltipMarginBottom="2px"
-            >
-                <!-- header name new -->
-                <ng-container *ngIf="deactivate">
-                    <div
-                        ngbTooltip
-                        class="current-active-dropdown-image d-flex"
-                        [mainTooltip]="'Deactivated'"
-                        position="bottom"
-                        tooltipBackground="#424242"
-                    >
-                        <svg-icon
-                            (mouseenter)="showTooltip(false)"
-                            (mouseleave)="showTooltip(true)"
-                            src="assets/svg/common/confirmation/ic_confirmation_activate.svg"
-                        ></svg-icon>
-                    </div>
-                </ng-container>
-                <p class="ta-font-bold text-color-black current-active-name">
-                    {{ currentName }}
-                </p>
-                <ng-container *ngIf="owner">
-                    <div
-                        ngbTooltip
-                        class="current-active-dropdown-owner"
-                        [mainTooltip]="'Owned by ' + ownerName"
-                        position="bottom"
-                        tooltipBackground="#424242"
-                    >
-                        <svg-icon
-                            (mouseenter)="showTooltip(false)"
-                            (mouseleave)="showTooltip(true)"
-                            src="assets/svg/common/blue_rounded_circle_white_inside.svg"
-                        ></svg-icon>
-                    </div>
-                </ng-container>
+            @if (!isDropdownItemSelected) {
+                <div
+                    class="current-active-item"
+                    [ngClass]="{
+                        'single-data': options.length === 1,
+                        closed: searchName?.includes('Closed'),
+                    }"
+                    (click)="onPickItem()"
+                    [ngbTooltip]="hasTooltip"
+                    [mainTooltip]="options.length > 1 ? searchInputName : ''"
+                    position="top"
+                    [tooltipBackground]="
+                        options.length > 1 ? '#424242' : '#eeeeee'
+                    "
+                    tooltipMarginBottom="2px"
+                >
+                    <!-- header name new -->
 
-                <ng-container *ngIf="haveDropSVG">
-                    <span
-                        ngbTooltip
-                        [mainTooltip]="searchName"
-                        position="bottom"
-                        [tooltipBackground]="searchName ? '#424242' : ''"
-                        [tooltipMarginTop]="'8px'"
-                        class="owner-tooltip"
+                    @if (deactivate) {
+                        <div
+                            ngbTooltip
+                            class="current-active-dropdown-image d-flex"
+                            [mainTooltip]="'Deactivated'"
+                            position="bottom"
+                            tooltipBackground="#424242"
+                        >
+                            <svg-icon
+                                [src]="
+                                    detailsHeaderCardSvgRoutes.deactivatedRoute
+                                "
+                                (mouseenter)="showTooltip(false)"
+                                (mouseleave)="showTooltip(true)"
+                            ></svg-icon>
+                        </div>
+                    }
+
+                    <p
+                        class="ta-font-bold text-color-black current-active-name"
                     >
-                        <svg-icon
-                            class="current-active-owner"
-                            [ngClass]="{
-                                'company-owned': searchName === 'Company Owned',
-                                closed: searchName?.includes('Closed'),
-                            }"
-                            src="{{
-                                customPinnedSvg
-                                    ? customPinnedSvg
-                                    : (options | detailActiveItem)?.svg
-                            }}"
-                        ></svg-icon>
-                    </span>
-                </ng-container>
-            </div>
+                        {{ currentName }}
+                    </p>
+
+                    @if (owner) {
+                        <div
+                            ngbTooltip
+                            class="current-active-dropdown-owner"
+                            [mainTooltip]="'Owned by ' + ownerName"
+                            position="bottom"
+                            tooltipBackground="#424242"
+                        >
+                            <svg-icon
+                                [src]="detailsHeaderCardSvgRoutes.ownerRoute"
+                                (mouseenter)="showTooltip(false)"
+                                (mouseleave)="showTooltip(true)"
+                            ></svg-icon>
+                        </div>
+                    }
+
+                    @if (haveDropSVG) {
+                        <span
+                            ngbTooltip
+                            [mainTooltip]="searchName"
+                            position="bottom"
+                            [tooltipBackground]="searchName ? '#424242' : ''"
+                            [tooltipMarginTop]="'8px'"
+                            class="owner-tooltip"
+                        >
+                            <svg-icon
+                                class="current-active-owner"
+                                [ngClass]="{
+                                    'company-owned':
+                                        searchName === 'Company Owned',
+                                    closed: searchName?.includes('Closed'),
+                                }"
+                                src="{{
+                                    customPinnedSvg
+                                        ? customPinnedSvg
+                                        : (options | detailActiveItem)?.svg
+                                }}"
+                            ></svg-icon>
+                        </span>
+                    }
+                </div>
+            }
+
             <!-- Input dropdown -->
 
-            <app-ta-input-dropdown
-                *ngIf="selectedDropdown && options.length > 1"
-                [template]="'details-template'"
-                class="dropInput"
-                [formControl]="inputFormControl"
-                [inputConfig]="{
-                    name: 'Input Dropdown',
-                    type: 'text',
-                    isDropdown: true,
-                    dropdownWidthClass: 'w-col-366',
-                    textTransform: 'capitalize',
-                    blackInput: true,
-                    customClass: 'input-32-font-20 details-pages',
-                }"
-                [options]="options"
-                [activeItem]="activeItem ?? options[0]"
-                [sort]="sortOptions"
-                [isDetailsPages]="selectedDropdown"
-                [canAddNew]="true"
-                [canOpenModal]="true"
-                (selectedItem)="onSelectItem($event)"
-            >
-            </app-ta-input-dropdown>
-        </div>
-        <div *ngIf="!hasArrow && options.length > 1" class="arrows">
-            <span
-                ngbTooltip
-                [mainTooltip]="tooltipPrevious"
-                position="bottom"
-                [tooltipBackground]="
-                    !tooltipPrevious ? 'rgba(0,0,0,0)' : '#424242'
-                "
-                [tooltipMarginTop]="'8px'"
-                class="d-flex justify-content-center align-items-center previousArrow"
-                (click)="onAction('previous')"
-            >
-                <svg-icon
-                    class="arrow-left"
-                    src="assets/svg/common/arrow-left.svg"
+            @if (isDropdownItemSelected && options.length > 1) {
+                <app-ca-input-dropdown
+                    class="dropInput"
+                    [formControl]="inputFormControl"
+                    [inputConfig]="
+                        detailsHeaderCardInputConfig.dropdownListConfig
+                    "
+                    [template]="'details-template'"
+                    [options]="options"
+                    [selectedDropdownItem]="selectedDropdownItem ?? options[0]"
+                    [sort]="sortOptions"
+                    [isDetailsPages]="isDropdownItemSelected"
+                    [canAddNew]="true"
+                    [canOpenModal]="true"
+                    (selectedItem)="onSelectItem($event)"
                 >
-                </svg-icon>
-            </span>
-            <span
-                ngbTooltip
-                [mainTooltip]="tooltipNext"
-                [tooltipBackground]="!tooltipNext ? 'rgba(0,0,0,0)' : '#424242'"
-                [tooltipMarginTop]="'8px'"
-                position="bottom"
-                class="d-flex justify-content-center align-items-center nextArrow"
-                (click)="onAction('next')"
-            >
-                <svg-icon
-                    class="arrow-right"
-                    src="assets/svg/common/arrow-left.svg"
-                ></svg-icon>
-            </span>
+                </app-ca-input-dropdown>
+            }
         </div>
-        <div *ngIf="hasArrow" class="vertical-dots-header">
-            <app-ta-details-dropdown
-                [options]="optionsDrop.actions"
-                [id]="optionsId"
-                [placement]="'bottom-right'"
-                (dropDownActions)="dropAct($event)"
-            >
-            </app-ta-details-dropdown>
-        </div>
+
+        @if (!hasArrow && options.length > 1) {
+            <div class="arrows">
+                <span
+                    ngbTooltip
+                    [mainTooltip]="tooltipPrevious"
+                    position="bottom"
+                    [tooltipBackground]="
+                        !tooltipPrevious ? 'rgba(0,0,0,0)' : '#424242'
+                    "
+                    [tooltipMarginTop]="'8px'"
+                    class="d-flex justify-content-center align-items-center previousArrow"
+                    (click)="
+                        onPreviousNextAction(eGeneralActions.PREVIOUS_LOWERCASE)
+                    "
+                >
+                    <svg-icon
+                        class="arrow-left"
+                        [src]="detailsHeaderCardSvgRoutes.arrowRoute"
+                    >
+                    </svg-icon>
+                </span>
+
+                <span
+                    ngbTooltip
+                    [mainTooltip]="tooltipNext"
+                    [tooltipBackground]="
+                        !tooltipNext ? 'rgba(0,0,0,0)' : '#424242'
+                    "
+                    [tooltipMarginTop]="'8px'"
+                    position="bottom"
+                    class="d-flex justify-content-center align-items-center nextArrow"
+                    (click)="
+                        onPreviousNextAction(eGeneralActions.NEXT_LOWERCASE)
+                    "
+                >
+                    <svg-icon
+                        class="arrow-right"
+                        [src]="detailsHeaderCardSvgRoutes.arrowRoute"
+                    ></svg-icon>
+                </span>
+            </div>
+        }
+
+        @if (hasArrow) {
+            <div class="vertical-dots-header">
+                <app-ta-details-dropdown
+                    [options]="optionsDrop.actions"
+                    [id]="optionsId"
+                    [placement]="'bottom-right'"
+                    (dropDownActions)="dropAct($event)"
+                >
+                </app-ta-details-dropdown>
+            </div>
+        }
     </div>
 
-    <!-- Additional Title -->
+    <!-- Second Input -->
 
-    @if (additionalTitle) {
-        <div class="d-flex align-items-center additional-title-container">
-            <p class="m-0 ta-font-semi-bold text-color-black text-size-18">
-                {{ additionalTitle }}
-            </p>
+    @if (hasMultipleInputs) {
+        <div
+            class="details-header-wrapper-switcher"
+            [ngClass]="{
+                disabedPreviousArrow: isFirstFuelStopStoreInList,
+                disableNextArrow: isLastFuelStopStoreInList,
+            }"
+        >
+            <div class="inactive-icon-input">
+                @if (!isAdditionalDropdownItemSelected) {
+                    <div
+                        class="current-active-item"
+                        [ngClass]="{
+                            'single-data': optionsSecondInput?.length === 1,
+                        }"
+                        ngbTooltip
+                        [mainTooltip]="'Search Store'"
+                        position="top"
+                        tooltipBackground="#424242"
+                        (click)="onPickSecondInput()"
+                    >
+                        <p
+                            class="ta-font-bold text-color-black current-active-name"
+                        >
+                            {{ secondCurrentName }}
+                        </p>
+                    </div>
+                }
+
+                @if (
+                    isAdditionalDropdownItemSelected &&
+                    optionsSecondInput.length > 1
+                ) {
+                    <app-ca-input-dropdown
+                        class="dropInput"
+                        [formControl]="inputFormControl"
+                        [inputConfig]="
+                            detailsHeaderCardInputConfig.dropdownListConfig
+                        "
+                        [template]="'details-template'"
+                        [options]="optionsSecondInput"
+                        [selectedDropdownItem]="
+                            selectedAdditionalDropdownItem ??
+                            optionsSecondInput[0]
+                        "
+                        [isDetailsPages]="isAdditionalDropdownItemSelected"
+                        [canAddNew]="true"
+                        [canOpenModal]="true"
+                        (selectedItem)="onSelectSecondItem($event)"
+                    >
+                    </app-ca-input-dropdown>
+                }
+            </div>
+
+            @if (optionsSecondInput.length > 1) {
+                <div class="arrows">
+                    <span
+                        ngbTooltip
+                        [mainTooltip]="
+                            isFirstFuelStopStoreInList
+                                ? eStringPlaceholder.EMPTY
+                                : eGeneralActions.PREVIOUS
+                        "
+                        position="bottom"
+                        [tooltipBackground]="
+                            isFirstFuelStopStoreInList
+                                ? 'rgba(0,0,0,0)'
+                                : '#424242'
+                        "
+                        [tooltipMarginTop]="'8px'"
+                        class="d-flex justify-content-center align-items-center previousArrow"
+                        (click)="
+                            onPreviousNextAction(
+                                eGeneralActions.PREVIOUS_LOWERCASE,
+                                true
+                            )
+                        "
+                    >
+                        <svg-icon
+                            class="arrow-left"
+                            [src]="detailsHeaderCardSvgRoutes.arrowRoute"
+                        >
+                        </svg-icon>
+                    </span>
+
+                    <span
+                        ngbTooltip
+                        [mainTooltip]="
+                            isLastFuelStopStoreInList
+                                ? eStringPlaceholder.EMPTY
+                                : eGeneralActions.NEXT
+                        "
+                        [tooltipBackground]="
+                            isLastFuelStopStoreInList
+                                ? 'rgba(0,0,0,0)'
+                                : '#424242'
+                        "
+                        [tooltipMarginTop]="'8px'"
+                        position="bottom"
+                        class="d-flex justify-content-center align-items-center nextArrow"
+                        (click)="
+                            onPreviousNextAction(
+                                eGeneralActions.NEXT_LOWERCASE,
+                                true
+                            )
+                        "
+                    >
+                        <svg-icon
+                            class="arrow-right"
+                            [src]="detailsHeaderCardSvgRoutes.arrowRoute"
+                        ></svg-icon>
+                    </span>
+                </div>
+            }
         </div>
     }
 
@@ -172,29 +301,32 @@
                 >
                     <svg-icon
                         class="date-add"
-                        src="assets/svg/common/date.svg"
+                        [src]="detailsHeaderCardSvgRoutes.dateRoute"
                     ></svg-icon>
                     <p class="vin-text">{{ cardDetailsDate }}</p>
                 </div>
             </span>
-            <span
-                style="margin-left: 130px"
-                *ngIf="statusInactive == 0"
-                tooltipBackground="#424242"
-                ngbTooltip
-                mainTooltip="Terminated"
-                [tooltipMarginTop]="'6px'"
-                position="bottom"
-            >
-                <div class="details-header-wrapper-data-item bottom">
-                    <svg-icon
-                        class="date-terminated"
-                        src="assets/svg/common/ic_terminated.svg"
-                    ></svg-icon>
-                    <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
-                </div>
-            </span>
-            <ng-container *ngIf="deactivate">
+
+            @if (statusInactive === 0) {
+                <span
+                    style="margin-left: 130px"
+                    tooltipBackground="#424242"
+                    ngbTooltip
+                    mainTooltip="Terminated"
+                    [tooltipMarginTop]="'6px'"
+                    position="bottom"
+                >
+                    <div class="details-header-wrapper-data-item bottom">
+                        <svg-icon
+                            class="date-terminated"
+                            [src]="detailsHeaderCardSvgRoutes.terminatedRoute"
+                        ></svg-icon>
+                        <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
+                    </div>
+                </span>
+            }
+
+            @if (deactivate) {
                 <span
                     style="margin-left: 130px"
                     tooltipBackground="#424242"
@@ -206,14 +338,16 @@
                     <div class="details-header-wrapper-data-item bottom">
                         <svg-icon
                             class="date-terminated"
-                            src="assets/svg/common/ic_terminated.svg"
+                            [src]="detailsHeaderCardSvgRoutes.terminatedRoute"
                         ></svg-icon>
-                        <p class="vin-text">{{ cardDetailsDateTerminated }}</p>
+                        <p class="vin-text">
+                            {{ cardDetailsDateTerminated }}
+                        </p>
                     </div>
                 </span>
-            </ng-container>
+            }
 
-            <ng-container *ngIf="dateChecked || dateClosed">
+            @if (dateChecked || dateClosed) {
                 <span style="margin-left: 130px">
                     <div
                         class="details-header-wrapper-data-item bottom"
@@ -227,12 +361,14 @@
                     >
                         <svg-icon
                             class="date-terminated"
-                            src="assets/svg/common/ic_date_checked.svg"
+                            [src]="detailsHeaderCardSvgRoutes.dateCheckedRoute"
                         ></svg-icon>
-                        <p class="vin-text">{{ dateChecked || dateClosed }}</p>
+                        <p class="vin-text">
+                            {{ dateChecked || dateClosed }}
+                        </p>
                     </div>
                 </span>
-            </ng-container>
+            }
         </div>
     </div>
 </div>
