@@ -29,4 +29,5 @@ export class SharedSvgRoutes {
     static STATUS_ICON: string = 'assets/svg/common/ic_broker-half-circle.svg';
     static ADDED_DATE: string = 'assets/svg/common/date.svg';
     static DATE_EDITED: string = 'assets/svg/common/ic_date_checked.svg';
+    static USER_CIRCLE_ICON: string = 'assets/svg/common/ic_broker-user.svg';
 }

@@ -30,6 +30,7 @@
                             isLoading,
                             isSpacingBottom: true,
                             width: 110,
+                            colWidth: 'col-6',
                         }
                     "
                 >
@@ -43,6 +44,7 @@
                             isLoading,
                             isSpacingBottom: true,
                             width: 140,
+                            colWidth: 'col-6',
                         }
                     "
                 >
@@ -56,6 +58,7 @@
                             isLoading,
                             isSpacingBottom: true,
                             width: 130,
+                            colWidth: 'col-6',
                         }
                     "
                 >
@@ -69,6 +72,7 @@
                             isLoading,
                             isSpacingBottom: true,
                             width: 120,
+                            colWidth: 'col-6',
                         }
                     "
                 >
@@ -86,6 +90,7 @@
                         text: load?.createdAt | formatDateP,
                         isLoading,
                         width: 64,
+                        colWidth: 'col-6',
                     }
                 "
             >
@@ -98,6 +103,7 @@
                         text: load?.updatedAt | formatDateP,
                         isLoading,
                         width: 64,
+                        colWidth: 'col-6',
                     }
                 "
             >
@@ -105,7 +111,85 @@
         </div>
     </div>
 
-    <div class="m-t-8 background-white p-8 br-3"></div>
+    <div class="m-t-8 background-white p-8 br-3">
+        <div class="d-flex flex-column p-t-4 p-b-8 px-6">
+            <app-ca-skeleton
+                [width]="100"
+                [height]="14"
+                [isLoading]="isLoading"
+                [contentTemplate]="brokerDetailContentTemplate"
+            >
+                <ng-template #brokerDetailContentTemplate>
+                    <div
+                        class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1"
+                    >
+                        Broker Detail
+                    </div>
+                </ng-template>
+            </app-ca-skeleton>
+
+            <app-ca-skeleton
+                [width]="190"
+                [height]="18"
+                [isLoading]="isLoading"
+                [contentTemplate]="brokerDetailNameContentTemplate"
+                class="mb-2"
+            >
+                <ng-template #brokerDetailNameContentTemplate>
+                    <div
+                        class="ta-font-medium text-size-18 text-color-black mb-1 text-truncate"
+                    >
+                        {{ load.broker?.businessName }}
+                    </div>
+                </ng-template>
+            </app-ca-skeleton>
+            <div class="d-flex align-items-center flex-wrap">
+                <ng-container
+                    *ngTemplateOutlet="
+                        iconTextTemplate;
+                        context: {
+                            icon: sharedIcons.USER_CIRCLE_ICON,
+                            text: load.brokerContact?.contactName,
+                            isLoading,
+                            isSpacingBottom: true,
+                            width: 160,
+                            colWidth: 'col-6',
+                        }
+                    "
+                >
+                </ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        iconTextTemplate;
+                        context: {
+                            icon: sharedIcons.PHONE_ICON,
+                            text: load.brokerContact?.phone,
+                            isLoading,
+                            isSpacingBottom: true,
+                            width: 140,
+                            colWidth: 'col-6',
+                            ext: '123',
+                        }
+                    "
+                >
+                </ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        iconTextTemplate;
+                        context: {
+                            icon: sharedIcons.EMAIL_ICON,
+                            text: load.brokerContact?.email,
+                            isLoading,
+                            isSpacingBottom: true,
+                            width: 180,
+                            colWidth: 'col-12',
+                        }
+                    "
+                >
+                </ng-container>
+            </div>
+        </div>
+    </div>
 </div>
 
 <ng-template
@@ -115,10 +199,13 @@
     let-isLoading="isLoading"
     let-width="width"
     let-isSpacingBottom="isSpacingBottom"
+    let-colWidth="colWidth"
+    let-ext="ext"
 >
     <div
-        class="d-flex align-items-center col-6 h-26"
+        class="d-flex align-items-center h-26"
         [ngClass]="isSpacingBottom && 'mb-2'"
+        [class]="colWidth"
     >
         <app-ca-skeleton
             [width]="15"
@@ -145,7 +232,7 @@
         >
             <ng-template #textTemplate>
                 <div class="text-size-14 text-color-black text-truncate">
-                    {{ text }}
+                    {{ text }} <span class="text-color-grey">x{{ ext }}</span>
                 </div>
             </ng-template>
         </app-ca-skeleton>
