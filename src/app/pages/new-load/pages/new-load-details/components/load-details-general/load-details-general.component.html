@@ -154,6 +154,7 @@
                             isSpacingBottom: true,
                             width: 160,
                             colWidth: 'col-6',
+                            textColorClass: 'text-color-black-2',
                         }
                     "
                 >
@@ -168,7 +169,8 @@
                             isSpacingBottom: true,
                             width: 140,
                             colWidth: 'col-6',
-                            ext: '123',
+                            ext: load.brokerContact?.extensionPhone,
+                            textColorClass: 'text-color-black-2',
                         }
                     "
                 >
@@ -183,6 +185,7 @@
                             isSpacingBottom: true,
                             width: 180,
                             colWidth: 'col-12',
+                            textColorClass: 'text-color-black-2',
                         }
                     "
                 >
@@ -201,6 +204,7 @@
     let-isSpacingBottom="isSpacingBottom"
     let-colWidth="colWidth"
     let-ext="ext"
+    let-textColorClass="textColorClass"
 >
     <div
         class="d-flex align-items-center h-26"
@@ -231,8 +235,14 @@
             class="overflow-hidden"
         >
             <ng-template #textTemplate>
-                <div class="text-size-14 text-color-black text-truncate">
-                    {{ text }} <span class="text-color-grey">x{{ ext }}</span>
+                <div
+                    class="text-size-14 text-truncate"
+                    [ngClass]="textColorClass || 'text-color-black'"
+                >
+                    {{ text }}
+                    @if (ext) {
+                        <span class="text-color-grey">x{{ ext }} </span>
+                    }
                 </div>
             </ng-template>
         </app-ca-skeleton>
