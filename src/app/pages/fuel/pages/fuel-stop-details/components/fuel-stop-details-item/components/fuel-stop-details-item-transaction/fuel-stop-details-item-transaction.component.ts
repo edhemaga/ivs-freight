@@ -237,7 +237,7 @@ export class FuelStopDetailsItemTransactionComponent
     ): void {
         const transaction = this._transactionList[index];
 
-        this.transactionItemDropdownIndex = -1;
+        this.transactionItemOptionsDropdownIndex = -1;
 
         option.type === eGeneralActions.OPEN_CAPITALIZED
             ? this.handleOptionsDropdownClick(index, transaction)
