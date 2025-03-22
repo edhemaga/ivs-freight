@@ -95,8 +95,12 @@ export class FuelStopDetailsItemTransactionComponent
 {
     @Input() set transactionList(data: FuelTransactionResponse[]) {
         this.createTransactionData(data);
+
+        console.log('data', data);
     }
     @Input() searchConfig: boolean[];
+
+    private transactionListPageIndex = 1;
 
     public destroy$ = new Subject<void>();
 
@@ -196,6 +200,8 @@ export class FuelStopDetailsItemTransactionComponent
                 filteredItemNames,
             };
         });
+
+        console.log(' this._transactionList', this._transactionList);
     }
 
     private handleOptionsDropdownClick(
@@ -257,7 +263,42 @@ export class FuelStopDetailsItemTransactionComponent
             : this.handleToggleDropdownMenuActions(option, transaction);
     }
 
-    public handleShowMoreAction(): void {}
+    public handleShowMoreAction(): void {
+        this.transactionListPageIndex++;
+
+        this.fuelService
+            .getFuelTransactionsList(
+                [this._transactionList?.[0].fuelStopStore?.id],
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                this.transactionListPageIndex,
+                25,
+                null,
+                null,
+                null,
+                null
+            )
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(({ pagination: { data } }) => {
+                this._transactionList = [...this._transactionList, ...data];
+            });
+    }
 
     public handleCloseSearchEmit(): void {
         this.detailsSearchService.setCloseSearchStatus(
