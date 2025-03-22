@@ -117,6 +117,7 @@
             </div>
             @for (stop of load.stops; track stop.id; let i = $index) {
                 @let isStopOpen = i === openStopIndex;
+                @let hasItems = stop.items?.length;
 
                 <div
                     [ngClass]="{
@@ -124,12 +125,13 @@
                     }"
                 >
                     <div
-                        class="h-34 p-y-3 p-x-8 d-grid align-items-center justify-content-between background-hover-bw2 c-pointer"
+                        class="h-34 p-y-3 p-x-8 d-grid align-items-center justify-content-between"
                         [ngClass]="{
                             'load-stop-rows-pending': isPendingLoad,
                             'load-stop-rows-not-pending': !isPendingLoad,
+                            'background-hover-bw2 c-pointer': hasItems,
                         }"
-                        (click)="toggleStopDetails(i)"
+                        (click)="hasItems && toggleStopDetails(i)"
                     >
                         <div class="d-flex align-items-center">
                             @let isDeadhead = stop.stopType.id === 0;
@@ -293,7 +295,7 @@
                         >
                             <div class="d-flex align-items-center">
                                 <div
-                                    class="h-18 w-18 text-muted text-size-11 ta-font-bold text-center d-flex align-items-center"
+                                    class="h-18 w-18 text-muted text-size-11 ta-font-bold text-center d-flex align-items-center justify-content-center"
                                 >
                                     #
                                 </div>
@@ -306,23 +308,58 @@
                             <div class="text-muted text-size-11 ta-font-bold">
                                 QUANTITY
                             </div>
-                            <div class="text-muted text-size-11 ta-font-medium">
-                                °F
+                            <div
+                                class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="sharedSvgRoutes.TEMPERATURE_ICON"
+                                    class="svg-size-14 svg-fill-muted"
+                                ></svg-icon>
+                                <span>°F</span>
                             </div>
-                            <div class="text-muted text-size-11 ta-font-medium">
-                                lbs
+                            <div
+                                class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="sharedSvgRoutes.WEIGHT_ICON"
+                                    class="svg-size-14 svg-fill-muted"
+                                ></svg-icon>
+                                <span>lbs</span>
                             </div>
-                            <div class="text-muted text-size-11 ta-font-medium">
-                                ft
+                            <div
+                                class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="sharedSvgRoutes.LENGTH_ICON"
+                                    class="svg-size-14 svg-fill-muted"
+                                ></svg-icon>
+                                <span>ft</span>
                             </div>
-                            <div class="text-muted text-size-11 ta-font-medium">
-                                ft
+                            <div
+                                class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="sharedSvgRoutes.HEIGHT_ICON"
+                                    class="svg-size-14 svg-fill-muted"
+                                ></svg-icon>
+                                <span>ft</span>
                             </div>
-                            <div class="text-muted text-size-11 ta-font-medium">
-                                ft
+                            <div
+                                class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="sharedSvgRoutes.TARP_ICON"
+                                    class="svg-size-14 svg-fill-muted"
+                                ></svg-icon>
+                                <span>ft</span>
                             </div>
-                            <div class="text-muted text-size-11 ta-font-medium">
-                                ft
+                            <div
+                                class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                            >
+                                <svg-icon
+                                    [src]="sharedSvgRoutes.STACKABLE_ICON"
+                                    class="svg-size-14 svg-fill-muted"
+                                ></svg-icon>
                             </div>
                             <div class="text-muted text-size-11 ta-font-bold">
                                 SECURE
@@ -340,6 +377,70 @@
                                 CODE
                             </div>
                         </div>
+
+                        @for (
+                            item of stop.items;
+                            track item.id;
+                            let stopIndex = $index
+                        ) {
+                            <div class="p-x-4">
+                                <div
+                                    class="h-22 d-grid load-stop-rows-items align-items-center p-x-4 justify-content-between background-hover-dark-2 br-1"
+                                >
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="h-18 w-18 text-color-muted text-size-11 text-center d-flex align-items-center ta-font-medium justify-content-center"
+                                        >
+                                            {{ stopIndex + 1 }}
+                                        </div>
+                                        <div
+                                            class="text-black-2 text-size-11 m-l-8"
+                                        >
+                                            {{ item.description }}
+                                        </div>
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.quantity }}
+                                        <span class="text-color-muted">
+                                            {{ item.units?.name }}</span
+                                        >
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.temperature }}°F
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.weight }}lbs
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.length }} ft
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.height }} ft
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.tarp?.name }}
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.stackable?.name }}
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.secure?.name }}
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.bolNumber }}
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.pickupNumber }}
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.sealNumber }}
+                                    </div>
+                                    <div class="text-black-2 text-size-11">
+                                        {{ item.code }}
+                                    </div>
+                                </div>
+                            </div>
+                        }
                     }
                 </div>
             }
