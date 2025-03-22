@@ -203,84 +203,67 @@
                 class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
             >
                 Assigned To
+
+                <svg-icon
+                    [src]="sharedIcons.HALF_TIME_ICON"
+                    class="svg-size-18 m-l-4 svg-fill-muted"
+                ></svg-icon>
             </div>
 
             <div class="row gutter-x-12">
                 @let isLoadAssigned = load.dispatch;
 
                 <div class="col-6">
-                    <div
-                        class="background-bw2 h-26 br-2 p-x-6 p-y-1 d-flex align-items-center"
-                    >
-                        @let truck = load.dispatch?.truck;
-
-                        @if (isLoadAssigned && truck) {
-                            @let truckIcon =
-                                'assets/svg/common/trucks/' +
-                                truck.truckType.logoName;
-                            <div class="h-18 w-42 d-flex">
-                                <svg-icon
-                                    class="h-18 w-36 d-flex"
-                                    [src]="truckIcon"
-                                ></svg-icon>
-                            </div>
-
-                            <span
-                                class="text-color-black text-size-14 ta-font-medium"
-                                >{{ truck.truckNumber }}</span
-                            >
-                        } @else {
-                            <span
-                                class="text-color-light-grey-2 text-size-14 ta-font-medium ml-1"
-                                >No Truck</span
-                            >
-                        }
-                    </div>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            itemTemplate;
+                            context: {
+                                item: load.dispatch?.truck,
+                                type: 'truck',
+                                iconPath:
+                                    'assets/svg/common/trucks/' +
+                                    load.dispatch?.truck?.truckType.logoName,
+                                label: load.dispatch?.truck?.truckNumber,
+                                noItemText: 'No Truck',
+                            }
+                        "
+                    ></ng-container>
                 </div>
+
                 <div class="col-6">
-                    <div
-                        class="background-bw2 h-26 br-2 p-x-6 p-y-1 d-flex align-items-center"
-                    >
-                        @let trailer = load.dispatch?.trailer;
-
-                        @if (isLoadAssigned && trailer) {
-                            @let trailerIcon =
-                                'assets/svg/common/trailers/' +
-                                trailer.trailerType.logoName;
-                            <div class="h-18 w-42 d-flex">
-                                <svg-icon
-                                    [src]="trailerIcon"
-                                    class="h-18 w-42 d-flex"
-                                ></svg-icon>
-                            </div>
-                            <span
-                                class="text-color-black text-size-14 ta-font-medium ml-1"
-                                >{{ trailer.trailerNumber }}</span
-                            >
-                        } @else {
-                            <span
-                                class="text-color-light-grey-2 text-size-14 ta-font-medium"
-                                >No Trailer</span
-                            >
-                        }
-                    </div>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            itemTemplate;
+                            context: {
+                                item: load.dispatch?.trailer,
+                                type: 'trailer',
+                                iconPath:
+                                    'assets/svg/common/trailers/' +
+                                    load.dispatch?.trailer?.trailerType
+                                        .logoName,
+                                label: load.dispatch?.trailer?.trailerNumber,
+                                noItemText: 'No Trailer',
+                            }
+                        "
+                    ></ng-container>
                 </div>
-                <div class="col-12">
-                    <div class="background-bw2 h-26 br-2 p-x-6 p-y-1 m-t-12">
-                        @let driver = load.dispatch?.driver;
 
-                        @if (isLoadAssigned && driver) {
-                            <span
-                                class="text-color-black text-size-14 ta-font-medium"
-                                >{{ driver.firstName }}
-                                {{ driver.lastName }}</span
-                            >
-                        } @else {
-                            <span
-                                class="text-color-light-grey-2 text-size-14 ta-font-medium"
-                                >No Driver</span
-                            >
-                        }
+                <div class="col-12">
+                    <div class="m-t-12">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                itemTemplate;
+                                context: {
+                                    item: load.dispatch?.driver,
+                                    type: 'driver',
+                                    label:
+                                        load.dispatch?.driver?.firstName +
+                                        ' ' +
+                                        load.dispatch?.driver?.lastName,
+                                    noItemText: 'No Driver',
+                                }
+                            "
+                        ></ng-container>
                     </div>
                 </div>
             </div>
@@ -339,5 +322,46 @@
                 </div>
             </ng-template>
         </app-ca-skeleton>
+    </div>
+</ng-template>
+
+<ng-template
+    #itemTemplate
+    let-item="item"
+    let-type="type"
+    let-iconPath="iconPath"
+    let-label="label"
+    let-noItemText="noItemText"
+>
+    <div
+        class="background-bw2 h-26 br-2 p-x-6 p-y-1 d-flex align-items-center"
+        [ngClass]="isLoadAssigned && item && 'box-unit-list'"
+    >
+        @if (isLoadAssigned && item) {
+            @if (iconPath) {
+                <div class="h-18 w-42 d-flex mr-1">
+                    <svg-icon
+                        [src]="iconPath"
+                        class="h-18 w-42 d-flex"
+                    ></svg-icon>
+                </div>
+            }
+
+            <span class="text-color-black text-size-14 ta-font-medium">{{
+                label
+            }}</span>
+
+            <div class="m-l-auto">
+                <svg-icon
+                    class="svg-size-14 d-flex c-pointer box-unit-list-icon"
+                    [src]="sharedIcons.TOP_RIGHT_ARROW"
+                ></svg-icon>
+            </div>
+        } @else {
+            <span
+                class="text-color-light-grey-2 text-size-14 ta-font-medium ml-1"
+                >{{ noItemText }}</span
+            >
+        }
     </div>
 </ng-template>
