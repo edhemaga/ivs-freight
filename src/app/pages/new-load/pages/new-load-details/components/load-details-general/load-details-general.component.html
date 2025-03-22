@@ -112,8 +112,8 @@
         </div>
     </div>
 
-    <div class="m-t-8 background-white p-8 br-3">
-        <div class="d-flex flex-column p-t-4 p-b-8 px-6">
+    <div class="m-t-8 background-white br-3 pb-2">
+        <div class="d-flex flex-column p-x-12 pt-1">
             <app-ca-skeleton
                 [width]="100"
                 [height]="14"
@@ -122,7 +122,7 @@
             >
                 <ng-template #brokerDetailContentTemplate>
                     <div
-                        class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1"
+                        class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1 d-flex align-items-center"
                     >
                         Broker Detail
                     </div>
@@ -191,6 +191,98 @@
                     "
                 >
                 </ng-container>
+            </div>
+        </div>
+
+        <div class="p-x-6 mb-1">
+            <div class="divider divider--small divider--dark"></div>
+        </div>
+
+        <div class="p-x-12">
+            <div
+                class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
+            >
+                Assigned To
+            </div>
+
+            <div class="row gutter-x-12">
+                @let isLoadAssigned = load.dispatch;
+
+                <div class="col-6">
+                    <div
+                        class="background-bw2 h-26 br-2 p-x-6 p-y-1 d-flex align-items-center"
+                    >
+                        @let truck = load.dispatch?.truck;
+
+                        @if (isLoadAssigned && truck) {
+                            @let truckIcon =
+                                'assets/svg/common/trucks/' +
+                                truck.truckType.logoName;
+                            <div class="h-18 w-42 d-flex">
+                                <svg-icon
+                                    class="h-18 w-36 d-flex"
+                                    [src]="truckIcon"
+                                ></svg-icon>
+                            </div>
+
+                            <span
+                                class="text-color-black text-size-14 ta-font-medium"
+                                >{{ truck.truckNumber }}</span
+                            >
+                        } @else {
+                            <span
+                                class="text-color-light-grey-2 text-size-14 ta-font-medium ml-1"
+                                >No Truck</span
+                            >
+                        }
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div
+                        class="background-bw2 h-26 br-2 p-x-6 p-y-1 d-flex align-items-center"
+                    >
+                        @let trailer = load.dispatch?.trailer;
+
+                        @if (isLoadAssigned && trailer) {
+                            @let trailerIcon =
+                                'assets/svg/common/trailers/' +
+                                trailer.trailerType.logoName;
+                            <div class="h-18 w-42 d-flex">
+                                <svg-icon
+                                    [src]="trailerIcon"
+                                    class="h-18 w-42 d-flex"
+                                ></svg-icon>
+                            </div>
+                            <span
+                                class="text-color-black text-size-14 ta-font-medium ml-1"
+                                >{{ trailer.trailerNumber }}</span
+                            >
+                        } @else {
+                            <span
+                                class="text-color-light-grey-2 text-size-14 ta-font-medium"
+                                >No Trailer</span
+                            >
+                        }
+                    </div>
+                </div>
+                <div class="col-12">
+                    <div class="background-bw2 h-26 br-2 p-x-6 p-y-1 m-t-12">
+                        @let driver = load.dispatch?.driver;
+
+                        @if (isLoadAssigned && driver) {
+                            <span
+                                class="text-color-black text-size-14 ta-font-medium"
+                                >{{ driver.firstName }}
+                                {{ driver.lastName }}</span
+                            >
+                        } @else {
+                            <span
+                                class="text-color-light-grey-2 text-size-14 ta-font-medium"
+                                >No Driver</span
+                            >
+                        }
+                    </div>
+                </div>
             </div>
         </div>
     </div>
