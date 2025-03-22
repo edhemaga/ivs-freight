@@ -95,8 +95,6 @@ export class FuelStopDetailsItemTransactionComponent
 {
     @Input() set transactionList(data: FuelTransactionResponse[]) {
         this.createTransactionData(data);
-
-        console.log('data', data);
     }
     @Input() searchConfig: boolean[];
 
@@ -200,8 +198,6 @@ export class FuelStopDetailsItemTransactionComponent
                 filteredItemNames,
             };
         });
-
-        console.log(' this._transactionList', this._transactionList);
     }
 
     private handleOptionsDropdownClick(
