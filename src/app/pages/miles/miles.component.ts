@@ -34,6 +34,9 @@ import { IStateFilters } from '@shared/interfaces';
 
 @Component({
     selector: 'app-miles',
+    templateUrl: './miles.component.html',
+    styleUrls: ['./miles.component.scss'],
+    standalone: true,
     imports: [
         CommonModule,
 
@@ -48,9 +51,6 @@ import { IStateFilters } from '@shared/interfaces';
         MilesCardComponent,
         MilesTableComponent,
     ],
-    templateUrl: './miles.component.html',
-    styleUrls: ['./miles.component.scss'],
-    standalone: true,
 })
 export class MilesComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
