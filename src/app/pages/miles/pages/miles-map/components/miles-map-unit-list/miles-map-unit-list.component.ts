@@ -101,6 +101,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         );
     }
     private manageSubscriptions(): void {
+        // <!-- TODO:  Inside virtual sroll ticket -->
         // this.subscriptions.add(
         //     forkJoin([
         //         this.milesStoreService.isMilesDetailsLoadingSelector$,

@@ -9,6 +9,7 @@
             class="background-white br-3 p-x-6 mb-2"
             [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
         >
+            <!-- TODO:  Uroš will replace all of this with component once it is done -->
             <div
                 class="h-42 d-flex align-items-center p-l-8 justify-content-between"
             >
@@ -66,6 +67,7 @@
             class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
             [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
         >
+            <!-- TODO:  This is waiting for backend, no config yet -->
             <form [formGroup]="searchForm">
                 <app-ca-input
                     formControlName="search"
@@ -121,6 +123,7 @@
 
             <div class="divider mt-1 mb-1"></div>
 
+            <!-- TODO:  Virtaul scroll is inside new ticket -->
             <div class="scrollable-element">
                 <cdk-virtual-scroll-viewport
                     #viewport
@@ -150,6 +153,7 @@
 }
 
 <ng-template #resizeButton>
+    <!-- TODO:  Inside virtual sroll ticket -->
     <!-- <div class="h-26 w-26 background-white">></div> -->
 </ng-template>
 

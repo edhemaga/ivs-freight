@@ -93,8 +93,6 @@ export class MilesHelper {
             newIndex = currentIndex - 1;
         }
 
-        console.log(newIndex);
-
         // Return the result with the truckId at the new index
         return {
             truckId: miles[newIndex]?.truckId ?? null,
