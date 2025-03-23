@@ -15,6 +15,10 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Constants
 import { UnitConstants } from '@shared/components/ca-unit-info-box/constants';
+import { CaProfileImageComponent } from 'ca-components';
+
+// Pipes
+import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
 @Component({
     selector: 'app-ca-unit-info-box',
@@ -22,8 +26,14 @@ import { UnitConstants } from '@shared/components/ca-unit-info-box/constants';
     imports: [
         CommonModule,
         NgbModule,
+
+        // Components
         TaAppTooltipV2Component,
         SvgIconComponent,
+        CaProfileImageComponent,
+
+        // Pipes
+        NameInitialsPipe,
     ],
     templateUrl: './ca-unit-info-box.component.html',
     styleUrls: ['./ca-unit-info-box.component.scss'],
@@ -37,13 +47,11 @@ export class CaUnitInfoBoxComponent {
         this._type = value;
         this.updateIconPathAndText();
     }
-    get type(): eSharedString {
-        return this._type;
-    }
 
     @Input() iconPath: string;
     @Input() isSvgIcon: boolean;
     @Input() isImage: boolean;
+    @Input() imagePath: boolean;
 
     public noItemText: string;
     public sharedIcons = SharedSvgRoutes;

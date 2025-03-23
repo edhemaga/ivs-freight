@@ -13,7 +13,19 @@
                 </div>
             }
 
-            @if (isImage) {}
+            @if (isImage) {
+                <div class="mr-1">
+                    <app-ca-profile-image
+                        [avatarColor]="{
+                            background: '#B7B6F1',
+                            color: '#2724D6',
+                        }"
+                        [textShortName]="label | nameInitials"
+                        [avatarImg]="imagePath"
+                        [isRound]="false"
+                    ></app-ca-profile-image>
+                </div>
+            }
         }
 
         <span class="text-color-black text-size-14 ta-font-medium">{{
