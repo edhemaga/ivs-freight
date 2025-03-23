@@ -18,6 +18,7 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.component';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
     selector: 'app-load-details-general',
@@ -35,6 +36,7 @@ import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-u
         CaSkeletonComponent,
         SvgIconComponent,
         CaUnitInfoBoxComponent,
+        TaAppTooltipV2Component,
     ],
 })
 export class LoadDetailsGeneralComponent {

@@ -37,4 +37,4 @@ export * from './chart/chart-tab-string.enum';
 export * from './plaid/plaid-event.enum';
 
 // Colors
-export * from './colors.enum';
+export * from './color.enum';

@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 
 // Enums
-import { eColors, eSharedString } from '@shared/enums';
+import { eColor, eSharedString } from '@shared/enums';
 
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -46,7 +46,7 @@ export class CaUnitInfoBoxComponent {
 
     public noItemText: string;
     public sharedIcons = SharedSvgRoutes;
-    public eColors = eColors;
+    public eColors = eColor;
     private unitConfig = UnitConstants.configuration;
     private _type!: eSharedString;
 

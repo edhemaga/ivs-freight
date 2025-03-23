@@ -46,6 +46,7 @@
                             isSpacingBottom,
                             width: 140,
                             colWidth: 'col-6',
+                            tooltipText: 'Company',
                         }
                     "
                 >
@@ -60,6 +61,7 @@
                             isSpacingBottom,
                             width: 130,
                             colWidth: 'col-6',
+                            tooltipText: 'Updated',
                         }
                     "
                 >
@@ -74,6 +76,7 @@
                             isSpacingBottom,
                             width: 120,
                             colWidth: 'col-6',
+                            tooltipText: 'Dispatcher',
                         }
                     "
                 >
@@ -81,8 +84,8 @@
             </div>
         </div>
 
-        <div class="divider divider--small divider--dark"></div>
-        <div class="d-flex align-items-center flex-wrap m-t-8 px-1">
+        <div class="divider divider--small divider--dark mb-2"></div>
+        <div class="d-flex align-items-center flex-wrap px-1 row gutter-x-12">
             <ng-container
                 *ngTemplateOutlet="
                     iconTextTemplate;
@@ -92,6 +95,7 @@
                         isLoading,
                         width: 64,
                         colWidth: 'col-6',
+                        tooltipText: 'Date Added',
                     }
                 "
             >
@@ -105,6 +109,7 @@
                         isLoading,
                         width: 64,
                         colWidth: 'col-6',
+                        tooltipText: 'Date Updated',
                     }
                 "
             >
@@ -113,133 +118,150 @@
     </div>
 
     <div class="m-t-8 background-white br-3 pb-2">
-        <div class="d-flex flex-column p-x-12 pt-1">
-            <div
-                class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1 d-flex align-items-center"
-            >
-                Broker Detail
-            </div>
-
-            <div
-                class="ta-font-medium text-size-18 text-color-black mb-1 text-truncate d-flex align-items-center h-30"
-            >
-                {{ load.broker?.businessName }}
-            </div>
-
-            <div class="d-flex align-items-center flex-wrap row gutter-x-12">
-                <ng-container
-                    *ngTemplateOutlet="
-                        iconTextTemplate;
-                        context: {
-                            icon: sharedIcons.USER_CIRCLE_ICON,
-                            text: load.broker?.contactName,
-                            isLoading,
-                            isSpacingBottom,
-                            width: 160,
-                            colWidth: 'col-6',
-                            textColorClass: 'text-color-black-2',
-                        }
-                    "
+        @if (isLoading) {
+            <ng-container
+                *ngTemplateOutlet="
+                    skeletonPlaceholder;
+                    context: { width: 100, isDividerVisible: true }
+                "
+            ></ng-container>
+            <ng-container
+                *ngTemplateOutlet="skeletonPlaceholder; context: { width: 91 }"
+            ></ng-container>
+        } @else {
+            <div class="d-flex flex-column p-x-12 pt-1">
+                <div
+                    class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1 d-flex align-items-center"
                 >
-                </ng-container>
-                <ng-container
-                    *ngTemplateOutlet="
-                        iconTextTemplate;
-                        context: {
-                            icon: sharedIcons.PHONE_ICON,
-                            text: load.broker?.phone,
-                            isLoading,
-                            isSpacingBottom,
-                            width: 140,
-                            colWidth: 'col-6',
-                            extension: load.brokerContact?.extensionPhone,
-                            textColorClass: 'text-color-black-2',
-                        }
-                    "
-                >
-                </ng-container>
-                <ng-container
-                    *ngTemplateOutlet="
-                        iconTextTemplate;
-                        context: {
-                            icon: sharedIcons.EMAIL_ICON,
-                            text: load.broker?.email,
-                            isLoading,
-                            isSpacingBottom,
-                            width: 180,
-                            colWidth: 'col-12',
-                            textColorClass: 'text-color-black-2',
-                        }
-                    "
-                >
-                </ng-container>
-            </div>
-        </div>
-
-        <div class="p-x-6 mb-1">
-            <div class="divider divider--small divider--dark"></div>
-        </div>
-
-        <div class="p-x-12">
-            <div
-                class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
-            >
-                Assigned To
-
-                <svg-icon
-                    [src]="sharedIcons.HALF_TIME_ICON"
-                    class="svg-size-18 m-l-4 svg-fill-muted"
-                ></svg-icon>
-            </div>
-
-            <div class="row gutter-x-12">
-                @let isLoadAssigned = load.dispatch;
-                <div class="col-6">
-                    <app-ca-unit-info-box
-                        [unitInfoBoxConfig]="{
-                            id: load.dispatch?.truck?.id,
-                            type: eSharedString.TRUCK,
-                            iconPath: load.dispatch?.truck?.truckType.logoName,
-                            label: load.dispatch?.truck?.truckNumber,
-                            isUnitAssigned: isLoadAssigned,
-                            isSvgIcon: true,
-                        }"
-                    ></app-ca-unit-info-box>
+                    Broker Detail
                 </div>
 
-                <div class="col-6">
-                    <app-ca-unit-info-box
-                        [unitInfoBoxConfig]="{
-                            id: load.dispatch?.trailer?.id,
-                            type: eSharedString.TRAILER,
-                            iconPath:
-                                load.dispatch?.trailer?.trailerType.logoName,
-                            label: load.dispatch?.trailer?.trailerNumber,
-                            isUnitAssigned: isLoadAssigned,
-                            isSvgIcon: true,
-                        }"
-                    ></app-ca-unit-info-box>
+                <div
+                    class="ta-font-medium text-size-18 text-color-black mb-1 text-truncate d-flex align-items-center h-30"
+                >
+                    {{ load.broker?.businessName }}
                 </div>
 
-                <div class="col-12">
-                    <div class="m-t-12">
+                <div
+                    class="d-flex align-items-center flex-wrap row gutter-x-12"
+                >
+                    <ng-container
+                        *ngTemplateOutlet="
+                            iconTextTemplate;
+                            context: {
+                                icon: sharedIcons.USER_CIRCLE_ICON,
+                                text: load.broker?.contactName,
+                                isLoading,
+                                isSpacingBottom,
+                                width: 160,
+                                colWidth: 'col-6',
+                                textColorClass: 'text-color-black-2',
+                            }
+                        "
+                    >
+                    </ng-container>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            iconTextTemplate;
+                            context: {
+                                icon: sharedIcons.PHONE_ICON,
+                                text: load.broker?.phone,
+                                isLoading,
+                                isSpacingBottom,
+                                width: 140,
+                                colWidth: 'col-6',
+                                extension: load.brokerContact?.extensionPhone,
+                                textColorClass: 'text-color-black-2',
+                            }
+                        "
+                    >
+                    </ng-container>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            iconTextTemplate;
+                            context: {
+                                icon: sharedIcons.EMAIL_ICON,
+                                text: load.broker?.email,
+                                isLoading,
+                                isSpacingBottom,
+                                width: 180,
+                                colWidth: 'col-12',
+                                textColorClass: 'text-color-black-2',
+                            }
+                        "
+                    >
+                    </ng-container>
+                </div>
+            </div>
+
+            <div class="p-x-6 mb-1">
+                <div class="divider divider--small divider--dark"></div>
+            </div>
+
+            <div class="p-x-12">
+                <div
+                    class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
+                >
+                    Assigned To
+
+                    <svg-icon
+                        [src]="sharedIcons.HALF_TIME_ICON"
+                        class="svg-size-18 m-l-4 svg-fill-muted"
+                    ></svg-icon>
+                </div>
+
+                <div class="row gutter-x-12">
+                    @let isLoadAssigned = load.dispatch;
+                    <div class="col-6">
                         <app-ca-unit-info-box
                             [unitInfoBoxConfig]="{
-                                id: load.dispatch?.driver?.id,
-                                type: eSharedString.DRIVER,
-                                label:
-                                    load.dispatch?.driver?.firstName +
-                                    ' ' +
-                                    load.dispatch?.driver?.lastName,
+                                id: load.dispatch?.truck?.id,
+                                type: eSharedString.TRUCK,
+                                iconPath:
+                                    load.dispatch?.truck?.truckType.logoName,
+                                label: load.dispatch?.truck?.truckNumber,
                                 isUnitAssigned: isLoadAssigned,
-                                isImage: true,
-                                imagePath: load.dispatch?.driver?.avatarFile,
+                                isSvgIcon: true,
                             }"
                         ></app-ca-unit-info-box>
                     </div>
+
+                    <div class="col-6">
+                        <app-ca-unit-info-box
+                            [unitInfoBoxConfig]="{
+                                id: load.dispatch?.trailer?.id,
+                                type: eSharedString.TRAILER,
+                                iconPath:
+                                    load.dispatch?.trailer?.trailerType
+                                        .logoName,
+                                label: load.dispatch?.trailer?.trailerNumber,
+                                isUnitAssigned: isLoadAssigned,
+                                isSvgIcon: true,
+                            }"
+                        ></app-ca-unit-info-box>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="m-t-12">
+                            <app-ca-unit-info-box
+                                [unitInfoBoxConfig]="{
+                                    id: load.dispatch?.driver?.id,
+                                    type: eSharedString.DRIVER,
+                                    label:
+                                        load.dispatch?.driver?.firstName +
+                                        ' ' +
+                                        load.dispatch?.driver?.lastName,
+                                    isUnitAssigned: isLoadAssigned,
+                                    isImage: true,
+                                    imagePath:
+                                        load.dispatch?.driver?.avatarFile,
+                                }"
+                            ></app-ca-unit-info-box>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
+        }
     </div>
 </div>
 
@@ -253,6 +275,7 @@
     let-colWidth="colWidth"
     let-extension="extension"
     let-textColorClass="textColorClass"
+    let-tooltipText="tooltipText"
 >
     @if (isLoading || text) {
         <div
@@ -269,10 +292,17 @@
                 [ngClass]="isLoading && 'mr-1'"
             >
                 <ng-template #contentTemplate>
-                    <svg-icon
-                        [src]="icon"
-                        class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
-                    ></svg-icon>
+                    <div
+                        ngbTooltip
+                        [mainTooltip]="tooltipText"
+                        position="bottom"
+                        tooltipBackground="#424242"
+                    >
+                        <svg-icon
+                            class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
+                            [src]="icon"
+                        ></svg-icon>
+                    </div>
                 </ng-template>
             </app-ca-skeleton>
 
@@ -297,6 +327,31 @@
                     </div>
                 </ng-template>
             </app-ca-skeleton>
+        </div>
+    }
+</ng-template>
+
+<ng-template
+    #skeletonPlaceholder
+    let-width="width"
+    let-isDividerVisible="isDividerVisible"
+>
+    <div class="d-flex align-items-center p-x-12 justify-content-between">
+        <p class="placeholder-glow">
+            <span
+                class="placeholder background-muted br-2 h-16"
+                [ngClass]="'w-' + width"
+            ></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder background-muted br-2 h-7 w-18"></span>
+        </p>
+    </div>
+
+    @if (isDividerVisible) {
+        <div class="p-x-6 mb-1 mt-1">
+            <div class="divider divider--small divider--dark"></div>
         </div>
     }
 </ng-template>
