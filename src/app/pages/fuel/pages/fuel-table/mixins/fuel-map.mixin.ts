@@ -10,7 +10,11 @@ import { FuelService } from '@shared/services/fuel.service';
 import { MapsService } from '@shared/services/maps.service';
 
 // models
-import { GetFuelStopRangeResponse } from 'appcoretruckassist';
+import {
+    ClusterResponse,
+    FuelStopResponse,
+    GetFuelStopRangeResponse,
+} from 'appcoretruckassist';
 import {
     IMapMarkers,
     IMapSelectedMarkerData,
@@ -26,6 +30,7 @@ import { FuelMapConstants } from '@pages/fuel/pages/fuel-table/utils/constants';
 
 // pipes
 import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-details/pipes';
+import { MapDropdownContent } from '@ca-shared/components/ca-map-dropdown/models';
 
 export function FuelMapMixin<T extends Constructor>(Base: T) {
     return class extends MapMixin(Base as Constructor) {
@@ -42,16 +47,16 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
 
         constructor(
             ref: ChangeDetectorRef,
-            fuelService: FuelService,
             fuelPricePipe: LastFuelPriceRangeClassColorPipe,
+            fuelService: FuelService,
             mapsService: MapsService,
             markerIconService: MapMarkerIconService
         ) {
             super(mapsService, markerIconService); // Pass arguments to MapMixin
 
             this.ref = ref;
-            this.fuelService = fuelService;
             this.fuelPricePipe = fuelPricePipe;
+            this.fuelService = fuelService;
         }
 
         protected getClusters(
@@ -61,7 +66,7 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
             if (!this.mapClustersObject) return;
 
             this.fuelService
-                .getFuelClusters(
+                .getFuelClusters([
                     this.mapClustersObject.northEastLatitude,
                     this.mapClustersObject.northEastLongitude,
                     this.mapClustersObject.southWestLatitude,
@@ -88,149 +93,19 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                     this.mapClustersPagination.pageSize, // pageSize
                     null, // companyId
                     this.mapListSortDirection ?? null, // sortBy
-                    null, // search
+                    null, // sortOrder
+                    null, // sortBy
+                    this.mapListSearchValue, // search
                     null, // search1
-                    null // search2
-                )
+                    null, // search2
+                ])
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((clustersResponse) => {
-                    if (isClusterPagination) {
-                        let selectedMarkerData: IMapMarkers | null = {
-                            ...this.mapData.selectedMarkerData,
-                        };
-
-                        const findClusterData = clustersResponse.find(
-                            (data) =>
-                                this.mapData.selectedMarkerData?.position
-                                    ?.lat === data.latitude &&
-                                this.mapData.selectedMarkerData?.position
-                                    .lng === data.longitude
+                    if (isClusterPagination)
+                        this.handleClustersSelectedMarkerPagination(
+                            clustersResponse
                         );
-
-                        if (findClusterData) {
-                            selectedMarkerData = {
-                                ...selectedMarkerData,
-                                infoWindowContent: {
-                                    ...selectedMarkerData.infoWindowContent,
-                                    clusterData: [
-                                        ...selectedMarkerData.infoWindowContent
-                                            .clusterData,
-                                        ...findClusterData.pagination.data,
-                                    ],
-                                },
-                            };
-                        }
-
-                        this.mapData = {
-                            ...this.mapData,
-                            selectedMarkerData,
-                        };
-                    } else {
-                        const clusterMarkers: IMapMarkers[] = [];
-                        const markers: IMapMarkers[] = [];
-
-                        clustersResponse?.forEach((data) => {
-                            const previousClusterData =
-                                this.mapData.clusterMarkers.find(
-                                    (item) =>
-                                        item.position.lat === data.latitude &&
-                                        item.position.lng === data.longitude
-                                );
-
-                            const previousMarkerData =
-                                this.mapData.markers.find(
-                                    (item2) =>
-                                        item2.position.lat === data.latitude &&
-                                        item2.position.lng === data.longitude
-                                );
-
-                            let clusterInfoWindowContent = data.pagination?.data
-                                ? {
-                                      clusterData: [...data.pagination.data],
-                                      selectedClusterItemData: null,
-                                  }
-                                : null;
-
-                            if (
-                                previousClusterData?.infoWindowContent
-                                    ?.selectedClusterItemData
-                            ) {
-                                clusterInfoWindowContent = {
-                                    ...clusterInfoWindowContent,
-                                    selectedClusterItemData:
-                                        previousClusterData?.infoWindowContent
-                                            ?.selectedClusterItemData,
-                                };
-                            }
-
-                            if (previousClusterData || previousMarkerData) {
-                                const newMarkerData = {
-                                    ...(previousMarkerData ||
-                                        previousClusterData),
-                                    infoWindowContent: clusterInfoWindowContent,
-                                };
-
-                                if (data.count > 1)
-                                    clusterMarkers.push(newMarkerData);
-                                else markers.push(newMarkerData);
-                            } else {
-                                let markerData: IMapMarkers = {
-                                    position: {
-                                        lat: data.latitude,
-                                        lng: data.longitude,
-                                    },
-                                    infoWindowContent: clusterInfoWindowContent,
-                                    label: data.name,
-                                    isFavorite: data.favourite,
-                                    isClosed: data.isClosed,
-                                    id: data.id,
-                                    data,
-                                };
-
-                                const fuelMarkerClass =
-                                    this.fuelPricePipe.transform({
-                                        minValue:
-                                            this.fuelStopPriceRange.dieselMin,
-                                        maxValue:
-                                            this.fuelStopPriceRange.dieselMax,
-                                        totalValue: data.pricePerGallon,
-                                    });
-
-                                const markerIcon =
-                                    data.count > 1
-                                        ? this.markerIconService.getClusterMarkerIcon(
-                                              markerData,
-                                              true
-                                          )
-                                        : this.markerIconService.getMarkerIcon(
-                                              data.id,
-                                              data.name,
-                                              data.isClosed,
-                                              data.favourite,
-                                              false,
-                                              fuelMarkerClass,
-                                              data.pricePerGallon
-                                                  ? '$' + data.pricePerGallon
-                                                  : null
-                                          );
-
-                                markerData = {
-                                    ...markerData,
-                                    content: markerIcon,
-                                };
-
-                                if (data.count > 1)
-                                    clusterMarkers.push(markerData);
-                                else markers.push(markerData);
-                            }
-                        });
-
-                        this.mapData = {
-                            ...this.mapData,
-                            clusterMarkers,
-                            markers,
-                        };
-                    }
+                    else this.handleClustersResponse(clustersResponse);
 
                     if (this.isAddedNewMarker) this.isAddedNewMarker = false;
 
@@ -244,7 +119,7 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
             if (!this.mapClustersObject) return;
 
             this.fuelService
-                .getFuelMapList(
+                .getFuelMapList([
                     this.mapClustersObject.northEastLatitude,
                     this.mapClustersObject.northEastLongitude,
                     this.mapClustersObject.southWestLatitude,
@@ -262,10 +137,12 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                     this.mapListPagination.pageSize,
                     null, // companyId
                     this.mapListSortDirection ?? null, // sort
+                    null, // sortOrder
+                    null, // sortBy
                     this.mapListSearchValue, // search
                     null, // search1
-                    null // search2
-                )
+                    null, // search2
+                ])
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((mapListResponse) => {
                     const mappedListData = mapListResponse?.pagination?.data;
@@ -287,58 +164,154 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                 .pipe(takeUntil(this.destroy$))
                 .subscribe({
                     next: (res) => {
-                        const fuelStopData = res;
-
-                        let selectedMarkerData: IMapSelectedMarkerData | null =
-                            null;
-
-                        this.mapData.clusterMarkers.forEach((clusterMarker) => {
-                            const clusterItemIndex =
-                                clusterMarker.data.pagination?.data?.findIndex(
-                                    (clusterItem) => clusterItem.id === markerId
-                                );
-
-                            if (clusterItemIndex > -1) {
-                                selectedMarkerData = {
-                                    ...clusterMarker,
-                                    infoWindowContent: {
-                                        ...clusterMarker.infoWindowContent,
-                                        selectedClusterItemData: {
-                                            ...FuelMapDropdownHelper.getFuelMapDropdownConfig(
-                                                fuelStopData,
-                                                true
-                                            ),
-                                            data: fuelStopData,
-                                        },
-                                    },
-                                };
-                            }
-                        });
-
-                        const markerData = this.mapData.markers.find(
-                            (marker) => marker.data?.id === markerId
-                        );
-
-                        if (markerData)
-                            selectedMarkerData = {
-                                ...markerData,
-                                infoWindowContent:
-                                    FuelMapDropdownHelper.getFuelMapDropdownConfig(
-                                        fuelStopData
-                                    ),
-                                data: fuelStopData,
-                            };
-
-                        this.mapsService.selectedMarker(
-                            selectedMarkerData ? fuelStopData.id : null
-                        );
-
-                        this.mapData = { ...this.mapData, selectedMarkerData };
+                        this.handleFuelStopResponse(res, markerId);
 
                         this.ref.detectChanges();
                     },
                     error: () => {},
                 });
+        }
+
+        protected handleClustersResponse(
+            clustersResponse: ClusterResponse[]
+        ): void {
+            const clusterMarkers: IMapMarkers[] = [];
+            const markers: IMapMarkers[] = [];
+
+            clustersResponse?.forEach((data) => {
+                const previousClusterData = this.findPreviousClusterData(data);
+                const previousMarkerData = this.findPreviousMarkerData(data);
+
+                let clusterInfoWindowContent = this.getClusterInfoWindowContent(
+                    data,
+                    previousClusterData
+                );
+
+                const newMarkerData =
+                    previousClusterData || previousMarkerData
+                        ? this.updateExistingMarker(
+                              previousClusterData,
+                              previousMarkerData,
+                              clusterInfoWindowContent
+                          )
+                        : this.createNewFuelStopMarker(
+                              data,
+                              clusterInfoWindowContent
+                          );
+
+                if (data.count > 1) clusterMarkers.push(newMarkerData);
+                else markers.push(newMarkerData);
+            });
+
+            this.mapData = {
+                ...this.mapData,
+                clusterMarkers,
+                markers,
+            };
+        }
+
+        protected handleFuelStopResponse(
+            fuelStopData: FuelStopResponse,
+            selectedMarkerId: number
+        ): void {
+            const selectedMarkerData: IMapSelectedMarkerData | null =
+                this.getSelectedMarkerData(fuelStopData, selectedMarkerId);
+
+            this.mapsService.selectedMarker(
+                selectedMarkerData ? fuelStopData.id : null
+            );
+
+            this.mapData = { ...this.mapData, selectedMarkerData };
+        }
+
+        protected createNewFuelStopMarker(
+            data: ClusterResponse,
+            clusterInfoWindowContent: MapDropdownContent
+        ): IMapMarkers {
+            let markerData: IMapMarkers = {
+                position: {
+                    lat: data.latitude,
+                    lng: data.longitude,
+                },
+                infoWindowContent: clusterInfoWindowContent,
+                label: data.name,
+                isFavorite: data.favourite,
+                isClosed: data.isClosed,
+                id: data.id,
+                data,
+            };
+
+            const fuelMarkerClass = this.fuelPricePipe.transform({
+                minValue: this.fuelStopPriceRange.dieselMin,
+                maxValue: this.fuelStopPriceRange.dieselMax,
+                totalValue: data.pricePerGallon,
+            });
+
+            const markerIcon =
+                data.count > 1
+                    ? this.markerIconService.getClusterMarkerIcon(
+                          markerData,
+                          true
+                      )
+                    : this.markerIconService.getMarkerIcon(
+                          data.id,
+                          data.name,
+                          data.isClosed,
+                          data.favourite,
+                          false,
+                          fuelMarkerClass,
+                          data.pricePerGallon ? '$' + data.pricePerGallon : null
+                      );
+
+            markerData = {
+                ...markerData,
+                content: markerIcon,
+            };
+
+            return markerData;
+        }
+
+        protected getSelectedMarkerData(
+            fuelStopData: FuelStopResponse,
+            selectedMarkerId: number
+        ): IMapSelectedMarkerData {
+            const selectedClusterMarker = this.mapData.clusterMarkers.find(
+                (clusterMarker) =>
+                    clusterMarker.data.pagination?.data?.some(
+                        (clusterItem) => clusterItem.id === selectedMarkerId
+                    )
+            );
+
+            if (selectedClusterMarker)
+                return {
+                    ...selectedClusterMarker,
+                    infoWindowContent: {
+                        ...selectedClusterMarker.infoWindowContent,
+                        selectedClusterItemData: {
+                            ...FuelMapDropdownHelper.getFuelMapDropdownConfig(
+                                fuelStopData,
+                                true
+                            ),
+                            data: fuelStopData,
+                        },
+                    },
+                };
+            else {
+                const markerData = this.mapData.markers.find(
+                    (marker) => marker.data?.id === selectedMarkerId
+                );
+
+                if (markerData) {
+                    return {
+                        ...markerData,
+                        infoWindowContent:
+                            FuelMapDropdownHelper.getFuelMapDropdownConfig(
+                                fuelStopData
+                            ),
+                        data: fuelStopData,
+                    };
+                }
+            }
         }
     };
 }

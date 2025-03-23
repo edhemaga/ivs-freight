@@ -13,7 +13,7 @@ import {
 } from 'rxjs';
 
 // base classes
-import { FuelDropdownMenuActionsBase } from '@pages/fuel/base-classes';
+import { FuelMixedBase } from '@pages/fuel/base-classes/fuel-mixed-base-class.base';
 
 // settings
 import {
@@ -88,22 +88,6 @@ import { AvatarColors } from '@shared/models';
 import { MapMarkerIconService } from 'ca-components';
 import { MapsService } from '@shared/services/maps.service';
 
-// mixins
-import { FuelMapMixin } from '@pages/fuel/pages/fuel-table/mixins';
-
-class ConcreteFuelDropdownMenuActionsBase<
-    T,
-> extends FuelDropdownMenuActionsBase {
-    destroy$: Subject<void>;
-    viewData: T[] = [];
-    fuelService: FuelService;
-    modalService: ModalService;
-
-    handleShowMoreAction(): void {}
-}
-
-const MixedBase = FuelMapMixin(ConcreteFuelDropdownMenuActionsBase);
-
 @Component({
     selector: 'app-fuel-table',
     templateUrl: './fuel-table.component.html',
@@ -116,7 +100,7 @@ const MixedBase = FuelMapMixin(ConcreteFuelDropdownMenuActionsBase);
     ],
 })
 export class FuelTableComponent
-    extends MixedBase
+    extends FuelMixedBase
     implements OnInit, AfterViewInit, OnDestroy
 {
     public destroy$ = new Subject<void>();
@@ -176,7 +160,7 @@ export class FuelTableComponent
         // ref
         public ref: ChangeDetectorRef
     ) {
-        super(ref, fuelService, fuelPricePipe, mapsService, markerIconService);
+        super(ref, fuelPricePipe, fuelService, mapsService, markerIconService);
     }
 
     ngOnInit(): void {

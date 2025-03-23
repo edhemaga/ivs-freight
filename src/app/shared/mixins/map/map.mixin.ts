@@ -16,9 +16,11 @@ import {
     IMapSelectedMarkerData,
     MapMarkerIconService,
 } from 'ca-components';
+import { ClusterResponse } from 'appcoretruckassist';
 
 // services
 import { MapsService } from '@shared/services/maps.service';
+import { MapDropdownContent } from '@ca-shared/components/ca-map-dropdown/models';
 
 export function MapMixin<T extends Constructor>(Base: T) {
     return class extends DestroyableMixin(Base) {
@@ -221,6 +223,92 @@ export function MapMixin<T extends Constructor>(Base: T) {
 
             if (this.mapsService.selectedMarkerId && !isAlreadySelectedMarker)
                 this.isSelectedFromDetails = true;
+        }
+
+        protected handleClustersSelectedMarkerPagination(
+            clustersResponse: ClusterResponse[]
+        ): void {
+            const { selectedMarkerData } = this.mapData;
+
+            if (!selectedMarkerData?.position) return;
+
+            const findClusterData = clustersResponse.find(
+                (data) =>
+                    selectedMarkerData.position.lat === data.latitude &&
+                    selectedMarkerData.position.lng === data.longitude
+            );
+
+            if (!findClusterData) return;
+
+            this.mapData = {
+                ...this.mapData,
+                selectedMarkerData: {
+                    ...selectedMarkerData,
+                    infoWindowContent: {
+                        ...selectedMarkerData.infoWindowContent,
+                        clusterData: [
+                            ...(selectedMarkerData.infoWindowContent
+                                ?.clusterData || []),
+                            ...findClusterData.pagination.data,
+                        ],
+                    },
+                },
+            };
+        }
+
+        protected findPreviousClusterData(
+            data: ClusterResponse
+        ): IMapMarkers | undefined {
+            return this.mapData.clusterMarkers.find(
+                (item) =>
+                    item.position.lat === data.latitude &&
+                    item.position.lng === data.longitude
+            );
+        }
+
+        protected findPreviousMarkerData(
+            data: ClusterResponse
+        ): IMapMarkers | undefined {
+            return this.mapData.markers.find(
+                (item) =>
+                    item.position.lat === data.latitude &&
+                    item.position.lng === data.longitude
+            );
+        }
+
+        protected updateExistingMarker(
+            previousClusterData?: IMapMarkers,
+            previousMarkerData?: IMapMarkers,
+            clusterInfoWindowContent?: MapDropdownContent
+        ): IMapMarkers {
+            return {
+                ...(previousMarkerData || previousClusterData),
+                infoWindowContent: clusterInfoWindowContent,
+            };
+        }
+
+        protected getClusterInfoWindowContent(
+            data: ClusterResponse,
+            previousClusterData?: IMapMarkers
+        ): MapDropdownContent | null {
+            let content: MapDropdownContent | null = data.pagination?.data
+                ? {
+                      clusterData: [...data.pagination.data],
+                      selectedClusterItemData: null,
+                  }
+                : null;
+
+            if (
+                previousClusterData?.infoWindowContent?.selectedClusterItemData
+            ) {
+                content = {
+                    ...content,
+                    selectedClusterItemData:
+                        previousClusterData.infoWindowContent
+                            .selectedClusterItemData,
+                };
+            }
+            return content;
         }
     };
 }

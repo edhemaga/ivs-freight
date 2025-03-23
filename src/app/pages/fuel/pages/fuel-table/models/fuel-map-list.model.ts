@@ -1,0 +1,26 @@
+import { SortOrder } from 'appcoretruckassist';
+
+export type FuelMapListApiArguments = [
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    number,
+    string,
+    SortOrder,
+    object,
+    string,
+    string,
+    string,
+];

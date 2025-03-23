@@ -37,6 +37,8 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // helpers
 import { FuelServiceHelper } from '@shared/utils/helpers/fuel-service.helper';
+import { FuelMapClustersApiArguments } from '@pages/fuel/pages/fuel-table/models/fuel-map-clusters.model';
+import { FuelMapListApiArguments } from '@pages/fuel/pages/fuel-table/models/fuel-map-list.model';
 
 @Injectable({
     providedIn: 'root',
@@ -359,117 +361,13 @@ export class FuelService {
     }
 
     public getFuelClusters(
-        northEastLatitude?: number,
-        northEastLongitude?: number,
-        southWestLatitude?: number,
-        southWestLongitude?: number,
-        zoomLevel?: number,
-        addedNew?: boolean,
-        shipperLong?: number,
-        shipperLat?: number,
-        shipperDistance?: number,
-        shipperStates?: Array<string>,
-        categoryIds?: Array<number>,
-        _long?: number,
-        lat?: number,
-        distance?: number,
-        costFrom?: number,
-        costTo?: number,
-        lastFrom?: number,
-        lastTo?: number,
-        ppgFrom?: number,
-        ppgTo?: number,
-        selectedId?: number,
-        active?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
+        data: FuelMapClustersApiArguments
     ): Observable<ClusterResponse[]> {
-        return this.fuelService.apiFuelClustersGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            zoomLevel,
-            addedNew,
-            shipperLong,
-            shipperLat,
-            shipperDistance,
-            shipperStates,
-            categoryIds,
-            _long,
-            lat,
-            distance,
-            costFrom,
-            costTo,
-            lastFrom,
-            lastTo,
-            ppgFrom,
-            ppgTo,
-            selectedId,
-            active,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            null,
-            null,
-            search,
-            search1,
-            search2
-        );
+        return this.fuelService.apiFuelClustersGet(...data);
     }
 
-    public getFuelMapList(
-        northEastLatitude?: number,
-        northEastLongitude?: number,
-        southWestLatitude?: number,
-        southWestLongitude?: number,
-        _long?: number,
-        lat?: number,
-        distance?: number,
-        lastFrom?: number,
-        lastTo?: number,
-        costFrom?: number,
-        costTo?: number,
-        ppgFrom?: number,
-        ppgTo?: number,
-        pageIndex?: number,
-        pageSize?: number,
-        companyId?: number,
-        sort?: string,
-        search?: string,
-        search1?: string,
-        search2?: string
-    ) {
-        return this.fuelService.apiFuelListmapGet(
-            northEastLatitude,
-            northEastLongitude,
-            southWestLatitude,
-            southWestLongitude,
-            _long,
-            lat,
-            distance,
-            lastFrom,
-            lastTo,
-            costFrom,
-            costTo,
-            ppgFrom,
-            ppgTo,
-            pageIndex,
-            pageSize,
-            companyId,
-            sort,
-            null,
-            null,
-            search,
-            search1,
-            search2
-        );
+    public getFuelMapList(data: FuelMapListApiArguments) {
+        return this.fuelService.apiFuelListmapGet(...data);
     }
 
     public getFuelStopPriceRange(): Observable<GetFuelStopRangeResponse> {
