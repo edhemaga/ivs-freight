@@ -29,10 +29,10 @@
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox
+                name="miles-row-all"
                 [isChecked]="store.hasAllItemsSelected"
                 [isRegularCheckbox]="false"
                 (columnCheckAction)="selectAll()"
-                name="miles-row-all"
             ></app-ca-checkbox>
         </ng-template>
 
@@ -42,9 +42,9 @@
             <app-ca-checkbox
                 [isChecked]="data.isSelected"
                 [isRegularCheckbox]="false"
-                (columnCheckAction)="selectRow(data)"
                 [itemIndex]="data.id"
                 [name]="name"
+                (columnCheckAction)="selectRow(data)"
             ></app-ca-checkbox>
         </ng-template>
 
@@ -64,6 +64,7 @@
         <ng-template #percentTemplate let-data="data" let-key="key">
             <p class="text-size-14 text-color-black-2 ta-font-regular">
                 {{ data[key]?.count }}
+
                 <span class="text-color-muted text-size-11 ta-font-semi-bold">
                     {{ data[key]?.percent }}%
                 </span>

@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-// Interface
+// Interfaces
 import { IMilesModel } from '@pages/miles/interface';
 
 // Services
@@ -19,6 +19,8 @@ import { CaCheckboxComponent } from 'ca-components';
     standalone: true,
     imports: [
         CommonModule,
+
+        // Components
         NewTableComponent,
         TaTruckTrailerIconComponent,
         CaCheckboxComponent,
