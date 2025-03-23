@@ -46,7 +46,7 @@ export class CaUnitInfoBoxComponent {
 
     public noItemText: string;
     public sharedIcons = SharedSvgRoutes;
-    public eColors = eColor;
+    public eColor = eColor;
     private unitConfig = UnitConstants.configuration;
     private _type!: eSharedString;
 
