@@ -47,6 +47,7 @@ import { MapsService } from '@shared/services/maps.service';
 import { RepairCardsModalService } from '@pages/repair/pages/repair-card-modal/services/repair-cards-modal.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { RepairShopQuery } from '@pages/repair/state/repair-shop-state/repair-shop.query';
@@ -214,8 +215,8 @@ export class RepairTableComponent
         protected modalService: ModalService,
         protected repairService: RepairService,
         protected reviewsRatingService: ReviewsRatingService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private mapsService: MapsService,
         private confirmationService: ConfirmationService,
         private repairCardsModalService: RepairCardsModalService,
@@ -2066,6 +2067,8 @@ export class RepairTableComponent
             ? this.shopBackFilter(filterQuery, true)
             : this.repairBackFilter(filterQuery, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

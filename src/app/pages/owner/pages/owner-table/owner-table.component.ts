@@ -16,6 +16,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { OwnerCardsModalService } from '@pages/owner/pages/owner-card-modal/services/owner-cards-modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { OwnerActiveQuery } from '@pages/owner/state/owner-active-state/owner-active.query';
@@ -107,8 +108,8 @@ export class OwnerTableComponent
     constructor(
         // services
         protected modalService: ModalService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private ownerService: OwnerService,
         private confirmationService: ConfirmationService,
         private ownerCardsModalService: OwnerCardsModalService,
@@ -896,6 +897,8 @@ export class OwnerTableComponent
 
         this.ownerBackFilter(this.backFilterQuery, true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});

@@ -20,6 +20,12 @@
         &-4 {
             margin-top: 4px;
         }
+        &-8 {
+            margin-top: 8px;
+        }
+        &-16 {
+            margin-top: 16px;
+        }
     }
     &-r {
         &-4 {
@@ -86,4 +92,30 @@
 }
 .w-full {
     width: 100%;
+}
+
+@for $i from 1 through 40 {
+    .top {
+        &-#{$i} {
+            top: #{$i}px;
+        }
+    }
+
+    .right {
+        &-#{$i} {
+            right: #{$i}px;
+        }
+    }
+
+    .left {
+        &-#{$i} {
+            left: #{$i}px;
+        }
+    }
+
+    .bottom {
+        &-#{$i} {
+            bottom: #{$i}px;
+        }
+    }
 }

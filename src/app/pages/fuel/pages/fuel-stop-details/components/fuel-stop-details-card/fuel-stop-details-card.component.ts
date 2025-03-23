@@ -27,7 +27,7 @@ import { FuelService } from '@shared/services/fuel.service';
 
 // enums
 import { eFuelStopDetails } from '@pages/fuel/pages/fuel-stop-details/enums';
-import { eStringPlaceholder } from '@shared/enums';
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
 
 // models
 import { FuelStopMinimalResponse, FuelStopResponse } from 'appcoretruckassist';
@@ -229,10 +229,11 @@ export class FuelStopDetailsCardComponent {
         );
 
         const isValidPreviousAction =
-            action === eFuelStopDetails.PREVIOUS && --currentIndex >= 0;
+            action === eGeneralActions.PREVIOUS_LOWERCASE &&
+            --currentIndex >= 0;
 
         const isValidNextAction =
-            action === eFuelStopDetails.NEXT &&
+            action === eGeneralActions.NEXT_LOWERCASE &&
             ++currentIndex < this.fuelStopFranchiseDropdownList.length;
 
         if (isValidPreviousAction || isValidNextAction)
@@ -241,11 +242,11 @@ export class FuelStopDetailsCardComponent {
 
     private onChangeFuelStopStore(action: string): void {
         const isValidPreviousAction =
-            action === eFuelStopDetails.PREVIOUS &&
+            action === eGeneralActions.PREVIOUS_LOWERCASE &&
             --this.fuelStopStoreCurrentIndex >= 0;
 
         const isValidNextAction =
-            action === eFuelStopDetails.NEXT &&
+            action === eGeneralActions.NEXT_LOWERCASE &&
             ++this.fuelStopStoreCurrentIndex <
                 this.fuelStopFranchiseDropdownList.length;
 
