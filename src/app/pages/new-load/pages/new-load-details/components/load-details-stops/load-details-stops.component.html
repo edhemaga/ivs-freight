@@ -118,7 +118,13 @@
                         LEG
                     </div>
                 </div>
-                @for (stop of load.stops; track stop.id; let i = $index) {
+                @for (
+                    stop of load.stops;
+                    track stop.id;
+                    let i = $index;
+                    let first = $first;
+                    let last = $last
+                ) {
                     @let isStopOpen = i === openStopIndex;
                     @let hasItems = stop.items?.length;
 
@@ -184,15 +190,18 @@
                                     <div
                                         class="text-size-11 text-color-muted ta-font-medium"
                                     >
-                                        <!-- TODO: Check text, We should show destination if step is finished -->
                                         @let text =
-                                            stop.stopOrder === 0
-                                                ? 'Deadhead'
-                                                : stop.stopOrder === 1
-                                                  ? 'Origin'
-                                                  : isPickup
-                                                    ? 'Extra Pickup'
-                                                    : 'Extra Delivery';
+                                            first
+                                                ? stop?.stopType?.id === 0
+                                                    ? 'Deadhead'
+                                                    : 'Origin'
+                                                : last
+                                                  ? 'Destination'
+                                                  : load.stops[0]?.stopType
+                                                          ?.id === 0 && i === 1
+                                                    ? 'Origin'
+                                                    : 'Extra ' +
+                                                      stop?.stopType?.name;
 
                                         {{ text }}
                                     </div>
