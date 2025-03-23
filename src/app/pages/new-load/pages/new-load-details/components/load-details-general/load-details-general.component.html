@@ -10,18 +10,18 @@
                 [height]="16"
                 [isLoading]="isLoading"
                 [contentTemplate]="contentTemplate"
-                class="mb-2"
+                [class.mb-2]="isLoading"
             >
                 <ng-template #contentTemplate>
                     <div
-                        class="ta-font-semi-bold text-size-18 text-color-black h-30 mb-1"
+                        class="ta-font-semi-bold text-size-18 text-color-black h-30 mb-1 d-flex align-items-center"
                     >
                         Ref. {{ load.referenceNumber }}
                     </div>
                 </ng-template>
             </app-ca-skeleton>
 
-            <div class="d-flex align-items-center flex-wrap">
+            <div class="d-flex align-items-center flex-wrap row gutter-x-12">
                 <ng-container
                     *ngTemplateOutlet="
                         iconTextTemplate;
@@ -114,43 +114,25 @@
 
     <div class="m-t-8 background-white br-3 pb-2">
         <div class="d-flex flex-column p-x-12 pt-1">
-            <app-ca-skeleton
-                [width]="100"
-                [height]="14"
-                [isLoading]="isLoading"
-                [contentTemplate]="brokerDetailContentTemplate"
+            <div
+                class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1 d-flex align-items-center"
             >
-                <ng-template #brokerDetailContentTemplate>
-                    <div
-                        class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1 d-flex align-items-center"
-                    >
-                        Broker Detail
-                    </div>
-                </ng-template>
-            </app-ca-skeleton>
+                Broker Detail
+            </div>
 
-            <app-ca-skeleton
-                [width]="190"
-                [height]="18"
-                [isLoading]="isLoading"
-                [contentTemplate]="brokerDetailNameContentTemplate"
-                class="mb-2"
+            <div
+                class="ta-font-medium text-size-18 text-color-black mb-1 text-truncate d-flex align-items-center h-30"
             >
-                <ng-template #brokerDetailNameContentTemplate>
-                    <div
-                        class="ta-font-medium text-size-18 text-color-black mb-1 text-truncate"
-                    >
-                        {{ load.broker?.businessName }}
-                    </div>
-                </ng-template>
-            </app-ca-skeleton>
-            <div class="d-flex align-items-center flex-wrap">
+                {{ load.broker?.businessName }}
+            </div>
+
+            <div class="d-flex align-items-center flex-wrap row gutter-x-12">
                 <ng-container
                     *ngTemplateOutlet="
                         iconTextTemplate;
                         context: {
                             icon: sharedIcons.USER_CIRCLE_ICON,
-                            text: load.brokerContact?.contactName,
+                            text: load.broker?.contactName,
                             isLoading,
                             isSpacingBottom,
                             width: 160,
@@ -165,7 +147,7 @@
                         iconTextTemplate;
                         context: {
                             icon: sharedIcons.PHONE_ICON,
-                            text: load.brokerContact?.phone,
+                            text: load.broker?.phone,
                             isLoading,
                             isSpacingBottom,
                             width: 140,
@@ -181,7 +163,7 @@
                         iconTextTemplate;
                         context: {
                             icon: sharedIcons.EMAIL_ICON,
-                            text: load.brokerContact?.email,
+                            text: load.broker?.email,
                             isLoading,
                             isSpacingBottom,
                             width: 180,
@@ -267,45 +249,49 @@
     let-extension="extension"
     let-textColorClass="textColorClass"
 >
-    <div
-        class="d-flex align-items-center h-26"
-        [ngClass]="isSpacingBottom && 'mb-2'"
-        [class]="colWidth"
-    >
-        <app-ca-skeleton
-            [width]="15"
-            [height]="15"
-            [isCircle]="true"
-            [isLoading]="isLoading"
-            [contentTemplate]="contentTemplate"
-            [ngClass]="isLoading && 'mr-1'"
+    @if (isLoading || text) {
+        <div
+            class="d-flex align-items-center h-26"
+            [ngClass]="isSpacingBottom && 'mb-2'"
+            [class]="colWidth"
         >
-            <ng-template #contentTemplate>
-                <svg-icon
-                    [src]="icon"
-                    class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
-                ></svg-icon>
-            </ng-template>
-        </app-ca-skeleton>
+            <app-ca-skeleton
+                [width]="15"
+                [height]="15"
+                [isCircle]="true"
+                [isLoading]="isLoading"
+                [contentTemplate]="contentTemplate"
+                [ngClass]="isLoading && 'mr-1'"
+            >
+                <ng-template #contentTemplate>
+                    <svg-icon
+                        [src]="icon"
+                        class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
+                    ></svg-icon>
+                </ng-template>
+            </app-ca-skeleton>
 
-        <app-ca-skeleton
-            [width]="width"
-            [height]="16"
-            [isLoading]="isLoading"
-            [contentTemplate]="textTemplate"
-            class="overflow-hidden"
-        >
-            <ng-template #textTemplate>
-                <div
-                    class="text-size-14 text-truncate"
-                    [ngClass]="textColorClass || 'text-color-black'"
-                >
-                    {{ text }}
-                    @if (extension) {
-                        <span class="text-color-grey">x{{ extension }} </span>
-                    }
-                </div>
-            </ng-template>
-        </app-ca-skeleton>
-    </div>
+            <app-ca-skeleton
+                [width]="width"
+                [height]="16"
+                [isLoading]="isLoading"
+                [contentTemplate]="textTemplate"
+                class="overflow-hidden"
+            >
+                <ng-template #textTemplate>
+                    <div
+                        class="text-size-14 text-truncate"
+                        [ngClass]="textColorClass || 'text-color-black'"
+                    >
+                        {{ text }}
+                        @if (extension) {
+                            <span class="text-color-grey"
+                                >x{{ extension }}
+                            </span>
+                        }
+                    </div>
+                </ng-template>
+            </app-ca-skeleton>
+        </div>
+    }
 </ng-template>
