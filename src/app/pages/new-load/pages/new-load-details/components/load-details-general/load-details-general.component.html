@@ -196,41 +196,45 @@
                 @let isLoadAssigned = load.dispatch;
                 <div class="col-6">
                     <app-ca-unit-info-box
-                        [id]="load.dispatch?.truck?.id"
-                        [type]="types.TRUCK"
-                        [iconPath]="load.dispatch?.truck?.truckType.logoName"
-                        [label]="load.dispatch?.truck?.truckNumber"
-                        [isUnitAssigned]="isLoadAssigned"
-                        [isSvgIcon]="true"
+                        [unitInfoBoxConfig]="{
+                            id: load.dispatch?.truck?.id,
+                            type: eSharedString.TRUCK,
+                            iconPath: load.dispatch?.truck?.truckType.logoName,
+                            label: load.dispatch?.truck?.truckNumber,
+                            isUnitAssigned: isLoadAssigned,
+                            isSvgIcon: true,
+                        }"
                     ></app-ca-unit-info-box>
                 </div>
 
                 <div class="col-6">
                     <app-ca-unit-info-box
-                        [id]="load.dispatch?.trailer?.id"
-                        [type]="types.TRAILER"
-                        [iconPath]="
-                            load.dispatch?.trailer?.trailerType.logoName
-                        "
-                        [label]="load.dispatch?.trailer?.trailerNumber"
-                        [isUnitAssigned]="isLoadAssigned"
-                        [isSvgIcon]="true"
+                        [unitInfoBoxConfig]="{
+                            id: load.dispatch?.trailer?.id,
+                            type: eSharedString.TRAILER,
+                            iconPath:
+                                load.dispatch?.trailer?.trailerType.logoName,
+                            label: load.dispatch?.trailer?.trailerNumber,
+                            isUnitAssigned: isLoadAssigned,
+                            isSvgIcon: true,
+                        }"
                     ></app-ca-unit-info-box>
                 </div>
 
                 <div class="col-12">
                     <div class="m-t-12">
                         <app-ca-unit-info-box
-                            [id]="load.dispatch?.driver?.id"
-                            [type]="types.DRIVER"
-                            [label]="
-                                load.dispatch?.driver?.firstName +
-                                ' ' +
-                                load.dispatch?.driver?.lastName
-                            "
-                            [isUnitAssigned]="isLoadAssigned"
-                            [isImage]="true"
-                            [imagePath]="load.dispatch?.driver.avatarFile"
+                            [unitInfoBoxConfig]="{
+                                id: load.dispatch?.driver?.id,
+                                type: eSharedString.DRIVER,
+                                label:
+                                    load.dispatch?.driver?.firstName +
+                                    ' ' +
+                                    load.dispatch?.driver?.lastName,
+                                isUnitAssigned: isLoadAssigned,
+                                isImage: true,
+                                imagePath: load.dispatch?.driver?.avatarFile,
+                            }"
                         ></app-ca-unit-info-box>
                     </div>
                 </div>

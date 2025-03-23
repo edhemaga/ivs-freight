@@ -20,6 +20,9 @@ import { CaProfileImageComponent } from 'ca-components';
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
 
+// Interface
+import { IUnitInfoBoxConfig } from '@shared/components/ca-unit-info-box/interface';
+
 @Component({
     selector: 'app-ca-unit-info-box',
     standalone: true,
@@ -39,27 +42,22 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
     styleUrls: ['./ca-unit-info-box.component.scss'],
 })
 export class CaUnitInfoBoxComponent {
-    @Input() id!: string;
-    @Input() label!: string;
-    @Input() isUnitAssigned!: boolean;
-    @Input()
+    @Input() unitInfoBoxConfig!: IUnitInfoBoxConfig;
+
+    private _type!: eSharedString;
+
     set type(value: eSharedString) {
         this._type = value;
         this.updateIconPathAndText();
     }
+
     get type(): eSharedString {
         return this._type;
     }
 
-    @Input() iconPath: string;
-    @Input() isSvgIcon: boolean;
-    @Input() isImage: boolean;
-    @Input() imagePath: boolean;
-
     public noItemText: string;
     public sharedIcons = SharedSvgRoutes;
 
-    private _type: eSharedString;
     private unitConfig = UnitConstants.configuration;
 
     constructor(private router: Router) {}
@@ -77,7 +75,8 @@ export class CaUnitInfoBoxComponent {
     private updateIconPathAndText(): void {
         const config = this.unitConfig[this.type.toLowerCase()];
         if (config) {
-            this.iconPath = config.iconPathPrefix + this.iconPath;
+            this.unitInfoBoxConfig.iconPath =
+                config.iconPathPrefix + this.unitInfoBoxConfig.iconPath;
             this.noItemText = config.noItemText;
         }
     }

@@ -39,7 +39,7 @@ import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-u
 })
 export class LoadDetailsGeneralComponent {
     public sharedIcons = SharedSvgRoutes;
-    public types = eSharedString;
+    public eSharedString = eSharedString;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 }

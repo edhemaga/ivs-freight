@@ -1,3 +1,12 @@
+@let isUnitAssigned = unitInfoBoxConfig.isUnitAssigned;
+@let iconPath = unitInfoBoxConfig.iconPath;
+@let imagePath = unitInfoBoxConfig.imagePath;
+@let isImage = unitInfoBoxConfig.isImage;
+@let isSvgIcon = unitInfoBoxConfig.isSvgIcon;
+@let label = unitInfoBoxConfig.label;
+@let id = unitInfoBoxConfig.id;
+@let type = unitInfoBoxConfig.type;
+
 <div
     class="background-bw2 h-26 br-2 p-x-6 p-y-1 d-flex align-items-center"
     [ngClass]="isUnitAssigned && 'box-unit-list'"
