@@ -1,16 +1,13 @@
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
-    AfterViewInit,
     ChangeDetectionStrategy,
     Component,
     ElementRef,
     EventEmitter,
     Input,
     Output,
-    Renderer2,
     TemplateRef,
     ViewChild,
 } from '@angular/core';
@@ -29,7 +26,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     standalone: true,
     imports: [
         CommonModule,
-        ScrollingModule,
         AngularSvgIconModule,
         NgbTooltipModule,
 
@@ -39,8 +35,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     templateUrl: './new-table.component.html',
     styleUrl: './new-table.component.scss',
 })
-export class NewTableComponent implements AfterViewInit {
-    @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
+export class NewTableComponent {
     @ViewChild('header') header!: ElementRef;
     @Input() expandedRows: Set<number> = new Set([]);
     @Input() isTableLocked: boolean;
@@ -59,12 +54,6 @@ export class NewTableComponent implements AfterViewInit {
     public leftPinnedColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
-
-    constructor(private renderer: Renderer2) {}
-
-    ngAfterViewInit() {
-        this.updateHeight();
-    }
 
     public onScroll(event: Event): void {
         const target = event.target as HTMLElement;
@@ -96,12 +85,5 @@ export class NewTableComponent implements AfterViewInit {
     public setSorting(sort: any): void {
         if (this.isTableLocked) return;
         this.onSortingChange$.emit(sort);
-    }
-
-    private updateHeight() {
-        if (this.viewport) {
-          const offsetTop = this.viewport.elementRef.nativeElement.offsetTop;
-          this.renderer.setStyle(this.viewport.elementRef.nativeElement, 'height', `calc(100vh - ${offsetTop}px)`);
-        }
     }
 }

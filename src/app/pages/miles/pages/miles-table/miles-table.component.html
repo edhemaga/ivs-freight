@@ -2,8 +2,8 @@
     {
         columns: milesStoreService.columns$ | async,
         miles: milesStoreService.miles$ | async,
-        areAllItemsSelected:
-            milesStoreService.areAllItemsSelectedSelector$ | async,
+        hasAllItemsSelected:
+            milesStoreService.hasAllItemsSelectedSelector$ | async,
     };
 
 @if (store) {
@@ -29,7 +29,7 @@
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox
-                [isChecked]="store.areAllItemsSelected"
+                [isChecked]="store.hasAllItemsSelected"
                 [isRegularCheckbox]="false"
                 (columnCheckAction)="selectAll()"
                 name="miles-row-all"
@@ -40,7 +40,7 @@
             @let name = 'miles-row' + data.id;
 
             <app-ca-checkbox
-                [isChecked]="data.selected"
+                [isChecked]="data.isSelected"
                 [isRegularCheckbox]="false"
                 (columnCheckAction)="selectRow(data)"
                 [itemIndex]="data.id"
