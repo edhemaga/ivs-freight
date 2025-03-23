@@ -1,5 +1,5 @@
 $sizes-height: (7, 8, 10, 15, 18, 22, 26, 34, 42);
-$sizes-width: (15, 10, 18, 26, 40, 70, 334, 462);
+$sizes-width: (15, 10, 18, 26, 40, 70, 223, 334, 462);
 
 @mixin size-classes($class, $property, $sizes) {
     .#{$class} {
