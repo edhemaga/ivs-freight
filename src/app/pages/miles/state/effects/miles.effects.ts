@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, of } from 'rxjs';
+import { combineLatest, Observable, of } from 'rxjs';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import {
     catchError,
     map,
@@ -10,7 +10,6 @@ import {
     switchMap,
     startWith,
     mergeMap,
-    concatMap,
 } from 'rxjs/operators';
 
 // Actions
@@ -27,9 +26,15 @@ import {
     selectSelectedTab,
     unitsPaginationSelector,
 } from '@pages/miles/state/selectors/miles.selector';
+
+// Helpers
 import { MilesHelper } from '@pages/miles/utils/helpers';
+
+// Enums
 import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
+
+// Inteface
 import { IMilesModel } from '@pages/miles/interface';
 
 @Injectable()
@@ -40,14 +45,20 @@ export class MilesEffects {
         private store: Store
     ) {}
 
-    private fetchMilesData(fetchInitialUnitDetails = false) {
+    private fetchMilesData(fetchInitialUnitDetails = false): Observable<
+        | Action<string>
+        | ({
+              miles: IMilesModel[];
+              totalResultsCount: number;
+          } & Action<string>)
+    > {
         return combineLatest([
             this.store.select(selectSelectedTab),
             this.store.select(filterSelector),
         ]).pipe(
             take(1),
             switchMap(([selectedTab, filters]) => {
-                const tabValue = selectedTab === eMileTabs.ACTIVE ? 1 : 0;
+                const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
 
                 return this.milesService
                     .apiMilesListGet(
@@ -91,7 +102,9 @@ export class MilesEffects {
         );
     }
 
-    private fetchInitialUnitDetails(milesItems: IMilesModel[]) {
+    private fetchInitialUnitDetails(
+        milesItems: IMilesModel[]
+    ): Observable<Action<string>> {
         const firstItemId = milesItems?.[0]?.truckId;
         if (!firstItemId) return of(MilesAction.getLoadsPayloadError());
 
@@ -201,7 +214,7 @@ export class MilesEffects {
         ]).pipe(
             take(1),
             switchMap(([selectedTab, filters]) => {
-                const tabValue = selectedTab === eMileTabs.ACTIVE ? 1 : 0;
+                const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
 
                 return this.milesService
                     .apiMilesListGet(
@@ -220,6 +233,7 @@ export class MilesEffects {
                                 response.pagination.data
                             );
                             const newTruckId = miles[0]?.truckId;
+                            const hasOnlyOneResult = miles.length === 1;
 
                             return this.milesService
                                 .apiMilesUnitGet(null, null, newTruckId)
@@ -230,9 +244,9 @@ export class MilesEffects {
                                             unitResponse,
                                             index: currentLength,
                                             isFirst: true,
-                                            isLast: miles.length === 1,
+                                            isLast: hasOnlyOneResult,
                                             isLastInCurrentList:
-                                                miles.length === 1,
+                                                hasOnlyOneResult,
                                         }),
                                     ])
                                 );

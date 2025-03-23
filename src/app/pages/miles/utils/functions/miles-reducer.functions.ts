@@ -29,7 +29,7 @@ export const changeViewMode = function (
         ...state,
         activeViewMode,
         selectedRows: 0,
-        areAllItemsSelected: false,
+        hasAllItemsSelected: false,
         unitsPagination: {
             ...state.unitsPagination,
             activeUnitIndex: 0,
@@ -73,34 +73,34 @@ export const toggleRowSelection = function (
     mile: IMilesModel
 ): IMilesState {
     const updatedItems = state.items.map((item) =>
-        item.id === mile.id ? { ...item, selected: !item.selected } : item
+        item.id === mile.id ? { ...item, isSelected: !item.isSelected } : item
     );
 
     const newSelectedCount = updatedItems.filter(
-        (item) => item.selected
+        (item) => item.isSelected
     ).length;
 
     return {
         ...state,
         items: updatedItems,
         selectedRows: newSelectedCount,
-        areAllItemsSelected: newSelectedCount === updatedItems.length,
+        hasAllItemsSelected: newSelectedCount === updatedItems.length,
     };
 };
 
 export const toggleSelectAll = function (state: IMilesState): IMilesState {
-    const areAllItemsSelected = !state.areAllItemsSelected;
+    const hasAllItemsSelected = !state.hasAllItemsSelected;
 
     const updatedItems = state.items.map((item) => ({
         ...item,
-        selected: areAllItemsSelected,
+        isSelected: hasAllItemsSelected,
     }));
 
     return {
         ...state,
         items: updatedItems,
-        selectedRows: areAllItemsSelected ? updatedItems.length : 0,
-        areAllItemsSelected,
+        selectedRows: hasAllItemsSelected ? updatedItems.length : 0,
+        hasAllItemsSelected,
     };
 };
 
@@ -112,7 +112,7 @@ export const updateFilters = function (
         ...state,
         filters,
         selectedRows: 0,
-        areAllItemsSelected: false,
+        hasAllItemsSelected: false,
     };
 };
 
@@ -125,7 +125,7 @@ export const updateTabSelection = function (
         selectedTab,
         selectedRows: 0,
         filters: {},
-        areAllItemsSelected: false,
+        hasAllItemsSelected: false,
     };
 };
 

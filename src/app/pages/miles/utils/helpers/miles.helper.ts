@@ -49,7 +49,7 @@ export class MilesHelper {
             milesTotal: mile.totalMiles,
             revenue: mile.revenue,
             id: mile.id,
-            selected: false,
+            isSelected: false,
         }));
 
         return mappedMiles;

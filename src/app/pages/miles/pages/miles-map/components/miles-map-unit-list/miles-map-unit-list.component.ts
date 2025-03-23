@@ -33,13 +33,18 @@ import { ArrowActionsStringEnum } from '@shared/enums';
     styleUrls: ['./miles-map-unit-list.component.scss'],
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         ReactiveFormsModule,
         ScrollingModule,
-        ThousandSeparatorPipe,
-        MilesIconPipe,
+
+        // Components
         SvgIconComponent,
         CaInputComponent,
+
+        // Pipes
+        ThousandSeparatorPipe,
+        MilesIconPipe,
     ],
 })
 export class MilesMapUnitListComponent implements OnInit, OnDestroy {

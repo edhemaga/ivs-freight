@@ -37,7 +37,7 @@
                             label: 'Loaded',
                             value: (total.loadedMiles | thousandSeparator) ?? 0,
                             bgClass: 'background-muted',
-                            showCircle: true,
+                            isCircleVisible: true,
                         }
                     "
                 >
@@ -50,7 +50,7 @@
                             label: 'Empty',
                             value: (total.emptyMiles | thousandSeparator) ?? 0,
                             bgClass: 'background-dark-2',
-                            showCircle: true,
+                            isCircleVisible: true,
                         }
                     "
                 >
@@ -65,10 +65,6 @@
                 [hasDarkDivider]="true"
                 [hasCounter]="total.stops.count"
                 [hasSmallDivider]="true"
-                [animationMarginParams]="{
-                    marginTop: '0',
-                    marginBottom: '0',
-                }"
             >
                 <ng-container
                     *ngTemplateOutlet="
@@ -169,10 +165,6 @@
                 [hasArrow]="true"
                 [hasDarkDivider]="true"
                 [hasSmallDivider]="true"
-                [animationMarginParams]="{
-                    marginTop: '0',
-                    marginBottom: '0',
-                }"
             >
                 <div class="d-flex flex-wrap p-b-12">
                     @let galons =
@@ -283,14 +275,14 @@
     let-label="label"
     let-value="value"
     let-bgClass="bgClass"
-    let-showCircle="showCircle"
+    let-isCircleVisible="isCircleVisible"
 >
     <div class="col-6 h-42 d-flex justify-content-center flex-column">
         <div
             class="text-size-11 ta-font-bold text-color-black m-b-2 d-flex align-items-center"
         >
             {{ label }}
-            @if (showCircle) {
+            @if (isCircleVisible) {
                 <span
                     class="m-l-4 h-10 w-10 rounded-circle d-block"
                     [ngClass]="bgClass"

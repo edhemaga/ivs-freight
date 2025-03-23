@@ -29,7 +29,7 @@ export const initialState: IMilesState = {
     filters: {},
     states: [],
     selectedRows: 0,
-    areAllItemsSelected: false,
+    hasAllItemsSelected: false,
 
     // Table
     columns: MilesTableColumns,
