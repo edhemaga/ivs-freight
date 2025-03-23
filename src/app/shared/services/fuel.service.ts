@@ -178,7 +178,8 @@ export class FuelService {
                         FuelServiceHelper.addFuelTransactionStopToStore(
                             this.fuelStore,
                             apiTransaction,
-                            true
+                            true,
+                            [this.fuelDetailsStore, this.fuelItemStore]
                         );
                     })
                 );
