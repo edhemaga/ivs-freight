@@ -220,7 +220,8 @@
                                 iconPath:
                                     load.dispatch?.truck?.truckType.logoName,
                                 label: load.dispatch?.truck?.truckNumber,
-                                isUnitAssigned: isLoadAssigned,
+                                isUnitAssigned:
+                                    isLoadAssigned && load.dispatch?.truck,
                                 isSvgIcon: true,
                             }"
                         ></app-ca-unit-info-box>
@@ -235,7 +236,8 @@
                                     load.dispatch?.trailer?.trailerType
                                         .logoName,
                                 label: load.dispatch?.trailer?.trailerNumber,
-                                isUnitAssigned: isLoadAssigned,
+                                isUnitAssigned:
+                                    isLoadAssigned && load.dispatch?.trailer,
                                 isSvgIcon: true,
                             }"
                         ></app-ca-unit-info-box>
@@ -251,7 +253,8 @@
                                         load.dispatch?.driver?.firstName +
                                         ' ' +
                                         load.dispatch?.driver?.lastName,
-                                    isUnitAssigned: isLoadAssigned,
+                                    isUnitAssigned:
+                                        isLoadAssigned && load.dispatch?.driver,
                                     isImage: true,
                                     imagePath:
                                         load.dispatch?.driver?.avatarFile,
