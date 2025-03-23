@@ -89,36 +89,17 @@
                         : 'stops-container-small'
                 "
             >
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-center"
-                >
-                    #
-                </div>
-                <div class="text-color-muted text-size-11 ta-font-bold">
-                    STOP
-                </div>
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-right"
-                >
-                    LEG
-                </div>
-                @if (isStopListExpanded) {
-                    <div
-                        class="text-color-muted text-size-11 ta-font-bold text-right"
-                    >
-                        LOADED
-                    </div>
-                    <div
-                        class="text-color-muted text-size-11 ta-font-bold text-right"
-                    >
-                        EMPTY
-                    </div>
+                @for (item of stopsConfig; let i = $index; track i) {
+                    @if (!item.isExpandable || isStopListExpanded) {
+                        <div
+                            class="text-color-muted text-size-11 ta-font-bold"
+                            [class.text-right]="item.isAlignedRight"
+                            [class.text-center]="item.isAlignedCenter"
+                        >
+                            {{ item.label }}
+                        </div>
+                    }
                 }
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-right"
-                >
-                    TOTAL
-                </div>
             </div>
 
             <div class="divider mt-1 mb-1"></div>
@@ -186,10 +167,10 @@
         </div>
         @if (isStopListExpanded) {
             <div class="text-color-black text-size-11 text-right">
-                {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+                {{ (stop.loadedMiles | thousandSeparator) ?? '0.0' }}
             </div>
             <div class="text-color-black text-size-11 text-right">
-                {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+                {{ (stop.emptyMiles | thousandSeparator) ?? '0.0' }}
             </div>
         }
         <div class="text-color-black text-size-11 ta-font-medium text-right">

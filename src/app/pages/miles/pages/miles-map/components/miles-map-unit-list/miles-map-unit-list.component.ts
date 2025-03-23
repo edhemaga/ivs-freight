@@ -27,6 +27,9 @@ import { CaInputComponent } from 'ca-components';
 // Enums
 import { ArrowActionsStringEnum } from '@shared/enums';
 
+// Const
+import { MilesStopsTable } from '@pages/miles/utils/constants';
+
 @Component({
     selector: 'app-miles-map-unit-list',
     templateUrl: './miles-map-unit-list.component.html',
@@ -51,6 +54,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
 
     public sharedSvgRoutes = SharedSvgRoutes;
+    public stopsConfig = MilesStopsTable.HEADER_CONFIG;
 
     public isStopListExpanded: boolean = false;
     public isLoading: boolean = false;
