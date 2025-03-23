@@ -10,6 +10,7 @@
 ) {
     <app-new-table-toolbar
         [title]="'Miles'"
+        [isMarginTopDisabled]="true"
         [leftSide]="leftSide"
         [showPlusIcon]="false"
     >
@@ -36,12 +37,14 @@
 
                 <app-ca-filter-state-dropdown
                     [states]="store.statesSelector"
+                    [entityType]="store.selectedTab"
                     (setFilter)="setFilters($event)"
                 ></app-ca-filter-state-dropdown>
 
                 <app-ca-filter-time-dropdown
                     type="TimeFilter"
                     subType="past"
+                    [entityType]="store.selectedTab"
                     (setFilter)="setFilters($event)"
                 >
                 </app-ca-filter-time-dropdown>

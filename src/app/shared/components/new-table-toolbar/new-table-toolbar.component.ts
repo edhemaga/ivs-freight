@@ -48,6 +48,7 @@ export class NewTableToolbarComponent implements OnInit, OnDestroy {
     @Input() rightSide: TemplateRef<any>;
     @Input() hasColumnsDropdown: boolean = true;
     @Input() showPlusIcon: boolean = true;
+    @Input() isMarginTopDisabled: boolean = false;
     @Input() toolbarDropdownContent: IDropdownMenuItem[];
 
     // Outputs

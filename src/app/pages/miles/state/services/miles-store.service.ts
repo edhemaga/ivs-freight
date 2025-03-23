@@ -12,21 +12,25 @@ import {
     selectedRowsSelector,
     tableColumnsSelector,
     filterSelector,
-    areAllItemsSelectedSelector
+    hasAllItemsSelectedSelector,
+    detailsSelector,
+    unitsPaginationSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
-import { IMilesModel } from '@pages/miles/interface';
+import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
+    MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
 import { ITableColumn, ITableData } from '@shared/models';
 import { IStateFilters } from '@shared/interfaces';
+
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@shared/enums';
+import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
 // Constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
@@ -67,7 +71,15 @@ export class MilesStoreService {
         select(filterSelector)
     );
 
-    public areAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(select(areAllItemsSelectedSelector))
+    public hasAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(
+        select(hasAllItemsSelectedSelector)
+    );
+
+    public unitsPaginationSelector$: Observable<IMilesDetailsFilters> =
+        this.store.pipe(select(unitsPaginationSelector));
+
+    public detailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
+        this.store.pipe(select(detailsSelector));
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -94,6 +106,7 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.LOAD_MILES_SUCCESS,
             miles: MilesHelper.milesMapper(data.pagination.data),
+            totalResultsCount: data.pagination.count,
         });
     }
 
@@ -102,6 +115,12 @@ export class MilesStoreService {
             type: MilesStoreConstants.ACTION_SET_ACTIVE_VIEW_MODE,
             activeViewMode,
         });
+
+        if (activeViewMode === eActiveViewMode.Map) {
+            this.store.dispatch({
+                type: MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE,
+            });
+        }
     }
 
     public dispatchFilters(
@@ -124,6 +143,15 @@ export class MilesStoreService {
     public dispatchSelectAll(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
+        });
+    }
+
+    public dispatchFollowingUnit(
+        getFollowingUnitDirection: ArrowActionsStringEnum
+    ): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
+            getFollowingUnitDirection,
         });
     }
 }

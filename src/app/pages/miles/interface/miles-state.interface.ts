@@ -11,7 +11,7 @@ import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
-import { IMilesModel } from '@pages/miles/interface';
+import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -23,6 +23,9 @@ export interface IMilesState {
     states: MilesStateFilterResponse[];
     selectedRows: number;
     columns: ITableColumn[];
-    areAllItemsSelected: boolean;
-    milesDetails: MilesByUnitPaginatedStopsResponse;
+    hasAllItemsSelected: boolean;
+
+    // Is used for next, prev icons to navigate throught list
+    details: MilesByUnitPaginatedStopsResponse;
+    unitsPagination: IMilesDetailsFilters;
 }

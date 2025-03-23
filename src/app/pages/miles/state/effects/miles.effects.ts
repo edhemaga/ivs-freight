@@ -1,10 +1,16 @@
 import { Injectable } from '@angular/core';
-
-// NgRx Imports
+import { combineLatest, Observable, of } from 'rxjs';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
-import { of } from 'rxjs';
-import { catchError, map, exhaustMap, take } from 'rxjs/operators';
+import { Action, Store } from '@ngrx/store';
+import {
+    catchError,
+    map,
+    exhaustMap,
+    take,
+    switchMap,
+    startWith,
+    mergeMap,
+} from 'rxjs/operators';
 
 // Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
@@ -12,12 +18,24 @@ import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 // Services
 import { MilesService } from 'appcoretruckassist';
 
-// Enums and Selectors
-import { eMileTabs } from '@pages/miles/enums';
-import { selectSelectedTab } from '@pages/miles/state/selectors/miles.selector';
+// Selectors & Helpers
+import {
+    activeViewModeSelector,
+    filterSelector,
+    selectMilesItems,
+    selectSelectedTab,
+    unitsPaginationSelector,
+} from '@pages/miles/state/selectors/miles.selector';
 
-// Utils
+// Helpers
 import { MilesHelper } from '@pages/miles/utils/helpers';
+
+// Enums
+import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
+import { eMileTabs } from '@pages/miles/enums';
+
+// Inteface
+import { IMilesModel } from '@pages/miles/interface';
 
 @Injectable()
 export class MilesEffects {
@@ -27,99 +45,215 @@ export class MilesEffects {
         private store: Store
     ) {}
 
-    // Centralized method to fetch miles data based on the tab and filters
-    private fetchMilesData(
-        tab: eMileTabs,
-        dateFrom: string | null,
-        dateTo: string | null,
-        revenueFrom?: number,
-        revenueTo?: number,
-        states?: string[]
-    ) {
-        const tabValue = tab === eMileTabs.ACTIVE ? 1 : 0;
-        return this.milesService
-            .apiMilesListGet(
-                null,
-                tabValue,
-                dateFrom,
-                dateTo,
-                states,
-                revenueFrom,
-                revenueTo
-            )
-            .pipe(
-                map((response) =>
-                    MilesAction.loadMilesSuccess({
-                        miles: MilesHelper.milesMapper(
-                            response.pagination.data
+    private fetchMilesData(fetchInitialUnitDetails = false): Observable<
+        | Action<string>
+        | ({
+              miles: IMilesModel[];
+              totalResultsCount: number;
+          } & Action<string>)
+    > {
+        return combineLatest([
+            this.store.select(selectSelectedTab),
+            this.store.select(filterSelector),
+        ]).pipe(
+            take(1),
+            switchMap(([selectedTab, filters]) => {
+                const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
+
+                return this.milesService
+                    .apiMilesListGet(
+                        null,
+                        tabValue,
+                        filters.dateFrom,
+                        filters.dateTo,
+                        filters.states,
+                        filters.revenueFrom,
+                        filters.revenueTo
+                    )
+                    .pipe(
+                        map((response) => {
+                            const miles = MilesHelper.milesMapper(
+                                response.pagination.data
+                            );
+                            return {
+                                miles,
+                                action: MilesAction.loadMilesSuccess({
+                                    miles,
+                                    totalResultsCount:
+                                        response.pagination.count,
+                                }),
+                            };
+                        }),
+                        catchError(() =>
+                            of({
+                                miles: [],
+                                action: MilesAction.getLoadsPayloadError(),
+                            })
                         ),
-                    })
-                ),
-                catchError(() => of(MilesAction.getLoadsPayloadError()))
-            );
-    }
-
-    public fetchTruckTotalMiles(
-        truckId?: number,
-        dateFrom?: string,
-        dateTo?: string,
-        states?: string[]
-    ): void {
-        this.milesService
-            .apiMilesUnitGet(null, 1, truckId, dateFrom, dateTo, states)
-            .pipe(
-                map((response) => {
-                    MilesAction.getTotalMilesDetails({
-                        milesDetails: response,
-                    });
-                    return response;
-                }),
-                catchError(() => of(null))
-            );
-    }
-
-    // Effect to get initial miles data default to Active tab and no date filters
-    public getInitalMilesList$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(MilesAction.getLoadsPayload),
-            exhaustMap(() => this.fetchMilesData(eMileTabs.ACTIVE, null, null))
-        )
-    );
-
-    // Effect to fetch miles data on tab change
-    public getMilesListOnTabChange$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(MilesAction.milesTabChange),
-            exhaustMap((action) => {
-                const tab = action.selectedTab;
-                return this.fetchMilesData(tab, null, null);
+                        switchMap(({ miles, action }) =>
+                            fetchInitialUnitDetails
+                                ? this.fetchInitialUnitDetails(miles).pipe(
+                                      startWith(action)
+                                  )
+                                : of(action)
+                        )
+                    );
             })
+        );
+    }
+
+    private fetchInitialUnitDetails(
+        milesItems: IMilesModel[]
+    ): Observable<Action<string>> {
+        const firstItemId = milesItems?.[0]?.truckId;
+        if (!firstItemId) return of(MilesAction.getLoadsPayloadError());
+
+        return this.milesService.apiMilesUnitGet(null, null, firstItemId).pipe(
+            map((unitResponse) =>
+                MilesAction.setUnitDetails({
+                    details: unitResponse,
+                    isLast: milesItems.length === 1,
+                })
+            ),
+            catchError(() => of(MilesAction.getLoadsPayloadError()))
+        );
+    }
+
+    public loadMilesEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.milesTabChange, MilesAction.changeFilters),
+            exhaustMap(() =>
+                this.store.select(activeViewModeSelector).pipe(
+                    take(1),
+                    switchMap((activeViewMode) =>
+                        this.fetchMilesData(
+                            activeViewMode ===
+                                eActiveViewMode[eActiveViewMode.Map]
+                        )
+                    )
+                )
+            )
         )
     );
 
-    // Effect to fetch miles data on filter change
-    public getMilesListOnFilterChange$ = createEffect(() =>
+    public loadInitialUnitDetails$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(MilesAction.changeFilters),
-            exhaustMap((action) => {
-                const { filters } = action || {};
-                const { dateFrom, dateTo, revenueFrom, revenueTo, states } =
-                    filters;
-                // TODO: Maybe this is not good, check
-                return this.store.select(selectSelectedTab).pipe(
-                    take(1), // Get the current selected tab only once
-                    exhaustMap((selectedTab) => {
-                        return this.fetchMilesData(
-                            selectedTab,
-                            dateFrom,
-                            dateTo,
-                            revenueFrom,
-                            revenueTo,
-                            states
+            ofType(MilesAction.getInitalUnitDetails),
+            exhaustMap(() =>
+                this.store.select(selectMilesItems).pipe(
+                    take(1),
+                    switchMap((milesItems) =>
+                        this.fetchInitialUnitDetails(milesItems)
+                    )
+                )
+            )
+        )
+    );
+
+    public getFollowingUnitDetails$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getFollowingUnit),
+            exhaustMap(({ getFollowingUnitDirection }) =>
+                combineLatest([
+                    this.store.select(selectMilesItems),
+                    this.store.select(unitsPaginationSelector),
+                ]).pipe(
+                    take(1),
+                    switchMap(([milesItems, unitsPagination]) => {
+                        // User reached last item in miles list, fetch new list
+                        if (
+                            unitsPagination.isLastInCurrentList &&
+                            getFollowingUnitDirection ===
+                                ArrowActionsStringEnum.NEXT
+                        ) {
+                            return this.loadMoreMiles(
+                                unitsPagination.currentPage + 1,
+                                milesItems.length
+                            );
+                        }
+
+                        const {
+                            index,
+                            isFirst,
+                            isLast,
+                            truckId,
+                            isLastInCurrentList,
+                        } = MilesHelper.findAdjacentId(
+                            milesItems,
+                            unitsPagination.activeUnitIndex,
+                            getFollowingUnitDirection,
+                            unitsPagination.totalResultsCount
                         );
+
+                        return this.milesService
+                            .apiMilesUnitGet(null, null, truckId)
+                            .pipe(
+                                map((unitResponse) =>
+                                    MilesAction.setFollowingUnitDetails({
+                                        unitResponse,
+                                        index,
+                                        isFirst,
+                                        isLast,
+                                        isLastInCurrentList,
+                                    })
+                                ),
+                                catchError(() =>
+                                    of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
                     })
-                );
-            })
+                )
+            )
         )
     );
+
+    private loadMoreMiles(page: number, currentLength: number) {
+        return combineLatest([
+            this.store.select(selectSelectedTab),
+            this.store.select(filterSelector),
+        ]).pipe(
+            take(1),
+            switchMap(([selectedTab, filters]) => {
+                const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
+
+                return this.milesService
+                    .apiMilesListGet(
+                        null,
+                        tabValue,
+                        filters.dateFrom,
+                        filters.dateTo,
+                        filters.states,
+                        filters.revenueFrom,
+                        filters.revenueTo,
+                        page
+                    )
+                    .pipe(
+                        switchMap((response) => {
+                            const miles = MilesHelper.milesMapper(
+                                response.pagination.data
+                            );
+                            const newTruckId = miles[0]?.truckId;
+                            const hasOnlyOneResult = miles.length === 1;
+
+                            return this.milesService
+                                .apiMilesUnitGet(null, null, newTruckId)
+                                .pipe(
+                                    mergeMap((unitResponse) => [
+                                        MilesAction.updateMilesList({ miles }),
+                                        MilesAction.setFollowingUnitDetails({
+                                            unitResponse,
+                                            index: currentLength,
+                                            isFirst: true,
+                                            isLast: hasOnlyOneResult,
+                                            isLastInCurrentList:
+                                                hasOnlyOneResult,
+                                        }),
+                                    ])
+                                );
+                        }),
+                        catchError(() => of(MilesAction.getLoadsPayloadError()))
+                    );
+            })
+        );
+    }
 }
