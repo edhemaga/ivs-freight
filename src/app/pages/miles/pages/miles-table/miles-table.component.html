@@ -1,12 +1,12 @@
-@if (
+@let store =
     {
         columns: milesStoreService.columns$ | async,
         miles: milesStoreService.miles$ | async,
         areAllItemsSelected:
             milesStoreService.areAllItemsSelectedSelector$ | async,
     };
-    as store
-) {
+
+@if (store) {
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
@@ -35,6 +35,7 @@
                 name="miles-row-all"
             ></app-ca-checkbox>
         </ng-template>
+
         <ng-template #loadSelectTemplate let-data="data">
             @let name = 'miles-row' + data.id;
 

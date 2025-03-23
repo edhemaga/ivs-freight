@@ -29,7 +29,6 @@ import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-p
 // enums
 import {
     eDropdownMenu,
-    eCommonElement,
     eGeneralActions,
     TableStringEnum,
     eSharedString,
@@ -322,7 +321,7 @@ export class FuelStopDetailsComponent
                             this.getDetailsOptions(this.fuelStopObject);
 
                             if (
-                                this.router.url.includes(eCommonElement.DETAILS)
+                                this.router.url.includes(eSharedString.DETAILS)
                             ) {
                                 this.router.navigate([
                                     `/list/fuel/${res.id}/details`,
