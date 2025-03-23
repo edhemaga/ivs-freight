@@ -1,7 +1,6 @@
 @import 'src/theme/variables';
 
 @mixin svg-fill($color) {
-
     svg path,
     svg circle {
         fill: $color !important;
@@ -28,7 +27,6 @@
 }
 
 .svg {
-
     // Colors
     &-fill {
         &-white {
@@ -53,6 +51,10 @@
 
         &-light-grey-6 {
             @include svg-fill($ta-light-grey-6);
+        }
+
+        &-light-grey-10 {
+            @include svg-fill($ta-light-grey-10);
         }
 
         &-blue-13 {
@@ -90,9 +92,16 @@
         &-yellow-4 {
             @include svg-fill($ta-yellow-4);
         }
-
         &-yellow-5 {
             @include svg-fill($ta-yellow-5);
+        }
+
+        &-orange-4 {
+            @include svg-fill($ta-orange-4);
+        }
+
+        &-orange-5 {
+            @include svg-fill($ta-orange-5);
         }
 
         &-red-11 {

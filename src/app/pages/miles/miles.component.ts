@@ -22,14 +22,21 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { TableStringEnum } from '@shared/enums';
-import { eActiveViewMode } from '@shared/enums';
+import {
+    eActiveViewMode,
+    eCommonElement,
+    eSharedString,
+    TableStringEnum,
+} from '@shared/enums';
 
-// Interface
+// Interfaces
 import { IStateFilters } from '@shared/interfaces';
 
 @Component({
     selector: 'app-miles',
+    templateUrl: './miles.component.html',
+    styleUrls: ['./miles.component.scss'],
+    standalone: true,
     imports: [
         CommonModule,
 
@@ -44,13 +51,16 @@ import { IStateFilters } from '@shared/interfaces';
         MilesCardComponent,
         MilesTableComponent,
     ],
-    templateUrl: './miles.component.html',
-    styleUrls: ['./miles.component.scss'],
-    standalone: true,
 })
 export class MilesComponent implements OnInit, OnDestroy {
     private destroy$ = new Subject<void>();
+
     private filter: IStateFilters = {};
+
+    // enums
+    public eSharedString = eSharedString;
+    public eActiveViewMode = eActiveViewMode;
+    public eCommonElement = eCommonElement;
 
     constructor(public milesStoreService: MilesStoreService) {}
 

@@ -68,8 +68,8 @@ import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
     eDropdownMenu,
-    eCommonElement,
     TableStringEnum,
+    eCommonElement,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
@@ -98,6 +98,7 @@ export class FuelTableComponent
 {
     public destroy$ = new Subject<void>();
 
+    // enums
     public eDropdownMenu = eDropdownMenu;
     public tableStringEnum = TableStringEnum;
     public eCommonElement = eCommonElement;

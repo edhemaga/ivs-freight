@@ -1,0 +1,294 @@
+@let total = milesStoreService.detailsSelector$ | async;
+
+@if (total) {
+    <div
+        class="background-white br-3 p-12 miles-map-total pb-0 position-relative z-2 miles-unit-total-list scrollable-element overflow-x-hidden overflow-y-auto"
+    >
+        <div class="text-size-11 ta-font-bold text-color-black m-b-2">
+            Total Miles
+        </div>
+        <div class="text-size-18 ta-font-medium text-color-black m-b-8">
+            {{ (total.totalMiles | thousandSeparator) ?? '0.0' }}
+        </div>
+
+        @if (total?.totalMiles || total?.stops?.count) {
+            @if (total.totalMiles) {
+                @let totalUnitCount = total.loadedMiles + total.emptyMiles;
+                @let percent = (total.loadedMiles / totalUnitCount) * 100;
+                <ng-container
+                    *ngTemplateOutlet="
+                        milesProgressBar;
+                        context: {
+                            label: '',
+                            percent: percent,
+                            count: totalUnitCount,
+                            color: 'muted',
+                        }
+                    "
+                >
+                </ng-container>
+            }
+
+            <div class="d-flex mb-1 gap-3">
+                <ng-container
+                    *ngTemplateOutlet="
+                        columns;
+                        context: {
+                            label: 'Loaded',
+                            value: (total.loadedMiles | thousandSeparator) ?? 0,
+                            bgClass: 'background-muted',
+                            isCircleVisible: true,
+                        }
+                    "
+                >
+                </ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="
+                        columns;
+                        context: {
+                            label: 'Empty',
+                            value: (total.emptyMiles | thousandSeparator) ?? 0,
+                            bgClass: 'background-dark-2',
+                            isCircleVisible: true,
+                        }
+                    "
+                >
+                </ng-container>
+            </div>
+
+            <app-ta-custom-card
+                [cardName]="'Stop'"
+                [isCardOpen]="true"
+                [hasBodyData]="true"
+                [hasArrow]="true"
+                [hasDarkDivider]="true"
+                [hasCounter]="total.stops.count"
+                [hasSmallDivider]="true"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        milesProgressBar;
+                        context: {
+                            label: 'Pickup',
+                            percent: total.pickupPercentage,
+                            count: total.pickupCount,
+                            color: 'green',
+                        }
+                    "
+                >
+                </ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="
+                        milesProgressBar;
+                        context: {
+                            label: 'Delivery',
+                            percent: total.deliveryPercentage,
+                            count: total.deliveryCount,
+                            color: 'orange-4',
+                        }
+                    "
+                >
+                </ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="
+                        milesProgressBar;
+                        context: {
+                            label: 'Fuel',
+                            percent: total.fuelPercentage,
+                            count: total.fuelCount,
+                            color: 'blue-13',
+                        }
+                    "
+                >
+                </ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="
+                        milesProgressBar;
+                        context: {
+                            label: 'Deadhead',
+                            percent: total.deadHeadPercentage,
+                            count: total.deadHeadCount,
+                            color: 'light-grey-2',
+                        }
+                    "
+                >
+                </ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="
+                        milesProgressBar;
+                        context: {
+                            label: 'Parking',
+                            percent: total.parkingPercentage,
+                            count: total.pickupCount,
+                            color: 'blue-26',
+                        }
+                    "
+                >
+                </ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="
+                        milesProgressBar;
+                        context: {
+                            label: 'Repair',
+                            percent: total.repairPercentage,
+                            count: total.repairCount,
+                            color: 'orange-5',
+                        }
+                    "
+                >
+                </ng-container>
+
+                <ng-container
+                    *ngTemplateOutlet="
+                        milesProgressBar;
+                        context: {
+                            label: 'Towing',
+                            percent: total.towingPercentage,
+                            count: total.towingCount,
+                            color: 'bw-9',
+                        }
+                    "
+                >
+                </ng-container>
+            </app-ta-custom-card>
+
+            <app-ta-custom-card
+                [cardName]="'Additional'"
+                [isCardOpen]="true"
+                [hasBodyData]="true"
+                [hasArrow]="true"
+                [hasDarkDivider]="true"
+                [hasSmallDivider]="true"
+            >
+                <div class="d-flex flex-wrap p-b-12">
+                    @let galons =
+                        ((total.fuelTotalGalons | thousandSeparator) ??
+                            total.fuelTotalGalons) + ' gal';
+                    <ng-container
+                        *ngTemplateOutlet="
+                            columns;
+                            context: {
+                                label: 'Fuel',
+                                value: galons,
+                            }
+                        "
+                    >
+                    </ng-container>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            columns;
+                            context: {
+                                label: 'MPG',
+                                value: total.milesPerGalon,
+                            }
+                        "
+                    >
+                    </ng-container>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            columns;
+                            context: {
+                                label: 'Load',
+                                value: total.loadCount,
+                            }
+                        "
+                    >
+                    </ng-container>
+                    <ng-container
+                        *ngTemplateOutlet="
+                            columns;
+                            context: {
+                                label: 'Revenue',
+                                value:
+                                    '$' +
+                                    ((total.revenue | thousandSeparator) ?? 0),
+                            }
+                        "
+                    >
+                    </ng-container>
+                </div>
+            </app-ta-custom-card>
+        }
+    </div>
+}
+
+<ng-template
+    #milesProgressBar
+    let-icon="icon"
+    let-label="label"
+    let-percent="percent"
+    let-count="count"
+    let-color="color"
+>
+    @if (label) {
+        @let svgClass = percent ? (label | milesIcon).color : 'svg-fill-bw-9';
+
+        <div class="gap-3 m-t-3 d-grid stops-container align-items-center">
+            <div class="d-flex align-items-center">
+                <svg-icon
+                    [src]="(label | milesIcon).icon"
+                    [ngClass]="svgClass"
+                    class="svg-size-14 d-flex"
+                ></svg-icon>
+                <div
+                    class="text-size-14 m-l-4 ta-font-medium"
+                    [ngClass]="percent ? 'text-color-black-2' : 'text-muted'"
+                >
+                    {{ label }}
+                </div>
+            </div>
+            <div
+                class="text-size-14 text-right"
+                [ngClass]="percent ? 'text-muted' : 'text-color-light-grey-6'"
+            >
+                {{ percent | number: '1.0-0' }}%
+            </div>
+            <div
+                class="text-size-14 ta-font-medium text-right"
+                [ngClass]="percent ? 'text-color-black' : 'text-color-muted'"
+            >
+                {{ count }}
+            </div>
+        </div>
+    }
+
+    <div
+        class="stop-progress-bar h-8 w-100 d-inline-block br-2 background-dark-2 overflow-hidden m-b-6"
+    >
+        @let bgClass = percent ? 'background-' + color : 'background-muted';
+        <div
+            class="h-8"
+            [ngStyle]="{ width: percent + '%' }"
+            [ngClass]="bgClass"
+        ></div>
+    </div>
+</ng-template>
+
+<ng-template
+    #columns
+    let-label="label"
+    let-value="value"
+    let-bgClass="bgClass"
+    let-isCircleVisible="isCircleVisible"
+>
+    <div class="col-6 h-42 d-flex justify-content-center flex-column">
+        <div
+            class="text-size-11 ta-font-bold text-color-black m-b-2 d-flex align-items-center"
+        >
+            {{ label }}
+            @if (isCircleVisible) {
+                <span
+                    class="m-l-4 h-10 w-10 rounded-circle d-block"
+                    [ngClass]="bgClass"
+                ></span>
+            }
+        </div>
+        <div class="text-size-14 text-color-black-2">{{ value }}</div>
+    </div>
+</ng-template>
