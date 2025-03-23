@@ -99,7 +99,7 @@ export const toggleSelectAll = function (state: IMilesState): IMilesState {
     return {
         ...state,
         items: updatedItems,
-        selectedRows: hasAllItemsSelected ? updatedItems.length : 0,
+        selectedRows: hasAllItemsSelected && updatedItems.length,
         hasAllItemsSelected,
     };
 };

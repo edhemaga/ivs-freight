@@ -93,8 +93,10 @@
                     @if (!item.isExpandable || isStopListExpanded) {
                         <div
                             class="text-color-muted text-size-11 ta-font-bold"
-                            [class.text-right]="item.isAlignedRight"
-                            [class.text-center]="item.isAlignedCenter"
+                            [ngClass]="{
+                                'text-right': item.isAlignedRight,
+                                'text-center': item.isAlignedCenter,
+                            }"
                         >
                             {{ item.label }}
                         </div>
