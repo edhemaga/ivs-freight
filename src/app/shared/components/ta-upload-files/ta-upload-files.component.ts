@@ -34,7 +34,7 @@ import { TaUploadFileService } from '@shared/components/ta-upload-files/services
 
 // enums
 import { FilesSizeEnum } from '@shared/components/ta-upload-files/enums/files-size.enum';
-import { eCommonElement, eGeneralActions } from '@shared/enums';
+import { eGeneralActions, eSharedString } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-upload-files',
@@ -71,7 +71,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
     //General
     @Input() set files(value: UploadFile[]) {
         this._files = value;
-        if (this.type === eCommonElement.DETAILS) {
+        if (this.type === eSharedString.DETAILS) {
             this.modalCarousel?.slideToFile(0);
         }
     }

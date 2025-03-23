@@ -2,6 +2,7 @@
 <div class="table-container" #container>
     <div class="custom-table w-full test-margin">
         <!-- Header -->
+
         <div class="d-flex m-b-6 p-x-8" #header style="overflow-x: hidden">
             <div class="d-flex new-table--pinned-left">
                 @for (column of leftPinnedColumns; track column.key) {
@@ -13,6 +14,7 @@
                     ></ng-container>
                 }
             </div>
+
             @for (column of mainColumns; track column.key) {
                 <ng-container
                     *ngTemplateOutlet="
@@ -21,6 +23,7 @@
                     "
                 ></ng-container>
             }
+
             <div class="d-flex new-table--pinned-right">
                 @for (column of rightPinnedColumns; track column.key) {
                     <ng-container

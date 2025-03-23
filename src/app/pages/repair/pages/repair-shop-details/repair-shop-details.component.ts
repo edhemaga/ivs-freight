@@ -40,7 +40,7 @@ import {
 } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import { eCommonElement, eGeneralActions, eSharedString } from '@shared/enums';
+import { eGeneralActions, eSharedString } from '@shared/enums';
 
 // helpers
 import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers';
@@ -472,7 +472,7 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
                             this.getDetailsOptions(this.repairShopObject);
 
                             if (
-                                this.router.url.includes(eCommonElement.DETAILS)
+                                this.router.url.includes(eSharedString.DETAILS)
                             ) {
                                 this.router.navigate([
                                     `/list/repair/${res.id}/details`,
