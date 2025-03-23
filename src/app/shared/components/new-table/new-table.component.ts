@@ -1,33 +1,42 @@
 import { CommonModule } from '@angular/common';
 import {
+    AfterViewInit,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     EventEmitter,
     Input,
+    OnDestroy,
     Output,
     TemplateRef,
     ViewChild,
 } from '@angular/core';
 
-// Modules
+// modules
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// Components
+// services
+import { TableService } from '@shared/components/new-table/services';
+
+// components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// Svg routes
+// svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Pipes
+// pipes
 import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
 
-// Enums
+// constants
+import { TableConstants } from '@shared/components/new-table/utils/constants';
+
+// enums
 import { ePosition } from 'ca-components';
 import { eColor } from '@shared/enums';
 
-// Models
+// models
 import { ITableColumn } from '@shared/models';
 
 @Component({
@@ -41,15 +50,16 @@ import { ITableColumn } from '@shared/models';
         AngularSvgIconModule,
         NgbTooltipModule,
 
-        // Components
+        // components
         TaAppTooltipV2Component,
 
-        // Pipes
+        // pipes
         TableColumnClassPipe,
     ],
 })
-export class NewTableComponent<T> {
+export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
     @ViewChild('header') header!: ElementRef;
+    @ViewChild('tableRow') tableRow!: ElementRef<HTMLDivElement>;
 
     @Input() expandedRows: Set<number> = new Set([]);
     @Input() isTableLocked: boolean;
@@ -63,6 +73,15 @@ export class NewTableComponent<T> {
 
     @Output() onSortingChange$: EventEmitter<T> = new EventEmitter();
 
+    private resizeObserver!: ResizeObserver;
+
+    public tableWidth: number;
+
+    // columns
+    public leftPinnedColumns: ITableColumn[] = [];
+    public mainColumns: ITableColumn[] = [];
+    public rightPinnedColumns: ITableColumn[] = [];
+
     // enums
     public ePosition = ePosition;
     public eColor = eColor;
@@ -70,12 +89,47 @@ export class NewTableComponent<T> {
     // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
-    // columns
-    public leftPinnedColumns: ITableColumn[] = [];
-    public mainColumns: ITableColumn[] = [];
-    public rightPinnedColumns: ITableColumn[] = [];
+    constructor(
+        // ref
+        private cdRef: ChangeDetectorRef,
 
-    constructor() {}
+        // services
+        private tableService: TableService
+    ) {}
+
+    ngAfterViewInit() {
+        this.getTableWidth();
+    }
+
+    private getTableWidth(): void {
+        this.resizeObserver = new ResizeObserver((entries) => {
+            for (let entry of entries) {
+                const rowWidth =
+                    entry.contentRect.width +
+                    TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
+
+                this.tableWidth = rowWidth;
+            }
+
+            this.tableService.setTableWidth(this.tableWidth);
+
+            this.cdRef.detectChanges();
+        });
+
+        this.resizeObserver.observe(this.tableRow.nativeElement);
+    }
+
+    private processColumns(columns: ITableColumn[]): void {
+        this.leftPinnedColumns = columns.filter(
+            (col) => col.pinned === ePosition.LEFT
+        );
+
+        this.rightPinnedColumns = columns.filter(
+            (col) => col.pinned === ePosition.RIGHT
+        );
+
+        this.mainColumns = columns.filter((col) => !col.pinned);
+    }
 
     public onScroll(event: Event): void {
         const target = event.target as HTMLElement;
@@ -92,21 +146,13 @@ export class NewTableComponent<T> {
         column.pinned = null;
     }
 
-    private processColumns(columns: ITableColumn[]): void {
-        this.leftPinnedColumns = columns.filter(
-            (col) => col.pinned === ePosition.LEFT
-        );
-
-        this.rightPinnedColumns = columns.filter(
-            (col) => col.pinned === ePosition.RIGHT
-        );
-
-        this.mainColumns = columns.filter((col) => !col.pinned);
-    }
-
     public setSorting(sort: any): void {
         if (this.isTableLocked) return;
 
         this.onSortingChange$.emit(sort);
+    }
+
+    ngOnDestroy() {
+        this.resizeObserver.disconnect();
     }
 }

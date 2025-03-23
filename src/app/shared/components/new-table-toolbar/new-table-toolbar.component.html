@@ -1,10 +1,12 @@
 <div
     class="new-table--header m-t-4 d-flex align-items-center position-relative z-2"
     [ngClass]="isMarginTopDisabled && 'mt-0'"
+    [ngStyle]="{ width: toolbarWidth + 'px' }"
 >
     <div class="text-size-26 ta-font-black text-color-black mr-12">
         {{ title }}
     </div>
+
     <div class="new-table--toolbar d-flex align-items-center background-white">
         <ng-container *ngTemplateOutlet="leftSide"></ng-container>
         <div class="m-l-auto d-flex align-items-center">
