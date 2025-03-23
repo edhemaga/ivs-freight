@@ -19,7 +19,8 @@ export class FuelServiceHelper {
     public static addFuelTransactionStopToStore(
         store: FuelStore,
         apiData: FuelTransactionResponse | FuelStopResponse,
-        isTransactionAdded?: boolean
+        isTransactionAdded?: boolean,
+        detailsStores?: (FuelDetailsStore & FuelItemStore)[]
     ): void {
         const tableCount = JSON.parse(
             localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
@@ -41,6 +42,8 @@ export class FuelServiceHelper {
                 isTransactionAdded
             )
         );
+
+        this.handleUpdateTransactionDetailsStore(apiData, detailsStores);
     }
 
     public static updateFuelTransactionStopInStore(
@@ -169,6 +172,19 @@ export class FuelServiceHelper {
     ): void {
         const updatingIndex = data.findIndex((item) => item.id === apiData.id);
         data.splice(updatingIndex, 1, apiData);
+    }
+
+    private static handleUpdateTransactionDetailsStore(
+        transaction: FuelTransactionResponse,
+        detailsStores?: (FuelDetailsStore & FuelItemStore)[]
+    ): void {
+        const updateStore = (store: FuelStoresType) =>
+            store.update(transaction?.fuelStopStore?.id, (entity) => ({
+                ...entity,
+                transactionList: [...entity.transactionList, transaction],
+            }));
+
+        detailsStores?.forEach((store) => updateStore(store));
     }
 
     public static handleUpdateDetailsStore(
