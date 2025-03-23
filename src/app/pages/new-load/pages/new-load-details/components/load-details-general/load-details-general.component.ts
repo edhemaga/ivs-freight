@@ -6,7 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Enums
-import { eSharedString } from '@shared/enums';
+import { eSharedString, eColor } from '@shared/enums';
 
 // SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -42,6 +42,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 export class LoadDetailsGeneralComponent {
     public sharedIcons = SharedSvgRoutes;
     public eSharedString = eSharedString;
+    public eColor = eColor;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 }
