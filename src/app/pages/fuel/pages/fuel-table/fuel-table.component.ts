@@ -34,6 +34,7 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 import { FuelService } from '@shared/services/fuel.service';
 import { FuelCardsModalService } from '@pages/fuel/pages/fuel-card-modal/services';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // constants
 import { FuelTableConstants } from '@pages/fuel/pages/fuel-table/utils/constants/fuel-table.constants';
@@ -68,8 +69,8 @@ import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
     eDropdownMenu,
-    eCommonElement,
     TableStringEnum,
+    eCommonElement,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
@@ -105,6 +106,7 @@ export class FuelTableComponent
 {
     public destroy$ = new Subject<void>();
 
+    // enums
     public eDropdownMenu = eDropdownMenu;
     public tableStringEnum = TableStringEnum;
     public eCommonElement = eCommonElement;
@@ -137,10 +139,10 @@ export class FuelTableComponent
         // services
         protected modalService: ModalService,
         protected fuelService: FuelService,
-
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private fuelCardsModalService: FuelCardsModalService,
         private confirmationService: ConfirmationService,
-        private tableService: TruckassistTableService,
         private confirmationActivationService: ConfirmationActivationService,
 
         public mapsService: MapsService,
@@ -692,7 +694,6 @@ export class FuelTableComponent
             truck,
             trailer,
             fuelCard,
-            fuelStopStore,
             transactionDate,
             fuelItems,
             total,
@@ -704,22 +705,27 @@ export class FuelTableComponent
             fuelCardHolderName,
             createdAt,
             updatedAt,
+            fuelStopStore,
         } = data;
-
+        const { address, businessName, phone, fax } = fuelStopStore || {};
         const driverFullName = !!driver
             ? `${driver.firstName} ${driver.lastName}`
             : fuelCardHolderName;
-
         const tableDescriptionDropTotal = total
             ? `$${this.thousandSeparator.transform(total)}`
             : null;
-
         const isIntegratedFuelTransaction =
             fuelTransactionType?.id !== eFuelTransactionType.Manual;
-
         const tableType: string = !!fuelTransactionType
             ? eFuelTransactionType[fuelTransactionType?.id]
             : null;
+        const tableLocation: string = [
+            address?.city,
+            address?.stateShortName,
+            address?.zipCode,
+        ]
+            .filter(Boolean)
+            .join(', ');
 
         if (
             driver &&
@@ -756,21 +762,10 @@ export class FuelTableComponent
             tableTransactionDate: transactionDate
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
                 : null,
-            tableFuelStopName: fuelStopStore?.businessName,
-            phone: fuelStopStore?.phone,
-            fax: fuelStopStore?.fax,
-            tableLocation: fuelStopStore?.address
-                ? fuelStopStore?.address.city +
-                  TableStringEnum.COMA +
-                  (fuelStopStore?.address.stateShortName &&
-                  fuelStopStore?.address.stateShortName !== TableStringEnum.NULL
-                      ? fuelStopStore?.address.stateShortName + null
-                      : null) +
-                  (fuelStopStore?.address.zipCode &&
-                  fuelStopStore?.address.zipCode !== TableStringEnum.NULL
-                      ? fuelStopStore?.address.zipCode
-                      : null)
-                : null,
+            tableFuelStopName: businessName,
+            phone,
+            fax,
+            tableLocation,
             tableAddress: fuelStopStore?.address?.address ?? null,
             tableDescription: fuelItems
                 ? fuelItems.map((item) => {
@@ -1261,6 +1256,8 @@ export class FuelTableComponent
     public handleShowMoreAction(): void {
         this.fetchApiDataPaginated(true);
     }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     private openCreateModalBySelectedTab(): void {
         if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION)

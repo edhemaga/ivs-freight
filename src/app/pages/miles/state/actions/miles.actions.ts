@@ -6,7 +6,7 @@ import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@shared/enums';
+import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
 // Models
 import {
@@ -18,14 +18,9 @@ import { IMilesModel } from '@pages/miles/interface';
 // Interface
 import { IStateFilters } from '@shared/interfaces';
 
-export const getLoadsPayload = createAction(
-    MilesStoreConstants.LOAD_MILES_INITAL,
-    props<{ filter: IStateFilters }>()
-);
-
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
-    props<{ miles: IMilesModel[] }>()
+    props<{ miles: IMilesModel[]; totalResultsCount: number }>()
 );
 
 export const getLoadsPayloadError = createAction(
@@ -34,6 +29,11 @@ export const getLoadsPayloadError = createAction(
 
 export const loadMilesSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
+    props<{ miles: IMilesModel[]; totalResultsCount: number }>()
+);
+
+export const updateMilesList = createAction(
+    MilesStoreConstants.UPDATE_MILES_LIST,
     props<{ miles: IMilesModel[] }>()
 );
 
@@ -71,7 +71,27 @@ export const selectAll = createAction(
     MilesStoreConstants.ACTION_SELECT_ALL_ROWS
 );
 
-export const getTotalMilesDetails = createAction(
-    MilesStoreConstants.ACTION_GET_TOTAL_MILES_DETAILS,
-    props<{ milesDetails: MilesByUnitPaginatedStopsResponse }>()
+export const getInitalUnitDetails = createAction(
+    MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE
+);
+
+export const setUnitDetails = createAction(
+    MilesStoreConstants.ACTION_GET_MILES_DETAILS_SET_PAGE,
+    props<{ details: MilesByUnitPaginatedStopsResponse; isLast: boolean }>()
+);
+
+export const getFollowingUnit = createAction(
+    MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
+    props<{ getFollowingUnitDirection: ArrowActionsStringEnum }>()
+);
+
+export const setFollowingUnitDetails = createAction(
+    MilesStoreConstants.ACTION_SET_FOLLOWING_UNIT,
+    props<{
+        unitResponse: MilesByUnitPaginatedStopsResponse;
+        index: number;
+        isFirst: boolean;
+        isLast: boolean;
+        isLastInCurrentList: boolean;
+    }>()
 );

@@ -5,7 +5,7 @@ import { BehaviorSubject } from 'rxjs';
 @Injectable({
     providedIn: 'root',
 })
-export class RepairShopDetailsService {
+export class DetailsSearchService {
     private closeSearchStatusSubject: BehaviorSubject<number> =
         new BehaviorSubject<number>(null);
 

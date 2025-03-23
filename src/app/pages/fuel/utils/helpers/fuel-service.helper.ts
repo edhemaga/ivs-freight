@@ -4,24 +4,31 @@ import { FuelStopResponse, FuelTransactionResponse } from 'appcoretruckassist';
 // enums
 import { TableStringEnum } from '@shared/enums';
 
+// types
+import { FuelStoresType } from '@pages/fuel/types';
+
 // store
 import {
     FuelState,
     FuelStore,
 } from '@pages/fuel/state/fuel-state/fuel-state.store';
+import { FuelDetailsStore } from '@pages/fuel/state/fuel-details-state/fuel-details.store';
+import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-details-item.store';
 
 export class FuelServiceHelper {
     public static addFuelTransactionStopToStore(
         store: FuelStore,
         apiData: FuelTransactionResponse | FuelStopResponse,
-        isTransactionAdded?: boolean
+        isTransactionAdded?: boolean,
+        detailsStores?: (FuelDetailsStore & FuelItemStore)[]
     ): void {
-        let tableCount = JSON.parse(
+        const tableCount = JSON.parse(
             localStorage.getItem(TableStringEnum.FUEL_TABLE_COUNT)
         );
 
-        if (isTransactionAdded) tableCount.fuelTransactions++;
-        else tableCount.fuelStops++;
+        isTransactionAdded
+            ? tableCount.fuelTransactions++
+            : tableCount.fuelStops++;
 
         localStorage.setItem(
             TableStringEnum.FUEL_TABLE_COUNT,
@@ -35,13 +42,18 @@ export class FuelServiceHelper {
                 isTransactionAdded
             )
         );
+
+        this.handleUpdateTransactionDetailsStore(apiData, detailsStores);
     }
 
     public static updateFuelTransactionStopInStore(
         store: FuelStore,
         apiData: FuelTransactionResponse | FuelStopResponse,
-        isTransactionAdded?: boolean
+        isTransactionAdded?: boolean,
+        detailsStores?: (FuelDetailsStore & FuelItemStore)[]
     ): void {
+        this.handleUpdateDetailsStore(apiData, detailsStores);
+
         store.update((state) =>
             this.updateTransactionStopStateResult(
                 state,
@@ -68,11 +80,11 @@ export class FuelServiceHelper {
             ? fuelStopCount
             : fuelStopCount + 1;
 
-        let _fuelTransactionsData: FuelTransactionResponse[] =
+        const _fuelTransactionsData: FuelTransactionResponse[] =
             isTransactionAdded
                 ? [apiData, ...transactionPagination?.data]
                 : transactionPagination?.data;
-        let _fuelStopsData: FuelStopResponse[] = isTransactionAdded
+        const _fuelStopsData: FuelStopResponse[] = isTransactionAdded
             ? stopPagination?.data
             : [apiData, ...stopPagination?.data];
 
@@ -117,9 +129,9 @@ export class FuelServiceHelper {
         const { pagination: transactionPagination } = fuelTransactions || {};
         const { pagination: stopPagination } = fuelStops || {};
 
-        let _fuelTransactionsData: FuelTransactionResponse[] =
+        const _fuelTransactionsData: FuelTransactionResponse[] =
             transactionPagination?.data;
-        let _fuelStopsData: FuelStopResponse[] = stopPagination?.data;
+        const _fuelStopsData: FuelStopResponse[] = stopPagination?.data;
 
         this.replaceUpdatedItem(
             isTransactionAdded ? _fuelTransactionsData : _fuelStopsData,
@@ -160,5 +172,36 @@ export class FuelServiceHelper {
     ): void {
         const updatingIndex = data.findIndex((item) => item.id === apiData.id);
         data.splice(updatingIndex, 1, apiData);
+    }
+
+    private static handleUpdateTransactionDetailsStore(
+        transaction: FuelTransactionResponse,
+        detailsStores?: (FuelDetailsStore & FuelItemStore)[]
+    ): void {
+        const updateStore = (store: FuelStoresType) =>
+            store.update(transaction?.fuelStopStore?.id, (entity) => ({
+                ...entity,
+                transactionList: [...entity.transactionList, transaction],
+            }));
+
+        detailsStores?.forEach((store) => updateStore(store));
+    }
+
+    public static handleUpdateDetailsStore(
+        fuelStop: FuelStopResponse,
+        detailsStores?: (FuelDetailsStore & FuelItemStore)[]
+    ): void {
+        const { id } = fuelStop;
+
+        const updateStore = (
+            store: FuelStoresType,
+            updateData: FuelStopResponse
+        ) =>
+            store.update(id, (entity) => ({
+                ...entity,
+                ...updateData,
+            }));
+
+        detailsStores?.forEach((store) => updateStore(store, fuelStop));
     }
 }

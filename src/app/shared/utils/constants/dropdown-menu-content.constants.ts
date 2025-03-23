@@ -1,5 +1,5 @@
 // enums
-import { eDropdownMenu } from '@shared/enums';
+import { eDropdownMenu, eDropdownMenuColumns } from '@shared/enums';
 
 // models
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -185,6 +185,47 @@ export class DropdownMenuContentConstants {
             type: eDropdownMenu.EXPORT_BATH_TYPE,
             svgUrl: 'assets/svg/common/ic_document.svg',
             svgClass: eDropdownMenu.ACTIVATE_SVG_CLASS,
+        },
+
+        // toolbar
+        [eDropdownMenuColumns.COLUMNS]: {
+            title: eDropdownMenuColumns.COLUMNS,
+            type: eDropdownMenuColumns.COLUMNS_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/columns-new.svg',
+            svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
+            isSelectMenuTypeActionItem: true,
+        },
+
+        [eDropdownMenuColumns.COLUMNS_BACK]: {
+            title: eDropdownMenuColumns.COLUMNS,
+            type: eDropdownMenuColumns.COLUMNS_TYPE,
+            titleOptionalClass: 'ca-font-extra-bold',
+            svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
+            svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
+            hasBorder: true,
+            isSelectMenuTypeActionItem: true,
+            isColumnDropdown: true,
+        },
+
+        [eDropdownMenuColumns.UNLOCK_TABLE]: {
+            title: eDropdownMenuColumns.UNLOCK_TABLE,
+            type: eDropdownMenuColumns.UNLOCK_TABLE_TYPE,
+            svgUrl: 'assets/svg/common/ic_lock.svg',
+            svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
+        },
+
+        [eDropdownMenuColumns.LOCK_TABLE]: {
+            title: eDropdownMenuColumns.LOCK_TABLE,
+            type: eDropdownMenuColumns.LOCK_TABLE_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/new-unlocked-table.svg',
+            svgClass: eDropdownMenu.ACTIVATE_SVG_CLASS,
+        },
+
+        [eDropdownMenuColumns.RESET_TABLE]: {
+            title: eDropdownMenuColumns.RESET_TABLE,
+            type: eDropdownMenuColumns.RESET_TABLE_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
+            svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
         },
     };
 

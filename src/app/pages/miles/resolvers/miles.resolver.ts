@@ -18,6 +18,7 @@ export class MilesResolver {
 
     resolve(): Observable<MilesByUnitListResponse> {
         const activeList = this.milesStoreService.apiMilesListGet(null, 1);
+
         const states = this.milesStoreService.apiMilesStateFilterGet();
 
         return forkJoin([activeList, states]).pipe(

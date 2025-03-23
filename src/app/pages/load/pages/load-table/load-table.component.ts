@@ -35,6 +35,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { CaSearchMultipleStatesService, IFilterAction } from 'ca-components';
 import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { Store, select } from '@ngrx/store';
@@ -56,6 +57,7 @@ import {
     LoadStatusEnum,
     eDropdownMenu,
     eActiveViewMode,
+    eDropdownMenuColumns,
 } from '@shared/enums/index';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 
@@ -68,13 +70,15 @@ import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpe
 // models
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
 import { LoadListDto, LoadListResponse, SortOrder } from 'appcoretruckassist';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
-import { CardRows } from '@shared/models';
+import { CardRows, TableCardBodyActions } from '@shared/models';
 
 import { IStateFilters } from '@shared/interfaces';
 
 // Helpers
 import { FilterHelper } from '@shared/utils/helpers';
+import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 @Component({
     selector: 'app-load-table',
@@ -107,6 +111,10 @@ export class LoadTableComponent
     // filters
     private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
 
+    private isTableLocked: boolean = true;
+    private isToolbarDropdownMenuColumnsActive: boolean = false;
+    public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
+
     constructor(
         // router
         protected router: Router,
@@ -114,8 +122,8 @@ export class LoadTableComponent
         // services
         protected modalService: ModalService,
         protected loadStoreService: LoadStoreService,
-
-        private tableService: TruckassistTableService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private loadServices: LoadService,
         private dispatchHubService: DispatchHubService,
         private confiramtionService: ConfirmationService,
@@ -166,6 +174,48 @@ export class LoadTableComponent
         );
     }
 
+    private setToolbarDropdownMenuContent(
+        selectedTab: string,
+        isTableLocked: boolean,
+        isColumnsDropdownActive: boolean,
+        loadColumnsList?: IDropdownMenuItem[]
+    ): void {
+        this.toolbarDropdownMenuOptions =
+            LoadTableHelper.getToolbarDropdownMenuContent(
+                selectedTab,
+                isTableLocked,
+                isColumnsDropdownActive,
+                loadColumnsList
+            );
+    }
+
+    private updateToolbarDropdownMenuContentUnlockLockAction(): void {
+        this.isTableLocked = !this.isTableLocked;
+
+        this.setToolbarDropdownMenuContent(
+            this.selectedTab,
+            this.isTableLocked,
+            this.isToolbarDropdownMenuColumnsActive
+        );
+    }
+
+    private updateToolbarDropdownMenuContentColumnsAction(): void {
+        this.isToolbarDropdownMenuColumnsActive =
+            !this.isToolbarDropdownMenuColumnsActive;
+
+        const loadColumns =
+            DropdownMenuColumnsActionsHelper.getDropdownMenuColumnsContent(
+                this.selectedTab
+            );
+
+        this.setToolbarDropdownMenuContent(
+            this.selectedTab,
+            this.isTableLocked,
+            this.isToolbarDropdownMenuColumnsActive,
+            loadColumns
+        );
+    }
+
     public onToolBarAction(event: TableToolbarActions): void {
         const { action, mode } = event || {};
         if (action === TableStringEnum.OPEN_MODAL) {
@@ -191,6 +241,11 @@ export class LoadTableComponent
             );
 
             this.updateCardView();
+            this.setToolbarDropdownMenuContent(
+                selectedTab,
+                this.isTableLocked,
+                this.isToolbarDropdownMenuColumnsActive
+            );
         } else if (action === TableStringEnum.VIEW_MODE) {
             this.loadStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
@@ -656,11 +711,54 @@ export class LoadTableComponent
         this.loadStoreService.dispatchGetList(this.filter, selectedTab, true);
     }
 
+    public updateToolbarDropdownMenuContent(action?: string): void {
+        if (!action) {
+            this.isToolbarDropdownMenuColumnsActive = false;
+
+            this.setToolbarDropdownMenuContent(
+                this.selectedTab,
+                this.isTableLocked,
+                this.isToolbarDropdownMenuColumnsActive
+            );
+
+            return;
+        }
+
+        switch (action) {
+            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
+                this.updateToolbarDropdownMenuContentUnlockLockAction();
+
+                break;
+            case eDropdownMenuColumns.COLUMNS_TYPE:
+                this.updateToolbarDropdownMenuContentColumnsAction();
+
+                break;
+            default:
+                break;
+        }
+    }
+
+    public handleToolbarDropdownMenuActions<T>(
+        action: TableCardBodyActions<T>
+    ) {
+        const mappedAction = {
+            ...action,
+            subType: DropdownMenuColumnsActionsHelper.getTableType(
+                this.selectedTab
+            ),
+        };
+
+        this.handleDropdownMenuActions(mappedAction, eDropdownMenu.LOAD);
+    }
+
     public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
 
         this.tableService.sendActionAnimation({});
+        this.tableService.sendUnlockTable({});
+
         this.resizeObserver.disconnect();
     }
 }

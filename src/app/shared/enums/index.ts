@@ -10,6 +10,7 @@ export * from './trailer-name-string.enum';
 export * from './truck-name-string.enum';
 export * from './truck-trailer-icon.enum';
 export * from './dropdown-menu-content-string.enum';
+export * from './dropdown-menu-columns-content-string.enum';
 export * from './toolbar-variant.enum';
 export * from './modal-button-text.enum';
 export * from './common-element.enum';
@@ -34,3 +35,6 @@ export * from './chart/chart-tab-string.enum';
 
 // Plaid
 export * from './plaid/plaid-event.enum';
+
+// Colors
+export * from './color.enum';

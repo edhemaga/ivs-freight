@@ -1,12 +1,12 @@
-@if (
+@let store =
     {
         columns: milesStoreService.columns$ | async,
         miles: milesStoreService.miles$ | async,
-        areAllItemsSelected:
-            milesStoreService.areAllItemsSelectedSelector$ | async,
+        hasAllItemsSelected:
+            milesStoreService.hasAllItemsSelectedSelector$ | async,
     };
-    as store
-) {
+
+@if (store) {
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
@@ -29,21 +29,22 @@
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox
-                [isChecked]="store.areAllItemsSelected"
+                name="miles-row-all"
+                [isChecked]="store.hasAllItemsSelected"
                 [isRegularCheckbox]="false"
                 (columnCheckAction)="selectAll()"
-                name="miles-row-all"
             ></app-ca-checkbox>
         </ng-template>
+
         <ng-template #loadSelectTemplate let-data="data">
             @let name = 'miles-row' + data.id;
 
             <app-ca-checkbox
-                [isChecked]="data.selected"
+                [isChecked]="data.isSelected"
                 [isRegularCheckbox]="false"
-                (columnCheckAction)="selectRow(data)"
                 [itemIndex]="data.id"
                 [name]="name"
+                (columnCheckAction)="selectRow(data)"
             ></app-ca-checkbox>
         </ng-template>
 
@@ -63,6 +64,7 @@
         <ng-template #percentTemplate let-data="data" let-key="key">
             <p class="text-size-14 text-color-black-2 ta-font-regular">
                 {{ data[key]?.count }}
+
                 <span class="text-color-muted text-size-11 ta-font-semi-bold">
                     {{ data[key]?.percent }}%
                 </span>

@@ -61,15 +61,20 @@ export const tableColumnsSelector = createSelector(
     }
 );
 
-export const areAllItemsSelectedSelector = createSelector(
+export const hasAllItemsSelectedSelector = createSelector(
     selectMilesState,
     (state) => {
-        const { areAllItemsSelected } = state || {};
-        return areAllItemsSelected;
+        const { hasAllItemsSelected } = state || {};
+        return hasAllItemsSelected;
     }
 );
 
-export const totalMilesSelector = createSelector(selectMilesState, (state) => {
-    const { milesDetails } = state || {};
-    return milesDetails;
+export const detailsSelector = createSelector(selectMilesState, (state) => {
+    const { details } = state || {};
+    return details;
 });
+
+export const unitsPaginationSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.unitsPagination
+);

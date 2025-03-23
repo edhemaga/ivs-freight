@@ -14,15 +14,29 @@ import { FuelDetailsQuery } from '@pages/fuel/state/fuel-details-state/fuel-deta
 // services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { FuelService } from '@shared/services';
+import { DetailsSearchService, FuelService } from '@shared/services';
 import { ModalService } from '@shared/services/modal.service';
+import { CaSearchMultipleStatesService } from 'ca-components';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 
 // components
 import { FuelStopDetailsItemComponent } from '@pages/fuel/pages/fuel-stop-details/components/fuel-stop-details-item/fuel-stop-details-item.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
+import { FuelPurchaseModalComponent } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/fuel-purchase-modal.component';
 
 // enums
-import { eDropdownMenu, eCommonElement, eGeneralActions } from '@shared/enums';
+import {
+    eDropdownMenu,
+    eGeneralActions,
+    TableStringEnum,
+    eSharedString,
+} from '@shared/enums';
+import {
+    eFuelDetailsPartIndex,
+    eFuelStopDetails,
+} from '@pages/fuel/pages/fuel-stop-details/enums';
 
 // helpers
 import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils/helpers';
@@ -30,6 +44,10 @@ import { FuelStopDetailsHelper } from '@pages/fuel/pages/fuel-stop-details/utils
 // models
 import { DetailsConfig, DetailsDropdownOptions } from '@shared/models';
 import { ExtendedFuelStopResponse } from '@pages/fuel/pages/fuel-stop-details/models';
+import {
+    FuelledVehicleResponse,
+    FuelTransactionResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-fuel-stop-details',
@@ -77,9 +95,14 @@ export class FuelStopDetailsComponent
         // services
         protected fuelService: FuelService,
         protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
         private detailsPageService: DetailsPageService,
         private confirmationService: ConfirmationService,
+        private confirmationActivationService: ConfirmationActivationService,
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private detailsSearchService: DetailsSearchService,
 
         // ref
         private cdRef: ChangeDetectorRef,
@@ -96,6 +119,10 @@ export class FuelStopDetailsComponent
 
         this.confirmationSubscribe();
 
+        this.confirmationActivationSubscribe();
+
+        this.searchSubscribe();
+
         this.handleRepairShopIdRouteChange();
     }
 
@@ -107,13 +134,49 @@ export class FuelStopDetailsComponent
                     const { id, type } = res;
 
                     if (type === eGeneralActions.DELETE) {
-                        if (false) {
-                            // delete fuel stop
-                        } else {
-                            this.deleteFuelTransaction(id);
-                        }
+                        res?.template === eFuelStopDetails.FUEL_STOP
+                            ? this.deleteFuelStop(id)
+                            : this.deleteFuelTransaction(id);
                     }
                 },
+            });
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (
+                    res?.subTypeStatus === eSharedString.BUSINESS &&
+                    [eGeneralActions.OPEN, eGeneralActions.CLOSE].includes(
+                        res?.type as eGeneralActions
+                    )
+                )
+                    this.handleOpenCloseFuelStop(res?.id);
+            });
+    }
+
+    private searchSubscribe(): void {
+        this.caSearchMultipleStatesService.currentSearchTableData
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res) {
+                    const { searchType } = res;
+
+                    searchType === eFuelStopDetails.TRANSACTION
+                        ? this.handleTransactionListSearch(res)
+                        : this.handleFuelledVehicleListSearch(res);
+                }
+            });
+
+        // close search subscribe
+        this.detailsSearchService.getCloseSearchStatus$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((detailsPartIndex) => {
+                this.searchConfig = this.searchConfig.map(
+                    (searchItem, index) =>
+                        index !== detailsPartIndex && searchItem
+                );
             });
     }
 
@@ -150,11 +213,97 @@ export class FuelStopDetailsComponent
             FuelStopDetailsHelper.getDetailsDropdownOptions(fuelStop);
     }
 
+    private handleOpenCloseFuelStop(id: number): void {
+        this.fuelService
+            .updateFuelStopStatus(id)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
+
+    public deleteFuelStop(id: number): void {
+        this.fuelService
+            .deleteFuelStopList([id])
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() =>
+                this.router.navigate([eFuelStopDetails.FUEL_LIST_ROUTE])
+            );
+    }
+
     private deleteFuelTransaction(ids: number): void {
         this.fuelService
             .deleteFuelTransactionsList([ids], this.fuelStopObject?.id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
+    }
+
+    private handleTransactionListSearch<T>(res: T): void {
+        // w8 for back
+        /*  this.backFilterQuery.pageIndex = 1;
+    
+            const searchEvent = MethodsGlobalHelper.tableSearch(
+                res,
+                this.backFilterQuery
+            );
+    
+            if (searchEvent) {
+                searchEvent.action === TableStringEnum.API
+                    ? this.fuelBackFilter(this.backFilterQuery)
+                    : this.handleTransactionListSearchData(
+                          this.fuelStopObject.transactionList
+                      );
+            } */
+    }
+
+    private handleFuelledVehicleListSearch<T>(res: T): void {
+        // w8 for back
+        /*  this.backFuelledVehiclesFilterQuery.pageIndex = 1;
+
+        const searchEvent = MethodsGlobalHelper.tableSearch(
+            res,
+            this.backFuelledVehiclesFilterQuery
+        );
+
+        if (searchEvent) {
+            searchEvent.action === TableStringEnum.API
+                ? this.fuelledVehiclesBackFilter(
+                      this.backFuelledVehiclesFilterQuery
+                  )
+                : this.handleFuelledVehicleListSearchData(
+                      this.fuelStopObject.fuelledVehicleList
+                  );
+        } */
+    }
+
+    private handleTransactionListSearchData(
+        transactionList: FuelTransactionResponse[]
+    ): void {
+        this.fuelStopDetailsConfig = this.fuelStopDetailsConfig.map(
+            (item, index) =>
+                index === eFuelDetailsPartIndex.TRANSACTION_INDEX
+                    ? {
+                          ...item,
+                          data: { ...item.data, transactionList },
+                      }
+                    : item
+        );
+
+        this.cdRef.detectChanges();
+    }
+
+    private handleFuelledVehicleListSearchData(
+        fuelledVehicleList: FuelledVehicleResponse[]
+    ): void {
+        this.fuelStopDetailsConfig = this.fuelStopDetailsConfig.map(
+            (item, index) =>
+                index === eFuelDetailsPartIndex.VEHICLE_INDEX
+                    ? {
+                          ...item,
+                          data: { ...item.data, fuelledVehicleList },
+                      }
+                    : item
+        );
+
+        this.cdRef.detectChanges();
     }
 
     private handleRepairShopIdRouteChange(): void {
@@ -172,7 +321,7 @@ export class FuelStopDetailsComponent
                             this.getDetailsOptions(this.fuelStopObject);
 
                             if (
-                                this.router.url.includes(eCommonElement.DETAILS)
+                                this.router.url.includes(eSharedString.DETAILS)
                             ) {
                                 this.router.navigate([
                                     `/list/fuel/${res.id}/details`,
@@ -185,7 +334,43 @@ export class FuelStopDetailsComponent
             });
     }
 
+    public onModalAction(action: string): void {
+        if (action === eFuelStopDetails.TRANSACTION)
+            this.modalService.openModal(FuelPurchaseModalComponent, {
+                size: TableStringEnum.SMALL,
+            });
+    }
+
+    public onFuelStopSortActions(
+        event: { direction: string },
+        type: string
+    ): void {
+        if (type === eFuelStopDetails.TRANSACTION) {
+            // w8 for back
+            /*  this.backFilterQuery.sort = event.direction;
+    
+                this.repairBackFilter(this.backFilterQuery); */
+        } else {
+            /*   this.backRepairedVehiclesFilterQuery.repairShopId =
+                    this.repairShopObject.id;
+    
+                this.backRepairedVehiclesFilterQuery.sort = event.direction;
+    
+                this.repairedVehiclesBackFilter(
+                    this.backRepairedVehiclesFilterQuery
+                ); */
+        }
+    }
+
+    public onSearchBtnClick(isSearch: boolean, type: string): void {
+        const index = Number(type !== eFuelStopDetails.TRANSACTION);
+
+        this.searchConfig[index] = isSearch;
+    }
+
     public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(action?: string): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

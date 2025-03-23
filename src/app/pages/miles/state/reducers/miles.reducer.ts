@@ -17,6 +17,9 @@ import {
 // Models
 import { IMilesState } from '@pages/miles/interface';
 
+// functions
+import * as Functions from '@pages/miles/utils/functions/miles-reducer.functions';
+
 export const initialState: IMilesState = {
     items: [],
     loading: false,
@@ -26,117 +29,98 @@ export const initialState: IMilesState = {
     filters: {},
     states: [],
     selectedRows: 0,
-    areAllItemsSelected: false,
+    hasAllItemsSelected: false,
 
     // Table
     columns: MilesTableColumns,
-    milesDetails: {},
+
+    // Unit list
+    details: {},
+    unitsPagination: {
+        activeUnitIndex: 0,
+        currentPage: 1,
+        totalPage: 0,
+        isFirstUnit: true,
+        isLastUnit: true,
+        isLastInCurrentList: false,
+    },
 };
 
 export const milesReducer = createReducer(
     initialState,
-    on(MilesAction.getLoadsPayload, (state) => ({
-        ...state,
-        loading: true,
-    })),
-    on(MilesAction.getLoadsPayloadSuccess, (state, { miles }) => {
-        return {
-            ...state,
-            items: miles,
-            loading: false,
-        };
-    }),
+    // #region Get miles
+    on(
+        MilesAction.getLoadsPayloadSuccess,
+        (state, { miles, totalResultsCount }) =>
+            Functions.updateMilesData(state, miles, totalResultsCount)
+    ),
     on(MilesAction.getLoadsPayloadError, (state) => ({
         ...state,
         loading: false,
     })),
-    on(MilesAction.loadMilesSuccess, (state, { miles }) => ({
-        ...state,
-        items: miles,
-    })),
+    on(MilesAction.loadMilesSuccess, (state, { miles, totalResultsCount }) =>
+        Functions.updateMilesData(state, miles, totalResultsCount)
+    ),
+
+    on(MilesAction.updateMilesList, (state, { miles }) =>
+        Functions.updateMilesListData(state, miles)
+    ),
+    // #endregion
 
     // #region Table tab
-    on(MilesAction.milesTabChange, (state, { selectedTab }) => ({
-        ...state,
-        selectedTab: selectedTab,
-        selectedRows: 0,
-        areAllItemsSelected: false,
-    })),
+    on(MilesAction.milesTabChange, (state, { selectedTab }) =>
+        Functions.updateTabSelection(state, selectedTab)
+    ),
 
     on(
         MilesAction.updateTruckCounts,
-        (state, { activeTruckCount, inactiveTruckCount }) => ({
-            ...state,
-            tableViewData: [
-                { ...state.tableViewData[0], length: activeTruckCount },
-                { ...state.tableViewData[1], length: inactiveTruckCount },
-            ],
-        })
+        (state, { activeTruckCount, inactiveTruckCount }) =>
+            Functions.updateTruckCounts(
+                state,
+                activeTruckCount,
+                inactiveTruckCount
+            )
     ),
 
-    on(MilesAction.activeViewMode, (state, { activeViewMode }) => ({
-        ...state,
-        activeViewMode,
-        selectedRows: 0,
-        areAllItemsSelected: false,
-    })),
+    on(MilesAction.activeViewMode, (state, { activeViewMode }) =>
+        Functions.changeViewMode(state, activeViewMode)
+    ),
     // #endregion
 
     // #region Table filters
-    on(MilesAction.changeFilters, (state, { filters }) => ({
-        ...state,
-        filters,
-        selectedRows: 0,
-        areAllItemsSelected: false,
-    })),
-    on(MilesAction.setStates, (state, { states }) => ({
-        ...state,
-        states,
-    })),
+    on(MilesAction.changeFilters, (state, { filters }) =>
+        Functions.updateFilters(state, filters)
+    ),
+    on(MilesAction.setStates, (state, { states }) => ({ ...state, states })),
     // #endregion
 
     // #region Checkbox selection
-    on(MilesAction.selectOneRow, (state, { mile }) => {
-        // Update select one only
-        const updatedItems = state.items.map((item) =>
-            item.id === mile.id ? { ...item, selected: !item.selected } : item
-        );
+    on(MilesAction.selectOneRow, (state, { mile }) =>
+        Functions.toggleRowSelection(state, mile)
+    ),
 
-        // new selected count
-        const newSelectedCount = updatedItems.filter(
-            (item) => item.selected
-        ).length;
-
-        return {
-            ...state,
-            items: updatedItems,
-            selectedRows: newSelectedCount,
-        };
-    }),
-
-    on(MilesAction.selectAll, (state) => {
-        const areAllItemsSelected = !state.areAllItemsSelected;
-
-        const updatedItems = state.items.map((item) => {
-            return {
-                ...item,
-                selected: areAllItemsSelected,
-            };
-        });
-
-        return {
-            ...state,
-            items: updatedItems,
-            selectedRows: areAllItemsSelected ? updatedItems.length : 0,
-            areAllItemsSelected,
-        };
-    }),
+    on(MilesAction.selectAll, (state) => Functions.toggleSelectAll(state)),
     // #endregion
 
-    on(MilesAction.getTotalMilesDetails, (state, { milesDetails }) => {
-        return {
-            ...state,
-            milesDetails,
-        };
-    })
+    // #region Unit detail
+    on(MilesAction.setUnitDetails, (state, { details, isLast }) =>
+        Functions.setUnitDetails(state, details, isLast)
+    ),
+
+    on(
+        MilesAction.setFollowingUnitDetails,
+        (
+            state,
+            { unitResponse, index, isFirst, isLast, isLastInCurrentList }
+        ) =>
+            Functions.setFollowingUnitDetails(
+                state,
+                unitResponse,
+                index,
+                isFirst,
+                isLast,
+                isLastInCurrentList
+            )
+    )
+    // #endregion
 );
