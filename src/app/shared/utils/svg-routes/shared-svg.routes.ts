@@ -30,4 +30,6 @@ export class SharedSvgRoutes {
     static ADDED_DATE: string = 'assets/svg/common/date.svg';
     static DATE_EDITED: string = 'assets/svg/common/ic_date_checked.svg';
     static USER_CIRCLE_ICON: string = 'assets/svg/common/ic_broker-user.svg';
+    static HALF_TIME_ICON: string = 'assets/svg/common/ic_half_time.svg';
+    static TOP_RIGHT_ARROW: string = 'assets/svg/common/arrow_top_right.svg';
 }
