@@ -4,7 +4,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
 
 // Enums
-import { eSharedString } from '@shared/enums';
+import { eColors, eSharedString } from '@shared/enums';
 
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -44,6 +44,10 @@ import { IUnitInfoBoxConfig } from '@shared/components/ca-unit-info-box/interfac
 export class CaUnitInfoBoxComponent {
     @Input() unitInfoBoxConfig!: IUnitInfoBoxConfig;
 
+    public noItemText: string;
+    public sharedIcons = SharedSvgRoutes;
+    public eColors = eColors;
+    private unitConfig = UnitConstants.configuration;
     private _type!: eSharedString;
 
     set type(value: eSharedString) {
@@ -54,11 +58,6 @@ export class CaUnitInfoBoxComponent {
     get type(): eSharedString {
         return this._type;
     }
-
-    public noItemText: string;
-    public sharedIcons = SharedSvgRoutes;
-
-    private unitConfig = UnitConstants.configuration;
 
     constructor(private router: Router) {}
 
