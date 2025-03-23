@@ -27,25 +27,34 @@ import { CaInputComponent } from 'ca-components';
 // Enums
 import { ArrowActionsStringEnum } from '@shared/enums';
 
+// Const
+import { MilesStopsTable } from '@pages/miles/utils/constants';
+
 @Component({
     selector: 'app-miles-map-unit-list',
     templateUrl: './miles-map-unit-list.component.html',
     styleUrls: ['./miles-map-unit-list.component.scss'],
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         ReactiveFormsModule,
         ScrollingModule,
-        ThousandSeparatorPipe,
-        MilesIconPipe,
+
+        // Components
         SvgIconComponent,
         CaInputComponent,
+
+        // Pipes
+        ThousandSeparatorPipe,
+        MilesIconPipe,
     ],
 })
 export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
 
     public sharedSvgRoutes = SharedSvgRoutes;
+    public stopsConfig = MilesStopsTable.HEADER_CONFIG;
 
     public isStopListExpanded: boolean = false;
     public isLoading: boolean = false;
@@ -101,6 +110,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         );
     }
     private manageSubscriptions(): void {
+        // <!-- TODO:  Inside virtual sroll ticket -->
         // this.subscriptions.add(
         //     forkJoin([
         //         this.milesStoreService.isMilesDetailsLoadingSelector$,

@@ -29,7 +29,7 @@ import { LoadItemStore } from '@pages/load/state_old/load-details-state/load-det
 // enums
 import { LoadDetailsStringEnum } from '@pages/load/pages/load-details/enums/load-details-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { eCommonElement } from '@shared/enums';
+import { eSharedString } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // helpers
@@ -277,7 +277,7 @@ export class LoadDetailsComponent implements OnInit, OnDestroy {
                             this.getDetailsConfig(load);
 
                             if (
-                                this.router.url.includes(eCommonElement.DETAILS)
+                                this.router.url.includes(eSharedString.DETAILS)
                             ) {
                                 this.router.navigate([
                                     `/list/load/${load.id}/details`,

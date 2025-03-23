@@ -1,6 +1,4 @@
 import { CommonModule } from '@angular/common';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
     ChangeDetectionStrategy,
     Component,
@@ -12,7 +10,9 @@ import {
     ViewChild,
 } from '@angular/core';
 
-import { ITableColumn } from '@shared/models';
+// Modules
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -20,9 +20,21 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
+// Pipes
+import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
+
+// Enums
+import { ePosition } from 'ca-components';
+import { eColor } from '@shared/enums';
+
+// Models
+import { ITableColumn } from '@shared/models';
+
 @Component({
     selector: 'app-new-table',
     changeDetection: ChangeDetectionStrategy.OnPush,
+    templateUrl: './new-table.component.html',
+    styleUrl: './new-table.component.scss',
     standalone: true,
     imports: [
         CommonModule,
@@ -31,29 +43,39 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
         // Components
         TaAppTooltipV2Component,
+
+        // Pipes
+        TableColumnClassPipe,
     ],
-    templateUrl: './new-table.component.html',
-    styleUrl: './new-table.component.scss',
 })
-export class NewTableComponent {
+export class NewTableComponent<T> {
     @ViewChild('header') header!: ElementRef;
+
     @Input() expandedRows: Set<number> = new Set([]);
     @Input() isTableLocked: boolean;
-    @Input() rows: any[] = [];
-    @Input() templates: { [key: string]: TemplateRef<any> } = {};
-    @Input() headerTemplates: { [key: string]: TemplateRef<any> } = {};
+    @Input() rows: T[] = [];
+    @Input() templates: { [key: string]: TemplateRef<T> } = {};
+    @Input() headerTemplates: { [key: string]: TemplateRef<T> } = {};
 
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
 
-    @Output() onSortingChange$: EventEmitter<any> = new EventEmitter();
+    @Output() onSortingChange$: EventEmitter<T> = new EventEmitter();
 
+    // enums
+    public ePosition = ePosition;
+    public eColor = eColor;
+
+    // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
+    // columns
     public leftPinnedColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
+
+    constructor() {}
 
     public onScroll(event: Event): void {
         const target = event.target as HTMLElement;
@@ -66,24 +88,25 @@ export class NewTableComponent {
         return this.expandedRows?.has(rowId);
     }
 
-    public trackTableRow(item: any) {
-        return item.id;
-    }
-
     public pinColumn(column: ITableColumn): void {
         column.pinned = null;
     }
 
     private processColumns(columns: ITableColumn[]): void {
-        this.leftPinnedColumns = columns.filter((col) => col.pinned === 'left');
-        this.rightPinnedColumns = columns.filter(
-            (col) => col.pinned === 'right'
+        this.leftPinnedColumns = columns.filter(
+            (col) => col.pinned === ePosition.LEFT
         );
+
+        this.rightPinnedColumns = columns.filter(
+            (col) => col.pinned === ePosition.RIGHT
+        );
+
         this.mainColumns = columns.filter((col) => !col.pinned);
     }
 
     public setSorting(sort: any): void {
         if (this.isTableLocked) return;
+
         this.onSortingChange$.emit(sort);
     }
 }

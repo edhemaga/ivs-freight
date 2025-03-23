@@ -1,9 +1,7 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, of } from 'rxjs';
-
-// NgRx Imports
+import { combineLatest, Observable, of } from 'rxjs';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
-import { Store } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import {
     catchError,
     map,
@@ -11,6 +9,7 @@ import {
     take,
     switchMap,
     startWith,
+    mergeMap,
 } from 'rxjs/operators';
 
 // Actions
@@ -19,8 +18,7 @@ import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 // Services
 import { MilesService } from 'appcoretruckassist';
 
-// Enums and Selectors
-import { eMileTabs } from '@pages/miles/enums';
+// Selectors & Helpers
 import {
     activeViewModeSelector,
     filterSelector,
@@ -29,9 +27,15 @@ import {
     unitsPaginationSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
-// Utils
+// Helpers
 import { MilesHelper } from '@pages/miles/utils/helpers';
-import { eActiveViewMode } from '@shared/enums';
+
+// Enums
+import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
+import { eMileTabs } from '@pages/miles/enums';
+
+// Inteface
+import { IMilesModel } from '@pages/miles/interface';
 
 @Injectable()
 export class MilesEffects {
@@ -41,26 +45,30 @@ export class MilesEffects {
         private store: Store
     ) {}
 
-    private fetchMilesData(fetchInitialUnitDetails: boolean = false) {
+    private fetchMilesData(fetchInitialUnitDetails = false): Observable<
+        | Action<string>
+        | ({
+              miles: IMilesModel[];
+              totalResultsCount: number;
+          } & Action<string>)
+    > {
         return combineLatest([
             this.store.select(selectSelectedTab),
             this.store.select(filterSelector),
         ]).pipe(
             take(1),
             switchMap(([selectedTab, filters]) => {
-                const { dateFrom, dateTo, revenueFrom, revenueTo, states } =
-                    filters;
-                const tabValue = selectedTab === eMileTabs.ACTIVE ? 1 : 0;
+                const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
 
                 return this.milesService
                     .apiMilesListGet(
                         null,
                         tabValue,
-                        dateFrom,
-                        dateTo,
-                        states,
-                        revenueFrom,
-                        revenueTo
+                        filters.dateFrom,
+                        filters.dateTo,
+                        filters.states,
+                        filters.revenueFrom,
+                        filters.revenueTo
                     )
                     .pipe(
                         map((response) => {
@@ -69,7 +77,11 @@ export class MilesEffects {
                             );
                             return {
                                 miles,
-                                action: MilesAction.loadMilesSuccess({ miles }),
+                                action: MilesAction.loadMilesSuccess({
+                                    miles,
+                                    totalResultsCount:
+                                        response.pagination.count,
+                                }),
                             };
                         }),
                         catchError(() =>
@@ -90,30 +102,20 @@ export class MilesEffects {
         );
     }
 
-    private fetchInitialUnitDetails(milesItems: any[]) {
-        return of(milesItems).pipe(
-            take(1),
-            switchMap((milesItems) => {
-                // Take first item from list and get unit details for that id
-                const firstItemId =
-                    milesItems.length > 0 ? milesItems[0].truckId : null;
+    private fetchInitialUnitDetails(
+        milesItems: IMilesModel[]
+    ): Observable<Action<string>> {
+        const firstItemId = milesItems?.[0]?.truckId;
+        if (!firstItemId) return of(MilesAction.getLoadsPayloadError());
 
-                if (!firstItemId) {
-                    return of(MilesAction.getLoadsPayloadError());
-                }
-
-                return this.milesService
-                    .apiMilesUnitGet(null, null, firstItemId)
-                    .pipe(
-                        map((unitResponse) =>
-                            MilesAction.setUnitDetails({
-                                details: unitResponse,
-                                isLast: milesItems.length === 1,
-                            })
-                        ),
-                        catchError(() => of(MilesAction.getLoadsPayloadError()))
-                    );
-            })
+        return this.milesService.apiMilesUnitGet(null, null, firstItemId).pipe(
+            map((unitResponse) =>
+                MilesAction.setUnitDetails({
+                    details: unitResponse,
+                    isLast: milesItems.length === 1,
+                })
+            ),
+            catchError(() => of(MilesAction.getLoadsPayloadError()))
         );
     }
 
@@ -124,7 +126,6 @@ export class MilesEffects {
                 this.store.select(activeViewModeSelector).pipe(
                     take(1),
                     switchMap((activeViewMode) =>
-                        // If we are on map view we need to get units again since list is changed
                         this.fetchMilesData(
                             activeViewMode ===
                                 eActiveViewMode[eActiveViewMode.Map]
@@ -135,8 +136,7 @@ export class MilesEffects {
         )
     );
 
-    // This is only for getting unit first time when user comes to map
-    public loadInitialUnitDetails = createEffect(() =>
+    public loadInitialUnitDetails$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.getInitalUnitDetails),
             exhaustMap(() =>
@@ -150,27 +150,40 @@ export class MilesEffects {
         )
     );
 
-    // When the user navigates back and forth between units through the list, we need to fetch a new list to update the current items and refresh pagination.
-
-    public getFollowingUnitDetails = createEffect(() =>
+    public getFollowingUnitDetails$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.getFollowingUnit),
-            exhaustMap((action) =>
+            exhaustMap(({ getFollowingUnitDirection }) =>
                 combineLatest([
                     this.store.select(selectMilesItems),
                     this.store.select(unitsPaginationSelector),
                 ]).pipe(
                     take(1),
                     switchMap(([milesItems, unitsPagination]) => {
-                        const { getFollowingUnitDirection } = action;
-                        // We should first check if user is on last page
-
-                        const { index, isFirst, isLast, truckId } =
-                            MilesHelper.findAdjacentId(
-                                milesItems,
-                                unitsPagination.activeUnitIndex,
-                                getFollowingUnitDirection
+                        // User reached last item in miles list, fetch new list
+                        if (
+                            unitsPagination.isLastInCurrentList &&
+                            getFollowingUnitDirection ===
+                                ArrowActionsStringEnum.NEXT
+                        ) {
+                            return this.loadMoreMiles(
+                                unitsPagination.currentPage + 1,
+                                milesItems.length
                             );
+                        }
+
+                        const {
+                            index,
+                            isFirst,
+                            isLast,
+                            truckId,
+                            isLastInCurrentList,
+                        } = MilesHelper.findAdjacentId(
+                            milesItems,
+                            unitsPagination.activeUnitIndex,
+                            getFollowingUnitDirection,
+                            unitsPagination.totalResultsCount
+                        );
 
                         return this.milesService
                             .apiMilesUnitGet(null, null, truckId)
@@ -181,6 +194,7 @@ export class MilesEffects {
                                         index,
                                         isFirst,
                                         isLast,
+                                        isLastInCurrentList,
                                     })
                                 ),
                                 catchError(() =>
@@ -192,4 +206,54 @@ export class MilesEffects {
             )
         )
     );
+
+    private loadMoreMiles(page: number, currentLength: number) {
+        return combineLatest([
+            this.store.select(selectSelectedTab),
+            this.store.select(filterSelector),
+        ]).pipe(
+            take(1),
+            switchMap(([selectedTab, filters]) => {
+                const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
+
+                return this.milesService
+                    .apiMilesListGet(
+                        null,
+                        tabValue,
+                        filters.dateFrom,
+                        filters.dateTo,
+                        filters.states,
+                        filters.revenueFrom,
+                        filters.revenueTo,
+                        page
+                    )
+                    .pipe(
+                        switchMap((response) => {
+                            const miles = MilesHelper.milesMapper(
+                                response.pagination.data
+                            );
+                            const newTruckId = miles[0]?.truckId;
+                            const hasOnlyOneResult = miles.length === 1;
+
+                            return this.milesService
+                                .apiMilesUnitGet(null, null, newTruckId)
+                                .pipe(
+                                    mergeMap((unitResponse) => [
+                                        MilesAction.updateMilesList({ miles }),
+                                        MilesAction.setFollowingUnitDetails({
+                                            unitResponse,
+                                            index: currentLength,
+                                            isFirst: true,
+                                            isLast: hasOnlyOneResult,
+                                            isLastInCurrentList:
+                                                hasOnlyOneResult,
+                                        }),
+                                    ])
+                                );
+                        }),
+                        catchError(() => of(MilesAction.getLoadsPayloadError()))
+                    );
+            })
+        );
+    }
 }

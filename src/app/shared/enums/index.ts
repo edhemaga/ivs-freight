@@ -35,3 +35,6 @@ export * from './chart/chart-tab-string.enum';
 
 // Plaid
 export * from './plaid/plaid-event.enum';
+
+// Colors
+export * from './color.enum';

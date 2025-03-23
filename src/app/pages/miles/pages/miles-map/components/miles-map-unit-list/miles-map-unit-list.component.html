@@ -9,6 +9,7 @@
             class="background-white br-3 p-x-6 mb-2"
             [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
         >
+            <!-- TODO:  Uroš will replace all of this with component once it is done -->
             <div
                 class="h-42 d-flex align-items-center p-l-8 justify-content-between"
             >
@@ -66,6 +67,7 @@
             class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
             [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
         >
+            <!-- TODO:  This is waiting for backend, no config yet -->
             <form [formGroup]="searchForm">
                 <app-ca-input
                     formControlName="search"
@@ -87,40 +89,24 @@
                         : 'stops-container-small'
                 "
             >
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-center"
-                >
-                    #
-                </div>
-                <div class="text-color-muted text-size-11 ta-font-bold">
-                    STOP
-                </div>
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-right"
-                >
-                    LEG
-                </div>
-                @if (isStopListExpanded) {
-                    <div
-                        class="text-color-muted text-size-11 ta-font-bold text-right"
-                    >
-                        LOADED
-                    </div>
-                    <div
-                        class="text-color-muted text-size-11 ta-font-bold text-right"
-                    >
-                        EMPTY
-                    </div>
+                @for (item of stopsConfig; let i = $index; track i) {
+                    @if (!item.isExpandable || isStopListExpanded) {
+                        <div
+                            class="text-color-muted text-size-11 ta-font-bold"
+                            [ngClass]="{
+                                'text-right': item.isAlignedRight,
+                                'text-center': item.isAlignedCenter,
+                            }"
+                        >
+                            {{ item.label }}
+                        </div>
+                    }
                 }
-                <div
-                    class="text-color-muted text-size-11 ta-font-bold text-right"
-                >
-                    TOTAL
-                </div>
             </div>
 
             <div class="divider mt-1 mb-1"></div>
 
+            <!-- TODO:  Virtaul scroll is inside new ticket -->
             <div class="scrollable-element">
                 <cdk-virtual-scroll-viewport
                     #viewport
@@ -150,6 +136,7 @@
 }
 
 <ng-template #resizeButton>
+    <!-- TODO:  Inside virtual sroll ticket -->
     <!-- <div class="h-26 w-26 background-white">></div> -->
 </ng-template>
 
@@ -182,10 +169,10 @@
         </div>
         @if (isStopListExpanded) {
             <div class="text-color-black text-size-11 text-right">
-                {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+                {{ (stop.loadedMiles | thousandSeparator) ?? '0.0' }}
             </div>
             <div class="text-color-black text-size-11 text-right">
-                {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+                {{ (stop.emptyMiles | thousandSeparator) ?? '0.0' }}
             </div>
         }
         <div class="text-color-black text-size-11 ta-font-medium text-right">

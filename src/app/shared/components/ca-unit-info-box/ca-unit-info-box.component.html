@@ -1,0 +1,62 @@
+@let isUnitAssigned = unitInfoBoxConfig.isUnitAssigned;
+@let iconPath = unitInfoBoxConfig.iconPath;
+@let imagePath = unitInfoBoxConfig.imagePath;
+@let isImage = unitInfoBoxConfig.isImage;
+@let isSvgIcon = unitInfoBoxConfig.isSvgIcon;
+@let label = unitInfoBoxConfig.label;
+@let id = unitInfoBoxConfig.id;
+@let type = unitInfoBoxConfig.type;
+
+<div
+    class="background-bw2 h-26 br-2 p-x-6 p-y-1 d-flex align-items-center"
+    [ngClass]="isUnitAssigned && 'box-unit-list'"
+>
+    @if (isUnitAssigned) {
+        @if (iconPath) {
+            @if (isSvgIcon) {
+                <div class="h-18 w-42 d-flex mr-1">
+                    <svg-icon
+                        [src]="iconPath"
+                        class="h-18 w-42 d-flex"
+                    ></svg-icon>
+                </div>
+            }
+        }
+        @if (isImage) {
+            <div class="mr-1">
+                <app-ca-profile-image
+                    [avatarColor]="{
+                        background: eColor.BLUE_27,
+                        color: eColor.BLUE_28,
+                    }"
+                    [textShortName]="label | nameInitials"
+                    [avatarImg]="imagePath"
+                    [isRound]="false"
+                ></app-ca-profile-image>
+            </div>
+        }
+
+        <span class="text-color-black text-size-14 ta-font-medium">{{
+            label
+        }}</span>
+
+        <div
+            class="m-l-auto"
+            ngbTooltip
+            mainTooltip="View Details"
+            position="bottom"
+            [tooltipBackground]="eColor.BLACK"
+        >
+            <svg-icon
+                class="svg-size-14 d-flex c-pointer box-unit-list-icon"
+                [src]="sharedIcons.TOP_RIGHT_ARROW"
+                (click)="handleViewDetailsClick(type, id)"
+            ></svg-icon>
+        </div>
+    } @else {
+        <span
+            class="text-color-light-grey-2 text-size-14 ta-font-medium ml-1"
+            >{{ noItemText }}</span
+        >
+    }
+</div>

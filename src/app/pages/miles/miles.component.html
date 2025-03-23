@@ -1,4 +1,4 @@
-@if (
+@let store =
     {
         selectedRows: milesStoreService.selectedRowsSelector$ | async,
         tableViewData: milesStoreService.tableViewData$ | async,
@@ -6,22 +6,22 @@
         activeViewMode: milesStoreService.activeViewMode$ | async,
         statesSelector: milesStoreService.statesSelector$ | async,
     };
-    as store
-) {
+
+@if (store) {
     <app-new-table-toolbar
-        [title]="'Miles'"
+        [title]="eSharedString.MILES"
         [isMarginTopDisabled]="true"
         [leftSide]="leftSide"
-        [showPlusIcon]="false"
+        [hasPlusIcon]="false"
     >
         <ng-template #leftSide>
             <app-toolbar-tabs-wrapper
+                class="d-flex align-items-center"
                 [data]="store.tableViewData"
                 [selectedTab]="store.selectedTab"
                 [viewMode]="store.activeViewMode"
                 [shouldAddMap]="true"
                 (onTabChange)="onToolBarAction($event)"
-                class="d-flex align-items-center"
             ></app-toolbar-tabs-wrapper>
 
             <ng-container *ngTemplateOutlet="divider"></ng-container>
@@ -49,7 +49,7 @@
                 >
                 </app-ca-filter-time-dropdown>
 
-                @if (store.activeViewMode !== 'Map') {
+                @if (store.activeViewMode !== eCommonElement.MAP) {
                     <app-ca-filter
                         type="moneyFilter"
                         icon="dollar"
@@ -64,8 +64,10 @@
                     >
                     </app-ca-filter>
                 }
+
                 @if (store.selectedRows) {
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
+
                     <div
                         class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
                     >
@@ -84,11 +86,17 @@
         </ng-template>
     </app-new-table-toolbar>
 
-    @if (store.activeViewMode === 'Map') {
-        <app-miles-map></app-miles-map>
-    } @else if (store.activeViewMode === 'List') {
-        <app-miles-table></app-miles-table>
-    } @else {
-        <app-miles-card></app-miles-card>
+    @switch (store.activeViewMode) {
+        @case (eCommonElement.LIST) {
+            <app-miles-table></app-miles-table>
+        }
+
+        @case (eCommonElement.CARD) {
+            <app-miles-card></app-miles-card>
+        }
+
+        @case (eCommonElement.MAP) {
+            <app-miles-map></app-miles-map>
+        }
     }
 }

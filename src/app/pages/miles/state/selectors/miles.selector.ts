@@ -61,11 +61,11 @@ export const tableColumnsSelector = createSelector(
     }
 );
 
-export const areAllItemsSelectedSelector = createSelector(
+export const hasAllItemsSelectedSelector = createSelector(
     selectMilesState,
     (state) => {
-        const { areAllItemsSelected } = state || {};
-        return areAllItemsSelected;
+        const { hasAllItemsSelected } = state || {};
+        return hasAllItemsSelected;
     }
 );
 

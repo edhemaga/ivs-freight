@@ -23,7 +23,7 @@ export interface IMilesState {
     states: MilesStateFilterResponse[];
     selectedRows: number;
     columns: ITableColumn[];
-    areAllItemsSelected: boolean;
+    hasAllItemsSelected: boolean;
 
     // Is used for next, prev icons to navigate throught list
     details: MilesByUnitPaginatedStopsResponse;

@@ -12,7 +12,7 @@ import {
     selectedRowsSelector,
     tableColumnsSelector,
     filterSelector,
-    areAllItemsSelectedSelector,
+    hasAllItemsSelectedSelector,
     detailsSelector,
     unitsPaginationSelector,
 } from '@pages/miles/state/selectors/miles.selector';
@@ -71,8 +71,8 @@ export class MilesStoreService {
         select(filterSelector)
     );
 
-    public areAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(
-        select(areAllItemsSelectedSelector)
+    public hasAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(
+        select(hasAllItemsSelectedSelector)
     );
 
     public unitsPaginationSelector$: Observable<IMilesDetailsFilters> =
@@ -106,6 +106,7 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.LOAD_MILES_SUCCESS,
             miles: MilesHelper.milesMapper(data.pagination.data),
+            totalResultsCount: data.pagination.count,
         });
     }
 

@@ -4,4 +4,6 @@ export interface IMilesDetailsFilters {
     isFirstUnit: boolean;
     isLastUnit: boolean;
     activeUnitIndex: number;
+    totalResultsCount?: number;
+    isLastInCurrentList?: boolean;
 }

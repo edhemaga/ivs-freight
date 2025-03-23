@@ -41,13 +41,14 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     styleUrl: './new-table-toolbar.component.scss',
     standalone: true,
 })
-export class NewTableToolbarComponent implements OnInit, OnDestroy {
+export class NewTableToolbarComponent<T> implements OnInit, OnDestroy {
     // Inputs
     @Input() title: string;
-    @Input() leftSide: TemplateRef<any>;
-    @Input() rightSide: TemplateRef<any>;
+    @Input() leftSide: TemplateRef<T>;
+    @Input() rightSide: TemplateRef<T>;
     @Input() hasColumnsDropdown: boolean = true;
     @Input() showPlusIcon: boolean = true;
+    @Input() hasPlusIcon: boolean = true;
     @Input() isMarginTopDisabled: boolean = false;
     @Input() toolbarDropdownContent: IDropdownMenuItem[];
 

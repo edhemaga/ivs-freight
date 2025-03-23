@@ -41,4 +41,13 @@ export class SharedSvgRoutes {
     static TARP_ICON: string = 'assets/svg/common/load/ic_tarp.svg';
     static STACKABLE_ICON: string = 'assets/svg/common/load/ic_stackable.svg';
     static WEX_EFS: string = 'assets/svg/fuel/wex-efs.svg';
+    static COMPANY_ICON: string = 'assets/svg/common/ic_company.svg';
+    static TIME_ICON: string = 'assets/svg/common/ic_time.svg';
+    static USER_ICON: string = 'assets/svg/common/ic_user.svg';
+    static STATUS_ICON: string = 'assets/svg/common/ic_broker-half-circle.svg';
+    static ADDED_DATE: string = 'assets/svg/common/date.svg';
+    static DATE_EDITED: string = 'assets/svg/common/ic_date_checked.svg';
+    static USER_CIRCLE_ICON: string = 'assets/svg/common/ic_broker-user.svg';
+    static HALF_TIME_ICON: string = 'assets/svg/common/ic_half_time.svg';
+    static TOP_RIGHT_ARROW: string = 'assets/svg/common/arrow_top_right.svg';
 }

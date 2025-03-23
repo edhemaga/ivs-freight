@@ -29,7 +29,7 @@ export const initialState: IMilesState = {
     filters: {},
     states: [],
     selectedRows: 0,
-    areAllItemsSelected: false,
+    hasAllItemsSelected: false,
 
     // Table
     columns: MilesTableColumns,
@@ -42,21 +42,28 @@ export const initialState: IMilesState = {
         totalPage: 0,
         isFirstUnit: true,
         isLastUnit: true,
+        isLastInCurrentList: false,
     },
 };
 
 export const milesReducer = createReducer(
     initialState,
     // #region Get miles
-    on(MilesAction.getLoadsPayloadSuccess, (state, { miles }) =>
-        Functions.updateMilesData(state, miles)
+    on(
+        MilesAction.getLoadsPayloadSuccess,
+        (state, { miles, totalResultsCount }) =>
+            Functions.updateMilesData(state, miles, totalResultsCount)
     ),
     on(MilesAction.getLoadsPayloadError, (state) => ({
         ...state,
         loading: false,
     })),
-    on(MilesAction.loadMilesSuccess, (state, { miles }) =>
-        Functions.updateMilesData(state, miles)
+    on(MilesAction.loadMilesSuccess, (state, { miles, totalResultsCount }) =>
+        Functions.updateMilesData(state, miles, totalResultsCount)
+    ),
+
+    on(MilesAction.updateMilesList, (state, { miles }) =>
+        Functions.updateMilesListData(state, miles)
     ),
     // #endregion
 
@@ -102,13 +109,17 @@ export const milesReducer = createReducer(
 
     on(
         MilesAction.setFollowingUnitDetails,
-        (state, { unitResponse, index, isFirst, isLast }) =>
+        (
+            state,
+            { unitResponse, index, isFirst, isLast, isLastInCurrentList }
+        ) =>
             Functions.setFollowingUnitDetails(
                 state,
                 unitResponse,
                 index,
                 isFirst,
-                isLast
+                isLast,
+                isLastInCurrentList
             )
     )
     // #endregion
