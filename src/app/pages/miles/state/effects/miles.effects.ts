@@ -195,32 +195,51 @@ export class MilesEffects {
     );
 
     private loadMoreMiles(page: number, currentLength: number) {
-        // TODO: PASS filters
-        return this.milesService
-            .apiMilesListGet(null, null, null, null, null, null, null, page)
-            .pipe(
-                switchMap((response) => {
-                    const miles = MilesHelper.milesMapper(
-                        response.pagination.data
-                    );
-                    const newTruckId = miles[0]?.truckId;
+        return combineLatest([
+            this.store.select(selectSelectedTab),
+            this.store.select(filterSelector),
+        ]).pipe(
+            take(1),
+            switchMap(([selectedTab, filters]) => {
+                const tabValue = selectedTab === eMileTabs.ACTIVE ? 1 : 0;
 
-                    return this.milesService
-                        .apiMilesUnitGet(null, null, newTruckId)
-                        .pipe(
-                            mergeMap((unitResponse) => [
-                                MilesAction.updateMilesList({ miles }),
-                                MilesAction.setFollowingUnitDetails({
-                                    unitResponse,
-                                    index: currentLength,
-                                    isFirst: true,
-                                    isLast: miles.length === 1,
-                                    isLastInCurrentList: miles.length === 1,
-                                }),
-                            ])
-                        );
-                }),
-                catchError(() => of(MilesAction.getLoadsPayloadError()))
-            );
+                return this.milesService
+                    .apiMilesListGet(
+                        null,
+                        tabValue,
+                        filters.dateFrom,
+                        filters.dateTo,
+                        filters.states,
+                        filters.revenueFrom,
+                        filters.revenueTo,
+                        page
+                    )
+                    .pipe(
+                        switchMap((response) => {
+                            const miles = MilesHelper.milesMapper(
+                                response.pagination.data
+                            );
+                            const newTruckId = miles[0]?.truckId;
+
+                            return this.milesService
+                                .apiMilesUnitGet(null, null, newTruckId)
+                                .pipe(
+                                    mergeMap((unitResponse) => [
+                                        MilesAction.updateMilesList({ miles }),
+                                        MilesAction.setFollowingUnitDetails({
+                                            unitResponse,
+                                            index: currentLength,
+                                            isFirst: true,
+                                            isLast: miles.length === 1,
+                                            isLastInCurrentList:
+                                                miles.length === 1,
+                                        }),
+                                    ])
+                                );
+                        }),
+                        catchError(() => of(MilesAction.getLoadsPayloadError()))
+                    );
+            })
+        );
     }
 }
