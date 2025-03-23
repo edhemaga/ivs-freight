@@ -145,6 +145,22 @@ body {
         background: $muted;
         border-radius: 5px;
     }
+
+    &.remove-scroll-track {
+        padding-right: 4px;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $ta-light-grey-6;
+        }
+    }
 }
 
 .text-left {
