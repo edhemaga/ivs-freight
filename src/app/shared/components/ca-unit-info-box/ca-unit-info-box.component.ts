@@ -47,6 +47,9 @@ export class CaUnitInfoBoxComponent {
         this._type = value;
         this.updateIconPathAndText();
     }
+    get type(): eSharedString {
+        return this._type;
+    }
 
     @Input() iconPath: string;
     @Input() isSvgIcon: boolean;
