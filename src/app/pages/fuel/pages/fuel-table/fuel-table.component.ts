@@ -745,8 +745,8 @@ export class FuelTableComponent
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
                 : null,
             tableFuelStopName: businessName,
-            phone: phone,
-            fax: fax,
+            phone,
+            fax,
             tableLocation,
             tableAddress: fuelStopStore?.address?.address ?? null,
             tableDescription: fuelItems
