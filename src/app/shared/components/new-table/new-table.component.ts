@@ -1,7 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
     AfterViewChecked,
-    AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
