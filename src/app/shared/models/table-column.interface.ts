@@ -1,4 +1,5 @@
 import { SortOrder } from 'appcoretruckassist';
+
 export interface ITableColumn {
     // This key is used to display data on frontend,
     // It will look for value on this key and show it
@@ -8,7 +9,7 @@ export interface ITableColumn {
     // Text for column heading
     label: string;
     pinned?: 'left' | 'right';
-    sort?: any;
+    sort?: string;
     direction?: SortOrder | null;
     isPinEnabled?: boolean;
     columns?: ITableColumn[];

@@ -17,9 +17,6 @@ import {
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// services
-import { TableService } from '@shared/components/new-table/services';
-
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
@@ -41,9 +38,9 @@ import { ITableColumn } from '@shared/models';
 
 @Component({
     selector: 'app-new-table',
-    changeDetection: ChangeDetectionStrategy.OnPush,
     templateUrl: './new-table.component.html',
     styleUrl: './new-table.component.scss',
+    changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
         CommonModule,
@@ -75,7 +72,7 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
 
     private resizeObserver!: ResizeObserver;
 
-    public tableWidth: number;
+    public rowWidth: number;
 
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
@@ -91,10 +88,7 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
 
     constructor(
         // ref
-        private cdRef: ChangeDetectorRef,
-
-        // services
-        private tableService: TableService
+        private cdRef: ChangeDetectorRef
     ) {}
 
     ngAfterViewInit() {
@@ -108,10 +102,8 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
                     entry.contentRect.width +
                     TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
 
-                this.tableWidth = rowWidth;
+                this.rowWidth = rowWidth;
             }
-
-            this.tableService.setTableWidth(this.tableWidth);
 
             this.cdRef.detectChanges();
         });

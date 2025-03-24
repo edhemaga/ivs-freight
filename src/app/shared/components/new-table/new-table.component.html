@@ -1,5 +1,7 @@
+@let tableWidth = rowWidth + 'px';
+
 <!-- TODO: REMOVE MARGIN -->
-<div class="table-container" [ngStyle]="{ width: tableWidth + 'px' }">
+<div class="table-container" [ngStyle]="{ width: tableWidth }">
     <div class="custom-table w-full test-margin">
         <!-- Header -->
 
@@ -127,7 +129,7 @@
 
 <ng-template #columnTemplate let-column="column">
     @if (column.columns?.length) {
-        <div class="new-table--row-heading-group d-flex">
+        <div class="d-flex p-l-6 new-table--row-heading-group">
             @for (
                 _column of column.columns;
                 track _column.key;
@@ -289,12 +291,12 @@
     >
         @if (!column.hidden) {
             <div
+                [class]="{
+                    'p-l-6': hasPaddingLeft,
+                    'm-r-7': hasMarginRight,
+                }"
                 [style.min-width]="column.width + 'px'"
                 [style.width]="column.width + 'px'"
-                [ngStyle]="{
-                    'padding-left': hasPaddingLeft && '6px',
-                    'margin-right': hasMarginRight && '7px',
-                }"
             >
                 <!-- Display custom template if template exists -->
 

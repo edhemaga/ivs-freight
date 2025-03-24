@@ -25,7 +25,6 @@ import { CaDropdownMenuComponent } from 'ca-components';
 
 // services
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
-import { TableService } from '@shared/components/new-table/services';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -64,17 +63,10 @@ export class NewTableToolbarComponent<T> implements OnInit, OnDestroy {
 
     public plusIcon = SharedSvgRoutes.PLUS_ICON;
 
-    public toolbarWidth: number;
-
-    constructor(
-        private confirmationResetService: ConfirmationResetService,
-        private tableService: TableService
-    ) {}
+    constructor(private confirmationResetService: ConfirmationResetService) {}
 
     ngOnInit(): void {
         this.watchResetConfirmation();
-
-        this.setToolbarWidth();
     }
 
     private watchResetConfirmation(): void {
@@ -88,12 +80,6 @@ export class NewTableToolbarComponent<T> implements OnInit, OnDestroy {
                 (isTableReset) =>
                     isTableReset && this.toolbarDropdownAction.emit(action)
             );
-    }
-
-    private setToolbarWidth(): void {
-        this.tableService.getTableWidth$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((tableWidth) => (this.toolbarWidth = tableWidth));
     }
 
     public handleDropdownMenuActions(action: IDropdownMenuOptionEmit): void {
