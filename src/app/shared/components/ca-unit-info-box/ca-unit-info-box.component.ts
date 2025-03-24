@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { CommonModule } from '@angular/common';
@@ -41,25 +41,20 @@ import { IUnitInfoBoxConfig } from '@shared/components/ca-unit-info-box/interfac
     templateUrl: './ca-unit-info-box.component.html',
     styleUrls: ['./ca-unit-info-box.component.scss'],
 })
-export class CaUnitInfoBoxComponent {
+export class CaUnitInfoBoxComponent implements OnInit {
     @Input() unitInfoBoxConfig!: IUnitInfoBoxConfig;
 
     public noItemText: string;
     public sharedIcons = SharedSvgRoutes;
     public eColor = eColor;
+
     private unitConfig = UnitConstants.configuration;
-    private _type!: eSharedString;
-
-    set type(value: eSharedString) {
-        this._type = value;
-        this.updateIconPathAndText();
-    }
-
-    get type(): eSharedString {
-        return this._type;
-    }
 
     constructor(private router: Router) {}
+
+    ngOnInit() {
+        this.updateIconPathAndText();
+    }
 
     public handleViewDetailsClick(type: eSharedString, id: number): void {
         if (type === eSharedString.TRUCK) {
@@ -72,7 +67,8 @@ export class CaUnitInfoBoxComponent {
     }
 
     private updateIconPathAndText(): void {
-        const config = this.unitConfig[this.type.toLowerCase()];
+        const config =
+            this.unitConfig[this.unitInfoBoxConfig.type.toLowerCase()];
         if (config) {
             this.unitInfoBoxConfig.iconPath =
                 config.iconPathPrefix + this.unitInfoBoxConfig.iconPath;
