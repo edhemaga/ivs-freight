@@ -150,11 +150,11 @@
                             iconTextTemplate;
                             context: {
                                 icon: sharedIcons.USER_CIRCLE_ICON,
-                                text: load.broker?.contactName,
+                                text: load.brokerContact?.contactName,
                                 isLoading,
                                 isSpacingBottom,
                                 width: 160,
-                                colWidth: 'col-6',
+                                colWidth: 'col-12',
                                 textColorClass: 'text-color-black-2',
                             }
                         "
@@ -165,11 +165,11 @@
                             iconTextTemplate;
                             context: {
                                 icon: sharedIcons.PHONE_ICON,
-                                text: load.broker?.phone,
+                                text: load.brokerContact?.phone,
                                 isLoading,
                                 isSpacingBottom,
                                 width: 140,
-                                colWidth: 'col-6',
+                                colWidth: 'col-12',
                                 extension: load.brokerContact?.extensionPhone,
                                 textColorClass: 'text-color-black-2',
                             }
@@ -181,7 +181,7 @@
                             iconTextTemplate;
                             context: {
                                 icon: sharedIcons.EMAIL_ICON,
-                                text: load.broker?.email,
+                                text: load.brokerContact?.email,
                                 isLoading,
                                 isSpacingBottom,
                                 width: 180,
@@ -220,7 +220,8 @@
                                 iconPath:
                                     load.dispatch?.truck?.truckType.logoName,
                                 label: load.dispatch?.truck?.truckNumber,
-                                isUnitAssigned: isLoadAssigned,
+                                isUnitAssigned:
+                                    isLoadAssigned && load.dispatch?.truck,
                                 isSvgIcon: true,
                             }"
                         ></app-ca-unit-info-box>
@@ -235,7 +236,8 @@
                                     load.dispatch?.trailer?.trailerType
                                         .logoName,
                                 label: load.dispatch?.trailer?.trailerNumber,
-                                isUnitAssigned: isLoadAssigned,
+                                isUnitAssigned:
+                                    isLoadAssigned && load.dispatch?.trailer,
                                 isSvgIcon: true,
                             }"
                         ></app-ca-unit-info-box>
@@ -251,7 +253,8 @@
                                         load.dispatch?.driver?.firstName +
                                         ' ' +
                                         load.dispatch?.driver?.lastName,
-                                    isUnitAssigned: isLoadAssigned,
+                                    isUnitAssigned:
+                                        isLoadAssigned && load.dipatch?.driver,
                                     isImage: true,
                                     imagePath:
                                         load.dispatch?.driver?.avatarFile,

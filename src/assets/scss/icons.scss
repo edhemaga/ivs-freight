@@ -115,6 +115,9 @@
 
     // Hovers
     &-hover {
+        &-white {
+            @include svg-hover($white);
+        }
         &-muted {
             @include svg-hover($muted);
         }
