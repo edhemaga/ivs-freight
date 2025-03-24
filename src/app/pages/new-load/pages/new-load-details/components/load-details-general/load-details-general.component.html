@@ -240,18 +240,18 @@
 
                 <div class="col-12">
                     <div class="m-t-12">
+                        @let driver = load.dispatch?.driver;
+                        @let driverName =
+                            driver?.firstName + ' ' + driver?.lastName;
                         <app-ca-unit-info-box
                             [unitInfoBoxConfig]="{
-                                id: load.dispatch?.driver?.id,
+                                id: driver.id,
                                 type: eSharedString.DRIVER,
-                                label:
-                                    load.dispatch?.driver?.firstName +
-                                    ' ' +
-                                    load.dispatch?.driver?.lastName,
+                                label: driverName,
                                 isUnitAssigned:
-                                    isLoadAssigned && load.dipatch?.driver,
+                                    isLoadAssigned && load.dispatch?.driver,
                                 isImage: true,
-                                imagePath: load.dispatch?.driver?.avatarFile,
+                                imagePath: driver.avatarFile?.url,
                             }"
                         ></app-ca-unit-info-box>
                     </div>
