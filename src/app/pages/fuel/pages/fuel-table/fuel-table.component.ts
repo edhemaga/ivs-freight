@@ -721,7 +721,7 @@ export class FuelTableComponent
             : null;
         const tableLocation: string = [
             address?.city,
-            address?.stateShortName,
+            address?.stateShortName ?? address?.state,
             address?.zipCode,
         ]
             .filter(Boolean)
