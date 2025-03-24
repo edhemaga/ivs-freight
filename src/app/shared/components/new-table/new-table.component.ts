@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
+    AfterViewChecked,
     AfterViewInit,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
@@ -54,7 +55,7 @@ import { ITableColumn } from '@shared/models';
         TableColumnClassPipe,
     ],
 })
-export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
+export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     @ViewChild('header') header!: ElementRef;
     @ViewChild('tableRow') tableRow!: ElementRef<HTMLDivElement>;
 
@@ -92,7 +93,7 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
         private cdRef: ChangeDetectorRef
     ) {}
 
-    ngAfterViewInit() {
+    ngAfterViewChecked() {
         this.getTableWidth();
     }
 
