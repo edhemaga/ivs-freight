@@ -3,67 +3,69 @@
 @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
 @let isMapOpen = !(loadStoreService.isLoadDetailsMapOpen$ | async);
 
-<div
-    class="background-white br-3 p-l-8 p-r-4 d-flex justify-content-between align-items-center h-34 disable-text-selection"
->
-    <div class="d-flex align-items-center gap-1">
-        @if (isLoading) {
-            <p class="placeholder-glow">
-                <span
-                    class="placeholder background-muted br-2 w-40 h-16"
-                ></span>
-            </p>
+<div class="h-44 d-flex align-items-center w-100">
+    <div
+        class="background-white br-3 p-l-8 p-r-4 d-flex justify-content-between align-items-center h-34 disable-text-selection w-100"
+    >
+        <div class="d-flex align-items-center gap-1">
+            @if (isLoading) {
+                <p class="placeholder-glow">
+                    <span
+                        class="placeholder background-muted br-2 w-40 h-16"
+                    ></span>
+                </p>
 
-            <p class="placeholder-glow">
-                <span
-                    class="placeholder background-muted br-2 rounded-circle w-18 h-18"
-                ></span>
-            </p>
-        } @else {
-            <div class="text-color-black text-size-16 ta-font-extra-bold">
-                Stop
-            </div>
-            <div
-                class="d-flex align-items-center justify-content-center text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-5 br-60 h-18 min-w-18"
-            >
-                {{ stopCount }}
-            </div>
-            @if (extraStopCount) {
+                <p class="placeholder-glow">
+                    <span
+                        class="placeholder background-muted br-2 rounded-circle w-18 h-18"
+                    ></span>
+                </p>
+            } @else {
+                <div class="text-color-black text-size-16 ta-font-extra-bold">
+                    Stop
+                </div>
                 <div
-                    class="text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-6 p-y-2 br-60 h-18"
+                    class="d-flex align-items-center justify-content-center text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-5 br-60 h-18 min-w-18"
                 >
-                    {{ extraStopCount }} EXTRA
+                    {{ stopCount }}
+                </div>
+                @if (extraStopCount) {
+                    <div
+                        class="text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-6 p-y-2 br-60 h-18"
+                    >
+                        {{ extraStopCount }} EXTRA
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="w-26 h-26 d-flex justify-content-center align-items-center">
+            @if (isLoading) {
+                <p class="placeholder-glow">
+                    <span
+                        class="placeholder background-muted br-5 rotate-45 w-15 h-15"
+                    ></span>
+                </p>
+            } @else {
+                <div
+                    ngbTooltip
+                    [mainTooltip]="isMapOpen ? 'Hide Map' : 'Show Map'"
+                    position="bottom"
+                    [tooltipBackground]="eColor.BLACK"
+                >
+                    <svg-icon
+                        class="svg-fill-muted w-26 h-26 c-pointer d-flex justify-content-center align-items-center br-2"
+                        [src]="sharedSvgRoutes.MAP_ICON"
+                        [ngClass]="
+                            isMapOpen
+                                ? 'background-bw6-2 background-hover-black svg-hover-white svg-fill-bw-9'
+                                : 'background-hover-bw2 svg-hover-black'
+                        "
+                        (click)="toggleMap()"
+                    >
+                    </svg-icon>
                 </div>
             }
-        }
-    </div>
-
-    <div class="w-26 h-26 d-flex justify-content-center align-items-center">
-        @if (isLoading) {
-            <p class="placeholder-glow">
-                <span
-                    class="placeholder background-muted br-5 rotate-45 w-15 h-15"
-                ></span>
-            </p>
-        } @else {
-            <div
-                ngbTooltip
-                [mainTooltip]="isMapOpen ? 'Hide Map' : 'Show Map'"
-                position="bottom"
-                [tooltipBackground]="eColor.BLACK"
-            >
-                <svg-icon
-                    class="svg-fill-muted w-26 h-26 c-pointer d-flex justify-content-center align-items-center br-2"
-                    [src]="sharedSvgRoutes.MAP_ICON"
-                    [ngClass]="
-                        isMapOpen
-                            ? 'background-bw6-2 background-hover-black svg-hover-white svg-fill-bw-9'
-                            : 'background-hover-bw2 svg-hover-black'
-                    "
-                    (click)="toggleMap()"
-                >
-                </svg-icon>
-            </div>
-        }
+        </div>
     </div>
 </div>
