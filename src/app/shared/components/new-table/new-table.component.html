@@ -1,5 +1,7 @@
+@let tableWidth = rowWidth + 'px';
+
 <!-- TODO: REMOVE MARGIN -->
-<div class="table-container" #container>
+<div class="table-container" [ngStyle]="{ width: tableWidth }">
     <div class="custom-table w-full test-margin">
         <!-- Header -->
 
@@ -36,6 +38,7 @@
                 >
                     @if (row) {
                         <div
+                            #tableRow
                             class="d-flex align-items-center new-table--row p-x-4 br-3 m-t-4 m-b-4 p-y-1 background-hover-light-grey"
                             [class.background-light-grey]="row.selected"
                         >
@@ -60,11 +63,19 @@
 
                             <!-- Main Columns -->
 
-                            @for (column of mainColumns; track column.key) {
+                            @for (
+                                column of mainColumns;
+                                track column.key;
+                                let mainColumnIndex = $index
+                            ) {
                                 <ng-container
                                     *ngTemplateOutlet="
                                         cellTemplate;
-                                        context: { column, row }
+                                        context: {
+                                            column,
+                                            row,
+                                            mainColumnIndex,
+                                        }
                                     "
                                 ></ng-container>
                             }
@@ -114,9 +125,11 @@
     </div>
 </div>
 
+<!-- Templates -->
+
 <ng-template #columnTemplate let-column="column">
     @if (column.columns?.length) {
-        <div class="new-table--row-heading-group d-flex">
+        <div class="d-flex p-l-6 new-table--row-heading-group">
             @for (
                 _column of column.columns;
                 track _column.key;
@@ -159,11 +172,11 @@
                 (click)="setSorting(column)"
             >
                 @if (isFirst) {
-                    <div
-                        class="text-size-11 ta-font-extra-bold text-color-light-grey-2 text-uppercase"
+                    <span
+                        class="text-size-9 ta-font-extra-bold text-color-light-grey-2 text-uppercase"
                     >
                         {{ label }}
-                    </div>
+                    </span>
                 }
 
                 <!-- Display custom header template if template exists -->
@@ -239,13 +252,28 @@
     </ng-template>
 </ng-template>
 
-<ng-template #cellTemplate let-column="column" let-row="row">
+<ng-template
+    #cellTemplate
+    let-column="column"
+    let-row="row"
+    let-mainColumnIndex="mainColumnIndex"
+>
     @if (column.columns?.length) {
-        @for (_column of column.columns; track _column.key) {
+        @for (
+            _column of column.columns;
+            track _column.key;
+            let _columnIndex = $index
+        ) {
             <ng-container
                 *ngTemplateOutlet="
                     cellColumnTemplate;
-                    context: { column: _column }
+                    context: {
+                        column: _column,
+                        hasPaddingLeft: true,
+                        hasMarginRight:
+                            _columnIndex === column.columns.length - 1 &&
+                            mainColumnIndex !== mainColumns.length - 1,
+                    }
                 "
             ></ng-container>
         }
@@ -255,25 +283,34 @@
         ></ng-container>
     }
 
-    <ng-template #cellColumnTemplate let-column="column">
+    <ng-template
+        #cellColumnTemplate
+        let-column="column"
+        let-hasPaddingLeft="hasPaddingLeft"
+        let-hasMarginRight="hasMarginRight"
+    >
         @if (!column.hidden) {
             <div
+                [class]="{
+                    'p-l-6': hasPaddingLeft,
+                    'm-r-7': hasMarginRight,
+                }"
                 [style.min-width]="column.width + 'px'"
                 [style.width]="column.width + 'px'"
             >
-                <!-- Display custom header template if template exists -->
+                <!-- Display custom template if template exists -->
 
                 @if (templates[column.key]) {
                     <ng-container
                         *ngTemplateOutlet="
                             templates[column.key];
-                            context: { data: row, key: column.key, index }
+                            context: { data: row, key: column.key }
                         "
                     ></ng-container>
                 } @else {
-                    <!-- Default header template - if no custom template -->
+                    <!-- Default template - if no custom template -->
 
-                    <p class="text-size-14 text-color-black-2 ta-font-regular">
+                    <p class="text-size-14 text-color-black-2">
                         {{ row[column.key] }}
                     </p>
                 }
