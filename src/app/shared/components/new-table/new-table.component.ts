@@ -31,7 +31,7 @@ import { TableConstants } from '@shared/components/new-table/utils/constants';
 
 // enums
 import { ePosition } from 'ca-components';
-import { eColor } from '@shared/enums';
+import { eColor, eGeneralActions } from '@shared/enums';
 
 // models
 import { ITableColumn } from '@shared/models';
@@ -82,6 +82,7 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
     // enums
     public ePosition = ePosition;
     public eColor = eColor;
+    public eGeneralActions = eGeneralActions;
 
     // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
@@ -143,6 +144,8 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
 
         this.onSortingChange$.emit(sort);
     }
+
+    public handleShowMoreClick(): void {}
 
     ngOnDestroy() {
         this.resizeObserver.disconnect();
