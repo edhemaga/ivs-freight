@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // models
-import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
+import { IFuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/interfaces';
 
 // enums
 import { NameInitialsPipe } from '@shared/pipes';
@@ -10,6 +10,9 @@ import { eGeneralActions } from '@shared/enums';
 // config
 import { ICaInput } from '@ca-shared/components/ca-input/config';
 
+// svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Pipe({
     standalone: true,
     name: 'fuelPurchaseModalInputConfig',
@@ -17,7 +20,7 @@ import { ICaInput } from '@ca-shared/components/ca-input/config';
 export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
     constructor(private nameInitialsPipe: NameInitialsPipe) {}
 
-    transform(args: FuelPurchaseModalConfigPipeArgs): ICaInput {
+    transform(args: IFuelPurchaseModalConfigPipeArgs): ICaInput {
         const {
             configType,
             editDataType,
@@ -109,24 +112,30 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
 
                 break;
             case 'truckInputConfig':
+                const iconsPath = selectedTruckType?.logoName
+                    ? `${SharedSvgRoutes.TRUCK_PATH_BASE}${selectedTruckType?.logoName}`
+                    : null;
+                const dropdownImageInput = iconsPath
+                    ? {
+                          withText: true,
+                          svg: true,
+                          image: false,
+                          iconsPath,
+                          template: 'truck',
+                          class: selectedTruckType?.name
+                              ?.trim()
+                              .replace(' ', '')
+                              .toLowerCase(),
+                      }
+                    : null;
+
                 inputConfig = {
                     name: 'Input Dropdown',
                     type: 'text',
                     label: 'Truck',
                     isRequired: true,
                     isDropdown: true,
-                    dropdownImageInput: {
-                        withText: true,
-                        svg: true,
-                        image: false,
-                        iconsPath: 'assets/svg/common/trucks/',
-                        activeItemIconKey: 'logoName',
-                        template: 'truck',
-                        class: selectedTruckType?.name
-                            ?.trim()
-                            .replace(' ', '')
-                            .toLowerCase(),
-                    },
+                    dropdownImageInput,
                     dropdownWidthClass: truckTrailerDriverDropdownWidth,
                     customClass: 'truck-trailer-dropdown',
                 };
