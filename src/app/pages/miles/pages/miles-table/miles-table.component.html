@@ -113,7 +113,7 @@
                         !!data.revenue ? 'text-color-black' : 'text-color-muted'
                     "
                 >
-                    ${{ data.revenue }}
+                    ${{ (data.revenue | thousandSeparator) ?? 0 }}
                 </p>
             </div>
         </ng-template>

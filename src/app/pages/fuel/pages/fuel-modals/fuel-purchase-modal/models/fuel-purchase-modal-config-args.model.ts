@@ -1,6 +1,5 @@
 // models
-import { PayrollDriver } from "@pages/accounting/pages/payroll/state/models";
-import { DriverFilterResponse } from "appcoretruckassist";
+import { PayrollDriver } from '@pages/accounting/pages/payroll/state/models';
 
 export interface FuelPurchaseModalConfigPipeArgs {
     configType: string;
