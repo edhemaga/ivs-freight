@@ -126,16 +126,18 @@
 
         <!-- Footer -->
 
-        <div
-            class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
-        >
-            <ng-container
-                *ngTemplateOutlet="
-                    footerTemplate;
-                    context: { rowsLength: rows?.length }
-                "
-            ></ng-container>
-        </div>
+        @if (rows?.length) {
+            <div
+                class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        footerTemplate;
+                        context: { rowsLength: rows?.length }
+                    "
+                ></ng-container>
+            </div>
+        }
     </div>
 </div>
 

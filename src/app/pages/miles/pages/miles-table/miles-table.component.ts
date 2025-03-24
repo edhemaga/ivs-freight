@@ -10,10 +10,10 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 // components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
-import { ThousandSeparatorPipe } from '@shared/pipes';
 import { CaCheckboxComponent } from 'ca-components';
 
 // pipes
+import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-miles-table',

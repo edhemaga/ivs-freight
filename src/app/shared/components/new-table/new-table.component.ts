@@ -68,7 +68,7 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
         this.processColumns(value);
     }
 
-    @Output() onSortingChange$: EventEmitter<T> = new EventEmitter();
+    @Output() onSortingChange: EventEmitter<string> = new EventEmitter();
 
     private resizeObserver!: ResizeObserver;
 
@@ -139,10 +139,10 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
         column.pinned = null;
     }
 
-    public setSorting(sort: any): void {
+    public setSorting(sort: string): void {
         if (this.isTableLocked) return;
 
-        this.onSortingChange$.emit(sort);
+        this.onSortingChange.emit(sort);
     }
 
     public handleShowMoreClick(): void {}
