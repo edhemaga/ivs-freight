@@ -755,6 +755,54 @@ export class DropdownMenuContentHelper {
         return [...conditionalItems, ...loadColumnsList];
     }
 
+    // miles toolbar
+    static getMilesToolbarDropdownContent(
+        tableType: string,
+        isTableLocked: boolean
+    ): IDropdownMenuItem[] {
+        // const tableColumnsConfig = JSON.parse(
+        //     DropdownMenuColumnsActionsHelper.getTableConfig(tableType)
+        // );
+
+        // const modifierItems =
+        //     DropdownMenuContentConditionalItemsHelper.getToolbarColumnsModifierItems(
+        //         !!tableColumnsConfig
+        //     );
+
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS,
+            isTableLocked
+                ? eDropdownMenuColumns.UNLOCK_TABLE
+                : eDropdownMenuColumns.LOCK_TABLE,
+            eDropdownMenuColumns.RESET_TABLE,
+        ];
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+                // modifierItems
+            );
+
+        return [...sharedItems];
+    }
+
+    static getMilesToolbarColumnsDropdownContent(
+        milesColumnsList: IDropdownMenuItem[]
+    ): IDropdownMenuItem[] {
+        milesColumnsList = milesColumnsList ?? [];
+
+        const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
+
+        const conditionalItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...conditionalItems, ...milesColumnsList];
+    }
+
     /////////////////////////////////////////////////////////////////////////////////
 
     // driver applicant

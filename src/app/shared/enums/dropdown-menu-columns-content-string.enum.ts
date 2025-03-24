@@ -18,4 +18,5 @@ export enum eDropdownMenuColumns {
     LOAD_REGULAR = 'LOAD_REGULAR',
     LOAD_CLOSED = 'LOAD_CLOSED',
     LOAD_TEMPLATE = 'LOAD_TEMPLATE',
+    MILES = 'MILES',
 }

@@ -645,8 +645,6 @@ export class AccountTableComponent
         this.accountBackFilter(this.backFilterQuery, true);
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
 

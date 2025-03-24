@@ -28,7 +28,7 @@ export abstract class ColumnsDropdownMenuActionsBase {
     protected abstract confirmationResetService: ConfirmationResetService;
     protected abstract destroy$: Subject<void>;
 
-    protected abstract updateToolbarDropdownMenuContent(action?: string): void;
+    protected updateToolbarDropdownMenuContent(action?: string): void {}
 
     protected handleColumnsDropdownMenuActions<T>(
         action: TableCardBodyActions<T>

@@ -1233,8 +1233,6 @@ export class FuelTableComponent
         this.fetchApiDataPaginated(true);
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     private openCreateModalBySelectedTab(): void {
         if (this.selectedTab === TableStringEnum.FUEL_TRANSACTION)
             this.modalService.openModal(FuelPurchaseModalComponent, {

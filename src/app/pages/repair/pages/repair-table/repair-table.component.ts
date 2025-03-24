@@ -1040,10 +1040,16 @@ export class RepairTableComponent
                             };
                             break;
                         case eFilterDropdownEnum.TRAILER:
-                            this.backFilterQuery = { ...this.backFilterQuery, trailerNumbers: res.selectedIds };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                trailerNumbers: res.selectedIds,
+                            };
                             break;
                         case eFilterDropdownEnum.TRUCK:
-                            this.backFilterQuery = { ...this.backFilterQuery, truckNumbers: res.selectedIds };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                truckNumbers: res.selectedIds,
+                            };
                             break;
                         case eFilterDropdownEnum.TIME_FILTER:
                             this.backFilterQuery = {
@@ -2067,8 +2073,6 @@ export class RepairTableComponent
             ? this.shopBackFilter(filterQuery, true)
             : this.repairBackFilter(filterQuery, true);
     }
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();
