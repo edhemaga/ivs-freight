@@ -98,14 +98,12 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     }
 
     private getTableWidth(): void {
-        this.resizeObserver = new ResizeObserver((entries) => {
-            for (let entry of entries) {
-                const rowWidth =
-                    entry.contentRect.width +
-                    TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
+        this.resizeObserver = new ResizeObserver(([entry]) => {
+            if (!entry) return;
 
-                this.rowWidth = rowWidth;
-            }
+            this.rowWidth =
+                entry.contentRect.width +
+                TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
 
             this.cdRef.detectChanges();
         });
