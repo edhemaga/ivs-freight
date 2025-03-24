@@ -37,8 +37,10 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // helpers
 import { FuelServiceHelper } from '@pages/fuel/utils/helpers';
-import { FuelMapClustersApiArguments } from '@pages/fuel/pages/fuel-table/models/fuel-map-clusters.model';
-import { FuelMapListApiArguments } from '@pages/fuel/pages/fuel-table/models/fuel-map-list.model';
+import {
+    FuelMapClustersApiArgumentsType,
+    FuelMapListApiArgumentsType,
+} from '@pages/fuel/types';
 
 @Injectable({
     providedIn: 'root',
@@ -362,12 +364,12 @@ export class FuelService {
     }
 
     public getFuelClusters(
-        data: FuelMapClustersApiArguments
+        data: FuelMapClustersApiArgumentsType
     ): Observable<ClusterResponse[]> {
         return this.fuelService.apiFuelClustersGet(...data);
     }
 
-    public getFuelMapList(data: FuelMapListApiArguments) {
+    public getFuelMapList(data: FuelMapListApiArgumentsType) {
         return this.fuelService.apiFuelListmapGet(...data);
     }
 

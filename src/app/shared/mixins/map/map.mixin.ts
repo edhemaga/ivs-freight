@@ -17,10 +17,10 @@ import {
     MapMarkerIconService,
 } from 'ca-components';
 import { ClusterResponse } from 'appcoretruckassist';
+import { MapDropdownContent } from '@ca-shared/components/ca-map-dropdown/models';
 
 // services
 import { MapsService } from '@shared/services/maps.service';
-import { MapDropdownContent } from '@ca-shared/components/ca-map-dropdown/models';
 
 export function MapMixin<T extends Constructor>(Base: T) {
     return class extends DestroyableMixin(Base) {
