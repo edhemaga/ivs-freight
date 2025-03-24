@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import {
 } from 'rxjs';
 
 // base classes
-import { FuelDropdownMenuActionsBase } from '@pages/fuel/base-classes';
+import { FuelMixedBase } from '@pages/fuel/base-classes/fuel-mixed-base-class.base';
 
 // settings
 import {
@@ -48,6 +48,7 @@ import {
     NameInitialsPipe,
     ActivityTimePipe,
 } from '@shared/pipes';
+import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-details/pipes';
 
 // helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -68,8 +69,8 @@ import { eFuelTransactionType } from '@pages/fuel/pages/fuel-table/enums';
 import {
     DropActionsStringEnum,
     eDropdownMenu,
-    eCommonElement,
     TableStringEnum,
+    eCommonElement,
 } from '@shared/enums';
 import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
@@ -85,19 +86,27 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
+import { MapMarkerIconService } from 'ca-components';
+import { MapsService } from '@shared/services/maps.service';
 
 @Component({
     selector: 'app-fuel-table',
     templateUrl: './fuel-table.component.html',
     styleUrls: ['./fuel-table.component.scss'],
-    providers: [ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe],
+    providers: [
+        ThousandSeparatorPipe,
+        NameInitialsPipe,
+        ActivityTimePipe,
+        LastFuelPriceRangeClassColorPipe,
+    ],
 })
 export class FuelTableComponent
-    extends FuelDropdownMenuActionsBase
+    extends FuelMixedBase
     implements OnInit, AfterViewInit, OnDestroy
 {
     public destroy$ = new Subject<void>();
 
+    // enums
     public eDropdownMenu = eDropdownMenu;
     public tableStringEnum = TableStringEnum;
     public eCommonElement = eCommonElement;
@@ -120,9 +129,6 @@ export class FuelTableComponent
 
     public tableDataLength: number;
 
-    // map
-    public mapListData = [];
-
     private avatarColorMappingIndexByDriverId: { [key: string]: AvatarColors } =
         {};
 
@@ -139,17 +145,24 @@ export class FuelTableComponent
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
 
+        public mapsService: MapsService,
+        public markerIconService: MapMarkerIconService,
+
         // pipes
         private datePipe: DatePipe,
         private nameInitialsPipe: NameInitialsPipe,
         private activityTimePipe: ActivityTimePipe,
         private thousandSeparator: ThousandSeparatorPipe,
+        public fuelPricePipe: LastFuelPriceRangeClassColorPipe,
 
         // store
         private store: Store,
-        private fuelQuery: FuelQuery
+        public fuelQuery: FuelQuery,
+
+        // ref
+        public ref: ChangeDetectorRef
     ) {
-        super();
+        super(ref, fuelPricePipe, fuelService, mapsService, markerIconService);
     }
 
     ngOnInit(): void {
@@ -172,6 +185,12 @@ export class FuelTableComponent
         this.confirmationSubscribe();
 
         this.confirmationActivationSubscribe();
+
+        this.addMapListScrollEvent();
+
+        this.addSelectedMarkerListener();
+
+        this.checkSelectedMarker();
     }
 
     ngAfterViewInit(): void {
@@ -675,7 +694,6 @@ export class FuelTableComponent
             truck,
             trailer,
             fuelCard,
-            fuelStopStore,
             transactionDate,
             fuelItems,
             total,
@@ -687,22 +705,27 @@ export class FuelTableComponent
             fuelCardHolderName,
             createdAt,
             updatedAt,
+            fuelStopStore,
         } = data;
-
+        const { address, businessName, phone, fax } = fuelStopStore || {};
         const driverFullName = !!driver
             ? `${driver.firstName} ${driver.lastName}`
             : fuelCardHolderName;
-
         const tableDescriptionDropTotal = total
             ? `$${this.thousandSeparator.transform(total)}`
             : null;
-
         const isIntegratedFuelTransaction =
             fuelTransactionType?.id !== eFuelTransactionType.Manual;
-
         const tableType: string = !!fuelTransactionType
             ? eFuelTransactionType[fuelTransactionType?.id]
             : null;
+        const tableLocation: string = [
+            address?.city,
+            address?.stateShortName ?? address?.state,
+            address?.zipCode,
+        ]
+            .filter(Boolean)
+            .join(', ');
 
         if (
             driver &&
@@ -739,21 +762,10 @@ export class FuelTableComponent
             tableTransactionDate: transactionDate
                 ? this.datePipe.transform(transactionDate, 'MM/dd/yy hh:mm a')
                 : null,
-            tableFuelStopName: fuelStopStore?.businessName,
-            phone: fuelStopStore?.phone,
-            fax: fuelStopStore?.fax,
-            tableLocation: fuelStopStore?.address
-                ? fuelStopStore?.address.city +
-                  TableStringEnum.COMA +
-                  (fuelStopStore?.address.stateShortName &&
-                  fuelStopStore?.address.stateShortName !== TableStringEnum.NULL
-                      ? fuelStopStore?.address.stateShortName + null
-                      : null) +
-                  (fuelStopStore?.address.zipCode &&
-                  fuelStopStore?.address.zipCode !== TableStringEnum.NULL
-                      ? fuelStopStore?.address.zipCode
-                      : null)
-                : null,
+            tableFuelStopName: businessName,
+            phone,
+            fax,
+            tableLocation,
             tableAddress: fuelStopStore?.address?.address ?? null,
             tableDescription: fuelItems
                 ? fuelItems.map((item) => {
@@ -1200,6 +1212,12 @@ export class FuelTableComponent
             )
             .subscribe((response) => {
                 this.updateStoreData(response, true);
+            });
+
+        this.fuelQuery.fuelPriceRange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.fuelStopPriceRange = res;
             });
     }
 

@@ -1,15 +1,19 @@
-@if (
+@let store =
     {
         columns: milesStoreService.columns$ | async,
         miles: milesStoreService.miles$ | async,
-        areAllItemsSelected:
-            milesStoreService.areAllItemsSelectedSelector$ | async,
+        hasAllItemsSelected:
+            milesStoreService.hasAllItemsSelectedSelector$ | async,
     };
-    as store
-) {
+
+@if (store) {
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
+        [headerTemplates]="{
+            select: selectHeaderTemplate,
+            revenue: revenueHeaderTemplate,
+        }"
         [templates]="{
             select: loadSelectTemplate,
             unit: unitTemplate,
@@ -21,36 +25,49 @@
             deadHeadCount: percentTemplate,
             repairCount: percentTemplate,
             towingCount: percentTemplate,
+            fuelCost: fuelCostTemplate,
             revenue: revenueTemplate,
         }"
-        [headerTemplates]="{
-            select: selectHeaderTemplate,
-        }"
     >
+        <!-- Header Templates -->
+
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox
-                [isChecked]="store.areAllItemsSelected"
+                name="miles-row-all"
+                [isChecked]="store.hasAllItemsSelected"
                 [isRegularCheckbox]="false"
                 (columnCheckAction)="selectAll()"
-                name="miles-row-all"
             ></app-ca-checkbox>
         </ng-template>
+
+        <ng-template #revenueHeaderTemplate let-data="data">
+            <div class="d-flex align-self-end m-r-6">
+                <span
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-color-bw6-2"
+                >
+                    Revenue
+                </span>
+            </div>
+        </ng-template>
+
+        <!-- Column Templates -->
+
         <ng-template #loadSelectTemplate let-data="data">
             @let name = 'miles-row' + data.id;
 
             <app-ca-checkbox
-                [isChecked]="data.selected"
+                [isChecked]="data.isSelected"
                 [isRegularCheckbox]="false"
-                (columnCheckAction)="selectRow(data)"
                 [itemIndex]="data.id"
                 [name]="name"
+                (columnCheckAction)="selectRow(data)"
             ></app-ca-checkbox>
         </ng-template>
 
         <ng-template #unitTemplate let-data="data">
-            <div class="text-color-black ta-font-bold text-size-14">
+            <p class="text-color-black ta-font-bold text-size-14">
                 {{ data.unit }}
-            </div>
+            </p>
         </ng-template>
 
         <ng-template #truckTypeTemplate let-data="data">
@@ -61,17 +78,24 @@
         </ng-template>
 
         <ng-template #percentTemplate let-data="data" let-key="key">
-            <p class="text-size-14 text-color-black-2 ta-font-regular">
+            <p class="text-size-14 text-color-black-2">
                 {{ data[key]?.count }}
+
                 <span class="text-color-muted text-size-11 ta-font-semi-bold">
                     {{ data[key]?.percent }}%
                 </span>
             </p>
         </ng-template>
 
+        <ng-template #fuelCostTemplate let-data="data">
+            <p class="text-size-14 text-color-black-2">${{ data.fuelCost }}</p>
+        </ng-template>
+
         <ng-template #revenueTemplate let-data="data">
-            <div class="text-color-black ta-font-semi-bold">
-                {{ data.revenue }}$
+            <div class="d-flex justify-content-end">
+                <p class="text-size-14 text-color-black ta-font-semi-bold">
+                    ${{ data.revenue }}
+                </p>
             </div>
         </ng-template>
     </app-new-table>

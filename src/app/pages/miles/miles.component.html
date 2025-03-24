@@ -1,4 +1,4 @@
-@if (
+@let store =
     {
         selectedRows: milesStoreService.selectedRowsSelector$ | async,
         tableViewData: milesStoreService.tableViewData$ | async,
@@ -6,86 +6,101 @@
         activeViewMode: milesStoreService.activeViewMode$ | async,
         statesSelector: milesStoreService.statesSelector$ | async,
     };
-    as store
-) {
-    <app-new-table-toolbar
-        [title]="'Miles'"
-        [leftSide]="leftSide"
-        [showPlusIcon]="false"
-    >
-        <ng-template #leftSide>
-            <app-toolbar-tabs-wrapper
-                [data]="store.tableViewData"
-                [selectedTab]="store.selectedTab"
-                [viewMode]="store.activeViewMode"
-                [shouldAddMap]="true"
-                (onTabChange)="onToolBarAction($event)"
-                class="d-flex align-items-center"
-            ></app-toolbar-tabs-wrapper>
 
-            <ng-container *ngTemplateOutlet="divider"></ng-container>
-
-            <div class="d-flex gap-1 align-items-center">
-                <app-ca-search-multiple-states
-                    [searchType]="'tabel'"
-                    [selectedTabData]="store?.activeTableData"
-                    [toolbarSearch]="true"
-                ></app-ca-search-multiple-states>
+<div class="d-inline-block">
+    @if (store) {
+        <app-new-table-toolbar
+            [title]="eSharedString.MILES"
+            [isMarginTopDisabled]="true"
+            [leftSide]="leftSide"
+            [hasPlusIcon]="false"
+        >
+            <ng-template #leftSide>
+                <app-toolbar-tabs-wrapper
+                    class="d-flex align-items-center"
+                    [data]="store.tableViewData"
+                    [selectedTab]="store.selectedTab"
+                    [viewMode]="store.activeViewMode"
+                    [shouldAddMap]="true"
+                    (onTabChange)="onToolBarAction($event)"
+                ></app-toolbar-tabs-wrapper>
 
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
-                <app-ca-filter-state-dropdown
-                    [states]="store.statesSelector"
-                    (setFilter)="setFilters($event)"
-                ></app-ca-filter-state-dropdown>
+                <div class="d-flex gap-1 align-items-center">
+                    <app-ca-search-multiple-states
+                        [searchType]="'tabel'"
+                        [selectedTabData]="store?.activeTableData"
+                        [toolbarSearch]="true"
+                    ></app-ca-search-multiple-states>
 
-                <app-ca-filter-time-dropdown
-                    type="TimeFilter"
-                    subType="past"
-                    (setFilter)="setFilters($event)"
-                >
-                </app-ca-filter-time-dropdown>
-
-                @if (store.activeViewMode !== 'Map') {
-                    <app-ca-filter
-                        type="moneyFilter"
-                        icon="dollar"
-                        filterTitle="Money Filter"
-                        [isMoneyFilter]="true"
-                        [isMilesFilter]="false"
-                        [isFuelType]="false"
-                        [isLoadType]="false"
-                        [isRepairFilter]="true"
-                        (setFilter)="setFilters($event)"
-                        (clearAll)="setFilters($event)"
-                    >
-                    </app-ca-filter>
-                }
-                @if (store.selectedRows) {
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
-                    <div
-                        class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+
+                    <app-ca-filter-state-dropdown
+                        [states]="store.statesSelector"
+                        [entityType]="store.selectedTab"
+                        (setFilter)="setFilters($event)"
+                    ></app-ca-filter-state-dropdown>
+
+                    <app-ca-filter-time-dropdown
+                        type="TimeFilter"
+                        subType="past"
+                        [entityType]="store.selectedTab"
+                        (setFilter)="setFilters($event)"
                     >
-                        {{ store.selectedRows }} Selected
-                    </div>
-                }
-            </div>
-        </ng-template>
+                    </app-ca-filter-time-dropdown>
 
-        <ng-template #divider>
-            <div class="new-table--toolbar-divider">
-                <div
-                    class="new-table--toolbar-divider-border background-light-grey-6"
-                ></div>
-            </div>
-        </ng-template>
-    </app-new-table-toolbar>
+                    @if (store.activeViewMode !== eCommonElement.MAP) {
+                        <app-ca-filter
+                            type="moneyFilter"
+                            icon="dollar"
+                            filterTitle="Money Filter"
+                            [isMoneyFilter]="true"
+                            [isMilesFilter]="false"
+                            [isFuelType]="false"
+                            [isLoadType]="false"
+                            [isRepairFilter]="true"
+                            (setFilter)="setFilters($event)"
+                            (clearAll)="setFilters($event)"
+                        >
+                        </app-ca-filter>
+                    }
 
-    @if (store.activeViewMode === 'Map') {
-        <app-miles-map></app-miles-map>
-    } @else if (store.activeViewMode === 'List') {
-        <app-miles-table></app-miles-table>
-    } @else {
-        <app-miles-card></app-miles-card>
+                    @if (store.selectedRows) {
+                        <ng-container
+                            *ngTemplateOutlet="divider"
+                        ></ng-container>
+
+                        <div
+                            class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
+                        >
+                            {{ store.selectedRows }} Selected
+                        </div>
+                    }
+                </div>
+            </ng-template>
+
+            <ng-template #divider>
+                <div class="new-table--toolbar-divider">
+                    <div
+                        class="new-table--toolbar-divider-border background-light-grey-6"
+                    ></div>
+                </div>
+            </ng-template>
+        </app-new-table-toolbar>
+
+        @switch (store.activeViewMode) {
+            @case (eCommonElement.LIST) {
+                <app-miles-table></app-miles-table>
+            }
+
+            @case (eCommonElement.CARD) {
+                <app-miles-card></app-miles-card>
+            }
+
+            @case (eCommonElement.MAP) {
+                <app-miles-map></app-miles-map>
+            }
+        }
     }
-}
+</div>

@@ -1,0 +1,11 @@
+.box-unit-list {
+    &-icon {
+        opacity: 0;
+    }
+
+    &:hover {
+        .box-unit-list-icon {
+            opacity: 1;
+        }
+    }
+}

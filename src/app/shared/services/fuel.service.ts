@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-import { exhaustMap, Observable, tap } from 'rxjs';
+import { exhaustMap, Observable, switchMap, tap } from 'rxjs';
 
 // models
 import {
@@ -17,8 +17,10 @@ import {
     FuelStopFranchiseResponse,
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
+    ClusterResponse,
     FuelledVehicleHistoryListResponse,
     CreateWithUploadsResponse,
+    GetFuelStopRangeResponse,
     FuelStopMinimalListResponse,
 } from 'appcoretruckassist';
 
@@ -34,7 +36,11 @@ import { FuelItemStore } from '@pages/fuel/state/fuel-details-item-state/fuel-de
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // helpers
-import { FuelServiceHelper } from '@shared/utils/helpers/fuel-service.helper';
+import { FuelServiceHelper } from '@pages/fuel/utils/helpers';
+import {
+    FuelMapClustersApiArgumentsType,
+    FuelMapListApiArgumentsType,
+} from '@pages/fuel/types';
 
 @Injectable({
     providedIn: 'root',
@@ -65,6 +71,15 @@ export class FuelService {
             return {
                 ...store,
                 fuelStops: data,
+            };
+        });
+    }
+
+    set updateStoreFuelStopPriceRange(data: GetFuelStopRangeResponse) {
+        this.fuelStore.update((store) => {
+            return {
+                ...store,
+                fuelPriceRange: data,
             };
         });
     }
@@ -178,7 +193,8 @@ export class FuelService {
                         FuelServiceHelper.addFuelTransactionStopToStore(
                             this.fuelStore,
                             apiTransaction,
-                            true
+                            true,
+                            [this.fuelDetailsStore, this.fuelItemStore]
                         );
                     })
                 );
@@ -347,6 +363,20 @@ export class FuelService {
         return this.fuelService.apiFuelFuelstopIdGet(id);
     }
 
+    public getFuelClusters(
+        data: FuelMapClustersApiArgumentsType
+    ): Observable<ClusterResponse[]> {
+        return this.fuelService.apiFuelClustersGet(...data);
+    }
+
+    public getFuelMapList(data: FuelMapListApiArgumentsType) {
+        return this.fuelService.apiFuelListmapGet(...data);
+    }
+
+    public getFuelStopPriceRange(): Observable<GetFuelStopRangeResponse> {
+        return this.fuelService.apiFuelFuelstopRangeGet();
+    }
+
     public getFuelStopFuelledcVehicle(
         fuelStopId?: number,
         pageIndex?: number,
@@ -401,7 +431,9 @@ export class FuelService {
                     tap((apiFuelStop) => {
                         FuelServiceHelper.updateFuelTransactionStopInStore(
                             this.fuelStore,
-                            apiFuelStop
+                            apiFuelStop,
+                            false,
+                            [this.fuelDetailsStore, this.fuelItemStore]
                         );
                     })
                 );
@@ -414,7 +446,8 @@ export class FuelService {
         isPinned: boolean
     ): Observable<object> {
         return this.fuelService.apiFuelFuelstopPut(id, isPinned).pipe(
-            tap(() => {
+            switchMap(() => this.getFuelStopById(id)),
+            tap((fuelStop) => {
                 this.fuelStore.update((store) => ({
                     fuelStops: {
                         ...store.fuelStops,
@@ -428,13 +461,19 @@ export class FuelService {
                         },
                     },
                 }));
+
+                FuelServiceHelper.handleUpdateDetailsStore(fuelStop, [
+                    this.fuelDetailsStore,
+                    this.fuelItemStore,
+                ]);
             })
         );
     }
 
-    public updateFuelStopStatus(id: number): Observable<void> {
+    public updateFuelStopStatus(id: number): Observable<FuelStopResponse> {
         return this.fuelService.apiFuelFuelstopStatusIdPut(id).pipe(
-            tap(() => {
+            switchMap(() => this.getFuelStopById(id)),
+            tap((fuelStop) => {
                 this.fuelStore.update((store) => ({
                     fuelStops: {
                         ...store.fuelStops,
@@ -448,6 +487,11 @@ export class FuelService {
                         },
                     },
                 }));
+
+                FuelServiceHelper.handleUpdateDetailsStore(fuelStop, [
+                    this.fuelDetailsStore,
+                    this.fuelItemStore,
+                ]);
             })
         );
     }

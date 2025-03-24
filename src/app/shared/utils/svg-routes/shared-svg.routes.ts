@@ -22,5 +22,25 @@ export class SharedSvgRoutes {
     static DELETE_ICON: string = 'assets/svg/truckassist-table/trash-icon.svg';
     static PRINT_ICON: string = 'assets/svg/truckassist-table/print-icon.svg';
     static MENU_ICON: string = 'assets/svg/truckassist-table/burger-icon.svg';
+    static PICKUP_ICON: string = 'assets/svg/common/ic_pickup.svg';
+    static DELIVERY_ICON: string = 'assets/svg/common/ic_delivery.svg';
+    static MILEAGE_ICON: string = 'assets/svg/common/ic_mileage.svg';
+    static PARKING_ICON: string = 'assets/svg/common/ic_parking.svg';
+    static FUEL_ICON: string = 'assets/svg/common/ic_fuel.svg';
+    static REPAIR_ICON: string = 'assets/svg/common/ic_key-repair.svg';
+    static TOWING_ICON: string = 'assets/svg/common/ic_towing.svg';
+    static ARROW_LEFT_ICON: string = 'assets/svg/common/arrow-left-grey.svg';
+    static ARROW_RIGHT_ICON: string = 'assets/svg/common/arrow-right-grey.svg';
+    static DEACTIVATE_ICON: string = 'assets/svg/common/ic_deactivate.svg';
     static WEX_EFS: string = 'assets/svg/fuel/wex-efs.svg';
+    static COMPANY_ICON: string = 'assets/svg/common/ic_company.svg';
+    static TIME_ICON: string = 'assets/svg/common/ic_time.svg';
+    static USER_ICON: string = 'assets/svg/common/ic_user.svg';
+    static STATUS_ICON: string = 'assets/svg/common/ic_broker-half-circle.svg';
+    static ADDED_DATE: string = 'assets/svg/common/date.svg';
+    static DATE_EDITED: string = 'assets/svg/common/ic_date_checked.svg';
+    static USER_CIRCLE_ICON: string = 'assets/svg/common/ic_broker-user.svg';
+    static HALF_TIME_ICON: string = 'assets/svg/common/ic_half_time.svg';
+    static TOP_RIGHT_ARROW: string = 'assets/svg/common/arrow_top_right.svg';
+    static TRUCK_PATH_BASE: string = 'assets/svg/common/trucks/';
 }

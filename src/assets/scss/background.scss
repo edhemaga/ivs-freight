@@ -9,10 +9,16 @@
 }
 
 .background {
+    &-transparent {
+        background: transparent;
+    }
+
     &-white {
         background: $white;
     }
-
+    &-dark-2 {
+        background: $dark-2;
+    }
     &-muted {
         background: $muted;
     }
@@ -37,12 +43,32 @@
         background-color: $bw6-2;
     }
 
+    &-bw-9 {
+        background-color: $bw-9;
+    }
+
     &-light-grey {
         background-color: $ta-light-grey;
+
+        &-2 {
+            background-color: $ta-light-grey-2;
+        }
 
         &-6 {
             background-color: $ta-light-grey-6;
         }
+
+        &-10 {
+            background-color: $ta-light-grey-10;
+        }
+    }
+
+    &-orange-4 {
+        background-color: $ta-orange-4;
+    }
+
+    &-orange-5 {
+        background-color: $ta-orange-5;
     }
 
     &-blue {
@@ -56,6 +82,10 @@
 
         &-16 {
             background-color: $ta-blue-16;
+        }
+
+        &-26 {
+            background-color: $ta-blue-26;
         }
     }
 
@@ -76,6 +106,10 @@
 
         &-bw2 {
             @include hover($bw2);
+        }
+
+        &-light-grey {
+            @include hover($ta-light-grey);
         }
     }
 }

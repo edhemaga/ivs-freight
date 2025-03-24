@@ -7,6 +7,7 @@ export const initialState = (): FuelState => {
     return {
         fuelTransactions: null,
         fuelStops: null,
+        fuelPriceRange: null,
     };
 };
 

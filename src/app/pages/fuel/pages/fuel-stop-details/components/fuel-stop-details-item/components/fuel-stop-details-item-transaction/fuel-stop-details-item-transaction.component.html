@@ -4,6 +4,20 @@
     >
         <!-- Search -->
 
+        @if (searchConfig[eFuelDetailsSearchIndex.TRANSACTION_INDEX]) {
+            <div class="m-b-6 stop-details-item-transaction-search">
+                <app-ca-search-multiple-states
+                    [searchType]="'Transaction'"
+                    [toolbarSearch]="true"
+                    [isDetailsPageSearch]="true"
+                    [selectedTabData]="{
+                        gridNameTitle: 'Transaction',
+                    }"
+                    (close)="handleCloseSearchEmit()"
+                ></app-ca-search-multiple-states>
+            </div>
+        }
+
         <!-- Header -->
 
         <div
@@ -174,8 +188,7 @@
                                                     transaction?.fuelStopStore
                                                         ?.highestPricePerGallon,
                                                 totalValue:
-                                                    transaction?.fuelStopStore
-                                                        ?.pricePerGallon,
+                                                    transaction?.pricePerGallon,
                                             } | lastFuelPriceRangeClassColor
                                         "
                                         [src]="

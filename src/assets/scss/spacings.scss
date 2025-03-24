@@ -15,15 +15,48 @@
         &-6 {
             margin-bottom: 6px;
         }
+        &-7 {
+            margin-bottom: 7px;
+        }
+        &-8 {
+            margin-bottom: 8px;
+        }
+        &-22 {
+            margin-bottom: 22px;
+        }
     }
     &-t {
+        &-2 {
+            margin-top: 2px;
+        }
+        &-3 {
+            margin-top: 3px;
+        }
         &-4 {
             margin-top: 4px;
+        }
+        &-6 {
+            margin-top: 6px;
+        }
+        &-8 {
+            margin-top: 8px;
+        }
+        &-12 {
+            margin-top: 12px;
+        }
+        &-16 {
+            margin-top: 16px;
         }
     }
     &-r {
         &-4 {
             margin-right: 4px;
+        }
+        &-6 {
+            margin-right: 6px;
+        }
+        &-7 {
+            margin-right: 7px;
         }
     }
     &-l {
@@ -39,9 +72,31 @@
     }
 }
 .p {
+    &-b {
+        &-12 {
+            padding-bottom: 12px;
+        }
+    }
     &-l {
         &-4 {
             padding-left: 4px;
+        }
+        &-6 {
+            padding-left: 6px;
+        }
+        &-8 {
+            padding-left: 8px;
+        }
+    }
+    &-r {
+        &-4 {
+            padding-right: 4px;
+        }
+        &-6 {
+            padding-right: 6px;
+        }
+        &-24 {
+            padding-right: 24px;
         }
     }
     &-x {
@@ -65,6 +120,10 @@
             padding-left: 10px;
             padding-right: 10px;
         }
+        &-12 {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
     }
     &-y {
         &-1 {
@@ -79,11 +138,52 @@
             padding-bottom: 4px;
             padding-top: 4px;
         }
+        &-6 {
+            padding-bottom: 6px;
+            padding-top: 6px;
+        }
     }
     &-8 {
         padding: 8px;
     }
+    &-12 {
+        padding: 12px;
+    }
 }
 .w-full {
     width: 100%;
+}
+
+@for $i from 1 through 40 {
+    .top {
+        &-#{$i} {
+            top: #{$i}px;
+        }
+    }
+
+    .right {
+        &-#{$i} {
+            right: #{$i}px;
+        }
+    }
+
+    .left {
+        &-#{$i} {
+            left: #{$i}px;
+        }
+    }
+
+    .bottom {
+        &-#{$i} {
+            bottom: #{$i}px;
+        }
+    }
+}
+
+.gutter {
+    &-x {
+        &-12 {
+            --bs-gutter-x: 12px !important;
+        }
+    }
 }

@@ -27,7 +27,7 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { eDropdownMenu, eCommonElement, eActiveViewMode } from '@shared/enums';
+import { eDropdownMenu, eActiveViewMode, eCommonElement } from '@shared/enums';
 
 // constants
 import { ContactsCardData } from '@pages/contacts/utils/constants/contacts-card-data.constants';
@@ -50,11 +50,13 @@ export class ContactsTableComponent
 {
     public destroy$ = new Subject<void>();
 
-    public eDropdownMenu = eDropdownMenu;
-
     public resizeObserver: ResizeObserver;
 
     public selectedTab: string = TableStringEnum.ACTIVE;
+
+    // enums
+    public eDropdownMenu = eDropdownMenu;
+    public eCommonElement = eCommonElement;
 
     // table
     public viewData: any[] = [];
@@ -64,8 +66,6 @@ export class ContactsTableComponent
         ContactsCardData.displayRowsFrontContacts;
     public sendDataToCardsBack: CardRows[] =
         ContactsCardData.displayRowsBackContacts;
-
-    public eCommonElement = eCommonElement;
 
     // filters
     public filter = {
@@ -262,9 +262,9 @@ export class ContactsTableComponent
 
     public onToolBarAction(event: ContactsTableToolbarAction) {
         const { action, mode } = event || {};
-        if (event.action === TableStringEnum.OPEN_MODAL) {
+        if (action === TableStringEnum.OPEN_MODAL) {
             this.contactStoreService.dispatchGetCreateContactModalData();
-        } else if (event.action === TableStringEnum.VIEW_MODE) {
+        } else if (action === TableStringEnum.VIEW_MODE) {
             this.contactStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
             );

@@ -22,6 +22,9 @@
             (onDropdownMenuActions)="
                 handleDropdownMenuActions($event, eDropdownMenu.FUEL_STOP)
             "
+            (openModalAction)="onModalAction($event)"
+            (sortActions)="onFuelStopSortActions($event, item?.name)"
+            (searchBtnEmitter)="onSearchBtnClick($event, item?.name)"
         >
         </app-ta-details-header>
     }
