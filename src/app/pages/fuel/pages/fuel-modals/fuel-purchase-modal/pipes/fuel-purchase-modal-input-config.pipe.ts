@@ -1,7 +1,7 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 // models
-import { FuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/models';
+import { IFuelPurchaseModalConfigPipeArgs } from '@pages/fuel/pages/fuel-modals/fuel-purchase-modal/interfaces';
 
 // enums
 import { NameInitialsPipe } from '@shared/pipes';
@@ -20,7 +20,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
     constructor(private nameInitialsPipe: NameInitialsPipe) {}
 
-    transform(args: FuelPurchaseModalConfigPipeArgs): ICaInput {
+    transform(args: IFuelPurchaseModalConfigPipeArgs): ICaInput {
         const {
             configType,
             editDataType,
