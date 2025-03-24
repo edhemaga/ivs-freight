@@ -22,7 +22,7 @@ export function TableCardViewMixin<
 >(Base: T) {
     return class extends DestroyableMixin(Base) {
         public isCardFlippedCheckInCards: number[];
-        public areAllCardsFlipped: boolean;
+        public isEveryCardFlipped: boolean;
 
         public flipCard(index: number): void {
             this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
@@ -32,7 +32,7 @@ export function TableCardViewMixin<
             this.tableService.isFlipedAllCards
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res) => {
-                    this.areAllCardsFlipped = res;
+                    this.isEveryCardFlipped = res;
                     this.isCardFlippedCheckInCards = [];
                     this.cardHelper.isCardFlippedArrayComparasion = [];
                 });
