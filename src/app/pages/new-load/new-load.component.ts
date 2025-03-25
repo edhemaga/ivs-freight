@@ -93,7 +93,7 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     private isToolbarDropdownMenuColumnsActive: boolean = false;
     public isTableLocked: boolean = false;
 
-    //
+    // dropdown options
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
 
     // icons
