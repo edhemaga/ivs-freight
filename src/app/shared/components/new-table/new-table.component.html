@@ -175,7 +175,7 @@
         let-isGroup="isGroup"
         let-label="label"
     >
-        @if (!column.hidden) {
+        @if (column.isChecked) {
             <div
                 class="new-table--row-heading d-flex flex-row"
                 [ngClass]="
@@ -194,7 +194,6 @@
                 }
 
                 <!-- Display custom header template if template exists -->
-
                 @if (headerTemplates[column.key]) {
                     <ng-container
                         *ngTemplateOutlet="headerTemplates[column.key]"
@@ -302,7 +301,7 @@
         let-hasPaddingLeft="hasPaddingLeft"
         let-hasMarginRight="hasMarginRight"
     >
-        @if (!column.hidden) {
+        @if (column.isChecked) {
             <div
                 [class]="{
                     'p-l-6': hasPaddingLeft,

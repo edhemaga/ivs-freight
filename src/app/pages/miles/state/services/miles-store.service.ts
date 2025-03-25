@@ -185,4 +185,15 @@ export class MilesStoreService {
             column,
         });
     }
+
+    public dispatchToggleColumnsVisiblity(
+        columnKey: string,
+        isActive: boolean
+    ) {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_COLUMN_VISIBILITY_CHANGE,
+            columnKey,
+            isActive,
+        });
+    }
 }

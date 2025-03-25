@@ -248,3 +248,55 @@ export function tableSortingChange(
         },
     };
 }
+
+export function toggledColumnVisibility(
+    state: IMilesState,
+    columnKey: string,
+    isActive: boolean
+): IMilesState {
+    function mapColumnsVisibility(
+        columns: ITableColumn[],
+        columnKey: string,
+        isActive: boolean
+    ): ITableColumn[] {
+        return columns.map((column) => {
+            if (column.key === columnKey) {
+                const updatedColumn = { ...column, isChecked: isActive };
+
+                // Ako je parent, postavi sve childove na isti status
+                if (updatedColumn.columns) {
+                    updatedColumn.columns = updatedColumn.columns.map(
+                        (child) => ({ ...child, isChecked: isActive })
+                    );
+                }
+
+                return updatedColumn;
+            }
+
+            // Ako je child, postavi parenta na false ako su svi childovi false
+            if (column.columns) {
+                const updatedChildren = column.columns.map((child) =>
+                    child.key === columnKey
+                        ? { ...child, isChecked: isActive }
+                        : child
+                );
+
+                const anyChildChecked = updatedChildren.some(
+                    (child) => child.isChecked
+                );
+                return {
+                    ...column,
+                    columns: updatedChildren,
+                    isChecked: anyChildChecked,
+                };
+            }
+
+            return column;
+        });
+    }
+
+    return {
+        ...state,
+        columns: mapColumnsVisibility(state.columns, columnKey, isActive),
+    };
+}

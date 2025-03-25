@@ -184,8 +184,38 @@ export class MilesComponent
             //     this.selectedTab
             // ),
         };
-
         this.handleSharedDropdownMenuActions(mappedAction, eDropdownMenu.MILES);
+        switch (action.type) {
+            // case eDropdownMenuColumns.OPEN_TYPE:
+            //     this.updateToolbarDropdownMenuContent();
+
+            //     break;
+            // case eDropdownMenuColumns.COLUMNS_TYPE:
+            //     this.updateToolbarDropdownMenuContent(type);
+
+            //     break;
+            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
+                this.toggleTableLockingStatus();
+
+                break;
+            // case eDropdownMenuColumns.RESET_TABLE_TYPE:
+            //     this.handleResetTableAction(subType);
+
+            //     break;
+            // case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
+            //     this.handleResetTableConfirmedAction(subType);
+
+            //     break;
+            default:
+                this.milesStoreService.dispatchToggleColumnsVisiblity(
+                    action.type,
+                    action.isActive
+                );
+
+                break;
+        }
+        //
     }
 
     public updateToolbarDropdownMenuContent(action?: string): void {

@@ -44,23 +44,23 @@ export abstract class ColumnsDropdownMenuActionsBase {
                 this.updateToolbarDropdownMenuContent(type);
 
                 break;
-            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
-            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
-                this.handleLockUnlockTableAction(type, subType);
+            // case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            // case eDropdownMenuColumns.LOCK_TABLE_TYPE:
+            //     this.handleLockUnlockTableAction(type, subType);
 
-                break;
-            case eDropdownMenuColumns.RESET_TABLE_TYPE:
-                this.handleResetTableAction(subType);
+            //     break;
+            // case eDropdownMenuColumns.RESET_TABLE_TYPE:
+            //     this.handleResetTableAction(subType);
 
-                break;
-            case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
-                this.handleResetTableConfirmedAction(subType);
+            //     break;
+            // case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
+            //     this.handleResetTableConfirmedAction(subType);
 
-                break;
-            default:
-                this.handleColumnsCheckAction(type, subType, isActive);
+            //     break;
+            // default:
+            //     this.handleColumnsCheckAction(type, subType, isActive);
 
-                break;
+            //     break;
         }
     }
 

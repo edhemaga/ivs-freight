@@ -138,6 +138,10 @@ export const milesReducer = createReducer(
 
     on(MilesAction.tableSortingChange, (state, { column }) =>
         Functions.tableSortingChange(state, column)
+    ),
+
+    on(MilesAction.toggledColumnVisibility, (state, { columnKey, isActive }) =>
+        Functions.toggledColumnVisibility(state, columnKey, isActive)
     )
     // #endregion
 );

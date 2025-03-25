@@ -1,7 +1,7 @@
-import { ITableColumn } from "@shared/components/new-table/interface";
-
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 const checkbox: ITableColumn = {
+    isChecked: true,
     key: 'select',
     label: '',
     width: 26,

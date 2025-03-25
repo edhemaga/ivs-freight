@@ -110,3 +110,8 @@ export const tableSortingChange = createAction(
     MilesStoreConstants.ACTION_SORTING_CHANGE,
     props<{ column: ITableColumn }>()
 );
+
+export const toggledColumnVisibility = createAction(
+    MilesStoreConstants.ACTION_COLUMN_VISIBILITY_CHANGE,
+    props<{ columnKey: string; isActive: boolean }>()
+);

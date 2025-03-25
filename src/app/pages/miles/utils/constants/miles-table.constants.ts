@@ -5,6 +5,7 @@ const checkbox: ITableColumn = {
     label: '',
     width: 26,
     pinned: 'left',
+    isChecked: true,
 };
 
 const unit: ITableColumn = {
