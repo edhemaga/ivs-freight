@@ -14,7 +14,7 @@ import {
     MilesToolbarTabs,
 } from '@pages/miles/utils/constants';
 
-// Models
+// interface
 import { IMilesState } from '@pages/miles/interface';
 
 // functions
@@ -43,6 +43,11 @@ export const initialState: IMilesState = {
         isFirstUnit: true,
         isLastUnit: true,
         isLastInCurrentList: false,
+    },
+    tableSettings: {
+        isTableLocked: false,
+        sortKey: '',
+        sortDirection: null,
     },
 };
 
@@ -121,6 +126,18 @@ export const milesReducer = createReducer(
                 isLast,
                 isLastInCurrentList
             )
+    ),
+
+    on(MilesAction.toggleTableLockingStatus, (state) =>
+        Functions.toggleTableLockingStatus(state)
+    ),
+
+    on(MilesAction.pinTableColumn, (state, { column }) =>
+        Functions.pinTableColumn(state, column)
+    ),
+
+    on(MilesAction.tableSortingChange, (state, { column }) =>
+        Functions.tableSortingChange(state, column)
     )
     // #endregion
 );

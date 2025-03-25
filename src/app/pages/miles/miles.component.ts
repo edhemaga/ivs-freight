@@ -1,9 +1,9 @@
+// External Libraries
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { Subject, takeUntil } from 'rxjs';
 
-// components
+// Shared Components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
@@ -16,14 +16,11 @@ import {
 import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
-import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
-import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 
-// services
+// Feature Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
-import { ModalService } from '@shared/services';
 
-// enums
+// Enums
 import { eMileTabs } from '@pages/miles/enums';
 import {
     eActiveViewMode,
@@ -34,9 +31,8 @@ import {
     eSharedString,
     TableStringEnum,
 } from '@shared/enums';
-import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
-// interfaces
+// Interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { DropdownMenuActionsBase } from '@shared/base-classes';
@@ -45,6 +41,9 @@ import { ConfirmationResetService } from '@shared/components/ta-shared-modals/co
 import { TableCardBodyActions } from '@shared/models';
 import { MilesDropdownMenuHelper } from './utils/helpers/miles-dropdown-menu.helper';
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
+import { ModalService } from '@shared/services';
 
 @Component({
     selector: 'app-miles',
@@ -64,7 +63,6 @@ import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown
         MilesMapComponent,
         MilesCardComponent,
         MilesTableComponent,
-        TaTableEmptyComponent,
     ],
 })
 export class MilesComponent
@@ -79,7 +77,6 @@ export class MilesComponent
     public eSharedString = eSharedString;
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
-    public eGeneralActions = eGeneralActions;
 
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
     private isTableLocked: boolean = true;
@@ -96,6 +93,10 @@ export class MilesComponent
 
     ngOnInit(): void {
         this.storeSubscription();
+    }
+
+    public toggleTableLockingStatus(): void {
+        this.milesStoreService.toggleTableLockingStatus();
     }
 
     private storeSubscription(): void {

@@ -1,4 +1,4 @@
-import { ITableColumn } from '@shared/models';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 const checkbox: ITableColumn = {
     key: 'select',

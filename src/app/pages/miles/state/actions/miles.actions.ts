@@ -17,6 +17,7 @@ import { IMilesModel } from '@pages/miles/interface';
 
 // Interface
 import { IStateFilters } from '@shared/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
@@ -94,4 +95,18 @@ export const setFollowingUnitDetails = createAction(
         isLast: boolean;
         isLastInCurrentList: boolean;
     }>()
+);
+
+export const toggleTableLockingStatus = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS
+);
+
+export const pinTableColumn = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_PIN_TABLE_COLUMN,
+    props<{ column: ITableColumn }>()
+);
+
+export const tableSortingChange = createAction(
+    MilesStoreConstants.ACTION_SORTING_CHANGE,
+    props<{ column: ITableColumn }>()
 );
