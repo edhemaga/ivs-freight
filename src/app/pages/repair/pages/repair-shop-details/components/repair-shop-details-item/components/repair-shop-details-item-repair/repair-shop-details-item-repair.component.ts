@@ -20,7 +20,7 @@ import {
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
+import { DetailsSearchService } from '@shared/services';
 import { RepairService } from '@shared/services/repair.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
@@ -36,7 +36,10 @@ import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // enums
-import { eRepairShopDetails } from '@pages/repair/pages/repair-shop-details/enums';
+import {
+    eRepairShopDetails,
+    eRepairShopDetailsSearchIndex,
+} from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eDropdownMenu, eGeneralActions } from '@shared/enums';
 
@@ -95,6 +98,7 @@ export class RepairShopDetailsItemRepairComponent
 
     // enums
     public eRepairShopDetails = eRepairShopDetails;
+    public eRepairShopDetailsSearchIndex = eRepairShopDetailsSearchIndex;
 
     // headers
     public repairHeaderItems: string[] = [];
@@ -118,7 +122,7 @@ export class RepairShopDetailsItemRepairComponent
         protected tableService: TruckassistTableService,
         protected confirmationResetService: ConfirmationResetService,
         private confirmationService: ConfirmationService,
-        private repairShopDetailsService: RepairShopDetailsService
+        private detailsSearchService: DetailsSearchService
     ) {
         super();
     }
@@ -262,9 +266,9 @@ export class RepairShopDetailsItemRepairComponent
     public updateToolbarDropdownMenuContent(): void {}
 
     public handleCloseSearchEmit(): void {
-        const detailsPartIndex = 0;
-
-        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
+        this.detailsSearchService.setCloseSearchStatus(
+            eRepairShopDetailsSearchIndex.REPAIR_INDEX
+        );
     }
 
     ngOnDestroy(): void {

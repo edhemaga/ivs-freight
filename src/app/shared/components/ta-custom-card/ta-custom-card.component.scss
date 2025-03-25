@@ -384,7 +384,8 @@
                     transition: all 0.3s ease-in-out;
 
                     path {
-                        fill: #919191;
+                        fill: $muted;
+                        transition: fill $transitionDuration ease-in-out;
                     }
                 }
 
@@ -620,5 +621,19 @@
 
     .ta-counter {
         background-color: $ta-light-grey-6 !important;
+    }
+}
+
+.ta-custom-card-hover {
+    &:hover {
+        .header-text {
+            color: $ta-black !important;
+        }
+
+        .header-arrow {
+            svg path {
+                fill: $ta-black !important;
+            }
+        }
     }
 }

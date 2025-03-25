@@ -101,6 +101,7 @@
                             marginBottom: '0',
                         }"
                         [disabledCard]="!selectedDispatches"
+                        [hasScrollBackroundTrack]="false"
                         (onOpenCard)="toggleAssignList()"
                         (onActionEvent)="onReorderAction($event)"
                         (cdkDropListDropped)="dropAssigned($event)"
@@ -175,6 +176,7 @@
                         [disabledCard]="isReorderingActive"
                         [hasDivider]="false"
                         [cardHeight]="secondElementHeight"
+                        [hasScrollBackroundTrack]="false"
                         [animationMarginParams]="{
                             marginTop: '0',
                             marginBottom: '0',
@@ -319,6 +321,7 @@
                         [hasCounter]="selectedLoad?.stops.length"
                         [hasActionSvg]="false"
                         [hasBodyData]="true"
+                        [hasScrollBackroundTrack]="false"
                         [animationMarginParams]="{
                             marginTop: '10px',
                             marginBottom: '12px',

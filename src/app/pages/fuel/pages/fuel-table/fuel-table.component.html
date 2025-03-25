@@ -34,6 +34,7 @@
                 "
             ></app-ta-table-body>
         }
+
         @case (eCommonElement.CARD) {
             <div class="elements">
                 <app-fuel-card
@@ -64,40 +65,46 @@
                 }
             </div>
         }
+
         @case (eCommonElement.MAP) {
             <div class="customer-map-container">
                 <app-ta-map-list
                     [type]="'fuelStop'"
                     [columns]="columns"
+                    [sortColumns]="fuelStopMapListSortColumns"
                     [mapListContent]="mapListData"
+                    (searchEvent)="onMapListSearch($event)"
+                    (sortEvent)="onMapListSort($event)"
                     (headActions)="onTableHeadActions($event)"
                 >
-                    <app-ta-map-list-card
-                        *ngFor="let latlong of mapListData; let i = index"
-                        #listCard
-                        [title]="latlong?.businessName"
-                        [isSelected]="latlong?.isSelected"
-                        [status]="latlong?.status"
-                        [item]="latlong"
-                        [index]="i"
-                        [address]="latlong.address"
-                        [rating]="{
-                            up: latlong?.upRatingCount,
-                            down: latlong?.downRatingCount,
-                        }"
-                        [type]="'fuelStop'"
-                        (clickedMarker)="selectItem($event)"
-                    ></app-ta-map-list-card>
+                    @for (
+                        latlong of mapListData;
+                        let i = $index;
+                        track latlong.id
+                    ) {
+                        <app-ta-map-list-card
+                            #listCard
+                            [title]="latlong?.businessName"
+                            [status]="!latlong?.tableDeactivated"
+                            [item]="latlong"
+                            [index]="i"
+                            [address]="latlong.address"
+                            [type]="'fuelStop'"
+                            (clickedMarker)="selectItem($event)"
+                        ></app-ta-map-list-card>
+                    }
                 </app-ta-map-list>
 
-                <!-- <app-ca-map
+                <app-ca-map
                     [data]="mapData"
                     (clusterMarkerClick)="onClusterMarkerClick($event)"
                     (clusterListScrollEvent)="onClusterListScroll($event)"
                     (getInfoWindowData)="onGetInfoWindowData($event)"
                     (boundsChanged)="onMapBoundsChange($event)"
-                    (resetSelectedMarkerItem)="onResetSelectedMarkerItem($event)"
-                ></app-ca-map> -->
+                    (resetSelectedMarkerItem)="
+                        onResetSelectedMarkerItem($event)
+                    "
+                ></app-ca-map>
             </div>
         }
     }
@@ -111,5 +118,5 @@
             : tableStringEnum.STOP
     "
     [hasResults]="!!viewData.length"
-    (btnClickEmitter)="handleTableEmptyBtnClickEmit()"
+    (onBtnClick)="onTableEmptyBtnClick()"
 ></app-ta-table-empty>

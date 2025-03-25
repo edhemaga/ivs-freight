@@ -29,6 +29,7 @@
         [class.dropdown-modal-card]="isDropdownModalCard"
         [class.ta-card-spacing-x]="hasXAxisBottomPadding"
         [class.active-dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
+        [class.ta-custom-card-hover]="!isHeaderLightColor"
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
         (click)="isCardOpenEvent($event)"
@@ -325,6 +326,7 @@
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
             'department-contacts-x-axis': isDepartmentContactsCard,
             'scrollable-element overflow-auto': isInheritingParentSize,
+            'remove-scroll-track': !hasScrollBackroundTrack,
             'set-max-height': isInheritingParentSize,
         }"
         [ngStyle]="{

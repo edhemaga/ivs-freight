@@ -1,16 +1,19 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-// Interface
+// interfaces
 import { IMilesModel } from '@pages/miles/interface';
 
-// Services
+// services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
-// Components
+// components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 import { CaCheckboxComponent } from 'ca-components';
+
+// pipes
+import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-miles-table',
@@ -18,10 +21,16 @@ import { CaCheckboxComponent } from 'ca-components';
     styleUrl: './miles-table.component.scss',
     standalone: true,
     imports: [
+        // modules
         CommonModule,
+
+        // components
         NewTableComponent,
         TaTruckTrailerIconComponent,
         CaCheckboxComponent,
+
+        // pipes
+        ThousandSeparatorPipe,
     ],
 })
 export class MilesTableComponent {

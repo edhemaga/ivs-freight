@@ -16,11 +16,13 @@
         [title]="'Load'"
         [leftSide]="leftSide"
         [rightSide]="rightSide"
+        [toolbarDropdownContent]="toolbarDropdownMenuOptions"
         (onPlusClick)="
             onToolBarAction({
                 action: generalActions.OPEN_MODAL,
             })
         "
+        (toolbarDropdownAction)="handleToolbarDropdownMenuActions($event)"
     >
         <ng-template #leftSide>
             <app-toolbar-tabs-wrapper
@@ -141,12 +143,6 @@
                 LTL BUILDER
             </div>
             <ng-container *ngTemplateOutlet="divider"></ng-container>
-
-            <svg-icon
-                [src]="sharedIcons.MENU_ICON"
-                class="background-hover-dark-2 svg-fill-muted svg-hover-black svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-r-4"
-            >
-            </svg-icon>
         </ng-template>
 
         <ng-template #divider>

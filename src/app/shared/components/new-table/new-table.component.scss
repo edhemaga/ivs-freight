@@ -1,7 +1,13 @@
-.test-margin {
-    margin-top: 20px;
-}
+.table-container {
+    .table-header {
+        overflow-x: hidden;
+    }
 
-.cdk-virtual-scrollable {
-    overflow: unset !important;
+    .test-margin {
+        margin-top: 20px;
+    }
+
+    .cdk-virtual-scrollable {
+        overflow: unset !important;
+    }
 }

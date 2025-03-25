@@ -284,3 +284,39 @@
     overflow: hidden;
     border-radius: 2px;
 }
+
+.marker-fuel-svg {
+    rect {
+        fill: $ta-light-grey-6;
+    }
+
+    &.fuel-color-1 {
+        rect {
+            fill: $ta-green;
+        }
+    }
+
+    &.fuel-color-2 {
+        rect {
+            fill: $ta-green-6;
+        }
+    }
+
+    &.fuel-color-3 {
+        rect {
+            fill: $ta-yellow-1;
+        }
+    }
+
+    &.fuel-color-4 {
+        rect {
+            fill: $ta-orange-4;
+        }
+    }
+
+    &.fuel-color-5 {
+        rect {
+            fill: $ta-red-10;
+        }
+    }
+}

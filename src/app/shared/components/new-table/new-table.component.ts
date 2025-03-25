@@ -1,69 +1,125 @@
-import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
-import { AngularSvgIconModule } from 'angular-svg-icon';
 import {
-    AfterViewInit,
+    AfterViewChecked,
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     ElementRef,
     EventEmitter,
     Input,
+    OnDestroy,
     Output,
-    Renderer2,
     TemplateRef,
     ViewChild,
 } from '@angular/core';
 
-import { ITableColumn } from '@shared/models';
+// modules
+import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
-// Components
+// components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// Svg routes
+// svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// pipes
+import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
+
+// constants
+import { TableConstants } from '@shared/components/new-table/utils/constants';
+
+// enums
+import { ePosition } from 'ca-components';
+import { eColor, eGeneralActions } from '@shared/enums';
+
+// models
+import { ITableColumn } from '@shared/models';
 
 @Component({
     selector: 'app-new-table',
+    templateUrl: './new-table.component.html',
+    styleUrl: './new-table.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush,
     standalone: true,
     imports: [
         CommonModule,
-        ScrollingModule,
         AngularSvgIconModule,
         NgbTooltipModule,
 
-        // Components
+        // components
         TaAppTooltipV2Component,
+
+        // pipes
+        TableColumnClassPipe,
     ],
-    templateUrl: './new-table.component.html',
-    styleUrl: './new-table.component.scss',
 })
-export class NewTableComponent implements AfterViewInit {
-    @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
+export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     @ViewChild('header') header!: ElementRef;
+    @ViewChild('tableRow') tableRow!: ElementRef<HTMLDivElement>;
+
     @Input() expandedRows: Set<number> = new Set([]);
     @Input() isTableLocked: boolean;
-    @Input() rows: any[] = [];
-    @Input() templates: { [key: string]: TemplateRef<any> } = {};
-    @Input() headerTemplates: { [key: string]: TemplateRef<any> } = {};
+    @Input() rows: T[] = [];
+    @Input() templates: { [key: string]: TemplateRef<T> } = {};
+    @Input() headerTemplates: { [key: string]: TemplateRef<T> } = {};
 
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
 
-    @Output() onSortingChange$: EventEmitter<any> = new EventEmitter();
+    @Output() onSortingChange: EventEmitter<string> = new EventEmitter();
 
-    public sharedSvgRoutes = SharedSvgRoutes;
+    private resizeObserver!: ResizeObserver;
 
+    public rowWidth: number;
+
+    // columns
     public leftPinnedColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
 
-    constructor(private renderer: Renderer2) {}
+    // enums
+    public ePosition = ePosition;
+    public eColor = eColor;
+    public eGeneralActions = eGeneralActions;
 
-    ngAfterViewInit() {
-        this.updateHeight();
+    // svg routes
+    public sharedSvgRoutes = SharedSvgRoutes;
+
+    constructor(
+        // ref
+        private cdRef: ChangeDetectorRef
+    ) {}
+
+    ngAfterViewChecked() {
+        this.getTableWidth();
+    }
+
+    private getTableWidth(): void {
+        this.resizeObserver = new ResizeObserver(([entry]) => {
+            if (!entry) return;
+
+            this.rowWidth =
+                entry.contentRect.width +
+                TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
+
+            this.cdRef.detectChanges();
+        });
+
+        this.resizeObserver.observe(this.tableRow.nativeElement);
+    }
+
+    private processColumns(columns: ITableColumn[]): void {
+        this.leftPinnedColumns = columns.filter(
+            (col) => col.pinned === ePosition.LEFT
+        );
+
+        this.rightPinnedColumns = columns.filter(
+            (col) => col.pinned === ePosition.RIGHT
+        );
+
+        this.mainColumns = columns.filter((col) => !col.pinned);
     }
 
     public onScroll(event: Event): void {
@@ -77,31 +133,19 @@ export class NewTableComponent implements AfterViewInit {
         return this.expandedRows?.has(rowId);
     }
 
-    public trackTableRow(item: any) {
-        return item.id;
-    }
-
     public pinColumn(column: ITableColumn): void {
         column.pinned = null;
     }
 
-    private processColumns(columns: ITableColumn[]): void {
-        this.leftPinnedColumns = columns.filter((col) => col.pinned === 'left');
-        this.rightPinnedColumns = columns.filter(
-            (col) => col.pinned === 'right'
-        );
-        this.mainColumns = columns.filter((col) => !col.pinned);
-    }
-
-    public setSorting(sort: any): void {
+    public setSorting(sort: string): void {
         if (this.isTableLocked) return;
-        this.onSortingChange$.emit(sort);
+
+        this.onSortingChange.emit(sort);
     }
 
-    private updateHeight() {
-        if (this.viewport) {
-          const offsetTop = this.viewport.elementRef.nativeElement.offsetTop;
-          this.renderer.setStyle(this.viewport.elementRef.nativeElement, 'height', `calc(100vh - ${offsetTop}px)`);
-        }
+    public handleShowMoreClick(): void {}
+
+    ngOnDestroy() {
+        this.resizeObserver.disconnect();
     }
 }

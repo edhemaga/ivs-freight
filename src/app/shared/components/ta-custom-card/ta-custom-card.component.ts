@@ -105,6 +105,7 @@ export class TaCustomCardComponent implements OnInit {
     @Input() isExtraLargeLayout: boolean = false;
     @Input() isDepartmentContactsCard: boolean = false;
     @Input() hasColorIcon: boolean = false;
+    @Input() hasScrollBackroundTrack: boolean = true;
 
     @Input() controlName: UntypedFormControl;
 

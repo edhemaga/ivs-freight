@@ -2,6 +2,11 @@
 
 .text {
     &-size {
+        &-9 {
+            font-size: 9px;
+            line-height: 12px;
+        }
+
         &-11 {
             font-size: 11px !important;
             line-height: 14px !important;
@@ -20,6 +25,11 @@
         &-18 {
             font-size: 18px !important;
             line-height: 22px !important;
+        }
+
+        &-20 {
+            font-size: 20px !important;
+            line-height: 24px !important;
         }
 
         &-26 {

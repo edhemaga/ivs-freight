@@ -2,8 +2,8 @@
     <div class="contacts-container">
         <!-- Search -->
 
-        @if (searchConfig[3]) {
-            <div class="contacts-container-search">
+        @if (searchConfig[eRepairShopDetailsSearchIndex.CONTACT_INDEX]) {
+            <div class="m-b-6 contacts-container-search">
                 <app-ca-search-multiple-states
                     [searchType]="'Contact'"
                     [toolbarSearch]="false"
