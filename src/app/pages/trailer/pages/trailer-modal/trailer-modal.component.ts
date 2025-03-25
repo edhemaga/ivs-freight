@@ -417,7 +417,9 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (this.trailerForm.valid && this.isFormDirty)
+            this.activeAction = action;
+
         if (action === TaModalActionEnum.CLOSE) {
             if (this.editData?.canOpenModal)
                 switch (this.editData?.key) {

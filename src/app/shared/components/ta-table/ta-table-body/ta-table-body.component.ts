@@ -85,7 +85,11 @@ import { MiddleEllipsisPipe } from '@shared/pipes';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { eDropdownMenu, eGeneralActions } from '@shared/enums';
+import {
+    eDropdownMenu,
+    eDropdownMenuColumns,
+    eGeneralActions,
+} from '@shared/enums';
 
 // models
 import {
@@ -784,6 +788,18 @@ export class TaTableBodyComponent<
         rowData: T
     ): void {
         const { type } = action;
+        const { id } = rowData;
+
+        if (type === eDropdownMenuColumns.OPEN_TYPE) {
+            this.dropDownActive = id;
+        }
+
+        if (
+            type === eDropdownMenuColumns.CLOSE_TYPE &&
+            this.dropDownActive === id
+        ) {
+            this.dropDownActive = -1;
+        }
 
         const emitAction =
             DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
@@ -1243,7 +1259,7 @@ export class TaTableBodyComponent<
 
     public addPmItem(row: any, column: any): void {
         this.tableBodyActions.emit({
-            data: {...row, title: column.name },
+            data: { ...row, title: column.name },
             type: TableStringEnum.ADD_PM_ITEM,
         });
     }

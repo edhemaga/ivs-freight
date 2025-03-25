@@ -359,7 +359,7 @@ export class ShipperModalComponent
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (this.isModalValidToSubmit) this.activeAction = action;
 
         if (action === TaModalActionEnum.CLOSE) {
             switch (this.editData?.key) {
