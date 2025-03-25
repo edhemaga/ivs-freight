@@ -15,9 +15,9 @@ import { CardHelper } from '@shared/utils/helpers';
 
 export function TableCardViewMixin<
     T extends Constructor<{
-        cardHelper: CardHelper;
-        tableService: TruckassistTableService;
-        viewData: CardDetails[];
+        cardHelper?: CardHelper;
+        tableService?: TruckassistTableService;
+        viewData?: CardDetails[];
     }>,
 >(Base: T) {
     return class extends DestroyableMixin(Base) {

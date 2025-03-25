@@ -1,0 +1,114 @@
+<div class="cards-container">
+    @for (card of _viewData; let i = $index; track $index) {
+        <div class="custom-card">
+            <!-- Card splited on left and right side -->
+
+            <div
+                class="card-body d-flex justify-content-between"
+            >
+                <!-- Left side of the card -->
+
+                <div class="card-body-left p-1">
+                    <!-- Head of the card -->
+
+                    <div class="card-header d-flex align-items-center">
+                        <div class="checkbox-holder d-flex align-items-center">
+                            <!-- Checkbox -->
+                            <span
+                                class="checkbox-tooltip"
+                                type="button"
+                                ngbTooltip
+                                tooltipBackground="#424242"
+                                position="bottom"
+                            >
+                                <input
+                                    class="table-checkbox"
+                                    type="checkbox"
+                                    id="checkbox{{ i }}"
+                                    [checked]="card.isSelected"
+                                    (change)="onCheckboxSelect(i, card)"
+                                />
+                                <label
+                                    class="table-checkbox-label"
+                                    for="checkbox{{ i }}"
+                                ></label>
+                            </span>
+                        </div>
+                        <div class="name d-flex ta-font-bold">
+                            <span class="title">
+                                <span class="title-tooltip" customClass="mt-1">
+                                    {{ card?.tableAvatar?.name }}
+                                </span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Card body front-->
+
+                    <div class="card-body-content flipped">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                frontSide;
+                                context: { data: card }
+                            "
+                        ></ng-container>
+                    </div>
+                </div>
+
+                <!-- Right side of card -->
+
+                <div class="card-body-right">
+                    <div class="top-side">
+                        <!-- Dropdown Menu-->
+
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
+
+                        <!-- Note element -->
+
+                        <div
+                            class="note-container right-side-svg d-flex align-items-center justify-content-center flex-column"
+                        >
+                            <app-ta-note
+                                [note]="card.note"
+                                [mainData]="card"
+                                [entityId]="card.id"
+                                [entityType]="'User'"
+                                [openedAll]="false"
+                                [parking]="false"
+                            >
+                            </app-ta-note>
+                        </div>
+
+                        <!-- Expand element -->
+
+                        <div
+                            class="bottom-side d-flex justify-content-center"
+                            (click)="flipCard(i)"
+                        >
+                            <span
+                                class="expand-card"
+                                type="button"
+                                ngbTooltip
+                                mainTooltip="Flip Card"
+                                tooltipBackground="#424242"
+                                position="bottom"
+                            >
+                                <svg-icon
+                                    [src]="'assets/svg/common/resize-arrow.svg'"
+                                ></svg-icon>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>

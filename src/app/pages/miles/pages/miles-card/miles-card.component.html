@@ -1,1 +1,43 @@
-<p>miles-card works!</p>
+@let store =
+    {
+        miles: milesStoreService.miles$ | async,
+        hasAllItemsSelected:
+            milesStoreService.hasAllItemsSelectedSelector$ | async,
+    };
+
+@if (store) {
+    <p>miles-card works!</p>
+
+    <ng-template #frontSide let-data="data">
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Stops • Count',
+                    text: data?.fuelCount.count ?? '/',
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Miles • Empty',
+                    text: data?.milesEmpty ?? '/',
+                }
+            "
+        ></ng-container>
+    </ng-template>
+
+    <ng-template #textWithTitle let-data="data" let-title="title" let-text="text">
+        {{data | json }}
+        <div>{{ title }}</div>
+        <div>{{ text }}</div>
+    </ng-template>
+
+    <app-table-card-view
+        [viewData]="store.miles"
+        [frontSide]="frontSide"
+    ></app-table-card-view>
+}
