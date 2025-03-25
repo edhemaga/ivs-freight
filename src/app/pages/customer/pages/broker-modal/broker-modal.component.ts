@@ -599,7 +599,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public onModalAction(action: string, cancelWrapper): void {
         if (this.isUploadInProgress) return;
 
-        this.activeAction = action;
+        if (this.isModalValidToSubmit) this.activeAction = action;
 
         if (
             action === TaModalActionEnum.MOVE_TO_BFB ||
@@ -1620,11 +1620,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                     };
 
                                 if (type)
-                                    this.loadStoreService.dispatchAddNewBrokerToStaticModalData(modalSingleBrokerItem);
-
-                                    this.loadStoreService.dispatchGetCreateLoadModalData(
+                                    this.loadStoreService.dispatchAddNewBrokerToStaticModalData(
                                         modalSingleBrokerItem
                                     );
+
+                                this.loadStoreService.dispatchGetCreateLoadModalData(
+                                    modalSingleBrokerItem
+                                );
                             }
                         }
                     }
@@ -1677,8 +1679,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 const { canOpenModal, key } = this.editData;
 
                                 if (canOpenModal && key) {
-                                    this.loadStoreService.dispatchUpdateEditedBrokerStaticModalData(newData, brokerContacts);
-                                    this.loadStoreService.dispatchGetCreateLoadModalData(newData);
+                                    this.loadStoreService.dispatchUpdateEditedBrokerStaticModalData(
+                                        newData,
+                                        brokerContacts
+                                    );
+                                    this.loadStoreService.dispatchGetCreateLoadModalData(
+                                        newData
+                                    );
                                 }
 
                                 break;

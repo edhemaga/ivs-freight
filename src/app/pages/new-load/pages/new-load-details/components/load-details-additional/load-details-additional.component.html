@@ -1,5 +1,19 @@
 @let load = loadStoreService.resolveLoadDetails$ | async;
 
-<div class="background-white p-8 br-3">
-   Comments: {{ load.commentsCount }}
+<div class="h-44 d-flex align-items-center w-100 m-b-7">
+    <div
+        class="background-white br-3 p-l-8 p-r-4 d-flex h-34 align-items-center disable-text-selection w-100"
+    >
+        <div class="text-color-black text-size-16 ta-font-extra-bold">
+            Comments
+        </div>
+
+        <div
+            class="ml-1 d-flex align-items-center justify-content-center text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-5 br-60 h-18 min-w-18"
+        >
+            {{ load.commentsCount }}
+        </div>
+    </div>
 </div>
+
+<div class="background-white p-x-6 p-y-6 br-3 w-100">Load status</div>

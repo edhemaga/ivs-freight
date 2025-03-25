@@ -969,7 +969,7 @@ export class RepairTableComponent
         }, 900);
     }
 
-    public handleTableEmptyBtnClickEmit(btnClickType: string): void {
+    public onTableEmptyBtnClick(btnClickType: string): void {
         switch (btnClickType) {
             case eTableEmpty.ADD_CLICK:
                 this.onToolBarAction({ action: eGeneralActions.OPEN_MODAL });

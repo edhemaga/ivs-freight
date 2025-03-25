@@ -33,6 +33,7 @@ import {
     CaFilterComponent,
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
+    CaSearchMultipleStates2Component,
     IFilterAction,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
@@ -75,6 +76,7 @@ import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
         CaFilterComponent,
         CaFilterTimeDropdownComponent,
         CaFilterListDropdownComponent,
+        CaSearchMultipleStates2Component,
         SvgIconComponent,
     ],
 })
@@ -91,7 +93,7 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     private isToolbarDropdownMenuColumnsActive: boolean = false;
     public isTableLocked: boolean = false;
 
-    // 
+    // dropdown options
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
 
     // icons

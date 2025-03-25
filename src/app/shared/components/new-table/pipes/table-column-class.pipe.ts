@@ -8,7 +8,7 @@ import { SortOrder } from 'appcoretruckassist';
     standalone: true,
 })
 export class TableColumnClassPipe<
-    T extends { sort?: any; direction?: SortOrder | null },
+    T extends { sort?: string; direction?: SortOrder | null },
 > implements PipeTransform
 {
     transform(args: {

@@ -646,3 +646,10 @@ html ngb-modal-backdrop {
     padding-left: 0px;
     z-index: 1;
 }
+
+.disable-text-selection {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}

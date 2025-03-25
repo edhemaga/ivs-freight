@@ -17,8 +17,10 @@ import {
     FuelStopFranchiseResponse,
     FuelTransactionResponse,
     GetModalFuelStopFranchiseResponse,
+    ClusterResponse,
     FuelledVehicleHistoryListResponse,
     CreateWithUploadsResponse,
+    GetFuelStopRangeResponse,
     FuelStopMinimalListResponse,
 } from 'appcoretruckassist';
 
@@ -35,6 +37,10 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // helpers
 import { FuelServiceHelper } from '@pages/fuel/utils/helpers';
+import {
+    FuelMapClustersApiArgumentsType,
+    FuelMapListApiArgumentsType,
+} from '@pages/fuel/types';
 
 @Injectable({
     providedIn: 'root',
@@ -65,6 +71,15 @@ export class FuelService {
             return {
                 ...store,
                 fuelStops: data,
+            };
+        });
+    }
+
+    set updateStoreFuelStopPriceRange(data: GetFuelStopRangeResponse) {
+        this.fuelStore.update((store) => {
+            return {
+                ...store,
+                fuelPriceRange: data,
             };
         });
     }
@@ -346,6 +361,20 @@ export class FuelService {
 
     public getFuelStopById(id: number): Observable<FuelStopResponse> {
         return this.fuelService.apiFuelFuelstopIdGet(id);
+    }
+
+    public getFuelClusters(
+        data: FuelMapClustersApiArgumentsType
+    ): Observable<ClusterResponse[]> {
+        return this.fuelService.apiFuelClustersGet(...data);
+    }
+
+    public getFuelMapList(data: FuelMapListApiArgumentsType) {
+        return this.fuelService.apiFuelListmapGet(...data);
+    }
+
+    public getFuelStopPriceRange(): Observable<GetFuelStopRangeResponse> {
+        return this.fuelService.apiFuelFuelstopRangeGet();
     }
 
     public getFuelStopFuelledcVehicle(

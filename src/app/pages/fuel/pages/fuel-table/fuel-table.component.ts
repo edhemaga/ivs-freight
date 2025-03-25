@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { DatePipe } from '@angular/common';
 import { AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
@@ -13,7 +13,7 @@ import {
 } from 'rxjs';
 
 // base classes
-import { FuelDropdownMenuActionsBase } from '@pages/fuel/base-classes';
+import { FuelMixedBase } from '@pages/fuel/base-classes/fuel-mixed-base-class.base';
 
 // settings
 import {
@@ -48,6 +48,7 @@ import {
     NameInitialsPipe,
     ActivityTimePipe,
 } from '@shared/pipes';
+import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-details/pipes';
 
 // helpers
 import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
@@ -85,15 +86,22 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFuelTableData } from '@pages/fuel/pages/fuel-table/models/fuel-table-data.model';
 import { AvatarColors } from '@shared/models';
+import { MapMarkerIconService } from 'ca-components';
+import { MapsService } from '@shared/services/maps.service';
 
 @Component({
     selector: 'app-fuel-table',
     templateUrl: './fuel-table.component.html',
     styleUrls: ['./fuel-table.component.scss'],
-    providers: [ThousandSeparatorPipe, NameInitialsPipe, ActivityTimePipe],
+    providers: [
+        ThousandSeparatorPipe,
+        NameInitialsPipe,
+        ActivityTimePipe,
+        LastFuelPriceRangeClassColorPipe,
+    ],
 })
 export class FuelTableComponent
-    extends FuelDropdownMenuActionsBase
+    extends FuelMixedBase
     implements OnInit, AfterViewInit, OnDestroy
 {
     public destroy$ = new Subject<void>();
@@ -121,9 +129,6 @@ export class FuelTableComponent
 
     public tableDataLength: number;
 
-    // map
-    public mapListData = [];
-
     private avatarColorMappingIndexByDriverId: { [key: string]: AvatarColors } =
         {};
 
@@ -140,17 +145,24 @@ export class FuelTableComponent
         private confirmationService: ConfirmationService,
         private confirmationActivationService: ConfirmationActivationService,
 
+        public mapsService: MapsService,
+        public markerIconService: MapMarkerIconService,
+
         // pipes
         private datePipe: DatePipe,
         private nameInitialsPipe: NameInitialsPipe,
         private activityTimePipe: ActivityTimePipe,
         private thousandSeparator: ThousandSeparatorPipe,
+        public fuelPricePipe: LastFuelPriceRangeClassColorPipe,
 
         // store
         private store: Store,
-        private fuelQuery: FuelQuery
+        public fuelQuery: FuelQuery,
+
+        // ref
+        public ref: ChangeDetectorRef
     ) {
-        super();
+        super(ref, fuelPricePipe, fuelService, mapsService, markerIconService);
     }
 
     ngOnInit(): void {
@@ -173,6 +185,12 @@ export class FuelTableComponent
         this.confirmationSubscribe();
 
         this.confirmationActivationSubscribe();
+
+        this.addMapListScrollEvent();
+
+        this.addSelectedMarkerListener();
+
+        this.checkSelectedMarker();
     }
 
     ngAfterViewInit(): void {
@@ -366,7 +384,7 @@ export class FuelTableComponent
             });
     }
 
-    public handleTableEmptyBtnClickEmit(): void {
+    public onTableEmptyBtnClick(): void {
         this.openCreateModalBySelectedTab();
     }
 
@@ -703,7 +721,7 @@ export class FuelTableComponent
             : null;
         const tableLocation: string = [
             address?.city,
-            address?.stateShortName,
+            address?.stateShortName ?? address?.state,
             address?.zipCode,
         ]
             .filter(Boolean)
@@ -1194,6 +1212,12 @@ export class FuelTableComponent
             )
             .subscribe((response) => {
                 this.updateStoreData(response, true);
+            });
+
+        this.fuelQuery.fuelPriceRange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                this.fuelStopPriceRange = res;
             });
     }
 

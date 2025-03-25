@@ -1,9 +1,9 @@
-// External Libraries
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// Shared Components
+// components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
@@ -16,26 +16,30 @@ import {
 import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
+import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 
-// Feature Services
+// services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
+import { ModalService } from '@shared/services';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
     eDropdownMenu,
     eDropdownMenuColumns,
+    eGeneralActions,
     eSharedString,
     TableStringEnum,
 } from '@shared/enums';
+import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
-// Interfaces
+// interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { DropdownMenuActionsBase } from '@shared/base-classes';
-import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 import { TableCardBodyActions } from '@shared/models';
@@ -60,6 +64,7 @@ import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown
         MilesMapComponent,
         MilesCardComponent,
         MilesTableComponent,
+        TaTableEmptyComponent,
     ],
 })
 export class MilesComponent
@@ -74,6 +79,7 @@ export class MilesComponent
     public eSharedString = eSharedString;
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
+    public eGeneralActions = eGeneralActions;
 
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
     private isTableLocked: boolean = true;
@@ -127,19 +133,47 @@ export class MilesComponent
         );
     }
 
+    private handleTableEmptyImportListClick(): void {
+        //TODO:
+    }
+
+    private handleTableEmptyAddClick(): void {
+        this.modalService.openModal(TruckModalComponent, {
+            size: TableStringEnum.SMALL,
+        });
+    }
+
+    public setFilters(filters: IFilterAction): void {
+        this.milesStoreService.dispatchFilters(filters, this.filter);
+    }
+
     public onToolBarAction(event: { mode: eMileTabs; action: string }): void {
         const { action, mode } = event || {};
-        if (action === TableStringEnum.TAB_SELECTED) {
+
+        if (action === eGeneralActions.TAB_SELECTED) {
             this.milesStoreService.dispatchListChange(mode);
-        } else if (action === TableStringEnum.VIEW_MODE) {
+        } else if (action === eGeneralActions.VIEW_MODE) {
             this.milesStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
             );
         }
     }
 
-    public setFilters(filters: IFilterAction): void {
-        this.milesStoreService.dispatchFilters(filters, this.filter);
+    public onTableEmptyBtnClick(btnClickType: string): void {
+        switch (btnClickType) {
+            case eTableEmpty.ADD_CLICK:
+                this.handleTableEmptyAddClick();
+
+                break;
+            case eTableEmpty.IMPORT_LIST_CLICK:
+                this.handleTableEmptyImportListClick();
+
+                break;
+            default:
+                // reset filters
+
+                break;
+        }
     }
 
     public handleToolbarDropdownMenuActions<T>(
@@ -180,7 +214,6 @@ export class MilesComponent
 
                 break;
             default:
-                break;
         }
     }
 

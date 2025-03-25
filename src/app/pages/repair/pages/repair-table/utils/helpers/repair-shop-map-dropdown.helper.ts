@@ -71,7 +71,7 @@ export class RepairShopMapDropdownHelper {
                         },
                         rightSide: {
                             template: 'money-text',
-                            field: 'tableExpense',
+                            field: 'cost',
                             title: 'Expense',
                         },
                     },

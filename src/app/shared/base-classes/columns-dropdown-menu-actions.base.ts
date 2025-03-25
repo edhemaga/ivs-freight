@@ -40,6 +40,8 @@ export abstract class ColumnsDropdownMenuActionsBase {
                 this.updateToolbarDropdownMenuContent();
 
                 break;
+            case eDropdownMenuColumns.CLOSE_TYPE:
+                break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
                 this.updateToolbarDropdownMenuContent(type);
 

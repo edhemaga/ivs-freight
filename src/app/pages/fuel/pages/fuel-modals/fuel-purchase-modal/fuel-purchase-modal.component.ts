@@ -48,6 +48,7 @@ import {
     CaInputDropdownComponent,
     CaInputDropdownTestComponent,
     CaModalComponent,
+    emptyValueValidator,
 } from 'ca-components';
 
 // modules
@@ -552,12 +553,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         total,
                         fuelTransactionType,
                         fuelCardHolderName,
+                        fuelTruckNumber
                     } = response;
 
                     this.fuelForm.patchValue({
                         efsAccount: null,
                         fuelCard: fuelCard?.cardNumber,
-                        truckId: truck?.id ?? null,
+                        truckId: truck?.id ?? fuelTruckNumber,
                         invoice: invoice,
                         trailerId: trailer?.trailerNumber ?? null,
                         driverFullName: driver
@@ -881,7 +883,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             efsAccount: [null],
             fuelCard: [null],
             invoice: [null, Validators.required],
-            truckId: [data.truckId, Validators.required],
+            truckId: [
+                data.truckId,
+                [Validators.required, emptyValueValidator('Truck Not Linked')],
+            ],
             trailerId: [null],
             driverFullName: [null, fullNameValidation],
             transactionDate: [data.transactionDate, Validators.required],

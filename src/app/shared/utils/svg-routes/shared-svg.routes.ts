@@ -42,4 +42,5 @@ export class SharedSvgRoutes {
     static USER_CIRCLE_ICON: string = 'assets/svg/common/ic_broker-user.svg';
     static HALF_TIME_ICON: string = 'assets/svg/common/ic_half_time.svg';
     static TOP_RIGHT_ARROW: string = 'assets/svg/common/arrow_top_right.svg';
+    static TRUCK_PATH_BASE: string = 'assets/svg/common/trucks/';
 }
