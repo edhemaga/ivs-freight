@@ -45,4 +45,8 @@ export class LoadDetailsGeneralComponent {
     public eColor = eColor;
 
     constructor(protected loadStoreService: LoadStoreService) {}
+
+    ngOnInit(): void {
+        this.loadStoreService.resolveLoadDetails$.subscribe(console.log);
+    }
 }

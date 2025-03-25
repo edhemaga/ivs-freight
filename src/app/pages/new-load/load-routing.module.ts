@@ -1,16 +1,18 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-// Resolvers
+// resolvers
 import { NewLoadDetailsResolver } from '@pages/new-load/resolvers/new-load-details.resolver';
 import { LoadResolver } from '@pages/load/resolvers/load.resolver';
-// Enums
+
+// enums
 import { eLoadRouting } from '@pages/new-load/enums';
+import { eStringPlaceholder } from 'ca-components';
 
 // resolvers
 const routes: Routes = [
     {
-        path: '',
+        path: eStringPlaceholder.EMPTY,
         loadComponent: () =>
             import('@pages/new-load/new-load.component').then(
                 (c) => c.NewLoadComponent
