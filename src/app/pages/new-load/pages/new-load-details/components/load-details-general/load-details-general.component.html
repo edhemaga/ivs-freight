@@ -258,6 +258,8 @@
                 </div>
             </div>
         </div>
+
+        <ng-container *ngTemplateOutlet="billing"></ng-container>
     }
 </div>
 
@@ -345,6 +347,12 @@
         </p>
     </div>
 
+    <ng-container
+        *ngTemplateOutlet="divider; context: { isDividerVisible }"
+    ></ng-container>
+</ng-template>
+
+<ng-template #divider let-isDividerVisible="isDividerVisible">
     @if (isDividerVisible) {
         <div class="p-x-6 mb-1 mt-1">
             <div class="divider divider--small divider--dark"></div>
@@ -352,4 +360,16 @@
     }
 </ng-template>
 
-<ng-template #billing let-data="data"></ng-template>
+<ng-template #billing let-data="data">
+    <ng-container
+        *ngTemplateOutlet="divider; context: { isDividerVisible: true }"
+    ></ng-container>
+
+    <div
+        class="d-flex"
+        (click)="toggleBilling()"
+        [ngClass]="isBillingExpanded ? 'text-color-black' : 'text-color-bw6-2'"
+    >
+        <div class="text-size-14 ta-font-extra-bold">Billing</div>
+    </div>
+</ng-template>
