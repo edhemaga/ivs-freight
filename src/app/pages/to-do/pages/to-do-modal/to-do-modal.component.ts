@@ -169,7 +169,8 @@ export class TodoModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string) {
-        this.activeAction = action;
+        if (this.taskForm.valid && this.isFormDirty) this.activeAction = action;
+
         switch (action) {
             case TaModalActionEnum.CLOSE: {
                 this.ngbActiveModal.close();

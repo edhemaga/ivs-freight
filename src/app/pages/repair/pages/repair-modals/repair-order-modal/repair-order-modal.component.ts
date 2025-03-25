@@ -391,7 +391,12 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (
+            this.repairOrderForm.valid &&
+            this.isFormDirty &&
+            this.isEachRepairRowValid
+        )
+            this.activeAction = action;
 
         switch (action) {
             case TaModalActionEnum.CLOSE:
