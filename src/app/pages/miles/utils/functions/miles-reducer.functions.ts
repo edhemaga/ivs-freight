@@ -206,7 +206,7 @@ export function pinTableColumn(
     };
 }
 
-export function dispatchSortingChange(
+export function tableSortingChange(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {

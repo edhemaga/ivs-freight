@@ -48,7 +48,7 @@ export const initialState: IMilesState = {
     tableSettings: {
         isTableLocked: false,
         sortKey: '',
-        sortDirection: '',
+        sortDirection: null,
     },
 };
 
@@ -136,8 +136,8 @@ export const milesReducer = createReducer(
     on(MilesAction.pinTableColumn, (state, { column }) =>
         Functions.pinTableColumn(state, column)
     ),
-    on(MilesAction.dispatchSortingChange, (state, { column }) =>
-        Functions.dispatchSortingChange(state, column)
+    on(MilesAction.tableSortingChange, (state, { column }) =>
+        Functions.tableSortingChange(state, column)
     )
     // #endregion
 );

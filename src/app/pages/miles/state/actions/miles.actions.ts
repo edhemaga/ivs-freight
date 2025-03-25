@@ -106,7 +106,7 @@ export const pinTableColumn = createAction(
     props<{ column: ITableColumn }>()
 );
 
-export const dispatchSortingChange = createAction(
+export const tableSortingChange = createAction(
     MilesStoreConstants.ACTION_SORTING_CHANGE,
     props<{ column: ITableColumn }>()
 );
