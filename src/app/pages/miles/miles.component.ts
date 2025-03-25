@@ -83,6 +83,10 @@ export class MilesComponent implements OnInit, OnDestroy {
         this.milesStoreService.dispatchFilters(filters, this.filter);
     }
 
+    public toggleTableLockingStatus(): void {
+        this.milesStoreService.toggleTableLockingStatus();
+    }
+
     private storeSubscription(): void {
         this.milesStoreService.filter$
             .pipe(takeUntil(this.destroy$))

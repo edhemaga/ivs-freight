@@ -26,23 +26,26 @@ import { CaDropdownMenuComponent } from 'ca-components';
 // services
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
-// Svg routes
+// svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-new-table-toolbar',
-    imports: [
-        CommonModule,
-        AngularSvgIconModule,
-        SvgIconComponent,
-        CaDropdownMenuComponent,
-    ],
     templateUrl: './new-table-toolbar.component.html',
     styleUrl: './new-table-toolbar.component.scss',
     standalone: true,
+    imports: [
+        // modules
+        CommonModule,
+        AngularSvgIconModule,
+
+        // components
+        SvgIconComponent,
+        CaDropdownMenuComponent,
+    ],
 })
 export class NewTableToolbarComponent<T> implements OnInit, OnDestroy {
-    // Inputs
+    // inputs
     @Input() title: string;
     @Input() leftSide: TemplateRef<T>;
     @Input() rightSide: TemplateRef<T>;
@@ -51,13 +54,14 @@ export class NewTableToolbarComponent<T> implements OnInit, OnDestroy {
     @Input() isMarginTopDisabled: boolean = false;
     @Input() toolbarDropdownContent: IDropdownMenuItem[];
 
-    // Outputs
+    // outputs
     @Output() onPlusClick: EventEmitter<boolean> = new EventEmitter();
     @Output() toolbarDropdownAction: EventEmitter<IDropdownMenuOptionEmit> =
         new EventEmitter();
 
-    public plusIcon = SharedSvgRoutes.PLUS_ICON;
     public destroy$ = new Subject<void>();
+
+    public plusIcon = SharedSvgRoutes.PLUS_ICON;
 
     constructor(private confirmationResetService: ConfirmationResetService) {}
 
@@ -78,7 +82,6 @@ export class NewTableToolbarComponent<T> implements OnInit, OnDestroy {
             );
     }
 
-    // Dropdown menu actions
     public handleDropdownMenuActions(action: IDropdownMenuOptionEmit): void {
         this.toolbarDropdownAction.emit(action);
     }
