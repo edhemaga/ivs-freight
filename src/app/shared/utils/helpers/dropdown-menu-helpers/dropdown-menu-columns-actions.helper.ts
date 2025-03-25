@@ -12,7 +12,10 @@ import {
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
 } from '@shared/utils/settings/table-settings/load-columns';
-import { MilesTableColumns } from '@pages/miles/utils/constants';
+import {
+    MilesTableColumns,
+    MilesTableToolbarColumns,
+} from '@pages/miles/utils/constants';
 
 export class DropdownMenuColumnsActionsHelper {
     static getColumnDefinition(tableType: string): ITableColummn[] {
@@ -30,7 +33,7 @@ export class DropdownMenuColumnsActionsHelper {
 
     static getColumnDefinitionNew(tableType: string): ITableColumn[] {
         const columnDefinitionMap: Record<string, ITableColumn[]> = {
-            [eDropdownMenuColumns.MILES]: MilesTableColumns,
+            [eDropdownMenuColumns.MILES]: MilesTableToolbarColumns,
         };
 
         return columnDefinitionMap[tableType];
@@ -66,20 +69,9 @@ export class DropdownMenuColumnsActionsHelper {
         return mappedColumns;
     }
 
-    static getDropdownMenuColumnsContentNew() // selectedTab: string
-    : IDropdownMenuItem[] {
-        // const tableColumnsConfig = JSON.parse(
-        //     localStorage.getItem(`table-${tableType}-Configuration`)
-        // );
-
-        // const mappedColumns = this.mapToolbarDropdownColumns(
-        //     tableColumnsConfig
-        //         ? tableColumnsConfig
-        //         : this.getColumnDefinition(tableType)
-        // );
-
+    static getDropdownMenuColumnsContentNew(): IDropdownMenuItem[] {
         const mappedColumns = this.mapToolbarDropdownColumnsNew(
-            this.getColumnDefinitionNew('MILES')
+            this.getColumnDefinitionNew(eDropdownMenuColumns.MILES)
         );
 
         return mappedColumns;
@@ -92,7 +84,7 @@ export class DropdownMenuColumnsActionsHelper {
         const dropdownItems: IDropdownMenuItem[] = [];
 
         columns.forEach((column) => {
-            if (column.ngTemplate === 'checkbox' || column) return;
+            if (column.ngTemplate === 'checkbox' || !column) return;
 
             const mappedColumn: IDropdownMenuItem = {
                 title: column.title,
@@ -133,17 +125,16 @@ export class DropdownMenuColumnsActionsHelper {
         const dropdownItems: IDropdownMenuItem[] = [];
 
         columns.forEach((column) => {
-            // Ako je grupni element (ima columns niz)
             if ('columns' in column) {
                 const group: IDropdownMenuItem = {
-                    title: column.label,
+                    title: column.labelToolbar,
                     type: column.key,
                     groupName: column.key,
                     svgClass: 'regular',
                     isChecked: column.columns.some((col) => col.isChecked),
                     isColumnDropdown: true,
                     innerDropdownContent: column.columns.map((col) => ({
-                        title: col.label,
+                        title: col.labelToolbar,
                         type: col.key,
                         isChecked: col.isChecked ?? true,
                         isColumnDropdown: true,
@@ -153,9 +144,8 @@ export class DropdownMenuColumnsActionsHelper {
 
                 dropdownItems.push(group);
             } else if (column.key !== 'select') {
-                // preskačemo checkbox
                 const item: IDropdownMenuItem = {
-                    title: column.label,
+                    title: column.labelToolbar,
                     type: column.key,
                     isChecked: column.isChecked ?? true,
                     isColumnDropdown: true,

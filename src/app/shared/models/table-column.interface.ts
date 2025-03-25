@@ -15,4 +15,5 @@ export interface ITableColumn {
     columns?: ITableColumn[];
     isDisabled?: boolean;
     isChecked?: boolean;
+    labelToolbar?: string;
 }

@@ -124,8 +124,6 @@ export class MilesComponent
         const milesColumns =
             DropdownMenuColumnsActionsHelper.getDropdownMenuColumnsContentNew();
 
-        console.log(milesColumns);
-
         this.setToolbarDropdownMenuContent(
             this.isTableLocked,
             this.isToolbarDropdownMenuColumnsActive,
@@ -185,8 +183,6 @@ export class MilesComponent
             //     this.selectedTab
             // ),
         };
-
-        console.log(action);
 
         this.handleSharedDropdownMenuActions(mappedAction, eDropdownMenu.MILES);
     }
