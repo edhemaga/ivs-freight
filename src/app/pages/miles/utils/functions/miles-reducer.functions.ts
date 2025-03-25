@@ -1,15 +1,17 @@
 // Interface
 import { IMilesModel, IMilesState } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
-import {
-    MilesByUnitPaginatedStopsResponse,
-    SortOrder,
-} from 'appcoretruckassist';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Enums
 import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
-import { ITableColumn } from '@shared/models';
+
+// Models
+import {
+    MilesByUnitPaginatedStopsResponse,
+    SortOrder,
+} from 'appcoretruckassist';
 
 export const updateTruckCounts = function (
     state: IMilesState,
@@ -189,11 +191,11 @@ export function pinTableColumn(
     function togglePinned(columns: ITableColumn[]): ITableColumn[] {
         return columns.map((col) => {
             if (col.key === column.key) {
-                // Možeš promeniti 'left' u 'right' po potrebi
+                // Use left as pinned side
                 return { ...col, pinned: col.pinned ? undefined : 'left' };
             }
             if (col.columns && col.columns.length) {
-                // Rekurzivno prolazi kroz pod-kolone
+                // Check all sub group column
                 return { ...col, columns: togglePinned(col.columns) };
             }
             return col;
@@ -227,7 +229,7 @@ export function tableSortingChange(
                 return { ...col, direction: updatedSortDirection };
             }
 
-            // Resetujemo `sort` na null za sve ostale kolone
+            // Reset all the other columns
             return {
                 ...col,
                 direction: null,

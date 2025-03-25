@@ -14,12 +14,11 @@ import {
     MilesToolbarTabs,
 } from '@pages/miles/utils/constants';
 
-// Models
+// interface
 import { IMilesState } from '@pages/miles/interface';
 
 // functions
 import * as Functions from '@pages/miles/utils/functions/miles-reducer.functions';
-import { ITableColumn } from '@shared/models';
 
 export const initialState: IMilesState = {
     items: [],
@@ -136,6 +135,7 @@ export const milesReducer = createReducer(
     on(MilesAction.pinTableColumn, (state, { column }) =>
         Functions.pinTableColumn(state, column)
     ),
+
     on(MilesAction.tableSortingChange, (state, { column }) =>
         Functions.tableSortingChange(state, column)
     )

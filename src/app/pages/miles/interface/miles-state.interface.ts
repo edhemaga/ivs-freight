@@ -3,8 +3,11 @@ import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // Shared Models
-import { ITableColumn, ITableData } from '@shared/models';
+import { ITableData } from '@shared/models';
+
+// Interface
 import { IStateFilters } from '@shared/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // External Services or Models
 import {

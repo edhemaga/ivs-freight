@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 // Interfaces
 import { IMilesModel } from '@pages/miles/interface';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
@@ -10,7 +11,6 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 // Components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
-import { ITableColumn } from '@shared/models';
 import { CaCheckboxComponent } from 'ca-components';
 
 @Component({

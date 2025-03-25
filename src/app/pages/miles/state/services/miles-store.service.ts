@@ -26,7 +26,7 @@ import {
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IFilterAction } from 'ca-components';
-import { ITableColumn, ITableData } from '@shared/models';
+import { ITableData } from '@shared/models';
 import { IStateFilters } from '@shared/interfaces';
 
 // Enums
@@ -41,7 +41,10 @@ import { FilterHelper } from '@shared/utils/helpers';
 import { MilesHelper } from '@pages/miles/utils/helpers';
 
 // interface
-import { ITableConfig } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableConfig,
+} from '@shared/components/new-table/interface';
 
 @Injectable({
     providedIn: 'root',

@@ -17,7 +17,7 @@ import { IMilesModel } from '@pages/miles/interface';
 
 // Interface
 import { IStateFilters } from '@shared/interfaces';
-import { ITableColumn } from '@shared/models';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
