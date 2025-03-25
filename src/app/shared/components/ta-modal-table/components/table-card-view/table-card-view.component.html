@@ -5,6 +5,12 @@
 
             <div
                 class="card-body d-flex justify-content-between"
+                [ngClass]="{
+                    'body-active':
+                        isCardFlippedCheckInCards?.includes(i) ||
+                        isAllCardsFlipp,
+                    'body-checked': card.isSelected,
+                }"
             >
                 <!-- Left side of the card -->
 
@@ -20,6 +26,12 @@
                                 ngbTooltip
                                 tooltipBackground="#424242"
                                 position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards?.includes(i),
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards?.includes(i),
+                                }"
                             >
                                 <input
                                     class="table-checkbox"
@@ -48,7 +60,7 @@
                     <div class="card-body-content flipped">
                         <ng-container
                             *ngTemplateOutlet="
-                                frontSide;
+                                _frontSide;
                                 context: { data: card }
                             "
                         ></ng-container>
@@ -100,10 +112,15 @@
                                 mainTooltip="Flip Card"
                                 tooltipBackground="#424242"
                                 position="bottom"
+                                [ngClass]="{
+                                    'rotate-svg':
+                                        isCardFlippedCheckInCards?.includes(
+                                            i
+                                        ) || isAllCardsFlipp,
+                                    'svg-position':
+                                        !isCardFlippedCheckInCards?.includes(i),
+                                }"
                             >
-                                <svg-icon
-                                    [src]="'assets/svg/common/resize-arrow.svg'"
-                                ></svg-icon>
                             </span>
                         </div>
                     </div>

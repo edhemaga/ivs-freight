@@ -1,12 +1,10 @@
-@let store =
-    {
-        miles: milesStoreService.miles$ | async,
-        hasAllItemsSelected:
-            milesStoreService.hasAllItemsSelectedSelector$ | async,
-    };
+@let store = milesStoreService.miles$ | async;
 
 @if (store) {
-    <p>miles-card works!</p>
+    <app-table-card-view
+        [viewData]="store"
+        [frontSide]="frontSide"
+    ></app-table-card-view>
 
     <ng-template #frontSide let-data="data">
         <ng-container
@@ -30,14 +28,8 @@
         ></ng-container>
     </ng-template>
 
-    <ng-template #textWithTitle let-data="data" let-title="title" let-text="text">
-        {{data | json }}
+    <ng-template #textWithTitle let-title="title" let-text="text">
         <div>{{ title }}</div>
         <div>{{ text }}</div>
     </ng-template>
-
-    <app-table-card-view
-        [viewData]="store.miles"
-        [frontSide]="frontSide"
-    ></app-table-card-view>
 }
