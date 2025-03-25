@@ -1,4 +1,4 @@
-@let tableWidth = rowWidth + 'px';
+@let tableWidth = rowWidth + eUnit.PX;
 
 <!-- TODO: REMOVE MARGIN -->
 
@@ -6,7 +6,7 @@
     <div class="w-full test-margin">
         <!-- Header -->
 
-        <div class="d-flex m-b-6 p-x-8 table-header" #header>
+        <div class="d-flex m-b-6 p-x-8 table-header">
             <div class="d-flex new-table--pinned-left">
                 @for (column of leftPinnedColumns; track column.key) {
                     <ng-container
@@ -183,9 +183,9 @@
                 [ngClass]="
                     { column, isTableLocked, isGroup } | tableColumnClass
                 "
-                [style.min-width]="column.width + 'px'"
-                [style.width]="column.width + 'px'"
-                (click)="setSorting(column)"
+                [style.min-width]="column.width + eUnit.PX"
+                [style.width]="column.width + eUnit.PX"
+                (click)="handleSortColumnClick(column)"
             >
                 @if (isFirst) {
                     <span
@@ -230,7 +230,7 @@
                             <svg-icon
                                 class="new-table--row-heading-arrow mr-1 svg-size-14"
                                 [src]="sharedSvgRoutes.PIN_ICON"
-                                (click)="pinColumn(column)"
+                                (click)="handlePinColumnClick(column)"
                             ></svg-icon>
                         </div>
 
@@ -311,8 +311,8 @@
                     'p-l-6': hasPaddingLeft,
                     'm-r-7': hasMarginRight,
                 }"
-                [style.min-width]="column.width + 'px'"
-                [style.width]="column.width + 'px'"
+                [style.min-width]="column.width + eUnit.PX"
+                [style.width]="column.width + eUnit.PX"
             >
                 <!-- Display custom template if template exists -->
 
