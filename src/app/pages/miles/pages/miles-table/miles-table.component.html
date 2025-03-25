@@ -4,6 +4,8 @@
         miles: milesStoreService.miles$ | async,
         hasAllItemsSelected:
             milesStoreService.hasAllItemsSelectedSelector$ | async,
+
+        tableSettings: milesStoreService.tableSettingsSelector$ | async,
     };
 
 @if (store) {
@@ -14,6 +16,7 @@
             select: selectHeaderTemplate,
             revenue: revenueHeaderTemplate,
         }"
+        [isTableLocked]="store.tableSettings.isTableLocked"
         [templates]="{
             select: loadSelectTemplate,
             unit: unitTemplate,

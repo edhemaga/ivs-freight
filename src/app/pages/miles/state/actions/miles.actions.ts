@@ -95,3 +95,7 @@ export const setFollowingUnitDetails = createAction(
         isLastInCurrentList: boolean;
     }>()
 );
+
+export const toggleTableLockingStatus = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS
+);

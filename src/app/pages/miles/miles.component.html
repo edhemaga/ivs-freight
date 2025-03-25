@@ -5,8 +5,11 @@
         selectedTab: milesStoreService.selectedTab$ | async,
         activeViewMode: milesStoreService.activeViewMode$ | async,
         statesSelector: milesStoreService.statesSelector$ | async,
+        tableSettings: milesStoreService.tableSettingsSelector$ | async,
     };
-
+<div (click)="toggleTableLockingStatus()">
+    is table unlocked: {{ store.tableSettings.isTableLocked }}
+</div>
 <div class="d-inline-block">
     @if (store) {
         <app-new-table-toolbar

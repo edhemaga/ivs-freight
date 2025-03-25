@@ -165,3 +165,16 @@ export const setFollowingUnitDetails = function (
         },
     };
 };
+
+export const toggleTableLockingStatus = function (
+    state: IMilesState
+): IMilesState {
+    const { tableSettings } = state;
+    return {
+        ...state,
+        tableSettings: {
+            ...tableSettings,
+            isTableLocked: !tableSettings.isTableLocked,
+        },
+    };
+};

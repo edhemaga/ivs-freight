@@ -15,6 +15,7 @@ import {
     hasAllItemsSelectedSelector,
     detailsSelector,
     unitsPaginationSelector,
+    tableSettingsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -38,6 +39,9 @@ import { MilesStoreConstants } from '@pages/miles/utils/constants';
 // Helpers
 import { FilterHelper } from '@shared/utils/helpers';
 import { MilesHelper } from '@pages/miles/utils/helpers';
+
+// interface
+import { ITableConfig } from '@shared/components/new-table/interface';
 
 @Injectable({
     providedIn: 'root',
@@ -80,6 +84,10 @@ export class MilesStoreService {
 
     public detailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
         this.store.pipe(select(detailsSelector));
+
+    public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
+        select(tableSettingsSelector)
+    );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -152,6 +160,12 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
             getFollowingUnitDirection,
+        });
+    }
+
+    public toggleTableLockingStatus(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS,
         });
     }
 }

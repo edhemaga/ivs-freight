@@ -12,6 +12,7 @@ import {
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
+import { ITableConfig } from '@shared/components/new-table/interface';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -28,4 +29,5 @@ export interface IMilesState {
     // Is used for next, prev icons to navigate throught list
     details: MilesByUnitPaginatedStopsResponse;
     unitsPagination: IMilesDetailsFilters;
+    tableSettings: ITableConfig;
 }

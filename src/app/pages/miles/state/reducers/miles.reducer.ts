@@ -44,6 +44,9 @@ export const initialState: IMilesState = {
         isLastUnit: true,
         isLastInCurrentList: false,
     },
+    tableSettings: {
+        isTableLocked: false,
+    },
 };
 
 export const milesReducer = createReducer(
@@ -121,6 +124,10 @@ export const milesReducer = createReducer(
                 isLast,
                 isLastInCurrentList
             )
+    ),
+
+    on(MilesAction.toggleTableLockingStatus, (state) =>
+        Functions.toggleTableLockingStatus(state)
     )
     // #endregion
 );
