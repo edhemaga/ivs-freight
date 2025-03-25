@@ -790,8 +790,16 @@ export class TaTableBodyComponent<
         const { type } = action;
         const { id } = rowData;
 
-        if (type === eDropdownMenuColumns.OPEN_TYPE) this.dropDownActive = id;
-        if (type === eDropdownMenuColumns.CLOSE_TYPE) this.dropDownActive = -1;
+        if (type === eDropdownMenuColumns.OPEN_TYPE) {
+            this.dropDownActive = id;
+        }
+
+        if (
+            type === eDropdownMenuColumns.CLOSE_TYPE &&
+            this.dropDownActive === id
+        ) {
+            this.dropDownActive = -1;
+        }
 
         const emitAction =
             DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
