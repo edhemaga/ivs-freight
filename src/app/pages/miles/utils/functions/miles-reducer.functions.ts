@@ -6,6 +6,7 @@ import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
 // Enums
 import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
+import { ITableColumn } from '@shared/models';
 
 export const updateTruckCounts = function (
     state: IMilesState,
@@ -178,3 +179,26 @@ export const toggleTableLockingStatus = function (
         },
     };
 };
+export function pinTableColumn(
+    state: IMilesState,
+    column: ITableColumn
+): IMilesState {
+    function togglePinned(columns: ITableColumn[]): ITableColumn[] {
+        return columns.map((col) => {
+            if (col.key === column.key) {
+                // Možeš promeniti 'left' u 'right' po potrebi
+                return { ...col, pinned: col.pinned ? undefined : 'left' };
+            }
+            if (col.columns && col.columns.length) {
+                // Rekurzivno prolazi kroz pod-kolone
+                return { ...col, columns: togglePinned(col.columns) };
+            }
+            return col;
+        });
+    }
+
+    return {
+        ...state,
+        columns: togglePinned(state.columns),
+    };
+}

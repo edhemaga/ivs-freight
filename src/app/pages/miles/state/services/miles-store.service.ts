@@ -168,4 +168,11 @@ export class MilesStoreService {
             type: MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS,
         });
     }
+
+    public dispatchColumnPinnedAction(column: ITableColumn): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_PIN_TABLE_COLUMN,
+            column,
+        });
+    }
 }

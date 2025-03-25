@@ -69,6 +69,7 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
     }
 
     @Output() onSortingChange$: EventEmitter<T> = new EventEmitter();
+    @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
 
     private resizeObserver!: ResizeObserver;
 
@@ -136,7 +137,7 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
     }
 
     public pinColumn(column: ITableColumn): void {
-        column.pinned = null;
+        this.onColumnPinned.emit(column);
     }
 
     public setSorting(sort: any): void {
