@@ -245,13 +245,13 @@
                             driver?.firstName + ' ' + driver?.lastName;
                         <app-ca-unit-info-box
                             [unitInfoBoxConfig]="{
-                                id: driver.id,
+                                id: driver?.id,
                                 type: eSharedString.DRIVER,
                                 label: driverName,
                                 isUnitAssigned:
                                     isLoadAssigned && load.dispatch?.driver,
                                 isImage: true,
-                                imagePath: driver.avatarFile?.url,
+                                imagePath: driver?.avatarFile?.url,
                             }"
                         ></app-ca-unit-info-box>
                     </div>
