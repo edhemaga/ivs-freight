@@ -208,7 +208,7 @@
             </div>
 
             <div class="row gutter-x-12">
-                @let isLoadAssigned = load.dispatch;
+                @let isLoadAssigned = load?.dispatch;
                 <div class="col-6">
                     <app-ca-unit-info-box
                         [unitInfoBoxConfig]="{
@@ -226,7 +226,7 @@
                 <div class="col-6">
                     <app-ca-unit-info-box
                         [unitInfoBoxConfig]="{
-                            id: load.dispatch?.trailer?.id,
+                            id: load?.dispatch?.trailer?.id,
                             type: eSharedString.TRAILER,
                             iconPath:
                                 load.dispatch?.trailer?.trailerType.logoName,
@@ -240,7 +240,7 @@
 
                 <div class="col-12">
                     <div class="m-t-12">
-                        @let driver = load.dispatch?.driver;
+                        @let driver = load?.dispatch?.driver;
                         @let driverName =
                             driver?.firstName + ' ' + driver?.lastName;
                         <app-ca-unit-info-box
@@ -249,7 +249,7 @@
                                 type: eSharedString.DRIVER,
                                 label: driverName,
                                 isUnitAssigned:
-                                    isLoadAssigned && load.dispatch?.driver,
+                                    isLoadAssigned && load?.dispatch?.driver,
                                 isImage: true,
                                 imagePath: driver?.avatarFile?.url,
                             }"
