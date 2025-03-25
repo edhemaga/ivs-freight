@@ -1,7 +1,10 @@
 // Interface
 import { IMilesModel, IMilesState } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
-import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
+import {
+    MilesByUnitPaginatedStopsResponse,
+    SortOrder,
+} from 'appcoretruckassist';
 
 // Enums
 import { eActiveViewMode } from '@shared/enums';
@@ -200,5 +203,46 @@ export function pinTableColumn(
     return {
         ...state,
         columns: togglePinned(state.columns),
+    };
+}
+
+export function dispatchSortingChange(
+    state: IMilesState,
+    column: ITableColumn
+): IMilesState {
+    let updatedSortKey = column.key;
+    let updatedSortDirection: SortOrder | null = SortOrder.Ascending;
+
+    function toggleSort(columns: ITableColumn[]): ITableColumn[] {
+        return columns.map((col) => {
+            if (col.key === column.key) {
+                if (col.direction === SortOrder.Ascending) {
+                    updatedSortDirection = SortOrder.Descending;
+                } else if (col.direction === SortOrder.Descending) {
+                    updatedSortDirection = null;
+                } else {
+                    updatedSortDirection = SortOrder.Ascending;
+                }
+
+                return { ...col, direction: updatedSortDirection };
+            }
+
+            // Resetujemo `sort` na null za sve ostale kolone
+            return {
+                ...col,
+                direction: null,
+                columns: col.columns ? toggleSort(col.columns) : col.columns,
+            };
+        });
+    }
+
+    return {
+        ...state,
+        columns: toggleSort(state.columns),
+        tableSettings: {
+            ...state.tableSettings,
+            sortDirection: updatedSortDirection,
+            sortKey: updatedSortDirection ? updatedSortKey : null,
+        },
     };
 }

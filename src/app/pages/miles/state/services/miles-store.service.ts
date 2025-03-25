@@ -175,4 +175,11 @@ export class MilesStoreService {
             column,
         });
     }
+
+    public dispatchSortingChange(column: ITableColumn): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SORTING_CHANGE,
+            column,
+        });
+    }
 }

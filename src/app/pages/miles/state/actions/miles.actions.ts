@@ -105,3 +105,8 @@ export const pinTableColumn = createAction(
     MilesStoreConstants.ACTION_TOGGLE_PIN_TABLE_COLUMN,
     props<{ column: ITableColumn }>()
 );
+
+export const dispatchSortingChange = createAction(
+    MilesStoreConstants.ACTION_SORTING_CHANGE,
+    props<{ column: ITableColumn }>()
+);

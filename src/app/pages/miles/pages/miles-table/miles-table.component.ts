@@ -41,4 +41,8 @@ export class MilesTableComponent {
     public onColumnPinned(column: ITableColumn): void {
         this.milesStoreService.dispatchColumnPinnedAction(column);
     }
+
+    public onSortingChange(column: ITableColumn): void {
+        this.milesStoreService.dispatchSortingChange(column);
+    }
 }
