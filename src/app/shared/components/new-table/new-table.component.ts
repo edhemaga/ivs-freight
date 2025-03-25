@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
-    AfterViewInit,
+    AfterViewChecked,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
@@ -54,7 +54,7 @@ import { ITableColumn } from '@shared/models';
         TableColumnClassPipe,
     ],
 })
-export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
+export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     @ViewChild('header') header!: ElementRef;
     @ViewChild('tableRow') tableRow!: ElementRef<HTMLDivElement>;
 
@@ -68,7 +68,7 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
         this.processColumns(value);
     }
 
-    @Output() onSortingChange$: EventEmitter<T> = new EventEmitter();
+    @Output() onSortingChange: EventEmitter<string> = new EventEmitter();
 
     private resizeObserver!: ResizeObserver;
 
@@ -92,19 +92,17 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
         private cdRef: ChangeDetectorRef
     ) {}
 
-    ngAfterViewInit() {
+    ngAfterViewChecked() {
         this.getTableWidth();
     }
 
     private getTableWidth(): void {
-        this.resizeObserver = new ResizeObserver((entries) => {
-            for (let entry of entries) {
-                const rowWidth =
-                    entry.contentRect.width +
-                    TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
+        this.resizeObserver = new ResizeObserver(([entry]) => {
+            if (!entry) return;
 
-                this.rowWidth = rowWidth;
-            }
+            this.rowWidth =
+                entry.contentRect.width +
+                TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
 
             this.cdRef.detectChanges();
         });
@@ -139,10 +137,10 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
         column.pinned = null;
     }
 
-    public setSorting(sort: any): void {
+    public setSorting(sort: string): void {
         if (this.isTableLocked) return;
 
-        this.onSortingChange$.emit(sort);
+        this.onSortingChange.emit(sort);
     }
 
     public handleShowMoreClick(): void {}

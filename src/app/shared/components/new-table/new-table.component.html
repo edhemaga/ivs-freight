@@ -41,7 +41,7 @@
                         <div
                             #tableRow
                             class="d-flex align-items-center new-table--row p-x-4 br-3 m-t-4 m-b-4 p-y-1 background-hover-light-grey"
-                            [class.background-light-grey]="row.selected"
+                            [class.background-light-grey]="row.isSelected"
                         >
                             <!-- Left Pinned Columns -->
 
@@ -126,16 +126,18 @@
 
         <!-- Footer -->
 
-        <div
-            class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
-        >
-            <ng-container
-                *ngTemplateOutlet="
-                    footerTemplate;
-                    context: { rowsLength: rows?.length }
-                "
-            ></ng-container>
-        </div>
+        @if (rows?.length) {
+            <div
+                class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        footerTemplate;
+                        context: { rowsLength: rows?.length }
+                    "
+                ></ng-container>
+            </div>
+        }
     </div>
 </div>
 
@@ -324,7 +326,14 @@
                 } @else {
                     <!-- Default template - if no custom template -->
 
-                    <p class="text-size-14 text-color-black-2">
+                    <p
+                        class="text-size-14"
+                        [class]="
+                            !!row[column.key]
+                                ? 'text-color-black-2'
+                                : 'text-color-muted'
+                        "
+                    >
                         {{ row[column.key] }}
                     </p>
                 }

@@ -78,7 +78,14 @@
         </ng-template>
 
         <ng-template #percentTemplate let-data="data" let-key="key">
-            <p class="text-size-14 text-color-black-2">
+            <p
+                class="text-size-14"
+                [class]="
+                    !!data[key]?.count
+                        ? 'text-color-black-2'
+                        : 'text-color-muted'
+                "
+            >
                 {{ data[key]?.count }}
 
                 <span class="text-color-muted text-size-11 ta-font-semi-bold">
@@ -88,13 +95,25 @@
         </ng-template>
 
         <ng-template #fuelCostTemplate let-data="data">
-            <p class="text-size-14 text-color-black-2">${{ data.fuelCost }}</p>
+            <p
+                class="text-size-14"
+                [class]="
+                    !!data.fuelCost ? 'text-color-black-2' : 'text-color-muted'
+                "
+            >
+                ${{ data.fuelCost }}
+            </p>
         </ng-template>
 
         <ng-template #revenueTemplate let-data="data">
             <div class="d-flex justify-content-end">
-                <p class="text-size-14 text-color-black ta-font-semi-bold">
-                    ${{ data.revenue }}
+                <p
+                    class="text-size-14 ta-font-semi-bold"
+                    [class]="
+                        !!data.revenue ? 'text-color-black' : 'text-color-muted'
+                    "
+                >
+                    ${{ (data.revenue | thousandSeparator) ?? 0 }}
                 </p>
             </div>
         </ng-template>

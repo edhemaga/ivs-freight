@@ -5,10 +5,13 @@
         selectedTab: milesStoreService.selectedTab$ | async,
         activeViewMode: milesStoreService.activeViewMode$ | async,
         statesSelector: milesStoreService.statesSelector$ | async,
+        miles: milesStoreService.miles$ | async,
     };
 
 <div class="d-inline-block">
     @if (store) {
+        <!-- Toolbar -->
+
         <app-new-table-toolbar
             [title]="eSharedString.MILES"
             [isMarginTopDisabled]="true"
@@ -89,6 +92,8 @@
             </ng-template>
         </app-new-table-toolbar>
 
+        <!-- List, Card, Map -->
+
         @switch (store.activeViewMode) {
             @case (eCommonElement.LIST) {
                 <app-miles-table></app-miles-table>
@@ -102,5 +107,15 @@
                 <app-miles-map></app-miles-map>
             }
         }
+
+        <!-- Empty State - List, Card -->
+
+        <app-ta-table-empty
+            [activeViewMode]="store.activeViewMode"
+            [btnText]="eSharedString.TRUCK_CAPITALIZED"
+            [hasResults]="!!store.miles.length"
+            [isNewTableLayout]="true"
+            (onBtnClick)="onTableEmptyBtnClick($event)"
+        ></app-ta-table-empty>
     }
 </div>

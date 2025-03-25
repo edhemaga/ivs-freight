@@ -126,5 +126,5 @@
     "
     [hasResults]="!!viewData.length"
     [filteredResults]="!!tabResultLength"
-    (btnClickEmitter)="handleTableEmptyBtnClickEmit($event)"
+    (onBtnClick)="onTableEmptyBtnClick($event)"
 ></app-ta-table-empty>
