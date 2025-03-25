@@ -1,19 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-// interfaces
+// Interfaces
 import { IMilesModel } from '@pages/miles/interface';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
-// services
+// Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
-// components
+// Components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 import { CaCheckboxComponent } from 'ca-components';
-
-// pipes
-import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-miles-table',
@@ -21,16 +19,12 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
     styleUrl: './miles-table.component.scss',
     standalone: true,
     imports: [
-        // modules
         CommonModule,
 
-        // components
+        // Components
         NewTableComponent,
         TaTruckTrailerIconComponent,
         CaCheckboxComponent,
-
-        // pipes
-        ThousandSeparatorPipe,
     ],
 })
 export class MilesTableComponent {
@@ -42,5 +36,13 @@ export class MilesTableComponent {
 
     public selectAll(): void {
         this.milesStoreService.dispatchSelectAll();
+    }
+
+    public onColumnPinned(column: ITableColumn): void {
+        this.milesStoreService.dispatchColumnPinnedAction(column);
+    }
+
+    public onSortingChange(column: ITableColumn): void {
+        this.milesStoreService.dispatchSortingChange(column);
     }
 }

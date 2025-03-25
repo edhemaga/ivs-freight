@@ -969,7 +969,7 @@ export class RepairTableComponent
         }, 900);
     }
 
-    public onTableEmptyBtnClick(btnClickType: string): void {
+    public handleTableEmptyBtnClickEmit(btnClickType: string): void {
         switch (btnClickType) {
             case eTableEmpty.ADD_CLICK:
                 this.onToolBarAction({ action: eGeneralActions.OPEN_MODAL });
@@ -1040,16 +1040,10 @@ export class RepairTableComponent
                             };
                             break;
                         case eFilterDropdownEnum.TRAILER:
-                            this.backFilterQuery = {
-                                ...this.backFilterQuery,
-                                trailerNumbers: res.selectedIds,
-                            };
+                            this.backFilterQuery = { ...this.backFilterQuery, trailerNumbers: res.selectedIds };
                             break;
                         case eFilterDropdownEnum.TRUCK:
-                            this.backFilterQuery = {
-                                ...this.backFilterQuery,
-                                truckNumbers: res.selectedIds,
-                            };
+                            this.backFilterQuery = { ...this.backFilterQuery, truckNumbers: res.selectedIds };
                             break;
                         case eFilterDropdownEnum.TIME_FILTER:
                             this.backFilterQuery = {

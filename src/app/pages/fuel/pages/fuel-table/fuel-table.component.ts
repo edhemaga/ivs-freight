@@ -384,7 +384,7 @@ export class FuelTableComponent
             });
     }
 
-    public onTableEmptyBtnClick(): void {
+    public handleTableEmptyBtnClickEmit(): void {
         this.openCreateModalBySelectedTab();
     }
 

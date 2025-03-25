@@ -13,7 +13,6 @@ export enum eDropdownMenuColumns {
     RESET_TABLE_TYPE = 'reset-table',
     RESET_TABLE_CONFIRMED_TYPE = 'reset-table-confirmed',
     OPEN_TYPE = 'Open',
-    CLOSE_TYPE = 'Close',
 
     // table types
     LOAD_REGULAR = 'LOAD_REGULAR',
