@@ -1,6 +1,6 @@
 // models
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { ITableColummn, ITableColumn } from '@shared/models';
+import { ITableColummn } from '@shared/models';
 import { TableType, UpdateTableConfigCommand } from 'appcoretruckassist';
 
 // enums
@@ -16,6 +16,7 @@ import {
     MilesTableColumns,
     MilesTableToolbarColumns,
 } from '@pages/miles/utils/constants';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 export class DropdownMenuColumnsActionsHelper {
     static getColumnDefinition(tableType: string): ITableColummn[] {
