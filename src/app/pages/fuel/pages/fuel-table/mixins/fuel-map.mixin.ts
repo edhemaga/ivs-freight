@@ -245,6 +245,7 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                 minValue: this.fuelStopPriceRange.dieselMin,
                 maxValue: this.fuelStopPriceRange.dieselMax,
                 totalValue: data.pricePerGallon,
+                isOutdated: data.isOutdated,
             });
 
             const markerIcon =
