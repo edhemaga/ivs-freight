@@ -4,7 +4,6 @@
         miles: milesStoreService.miles$ | async,
         hasAllItemsSelected:
             milesStoreService.hasAllItemsSelectedSelector$ | async,
-
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
     };
 
@@ -12,11 +11,11 @@
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
+        [isTableLocked]="store.tableSettings.isTableLocked"
         [headerTemplates]="{
             select: selectHeaderTemplate,
             revenue: revenueHeaderTemplate,
         }"
-        [isTableLocked]="store.tableSettings.isTableLocked"
         [templates]="{
             select: loadSelectTemplate,
             unit: unitTemplate,
@@ -37,7 +36,9 @@
         <!-- Header Templates -->
 
         <ng-template #selectHeaderTemplate>
-            <app-ca-checkbox-selected-count></app-ca-checkbox-selected-count>
+            <app-ca-checkbox-selected-count
+                (onCheckboxCountClick)="onCheckboxCountClick($event)"
+            ></app-ca-checkbox-selected-count>
 
             <!--  <app-ca-checkbox
                 name="miles-row-all"

@@ -49,4 +49,8 @@ export class MilesTableComponent {
     public onSortingChange(column: ITableColumn): void {
         this.milesStoreService.dispatchSortingChange(column);
     }
+
+    public onCheckboxCountClick(action: string): void {
+        console.log('action', action);
+    }
 }

@@ -123,8 +123,6 @@ export enum DashboardStringEnum {
     TREND_DOWN_IMG = 'assets/svg/common/dashboard/trend-down-with-frame.svg',
     TREND_DOWN_IMG_2 = 'assets/svg/common/dashboard/trend-up-with-frame.svg',
 
-    ZERO_STRING = '0',
-
     MAP_STATE_DEFAULT_COLOR = '#E5E5E5',
 
     DROPDOWN_CLASS_WIDTH_1 = 'dropdown-right-w-1',
