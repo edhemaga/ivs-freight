@@ -33,8 +33,8 @@ import { TableConstants } from '@shared/components/new-table/utils/constants';
 import { ePosition } from 'ca-components';
 import { eColor, eGeneralActions } from '@shared/enums';
 
-// models
-import { ITableColumn } from '@shared/models';
+// Interface
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 @Component({
     selector: 'app-new-table',
@@ -68,7 +68,8 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
         this.processColumns(value);
     }
 
-    @Output() onSortingChange$: EventEmitter<T> = new EventEmitter();
+    @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
+    @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
 
     private resizeObserver!: ResizeObserver;
 
@@ -136,13 +137,13 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
     }
 
     public pinColumn(column: ITableColumn): void {
-        column.pinned = null;
+        this.onColumnPinned.emit(column);
     }
 
-    public setSorting(sort: any): void {
+    public setSorting(sort: ITableColumn): void {
         if (this.isTableLocked) return;
 
-        this.onSortingChange$.emit(sort);
+        this.onSortingChange.emit(sort);
     }
 
     public handleShowMoreClick(): void {}
