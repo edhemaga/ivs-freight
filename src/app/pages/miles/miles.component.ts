@@ -1,9 +1,9 @@
-// External Libraries
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// Shared Components
+// components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
@@ -17,19 +17,19 @@ import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.compon
 import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
 
-// Feature Services
+// services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
+    eGeneralActions,
     eSharedString,
-    TableStringEnum,
 } from '@shared/enums';
 
-// Interfaces
+// interfaces
 import { IStateFilters } from '@shared/interfaces';
 
 @Component({
@@ -68,11 +68,18 @@ export class MilesComponent implements OnInit, OnDestroy {
         this.storeSubscription();
     }
 
+    private storeSubscription(): void {
+        this.milesStoreService.filter$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.filter = res));
+    }
+
     public onToolBarAction(event: { mode: eMileTabs; action: string }): void {
         const { action, mode } = event || {};
-        if (action === TableStringEnum.TAB_SELECTED) {
+
+        if (action === eGeneralActions.TAB_SELECTED) {
             this.milesStoreService.dispatchListChange(mode);
-        } else if (action === TableStringEnum.VIEW_MODE) {
+        } else if (action === eGeneralActions.VIEW_MODE) {
             this.milesStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
             );
@@ -85,12 +92,6 @@ export class MilesComponent implements OnInit, OnDestroy {
 
     public toggleTableLockingStatus(): void {
         this.milesStoreService.toggleTableLockingStatus();
-    }
-
-    private storeSubscription(): void {
-        this.milesStoreService.filter$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.filter = res));
     }
 
     ngOnDestroy(): void {

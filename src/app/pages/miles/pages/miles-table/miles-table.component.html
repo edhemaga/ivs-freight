@@ -1,5 +1,6 @@
 @let store =
     {
+        selectedCount: milesStoreService.selectedCountSelector$ | async,
         columns: milesStoreService.columns$ | async,
         miles: milesStoreService.miles$ | async,
         hasAllItemsSelected:
@@ -37,15 +38,10 @@
 
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
+                [itemsTotalCount]="store.miles.length"
+                [itemsSelectedCount]="store.selectedCount"
                 (onCheckboxCountClick)="onCheckboxCountClick($event)"
             ></app-ca-checkbox-selected-count>
-
-            <!--  <app-ca-checkbox
-                name="miles-row-all"
-                [isChecked]="store.hasAllItemsSelected"
-                [isRegularCheckbox]="false"
-                (columnCheckAction)="selectAll()"
-            ></app-ca-checkbox> -->
         </ng-template>
 
         <ng-template #revenueHeaderTemplate let-data="data">
@@ -64,10 +60,10 @@
             @let name = 'miles-row' + data.id;
 
             <app-ca-checkbox
-                [isChecked]="data.isSelected"
+                [name]="name"
+                [isChecked]="data.isSelected || store.hasAllItemsSelected"
                 [isRegularCheckbox]="false"
                 [itemIndex]="data.id"
-                [name]="name"
                 (columnCheckAction)="selectRow(data)"
             ></app-ca-checkbox>
         </ng-template>

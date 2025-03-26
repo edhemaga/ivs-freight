@@ -8,6 +8,9 @@ import { ITableColumn } from '@shared/components/new-table/interface';
 // services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 // components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
@@ -38,10 +41,6 @@ export class MilesTableComponent {
         this.milesStoreService.dispatchSelectOneRow(mile);
     }
 
-    public selectAll(): void {
-        this.milesStoreService.dispatchSelectAll();
-    }
-
     public onColumnPinned(column: ITableColumn): void {
         this.milesStoreService.dispatchColumnPinnedAction(column);
     }
@@ -51,6 +50,15 @@ export class MilesTableComponent {
     }
 
     public onCheckboxCountClick(action: string): void {
-        console.log('action', action);
+        switch (action) {
+            case eGeneralActions.SELECT_ALL:
+            case eGeneralActions.CLEAR_SELECTED:
+                this.milesStoreService.dispatchSelectAll();
+
+                break;
+            default:
+                // select remaining
+                break;
+        }
     }
 }

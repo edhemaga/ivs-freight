@@ -33,7 +33,7 @@ import { TableConstants } from '@shared/components/new-table/utils/constants';
 import { ePosition } from 'ca-components';
 import { eColor, eGeneralActions } from '@shared/enums';
 
-// Interface
+// interfaces
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 @Component({

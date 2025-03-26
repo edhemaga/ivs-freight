@@ -6,19 +6,15 @@
         activeViewMode: milesStoreService.activeViewMode$ | async,
         statesSelector: milesStoreService.statesSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
-        miles: milesStoreService.miles$ | async,
-        unSelectedCount: milesStoreService.unSelectedCountSelector$ | async,
     };
-<div (click)="toggleTableLockingStatus()">
-    is table unlocked: {{ store.tableSettings.isTableLocked }}
-</div>
+
 <div
     class="d-inline-block"
     [class.w-100]="store?.activeViewMode === eCommonElement.MAP"
 >
     @if (store) {
         <!-- Toolbar -->
-        unSelectedCount: {{ store.unSelectedCount }}
+
         <app-new-table-toolbar
             [title]="eSharedString.MILES"
             [isMarginTopDisabled]="true"

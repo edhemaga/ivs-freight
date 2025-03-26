@@ -1,13 +1,13 @@
-// Interface
+// interfaces
 import { IMilesModel, IMilesState } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
-// Enums
+// enums
 import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
-// Models
+// models
 import {
     MilesByUnitPaginatedStopsResponse,
     SortOrder,
