@@ -2,16 +2,32 @@
 
 .load-stop-rows {
     &-not-pending {
+        // Hot fix only for this table
+        @media (max-width: 1380px) {
+            gap: 3px;
+        }
+        @media (max-width: $small-max) {
+            gap: 0;
+        }
         @include responsive-grid(
-            200px 220px 140px 130px 140px 76px,
-            200px 220px 140px 130px 140px 76px,
+            minmax(168px, 192px) 130px 140px 76px,
+            minmax(168px, 192px) 130px 140px 76px,
+            minmax(168px, 192px) 130px 140px 76px,
             200px 220px 140px 130px 140px 76px
         );
     }
     &-pending {
+        // Hot fix only for this table
+        @media (max-width: 1380px) {
+            gap: 3px;
+        }
+        @media (max-width: $small-max) {
+            gap: 0;
+        }
         @include responsive-grid(
-            200px 220px 140px 130px 76px,
-            200px 220px 140px 130px 76px,
+            minmax(168px, 192px) 130px 140px 76px,
+            minmax(168px, 192px) 130px 140px 76px,
+            minmax(168px, 192px) 130px 140px 76px,
             200px 220px 140px 130px 76px
         );
     }

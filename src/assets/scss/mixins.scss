@@ -1,3 +1,5 @@
+@import 'src/theme/variables';
+
 /* styles.scss */
 @mixin flex($align: null, $justify: null) {
     display: flex;
@@ -50,22 +52,36 @@
     -webkit-user-select: none;
     user-select: none;
     -moz-user-select: none;
-  }
-  
-  @mixin responsive-grid($small, $medium, $large, $small-max: 1280px, $medium-min: 1281px, $medium-max: 1440px, $large-min: 1441px) {
+}
+
+@mixin responsive-grid($small, $medium, $large, $xlarge) {
     display: grid;
     gap: 12px;
     padding-right: 12px;
 
     @media (max-width: $small-max) {
-      grid-template-columns: $small;
+        grid-template-columns: $small;
     }
-  
+
     @media (min-width: $medium-min) and (max-width: $medium-max) {
-      grid-template-columns: $medium;
+        grid-template-columns: $medium;
     }
-  
-    @media (min-width: $large-min) {
-      grid-template-columns: $large;
+
+    @media (min-width: $large-min) and (max-width: $large-max) {
+        grid-template-columns: $large;
     }
-  }
+
+    @media (min-width: $xlarge-min) {
+        grid-template-columns: $xlarge;
+    }
+}
+.visible {
+    &-large {
+        @media (max-width: $large-max) {
+            display: none !important;
+        }
+        @media (min-width: $xlarge-min) {
+            display: block !important;
+        }
+    }
+}
