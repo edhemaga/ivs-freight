@@ -495,10 +495,10 @@
     @for (item of data?.additionalBillingRates; track item.id) {
         @if (item?.rate) {
             <div
-                class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+                class="d-flex justify-content-between align-items-center mb-1 h-26"
             >
                 <div
-                    class="ta-font-medium"
+                    class="ta-font-medium text-size-14"
                     [ngClass]="
                         data.tonuRate ? 'text-color-muted' : 'text-color-black'
                     "
@@ -507,6 +507,7 @@
                     {{ item.additionalBillingType?.name }}
                 </div>
                 <div
+                    class="text-size-14"
                     [ngClass]="
                         data.tonuRate
                             ? 'text-color-muted'
