@@ -414,24 +414,25 @@
     @if (data?.baseRate) {
         <div
             class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-            [class.text-decoration-line-through]="
-                data.tonuRate || data?.revisedRate
-            "
         >
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-black': !data.tonuRate,
-                }"
+                [ngClass]="
+                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
+                "
+                [class.text-decoration-line-through]="
+                    data.tonuRate || data?.revisedRate
+                "
                 class="ta-font-medium"
             >
                 Base Rate
             </div>
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-black-2': !data.tonuRate,
-                }"
+                [ngClass]="
+                    data.tonuRate ? 'text-color-muted' : 'text-color-black-2'
+                "
+                [class.text-decoration-line-through]="
+                    data.tonuRate || data?.revisedRate
+                "
                 class="ta-font-regular"
             >
                 {{ data?.baseRate | currency: 'USD' }}
@@ -442,23 +443,24 @@
     @if (data?.adjustedRate) {
         <div
             class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-            [class.text-decoration-line-through]="data.tonuRate"
         >
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-black': !data.tonuRate,
-                }"
                 class="ta-font-medium"
+                [ngClass]="
+                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
+                "
+                [class.text-decoration-line-through]="data.tonuRate"
             >
                 Adjusted Rate
             </div>
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-special-filter-purple': !data.tonuRate,
-                }"
                 class="ta-font-regular"
+                [ngClass]="
+                    data.tonuRate
+                        ? 'text-color-muted'
+                        : 'text-color-special-filter-purple'
+                "
+                [class.text-decoration-line-through]="data.tonuRate"
             >
                 {{ data?.adjustedRate | currency: 'USD' }}
             </div>
@@ -468,23 +470,24 @@
     @if (data?.revisedRate) {
         <div
             class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-            [class.text-decoration-line-through]="data.tonuRate"
         >
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-black': !data.tonuRate,
-                }"
                 class="ta-font-medium"
+                [ngClass]="
+                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
+                "
+                [class.text-decoration-line-through]="data.tonuRate"
             >
                 Revised Rate
             </div>
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-special-filter-purple': !data.tonuRate,
-                }"
                 class="ta-font-semi-bold"
+                [ngClass]="
+                    data.tonuRate
+                        ? 'text-color-muted'
+                        : 'text-color-special-filter-purple'
+                "
+                [class.text-decoration-line-through]="data.tonuRate"
             >
                 {{ data?.revisedRate | currency: 'USD' }}
             </div>
@@ -495,23 +498,24 @@
         @if (item?.rate) {
             <div
                 class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-                [class.text-decoration-line-through]="data.tonuRate"
             >
                 <div
-                    [ngClass]="{
-                        'text-color-muted': data.tonuRate,
-                        'text-color-black': !data.tonuRate,
-                    }"
                     class="ta-font-medium"
+                    [ngClass]="
+                        data.tonuRate ? 'text-color-muted' : 'text-color-black'
+                    "
+                    [class.text-decoration-line-through]="data.tonuRate"
                 >
                     {{ item.additionalBillingType?.name }}
                 </div>
                 <div
-                    [ngClass]="{
-                        'text-color-muted': data.tonuRate,
-                        'text-color-black-2': !data.tonuRate,
-                    }"
                     class="ta-font-regular"
+                    [ngClass]="
+                        data.tonuRate
+                            ? 'text-color-muted'
+                            : 'text-color-black-2'
+                    "
+                    [class.text-decoration-line-through]="data.tonuRate"
                 >
                     {{ item?.rate | currency: 'USD' }}
                 </div>
@@ -519,27 +523,22 @@
         }
     }
 
-    <div
-        class="d-flex justify-content-between align-items-center mb-1 h-30"
-        [class.text-decoration-line-through]="
-            data.tonuRate || data?.revisedRate
-        "
-    >
+    <div class="d-flex justify-content-between align-items-center mb-1 h-30">
         <div
-            [ngClass]="{
-                'text-color-muted': data.tonuRate,
-                'text-color-black': !data.tonuRate,
-            }"
             class="text-size-14 ta-font-medium"
+            [ngClass]="data.tonuRate ? 'text-color-muted' : 'text-color-black'"
+            [class.text-decoration-line-through]="
+                data.tonuRate || data?.revisedRate
+            "
         >
             TOTAL RATE
         </div>
         <div
-            [ngClass]="{
-                'text-color-muted': data.tonuRate,
-                'text-color-black': !data.tonuRate,
-            }"
             class="text-size-18 ta-font-semi-bold"
+            [ngClass]="data.tonuRate ? 'text-color-muted' : 'text-color-black'"
+            [class.text-decoration-line-through]="
+                data.tonuRate || data?.revisedRate
+            "
         >
             {{ data?.totalRate | currency: 'USD' }}
         </div>
@@ -547,23 +546,22 @@
 
     @if (data?.totalAdjustedRate) {
         <div
-            [class.text-decoration-line-through]="data.tonuRate"
             class="d-flex justify-content-between align-items-center mb-1 h-30"
         >
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-black': !data.tonuRate,
-                }"
                 class="text-size-14 ta-font-medium"
+                [ngClass]="
+                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
+                "
             >
                 TOTAL ADJUSTED
             </div>
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-special-filter-purple': !data.tonuRate,
-                }"
+                [ngClass]="
+                    data.tonuRate
+                        ? 'text-color-muted'
+                        : 'text-color-special-filter-purple'
+                "
                 class="text-size-18 ta-font-semi-bold"
             >
                 {{ data?.totalAdjustedRate | currency: 'USD' }}
@@ -573,24 +571,23 @@
 
     @if (data?.driverRate) {
         <div
-            [class.text-decoration-line-through]="data.tonuRate"
             class="d-flex justify-content-between align-items-center mb-1 h-30"
         >
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-black': !data.tonuRate,
-                }"
                 class="text-size-14 ta-font-medium"
+                [ngClass]="
+                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
+                "
+                [class.text-decoration-line-through]="data.tonuRate"
             >
                 DRIVER RATE
             </div>
             <div
-                [ngClass]="{
-                    'text-color-muted': data.tonuRate,
-                    'text-color-yellow-5': !data.tonuRate,
-                }"
                 class="text-size-18 ta-font-semi-bold"
+                [ngClass]="
+                    data.tonuRate ? 'text-color-muted' : 'text-color-yellow-5'
+                "
+                [class.text-decoration-line-through]="data.tonuRate"
             >
                 {{ data?.driverRate | currency: 'USD' }}
             </div>
@@ -599,28 +596,37 @@
 
     @if (data?.tonuRate) {
         <div
-            [class.text-decoration-line-through]="data.tonuRate"
             class="d-flex justify-content-between align-items-center mb-1 h-30"
         >
-            <div class="text-color-black text-size-14 ta-font-medium">
+            <div
+                class="text-color-black text-size-14 ta-font-medium"
+                [class.text-decoration-line-through]="data.tonuRate"
+            >
                 TONU RATE
             </div>
-            <div class="text-color-red-11 text-size-18 ta-font-semi-medium">
+            <div
+                class="text-color-red-11 text-size-18 ta-font-semi-medium"
+                [class.text-decoration-line-through]="data.tonuRate"
+            >
                 {{ data?.tonuRate | currency: 'USD' }}
             </div>
         </div>
     }
 
     @if (data?.revisedRate) {
-        <!-- TODO  Add reducer or pass it through a pipe-->
         <div
-            [class.text-decoration-line-through]="data.tonuRate"
             class="d-flex justify-content-between align-items-center mb-1 h-30"
         >
-            <div class="text-color-black text-size-14 ta-font-medium">
+            <div
+                class="text-color-black text-size-14 ta-font-medium"
+                [class.text-decoration-line-through]="data.tonuRate"
+            >
                 REVISED RATE
             </div>
-            <div class="text-color-red-11 text-size-18 ta-font-semi-medium">
+            <div
+                class="text-color-red-11 text-size-18 ta-font-semi-medium"
+                [class.text-decoration-line-through]="data.tonuRate"
+            >
                 {{ data?.revisedRate | currency: 'USD' }}
             </div>
         </div>
