@@ -32,12 +32,14 @@
         <!-- Header Templates -->
 
         <ng-template #selectHeaderTemplate>
-            <app-ca-checkbox
+            <app-ca-checkbox-selected-count></app-ca-checkbox-selected-count>
+
+            <!--  <app-ca-checkbox
                 name="miles-row-all"
                 [isChecked]="store.hasAllItemsSelected"
                 [isRegularCheckbox]="false"
                 (columnCheckAction)="selectAll()"
-            ></app-ca-checkbox>
+            ></app-ca-checkbox> -->
         </ng-template>
 
         <ng-template #revenueHeaderTemplate let-data="data">
