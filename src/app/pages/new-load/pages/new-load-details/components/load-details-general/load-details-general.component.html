@@ -259,7 +259,14 @@
             </div>
         </div>
 
-        <ng-container *ngTemplateOutlet="billing"></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                billing;
+                context: {
+                    data: load,
+                }
+            "
+        ></ng-container>
     }
 </div>
 
@@ -374,8 +381,48 @@
             }"
         >
         </app-ta-custom-card>
+        <ng-container
+            *ngTemplateOutlet="
+                billingBaseRate;
+                context: {
+                    data,
+                }
+            "
+        ></ng-container>
     </div>
 </ng-template>
-<ng-template #billingBaseRate let-data="data"></ng-template>
+<ng-template #billingBaseRate let-data="data">
+    <div
+        class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+    >
+        <div class="text-color-black ta-font-medium">Base Rate</div>
+        <div class="text-color-black-2 ta-font-regular">
+            ${{ data?.baseRate }}
+        </div>
+    </div>
+    @for (item of data?.additionalBillingRates; track item.id) {
+        @if (item) {
+            <!-- @if (item?.rate) { -->
+            <div
+                class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+            >
+                <div class="text-color-black ta-font-medium">
+                    {{ item.additionalBillingType?.name }}
+                </div>
+                <div class="text-color-black-2 ta-font-regular">
+                    ${{ item?.rate }}
+                </div>
+            </div>
+        }
+    }
+    <div class="d-flex justify-content-between align-items-center mb-1 h-30">
+        <div class="text-color-black text-size-14 ta-font-medium">
+            TOTAL RATE
+        </div>
+        <div class="text-color-black text-size-18 ta-font-semi-bold">
+            ${{ data?.totalRate }}
+        </div>
+    </div>
+</ng-template>
 <ng-template #billingTonu let-data="data"></ng-template>
 <ng-template #billingRevised let-data="data"></ng-template>
