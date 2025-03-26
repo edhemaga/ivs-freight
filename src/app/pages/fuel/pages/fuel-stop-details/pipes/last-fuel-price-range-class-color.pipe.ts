@@ -11,13 +11,16 @@ export class LastFuelPriceRangeClassColorPipe implements PipeTransform {
         minValue: number;
         maxValue: number;
         totalValue: number;
+        isOutdated?: boolean;
     }): string {
-        const { minValue, maxValue, totalValue } = lastFuelPriceData;
+        const { minValue, maxValue, totalValue, isOutdated } =
+            lastFuelPriceData;
 
         return LastFuelPriceProgressHelper.getSvgClassFromValue(
             minValue,
             maxValue,
-            totalValue
+            totalValue,
+            isOutdated
         );
     }
 }

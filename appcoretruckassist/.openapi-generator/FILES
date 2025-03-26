@@ -761,6 +761,7 @@ model/ownerIntervalResponse.ts
 model/ownerModalResponse.ts
 model/ownerResponse.ts
 model/ownerShortResponse.ts
+model/ownerSortBy.ts
 model/ownerTableResponse.ts
 model/ownerTableResponsePagination.ts
 model/ownerTrailerModalResponse.ts
@@ -1070,6 +1071,7 @@ model/trailerModelResponse.ts
 model/trailerResponse.ts
 model/trailerShortResponse.ts
 model/trailerShortResponsePagination.ts
+model/trailerSortBy.ts
 model/trailerTypeFilterResponse.ts
 model/trailerTypeResponse.ts
 model/transferRegistrationCommand.ts
@@ -1105,6 +1107,7 @@ model/truckRevenueChartResponse.ts
 model/truckRevenueResponse.ts
 model/truckShortResponse.ts
 model/truckShortResponsePagination.ts
+model/truckSortBy.ts
 model/truckTypeFilterResponse.ts
 model/truckTypeResponse.ts
 model/unitType.ts
@@ -1139,6 +1142,8 @@ model/updateDisclosureReleaseCommand.ts
 model/updateDispatchCommand.ts
 model/updateDispatchHistoryCommand.ts
 model/updateDivisionCompanyCommand.ts
+model/updateDocumentNameCommand.ts
+model/updateDocumentNameResponse.ts
 model/updateDriverRightsCommand.ts
 model/updateDrugAndAlcoholCommand.ts
 model/updateDrugAndAlcoholReviewCommand.ts

@@ -11,11 +11,8 @@
  */
 
 
-export type LoadType = 'FTL' | 'LTL' | 'Combo';
-
-export const LoadType = {
-    Ftl: 'FTL' as LoadType,
-    Ltl: 'LTL' as LoadType,
-    Combo: 'Combo' as LoadType
-};
+export interface UpdateDocumentNameCommand { 
+    fileId?: number;
+    newFileName?: string | null;
+}
 
