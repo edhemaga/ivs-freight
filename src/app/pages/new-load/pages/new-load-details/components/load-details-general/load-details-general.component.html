@@ -309,7 +309,10 @@
                     >
                         <svg-icon
                             class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
-                            [class]="loadStatus && (loadStatus.id | loadStatusColors : true)"
+                            [class]="
+                                loadStatus &&
+                                (loadStatus.id | loadStatusColors: true)
+                            "
                             [src]="icon"
                         ></svg-icon>
                     </div>
@@ -336,17 +339,16 @@
                                 </span>
                             }
                         </div>
-                    } 
-                    @else if (loadStatus) {
+                    } @else if (loadStatus) {
                         <app-ca-load-status
                             [status]="{
                                 name: loadStatus?.name,
-                                id: loadStatus?.id
+                                id: loadStatus?.id,
                             }"
                             [isNoStyle]="true"
                             [fontSize]="14"
                         >
-                        </app-ca-load-status> 
+                        </app-ca-load-status>
                     }
                 </ng-template>
             </app-ca-skeleton>
@@ -386,61 +388,241 @@
 </ng-template>
 
 <ng-template #billing let-data="data">
-    <div class="p-2">
+    <div class="p-2" (click)="toggleBilling()">
         <app-ta-custom-card
             [cardName]="'Billing'"
-            [hasCounter]="load?.billingCount"
-            [isCardOpen]="!!load?.billingCount?.length"
-            [disabledCard]="!load?.billingCount?.length"
+            [hasCounter]="data?.billingCount"
+            [disabledCard]="!data?.billingCount"
             [bodyTemplate]="'card'"
             [animationMarginParams]="{
                 marginTop: '6px',
                 marginBottom: '6px',
             }"
         >
+            <ng-container
+                *ngTemplateOutlet="
+                    billingBaseRate;
+                    context: {
+                        data,
+                    }
+                "
+            ></ng-container>
         </app-ta-custom-card>
-        <ng-container
-            *ngTemplateOutlet="
-                billingBaseRate;
-                context: {
-                    data,
-                }
-            "
-        ></ng-container>
     </div>
 </ng-template>
 <ng-template #billingBaseRate let-data="data">
-    <div
-        class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-    >
-        <div class="text-color-black ta-font-medium">Base Rate</div>
-        <div class="text-color-black-2 ta-font-regular">
-            ${{ data?.baseRate }}
+    @if (data?.baseRate) {
+        <div
+            class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+            [class.text-decoration-line-through]="
+                data.tonuRate || data?.revisedRate
+            "
+        >
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-black': !data.tonuRate,
+                }"
+                class="ta-font-medium"
+            >
+                Base Rate
+            </div>
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-black-2': !data.tonuRate,
+                }"
+                class="ta-font-regular"
+            >
+                {{ data?.baseRate | currency: 'USD' }}
+            </div>
         </div>
-    </div>
+    }
+
+    @if (data?.adjustedRate) {
+        <div
+            class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+            [class.text-decoration-line-through]="data.tonuRate"
+        >
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-black': !data.tonuRate,
+                }"
+                class="ta-font-medium"
+            >
+                Adjusted Rate
+            </div>
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-special-filter-purple': !data.tonuRate,
+                }"
+                class="ta-font-regular"
+            >
+                {{ data?.adjustedRate | currency: 'USD' }}
+            </div>
+        </div>
+    }
+
+    @if (data?.revisedRate) {
+        <div
+            class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+            [class.text-decoration-line-through]="data.tonuRate"
+        >
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-black': !data.tonuRate,
+                }"
+                class="ta-font-medium"
+            >
+                Revised Rate
+            </div>
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-special-filter-purple': !data.tonuRate,
+                }"
+                class="ta-font-semi-bold"
+            >
+                {{ data?.revisedRate | currency: 'USD' }}
+            </div>
+        </div>
+    }
+
     @for (item of data?.additionalBillingRates; track item.id) {
-        @if (item) {
-            <!-- @if (item?.rate) { -->
+        @if (item?.rate) {
             <div
                 class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+                [class.text-decoration-line-through]="data.tonuRate"
             >
-                <div class="text-color-black ta-font-medium">
+                <div
+                    [ngClass]="{
+                        'text-color-muted': data.tonuRate,
+                        'text-color-black': !data.tonuRate,
+                    }"
+                    class="ta-font-medium"
+                >
                     {{ item.additionalBillingType?.name }}
                 </div>
-                <div class="text-color-black-2 ta-font-regular">
-                    ${{ item?.rate }}
+                <div
+                    [ngClass]="{
+                        'text-color-muted': data.tonuRate,
+                        'text-color-black-2': !data.tonuRate,
+                    }"
+                    class="ta-font-regular"
+                >
+                    {{ item?.rate | currency: 'USD' }}
                 </div>
             </div>
         }
     }
-    <div class="d-flex justify-content-between align-items-center mb-1 h-30">
-        <div class="text-color-black text-size-14 ta-font-medium">
+
+    <div
+        class="d-flex justify-content-between align-items-center mb-1 h-30"
+        [class.text-decoration-line-through]="
+            data.tonuRate || data?.revisedRate
+        "
+    >
+        <div
+            [ngClass]="{
+                'text-color-muted': data.tonuRate,
+                'text-color-black': !data.tonuRate,
+            }"
+            class="text-size-14 ta-font-medium"
+        >
             TOTAL RATE
         </div>
-        <div class="text-color-black text-size-18 ta-font-semi-bold">
-            ${{ data?.totalRate }}
+        <div
+            [ngClass]="{
+                'text-color-muted': data.tonuRate,
+                'text-color-black': !data.tonuRate,
+            }"
+            class="text-size-18 ta-font-semi-bold"
+        >
+            {{ data?.totalRate | currency: 'USD' }}
         </div>
     </div>
+
+    @if (data?.totalAdjustedRate) {
+        <div
+            [class.text-decoration-line-through]="data.tonuRate"
+            class="d-flex justify-content-between align-items-center mb-1 h-30"
+        >
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-black': !data.tonuRate,
+                }"
+                class="text-size-14 ta-font-medium"
+            >
+                TOTAL ADJUSTED
+            </div>
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-special-filter-purple': !data.tonuRate,
+                }"
+                class="text-size-18 ta-font-semi-bold"
+            >
+                {{ data?.totalAdjustedRate | currency: 'USD' }}
+            </div>
+        </div>
+    }
+
+    @if (data?.driverRate) {
+        <div
+            [class.text-decoration-line-through]="data.tonuRate"
+            class="d-flex justify-content-between align-items-center mb-1 h-30"
+        >
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-black': !data.tonuRate,
+                }"
+                class="text-size-14 ta-font-medium"
+            >
+                DRIVER RATE
+            </div>
+            <div
+                [ngClass]="{
+                    'text-color-muted': data.tonuRate,
+                    'text-color-yellow-5': !data.tonuRate,
+                }"
+                class="text-size-18 ta-font-semi-bold"
+            >
+                {{ data?.driverRate | currency: 'USD' }}
+            </div>
+        </div>
+    }
+
+    @if (data?.tonuRate) {
+        <div
+            [class.text-decoration-line-through]="data.tonuRate"
+            class="d-flex justify-content-between align-items-center mb-1 h-30"
+        >
+            <div class="text-color-black text-size-14 ta-font-medium">
+                TONU RATE
+            </div>
+            <div class="text-color-red-11 text-size-18 ta-font-semi-medium">
+                {{ data?.tonuRate | currency: 'USD' }}
+            </div>
+        </div>
+    }
+
+    @if (data?.revisedRate) {
+        <!-- TODO  Add reducer or pass it through a pipe-->
+        <div
+            [class.text-decoration-line-through]="data.tonuRate"
+            class="d-flex justify-content-between align-items-center mb-1 h-30"
+        >
+            <div class="text-color-black text-size-14 ta-font-medium">
+                REVISED RATE
+            </div>
+            <div class="text-color-red-11 text-size-18 ta-font-semi-medium">
+                {{ data?.revisedRate | currency: 'USD' }}
+            </div>
+        </div>
+    }
 </ng-template>
-<ng-template #billingTonu let-data="data"></ng-template>
-<ng-template #billingRevised let-data="data"></ng-template>
