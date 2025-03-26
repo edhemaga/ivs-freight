@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import {
-    AfterViewInit,
+    AfterViewChecked,
     ChangeDetectionStrategy,
     ChangeDetectorRef,
     Component,
@@ -30,7 +30,7 @@ import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
 import { TableConstants } from '@shared/components/new-table/utils/constants';
 
 // enums
-import { ePosition } from 'ca-components';
+import { ePosition, eUnit } from 'ca-components';
 import { eColor, eGeneralActions } from '@shared/enums';
 
 // interfaces
@@ -54,19 +54,21 @@ import { ITableColumn } from '@shared/components/new-table/interface';
         TableColumnClassPipe,
     ],
 })
-export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
-    @ViewChild('header') header!: ElementRef;
+export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     @ViewChild('tableRow') tableRow!: ElementRef<HTMLDivElement>;
-
-    @Input() expandedRows: Set<number> = new Set([]);
-    @Input() isTableLocked: boolean;
-    @Input() rows: T[] = [];
-    @Input() templates: { [key: string]: TemplateRef<T> } = {};
-    @Input() headerTemplates: { [key: string]: TemplateRef<T> } = {};
 
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
+
+    @Input() rows: T[] = [];
+
+    @Input() isTableLocked: boolean;
+
+    @Input() headerTemplates: { [key: string]: TemplateRef<T> } = {};
+    @Input() templates: { [key: string]: TemplateRef<T> } = {};
+
+    @Input() expandedRows: Set<number> = new Set([]);
 
     @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
@@ -84,28 +86,24 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
     public ePosition = ePosition;
     public eColor = eColor;
     public eGeneralActions = eGeneralActions;
+    public eUnit = eUnit;
 
     // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
-    constructor(
-        // ref
-        private cdRef: ChangeDetectorRef
-    ) {}
+    constructor(private cdRef: ChangeDetectorRef) {}
 
-    ngAfterViewInit() {
+    ngAfterViewChecked() {
         this.getTableWidth();
     }
 
     private getTableWidth(): void {
-        this.resizeObserver = new ResizeObserver((entries) => {
-            for (let entry of entries) {
-                const rowWidth =
-                    entry.contentRect.width +
-                    TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
+        this.resizeObserver = new ResizeObserver(([entry]) => {
+            if (!entry) return;
 
-                this.rowWidth = rowWidth;
-            }
+            this.rowWidth =
+                entry.contentRect.width +
+                TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
 
             this.cdRef.detectChanges();
         });
@@ -125,28 +123,21 @@ export class NewTableComponent<T> implements AfterViewInit, OnDestroy {
         this.mainColumns = columns.filter((col) => !col.pinned);
     }
 
-    public onScroll(event: Event): void {
-        const target = event.target as HTMLElement;
-        const scrollLeft = target.scrollLeft;
-
-        if (this.header) this.header.nativeElement.scrollLeft = scrollLeft;
-    }
-
-    public isRowExpanded(rowId: number): boolean {
-        return this.expandedRows?.has(rowId);
-    }
-
-    public pinColumn(column: ITableColumn): void {
+    public handlePinColumnClick(column: ITableColumn): void {
         this.onColumnPinned.emit(column);
     }
 
-    public setSorting(sort: ITableColumn): void {
+    public handleSortColumnClick(sort: ITableColumn): void {
         if (this.isTableLocked) return;
 
         this.onSortingChange.emit(sort);
     }
 
     public handleShowMoreClick(): void {}
+
+    public isRowExpanded(rowId: number): boolean {
+        return this.expandedRows?.has(rowId);
+    }
 
     ngOnDestroy() {
         this.resizeObserver.disconnect();

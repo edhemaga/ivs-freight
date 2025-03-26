@@ -19,6 +19,9 @@ import {
     CaCheckboxSelectedCountComponent,
 } from 'ca-components';
 
+// pipes
+import { ThousandSeparatorPipe } from '@shared/pipes';
+
 @Component({
     selector: 'app-miles-table',
     templateUrl: './miles-table.component.html',
@@ -32,6 +35,9 @@ import {
         TaTruckTrailerIconComponent,
         CaCheckboxComponent,
         CaCheckboxSelectedCountComponent,
+
+        // pipes
+        ThousandSeparatorPipe,
     ],
 })
 export class MilesTableComponent {

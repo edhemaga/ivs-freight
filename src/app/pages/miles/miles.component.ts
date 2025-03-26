@@ -16,9 +16,12 @@ import {
 import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
+import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 
 // services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
+import { ModalService } from '@shared/services';
 
 // enums
 import { eMileTabs } from '@pages/miles/enums';
@@ -28,6 +31,7 @@ import {
     eGeneralActions,
     eSharedString,
 } from '@shared/enums';
+import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
@@ -50,6 +54,7 @@ import { IStateFilters } from '@shared/interfaces';
         MilesMapComponent,
         MilesCardComponent,
         MilesTableComponent,
+        TaTableEmptyComponent,
     ],
 })
 export class MilesComponent implements OnInit, OnDestroy {
@@ -62,7 +67,11 @@ export class MilesComponent implements OnInit, OnDestroy {
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
 
-    constructor(public milesStoreService: MilesStoreService) {}
+    constructor(
+        private modalService: ModalService,
+
+        public milesStoreService: MilesStoreService
+    ) {}
 
     ngOnInit(): void {
         this.storeSubscription();
@@ -72,6 +81,20 @@ export class MilesComponent implements OnInit, OnDestroy {
         this.milesStoreService.filter$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => (this.filter = res));
+    }
+
+    private handleTableEmptyImportListClick(): void {
+        //TODO:
+    }
+
+    private handleTableEmptyAddClick(): void {
+        this.modalService.openModal(TruckModalComponent, {
+            size: eSharedString.SMALL,
+        });
+    }
+
+    public setFilters(filters: IFilterAction): void {
+        this.milesStoreService.dispatchFilters(filters, this.filter);
     }
 
     public onToolBarAction(event: { mode: eMileTabs; action: string }): void {
@@ -86,12 +109,21 @@ export class MilesComponent implements OnInit, OnDestroy {
         }
     }
 
-    public setFilters(filters: IFilterAction): void {
-        this.milesStoreService.dispatchFilters(filters, this.filter);
-    }
+    public onTableEmptyBtnClick(btnClickType: string): void {
+        switch (btnClickType) {
+            case eTableEmpty.ADD_CLICK:
+                this.handleTableEmptyAddClick();
 
-    public toggleTableLockingStatus(): void {
-        this.milesStoreService.toggleTableLockingStatus();
+                break;
+            case eTableEmpty.IMPORT_LIST_CLICK:
+                this.handleTableEmptyImportListClick();
+
+                break;
+            default:
+                // reset filters
+
+                break;
+        }
     }
 
     ngOnDestroy(): void {
