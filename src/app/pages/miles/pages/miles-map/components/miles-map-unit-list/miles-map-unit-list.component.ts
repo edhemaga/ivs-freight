@@ -55,6 +55,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     public sharedSvgRoutes = SharedSvgRoutes;
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
+    public searchField = MilesStopsTable.SEARCH_FIELD;
 
     public isStopListExpanded: boolean = false;
     public isLoading: boolean = false;
@@ -122,6 +123,17 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         // );
 
         this.manageScrollDebounce();
+
+        this.onSeachFieldChange();
+    }
+
+    private onSeachFieldChange(): void {
+        this.searchForm
+            .get('search')
+            ?.valueChanges.pipe(debounceTime(300))
+            .subscribe((value) => {
+                this.milesStoreService.dispatchSearchInputChanged(value);
+            });
     }
 
     ngOnDestroy(): void {

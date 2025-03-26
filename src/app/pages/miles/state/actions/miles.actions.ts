@@ -110,3 +110,8 @@ export const tableSortingChange = createAction(
     MilesStoreConstants.ACTION_SORTING_CHANGE,
     props<{ column: ITableColumn }>()
 );
+
+export const onSearchChange = createAction(
+    MilesStoreConstants.ACTION_SEARCH_CHANGED,
+    props<{ search: string }>()
+);

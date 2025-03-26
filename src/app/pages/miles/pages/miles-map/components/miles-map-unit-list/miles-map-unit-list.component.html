@@ -67,17 +67,10 @@
             class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
             [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
         >
-            <!-- TODO:  This is waiting for backend, no config yet -->
             <form [formGroup]="searchForm">
                 <app-ca-input
                     formControlName="search"
-                    [inputConfig]="{
-                        name: 'search',
-                        type: 'text',
-                        label: 'Find Stop',
-                        placeholderIcon: 'ic_search',
-                        placeholderInsteadOfLabel: true,
-                    }"
+                    [inputConfig]="searchField"
                 ></app-ca-input>
             </form>
 
