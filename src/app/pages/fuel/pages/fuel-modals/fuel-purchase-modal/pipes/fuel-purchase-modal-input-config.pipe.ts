@@ -33,6 +33,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
         } = args;
 
         let inputConfig: ICaInput;
+
         const truckTrailerDriverDropdownWidth: string = trailerId
             ? 'w-col-143'
             : 'w-col-220';
