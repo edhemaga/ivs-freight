@@ -29,16 +29,24 @@
 .svg {
     // Colors
     &-fill {
-        &-white {
-            @include svg-fill($white);
-        }
-
         &-black {
             @include svg-fill($black);
         }
 
+        &-white {
+            @include svg-fill($white);
+        }
+
+        &-white-2 {
+            @include svg-fill($white-2);
+        }
+
         &-muted {
             @include svg-fill($muted);
+        }
+
+        &-grey {
+            @include svg-fill($bw5);
         }
 
         &-bw-9 {
@@ -65,6 +73,10 @@
             @include svg-fill($ta-blue-14);
         }
 
+        &-blue-17 {
+            @include svg-fill($ta-blue-17);
+        }
+
         &-blue-19 {
             @include svg-fill($ta-blue-19);
         }
@@ -85,6 +97,10 @@
             @include svg-fill($ta-green-4);
         }
 
+        &-green-6 {
+            @include svg-fill($ta-green-6);
+        }
+
         &-yellow-1 {
             @include svg-fill($ta-yellow-1);
         }
@@ -92,24 +108,45 @@
         &-yellow-4 {
             @include svg-fill($ta-yellow-4);
         }
+
         &-yellow-5 {
             @include svg-fill($ta-yellow-5);
         }
 
-        &-orange-4 {
-            @include svg-fill($ta-orange-4);
+        &-yellow-8 {
+            @include svg-fill($ta-yellow-8);
         }
 
-        &-orange-5 {
-            @include svg-fill($ta-orange-5);
+        &-white-4 {
+            @include svg-fill($white-4);
+        }
+
+        &-grey {
+            @include svg-fill($bw5);
+        }
+
+        &-red-10 {
+            @include svg-fill($ta-red-10);
         }
 
         &-red-11 {
             @include svg-fill($ta-red-11);
         }
 
-        &-red-10 {
-            @include svg-fill($ta-red-10);
+        &-red-14 {
+            @include svg-fill($ta-red-14);
+        }
+
+        &-red-18 {
+            @include svg-fill($ta-red-18);
+        }
+
+        &-orange-4 {
+            @include svg-fill($ta-orange-4);
+        }
+        
+        &-orange-5 {
+            @include svg-fill($ta-orange-5);
         }
     }
 

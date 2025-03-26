@@ -59,6 +59,8 @@ import { TruckResponse } from '../model/truckResponse';
 // @ts-ignore
 import { TruckRevenueResponse } from '../model/truckRevenueResponse';
 // @ts-ignore
+import { TruckSortBy } from '../model/truckSortBy';
+// @ts-ignore
 import { WheelsType } from '../model/wheelsType';
 
 // @ts-ignore
@@ -945,10 +947,10 @@ export class TruckService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckListResponse>;
-    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckListResponse>>;
-    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckListResponse>>;
-    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: object, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: TruckSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<TruckListResponse>;
+    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: TruckSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<TruckListResponse>>;
+    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: TruckSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<TruckListResponse>>;
+    public apiTruckListGet(active?: number, truckTypes?: Array<number>, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: TruckSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (active !== undefined && active !== null) {
