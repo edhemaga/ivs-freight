@@ -276,7 +276,8 @@ export class DropdownMenuContentHelper {
     static getRepairShopDropdownContent(
         isOpenBusiness: boolean,
         isPinned: boolean,
-        isCompanyOwned: boolean
+        isCompanyOwned: boolean,
+        isDetailsPageDropdown: boolean = false
     ): IDropdownMenuItem[] {
         // modifier items
         const modifierItems =
@@ -288,7 +289,7 @@ export class DropdownMenuContentHelper {
         // requested items
         const requestedSharedItems = [
             eDropdownMenu.EDIT,
-            eDropdownMenu.VIEW_DETAILS,
+            !isDetailsPageDropdown && eDropdownMenu.VIEW_DETAILS,
             eDropdownMenu.ADD_REPAIR_BILL,
             isPinned
                 ? eDropdownMenu.UNMARK_FAVORITE

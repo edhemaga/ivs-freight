@@ -10,6 +10,9 @@ import {
 
 import { Subject, take, takeUntil } from 'rxjs';
 
+// base classes
+import { RepairDropdownMenuActionsBase } from '@pages/repair/base-classes';
+
 // services
 import { DropDownService } from '@shared/services/drop-down.service';
 import { RepairService } from '@shared/services/repair.service';
@@ -21,6 +24,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { DetailsSearchService } from '@shared/services';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { RepairDetailsQuery } from '@pages/repair/state/repair-details-state/repair-details.query';
@@ -40,7 +44,7 @@ import {
 } from '@pages/repair/pages/repair-shop-details/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { RepairTableStringEnum } from '@pages/repair/pages/repair-table/enums';
-import { eGeneralActions, eSharedString } from '@shared/enums';
+import { eDropdownMenu, eGeneralActions, eSharedString } from '@shared/enums';
 
 // helpers
 import { RepairShopDetailsHelper } from '@pages/repair/pages/repair-shop-details/utils/helpers';
@@ -77,8 +81,11 @@ import { RepairBackFilter } from '@pages/repair/pages/repair-table/models';
         RepairShopDetailsItemComponent,
     ],
 })
-export class RepairShopDetailsComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class RepairShopDetailsComponent
+    extends RepairDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
+    public destroy$ = new Subject<void>();
 
     public detailsDropdownOptions: DetailsDropdownOptions;
     public repairShopDetailsConfig: DetailsConfig[] = [];
@@ -86,6 +93,9 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     public repairShopObject: ExtendedRepairShopResponse;
 
     public newRepairShopId: number;
+
+    // enums
+    public eDropdownMenu = eDropdownMenu;
 
     // search
     public contactListSearchValue: string;
@@ -99,20 +109,29 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     public backRepairedVehiclesFilterQuery: RepairBackFilter =
         RepairTableBackFilterDataHelper.backRepairedVehiclesFilterData();
 
+    get viewData() {
+        return [];
+    }
+
     constructor(
         // router
-        private router: Router,
+        protected router: Router,
+
         private activatedRoute: ActivatedRoute,
 
         // services
+        protected repairService: RepairService,
+        protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
+
         private detailsPageService: DetailsPageService,
-        private repairService: RepairService,
-        private tableService: TruckassistTableService,
+
         private confirmationService: ConfirmationService,
         private dropDownService: DropDownService,
         private detailsDataService: DetailsDataService,
         private confirmationActivationService: ConfirmationActivationService,
-        private modalService: ModalService,
+
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private detailsSearchService: DetailsSearchService,
 
@@ -122,7 +141,9 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
         // store
         private repairItemStore: RepairItemStore,
         private repairDetailsQuery: RepairDetailsQuery
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.getStoreData();
@@ -525,14 +546,8 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
     }
 
     public getDetailsOptions(repairShop: RepairShopResponse): void {
-        const { pinned, status, companyOwned } = repairShop;
-
         this.detailsDropdownOptions =
-            RepairShopDetailsHelper.getDetailsDropdownOptions(
-                pinned,
-                status,
-                companyOwned
-            );
+            RepairShopDetailsHelper.getDetailsDropdownOptions(repairShop);
     }
 
     public onModalAction(action: string): void {
@@ -655,6 +670,10 @@ export class RepairShopDetailsComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
+
+    public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(action?: string): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();
