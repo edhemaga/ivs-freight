@@ -1,9 +1,9 @@
+// External Libraries
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-
 import { Subject, takeUntil } from 'rxjs';
 
-// components
+// Shared Components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
@@ -16,25 +16,20 @@ import {
 import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
-import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
-import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 
-// services
+// Feature Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
-import { ModalService } from '@shared/services';
 
-// enums
+// Enums
 import { eMileTabs } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
-    eGeneralActions,
     eSharedString,
     TableStringEnum,
 } from '@shared/enums';
-import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
-// interfaces
+// Interfaces
 import { IStateFilters } from '@shared/interfaces';
 
 @Component({
@@ -55,7 +50,6 @@ import { IStateFilters } from '@shared/interfaces';
         MilesMapComponent,
         MilesCardComponent,
         MilesTableComponent,
-        TaTableEmptyComponent,
     ],
 })
 export class MilesComponent implements OnInit, OnDestroy {
@@ -67,65 +61,36 @@ export class MilesComponent implements OnInit, OnDestroy {
     public eSharedString = eSharedString;
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
-    public eGeneralActions = eGeneralActions;
 
-    constructor(
-        private modalService: ModalService,
-
-        public milesStoreService: MilesStoreService
-    ) {}
+    constructor(public milesStoreService: MilesStoreService) {}
 
     ngOnInit(): void {
         this.storeSubscription();
     }
 
-    private storeSubscription(): void {
-        this.milesStoreService.filter$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.filter = res));
-    }
-
-    private handleTableEmptyImportListClick(): void {
-        //TODO:
-    }
-
-    private handleTableEmptyAddClick(): void {
-        this.modalService.openModal(TruckModalComponent, {
-            size: TableStringEnum.SMALL,
-        });
-    }
-
-    public setFilters(filters: IFilterAction): void {
-        this.milesStoreService.dispatchFilters(filters, this.filter);
-    }
-
     public onToolBarAction(event: { mode: eMileTabs; action: string }): void {
         const { action, mode } = event || {};
-
-        if (action === eGeneralActions.TAB_SELECTED) {
+        if (action === TableStringEnum.TAB_SELECTED) {
             this.milesStoreService.dispatchListChange(mode);
-        } else if (action === eGeneralActions.VIEW_MODE) {
+        } else if (action === TableStringEnum.VIEW_MODE) {
             this.milesStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
             );
         }
     }
 
-    public onTableEmptyBtnClick(btnClickType: string): void {
-        switch (btnClickType) {
-            case eTableEmpty.ADD_CLICK:
-                this.handleTableEmptyAddClick();
+    public setFilters(filters: IFilterAction): void {
+        this.milesStoreService.dispatchFilters(filters, this.filter);
+    }
 
-                break;
-            case eTableEmpty.IMPORT_LIST_CLICK:
-                this.handleTableEmptyImportListClick();
+    public toggleTableLockingStatus(): void {
+        this.milesStoreService.toggleTableLockingStatus();
+    }
 
-                break;
-            default:
-                // reset filters
-
-                break;
-        }
+    private storeSubscription(): void {
+        this.milesStoreService.filter$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.filter = res));
     }
 
     ngOnDestroy(): void {

@@ -19,6 +19,7 @@ import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
 
 @Component({
     selector: 'app-load-details-general',
@@ -31,12 +32,14 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
         // Pipes
         FormatDatePipe,
+        LoadStatusColorsPipe,
 
         // Components
         CaSkeletonComponent,
         SvgIconComponent,
         CaUnitInfoBoxComponent,
         TaAppTooltipV2Component,
+        CaLoadStatusComponent,
     ],
 })
 export class LoadDetailsGeneralComponent {

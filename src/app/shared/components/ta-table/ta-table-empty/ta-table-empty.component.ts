@@ -27,8 +27,9 @@ import { IToolbarWidth } from '@shared/interfaces';
 import { TableEmptySvgRoutes } from '@shared/components/ta-table/ta-table-empty/utils/svg-routes';
 
 // enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
-import { eCommonElement, eModalButtonText } from '@shared/enums';
+import { eModalButtonText } from '@shared/enums';
 
 @Component({
     selector: 'app-ta-table-empty',
@@ -45,17 +46,14 @@ import { eCommonElement, eModalButtonText } from '@shared/enums';
     ],
 })
 export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
-    @Input() activeViewMode: eCommonElement.LIST | eCommonElement.CARD =
-        eCommonElement.LIST;
+    @Input() activeViewMode: TableStringEnum.LIST | TableStringEnum.CARD =
+        TableStringEnum.LIST;
 
     @Input() btnText: string;
     @Input() hasResults: boolean;
     @Input() filteredResults: boolean;
-    @Input() isNewTableLayout?: boolean = false; // TODO: delete after new table implementation
 
-    @Output() onBtnClick: EventEmitter<string> = new EventEmitter();
-
-    private destroy$ = new Subject<void>();
+    @Output() btnClickEmitter: EventEmitter<string> = new EventEmitter();
 
     // empty grid
     public emptyGridPlaceholder: number[] = [];
@@ -63,13 +61,15 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
     public toolbarWidth: IToolbarWidth;
 
     // enums
-    public eCommonElement = eCommonElement;
+    public taStringEnum = TableStringEnum;
     public eModalButtonClassType = eModalButtonClassType;
     public emodalButtonText = eModalButtonText;
     public eTableEmpty = eTableEmpty;
 
     // svg routes
     public tableEmptySvgRoutes = TableEmptySvgRoutes;
+
+    private destroy$ = new Subject<void>();
 
     constructor(private tableService: TruckassistTableService) {}
 
@@ -82,7 +82,7 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     public handleBtnClick(btnClickType: string): void {
-        this.onBtnClick.emit(btnClickType);
+        this.btnClickEmitter.emit(btnClickType);
     }
 
     private fillEmptyGridPlaceholder(): void {
@@ -90,14 +90,13 @@ export class TaTableEmptyComponent implements OnInit, OnChanges, OnDestroy {
         const columnCountList: number = 3;
 
         this.emptyGridPlaceholder = Array(
-            this.activeViewMode === eCommonElement.LIST
+            this.activeViewMode === TableStringEnum.LIST
                 ? columnCountList
                 : columnCountCard
         ).fill(0);
     }
 
     private getToolbarWidth(): void {
-        // TODO: delete after new table implementation
         this.tableService.currentToolbarWidth
             .pipe(takeUntil(this.destroy$))
             .subscribe((toolbarWidth) => (this.toolbarWidth = toolbarWidth));

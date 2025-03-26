@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 // interfaces
 import { IMilesModel } from '@pages/miles/interface';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
@@ -15,16 +16,12 @@ import {
     CaCheckboxSelectedCountComponent,
 } from 'ca-components';
 
-// pipes
-import { ThousandSeparatorPipe } from '@shared/pipes';
-
 @Component({
     selector: 'app-miles-table',
     templateUrl: './miles-table.component.html',
     styleUrl: './miles-table.component.scss',
     standalone: true,
     imports: [
-        // modules
         CommonModule,
 
         // components
@@ -32,9 +29,6 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
         TaTruckTrailerIconComponent,
         CaCheckboxComponent,
         CaCheckboxSelectedCountComponent,
-
-        // pipes
-        ThousandSeparatorPipe,
     ],
 })
 export class MilesTableComponent {
@@ -46,5 +40,13 @@ export class MilesTableComponent {
 
     public selectAll(): void {
         this.milesStoreService.dispatchSelectAll();
+    }
+
+    public onColumnPinned(column: ITableColumn): void {
+        this.milesStoreService.dispatchColumnPinnedAction(column);
+    }
+
+    public onSortingChange(column: ITableColumn): void {
+        this.milesStoreService.dispatchSortingChange(column);
     }
 }

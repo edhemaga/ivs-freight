@@ -26,7 +26,10 @@
                     iconTextTemplate;
                     context: {
                         icon: sharedIcons.STATUS_ICON,
-                        text: load.status?.statusString,
+                        loadStatus: {
+                            name: load.status?.statusString,
+                            id: load.status?.statusValue?.id,
+                        },
                         isLoading,
                         isSpacingBottom,
                         width: 110,
@@ -208,7 +211,7 @@
             </div>
 
             <div class="row gutter-x-12">
-                @let isLoadAssigned = load.dispatch;
+                @let isLoadAssigned = load?.dispatch;
                 <div class="col-6">
                     <app-ca-unit-info-box
                         [unitInfoBoxConfig]="{
@@ -226,7 +229,7 @@
                 <div class="col-6">
                     <app-ca-unit-info-box
                         [unitInfoBoxConfig]="{
-                            id: load.dispatch?.trailer?.id,
+                            id: load?.dispatch?.trailer?.id,
                             type: eSharedString.TRAILER,
                             iconPath:
                                 load.dispatch?.trailer?.trailerType.logoName,
@@ -240,18 +243,18 @@
 
                 <div class="col-12">
                     <div class="m-t-12">
-                        @let driver = load.dispatch?.driver;
+                        @let driver = load?.dispatch?.driver;
                         @let driverName =
                             driver?.firstName + ' ' + driver?.lastName;
                         <app-ca-unit-info-box
                             [unitInfoBoxConfig]="{
-                                id: driver.id,
+                                id: driver?.id,
                                 type: eSharedString.DRIVER,
                                 label: driverName,
                                 isUnitAssigned:
-                                    isLoadAssigned && load.dispatch?.driver,
+                                    isLoadAssigned && load?.dispatch?.driver,
                                 isImage: true,
-                                imagePath: driver.avatarFile?.url,
+                                imagePath: driver?.avatarFile?.url,
                             }"
                         ></app-ca-unit-info-box>
                     </div>
@@ -272,8 +275,9 @@
     let-extension="extension"
     let-textColorClass="textColorClass"
     let-tooltipText="tooltipText"
+    let-loadStatus="loadStatus"
 >
-    @if (isLoading || text) {
+    @if (isLoading || text || loadStatus) {
         <div
             class="d-flex align-items-center h-26"
             [ngClass]="isSpacingBottom && 'mb-2'"
@@ -296,6 +300,7 @@
                     >
                         <svg-icon
                             class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
+                            [class]="loadStatus && (loadStatus.id | loadStatusColors : true)"
                             [src]="icon"
                         ></svg-icon>
                     </div>
@@ -310,17 +315,30 @@
                 class="overflow-hidden"
             >
                 <ng-template #textTemplate>
-                    <div
-                        class="text-size-14 text-truncate"
-                        [ngClass]="textColorClass || 'text-color-black'"
-                    >
-                        {{ text }}
-                        @if (extension) {
-                            <span class="text-color-grey"
-                                >x{{ extension }}
-                            </span>
-                        }
-                    </div>
+                    @if (text) {
+                        <div
+                            class="text-size-14 text-truncate"
+                            [ngClass]="textColorClass || 'text-color-black'"
+                        >
+                            {{ text }}
+                            @if (extension) {
+                                <span class="text-color-grey"
+                                    >x{{ extension }}
+                                </span>
+                            }
+                        </div>
+                    } 
+                    @else if (loadStatus) {
+                        <app-ca-load-status
+                            [status]="{
+                                name: loadStatus?.name,
+                                id: loadStatus?.id
+                            }"
+                            [isNoStyle]="true"
+                            [fontSize]="14"
+                        >
+                        </app-ca-load-status> 
+                    }
                 </ng-template>
             </app-ca-skeleton>
         </div>

@@ -22,6 +22,7 @@ export interface CommentResponse {
     downRatingCount?: number;
     upRatingCount?: number;
     currentCompanyUserRating?: number | null;
+    isDriver?: boolean | null;
     createdAt?: string;
     updatedAt?: string;
 }

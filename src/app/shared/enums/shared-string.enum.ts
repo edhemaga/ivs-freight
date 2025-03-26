@@ -1,6 +1,5 @@
 export enum eSharedString {
     TRUCK = 'truck',
-    TRUCK_CAPITALIZED = 'Truck',
     TRAILER = 'trailer',
     DRIVER = 'driver',
     MILES = 'Miles',

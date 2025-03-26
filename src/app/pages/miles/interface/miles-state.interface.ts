@@ -3,8 +3,11 @@ import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // Shared Models
-import { ITableColumn, ITableData } from '@shared/models';
+import { ITableData } from '@shared/models';
+
+// Interface
 import { IStateFilters } from '@shared/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // External Services or Models
 import {
@@ -12,6 +15,7 @@ import {
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
+import { ITableConfig } from '@shared/components/new-table/interface';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -28,4 +32,5 @@ export interface IMilesState {
     // Is used for next, prev icons to navigate throught list
     details: MilesByUnitPaginatedStopsResponse;
     unitsPagination: IMilesDetailsFilters;
+    tableSettings: ITableConfig;
 }

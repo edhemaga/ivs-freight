@@ -503,6 +503,7 @@ export class MilesService {
 
     /**
      * @param pageSize 
+     * @param search 
      * @param pageIndex 
      * @param truckId 
      * @param dateFrom 
@@ -511,15 +512,19 @@ export class MilesService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiMilesUnitGet(pageSize?: number, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MilesByUnitPaginatedStopsResponse>;
-    public apiMilesUnitGet(pageSize?: number, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MilesByUnitPaginatedStopsResponse>>;
-    public apiMilesUnitGet(pageSize?: number, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MilesByUnitPaginatedStopsResponse>>;
-    public apiMilesUnitGet(pageSize?: number, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiMilesUnitGet(pageSize?: number, search?: string, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<string>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<MilesByUnitPaginatedStopsResponse>;
+    public apiMilesUnitGet(pageSize?: number, search?: string, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<string>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<MilesByUnitPaginatedStopsResponse>>;
+    public apiMilesUnitGet(pageSize?: number, search?: string, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<string>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<MilesByUnitPaginatedStopsResponse>>;
+    public apiMilesUnitGet(pageSize?: number, search?: string, pageIndex?: number, truckId?: number, dateFrom?: string, dateTo?: string, state?: Array<string>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (pageSize !== undefined && pageSize !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>pageSize, 'PageSize');
+        }
+        if (search !== undefined && search !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>search, 'Search');
         }
         if (pageIndex !== undefined && pageIndex !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,

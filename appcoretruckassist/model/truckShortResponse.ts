@@ -65,6 +65,7 @@ export interface TruckShortResponse {
     purchaseDate?: string | null;
     purchasePrice?: number | null;
     licensePlate?: string | null;
+    licenceRegistrationState?: string | null;
     registrationPercentage?: number | null;
     registrationExpirationDays?: number | null;
     registrationExpirationHours?: number | null;

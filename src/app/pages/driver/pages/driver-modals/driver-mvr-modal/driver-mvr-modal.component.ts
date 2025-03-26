@@ -176,7 +176,7 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        if (this.mvrForm.valid && this.isFormDirty) this.activeAction = action;
+        this.activeAction = action;
 
         switch (action) {
             case DriverMVrModalStringEnum.CLOSE:
