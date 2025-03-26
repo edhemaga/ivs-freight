@@ -757,13 +757,8 @@ export class DropdownMenuContentHelper {
 
     // miles toolbar
     static getMilesToolbarDropdownContent(
-        tableType: string,
         isTableLocked: boolean
     ): IDropdownMenuItem[] {
-        // const tableColumnsConfig = JSON.parse(
-        //     DropdownMenuColumnsActionsHelper.getTableConfig(tableType)
-        // );
-
         // const modifierItems =
         //     DropdownMenuContentConditionalItemsHelper.getToolbarColumnsModifierItems(
         //         !!tableColumnsConfig

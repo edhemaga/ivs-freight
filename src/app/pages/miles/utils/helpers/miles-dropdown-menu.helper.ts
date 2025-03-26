@@ -9,7 +9,6 @@ export class MilesDropdownMenuHelper {
     ): IDropdownMenuItem[] {
         return !isColumnsDropdownActive
             ? DropdownMenuContentHelper.getMilesToolbarDropdownContent(
-                  'tableType',
                   isTableLocked
               )
             : DropdownMenuContentHelper.getMilesToolbarColumnsDropdownContent(

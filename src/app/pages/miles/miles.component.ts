@@ -79,7 +79,6 @@ export class MilesComponent
     public eCommonElement = eCommonElement;
 
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
-    private isTableLocked: boolean = true;
     private isToolbarDropdownMenuColumnsActive: boolean = false;
 
     constructor(
@@ -106,10 +105,15 @@ export class MilesComponent
     }
 
     private setToolbarDropdownMenuContent(
-        isTableLocked: boolean,
         isColumnsDropdownActive: boolean,
         milesColumnsList?: IDropdownMenuItem[]
     ): void {
+        let isTableLocked;
+        this.milesStoreService.tableSettingsSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (isTableLocked = res.isTableLocked));
+
+        console.log('isTableLocked', isTableLocked)
         this.toolbarDropdownMenuOptions =
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 isTableLocked,
@@ -126,7 +130,6 @@ export class MilesComponent
             DropdownMenuColumnsActionsHelper.getDropdownMenuColumnsContentNew();
 
         this.setToolbarDropdownMenuContent(
-            this.isTableLocked,
             this.isToolbarDropdownMenuColumnsActive,
             milesColumns
         );
@@ -178,70 +181,45 @@ export class MilesComponent
     public handleToolbarDropdownMenuActions<T>(
         action: TableCardBodyActions<T>
     ) {
-        const mappedAction = {
-            ...action,
-            // subType: DropdownMenuColumnsActionsHelper.getTableType(
-            //     this.selectedTab
-            // ),
-        };
-        this.handleSharedDropdownMenuActions(mappedAction, eDropdownMenu.MILES);
-        switch (action.type) {
-            // case eDropdownMenuColumns.OPEN_TYPE:
-            //     this.updateToolbarDropdownMenuContent();
+        const { type, isActive } = action;
 
-            //     break;
-            // case eDropdownMenuColumns.COLUMNS_TYPE:
-            //     this.updateToolbarDropdownMenuContent(type);
+        switch (type) {
+            case eDropdownMenuColumns.OPEN_TYPE:
+                this.isToolbarDropdownMenuColumnsActive = false;
 
-            //     break;
-            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
-            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
-                this.toggleTableLockingStatus();
-
-                break;
-            // case eDropdownMenuColumns.RESET_TABLE_TYPE:
-            //     this.handleResetTableAction(subType);
-
-            //     break;
-            // case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
-            //     this.handleResetTableConfirmedAction(subType);
-
-            //     break;
-            default:
-                this.milesStoreService.dispatchToggleColumnsVisiblity(
-                    action.type,
-                    action.isActive
+                this.setToolbarDropdownMenuContent(
+                    this.isToolbarDropdownMenuColumnsActive
                 );
-
-                break;
-        }
-        //
-    }
-
-    public updateToolbarDropdownMenuContent(action?: string): void {
-        if (!action) {
-            this.isToolbarDropdownMenuColumnsActive = false;
-
-            this.setToolbarDropdownMenuContent(
-                this.isTableLocked,
-                this.isToolbarDropdownMenuColumnsActive
-            );
-
-            return;
-        }
-
-        switch (action) {
-            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
-            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
-                // this.updateToolbarDropdownMenuContentUnlockLockAction();
 
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
                 this.updateToolbarDropdownMenuContentColumnsAction();
 
                 break;
+            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
+                this.toggleTableLockingStatus();
+                this.setToolbarDropdownMenuContent(
+                    this.isToolbarDropdownMenuColumnsActive
+                );
+                break;
+            case eDropdownMenuColumns.RESET_TABLE_TYPE:
+                // this.handleResetTableAction(subType);
+
+                break;
+            case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
+                // this.handleResetTableConfirmedAction(subType);
+
+                break;
             default:
+                this.milesStoreService.dispatchToggleColumnsVisiblity(
+                    type,
+                    isActive
+                );
+
+                break;
         }
+        //
     }
 
     public handleShowMoreAction(): void {}
