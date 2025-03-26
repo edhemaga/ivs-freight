@@ -241,6 +241,9 @@ export class RepairShopModalComponent
     public isNewContactAdded: boolean = false;
     public isEachContactRowValid: boolean = true;
 
+    // Address
+    public selectedAddress: AddressEntity;
+
     private departments: DepartmentResponse[];
 
     // Reviews
@@ -543,7 +546,7 @@ export class RepairShopModalComponent
                             [RepairShopModalStringEnum.ADDRESS_UNIT]:
                                 repairShop.address.addressUnit,
                             [RepairShopModalStringEnum.ADDRESS]:
-                                repairShop.address,
+                                repairShop.address.address,
                             [RepairShopModalStringEnum.OPEN_ALWAYS]:
                                 repairShop.openAlways,
                             [RepairShopModalStringEnum.ACCOUNT]:
@@ -697,6 +700,10 @@ export class RepairShopModalComponent
         longLat: any;
     }): void {
         if (event.valid) {
+            this.selectedAddress = event.address;
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.ADDRESS)
+                .patchValue(event.address.address);
             this.repairShopForm
                 .get(RepairShopModalStringEnum.LONGITUDE)
                 .patchValue(event.longLat.longitude);
@@ -1063,7 +1070,7 @@ export class RepairShopModalComponent
                 RepairShopModalStringEnum.PHONE_EXT
             ),
             address: {
-                ...this.getFromFieldValue(RepairShopModalStringEnum.ADDRESS),
+                ...this.selectedAddress,
                 addressUnit: this.getFromFieldValue(
                     RepairShopModalStringEnum.ADDRESS_UNIT
                 ),
