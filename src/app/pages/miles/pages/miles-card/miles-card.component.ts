@@ -5,7 +5,7 @@ import { CommonModule } from '@angular/common';
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 // components
-import { TableCardViewComponent } from '@shared/components/ta-modal-table/components/table-card-view/table-card-view.component';
+import { TableCardViewComponent } from '@shared/components/table-card-view/table-card-view.component';
 
 @Component({
     selector: 'app-miles-card',
