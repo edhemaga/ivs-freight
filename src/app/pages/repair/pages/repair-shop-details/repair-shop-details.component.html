@@ -1,6 +1,7 @@
 <div class="repair-shop-details-container">
     @for (item of repairShopDetailsConfig; track item.id) {
         <app-ta-details-header
+            [isDetailsDropdownImplementation]="true"
             [hasIcon]="item?.icon"
             [hasSearch]="item?.hasSearch"
             [options]="detailsDropdownOptions"
@@ -30,7 +31,10 @@
             [pmFilter]="item?.pmFilter"
             [moneyFilter]="item?.moneyFilter"
             [repairOrderFilter]="item?.repairOrderFilter"
-            (dropActions)="onRepairShopActions($event)"
+            [isSortBtn]="item?.isSortBtn"
+            (onDropdownMenuActions)="
+                handleDropdownMenuActions($event, eDropdownMenu.REPAIR_SHOP)
+            "
             (openModalAction)="onModalAction($event)"
             (sortActions)="onRepairShopSortActions($event, item?.name)"
             (searchBtnEmitter)="onSearchBtnClick($event, item?.name)"
