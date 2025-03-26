@@ -19,11 +19,7 @@ import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import {
-    CaLoadStatusComponent,
-    DetailsTitleCardComponent,
-    LoadStatusColorsPipe,
-} from 'ca-components';
+import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 @Component({
@@ -45,7 +41,6 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
         CaUnitInfoBoxComponent,
         TaAppTooltipV2Component,
         CaLoadStatusComponent,
-        DetailsTitleCardComponent,
         TaCustomCardComponent,
     ],
 })
