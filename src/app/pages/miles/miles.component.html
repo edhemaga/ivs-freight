@@ -10,7 +10,10 @@
 <div (click)="toggleTableLockingStatus()">
     is table unlocked: {{ store.tableSettings.isTableLocked }}
 </div>
-<div class="d-inline-block">
+<div
+    class="d-inline-block"
+    [class.w-100]="store?.activeViewMode === eCommonElement.MAP"
+>
     @if (store) {
         <app-new-table-toolbar
             [title]="eSharedString.MILES"
