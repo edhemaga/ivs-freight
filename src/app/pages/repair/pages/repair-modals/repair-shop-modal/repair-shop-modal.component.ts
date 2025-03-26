@@ -309,7 +309,7 @@ export class RepairShopModalComponent
     public get isModalValidToSubmit(): boolean {
         return (
             this.repairShopForm.valid &&
-            this.repairShopForm.touched &&
+            this.isFormDirty &&
             this.isEachContactRowValid
         );
     }
@@ -899,12 +899,12 @@ export class RepairShopModalComponent
     }
 
     private startFormChanges(): void {
-        // this.formService.checkFormChange(this.repairShopForm);
-        // this.formService.formValueChange$
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe(
-        //         (isFormChange: boolean) => (this.isFormDirty = isFormChange)
-        //     );
+        this.formService.checkFormChange(this.repairShopForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                (isFormChange: boolean) => (this.isFormDirty = isFormChange)
+            );
     }
 
     // Bank
