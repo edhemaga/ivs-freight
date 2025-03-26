@@ -543,7 +543,7 @@ export class RepairShopModalComponent
                             [RepairShopModalStringEnum.ADDRESS_UNIT]:
                                 repairShop.address.addressUnit,
                             [RepairShopModalStringEnum.ADDRESS]:
-                                repairShop.address,
+                                repairShop.address.address,
                             [RepairShopModalStringEnum.OPEN_ALWAYS]:
                                 repairShop.openAlways,
                             [RepairShopModalStringEnum.ACCOUNT]:
@@ -697,6 +697,9 @@ export class RepairShopModalComponent
         longLat: any;
     }): void {
         if (event.valid) {
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.ADDRESS)
+                .patchValue(event.address.address);
             this.repairShopForm
                 .get(RepairShopModalStringEnum.LONGITUDE)
                 .patchValue(event.longLat.longitude);
