@@ -1,11 +1,17 @@
 // Interface
 import { IMilesModel, IMilesState } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
-import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Enums
 import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
+
+// Models
+import {
+    MilesByUnitPaginatedStopsResponse,
+    SortOrder,
+} from 'appcoretruckassist';
 
 export const updateTruckCounts = function (
     state: IMilesState,
@@ -165,3 +171,80 @@ export const setFollowingUnitDetails = function (
         },
     };
 };
+
+export const toggleTableLockingStatus = function (
+    state: IMilesState
+): IMilesState {
+    const { tableSettings } = state;
+    return {
+        ...state,
+        tableSettings: {
+            ...tableSettings,
+            isTableLocked: !tableSettings.isTableLocked,
+        },
+    };
+};
+export function pinTableColumn(
+    state: IMilesState,
+    column: ITableColumn
+): IMilesState {
+    function togglePinned(columns: ITableColumn[]): ITableColumn[] {
+        return columns.map((col) => {
+            if (col.key === column.key) {
+                // Use left as pinned side
+                return { ...col, pinned: col.pinned ? undefined : 'left' };
+            }
+            if (col.columns && col.columns.length) {
+                // Check all sub group column
+                return { ...col, columns: togglePinned(col.columns) };
+            }
+            return col;
+        });
+    }
+
+    return {
+        ...state,
+        columns: togglePinned(state.columns),
+    };
+}
+
+export function tableSortingChange(
+    state: IMilesState,
+    column: ITableColumn
+): IMilesState {
+    let updatedSortKey = column.key;
+    let updatedSortDirection: SortOrder | null = SortOrder.Ascending;
+
+    function toggleSort(columns: ITableColumn[]): ITableColumn[] {
+        return columns.map((col) => {
+            if (col.key === column.key) {
+                if (col.direction === SortOrder.Ascending) {
+                    updatedSortDirection = SortOrder.Descending;
+                } else if (col.direction === SortOrder.Descending) {
+                    updatedSortDirection = null;
+                } else {
+                    updatedSortDirection = SortOrder.Ascending;
+                }
+
+                return { ...col, direction: updatedSortDirection };
+            }
+
+            // Reset all the other columns
+            return {
+                ...col,
+                direction: null,
+                columns: col.columns ? toggleSort(col.columns) : col.columns,
+            };
+        });
+    }
+
+    return {
+        ...state,
+        columns: toggleSort(state.columns),
+        tableSettings: {
+            ...state.tableSettings,
+            sortDirection: updatedSortDirection,
+            sortKey: updatedSortDirection ? updatedSortKey : null,
+        },
+    };
+}

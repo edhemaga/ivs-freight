@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 
 // Interfaces
 import { IMilesModel } from '@pages/miles/interface';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
@@ -35,5 +36,13 @@ export class MilesTableComponent {
 
     public selectAll(): void {
         this.milesStoreService.dispatchSelectAll();
+    }
+
+    public onColumnPinned(column: ITableColumn): void {
+        this.milesStoreService.dispatchColumnPinnedAction(column);
+    }
+
+    public onSortingChange(column: ITableColumn): void {
+        this.milesStoreService.dispatchSortingChange(column);
     }
 }

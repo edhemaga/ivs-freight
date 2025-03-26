@@ -9,6 +9,10 @@
 }
 
 .background {
+    &-transparent {
+        background: transparent;
+    }
+
     &-white {
         background: $white;
     }

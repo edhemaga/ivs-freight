@@ -1,6 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, TemplateRef } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Svg routes
@@ -21,7 +21,6 @@ import { CaDropdownMenuComponent } from 'ca-components';
     standalone: true,
     imports: [
         CommonModule,
-        RouterLink,
         NgbModule,
 
         // components
@@ -32,10 +31,34 @@ import { CaDropdownMenuComponent } from 'ca-components';
 })
 export class TaDetailsPageTitleComponent {
     @Input() isLoading: boolean;
-    @Input() title!: string;
+    @Input() textTitle!: string;
     @Input() routeLink!: string;
     @Input() detailsDropdownOptions!: DetailsDropdownOptions;
     @Input() rightSide?: TemplateRef<any>;
 
+    private history: string[] = [];
+
+    constructor(private router: Router) {
+        this.router.events.subscribe((event) => {
+            if (event instanceof NavigationEnd) {
+                this.history.push(event.urlAfterRedirects);
+            }
+        });
+    }
+
     public backIcon = SharedSvgRoutes.DETAILS_BACK_BUTTON;
+
+    public goBackInHistory(): void {
+        // If user comes from google he will go back there, keep him on list
+        if (this.history.length > 1) {
+            this.history.pop();
+            const previousUrl = this.history.pop();
+            if (previousUrl) {
+                this.router.navigateByUrl(previousUrl);
+            }
+        } else {
+            // Fallback
+            this.router.navigate([this.routeLink]);
+        }
+    }
 }

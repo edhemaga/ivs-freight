@@ -17,6 +17,7 @@ import {
     CaDropdownMenuComponent,
     CaProfileImageComponent,
     CaProgressRangeComponent,
+    CaMapComponent,
 } from 'ca-components';
 import { FuelCardComponent } from '@pages/fuel/pages/fuel-card/fuel-card.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
@@ -58,6 +59,7 @@ import {
         TaNoteComponent,
         CaProfileImageComponent,
         CaProgressRangeComponent,
+        CaMapComponent,
         TaTableEmptyComponent,
 
         // pipes

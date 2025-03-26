@@ -24,6 +24,7 @@ import { DetailsDataService } from '@shared/services/details-data.service';
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-details/pipes';
 
 // components
 import { TaDetailsDropdownComponent } from '@shared/components/ta-details-dropdown/ta-details-dropdown.component';
@@ -32,13 +33,16 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 // Models
 import { AddressEntity } from 'appcoretruckassist';
-import { SortColumn } from 'ca-components';
+import { SortColumn, DateFromStringPipe } from 'ca-components';
 
 // tooltip
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Svg Routes
 import { MapListCardSvgRoutes } from '@shared/components/ta-map-list-card/utils/svg-routes';
+
+// enums
+import { eMapListSortColumnsString } from '@shared/components/ta-map-list-card/enums';
 
 @Component({
     selector: 'app-ta-map-list-card',
@@ -62,6 +66,8 @@ import { MapListCardSvgRoutes } from '@shared/components/ta-map-list-card/utils/
         // Pipes
         FormatDatePipe,
         ThousandSeparatorPipe,
+        LastFuelPriceRangeClassColorPipe,
+        DateFromStringPipe,
     ],
 })
 export class TaMapListCardComponent implements OnInit, OnDestroy {
@@ -89,6 +95,8 @@ export class TaMapListCardComponent implements OnInit, OnDestroy {
 
     // Svg routes
     public mapListCardSvgRoutes: MapListCardSvgRoutes = MapListCardSvgRoutes;
+
+    public eMapListSortColumnsString = eMapListSortColumnsString;
 
     constructor(
         private mapsService: MapsService,

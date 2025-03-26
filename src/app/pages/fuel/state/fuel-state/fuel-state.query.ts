@@ -12,6 +12,7 @@ import { Observable } from 'rxjs';
 import {
     FuelStopListResponse,
     FuelTransactionListResponse,
+    GetFuelStopRangeResponse,
 } from 'appcoretruckassist';
 
 @Injectable({ providedIn: 'root' })
@@ -24,6 +25,10 @@ export class FuelQuery extends QueryEntity<FuelState> {
     public fuelStops$: Observable<FuelStopListResponse> = this.select(
         'fuelStops'
     ) as Observable<FuelStopListResponse>;
+
+    public fuelPriceRange$: Observable<GetFuelStopRangeResponse> = this.select(
+        'fuelPriceRange'
+    ) as Observable<GetFuelStopRangeResponse>;
 
     constructor(protected fuelStore: FuelStore) {
         super(fuelStore);

@@ -18,6 +18,8 @@ export enum eGeneralActions {
     PREVIOUS = 'Previous',
     PREVIOUS_LOWERCASE = 'previous',
 
+    SHOW_MORE = 'show more',
+
     OPEN_MODAL = 'open-modal',
     RESET_MODAL = 'reset modal',
     RESET = 'reset',

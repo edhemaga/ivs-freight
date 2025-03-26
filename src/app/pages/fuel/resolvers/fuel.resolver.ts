@@ -8,6 +8,7 @@ import {
     FuelService as FuelController,
     FuelStopListResponse,
     FuelTransactionListResponse,
+    GetFuelStopRangeResponse,
 } from 'appcoretruckassist';
 
 // enums
@@ -26,12 +27,19 @@ export class FuelResolver {
         private fuelService: FuelService
     ) {}
 
-    resolve(): Observable<[FuelTransactionListResponse, FuelStopListResponse]> {
+    resolve(): Observable<
+        [
+            FuelTransactionListResponse,
+            FuelStopListResponse,
+            GetFuelStopRangeResponse,
+        ]
+    > {
         return forkJoin([
             this.fuelController.apiFuelTransactionListGet(),
             this.fuelController.apiFuelFuelstopListGet(),
+            this.fuelController.apiFuelFuelstopRangeGet(),
         ]).pipe(
-            tap(([fuelTransactions, fuelStops]) => {
+            tap(([fuelTransactions, fuelStops, fuelStopPriceRange]) => {
                 const tableView = JSON.parse(
                     localStorage.getItem(TableStringEnum.FUEL_TABLE_VIEW)
                 );
@@ -45,6 +53,10 @@ export class FuelResolver {
                         fuelCard: fuelStops?.fuelCardCount,
                     })
                 );
+
+                if (fuelStopPriceRange)
+                    this.fuelService.updateStoreFuelStopPriceRange =
+                        fuelStopPriceRange;
 
                 if (
                     !tableView ||

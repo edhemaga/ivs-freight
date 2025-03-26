@@ -24,6 +24,7 @@ import {
     filterSelector,
     selectMilesItems,
     selectSelectedTab,
+    tableSettingsSelector,
     unitsPaginationSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
@@ -55,9 +56,10 @@ export class MilesEffects {
         return combineLatest([
             this.store.select(selectSelectedTab),
             this.store.select(filterSelector),
+            this.store.select(tableSettingsSelector),
         ]).pipe(
             take(1),
-            switchMap(([selectedTab, filters]) => {
+            switchMap(([selectedTab, filters, tableSettings]) => {
                 const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
 
                 return this.milesService
@@ -68,7 +70,12 @@ export class MilesEffects {
                         filters.dateTo,
                         filters.states,
                         filters.revenueFrom,
-                        filters.revenueTo
+                        filters.revenueTo,
+                        null,
+                        null,
+                        null,
+                        tableSettings.sortKey,
+                        tableSettings.sortDirection
                     )
                     .pipe(
                         map((response) => {
@@ -121,7 +128,11 @@ export class MilesEffects {
 
     public loadMilesEffect$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(MilesAction.milesTabChange, MilesAction.changeFilters),
+            ofType(
+                MilesAction.milesTabChange,
+                MilesAction.changeFilters,
+                MilesAction.tableSortingChange
+            ),
             exhaustMap(() =>
                 this.store.select(activeViewModeSelector).pipe(
                     take(1),
@@ -211,9 +222,10 @@ export class MilesEffects {
         return combineLatest([
             this.store.select(selectSelectedTab),
             this.store.select(filterSelector),
+            this.store.select(tableSettingsSelector),
         ]).pipe(
             take(1),
-            switchMap(([selectedTab, filters]) => {
+            switchMap(([selectedTab, filters, tableSettings]) => {
                 const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
 
                 return this.milesService
@@ -225,7 +237,11 @@ export class MilesEffects {
                         filters.states,
                         filters.revenueFrom,
                         filters.revenueTo,
-                        page
+                        page,
+                        null,
+                        null,
+                        tableSettings.sortKey,
+                        tableSettings.sortDirection
                     )
                     .pipe(
                         switchMap((response) => {

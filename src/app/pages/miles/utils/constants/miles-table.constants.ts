@@ -1,4 +1,4 @@
-import { ITableColumn } from "@shared/models";
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 const checkbox: ITableColumn = {
     key: 'select',
@@ -10,25 +10,25 @@ const checkbox: ITableColumn = {
 const unit: ITableColumn = {
     key: 'unit',
     label: 'Unit',
-    width: 80, 
+    width: 80,
 };
 
 const truckType: ITableColumn = {
     key: 'truckType',
     label: 'Type',
-    width: 64, 
+    width: 64,
 };
 
 const stopsCount: ITableColumn = {
     key: 'stopsCount',
     label: 'Count',
-    width: 62, 
+    width: 62,
 };
 
 const stopsPickup: ITableColumn = {
     key: 'stopsPickup',
     label: 'PICKUP',
-    width: 90, 
+    width: 90,
 };
 
 const stopsDelivery: ITableColumn = {
@@ -36,7 +36,7 @@ const stopsDelivery: ITableColumn = {
     label: 'DELIVERY',
     width: 90,
 };
- 
+
 // Adding the new columns
 const fuel: ITableColumn = {
     key: 'fuelCount',
@@ -95,7 +95,7 @@ const fuelMpg: ITableColumn = {
 const fuelGroup = {
     key: 'fuel',
     label: 'Fuel',
-    columns: [fuelGalons, fuelCost, fuelMpg], 
+    columns: [fuelGalons, fuelCost, fuelMpg],
 };
 
 const milesLoaded: ITableColumn = {
@@ -125,28 +125,35 @@ const revenue: ITableColumn = {
 const milesGroup = {
     key: 'miles',
     label: 'Miles',
-    columns: [milesLoaded, milesEmpty, milesTotal], 
+    columns: [milesLoaded, milesEmpty, milesTotal],
 };
-
 
 const stops = {
     key: 'stops',
     label: 'Stop',
-    columns: [stopsCount, stopsPickup, stopsDelivery, fuel, parking, deadHead, repair, towing], 
+    columns: [
+        stopsCount,
+        stopsPickup,
+        stopsDelivery,
+        fuel,
+        parking,
+        deadHead,
+        repair,
+        towing,
+    ],
 };
 
 const loadGroup = {
     key: 'load',
     label: '',
-    columns: [loadCount]
-}
+    columns: [loadCount],
+};
 
 const revenueGroup = {
     key: 'revenueGroup',
     label: '',
-    columns: [revenue]
-}
-
+    columns: [revenue],
+};
 
 export const MilesTableColumns: ITableColumn[] = [
     checkbox,
@@ -156,5 +163,5 @@ export const MilesTableColumns: ITableColumn[] = [
     loadGroup,
     fuelGroup,
     milesGroup,
-    revenueGroup
+    revenueGroup,
 ];

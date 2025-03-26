@@ -15,7 +15,8 @@ export class SharedSvgRoutes {
     static PIN_ICON: string = 'assets/svg/truckassist-table/pin.svg';
     static CLOSE_ICON_NORMAL: string = 'assets/svg/applicant/close-x.svg';
     static SORT_ICON: string = 'assets/svg/common/sortArrow_filter.svg';
-    static SORT_ICON_ASC: string = 'assets/svg/common/sortArrow_filter-asc.svg';
+    static SORT_ICON_ASC: string =
+        'assets/svg/common/routing/ic_keyboard_arrow_up.svg';
     static MAP_ICON: string = 'assets/svg/common/load/ic_load_map.svg';
     static DETAILS_BACK_BUTTON: string =
         'assets/svg/common/ic_details-back-arrow.svg';
@@ -50,4 +51,5 @@ export class SharedSvgRoutes {
     static USER_CIRCLE_ICON: string = 'assets/svg/common/ic_broker-user.svg';
     static HALF_TIME_ICON: string = 'assets/svg/common/ic_half_time.svg';
     static TOP_RIGHT_ARROW: string = 'assets/svg/common/arrow_top_right.svg';
+    static TRUCK_PATH_BASE: string = 'assets/svg/common/trucks/';
 }

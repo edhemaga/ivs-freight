@@ -156,5 +156,9 @@
         &-black {
             @include hover($ta-black);
         }
+
+        &-blue-15 {
+            @include hover($ta-blue-15);
+        }
     }
 }

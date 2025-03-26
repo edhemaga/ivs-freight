@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -9,6 +10,10 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+// Enums
+import { eColor } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
@@ -35,12 +40,18 @@ import {
         // Components
         AngularSvgIconModule,
         CaMapComponent,
+        NgbModule,
+
+        // Components
+        TaAppTooltipV2Component,
+        AngularSvgIconModule,
     ],
 })
 export class LoadDetailsStopsComponent {
     public sharedSvgRoutes = SharedSvgRoutes;
     public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
     public openStopIndex: number = -1;
+    public eColor = eColor;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
