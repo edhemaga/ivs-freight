@@ -248,7 +248,12 @@
                                 >
                                     {{ stop.shipperContact?.fullName }}
                                 </div>
-                                <div class="text-size-11 text-color-muted">
+                                <div
+                                    class="text-size-11 text-color-muted"
+                                    [ngClass]="
+                                        !stop.shipperContact && 'ta-font-medium'
+                                    "
+                                >
                                     @let phoneNumber =
                                         stop.shipperContact
                                             ? stop.shipperContact.phone +
@@ -265,9 +270,11 @@
                                 <div
                                     class="text-size-11 text-color-black ta-font-medium"
                                 >
+                                    {{ stop?.dateFrom | formatDateP }}
                                     {{
-                                        stop.dateFrom
-                                            ? (stop.dateFrom | formatDateP)
+                                        stop?.dateTo
+                                            ? ' - ' +
+                                              (stop?.dateTo | formatDateP)
                                             : ''
                                     }}
                                 </div>
