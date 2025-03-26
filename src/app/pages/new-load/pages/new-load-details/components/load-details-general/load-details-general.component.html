@@ -300,7 +300,7 @@
                     >
                         <svg-icon
                             class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
-                            [class]="loadStatus ? (loadStatus.id | loadStatusColors : true) : ''"
+                            [class]="loadStatus && (loadStatus.id | loadStatusColors : true)"
                             [src]="icon"
                         ></svg-icon>
                     </div>
@@ -327,9 +327,8 @@
                                 </span>
                             }
                         </div>
-                    }
-
-                    @if (loadStatus) {
+                    } 
+                    @else if (loadStatus) {
                         <app-ca-load-status
                             [status]="{
                                 name: loadStatus?.name,
