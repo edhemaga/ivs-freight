@@ -14,7 +14,6 @@ import { Subject, take, takeUntil } from 'rxjs';
 import { RepairDropdownMenuActionsBase } from '@pages/repair/base-classes';
 
 // services
-import { DropDownService } from '@shared/services/drop-down.service';
 import { RepairService } from '@shared/services/repair.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { DetailsPageService } from '@shared/services/details-page.service';
@@ -126,12 +125,9 @@ export class RepairShopDetailsComponent
         protected confirmationResetService: ConfirmationResetService,
 
         private detailsPageService: DetailsPageService,
-
         private confirmationService: ConfirmationService,
-        private dropDownService: DropDownService,
         private detailsDataService: DetailsDataService,
         private confirmationActivationService: ConfirmationActivationService,
-
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private detailsSearchService: DetailsSearchService,
 
@@ -285,19 +281,20 @@ export class RepairShopDetailsComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    if (res?.type === eGeneralActions.DELETE) {
-                        if (res?.template === eRepairShopDetails.REPAIR_SHOP) {
-                            this.deleteRepairShop(res?.data?.id);
+                    const { id, type, template, data } = res;
+
+                    if (type === eGeneralActions.DELETE) {
+                        if (template === eRepairShopDetails.REPAIR_SHOP) {
+                            this.deleteRepairShop(id);
                         } else if (
-                            res?.template ===
-                            eRepairShopDetails.REPAIR_SHOP_CONTACT
+                            template === eRepairShopDetails.REPAIR_SHOP_CONTACT
                         ) {
-                            this.deleteRepairShopContact(res?.id);
+                            this.deleteRepairShopContact(id);
                         } else {
                             this.deleteRepair(
-                                res?.data?.id,
-                                res?.data?.repairShop?.id,
-                                res?.data?.unitType?.id
+                                id,
+                                data?.repairShop?.id,
+                                data?.unitType?.id
                             );
                         }
                     }
@@ -581,17 +578,6 @@ export class RepairShopDetailsComponent
             default:
                 break;
         }
-    }
-
-    public onRepairShopActions<T>(event: {
-        id: number;
-        data: T;
-        type: string;
-    }): void {
-        this.dropDownService.dropActionsHeaderRepair(
-            event,
-            this.repairShopObject
-        );
     }
 
     public onRepairShopSortActions(
