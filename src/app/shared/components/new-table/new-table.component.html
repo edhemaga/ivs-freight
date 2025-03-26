@@ -6,7 +6,7 @@
     <div class="w-full test-margin">
         <!-- Header -->
 
-        <div class="d-flex m-b-6 p-x-8 table-header" #tableRow>
+        <div #tableRow class="d-flex m-b-6 p-x-8 table-header">
             <div class="d-flex new-table--pinned-left">
                 @for (column of leftPinnedColumns; track column.key) {
                     <ng-container

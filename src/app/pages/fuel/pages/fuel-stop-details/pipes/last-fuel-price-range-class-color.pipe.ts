@@ -19,8 +19,8 @@ export class LastFuelPriceRangeClassColorPipe implements PipeTransform {
         return LastFuelPriceProgressHelper.getSvgClassFromValue(
             minValue,
             maxValue,
-            totalValue
-            /*  isOutdated */
+            totalValue,
+            isOutdated
         );
     }
 }
