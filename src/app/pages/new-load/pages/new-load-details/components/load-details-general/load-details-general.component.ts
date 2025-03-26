@@ -19,6 +19,7 @@ import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 
 @Component({
     selector: 'app-load-details-general',
@@ -37,10 +38,10 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         SvgIconComponent,
         CaUnitInfoBoxComponent,
         TaAppTooltipV2Component,
+        TaCustomCardComponent,
     ],
 })
 export class LoadDetailsGeneralComponent {
-
     // assets
     public sharedIcons = SharedSvgRoutes;
 
@@ -50,11 +51,7 @@ export class LoadDetailsGeneralComponent {
 
     public isBillingExpanded: boolean = false;
 
-    constructor(protected loadStoreService: LoadStoreService) { }
-
-    ngOnInit(): void {
-        this.loadStoreService.resolveLoadDetails$.subscribe(console.log);
-    }
+    constructor(protected loadStoreService: LoadStoreService) {}
 
     public toggleBilling(): void {
         this.isBillingExpanded = !this.isBillingExpanded;

@@ -361,15 +361,21 @@
 </ng-template>
 
 <ng-template #billing let-data="data">
-    <ng-container
-        *ngTemplateOutlet="divider; context: { isDividerVisible: true }"
-    ></ng-container>
-
-    <div
-        class="d-flex"
-        (click)="toggleBilling()"
-        [ngClass]="isBillingExpanded ? 'text-color-black' : 'text-color-bw6-2'"
-    >
-        <div class="text-size-14 ta-font-extra-bold">Billing</div>
+    <div class="p-2">
+        <app-ta-custom-card
+            [cardName]="'Billing'"
+            [hasCounter]="load?.billingCount"
+            [isCardOpen]="!!load?.billingCount?.length"
+            [disabledCard]="!load?.billingCount?.length"
+            [bodyTemplate]="'card'"
+            [animationMarginParams]="{
+                marginTop: '6px',
+                marginBottom: '6px',
+            }"
+        >
+        </app-ta-custom-card>
     </div>
 </ng-template>
+<ng-template #billingBaseRate let-data="data"></ng-template>
+<ng-template #billingTonu let-data="data"></ng-template>
+<ng-template #billingRevised let-data="data"></ng-template>
