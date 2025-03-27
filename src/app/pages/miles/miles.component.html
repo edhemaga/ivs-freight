@@ -7,9 +7,6 @@
         statesSelector: milesStoreService.statesSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
     };
-<div (click)="toggleTableLockingStatus()">
-    is table unlocked: {{ store.tableSettings.isTableLocked }}
-</div>
 <div
     class="d-inline-block"
     [class.w-100]="store?.activeViewMode === eCommonElement.MAP"

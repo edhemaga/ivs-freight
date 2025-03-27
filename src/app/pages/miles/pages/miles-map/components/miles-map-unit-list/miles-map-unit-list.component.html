@@ -75,7 +75,7 @@
             </form>
 
             <div
-                class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-6"
+                class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-4"
                 [ngClass]="
                     isStopListExpanded
                         ? 'stops-container-large'
@@ -121,21 +121,26 @@
                 </cdk-virtual-scroll-viewport>
             </div>
 
-            <div (click)="toogleStopList()">
+            <div
+                (click)="toogleStopList()"
+                class="position-absolute z-2 arrow-bottom"
+            >
+                <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
+            </div>
+
+            <div
+                (click)="toogleStopList()"
+                class="position-absolute z-2 arrow-right"
+            >
                 <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
             </div>
         </div>
     </div>
 }
 
-<ng-template #resizeButton>
-    <!-- TODO:  Inside virtual sroll ticket -->
-    <!-- <div class="h-26 w-26 background-white">></div> -->
-</ng-template>
-
 <ng-template #stopRows let-stop="stop">
     <div
-        class="h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer"
+        class="h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
         [ngClass]="
             isStopListExpanded
                 ? 'stops-container-large'
@@ -171,5 +176,17 @@
         <div class="text-color-black text-size-11 ta-font-medium text-right">
             {{ (stop.totalMiles | thousandSeparator) ?? '0.0' }}
         </div>
+    </div>
+</ng-template>
+
+<ng-template #resizeButton>
+    <!-- TODO:  Inside virtual sroll ticket -->
+    <div
+        class="h-26 w-26 background-white rounded-circle d-flex align-items-center justify-content-center svg-fill-muted svg-hover-black c-pointer shadow-100"
+    >
+        <svg-icon
+            [src]="sharedSvgRoutes.PRIMARY_ARROW_UP"
+            class="svg-size-14 d-flex"
+        ></svg-icon>
     </div>
 </ng-template>
