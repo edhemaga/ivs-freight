@@ -102,11 +102,10 @@ export class MilesComponent implements OnInit, OnDestroy {
 
         if (action === eGeneralActions.TAB_SELECTED) {
             this.milesStoreService.dispatchListChange(mode);
-        } else if (action === eGeneralActions.VIEW_MODE) {
+        } else if (action === eGeneralActions.VIEW_MODE)
             this.milesStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
             );
-        }
     }
 
     public onTableEmptyBtnClick(btnClickType: string): void {

@@ -26,7 +26,6 @@ export interface IMilesState {
     filters: IStateFilters;
     states: MilesStateFilterResponse[];
     selectedCount: number;
-    unSelectedCount: number;
     columns: ITableColumn[];
     hasAllItemsSelected: boolean;
 

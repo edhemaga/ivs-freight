@@ -83,7 +83,3 @@ export const tableSettingsSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.tableSettings
 );
-export const unSelectedCountSelector = createSelector(
-    selectMilesState,
-    (state: IMilesState) => state.unSelectedCount
-);
