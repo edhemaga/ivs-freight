@@ -420,18 +420,20 @@
     let-color="color"
     let-isLineThrough="isLineThrough"
 >
+    @let mutedColor = 'text-color-muted';
+    @let blackColor = 'text-color-black';
     <div
         class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
     >
         <span
             class="ta-font-medium"
-            [ngClass]="isLineThrough ? 'text-color-muted' : 'text-color-black'"
+            [ngClass]="isLineThrough ? mutedColor : blackColor"
             [class.text-decoration-line-through]="isLineThrough"
         >
             {{ label }}
         </span>
         <span
-            [ngClass]="color"
+            [ngClass]="isLineThrough ? mutedColor : color"
             [class.text-decoration-line-through]="isLineThrough"
         >
             {{ value | currency: 'USD' }}
@@ -447,10 +449,11 @@
                 context: {
                     label: 'Base Rate',
                     value: data?.baseRate,
-                    color: data.tonuRate
-                        ? 'text-color-muted'
-                        : 'text-color-black-2',
-                    isLineThrough: data.tonuRate || data?.revisedRate,
+                    color: data?.tonuRate ? mutedColor : 'text-color-black-2',
+                    isLineThrough:
+                        data?.tonuRate ||
+                        data?.revisedRate ||
+                        data?.adjustedRate,
                 }
             "
         ></ng-container>
@@ -461,12 +464,12 @@
             *ngTemplateOutlet="
                 billingRateItem;
                 context: {
-                    label: 'Adjusted Rate',
+                    label: 'Adjusted',
                     value: data?.adjustedRate,
-                    color: data.tonuRate
-                        ? 'text-color-muted'
+                    color: data?.tonuRate
+                        ? mutedColor
                         : 'text-color-special-filter-purple',
-                    lineThrough: data.tonuRate,
+                    lineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -477,12 +480,12 @@
             *ngTemplateOutlet="
                 billingRateItem;
                 context: {
-                    label: 'Revised Rate',
+                    label: 'Revised',
                     value: data?.revisedRate,
-                    color: data.tonuRate
-                        ? 'text-color-muted'
+                    color: data?.tonuRate
+                        ? mutedColor
                         : 'text-color-special-filter-purple',
-                    isLineThrough: data.tonuRate,
+                    isLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -494,12 +497,12 @@
                 *ngTemplateOutlet="
                     billingRateItem;
                     context: {
-                        label: item.additionalBillingType?.name,
+                        label: item?.additionalBillingType?.name,
                         value: item?.rate,
-                        color: data.tonuRate
-                            ? 'text-color-muted'
+                        color: data?.tonuRate
+                            ? mutedColor
                             : 'text-color-black-2',
-                        lineThrough: data.tonuRate,
+                        lineThrough: data?.tonuRate,
                     }
                 "
             ></ng-container>
@@ -512,8 +515,9 @@
             context: {
                 label: 'TOTAL RATE',
                 value: data?.totalRate,
-                color: data.tonuRate ? 'text-color-muted' : 'text-color-black',
-                isLineThrough: data.tonuRate || data?.revisedRate,
+                color: data?.tonuRate ? mutedColor : 'text-color-black',
+                isLineThrough:
+                    data?.tonuRate || data?.revisedRate || data?.adjustedRate,
             }
         "
     ></ng-container>
@@ -525,8 +529,8 @@
                 context: {
                     label: 'TOTAL ADJUSTED',
                     value: data?.totalAdjustedRate,
-                    color: data.tonuRate
-                        ? 'text-color-muted'
+                    color: data?.tonuRate
+                        ? mutedColor
                         : 'text-color-special-filter-purple',
                     isLineThrough: false,
                 }
@@ -541,10 +545,8 @@
                 context: {
                     label: 'DRIVER RATE',
                     value: data?.driverRate,
-                    color: data.tonuRate
-                        ? 'text-color-muted'
-                        : 'text-color-yellow-5',
-                    isLineThrough: data.tonuRate,
+                    color: data?.tonuRate ? mutedColor : 'text-color-yellow-5',
+                    isLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -558,7 +560,7 @@
                     label: 'TONU RATE',
                     value: data?.tonuRate,
                     color: 'text-color-red-11',
-                    lineThrough: data.tonuRate,
+                    lineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
