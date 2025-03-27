@@ -469,3 +469,8 @@ export const loadDetailsExtraStopCountSelector = createSelector(
         return extraStopCount;
     }
 );
+
+export const minimalListSelector = createSelector(loadState, (state) => {
+    const { minimalList } = state;
+    return minimalList;
+});

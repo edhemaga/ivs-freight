@@ -5,6 +5,7 @@ import {
     DispatcherFilterResponse,
     LoadListDto,
     LoadListResponse,
+    LoadMinimalListResponse,
     LoadModalResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
@@ -642,5 +643,15 @@ export function updateLoadSelectedStatus(
             false
         ),
         hasAllLoadsSelected: selectedCount === loads.length,
+    };
+}
+
+export function setMinimalList(
+    state: ILoadState,
+    minimalList: LoadMinimalListResponse
+): ILoadState {
+    return {
+        ...state,
+        minimalList,
     };
 }

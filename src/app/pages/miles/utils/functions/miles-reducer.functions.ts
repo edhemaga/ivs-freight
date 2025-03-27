@@ -254,3 +254,16 @@ export function tableSortingChange(
         },
     };
 }
+
+export function onSearchChange(
+    state: IMilesState,
+    search: string
+): IMilesState {
+    return {
+        ...state,
+        unitsPagination: {
+            ...state.unitsPagination,
+            search,
+        },
+    };
+}

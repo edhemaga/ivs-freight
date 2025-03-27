@@ -16,6 +16,7 @@ import {
     DispatcherFilterResponse,
     LoadListDto,
     LoadListResponse,
+    LoadMinimalListResponse,
     LoadModalResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
@@ -725,3 +726,15 @@ export const selectLoad = createAction(
 );
 
 export const toggleMap = createAction(LoadStoreConstants.ACTION_TOGGLE_MAP);
+export const getMinimalList = createAction(
+    LoadStoreConstants.ACTION_GET_MINIMAL_LIST
+);
+
+export const setMinimalList = createAction(
+    LoadStoreConstants.ACTION_SET_MINIMAL_LIST,
+    props<{ list: LoadMinimalListResponse }>()
+);
+
+export const setMinimalListError = createAction(
+    LoadStoreConstants.ACTION_SET_MINIMAL_LIST_ERROR
+);

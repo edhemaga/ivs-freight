@@ -8,7 +8,7 @@ import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolba
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
     CaFilterComponent,
-    CaSearchMultipleStatesComponent,
+    CaSearchMultipleStates2Component,
     IFilterAction,
     CaFilterStateDropdownComponent,
     CaFilterTimeDropdownComponent,
@@ -48,7 +48,7 @@ import { IStateFilters } from '@shared/interfaces';
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
         CaFilterComponent,
-        CaSearchMultipleStatesComponent,
+        CaSearchMultipleStates2Component,
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
         MilesMapComponent,
@@ -124,6 +124,11 @@ export class MilesComponent implements OnInit, OnDestroy {
 
                 break;
         }
+    }
+
+    public onSearchQueryChange(query: string[]): void {
+        // TODO remove, for easier emitted data preview
+        console.log(query);
     }
 
     ngOnDestroy(): void {
