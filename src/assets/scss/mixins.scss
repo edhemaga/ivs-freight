@@ -54,7 +54,7 @@
     -moz-user-select: none;
 }
 
-@mixin responsive-grid($small, $medium, $large, $xlarge) {
+@mixin responsive-grid($small, $medium, $large, $xlarge, $xxl) {
     display: grid;
     gap: 12px;
     padding-right: 12px;
@@ -71,8 +71,12 @@
         grid-template-columns: $large;
     }
 
-    @media (min-width: $xlarge-min) {
+    @media (min-width: $xlarge-min) and (max-width: $xxlarge-max) {
         grid-template-columns: $xlarge;
+    }
+
+    @media (min-width: $xxlarge-max) {
+        grid-template-columns: $xxl;
     }
 }
 .visible {
@@ -81,6 +85,14 @@
             display: none !important;
         }
         @media (min-width: $xlarge-min) {
+            display: block !important;
+        }
+    }
+    &-xl {
+        @media (max-width: $xxlarge-max) {
+            display: none !important;
+        }
+        @media (min-width: $xxlarge-max) {
             display: block !important;
         }
     }
