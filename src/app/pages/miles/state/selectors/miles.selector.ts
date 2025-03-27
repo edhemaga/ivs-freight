@@ -79,6 +79,11 @@ export const unitsPaginationSelector = createSelector(
     (state: IMilesState) => state.unitsPagination
 );
 
+export const pageSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.page
+);
+
 export const tableSettingsSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.tableSettings
@@ -86,4 +91,9 @@ export const tableSettingsSelector = createSelector(
 export const unSelectedCountSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.unSelectedCount
+);
+
+export const tabResultsSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.tabResults
 );

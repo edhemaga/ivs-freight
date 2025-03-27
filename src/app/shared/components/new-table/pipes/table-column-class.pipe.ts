@@ -17,13 +17,16 @@ export class TableColumnClassPipe<
         isGroup: boolean;
     }): object {
         const { column, isTableLocked, isGroup } = args;
-
+        console.log('text-color-bw6-2', !column.sort || isGroup);
         return {
+            'text-color-bw6-2': !column.sort || !column.direction,
             'c-pointer new-table--row-heading-sortable':
                 column.sort && !isTableLocked,
-            'new-table--row-heading-sorting-active':
+            'text-hover-black':
+                column.sort && !isTableLocked && !column.direction,
+            'new-table--row-heading-sorting-active text-color-blue-13 svg-fill-blue-13 text-hover-blue-18 svg-hover-blue-18':
                 column.direction && !isTableLocked,
-            'new-table--row-heading-unlocked c-pointer justify-content-between':
+            'new-table--row-heading-unlocked  justify-content-between':
                 isTableLocked,
             'flex-column align-items-start mt-auto': isGroup,
             'align-items-end': !isGroup,

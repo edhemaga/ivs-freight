@@ -6,13 +6,23 @@
         hasAllItemsSelected:
             milesStoreService.hasAllItemsSelectedSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
+        selectedTab: milesStoreService.selectedTab$ | async,
+        tabResultsSelector: milesStoreService.tabResultsSelector$ | async,
     };
 
 @if (store) {
+    @let tabCount =
+        store.selectedTab === eMileTabs?.ACTIVE
+            ? store.tabResultsSelector.activeTruckCount
+            : store.tabResultsSelector.inactiveTruckCount;
+
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
         [isTableLocked]="store.tableSettings.isTableLocked"
+        [isEmptyTable]="!store.miles.length"
+        [pageResult]="store.miles.length"
+        [totalResult]="tabCount"
         [headerTemplates]="{
             select: selectHeaderTemplate,
             revenue: revenueHeaderTemplate,
@@ -33,6 +43,7 @@
         }"
         (onColumnPinned)="onColumnPinned($event)"
         (onSortingChange)="onSortingChange($event)"
+        (onHandleShowMoreClick)="onHandleShowMoreClick()"
     >
         <!-- Header Templates -->
 

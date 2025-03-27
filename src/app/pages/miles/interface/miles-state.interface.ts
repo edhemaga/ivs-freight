@@ -14,7 +14,11 @@ import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
-import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
+import {
+    IMilesDetailsFilters,
+    IMilesModel,
+    IMilesTabResults,
+} from '@pages/miles/interface';
 import { ITableConfig } from '@shared/components/new-table/interface';
 
 export interface IMilesState {
@@ -29,6 +33,9 @@ export interface IMilesState {
     unSelectedCount: number;
     columns: ITableColumn[];
     hasAllItemsSelected: boolean;
+    page: number;
+
+    tabResults: IMilesTabResults;
 
     // Is used for next, prev icons to navigate throught list
     details: MilesByUnitPaginatedStopsResponse;

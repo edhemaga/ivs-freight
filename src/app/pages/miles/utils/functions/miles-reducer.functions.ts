@@ -24,6 +24,10 @@ export const updateTruckCounts = function (
             { ...state.tableViewData[0], length: activeTruckCount },
             { ...state.tableViewData[1], length: inactiveTruckCount },
         ],
+        tabResults: {
+            activeTruckCount,
+            inactiveTruckCount,
+        },
     };
 };
 
@@ -51,12 +55,20 @@ export const updateMilesData = function (
     return {
         ...state,
         items: miles,
+        page: 1,
         loading: false,
         unitsPagination: {
             ...state.unitsPagination,
             activeUnitIndex: 0,
             totalResultsCount,
         },
+    };
+};
+
+export const pageChanges = function (state: IMilesState): IMilesState {
+    return {
+        ...state,
+        page: state.page + 1,
     };
 };
 

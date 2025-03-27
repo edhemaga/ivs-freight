@@ -9,7 +9,7 @@ export interface ITableColumn {
     // Text for column heading
     label: string;
     pinned?: 'left' | 'right';
-    sort?: string;
+    sort?: boolean;
     direction?: SortOrder | null;
     isPinEnabled?: boolean;
     columns?: ITableColumn[];

@@ -10,6 +10,7 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 
 // enums
 import { eGeneralActions } from '@shared/enums';
+import { eMileTabs } from '@pages/miles/enums';
 
 // components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
@@ -41,6 +42,8 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
     ],
 })
 export class MilesTableComponent {
+    public eMileTabs = eMileTabs;
+
     constructor(public milesStoreService: MilesStoreService) {}
 
     public selectRow(mile: IMilesModel): void {
@@ -53,6 +56,10 @@ export class MilesTableComponent {
 
     public onSortingChange(column: ITableColumn): void {
         this.milesStoreService.dispatchSortingChange(column);
+    }
+
+    public onHandleShowMoreClick(): void {
+        this.milesStoreService.getNewPage();
     }
 
     public onCheckboxCountClick(action: string): void {

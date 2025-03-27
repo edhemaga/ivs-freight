@@ -31,6 +31,11 @@ export const initialState: IMilesState = {
     selectedCount: 0,
     unSelectedCount: 0,
     hasAllItemsSelected: false,
+    page: 1,
+    tabResults: {
+        activeTruckCount: 0,
+        inactiveTruckCount: 0,
+    },
 
     // Table
     columns: MilesTableColumns,
@@ -77,6 +82,8 @@ export const milesReducer = createReducer(
     on(MilesAction.milesTabChange, (state, { selectedTab }) =>
         Functions.updateTabSelection(state, selectedTab)
     ),
+
+    on(MilesAction.pageChanges, (state) => Functions.pageChanges(state)),
 
     on(
         MilesAction.updateTruckCounts,

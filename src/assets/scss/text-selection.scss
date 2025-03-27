@@ -46,6 +46,11 @@
             @include text-selection($ta-blue-13);
         }
 
+        &-blue-15 {
+            color: $ta-blue-15 !important;
+            @include text-selection($ta-blue-15);
+        }
+
         &-blue-16 {
             color: $ta-blue-16 !important;
             @include text-selection($ta-blue-16);
@@ -153,6 +158,10 @@
 
         &-blue-15 {
             @include hover($ta-blue-15);
+        }
+
+        &-blue-18 {
+            @include hover($ta-blue-18);
         }
     }
 }
