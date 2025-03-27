@@ -417,7 +417,9 @@ export class RepairOrderModalComponent implements OnInit, OnDestroy {
                 }
 
                 if (
-                    this.editData.type.includes(RepairOrderModalStringEnum.EDIT)
+                    this.editData?.type.includes(
+                        RepairOrderModalStringEnum.EDIT
+                    )
                 ) {
                     this.updateRepairById(this.editData.data.id);
                 } else {

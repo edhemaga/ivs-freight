@@ -1,21 +1,31 @@
-import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-select-details-dropdown-item.model';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+
+// constants
+import { RepairShopDetailsConstants } from '@pages/repair/pages/repair-shop-details/utils/constants';
+
+// enums
+import { eStringPlaceholder } from '@shared/enums';
 
 // models
 import { ExtendedRepairShopResponse } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-card/models';
-import { RepairShopDetailsConstants } from '@pages/repair/pages/repair-shop-details/utils/constants';
 import { DetailsConfig } from '@shared/models/details-config.model';
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { RepairShopContactResponse } from 'appcoretruckassist';
-
-// enums
-import { eGeneralActions } from '@shared/enums';
+import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-select-details-dropdown-item.model';
 
 export class RepairShopDetailsHelper {
     static getDetailsDropdownOptions(
-        pinned: boolean,
-        status: number,
-        companyOwned: boolean
+        repairShopData: ExtendedRepairShopResponse
     ): DetailsDropdownOptions {
+        const { pinned, status, companyOwned } = repairShopData;
+
+        const actions = DropdownMenuContentHelper.getRepairShopDropdownContent(
+            !!status,
+            pinned,
+            companyOwned,
+            true
+        );
+
         return {
             disabledMutedStyle: null,
             toolbarActions: {
@@ -23,89 +33,13 @@ export class RepairShopDetailsHelper {
             },
             config: {
                 showSort: true,
-                sortBy: '',
-                sortDirection: '',
+                sortBy: eStringPlaceholder.EMPTY,
+                sortDirection: eStringPlaceholder.EMPTY,
                 disabledColumns: [0],
                 minWidth: 60,
             },
-            actions: [
-                {
-                    title: 'Edit',
-                    name: eGeneralActions.EDIT,
-                    svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: eGeneralActions.EDIT,
-                    disabled: !status,
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Add Bill',
-                    name: 'Repair',
-                    svg: 'assets/svg/common/ic_plus.svg',
-                    show: true,
-                    blueIcon: true,
-                    iconName: 'ic_plus',
-                    disabled: !status,
-                },
-                {
-                    title: !pinned ? 'Mark as Favorite' : 'Unmark Favorite',
-                    name: 'move-to-favourite',
-                    svg: 'assets/svg/common/ic_star.svg',
-                    activate: true,
-                    show: true,
-                    iconName: 'ic_star',
-                    blueIcon: !pinned,
-                    disabled: !status || companyOwned,
-                },
-                {
-                    title: 'Write Review',
-                    name: 'write-review',
-                    svg: 'assets/svg/common/review-pen.svg',
-                    show: true,
-                    iconName: 'write-review',
-                    disabled: !status,
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: 'Share',
-                    name: 'share',
-                    svg: 'assets/svg/common/share-icon.svg',
-                    show: true,
-                    iconName: 'share',
-                },
-                {
-                    title: 'Print',
-                    name: 'print',
-                    svg: 'assets/svg/common/ic_fax.svg',
-                    show: true,
-                    iconName: 'print',
-                },
-                {
-                    title: 'border',
-                },
-                {
-                    title: !status ? 'Open Business' : 'Close Business',
-                    name: 'close-business',
-                    svg: !status
-                        ? 'assets/svg/common/ic_verify-check.svg'
-                        : 'assets/svg/common/close-business-icon.svg',
-                    greenIcon: !status,
-                    redIcon: !!status,
-                    show: true,
-                    iconName: 'close-business',
-                },
-                {
-                    title: 'Delete',
-                    name: 'delete-item',
-                    svg: 'assets/svg/common/ic_trash_updated.svg',
-                    show: true,
-                    redIcon: true,
-                    iconName: eGeneralActions.DELETE,
-                },
-            ],
+            data: repairShopData,
+            actions,
             export: true,
         };
     }
