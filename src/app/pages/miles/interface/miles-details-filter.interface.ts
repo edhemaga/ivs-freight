@@ -6,4 +6,5 @@ export interface IMilesDetailsFilters {
     activeUnitIndex: number;
     totalResultsCount?: number;
     isLastInCurrentList?: boolean;
+    search?: string;
 }

@@ -7,9 +7,6 @@
         statesSelector: milesStoreService.statesSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
     };
-<div (click)="toggleTableLockingStatus()">
-    is table unlocked: {{ store.tableSettings.isTableLocked }}
-</div>
 <div
     class="d-inline-block"
     [class.w-100]="store?.activeViewMode === eCommonElement.MAP"
@@ -34,13 +31,15 @@
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
                 <div class="d-flex gap-1 align-items-center">
-                    <app-ca-search-multiple-states
-                        [searchType]="'tabel'"
-                        [selectedTabData]="store?.activeTableData"
-                        [toolbarSearch]="true"
-                    ></app-ca-search-multiple-states>
-
-                    <ng-container *ngTemplateOutlet="divider"></ng-container>
+                    @if (store.activeViewMode !== eCommonElement.MAP) {
+                        <ca-search-multiple-states-2
+                            [selectedTab]="selectedTab"
+                            (onSearchQueryChange)="onSearchQueryChange($event)"
+                        ></ca-search-multiple-states-2>
+                        <ng-container
+                            *ngTemplateOutlet="divider"
+                        ></ng-container>
+                    }
 
                     <app-ca-filter-state-dropdown
                         [states]="store.statesSelector"
