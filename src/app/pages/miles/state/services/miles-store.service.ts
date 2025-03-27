@@ -16,11 +16,14 @@ import {
     detailsSelector,
     unitsPaginationSelector,
     tableSettingsSelector,
-    unSelectedCountSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
-import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
+import {
+    IMilesDetailsFilters,
+    IMilesModel,
+    IMilesState,
+} from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
@@ -92,9 +95,6 @@ export class MilesStoreService {
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(tableSettingsSelector)
     );
-    public unSelectedCountSelector$: Observable<number> = this.store.pipe(
-        select(unSelectedCountSelector)
-    );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -155,9 +155,10 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchSelectAll(): void {
+    public dispatchSelectAll(action: string): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
+            action,
         });
     }
 
@@ -194,6 +195,13 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SEARCH_CHANGED,
             search,
+        });
+    }
+
+    public dispatchSelectUnit(unit: IMilesModel): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_UNIT_SELECTED,
+            unit,
         });
     }
 }

@@ -29,7 +29,6 @@ export const initialState: IMilesState = {
     filters: {},
     states: [],
     selectedCount: 0,
-    unSelectedCount: 0,
     hasAllItemsSelected: false,
 
     // Table
@@ -105,7 +104,9 @@ export const milesReducer = createReducer(
         Functions.toggleRowSelection(state, mile)
     ),
 
-    on(MilesAction.selectAll, (state) => Functions.toggleSelectAll(state)),
+    on(MilesAction.selectAll, (state, { action }) =>
+        Functions.toggleSelectAll(state, action)
+    ),
     // #endregion
 
     // #region Unit detail

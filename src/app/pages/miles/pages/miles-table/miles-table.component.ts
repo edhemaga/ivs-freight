@@ -56,15 +56,6 @@ export class MilesTableComponent {
     }
 
     public onCheckboxCountClick(action: string): void {
-        switch (action) {
-            case eGeneralActions.SELECT_ALL:
-            case eGeneralActions.CLEAR_SELECTED:
-                this.milesStoreService.dispatchSelectAll();
-
-                break;
-            default:
-                // select remaining
-                break;
-        }
+        this.milesStoreService.dispatchSelectAll(action);
     }
 }
