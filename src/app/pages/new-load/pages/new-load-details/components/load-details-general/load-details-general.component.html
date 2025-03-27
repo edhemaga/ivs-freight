@@ -1,5 +1,6 @@
 @let load = loadStoreService.resolveLoadDetails$ | async;
 @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
+@let minimalList = loadStoreService.minimalListSelector$ | async;
 @let isSpacingBottom = true;
 
 <div class="background-white p-8 br-3">
@@ -300,7 +301,10 @@
                     >
                         <svg-icon
                             class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
-                            [class]="loadStatus && (loadStatus.id | loadStatusColors : true)"
+                            [class]="
+                                loadStatus &&
+                                (loadStatus.id | loadStatusColors: true)
+                            "
                             [src]="icon"
                         ></svg-icon>
                     </div>
@@ -327,17 +331,16 @@
                                 </span>
                             }
                         </div>
-                    } 
-                    @else if (loadStatus) {
+                    } @else if (loadStatus) {
                         <app-ca-load-status
                             [status]="{
                                 name: loadStatus?.name,
-                                id: loadStatus?.id
+                                id: loadStatus?.id,
                             }"
                             [isNoStyle]="true"
                             [fontSize]="14"
                         >
-                        </app-ca-load-status> 
+                        </app-ca-load-status>
                     }
                 </ng-template>
             </app-ca-skeleton>
