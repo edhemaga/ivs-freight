@@ -57,7 +57,8 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
     public searchField = MilesStopsTable.SEARCH_FIELD;
 
-    public isStopListExpanded: boolean = false;
+    public isStopListWidthExpanded: boolean = false;
+    public isStopListHeightExpanded: boolean = false;
     public isLoading: boolean = false;
     public isUserOnLastPage: boolean = false;
     public truckId: number;
@@ -100,8 +101,12 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         this.milesStoreService.dispatchFollowingUnit(getFollowingUnitDirection);
     }
 
-    public toogleStopList(): void {
-        this.isStopListExpanded = !this.isStopListExpanded;
+    public toogleStopListWidth(): void {
+        this.isStopListWidthExpanded = !this.isStopListWidthExpanded;
+    }
+
+    public toogleStopListHeight(): void {
+        this.isStopListHeightExpanded = !this.isStopListHeightExpanded;
     }
 
     private manageScrollDebounce(): void {

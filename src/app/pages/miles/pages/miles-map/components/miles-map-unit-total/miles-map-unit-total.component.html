@@ -3,7 +3,7 @@
 @if (total) {
     @let hasTotalMiles = total?.totalMiles || total?.stops?.count;
     <div
-        class="background-white br-3 p-x-12 miles-map-total position-relative z-2 miles-unit-total-list overflow-x-hidden overflow-y-auto"
+        class="background-white br-3 p-x-12 miles-map-total position-relative z-2 miles-unit-total-list overflow-x-hidden overflow-y-auto opacity-90"
         [ngClass]="hasTotalMiles ? 'p-b-2 p-t-8' : 'p-y-8'"
     >
         <div class="text-size-11 ta-font-bold text-color-black m-b-2 mt-1">

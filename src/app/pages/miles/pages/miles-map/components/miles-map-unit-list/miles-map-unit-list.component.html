@@ -7,7 +7,7 @@
     <div class="position-relative z-2">
         <div
             class="background-white br-3 p-x-6 mb-2"
-            [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
+            [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
         >
             <!-- TODO:  Uroš will replace all of this with component once it is done -->
             <div
@@ -65,7 +65,8 @@
         </div>
         <div
             class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
-            [ngClass]="isStopListExpanded ? 'w-442' : 'w-334'"
+            [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
+            [class.miles-unit-list-minimal]="isStopListHeightExpanded"
         >
             <form [formGroup]="searchForm">
                 <app-ca-input
@@ -77,13 +78,13 @@
             <div
                 class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-4"
                 [ngClass]="
-                    isStopListExpanded
+                    isStopListWidthExpanded
                         ? 'stops-container-large'
                         : 'stops-container-small'
                 "
             >
                 @for (item of stopsConfig; let i = $index; track i) {
-                    @if (!item.isExpandable || isStopListExpanded) {
+                    @if (!item.isExpandable || isStopListWidthExpanded) {
                         <div
                             class="text-color-muted text-size-11 ta-font-bold"
                             [ngClass]="{
@@ -122,15 +123,17 @@
             </div>
 
             <div
-                (click)="toogleStopList()"
-                class="position-absolute z-2 arrow-bottom"
+                (click)="toogleStopListHeight()"
+                class="position-absolute z-2 arrow arrow-bottom"
+                [class.arrow-bottom-opened]="isStopListHeightExpanded"
             >
                 <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
             </div>
 
             <div
-                (click)="toogleStopList()"
-                class="position-absolute z-2 arrow-right"
+                (click)="toogleStopListWidth()"
+                class="position-absolute z-2 arrow arrow-right"
+                [class.arrow-right-opened]="isStopListWidthExpanded"
             >
                 <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
             </div>
@@ -140,9 +143,9 @@
 
 <ng-template #stopRows let-stop="stop">
     <div
-        class="h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
+        class="stops-container h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
         [ngClass]="
-            isStopListExpanded
+            isStopListWidthExpanded
                 ? 'stops-container-large'
                 : 'stops-container-small'
         "
@@ -165,7 +168,7 @@
         <div class="text-color-black text-size-11 text-right">
             {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
         </div>
-        @if (isStopListExpanded) {
+        @if (isStopListWidthExpanded) {
             <div class="text-color-black text-size-11 text-right">
                 {{ (stop.loadedMiles | thousandSeparator) ?? '0.0' }}
             </div>

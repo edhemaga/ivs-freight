@@ -12,17 +12,32 @@
 }
 
 .miles-unit-list {
-    max-height: calc(100vh - 120px);
+    max-height: calc(100vh - 130px);
+
+    &-minimal {
+        height: 462px;
+    }
 }
 
 .arrow {
+    transition: transform $transitionDuration ease-in-out;
+
     &-bottom {
         bottom: -13px;
         left: calc(50% - 13px);
+
+        &-opened {
+            transform: rotate(-180deg);
+        }
     }
 
     &-right {
+        transform: rotate(90deg);
         right: -13px;
         top: calc(50% - 13px);
+
+        &-opened {
+            transform: rotate(-90deg);
+        }
     }
 }
