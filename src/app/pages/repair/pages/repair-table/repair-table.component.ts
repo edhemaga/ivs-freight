@@ -969,7 +969,7 @@ export class RepairTableComponent
         }, 900);
     }
 
-    public handleTableEmptyBtnClickEmit(btnClickType: string): void {
+    public onTableEmptyBtnClick(btnClickType: string): void {
         switch (btnClickType) {
             case eTableEmpty.ADD_CLICK:
                 this.onToolBarAction({ action: eGeneralActions.OPEN_MODAL });
@@ -1024,6 +1024,7 @@ export class RepairTableComponent
                                 ...this.backFilterQuery,
                                 categoryIds: res.selectedIds,
                             };
+
                             break;
                         case RepairTableStringEnum.LOCATION_FILTER:
                             this.shopFilterQuery = {
@@ -1032,18 +1033,28 @@ export class RepairTableComponent
                                 lat: res.queryParams?.latValue,
                                 distance: res.queryParams?.rangeValue,
                             };
+
                             break;
                         case eFilterDropdownEnum.PM:
                             this.backFilterQuery = {
                                 ...this.backFilterQuery,
                                 pmTruckTitles: res.selectedIds,
                             };
+
                             break;
                         case eFilterDropdownEnum.TRAILER:
-                            this.backFilterQuery = { ...this.backFilterQuery, trailerNumbers: res.selectedIds };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                trailerNumbers: res.selectedIds,
+                            };
+
                             break;
                         case eFilterDropdownEnum.TRUCK:
-                            this.backFilterQuery = { ...this.backFilterQuery, truckNumbers: res.selectedIds };
+                            this.backFilterQuery = {
+                                ...this.backFilterQuery,
+                                truckNumbers: res.selectedIds,
+                            };
+
                             break;
                         case eFilterDropdownEnum.TIME_FILTER:
                             this.backFilterQuery = {
@@ -1051,15 +1062,18 @@ export class RepairTableComponent
                                 dateTo: res.toDate,
                                 dateFrom: res.fromDate,
                             };
+
                             break;
                         case eFilterDropdownEnum.STATE:
                             // this.backFilterQuery = { ...this.backFilterQuery, states: res.states };
+
                             break;
                         case eFilterDropdownEnum.SERVICE:
                             this.backFilterQuery = {
                                 ...this.backFilterQuery,
                                 categoryIds: res.selectedIds,
                             };
+
                             break;
                         case 'moneyFilter':
                             this.backFilterQuery = {
@@ -1067,6 +1081,7 @@ export class RepairTableComponent
                                 costFrom: res.queryParams?.from,
                                 costTo: res.queryParams?.to,
                             };
+
                             break;
                     }
 
@@ -1085,6 +1100,7 @@ export class RepairTableComponent
                             );
 
                         this.isAddedNewRepairShop = true;
+
                         this.getMapData();
                     }
                 }

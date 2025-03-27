@@ -28,7 +28,8 @@ export const initialState: IMilesState = {
     activeViewMode: eActiveViewMode.List,
     filters: {},
     states: [],
-    selectedRows: 0,
+    selectedCount: 0,
+    unSelectedCount: 0,
     hasAllItemsSelected: false,
 
     // Table

@@ -18,6 +18,10 @@ export enum eGeneralActions {
     PREVIOUS = 'Previous',
     PREVIOUS_LOWERCASE = 'previous',
 
+    SELECT_ALL = 'Select All',
+    SELECT_REMAINING = 'Select Remaining',
+    CLEAR_SELECTED = 'Clear Selected',
+
     SHOW_MORE = 'show more',
 
     OPEN_MODAL = 'open-modal',
