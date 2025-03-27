@@ -45,7 +45,12 @@
     <!-- In (days) of or ago (days) dispaly text bassed on expired or it will expire -->
 
     <ng-container *ngIf="percents && text !== '/'">
-        <span class="progress-text" [class.table-progress-text]="isTable">
+        <span
+            class="progress-text"
+            [class.table-progress-text]="isTable"
+            [class.text-size-13]="text?.length === 5"
+            [class.text-size-12]="text?.length > 5"
+        >
             <ng-container *ngIf="type === 'days'">
                 <ng-container *ngIf="!daysExpired"
                     >in {{ text }} days</ng-container
@@ -73,6 +78,7 @@
             class="progress-text ta-font-semi-bold"
             [class.table-progress-text]="isTable"
             [class.text-size-13]="text?.length >= 5"
+            [class.text-size-12]="text?.length > 5"
         >
             <ng-container *ngIf="type === 'days'">
                 <ng-container *ngIf="!daysExpired"
