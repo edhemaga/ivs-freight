@@ -797,7 +797,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getTruckList(pageIndex: number = 1, pageSize: number = 25): void {
+    private getTruckList(pageIndex: number = 1, pageSize: number = 200): void {
         this.truckService
             .getTrucksMinimalList(pageIndex, pageSize)
             .pipe(takeUntil(this.destroy$))

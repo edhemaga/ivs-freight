@@ -185,4 +185,11 @@ export class MilesStoreService {
             column,
         });
     }
+
+    public dispatchSearchInputChanged(search: string): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SEARCH_CHANGED,
+            search,
+        });
+    }
 }
