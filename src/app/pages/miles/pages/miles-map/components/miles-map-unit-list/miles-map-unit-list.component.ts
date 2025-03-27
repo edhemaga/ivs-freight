@@ -117,16 +117,11 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         );
     }
     private manageSubscriptions(): void {
-        // <!-- TODO:  Inside virtual sroll ticket -->
-        // this.subscriptions.add(
-        //     forkJoin([
-        //         this.milesStoreService.isMilesDetailsLoadingSelector$,
-        //         this.milesStoreService.isUserOnLastPageSelector$,
-        //     ]).subscribe(([loading, isUserOnLastPage]) => {
-        //         this.isLoading = loading;
-        //         this.isUserOnLastPage = isUserOnLastPage;
-        //     })
-        // );
+        this.subscriptions.add(
+            this.milesStoreService.selectedTab$.subscribe(() => {
+                this.resetFormValue();
+            })
+        );
 
         this.manageScrollDebounce();
 
