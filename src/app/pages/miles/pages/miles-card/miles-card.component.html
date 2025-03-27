@@ -1,10 +1,11 @@
 @let store = milesStoreService.miles$ | async;
 
 @if (store) {
-    <app-table-card-view
+    <ca-table-card-view
         [viewData]="store"
         [frontSide]="frontSide"
-    ></app-table-card-view>
+        [cardTitle]="'unit'"
+    ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
         <ng-container
@@ -26,10 +27,32 @@
                 }
             "
         ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Miles • Loaded',
+                    text: data?.milesLoaded ?? '/',
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Miles • Total',
+                    text: data?.milesTotal ?? '/',
+                }
+            "
+        ></ng-container>
     </ng-template>
 
     <ng-template #textWithTitle let-title="title" let-text="text">
-        <div>{{ title }}</div>
-        <div>{{ text }}</div>
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">{{ title }}</div>
+            <div class="text-size-14 text-color-black-2">{{ text }}</div>
+        </div>
     </ng-template>
 }

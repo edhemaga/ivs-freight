@@ -5,14 +5,19 @@ import { CommonModule } from '@angular/common';
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 // components
-import { TableCardViewComponent } from '@shared/components/table-card-view/table-card-view.component';
+import { CaTableCardViewComponent } from 'ca-components';
 
 @Component({
     selector: 'app-miles-card',
     templateUrl: './miles-card.component.html',
     styleUrl: './miles-card.component.scss',
     standalone: true,
-    imports: [CommonModule, TableCardViewComponent],
+    imports: [
+        CommonModule,
+        
+        // components
+        CaTableCardViewComponent,
+    ],
 })
 export class MilesCardComponent {
     constructor(public milesStoreService: MilesStoreService) {}
