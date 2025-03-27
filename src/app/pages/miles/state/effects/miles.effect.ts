@@ -318,4 +318,14 @@ export class MilesEffects {
             })
         );
     }
+
+    public getUnitOnSelection$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.onUnitSelection),
+            exhaustMap((action) => {
+                const { unit } = action;
+                return this.fetchInitialUnitDetails([unit]);
+            })
+        )
+    );
 }

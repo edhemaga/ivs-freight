@@ -20,7 +20,11 @@ import {
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
-import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
+import {
+    IMilesDetailsFilters,
+    IMilesModel,
+    IMilesState,
+} from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
@@ -194,6 +198,13 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SEARCH_CHANGED,
             search,
+        });
+    }
+
+    public dispatchSelectUnit(unit: IMilesModel): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_UNIT_SELECTED,
+            unit,
         });
     }
 }
