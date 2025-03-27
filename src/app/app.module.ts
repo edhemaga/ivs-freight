@@ -56,11 +56,10 @@ import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
 // NGRX
 import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
-import { MilesEffects } from '@pages/miles/state/effects/miles.effects';
-import { milesReducer } from '@pages/miles/state/reducers/miles.reducer'; 
+import { MilesEffects } from '@pages/miles/state/effects/miles.effect';
+import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
 // Store
 import { loadReducer } from '@pages/load/state/reducers/load.reducer';
-import { contactReducer } from '@pages/contacts/state/reducers/contacts.reducer';
 import { LoadEffect } from '@pages/load/state/effects/load.effect';
 
 export const appConfig: ApplicationConfig = {
@@ -102,9 +101,9 @@ export const appConfig: ApplicationConfig = {
         RightSidePanelComponent,
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
-        }), 
+        }),
         EffectsModule.forRoot([LoadEffect, MilesEffects]),
-        StoreModule.forRoot({ load: loadReducer, miles: milesReducer}),
+        StoreModule.forRoot({ load: loadReducer, miles: milesReducer }),
         StoreDevtoolsModule.instrument({
             name: 'Carriera App',
         }),
