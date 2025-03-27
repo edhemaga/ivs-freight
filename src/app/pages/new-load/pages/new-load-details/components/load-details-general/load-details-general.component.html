@@ -13,11 +13,11 @@
             [class.mb-2]="isLoading"
         >
             <ng-template #contentTemplate>
-                <div
+                <span
                     class="ta-font-semi-bold text-size-18 text-color-black h-30 mb-1 d-flex align-items-center"
                 >
                     Ref. {{ load.referenceNumber }}
-                </div>
+                </span>
             </ng-template>
         </app-ca-skeleton>
 
@@ -133,17 +133,17 @@
         ></ng-container>
     } @else {
         <div class="d-flex flex-column p-x-12 pt-1">
-            <div
+            <span
                 class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1 d-flex align-items-center"
             >
                 Broker Detail
-            </div>
+            </span>
 
-            <div
+            <span
                 class="ta-font-medium text-size-18 text-color-black mb-1 text-truncate d-flex align-items-center h-30"
             >
                 {{ load.broker?.businessName }}
-            </div>
+            </span>
 
             <div class="d-flex align-items-center flex-wrap row gutter-x-12">
                 <ng-container
@@ -200,7 +200,7 @@
         </div>
 
         <div class="p-x-12">
-            <div
+            <span
                 class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
             >
                 Assigned To
@@ -209,7 +209,7 @@
                     [src]="sharedIcons.HALF_TIME_ICON"
                     class="svg-size-18 m-l-4 svg-fill-muted"
                 ></svg-icon>
-            </div>
+            </span>
 
             <div class="row gutter-x-12">
                 @let isLoadAssigned = load?.dispatch;
@@ -246,7 +246,9 @@
                     <div class="m-t-12">
                         @let driver = load?.dispatch?.driver;
                         @let driverName =
-                            driver?.firstName + ' ' + driver?.lastName;
+                            driver?.firstName +
+                            eStringPlaceholder.WHITESPACE +
+                            driver?.lastName;
                         <app-ca-unit-info-box
                             [unitInfoBoxConfig]="{
                                 id: driver?.id,
@@ -262,6 +264,15 @@
                 </div>
             </div>
         </div>
+
+        <ng-container
+            *ngTemplateOutlet="
+                billing;
+                context: {
+                    data: load,
+                }
+            "
+        ></ng-container>
     }
 </div>
 
@@ -366,9 +377,193 @@
         </p>
     </div>
 
+    <ng-container
+        *ngTemplateOutlet="divider; context: { isDividerVisible }"
+    ></ng-container>
+</ng-template>
+
+<ng-template #divider let-isDividerVisible="isDividerVisible">
     @if (isDividerVisible) {
         <div class="p-x-6 mb-1 mt-1">
             <div class="divider divider--small divider--dark"></div>
         </div>
+    }
+</ng-template>
+
+<ng-template #billing let-data="data">
+    <div class="p-2" (click)="toggleBilling()">
+        <app-ta-custom-card
+            [cardName]="'Billing'"
+            [hasCounter]="data?.billingCount"
+            [disabledCard]="!data?.billingCount"
+            [bodyTemplate]="'card'"
+            [animationMarginParams]="{
+                marginTop: '6px',
+                marginBottom: '6px',
+            }"
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    billingBaseRate;
+                    context: {
+                        data,
+                    }
+                "
+            ></ng-container>
+        </app-ta-custom-card>
+    </div>
+</ng-template>
+
+<ng-template
+    #billingRateItem
+    let-label="label"
+    let-value="value"
+    let-color="color"
+    let-isLineThrough="isLineThrough"
+>
+    @let mutedColor = 'text-color-muted';
+    @let blackColor = 'text-color-black';
+    <div
+        class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+    >
+        <span
+            class="ta-font-medium"
+            [ngClass]="isLineThrough ? mutedColor : blackColor"
+            [class.text-decoration-line-through]="isLineThrough"
+        >
+            {{ label }}
+        </span>
+        <span
+            [ngClass]="isLineThrough ? mutedColor : color"
+            [class.text-decoration-line-through]="isLineThrough"
+        >
+            {{ value | currency: 'USD' }}
+        </span>
+    </div>
+</ng-template>
+
+<ng-template #billingBaseRate let-data="data">
+    @if (data?.baseRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Base Rate',
+                    value: data?.baseRate,
+                    color: data?.tonuRate ? mutedColor : 'text-color-black-2',
+                    isLineThrough:
+                        data?.tonuRate ||
+                        data?.revisedRate ||
+                        data?.adjustedRate,
+                }
+            "
+        ></ng-container>
+    }
+
+    @if (data?.adjustedRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Adjusted',
+                    value: data?.adjustedRate,
+                    color: data?.tonuRate
+                        ? mutedColor
+                        : 'text-color-special-filter-purple',
+                    lineThrough: data?.tonuRate,
+                }
+            "
+        ></ng-container>
+    }
+
+    @if (data?.revisedRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Revised',
+                    value: data?.revisedRate,
+                    color: data?.tonuRate
+                        ? mutedColor
+                        : 'text-color-special-filter-purple',
+                    isLineThrough: data?.tonuRate,
+                }
+            "
+        ></ng-container>
+    }
+
+    @for (item of data?.additionalBillingRates; track item.id) {
+        @if (item?.rate) {
+            <ng-container
+                *ngTemplateOutlet="
+                    billingRateItem;
+                    context: {
+                        label: item?.additionalBillingType?.name,
+                        value: item?.rate,
+                        color: data?.tonuRate
+                            ? mutedColor
+                            : 'text-color-black-2',
+                        lineThrough: data?.tonuRate,
+                    }
+                "
+            ></ng-container>
+        }
+    }
+
+    <ng-container
+        *ngTemplateOutlet="
+            billingRateItem;
+            context: {
+                label: 'TOTAL RATE',
+                value: data?.totalRate,
+                color: data?.tonuRate ? mutedColor : 'text-color-black',
+                isLineThrough:
+                    data?.tonuRate || data?.revisedRate || data?.adjustedRate,
+            }
+        "
+    ></ng-container>
+
+    @if (data?.totalAdjustedRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'TOTAL ADJUSTED',
+                    value: data?.totalAdjustedRate,
+                    color: data?.tonuRate
+                        ? mutedColor
+                        : 'text-color-special-filter-purple',
+                    isLineThrough: false,
+                }
+            "
+        ></ng-container>
+    }
+
+    @if (data?.driverRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'DRIVER RATE',
+                    value: data?.driverRate,
+                    color: data?.tonuRate ? mutedColor : 'text-color-yellow-5',
+                    isLineThrough: data?.tonuRate,
+                }
+            "
+        ></ng-container>
+    }
+
+    @if (data?.tonuRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'TONU RATE',
+                    value: data?.tonuRate,
+                    color: 'text-color-red-11',
+                    lineThrough: data?.tonuRate,
+                }
+            "
+        ></ng-container>
     }
 </ng-template>
