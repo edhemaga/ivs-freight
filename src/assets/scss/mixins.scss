@@ -85,7 +85,7 @@
             display: none !important;
         }
         @media (min-width: $xlarge-min) {
-            display: block !important;
+            display: flex !important;
         }
     }
     &-xl {
@@ -93,7 +93,7 @@
             display: none !important;
         }
         @media (min-width: $xxlarge-max) {
-            display: block !important;
+            display: flex !important;
         }
     }
 }
