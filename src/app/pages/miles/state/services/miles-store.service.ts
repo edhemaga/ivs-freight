@@ -9,13 +9,14 @@ import {
     selectTableViewData,
     selectSelectedTab,
     statesSelector,
-    selectedRowsSelector,
+    selectedCountSelector,
     tableColumnsSelector,
     filterSelector,
     hasAllItemsSelectedSelector,
     detailsSelector,
     unitsPaginationSelector,
     tableSettingsSelector,
+    unSelectedCountSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -67,8 +68,8 @@ export class MilesStoreService {
     public statesSelector$: Observable<MilesStateFilterResponse[]> =
         this.store.pipe(select(statesSelector));
 
-    public selectedRowsSelector$: Observable<number> = this.store.pipe(
-        select(selectedRowsSelector)
+    public selectedCountSelector$: Observable<number> = this.store.pipe(
+        select(selectedCountSelector)
     );
     public columns$: Observable<ITableColumn[]> = this.store.pipe(
         select(tableColumnsSelector)
@@ -90,6 +91,9 @@ export class MilesStoreService {
 
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(tableSettingsSelector)
+    );
+    public unSelectedCountSelector$: Observable<number> = this.store.pipe(
+        select(unSelectedCountSelector)
     );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
@@ -183,6 +187,13 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SORTING_CHANGE,
             column,
+        });
+    }
+
+    public dispatchSearchInputChanged(search: string): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SEARCH_CHANGED,
+            search,
         });
     }
 }

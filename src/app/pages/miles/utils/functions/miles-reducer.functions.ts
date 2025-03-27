@@ -1,13 +1,13 @@
-// Interface
+// interfaces
 import { IMilesModel, IMilesState } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
-// Enums
+// enums
 import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
-// Models
+// models
 import {
     MilesByUnitPaginatedStopsResponse,
     SortOrder,
@@ -34,7 +34,7 @@ export const changeViewMode = function (
     return {
         ...state,
         activeViewMode,
-        selectedRows: 0,
+        selectedCount: 0,
         hasAllItemsSelected: false,
         unitsPagination: {
             ...state.unitsPagination,
@@ -64,9 +64,13 @@ export const updateMilesListData = function (
     state: IMilesState,
     miles: IMilesModel[]
 ): IMilesState {
+    const items = [...state.items, ...miles];
+
     return {
         ...state,
-        items: [...state.items, ...miles],
+        items,
+        // New items are not selected no need to filter it
+        unSelectedCount: state.unSelectedCount + miles.length,
         unitsPagination: {
             ...state.unitsPagination,
             currentPage: state.unitsPagination.currentPage + 1,
@@ -89,8 +93,9 @@ export const toggleRowSelection = function (
     return {
         ...state,
         items: updatedItems,
-        selectedRows: newSelectedCount,
+        selectedCount: newSelectedCount,
         hasAllItemsSelected: newSelectedCount === updatedItems.length,
+        unSelectedCount: state.items.length - newSelectedCount,
     };
 };
 
@@ -105,8 +110,9 @@ export const toggleSelectAll = function (state: IMilesState): IMilesState {
     return {
         ...state,
         items: updatedItems,
-        selectedRows: hasAllItemsSelected && updatedItems.length,
+        selectedCount: hasAllItemsSelected && updatedItems.length,
         hasAllItemsSelected,
+        unSelectedCount: 0,
     };
 };
 
@@ -117,7 +123,7 @@ export const updateFilters = function (
     return {
         ...state,
         filters,
-        selectedRows: 0,
+        selectedCount: 0,
         hasAllItemsSelected: false,
     };
 };
@@ -129,7 +135,7 @@ export const updateTabSelection = function (
     return {
         ...state,
         selectedTab,
-        selectedRows: 0,
+        selectedCount: 0,
         filters: {},
         hasAllItemsSelected: false,
     };
@@ -245,6 +251,19 @@ export function tableSortingChange(
             ...state.tableSettings,
             sortDirection: updatedSortDirection,
             sortKey: updatedSortDirection ? updatedSortKey : null,
+        },
+    };
+}
+
+export function onSearchChange(
+    state: IMilesState,
+    search: string
+): IMilesState {
+    return {
+        ...state,
+        unitsPagination: {
+            ...state.unitsPagination,
+            search,
         },
     };
 }

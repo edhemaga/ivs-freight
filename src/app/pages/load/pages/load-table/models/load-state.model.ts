@@ -4,6 +4,7 @@ import {
     ILoadTemplateGridItem,
 } from '@pages/load/pages/load-table/models/index';
 import {
+    LoadMinimalListResponse,
     LoadModalResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
@@ -42,4 +43,5 @@ export interface ILoadState {
     totalLoadSum: number;
     hasAllLoadsSelected: boolean;
     isLoadDetailsMapOpen: boolean;
+    minimalList: LoadMinimalListResponse;
 }

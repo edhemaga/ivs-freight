@@ -241,6 +241,9 @@ export class RepairShopModalComponent
     public isNewContactAdded: boolean = false;
     public isEachContactRowValid: boolean = true;
 
+    // Address
+    public selectedAddress: AddressEntity;
+
     private departments: DepartmentResponse[];
 
     // Reviews
@@ -309,7 +312,7 @@ export class RepairShopModalComponent
     public get isModalValidToSubmit(): boolean {
         return (
             this.repairShopForm.valid &&
-            this.repairShopForm.touched &&
+            this.isFormDirty &&
             this.isEachContactRowValid
         );
     }
@@ -697,6 +700,10 @@ export class RepairShopModalComponent
         longLat: any;
     }): void {
         if (event.valid) {
+            this.selectedAddress = event.address;
+            this.repairShopForm
+                .get(RepairShopModalStringEnum.ADDRESS)
+                .patchValue(event.address.address);
             this.repairShopForm
                 .get(RepairShopModalStringEnum.ADDRESS)
                 .patchValue(event.address.address);
@@ -902,12 +909,12 @@ export class RepairShopModalComponent
     }
 
     private startFormChanges(): void {
-        // this.formService.checkFormChange(this.repairShopForm);
-        // this.formService.formValueChange$
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe(
-        //         (isFormChange: boolean) => (this.isFormDirty = isFormChange)
-        //     );
+        this.formService.checkFormChange(this.repairShopForm);
+        this.formService.formValueChange$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(
+                (isFormChange: boolean) => (this.isFormDirty = isFormChange)
+            );
     }
 
     // Bank
@@ -1066,7 +1073,7 @@ export class RepairShopModalComponent
                 RepairShopModalStringEnum.PHONE_EXT
             ),
             address: {
-                ...this.getFromFieldValue(RepairShopModalStringEnum.ADDRESS),
+                ...this.selectedAddress,
                 addressUnit: this.getFromFieldValue(
                     RepairShopModalStringEnum.ADDRESS_UNIT
                 ),

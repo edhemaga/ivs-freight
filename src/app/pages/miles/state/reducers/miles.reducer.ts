@@ -28,7 +28,8 @@ export const initialState: IMilesState = {
     activeViewMode: eActiveViewMode.List,
     filters: {},
     states: [],
-    selectedRows: 0,
+    selectedCount: 0,
+    unSelectedCount: 0,
     hasAllItemsSelected: false,
 
     // Table
@@ -138,6 +139,10 @@ export const milesReducer = createReducer(
 
     on(MilesAction.tableSortingChange, (state, { column }) =>
         Functions.tableSortingChange(state, column)
+    ),
+
+    on(MilesAction.onSearchChange, (state, { search }) =>
+        Functions.onSearchChange(state, search)
     )
     // #endregion
 );

@@ -171,6 +171,17 @@ export class RepairService {
                             repairCount.repairTrailers++;
                         }
 
+                        const updateStore = (store: RepairStoresType) =>
+                            store.update(repair?.repairShop?.id, (entity) => ({
+                                ...entity,
+                                repairList: [...entity.repairList, repair],
+                            }));
+
+                        [
+                            this.repairDetailsStore,
+                            this.repairItemStore,
+                        ]?.forEach((store) => updateStore(store));
+
                         localStorage.setItem(
                             TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
                             JSON.stringify({
