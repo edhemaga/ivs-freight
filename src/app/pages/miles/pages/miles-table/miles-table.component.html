@@ -61,7 +61,7 @@
 
             <app-ca-checkbox
                 [name]="name"
-                [isChecked]="data.isSelected || store.hasAllItemsSelected"
+                [isChecked]="data.isSelected"
                 [isRegularCheckbox]="false"
                 [itemIndex]="data.id"
                 (columnCheckAction)="selectRow(data)"

@@ -4,8 +4,7 @@ export class MilesStoreConstants {
     public static LOAD_MILES_SUCCESS = `${this.COMPONENT_NAME_KEY} LOAD_MILES_SUCCESS`;
     public static LOAD_MILES_FAILURE = `${this.COMPONENT_NAME_KEY} LOAD_MILES_FAILURE`;
 
-    public static UPDATE_MILES_LIST = `${this.COMPONENT_NAME_KEY} UPDATE_MILES_LIST
-`;
+    public static UPDATE_MILES_LIST = `${this.COMPONENT_NAME_KEY} UPDATE_MILES_LIST`;
     public static MILES_TAB_CHANGE = `${this.COMPONENT_NAME_KEY} MILES_TAB_CHANGE`;
 
     public static UPDATE_TRUCK_COUNTS = `${this.COMPONENT_NAME_KEY} UPADE_TRUCK_COUNTS`;
