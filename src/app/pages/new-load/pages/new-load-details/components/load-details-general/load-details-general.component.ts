@@ -54,10 +54,15 @@ export class LoadDetailsGeneralComponent {
     public eColor = eColor;
 
     public isBillingExpanded: boolean = false;
+    public isPaymentExpanded: boolean = false;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
     public toggleBilling(): void {
         this.isBillingExpanded = !this.isBillingExpanded;
+    }
+
+    public togglePayment(): void {
+        this.isPaymentExpanded = !this.isPaymentExpanded;
     }
 }

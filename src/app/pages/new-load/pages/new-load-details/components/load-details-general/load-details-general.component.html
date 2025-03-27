@@ -273,6 +273,14 @@
                 }
             "
         ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                payment;
+                context: {
+                    data: load,
+                }
+            "
+        ></ng-container>
     }
 </div>
 
@@ -391,11 +399,30 @@
 </ng-template>
 
 <ng-template #billing let-data="data">
-    <div class="p-2" (click)="toggleBilling()">
+    @let cardSubText =
+        !isBillingExpanded
+            ? data?.tonuRate
+                ? (data?.tonuRate | currency: 'USD') + ' TONU'
+                : data?.revisedRate
+                  ? (data?.revisedRate | currency: 'USD') + ' REVISED'
+                  : eStringPlaceholder.EMPTY
+            : eStringPlaceholder.EMPTY;
+    @let cardSubTextClass =
+        !isBillingExpanded
+            ? data?.tonuRate
+                ? 'text-color-red-11'
+                : data?.revisedRate
+                  ? 'text-color-muted'
+                  : eStringPlaceholder.EMPTY
+            : eStringPlaceholder.EMPTY;
+
+    <div class="px-3 py-2" (click)="toggleBilling()">
         <app-ta-custom-card
             [cardName]="'Billing'"
             [hasCounter]="data?.billingCount"
             [disabledCard]="!data?.billingCount"
+            [subText]="cardSubText"
+            [subTextClass]="cardSubTextClass"
             [bodyTemplate]="'card'"
             [animationMarginParams]="{
                 marginTop: '6px',
@@ -414,6 +441,9 @@
     </div>
 </ng-template>
 
+@let mutedColor = 'text-color-muted';
+@let blackColor = 'text-color-black';
+
 <ng-template
     #billingRateItem
     let-label="label"
@@ -421,8 +451,6 @@
     let-color="color"
     let-isLineThrough="isLineThrough"
 >
-    @let mutedColor = 'text-color-muted';
-    @let blackColor = 'text-color-black';
     <div
         class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
     >
@@ -566,4 +594,46 @@
             "
         ></ng-container>
     }
+</ng-template>
+
+<ng-template #payment let-data="data">
+    <div class="px-3 py-2" (click)="togglePayment()">
+        <app-ta-custom-card
+            [cardName]="'Payment'"
+            [hasCounter]="data?.paymentCount"
+            [disabledCard]="!!data?.paymentCount"
+            [subText]="!isPaymentExpanded && data?.totalDue"
+            [subTextClass]="isPaymentExpanded && 'text-color-red-11'"
+            [bodyTemplate]="'card'"
+            [animationMarginParams]="{
+                marginTop: '6px',
+                marginBottom: '6px',
+            }"
+        >
+            @if (data?.advancePay) {
+                <div
+                    class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+                >
+                    <span class="ta-font-medium text-color-black">
+                        Advance
+                    </span>
+                    <span class="text-color-black">
+                        {{ data?.advancePay | currency: 'USD' }}
+                    </span>
+                </div>
+            }
+            <div class="d-flex justify-content-between">
+                @for (item of data?.pays; track pay.id) {
+                    <span class="ta-font-medium text-size-14">
+                        {{ item?.paymentType?.name }}
+                        ({{ item?.paymentMethod?.name }})
+                    </span>
+                    <span class="text-size-14"> {{ item?.payDate }} </span>
+                    <span class="text-size-14">{{
+                        item?.pay | currency: 'USD'
+                    }}</span>
+                }
+            </div>
+        </app-ta-custom-card>
+    </div>
 </ng-template>
