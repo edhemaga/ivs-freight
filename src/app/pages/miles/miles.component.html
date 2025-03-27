@@ -31,12 +31,15 @@
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
                 <div class="d-flex gap-1 align-items-center">
-                    <ca-search-multiple-states-2
-                        [selectedTab]="selectedTab"
-                        (onSearchQueryChange)="onSearchQueryChange($event)"
-                    ></ca-search-multiple-states-2>
-
-                    <ng-container *ngTemplateOutlet="divider"></ng-container>
+                    @if (store.activeViewMode !== eCommonElement.MAP) {
+                        <ca-search-multiple-states-2
+                            [selectedTab]="selectedTab"
+                            (onSearchQueryChange)="onSearchQueryChange($event)"
+                        ></ca-search-multiple-states-2>
+                        <ng-container
+                            *ngTemplateOutlet="divider"
+                        ></ng-container>
+                    }
 
                     <app-ca-filter-state-dropdown
                         [states]="store.statesSelector"
