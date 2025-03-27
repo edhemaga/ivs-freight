@@ -116,3 +116,8 @@ export const onSearchChange = createAction(
     MilesStoreConstants.ACTION_SEARCH_CHANGED,
     props<{ search: string }>()
 );
+
+export const onUnitSelection = createAction(
+    MilesStoreConstants.ACTION_UNIT_SELECTED,
+    props<{ unit: IMilesModel }>()
+);
