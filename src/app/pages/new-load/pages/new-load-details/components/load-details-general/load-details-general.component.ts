@@ -6,7 +6,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Enums
-import { eSharedString, eColor } from '@shared/enums';
+import { eSharedString, eColor, eStringPlaceholder } from '@shared/enums';
 
 // SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -49,6 +49,7 @@ export class LoadDetailsGeneralComponent {
     public sharedIcons = SharedSvgRoutes;
 
     // enums
+    public eStringPlaceholder = eStringPlaceholder;
     public eSharedString = eSharedString;
     public eColor = eColor;
 
