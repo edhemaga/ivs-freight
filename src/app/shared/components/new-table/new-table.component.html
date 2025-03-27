@@ -175,7 +175,8 @@
             <div
                 class="new-table--row-heading text-color-bw6-2 d-flex"
                 [ngClass]="
-                    { column, isTableLocked, isGroup } | tableColumnClass
+                    { column, isTableLocked, isGroup, isEmptyTable }
+                        | tableColumnClass
                 "
                 [style.min-width]="column.width + eUnit.PX"
                 [style.width]="column.width + eUnit.PX"
