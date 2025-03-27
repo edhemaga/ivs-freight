@@ -96,6 +96,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public getTruckUnit(
         getFollowingUnitDirection: ArrowActionsStringEnum
     ): void {
+        this.resetFormValue();
         this.milesStoreService.dispatchFollowingUnit(getFollowingUnitDirection);
     }
 
@@ -134,6 +135,10 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
             .subscribe((value) => {
                 this.milesStoreService.dispatchSearchInputChanged(value);
             });
+    }
+
+    private resetFormValue(): void {
+        this.searchForm.reset();
     }
 
     ngOnDestroy(): void {

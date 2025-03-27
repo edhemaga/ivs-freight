@@ -1,35 +1,37 @@
 @let total = milesStoreService.detailsSelector$ | async;
 
 @if (total) {
+    @let hasTotalMiles = total?.totalMiles || total?.stops?.count;
     <div
-        class="background-white br-3 p-12 miles-map-total pb-0 position-relative z-2 miles-unit-total-list scrollable-element overflow-x-hidden overflow-y-auto"
+        class="background-white br-3 p-x-12 miles-map-total position-relative z-2 miles-unit-total-list overflow-x-hidden overflow-y-auto"
+        [ngClass]="hasTotalMiles ? 'p-b-2 p-t-8' : 'p-y-8'"
     >
-        <div class="text-size-11 ta-font-bold text-color-black m-b-2">
+        <div class="text-size-11 ta-font-bold text-color-black m-b-2 mt-1">
             Total Miles
         </div>
         <div class="text-size-18 ta-font-medium text-color-black m-b-8">
             {{ (total.totalMiles | thousandSeparator) ?? '0.0' }}
         </div>
 
-        @if (total?.totalMiles || total?.stops?.count) {
-            @if (total.totalMiles) {
-                @let totalUnitCount = total.loadedMiles + total.emptyMiles;
-                @let percent = (total.loadedMiles / totalUnitCount) * 100;
-                <ng-container
-                    *ngTemplateOutlet="
-                        milesProgressBar;
-                        context: {
-                            label: '',
-                            percent: percent,
-                            count: totalUnitCount,
-                            color: 'muted',
-                        }
-                    "
-                >
-                </ng-container>
-            }
+        @let totalUnitCount = total.loadedMiles + total.emptyMiles;
+        <!-- If we don't have total count set percent as 0  -->
+        @let percent =
+            !totalUnitCount ? 0 : (total.loadedMiles / totalUnitCount) * 100;
+        <ng-container
+            *ngTemplateOutlet="
+                milesProgressBar;
+                context: {
+                    label: '',
+                    percent: percent,
+                    count: totalUnitCount,
+                    color: 'muted',
+                }
+            "
+        >
+        </ng-container>
 
-            <div class="d-flex mb-1 gap-3">
+        @if (hasTotalMiles) {
+            <div class="d-flex m-b-8 gap-3">
                 <ng-container
                     *ngTemplateOutlet="
                         columns;
@@ -65,6 +67,10 @@
                 [hasDarkDivider]="true"
                 [hasCounter]="total.stops.count"
                 [hasSmallDivider]="true"
+                [animationMarginParams]="{
+                    marginTop: '0',
+                    marginBottom: '4px',
+                }"
             >
                 <ng-container
                     *ngTemplateOutlet="
@@ -165,6 +171,10 @@
                 [hasArrow]="true"
                 [hasDarkDivider]="true"
                 [hasSmallDivider]="true"
+                [animationMarginParams]="{
+                    marginTop: '0',
+                    marginBottom: '0',
+                }"
             >
                 <div class="d-flex flex-wrap p-b-12">
                     @let galons =
@@ -226,47 +236,59 @@
     let-count="count"
     let-color="color"
 >
-    @if (label) {
-        @let svgClass = percent ? (label | milesIcon).color : 'svg-fill-bw-9';
+    <div
+        class="d-flex flex-column justify-content-center gap-6 mb-1"
+        [ngClass]="label ? 'h-40' : 'h-16'"
+    >
+        @if (label) {
+            @let svgClass =
+                percent ? (label | milesIcon).color : 'svg-fill-bw-9';
 
-        <div class="gap-3 m-t-3 d-grid stops-container align-items-center">
-            <div class="d-flex align-items-center">
-                <svg-icon
-                    [src]="(label | milesIcon).icon"
-                    [ngClass]="svgClass"
-                    class="svg-size-14 d-flex"
-                ></svg-icon>
+            <div class="gap-3 d-grid stops-container align-items-center">
+                <div class="d-flex align-items-center">
+                    <svg-icon
+                        [src]="(label | milesIcon).icon"
+                        [ngClass]="svgClass"
+                        class="svg-size-14 d-flex"
+                    ></svg-icon>
+                    <div
+                        class="text-size-14 m-l-4 ta-font-medium"
+                        [ngClass]="
+                            percent ? 'text-color-black-2' : 'text-muted'
+                        "
+                    >
+                        {{ label }}
+                    </div>
+                </div>
                 <div
-                    class="text-size-14 m-l-4 ta-font-medium"
-                    [ngClass]="percent ? 'text-color-black-2' : 'text-muted'"
+                    class="text-size-14 text-right"
+                    [ngClass]="
+                        percent ? 'text-muted' : 'text-color-light-grey-6'
+                    "
                 >
-                    {{ label }}
+                    {{ percent | number: '1.0-0' }}%
+                </div>
+                <div
+                    class="text-size-14 ta-font-medium text-right"
+                    [ngClass]="
+                        percent ? 'text-color-black' : 'text-color-muted'
+                    "
+                >
+                    {{ count }}
                 </div>
             </div>
-            <div
-                class="text-size-14 text-right"
-                [ngClass]="percent ? 'text-muted' : 'text-color-light-grey-6'"
-            >
-                {{ percent | number: '1.0-0' }}%
-            </div>
-            <div
-                class="text-size-14 ta-font-medium text-right"
-                [ngClass]="percent ? 'text-color-black' : 'text-color-muted'"
-            >
-                {{ count }}
-            </div>
-        </div>
-    }
+        }
 
-    <div
-        class="stop-progress-bar h-8 w-100 d-inline-block br-2 background-dark-2 overflow-hidden m-b-6"
-    >
-        @let bgClass = percent ? 'background-' + color : 'background-muted';
         <div
-            class="h-8"
-            [ngStyle]="{ width: percent + '%' }"
-            [ngClass]="bgClass"
-        ></div>
+            class="stop-progress-bar h-8 w-100 d-inline-block br-2 background-dark-2 overflow-hidden mb-1"
+        >
+            @let bgClass = percent ? 'background-' + color : 'background-muted';
+            <div
+                class="h-8"
+                [ngStyle]="{ width: percent + '%' }"
+                [ngClass]="bgClass"
+            ></div>
+        </div>
     </div>
 </ng-template>
 
