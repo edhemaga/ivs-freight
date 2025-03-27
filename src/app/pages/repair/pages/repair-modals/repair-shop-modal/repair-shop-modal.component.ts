@@ -705,9 +705,6 @@ export class RepairShopModalComponent
                 .get(RepairShopModalStringEnum.ADDRESS)
                 .patchValue(event.address.address);
             this.repairShopForm
-                .get(RepairShopModalStringEnum.ADDRESS)
-                .patchValue(event.address.address);
-            this.repairShopForm
                 .get(RepairShopModalStringEnum.LONGITUDE)
                 .patchValue(event.longLat.longitude);
             this.repairShopForm
