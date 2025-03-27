@@ -412,223 +412,155 @@
         </app-ta-custom-card>
     </div>
 </ng-template>
+
+<ng-template
+    #billingRateItem
+    let-label="label"
+    let-value="value"
+    let-color="color"
+    let-isLineThrough="isLineThrough"
+>
+    <div
+        class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+    >
+        <span
+            class="ta-font-medium"
+            [ngClass]="isLineThrough ? 'text-color-muted' : 'text-color-black'"
+            [class.text-decoration-line-through]="isLineThrough"
+        >
+            {{ label }}
+        </span>
+        <span
+            [ngClass]="color"
+            [class.text-decoration-line-through]="isLineThrough"
+        >
+            {{ value | currency: 'USD' }}
+        </span>
+    </div>
+</ng-template>
+
 <ng-template #billingBaseRate let-data="data">
     @if (data?.baseRate) {
-        <div
-            class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-        >
-            <span
-                [ngClass]="
-                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
-                "
-                [class.text-decoration-line-through]="
-                    data.tonuRate || data?.revisedRate
-                "
-                class="ta-font-medium"
-            >
-                Base Rate
-            </span>
-            <span
-                [ngClass]="
-                    data.tonuRate ? 'text-color-muted' : 'text-color-black-2'
-                "
-                [class.text-decoration-line-through]="
-                    data.tonuRate || data?.revisedRate
-                "
-            >
-                {{ data?.baseRate | currency: 'USD' }}
-            </span>
-        </div>
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Base Rate',
+                    value: data?.baseRate,
+                    color: data.tonuRate
+                        ? 'text-color-muted'
+                        : 'text-color-black-2',
+                    isLineThrough: data.tonuRate || data?.revisedRate,
+                }
+            "
+        ></ng-container>
     }
 
     @if (data?.adjustedRate) {
-        <div
-            class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-        >
-            <span
-                class="ta-font-medium"
-                [ngClass]="
-                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
-                "
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                Adjusted Rate
-            </span>
-            <span
-                [ngClass]="
-                    data.tonuRate
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Adjusted Rate',
+                    value: data?.adjustedRate,
+                    color: data.tonuRate
                         ? 'text-color-muted'
-                        : 'text-color-special-filter-purple'
-                "
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                {{ data?.adjustedRate | currency: 'USD' }}
-            </span>
-        </div>
+                        : 'text-color-special-filter-purple',
+                    lineThrough: data.tonuRate,
+                }
+            "
+        ></ng-container>
     }
 
     @if (data?.revisedRate) {
-        <div
-            class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-        >
-            <span
-                class="ta-font-medium"
-                [ngClass]="
-                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
-                "
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                Revised Rate
-            </span>
-            <span
-                class="ta-font-semi-bold"
-                [ngClass]="
-                    data.tonuRate
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Revised Rate',
+                    value: data?.revisedRate,
+                    color: data.tonuRate
                         ? 'text-color-muted'
-                        : 'text-color-special-filter-purple'
-                "
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                {{ data?.revisedRate | currency: 'USD' }}
-            </span>
-        </div>
+                        : 'text-color-special-filter-purple',
+                    isLineThrough: data.tonuRate,
+                }
+            "
+        ></ng-container>
     }
 
     @for (item of data?.additionalBillingRates; track item.id) {
         @if (item?.rate) {
-            <div
-                class="d-flex justify-content-between align-items-center mb-1 h-26"
-            >
-                <span
-                    class="ta-font-medium text-size-14"
-                    [ngClass]="
-                        data.tonuRate ? 'text-color-muted' : 'text-color-black'
-                    "
-                    [class.text-decoration-line-through]="data.tonuRate"
-                >
-                    {{ item.additionalBillingType?.name }}
-                </span>
-                <span
-                    class="text-size-14"
-                    [ngClass]="
-                        data.tonuRate
+            <ng-container
+                *ngTemplateOutlet="
+                    billingRateItem;
+                    context: {
+                        label: item.additionalBillingType?.name,
+                        value: item?.rate,
+                        color: data.tonuRate
                             ? 'text-color-muted'
-                            : 'text-color-black-2'
-                    "
-                    [class.text-decoration-line-through]="data.tonuRate"
-                >
-                    {{ item?.rate | currency: 'USD' }}
-                </span>
-            </div>
+                            : 'text-color-black-2',
+                        lineThrough: data.tonuRate,
+                    }
+                "
+            ></ng-container>
         }
     }
 
-    <div class="d-flex justify-content-between align-items-center mb-1 h-30">
-        <span
-            class="text-size-14 ta-font-medium"
-            [ngClass]="data.tonuRate ? 'text-color-muted' : 'text-color-black'"
-            [class.text-decoration-line-through]="
-                data.tonuRate || data?.revisedRate
-            "
-        >
-            TOTAL RATE
-        </span>
-        <span
-            class="text-size-18 ta-font-semi-bold"
-            [ngClass]="data.tonuRate ? 'text-color-muted' : 'text-color-black'"
-            [class.text-decoration-line-through]="
-                data.tonuRate || data?.revisedRate
-            "
-        >
-            {{ data?.totalRate | currency: 'USD' }}
-        </span>
-    </div>
+    <ng-container
+        *ngTemplateOutlet="
+            billingRateItem;
+            context: {
+                label: 'TOTAL RATE',
+                value: data?.totalRate,
+                color: data.tonuRate ? 'text-color-muted' : 'text-color-black',
+                isLineThrough: data.tonuRate || data?.revisedRate,
+            }
+        "
+    ></ng-container>
 
     @if (data?.totalAdjustedRate) {
-        <div
-            class="d-flex justify-content-between align-items-center mb-1 h-30"
-        >
-            <span
-                class="text-size-14 ta-font-medium"
-                [ngClass]="
-                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
-                "
-            >
-                TOTAL ADJUSTED
-            </span>
-            <span
-                [ngClass]="
-                    data.tonuRate
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'TOTAL ADJUSTED',
+                    value: data?.totalAdjustedRate,
+                    color: data.tonuRate
                         ? 'text-color-muted'
-                        : 'text-color-special-filter-purple'
-                "
-                class="text-size-18 ta-font-semi-bold"
-            >
-                {{ data?.totalAdjustedRate | currency: 'USD' }}
-            </span>
-        </div>
+                        : 'text-color-special-filter-purple',
+                    isLineThrough: false,
+                }
+            "
+        ></ng-container>
     }
 
     @if (data?.driverRate) {
-        <div
-            class="d-flex justify-content-between align-items-center mb-1 h-30"
-        >
-            <span
-                class="text-size-14 ta-font-medium"
-                [ngClass]="
-                    data.tonuRate ? 'text-color-muted' : 'text-color-black'
-                "
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                DRIVER RATE
-            </span>
-            <span
-                class="text-size-18 ta-font-semi-bold"
-                [ngClass]="
-                    data.tonuRate ? 'text-color-muted' : 'text-color-yellow-5'
-                "
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                {{ data?.driverRate | currency: 'USD' }}
-            </span>
-        </div>
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'DRIVER RATE',
+                    value: data?.driverRate,
+                    color: data.tonuRate
+                        ? 'text-color-muted'
+                        : 'text-color-yellow-5',
+                    isLineThrough: data.tonuRate,
+                }
+            "
+        ></ng-container>
     }
 
     @if (data?.tonuRate) {
-        <div
-            class="d-flex justify-content-between align-items-center mb-1 h-30"
-        >
-            <span
-                class="text-color-black text-size-14 ta-font-medium"
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                TONU RATE
-            </span>
-            <span
-                class="text-color-red-11 text-size-18 ta-font-semi-medium"
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                {{ data?.tonuRate | currency: 'USD' }}
-            </span>
-        </div>
-    }
-
-    @if (data?.revisedRate) {
-        <div
-            class="d-flex justify-content-between align-items-center mb-1 h-30"
-        >
-            <span
-                class="text-color-black text-size-14 ta-font-medium"
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                REVISED RATE
-            </span>
-            <span
-                class="text-color-red-11 text-size-18 ta-font-semi-medium"
-                [class.text-decoration-line-through]="data.tonuRate"
-            >
-                {{ data?.revisedRate | currency: 'USD' }}
-            </span>
-        </div>
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'TONU RATE',
+                    value: data?.tonuRate,
+                    color: 'text-color-red-11',
+                    lineThrough: data.tonuRate,
+                }
+            "
+        ></ng-container>
     }
 </ng-template>
