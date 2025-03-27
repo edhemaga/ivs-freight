@@ -12,10 +12,6 @@ import {
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
 } from '@shared/utils/settings/table-settings/load-columns';
-import {
-    MilesTableColumns,
-    MilesTableToolbarColumns,
-} from '@pages/miles/utils/constants';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 export class DropdownMenuColumnsActionsHelper {
@@ -27,14 +23,6 @@ export class DropdownMenuColumnsActionsHelper {
                 getLoadActiveAndPendingColumnDefinition(),
             [eDropdownMenuColumns.LOAD_CLOSED]: getLoadClosedColumnDefinition(),
             [eDropdownMenuColumns.MILES]: getLoadClosedColumnDefinition(),
-        };
-
-        return columnDefinitionMap[tableType];
-    }
-
-    static getColumnDefinitionNew(tableType: string): ITableColumn[] {
-        const columnDefinitionMap: Record<string, ITableColumn[]> = {
-            [eDropdownMenuColumns.MILES]: MilesTableToolbarColumns,
         };
 
         return columnDefinitionMap[tableType];
@@ -65,14 +53,6 @@ export class DropdownMenuColumnsActionsHelper {
             tableColumnsConfig
                 ? tableColumnsConfig
                 : this.getColumnDefinition(tableType)
-        );
-
-        return mappedColumns;
-    }
-
-    static getDropdownMenuColumnsContentNew(): IDropdownMenuItem[] {
-        const mappedColumns = this.mapToolbarDropdownColumnsNew(
-            this.getColumnDefinitionNew(eDropdownMenuColumns.MILES)
         );
 
         return mappedColumns;
@@ -127,23 +107,38 @@ export class DropdownMenuColumnsActionsHelper {
 
         columns.forEach((column) => {
             if ('columns' in column) {
-                const group: IDropdownMenuItem = {
-                    title: column.labelToolbar,
-                    type: column.key,
-                    groupName: column.key,
-                    svgClass: 'regular',
-                    isChecked: column.columns.some((col) => col.isChecked),
-                    isColumnDropdown: true,
-                    innerDropdownContent: column.columns.map((col) => ({
+                const children = column.columns;
+
+                if (children.length === 1) {
+                    const col = children[0];
+                    const item: IDropdownMenuItem = {
                         title: col.labelToolbar,
                         type: col.key,
                         isChecked: col.isChecked ?? true,
                         isColumnDropdown: true,
                         ...(col.isDisabled && { isCheckBoxDisabled: true }),
-                    })),
-                };
+                    };
 
-                dropdownItems.push(group);
+                    dropdownItems.push(item);
+                } else {
+                    const group: IDropdownMenuItem = {
+                        title: column.labelToolbar,
+                        type: column.key,
+                        groupName: column.key,
+                        svgClass: 'regular',
+                        isChecked: children.some((col) => col.isChecked),
+                        isColumnDropdown: true,
+                        innerDropdownContent: children.map((col) => ({
+                            title: col.labelToolbar,
+                            type: col.key,
+                            isChecked: col.isChecked ?? true,
+                            isColumnDropdown: true,
+                            ...(col.isDisabled && { isCheckBoxDisabled: true }),
+                        })),
+                    };
+
+                    dropdownItems.push(group);
+                }
             } else if (column.key !== 'select') {
                 const item: IDropdownMenuItem = {
                     title: column.labelToolbar,

@@ -9,16 +9,14 @@ import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode } from '@shared/enums';
 
 // Constants
-import {
-    MilesTableColumns,
-    MilesToolbarTabs,
-} from '@pages/miles/utils/constants';
+import { MilesToolbarTabs } from '@pages/miles/utils/constants';
 
 // interface
 import { IMilesState } from '@pages/miles/interface';
 
 // functions
 import * as Functions from '@pages/miles/utils/functions/miles-reducer.functions';
+import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
 
 export const initialState: IMilesState = {
     items: [],
@@ -32,7 +30,7 @@ export const initialState: IMilesState = {
     hasAllItemsSelected: false,
 
     // Table
-    columns: MilesTableColumns,
+    columns: MilesTableColumnsConfig.columnsConfig,
 
     // Unit list
     details: {},

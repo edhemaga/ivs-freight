@@ -260,34 +260,35 @@ export function toggledColumnVisibility(
         isActive: boolean
     ): ITableColumn[] {
         return columns.map((column) => {
-            if (column.key === columnKey) {
-                const updatedColumn = { ...column, isChecked: isActive };
+            const isParentMatch = column.key === columnKey;
+            const hasChildren = Array.isArray(column.columns);
 
-                // Ako je parent, postavi sve childove na isti status
-                if (updatedColumn.columns) {
-                    updatedColumn.columns = updatedColumn.columns.map(
-                        (child) => ({ ...child, isChecked: isActive })
-                    );
-                }
-
-                return updatedColumn;
+            if (isParentMatch) {
+                return {
+                    ...column,
+                    isChecked: isActive,
+                    ...(hasChildren && {
+                        columns: column.columns!.map((child) => ({
+                            ...child,
+                            isChecked: isActive,
+                        })),
+                    }),
+                };
             }
 
-            // Ako je child, postavi parenta na false ako su svi childovi false
-            if (column.columns) {
-                const updatedChildren = column.columns.map((child) =>
+            if (hasChildren) {
+                const columns = column.columns!.map((child) =>
                     child.key === columnKey
                         ? { ...child, isChecked: isActive }
                         : child
                 );
 
-                const anyChildChecked = updatedChildren.some(
-                    (child) => child.isChecked
-                );
+                const isChecked = columns.some((child) => child.isChecked);
+
                 return {
                     ...column,
-                    columns: updatedChildren,
-                    isChecked: anyChildChecked,
+                    columns,
+                    isChecked,
                 };
             }
 

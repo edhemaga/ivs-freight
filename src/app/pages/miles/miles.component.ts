@@ -44,6 +44,7 @@ import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 import { ModalService } from '@shared/services';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 @Component({
     selector: 'app-miles',
@@ -80,6 +81,8 @@ export class MilesComponent
 
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
     private isToolbarDropdownMenuColumnsActive: boolean = false;
+    private isTableLocked: boolean = true;
+    private tableColumns: ITableColumn[];
 
     constructor(
         public milesStoreService: MilesStoreService,
@@ -102,24 +105,22 @@ export class MilesComponent
         this.milesStoreService.filter$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => (this.filter = res));
-    }
 
-    private setToolbarDropdownMenuContent(
-        isColumnsDropdownActive: boolean,
-        milesColumnsList?: IDropdownMenuItem[]
-    ): void {
-        let isTableLocked;
         this.milesStoreService.tableSettingsSelector$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (isTableLocked = res.isTableLocked));
+            .subscribe((res) => (this.isTableLocked = res.isTableLocked));
 
-        console.log('isTableLocked', isTableLocked)
-        this.toolbarDropdownMenuOptions =
-            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
-                isTableLocked,
-                isColumnsDropdownActive,
-                milesColumnsList
-            );
+        this.milesStoreService.columns$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => (this.tableColumns = res));
+    }
+
+    private updateToolbarDropdownMenuContentInitial(): void {
+        this.isToolbarDropdownMenuColumnsActive = false;
+
+        this.setToolbarDropdownMenuContent(
+            this.isToolbarDropdownMenuColumnsActive
+        );
     }
 
     private updateToolbarDropdownMenuContentColumnsAction(): void {
@@ -127,12 +128,26 @@ export class MilesComponent
             !this.isToolbarDropdownMenuColumnsActive;
 
         const milesColumns =
-            DropdownMenuColumnsActionsHelper.getDropdownMenuColumnsContentNew();
+            DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(
+                this.tableColumns
+            );
 
         this.setToolbarDropdownMenuContent(
             this.isToolbarDropdownMenuColumnsActive,
             milesColumns
         );
+    }
+
+    private setToolbarDropdownMenuContent(
+        isColumnsDropdownActive: boolean,
+        milesColumnsList?: IDropdownMenuItem[]
+    ): void {
+        this.toolbarDropdownMenuOptions =
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                this.isTableLocked,
+                isColumnsDropdownActive,
+                milesColumnsList
+            );
     }
 
     private handleTableEmptyImportListClick(): void {
@@ -185,11 +200,7 @@ export class MilesComponent
 
         switch (type) {
             case eDropdownMenuColumns.OPEN_TYPE:
-                this.isToolbarDropdownMenuColumnsActive = false;
-
-                this.setToolbarDropdownMenuContent(
-                    this.isToolbarDropdownMenuColumnsActive
-                );
+                this.updateToolbarDropdownMenuContentInitial();
 
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
@@ -202,14 +213,13 @@ export class MilesComponent
                 this.setToolbarDropdownMenuContent(
                     this.isToolbarDropdownMenuColumnsActive
                 );
+
                 break;
             case eDropdownMenuColumns.RESET_TABLE_TYPE:
-                // this.handleResetTableAction(subType);
-
+                // todo
                 break;
             case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
-                // this.handleResetTableConfirmedAction(subType);
-
+                // todo
                 break;
             default:
                 this.milesStoreService.dispatchToggleColumnsVisiblity(

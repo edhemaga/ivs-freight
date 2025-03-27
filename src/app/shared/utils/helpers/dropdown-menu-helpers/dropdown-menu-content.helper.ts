@@ -759,16 +759,11 @@ export class DropdownMenuContentHelper {
     static getMilesToolbarDropdownContent(
         isTableLocked: boolean
     ): IDropdownMenuItem[] {
-        // const modifierItems =
-        //     DropdownMenuContentConditionalItemsHelper.getToolbarColumnsModifierItems(
-        //         !!tableColumnsConfig
-        //     );
-
         const requestedSharedItems = [
             eDropdownMenuColumns.COLUMNS,
             isTableLocked
-                ? eDropdownMenuColumns.UNLOCK_TABLE
-                : eDropdownMenuColumns.LOCK_TABLE,
+                ? eDropdownMenuColumns.LOCK_TABLE
+                : eDropdownMenuColumns.UNLOCK_TABLE,
             eDropdownMenuColumns.RESET_TABLE,
         ];
 
@@ -776,7 +771,6 @@ export class DropdownMenuContentHelper {
             DropdownMenuContentConditionalItemsHelper.getConditionalItems(
                 requestedSharedItems,
                 true
-                // modifierItems
             );
 
         return [...sharedItems];
