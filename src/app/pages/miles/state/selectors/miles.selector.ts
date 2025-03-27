@@ -45,11 +45,11 @@ export const statesSelector = createSelector(selectMilesState, (state) => {
     return states;
 });
 
-export const selectedRowsSelector = createSelector(
+export const selectedCountSelector = createSelector(
     selectMilesState,
     (state) => {
-        const { selectedRows } = state || {};
-        return selectedRows;
+        const { selectedCount } = state || {};
+        return selectedCount;
     }
 );
 

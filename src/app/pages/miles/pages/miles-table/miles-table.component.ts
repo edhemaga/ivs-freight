@@ -1,17 +1,26 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
-// Interfaces
+// interfaces
 import { IMilesModel } from '@pages/miles/interface';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
-// Services
+// services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
-// Components
+// enums
+import { eGeneralActions } from '@shared/enums';
+
+// components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
-import { CaCheckboxComponent } from 'ca-components';
+import {
+    CaCheckboxComponent,
+    CaCheckboxSelectedCountComponent,
+} from 'ca-components';
+
+// pipes
+import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-miles-table',
@@ -21,10 +30,14 @@ import { CaCheckboxComponent } from 'ca-components';
     imports: [
         CommonModule,
 
-        // Components
+        // components
         NewTableComponent,
         TaTruckTrailerIconComponent,
         CaCheckboxComponent,
+        CaCheckboxSelectedCountComponent,
+
+        // pipes
+        ThousandSeparatorPipe,
     ],
 })
 export class MilesTableComponent {
@@ -34,15 +47,15 @@ export class MilesTableComponent {
         this.milesStoreService.dispatchSelectOneRow(mile);
     }
 
-    public selectAll(): void {
-        this.milesStoreService.dispatchSelectAll();
-    }
-
     public onColumnPinned(column: ITableColumn): void {
         this.milesStoreService.dispatchColumnPinnedAction(column);
     }
 
     public onSortingChange(column: ITableColumn): void {
         this.milesStoreService.dispatchSortingChange(column);
+    }
+
+    public onCheckboxCountClick(action: string): void {
+        this.milesStoreService.dispatchSelectAll(action);
     }
 }

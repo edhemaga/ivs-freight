@@ -80,6 +80,10 @@
             color: $ta-yellow-1 !important;
             @include text-selection($ta-yellow-1);
         }
+        &-yellow-5 {
+            color: $ta-yellow-5 !important;
+            @include text-selection($ta-yellow-5);
+        }
 
         &-yellow-5 {
             color: $ta-yellow-5 !important;

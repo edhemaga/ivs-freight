@@ -22,13 +22,16 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
-import { CaInputComponent } from 'ca-components';
+import { CaInputComponent, CaDetailsTitleCardComponent } from 'ca-components';
 
 // Enums
 import { ArrowActionsStringEnum } from '@shared/enums';
 
 // Const
 import { MilesStopsTable } from '@pages/miles/utils/constants';
+
+// Interface
+import { IMilesModel, IMilesState } from '@pages/miles/interface';
 
 @Component({
     selector: 'app-miles-map-unit-list',
@@ -44,6 +47,7 @@ import { MilesStopsTable } from '@pages/miles/utils/constants';
         // Components
         SvgIconComponent,
         CaInputComponent,
+        CaDetailsTitleCardComponent,
 
         // Pipes
         ThousandSeparatorPipe,
@@ -101,6 +105,11 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         this.milesStoreService.dispatchFollowingUnit(getFollowingUnitDirection);
     }
 
+    public selectUnit(unit: IMilesModel): void {
+        this.resetFormValue();
+        this.milesStoreService.dispatchSelectUnit(unit);
+    }
+
     public toogleStopListWidth(): void {
         this.isStopListWidthExpanded = !this.isStopListWidthExpanded;
     }
@@ -138,7 +147,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     }
 
     private resetFormValue(): void {
-        this.searchForm.reset();
+        this.searchForm.reset({}, { onlySelf: true, emitEvent: false });
     }
 
     ngOnDestroy(): void {

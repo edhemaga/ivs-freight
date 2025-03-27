@@ -12,7 +12,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // Pipes
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 import { FilterClassPipe } from '@shared/components/ta-special-filter/pipes/filter-class.pipe';
-import { ThousandFormatterPipe } from '@pages/dashboard/pipes';
+import { ThousandFormatterPipe } from 'ca-components';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
