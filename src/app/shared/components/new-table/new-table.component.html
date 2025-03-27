@@ -1,12 +1,12 @@
-@let tableWidth = rowWidth + 'px';
+@let tableWidth = rowWidth + eUnit.PX;
 
 <!-- TODO: REMOVE MARGIN -->
 
 <div class="table-container" [ngStyle]="{ width: tableWidth }">
-    <div class="w-full test-margin">
+    <div class="w-full">
         <!-- Header -->
 
-        <div class="d-flex m-b-6 p-x-8 table-header" #header>
+        <div #tableRow class="d-flex m-b-6 p-x-8 table-header">
             <div class="d-flex new-table--pinned-left">
                 @for (column of leftPinnedColumns; track column.key) {
                     <ng-container
@@ -35,13 +35,12 @@
         <div class="new-table--body">
             @for (row of rows; track row.id) {
                 <div
-                    class="d-flex align-items-center new-table--row background-white p-x-4 br-3 m-b-2"
+                    class="d-flex align-items-center background-white p-x-4 br-3 m-b-2"
                 >
                     @if (row) {
                         <div
-                            #tableRow
-                            class="d-flex align-items-center new-table--row p-x-4 br-3 m-t-4 m-b-4 p-y-1 background-hover-light-grey"
-                            [class.background-light-grey]="row.selected"
+                            class="d-flex align-items-center p-x-4 br-3 m-t-4 m-b-4 p-y-1 background-hover-light-grey"
+                            [class.background-light-grey]="row.isSelected"
                         >
                             <!-- Left Pinned Columns -->
 
@@ -126,16 +125,18 @@
 
         <!-- Footer -->
 
-        <div
-            class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
-        >
-            <ng-container
-                *ngTemplateOutlet="
-                    footerTemplate;
-                    context: { rowsLength: rows?.length }
-                "
-            ></ng-container>
-        </div>
+        @if (rows?.length) {
+            <div
+                class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
+            >
+                <ng-container
+                    *ngTemplateOutlet="
+                        footerTemplate;
+                        context: { rowsLength: rows?.length }
+                    "
+                ></ng-container>
+            </div>
+        }
     </div>
 </div>
 
@@ -181,9 +182,9 @@
                 [ngClass]="
                     { column, isTableLocked, isGroup } | tableColumnClass
                 "
-                [style.min-width]="column.width + 'px'"
-                [style.width]="column.width + 'px'"
-                (click)="setSorting(column)"
+                [style.min-width]="column.width + eUnit.PX"
+                [style.width]="column.width + eUnit.PX"
+                (click)="handleSortColumnClick(column)"
             >
                 @if (isFirst) {
                     <span
@@ -227,7 +228,7 @@
                             <svg-icon
                                 class="new-table--row-heading-arrow mr-1 svg-size-14"
                                 [src]="sharedSvgRoutes.PIN_ICON"
-                                (click)="pinColumn(column)"
+                                (click)="handlePinColumnClick(column)"
                             ></svg-icon>
                         </div>
 
@@ -307,8 +308,8 @@
                     'p-l-6': hasPaddingLeft,
                     'm-r-7': hasMarginRight,
                 }"
-                [style.min-width]="column.width + 'px'"
-                [style.width]="column.width + 'px'"
+                [style.min-width]="column.width + eUnit.PX"
+                [style.width]="column.width + eUnit.PX"
             >
                 <!-- Display custom template if template exists -->
 
@@ -322,7 +323,14 @@
                 } @else {
                     <!-- Default template - if no custom template -->
 
-                    <p class="text-size-14 text-color-black-2">
+                    <p
+                        class="text-size-14"
+                        [class]="
+                            !!row[column.key]
+                                ? 'text-color-black-2'
+                                : 'text-color-muted'
+                        "
+                    >
                         {{ row[column.key] }}
                     </p>
                 }

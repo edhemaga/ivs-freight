@@ -8,7 +8,6 @@ export enum DashboardChartStringEnum {
 
     PERCENTAGE_SIGN = '%',
     DOLLAR_SIGN = '$',
-    THOUSAND_SIGN = 'K',
 
     DOUGHNUT = 'doughnut',
     BAR = 'bar',
@@ -76,7 +75,5 @@ export enum DashboardChartStringEnum {
     COST = 'cost',
     COUNT_PERCENTAGE = 'countPercentage',
     VISIT_PERCENTAGE = 'visitPercentage',
-    VISIT_COUNT = 'visitCount'
-
-
+    VISIT_COUNT = 'visitCount',
 }

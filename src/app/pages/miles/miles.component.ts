@@ -1,14 +1,14 @@
-// External Libraries
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// Shared Components
+// components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
     CaFilterComponent,
-    CaSearchMultipleStatesComponent,
+    CaSearchMultipleStates2Component,
     IFilterAction,
     CaFilterStateDropdownComponent,
     CaFilterTimeDropdownComponent,
@@ -16,23 +16,25 @@ import {
 import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
+import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 
-// Feature Services
+// services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
+import { ModalService } from '@shared/services';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
-    eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
     eSharedString,
-    TableStringEnum,
 } from '@shared/enums';
+import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
-// Interfaces
+// interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { DropdownMenuActionsBase } from '@shared/base-classes';
@@ -41,9 +43,6 @@ import { ConfirmationResetService } from '@shared/components/ta-shared-modals/co
 import { TableCardBodyActions } from '@shared/models';
 import { MilesDropdownMenuHelper } from './utils/helpers/miles-dropdown-menu.helper';
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
-import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
-import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
-import { ModalService } from '@shared/services';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 @Component({
@@ -58,12 +57,13 @@ import { ITableColumn } from '@shared/components/new-table/interface';
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
         CaFilterComponent,
-        CaSearchMultipleStatesComponent,
+        CaSearchMultipleStates2Component,
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
         MilesMapComponent,
         MilesCardComponent,
         MilesTableComponent,
+        TaTableEmptyComponent,
     ],
 })
 export class MilesComponent
@@ -95,10 +95,6 @@ export class MilesComponent
 
     ngOnInit(): void {
         this.storeSubscription();
-    }
-
-    public toggleTableLockingStatus(): void {
-        this.milesStoreService.toggleTableLockingStatus();
     }
 
     private storeSubscription(): void {
@@ -156,9 +152,15 @@ export class MilesComponent
 
     private handleTableEmptyAddClick(): void {
         this.modalService.openModal(TruckModalComponent, {
-            size: TableStringEnum.SMALL,
+            size: eSharedString.SMALL,
         });
     }
+
+    private handleTableLockingStatus(): void {
+        this.milesStoreService.toggleTableLockingStatus();
+    }
+
+    public handleShowMoreAction(): void {}
 
     public setFilters(filters: IFilterAction): void {
         this.milesStoreService.dispatchFilters(filters, this.filter);
@@ -169,11 +171,10 @@ export class MilesComponent
 
         if (action === eGeneralActions.TAB_SELECTED) {
             this.milesStoreService.dispatchListChange(mode);
-        } else if (action === eGeneralActions.VIEW_MODE) {
+        } else if (action === eGeneralActions.VIEW_MODE)
             this.milesStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
             );
-        }
     }
 
     public onTableEmptyBtnClick(btnClickType: string): void {
@@ -193,6 +194,11 @@ export class MilesComponent
         }
     }
 
+    public onSearchQueryChange(query: string[]): void {
+        // TODO remove, for easier emitted data preview
+        console.log(query);
+    }
+
     public handleToolbarDropdownMenuActions<T>(
         action: TableCardBodyActions<T>
     ) {
@@ -209,16 +215,13 @@ export class MilesComponent
                 break;
             case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
             case eDropdownMenuColumns.LOCK_TABLE_TYPE:
-                this.toggleTableLockingStatus();
+                this.handleTableLockingStatus();
                 this.setToolbarDropdownMenuContent(
                     this.isToolbarDropdownMenuColumnsActive
                 );
 
                 break;
             case eDropdownMenuColumns.RESET_TABLE_TYPE:
-                // todo
-                break;
-            case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
                 // todo
                 break;
             default:
@@ -229,10 +232,7 @@ export class MilesComponent
 
                 break;
         }
-        //
     }
-
-    public handleShowMoreAction(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

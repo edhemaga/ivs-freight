@@ -1,14 +1,16 @@
-@let isListView = activeViewMode === taStringEnum.LIST;
+@let isListView = activeViewMode === eCommonElement.LIST;
 @let isEmptyList = !hasResults && filteredResults;
 
 @if (!hasResults) {
     <div
         class="table-empty-container"
-        [ngStyle]="{
-            'margin-top': isListView ? '80px' : '50px',
-            width: toolbarWidth?.width,
-            'max-width.px': toolbarWidth?.maxWidth,
-        }"
+        [ngStyle]="
+            !isNewTableLayout && {
+                'margin-top': isListView ? '80px' : '50px',
+                width: toolbarWidth?.width,
+                'max-width.px': toolbarWidth?.maxWidth,
+            }
+        "
     >
         <!-- Empty Grid Placeholder -->
 

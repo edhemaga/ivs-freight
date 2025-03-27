@@ -9,7 +9,7 @@ import {
     selectTableViewData,
     selectSelectedTab,
     statesSelector,
-    selectedRowsSelector,
+    selectedCountSelector,
     tableColumnsSelector,
     filterSelector,
     hasAllItemsSelectedSelector,
@@ -19,7 +19,11 @@ import {
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
-import { IMilesDetailsFilters, IMilesModel } from '@pages/miles/interface';
+import {
+    IMilesDetailsFilters,
+    IMilesModel,
+    IMilesState,
+} from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
@@ -67,8 +71,8 @@ export class MilesStoreService {
     public statesSelector$: Observable<MilesStateFilterResponse[]> =
         this.store.pipe(select(statesSelector));
 
-    public selectedRowsSelector$: Observable<number> = this.store.pipe(
-        select(selectedRowsSelector)
+    public selectedCountSelector$: Observable<number> = this.store.pipe(
+        select(selectedCountSelector)
     );
     public columns$: Observable<ITableColumn[]> = this.store.pipe(
         select(tableColumnsSelector)
@@ -151,9 +155,10 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchSelectAll(): void {
+    public dispatchSelectAll(action: string): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
+            action,
         });
     }
 
@@ -194,6 +199,20 @@ export class MilesStoreService {
             type: MilesStoreConstants.ACTION_COLUMN_VISIBILITY_CHANGE,
             columnKey,
             isActive,
+        });
+    }
+
+    public dispatchSearchInputChanged(search: string): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SEARCH_CHANGED,
+            search,
+        });
+    }
+
+    public dispatchSelectUnit(unit: IMilesModel): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_UNIT_SELECTED,
+            unit,
         });
     }
 }

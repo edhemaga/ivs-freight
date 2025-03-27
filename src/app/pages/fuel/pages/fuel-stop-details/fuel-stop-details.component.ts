@@ -131,10 +131,10 @@ export class FuelStopDetailsComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res) => {
-                    const { id, type } = res;
+                    const { id, type, template } = res;
 
                     if (type === eGeneralActions.DELETE) {
-                        res?.template === eFuelStopDetails.FUEL_STOP
+                        template === eFuelStopDetails.FUEL_STOP
                             ? this.deleteFuelStop(id)
                             : this.deleteFuelTransaction(id);
                     }

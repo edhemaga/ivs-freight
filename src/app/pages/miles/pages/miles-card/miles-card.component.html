@@ -1,1 +1,58 @@
-<p>miles-card works!</p>
+@let store = milesStoreService.miles$ | async;
+
+@if (store) {
+    <ca-table-card-view
+        [viewData]="store"
+        [frontSide]="frontSide"
+        [cardTitle]="'unit'"
+    ></ca-table-card-view>
+
+    <ng-template #frontSide let-data="data">
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Stops • Count',
+                    text: data?.fuelCount.count ?? '/',
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Miles • Empty',
+                    text: data?.milesEmpty ?? '/',
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Miles • Loaded',
+                    text: data?.milesLoaded ?? '/',
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Miles • Total',
+                    text: data?.milesTotal ?? '/',
+                }
+            "
+        ></ng-container>
+    </ng-template>
+
+    <ng-template #textWithTitle let-title="title" let-text="text">
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">{{ title }}</div>
+            <div class="text-size-14 text-color-black-2">{{ text }}</div>
+        </div>
+    </ng-template>
+}

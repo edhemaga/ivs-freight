@@ -802,4 +802,20 @@ export class LoadEffect {
             })
         )
     );
+
+    public getLoadMinimalList$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.getMinimalList),
+            exhaustMap(() => {
+                return this.loadService.getLoadMinimalList().pipe(
+                    map((list) => {
+                        return LoadActions.setMinimalList({
+                            list,
+                        });
+                    }),
+                    catchError(() => of(LoadActions.setMinimalListError()))
+                );
+            })
+        )
+    );
 }

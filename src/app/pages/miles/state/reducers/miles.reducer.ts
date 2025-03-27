@@ -26,7 +26,7 @@ export const initialState: IMilesState = {
     activeViewMode: eActiveViewMode.List,
     filters: {},
     states: [],
-    selectedRows: 0,
+    selectedCount: 0,
     hasAllItemsSelected: false,
 
     // Table
@@ -102,7 +102,9 @@ export const milesReducer = createReducer(
         Functions.toggleRowSelection(state, mile)
     ),
 
-    on(MilesAction.selectAll, (state) => Functions.toggleSelectAll(state)),
+    on(MilesAction.selectAll, (state, { action }) =>
+        Functions.toggleSelectAll(state, action)
+    ),
     // #endregion
 
     // #region Unit detail
@@ -140,6 +142,10 @@ export const milesReducer = createReducer(
 
     on(MilesAction.toggledColumnVisibility, (state, { columnKey, isActive }) =>
         Functions.toggledColumnVisibility(state, columnKey, isActive)
+    ),
+
+    on(MilesAction.onSearchChange, (state, { search }) =>
+        Functions.onSearchChange(state, search)
     )
     // #endregion
 );
