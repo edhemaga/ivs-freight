@@ -431,6 +431,24 @@
                 }
             }
         }
+
+        &.text-paid {
+            justify-content: end;
+            text-align: end;
+            padding-right: 12px;
+
+            &-border-right {
+                &::before {
+                    content: '';
+                    position: absolute;
+                    top: 0;
+                    right: 2px;
+                    width: 1px;
+                    height: 100%;
+                    background-color: $ta-light-grey-6;
+                }
+            }
+        }
     }
 
     .sort-active {
