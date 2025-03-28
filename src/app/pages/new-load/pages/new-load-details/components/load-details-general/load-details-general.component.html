@@ -609,19 +609,19 @@
     @let isDue = !!data?.totalDue;
     @let cardSubTitle =
         isDue ? 'DUE ' + (data?.totalDue | currency: 'USD') : 'PAID IN FULL';
+    @let cardSubClass =
+        !isPaymentExpanded
+            ? isDue
+                ? 'red'
+                : 'green'
+            : eStringPlaceholder.EMPTY;
     <div class="px-3 pt-2" (click)="togglePayment()">
         <app-ta-custom-card
             [cardName]="'Payment'"
             [hasCounter]="data?.paymentCount"
             [disabledCard]="!!data?.paymentCount"
             [subText]="!isPaymentExpanded && cardSubTitle"
-            [subTextClass]="
-                !isPaymentExpanded
-                    ? isDue
-                        ? 'red'
-                        : 'green'
-                    : eStringPlaceholder.EMPTY
-            "
+            [subTextClass]="cardSubClass"
             [bodyTemplate]="'card'"
             [animationMarginParams]="{
                 marginTop: '6px',
