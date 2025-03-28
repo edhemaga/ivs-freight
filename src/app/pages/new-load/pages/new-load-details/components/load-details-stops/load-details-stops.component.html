@@ -81,7 +81,7 @@
 
 <ng-template #stopList>
     @let load = loadStoreService.resolveLoadDetails$ | async;
-    @let isLoading = true;
+    @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
     @let isPendingLoad = load.statusType?.id === 1;
 
     <div class="background-white br-3 m-t-8">
@@ -326,6 +326,9 @@
                 ) {
                     @let isStopOpen = i === openStopIndex;
                     @let hasItems = stop.items?.length;
+                    @let isDeadhead = stop.stopType.id === 0;
+                    @let isPickup = stop.stopType.id === 1;
+                    @let isDelivery = stop.stopType.id === 2;
 
                     <div
                         [ngClass]="{
@@ -342,9 +345,6 @@
                             (click)="hasItems && toggleStopDetails(i)"
                         >
                             <div class="d-flex align-items-center">
-                                @let isDeadhead = stop.stopType.id === 0;
-                                @let isPickup = stop.stopType.id === 1;
-                                @let isDelivery = stop.stopType.id === 2;
                                 <div
                                     class="h-18 w-18 br-1 text-size-11 ta-font-bold d-flex align-items-center justify-content-center"
                                     [ngClass]="{
@@ -391,7 +391,7 @@
                                     >
                                         @let text =
                                             first
-                                                ? stop?.stopType?.id === 0
+                                                ? isDeadhead
                                                     ? 'Deadhead'
                                                     : 'Origin'
                                                 : last
@@ -407,7 +407,7 @@
                                 </div>
                             </div>
 
-                            <div class="visible-large">
+                            <div class="visible-large flex-column">
                                 <div
                                     class="text-size-11 text-color-black ta-font-medium"
                                 >
@@ -419,7 +419,7 @@
                                 </div>
                             </div>
 
-                            <div class="visible-xl">
+                            <div class="visible-xl flex-column">
                                 <div
                                     class="text-size-11 ta-font-medium"
                                     [ngClass]="
@@ -449,56 +449,92 @@
                             </div>
 
                             <div>
-                                <div
-                                    class="text-size-11 text-color-black ta-font-medium"
-                                >
-                                    {{ stop?.dateFrom | formatDateP }}
-                                    {{
-                                        stop?.dateTo
-                                            ? ' - ' +
-                                              (stop?.dateTo | formatDateP)
-                                            : ''
-                                    }}
-                                </div>
-                                <div class="text-size-11 text-color-muted">
-                                    {{ stop.dateFrom | formatTime }}
-                                    @if (stop.timeType?.id === 2) {
-                                        •
-                                        <span
-                                            class="text-color-yellow-5 ta-font-semi-bold"
-                                        >
-                                            Appt
-                                        </span>
-                                    } @else {
-                                        - {{ stop.dateTo | formatTime }}
-                                    }
-                                </div>
-                            </div>
-                            @if (!isPendingLoad) {
-                                <div>
+                                @if (!isDeadhead) {
                                     <div
                                         class="text-size-11 text-color-black ta-font-medium"
                                     >
-                                        {{
-                                            stop.arrive
-                                                ? (stop.arrive | formatDateP)
-                                                : ''
-                                        }}
+                                        {{ stop?.dateFrom | formatDateP }}
                                     </div>
                                     <div class="text-size-11 text-color-muted">
-                                        {{ stop.arrive | formatTime }}
+                                        <ng-container
+                                            *ngTemplateOutlet="
+                                                timeFormat;
+                                                context: {
+                                                    time: stop.timeFrom,
+                                                }
+                                            "
+                                        ></ng-container>
+                                        @if (stop.timeType?.id === 2) {
+                                            •
+                                            <span
+                                                class="text-color-yellow-5 ta-font-semi-bold"
+                                            >
+                                                Appt
+                                            </span>
+                                        } @else {
+                                            -
+                                            <ng-container
+                                                *ngTemplateOutlet="
+                                                    timeFormat;
+                                                    context: {
+                                                        time: stop.timeTo,
+                                                    }
+                                                "
+                                            ></ng-container>
+                                        }
                                     </div>
+                                }
+                            </div>
+                            @if (!isPendingLoad) {
+                                @let time =
+                                    isDeadhead ? stop.dateFrom : stop.arrive;
+
+                                <div>
+                                    @if (time) {
+                                        <div
+                                            class="text-size-11 text-color-black ta-font-medium"
+                                        >
+                                            {{
+                                                time ? (time | formatDateP) : ''
+                                            }}
+                                        </div>
+                                        <div
+                                            class="text-size-11 text-color-muted"
+                                        >
+                                            {{ time | formatTime }}
+                                            @if (stop.depart) {
+                                                -
+                                                {{ stop.depart | formatTime }}
+                                            }
+                                        </div>
+                                    }
                                 </div>
                             }
 
                             <div class="text-right">
                                 <div
-                                    class="text-size-11 text-color-black ta-font-medium"
+                                    class="text-size-11 ta-font-medium"
+                                    [ngClass]="
+                                        stop.legMiles
+                                            ? 'text-color-black'
+                                            : 'text-color-muted'
+                                    "
                                 >
-                                    {{ stop.legMiles }}
+                                    {{ stop.legMiles ?? '0.0' }} mi
                                 </div>
-                                <div class="text-size-11 text-color-muted">
-                                    ≈ {{ stop.legHours }} {{ stop.legMinutes }}
+                                <div
+                                    class="text-size-11 text-color-muted ta-font-medium"
+                                >
+                                    @let hasTime =
+                                        stop.legHours
+                                            ? stop.legHours + 'h '
+                                            : '';
+                                    @let hasMinutes =
+                                        stop.legMinutes
+                                            ? stop.legMinutes + 'm'
+                                            : '0' + 'm';
+                                    @let timeString = hasTime + hasMinutes;
+                                    ≈ {{ timeString }}
                                 </div>
                             </div>
                         </div>
@@ -691,4 +727,8 @@
             <app-ca-map [data]="mapData" class="h-full w-full"></app-ca-map>
         </div>
     }
+</ng-template>
+
+<ng-template #timeFormat let-time="time">
+    {{ time }} {{ time?.substring(0, time?.indexOf(':')) < 12 ? 'AM' : 'PM' }}
 </ng-template>
