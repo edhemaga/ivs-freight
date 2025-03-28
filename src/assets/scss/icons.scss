@@ -73,6 +73,10 @@
             @include svg-fill($ta-blue-14);
         }
 
+        &-blue-15 {
+            @include svg-fill($ta-blue-15);
+        }
+
         &-blue-17 {
             @include svg-fill($ta-blue-17);
         }
@@ -144,7 +148,7 @@
         &-orange-4 {
             @include svg-fill($ta-orange-4);
         }
-        
+
         &-orange-5 {
             @include svg-fill($ta-orange-5);
         }
@@ -165,6 +169,10 @@
 
         &-blue-15 {
             @include svg-hover($ta-blue-15);
+        }
+
+        &-blue-18 {
+            @include svg-hover($ta-blue-18);
         }
 
         &-bw6-2 {

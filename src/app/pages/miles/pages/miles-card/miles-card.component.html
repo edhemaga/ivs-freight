@@ -4,7 +4,9 @@
     <ca-table-card-view
         [viewData]="store"
         [frontSide]="frontSide"
+        [backSide]="backSide"
         [cardTitle]="'unit'"
+        [isDropdownMenuHidden]="true"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
@@ -13,7 +15,7 @@
                 textWithTitle;
                 context: {
                     title: 'Stops • Count',
-                    text: data?.fuelCount.count ?? '/',
+                    text: (data?.fuelCount?.count | thousandSeparator) ?? 0,
                 }
             "
         ></ng-container>
@@ -23,7 +25,7 @@
                 textWithTitle;
                 context: {
                     title: 'Miles • Empty',
-                    text: data?.milesEmpty ?? '/',
+                    text: (data?.milesEmpty | thousandSeparator) ?? 0,
                 }
             "
         ></ng-container>
@@ -33,7 +35,7 @@
                 textWithTitle;
                 context: {
                     title: 'Miles • Loaded',
-                    text: data?.milesLoaded ?? '/',
+                    text: (data?.milesLoaded | thousandSeparator) ?? 0,
                 }
             "
         ></ng-container>
@@ -43,7 +45,51 @@
                 textWithTitle;
                 context: {
                     title: 'Miles • Total',
-                    text: data?.milesTotal ?? '/',
+                    text: (data?.milesTotal | thousandSeparator) ?? 0,
+                }
+            "
+        ></ng-container>
+    </ng-template>
+
+    <ng-template #backSide let-data="data">
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Load',
+                    text: (data?.loadCount | thousandSeparator) ?? 0,
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                doubleTextPercent;
+                context: {
+                    title: 'Stops • Pickup',
+                    text: (data?.stopsPickup?.count | thousandSeparator) ?? 0,
+                    percent: data?.stopsPickup?.percent,
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                doubleTextPercent;
+                context: {
+                    title: 'Stops • Delivery',
+                    text: (data?.stopsDelivery?.count | thousandSeparator) ?? 0,
+                    percent: data?.stopsDelivery?.percent,
+                }
+            "
+        ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                textWithTitle;
+                context: {
+                    title: 'Miles • Revenue',
+                    text: data?.revenue | formatCurrency,
                 }
             "
         ></ng-container>
@@ -51,8 +97,29 @@
 
     <ng-template #textWithTitle let-title="title" let-text="text">
         <div class="d-flex flex-column px-1 gap-1">
-            <div class="text-size-11 text-color-black ta-font-bold">{{ title }}</div>
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
             <div class="text-size-14 text-color-black-2">{{ text }}</div>
+        </div>
+    </ng-template>
+
+    <ng-template
+        #doubleTextPercent
+        let-title="title"
+        let-text="text"
+        let-percent="percent"
+    >
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="text-size-14 text-color-black-2">
+                {{ text }}
+                <span class="text-size-11 text-color-grey ta-font-semi-bold"
+                    >{{ percent }}%</span
+                >
+            </div>
         </div>
     </ng-template>
 }

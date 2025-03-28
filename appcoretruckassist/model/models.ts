@@ -648,6 +648,7 @@ export * from './milesStopItemResponse';
 export * from './milesStopItemResponsePagination';
 export * from './milesStopResponse';
 export * from './milesStopShortResponse';
+export * from './milesStopSortBy';
 export * from './mobileFuelStopExpensesChartResponse';
 export * from './mobileFuelStopExpensesResponse';
 export * from './mobileFuelStopListResponse';
