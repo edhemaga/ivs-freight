@@ -14,6 +14,7 @@
 export interface ApiFuelEfsTransactionPutRequest { 
     Id?: number;
     TruckId?: number;
+    DriverId?: number;
     TrailerId?: number;
     Files?: Array<Blob>;
     FilesForDeleteIds?: Array<number>;

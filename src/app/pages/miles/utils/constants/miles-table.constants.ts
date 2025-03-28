@@ -1,4 +1,5 @@
 import { ITableColumn } from '@shared/components/new-table/interface';
+import { MilesStopSortBy } from 'appcoretruckassist';
 
 const checkbox: ITableColumn = {
     key: 'select',
@@ -12,6 +13,7 @@ const unit: ITableColumn = {
     label: 'Unit',
     width: 80,
     sort: true,
+    sortName: MilesStopSortBy.UnitNumber,
 };
 
 const truckType: ITableColumn = {
@@ -19,6 +21,7 @@ const truckType: ITableColumn = {
     label: 'Type',
     width: 64,
     sort: true,
+    sortName: MilesStopSortBy.UnitType,
 };
 
 const stopsCount: ITableColumn = {
@@ -26,6 +29,7 @@ const stopsCount: ITableColumn = {
     label: 'Count',
     width: 62,
     sort: true,
+    sortName: MilesStopSortBy.Count,
 };
 
 const stopsPickup: ITableColumn = {
@@ -33,6 +37,7 @@ const stopsPickup: ITableColumn = {
     label: 'PICKUP',
     width: 90,
     sort: true,
+    sortName: MilesStopSortBy.Pickup,
 };
 
 const stopsDelivery: ITableColumn = {
@@ -40,14 +45,15 @@ const stopsDelivery: ITableColumn = {
     label: 'DELIVERY',
     width: 90,
     sort: true,
+    sortName: MilesStopSortBy.Delivery,
 };
 
-// Adding the new columns
 const fuel: ITableColumn = {
     key: 'fuelCount',
     label: 'FUEL',
     width: 90,
     sort: true,
+    sortName: MilesStopSortBy.Fuel,
 };
 
 const parking: ITableColumn = {
@@ -55,6 +61,7 @@ const parking: ITableColumn = {
     label: 'PARKING',
     width: 90,
     sort: true,
+    sortName: MilesStopSortBy.Parking,
 };
 
 const deadHead: ITableColumn = {
@@ -62,6 +69,7 @@ const deadHead: ITableColumn = {
     label: 'D-HEAD',
     width: 90,
     sort: true,
+    sortName: MilesStopSortBy.Deadhead,
 };
 
 const repair: ITableColumn = {
@@ -69,6 +77,7 @@ const repair: ITableColumn = {
     label: 'REPAIR',
     width: 90,
     sort: true,
+    sortName: MilesStopSortBy.Repair,
 };
 
 const towing: ITableColumn = {
@@ -76,6 +85,7 @@ const towing: ITableColumn = {
     label: 'TOWING',
     width: 90,
     sort: true,
+    sortName: MilesStopSortBy.Towing,
 };
 
 const loadCount: ITableColumn = {
@@ -83,6 +93,7 @@ const loadCount: ITableColumn = {
     label: 'LOAD',
     width: 62,
     sort: true,
+    sortName: MilesStopSortBy.Load,
 };
 
 const fuelGalons: ITableColumn = {
@@ -90,6 +101,7 @@ const fuelGalons: ITableColumn = {
     label: 'GAL',
     width: 62,
     sort: true,
+    sortName: MilesStopSortBy.FuelGallons,
 };
 
 const fuelCost: ITableColumn = {
@@ -97,6 +109,7 @@ const fuelCost: ITableColumn = {
     label: 'Cost',
     width: 101,
     sort: true,
+    sortName: MilesStopSortBy.FuelCost,
 };
 
 const fuelMpg: ITableColumn = {
@@ -117,28 +130,32 @@ const milesLoaded: ITableColumn = {
     key: 'milesLoaded',
     label: 'LOADED',
     width: 78,
-    sort: false,
+    sort: true,
+    sortName: MilesStopSortBy.LoadedMiles,
 };
 
 const milesEmpty: ITableColumn = {
     key: 'milesEmpty',
     label: 'EMPTY',
     width: 78,
-    sort: false,
+    sort: true,
+    sortName: MilesStopSortBy.EmptyMiles,
 };
 
 const milesTotal: ITableColumn = {
     key: 'milesTotal',
     label: 'TOTAL',
     width: 78,
-    sort: false,
+    sort: true,
+    sortName: MilesStopSortBy.TotalMiles,
 };
 
 const revenue: ITableColumn = {
     key: 'revenue',
     label: 'revenue',
     width: 78,
-    sort: false,
+    sort: true,
+    sortName: MilesStopSortBy.Revenue,
 };
 
 const milesGroup = {

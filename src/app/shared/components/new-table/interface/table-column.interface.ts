@@ -13,4 +13,5 @@ export interface ITableColumn {
     direction?: SortOrder | null;
     isPinEnabled?: boolean;
     columns?: ITableColumn[];
+    sortName?: string;
 }

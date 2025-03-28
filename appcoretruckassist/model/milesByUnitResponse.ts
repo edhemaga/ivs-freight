@@ -31,12 +31,12 @@ export interface MilesByUnitResponse {
     towingCount?: number;
     towingPercentage?: number;
     loadCount?: number;
-    revenue?: number;
+    revenue?: number | null;
     fuelTotalGalons?: number | null;
     fuelCost?: number | null;
     milesPerGalon?: number | null;
-    loadedMiles?: number;
-    emptyMiles?: number;
-    totalMiles?: number;
+    loadedMiles?: number | null;
+    emptyMiles?: number | null;
+    totalMiles?: number | null;
 }
 

@@ -230,7 +230,7 @@ export function tableSortingChange(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
-    let updatedSortKey = column.key;
+    let updatedSortKey = column.sortName;
     let updatedSortDirection: SortOrder | null = SortOrder.Ascending;
 
     function toggleSort(columns: ITableColumn[]): ITableColumn[] {
