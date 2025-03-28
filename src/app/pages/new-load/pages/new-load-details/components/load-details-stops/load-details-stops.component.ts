@@ -15,6 +15,17 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // Enums
 import { eColor } from '@shared/enums';
 
+// Pipes
+import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
+import { StopStatusPipe } from '@pages/new-load/pages/new-load-details/components/load-details-stops/pipes/stop-status.pipe';
+
+// COmponents
+import {
+    CaMapComponent,
+    ICaMapProps,
+    MapOptionsConstants,
+} from 'ca-components';
+
 @Component({
     selector: 'app-load-details-stops',
     templateUrl: './load-details-stops.component.html',
@@ -22,6 +33,15 @@ import { eColor } from '@shared/enums';
     standalone: true,
     imports: [
         CommonModule,
+
+        // Pipes
+        FormatDatePipe,
+        FormatTimePipe,
+        StopStatusPipe,
+
+        // Components
+        AngularSvgIconModule,
+        CaMapComponent,
         NgbModule,
 
         // Components
@@ -30,12 +50,22 @@ import { eColor } from '@shared/enums';
     ],
 })
 export class LoadDetailsStopsComponent {
+    public openStopIndex: number = -1;
+    public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
+
+    // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
+
+    // Enums
     public eColor = eColor;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
     public toggleMap(): void {
         this.loadStoreService.toggleMap();
+    }
+
+    public toggleStopDetails(newIndex: number): void {
+        this.openStopIndex = this.openStopIndex === newIndex ? -1 : newIndex;
     }
 }

@@ -1,71 +1,775 @@
-@let stopCount = loadStoreService.loadDetailsStopCount$ | async;
-@let extraStopCount = loadStoreService.loadDetailsExtraStopCount$ | async;
-@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-@let isMapOpen = !(loadStoreService.isLoadDetailsMapOpen$ | async);
+<ng-container *ngTemplateOutlet="stopsHeader"></ng-container>
+<ng-container *ngTemplateOutlet="stopList"></ng-container>
 
-<div class="h-44 d-flex align-items-center w-100">
-    <div
-        class="background-white br-3 p-l-8 p-r-4 d-flex justify-content-between align-items-center h-34 disable-text-selection w-100"
-    >
-        <div class="d-flex align-items-center gap-1">
-            @if (isLoading) {
-                <p class="placeholder-glow">
-                    <span
-                        class="placeholder background-muted br-2 w-40 h-16"
-                    ></span>
-                </p>
+<ng-template #stopsHeader>
+    @let stopCount = loadStoreService.loadDetailsStopCount$ | async;
+    @let extraStopCount = loadStoreService.loadDetailsExtraStopCount$ | async;
+    @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
+    @let isMapOpen = loadStoreService.isLoadDetailsMapOpen$ | async;
 
-                <p class="placeholder-glow">
-                    <span
-                        class="placeholder background-muted br-2 rounded-circle w-18 h-18"
-                    ></span>
-                </p>
-            } @else {
-                <div class="text-color-black text-size-16 ta-font-extra-bold">
-                    Stop
-                </div>
-                <div
-                    class="d-flex align-items-center justify-content-center text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-5 br-60 h-18 min-w-18"
-                >
-                    {{ stopCount }}
-                </div>
-                @if (extraStopCount) {
+    <div class="h-44 d-flex align-items-center w-100">
+        <div
+            class="background-white br-3 p-l-8 p-r-4 d-flex justify-content-between align-items-center h-34 disable-text-selection w-100"
+        >
+            <div class="d-flex align-items-center gap-1">
+                @if (isLoading) {
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder background-muted br-2 w-40 h-16"
+                        ></span>
+                    </p>
+
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder background-muted br-2 rounded-circle w-18 h-18"
+                        ></span>
+                    </p>
+                } @else {
                     <div
-                        class="text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-6 p-y-2 br-60 h-18"
+                        class="text-color-black text-size-16 ta-font-extra-bold"
                     >
-                        {{ extraStopCount }} EXTRA
+                        Stop
+                    </div>
+                    <div
+                        class="d-flex align-items-center justify-content-center text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-5 br-60 h-18 min-w-18"
+                    >
+                        {{ stopCount }}
+                    </div>
+                    @if (extraStopCount) {
+                        <div
+                            class="text-size-11 ta-font-bold text-color-white background-bw6-2 p-x-6 p-y-2 br-60 h-18"
+                        >
+                            {{ extraStopCount }} EXTRA
+                        </div>
+                    }
+                }
+            </div>
+
+            <div
+                class="w-26 h-26 d-flex justify-content-center align-items-center"
+            >
+                @if (isLoading) {
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder background-muted br-5 rotate-45 w-15 h-15"
+                        ></span>
+                    </p>
+                } @else {
+                    <div
+                        ngbTooltip
+                        [mainTooltip]="isMapOpen ? 'Hide Map' : 'Show Map'"
+                        position="bottom"
+                        [tooltipBackground]="eColor.BLACK"
+                    >
+                        <svg-icon
+                            class="svg-fill-muted w-26 h-26 c-pointer d-flex justify-content-center align-items-center br-2"
+                            [src]="sharedSvgRoutes.MAP_ICON"
+                            [ngClass]="
+                                isMapOpen
+                                    ? 'background-bw6-2 background-hover-black svg-hover-white svg-fill-bw-9'
+                                    : 'background-hover-bw2 svg-hover-black'
+                            "
+                            (click)="toggleMap()"
+                        >
+                        </svg-icon>
                     </div>
                 }
-            }
-        </div>
-
-        <div class="w-26 h-26 d-flex justify-content-center align-items-center">
-            @if (isLoading) {
-                <p class="placeholder-glow">
-                    <span
-                        class="placeholder background-muted br-5 rotate-45 w-15 h-15"
-                    ></span>
-                </p>
-            } @else {
-                <div
-                    ngbTooltip
-                    [mainTooltip]="isMapOpen ? 'Hide Map' : 'Show Map'"
-                    position="bottom"
-                    [tooltipBackground]="eColor.BLACK"
-                >
-                    <svg-icon
-                        class="svg-fill-muted w-26 h-26 c-pointer d-flex justify-content-center align-items-center br-2"
-                        [src]="sharedSvgRoutes.MAP_ICON"
-                        [ngClass]="
-                            isMapOpen
-                                ? 'background-bw6-2 background-hover-black svg-hover-white svg-fill-bw-9'
-                                : 'background-hover-bw2 svg-hover-black'
-                        "
-                        (click)="toggleMap()"
-                    >
-                    </svg-icon>
-                </div>
-            }
+            </div>
         </div>
     </div>
-</div>
+</ng-template>
+
+<ng-template #stopList>
+    @let load = loadStoreService.resolveLoadDetails$ | async;
+    @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
+    @let isPendingLoad = load.statusType?.id === 1;
+
+    <div class="background-white br-3 m-t-8">
+        @if (isLoading) {
+            <div class="p-6">
+                <div
+                    class="h-26 p-x-8 p-b-2 d-grid align-items-center justify-content-between"
+                    [ngClass]="
+                        isPendingLoad
+                            ? 'load-stop-rows-pending'
+                            : 'load-stop-rows-not-pending'
+                    "
+                >
+                    <div class="d-flex align-items-center">
+                        <div
+                            class="h-18 w-18 d-flex align-items-center justify-content-center"
+                        >
+                            <p class="placeholder-glow">
+                                <span
+                                    class="placeholder background-muted br-2 w-10 h-10"
+                                ></span>
+                            </p>
+                        </div>
+
+                        <div class="m-l-8">
+                            <div
+                                class="d-flex align-items-center justify-content-center"
+                            >
+                                <p class="placeholder-glow">
+                                    <span
+                                        class="placeholder background-muted br-2 w-98 h-10"
+                                    ></span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex align-items-center visible-large">
+                        <p class="placeholder-glow">
+                            <span
+                                class="placeholder background-muted br-2 w-116 h-10"
+                            ></span>
+                        </p>
+                    </div>
+
+                    <div class="d-flex align-items-center visible-xl">
+                        <p class="placeholder-glow">
+                            <span
+                                class="placeholder background-muted br-2 w-108 h-10"
+                            ></span>
+                        </p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="placeholder-glow">
+                            <span
+                                class="placeholder background-muted br-2 w-68 h-10"
+                            ></span>
+                        </p>
+                    </div>
+
+                    <div class="d-flex align-items-center">
+                        <p class="placeholder-glow">
+                            <span
+                                class="placeholder background-muted br-2 w-57 h-10"
+                            ></span>
+                        </p>
+                    </div>
+
+                    <div class="d-flex align-items-center justify-content-end">
+                        <p class="placeholder-glow">
+                            <span
+                                class="placeholder background-muted br-2 w-24 h-10"
+                            ></span>
+                        </p>
+                    </div>
+                </div>
+
+                <div class="d-flex flex-column gap-2px m-b-2">
+                    <!-- Hardcode only 5 stops  -->
+                    @for (i of [1, 2, 3, 4, 5]; track i) {
+                        <div
+                            class="h-34 p-x-8 d-grid align-items-center justify-content-between"
+                            [ngClass]="
+                                isPendingLoad
+                                    ? 'load-stop-rows-pending'
+                                    : 'load-stop-rows-not-pending'
+                            "
+                        >
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="h-18 w-18 d-flex align-items-center justify-content-center"
+                                >
+                                    <p class="placeholder-glow">
+                                        <span
+                                            class="placeholder background-muted br-2 w-18 h-18"
+                                        ></span>
+                                    </p>
+                                </div>
+
+                                <div class="m-l-8 flex-1">
+                                    <div class="d-flex gap-1 flex-column">
+                                        <p class="placeholder-glow line-0">
+                                            <span
+                                                class="placeholder background-muted br-2 w-75 h-10"
+                                            ></span>
+                                        </p>
+
+                                        <p class="placeholder-glow line-0">
+                                            <span
+                                                class="placeholder background-muted br-2 w-25 h-10"
+                                            ></span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="visible-large">
+                                <div class="d-flex gap-1 flex-column flex-1">
+                                    <p class="placeholder-glow line-0">
+                                        <span
+                                            class="placeholder background-muted br-2 w-75 h-10"
+                                        ></span>
+                                    </p>
+
+                                    <p class="placeholder-glow line-0">
+                                        <span
+                                            class="placeholder background-muted br-2 w-25 h-10"
+                                        ></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="visible-xl">
+                                <div class="d-flex gap-1 flex-column flex-1">
+                                    <p class="placeholder-glow line-0">
+                                        <span
+                                            class="placeholder background-muted br-2 w-50 h-10"
+                                        ></span>
+                                    </p>
+
+                                    <p class="placeholder-glow line-0">
+                                        <span
+                                            class="placeholder background-muted br-2 w-33 h-10"
+                                        ></span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="d-flex flex-column gap-1">
+                                <p class="placeholder-glow line-0">
+                                    <span
+                                        class="placeholder background-muted br-2 w-75 h-10"
+                                    ></span>
+                                </p>
+
+                                <p class="placeholder-glow line-0">
+                                    <span
+                                        class="placeholder background-muted br-2 w-33 h-10"
+                                    ></span>
+                                </p>
+                            </div>
+
+                            <div class="d-flex flex-column gap-1">
+                                <p class="placeholder-glow line-0">
+                                    <span
+                                        class="placeholder background-muted br-2 w-50 h-10"
+                                    ></span>
+                                </p>
+
+                                <p class="placeholder-glow line-0">
+                                    <span
+                                        class="placeholder background-muted br-2 w-33 h-10"
+                                    ></span>
+                                </p>
+                            </div>
+
+                            <div class="d-flex gap-1 flex-column text-right">
+                                <p class="placeholder-glow line-0">
+                                    <span
+                                        class="placeholder background-muted br-2 w-75 h-10"
+                                    ></span>
+                                </p>
+
+                                <p class="placeholder-glow line-0">
+                                    <span
+                                        class="placeholder background-muted br-2 w-50 h-10"
+                                    ></span>
+                                </p>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        } @else {
+            <div class="p-6 d-flex flex-column gap-2px">
+                <div
+                    class="h-26 p-x-8 p-b-2 d-grid align-items-center justify-content-between"
+                    [ngClass]="
+                        isPendingLoad
+                            ? 'load-stop-rows-pending'
+                            : 'load-stop-rows-not-pending'
+                    "
+                >
+                    <div
+                        class="d-flex align-items-center text-size-11 ta-font-bold"
+                    >
+                        <div
+                            class="h-18 w-18 d-flex align-items-center justify-content-center text-color-bw6-2"
+                        >
+                            #
+                        </div>
+                        <div class="m-l-8 text-color-bw6-2">
+                            LOCATION • TYPE
+                        </div>
+                    </div>
+                    <div
+                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold visible-large"
+                    >
+                        SHIPPER • ADDRESS
+                    </div>
+                    <div
+                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold visible-xl"
+                    >
+                        CONTACT • PHONE
+                    </div>
+                    <div
+                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold"
+                    >
+                        DATE • TIME
+                    </div>
+                    @if (!isPendingLoad) {
+                        <div
+                            class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold"
+                        >
+                            CHECK-IN
+                        </div>
+                    }
+                    <div
+                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold justify-content-end"
+                    >
+                        LEG
+                    </div>
+                </div>
+                @for (
+                    stop of load.stops;
+                    track stop.id;
+                    let i = $index;
+                    let first = $first;
+                    let last = $last
+                ) {
+                    @let isStopOpen = i === openStopIndex;
+                    @let hasItems = stop.items?.length;
+                    @let isDeadhead = stop.stopType.id === 0;
+                    @let isPickup = stop.stopType.id === 1;
+                    @let isDelivery = stop.stopType.id === 2;
+
+                    <div
+                        [ngClass]="{
+                            'background-light-grey-5': isStopOpen,
+                        }"
+                    >
+                        <div
+                            class="h-34 p-x-8 d-grid align-items-center justify-content-between"
+                            [ngClass]="{
+                                'load-stop-rows-pending': isPendingLoad,
+                                'load-stop-rows-not-pending': !isPendingLoad,
+                                'background-hover-bw2 c-pointer': hasItems,
+                            }"
+                            (click)="hasItems && toggleStopDetails(i)"
+                        >
+                            <div class="d-flex align-items-center">
+                                <div
+                                    class="h-18 w-18 br-1 text-size-11 ta-font-bold d-flex align-items-center justify-content-center"
+                                    [ngClass]="
+                                        stop
+                                            | stopStatus
+                                                : isPickup
+                                                : isDelivery
+                                                : isDeadhead
+                                    "
+                                >
+                                    {{ stop.stopOrder }}
+                                </div>
+
+                                <div class="m-l-8">
+                                    <div class="d-flex align-items-center">
+                                        <div
+                                            class="text-color-black text-size-11 ta-font-semi-bold text-truncate"
+                                        >
+                                            {{ stop.shipper.address.city }},
+                                            {{
+                                                stop.shipper.address
+                                                    .stateShortName
+                                            }},
+                                            {{ stop.shipper.address.zipCode }}
+                                        </div>
+
+                                        @if (stop.arrive) {
+                                            <svg-icon
+                                                [src]="
+                                                    sharedSvgRoutes.CHECKMARK_ICON
+                                                "
+                                                class="svg-size-10 svg-fill-blue-13 ml-1 d-flex"
+                                            ></svg-icon>
+                                        }
+                                    </div>
+                                    <div
+                                        class="text-size-11 text-color-muted ta-font-medium"
+                                    >
+                                        @let text =
+                                            first
+                                                ? isDeadhead
+                                                    ? 'Deadhead'
+                                                    : 'Origin'
+                                                : last
+                                                  ? 'Destination'
+                                                  : load.stops[0]?.stopType
+                                                          ?.id === 0 && i === 1
+                                                    ? 'Origin'
+                                                    : 'Extra ' +
+                                                      stop?.stopType?.name;
+
+                                        {{ text }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="visible-large flex-column">
+                                <div
+                                    class="text-size-11 text-color-black ta-font-medium"
+                                >
+                                    {{ stop.shipper.businessName }}
+                                </div>
+                                <div class="text-size-11 text-color-muted">
+                                    {{ stop.shipper.address.streetNumber }}
+                                    {{ stop.shipper.address.street }}
+                                </div>
+                            </div>
+
+                            <div class="visible-xl flex-column">
+                                <div
+                                    class="text-size-11 ta-font-medium"
+                                    [ngClass]="
+                                        stop.shipperContact
+                                            ? 'text-color-black'
+                                            : 'text-color-muted'
+                                    "
+                                >
+                                    {{ stop.shipperContact?.fullName }}
+                                </div>
+                                <div
+                                    class="text-size-11 text-color-muted"
+                                    [ngClass]="
+                                        !stop.shipperContact && 'ta-font-medium'
+                                    "
+                                >
+                                    @if (!isDeadhead) {
+                                        @let phoneNumber =
+                                            stop.shipperContact
+                                                ? stop.shipperContact.phone +
+                                                  (stop.shipperContact.phoneExt
+                                                      ? ' x' +
+                                                        stop.shipperContact
+                                                            .phoneExt
+                                                      : '')
+                                                : 'No Contact';
+                                        {{ phoneNumber }}
+                                    }
+                                </div>
+                            </div>
+
+                            <div>
+                                @if (!isDeadhead) {
+                                    <div
+                                        class="text-size-11 text-color-black ta-font-medium"
+                                    >
+                                        {{ stop?.dateFrom | formatDateP }}
+                                    </div>
+                                    <div class="text-size-11 text-color-muted">
+                                        <ng-container
+                                            *ngTemplateOutlet="
+                                                timeFormat;
+                                                context: {
+                                                    time: stop.timeFrom,
+                                                }
+                                            "
+                                        ></ng-container>
+                                        @if (stop.timeType?.id === 2) {
+                                            •
+                                            <span
+                                                class="text-color-yellow-5 ta-font-semi-bold"
+                                            >
+                                                Appt
+                                            </span>
+                                        } @else {
+                                            -
+                                            <ng-container
+                                                *ngTemplateOutlet="
+                                                    timeFormat;
+                                                    context: {
+                                                        time: stop.timeTo,
+                                                    }
+                                                "
+                                            ></ng-container>
+                                        }
+                                    </div>
+                                }
+                            </div>
+                            @if (!isPendingLoad) {
+                                @let time =
+                                    isDeadhead ? stop.dateFrom : stop.arrive;
+
+                                <div>
+                                    @if (time) {
+                                        <div
+                                            class="text-size-11 text-color-black ta-font-medium"
+                                        >
+                                            {{
+                                                time ? (time | formatDateP) : ''
+                                            }}
+                                        </div>
+                                        <div
+                                            class="text-size-11 text-color-muted"
+                                        >
+                                            {{ time | formatTime }}
+
+                                            <!-- If stop is in progress -->
+                                            @if (
+                                                stop.statusHistory &&
+                                                !stop.depart
+                                            ) {
+                                                @let lastStatus =
+                                                    stop.statusHistory[
+                                                        stop.statusHistory
+                                                            ?.length - 1
+                                                    ];
+                                                @if (lastStatus) {
+                                                    •
+                                                    <span
+                                                        class="text-uppercase text-size-11 text-color-green-2 ta-font-semi-bold"
+                                                    >
+                                                        @let displayLoadStatusName =
+                                                            lastStatus.status
+                                                                .name ===
+                                                            'ArrivedPickup'
+                                                                ? 'Arrived'
+                                                                : lastStatus
+                                                                      .status
+                                                                      .name;
+
+                                                        {{
+                                                            displayLoadStatusName
+                                                        }}</span
+                                                    >
+                                                }
+                                            } @else {
+                                                <!-- Deadhead has not depart -->
+                                                @if (stop.depart) {
+                                                    -
+                                                    {{
+                                                        stop.depart | formatTime
+                                                    }}
+                                                }
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                            }
+
+                            <div class="text-right">
+                                <div
+                                    class="text-size-11 ta-font-medium"
+                                    [ngClass]="
+                                        stop.legMiles
+                                            ? 'text-color-black'
+                                            : 'text-color-muted'
+                                    "
+                                >
+                                    {{ stop.legMiles ?? '0.0' }} mi
+                                </div>
+                                <div
+                                    class="text-size-11 text-color-muted ta-font-medium"
+                                >
+                                    @let hasTime =
+                                        stop.legHours
+                                            ? stop.legHours + 'h '
+                                            : '';
+                                    @let hasMinutes =
+                                        stop.legMinutes
+                                            ? stop.legMinutes + 'm'
+                                            : '0' + 'm';
+                                    @let timeString = hasTime + hasMinutes;
+                                    ≈ {{ timeString }}
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (isStopOpen) {
+                            <div class="p-x-4">
+                                <div
+                                    class="divider divider--small divider--dark mb-1"
+                                ></div>
+                            </div>
+                            <div
+                                class="h-22 d-grid load-stop-rows-items align-items-center p-x-8 justify-content-between"
+                            >
+                                <div class="d-flex align-items-center">
+                                    <div
+                                        class="h-18 w-18 text-muted text-size-11 ta-font-bold text-center d-flex align-items-center justify-content-center"
+                                    >
+                                        #
+                                    </div>
+                                    <div
+                                        class="text-muted text-size-11 ta-font-bold m-l-8"
+                                    >
+                                        DESCRIPTION
+                                    </div>
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-bold"
+                                >
+                                    QUANTITY
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                >
+                                    <svg-icon
+                                        [src]="sharedSvgRoutes.TEMPERATURE_ICON"
+                                        class="svg-size-14 svg-fill-muted"
+                                    ></svg-icon>
+                                    <span>°F</span>
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                >
+                                    <svg-icon
+                                        [src]="sharedSvgRoutes.WEIGHT_ICON"
+                                        class="svg-size-14 svg-fill-muted"
+                                    ></svg-icon>
+                                    <span>lbs</span>
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                >
+                                    <svg-icon
+                                        [src]="sharedSvgRoutes.LENGTH_ICON"
+                                        class="svg-size-14 svg-fill-muted"
+                                    ></svg-icon>
+                                    <span>ft</span>
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                >
+                                    <svg-icon
+                                        [src]="sharedSvgRoutes.HEIGHT_ICON"
+                                        class="svg-size-14 svg-fill-muted"
+                                    ></svg-icon>
+                                    <span>ft</span>
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                >
+                                    <svg-icon
+                                        [src]="sharedSvgRoutes.TARP_ICON"
+                                        class="svg-size-14 svg-fill-muted"
+                                    ></svg-icon>
+                                    <span>ft</span>
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                >
+                                    <svg-icon
+                                        [src]="sharedSvgRoutes.STACKABLE_ICON"
+                                        class="svg-size-14 svg-fill-muted"
+                                    ></svg-icon>
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-bold"
+                                >
+                                    SECURE
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-bold"
+                                >
+                                    BOL NO
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-bold"
+                                >
+                                    PICKUP NO
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-bold"
+                                >
+                                    SEAL NO
+                                </div>
+                                <div
+                                    class="text-muted text-size-11 ta-font-bold"
+                                >
+                                    CODE
+                                </div>
+                            </div>
+
+                            @for (
+                                item of stop.items;
+                                track item.id;
+                                let stopIndex = $index
+                            ) {
+                                <div class="p-x-4">
+                                    <div
+                                        class="h-22 d-grid load-stop-rows-items align-items-center p-x-4 justify-content-between background-hover-dark-2 br-1"
+                                    >
+                                        <div class="d-flex align-items-center">
+                                            <div
+                                                class="h-18 w-18 text-color-muted text-size-11 text-center d-flex align-items-center ta-font-medium justify-content-center"
+                                            >
+                                                {{ stopIndex + 1 }}
+                                            </div>
+                                            <div
+                                                class="text-black-2 text-size-11 m-l-8"
+                                            >
+                                                {{ item.description }}
+                                            </div>
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.quantity }}
+                                            <span class="text-color-muted">
+                                                {{ item.units?.name }}</span
+                                            >
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.temperature }}°F
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.weight }}lbs
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.length }} ft
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.height }} ft
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.tarp?.name }}
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.stackable?.name }}
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.secure?.name }}
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.bolNumber }}
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.pickupNumber }}
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.sealNumber }}
+                                        </div>
+                                        <div class="text-black-2 text-size-11">
+                                            {{ item.code }}
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+        }
+
+        <ng-container *ngTemplateOutlet="mapTemplate"></ng-container>
+    </div>
+</ng-template>
+
+<ng-template #mapTemplate>
+    @let isMapOpen = loadStoreService.isLoadDetailsMapOpen$ | async;
+    @if (isMapOpen) {
+        <div
+            class="d-flex justify-content-center align-items-center br-3 p-6 pt-0 h-486"
+        >
+            <app-ca-map [data]="mapData" class="h-full w-full"></app-ca-map>
+        </div>
+    }
+</ng-template>
+
+<ng-template #timeFormat let-time="time">
+    {{ time }} {{ time?.substring(0, time?.indexOf(':')) < 12 ? 'AM' : 'PM' }}
+</ng-template>
