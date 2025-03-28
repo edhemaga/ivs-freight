@@ -7,6 +7,9 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 // components
 import { CaTableCardViewComponent } from 'ca-components';
 
+// pipes
+import { FormatCurrencyPipe, ThousandSeparatorPipe } from '@shared/pipes';
+
 @Component({
     selector: 'app-miles-card',
     templateUrl: './miles-card.component.html',
@@ -14,9 +17,13 @@ import { CaTableCardViewComponent } from 'ca-components';
     standalone: true,
     imports: [
         CommonModule,
-        
+
         // components
         CaTableCardViewComponent,
+
+        // pipes
+        FormatCurrencyPipe,
+        ThousandSeparatorPipe,
     ],
 })
 export class MilesCardComponent {
