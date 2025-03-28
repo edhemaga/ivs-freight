@@ -143,7 +143,7 @@ export class TaInputNoteComponent implements ControlValueAccessor {
         this.noActive = '';
         this._isVisibleNote = !this._isVisibleNote;
         this.toggleCard.emit(this._isVisibleNote);
-        
+
         if (this._isVisibleNote) {
             this.checkActiveItems();
         }
