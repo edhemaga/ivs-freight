@@ -6,7 +6,7 @@
                 isDispatchBoardLocked && isHoveringRowIndex === rowIndex
             "
         >
-            <div class="info-item w-100" [class.p-0]="dispatchResponse?.activeLoad">
+            <div class="info-item w-100 c-pointer" [class.p-0]="dispatchResponse?.activeLoad">
                 <ng-container
                     *ngIf="dispatchResponse?.activeLoad; else noActiveLoad"
                 >
