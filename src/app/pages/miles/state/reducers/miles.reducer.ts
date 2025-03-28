@@ -52,7 +52,7 @@ export const initialState: IMilesState = {
     },
     tableSettings: {
         isTableLocked: false,
-        sortKey: '',
+        sortKey: null,
         sortDirection: null,
     },
 };

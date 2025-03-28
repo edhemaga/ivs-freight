@@ -76,8 +76,9 @@ export class MilesEffects {
                         null,
                         null,
                         null,
-                        tableSettings.sortKey,
-                        tableSettings.sortDirection
+                        null,
+                        tableSettings.sortDirection,
+                        tableSettings.sortKey
                     )
                     .pipe(
                         map((response) => {
@@ -287,8 +288,9 @@ export class MilesEffects {
                         page,
                         null,
                         null,
-                        tableSettings.sortKey,
-                        tableSettings.sortDirection
+                        null,
+                        tableSettings.sortDirection,
+                        tableSettings.sortKey
                     )
                     .pipe(
                         switchMap((response) => {
@@ -356,10 +358,11 @@ export class MilesEffects {
                                 filters.revenueFrom,
                                 filters.revenueTo,
                                 page,
-                                2,
                                 null,
-                                tableSettings.sortKey,
-                                tableSettings.sortDirection
+                                null,
+                                null,
+                                tableSettings.sortDirection,
+                                tableSettings.sortKey
                             )
                             .pipe(
                                 map((response) => {

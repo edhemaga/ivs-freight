@@ -1,4 +1,4 @@
-import { SortOrder } from 'appcoretruckassist';
+import { MilesStopSortBy, SortOrder } from 'appcoretruckassist';
 
 export interface ITableColumn {
     // This key is used to display data on frontend,
@@ -13,5 +13,5 @@ export interface ITableColumn {
     direction?: SortOrder | null;
     isPinEnabled?: boolean;
     columns?: ITableColumn[];
-    sortName?: string;
+    sortName?: MilesStopSortBy;
 }
