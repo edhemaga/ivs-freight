@@ -505,9 +505,44 @@
                                             class="text-size-11 text-color-muted"
                                         >
                                             {{ time | formatTime }}
-                                            @if (stop.depart) {
-                                                -
-                                                {{ stop.depart | formatTime }}
+
+                                            <!-- If stop is in progress -->
+                                            @if (
+                                                stop.statusHistory &&
+                                                !stop.depart
+                                            ) {
+                                                @let lastStatus =
+                                                    stop.statusHistory[
+                                                        stop.statusHistory
+                                                            ?.length - 1
+                                                    ];
+                                                @if (lastStatus) {
+                                                    •
+                                                    <span
+                                                        class="text-uppercase text-size-11 text-color-green-2 ta-font-semi-bold"
+                                                    >
+                                                        @let displayLoadStatusName =
+                                                            lastStatus.status
+                                                                .name ===
+                                                            'ArrivedPickup'
+                                                                ? 'Arrived'
+                                                                : lastStatus
+                                                                      .status
+                                                                      .name;
+
+                                                        {{
+                                                            displayLoadStatusName
+                                                        }}</span
+                                                    >
+                                                }
+                                            } @else {
+                                                <!-- Deadhead has not depart -->
+                                                @if (stop.depart) {
+                                                    -
+                                                    {{
+                                                        stop.depart | formatTime
+                                                    }}
+                                                }
                                             }
                                         </div>
                                     }
