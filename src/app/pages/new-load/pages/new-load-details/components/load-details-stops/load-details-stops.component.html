@@ -364,7 +364,7 @@
                                                 : isDeadhead
                                     "
                                 >
-                                    {{ stop.stopOrder }}
+                                    {{ stop.stopLoadOrder }}
                                 </div>
 
                                 <div class="m-l-8">
@@ -376,7 +376,7 @@
                                             {{
                                                 stop.shipper.address
                                                     .stateShortName
-                                            }},
+                                            }}
                                             {{ stop.shipper.address.zipCode }}
                                         </div>
 
@@ -555,19 +555,34 @@
                                                     <span
                                                         class="text-uppercase text-size-11 text-color-green-2 ta-font-semi-bold"
                                                     >
-                                                        @let displayLoadStatusName =
+                                                        @let isArrived =
                                                             lastStatus.status
                                                                 .name ===
-                                                            'ArrivedPickup'
+                                                                'ArrivedPickup' ||
+                                                            lastStatus.status
+                                                                .name ===
+                                                                'ArrivedDelivery';
+                                                        @let isCheckedIn =
+                                                            lastStatus.status
+                                                                .name ===
+                                                                'CheckedInPickup' ||
+                                                            lastStatus.status
+                                                                .name ===
+                                                                'CheckedInDelivery';
+
+                                                        @let displayLoadStatusName =
+                                                            isArrived
                                                                 ? 'Arrived'
-                                                                : lastStatus
-                                                                      .status
-                                                                      .name;
+                                                                : isCheckedIn
+                                                                  ? 'CHECKED-IN'
+                                                                  : lastStatus
+                                                                        .status
+                                                                        .name;
 
                                                         {{
                                                             displayLoadStatusName
-                                                        }}</span
-                                                    >
+                                                        }}
+                                                    </span>
                                                 }
                                             } @else {
                                                 <!-- Deadhead has not depart -->
@@ -592,7 +607,8 @@
                                             : 'text-color-muted'
                                     "
                                 >
-                                    {{ stop.legMiles ?? '0.0' }} mi
+                                    {{ stop.legMiles || 0 | number: '1.1-1' }}
+                                    mi
                                 </div>
                                 <div
                                     class="text-size-11 text-color-muted ta-font-medium"
