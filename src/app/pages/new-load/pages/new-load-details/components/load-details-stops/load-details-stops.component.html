@@ -356,19 +356,13 @@
                             <div class="d-flex align-items-center">
                                 <div
                                     class="h-18 w-18 br-1 text-size-11 ta-font-bold d-flex align-items-center justify-content-center"
-                                    [ngClass]="{
-                                        'background-dark-2 text-color-bw6-2':
-                                            isDeadhead,
-                                        'background-orange-8 text-color-orange-1':
-                                            isDelivery && stop.arrive,
-                                        'background-green-7 text-color-green-2':
-                                            isPickup && stop.arrive,
-                                        'background-orange-4 ':
-                                            isDelivery && !stop.arrive,
-                                        'background-green ':
-                                            isPickup && !stop.arrive,
-                                        'text-color-white': !stop.arrive,
-                                    }"
+                                    [ngClass]="
+                                        stop
+                                            | stopStatus
+                                                : isPickup
+                                                : isDelivery
+                                                : isDeadhead
+                                    "
                                 >
                                     {{ stop.stopOrder }}
                                 </div>

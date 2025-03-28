@@ -17,6 +17,7 @@ import { eColor } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
+import { StopStatusPipe } from '@pages/new-load/pages/new-load-details/components/load-details-stops/pipes/stop-status.pipe';
 
 // COmponents
 import {
@@ -36,6 +37,7 @@ import {
         // Pipes
         FormatDatePipe,
         FormatTimePipe,
+        StopStatusPipe,
 
         // Components
         AngularSvgIconModule,
@@ -48,9 +50,13 @@ import {
     ],
 })
 export class LoadDetailsStopsComponent {
-    public sharedSvgRoutes = SharedSvgRoutes;
-    public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
     public openStopIndex: number = -1;
+    public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
+
+    // Svg routes
+    public sharedSvgRoutes = SharedSvgRoutes;
+
+    // Enums
     public eColor = eColor;
 
     constructor(protected loadStoreService: LoadStoreService) {}
