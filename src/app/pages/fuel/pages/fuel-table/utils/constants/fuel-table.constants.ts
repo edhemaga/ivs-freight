@@ -1,6 +1,8 @@
 export class FuelTableConstants {
-    static TEXT_DELETE_FUEL_POPUP: string = 'Are you sure you want to delete fuel(s)?';
+    static TEXT_DELETE_FUEL_POPUP: string =
+        'Are you sure you want to delete fuel(s)?';
     static TABLE_PAGE_SIZE: number = 25;
+    static TABLE_PAGE_SIZE_MAX: number = 100;
     static AVATAR_SIZE_PX: number = 18;
     static AVATAR_FONT_SIZE_PX: number = 7;
     static AVATAR_IS_HOVER_EFFECT: boolean = true;
