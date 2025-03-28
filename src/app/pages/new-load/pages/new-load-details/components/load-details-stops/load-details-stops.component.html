@@ -500,9 +500,40 @@
                                         <div
                                             class="text-size-11 text-color-black ta-font-medium"
                                         >
-                                            {{
-                                                time ? (time | formatDateP) : ''
-                                            }}
+                                            <span
+                                                >{{ time | formatDateP }}
+                                                {{
+                                                    stop.wait ? '• ' : ''
+                                                }}</span
+                                            >
+                                            <span
+                                                class="text-color-blue-13 ta-font-semi-bold"
+                                            >
+                                                @let days =
+                                                    stop.wait?.days
+                                                        ? stop.wait?.days + 'd '
+                                                        : '';
+                                                @let hours =
+                                                    stop.wait?.hours
+                                                        ? stop.wait?.hours +
+                                                          'h '
+                                                        : '';
+                                                @let minutes =
+                                                    stop.wait?.minutes
+                                                        ? stop.wait?.minutes +
+                                                          'm '
+                                                        : '';
+                                                @let seconds =
+                                                    stop.wait?.seconds
+                                                        ? stop.wait?.seconds +
+                                                          's'
+                                                        : '';
+
+                                                <span>{{ days }}</span>
+                                                <span>{{ hours }}</span>
+                                                <span>{{ minutes }}</span>
+                                                <span>{{ seconds }}</span>
+                                            </span>
                                         </div>
                                         <div
                                             class="text-size-11 text-color-muted"
