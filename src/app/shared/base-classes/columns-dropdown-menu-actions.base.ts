@@ -127,7 +127,7 @@ export abstract class ColumnsDropdownMenuActionsBase {
             ? JSON.parse(initialTableConfig)
             : DropdownMenuColumnsActionsHelper.getColumnDefinition(subType);
 
-        config = config.map((column: ITableColummn) =>
+        config = config?.map((column: ITableColummn) =>
             column.field === actionType || column.groupName === actionType
                 ? { ...column, hidden: !isChecked }
                 : column
