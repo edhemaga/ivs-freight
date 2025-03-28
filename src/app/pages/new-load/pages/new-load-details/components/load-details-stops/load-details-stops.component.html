@@ -161,7 +161,7 @@
                 </div>
 
                 <div
-                    class="h-34 m-t-2 p-x-8 d-grid align-items-center justify-content-between"
+                    class="h-34 p-x-8 d-grid align-items-center justify-content-between"
                     [ngClass]="
                         isPendingLoad
                             ? 'load-stop-rows-pending'
@@ -268,7 +268,7 @@
                 </div>
             </div>
         } @else {
-            <div class="p-6">
+            <div class="p-6 d-flex flex-column gap-2px">
                 <div
                     class="h-26 p-x-8 p-b-2 d-grid align-items-center justify-content-between"
                     [ngClass]="
@@ -336,7 +336,7 @@
                         }"
                     >
                         <div
-                            class="h-34 m-t-2 p-x-8 d-grid align-items-center justify-content-between"
+                            class="h-34 p-x-8 d-grid align-items-center justify-content-between"
                             [ngClass]="{
                                 'load-stop-rows-pending': isPendingLoad,
                                 'load-stop-rows-not-pending': !isPendingLoad,
@@ -436,15 +436,18 @@
                                         !stop.shipperContact && 'ta-font-medium'
                                     "
                                 >
-                                    @let phoneNumber =
-                                        stop.shipperContact
-                                            ? stop.shipperContact.phone +
-                                              (stop.shipperContact.phoneExt
-                                                  ? ' x' +
-                                                    stop.shipperContact.phoneExt
-                                                  : '')
-                                            : 'No Contact';
-                                    {{ phoneNumber }}
+                                    @if (!isDeadhead) {
+                                        @let phoneNumber =
+                                            stop.shipperContact
+                                                ? stop.shipperContact.phone +
+                                                  (stop.shipperContact.phoneExt
+                                                      ? ' x' +
+                                                        stop.shipperContact
+                                                            .phoneExt
+                                                      : '')
+                                                : 'No Contact';
+                                        {{ phoneNumber }}
+                                    }
                                 </div>
                             </div>
 
@@ -722,7 +725,7 @@
     @let isMapOpen = loadStoreService.isLoadDetailsMapOpen$ | async;
     @if (isMapOpen) {
         <div
-            class="d-flex justify-content-center align-items-center br-3 p-6 h-480"
+            class="d-flex justify-content-center align-items-center br-3 p-6 pt-0 h-486"
         >
             <app-ca-map [data]="mapData" class="h-full w-full"></app-ca-map>
         </div>
