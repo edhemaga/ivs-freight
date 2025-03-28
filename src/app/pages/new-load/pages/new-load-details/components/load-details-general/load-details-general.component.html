@@ -264,7 +264,9 @@
                 </div>
             </div>
         </div>
-
+        <div class="p-x-6 m-t-8">
+            <div class="divider divider--small divider--dark"></div>
+        </div>
         <ng-container
             *ngTemplateOutlet="
                 billing;
@@ -273,6 +275,9 @@
                 }
             "
         ></ng-container>
+        <div class="p-x-6">
+            <div class="divider divider--small divider--dark"></div>
+        </div>
         <ng-container
             *ngTemplateOutlet="
                 payment;
@@ -416,7 +421,7 @@
                   : eStringPlaceholder.EMPTY
             : eStringPlaceholder.EMPTY;
 
-    <div class="px-3 p-t-8">
+    <div class="px-3">
         <app-ta-custom-card
             [cardName]="'Billing'"
             [hasCounter]="data?.billingCount"
@@ -428,6 +433,7 @@
                 marginTop: '6px',
                 marginBottom: '6px',
             }"
+            [hasDivider]="false"
             (onOpenCard)="toggleBilling()"
         >
             <ng-container
@@ -631,6 +637,7 @@
                 marginTop: '6px',
                 marginBottom: '6px',
             }"
+            [hasDivider]="false"
             (onOpenCard)="togglePayment()"
         >
             @if (data?.advancePay) {
