@@ -20,7 +20,7 @@
                             [src]="svgRoutes.deleteIcon"
                             [svgStyle]="{
                                 'width.px': 18,
-                                'height.px': 18
+                                'height.px': 18,
                             }"
                             (click)="emitDeleteFormArrayRowClick(i)"
                         ></svg-icon>
@@ -44,7 +44,7 @@
                                 contactItemRow.valid && !isInputHoverRows[i][0],
                             blackInput:
                                 formArray.at(i).get('fullName').value &&
-                                !isInputHoverRows[i][0]
+                                !isInputHoverRows[i][0],
                         }"
                         (mouseenter)="emitOnInputHover(true, i, 0)"
                         (mouseleave)="emitOnInputHover(false, i, 0)"
@@ -58,7 +58,6 @@
                         type: 'text',
                         label: 'Department',
                         placeholderInsteadOfLabel: true,
-                        textTransform: 'capitalize',
                         isDropdown: true,
                         dropdownWidthClass: 'w-col-130',
                         isRequired: true,
@@ -70,7 +69,7 @@
                             contactItemRow.valid && !isInputHoverRows[i][1],
                         blackInput:
                             formArray.at(i).get('department').value &&
-                            !isInputHoverRows[i][1]
+                            !isInputHoverRows[i][1],
                     }"
                     [activeItem]="selectedDepartment[i]"
                     [options]="departmentOptions"
@@ -96,7 +95,7 @@
                             contactItemRow.valid && !isInputHoverRows[i][2],
                         blackInput:
                             formArray.at(i).get('phone').value &&
-                            !isInputHoverRows[i][2]
+                            !isInputHoverRows[i][2],
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 2)"
                     (mouseleave)="emitOnInputHover(false, i, 2)"
@@ -118,7 +117,7 @@
                             contactItemRow.valid && !isInputHoverRows[i][3],
                         blackInput:
                             formArray.at(i).get('phoneExt').value &&
-                            !isInputHoverRows[i][3]
+                            !isInputHoverRows[i][3],
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 3)"
                     (mouseleave)="emitOnInputHover(false, i, 3)"
@@ -142,7 +141,7 @@
                             contactItemRow.valid && !isInputHoverRows[i][4],
                         blackInput:
                             formArray.at(i).get('email').value &&
-                            !isInputHoverRows[i][4]
+                            !isInputHoverRows[i][4],
                     }"
                     (mouseenter)="emitOnInputHover(true, i, 4)"
                     (mouseleave)="emitOnInputHover(false, i, 4)"
