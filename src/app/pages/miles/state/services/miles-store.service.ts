@@ -16,6 +16,7 @@ import {
     detailsSelector,
     unitsPaginationSelector,
     tableSettingsSelector,
+    tabResultsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -23,6 +24,7 @@ import {
     IMilesDetailsFilters,
     IMilesModel,
     IMilesState,
+    IMilesTabResults,
 } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
@@ -94,6 +96,10 @@ export class MilesStoreService {
 
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(tableSettingsSelector)
+    );
+
+    public tabResultsSelector$: Observable<IMilesTabResults> = this.store.pipe(
+        select(tabResultsSelector)
     );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
@@ -202,6 +208,12 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_UNIT_SELECTED,
             unit,
+        });
+    }
+
+    public getNewPage(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
         });
     }
 }

@@ -37,8 +37,8 @@ export class ListRoutes {
         {
             path: eLoadRouting.LIST,
             loadChildren: () =>
-                import('@pages/new-load/new-load.module').then(
-                    (m) => m.NewLoadModule
+                import('@pages/new-load/new-load.component').then(
+                    (c) => c.NewLoadComponent
                 ),
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: { data: LoadResolver },

@@ -64,12 +64,16 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     @Input() rows: T[] = [];
 
     @Input() isTableLocked: boolean;
+    @Input() isEmptyTable: boolean;
+    @Input() totalResult: number;
+    @Input() pageResult: number;
 
     @Input() headerTemplates: { [key: string]: TemplateRef<T> } = {};
     @Input() templates: { [key: string]: TemplateRef<T> } = {};
 
     @Input() expandedRows: Set<number> = new Set([]);
 
+    @Output() onHandleShowMoreClick: EventEmitter<boolean> = new EventEmitter();
     @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
 
@@ -127,13 +131,15 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
         this.onColumnPinned.emit(column);
     }
 
-    public handleSortColumnClick(sort: ITableColumn): void {
-        if (this.isTableLocked) return;
+    public handleSortColumnClick(column: ITableColumn): void {
+        if (this.isTableLocked || this.isEmptyTable || !column.hasSort) return;
 
-        this.onSortingChange.emit(sort);
+        this.onSortingChange.emit(column);
     }
 
-    public handleShowMoreClick(): void {}
+    public handleShowMoreClick(): void {
+        this.onHandleShowMoreClick.emit(true);
+    }
 
     public isRowExpanded(rowId: number): boolean {
         return this.expandedRows?.has(rowId);

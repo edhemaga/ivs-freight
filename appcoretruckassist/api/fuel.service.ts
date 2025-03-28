@@ -690,16 +690,17 @@ export class FuelService {
     /**
      * @param id 
      * @param truckId 
+     * @param driverId 
      * @param trailerId 
      * @param files 
      * @param filesForDeleteIds 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiFuelEfsTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiFuelEfsTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiFuelEfsTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
-    public apiFuelEfsTransactionPut(id?: number, truckId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiFuelEfsTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
+    public apiFuelEfsTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
+    public apiFuelEfsTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiFuelEfsTransactionPut(id?: number, truckId?: number, driverId?: number, trailerId?: number, files?: Array<Blob>, filesForDeleteIds?: Array<number>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
 
@@ -761,6 +762,9 @@ export class FuelService {
         }
         if (truckId !== undefined) {
             localVarFormParams = localVarFormParams.append('TruckId', <any>truckId) as any || localVarFormParams;
+        }
+        if (driverId !== undefined) {
+            localVarFormParams = localVarFormParams.append('DriverId', <any>driverId) as any || localVarFormParams;
         }
         if (trailerId !== undefined) {
             localVarFormParams = localVarFormParams.append('TrailerId', <any>trailerId) as any || localVarFormParams;

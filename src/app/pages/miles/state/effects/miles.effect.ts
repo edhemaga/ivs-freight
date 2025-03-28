@@ -23,6 +23,7 @@ import {
     activeViewModeSelector,
     detailsSelector,
     filterSelector,
+    pageSelector,
     selectMilesItems,
     selectSelectedTab,
     tableSettingsSelector,
@@ -75,8 +76,9 @@ export class MilesEffects {
                         null,
                         null,
                         null,
-                        tableSettings.sortKey,
-                        tableSettings.sortDirection
+                        null,
+                        tableSettings.sortDirection,
+                        tableSettings.sortKey
                     )
                     .pipe(
                         map((response) => {
@@ -286,8 +288,9 @@ export class MilesEffects {
                         page,
                         null,
                         null,
-                        tableSettings.sortKey,
-                        tableSettings.sortDirection
+                        null,
+                        tableSettings.sortDirection,
+                        tableSettings.sortKey
                     )
                     .pipe(
                         switchMap((response) => {
@@ -325,6 +328,57 @@ export class MilesEffects {
             exhaustMap((action) => {
                 const { unit } = action;
                 return this.fetchInitialUnitDetails([unit]);
+            })
+        )
+    );
+
+    public getMilesOnPageChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.pageChanges),
+            exhaustMap(() => {
+                return combineLatest([
+                    this.store.select(selectSelectedTab),
+                    this.store.select(filterSelector),
+                    this.store.select(tableSettingsSelector),
+                    this.store.select(pageSelector),
+                ]).pipe(
+                    take(1),
+                    switchMap(([selectedTab, filters, tableSettings, page]) => {
+                        const tabValue = Number(
+                            selectedTab === eMileTabs.ACTIVE
+                        );
+
+                        return this.milesService
+                            .apiMilesListGet(
+                                null,
+                                tabValue,
+                                filters.dateFrom,
+                                filters.dateTo,
+                                filters.states,
+                                filters.revenueFrom,
+                                filters.revenueTo,
+                                page,
+                                null,
+                                null,
+                                null,
+                                tableSettings.sortDirection,
+                                tableSettings.sortKey
+                            )
+                            .pipe(
+                                map((response) => {
+                                    const miles = MilesHelper.milesMapper(
+                                        response.pagination.data
+                                    );
+                                    return MilesAction.updateMilesList({
+                                        miles,
+                                    });
+                                }),
+                                catchError(() =>
+                                    of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
+                    })
+                );
             })
         )
     );
