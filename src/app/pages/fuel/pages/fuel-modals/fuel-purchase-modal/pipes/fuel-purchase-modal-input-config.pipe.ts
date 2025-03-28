@@ -30,6 +30,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
             selectedDriver,
             trailerId,
             logoName,
+            isDisabled
         } = args;
 
         let inputConfig: ICaInput;
@@ -153,6 +154,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Driver',
                     isDropdown: true,
+                    isDisabled: isDisabled,
                     dropdownWidthClass: truckTrailerDriverDropdownWidth,
                     dropdownImageInput: {
                         withText: true,
