@@ -156,7 +156,9 @@
                         "
                     ></app-ca-input>
                 } @else {
-                    <app-ca-input-dropdown
+                    <ca-input-dropdown-test
+                        [label]="'name'"
+                        [optionValue]="'id'"
                         formControlName="driverFullName"
                         [template]="'load-dispatcher'"
                         [inputConfig]="
@@ -172,7 +174,7 @@
                         [options]="driverOptions"
                         [activeItem]="selectedDriver"
                         (selectedItem)="onSelectDropDown($event, 'driver')"
-                    ></app-ca-input-dropdown>
+                    ></ca-input-dropdown-test>
                 }
             </div>
             <div class="row last-row">
