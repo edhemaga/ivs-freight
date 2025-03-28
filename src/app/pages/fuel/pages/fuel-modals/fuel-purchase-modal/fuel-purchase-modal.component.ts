@@ -900,7 +900,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
     }
 
     private composeDriverOptions(data: DriverFilterResponse[]): void {
-        const driverOptions = data.map((driver) => {
+        this.driverOptions = data.map((driver) => {
             return {
                 id: driver.id,
                 name: driver.driverFullName,
@@ -908,8 +908,6 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 suffix: '',
             };
         });
-
-        this.driverOptions = JSON.parse(JSON.stringify([...driverOptions]));
     }
 
     private patchDriverId(driverId: number): void {
