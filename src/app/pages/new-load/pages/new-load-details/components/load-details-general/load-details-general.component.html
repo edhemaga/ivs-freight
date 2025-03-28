@@ -416,7 +416,7 @@
                   : eStringPlaceholder.EMPTY
             : eStringPlaceholder.EMPTY;
 
-    <div class="px-3 pt-2" (click)="toggleBilling()">
+    <div class="px-3 p-t-8">
         <app-ta-custom-card
             [cardName]="'Billing'"
             [hasCounter]="data?.billingCount"
@@ -428,6 +428,7 @@
                 marginTop: '6px',
                 marginBottom: '6px',
             }"
+            (onOpenCard)="toggleBilling()"
         >
             <ng-container
                 *ngTemplateOutlet="
@@ -451,12 +452,11 @@
     let-valueTextSize="valueTextSize"
     let-color="color"
     let-hasLineThrough="hasLineThrough"
+    let-fontWeight="fontWeight"
 >
-    <div
-        class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
-    >
+    <div class="d-flex justify-content-between align-items-center mb-1 h-26">
         <span
-            class="ta-font-medium"
+            class="ta-font-{{ fontWeight ?? 'medium' }} text-size-14"
             [ngClass]="hasLineThrough ? mutedColor : blackColor"
             [class.text-decoration-line-through]="hasLineThrough"
         >
@@ -548,10 +548,11 @@
             context: {
                 label: 'TOTAL RATE',
                 value: data?.totalRate,
-                color: data?.tonuRate ? mutedColor : 'text-color-black',
                 valueTextSize: 18,
+                color: data?.tonuRate ? mutedColor : 'text-color-black',
                 hasLineThrough:
                     data?.tonuRate || data?.revisedRate || data?.adjustedRate,
+                fontWeight: 'semi-bold',
             }
         "
     ></ng-container>
@@ -568,6 +569,7 @@
                         ? mutedColor
                         : 'text-color-special-filter-purple',
                     hasLineThrough: false,
+                    fontWeight: 'semi-bold',
                 }
             "
         ></ng-container>
@@ -583,6 +585,7 @@
                     valueTextSize: 18,
                     color: data?.tonuRate ? mutedColor : 'text-color-yellow-5',
                     hasLineThrough: data?.tonuRate,
+                    fontWeight: 'semi-bold',
                 }
             "
         ></ng-container>
@@ -596,9 +599,9 @@
                     label: 'TONU RATE',
                     value: data?.tonuRate,
                     valueTextSize: 18,
-
                     color: 'text-color-red-11',
                     hasLineThrough: data?.tonuRate,
+                    fontWeight: 'semi-bold',
                 }
             "
         ></ng-container>
@@ -615,7 +618,8 @@
                 ? 'red'
                 : 'green'
             : eStringPlaceholder.EMPTY;
-    <div class="px-3 pt-2" (click)="togglePayment()">
+
+    <div class="px-3">
         <app-ta-custom-card
             [cardName]="'Payment'"
             [hasCounter]="data?.paymentCount"
@@ -627,6 +631,7 @@
                 marginTop: '6px',
                 marginBottom: '6px',
             }"
+            (onOpenCard)="togglePayment()"
         >
             @if (data?.advancePay) {
                 <ng-container

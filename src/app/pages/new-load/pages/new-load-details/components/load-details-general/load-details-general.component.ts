@@ -62,7 +62,7 @@ export class LoadDetailsGeneralComponent {
         this.isBillingExpanded = !this.isBillingExpanded;
     }
 
-    public togglePayment(): void {
+    public togglePayment(isOpened: boolean): void {
         this.isPaymentExpanded = !this.isPaymentExpanded;
     }
 }
