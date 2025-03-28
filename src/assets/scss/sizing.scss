@@ -1,7 +1,35 @@
-$sizes-height: (7, 8, 10, 15, 16, 18, 22, 26, 30, 34, 40, 42, 44);
+$sizes-height: (7, 8, 10, 15, 16, 18, 22, 26, 30, 34, 40, 42, 44, 486);
 
-// DO NOT USE 25,50,75,100. They are bootstrap width classes
-$sizes-width: (10, 15, 18, 26, 36, 40, 42, 70, 91, 101, 223, 334, 462);
+// DO NOT USE 25, 33, ,50,75,100. They are bootstrap width classes
+$sizes-width: (
+    10,
+    15,
+    18,
+    24,
+    26,
+    36,
+    40,
+    42,
+    46,
+    57,
+    60,
+    68,
+    70,
+    71,
+    83,
+    90,
+    91,
+    98,
+    101,
+    106,
+    108,
+    116,
+    155,
+    179,
+    223,
+    334,
+    462
+);
 
 @mixin size-classes($class, $property, $sizes) {
     .#{$class} {
@@ -20,5 +48,15 @@ $sizes-width: (10, 15, 18, 26, 36, 40, 42, 70, 91, 101, 223, 334, 462);
 .min-w {
     &-18 {
         min-width: 18px;
+    }
+}
+
+.flex-1 {
+    flex: 1;
+}
+
+.w {
+    &-33 {
+        width: 33%;
     }
 }
