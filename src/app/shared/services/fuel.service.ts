@@ -42,6 +42,9 @@ import {
     FuelMapListApiArgumentsType,
 } from '@pages/fuel/types';
 
+// constants
+import { FuelTableConstants } from '@pages/fuel/pages/fuel-table/utils/constants';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -172,7 +175,12 @@ export class FuelService {
         truckId: number,
         date: string
     ): Observable<FuelDispatchHistoryResponse> {
-        return this.fuelService.apiFuelDispatchhistoryGet(truckId, date);
+        return this.fuelService.apiFuelDispatchhistoryGet(
+            truckId,
+            date,
+            1,
+            FuelTableConstants.TABLE_PAGE_SIZE_MAX
+        );
     }
 
     public getFuelTransactionById(
