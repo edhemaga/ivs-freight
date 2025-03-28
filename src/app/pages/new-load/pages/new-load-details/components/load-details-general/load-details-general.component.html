@@ -273,6 +273,14 @@
                 }
             "
         ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                payment;
+                context: {
+                    data: load,
+                }
+            "
+        ></ng-container>
     }
 </div>
 
@@ -391,11 +399,30 @@
 </ng-template>
 
 <ng-template #billing let-data="data">
-    <div class="p-2" (click)="toggleBilling()">
+    @let cardSubText =
+        !isBillingExpanded
+            ? data?.tonuRate
+                ? (data?.tonuRate | currency: 'USD') + ' TONU'
+                : data?.revisedRate
+                  ? (data?.revisedRate | currency: 'USD') + ' REVISED'
+                  : eStringPlaceholder.EMPTY
+            : eStringPlaceholder.EMPTY;
+    @let cardSubTextClass =
+        !isBillingExpanded
+            ? data?.tonuRate
+                ? 'red'
+                : data?.revisedRate
+                  ? 'text-color-muted'
+                  : eStringPlaceholder.EMPTY
+            : eStringPlaceholder.EMPTY;
+
+    <div class="px-3 pt-2" (click)="toggleBilling()">
         <app-ta-custom-card
             [cardName]="'Billing'"
             [hasCounter]="data?.billingCount"
             [disabledCard]="!data?.billingCount"
+            [subText]="cardSubText"
+            [subTextClass]="cardSubTextClass"
             [bodyTemplate]="'card'"
             [animationMarginParams]="{
                 marginTop: '6px',
@@ -414,28 +441,33 @@
     </div>
 </ng-template>
 
+@let mutedColor = 'text-color-muted';
+@let blackColor = 'text-color-black';
+
 <ng-template
-    #billingRateItem
+    #cardItem
     let-label="label"
     let-value="value"
+    let-valueTextSize="valueTextSize"
     let-color="color"
-    let-isLineThrough="isLineThrough"
+    let-hasLineThrough="hasLineThrough"
 >
-    @let mutedColor = 'text-color-muted';
-    @let blackColor = 'text-color-black';
     <div
         class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
     >
         <span
             class="ta-font-medium"
-            [ngClass]="isLineThrough ? mutedColor : blackColor"
-            [class.text-decoration-line-through]="isLineThrough"
+            [ngClass]="hasLineThrough ? mutedColor : blackColor"
+            [class.text-decoration-line-through]="hasLineThrough"
         >
             {{ label }}
         </span>
         <span
-            [ngClass]="isLineThrough ? mutedColor : color"
-            [class.text-decoration-line-through]="isLineThrough"
+            [ngClass]="[
+                valueTextSize ? 'text-size-' + valueTextSize : 'text-size-14',
+                hasLineThrough ? mutedColor : color,
+            ]"
+            [class.text-decoration-line-through]="hasLineThrough"
         >
             {{ value | currency: 'USD' }}
         </span>
@@ -446,12 +478,12 @@
     @if (data?.baseRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'Base Rate',
                     value: data?.baseRate,
                     color: data?.tonuRate ? mutedColor : 'text-color-black-2',
-                    isLineThrough:
+                    hasLineThrough:
                         data?.tonuRate ||
                         data?.revisedRate ||
                         data?.adjustedRate,
@@ -463,14 +495,14 @@
     @if (data?.adjustedRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'Adjusted',
                     value: data?.adjustedRate,
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    lineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -479,14 +511,14 @@
     @if (data?.revisedRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'Revised',
                     value: data?.revisedRate,
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    isLineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -496,14 +528,14 @@
         @if (item?.rate) {
             <ng-container
                 *ngTemplateOutlet="
-                    billingRateItem;
+                    cardItem;
                     context: {
                         label: item?.additionalBillingType?.name,
                         value: item?.rate,
                         color: data?.tonuRate
                             ? mutedColor
                             : 'text-color-black-2',
-                        lineThrough: data?.tonuRate,
+                        hasLineThrough: data?.tonuRate,
                     }
                 "
             ></ng-container>
@@ -512,12 +544,13 @@
 
     <ng-container
         *ngTemplateOutlet="
-            billingRateItem;
+            cardItem;
             context: {
                 label: 'TOTAL RATE',
                 value: data?.totalRate,
                 color: data?.tonuRate ? mutedColor : 'text-color-black',
-                isLineThrough:
+                valueTextSize: 18,
+                hasLineThrough:
                     data?.tonuRate || data?.revisedRate || data?.adjustedRate,
             }
         "
@@ -526,14 +559,15 @@
     @if (data?.totalAdjustedRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'TOTAL ADJUSTED',
                     value: data?.totalAdjustedRate,
+                    valueTextSize: 18,
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    isLineThrough: false,
+                    hasLineThrough: false,
                 }
             "
         ></ng-container>
@@ -542,12 +576,13 @@
     @if (data?.driverRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'DRIVER RATE',
                     value: data?.driverRate,
+                    valueTextSize: 18,
                     color: data?.tonuRate ? mutedColor : 'text-color-yellow-5',
-                    isLineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -556,14 +591,82 @@
     @if (data?.tonuRate) {
         <ng-container
             *ngTemplateOutlet="
-                billingRateItem;
+                cardItem;
                 context: {
                     label: 'TONU RATE',
                     value: data?.tonuRate,
+                    valueTextSize: 18,
+
                     color: 'text-color-red-11',
-                    lineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
     }
+</ng-template>
+
+<ng-template #payment let-data="data">
+    @let isDue = !!data?.totalDue;
+    @let cardSubTitle =
+        isDue ? 'DUE ' + (data?.totalDue | currency: 'USD') : 'PAID IN FULL';
+    @let cardSubClass =
+        !isPaymentExpanded
+            ? isDue
+                ? 'red'
+                : 'green'
+            : eStringPlaceholder.EMPTY;
+    <div class="px-3 pt-2" (click)="togglePayment()">
+        <app-ta-custom-card
+            [cardName]="'Payment'"
+            [hasCounter]="data?.paymentCount"
+            [disabledCard]="!!data?.paymentCount"
+            [subText]="!isPaymentExpanded && cardSubTitle"
+            [subTextClass]="cardSubClass"
+            [bodyTemplate]="'card'"
+            [animationMarginParams]="{
+                marginTop: '6px',
+                marginBottom: '6px',
+            }"
+        >
+            @if (data?.advancePay) {
+                <ng-container
+                    *ngTemplateOutlet="
+                        cardItem;
+                        context: {
+                            label: 'Advance',
+                            value: data?.advancePay,
+                            color: 'text-color-black',
+                            hasLineThrough: data?.tonuRate,
+                        }
+                    "
+                ></ng-container>
+            }
+            <div class="d-flex justify-content-between">
+                @for (item of data?.pays; track pay.id) {
+                    <span class="ta-font-medium text-size-14">
+                        {{ item?.paymentType?.name }}
+                        ({{ item?.paymentMethod?.name }})
+                    </span>
+                    <span class="text-size-14"> {{ item?.payDate }} </span>
+                    <span class="text-size-14">{{
+                        item?.pay | currency: 'USD'
+                    }}</span>
+                }
+            </div>
+            <ng-container
+                *ngTemplateOutlet="
+                    cardItem;
+                    context: {
+                        label: isDue ? 'DUE' : 'PAID IN FULL',
+                        value: isDue ? data?.totalDue : data?.totalPaid,
+                        valueTextSize: 18,
+                        color: isDue
+                            ? 'text-color-red-11'
+                            : 'text-color-green-2',
+                        hasLineThrough: false,
+                    }
+                "
+            ></ng-container>
+        </app-ta-custom-card>
+    </div>
 </ng-template>
