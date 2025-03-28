@@ -399,29 +399,30 @@
 </ng-template>
 
 <ng-template #billing let-data="data">
+    @let cardSubText =
+        !isBillingExpanded
+            ? data?.tonuRate
+                ? (data?.tonuRate | currency: 'USD') + ' TONU'
+                : data?.revisedRate
+                  ? (data?.revisedRate | currency: 'USD') + ' REVISED'
+                  : eStringPlaceholder.EMPTY
+            : eStringPlaceholder.EMPTY;
+    @let cardSubTextClass =
+        !isBillingExpanded
+            ? data?.tonuRate
+                ? 'red'
+                : data?.revisedRate
+                  ? 'text-color-muted'
+                  : eStringPlaceholder.EMPTY
+            : eStringPlaceholder.EMPTY;
+
     <div class="px-3 pt-2" (click)="toggleBilling()">
         <app-ta-custom-card
             [cardName]="'Billing'"
             [hasCounter]="data?.billingCount"
             [disabledCard]="!data?.billingCount"
-            [subText]="
-                !isBillingExpanded
-                    ? data?.tonuRate
-                        ? (data?.tonuRate | currency: 'USD') + ' TONU'
-                        : data?.revisedRate
-                          ? (data?.revisedRate | currency: 'USD') + ' REVISED'
-                          : eStringPlaceholder.EMPTY
-                    : eStringPlaceholder.EMPTY
-            "
-            [subTextClass]="
-                !isBillingExpanded
-                    ? data?.tonuRate
-                        ? 'red'
-                        : data?.revisedRate
-                          ? 'text-color-muted'
-                          : eStringPlaceholder.EMPTY
-                    : eStringPlaceholder.EMPTY
-            "
+            [subText]="cardSubText"
+            [subTextClass]="cardSubTextClass"
             [bodyTemplate]="'card'"
             [animationMarginParams]="{
                 marginTop: '6px',
@@ -449,24 +450,24 @@
     let-value="value"
     let-valueTextSize="valueTextSize"
     let-color="color"
-    let-isLineThrough="isLineThrough"
+    let-hasLineThrough="hasLineThrough"
 >
     <div
         class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
     >
         <span
             class="ta-font-medium"
-            [ngClass]="isLineThrough ? mutedColor : blackColor"
-            [class.text-decoration-line-through]="isLineThrough"
+            [ngClass]="hasLineThrough ? mutedColor : blackColor"
+            [class.text-decoration-line-through]="hasLineThrough"
         >
             {{ label }}
         </span>
         <span
             [ngClass]="[
                 valueTextSize ? 'text-size-' + valueTextSize : 'text-size-14',
-                isLineThrough ? mutedColor : color,
+                hasLineThrough ? mutedColor : color,
             ]"
-            [class.text-decoration-line-through]="isLineThrough"
+            [class.text-decoration-line-through]="hasLineThrough"
         >
             {{ value | currency: 'USD' }}
         </span>
@@ -482,7 +483,7 @@
                     label: 'Base Rate',
                     value: data?.baseRate,
                     color: data?.tonuRate ? mutedColor : 'text-color-black-2',
-                    isLineThrough:
+                    hasLineThrough:
                         data?.tonuRate ||
                         data?.revisedRate ||
                         data?.adjustedRate,
@@ -501,7 +502,7 @@
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    lineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -517,7 +518,7 @@
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    isLineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -534,7 +535,7 @@
                         color: data?.tonuRate
                             ? mutedColor
                             : 'text-color-black-2',
-                        lineThrough: data?.tonuRate,
+                        hasLineThrough: data?.tonuRate,
                     }
                 "
             ></ng-container>
@@ -549,7 +550,7 @@
                 value: data?.totalRate,
                 color: data?.tonuRate ? mutedColor : 'text-color-black',
                 valueTextSize: 18,
-                isLineThrough:
+                hasLineThrough:
                     data?.tonuRate || data?.revisedRate || data?.adjustedRate,
             }
         "
@@ -566,7 +567,7 @@
                     color: data?.tonuRate
                         ? mutedColor
                         : 'text-color-special-filter-purple',
-                    isLineThrough: false,
+                    hasLineThrough: false,
                 }
             "
         ></ng-container>
@@ -581,7 +582,7 @@
                     value: data?.driverRate,
                     valueTextSize: 18,
                     color: data?.tonuRate ? mutedColor : 'text-color-yellow-5',
-                    isLineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -597,7 +598,7 @@
                     valueTextSize: 18,
 
                     color: 'text-color-red-11',
-                    lineThrough: data?.tonuRate,
+                    hasLineThrough: data?.tonuRate,
                 }
             "
         ></ng-container>
@@ -635,7 +636,7 @@
                             label: 'Advance',
                             value: data?.advancePay,
                             color: 'text-color-black',
-                            lineThrough: data?.tonuRate,
+                            hasLineThrough: data?.tonuRate,
                         }
                     "
                 ></ng-container>
@@ -662,7 +663,7 @@
                         color: isDue
                             ? 'text-color-red-11'
                             : 'text-color-green-2',
-                        lineThrough: false,
+                        hasLineThrough: false,
                     }
                 "
             ></ng-container>
