@@ -16,7 +16,6 @@ import {
     detailsSelector,
     unitsPaginationSelector,
     tableSettingsSelector,
-    unSelectedCountSelector,
     tabResultsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
@@ -98,9 +97,6 @@ export class MilesStoreService {
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(tableSettingsSelector)
     );
-    public unSelectedCountSelector$: Observable<number> = this.store.pipe(
-        select(unSelectedCountSelector)
-    );
 
     public tabResultsSelector$: Observable<IMilesTabResults> = this.store.pipe(
         select(tabResultsSelector)
@@ -165,9 +161,10 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchSelectAll(): void {
+    public dispatchSelectAll(action: string): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
+            action,
         });
     }
 

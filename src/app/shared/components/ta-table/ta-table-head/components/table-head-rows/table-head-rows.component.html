@@ -72,6 +72,14 @@
                     column.ngTemplate !== 'user-checkbox',
                 'space-left': tableHeadRowsData?.notPinedColumns && i === 0,
                 'no-data': !tableHeadRowsData.viewDataLength,
+                'text-paid':
+                    column.ngTemplate === 'text-paid' &&
+                    tableHeadRowsData.locked,
+                'text-paid-border-right':
+                    column.ngTemplate === 'text-paid' &&
+                        tableHeadRowsData.locked &&
+                        column
+                    | tableDoubleHead: tableHeadRowsData?.tableData[0] : true,
             }"
             (cdkDragStarted)="
                 tableHeadRowsData?.notPinedColumns &&

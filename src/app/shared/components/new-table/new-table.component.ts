@@ -132,7 +132,7 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     }
 
     public handleSortColumnClick(column: ITableColumn): void {
-        if (this.isTableLocked || this.isEmptyTable || !column.sort) return;
+        if (this.isTableLocked || this.isEmptyTable || !column.hasSort) return;
 
         this.onSortingChange.emit(column);
     }

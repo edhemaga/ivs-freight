@@ -33,6 +33,14 @@ export class SharedSvgRoutes {
     static ARROW_LEFT_ICON: string = 'assets/svg/common/arrow-left-grey.svg';
     static ARROW_RIGHT_ICON: string = 'assets/svg/common/arrow-right-grey.svg';
     static DEACTIVATE_ICON: string = 'assets/svg/common/ic_deactivate.svg';
+    static CHECKMARK_ICON: string = 'assets/svg/common/ic_checkmark.svg';
+    static TEMPERATURE_ICON: string =
+        'assets/svg/common/load/ic_temperature.svg';
+    static WEIGHT_ICON: string = 'assets/svg/common/ic_weight.svg';
+    static LENGTH_ICON: string = 'assets/svg/common/load/ic_length.svg';
+    static HEIGHT_ICON: string = 'assets/svg/common/load/ic_height.svg';
+    static TARP_ICON: string = 'assets/svg/common/load/ic_tarp.svg';
+    static STACKABLE_ICON: string = 'assets/svg/common/load/ic_stackable.svg';
     static WEX_EFS: string = 'assets/svg/fuel/wex-efs.svg';
     static COMPANY_ICON: string = 'assets/svg/common/ic_company.svg';
     static TIME_ICON: string = 'assets/svg/common/ic_time.svg';

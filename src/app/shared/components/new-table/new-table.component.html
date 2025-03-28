@@ -35,11 +35,11 @@
         <div class="new-table--body">
             @for (row of rows; track row.id) {
                 <div
-                    class="d-flex align-items-center new-table--row background-white p-x-4 br-3 m-b-2"
+                    class="d-flex align-items-center background-white p-x-4 br-3 m-b-2"
                 >
                     @if (row) {
                         <div
-                            class="d-flex align-items-center new-table--row p-x-4 br-3 m-t-4 m-b-4 p-y-1 background-hover-light-grey"
+                            class="d-flex align-items-center p-x-4 br-3 m-t-4 m-b-4 p-y-1 background-hover-light-grey"
                             [class.background-light-grey]="row.isSelected"
                         >
                             <!-- Left Pinned Columns -->

@@ -4,7 +4,7 @@ import { IStateFilters } from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 // enums
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eGeneralActions } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // models
@@ -82,7 +82,6 @@ export const updateMilesListData = function (
         ...state,
         items,
         // New items are not selected no need to filter it
-        unSelectedCount: state.unSelectedCount + miles.length,
         unitsPagination: {
             ...state.unitsPagination,
             currentPage: state.unitsPagination.currentPage + 1,
@@ -107,12 +106,18 @@ export const toggleRowSelection = function (
         items: updatedItems,
         selectedCount: newSelectedCount,
         hasAllItemsSelected: newSelectedCount === updatedItems.length,
-        unSelectedCount: state.items.length - newSelectedCount,
     };
 };
 
-export const toggleSelectAll = function (state: IMilesState): IMilesState {
-    const hasAllItemsSelected = !state.hasAllItemsSelected;
+export const toggleSelectAll = function (
+    state: IMilesState,
+    action: string
+): IMilesState {
+    const hasAllItemsSelected =
+        action === eGeneralActions.SELECT_ALL ||
+        action === eGeneralActions.CLEAR_SELECTED
+            ? !state.hasAllItemsSelected
+            : true;
 
     const updatedItems = state.items.map((item) => ({
         ...item,
@@ -124,7 +129,6 @@ export const toggleSelectAll = function (state: IMilesState): IMilesState {
         items: updatedItems,
         selectedCount: hasAllItemsSelected && updatedItems.length,
         hasAllItemsSelected,
-        unSelectedCount: 0,
     };
 };
 
