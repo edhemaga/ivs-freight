@@ -154,7 +154,7 @@ export class FuelPurchaseModalInputConfigPipe implements PipeTransform {
                     type: 'text',
                     label: 'Driver',
                     isDropdown: true,
-                    isDisabled: isDisabled,
+                    isDisabled,
                     dropdownWidthClass: truckTrailerDriverDropdownWidth,
                     dropdownImageInput: {
                         withText: true,
