@@ -559,7 +559,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         truckId: truck?.id ?? fuelTruckNumber,
                         invoice: invoice,
                         trailerId: trailer?.trailerNumber ?? null,
-                        driverId: driver ? driver.id : fuelCardHolderName,
+                        driverId: driver?.id ?? fuelCardHolderName,
                         transactionDate:
                             MethodsCalculationsHelper.convertDateFromBackend(
                                 transactionDate
