@@ -27,7 +27,7 @@
                     expired: percents === 0,
                     'back-gray': percents > 50,
                     'back-yellow': percents > 20 && percents <= 50,
-                    'back-red': percents <= 20 && percents > 0 && text !== '/'
+                    'back-red': percents <= 20 && percents > 0 && text !== '/',
                 }"
             ></div>
             <div
@@ -35,7 +35,7 @@
                 [ngClass]="{
                     'front-gray': percents > 50,
                     'front-yellow': percents > 20 && percents <= 50,
-                    'front-red': percents <= 20
+                    'front-red': percents <= 20,
                 }"
                 [style.width.%]="daysExpired ? 100 - percents : percents"
             ></div>
@@ -45,7 +45,12 @@
     <!-- In (days) of or ago (days) dispaly text bassed on expired or it will expire -->
 
     <ng-container *ngIf="percents && text !== '/'">
-        <span class="progress-text" [class.table-progress-text]="isTable">
+        <span
+            class="progress-text"
+            [class.table-progress-text]="isTable"
+            [class.text-size-13]="text?.length === 5"
+            [class.text-size-12]="text?.length > 5"
+        >
             <ng-container *ngIf="type === 'days'">
                 <ng-container *ngIf="!daysExpired"
                     >in {{ text }} days</ng-container
@@ -72,10 +77,12 @@
         <span
             class="progress-text ta-font-semi-bold"
             [class.table-progress-text]="isTable"
+            [class.text-size-13]="text?.length >= 5"
+            [class.text-size-12]="text?.length > 5"
         >
             <ng-container *ngIf="type === 'days'">
                 <ng-container *ngIf="!daysExpired"
-                    >{{ text }}days ago</ng-container
+                    >{{ text }} days ago</ng-container
                 >
                 <ng-container *ngIf="daysExpired">
                     <div class="progress-text-title">
@@ -162,17 +169,17 @@
                 'bg-sliver-container': percents >= 50 && percents < 100,
                 'bg-orange-container': percents >= 20 && percents < 50,
                 'bg-danger-container': percents > 0 && percents < 20,
-                'bg-inactive-container': percents === 100
+                'bg-inactive-container': percents === 100,
             }"
         >
             <div
                 [ngClass]="{
                     'bg-progress-sliver': percents >= 50 && percents <= 100,
                     'bg-progress-orange': percents >= 20 && percents < 50,
-                    'bg-progress-danger': percents > 0 && percents < 20
+                    'bg-progress-danger': percents > 0 && percents < 20,
                 }"
                 [ngStyle]="{
-                    width: percents + '%'
+                    width: percents + '%',
                 }"
                 class="table-progress-bar bg-progress-danger"
             ></div>
@@ -185,23 +192,40 @@
                     <div class="progress-info-container">
                         <div class="progress-info-title">Last Serviced</div>
                         <div class="progress-info-text text-color-white">
-                            {{ progressDropdownData.column?.serviceData?.date ? (progressDropdownData.column.serviceData.date | date: 'MM/dd/yy') : '/' }}
+                            {{
+                                progressDropdownData.column?.serviceData?.date
+                                    ? (progressDropdownData.column.serviceData
+                                          .date | date: 'MM/dd/yy')
+                                    : '/'
+                            }}
                         </div>
                     </div>
                     <div class="progress-info-container">
                         <div class="progress-info-title">Odometer</div>
                         <div class="progress-info-text text-color-white">
-                            {{ progressDropdownData.column?.serviceData?.odometer ? (progressDropdownData.column?.serviceData?.odometer | thousandSeparator) : '/' }}
+                            {{
+                                progressDropdownData.column?.serviceData
+                                    ?.odometer
+                                    ? (progressDropdownData.column?.serviceData
+                                          ?.odometer | thousandSeparator)
+                                    : '/'
+                            }}
                         </div>
                     </div>
                 </div>
                 <div class="progress-info-container">
                     <div class="progress-info-title">Repair Shop</div>
                     <div class="progress-info-text text-color-white">
-                        {{ progressDropdownData.column?.serviceData?.repairShop?.name ?? '/' }}
+                        {{
+                            progressDropdownData.column?.serviceData?.repairShop
+                                ?.name ?? '/'
+                        }}
                     </div>
                     <div class="text-size-14 text-color-grey progress-address">
-                        {{ progressDropdownData.column?.serviceData?.repairShop?.address?.address ?? '/' }}
+                        {{
+                            progressDropdownData.column?.serviceData?.repairShop
+                                ?.address?.address ?? '/'
+                        }}
                     </div>
                 </div>
                 <div
@@ -210,13 +234,21 @@
                     <div class="progress-info-container">
                         <div class="progress-info-title">Invoice</div>
                         <div class="progress-info-text text-color-white">
-                            {{ progressDropdownData.column?.serviceData?.invoice ?? '/' }}
+                            {{
+                                progressDropdownData.column?.serviceData
+                                    ?.invoice ?? '/'
+                            }}
                         </div>
                     </div>
                     <div class="progress-info-container">
                         <div class="progress-info-title">Cost</div>
                         <div class="progress-info-text text-color-white">
-                            {{ progressDropdownData.column?.serviceData?.total ? (progressDropdownData.column.serviceData.total | formatCurrency) : '/' }}
+                            {{
+                                progressDropdownData.column?.serviceData?.total
+                                    ? (progressDropdownData.column.serviceData
+                                          .total | formatCurrency)
+                                    : '/'
+                            }}
                         </div>
                     </div>
                 </div>

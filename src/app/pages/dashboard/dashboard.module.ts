@@ -11,7 +11,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ClickOutsideCustomRangeDirective } from '@pages/dashboard/directives/click-outside-custom-range.directive';
 
 // pipes
-
+import { ThousandFormatterPipe } from 'ca-components';
 import { SetTrendIconPipe } from '@pages/dashboard/pages/dashboard-performance/pipes/set-trend-icon.pipe';
 import { SetTrendLabelPipe } from '@pages/dashboard/pages/dashboard-performance/pipes/set-trend-label.pipe';
 import { TextColorPipe } from '@pages/dashboard/pages/dashboard-by-state/pipes/text-color.pipe';
@@ -20,7 +20,6 @@ import {
     CustomSubperiodWidthPipe,
     DropdownClassPipe,
     ShowMorePipe,
-    ThousandFormatterPipe,
 } from '@pages/dashboard/pipes';
 
 // components

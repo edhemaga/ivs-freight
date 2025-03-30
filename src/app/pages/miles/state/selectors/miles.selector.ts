@@ -45,11 +45,11 @@ export const statesSelector = createSelector(selectMilesState, (state) => {
     return states;
 });
 
-export const selectedRowsSelector = createSelector(
+export const selectedCountSelector = createSelector(
     selectMilesState,
     (state) => {
-        const { selectedRows } = state || {};
-        return selectedRows;
+        const { selectedCount } = state || {};
+        return selectedCount;
     }
 );
 
@@ -79,7 +79,17 @@ export const unitsPaginationSelector = createSelector(
     (state: IMilesState) => state.unitsPagination
 );
 
+export const pageSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.page
+);
+
 export const tableSettingsSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.tableSettings
+);
+
+export const tabResultsSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.tabResults
 );

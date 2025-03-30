@@ -40,7 +40,9 @@ export const initialState: ILoadState = {
     selectLoadCount: 0,
     totalLoadSum: 0,
     hasAllLoadsSelected: false,
-    isLoadDetailsMapOpen: false,
+    isLoadDetailsMapOpen: true,
+
+    minimalList: {},
 };
 // #endregion
 
@@ -337,6 +339,11 @@ export const loadReducer = createReducer(
     on(LoadActions.selectLoad, (state, { load }) =>
         Functions.updateLoadSelectedStatus(state, load)
     ),
+    on(LoadActions.getMinimalList, (state) => state),
+    on(LoadActions.setMinimalList, (state, { list }) =>
+        Functions.setMinimalList(state, list)
+    ),
+    on(LoadActions.setMinimalListError, (state) => state),
     on(LoadActions.toggleMap, (state) => {
         const { isLoadDetailsMapOpen } = state;
 

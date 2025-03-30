@@ -28,8 +28,13 @@ export const initialState: IMilesState = {
     activeViewMode: eActiveViewMode.List,
     filters: {},
     states: [],
-    selectedRows: 0,
+    selectedCount: 0,
     hasAllItemsSelected: false,
+    page: 1,
+    tabResults: {
+        activeTruckCount: 0,
+        inactiveTruckCount: 0,
+    },
 
     // Table
     columns: MilesTableColumns,
@@ -46,7 +51,7 @@ export const initialState: IMilesState = {
     },
     tableSettings: {
         isTableLocked: false,
-        sortKey: '',
+        sortKey: null,
         sortDirection: null,
     },
 };
@@ -77,6 +82,8 @@ export const milesReducer = createReducer(
         Functions.updateTabSelection(state, selectedTab)
     ),
 
+    on(MilesAction.pageChanges, (state) => Functions.pageChanges(state)),
+
     on(
         MilesAction.updateTruckCounts,
         (state, { activeTruckCount, inactiveTruckCount }) =>
@@ -104,7 +111,9 @@ export const milesReducer = createReducer(
         Functions.toggleRowSelection(state, mile)
     ),
 
-    on(MilesAction.selectAll, (state) => Functions.toggleSelectAll(state)),
+    on(MilesAction.selectAll, (state, { action }) =>
+        Functions.toggleSelectAll(state, action)
+    ),
     // #endregion
 
     // #region Unit detail
@@ -138,6 +147,10 @@ export const milesReducer = createReducer(
 
     on(MilesAction.tableSortingChange, (state, { column }) =>
         Functions.tableSortingChange(state, column)
+    ),
+
+    on(MilesAction.onSearchChange, (state, { search }) =>
+        Functions.onSearchChange(state, search)
     )
     // #endregion
 );

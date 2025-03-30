@@ -46,6 +46,11 @@
             @include text-selection($ta-blue-13);
         }
 
+        &-blue-15 {
+            color: $ta-blue-15 !important;
+            @include text-selection($ta-blue-15);
+        }
+
         &-blue-16 {
             color: $ta-blue-16 !important;
             @include text-selection($ta-blue-16);
@@ -79,6 +84,20 @@
         &-yellow {
             color: $ta-yellow-1 !important;
             @include text-selection($ta-yellow-1);
+        }
+        &-yellow-5 {
+            color: $ta-yellow-5 !important;
+            @include text-selection($ta-yellow-5);
+        }
+
+        &-yellow-5 {
+            color: $ta-yellow-5 !important;
+            @include text-selection($ta-yellow-5);
+        }
+
+        &-orange-1 {
+            color: $ta-orange-1 !important;
+            @include text-selection($ta-orange-1);
         }
 
         &-purple {
@@ -149,6 +168,10 @@
 
         &-blue-15 {
             @include hover($ta-blue-15);
+        }
+
+        &-blue-18 {
+            @include hover($ta-blue-18);
         }
     }
 }

@@ -21,7 +21,9 @@ import { MilesService } from 'appcoretruckassist';
 // Selectors & Helpers
 import {
     activeViewModeSelector,
+    detailsSelector,
     filterSelector,
+    pageSelector,
     selectMilesItems,
     selectSelectedTab,
     tableSettingsSelector,
@@ -74,8 +76,9 @@ export class MilesEffects {
                         null,
                         null,
                         null,
-                        tableSettings.sortKey,
-                        tableSettings.sortDirection
+                        null,
+                        tableSettings.sortDirection,
+                        tableSettings.sortKey
                     )
                     .pipe(
                         map((response) => {
@@ -115,15 +118,17 @@ export class MilesEffects {
         const firstItemId = milesItems?.[0]?.truckId;
         if (!firstItemId) return of(MilesAction.getLoadsPayloadError());
 
-        return this.milesService.apiMilesUnitGet(null, null, firstItemId).pipe(
-            map((unitResponse) =>
-                MilesAction.setUnitDetails({
-                    details: unitResponse,
-                    isLast: milesItems.length === 1,
-                })
-            ),
-            catchError(() => of(MilesAction.getLoadsPayloadError()))
-        );
+        return this.milesService
+            .apiMilesUnitGet(null, null, null, firstItemId)
+            .pipe(
+                map((unitResponse) =>
+                    MilesAction.setUnitDetails({
+                        details: unitResponse,
+                        isLast: milesItems.length === 1,
+                    })
+                ),
+                catchError(() => of(MilesAction.getLoadsPayloadError()))
+            );
     }
 
     public loadMilesEffect$ = createEffect(() =>
@@ -197,7 +202,7 @@ export class MilesEffects {
                         );
 
                         return this.milesService
-                            .apiMilesUnitGet(null, null, truckId)
+                            .apiMilesUnitGet(null, null, null, truckId)
                             .pipe(
                                 map((unitResponse) =>
                                     MilesAction.setFollowingUnitDetails({
@@ -206,6 +211,49 @@ export class MilesEffects {
                                         isFirst,
                                         isLast,
                                         isLastInCurrentList,
+                                    })
+                                ),
+                                catchError(() =>
+                                    of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
+                    })
+                )
+            )
+        )
+    );
+
+    public searchUnitStops$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.onSearchChange),
+            exhaustMap(() =>
+                combineLatest([
+                    this.store.select(unitsPaginationSelector),
+                    this.store.select(detailsSelector),
+                ]).pipe(
+                    take(1),
+                    switchMap(([unitsPagination, details]) => {
+                        return this.milesService
+                            .apiMilesUnitGet(
+                                null,
+                                unitsPagination.search,
+                                null,
+                                details.id
+                            )
+                            .pipe(
+                                map((unitResponse) =>
+                                    MilesAction.setFollowingUnitDetails({
+                                        unitResponse,
+                                        index: unitsPagination.activeUnitIndex,
+                                        isFirst:
+                                            unitsPagination.activeUnitIndex ===
+                                            0,
+                                        isLast:
+                                            unitsPagination.activeUnitIndex ===
+                                            unitsPagination.totalResultsCount -
+                                                1,
+                                        isLastInCurrentList:
+                                            unitsPagination.isLastInCurrentList,
                                     })
                                 ),
                                 catchError(() =>
@@ -240,8 +288,9 @@ export class MilesEffects {
                         page,
                         null,
                         null,
-                        tableSettings.sortKey,
-                        tableSettings.sortDirection
+                        null,
+                        tableSettings.sortDirection,
+                        tableSettings.sortKey
                     )
                     .pipe(
                         switchMap((response) => {
@@ -252,7 +301,7 @@ export class MilesEffects {
                             const hasOnlyOneResult = miles.length === 1;
 
                             return this.milesService
-                                .apiMilesUnitGet(null, null, newTruckId)
+                                .apiMilesUnitGet(null, null, null, newTruckId)
                                 .pipe(
                                     mergeMap((unitResponse) => [
                                         MilesAction.updateMilesList({ miles }),
@@ -272,4 +321,65 @@ export class MilesEffects {
             })
         );
     }
+
+    public getUnitOnSelection$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.onUnitSelection),
+            exhaustMap((action) => {
+                const { unit } = action;
+                return this.fetchInitialUnitDetails([unit]);
+            })
+        )
+    );
+
+    public getMilesOnPageChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.pageChanges),
+            exhaustMap(() => {
+                return combineLatest([
+                    this.store.select(selectSelectedTab),
+                    this.store.select(filterSelector),
+                    this.store.select(tableSettingsSelector),
+                    this.store.select(pageSelector),
+                ]).pipe(
+                    take(1),
+                    switchMap(([selectedTab, filters, tableSettings, page]) => {
+                        const tabValue = Number(
+                            selectedTab === eMileTabs.ACTIVE
+                        );
+
+                        return this.milesService
+                            .apiMilesListGet(
+                                null,
+                                tabValue,
+                                filters.dateFrom,
+                                filters.dateTo,
+                                filters.states,
+                                filters.revenueFrom,
+                                filters.revenueTo,
+                                page,
+                                null,
+                                null,
+                                null,
+                                tableSettings.sortDirection,
+                                tableSettings.sortKey
+                            )
+                            .pipe(
+                                map((response) => {
+                                    const miles = MilesHelper.milesMapper(
+                                        response.pagination.data
+                                    );
+                                    return MilesAction.updateMilesList({
+                                        miles,
+                                    });
+                                }),
+                                catchError(() =>
+                                    of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
+                    })
+                );
+            })
+        )
+    );
 }

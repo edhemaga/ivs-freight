@@ -1,20 +1,21 @@
 @let store =
     {
-        selectedRows: milesStoreService.selectedRowsSelector$ | async,
+        selectedCount: milesStoreService.selectedCountSelector$ | async,
         tableViewData: milesStoreService.tableViewData$ | async,
         selectedTab: milesStoreService.selectedTab$ | async,
         activeViewMode: milesStoreService.activeViewMode$ | async,
         statesSelector: milesStoreService.statesSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
+        miles: milesStoreService.miles$ | async,
     };
-<div (click)="toggleTableLockingStatus()">
-    is table unlocked: {{ store.tableSettings.isTableLocked }}
-</div>
+
 <div
     class="d-inline-block"
     [class.w-100]="store?.activeViewMode === eCommonElement.MAP"
 >
     @if (store) {
+        <!-- Toolbar -->
+
         <app-new-table-toolbar
             [title]="eSharedString.MILES"
             [isMarginTopDisabled]="true"
@@ -34,13 +35,15 @@
                 <ng-container *ngTemplateOutlet="divider"></ng-container>
 
                 <div class="d-flex gap-1 align-items-center">
-                    <app-ca-search-multiple-states
-                        [searchType]="'tabel'"
-                        [selectedTabData]="store?.activeTableData"
-                        [toolbarSearch]="true"
-                    ></app-ca-search-multiple-states>
-
-                    <ng-container *ngTemplateOutlet="divider"></ng-container>
+                    @if (store.activeViewMode !== eCommonElement.MAP) {
+                        <ca-search-multiple-states-2
+                            [selectedTab]="selectedTab"
+                            (onSearchQueryChange)="onSearchQueryChange($event)"
+                        ></ca-search-multiple-states-2>
+                        <ng-container
+                            *ngTemplateOutlet="divider"
+                        ></ng-container>
+                    }
 
                     <app-ca-filter-state-dropdown
                         [states]="store.statesSelector"
@@ -72,7 +75,7 @@
                         </app-ca-filter>
                     }
 
-                    @if (store.selectedRows) {
+                    @if (store.selectedCount) {
                         <ng-container
                             *ngTemplateOutlet="divider"
                         ></ng-container>
@@ -80,7 +83,7 @@
                         <div
                             class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
                         >
-                            {{ store.selectedRows }} Selected
+                            {{ store.selectedCount }} Selected
                         </div>
                     }
                 </div>
@@ -95,6 +98,8 @@
             </ng-template>
         </app-new-table-toolbar>
 
+        <!-- List, Card, Map -->
+
         @switch (store.activeViewMode) {
             @case (eCommonElement.LIST) {
                 <app-miles-table></app-miles-table>
@@ -108,5 +113,15 @@
                 <app-miles-map></app-miles-map>
             }
         }
+
+        <!-- Empty State - List, Card -->
+
+        <app-ta-table-empty
+            [activeViewMode]="store.activeViewMode"
+            [btnText]="eSharedString.TRUCK_CAPITALIZED"
+            [hasResults]="!!store.miles.length"
+            [isNewTableLayout]="true"
+            (onBtnClick)="onTableEmptyBtnClick($event)"
+        ></app-ta-table-empty>
     }
 </div>

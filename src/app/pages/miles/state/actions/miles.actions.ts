@@ -69,7 +69,8 @@ export const selectOneRow = createAction(
 );
 
 export const selectAll = createAction(
-    MilesStoreConstants.ACTION_SELECT_ALL_ROWS
+    MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
+    props<{ action: string }>()
 );
 
 export const getInitalUnitDetails = createAction(
@@ -109,4 +110,18 @@ export const pinTableColumn = createAction(
 export const tableSortingChange = createAction(
     MilesStoreConstants.ACTION_SORTING_CHANGE,
     props<{ column: ITableColumn }>()
+);
+
+export const pageChanges = createAction(
+    MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
+);
+
+export const onSearchChange = createAction(
+    MilesStoreConstants.ACTION_SEARCH_CHANGED,
+    props<{ search: string }>()
+);
+
+export const onUnitSelection = createAction(
+    MilesStoreConstants.ACTION_UNIT_SELECTED,
+    props<{ unit: IMilesModel }>()
 );

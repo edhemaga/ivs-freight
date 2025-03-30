@@ -38,7 +38,7 @@ export class LoadRequirementsFormatPipe implements PipeTransform {
         const weightValue = weight
             ? MethodsCalculationsHelper.convertNumberInThousandSep(weight) +
               eLoadDetailsGeneral.EMPTY_SPACE_STRING +
-              eUnit.POUNDS
+              'lbs' //eUnit.POUNDS
             : null;
 
         const liftGateValue = loadRequirements?.liftgate

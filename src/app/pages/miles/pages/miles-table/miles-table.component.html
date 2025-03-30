@@ -1,22 +1,32 @@
 @let store =
     {
+        selectedCount: milesStoreService.selectedCountSelector$ | async,
         columns: milesStoreService.columns$ | async,
         miles: milesStoreService.miles$ | async,
         hasAllItemsSelected:
             milesStoreService.hasAllItemsSelectedSelector$ | async,
-
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
+        selectedTab: milesStoreService.selectedTab$ | async,
+        tabResultsSelector: milesStoreService.tabResultsSelector$ | async,
     };
 
 @if (store) {
+    @let tabCount =
+        store.selectedTab === eMileTabs?.ACTIVE
+            ? store.tabResultsSelector.activeTruckCount
+            : store.tabResultsSelector.inactiveTruckCount;
+
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
+        [isTableLocked]="store.tableSettings.isTableLocked"
+        [isEmptyTable]="!store.miles.length"
+        [pageResult]="store.miles.length"
+        [totalResult]="tabCount"
         [headerTemplates]="{
             select: selectHeaderTemplate,
             revenue: revenueHeaderTemplate,
         }"
-        [isTableLocked]="store.tableSettings.isTableLocked"
         [templates]="{
             select: loadSelectTemplate,
             unit: unitTemplate,
@@ -33,16 +43,16 @@
         }"
         (onColumnPinned)="onColumnPinned($event)"
         (onSortingChange)="onSortingChange($event)"
+        (onHandleShowMoreClick)="onHandleShowMoreClick()"
     >
         <!-- Header Templates -->
 
         <ng-template #selectHeaderTemplate>
-            <app-ca-checkbox
-                name="miles-row-all"
-                [isChecked]="store.hasAllItemsSelected"
-                [isRegularCheckbox]="false"
-                (columnCheckAction)="selectAll()"
-            ></app-ca-checkbox>
+            <app-ca-checkbox-selected-count
+                [itemsTotalCount]="store.miles.length"
+                [itemsSelectedCount]="store.selectedCount"
+                (onCheckboxCountClick)="onCheckboxCountClick($event)"
+            ></app-ca-checkbox-selected-count>
         </ng-template>
 
         <ng-template #revenueHeaderTemplate let-data="data">
@@ -61,10 +71,10 @@
             @let name = 'miles-row' + data.id;
 
             <app-ca-checkbox
+                [name]="name"
                 [isChecked]="data.isSelected"
                 [isRegularCheckbox]="false"
                 [itemIndex]="data.id"
-                [name]="name"
                 (columnCheckAction)="selectRow(data)"
             ></app-ca-checkbox>
         </ng-template>
@@ -83,7 +93,14 @@
         </ng-template>
 
         <ng-template #percentTemplate let-data="data" let-key="key">
-            <p class="text-size-14 text-color-black-2">
+            <p
+                class="text-size-14"
+                [class]="
+                    !!data[key]?.count
+                        ? 'text-color-black-2'
+                        : 'text-color-muted'
+                "
+            >
                 {{ data[key]?.count }}
 
                 <span class="text-color-muted text-size-11 ta-font-semi-bold">
@@ -93,13 +110,25 @@
         </ng-template>
 
         <ng-template #fuelCostTemplate let-data="data">
-            <p class="text-size-14 text-color-black-2">${{ data.fuelCost }}</p>
+            <p
+                class="text-size-14"
+                [class]="
+                    !!data.fuelCost ? 'text-color-black-2' : 'text-color-muted'
+                "
+            >
+                ${{ data.fuelCost }}
+            </p>
         </ng-template>
 
         <ng-template #revenueTemplate let-data="data">
             <div class="d-flex justify-content-end">
-                <p class="text-size-14 text-color-black ta-font-semi-bold">
-                    ${{ data.revenue }}
+                <p
+                    class="text-size-14 ta-font-semi-bold"
+                    [class]="
+                        !!data.revenue ? 'text-color-black' : 'text-color-muted'
+                    "
+                >
+                    ${{ (data.revenue | thousandSeparator) ?? 0 }}
                 </p>
             </div>
         </ng-template>

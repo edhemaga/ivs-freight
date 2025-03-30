@@ -1,14 +1,14 @@
-// External Libraries
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// Shared Components
+// components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
 import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/new-table-toolbar.component';
 import {
     CaFilterComponent,
-    CaSearchMultipleStatesComponent,
+    CaSearchMultipleStates2Component,
     IFilterAction,
     CaFilterStateDropdownComponent,
     CaFilterTimeDropdownComponent,
@@ -16,20 +16,24 @@ import {
 import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
+import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 
-// Feature Services
+// services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
+import { ModalService } from '@shared/services';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
+    eGeneralActions,
     eSharedString,
-    TableStringEnum,
 } from '@shared/enums';
+import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
-// Interfaces
+// interfaces
 import { IStateFilters } from '@shared/interfaces';
 
 @Component({
@@ -44,12 +48,13 @@ import { IStateFilters } from '@shared/interfaces';
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
         CaFilterComponent,
-        CaSearchMultipleStatesComponent,
+        CaSearchMultipleStates2Component,
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
         MilesMapComponent,
         MilesCardComponent,
         MilesTableComponent,
+        TaTableEmptyComponent,
     ],
 })
 export class MilesComponent implements OnInit, OnDestroy {
@@ -62,35 +67,67 @@ export class MilesComponent implements OnInit, OnDestroy {
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
 
-    constructor(public milesStoreService: MilesStoreService) {}
+    constructor(
+        private modalService: ModalService,
+
+        public milesStoreService: MilesStoreService
+    ) {}
 
     ngOnInit(): void {
         this.storeSubscription();
-    }
-
-    public onToolBarAction(event: { mode: eMileTabs; action: string }): void {
-        const { action, mode } = event || {};
-        if (action === TableStringEnum.TAB_SELECTED) {
-            this.milesStoreService.dispatchListChange(mode);
-        } else if (action === TableStringEnum.VIEW_MODE) {
-            this.milesStoreService.dispatchSetActiveViewMode(
-                eActiveViewMode[mode]
-            );
-        }
-    }
-
-    public setFilters(filters: IFilterAction): void {
-        this.milesStoreService.dispatchFilters(filters, this.filter);
-    }
-
-    public toggleTableLockingStatus(): void {
-        this.milesStoreService.toggleTableLockingStatus();
     }
 
     private storeSubscription(): void {
         this.milesStoreService.filter$
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => (this.filter = res));
+    }
+
+    private handleTableEmptyImportListClick(): void {
+        //TODO:
+    }
+
+    private handleTableEmptyAddClick(): void {
+        this.modalService.openModal(TruckModalComponent, {
+            size: eSharedString.SMALL,
+        });
+    }
+
+    public setFilters(filters: IFilterAction): void {
+        this.milesStoreService.dispatchFilters(filters, this.filter);
+    }
+
+    public onToolBarAction(event: { mode: eMileTabs; action: string }): void {
+        const { action, mode } = event || {};
+
+        if (action === eGeneralActions.TAB_SELECTED) {
+            this.milesStoreService.dispatchListChange(mode);
+        } else if (action === eGeneralActions.VIEW_MODE)
+            this.milesStoreService.dispatchSetActiveViewMode(
+                eActiveViewMode[mode]
+            );
+    }
+
+    public onTableEmptyBtnClick(btnClickType: string): void {
+        switch (btnClickType) {
+            case eTableEmpty.ADD_CLICK:
+                this.handleTableEmptyAddClick();
+
+                break;
+            case eTableEmpty.IMPORT_LIST_CLICK:
+                this.handleTableEmptyImportListClick();
+
+                break;
+            default:
+                // reset filters
+
+                break;
+        }
+    }
+
+    public onSearchQueryChange(query: string[]): void {
+        // TODO remove, for easier emitted data preview
+        console.log(query);
     }
 
     ngOnDestroy(): void {

@@ -1,12 +1,17 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 // Services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Enums
-import { eSharedString, eColor } from '@shared/enums';
+import { eSharedString, eColor, eStringPlaceholder } from '@shared/enums';
 
 // SVG routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -32,6 +37,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
     imports: [
         CommonModule,
         NgbModule,
+        ReactiveFormsModule,
 
         // Pipes
         FormatDatePipe,
@@ -49,9 +55,40 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
     ],
 })
 export class LoadDetailsGeneralComponent {
+    // assets
     public sharedIcons = SharedSvgRoutes;
+
+    // enums
+    public eStringPlaceholder = eStringPlaceholder;
     public eSharedString = eSharedString;
     public eColor = eColor;
 
-    constructor(protected loadStoreService: LoadStoreService) {}
+    public isBillingExpanded: boolean = false;
+    public isPaymentExpanded: boolean = false;
+
+    public cardForm: UntypedFormGroup;
+
+    constructor(
+        protected loadStoreService: LoadStoreService,
+        private formBuilder: UntypedFormBuilder
+    ) {}
+
+    ngOnInit(): void {
+        this.createForm();
+    }
+
+    public toggleBilling(): void {
+        this.isBillingExpanded = !this.isBillingExpanded;
+    }
+
+    public togglePayment(): void {
+        this.isPaymentExpanded = !this.isPaymentExpanded;
+    }
+
+    private createForm(): void {
+        this.cardForm = this.formBuilder.group({
+            driverMessage: [],
+            note: [],
+        });
+    }
 }

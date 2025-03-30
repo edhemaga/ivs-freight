@@ -1,5 +1,8 @@
 import { Validators } from '@angular/forms';
 
+// validators
+import { emptyValueValidator } from 'ca-components';
+
 import moment from 'moment';
 
 //---------------- Bank Regex, Routing & Accounting Validation
@@ -277,7 +280,8 @@ export const passwordAccountValidation = [Validators.maxLength(64)];
 export const fullNameValidation = [
     Validators.minLength(2),
     Validators.maxLength(32),
-    Validators.required
+    Validators.required,
+    emptyValueValidator('Driver Not Linked'),
 ];
 
 //---------------- Title

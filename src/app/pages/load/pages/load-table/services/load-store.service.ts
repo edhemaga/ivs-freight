@@ -28,6 +28,7 @@ import {
     CreateCommentCommand,
     CreateLoadTemplateCommand,
     LoadListResponse,
+    LoadMinimalListResponse,
     LoadModalResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
@@ -65,6 +66,7 @@ import {
     loadDetailsStopCountSelector,
     loadDetailsExtraStopCountSelector,
     isLoadDetailsMapOpenSelector,
+    minimalListSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -176,6 +178,9 @@ export class LoadStoreService {
         select(isLoadDetailsMapOpenSelector)
     );
 
+    public minimalListSelector$: Observable<LoadMinimalListResponse> =
+        this.store.pipe(select(minimalListSelector));
+
     public dispatchLoadList(
         apiParam: IGetLoadListParam,
         showMore?: boolean,
@@ -190,6 +195,10 @@ export class LoadStoreService {
     }
 
     public dispatchLoadDetails(loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_MINIMAL_LIST,
+        });
+
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_SET_LOAD_DETAILS_TO_UNLOAD,
         });

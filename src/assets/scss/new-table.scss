@@ -2,7 +2,6 @@
 
 .new-table {
     &--header {
-        margin-top: 17px !important;
         max-width: calc(100vw - 80px);
     }
 
@@ -10,6 +9,14 @@
         &-heading {
             &-group {
                 border-left: 1px solid $ta-light-grey-6;
+            }
+
+            &-sortable {
+                &:hover {
+                    .new-table--row-heading-arrow {
+                        display: flex !important;
+                    }
+                }
             }
         }
     }

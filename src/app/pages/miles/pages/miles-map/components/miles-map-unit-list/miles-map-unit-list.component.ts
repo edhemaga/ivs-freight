@@ -22,13 +22,16 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
-import { CaInputComponent } from 'ca-components';
+import { CaInputComponent, CaDetailsTitleCardComponent } from 'ca-components';
 
 // Enums
 import { ArrowActionsStringEnum } from '@shared/enums';
 
 // Const
 import { MilesStopsTable } from '@pages/miles/utils/constants';
+
+// Interface
+import { IMilesModel, IMilesState } from '@pages/miles/interface';
 
 @Component({
     selector: 'app-miles-map-unit-list',
@@ -44,6 +47,7 @@ import { MilesStopsTable } from '@pages/miles/utils/constants';
         // Components
         SvgIconComponent,
         CaInputComponent,
+        CaDetailsTitleCardComponent,
 
         // Pipes
         ThousandSeparatorPipe,
@@ -55,8 +59,10 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     public sharedSvgRoutes = SharedSvgRoutes;
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
+    public searchField = MilesStopsTable.SEARCH_FIELD;
 
-    public isStopListExpanded: boolean = false;
+    public isStopListWidthExpanded: boolean = false;
+    public isStopListHeightExpanded: boolean = false;
     public isLoading: boolean = false;
     public isUserOnLastPage: boolean = false;
     public truckId: number;
@@ -95,11 +101,21 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public getTruckUnit(
         getFollowingUnitDirection: ArrowActionsStringEnum
     ): void {
+        this.resetFormValue();
         this.milesStoreService.dispatchFollowingUnit(getFollowingUnitDirection);
     }
 
-    public toogleStopList(): void {
-        this.isStopListExpanded = !this.isStopListExpanded;
+    public selectUnit(unit: IMilesModel): void {
+        this.resetFormValue();
+        this.milesStoreService.dispatchSelectUnit(unit);
+    }
+
+    public toogleStopListWidth(): void {
+        this.isStopListWidthExpanded = !this.isStopListWidthExpanded;
+    }
+
+    public toogleStopListHeight(): void {
+        this.isStopListHeightExpanded = !this.isStopListHeightExpanded;
     }
 
     private manageScrollDebounce(): void {
@@ -110,18 +126,28 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         );
     }
     private manageSubscriptions(): void {
-        // <!-- TODO:  Inside virtual sroll ticket -->
-        // this.subscriptions.add(
-        //     forkJoin([
-        //         this.milesStoreService.isMilesDetailsLoadingSelector$,
-        //         this.milesStoreService.isUserOnLastPageSelector$,
-        //     ]).subscribe(([loading, isUserOnLastPage]) => {
-        //         this.isLoading = loading;
-        //         this.isUserOnLastPage = isUserOnLastPage;
-        //     })
-        // );
+        this.subscriptions.add(
+            this.milesStoreService.selectedTab$.subscribe(() => {
+                this.resetFormValue();
+            })
+        );
 
         this.manageScrollDebounce();
+
+        this.onSeachFieldChange();
+    }
+
+    private onSeachFieldChange(): void {
+        this.searchForm
+            .get('search')
+            ?.valueChanges.pipe(debounceTime(300))
+            .subscribe((value) => {
+                this.milesStoreService.dispatchSearchInputChanged(value);
+            });
+    }
+
+    private resetFormValue(): void {
+        this.searchForm.reset({}, { onlySelf: true, emitEvent: false });
     }
 
     ngOnDestroy(): void {
