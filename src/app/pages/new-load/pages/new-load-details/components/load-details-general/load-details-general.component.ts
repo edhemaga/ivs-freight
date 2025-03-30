@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
@@ -13,6 +13,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { LoadRequirementsFormatPipe } from '@pages/new-load/pages/new-load-details/pipes';
 
 // Components
 import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.component';
@@ -20,6 +21,8 @@ import { SvgIconComponent } from 'angular-svg-icon';
 import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
+import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-load-details-general',
@@ -33,6 +36,7 @@ import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
         // Pipes
         FormatDatePipe,
         LoadStatusColorsPipe,
+        LoadRequirementsFormatPipe,
 
         // Components
         CaSkeletonComponent,
@@ -40,6 +44,8 @@ import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
         CaUnitInfoBoxComponent,
         TaAppTooltipV2Component,
         CaLoadStatusComponent,
+        TaCustomCardComponent,
+        TaInputNoteComponent,
     ],
 })
 export class LoadDetailsGeneralComponent {

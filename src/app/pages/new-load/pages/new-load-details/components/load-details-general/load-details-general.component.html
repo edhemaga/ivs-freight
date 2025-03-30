@@ -128,7 +128,22 @@
             "
         ></ng-container>
         <ng-container
-            *ngTemplateOutlet="skeletonPlaceholder; context: { width: 91 }"
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 91, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 202, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 116, isDividerVisible: true }
+            "
         ></ng-container>
     } @else {
         <div class="d-flex flex-column p-x-12 pt-1">
@@ -198,7 +213,7 @@
             <div class="divider divider--small divider--dark"></div>
         </div>
 
-        <div class="p-x-12">
+        <div class="p-x-12 mb-2">
             <div
                 class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
             >
@@ -261,6 +276,72 @@
                 </div>
             </div>
         </div>
+
+        <div class="p-x-6 mb-1">
+            <div class="divider divider--small divider--dark"></div>
+        </div>
+
+        <!-- Load Detail & Requirement -->
+        <div class="p-x-12">
+            @let loadRequirements =
+                load.loadRequirements
+                    | loadRequirementsFormat
+                        : load.generalCommodity
+                        : load.weight;
+
+            <app-ta-custom-card
+                [cardName]="'Load Detail & Requirement'"
+                [isCardOpen]="!!loadRequirements"
+                [hasBodyData]="true"
+                [hasDivider]="false"
+                [hasArrow]="false"
+                [disabledCard]="!loadRequirements"
+            >
+                @if (loadRequirements) {
+                    <div
+                        class="d-flex align-items-center flex-wrap row gutter-x-12 gutter-y-12"
+                    >
+                        @for (
+                            requirement of loadRequirements;
+                            track requirement.title
+                        ) {
+                            <div class="col-6">
+                                <div class="d-flex flex-column">
+                                    <div
+                                        class="text-size-11 text-color-black ta-font-bold m-b-2"
+                                    >
+                                        {{ requirement.title }}
+                                    </div>
+                                    <div
+                                        class="text-size-14 text-color-black-2"
+                                    >
+                                        {{ requirement.value }}
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </app-ta-custom-card>
+        </div>
+
+        <div class="p-x-6 mb-1">
+            <div class="divider divider--small divider--dark"></div>
+        </div>
+
+        <!-- Driver Message -->
+        <div class="p-x-12">
+            @let driverMessage = load.loadRequirements?.driverMessage;
+
+            @if (driverMessage) {
+                <!-- <app-ta-input-note
+                        formControlName="driverMessage"
+                        [noteLabel]="'Drver Message'"
+                        [isVisibleNote]="!!driverMessage"
+                        [note]="driverMessage"
+                    ></app-ta-input-note> -->
+            }
+        </div>
     }
 </div>
 
@@ -300,7 +381,10 @@
                     >
                         <svg-icon
                             class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
-                            [class]="loadStatus && (loadStatus.id | loadStatusColors : true)"
+                            [class]="
+                                loadStatus &&
+                                (loadStatus.id | loadStatusColors: true)
+                            "
                             [src]="icon"
                         ></svg-icon>
                     </div>
@@ -327,17 +411,16 @@
                                 </span>
                             }
                         </div>
-                    } 
-                    @else if (loadStatus) {
+                    } @else if (loadStatus) {
                         <app-ca-load-status
                             [status]="{
                                 name: loadStatus?.name,
-                                id: loadStatus?.id
+                                id: loadStatus?.id,
                             }"
                             [isNoStyle]="true"
                             [fontSize]="14"
                         >
-                        </app-ca-load-status> 
+                        </app-ca-load-status>
                     }
                 </ng-template>
             </app-ca-skeleton>
