@@ -240,7 +240,7 @@ export function getTruckColumnDefinition() {
                 imgPath: 'assets/svg/truckassist-table/length-icon.svg',
             },
             headAlign: 'center',
-            sortName: 'color',
+            sortName: 'truckLength',
             hidden: true,
             width: 34,
             minWidth: 34,
