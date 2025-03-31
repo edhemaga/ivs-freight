@@ -294,10 +294,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                             };
                         else this.selectedTrailerType = null;
 
-                        this.patchDriverFullName(
-                            response?.firstName,
-                            response?.lastName
-                        );
+                        this.patchDriverId(response?.driverId);
 
                         this.fuelForm
                             .get(FuelValuesStringEnum.TRAILER_ID)
@@ -306,12 +303,12 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         if (!!data) {
                             this.composeDriverOptions(data);
                             this.fuelForm
-                                .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
+                                .get(FuelValuesStringEnum.DRIVER_ID)
                                 .markAsPristine();
                         }
 
                         this.fuelForm
-                            .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
+                            .get(FuelValuesStringEnum.DRIVER_ID)
                             .markAsPristine();
                     });
 
@@ -460,7 +457,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
             id: id,
             truckId: this.selectedTruckType.id,
             trailerId: this.selectedTrailerType?.id ?? null,
-            driverId: form?.driverFullName,
+            driverId: form?.driverId,
             files: this.mapDocuments(),
             filesForDeleteIds: [],
         };
@@ -562,7 +559,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                         truckId: truck?.id ?? fuelTruckNumber,
                         invoice: invoice,
                         trailerId: trailer?.trailerNumber ?? null,
-                        driverFullName: driver ? driver.id : fuelCardHolderName,
+                        driverId: driver?.id ?? fuelCardHolderName,
                         transactionDate:
                             MethodsCalculationsHelper.convertDateFromBackend(
                                 transactionDate
@@ -640,10 +637,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 const { data } = response?.pagination || {};
                 this.selectedDispatchHistory = response;
 
-                this.patchDriverFullName(
-                    response?.firstName,
-                    response?.lastName
-                );
+                this.patchDriverId(response?.driverId);
 
                 this.fuelForm
                     .get(FuelValuesStringEnum.TRAILER_ID)
@@ -886,7 +880,7 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
                 [Validators.required, emptyValueValidator('Truck Not Linked')],
             ],
             trailerId: [null],
-            driverFullName: [null, fullNameValidation],
+            driverId: [null, fullNameValidation],
             transactionDate: [data.transactionDate, Validators.required],
             transactionTime: [data.transactionTime, Validators.required],
             fuelStopStoreId: [null, Validators.required],
@@ -916,10 +910,10 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    private patchDriverFullName(firstName: string, lastName: string): void {
+    private patchDriverId(driverId: number): void {
         this.fuelForm
-            .get(FuelValuesStringEnum.DRIVER_FULL_NAME)
-            .patchValue(firstName?.concat(' ', lastName) ?? null);
+            .get(FuelValuesStringEnum.DRIVER_ID)
+            .patchValue(driverId ?? null);
     }
 
     private getInitialFormData(): IFuelPurchaseModalForm {
