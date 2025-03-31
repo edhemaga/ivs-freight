@@ -12,6 +12,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // Pipes
 import { TaSvgPipe } from '@shared/pipes/ta-svg.pipe';
 import { FilterClassPipe } from '@shared/components/ta-special-filter/pipes/filter-class.pipe';
+import { ThousandFormatterPipe } from 'ca-components';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
@@ -19,18 +20,27 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 // Services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 
+// Svg Routes
+import { TaSpecialFilterSvgRoutes } from '@shared/components/ta-special-filter/utils/svg-routes';
+
 @Component({
     selector: 'app-ta-special-filter',
     standalone: true,
     templateUrl: './ta-special-filter.component.html',
     styleUrls: ['./ta-special-filter.component.scss'],
     imports: [
-        TaAppTooltipV2Component,
+        // modules
         NgbModule,
+
+        // components
+        TaAppTooltipV2Component,
         AngularSvgIconModule,
-        TaSvgPipe,
         CommonModule,
+
+        // pipes
+        TaSvgPipe,
         FilterClassPipe,
+        ThousandFormatterPipe,
     ],
 })
 export class TaSpecialFilterComponent implements OnInit {
@@ -41,6 +51,7 @@ export class TaSpecialFilterComponent implements OnInit {
     public activeFilter: boolean = false;
     public hoverClose: boolean = false;
     public hoverFilter: boolean = false;
+    public svgRoutes = TaSpecialFilterSvgRoutes;
 
     @Input() type: string = TableStringEnum.USER_FILTER;
     @Input() icon: string = TableStringEnum.USER_1;
@@ -63,7 +74,10 @@ export class TaSpecialFilterComponent implements OnInit {
 
     public toggleSpecialFilter(): void {
         this.activeFilter = !this.activeFilter;
-        this.setFilter.emit({...this.dataArray, selectedFilter: this.activeFilter});
+        this.setFilter.emit({
+            ...this.dataArray,
+            selectedFilter: this.activeFilter,
+        });
 
         if (!this.activeFilter) {
             this.hoverClose = false;

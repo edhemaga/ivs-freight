@@ -16,7 +16,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { skip, Subject, takeUntil } from 'rxjs';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -30,8 +30,11 @@ import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.com
 import {
     CaInputComponent,
     CaInputDropdownComponent,
+    CaInputDropdownTestComponent,
     CaModalComponent,
+    InputTestComponent,
 } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Models
 import { EditData } from '@shared/models/edit-data.model';
@@ -47,15 +50,17 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Pipes
-import { PayrollTablesStatus } from '../../state/enums';
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import {
+    ePayrollTablesStatus,
+    ePayrollString,
+} from '@pages/accounting/pages/payroll/state/enums';
 
 // Config
 import {
     dropDownInputConfig,
     dropdownOption,
     inputConfig,
-} from '@pages/accounting/pages/payroll/config/payroll_proccess_payment';
+} from '@pages/accounting/pages/payroll/config';
 
 // Svg
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
@@ -72,13 +77,16 @@ import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltip,
 
         // Component
         TaTabSwitchComponent,
         CaInputComponent,
         CaModalComponent,
-        CaInputDropdownComponent,
+        CaInputDropdownTestComponent,
         TaSpinnerComponent,
+        InputTestComponent,
+        TaAppTooltipV2Component,
     ],
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -144,27 +152,30 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
     }
 
     private setAmmoutWatchers() {
-        const ammount = this.paymentForm.get(PayrollStringEnum.AMOUNT);
-    
+        const ammount = this.paymentForm.get(ePayrollString.AMOUNT);
+
         // Manually handle the initial value
-        const initialValue = MethodsCalculationsHelper.convertThousanSepInNumber(ammount.value);
+        const initialValue =
+            MethodsCalculationsHelper.convertThousandSepInNumber(ammount.value);
         this.handleAmountChange(initialValue);
-    
+
         ammount.valueChanges.subscribe((val) => {
-            const convertToNumber = MethodsCalculationsHelper.convertThousanSepInNumber(val);
+            const convertToNumber =
+                MethodsCalculationsHelper.convertThousandSepInNumber(val);
             this.handleAmountChange(convertToNumber);
         });
     }
-    
+
     private handleAmountChange(convertToNumber: number) {
         const totalEarnings = this.modalData?.totalEarnings;
-    
+
         if (convertToNumber > totalEarnings) {
-            this.paymentForm.get(PayrollStringEnum.AMOUNT).patchValue(totalEarnings, { emitEvent: false });
+            this.paymentForm
+                .get(ePayrollString.AMOUNT)
+                .patchValue(totalEarnings, { emitEvent: false });
         }
         this.isPaidInFull = convertToNumber === totalEarnings;
     }
-    
 
     private subscribeToStore(): void {
         this.payrollFacadeService.selectPayrollReportStates$
@@ -173,7 +184,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
                 if (!loading && !error) {
                     this.loading = false;
                     this.loadingCloseUnpaid = false;
-                    this.payrollFacadeService.getPayrollCounts();
+                    this.payrollFacadeService.getPayrollCounts(true);
                     this.onCloseModal();
                     this.destroy$.next();
                     this.destroy$.complete();
@@ -237,11 +248,11 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
 
         const isOpen = this.modalData.selectedTab;
 
-        if (isOpen === PayrollTablesStatus.OPEN) {
+        if (isOpen === ePayrollTablesStatus.OPEN) {
             this.payrollFacadeService.closePayrollReport({
                 amount: isUnpaid
                     ? 0
-                    : MethodsCalculationsHelper.convertThousanSepInNumber(
+                    : MethodsCalculationsHelper.convertThousandSepInNumber(
                           formData.amount
                       ),
                 reportId: this.modalData.id,
@@ -256,7 +267,7 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
         } else {
             this.payrollFacadeService.addPayrollClosedPayment(
                 {
-                    amount: MethodsCalculationsHelper.convertThousanSepInNumber(
+                    amount: MethodsCalculationsHelper.convertThousandSepInNumber(
                         formData.amount
                     ),
                     paymentType:
@@ -271,8 +282,6 @@ export class PayrollProccessPaymentModalComponent implements OnDestroy {
             );
         }
     }
-
-    selectedItem(dd: any) {}
 
     get modalData(): IPayrollProccessPaymentModal {
         return this.editData.data as IPayrollProccessPaymentModal;

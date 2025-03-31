@@ -1,49 +1,87 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.header"
-    [editData]="editData"
-    [editName]="
-        editData?.action?.includes('unit-pm') ? editData?.data?.textUnit : null
-    "
-    [disableDelete]="true"
-    [isModalValid]="isFormDirty && isFormValid"
-    (action)="onModalAction($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <form
-        origin
-        [formGroup]="PMform"
-        class="form-container form-container-without-mb"
-    >
-        <app-ta-custom-card
-            [hasCounter]="activePMs()"
-            [hasDivider]="false"
-            [cardName]="'Selected'"
-            [hasActionSvg]="
-                editData?.action?.includes('unit-pm')
-                    ? null
-                    : 'assets/svg/common/ic_plus.svg'
-            "
-            [hasArrow]="false"
-            [isCardOpen]="newPMs.length > 0"
-            [hasScrollBody]="newPMs.length > 18"
-            [disabledCard]="!newPMs.length"
-            [disableAnimation]="disableCardAnimation"
-            (onActionEvent)="addPMs()"
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
+        <form
+            [formGroup]="PMform"
+            class="form-container form-container-without-mb"
         >
-            <app-ta-modal-table
-                [tableType]="
-                    editData?.header === 'Truck' ||
-                    editData?.header === 'Edit Truck PM' 
-                        ? modalTableTypeEnum.PM_TRUCK
-                        : modalTableTypeEnum.PM_TRAILER
+            <app-ta-custom-card
+                [hasCounter]="activePMs()"
+                [hasDivider]="false"
+                [cardName]="'Selected'"
+                [hasActionSvg]="
+                    editData?.action?.includes('unit-pm')
+                        ? null
+                        : svgRoutes.PLUS_ICON
                 "
-                [isEdit]="editData?.type === 'edit'"
-                [isNewRowCreated]="isPmRowCreated"
-                [modalTableData]="pmTableData"
-                (modalTableValueEmitter)="handleModalTableValueEmit($event)"
-                (modalTableValidStatusEmitter)="
-                    handleModalTableValidStatusEmit($event)
-                "
-            ></app-ta-modal-table>
-        </app-ta-custom-card>
-    </form>
-</app-ta-modal>
+                [hasArrow]="false"
+                [isCardOpen]="newPMs.length > 0"
+                [hasScrollBody]="newPMs.length > 18"
+                [disabledCard]="!newPMs.length"
+                [disableAnimation]="isCardAnimationDisabled"
+                (onActionEvent)="addPMs()"
+            >
+                <app-ta-modal-table
+                    [tableType]="
+                        !!editData?.data?.truck
+                            ? modalTableTypeEnum.PM_TRUCK
+                            : modalTableTypeEnum.PM_TRAILER
+                    "
+                    [isEdit]="editData?.type === 'edit'"
+                    [isNewRowCreated]="isPmRowCreated"
+                    [modalTableData]="pmTableData"
+                    (modalTableValueEmitter)="handleModalTableValueEmit($event)"
+                    (modalTableValidStatusEmitter)="
+                        handleModalTableValidStatusEmit($event)
+                    "
+                ></app-ta-modal-table>
+            </app-ta-custom-card>
+        </form>
+    </div>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction({ action: TableStringEnum.CLOSE })"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+<ng-template #leftModalContent>
+    @if (editData?.action?.includes('unit-pm')) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{
+                editData?.action?.includes('unit-pm')
+                    ? editData?.data?.textUnit
+                    : null
+            }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        <app-ca-modal-button
+            text="Save Changes"
+            [isValid]="isFormDirty && isFormValid"
+            (click)="onModalAction({ action: TableStringEnum.SAVE })"
+            [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+            [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+        >
+        </app-ca-modal-button>
+    </div>
+</ng-template>

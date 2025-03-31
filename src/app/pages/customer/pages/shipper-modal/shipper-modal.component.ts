@@ -1,4 +1,5 @@
 import {
+    AbstractControl,
     FormsModule,
     ReactiveFormsModule,
     UntypedFormBuilder,
@@ -16,14 +17,23 @@ import {
 import { CommonModule } from '@angular/common';
 import { Subject, takeUntil, switchMap } from 'rxjs';
 
-// Modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Enums
+// enums
 import { ShipperModalString } from '@pages/customer/pages/shipper-modal/enums';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
+import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { eGeneralActions } from '@shared/enums/general-actions.enum';
+import { eStringPlaceholder } from '@shared/enums/string-placeholder.enum';
+import { eFileFormControls } from '@shared/enums/file/file-form-controls.enum';
 
-// Validators
+// validators
 import {
     addressUnitValidation,
     addressValidation,
@@ -36,7 +46,7 @@ import {
     longitudeValidator,
 } from '@shared/validators/long-lat-validations';
 
-// Services
+// services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import {
@@ -48,45 +58,51 @@ import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { FormService } from '@shared/services/form.service';
 import { AddressService } from '@shared/services/address.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
-// Animations
+// animations
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
-// Components
+// components
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import {
+    CaInputAddressDropdownComponent,
+    CaInputComponent,
+    CaInputDatetimePickerComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
+} from 'ca-components';
+import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
-// Helpers
+// helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// Constants
+// constants
 import { ShipperModalConfiguration } from '@pages/customer/pages/shipper-modal/utils/constants';
 
-// Config
+// config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { ShipperModalConfig } from '@pages/customer/pages/shipper-modal/utils/configs';
 
-// Enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
-
 // svg routes
-import { BrokerModalSvgRoutes } from '@pages/customer/pages/broker-modal/utils/svg-routes/';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Models
+// pipes
+import { FormatDatePipe } from '@shared/pipes';
+
+// models
 import {
     ShipperModalResponse,
     AddressEntity,
@@ -97,10 +113,14 @@ import {
     ShipperResponse,
     ReviewResponse,
     DepartmentResponse,
+    ShipperLoadModalResponse,
 } from 'appcoretruckassist';
 import { ReviewComment } from '@shared/models/review-comment.model';
 import { Tabs } from '@shared/models/tabs.model';
 import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/models';
+
+// mixing
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-shipper-modal',
@@ -120,23 +140,34 @@ import { ShipperContactExtended } from '@pages/customer/pages/shipper-modal/mode
 
         // Component
         TaAppTooltipV2Component,
-        TaModalComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
         TaUserReviewComponent,
-        TaInputDropdownComponent,
         TaModalTableComponent,
+        CaInputComponent,
+        CaModalButtonComponent,
+        CaInputDatetimePickerComponent,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
-export class ShipperModalComponent implements OnInit, OnDestroy {
+export class ShipperModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     @Input() editData;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public shipperForm: UntypedFormGroup;
     public shipperName: string;
@@ -144,7 +175,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public companyUser: SignInResponse;
 
     public modalTableTypeEnum = ModalTableTypeEnum;
-    public brokerModalSvgRoutes = BrokerModalSvgRoutes;
+    public svgRoutes = SharedSvgRoutes;
 
     public selectedTab: number = 1;
     public tabs: Tabs[] = JSON.parse(
@@ -194,6 +225,13 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
     public reviews: any[] = [];
     public previousReviews: any[] = [];
 
+    public taModalActionEnum = TaModalActionEnum;
+
+    public activeAction: string;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
+    public shipperModalString = ShipperModalString;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -207,9 +245,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         private taLikeDislikeService: TaLikeDislikeService,
         private reviewRatingService: ReviewsRatingService,
         private formService: FormService,
-        private addressService: AddressService,
-        private confirmationService: ConfirmationService
-    ) {}
+        public addressService: AddressService,
+        private confirmationService: ConfirmationService,
+        private confirmationActivationService: ConfirmationActivationService,
+        private ngbActiveModal: NgbActiveModal,
+        private loadStoreService: LoadStoreService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
@@ -221,6 +264,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.monitorLatAndLong();
 
         this.confirmationSubscribe();
+
+        this.confirmationDeactivationSubscribe();
     }
 
     get isModalValidToSubmit(): boolean {
@@ -266,6 +311,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         );
     }
 
+    private confirmationDeactivationSubscribe(): void {
+        this.confirmationActivationService.getConfirmationActivationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => {
+                this.ngbActiveModal?.close();
+            });
+    }
+
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -305,70 +358,66 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         this.companyUser = JSON.parse(localStorage.getItem('user'));
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
-        if (data.action === 'close') {
-            switch (this.editData?.key) {
-                case 'load-modal': {
-                    this.modalService.setProjectionModal({
-                        action: 'close',
-                        payload: {
-                            key: this.editData?.key,
-                            value: null,
-                        },
-                        component: LoadModalComponent,
-                        size: 'small',
-                        closing: 'fastest',
-                    });
-                    break;
-                }
+    public onModalAction(action: string): void {
+        this.activeAction = action;
 
-                default: {
+        if (action === TaModalActionEnum.CLOSE) {
+            switch (this.editData?.key) {
+                case LoadModalStringEnum.LOAD_MODAL:
+                    this.ngbActiveModal.close();
+                    this.loadStoreService.dispatchGetCreateLoadModalData();
                     break;
-                }
+                default:
+                    this.ngbActiveModal.close();
+                    break;
             }
             return;
         }
         // Save And Add New
-        else if (data.action === 'save and add new') {
+        else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
             if (this.shipperForm.invalid || !this.isFormDirty) {
                 this.inputService.markInvalid(this.shipperForm);
                 return;
             }
-
             this.addShipper(true);
-
-            this.modalService.setModalSpinner({
-                action: 'save and add new',
-                status: true,
-                close: false,
-            });
-
             this.addNewAfterSave = true;
+        } else if (action === TaModalActionEnum.CLOSE_BUSINESS) {
+            const mappedEvent = {
+                type: this.editData.data.status
+                    ? TableStringEnum.CLOSE
+                    : TableStringEnum.OPEN,
+            };
+
+            this.modalService.openModal(
+                ConfirmationActivationModalComponent,
+                { size: TableStringEnum.SMALL },
+                {
+                    ...mappedEvent,
+                    data: {
+                        id: this.editData.id,
+                    },
+                    id: this.editData.id,
+                    template: TableStringEnum.INFO,
+                    subType: TableStringEnum.SHIPPER_3,
+                    subTypeStatus: TableStringEnum.BUSINESS,
+                    tableType: ConfirmationActivationStringEnum.SHIPPER_TEXT,
+                    modalTitle: this.editData.data.businessName,
+                    modalSecondTitle: this.editData.data.address?.address,
+                }
+            );
         } else {
             // Save & Update
-            if (data.action === 'save') {
+            if (action === TaModalActionEnum.SAVE) {
                 if (this.shipperForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (this.editData?.type.includes('edit')) {
+                if (this.editData?.type.includes(eGeneralActions.EDIT))
                     this.updateShipper(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                } else {
-                    this.addShipper();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                }
+                else this.addShipper();
             }
             // Delete
-            if (data.action === 'delete' && this.editData) {
+            if (action === TaModalActionEnum.DELETE && this.editData)
                 this.modalService.openModal(
                     ConfirmationModalComponent,
                     { size: TableStringEnum.DELETE },
@@ -382,13 +431,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             ConfirmationModalStringEnum.DELETE_SHIPPER,
                     }
                 );
-
-                this.modalService.setModalSpinner({
-                    action: null,
-                    status: true,
-                    close: true,
-                });
-            }
         }
     }
 
@@ -475,21 +517,17 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case 'delete':
+            case eGeneralActions.DELETE:
                 this.deleteReview(true, review);
-
                 break;
-            case 'add':
+            case eGeneralActions.ADD:
                 this.addReview(review);
-
                 break;
-            case 'update':
+            case eGeneralActions.UPDATE:
                 this.updateReview(review);
-
                 break;
-            case 'cancel':
-                this.reviews = this.reviews.filter((review) => review.id);
-
+            case eGeneralActions.CANCEL:
+                this.reviews = [...this.reviews.filter((review) => review.id)];
                 break;
             default:
                 break;
@@ -502,19 +540,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .subscribe((action: LikeDislikeModel) => {
                 let rating: CreateRatingCommand = null;
 
-                if (action.action === 'liked') {
+                if (action.action === 'liked')
                     rating = {
                         entityTypeRatingId: 3,
                         entityTypeId: this.editData.id,
                         thumb: action.likeDislike,
                     };
-                } else {
+                else
                     rating = {
                         entityTypeRatingId: 3,
                         entityTypeId: this.editData.id,
                         thumb: action.likeDislike,
                     };
-                }
 
                 this.reviewRatingService
                     .addRating(rating)
@@ -547,9 +584,8 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                         this.companyUser.companyUserId
                                 );
 
-                                if (reviewIndex !== -1) {
+                                if (reviewIndex !== -1)
                                     this.isOneMoreReviewDisabled = true;
-                                }
                             }
 
                             this.taLikeDislikeService.populateLikeDislikeEvent({
@@ -567,19 +603,18 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         if (
             this.reviews.some((item) => item.isNewReview) ||
             this.isOneMoreReviewDisabled
-        ) {
+        )
             return;
-        }
 
         this.reviews.unshift({
             companyUser: {
                 fullName: this.companyUser.firstName.concat(
-                    ' ',
+                    eStringPlaceholder.WHITESPACE,
                     this.companyUser.lastName
                 ),
                 /*                 avatar: this.companyUser.avatar, */
             },
-            commentContent: '',
+            commentContent: eStringPlaceholder.EMPTY,
             createdAt: new Date().toISOString(),
             updatedAt: new Date().toISOString(),
             isNewReview: true,
@@ -706,32 +741,27 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             });
 
                             this.ratingChanges();
-                        } else {
-                            this.startFormChanges();
-                        }
+                        } else this.startFormChanges();
                     }
 
-                    if (this.editData) {
-                        this.tabs = this.tabs.map((tab) => ({
+                    if (this.editData)
+                        this.tabs = this.tabs?.map((tab) => ({
                             ...tab,
                             checked: tab.name === this.editData?.openedTab,
                         }));
-                    }
 
                     // Open Tab Position
                     if (this.editData?.openedTab) {
-                        setTimeout(() => {
-                            this.tabChange({
-                                id:
-                                    this.editData?.openedTab === 'Additional'
-                                        ? 2
-                                        : this.editData?.openedTab === 'Review'
-                                        ? 3
-                                        : 1,
-                            });
-
-                            this.isCardAnimationDisabled = true;
+                        this.tabChange({
+                            id:
+                                this.editData?.openedTab === 'Additional'
+                                    ? 2
+                                    : this.editData?.openedTab === 'Review'
+                                      ? 3
+                                      : 1,
                         });
+
+                        this.isCardAnimationDisabled = true;
                     }
                 },
             });
@@ -782,78 +812,35 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .addShipper(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
+                next: (response) => {
                     if (this.editData?.canOpenModal && !isSaveAndAddNew) {
                         switch (this.editData?.key) {
-                            case 'load-modal': {
-                                this.modalService.setProjectionModal({
-                                    action: 'close',
-                                    payload: {
-                                        key: this.editData?.key,
-                                        value: null,
-                                    },
-                                    component: LoadModalComponent,
-                                    size: 'small',
-                                    closing: 'slowlest',
-                                });
-                                break;
-                            }
+                            case LoadModalStringEnum.LOAD_MODAL:
+                                const { id } = response;
+                                const modalSingleShipperitem: ShipperLoadModalResponse =
+                                    {
+                                        id,
+                                        ...newData,
+                                    };
 
-                            default: {
+                                this.loadStoreService.dispatchAddnewShipperToStaticModalData(
+                                    modalSingleShipperitem
+                                );
+
+                                this.loadStoreService.dispatchGetCreateLoadModalData();
+
                                 break;
-                            }
+                            default:
+                                break;
                         }
                     }
-                    if (this.addNewAfterSave) {
-                        this.modalService.setModalSpinner({
-                            action: 'save and add new',
-                            status: false,
-                            close: false,
-                        });
+                    this.ngbActiveModal.close();
 
-                        this.formService.resetForm(this.shipperForm);
-
-                        this.selectedAddress = null;
-
-                        this.isPhoneExtExist = false;
-
-                        this.shipperForm
-                            .get(
-                                ShipperModalString.SHIPPING_HOURS_SAME_RECEIVING
-                            )
-                            .patchValue(true);
-
-                        this.selectedTab = 1;
-
-                        this.tabs = this.tabs.map((item, index) => {
-                            return {
-                                ...item,
-                                checked: index === 0,
-                            };
-                        });
-
-                        this.isAppointmentShipping = false;
-                        this.isAppointmentReceiving = false;
-
-                        this.documents = [];
-                        this.fileModified = false;
-                        this.filesForDelete = [];
-
-                        this.addNewAfterSave = false;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
+                    if (this.addNewAfterSave)
+                        this.modalService.openModal(ShipperModalComponent, {});
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.activeAction = null;
                 },
             });
     }
@@ -873,11 +860,11 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
         const shipperContacts = this.mapContacts(this.shipperContacts);
 
         const newData = {
-            id: id,
+            id,
             ...form,
             address: {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit,
             },
             receivingFrom: receivingShipping.receiving.receivingFrom,
             receivingTo: receivingShipping.receiving.receivingTo,
@@ -907,14 +894,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 next: () => {
                     if (this.editData?.canOpenModal) {
                         switch (this.editData?.key) {
-                            case 'load-modal': {
+                            case LoadModalStringEnum.LOAD_MODAL:
                                 this.modalService.setModalSpinner({
                                     action: null,
                                     status: true,
                                     close: true,
                                 });
                                 this.modalService.setProjectionModal({
-                                    action: 'close',
+                                    action: eGeneralActions.CLOSE,
                                     payload: {
                                         key: this.editData?.key,
                                         value: null,
@@ -925,27 +912,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                                 });
 
                                 break;
-                            }
-
-                            default: {
+                            default:
                                 break;
-                            }
                         }
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
-                    }
+                    } else this.ngbActiveModal.close();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -956,13 +928,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     this.shipperForm.patchValue({
-                        businessName: res.businessName,
-                        phone: res.phone,
-                        phoneExt: res.phoneExt,
-                        email: res.email,
-                        address: res.address.address,
-                        addressUnit: res.address.addressUnit,
-                        receivingAppointment: res.receivingAppointment,
+                        ...res,
                         receivingOpenTwentyFourHours:
                             res.receivingOpenTwentyFourHours,
                         receivingFrom:
@@ -970,42 +936,37 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             res.receivingOpenTwentyFourHours
                                 ? null
                                 : res.receivingFrom
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      res.receivingFrom
-                                  )
-                                : null,
+                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                        res.receivingFrom
+                                    )
+                                  : null,
                         receivingTo:
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
                                 : res.receivingTo
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      res.receivingTo
-                                  )
-                                : null,
-                        shippingHoursSameReceiving:
-                            res.shippingHoursSameReceiving,
-                        shippingAppointment: res.shippingAppointment,
-                        shippingOpenTwentyFourHours:
-                            res.shippingOpenTwentyFourHours,
+                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                        res.receivingTo
+                                    )
+                                  : null,
                         shippingFrom:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
                                 : res.shippingFrom
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      res.shippingFrom
-                                  )
-                                : null,
+                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                        res.shippingFrom
+                                    )
+                                  : null,
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
                                 : res.shippingTo
-                                ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                      res.shippingTo
-                                  )
-                                : null,
+                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
+                                        res.shippingTo
+                                    )
+                                  : null,
                         note: res.note,
                         contacts: this.mapContacts(res.shipperContacts, true),
                     });
@@ -1018,35 +979,32 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.longitude = res.longitude;
                     this.latitude = res.latitude;
 
-                    if (res.phoneExt) {
-                        this.isPhoneExtExist = true;
-                    }
+                    if (res.phoneExt) this.isPhoneExtExist = true;
 
-                    if (res.receivingAppointment) {
+                    if (res.receivingAppointment)
                         this.isAppointmentReceiving = true;
-                    }
 
                     if (
                         res.shippingAppointment ||
                         res.shippingHoursSameReceiving
-                    ) {
+                    )
                         this.isAppointmentShipping = true;
-                    }
 
                     // Contacts
                     this.updatedShipperContacts = res.shipperContacts;
 
                     // Review
-                    this.reviews = res.ratingReviews.map((item) => ({
-                        ...item,
-                        id: item.reviewId,
-                        companyUser: {
-                            ...item.companyUser,
-                            /*   avatar: item.companyUser.avatar, */
-                        },
-                        commentContent: item.comment,
-                        rating: item.thumb,
-                    }));
+                    this.reviews = [
+                        ...res.ratingReviews.map((item) => ({
+                            ...item,
+                            id: item.reviewId,
+                            companyUser: {
+                                ...item.companyUser,
+                            },
+                            commentContent: item.comment,
+                            rating: item.thumb,
+                        })),
+                    ];
 
                     const reviewIndex = this.reviews?.findIndex(
                         (item) =>
@@ -1054,9 +1012,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                             this.companyUser.companyUserId
                     );
 
-                    if (reviewIndex !== -1) {
-                        this.isOneMoreReviewDisabled = true;
-                    }
+                    if (reviewIndex !== -1) this.isOneMoreReviewDisabled = true;
 
                     this.taLikeDislikeService.populateLikeDislikeEvent({
                         downRatingCount: res.downCount,
@@ -1124,12 +1080,12 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             this.shipperForm.get(
                 ShipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS
             ).value
-        ) {
+        )
             receiving = {
                 receivingFrom: null,
                 receivingTo: null,
             };
-        } else {
+        else
             receiving = {
                 receivingFrom: this.shipperForm.get(
                     ShipperModalString.RECEIVING_FROM
@@ -1138,7 +1094,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     ShipperModalString.RECEIVING_TO
                 ).value,
             };
-        }
 
         if (
             this.shipperForm.get(
@@ -1166,7 +1121,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                 this.shipperForm.get(
                     ShipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS
                 ).value
-            ) {
+            )
                 shipping = {
                     shippingAppointment: this.shipperForm.get(
                         ShipperModalString.SHIPPING_APPOINTMENT
@@ -1177,7 +1132,7 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     shippingFrom: null,
                     shippingTo: null,
                 };
-            } else {
+            else
                 shipping = {
                     shippingAppointment: this.shipperForm.get(
                         ShipperModalString.SHIPPING_APPOINTMENT
@@ -1192,37 +1147,30 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                         this.shipperForm.get(ShipperModalString.SHIPPING_TO)
                             .value ?? null,
                 };
-            }
         }
 
         return { receiving, shipping };
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         this.documents = event.files;
         switch (event.action) {
-            case 'add': {
+            case eGeneralActions.ADD:
                 this.shipperForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            }
-            case 'delete': {
+            case eGeneralActions.DELETE:
                 this.shipperForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
-
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
                 this.fileModified = true;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -1308,12 +1256,14 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
                     this.shipperForm.get(ShipperModalString.LONGITUDE).value,
                     this.shipperForm.get(ShipperModalString.LATITUDE).value
                 )
-                .pipe()
-                .subscribe((res) => {
+                .pipe(takeUntil(this.destroy$))
+                .subscribe((res: AddressEntity) => {
                     this.shipperForm.patchValue({
+                        ...res,
                         countryStateAddress:
-                            res?.county + ', ' + res.stateShortName,
-                        address: res.address,
+                            res?.county +
+                            eStringPlaceholder.COMMA_WHITESPACE +
+                            res.stateShortName,
                     });
 
                     this.selectedAddress = res;
@@ -1331,10 +1281,6 @@ export class ShipperModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
-    }
-
-    get getAddressInputConfig(): ITaInput {
-        return ShipperModalConfig.getAddressInputConfig();
     }
 
     get getAddressUnitInputConfig(): ITaInput {

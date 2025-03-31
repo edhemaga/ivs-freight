@@ -1,5 +1,9 @@
+// Models
 import { DetailsDropdownOptions } from '@shared/models/details-dropdown-options.model';
 import { DetailsConfig } from '@shared/models/details-config.model';
+
+// Enums
+import { eGeneralActions } from '@shared/enums';
 
 export class DriverDetailsHelper {
     static getDetailsDropdownOptions(status: number): DetailsDropdownOptions {
@@ -18,10 +22,10 @@ export class DriverDetailsHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     disabled: !status,
-                    iconName: 'edit',
+                    iconName: eGeneralActions.EDIT,
                 },
                 {
                     title: 'border',
@@ -89,7 +93,9 @@ export class DriverDetailsHelper {
                 },
                 {
                     title: !status ? 'Activate' : 'Deactivate',
-                    name: !status ? 'activate' : 'deactivate',
+                    name: !status
+                        ? eGeneralActions.ACTIVATE
+                        : eGeneralActions.DEACTIVATE,
                     iconName: 'activate-item',
                     svg: 'assets/svg/common/ic_deactivate.svg',
                     activate: !status,
@@ -104,7 +110,7 @@ export class DriverDetailsHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
+                    iconName: eGeneralActions.DELETE,
                     danger: true,
                     show: true,
                     redIcon: true,

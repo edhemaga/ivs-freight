@@ -1,11 +1,11 @@
 import {
     ChartImagesStringEnum,
-    ChartTypesStringEnum,
+    eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
 
 export class FuelDetailsChartsConfiguration {
     static FUEL_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],
@@ -15,6 +15,7 @@ export class FuelDetailsChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
         showTooltipBackground: false,
-        showXAxisLabels: true
+        showXAxisLabels: true,
+        hasVerticalDashedAnnotation: true,
     };
 }

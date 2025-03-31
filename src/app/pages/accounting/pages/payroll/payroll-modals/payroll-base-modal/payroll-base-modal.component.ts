@@ -7,7 +7,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 import { Subject, takeUntil } from 'rxjs';
 
 // Pipes
@@ -16,8 +16,10 @@ import { FormatDatePipe } from '@shared/pipes';
 // Components
 import {
     CaInputComponent,
-    CaInputDropdownComponent,
+    CaInputDatetimePickerComponent,
+    CaInputDropdownTestComponent,
     CaModalComponent,
+    InputTestComponent,
 } from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -27,7 +29,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { PayrollCreditConst } from '@pages/accounting/pages/payroll/state/utils/consts';
 
 // Enums
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
@@ -35,7 +37,7 @@ import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
 
 // Models
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import {
     DriverMinimalResponse,
     EnumValue,
@@ -59,6 +61,10 @@ import { ConfirmationService } from '@shared/components/ta-shared-modals/confirm
 
 // Helpers
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
+import { PayrollSettingsPipe } from '@pages/accounting/pages/payroll/pipes/payroll-settings-pipe/payroll-settings-pipe.pipe';
+
+// Config
+import { ICaInput } from '@ca-shared/components/ca-input-test/config';
 
 @Component({
     selector: 'app-payroll-base-modal',
@@ -69,17 +75,20 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
-        NgbModule,
+        NgbTooltipModule,
 
         CaModalComponent,
         CaInputComponent,
         TaTabSwitchComponent,
-        CaInputDropdownComponent,
+        CaInputDropdownTestComponent,
         TaCheckboxComponent,
         TaAppTooltipV2Component,
+        CaInputDatetimePickerComponent,
+        InputTestComponent,
 
         // Pipes
         FormatDatePipe,
+        PayrollSettingsPipe,
     ],
     templateUrl: './payroll-base-modal.component.html',
     styleUrls: ['./payroll-base-modal.component.scss'],
@@ -98,7 +107,7 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectedTab: TabOptions;
 
     // Drivers
-    public driverConfig: ITaInput = this.payrollCreditConst.driverConfig(
+    public driverConfig: ICaInput = this.payrollCreditConst.driverConfig(
         '',
         ''
     );
@@ -151,8 +160,6 @@ export class PayrollBaseModalComponent implements OnInit {
                 }
             }
         }
-
-        if (this.isBonusModal) this.getEmployeesDropdown();
     }
 
     private setupEventListeners(): void {
@@ -173,7 +180,7 @@ export class PayrollBaseModalComponent implements OnInit {
         if (!this.isDeductionModal) return;
 
         this.baseForm
-            .get(PayrollStringEnum.RECURRING)
+            .get(ePayrollString.RECURRING)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
                 if (value) {
@@ -187,36 +194,32 @@ export class PayrollBaseModalComponent implements OnInit {
             });
 
         this.baseForm
-            .get(PayrollStringEnum.AMOUNT)
+            .get(ePayrollString.AMOUNT)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe(() => this.calculateDeductionPayAmmount());
 
         this.baseForm
-            .get(PayrollStringEnum.LIMITED_NUMBER)
+            .get(ePayrollString.LIMITED_NUMBER)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe(() => this.calculateDeductionPayAmmount());
     }
 
     private calculateDeductionPayAmmount(): void {
-        const ammount = MethodsCalculationsHelper.convertThousanSepInNumber(
-            this.baseForm.get(PayrollStringEnum.AMOUNT).value
+        const amount = MethodsCalculationsHelper.convertThousandSepInNumber(
+            this.baseForm.get(ePayrollString.AMOUNT).value
         );
         const numberOfPayments =
-            MethodsCalculationsHelper.convertThousanSepInNumber(
-                this.baseForm.get(PayrollStringEnum.LIMITED_NUMBER).value
+            MethodsCalculationsHelper.convertThousandSepInNumber(
+                this.baseForm.get(ePayrollString.LIMITED_NUMBER).value
             );
 
         this.baseForm
-            .get(PayrollStringEnum.LIMITED_AMOUNT)
+            .get(ePayrollString.LIMITED_AMOUNT)
             .patchValue(
                 MethodsCalculationsHelper.convertNumberInThousandSep(
-                    ammount / numberOfPayments
+                    Number((amount / numberOfPayments).toFixed(2))
                 ) ?? null
             );
-    }
-
-    private getEmployeesDropdown(): void {
-        this.payrollBonusService.getPayrollBonusModal().subscribe((res) => {});
     }
 
     private driverAndTruckDropdowns(): void {
@@ -229,7 +232,6 @@ export class PayrollBaseModalComponent implements OnInit {
                     this.mapTrucks(res.trucks);
                     this.populateData();
                 },
-                error: () => {},
             });
     }
 
@@ -259,7 +261,7 @@ export class PayrollBaseModalComponent implements OnInit {
                     logoName: avatarFile?.url,
                     name: firstName + ' ' + lastName,
                     avatarFile: avatarFile?.url,
-                    suffix: payType ? ` • ${payType.name}` : '',
+                    suffix: payType ? ` ${payType.name}` : '',
                 };
             }
         );
@@ -268,30 +270,11 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectDriver(driver: PayrollDriver): void {
         this.selectedDriver = driver;
         this.baseForm
-            .get(PayrollStringEnum.SELECTED_DRIVER_ID)
+            .get(ePayrollString.SELECTED_DRIVER_ID)
             .patchValue(driver?.id ?? null);
-        this.creditTitle = driver?.name + driver?.suffix;
+        this.creditTitle = `${driver?.name} • ${driver?.suffix}`;
         this.driverConfig = {
             ...this.driverConfig,
-            multipleInputValues: {
-                options: [
-                    {
-                        value: driver.name,
-                        isImg: true,
-                        isSvg: false,
-                        folder: null,
-                        subFolder: null,
-                        isOwner: false,
-                        logoType: null,
-                        logoName: this.selectedDriver?.logoName,
-                    },
-                    {
-                        value: `${driver.suffix}`,
-                        logoName: null,
-                    },
-                ],
-                customClass: LoadModalStringEnum.TEXT_SUFFIX,
-            },
         };
     }
 
@@ -312,74 +295,70 @@ export class PayrollBaseModalComponent implements OnInit {
     public selectTruck(truck: any): void {
         this.selectedTruck = truck;
         this.baseForm
-            .get(PayrollStringEnum.SELECTED_TRUCK_ID)
+            .get(ePayrollString.SELECTED_TRUCK_ID)
             .patchValue(truck?.id ?? null);
-        this.creditTitle = truck ? truck?.name + truck.suffix : null;
-        
+        this.creditTitle = truck ? `${truck?.name} • ${truck?.suffix}` : null;
+
         this.truckConfig = {
             ...this.truckConfig,
-            multipleInputValues: truck ? {
-                options: [
-                    {
-                        id: truck.id,
-                        value: truck.name,
-                        isImg: false,
-                        isSvg: true,
-                        folder: LoadModalStringEnum.COMMON,
-                        subFolder: LoadModalStringEnum.TRUCKS,
-                        logoName: truck?.logoName,
-                        logoType: truck?.logoType
-                    },
+            multipleInputValues: truck
+                ? {
+                      options: [
+                          {
+                              id: truck.id,
+                              value: truck.name,
+                              isImg: false,
+                              isSvg: true,
+                              folder: LoadModalStringEnum.COMMON,
+                              subFolder: LoadModalStringEnum.TRUCKS,
+                              logoName: truck?.logoName,
+                              logoType: truck?.logoType,
+                          },
 
-                    {
-                        value: `${truck.owner}`,
-                        logoName: null,
-                    },
-                ],
-                customClass: 'text-suffix',
-            } : null,
+                          {
+                              value: `${truck.owner}`,
+                              logoName: null,
+                          },
+                      ],
+                      customClass: 'text-suffix',
+                  }
+                : null,
         };
     }
 
     private clearDriverTruckValidators(): void {
-        this.baseForm.get(PayrollStringEnum.DRIVER_ID).clearValidators();
-        this.baseForm.get(PayrollStringEnum.TRUCK_ID).clearValidators();
+        this.baseForm.get(ePayrollString.DRIVER_ID).clearValidators();
+        this.baseForm.get(ePayrollString.TRUCK_ID).clearValidators();
     }
 
     public onDriverTruckTabChange(tab: TabOptions): void {
         this.selectedTab = tab;
-        this.baseForm
-            .get(PayrollStringEnum.SELECTED_TYPE_ID)
-            .patchValue(tab.name);
+        this.baseForm.get(ePayrollString.SELECTED_TYPE_ID).patchValue(tab.name);
 
         this.clearDriverTruckValidators();
 
         if (tab.id === 1) {
             this.baseForm
-                .get(PayrollStringEnum.DRIVER_ID)
+                .get(ePayrollString.DRIVER_ID)
                 .setValidators(Validators.required);
-            this.baseForm
-                .get(PayrollStringEnum.SELECTED_TRUCK_ID)
-                .setValue(null);
+            this.baseForm.get(ePayrollString.SELECTED_TRUCK_ID).setValue(null);
         } else if (tab.id === 2) {
             this.baseForm
-                .get(PayrollStringEnum.TRUCK_ID)
+                .get(ePayrollString.TRUCK_ID)
                 .setValidators(Validators.required);
-            this.baseForm
-                .get(PayrollStringEnum.SELECTED_DRIVER_ID)
-                .setValue(null);
+            this.baseForm.get(ePayrollString.SELECTED_DRIVER_ID).setValue(null);
         }
 
         // Re-validate the form to apply changes
-        this.baseForm.get(PayrollStringEnum.DRIVER_ID).updateValueAndValidity();
-        this.baseForm.get(PayrollStringEnum.TRUCK_ID).updateValueAndValidity();
+        this.baseForm.get(ePayrollString.DRIVER_ID).updateValueAndValidity();
+        this.baseForm.get(ePayrollString.TRUCK_ID).updateValueAndValidity();
 
         this.creditTitle = null;
     }
 
     public onPeriodTabChange(tab: TabOptions): void {
         this.baseForm
-            .get(PayrollStringEnum.RECURRING_TYPE)
+            .get(ePayrollString.RECURRING_TYPE)
             .patchValue(tab?.value ?? null);
     }
 
@@ -390,27 +369,27 @@ export class PayrollBaseModalComponent implements OnInit {
     public get isNotRecuringPayment(): boolean {
         return (
             this.isDeductionModal &&
-            !this.baseForm.get(PayrollStringEnum.RECURRING)?.value
+            !this.baseForm.get(ePayrollString.RECURRING)?.value
         );
     }
 
     public get isLimitedPayment(): boolean {
         return (
             this.isDeductionModal &&
-            this.baseForm.get(PayrollStringEnum.LIMITED)?.value
+            this.baseForm.get(ePayrollString.LIMITED)?.value
         );
     }
 
     public get isDeductionModal(): boolean {
-        return this.modalType === PayrollStringEnum.MODAL_DEDUCTION;
+        return this.modalType === ePayrollString.MODAL_DEDUCTION;
     }
 
     public get isCreditModal(): boolean {
-        return this.modalType === PayrollStringEnum.MODAL_CREDIT;
+        return this.modalType === ePayrollString.MODAL_CREDIT;
     }
 
     public get isBonusModal(): boolean {
-        return this.modalType === PayrollStringEnum.MODAL_BONUS;
+        return this.modalType === ePayrollString.MODAL_BONUS;
     }
 
     public get isEditMode(): boolean {

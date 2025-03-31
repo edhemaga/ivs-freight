@@ -1,4 +1,5 @@
 @import 'src/theme/variables';
+@import './mixins.scss';
 
 .chart_custom_tooltip {
     width: 122px;
@@ -104,7 +105,7 @@ body {
         .map-list-body
     ):not(.cluster-marker-container):not(
         .shop-details-item-repair-main-dropdown
-    ):not(.description-items) {
+    ):not(.description-items):not(.ca-scroll-bar):not(.dropdown-content) {
     scrollbar-width: none !important; /* Firefox */
 
     &::-webkit-scrollbar {
@@ -144,6 +145,22 @@ body {
         background: $muted;
         border-radius: 5px;
     }
+
+    &.remove-scroll-track {
+        padding-right: 4px;
+
+        &::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        &::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        &::-webkit-scrollbar-thumb {
+            background: $ta-light-grey-6;
+        }
+    }
 }
 
 .text-left {
@@ -160,6 +177,7 @@ body {
 
 html {
     body {
+        app-ca-modal,
         app-ta-modal {
             .ta-custom-card {
                 .ta-card-body.scroll-x-axis {
@@ -208,26 +226,31 @@ html {
             color: $ta-light-grey-2;
         }
     }
+
     &.cancelled {
         .svgtext-template-text {
             color: $ta-red-14;
         }
     }
+
     &.assigned {
         .svgtext-template-text {
             color: $ta-green-1;
         }
     }
+
     &.unassigned {
         .svgtext-template-text {
             color: $muted;
         }
     }
+
     &.dispatched {
         .svgtext-template-text {
             color: $ta-blue-13;
         }
     }
+
     &.split {
         .svgtext-template-text {
             color: $ta-red-17;
@@ -274,13 +297,16 @@ html {
     .load-stop-container {
         .load-stop-drag-icon {
             display: block;
+
             svg path {
                 fill: $white !important;
             }
         }
+
         .load-delete-drag-icon {
             display: none;
         }
+
         .load-stop-header-bar {
             background-color: $ta-black-2 !important;
 
@@ -317,12 +343,14 @@ app-load-modal {
         .input-required-check {
             display: none;
         }
+
         .valid-focus-out-filled {
             &:hover {
                 background-color: $ta-blue-17;
             }
         }
     }
+
     .input-control {
         &.valid-focus-in {
             background-color: $black;
@@ -370,6 +398,11 @@ app-load-modal {
 .mr-3 {
     margin-right: 6px;
 }
+
+.mr-12 {
+    margin-right: 12px !important;
+}
+
 .dispatch-load {
     .ta-custom-card .ta-card-header {
         height: 33px;
@@ -514,6 +547,20 @@ app-load-modal {
     &-0 {
         padding-left: 0 !important;
     }
+
+    &-3 {
+        padding-left: 3px;
+    }
+}
+
+.position {
+    &-relative {
+        position: relative;
+    }
+
+    &-absolute {
+        position: absolute;
+    }
 }
 
 // Use case for deleting modal opening from modal
@@ -534,4 +581,75 @@ html ngb-modal-backdrop {
 
 .mb-12 {
     margin-bottom: 12px !important;
+}
+
+.modal-date-border {
+    height: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid $ta-light-grey-6;
+}
+
+.modal-buttons {
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 30px;
+    cursor: pointer;
+}
+
+.payroll-number.text-color-white {
+    color: $white !important;
+}
+
+.prevent-text-selection {
+    @include prevent-text-selection();
+}
+
+// #region middle ellipsis
+
+.mete {
+    height: 1.5em;
+    line-height: 1.5em;
+}
+
+.mete-start,
+.mete-end {
+    overflow: hidden;
+    height: inherit;
+    flex: 0 1 auto;
+}
+
+.mete-start {
+    word-break: break-all;
+}
+
+.mete-end {
+    white-space: nowrap;
+    direction: rtl;
+    text-overflow: ellipsis;
+}
+
+.mete-end::after {
+    content: '\200E';
+}
+
+// #endregion
+.map-container {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    padding-left: 0px;
+    z-index: 1;
+}
+
+.disable-text-selection {
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }

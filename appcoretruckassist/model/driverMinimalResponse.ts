@@ -27,5 +27,6 @@ export interface DriverMinimalResponse {
     hiredAt?: string | null;
     payType?: EnumValue;
     driverRate?: number | null;
+    colorFlag?: EnumValue;
 }
 

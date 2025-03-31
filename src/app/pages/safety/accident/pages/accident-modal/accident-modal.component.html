@@ -18,7 +18,7 @@
         <form
             [formGroup]="accidentForm"
             [ngClass]="{
-                'tab-2': selectedTab !== 1
+                'tab-2': selectedTab !== 1,
             }"
             class="form-container"
         >
@@ -35,7 +35,7 @@
                                 type: 'text',
                                 label: 'Report',
                                 isDisabled: editData?.type === 'edit',
-                                autoFocus: editData?.type !== 'edit'
+                                autoFocus: editData?.type !== 'edit',
                             }"
                             formControlName="report"
                         ></app-ta-input>
@@ -44,7 +44,7 @@
                                 name: 'Federally Recordable',
                                 type: 'text',
                                 isDisabled: editData?.type === 'edit',
-                                label: 'Federally Recordable'
+                                label: 'Federally Recordable',
                             }"
                             formControlName="federallyRecordable"
                         ></app-ta-input>
@@ -53,7 +53,7 @@
                                 name: 'State Recordable',
                                 type: 'text',
                                 isDisabled: editData?.type === 'edit',
-                                label: 'State Recordable'
+                                label: 'State Recordable',
                             }"
                             formControlName="stateRecordable"
                         ></app-ta-input>
@@ -65,7 +65,7 @@
                                 type: 'text',
                                 isDisabled: editData?.type === 'edit',
                                 label: 'Injury',
-                                placeholderIcon: 'injury'
+                                placeholderIcon: 'injury',
                             }"
                             formControlName="injury"
                         ></app-ta-input>
@@ -75,7 +75,7 @@
                                 type: 'text',
                                 isDisabled: editData?.type === 'edit',
                                 label: 'Fatality',
-                                placeholderIcon: 'fatality'
+                                placeholderIcon: 'fatality',
                             }"
                             formControlName="fatality"
                         ></app-ta-input>
@@ -85,7 +85,7 @@
                                 type: 'text',
                                 isDisabled: editData?.type === 'edit',
                                 label: 'Towing',
-                                placeholderIcon: 'towing'
+                                placeholderIcon: 'towing',
                             }"
                             formControlName="towing"
                         ></app-ta-input>
@@ -95,7 +95,7 @@
                                 type: 'text',
                                 isDisabled: editData?.type === 'edit',
                                 label: 'Hazmat',
-                                placeholderIcon: 'hazmat'
+                                placeholderIcon: 'hazmat',
                             }"
                             formControlName="hazMat"
                         ></app-ta-input>
@@ -105,7 +105,7 @@
                                 type: 'text',
                                 isDisabled: editData?.type === 'edit',
                                 label: 'Vehicle No.',
-                                placeholderIcon: 'crash_vehicle'
+                                placeholderIcon: 'crash_vehicle',
                             }"
                             formControlName="vehicleNo"
                         ></app-ta-input>
@@ -126,14 +126,14 @@
                                     textTransform: 'capitalize',
                                     dropdownWidthClass: 'w-col-405',
                                     minLength: 6,
-                                    maxLength: 256
+                                    maxLength: 256,
                                 }"
                                 [placeholderType]="'longAddress'"
                                 formControlName="addressAccident"
                             ></app-ta-input-address-dropdown>
                         </div>
                         <div class="col-3">
-                            <app-ta-input
+                            <ca-input-datetime-picker
                                 [inputConfig]="{
                                     name: 'datepicker',
                                     type: 'text',
@@ -141,13 +141,13 @@
                                     label: 'Date',
                                     isDisabled: editData?.type === 'edit',
                                     placeholderIcon: 'date',
-                                    customClass: 'datetimeclass'
+                                    customClass: 'datetimeclass',
                                 }"
                                 formControlName="date"
-                            ></app-ta-input>
+                            ></ca-input-datetime-picker>
                         </div>
                         <div class="col-3 no-p-left">
-                            <app-ta-input
+                            <ca-input-datetime-picker
                                 [inputConfig]="{
                                     name: 'timepicker',
                                     type: 'text',
@@ -155,19 +155,19 @@
                                     isDropdown: true,
                                     isDisabled: editData?.type === 'edit',
                                     placeholderIcon: 'time',
-                                    customClass: 'datetimeclass'
+                                    customClass: 'datetimeclass',
                                 }"
                                 formControlName="time"
-                            ></app-ta-input>
+                            ></ca-input-datetime-picker>
                         </div>
                     </div>
                     <app-ta-custom-card
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                         [cardName]="'Driver'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [isCardOpen]="true"
                     >
                         <div class="violation-modal-row-3">
@@ -176,7 +176,7 @@
                                     name: 'Driver Name',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Driver'
+                                    label: 'Driver',
                                 }"
                                 formControlName="driverName"
                             ></app-ta-input>
@@ -185,7 +185,7 @@
                                     name: 'Licence Number',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Licence No.'
+                                    label: 'Licence No.',
                                 }"
                                 formControlName="driverLicenceNumber"
                             ></app-ta-input>
@@ -195,11 +195,11 @@
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
                                     label: 'State',
-                                    textTransform: 'uppercase'
+                                    textTransform: 'uppercase',
                                 }"
                                 formControlName="driverState"
                             ></app-ta-input>
-                            <app-ta-input
+                            <ca-input-datetime-picker
                                 [inputConfig]="{
                                     name: 'datepicker',
                                     type: 'text',
@@ -207,19 +207,19 @@
                                     isDropdown: true,
                                     label: 'DoB',
                                     placeholderIcon: 'date',
-                                    customClass: 'datetimeclass'
+                                    customClass: 'datetimeclass',
                                 }"
                                 formControlName="driverDOB"
-                            ></app-ta-input>
+                            ></ca-input-datetime-picker>
                         </div>
                     </app-ta-custom-card>
                     <app-ta-custom-card
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                         [cardName]="'Truck'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [isCardOpen]="true"
                     >
                         <div class="violation-modal-row-5">
@@ -228,7 +228,7 @@
                                     name: 'Truck Number',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Unit'
+                                    label: 'Unit',
                                 }"
                                 formControlName="truckUnit"
                             ></app-ta-input>
@@ -237,7 +237,7 @@
                                     name: 'Truck Type',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Type'
+                                    label: 'Type',
                                 }"
                                 formControlName="truckType"
                             ></app-ta-input>
@@ -246,7 +246,7 @@
                                     name: 'Truck Make',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Make'
+                                    label: 'Make',
                                 }"
                                 formControlName="truckMake"
                             ></app-ta-input>
@@ -255,7 +255,7 @@
                                     name: 'Truck Plate Make',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Plate No.'
+                                    label: 'Plate No.',
                                 }"
                                 formControlName="truckPlateNumber"
                             ></app-ta-input>
@@ -265,7 +265,7 @@
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
                                     label: 'State',
-                                    textTransform: 'uppercase'
+                                    textTransform: 'uppercase',
                                 }"
                                 formControlName="truckState"
                             ></app-ta-input>
@@ -277,7 +277,7 @@
                                     maxLength: 17,
                                     textTransform: 'uppercase',
                                     type: 'text',
-                                    isDisabled: editData?.type === 'edit'
+                                    isDisabled: editData?.type === 'edit',
                                 }"
                                 formControlName="truckVIN"
                             ></app-ta-input>
@@ -286,10 +286,10 @@
                     <app-ta-custom-card
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                         [cardName]="'Trailer'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [isCardOpen]="true"
                     >
                         <div class="violation-modal-row-6">
@@ -303,7 +303,7 @@
                                     type: 'text',
                                     label: 'Unit',
                                     isDropdown: true,
-                                    dropdownWidthClass: 'w-col-100'
+                                    dropdownWidthClass: 'w-col-100',
                                 }"
                                 [options]="labelsTrailerUnits"
                                 formControlName="trailerUnit"
@@ -313,7 +313,7 @@
                                     name: 'Trailer Type',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Type'
+                                    label: 'Type',
                                 }"
                                 formControlName="trailerType"
                             ></app-ta-input>
@@ -322,7 +322,7 @@
                                     name: 'Trailer Make',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Make'
+                                    label: 'Make',
                                 }"
                                 formControlName="trailerMake"
                             ></app-ta-input>
@@ -331,7 +331,7 @@
                                     name: 'Trailer Plate Number',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Plate No.'
+                                    label: 'Plate No.',
                                 }"
                                 formControlName="trailerPlateNumber"
                             ></app-ta-input>
@@ -341,7 +341,7 @@
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
                                     label: 'State',
-                                    textTransform: 'uppercase'
+                                    textTransform: 'uppercase',
                                 }"
                                 formControlName="trailerState"
                             ></app-ta-input>
@@ -353,7 +353,7 @@
                                     minLength: 5,
                                     maxLength: 17,
                                     textTransform: 'uppercase',
-                                    isDisabled: editData?.type === 'edit'
+                                    isDisabled: editData?.type === 'edit',
                                 }"
                                 formControlName="trailerVIN"
                             ></app-ta-input>
@@ -362,7 +362,7 @@
                     <div class="violation-card">
                         <app-ta-custom-card
                             [cardName]="'Violation'"
-                            [disableAnimation]="disableCardAnimation"
+                            [disableAnimation]="isCardAnimationDisabled"
                             [disabledCard]="!violations.length"
                             [hasScrollBody]="violations.length > 10"
                             [isCardOpen]="violations.length > 0"
@@ -426,7 +426,7 @@
                                                     textTransform: 'capitalize',
                                                     hideErrorMessage: true,
                                                     hideRequiredCheck: true,
-                                                    blackInput: true
+                                                    blackInput: true,
                                                 }"
                                                 formControlName="description"
                                             ></app-ta-input>
@@ -440,7 +440,7 @@
                     <app-ta-custom-card
                         (onActionEvent)="addInsurance($event)"
                         [cardName]="'Insurance'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [disabledCard]="!insurances.length"
                         [hasActionSvg]="'assets/svg/common/ic_plus.svg'"
                         [hasBodyData]="insurances.length > 0"
@@ -488,7 +488,7 @@
                                                 dropdownWidthClass: 'w-col-136',
                                                 hideErrorMessage: true,
                                                 hideRequiredCheck: true,
-                                                blackInput: true
+                                                blackInput: true,
                                             }"
                                             [options]="labelsInsuranceType"
                                             formControlName="insuranceType"
@@ -501,7 +501,7 @@
                                                 textTransform: 'capitalize',
                                                 hideErrorMessage: true,
                                                 hideRequiredCheck: true,
-                                                blackInput: true
+                                                blackInput: true,
                                             }"
                                             formControlName="claimNumber"
                                         ></app-ta-input>
@@ -513,7 +513,7 @@
                                                 textTransform: 'capitalize',
                                                 hideErrorMessage: true,
                                                 hideRequiredCheck: true,
-                                                blackInput: true
+                                                blackInput: true,
                                             }"
                                             formControlName="insuranceAdjuster"
                                         ></app-ta-input>
@@ -526,7 +526,7 @@
                                                 maxLength: 14,
                                                 hideErrorMessage: true,
                                                 hideRequiredCheck: true,
-                                                blackInput: true
+                                                blackInput: true,
                                             }"
                                             formControlName="phone"
                                         ></app-ta-input>
@@ -540,7 +540,7 @@
                                                 textTransform: 'lowercase',
                                                 hideErrorMessage: true,
                                                 hideRequiredCheck: true,
-                                                blackInput: true
+                                                blackInput: true,
                                             }"
                                             formControlName="email"
                                         ></app-ta-input>
@@ -565,7 +565,7 @@
 
                     <app-ta-custom-card
                         [cardName]="'Document'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [hasCounter]="documents.length ? documents.length : 0"
                         [isCardOpen]="!!documents.length"
                     >
@@ -580,7 +580,7 @@
 
                     <app-ta-custom-card
                         [cardName]="'Media'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [hasCounter]="media.length ? media.length : 0"
                         [isCardOpen]="media.length > 0"
                     >
@@ -614,10 +614,10 @@
                     <app-ta-custom-card
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                         [cardName]="'Crash Environment'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [isCardOpen]="true"
                     >
                         <div class="row">
@@ -627,7 +627,7 @@
                                         name: 'Roadway Trafficway',
                                         type: 'text',
                                         label: 'Roadway Trafficway',
-                                        isDisabled: true
+                                        isDisabled: true,
                                     }"
                                     formControlName="roadwayTrafficWay"
                                 ></app-ta-input>
@@ -638,7 +638,7 @@
                                         name: 'Weather Condition',
                                         type: 'text',
                                         label: 'Weather Condition',
-                                        isDisabled: true
+                                        isDisabled: true,
                                     }"
                                     formControlName="weatherCondition"
                                 ></app-ta-input>
@@ -651,7 +651,7 @@
                                         name: 'Road Access Control',
                                         type: 'text',
                                         label: 'Road Access Control',
-                                        isDisabled: true
+                                        isDisabled: true,
                                     }"
                                     formControlName="roadAccessControl"
                                 ></app-ta-input>
@@ -662,7 +662,7 @@
                                         name: 'Road Surface Condition',
                                         type: 'text',
                                         label: 'Road Surface Condition',
-                                        isDisabled: true
+                                        isDisabled: true,
                                     }"
                                     formControlName="roadSurfaceCondition"
                                 ></app-ta-input>
@@ -673,7 +673,7 @@
                                         name: 'Light Condition',
                                         type: 'text',
                                         label: 'Light Condition',
-                                        isDisabled: true
+                                        isDisabled: true,
                                     }"
                                     formControlName="lightCondition"
                                 ></app-ta-input>
@@ -683,10 +683,10 @@
                     <app-ta-custom-card
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                         [cardName]="'Authority Details'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [isCardOpen]="true"
                     >
                         <div class="violation-modal-autority-details-row">
@@ -695,7 +695,7 @@
                                     name: 'Reporting Agency',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Reporting Agency'
+                                    label: 'Reporting Agency',
                                 }"
                                 formControlName="reportingAgency"
                             ></app-ta-input>
@@ -704,7 +704,7 @@
                                     name: 'Police Officer',
                                     type: 'text',
                                     textTransform: 'capitalize',
-                                    label: 'Police Officer'
+                                    label: 'Police Officer',
                                 }"
                                 formControlName="policeOfficer"
                             ></app-ta-input>
@@ -713,7 +713,7 @@
                                     name: 'Badge Number',
                                     type: 'text',
                                     isDisabled: editData?.type === 'edit',
-                                    label: 'Badge Number'
+                                    label: 'Badge Number',
                                 }"
                                 formControlName="bagdeNo"
                             ></app-ta-input>
@@ -734,7 +734,7 @@
                                     textTransform: 'capitalize',
                                     dropdownWidthClass: 'w-col-452',
                                     minLength: 6,
-                                    maxLength: 256
+                                    maxLength: 256,
                                 }"
                                 [placeholderType]="'longAddress'"
                                 formControlName="authorityAddress"
@@ -746,7 +746,7 @@
                                     label: 'Phone',
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
-                                    maxLength: 14
+                                    maxLength: 14,
                                 }"
                                 formControlName="phoneOfficer"
                             ></app-ta-input>
@@ -756,7 +756,7 @@
                                     type: 'text',
                                     label: 'Fax',
                                     mask: '(000) 000-0000',
-                                    placeholderIcon: 'fax'
+                                    placeholderIcon: 'fax',
                                 }"
                                 formControlName="fax"
                             ></app-ta-input>
@@ -766,10 +766,10 @@
                         (onOpenCard)="isLocationAndShippingOpen = $event"
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                         [cardName]="'Location & Shipping info'"
-                        [disableAnimation]="disableCardAnimation"
+                        [disableAnimation]="isCardAnimationDisabled"
                         [isCardOpen]="isLocationAndShippingOpen"
                     >
                         <div class="row">
@@ -790,7 +790,7 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-407',
                                         minLength: 6,
-                                        maxLength: 256
+                                        maxLength: 256,
                                     }"
                                     [placeholderType]="'longAddress'"
                                     formControlName="origin"
@@ -813,7 +813,7 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-418',
                                         minLength: 6,
-                                        maxLength: 256
+                                        maxLength: 256,
                                     }"
                                     [placeholderType]="'longAddress'"
                                     formControlName="destination"
@@ -835,7 +835,7 @@
                                     label: 'Customer',
                                     isDropdown: true,
                                     textTransform: 'capitalize',
-                                    dropdownWidthClass: 'w-col-272'
+                                    dropdownWidthClass: 'w-col-272',
                                 }"
                                 [options]="labelsAccidentCustomer"
                                 formControlName="customer"
@@ -845,7 +845,7 @@
                                     name: 'BoL',
                                     type: 'text',
                                     textTransform: 'capitalize',
-                                    label: 'BoL'
+                                    label: 'BoL',
                                 }"
                                 formControlName="boL"
                             ></app-ta-input>
@@ -854,7 +854,7 @@
                                     name: 'Cargo',
                                     type: 'text',
                                     textTransform: 'capitalize',
-                                    label: 'Cargo'
+                                    label: 'Cargo',
                                 }"
                                 formControlName="cargo"
                             ></app-ta-input>

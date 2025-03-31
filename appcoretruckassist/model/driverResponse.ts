@@ -63,5 +63,6 @@ export interface DriverResponse {
     soloDriver?: boolean | null;
     teamDriver?: boolean | null;
     fleetType?: EnumValue;
+    colorFlag?: EnumValue;
 }
 

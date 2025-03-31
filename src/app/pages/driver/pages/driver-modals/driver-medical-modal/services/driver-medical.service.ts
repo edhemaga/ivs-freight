@@ -20,6 +20,9 @@ import {
     MedicalService,
 } from 'appcoretruckassist';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -99,7 +102,7 @@ export class DriverMedicalService {
                         : this.driverInactiveStore.add(driver);
 
                     this.tableService.sendActionAnimation({
-                        animation: 'update',
+                        animation: eGeneralActions.UPDATE,
                         data: mappedDriver,
                         id: mappedDriver.id,
                     });

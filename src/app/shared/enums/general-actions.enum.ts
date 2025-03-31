@@ -1,0 +1,32 @@
+export enum eGeneralActions {
+    ADD = 'add',
+    UPDATE = 'update',
+    DELETE = 'delete',
+    EDIT = 'edit',
+    CANCEL = 'cancel',
+    ENTER = 'Enter',
+    ESCAPE = 'Escape',
+    CONFIRM = 'confirm',
+    ACTIVATE = 'activate',
+    DEACTIVATE = 'deactivate',
+    CLOSE = 'close',
+    OPEN = 'open',
+    OPEN_CAPITALIZED = 'Open',
+    SAVE = 'save',
+    NEXT = 'Next',
+    NEXT_LOWERCASE = 'next',
+    PREVIOUS = 'Previous',
+    PREVIOUS_LOWERCASE = 'previous',
+
+    SELECT_ALL = 'Select All',
+    SELECT_REMAINING = 'Select Remaining',
+    CLEAR_SELECTED = 'Clear Selected',
+
+    SHOW_MORE = 'show more',
+
+    OPEN_MODAL = 'open-modal',
+    RESET_MODAL = 'reset modal',
+    RESET = 'reset',
+    TAB_SELECTED = 'tab-selected',
+    VIEW_MODE = 'view-mode',
+}

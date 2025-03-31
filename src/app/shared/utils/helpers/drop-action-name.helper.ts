@@ -1,8 +1,11 @@
+// Enums
+import { eGeneralActions } from '@shared/enums';
+
 export class DropActionNameHelper {
     static dropActionNameDriver(any: any, action: string) {
         let dropAction: string;
 
-        if (any.type === 'edit') {
+        if (any.type === eGeneralActions.EDIT) {
             switch (action) {
                 case 'cdl': {
                     dropAction = 'edit-licence';
@@ -106,7 +109,7 @@ export class DropActionNameHelper {
     static dropActionNameTrailerTruck(any: any, action: string) {
         let dropAction: string;
 
-        if (any.type === 'edit') {
+        if (any.type === eGeneralActions.EDIT) {
             switch (action) {
                 case 'registration': {
                     dropAction = 'edit-registration';
@@ -139,12 +142,10 @@ export class DropActionNameHelper {
                 }
             }
         }
-        if (any.type === 'void') {
-            dropAction = 'void';
-        }
-        if (any.type === 'activate') {
-            dropAction = 'activate';
-        }
+        if (any.type === 'void') dropAction = 'void';
+
+        if (any.type === eGeneralActions.ACTIVATE)
+            dropAction = eGeneralActions.ACTIVATE;
 
         return dropAction;
     }

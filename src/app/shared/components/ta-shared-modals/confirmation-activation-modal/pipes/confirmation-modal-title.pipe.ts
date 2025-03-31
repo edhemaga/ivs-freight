@@ -1,7 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
-// Enums
+// enums
 import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { eDropdownMenu } from '@shared/enums';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 @Pipe({
@@ -9,7 +10,7 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
     standalone: true,
 })
 export class ConfirmationModalTitlePipe implements PipeTransform {
-    transform(type: string, template: string): string {
+    transform(type: string, subType: string): string {
         let titleString = '';
 
         if (type === ConfirmationActivationStringEnum.OPEN) {
@@ -32,12 +33,14 @@ export class ConfirmationModalTitlePipe implements PipeTransform {
 
         titleString += ' ';
 
-        if (template === TableStringEnum.REPAIR_SHOP) {
+        if (subType === TableStringEnum.REPAIR_SHOP) {
             titleString += ConfirmationActivationStringEnum.REPAIR_SHOP_TITLE;
-        } else if (template === TableStringEnum.TRUCK) {
+        } else if (subType === TableStringEnum.TRUCK) {
             titleString += TableStringEnum.TRUCK_2;
+        } else if (subType === eDropdownMenu.FUEL_STOP) {
+            titleString += ConfirmationActivationStringEnum.FUEL_STOP_TITLE;
         } else {
-            titleString += template;
+            titleString += subType;
         }
 
         return titleString;

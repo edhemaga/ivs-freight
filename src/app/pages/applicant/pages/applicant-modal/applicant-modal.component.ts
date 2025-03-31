@@ -29,6 +29,10 @@ import { FormService } from '@shared/services/form.service';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { CaInputComponent, CaInputNoteComponent } from 'ca-components';
+
+// enums
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-applicant-modal',
@@ -46,6 +50,9 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
         TaModalComponent,
         TaInputComponent,
         TaInputNoteComponent,
+
+        CaInputComponent,
+        CaInputNoteComponent,
     ],
 })
 export class ApplicantModalComponent implements OnInit, OnDestroy {
@@ -71,12 +78,11 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        if (this.editData?.type === 'edit') {
+        if (this.editData?.type === eGeneralActions.EDIT)
             this.editApplicant(this.editData.id);
-        }
     }
 
-    private createForm() {
+    private createForm(): void {
         this.applicantForm = this.formBuilder.group({
             firstName: [null, [Validators.required, ...firstNameValidation]],
             lastName: [null, [Validators.required, ...lastNameValidation]],
@@ -99,12 +105,11 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
+            case eGeneralActions.CLOSE:
                 break;
-            }
-            case 'resend email': {
+            case 'resend email':
                 this.resendApplicationEmail(this.editData.id);
                 this.modalService.setModalSpinner({
                     action: 'resend email',
@@ -112,8 +117,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     close: false,
                 });
                 break;
-            }
-            case 'save and add new': {
+            case 'save and add new':
                 if (this.applicantForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.applicantForm);
                     return;
@@ -126,14 +130,12 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     close: false,
                 });
                 break;
-            }
-            case 'save': {
+            case eGeneralActions.SAVE:
                 if (this.applicantForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.applicantForm);
                     return;
                 }
-
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === eGeneralActions.EDIT) {
                     this.updateApplicant(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: null,
@@ -149,10 +151,8 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -188,7 +188,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addApplicant() {
+    private addApplicant(): void {
         this.applicantService
             .addApplicantAdmin(this.applicantForm.value)
             .pipe(takeUntil(this.destroy$))
@@ -221,7 +221,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private editApplicant(id: number) {
+    private editApplicant(id: number): void {
         this.applicantService
             .getApplicantByIdAdmin(id)
             .pipe(takeUntil(this.destroy$))
@@ -235,11 +235,10 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                         note: res.note,
                     });
                     this.applicantFullName = res.firstName.concat(
-                        ' ',
+                        eStringPlaceholder.WHITESPACE,
                         res.lastName
                     );
                 },
-                error: () => {},
             });
     }
 

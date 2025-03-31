@@ -1,15 +1,17 @@
-import { DatePipe } from '@angular/common';
-import { Observable, skip, Subject, takeUntil } from 'rxjs';
 import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable, skip, Subject, takeUntil } from 'rxjs';
 
 // components
-import { TtFhwaInspectionModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-fhwa-inspection-modal/tt-fhwa-inspection-modal.component';
-import { TtRegistrationModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-registration-modal/tt-registration-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
-import { TtTitleModalComponent } from '@shared/components/ta-shared-modals/truck-trailer-modals/modals/tt-title-modal/tt-title-modal.component';
+
+// base classes
+import { TrailerDropdownMenuActionsBase } from '@pages/trailer/base-classes';
+
+// settings
+import { getTrailerColumnDefinition } from '@shared/utils/settings/table-settings/trailer-columns';
 
 // services
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
@@ -20,6 +22,7 @@ import { ConfirmationActivationService } from '@shared/components/ta-shared-moda
 import { TrailerCardsModalService } from '@pages/trailer/pages/trailer-card-modal/services/trailer-cards-modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
 import { DetailsDataService } from '@shared/services/details-data.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { TrailerActiveQuery } from '@pages/trailer/state/trailer-active-state/trailer-active.query';
@@ -37,39 +40,33 @@ import {
 } from '@pages/trailer/pages/trailer-card-modal/state/trailer-card-modal.selectors';
 
 // pipes
+import { DatePipe } from '@angular/common';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 
-// helpers
-import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
-
-// animations
-import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+// enums
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eDropdownMenu } from '@shared/enums';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { TrailerCardsModalConfig } from '@pages/trailer/pages/trailer-card-modal/utils/constants/trailer-cards-modal.config';
-
-// configuration
 import { TrailerCardDataConstants } from '@pages/trailer/pages/trailer-table/utils/constants/trailer-card-data.constants';
 
-// enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { TrailerNameStringEnum } from '@shared/enums/trailer-name-string.enum';
-import { TooltipColorsStringEnum } from '@shared/enums/tooltip-colors-string.enum';
+// helpers
+import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
 // models
 import { TrailerListResponse } from 'appcoretruckassist';
-import {
-    CardDetails,
-    DropdownItem,
-} from '@shared/models/card-models/card-table-data.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
 import { TrailerMapped } from '@pages/trailer/pages/trailer-table/models/trailer-mapped.model';
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { getTrailerColumnDefinition } from '@shared/utils/settings/table-settings/trailer-columns';
 import { TrailerBackFilterQueryInterface } from '@pages/trailer/pages/trailer-table/models/trailer-back-filter-query.model';
 import { CardTableData } from '@shared/models/table-models/card-table-data.model';
 import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-trailer-table',
@@ -77,23 +74,37 @@ import { TableColumnConfig } from '@shared/models/table-models/table-column-conf
     styleUrls: ['./trailer-table.component.scss'],
     providers: [ThousandSeparatorPipe],
 })
-export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class TrailerTableComponent
+    extends TrailerDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    public destroy$ = new Subject<void>();
+
+    public eDropdownMenu = eDropdownMenu;
+
+    public resizeObserver: ResizeObserver;
+    public activeViewMode: string = TableStringEnum.LIST;
+
+    public selectedTab: TableStringEnum | string = TableStringEnum.ACTIVE;
+
+    public trailerActive: TrailerActiveState[] = [];
+    public trailerInactive: TrailerInactiveState[] = [];
+
     public trailerData: any[] = [];
-    public tableOptions;
+
+    public inactiveTabClicked: boolean = false;
+    public activeTableData: string;
+
+    // table
+    public tableOptions: any = {};
     public tableData: any[] = [];
     public viewData: any[] = [];
     public columns: TableColumnConfig[] = [];
-    public selectedTab: TableStringEnum | string = TableStringEnum.ACTIVE;
-    public activeViewMode: string = TableStringEnum.LIST;
-    public resizeObserver: ResizeObserver;
-    public inactiveTabClicked: boolean = false;
-    public trailerActive: TrailerActiveState[] = [];
-    public trailerInactive: TrailerInactiveState[] = [];
-    public activeTableData: string;
-    public backFilterQuery: TrailerBackFilterQueryInterface = JSON.parse(
-        JSON.stringify(TableDropdownComponentConstants.BACK_FILTER_QUERY)
-    );
+
+    // cards
+    public cardTitle: string = TrailerCardDataConstants.cardTitle;
+    public page: string = TrailerCardDataConstants.page;
+    public rows: number = TrailerCardDataConstants.rows;
 
     //Data to display from model Truck Active
     public displayRowsFront: CardRows[] =
@@ -111,20 +122,24 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public displayRowsBackInactive: CardRows[] =
         TrailerCardDataConstants.displayRowsBackInactive;
 
-    public cardTitle: string = TrailerCardDataConstants.cardTitle;
-    public page: string = TrailerCardDataConstants.page;
-    public rows: number = TrailerCardDataConstants.rows;
-
     public sendDataToCardsFront: CardRows[];
     public sendDataToCardsBack: CardRows[];
 
     public displayRows$: Observable<any>; //leave this as any for now
 
+    // filters
+    public backFilterQuery: TrailerBackFilterQueryInterface = JSON.parse(
+        JSON.stringify(TableDropdownComponentConstants.BACK_FILTER_QUERY)
+    );
+
     constructor(
-        private router: Router,
-        //Services
-        private modalService: ModalService,
-        private tableService: TruckassistTableService,
+        // router
+        protected router: Router,
+
+        // services
+        protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private trailerService: TrailerService,
         private confirmationService: ConfirmationService,
         private trailerCardsModalService: TrailerCardsModalService,
@@ -132,17 +147,19 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
         private detailsDataService: DetailsDataService,
 
-        //Store
+        // store
         private trailerActiveQuery: TrailerActiveQuery,
         private trailerInactiveQuery: TrailerInactiveQuery,
         private trailerInactiveStore: TrailerInactiveStore,
         private trailerActiveStore: TrailerActiveStore,
         private store: Store,
 
-        //Pipes
+        // pipes
         public datePipe: DatePipe,
         private thousandSeparator: ThousandSeparatorPipe
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.sendTrailerData();
@@ -175,7 +192,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             .pipe(skip(1), takeUntil(this.destroy$))
             .subscribe((res) => {
                 if (res?.filterType) {
-                    this.backFilterQuery.trailerTypeIds = res.queryParams;
+                    this.backFilterQuery.trailerTypeIds = res.selectedIds;
                     this.trailerBackFilter(this.backFilterQuery);
                 }
             });
@@ -387,7 +404,7 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     public initTableOptions(): void {
         this.tableOptions = {
             toolbarActions: {
-                showTrailerFilter: true,
+                showTrailerTypeFilter: true,
                 viewModeOptions: [
                     {
                         name: TableStringEnum.LIST,
@@ -499,33 +516,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.trailerData = this.viewData;
     }
 
-    private setTrailerTooltipColor(trailerName: string): string {
-        switch (trailerName) {
-            case TrailerNameStringEnum.FLAT_BED:
-            case TrailerNameStringEnum.STEP_DECK:
-            case TrailerNameStringEnum.LOW_BOY_RGN:
-            case TrailerNameStringEnum.CHASSIS:
-            case TrailerNameStringEnum.CONESTOGA:
-            case TrailerNameStringEnum.SIDE_KIT:
-            case TrailerNameStringEnum.CONTAINER:
-                return TooltipColorsStringEnum.BLUE;
-            case TrailerNameStringEnum.DRY_VAN:
-            case TrailerNameStringEnum.REEFER:
-                return TooltipColorsStringEnum.YELLOW;
-            case TrailerNameStringEnum.END_DUMP:
-            case TrailerNameStringEnum.BOTTOM_DUMP:
-            case TrailerNameStringEnum.HOPPER:
-            case TrailerNameStringEnum.TANKER:
-            case TrailerNameStringEnum.PNEUMATIC_TANKER:
-                return TooltipColorsStringEnum.RED;
-            case TrailerNameStringEnum.CAR_HAULER:
-            case TrailerNameStringEnum.CAR_HAULER_STINGER:
-                return TooltipColorsStringEnum.LIGHT_GREEN;
-            default:
-                return;
-        }
-    }
-
     private mapTrailerData(data: TrailerMapped): any {
         const {
             id,
@@ -577,7 +567,9 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             isSelected: false,
             tableTrailerTypeIcon: trailerType.logoName,
             tableTrailerName: trailerType.name,
-            tableTrailerColor: this.setTrailerTooltipColor(trailerType.name),
+            tableTrailerColor: MethodsGlobalHelper.getTrailerTooltipColor(
+                trailerType.name
+            ),
             tableVin: {
                 regularText: vin
                     ? vin.substr(0, vin.length - 6)
@@ -700,99 +692,16 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 : null,
             tableAttachments: files ? files : [],
             fileCount: fileCount,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownTrailerContent(),
-            },
+            tableDropdownContent: this.getTrailerDropdownContent(),
             createdAt,
-            updatedAt
+            updatedAt,
         };
     }
 
-    public getDropdownTrailerContent(): DropdownItem[] {
-        return [
-            {
-                title: TableStringEnum.EDIT_2,
-                name: TableStringEnum.EDIT_TRAILER,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                hasBorder: true,
-                svgClass: TableStringEnum.REGULAR,
-            },
-            {
-                title: TableStringEnum.VIEW_DETAILS_2,
-                name: TableStringEnum.VIEW_DETAILS,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Information.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.ADD_NEW_2,
-                name: TableStringEnum.ADD_NEW,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Show More.svg',
-                svgStyle: {
-                    width: 15,
-                    height: 15,
-                },
-                svgClass: TableStringEnum.REGULAR,
-                isDropdown: true,
-                insideDropdownContent: [
-                    {
-                        title: TableStringEnum.ADD_REGISTRATION_2,
-                        name: TableStringEnum.ADD_REGISTRATION,
-                    },
-
-                    {
-                        title: TableStringEnum.ADD_INSPECTION_2,
-                        name: TableStringEnum.ADD_INSPECTION,
-                    },
-
-                    {
-                        title: TableStringEnum.TITLE,
-                        name: TableStringEnum.ADD_TITLE,
-                    },
-                ],
-                hasBorder: true,
-            },
-            {
-                title:
-                    this.selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.DEACTIVATE_2
-                        : TableStringEnum.ACTIVATE_2,
-                name: TableStringEnum.ACTIVATE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Deactivate.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass:
-                    this.selectedTab === TableStringEnum.ACTIVE
-                        ? TableStringEnum.DEACTIVATE
-                        : TableStringEnum.ACTIVATE,
-                tableListDropdownContentStyle: {
-                    'margin-bottom.px': 4,
-                },
-            },
-            {
-                title: TableStringEnum.DELETE_2,
-                name: TableStringEnum.DELETE_ITEM,
-                svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
-                svgStyle: {
-                    width: 18,
-                    height: 18,
-                },
-                svgClass: TableStringEnum.DELETE,
-            },
-        ];
+    public getTrailerDropdownContent(): IDropdownMenuItem[] {
+        return DropdownMenuContentHelper.getTruckTrailerDropdownContent(
+            this.selectedTab
+        );
     }
 
     private updateDataCount(): void {
@@ -921,9 +830,11 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                             data: {
                                 ...data,
                                 number: data.trailerNumber,
-                                avatar: data?.tableTrailerTypeIcon
-                                    ? `/assets/svg/common/trailers/${data?.tableTrailerTypeIcon}`
-                                    : `/assets/svg/common/trailers/${data?.trailerType?.logoName}`,
+                                avatarFile: {
+                                    url: data?.tableTrailerTypeIcon
+                                        ? `/assets/svg/common/trailers/${data?.tableTrailerTypeIcon}`
+                                        : `/assets/svg/common/trailers/${data?.trailerType?.logoName}`,
+                                },
                             },
                             modalTitle: ' Unit ' + data?.trailerNumber,
                             modalSecondTitle: data?.tableVin
@@ -966,120 +877,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: any): void {
-        const mappedEvent = {
-            ...event,
-            data: {
-                ...event.data,
-                number: event.data?.trailerNumber,
-                vin: event.data?.tableVin
-                    ? event.data?.tableVin?.regularText +
-                      event.data?.tableVin?.boldText
-                    : event.data?.vin,
-                avatar: `/assets/svg/common/trailers/${event.data?.tableTrailerTypeIcon}`,
-            },
-        };
-
-        switch (event.type) {
-            case TableStringEnum.SHOW_MORE: {
-                this.backFilterQuery.active =
-                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-                this.backFilterQuery.pageIndex++;
-
-                this.trailerBackFilter(this.backFilterQuery, true);
-                break;
-            }
-            case TableStringEnum.VIEW_DETAILS: {
-                this.router.navigate([`/list/trailer/${event.id}/details`]);
-                break;
-            }
-            case TableStringEnum.EDIT_TRAILER: {
-                this.modalService.openModal(
-                    TrailerModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        type: TableStringEnum.EDIT,
-                        tabSelected: this.selectedTab,
-                    }
-                );
-                break;
-            }
-            case TableStringEnum.ADD_REGISTRATION: {
-                this.modalService.openModal(
-                    TtRegistrationModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        modal: TableStringEnum.TRAILER_2,
-                        tabSelected: this.selectedTab,
-                    }
-                );
-                break;
-            }
-            case TableStringEnum.ADD_INSPECTION: {
-                this.modalService.openModal(
-                    TtFhwaInspectionModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        modal: TableStringEnum.TRAILER_2,
-                        tabSelected: this.selectedTab,
-                    }
-                );
-                break;
-            }
-            case TableStringEnum.ADD_TITLE: {
-                this.modalService.openModal(
-                    TtTitleModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        modal: TableStringEnum.TRAILER_2,
-                        tabSelected: this.selectedTab,
-                    }
-                );
-                break;
-            }
-            case TableStringEnum.ACTIVATE_ITEM: {
-                this.modalService.openModal(
-                    ConfirmationActivationModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        template: TableStringEnum.TRAILER_2,
-                        subType: TableStringEnum.TRAILER_2,
-                        type:
-                            event.data.status === 1
-                                ? TableStringEnum.DEACTIVATE
-                                : TableStringEnum.ACTIVATE,
-                        tableType: TableStringEnum.TRAILER_2,
-                        modalTitle: ' Unit ' + mappedEvent?.data?.number,
-                        modalSecondTitle: mappedEvent?.data?.vin,
-                        svg: true,
-                    }
-                );
-                break;
-            }
-            case TableStringEnum.DELETE_ITEM: {
-                this.modalService.openModal(
-                    ConfirmationModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...mappedEvent,
-                        template: TableStringEnum.TRAILER_2,
-                        type: TableStringEnum.DELETE,
-                        svg: true,
-                    }
-                );
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    }
-
     // Get Tab Table Data For Selected Tab
     private getSelectedTabTableData(): void {
         if (this.tableData?.length) {
@@ -1087,13 +884,6 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 (table) => table.field === this.selectedTab
             );
         }
-    }
-
-    // Show More Data
-    public onShowMore(): void {
-        this.onTableBodyActions({
-            type: TableStringEnum.SHOW_MORE,
-        });
     }
 
     private changeTrailerStatus(id: number): void {
@@ -1215,6 +1005,17 @@ export class TrailerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         this.trailerService.updateNote(noteData);
     }
+
+    public handleShowMoreAction(): void {
+        this.backFilterQuery.active =
+            this.selectedTab === eDropdownMenu.ACTIVE ? 1 : 0;
+
+        this.backFilterQuery.pageIndex++;
+
+        this.trailerBackFilter(this.backFilterQuery, true);
+    }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});

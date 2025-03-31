@@ -1,13 +1,15 @@
 @import 'src/theme/variables';
+
 @mixin svg-fill($color) {
-    svg path {
+    svg path,
+    svg circle {
         fill: $color !important;
     }
 }
 
 @mixin svg-hover($color) {
     svg path {
-        transition: $transition;
+        transition: fill 0.3s ease-in-out;
     }
 
     &:hover {
@@ -30,46 +32,149 @@
         &-black {
             @include svg-fill($black);
         }
+
+        &-white {
+            @include svg-fill($white);
+        }
+
+        &-white-2 {
+            @include svg-fill($white-2);
+        }
+
         &-muted {
             @include svg-fill($muted);
         }
+
+        &-grey {
+            @include svg-fill($bw5);
+        }
+
         &-bw-9 {
             @include svg-fill($bw-9);
         }
+
         &-light-grey-2 {
             @include svg-fill($ta-light-grey-2);
         }
+
         &-light-grey-6 {
             @include svg-fill($ta-light-grey-6);
         }
+
+        &-light-grey-10 {
+            @include svg-fill($ta-light-grey-10);
+        }
+
         &-blue-13 {
             @include svg-fill($ta-blue-13);
         }
+
+        &-blue-14 {
+            @include svg-fill($ta-blue-14);
+        }
+
+        &-blue-17 {
+            @include svg-fill($ta-blue-17);
+        }
+
         &-blue-19 {
             @include svg-fill($ta-blue-19);
         }
+
         &-blue-26 {
             @include svg-fill($ta-blue-26);
+        }
+
+        &-green {
+            @include svg-fill($ta-green);
+        }
+
+        &-green-2 {
+            @include svg-fill($ta-green-2);
+        }
+
+        &-green-4 {
+            @include svg-fill($ta-green-4);
+        }
+
+        &-green-6 {
+            @include svg-fill($ta-green-6);
+        }
+
+        &-yellow-1 {
+            @include svg-fill($ta-yellow-1);
+        }
+
+        &-yellow-4 {
+            @include svg-fill($ta-yellow-4);
+        }
+
+        &-yellow-5 {
+            @include svg-fill($ta-yellow-5);
+        }
+
+        &-yellow-8 {
+            @include svg-fill($ta-yellow-8);
+        }
+
+        &-white-4 {
+            @include svg-fill($white-4);
+        }
+
+        &-grey {
+            @include svg-fill($bw5);
+        }
+
+        &-red-10 {
+            @include svg-fill($ta-red-10);
+        }
+
+        &-red-11 {
+            @include svg-fill($ta-red-11);
+        }
+
+        &-red-14 {
+            @include svg-fill($ta-red-14);
+        }
+
+        &-red-18 {
+            @include svg-fill($ta-red-18);
+        }
+
+        &-orange-4 {
+            @include svg-fill($ta-orange-4);
+        }
+        
+        &-orange-5 {
+            @include svg-fill($ta-orange-5);
         }
     }
 
     // Hovers
     &-hover {
+        &-white {
+            @include svg-hover($white);
+        }
         &-muted {
             @include svg-hover($muted);
         }
+
         &-black {
             @include svg-hover($ta-black);
         }
+
         &-blue-15 {
             @include svg-hover($ta-blue-15);
         }
+
         &-bw6-2 {
             @include svg-hover($bw6-2);
         }
+
         &-trash-red {
             @include svg-hover($settings-trash-red);
         }
+
         &-red-14 {
             @include svg-hover($ta-red-14);
         }
@@ -77,18 +182,30 @@
 
     // Sizes
     &-size {
+        &-10 {
+            @include svg-size(10px, 10px);
+        }
+
         &-12 {
             @include svg-size(12px, 12px);
         }
+
         &-14 {
             @include svg-size(14px, 14px);
         }
+
         &-16 {
             @include svg-size(16px, 16px);
         }
+
         &-18 {
             @include svg-size(18px, 18px);
         }
+
+        &-22 {
+            @include svg-size(22px, 22px);
+        }
+
         &-44-16 {
             @include svg-size(44px, 16px);
         }

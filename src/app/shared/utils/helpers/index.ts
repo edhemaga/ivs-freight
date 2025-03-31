@@ -7,7 +7,12 @@ export * from './chart.helper';
 export * from './copy-paste.helper';
 export * from './data-filter.helper';
 export * from './drop-action-name.helper';
-export * from './dropdown-content.helper';
+export * from './dropdown-menu-helpers/dropdown-menu-content.helper';
 export * from './load-status.helper';
 export * from './methods-calculations.helper';
 export * from './methods-global.helper';
+export * from './timespan-convert.helper';
+export * from './filter-helper';
+export * from './sorting.helper';
+export * from './open-hours.helper';
+export * from './table-view.helper'

@@ -5,7 +5,6 @@ import {
     OnChanges,
     SimpleChanges,
     ViewEncapsulation,
-    ViewChild,
     OnDestroy,
 } from '@angular/core';
 import { UntypedFormControl } from '@angular/forms';
@@ -23,17 +22,25 @@ import { ShipperService } from '@pages/customer/services';
 import { ModalService } from '@shared/services/modal.service';
 
 // Constants
-//import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/utils/constants/';
+import { ShipperDetailsChartsConfiguration } from '@pages/customer/pages/shipper-details/components/shipper-details-item/utils/constants';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration,
+} from '@shared/utils/constants';
 
 // Components
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 
 // Models
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
+import { ChartLegendProperty, Tabs } from '@shared/models';
+import { ShipperAverageWaitingTimeResponse } from 'appcoretruckassist';
 
 // Enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils/constants';
+
+// Helpers
+import { ChartHelper, TimespanConvertHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-shipper-details-card',
@@ -42,17 +49,26 @@ import { ShipperDetailsChartsConfiguration } from '../shipper-details-item/utils
     styleUrls: ['./shipper-details-card.component.scss'],
 })
 export class ShipperDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     private destroy$ = new Subject<void>();
     @Input() shipper: any;
     @Input() templateCard: boolean;
     public shipperDropdowns: any[] = [];
     public shipperList: any[] = this.shipperMinimalListQuery.getAll();
     public note: UntypedFormControl = new UntypedFormControl();
-    public shipperTabs: any[] = [];
-    public payrollChartConfig: IChartConfiguration = ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG;
+    public shipperTabs: Tabs[] = [];
+    public selectedTab: number;
 
-    public monthList: any[] = [
+    // Charts
+    public payrollChartData!: ShipperAverageWaitingTimeResponse;
+    public payrollChartConfig: IChartConfiguration;
+    public payrollChartLegend!: ChartLegendProperty[];
+    public payrollChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public payrollLegendHighlightedBackground!: boolean;
+    public payrollLegendTitle!: string;
+
+    public monthList: string[] = [
         'JAN',
         'FEB',
         'MAR',
@@ -82,7 +98,7 @@ export class ShipperDetailsCardComponent
 
         // Store
         private shipperMinimalListQuery: ShipperMinimalListQuery
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (changes.shipper?.currentValue != changes.shipper?.previousValue) {
@@ -97,8 +113,6 @@ export class ShipperDetailsCardComponent
         }
     }
     ngOnInit(): void {
-        this.tabsButton();
-
         let currentIndex = this.shipperList.findIndex(
             (shipper) => shipper.id === this.shipper.id
         );
@@ -116,39 +130,6 @@ export class ShipperDetailsCardComponent
             });
     }
 
-    public tabsButton() {
-        this.shipperTabs = [
-            {
-                id: 223,
-                name: '1M',
-                checked: true,
-            },
-            {
-                name: '3M',
-                checked: false,
-            },
-            {
-                id: 412,
-                name: '6M',
-                checked: false,
-            },
-            {
-                id: 515,
-                name: '1Y',
-                checked: false,
-            },
-            {
-                id: 1210,
-                name: 'YTD',
-                checked: false,
-            },
-            {
-                id: 1011,
-                name: 'ALL',
-                checked: false,
-            },
-        ];
-    }
     public onSelectedShipper(event: any) {
         if (event && event.id !== this.shipper.id) {
             if (event.name === TableStringEnum.ADD_NEW_3) {
@@ -219,8 +200,8 @@ export class ShipperDetailsCardComponent
     }
 
     public changeShipperTabs(ev: any) {
-        //const chartType = this.stackedBarChart?.detailsTimePeriod(ev.name);
-        //this.getShipperChartData(this.shipper.id, chartType);
+        this.selectedTab = ev.id;
+        this.getShipperChartData(this.shipper.id, this.selectedTab);
     }
 
     public getShipperChartData(
@@ -240,111 +221,92 @@ export class ShipperDetailsCardComponent
         this.shipperService
             .getShipperChart(id, chartType)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((item) => {
-                let avgPickupTime = this.convertTimeSpanToMinutes(
-                    item.avgPickupTime
-                ),
-                    avgDeliveryTime = this.convertTimeSpanToMinutes(
-                        item.avgDeliveryTime
-                    );
-                // this.stackedBarChartConfig.dataLabels = [];
-                // this.stackedBarChartConfig.chartValues = [
-                //     avgPickupTime,
-                //     avgDeliveryTime,
-                // ];
-                // this.stackedBarChartLegend[0].value = avgPickupTime;
-                // this.stackedBarChartLegend[1].value = avgDeliveryTime;
-                // let hasValue = false;
-                // this.stackedBarChartLegend.map((leg) => {
-                //     if (leg.value > 0) {
-                //         hasValue = true;
-                //     }
-                // });
-                // this.stackedBarChartConfig.hasValue = hasValue;
-                let milesPerGallon = [],
-                    costPerGallon = [],
-                    labels = [],
-                    maxValue = 0;
-                // if (item?.shipperAverageWaitingTimeChartResponse?.length > 17) {
-                //     this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 10;
-                //     this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 10;
-                // } else {
-                //     this.stackedBarChartConfig.dataProperties[0].defaultConfig.barThickness = 18;
-                //     this.stackedBarChartConfig.dataProperties[1].defaultConfig.barThickness = 18;
-                // }
-                //this.stackedBarChart.toolTipData = [];
-                item.shipperAverageWaitingTimeChartResponse.map((data) => {
-                    let pickup = this.convertTimeSpanToMinutes(
-                        data.avgPickupTime
-                    );
-                    let delivery = this.convertTimeSpanToMinutes(
-                        data.avgDeliveryTime
-                    );
+            .subscribe(
+                (item: ShipperAverageWaitingTimeResponse) => {
+                    let avgPickupTime =
+                            TimespanConvertHelper.convertTimeSpanToMinutes(
+                                item.avgPickupTime
+                            ),
+                        avgDeliveryTime =
+                            TimespanConvertHelper.convertTimeSpanToMinutes(
+                                item.avgDeliveryTime
+                            );
 
-                    //this.stackedBarChart.toolTipData.push(data);
+                    let milesPerGallon = [],
+                        costPerGallon = [],
+                        labels = [],
+                        maxValue = 0;
 
-                    if (delivery + pickup > maxValue) {
-                        maxValue =
-                            delivery + pickup + ((delivery + pickup) * 7) / 100;
-                    }
-                    if (data.day) {
-                        labels.push([data.day, this.monthList[data.month - 1]]);
-                    } else {
-                        labels.push([this.monthList[data.month - 1]]);
-                    }
+                    item.shipperAverageWaitingTimeChartResponse.map((data) => {
+                        const pickup =
+                            TimespanConvertHelper.convertTimeSpanToMinutes(
+                                data.avgPickupTime
+                            );
+                        let delivery =
+                            TimespanConvertHelper.convertTimeSpanToMinutes(
+                                data.avgDeliveryTime
+                            );
 
-                    delivery = delivery ? -delivery : 0;
-                    milesPerGallon.push(pickup);
-                    costPerGallon.push(delivery);
-                });
+                        if (delivery + pickup > maxValue) {
+                            maxValue =
+                                delivery +
+                                pickup +
+                                ((delivery + pickup) * 7) / 100;
+                        }
+                        if (data.day)
+                            labels.push([
+                                data.day,
+                                this.monthList[data.month - 1],
+                            ]);
+                        else labels.push([this.monthList[data.month - 1]]);
 
-                // this.stackedBarAxes['verticalLeftAxes']['maxValue'] =
-                //     maxValue / 2;
-                // this.stackedBarAxes['verticalLeftAxes']['minValue'] = -(
-                //     maxValue / 2
-                // );
-                // this.stackedBarChartConfig.dataLabels = labels;
-                // this.stackedBarChartConfig.dataProperties[0].defaultConfig.data =
-                //     milesPerGallon;
-                // this.stackedBarChartConfig.dataProperties[1].defaultConfig.data =
-                //     costPerGallon;
-                // this.stackedBarChart.chartDataCheck(
-                //     this.stackedBarChartConfig.chartValues
-                // );
-                // this.stackedBarChart.updateChartData(hideAnimation);
-                // this.stackedBarChart.saveValues = JSON.parse(
-                //     JSON.stringify(this.stackedBarChartLegend)
-                // );
-                // this.stackedBarChart.legendAttributes = JSON.parse(
-                //     JSON.stringify(this.stackedBarChartLegend)
-                // );
-            });
+                        delivery = delivery ? -delivery : 0;
+                        milesPerGallon.push(pickup);
+                        costPerGallon.push(delivery);
+                    });
 
-        //this.ref.detectChanges();
+                    this.payrollChartData = { ...item };
+                    this.payrollChartConfig = {
+                        ...ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: ChartHelper.generateDataByDateTime(
+                            this.payrollChartData
+                                .shipperAverageWaitingTimeChartResponse,
+                            ChartConfiguration.SHIPPER_AVERAGE_WAITING_TIME_CONFIGURATION
+                        ),
+                    };
+                },
+                () => {
+                    this.payrollChartConfig = {
+                        ...ShipperDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
-    convertTimeSpanToMinutes(timespan) {
-        if (!timespan) {
-            return 0;
-        }
-        let totalMinutes = 0;
-        let timeArr = JSON.stringify(timespan);
-        timeArr = JSON.parse(timeArr).split('.');
-        if (timeArr.length > 1) {
-            const days = Number(timeArr[0]);
-            let hoursAndMinutes = timeArr[1].split(':');
-            const hours = Number(hoursAndMinutes[0]) + days * 24;
-            const minutes = Number([hoursAndMinutes[1]]);
+    public setPayrollLegendOnHover(index: number | null): void {
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.payrollChartConfig.chartData.labels
+        );
 
-            totalMinutes = hours * 60 + minutes;
-        } else {
-            let hoursAndMinutes = timeArr[0].split(':');
-            const hours = Number(hoursAndMinutes[0]);
-            const minutes = Number([hoursAndMinutes[1]]);
-            totalMinutes = hours * 60 + minutes;
-        }
+        this.payrollLegendHighlightedBackground = hasHighlightedBackground;
+        this.payrollLegendTitle = title;
 
-        return totalMinutes;
+        const dataForLegend =
+            isNaN(index) || index < 0 || index === null
+                ? this.payrollChartData
+                : this.payrollChartData?.shipperAverageWaitingTimeChartResponse[
+                      index
+                  ];
+
+        this.payrollChartLegend =
+            ChartLegendConfiguration.SHIPPER_AVERAGE_WAITING_TIME_CONFIGURATION(
+                dataForLegend
+            );
     }
 
     ngOnDestroy(): void {

@@ -11,10 +11,10 @@
  */
 
 
-export type BankAccountStatus = 'Unverivied' | 'Verified' | 'Pending' | 'Declined';
+export type BankAccountStatus = 'Unverified' | 'Verified' | 'Pending' | 'Declined';
 
 export const BankAccountStatus = {
-    Unverivied: 'Unverivied' as BankAccountStatus,
+    Unverified: 'Unverified' as BankAccountStatus,
     Verified: 'Verified' as BankAccountStatus,
     Pending: 'Pending' as BankAccountStatus,
     Declined: 'Declined' as BankAccountStatus

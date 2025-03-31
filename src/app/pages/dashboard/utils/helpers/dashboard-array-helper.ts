@@ -1,5 +1,5 @@
 export class DashboardArrayHelper {
-    static sorPartOfArray<T extends { isSelected: boolean; id: number }>(
+    static sortPartOfArray<T extends { isSelected: boolean; id: number }>(
         arr: T[]
     ): T[] {
         // Slice the array into two parts: selected and not selected

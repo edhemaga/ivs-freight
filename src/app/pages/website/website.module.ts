@@ -5,7 +5,6 @@ import { RouterModule } from '@angular/router';
 // modules
 import { WebsiteRoutingModule } from '@pages/website/website-routing.module';
 import { SharedModule } from '@shared/shared.module';
-//import { SlickCarouselModule } from 'ngx-slick-carousel';
 
 // components
 import { WebsiteMainComponent } from '@pages/website/pages/website-main/website-main.component';
@@ -34,7 +33,6 @@ import { SelectCompanyComponent } from '@pages/website/components/website-sideba
 import { WebsiteUnderConstructionComponent } from '@pages/website/components/website-under-construction/website-under-construction.component';
 
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 
@@ -45,7 +43,11 @@ import { StoreModule } from '@ngrx/store';
 
 // ngrx reducers
 import { authReducer } from '@pages/website/state/auth.reducer';
-import { CaComponentsLibModule, CaProfileImageComponent } from 'ca-components';
+import {
+    CaInputAddressDropdownComponent,
+    CaProfileImageComponent,
+    InputTestComponent,
+} from 'ca-components';
 
 @NgModule({
     declarations: [
@@ -72,7 +74,6 @@ import { CaComponentsLibModule, CaProfileImageComponent } from 'ca-components';
         RegisterUserHaveAccountHelperComponent,
         VerifyUserHelperComponent,
         SelectCompanyComponent,
-
         WebsiteUnderConstructionComponent,
     ],
     imports: [
@@ -85,12 +86,13 @@ import { CaComponentsLibModule, CaProfileImageComponent } from 'ca-components';
 
         // components
         TaInputComponent,
-        TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaSpinnerComponent,
         CaProfileImageComponent,
+        CaInputAddressDropdownComponent,
+        InputTestComponent,
 
-       // CaComponentsLibModule,
+        // CaComponentsLibModule,
         // ngrx effects
         EffectsModule.forFeature([AuthEffect]),
         //ngrx reducers

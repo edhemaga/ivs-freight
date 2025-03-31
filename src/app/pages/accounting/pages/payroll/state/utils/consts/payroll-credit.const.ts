@@ -1,18 +1,26 @@
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
-import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+// Enums
+
+import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
+
+// Model
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { PayrollDeductionRecurringType } from 'appcoretruckassist';
+
+// Config
+import { ICaInput } from '@ca-shared/components/ca-input-test/config';
+import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
+import { eStringPlaceholder } from '@shared/enums';
 
 export class PayrollCreditConst {
     static tabs: TabOptions[] = [
         {
             id: 1,
-            name: PayrollStringEnum.DRIVER,
+            name: ePayrollString.DRIVER,
             checked: true,
         },
         {
             id: 2,
-            name: PayrollStringEnum.TRUCK,
+            name: ePayrollString.TRUCK,
             checked: false,
         },
     ];
@@ -32,7 +40,7 @@ export class PayrollCreditConst {
         },
     ];
 
-    static driverConfig(logoName: string, name: string): ITaInput {
+    static driverConfig(logoName: string, name: string): ICaInput {
         return {
             name: 'Input Dropdown',
             type: 'text',
@@ -43,6 +51,8 @@ export class PayrollCreditConst {
                 withText: true,
                 svg: false,
                 image: true,
+                iconsPath: eStringPlaceholder.EMPTY,
+                activeItemIconKey: 'logoName',
                 url: logoName,
                 nameInitialsInsteadUrl: !logoName ? name : null,
                 template: 'user',
@@ -78,6 +88,7 @@ export class PayrollCreditConst {
         type: 'text',
         isDropdown: true,
         placeholderIcon: 'date',
+
         isRequired: true,
         customClass: 'datetimeclass',
     };
@@ -113,17 +124,19 @@ export class PayrollCreditConst {
             iconIncrementSvgRoute: string;
         },
         isDisabled: boolean
-    ): ITaInput {
+    ): ICaInput {
         return {
             id: 'No. of Payments',
             name: 'numberOfPayments',
             type: 'text',
             label: 'No. of Payments',
+            minValue: 1,
             minLength: 1,
             maxLength: 10,
             placeholderText: 'payments',
             thousandSeparator: true,
             isDisabled,
+            isRequired: !isDisabled,
             commands: {
                 active: true,
                 type: 'increment-decrement',

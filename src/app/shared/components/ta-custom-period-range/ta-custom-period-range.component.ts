@@ -30,6 +30,7 @@ import { FormService } from '@shared/services/form.service';
 // components
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { CaInputDatetimePickerComponent } from 'ca-components';
 
 // models
 import { CustomPeriodRange } from '@shared/models/custom-period-range.model';
@@ -49,6 +50,7 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
         // components
         TaInputComponent,
         TaInputDropdownComponent,
+        CaInputDatetimePickerComponent
     ],
 })
 export class TaCustomPeriodRangeComponent

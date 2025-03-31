@@ -46,6 +46,9 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-ta-map-toolbar',
     templateUrl: './ta-map-toolbar.component.html',
@@ -97,44 +100,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
     layersPopupOpen: boolean = false;
     keyboardPopupOpen: boolean = false;
     tableLocked: boolean = true;
-    OptionsPopupContent: any[] = [
-        {
-            text: 'Unlock table',
-            svgPath: 'assets/svg/truckassist-table/lock.svg',
-            width: 14,
-            height: 16,
-        },
-        {
-            text: 'Import',
-            svgPath: 'assets/svg/truckassist-table/import.svg',
-            width: 16,
-            height: 16,
-        },
-        {
-            text: 'Export',
-            svgPath: 'assets/svg/truckassist-table/export.svg',
-            width: 16,
-            height: 16,
-        },
-        {
-            text: 'Reset Columns',
-            svgPath: 'assets/svg/truckassist-table/new-reset-icon.svg',
-            width: 16,
-            height: 16,
-        },
-        {
-            text: 'Columns',
-            svgPath: 'assets/svg/truckassist-table/columns.svg',
-            width: 16,
-            height: 16,
-            active: false,
-            additionalDropIcon: {
-                path: 'assets/svg/truckassist-table/arrow-columns-drop.svg',
-                width: 6,
-                height: 8,
-            },
-        },
-    ];
+
     tableRowsSelected: any[] = [];
     activeTableData: any = {};
     toolbarWidth: string = '';
@@ -487,7 +453,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             { size: 'small' },
             {
                 ...this.activeTableData,
-                type: 'edit',
+                type: eGeneralActions.EDIT,
             }
         );
     }
@@ -504,7 +470,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 {
                     ...routeInfo,
                     mapId: this.activeTableData.id,
-                    type: 'add',
+                    type: eGeneralActions.ADD,
                 }
             );
         }
@@ -761,7 +727,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             {
                 ...route,
                 mapId: this.activeTableData.id,
-                type: 'edit',
+                type: eGeneralActions.EDIT,
             }
         );
     }

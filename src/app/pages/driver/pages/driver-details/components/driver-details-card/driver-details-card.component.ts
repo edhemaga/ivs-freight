@@ -1,11 +1,4 @@
-import {
-    Component,
-    Input,
-    OnChanges,
-    OnDestroy,
-    OnInit,
-    SimpleChanges,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
     ReactiveFormsModule,
@@ -24,7 +17,6 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaChartLegendComponent } from '@shared/components/ta-chart-legend/ta-chart-legend.component';
 import { DriverDetailsTitleCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-title-card/driver-details-title-card.component';
 import { DriverDetailsAssignToCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-assign-to-card/driver-details-assign-to-card.component';
 import { DriverDetailsAdditionalInfoCardComponent } from '@pages/driver/pages/driver-details/components/driver-details-card/components/driver-details-additional-info-card/driver-details-additional-info-card.component';
@@ -58,17 +50,17 @@ import {
     DriverMinimalResponse,
     DriverPayrollChartResponse,
     DriverPayrollResponse,
-    DriverResponse
+    DriverResponse,
 } from 'appcoretruckassist';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
 
 // Enums
-import { } from '@shared/enums';
+import {} from '@shared/enums';
 import {
     ChartConfiguration,
-    ChartLegendConfiguration
+    ChartLegendConfiguration,
 } from '@shared/utils/constants';
 
 @Component({
@@ -86,7 +78,6 @@ import {
         TaCustomCardComponent,
         TaUploadFilesComponent,
         TaInputNoteComponent,
-        TaChartLegendComponent,
         DriverDetailsTitleCardComponent,
         DriverDetailsAssignToCardComponent,
         DriverDetailsAdditionalInfoCardComponent,
@@ -100,9 +91,15 @@ import {
         CaChartComponent,
     ],
 })
-export class DriverDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy {
-    @Input() driver: DriverResponse;
+export class DriverDetailsCardComponent implements OnInit, OnDestroy {
+    @Input() set driverData(value: DriverResponse) {
+        if (value) {
+            this.driver = value;
+            this.getDriversDropdown();
+        }
+    }
+
+    public driver!: DriverResponse;
 
     private destroy$ = new Subject<void>();
 
@@ -112,8 +109,11 @@ export class DriverDetailsCardComponent
     public driversDropdownList: DriverMinimalResponse[];
 
     // Payroll chart card
+    public driverChartData!: DriverPayrollResponse;
+    public driverLegendConfig!: ChartLegendProperty[];
+    public driverLegendHighlightedBackground!: boolean;
+    public driverLegendTitle!: string;
     public barChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
-    public chartLegendData: ChartLegendProperty[];
 
     // Note card
     public noteForm: UntypedFormGroup;
@@ -130,7 +130,7 @@ export class DriverDetailsCardComponent
 
         // Store
         private driverMinimalQuery: DriversMinimalListQuery
-    ) { }
+    ) {}
 
     ngOnInit(): void {
         this.createForm();
@@ -144,31 +144,67 @@ export class DriverDetailsCardComponent
         this.getDriverPayroll();
     }
 
-    ngOnChanges(changes: SimpleChanges): void {
-        if (!changes?.driver?.firstChange && changes?.driver.currentValue) {
-            this.getDriversDropdown();
-        }
-    }
-
     private getDriverPayroll(timeFilter?: number): void {
         this.driverService
             .getDriverPayroll(this.driver.id, timeFilter || 1)
-            .subscribe((response: DriverPayrollResponse) => {
-                if (timeFilter && this.barChartTabs[timeFilter - 1])
-                    this.barChartTabs[timeFilter - 1].checked = true;
-                this.payrollChartConfig = {
-                    ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
-                    chartData: ChartHelper
-                        .generateDataByDateTime<DriverPayrollChartResponse>(
-                            response.getDriverPayrollChartResponse,
-                            ChartConfiguration.driverConfiguration,
-                            timeFilter
-                        )
-                };
+            .subscribe(
+                (response: DriverPayrollResponse) => {
+                    if (timeFilter && this.barChartTabs[timeFilter - 1])
+                        this.barChartTabs = this.barChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
+                    this.driverChartData = response;
 
-                this.chartLegendData =
-                    ChartLegendConfiguration.driverLegendConfiguration(response);
-            })
+                    this.payrollChartConfig = {
+                        ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<DriverPayrollChartResponse>(
+                                this.driverChartData
+                                    .getDriverPayrollChartResponse,
+                                ChartConfiguration.DRIVER_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+
+                    this.driverLegendConfig =
+                        ChartLegendConfiguration.driverLegendConfiguration(
+                            this.driverChartData
+                        );
+                },
+                () => {
+                    this.payrollChartConfig = {
+                        ...DriverDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
+    }
+
+    public setDriverLegendOnHover(index: number | null): void {
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.payrollChartConfig.chartData.labels
+        );
+
+        this.driverLegendHighlightedBackground = hasHighlightedBackground;
+        this.driverLegendTitle = title;
+
+        const dataForLegend =
+            isNaN(index) || index < 0 || index === null
+                ? this.driverChartData
+                : this.driverChartData.getDriverPayrollChartResponse[index];
+
+        this.driverLegendConfig =
+            ChartLegendConfiguration.driverLegendConfiguration(dataForLegend);
     }
 
     private createForm(): void {
@@ -178,14 +214,12 @@ export class DriverDetailsCardComponent
     }
 
     private getStoreData(isInit: boolean = false): void {
-        if (isInit) {
-            this.driversDropdownList = this.driverMinimalQuery.getAll();
-        } else {
+        if (isInit) this.driversDropdownList = this.driverMinimalQuery.getAll();
+        else
             this.driverMinimalQuery
                 .selectAll()
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((drivers) => (this.driversDropdownList = drivers));
-        }
     }
 
     private getCurrentIndex(): void {
@@ -219,8 +253,8 @@ export class DriverDetailsCardComponent
                     active: id === this.driver.id,
                     hiredAt: hiredAt
                         ? MethodsCalculationsHelper.convertDateFromBackend(
-                            hiredAt
-                        )
+                              hiredAt
+                          )
                         : null,
                 };
             });
@@ -235,35 +269,35 @@ export class DriverDetailsCardComponent
     }
 
     public onSelectedDriver(event: DriverMinimalResponse): void {
-        if (event?.id !== this.driver.id) {
-            this.driversDropdownList = this.driverMinimalQuery
-                .getAll()
-                .map((driver) => {
-                    const { id, firstName, lastName, status, owner } = driver;
+        if (event?.id === this.driver.id) return;
 
-                    const fullname =
-                        firstName +
-                        DriverDetailsCardStringEnum.EMPTY_STRING +
-                        lastName;
+        this.driversDropdownList = this.driverMinimalQuery
+            .getAll()
+            .map((driver) => {
+                const { id, firstName, lastName, status, owner } = driver;
 
-                    return {
-                        id,
-                        name: fullname,
-                        status,
-                        svg: owner
-                            ? DriverDetailsCardSvgRoutes.ownerStatusRoute
-                            : null,
-                        folder: DriverDetailsCardStringEnum.COMMON,
-                        active: id === event.id,
-                    };
-                });
+                const fullname =
+                    firstName +
+                    DriverDetailsCardStringEnum.EMPTY_STRING +
+                    lastName;
 
-            this.detailsPageService.getDataDetailId(event.id);
+                return {
+                    id,
+                    name: fullname,
+                    status,
+                    svg: owner
+                        ? DriverDetailsCardSvgRoutes.ownerStatusRoute
+                        : null,
+                    folder: DriverDetailsCardStringEnum.COMMON,
+                    active: id === event.id,
+                };
+            });
 
-            this.driversDropdownList = this.driversDropdownList.sort(
-                (x, y) => Number(y.status) - Number(x.status)
-            );
-        }
+        this.detailsPageService.getDataDetailId(event.id);
+
+        this.driversDropdownList = this.driversDropdownList.sort(
+            (x, y) => Number(y.status) - Number(x.status)
+        );
     }
 
     public onChangeDriver(action: string): void {

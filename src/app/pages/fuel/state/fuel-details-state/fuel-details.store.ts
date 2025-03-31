@@ -1,14 +1,17 @@
 import { Injectable } from '@angular/core';
+
+// store
 import { EntityState, EntityStore, StoreConfig } from '@datorama/akita';
 
-//Models
-import { FuelStopResponse } from 'appcoretruckassist';
+// models
+import { ExtendedFuelStopResponse } from '@pages/fuel/pages/fuel-stop-details/models';
 
-export interface FuelItemState extends EntityState<FuelStopResponse, number> {}
+export interface FuelDetailsState
+    extends EntityState<ExtendedFuelStopResponse, number> {}
 
 @Injectable({ providedIn: 'root' })
-@StoreConfig({ name: 'fuelItem' })
-export class FuelItemStore extends EntityStore<FuelItemState> {
+@StoreConfig({ name: 'fuelDetails' })
+export class FuelDetailsStore extends EntityStore<FuelDetailsState> {
     constructor() {
         super();
     }

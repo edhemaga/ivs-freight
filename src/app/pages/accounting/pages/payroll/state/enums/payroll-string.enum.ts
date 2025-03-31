@@ -1,4 +1,4 @@
-export enum PayrollStringEnum {
+export enum ePayrollString {
     ADD_CREDIT = 'Add credit',
     EDIT_CREDIT = 'Edit credit',
     DRIVER = 'Driver',
@@ -21,5 +21,4 @@ export enum PayrollStringEnum {
     MODAL_DEDUCTION = 'MODAL_DEDUCTION',
     MODAL_CREDIT = 'MODAL_CREDIT',
     MODAL_BONUS = 'MODAL_BONUS',
-    REPORT = 'report'
 }

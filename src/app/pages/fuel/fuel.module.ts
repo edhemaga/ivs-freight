@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// Modules
+// modules
 import { FuelRoutingModule } from '@pages/fuel/fuel-routing.module';
 import { SharedModule } from '@shared/shared.module';
 
-// Components
+// components
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
 import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/ta-table-body.component';
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
@@ -14,21 +14,23 @@ import { TaMapListCardComponent } from '@shared/components/ta-map-list-card/ta-m
 import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.component';
 import {
     CaChartComponent,
+    CaDropdownMenuComponent,
     CaProfileImageComponent,
     CaProgressRangeComponent,
+    CaMapComponent,
 } from 'ca-components';
 import { FuelCardComponent } from '@pages/fuel/pages/fuel-card/fuel-card.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 
-// Store
+// store
 import { fuelCardModalReducer } from '@pages/fuel/pages/fuel-card-modal/state';
 import { StoreModule } from '@ngrx/store';
 
 // directives
 import { DescriptionItemsTextCountDirective } from '@shared/directives';
 
-// Pipes
+// pipes
 import {
     ActivityTimePipe,
     CardValuePipe,
@@ -53,10 +55,12 @@ import {
         TaMapListComponent,
         TaMapListCardComponent,
         CaChartComponent,
-        TaTableCardDropdownActionsComponent,
+        CaDropdownMenuComponent,
         TaNoteComponent,
         CaProfileImageComponent,
         CaProgressRangeComponent,
+        CaMapComponent,
+        TaTableEmptyComponent,
 
         // pipes
         FormatDatePipe,

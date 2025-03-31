@@ -11,7 +11,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // services
 import { DriverService } from '@pages/driver/services/driver.service';
@@ -25,14 +25,19 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { DriverCdlModalComponent } from '@pages/driver/pages/driver-modals/driver-cdl-modal/driver-cdl-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import {
+    CaInputDropdownComponent,
+    CaUploadFilesComponent,
+    CaInputNoteComponent,
+    CaModalComponent,
+    CaModalButtonComponent,
+    CaInputDatetimePickerComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
+} from 'ca-components';
 
 // enums
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
@@ -41,6 +46,15 @@ import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driv
 import { EditData } from '@shared/models/edit-data.model';
 import { ExtendedCdlMinimalResponse } from '@pages/driver/pages/driver-modals/driver-mvr-modal/models/extended-cdl-minimal-response.model';
 import { MvrResponse } from 'appcoretruckassist';
+
+// constants
+import { DriverMvrModalUploadFilesConfig } from '@pages/driver/pages/driver-modals/driver-mvr-modal/utils/config';
+
+// pipes
+import { FormatDatePipe } from '@shared/pipes';
+
+// svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-driver-mvr-modal',
@@ -54,15 +68,20 @@ import { MvrResponse } from 'appcoretruckassist';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // componentS
         TaAppTooltipV2Component,
-        TaModalComponent,
-        TaInputDropdownComponent,
-        TaUploadFilesComponent,
-        TaInputComponent,
+        CaModalComponent,
+        CaModalButtonComponent,
         TaCustomCardComponent,
-        TaInputNoteComponent,
+
+        CaInputDropdownComponent,
+        CaInputDatetimePickerComponent,
+        CaUploadFilesComponent,
+        CaInputNoteComponent,
+
+        FormatDatePipe,
     ],
 })
 export class DriverMvrModalComponent implements OnInit, OnDestroy {
@@ -88,8 +107,15 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
     public documents: any[] = [];
     public filesForDelete: any[] = [];
     public isFileModified: boolean = false;
+    public svgRoutes = SharedSvgRoutes;
+    public uploadFilesConfig =
+        DriverMvrModalUploadFilesConfig.DRIVER_MVR_MODAL_UPLOAD_FILES_CONFIG;
 
     private isAddNewCdl: boolean = false;
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
+    public activeAction!: string;
+    public taModalActionEnum = DriverMVrModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -149,9 +175,12 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
         if (this.isAddNewCdl) this.getMvrDropdowns(this.editData.id);
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
+    public onModalAction(action: string): void {
+        this.activeAction = action;
+
+        switch (action) {
             case DriverMVrModalStringEnum.CLOSE:
+                this.ngbActiveModal.close();
                 break;
             case DriverMVrModalStringEnum.SAVE:
                 if (this.mvrForm.invalid || !this.isFormDirty) {
@@ -162,20 +191,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
 
                 if (this.editData?.type === DriverMVrModalStringEnum.EDIT_MVR) {
                     this.updateMVR();
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 } else {
                     this.addMVR();
-
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
                 }
 
                 break;
@@ -347,20 +364,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             .addMvr(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close(),
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -390,20 +395,8 @@ export class DriverMvrModalComponent implements OnInit, OnDestroy {
             .updateMvr(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close(),
+                error: () => (this.activeAction = null),
             });
     }
 

@@ -66,6 +66,7 @@ $nav-icon-red: #E66767;
 $nav-icon-hover-fill: #0B49D1;
 $nav-icon-hover-bg: #BED0F9;
 $nav-icon-grey: #ccc;
+$nav-item-active-hover: #558ddd;
 
 $files: #ffcc80;
 
@@ -94,6 +95,7 @@ $notification: #e57373;
     position: absolute;
     bottom: 12px;
     left: 17px;
+    pointer-events: none;
 
     .status-marker {
         width: 10px;

@@ -1,17 +1,17 @@
-<ng-container *ngIf="loading$ | async">
+@let isLoading = loading$ | async;
+
+@if (isLoading) {
     <svg-icon
         [name]="expandTable ? 'payroll_sceleton_collapsed' : 'payroll_sceleton'"
     ></svg-icon>
-</ng-container>
-
-<ng-container *ngIf="!(loading$ | async)">
+} @else {
     <app-ca-main-table
         [hideFieldsToHide]="!expandTable"
         (onPressEvent)="selectPayrollReport($event)"
         [columns]="columns"
         [data$]="tableData$"
     ></app-ca-main-table>
-</ng-container>
+}
 
 <ng-template #customCell let-data>
     <div class="driver-solo-info d-flex">
@@ -22,47 +22,52 @@
             [isRound]="false"
             [isHoverEffect]="false"
         ></app-ca-profile-image>
-        <span class="driver-solo-info-text">{{ data.fullName }}</span>
+        <span class="driver-solo-info-text text-color-black">{{
+            data.fullName
+        }}</span>
     </div>
 </ng-template>
 
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
-        <ng-container *ngIf="data.period == 'Ready'">
+        @if (data.period == 'Ready') {
             <svg-icon
                 class="payment_done d-flex"
                 [svgClass]="'d-flex'"
                 name="mark-as-done"
             ></svg-icon>
-        </ng-container>
+        }
 
-        <ng-container *ngIf="data.period == 'Past'">
+        @if (data.period == 'Past') {
             <svg-icon
                 class="caution d-flex"
                 [svgClass]="'d-flex'"
                 name="incorrect"
             ></svg-icon>
-        </ng-container>
+        }
 
-        <ng-container *ngIf="data.period == 'Pending'">
+        @if (data.period == 'Pending') {
             <svg-icon
                 class="state d-flex"
                 [svgClass]="'d-flex'"
                 name="ic_clock"
             ></svg-icon>
-        </ng-container>
+        }
 
-        <ng-container *ngIf="data.period !== 'Ready'">
+        @if (data.period !== 'Ready') {
             <div
                 class="custom-status-text"
-                [ngClass]="{ 'past-payment': data.period == 'Past' }"
+                [ngClass]="{
+                    'text-color-red-11': data.period === 'Past',
+                    'text-color-bw6-2': data.period !== 'Past',
+                }"
             >
                 {{ Math.abs(data.numberOfDays) }} DAYS
             </div>
-        </ng-container>
+        }
 
-        <ng-container *ngIf="data.period == 'Ready'">
-            <div class="custom-status-text ready-payment">Ready</div>
-        </ng-container>
+        @if (data.period == 'Ready') {
+            <div class="custom-status-text text-color-green-2">Ready</div>
+        }
     </div>
 </ng-template>

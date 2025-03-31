@@ -11,7 +11,7 @@
  */
 
 
-export type ItemFuel = 'Diesel' | 'DEF' | 'Reefer' | 'ScaleTicket' | 'Oil' | 'Truckwash' | 'Parking' | 'Cashback' | 'Other';
+export type ItemFuel = 'Diesel' | 'DEF' | 'Reefer' | 'ScaleTicket' | 'Oil' | 'Truckwash' | 'Parking' | 'Advance' | 'Other';
 
 export const ItemFuel = {
     Diesel: 'Diesel' as ItemFuel,
@@ -21,7 +21,7 @@ export const ItemFuel = {
     Oil: 'Oil' as ItemFuel,
     Truckwash: 'Truckwash' as ItemFuel,
     Parking: 'Parking' as ItemFuel,
-    Cashback: 'Cashback' as ItemFuel,
+    Advance: 'Advance' as ItemFuel,
     Other: 'Other' as ItemFuel
 };
 

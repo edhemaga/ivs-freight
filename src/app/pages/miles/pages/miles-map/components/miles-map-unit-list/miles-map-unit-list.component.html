@@ -1,0 +1,191 @@
+@let details = milesStoreService.detailsSelector$ | async;
+@let miles = milesStoreService.miles$ | async;
+@let pagination = milesStoreService.unitsPaginationSelector$ | async;
+@let isPreviousButtonDisabled = pagination.isFirstUnit;
+@let isNextButtonDisabled = pagination.isLastUnit;
+
+@if (details) {
+    <div class="position-relative z-2">
+        <div
+            class="background-white br-3 p-x-6 mb-2"
+            [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
+        >
+            <div class="h-42 d-flex align-items-center justify-content-between">
+                @let title = 'UNIT ' + details?.truck?.truckNumber;
+                <app-ca-details-title-card
+                    [detailsTitleCardConfig]="{
+                        title: title,
+                        tooltip: 'Search Truck',
+                        placeholder: title,
+                        width: isStopListWidthExpanded ? 398 : 270,
+                        tooltipNext: 'Next Truck',
+                        tooltipPrevious: 'Previous Truck',
+                        disableNext: isNextButtonDisabled,
+                        disablePrevious: isPreviousButtonDisabled,
+                    }"
+                    [dropdownTemplate]="titleDropdown"
+                    [titleRightIconTemplate]="titleRightIconTemplate"
+                    (onNextAction)="getTruckUnit(ArrowActionsStringEnum.NEXT)"
+                    (onPreviousAction)="
+                        getTruckUnit(ArrowActionsStringEnum.PREV)
+                    "
+                >
+                    <ng-template #titleDropdown>
+                        <div class="gap-1 d-flex flex-column">
+                            @for (unit of miles; track unit.id) {
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        mileUnits;
+                                        context: {
+                                            unit,
+                                        }
+                                    "
+                                >
+                                </ng-container>
+                            }
+                        </div>
+                    </ng-template>
+                </app-ca-details-title-card>
+            </div>
+        </div>
+        <div
+            class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
+            [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
+            [class.miles-unit-list-minimal]="isStopListHeightExpanded"
+        >
+            <form [formGroup]="searchForm">
+                <app-ca-input
+                    formControlName="search"
+                    [inputConfig]="searchField"
+                ></app-ca-input>
+            </form>
+
+            <div
+                class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-4"
+                [ngClass]="
+                    isStopListWidthExpanded
+                        ? 'stops-container-large'
+                        : 'stops-container-small'
+                "
+            >
+                @for (item of stopsConfig; let i = $index; track i) {
+                    @if (!item.isExpandable || isStopListWidthExpanded) {
+                        <div
+                            class="text-color-muted text-size-11 ta-font-bold"
+                            [ngClass]="{
+                                'text-right': item.isAlignedRight,
+                                'text-center': item.isAlignedCenter,
+                            }"
+                        >
+                            {{ item.label }}
+                        </div>
+                    }
+                }
+            </div>
+
+            <div class="divider mt-1 mb-1"></div>
+
+            <!-- TODO:  Virtaul scroll is inside new ticket -->
+            <div class="scrollable-element">
+                <cdk-virtual-scroll-viewport
+                    #viewport
+                    (scroll)="onScrollEvent()"
+                    [itemSize]="26"
+                    style="height: calc(100vh - 188px)"
+                >
+                    <div *cdkVirtualFor="let stop of details?.stops?.data">
+                        <ng-container
+                            *ngTemplateOutlet="
+                                stopRows;
+                                context: {
+                                    stop,
+                                }
+                            "
+                        >
+                        </ng-container>
+                    </div>
+                </cdk-virtual-scroll-viewport>
+            </div>
+
+            <div
+                (click)="toogleStopListHeight()"
+                class="position-absolute z-2 arrow arrow-bottom"
+                [class.arrow-bottom-opened]="isStopListHeightExpanded"
+            >
+                <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
+            </div>
+
+            <div
+                (click)="toogleStopListWidth()"
+                class="position-absolute z-2 arrow arrow-right"
+                [class.arrow-right-opened]="isStopListWidthExpanded"
+            >
+                <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
+            </div>
+        </div>
+    </div>
+}
+
+<ng-template #stopRows let-stop="stop">
+    <div
+        class="stops-container h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
+        [ngClass]="
+            isStopListWidthExpanded
+                ? 'stops-container-large'
+                : 'stops-container-small'
+        "
+    >
+        <div class="text-color-muted text-size-11 text-center">
+            {{ stop.order }}
+        </div>
+        <div
+            class="text-color-black text-size-11 ta-font-bold text-truncate d-flex"
+        >
+            @let location = stop.location;
+            <svg-icon
+                [src]="(stop.type.name | milesIcon).icon"
+                [ngClass]="(stop.type.name | milesIcon).color"
+                class="svg-size-14 d-flex m-r-4"
+            ></svg-icon>
+            {{ location.city }}, {{ location.stateShortName }}
+            {{ location.zipCode }}
+        </div>
+        <div class="text-color-black text-size-11 text-right">
+            {{ (stop.legMiles | thousandSeparator) ?? '0.0' }}
+        </div>
+        @if (isStopListWidthExpanded) {
+            <div class="text-color-black text-size-11 text-right">
+                {{ (stop.loadedMiles | thousandSeparator) ?? '0.0' }}
+            </div>
+            <div class="text-color-black text-size-11 text-right">
+                {{ (stop.emptyMiles | thousandSeparator) ?? '0.0' }}
+            </div>
+        }
+        <div class="text-color-black text-size-11 ta-font-medium text-right">
+            {{ (stop.totalMiles | thousandSeparator) ?? '0.0' }}
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #resizeButton>
+    <!-- TODO:  Inside virtual sroll ticket -->
+    <div
+        class="h-26 w-26 background-white rounded-circle d-flex align-items-center justify-content-center svg-fill-muted svg-hover-black c-pointer shadow-100"
+    >
+        <svg-icon
+            [src]="sharedSvgRoutes.PRIMARY_ARROW_UP"
+            class="svg-size-14 d-flex"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #mileUnits let-unit="unit">
+    <div
+        class="h-26 br-2 p-y-4 p-x-6 background-hover-black d-flex justify-content-between c-pointer"
+        (click)="selectUnit(unit)"
+    >
+        <p class="text-size-14 text-color-white">
+            {{ unit.unit }}
+        </p>
+    </div>
+</ng-template>

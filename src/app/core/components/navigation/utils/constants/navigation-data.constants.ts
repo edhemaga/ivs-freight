@@ -7,6 +7,9 @@ import {
     NavigationSettings,
 } from '@core/components/navigation/models';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 // environments
 import { environment } from 'src/environments/environment';
 
@@ -76,7 +79,6 @@ export class NavigationDataConstants {
                     name: 'Fuel',
                     route: '/list/fuel',
                     activeRouteFlegId: 3,
-                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Owner',
@@ -258,7 +260,7 @@ export class NavigationDataConstants {
         },
         {
             id: 9,
-            name: 'Statistic',
+            name: 'Statistics',
             image: 'ic_statistic.svg',
             route: 'statistic' /* /statistic/load -> Bilo je pre. Pravi problem load tabeli, nakon reloada, pokusava da vodi ka ovoj ruti, posto ne postoji prebaci se na dashboard */,
             isRouteActive: false,
@@ -275,7 +277,7 @@ export class NavigationDataConstants {
         },
         {
             id: 11,
-            name: 'Telematic',
+            name: 'Telematics',
             image: 'ic_gps.svg',
             route: '/telematic',
             isRouteActive: false,
@@ -457,7 +459,7 @@ export class NavigationDataConstants {
     static repairNavigationData: NavigationModal[] = [
         {
             id: 15,
-            name: 'Order',
+            name: 'Bill / Order',
             path: 'repair-order',
         },
         {
@@ -554,7 +556,7 @@ export class NavigationDataConstants {
             id: 27,
             name: 'Profile Update',
             image: 'ic_pen.svg',
-            action: 'update',
+            action: eGeneralActions.UPDATE,
         },
         {
             id: 28,
@@ -688,85 +690,5 @@ export class NavigationDataConstants {
         logoText: 'assets/svg/logo-text.svg',
         search: 'assets/svg/common/ic_search.svg',
         plus: 'assets/svg/common/ic_plus.svg',
-    };
-
-    static UPLOAD_OPTIONS = {
-        isVisibleCropAndDrop: true,
-        files: [],
-        slider: {
-            dontUseSlider: false,
-            hasCarouselBottomTabs: false,
-        },
-        carouselConfig: {
-            files: [],
-            customClass: 'medium',
-            customDetailsPageClass: 'modals',
-            hasCarouselBottomTabs: true,
-        },
-        hasCrop: true,
-        isRoundCrop: true,
-        containWithinAspectRatio: false,
-        aspectRatio: [1, 1],
-        initialCropperPosition: {
-            x1: 0,
-            y1: 0,
-            x2: 184,
-            y2: 184,
-        },
-        dropzoneConf: [
-            {
-                template: 'imageCropTemplate',
-                config: {
-                    dropzone: {
-                        dropZoneType: 'image',
-                        multiple: true,
-                        globalDropZone: false,
-                        dropZonePages: 'cdl',
-                    },
-                    dropzoneOption: {
-                        customClassName: 'documents-dropzone',
-                        size: 'medium',
-                        modalSize: 'lg',
-                        showDropzone: true,
-                        dropzoneClose: false,
-                    },
-                },
-            },
-        ],
-        review: {
-            isReview: true,
-            reviewMode: 'REVIEW_MODE',
-            feedbackText: 'Sample feedback text',
-            categoryTag: 'General',
-        },
-        configFile: {
-            id: 111,
-            customClassName: 'modals',
-            file: {
-                url: '',
-                incorrect: false,
-                lastHovered: false,
-                fileSize: 1200,
-                fileName: '',
-            },
-            hasTagsDropdown: false,
-            hasNumberOfPages: true,
-            activePage: 1,
-            tags: ['Example'],
-            type: 'modal',
-            hasLandscapeOption: false,
-            tagsOptions: [
-                {
-                    tagName: 'HOS Agreement',
-                    checked: false,
-                },
-                {
-                    tagName: 'Unsafe Driving AGT',
-                    checked: false,
-                },
-            ],
-        },
-        size: 'medium',
-        slideWidth: 180,
     };
 }

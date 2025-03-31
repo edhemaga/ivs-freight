@@ -12,7 +12,9 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent, HttpParameterCodec, HttpContext }       from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
@@ -47,8 +49,6 @@ import { RepairAutocompleteDescriptionResponse } from '../model/repairAutocomple
 // @ts-ignore
 import { RepairCategoryFilterResponse } from '../model/repairCategoryFilterResponse';
 // @ts-ignore
-import { RepairDriverResponse } from '../model/repairDriverResponse';
-// @ts-ignore
 import { RepairItemCommand } from '../model/repairItemCommand';
 // @ts-ignore
 import { RepairListResponse } from '../model/repairListResponse';
@@ -56,6 +56,8 @@ import { RepairListResponse } from '../model/repairListResponse';
 import { RepairMainModuleResponse } from '../model/repairMainModuleResponse';
 // @ts-ignore
 import { RepairModalResponse } from '../model/repairModalResponse';
+// @ts-ignore
+import { RepairOrderBillDriverListResponse } from '../model/repairOrderBillDriverListResponse';
 // @ts-ignore
 import { RepairResponse } from '../model/repairResponse';
 // @ts-ignore
@@ -322,9 +324,9 @@ export class RepairService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiRepairDriversGet(truckId?: number, trailerId?: number, repairDate?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<RepairDriverResponse>>;
-    public apiRepairDriversGet(truckId?: number, trailerId?: number, repairDate?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<RepairDriverResponse>>>;
-    public apiRepairDriversGet(truckId?: number, trailerId?: number, repairDate?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<RepairDriverResponse>>>;
+    public apiRepairDriversGet(truckId?: number, trailerId?: number, repairDate?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<RepairOrderBillDriverListResponse>;
+    public apiRepairDriversGet(truckId?: number, trailerId?: number, repairDate?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<RepairOrderBillDriverListResponse>>;
+    public apiRepairDriversGet(truckId?: number, trailerId?: number, repairDate?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<RepairOrderBillDriverListResponse>>;
     public apiRepairDriversGet(truckId?: number, trailerId?: number, repairDate?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -388,7 +390,7 @@ export class RepairService {
         }
 
         let localVarPath = `/api/repair/drivers`;
-        return this.httpClient.request<Array<RepairDriverResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<RepairOrderBillDriverListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,

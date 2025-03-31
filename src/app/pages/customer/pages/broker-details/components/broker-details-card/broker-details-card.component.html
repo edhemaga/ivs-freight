@@ -2,7 +2,7 @@
     <app-ta-details-header-card
         [ngClass]="{
             disabedPreviousArrow: !brokerIndex,
-            disableNextArrow: brokerIndex === brokerList.length - 1
+            disableNextArrow: brokerIndex === brokerList.length - 1,
         }"
         [cardDetailsDate]="broker?.createdAt | formatDateP"
         [tooltipNext]="
@@ -20,7 +20,7 @@
             <div class="repair-information-item">
                 <span class="header-bottom">{{ broker?.dbaName }}</span>
             </div>
-            <ng-container *ngIf="broker?.phone">
+            @if (broker?.phone) {
                 <div class="repair-information-item">
                     <span
                         tooltipBackground="#6c6c6c"
@@ -39,8 +39,8 @@
                         [textColor]="'#2f2f2f'"
                     ></app-ta-copy>
                 </div>
-            </ng-container>
-            <ng-container *ngIf="broker.email">
+            }
+            @if (broker.email) {
                 <div class="repair-information-item">
                     <span
                         tooltipBackground="#6c6c6c"
@@ -59,7 +59,7 @@
                         [textColor]="'#2f2f2f'"
                     ></app-ta-copy>
                 </div>
-            </ng-container>
+            }
             <div class="repair-information-item address-cont">
                 <svg-icon
                     class="repair-icon"
@@ -81,7 +81,7 @@
         [ngClass]="{ 'bind-heigth': !templateCard }"
     >
         <div class="repair-cards">
-            <ng-container *ngIf="broker?.ein || broker?.mcNumber">
+            @if (broker?.ein || broker?.mcNumber) {
                 <app-ta-custom-card
                     [bodyTemplate]="'card'"
                     [hasDivider]="false"
@@ -89,7 +89,7 @@
                     [isCardOpen]="true"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '10px'
+                        marginBottom: '10px',
                     }"
                     [customClass]="'detailsPadding'"
                 >
@@ -106,8 +106,7 @@
                         </div>
                     </div>
                 </app-ta-custom-card>
-            </ng-container>
-
+            }
             <app-ta-custom-card
                 [bodyTemplate]="'card'"
                 [hasDivider]="broker?.ein || broker?.mcNumber"
@@ -116,26 +115,32 @@
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            (switchClicked)="changeInvoiceTab($event)"
-                            [tabs]="invoiceChartTabs"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
-                    <ng-container *ngIf="invoiceChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="invoiceChartLegend"
-                        ></app-ta-chart-legend>
-                        <app-ca-chart [chartConfig]="invoiceChartConfig">
-                        </app-ca-chart>
-                    </ng-container>
+                <div>
+                    @if (!invoiceLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                (switchClicked)="changeInvoiceTab($event)"
+                                [tabs]="invoiceChartTabs"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
+                    <app-ca-chart
+                        [chartConfig]="invoiceChartConfig"
+                        [legendData]="{
+                            data: invoiceChartLegend,
+                            hasHighlightedBackground:
+                                invoiceLegendHighlightedBackground,
+                            title: invoiceLegendTitle,
+                        }"
+                        (hoveredIndex)="setInvoiceLegendOnHover($event)"
+                    >
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -147,27 +152,32 @@
                 [hasHeaderSvg]="brokerDetailsSvgRoutes.rightArrowIcon"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            [tabs]="mileageChartTabs"
-                            (switchClicked)="changeMileageTab($event)"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
-
-                    <ng-container *ngIf="mileageChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="mileageChartLegendData"
-                        ></app-ta-chart-legend>
-                        <app-ca-chart [chartConfig]="mileageChartConfig">
-                        </app-ca-chart>
-                    </ng-container>
+                <div>
+                    @if (!mileageLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                [tabs]="mileageChartTabs"
+                                (switchClicked)="changeMileageTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
+                    <app-ca-chart
+                        [chartConfig]="mileageChartConfig"
+                        [legendData]="{
+                            data: mileageChartLegendData,
+                            hasHighlightedBackground:
+                                mileageLegendHighlightedBackground,
+                            title: mileageLegendTitle,
+                        }"
+                        (hoveredIndex)="setMileageLegendOnHover($event)"
+                    >
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
             <app-ta-custom-card
@@ -177,11 +187,11 @@
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <ng-container *ngIf="broker?.availableCredit">
+                @if (broker?.availableCredit) {
                     <div class="invoice-ageing-template">
                         <div class="invoice-ageing-template-item">
                             <span class="header-name ta-font-bold mb-1"
@@ -192,30 +202,31 @@
                                     broker?.availableCredit | formatCurrency
                                 }}</span>
                                 <div class="percntage-broker ta-font-medium">
-                                    {{ getPercntageOfPaid }}%
+                                    {{ getPercentageOfPaid }}%
                                 </div>
                             </div>
                         </div>
                     </div>
-                </ng-container>
-                <ng-container *ngIf="broker.availableCredit">
+                }
+                @if (broker.availableCredit) {
                     <div
                         class="table-progress-bar-container my-2"
                         [ngClass]="
-                            getPercntageOfPaid | progressBarColors : false
+                            getPercentageOfPaid | progressBarColors: false
                         "
                     >
                         <div
                             class="table-progress-bar"
                             [ngClass]="
-                                getPercntageOfPaid | progressBarColors : true
+                                getPercentageOfPaid | progressBarColors: true
                             "
                             [ngStyle]="{
-                                width: getPercntageOfPaid + '%'
+                                width: getPercentageOfPaid + '%',
                             }"
                         ></div>
                     </div>
-                </ng-container>
+                }
+
                 <div class="additional-template-broker-data">
                     <div class="addition-template-item">
                         <span class="header ta-font-bold mb-1"
@@ -247,7 +258,7 @@
                 [isCardOpen]="true"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
@@ -272,7 +283,7 @@
                             ) | formatCurrency
                         }}</span>
                     </div>
-                    <ng-container *ngIf="broker?.payTerm?.name === 'Unlimited'">
+                    @if (broker?.payTerm?.name === 'Unlimited') {
                         <div class="invoice-agein-unlimited">
                             Avg.
                             <span class="avg-days-invoice"
@@ -283,16 +294,14 @@
                                 Days</span
                             >
                         </div>
-                    </ng-container>
+                    }
                 </div>
 
                 <div class="w-100 d-flex flex-column gap-2">
-                    <ng-container
-                        *ngIf="
-                            broker?.payTerm?.name !== 'Unlimited' &&
-                            invoiceAgingData?.invoiceAgeingGroupOne
-                        "
-                    >
+                    @if (
+                        broker?.payTerm?.name !== 'Unlimited' &&
+                        invoiceAgingData?.invoiceAgeingGroupOne
+                    ) {
                         <app-ta-progress-invoices
                             [invoiceDays]="
                                 invoiceAgingData?.invoiceAgeingGroupOne
@@ -318,14 +327,11 @@
                             "
                         >
                         </app-ta-progress-invoices>
-                    </ng-container>
-
-                    <ng-container
-                        *ngIf="
-                            broker?.payTerm?.name !== 'Unlimited' &&
-                            invoiceAgingData?.invoiceAgeingGroupTwo
-                        "
-                    >
+                    }
+                    @if (
+                        broker?.payTerm?.name !== 'Unlimited' &&
+                        invoiceAgingData?.invoiceAgeingGroupTwo
+                    ) {
                         <app-ta-progress-invoices
                             [invoiceDays]="
                                 invoiceAgingData?.invoiceAgeingGroupTwo
@@ -351,13 +357,11 @@
                             "
                         >
                         </app-ta-progress-invoices>
-                    </ng-container>
-                    <ng-container
-                        *ngIf="
-                            broker?.payTerm?.name !== 'Unlimited' &&
-                            invoiceAgingData?.invoiceAgeingGroupThree
-                        "
-                    >
+                    }
+                    @if (
+                        broker?.payTerm?.name !== 'Unlimited' &&
+                        invoiceAgingData?.invoiceAgeingGroupThree
+                    ) {
                         <app-ta-progress-invoices
                             [invoiceDays]="
                                 invoiceAgingData?.invoiceAgeingGroupThree
@@ -383,13 +387,11 @@
                             "
                         >
                         </app-ta-progress-invoices>
-                    </ng-container>
-                    <ng-container
-                        *ngIf="
-                            broker?.payTerm?.name !== 'Unlimited' &&
-                            invoiceAgingData?.invoiceAgeingGroupFour
-                        "
-                    >
+                    }
+                    @if (
+                        broker?.payTerm?.name !== 'Unlimited' &&
+                        invoiceAgingData?.invoiceAgeingGroupFour
+                    ) {
                         <app-ta-progress-invoices
                             [invoiceDays]="
                                 invoiceAgingData?.invoiceAgeingGroupFour
@@ -415,7 +417,7 @@
                             "
                         >
                         </app-ta-progress-invoices>
-                    </ng-container>
+                    }
                 </div>
             </app-ta-custom-card>
 
@@ -427,26 +429,32 @@
                 [hasHeaderSvg]="brokerDetailsSvgRoutes.rightArrowIcon"
                 [animationMarginParams]="{
                     marginTop: '0px',
-                    marginBottom: '10px'
+                    marginBottom: '10px',
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <div class="charts-template perfomance">
-                    <div>
-                        <app-ta-tab-switch
-                            [type]="'type2-modal-popup'"
-                            [tabs]="paymentChartTabs"
-                            (switchClicked)="changePaymentTab($event)"
-                        >
-                        </app-ta-tab-switch>
-                    </div>
-                    <ng-container *ngIf="paymentChartConfig?.chartData">
-                        <app-ta-chart-legend
-                            [data]="paymentChartLegendData"
-                        ></app-ta-chart-legend>
-                        <app-ca-chart [chartConfig]="paymentChartConfig">
-                        </app-ca-chart>
-                    </ng-container>
+                <div>
+                    @if (!paymentLegendHighlightedBackground) {
+                        <div>
+                            <app-ta-tab-switch
+                                [type]="'type2-modal-popup'"
+                                [tabs]="paymentChartTabs"
+                                (switchClicked)="changePaymentTab($event)"
+                            >
+                            </app-ta-tab-switch>
+                        </div>
+                    }
+                    <app-ca-chart
+                        [chartConfig]="paymentChartConfig"
+                        [legendData]="{
+                            data: paymentChartLegendData,
+                            hasHighlightedBackground:
+                                paymentLegendHighlightedBackground,
+                            title: paymentLegendTitle,
+                        }"
+                        (hoveredIndex)="setPaymentHistoryLegendOnHover($event)"
+                    >
+                    </app-ca-chart>
                 </div>
             </app-ta-custom-card>
 

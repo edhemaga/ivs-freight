@@ -11,14 +11,15 @@ import * as PayrollFlatRateActions from '@pages/accounting/pages/payroll/state/a
 import { PayrollState } from '@pages/accounting/pages/payroll/state/models';
 
 // Reducers
-import * as PayrollMileageDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_mileage.reducer';
-import * as PayrollMainReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/payroll_main.reducer';
-import * as PayrollCommissionDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_commission.reducer';
-import * as PayrollOwnerDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_owner.reducer';
-import * as PayrollFlatRateDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver_flat_rate.reducer';
+import * as PayrollMileageDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver-mileage.reducer';
+import * as PayrollMainReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/payroll-main.reducer';
+import * as PayrollCommissionDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver-commission.reducer';
+import * as PayrollOwnerDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver-owner.reducer';
+import * as PayrollFlatRateDriverReducers from '@pages/accounting/pages/payroll/state/reducers/payroll_reducers/driver-flat-rate.reducer';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 export const payrollState: PayrollState = {
     payrollCounts: {},
@@ -34,7 +35,9 @@ export const payrollState: PayrollState = {
     reportLoading: false,
     expandedReportTable: false,
     closeReportPaymentLoading: false,
-    payrollOpenedTab: PayrollTablesStatus.OPEN,
+    payrollOpenedTab: ePayrollTablesStatus.OPEN,
+    payrollMapRoutes: null,
+    openedPayrollLeftId: eStringPlaceholder.EMPTY,
 };
 
 export const payrollReducer = createReducer(
@@ -55,6 +58,10 @@ export const payrollReducer = createReducer(
     on(
         PayrollActions.setTableReportExpanded,
         PayrollMainReducers.onSetTableReportExpanded
+    ),
+    on(
+        PayrollActions.getPayrollMapDataSuccess,
+        PayrollMainReducers.onGetMapDataSuccess
     ),
 
     /*
@@ -78,7 +85,7 @@ export const payrollReducer = createReducer(
     ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverSuccess,
-        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriverErrorSuccess
+        PayrollMileageDriverReducers.onGetPayrollSoloMileageReportDriverSuccess
     ),
     on(
         PayrollSoloMileageDriver.getPayrollSoloMileageReportDriverError,

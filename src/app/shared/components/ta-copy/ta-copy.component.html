@@ -12,30 +12,33 @@
         [autoClose]="false"
     >
         <div
-            class="copy-value"
+            class="d-flex align-items-center copy-value"
             [class.leftIconOrder]="leftSideIcon"
             [class.short_text]="maxWidth"
             [ngStyle]="{
                 color: textColor,
                 'font-size': textFontSize,
                 'font-weight': textFontWeight,
-                'max-width': maxWidth
+                'max-width': maxWidth,
             }"
         >
             <ng-container *ngIf="!accountCompany && !arrayText">
                 <div
-                    class="text-color-black-2 copy-text"
+                    class="text-color-black-2 copy-text d-inline-block text-truncate"
+                    [ngStyle]="{
+                        'max-width': maxWidth,
+                    }"
                     [class.boldVinSpan]="boldText"
                     [innerHtml]="
                         hasEye
-                            ? (copyValue | hideAccount : 'account' : isVisible)
+                            ? (copyValue | hideAccount: 'account' : isVisible)
                             : (copyValue
                               | taHighlight
                                   : [
                                         {
                                             index: 1,
-                                            text: searchValue
-                                        }
+                                            text: searchValue,
+                                        },
                                     ])
                     "
                 ></div>
@@ -43,18 +46,21 @@
 
             <ng-container *ngIf="accountCompany && !arrayText">
                 <div
-                    class="text-color-black-2 copy-text"
+                    class="text-color-black-2 copy-text d-inline-block text-truncate"
+                    [ngStyle]="{
+                        'max-width': maxWidth,
+                    }"
                     [class.boldVinSpan]="boldText"
                     [innerHtml]="
                         hasEye
-                            ? (copyValue | hidePassword : 'account' : isVisible)
+                            ? (copyValue | hidePassword: 'account' : isVisible)
                             : (copyValue
                               | taHighlight
                                   : [
                                         {
                                             index: 1,
-                                            text: searchValue
-                                        }
+                                            text: searchValue,
+                                        },
                                     ])
                     "
                 ></div>

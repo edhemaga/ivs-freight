@@ -1,16 +1,19 @@
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 export class SettingsOfficeConfig {
     static getNameInputConfig(type: string): ITaInput {
         return {
-                name: 'Office Name',
-                type: 'text',
-                label: 'Office Name',
-                isRequired: true,
-                textTransform: 'capitalize',
-                autoFocus: type !== 'edit',
-                minLength: 2,
-                maxLength: 64
+            name: 'Office Name',
+            type: 'text',
+            label: 'Office Name',
+            isRequired: true,
+            textTransform: 'capitalize',
+            autoFocus: type !== eGeneralActions.EDIT,
+            minLength: 2,
+            maxLength: 64,
         };
     }
 
@@ -46,20 +49,6 @@ export class SettingsOfficeConfig {
             minLength: 5,
             maxLength: 64,
             textTransform: 'lowercase',
-        };
-    }
-
-    static getAddressInputConfig(): ITaInput {
-        return {
-            name: 'Address',
-            type: 'text',
-            label: 'Address, City, State Zip',
-            isRequired: true,
-            placeholderIcon: 'address',
-            textTransform: 'capitalize',
-            dropdownWidthClass: 'w-col-376',
-            minLength: 6,
-            maxLength: 256,
         };
     }
 

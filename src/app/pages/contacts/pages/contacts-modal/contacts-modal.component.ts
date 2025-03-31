@@ -18,22 +18,22 @@ import { Subject, switchMap, takeUntil } from 'rxjs';
 
 // modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // components
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaLogoChangeComponent } from '@shared/components/ta-logo-change/ta-logo-change.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaInputDropdownLabelComponent } from '@shared/components/ta-input-dropdown-label/ta-input-dropdown-label.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
-import { CaUploadFilesComponent } from 'ca-components';
+import {
+    CaInputAddressDropdownComponent,
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaInputNoteComponent,
+    CaModalComponent,
+    CaUploadFilesComponent,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // validations
 import {
@@ -48,13 +48,18 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { ContactsService } from '@shared/services/contacts.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
+import { ContactStoreService } from '@pages/contacts/services/contact-store.service';
 
 // enums
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums/contacts-modal-string.enum';
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 
 // constants
-import { ContactsModalConstants } from '@pages/contacts/pages/contacts-modal/utils/constants/contacts-modal.constants';
+import { ContactModalConfig } from '@pages/contacts/pages/contacts-modal/utils/contacts-modal.config';
+
+// config
+import { ContactsModalUploadFilesConfig } from '@pages/contacts/pages/contacts-modal/utils/config';
 
 // models
 import {
@@ -74,6 +79,9 @@ import { EditData } from '@shared/models/edit-data.model';
 // utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
 
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
 @Component({
     selector: 'app-contact-modal',
     templateUrl: './contacts-modal.component.html',
@@ -86,30 +94,36 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
-        NgbModule,
+        NgbTooltipModule,
 
         // components
-        TaAppTooltipV2Component,
-        TaModalComponent,
-        TaTabSwitchComponent,
+        CaModalComponent,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
-        TaInputDropdownComponent,
-        TaLogoChangeComponent,
-        TaInputNoteComponent,
-        TaInputComponent,
-        TaInputAddressDropdownComponent,
+        CaInputNoteComponent,
+        CaInputAddressDropdownComponent,
         TaInputDropdownLabelComponent,
         TaModalTableComponent,
         CaUploadFilesComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
+        TaAppTooltipV2Component,
     ],
 })
-export class ContactsModalComponent implements OnInit, OnDestroy {
+export class ContactsModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     @Input() editData: EditData;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
-    public uploadOptionsConstants = ContactsModalConstants.UPLOAD_OPTIONS;
+    public uploadFilesConfig =
+        ContactsModalUploadFilesConfig.CONTACTS_MODAL_UPLOAD_FILES_CONFIG;
     public contactForm: UntypedFormGroup;
     public isFormDirty: boolean;
 
@@ -136,23 +150,38 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     public isEachEmailRowValid: boolean = true;
     public contactEmails: ContactEmailResponse[] = [];
     public updatedContactEmails: ContactEmailResponse[] = [];
-
-    // enums
-    public modalTableTypeEnum = ModalTableTypeEnum;
+    public contactModalConfig = ContactModalConfig;
 
     private isUploadInProgress: boolean;
 
+    public modalTableTypeEnum = ModalTableTypeEnum;
+    public taModalActionEnum = ContactsModalStringEnum;
+
     constructor(
+        private ngbActiveModal: NgbActiveModal,
+
+        // form
         private formBuilder: UntypedFormBuilder,
+
+        // ref
         private changeDetector: ChangeDetectorRef,
+
+        // services
+        protected contactStoreService: ContactStoreService,
         private inputService: TaInputService,
         private modalService: ModalService,
         private contactService: ContactsService,
-        private formService: FormService
-    ) {}
+        private formService: FormService,
+        
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
+
+        this.manageSubscriptions();
 
         this.getCompanyContactModal();
 
@@ -180,11 +209,12 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
+    public onModalAction(action: string): void {
         if (this.isUploadInProgress) return;
 
-        switch (data.action) {
+        switch (action) {
             case ContactsModalStringEnum.CLOSE:
+                this.setModalSpinner(null, true, true, false);
                 break;
             case ContactsModalStringEnum.SAVE_AND_ADD_NEW:
                 if (this.contactForm.invalid || !this.isFormDirty) {
@@ -193,7 +223,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                     return;
                 }
                 this.isUploadInProgress = true;
-                this.addCompanyContact();
+                this.saveCompanyContact();
 
                 this.modalService.openModal(ContactsModalComponent, {
                     size: ContactsModalStringEnum.SMALL,
@@ -208,10 +238,10 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                 }
 
                 this.isUploadInProgress = true;
-                if (this.editData) {
-                    this.updateCompanyContact(this.editData.id);
+                if (this.editData?.id) {
+                    this.saveCompanyContact(this.editData.id, true);
                 } else {
-                    this.addCompanyContact();
+                    this.saveCompanyContact();
                 }
 
                 break;
@@ -230,20 +260,12 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
             .get(ContactsModalStringEnum.SHARED)
             .valueChanges.pipe(takeUntil(this.destroy$))
             .subscribe((value) => {
-                if (value) {
-                    this.inputService.changeValidators(
-                        this.contactForm.get(
-                            ContactsModalStringEnum.SHARED_LABEL_ID
-                        )
-                    );
-                } else {
-                    this.inputService.changeValidators(
-                        this.contactForm.get(
-                            ContactsModalStringEnum.SHARED_LABEL_ID
-                        ),
-                        false
-                    );
-                }
+                this.inputService.changeValidators(
+                    this.contactForm.get(
+                        ContactsModalStringEnum.SHARED_LABEL_ID
+                    ),
+                    !!value
+                );
             });
     }
 
@@ -336,18 +358,17 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         }
     }
 
-    private getCompanyContactModal(): void {
-        this.contactService
-            .getCompanyContactModal()
+    private listenToStoreContactModal(): void {
+        this.contactStoreService.modalData$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.contactLabels = res.labels.map((item) => {
+            .subscribe((data) => {
+                this.contactLabels = data.labels.map((item) => {
                     return { ...item, dropLabel: true };
                 });
 
-                this.sharedDepartments = res.departments;
+                this.sharedDepartments = data.departments;
 
-                if (this.editData) {
+                if (this.editData.id) {
                     this.isCardAnimationDisabled = true;
 
                     this.getCompanyContactById(this.editData.id);
@@ -355,6 +376,23 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                     this.startFormChanges();
                 }
             });
+    }
+
+    private listenToStoreContactLabelsColor(): void {
+        this.contactStoreService.contactLabelsColor$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((colors) => {
+                this.colors = colors;
+            });
+    }
+
+    private manageSubscriptions(): void {
+        this.listenToStoreContactModal();
+        this.listenToStoreContactLabelsColor();
+    }
+
+    private getCompanyContactModal(): void {
+        this.contactStoreService.dispatchGetContactModalData();
     }
 
     private getCompanyContactById(id: number): void {
@@ -370,7 +408,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                             ? res.companyContactLabel.name
                             : null,
                         /*  avatar: res.avatar ? res.avatar : null, */
-                        address: res.address ? res.address.address : null,
+                        address: res.address?.address,
                         addressUnit: res.address
                             ? res.address.addressUnit
                             : null,
@@ -386,8 +424,8 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
                     });
 
                     this.selectedContactLabel = res.companyContactLabel;
-                    this.selectedAddress = res.address;
                     this.selectedSharedDepartment = res.departmentContacts;
+                    this.selectedAddress = res.address;
 
                     this.updatedContactPhones = res.contactPhones;
                     this.updatedContactEmails = res.contactEmails;
@@ -410,72 +448,62 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addCompanyContact(): void {
+    private prepareCompanyContactData(
+        id: number | null,
+        isUpdate: boolean
+    ): CreateCompanyContactCommand | UpdateCompanyContactCommand {
         const { addressUnit, ...form } = this.contactForm.value;
 
-        if (this.selectedAddress)
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit,
-            };
+        const updatedAddress = this.selectedAddress
+            ? { ...this.selectedAddress, addressUnit }
+            : null;
 
-        const contactPhones = this.contactPhones.map((contactPhone, index) => {
-            return {
-                ...contactPhone,
-                primary: !index,
-            };
-        });
+        const contactPhones = this.contactPhones.map((contactPhone, index) => ({
+            ...contactPhone,
+            primary: !index,
+        }));
 
-        const contactEmails = this.contactEmails.map((contactEmail, index) => {
-            return {
-                ...contactEmail,
-                primary: !index,
-            };
-        });
+        const contactEmails = this.contactEmails.map((contactEmail, index) => ({
+            ...contactEmail,
+            primary: !index,
+        }));
 
-        const newData: CreateCompanyContactCommand = {
+        const companyContactUsers = this.selectedSharedDepartment.map(
+            (department) => ({
+                departmentId: department.id,
+                companyUserIds: department.companyUsers.map(
+                    (companyUser) => companyUser.id
+                ),
+            })
+        );
+
+        const data = {
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: updatedAddress?.address ? updatedAddress : null,
             companyContactLabelId: this.selectedContactLabel
                 ? this.selectedContactLabel.id
                 : null,
             contactPhones,
             contactEmails,
-            companyContactUsers: this.selectedSharedDepartment.map(
-                (department) => {
-                    return {
-                        departmentId: department.id,
-                        companyUserIds: department.companyUsers.map(
-                            (companyUser) => companyUser.id
-                        ),
-                    };
-                }
-            ),
+            companyContactUsers,
         };
 
-        this.contactService
-            .addCompanyContact(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: true,
-                    });
-                    this.enableSaving();
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                    this.enableSaving();
-                },
-            });
+        if (isUpdate && id !== null) data.id = id;
+
+        return data;
+    }
+
+    private saveCompanyContact(
+        id: number | null = null,
+        isUpdate: boolean = false
+    ): void {
+        const mappedContactData = this.prepareCompanyContactData(id, isUpdate);
+
+        isUpdate
+            ? this.contactStoreService.dispatchUpdateContact(mappedContactData)
+            : this.contactStoreService.dispatchCreateContact(mappedContactData);
+
+        this.setModalSpinner(null, isUpdate, true, true);
     }
 
     private enableSaving(): void {
@@ -485,94 +513,26 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
         }, 200);
     }
 
-    private updateCompanyContact(id: number): void {
-        const { addressUnit, ...form } = this.contactForm.value;
-
-        if (this.selectedAddress)
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-
-        const contactPhones = this.contactPhones.map((contactPhone, index) => {
-            return {
-                ...contactPhone,
-                primary: !index,
-            };
-        });
-
-        const contactEmails = this.contactEmails.map((contactEmail, index) => {
-            return {
-                ...contactEmail,
-                primary: !index,
-            };
-        });
-
-        const newData: UpdateCompanyContactCommand = {
-            id: id,
-            ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
-            companyContactLabelId: this.selectedContactLabel
-                ? this.selectedContactLabel.id
-                : null,
-
-            contactPhones,
-            contactEmails,
-            companyContactUsers: this.selectedSharedDepartment.map(
-                (department) => {
-                    return {
-                        departmentId: department.id,
-                        companyUserIds: department.companyUsers.map(
-                            (companyUser) => companyUser.id
-                        ),
-                    };
-                }
-            ),
-        };
-
-        this.contactService
-            .updateCompanyContact(newData)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                    this.enableSaving();
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                    this.enableSaving();
-                },
-            });
-    }
-
     public deleteCompanyContactById(id: number): void {
         this.contactService
             .deleteCompanyContactById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
-                    this.modalService.setModalSpinner({
-                        action: ContactsModalStringEnum.DELETE,
-                        status: true,
-                        close: true,
-                    });
+                    this.setModalSpinner(
+                        ContactsModalStringEnum.DELETE,
+                        true,
+                        true,
+                        false
+                    );
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: ContactsModalStringEnum.DELETE,
-                        status: false,
-                        close: false,
-                    });
+                    this.setModalSpinner(
+                        ContactsModalStringEnum.DELETE,
+                        false,
+                        false,
+                        false
+                    );
                 },
             });
     }
@@ -625,12 +585,7 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
     }
 
     private getCompanyContactColorLabels(): void {
-        this.contactService
-            .companyContactLabelsColorList()
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.colors = res;
-            });
+        this.contactStoreService.dispatchGetContactColorLabels();
     }
 
     public onPickExistLabel(event: EnumValue): void {
@@ -729,6 +684,23 @@ export class ContactsModalComponent implements OnInit, OnDestroy {
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    private setModalSpinner(
+        action: string,
+        status: boolean,
+        close: boolean,
+        enableSaving: boolean
+    ): void {
+        this.modalService.setModalSpinner({
+            action,
+            status,
+            close,
+        });
+
+        if (enableSaving) this.enableSaving();
+
+        if (close) this.ngbActiveModal.close();
     }
 
     ngOnDestroy(): void {

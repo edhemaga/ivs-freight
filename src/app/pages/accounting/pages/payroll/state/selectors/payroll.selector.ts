@@ -12,9 +12,11 @@ import {
 } from 'appcoretruckassist';
 
 // Constants
-import { PayrollDriverMilesTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-miles-table-settings.constants';
-import { PayrollDriverCommisionTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-driver-commision-table-settings.constants';
-import { PayrollOwnerTableSettingsConstants } from '@pages/accounting/utils/constants/payroll-owner-table-settings.constants';
+import {
+    PayrollDriverMilesTableSettingsConstants,
+    PayrollDriverCommisionTableSettingsConstants,
+    PayrollOwnerTableSettingsConstants,
+} from '@pages/accounting/utils/constants';
 import {
     ICaMapProps,
     IMapMarkers,
@@ -36,6 +38,7 @@ const payrollNamesData = {
 const payrollStatus = {
     Paid: 'success',
     Debt: 'danger',
+    Ready: 'positive',
 };
 
 export const selectPayrollState =
@@ -72,36 +75,29 @@ export const selectPayrollReportMapData = createSelector(
         const mapData = (
             state.payrollOpenedReport || state.ownerPayrollResponse
         )?.mapLocations;
+        const mapRoutes = state.payrollMapRoutes;
+
         mapData?.map((loadStop, index) => {
             const nextLoadNumber = mapData[index]?.loadNumber;
             const routeMarker: IMapMarkers = {
                 position: { lat: loadStop.latitude, lng: loadStop.longitude },
-                icon: {
-                    url: MapMarkerIconHelper.getRoutingMarkerIcon(
-                        loadStop.orderInLoad ?? 0,
-                        loadStop.type.name.toLowerCase(),
-                        false,
-                        true
-                    ),
-                    labelOrigin: new google.maps.Point(90, 15),
-                },
-                label: loadStop.loadNumber && {
-                    text: loadStop.loadNumber,
-                },
+                content: MapMarkerIconHelper.getRoutingMarkerElement(
+                    loadStop.orderInLoad ?? 0,
+                    loadStop.type.name.toLowerCase(),
+                    false,
+                    true,
+                    loadStop.loadNumber
+                ),
+                label: loadStop.loadNumber,
             };
 
             routeMarkers.push(routeMarker);
 
             if (index > 0) {
                 const routePath: IMapRoutePath = {
-                    path: [
-                        {
-                            lat: mapData[index - 1].latitude!,
-                            lng: mapData[index - 1].longitude!,
-                        },
-                        { lat: loadStop.latitude!, lng: loadStop.longitude! },
-                    ],
-                    strokeColor: MapOptionsConstants.routingPathColors.gray,
+                    path: [],
+                    decodedShape: mapRoutes?.legs?.[index - 1]?.decodedShape,
+                    strokeColor: MapOptionsConstants.ROUTING_PATH_COLORS.gray,
                     strokeOpacity: 1,
                     strokeWeight: 4,
                     isDashed: !!nextLoadNumber,
@@ -112,7 +108,8 @@ export const selectPayrollReportMapData = createSelector(
                 if (index === 1) {
                     routePaths.push({
                         ...routePath,
-                        strokeColor: MapOptionsConstants.routingPathColors.gray,
+                        strokeColor:
+                            MapOptionsConstants.ROUTING_PATH_COLORS.gray,
                         strokeOpacity: 1,
                         strokeWeight: 2,
                     });
@@ -142,6 +139,11 @@ export const selectPayrollOpenedReport = createSelector(
             avatar: state.payrollOpenedReport?.driver?.avatarFile,
         };
     }
+);
+
+export const selectPayrollOpenedFromLeftListToReport = createSelector(
+    selectPayrollState,
+    (state) => state.openedPayrollLeftId
 );
 
 export const selectPayrollReportsIncludedStops = createSelector(
@@ -186,7 +188,36 @@ export const selectPayrollDriverMileageStops = createSelector(
             rowType: 'reorder',
         };
 
-        return [...includedLoads, reorderRow, ...excludedLoads];
+        let lastLoadId = -Infinity;
+        let hasFoundFirstInRow = false;
+        const finalLoadListFinal = [
+            ...includedLoads,
+            reorderRow,
+            ...excludedLoads,
+        ];
+        const finalLoadList = finalLoadListFinal.map((load, index) => {
+            if (load.loadId > 0) {
+                load = {
+                    ...load,
+                    hasBorderLeft: load.loadId > 0,
+                };
+
+                const nextLoadId = finalLoadListFinal[index + 1]?.loadId;
+
+                if (!hasFoundFirstInRow && lastLoadId !== load.loadId) {
+                    load.firstInRow = true;
+                    hasFoundFirstInRow = true;
+                } else if (hasFoundFirstInRow && nextLoadId !== load.loadId) {
+                    load.lastInRow = true;
+                    hasFoundFirstInRow = false;
+                }
+            }
+
+            lastLoadId = load.loadId;
+            return load;
+        });
+
+        return finalLoadList;
     }
 );
 
@@ -263,6 +294,22 @@ export const selectDriverMileageExpandedTable = createSelector(
     selectPayrollState,
     (state) => {
         return state.driverMileageExpandedList;
+    }
+);
+
+export const selectPayrollLoadListForDropdown = createSelector(
+    selectPayrollState,
+    (state) => {
+        if (!state.payrollOpenedReport) return [];
+        let includedLoads = state.payrollOpenedReport?.includedLoads ?? [];
+
+        const filteredLoads = includedLoads
+            .filter((load) => !isNaN(load.id))
+            .map((load) => ({
+                id: +load.id,
+                title: load.loadNumber,
+            }));
+        return filteredLoads;
     }
 );
 

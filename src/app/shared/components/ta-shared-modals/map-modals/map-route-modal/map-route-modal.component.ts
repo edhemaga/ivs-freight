@@ -26,6 +26,10 @@ import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/t
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+import { CaInputDatetimePickerComponent } from 'ca-components';
+
 @Component({
     selector: 'app-map-route-modal',
     templateUrl: './map-route-modal.component.html',
@@ -43,6 +47,7 @@ import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-sw
         TaInputDropdownComponent,
         TaCheckboxCardComponent,
         TaTabSwitchComponent,
+        CaInputDatetimePickerComponent,
     ],
 })
 export class MapRouteModalComponent implements OnInit, OnDestroy {
@@ -136,9 +141,9 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
         if (routeName) this.isFormDirty = true;
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
+            case eGeneralActions.CLOSE: {
                 break;
             }
             case 'save and add new': {
@@ -161,7 +166,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === eGeneralActions.EDIT) {
                     this.updateRoute(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: 'create-map-route',
@@ -222,7 +227,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                 });
 
                 // Edit
-                if (this.editData?.type === 'edit') {
+                if (this.editData?.type === eGeneralActions.EDIT) {
                     this.getRoute(this.editData.id);
                 }
             });
@@ -325,7 +330,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     }
 
     private resetForm() {
-        if (this.editData?.type === 'edit') {
+        if (this.editData?.type === eGeneralActions.EDIT) {
             this.getRoute(this.editData.id);
         } else {
             this.mapRouteForm.reset();

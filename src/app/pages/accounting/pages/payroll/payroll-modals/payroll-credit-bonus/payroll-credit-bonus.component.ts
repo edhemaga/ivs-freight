@@ -13,8 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // Services
 import { PayrollCreditService } from '@pages/accounting/pages/payroll/payroll-modals/payroll-credit-bonus/services/payroll-credit.service';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollService as PayrollInternalService } from '../../services/payroll.service';
+import { PayrollService as PayrollInternalService } from '@pages/accounting/pages/payroll/services';
 
 // Models
 import {
@@ -32,13 +31,13 @@ import {
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
 // Enums
-import { PayrollStringEnum } from '@pages/accounting/pages/payroll/state/enums';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { ePayrollString } from '@pages/accounting/pages/payroll/state/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 // Components
 import { PayrollBaseModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-base-modal/payroll-base-modal.component';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
 
 @Component({
     selector: 'app-payroll-credit-bonus',
@@ -61,7 +60,7 @@ export class PayrollCreditBonusComponent implements OnInit {
     @Input() editData: PayrollModal;
 
     // Utils
-    public taModalActionEnums = TaModalActionEnums;
+    public taModalActionEnum = TaModalActionEnum;
 
     private destroy$ = new Subject<void>();
 
@@ -69,15 +68,15 @@ export class PayrollCreditBonusComponent implements OnInit {
     public payrollCreditForm: UntypedFormGroup;
     public formLoaded: boolean;
     private credit: PayrollCreditResponse;
+    private preselectedDriver: boolean;
 
     constructor(
         private payrolCreditService: PayrollCreditService,
         private payrollService: PayrollService,
         private payrollInternalService: PayrollInternalService,
         private ngbActiveModal: NgbActiveModal,
-        private formBuilder: UntypedFormBuilder,
-        private payrollFacadeService: PayrollFacadeService
-    ) {}
+        private formBuilder: UntypedFormBuilder
+    ) { }
 
     ngOnInit() {
         this.createForm();
@@ -86,30 +85,32 @@ export class PayrollCreditBonusComponent implements OnInit {
     private createForm(): void {
         const data = this.editData ? this.editData.data : {};
         this.getCredit();
-        
+
         const creditType =
             this.editData?.creditType || PayrollCreditType.Driver;
 
         this.payrollCreditForm = this.formBuilder.group({
-            [PayrollStringEnum.DRIVER_ID]: [data?.driverId ?? null],
-            [PayrollStringEnum.TRUCK_ID]: [data?.truckId ?? null],
-            [PayrollStringEnum.DATE]: [
-                MethodsCalculationsHelper.convertDateFromBackend(data.date) ?? new Date(),
+            [ePayrollString.DRIVER_ID]: [data?.driverId ?? null],
+            [ePayrollString.TRUCK_ID]: [data?.truckId ?? null],
+            [ePayrollString.DATE]: [
+                MethodsCalculationsHelper.convertDateFromBackend(data.date) ??
+                new Date(),
                 Validators.required,
             ],
-            [PayrollStringEnum.DESCRIPTION]: [
+            [ePayrollString.DESCRIPTION]: [
                 data.description ?? null,
                 Validators.required,
             ],
-            [PayrollStringEnum.AMOUNT]: [
+            [ePayrollString.AMOUNT]: [
                 data.subtotal ?? null,
                 Validators.required,
             ],
-            [PayrollStringEnum.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
-            [PayrollStringEnum.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
-            [PayrollStringEnum.SELECTED_TYPE_ID]: [creditType],
+            [ePayrollString.SELECTED_DRIVER_ID]: [data?.driverId ?? null],
+            [ePayrollString.SELECTED_TRUCK_ID]: [data?.truckId ?? null],
+            [ePayrollString.SELECTED_TYPE_ID]: [creditType],
         });
         this.formLoaded = true;
+        if (data.driverId) this.preselectedDriver = true;
     }
 
     public getCredit(): void {
@@ -130,9 +131,9 @@ export class PayrollCreditBonusComponent implements OnInit {
     }
 
     public get modalTitle(): string {
-        if (this.isEditMode) return PayrollStringEnum.EDIT_CREDIT;
+        if (this.isEditMode) return ePayrollString.EDIT_CREDIT;
 
-        return PayrollStringEnum.ADD_CREDIT;
+        return ePayrollString.ADD_CREDIT;
     }
 
     public onCloseModal(): void {
@@ -141,37 +142,38 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     public saveCredit(action: PayrollActionType): void {
         const addNew =
-            action === TaModalActionEnums.SAVE ||
-            action === TaModalActionEnums.SAVE_AND_ADD_NEW;
+            action === TaModalActionEnum.SAVE ||
+            action === TaModalActionEnum.SAVE_AND_ADD_NEW;
 
         if (addNew) {
             // Don't clear if we have preselected driver or truck
             const data = this.generateCreditModel();
 
             this.payrolCreditService.addPayrollCredit(data).subscribe(() => {
-                if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+                if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
                     if (this.isDropdownEnabled) {
-                        // TODO: CHECK THIS, validators stays here all the time
-                        this.createForm();
-                        this.payrollFacadeService.resetForm();
-                        // this.selectDriver('');
-                        // this.selectTruck('');
+                        this.payrollInternalService.saveAndAddNew(
+                            PayrollCreditBonusComponent,
+                            this.preselectedDriver,
+                            data.driverId,
+                            this.ngbActiveModal
+                        );
                     } else {
                         this.payrollCreditForm
-                            .get(PayrollStringEnum.DATE)
+                            .get(ePayrollString.DATE)
                             .patchValue(null);
                         this.payrollCreditForm
-                            .get(PayrollStringEnum.AMOUNT)
+                            .get(ePayrollString.AMOUNT)
                             .patchValue(null);
                         this.payrollCreditForm
-                            .get(PayrollStringEnum.DESCRIPTION)
+                            .get(ePayrollString.DESCRIPTION)
                             .patchValue(null);
                     }
                 } else {
                     this.onCloseModal();
                 }
             });
-        } else if (action === TaModalActionEnums.UPDATE) {
+        } else if (action === TaModalActionEnum.UPDATE) {
             const data = this.generateCreditModel();
             this.payrolCreditService
                 .updatePayrollCredit({ ...data, id: this.editData.data.id })
@@ -179,15 +181,17 @@ export class PayrollCreditBonusComponent implements OnInit {
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
-        } else if (action === TaModalActionEnums.MOVE_TO_THIS_PERIOD) {
+        } else if (action === TaModalActionEnum.MOVE_TO_THIS_PERIOD) {
             this.payrolCreditService
                 .movePayrollCredit(this.editData.data.id)
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((response) => {
                     this.onCloseModal();
                 });
-        } else if (action === TaModalActionEnums.DELETE) {
-            const label = this.credit.driver ? `${this.credit.driver.firstName} ${this.credit.driver.lastName}` : this.credit.truck.owner;
+        } else if (action === TaModalActionEnum.DELETE) {
+            const label = this.credit.driver
+                ? `${this.credit.driver.firstName} ${this.credit.driver.lastName}`
+                : this.credit.truck.owner;
             this.payrollInternalService.raiseDeleteModal(
                 TableStringEnum.CREDIT,
                 ConfirmationModalStringEnum.DELETE_CREDIT,
@@ -197,7 +201,7 @@ export class PayrollCreditBonusComponent implements OnInit {
                     subtitle: this.credit.amount,
                     date: this.credit.date,
                     label: `${label}`,
-                    id: this.credit.id
+                    id: this.credit.id,
                 }
             );
         }
@@ -205,22 +209,22 @@ export class PayrollCreditBonusComponent implements OnInit {
 
     private generateCreditModel(): CreatePayrollCreditCommand {
         return {
-            type: this.payrollCreditForm.get(PayrollStringEnum.SELECTED_TYPE_ID)
+            type: this.payrollCreditForm.get(ePayrollString.SELECTED_TYPE_ID)
                 .value,
             driverId: this.payrollCreditForm.get(
-                PayrollStringEnum.SELECTED_DRIVER_ID
+                ePayrollString.SELECTED_DRIVER_ID
             ).value,
             truckId: this.payrollCreditForm.get(
-                PayrollStringEnum.SELECTED_TRUCK_ID
+                ePayrollString.SELECTED_TRUCK_ID
             ).value,
             description: this.payrollCreditForm.get(
-                PayrollStringEnum.DESCRIPTION
+                ePayrollString.DESCRIPTION
             ).value,
             date: MethodsCalculationsHelper.convertDateToBackend(
-                this.payrollCreditForm.get(PayrollStringEnum.DATE).value
+                this.payrollCreditForm.get(ePayrollString.DATE).value
             ),
-            amount: MethodsCalculationsHelper.convertThousanSepInNumber(
-                this.payrollCreditForm.get(PayrollStringEnum.AMOUNT).value
+            amount: MethodsCalculationsHelper.convertThousandSepInNumber(
+                this.payrollCreditForm.get(ePayrollString.AMOUNT).value
             ),
         };
     }

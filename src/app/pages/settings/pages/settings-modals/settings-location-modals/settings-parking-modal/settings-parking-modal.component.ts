@@ -6,6 +6,7 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { debounceTime, Subject, takeUntil } from 'rxjs';
 
@@ -32,21 +33,38 @@ import { TaInputService } from '@shared/services/ta-input.service';
 import { rentValidation } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 import { FormService } from '@shared/services/form.service';
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { AddressService } from '@shared/services/address.service';
 
 // components
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
+import {
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaModalComponent,
+    CaModalButtonComponent,
+    CaInputAddressDropdownComponent,
+    eModalButtonClassType,
+} from 'ca-components';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // pipes
 import { SumArraysPipe } from '@shared/pipes/sum-arrays.pipe';
+import { FormatDatePipe } from '@shared/pipes';
+import { SettingsParkingConfigPipe } from '@pages/settings/pipes';
 
 // Enums
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+import {
+    TableStringEnum,
+    DropActionsStringEnum,
+    eGeneralActions,
+    eConfirmationMessage,
+} from '@shared/enums';
+import { ESettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
 
 // validators
 import {
@@ -62,15 +80,17 @@ import {
 // utils
 import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
 
-// Svg routes
-import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
-
 // Config
 import { SettingsParkingConfig } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-parking-modal/config';
 
-// Enums
-import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
+// Helpers
+import { DropActionNameHelper } from '@shared/utils/helpers';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 @Component({
     selector: 'app-settings-parking-modal',
     templateUrl: './settings-parking-modal.component.html',
@@ -84,21 +104,35 @@ import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaInputComponent,
-        TaInputDropdownComponent,
-        TaModalComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
+        TaAppTooltipV2Component,
+        CaModalButtonComponent,
 
         // Pipe
         SumArraysPipe,
+
+        // Pipes
+        FormatDatePipe,
+        SettingsParkingConfigPipe,
     ],
 })
-export class SettingsParkingModalComponent implements OnInit, OnDestroy {
+export class SettingsParkingModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     @Input() editData: any;
 
     public parkingForm: UntypedFormGroup;
@@ -111,7 +145,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         },
         {
             id: 522,
-            name: 'No',
+            name: eConfirmationMessage.NO,
             checked: true,
         },
     ];
@@ -124,7 +158,7 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
         },
         {
             id: 367,
-            name: 'No',
+            name: eConfirmationMessage.NO,
             checked: true,
         },
     ];
@@ -158,11 +192,9 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public isFinanceCardOpen: boolean = true;
     public isParkingCardOpen: boolean = true;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
-    private destroy$ = new Subject<void>();
-
-    public svgRoutes = SettingsLocationSvgRoutes;
+    public destroy$ = new Subject<void>();
 
     public formConfig = SettingsParkingConfig;
 
@@ -182,20 +214,43 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     public fullParkingSlotConfig: ITaInput =
         SettingsParkingConfig.getFullParkingSlotConfig();
 
+    public taModalActionEnum = TaModalActionEnum;
+    public svgRoutes = SharedSvgRoutes;
+    public eModalButtonClassType = eModalButtonClassType;
+    public activeAction!: string;
+    public data: ParkingResponse;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,
         private formService: FormService,
-        private dispatcherService: DispatcherService
-    ) {}
+        private dispatcherService: DispatcherService,
+
+        private ngbActiveModal: NgbActiveModal,
+        public dropDownService: DropDownService,
+        private confirmationService: ConfirmationService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
         this.parkingSlot();
         this.fullParkingSlot();
         this.getModalDropdowns();
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm() {
@@ -226,14 +281,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     public tabChange(event: any, action?: string): void {
         switch (action) {
-            case SettingsFormEnum.GATE: {
+            case ESettingsFormEnum.GATE:
                 this.gateBtns = this.gateBtns.map((item) => {
-                    event.name === 'No'
+                    event.name === eConfirmationMessage.NO
                         ? this.parkingForm
-                              .get(SettingsFormEnum.GATE)
+                              .get(ESettingsFormEnum.GATE)
                               .patchValue(false)
                         : this.parkingForm
-                              .get(SettingsFormEnum.GATE)
+                              .get(ESettingsFormEnum.GATE)
                               .patchValue(true);
 
                     return {
@@ -242,79 +297,55 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     };
                 });
                 break;
-            }
-            case 'camera': {
+
+            case 'camera':
                 this.cameraBtns = this.cameraBtns.map((item) => {
-                    event.name === 'No'
+                    event.name === eConfirmationMessage.NO
                         ? this.parkingForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
+                              .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(false)
                         : this.parkingForm
-                              .get(SettingsFormEnum.SECURITY_CAMERA)
+                              .get(ESettingsFormEnum.SECURITY_CAMERA)
                               .patchValue(true);
-
                     return {
                         ...item,
                         checked: item.id === event.id,
                     };
                 });
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        switch (data.action) {
-            case TaModalActionEnums.CLOSE: {
-                break;
-            }
-            case TaModalActionEnums.SAVE: {
-                if (this.parkingForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.parkingForm);
-                    return;
-                }
-                if (this.editData?.type === 'edit') {
-                    this.updateParking(this.editData.id);
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                } else {
-                    this.addParking();
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: false,
-                    });
-                }
-                break;
-            }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
-                if (this.parkingForm.invalid || !this.isFormDirty) {
-                    this.inputService.markInvalid(this.parkingForm);
-                    return;
-                }
+    public onModalAction(action: string): void {
+        this.activeAction = action;
 
+        switch (action) {
+            case TaModalActionEnum.CLOSE:
+                this.ngbActiveModal.close();
+                break;
+            case TaModalActionEnum.SAVE:
+                if (this.parkingForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.parkingForm);
+                    return;
+                }
+                if (this.editData?.type === eGeneralActions.EDIT)
+                    this.updateParking(this.editData.id);
+                else this.addParking();
+                break;
+            case TaModalActionEnum.SAVE_AND_ADD_NEW:
+                if (this.parkingForm.invalid || !this.isFormDirty) {
+                    this.inputService.markInvalid(this.parkingForm);
+                    return;
+                }
                 this.addParking(true);
                 break;
-            }
-            case TaModalActionEnums.DELETE: {
+            case TaModalActionEnum.DELETE:
                 this.deleteParkingById(this.editData.id);
-                this.modalService.setModalSpinner({
-                    action: 'delete',
-                    status: true,
-                    close: false,
-                });
-
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -327,20 +358,17 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
 
     public onSelectDropdown(event: any, action: string) {
         switch (action) {
-            case 'pay-period': {
+            case 'pay-period':
                 this.selectedPayPeriod = event;
                 this.parkingForm.get('monthlyDay').patchValue(null);
                 this.parkingForm.get('weeklyDay').patchValue(null);
                 this.selectedDay = null;
                 break;
-            }
-            case 'day': {
+            case 'day':
                 this.selectedDay = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
@@ -375,21 +403,15 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
     private updateParking(id: number) {
         const { addressUnit, rent, ...form } = this.parkingForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
-                ...this.selectedAddress,
-                addressUnit: addressUnit,
-            };
-        }
-
         const newData: UpdateParkingCommand = {
             id: id,
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
@@ -410,8 +432,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                    ? this.parkingSlots[1].value
-                    : 0
+                      ? this.parkingSlots[1].value
+                      : 0
                 : 0,
             parkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -425,45 +447,22 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .updateCompanyParking(newData)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                next: () => this.ngbActiveModal.close(),
+                error: () => (this.activeAction = null),
             });
-    }
-
-    private getUpdatedAddress(
-        address: AddressEntity,
-        addressUnit: string
-    ): AddressEntity {
-        return {
-            ...address,
-            addressUnit: addressUnit,
-        };
     }
 
     private addParking(addNew?: boolean) {
         const { addressUnit, rent, ...form } = this.parkingForm.value;
 
-        const updatedAddress = this.selectedAddress
-            ? this.getUpdatedAddress(this.selectedAddress, addressUnit)
-            : null;
-
         const newData: CreateParkingCommand = {
             ...form,
-            address: updatedAddress?.address ? updatedAddress : null,
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             payPeriod: this.selectedPayPeriod
                 ? this.selectedPayPeriod.id
@@ -484,8 +483,8 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                 ? this.parkingSlots[0].value
                     ? this.parkingSlots[0].value
                     : 0 + this.parkingSlots[1].value
-                    ? this.parkingSlots[1].value
-                    : 0
+                      ? this.parkingSlots[1].value
+                      : 0
                 : 0,
             parkingSlotCount: this.parkingSlots.length
                 ? this.parkingSlots[0].value
@@ -500,57 +499,35 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
+                    this.ngbActiveModal.close();
                     if (addNew) {
-                        this.parkingForm.reset();
-                        this.parkingForm
-                            .get(SettingsFormEnum.IS_OWNER)
-                            .patchValue(true);
-                        this.parkingForm
-                            .get(SettingsFormEnum.SECURITY_CAMERA)
-                            .patchValue(true);
-                        this.parkingForm
-                            .get(SettingsFormEnum.GATE)
-                            .patchValue(false);
-                        this.selectedAddress = null;
-                    } else {
-                        this.modalService.setModalSpinner({
-                            action: null,
-                            status: true,
-                            close: true,
-                        });
+                        this.modalService.openModal(
+                            SettingsParkingModalComponent,
+                            {
+                                size: TableStringEnum.SMALL,
+                            }
+                        );
                     }
                     this.dispatcherService.updateModalList();
                 },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
-                },
+                error: () => (this.activeAction = null),
             });
     }
 
     private deleteParkingById(id: number) {
-        this.settingsLocationService
-            .deleteCompanyParkingById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: true,
-                        close: true,
-                    });
-                },
-                error: () => {
-                    this.modalService.setModalSpinner({
-                        action: 'delete',
-                        status: false,
-                        close: false,
-                    });
-                },
-            });
+        const eventData = {
+            id: this.editData.id,
+            type: DropActionsStringEnum.DELETE_ITEM,
+        };
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            DropActionsStringEnum.PARKING
+        );
+        this.dropDownService.dropActionCompanyLocation(
+            eventData,
+            name,
+            this.data
+        );
     }
 
     private editCompanyParkingById(id: number) {
@@ -619,12 +596,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                         this.isPhoneExtExist = true;
                     }
 
+                    this.data = res;
+
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -638,14 +617,14 @@ export class SettingsParkingModalComponent implements OnInit, OnDestroy {
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === 'edit') {
-                        this.disableCardAnimation = true;
+                    if (this.editData?.type === eGeneralActions.EDIT) {
+                        this.isCardAnimationDisabled = true;
                         this.editCompanyParkingById(this.editData.id);
                     } else {
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
+                error: () => (this.activeAction = null),
             });
     }
 

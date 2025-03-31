@@ -50,6 +50,9 @@ import {
     AccidentModalResponse,
 } from 'appcoretruckassist';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Component({
     selector: 'app-accident-modal',
     templateUrl: './accident-modal.component.html',
@@ -127,7 +130,7 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
     public accidentModalName: string = null;
 
-    public disableCardAnimation: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
@@ -142,11 +145,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         this.getModalDropdowns();
 
         if (this.editData) {
-            this.disableCardAnimation = true;
+            this.isCardAnimationDisabled = true;
             this.editAccidentById(this.editData.id);
-        } else {
-            this.startFormChanges();
-        }
+        } else this.startFormChanges();
     }
 
     private createForm() {
@@ -238,11 +239,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public addInsurance(event: { check: boolean; action: string }) {
+    public addInsurance(event: { check: boolean; action: string }): void {
         const form = this.createInsurance();
-        if (event.check) {
-            this.insurances.push(form);
-        }
+        if (event.check) this.insurances.push(form);
 
         this.inputService.customInputValidator(
             form.get('email'),
@@ -258,10 +257,9 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
 
     public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
+            case eGeneralActions.CLOSE:
                 break;
-            }
-            case 'save': {
+            case eGeneralActions.SAVE:
                 if (this.accidentForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.accidentForm);
                     return;
@@ -282,37 +280,25 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public editAccidentById(id: number) {
+    public editAccidentById(id: number): void {
         this.accidentTService
             .getAccidentById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: (res: AccidentResponse) => {
                     this.accidentForm.patchValue({
-                        report: res.report,
-                        federallyRecordable: res.federallyRecordable,
-                        stateRecordable: res.stateRecordable,
-                        injury: res.injury,
-                        fatality: res.fatality,
-                        towing: res.towing,
-                        hazMat: res.hazMat,
-                        vehicleNo: res.vehicloNo,
-                        addressAccident: res.addressAccident
-                            ? res.addressAccident.address
-                            : null,
+                        ...res,
+                        addressAccident: res.addressAccident?.address ?? null,
                         date: res.date
                             ? MethodsCalculationsHelper.convertDateFromBackend(
                                   res.date
                               )
                             : null,
-                        time: res.time,
                         driverName: res.driver_FullName,
                         driverLicenceNumber: res.driver_LicenceNo,
                         driverState: res.driver_State,
@@ -336,26 +322,10 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                         violations: [],
                         insuranceType: [],
                         note: null,
-                        roadwayTrafficWay: res.roadwayTrafficway,
-                        weatherCondition: res.weatherCondition,
-                        roadAccessControl: res.roadAccessControl,
-                        roadSurfaceCondition: res.roadSurfaceCondition,
-                        lightCondition: res.lightCondition,
-                        reportingAgency: res.reportingAgency,
-                        policeOfficer: res.policeOfficer,
-                        bagdeNo: res.bagdeNo,
-                        authorityAddress: res.addressAuthority
-                            ? res.addressAuthority.address
-                            : null,
-                        phoneOfficer: res.phoneOfficer,
-                        fax: res.fax,
-                        origin: res.origin ? res.origin.address : null,
-                        destination: res.destination
-                            ? res.destination.address
-                            : null,
-                        customer: res.broker ? res.broker.businessName : null,
-                        boL: res.boL,
-                        cargo: res.cargo,
+                        authorityAddress: res.addressAuthority?.address ?? null,
+                        origin: res.origin?.address ?? null,
+                        destination: res.destination?.address ?? null,
+                        customer: res.broker?.businessName ?? null,
                     });
 
                     this.accidentModalName = res.report;
@@ -385,23 +355,11 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                         }
                     }
 
-                    // [
-                    //   this.formBuilder.group({
-                    //     categoryId: ['Crash Indicator'],
-                    //     sw: ['2'],
-                    //     hm: [true],
-                    //     description: [
-                    //       'Involves tow-away but no injury or fatality',
-                    //       [...descriptionValidation],
-                    //     ],
-                    //   }),
-                    // ]
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -441,7 +399,6 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
                     });
                     this.labelsInsuranceType = res.insuranceType;
                 },
-                error: () => {},
             });
     }
 
@@ -453,66 +410,54 @@ export class AccidentModalComponent implements OnInit, OnDestroy {
         action: string
     ) {
         switch (action) {
-            case 'address-authority': {
+            case 'address-authority':
                 if (event.valid) this.selectedAddressAuthority = event.address;
                 break;
-            }
-            case 'address-origin': {
+            case 'address-origin':
                 if (event.valid) this.selectedAddressOrigin = event.address;
                 break;
-            }
-            case 'address-destination': {
+            case 'address-destination':
                 if (event.valid)
                     this.selectedAddressDestination = event.address;
                 break;
-            }
-            case 'location': {
+            case 'location':
                 if (event.valid) this.selectedAddressLocation = event.address;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: any): void {
         switch (event.type) {
-            case 'documents': {
+            case 'documents':
                 this.documents = event.files;
                 break;
-            }
-            case 'media': {
+            case 'media':
                 this.media = event.files;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onSelectDropDown(event: any, action: string, index?: number) {
+    public onSelectDropDown(event: any, action: string, index?: number): void {
         switch (action) {
-            case 'shipping-customer': {
+            case 'shipping-customer':
                 this.selectedAccidentCustomer = event;
                 break;
-            }
-            case 'trailer-unit': {
+            case 'trailer-unit':
                 this.selectedTrailerUnit = event;
                 break;
-            }
-            case 'insurance-type': {
+            case 'insurance-type':
                 this.selectedInsuranceType[index] = event;
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private startFormChanges() {
+    private startFormChanges(): void {
         this.formService.checkFormChange(this.accidentForm);
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))

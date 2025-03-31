@@ -1,17 +1,20 @@
-<app-ta-modal
+@let receivingAppointmentControl = this.shipperForm.get(shipperModalString.RECEIVING_APPOINTMENT);
+@let receivingOpenTwentyFourHoursControl = this.shipperForm.get(shipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS);
+@let receivingFromControl = this.shipperForm.get(shipperModalString.RECEIVING_FROM);
+@let receivingToControl = this.shipperForm.get(shipperModalString.RECEIVING_TO);
+@let shippingAppointmentControl = this.shipperForm.get(shipperModalString.SHIPPING_APPOINTMENT);
+@let shippingOpenTwentyFourHoursControl = this.shipperForm.get(shipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS);
+
+<app-ca-modal
     [modalTitle]="
         !editData?.type?.includes('edit') ? 'Add Shipper' : 'Edit Shipper'
     "
-    [editData]="editData"
-    [editName]="shipperName"
-    [isModalValid]="isModalValidToSubmit"
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    [customClass]="'modal-container-M'"
-    [isClickEnabledWhileFormInvalid]="true"
-    [topDivider]="false"
-    (action)="onModalAction($event)"
+    customClass="modal-container-M"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
+    <div class="new-modal" origin>
         <app-ta-tab-switch
             [tabs]="tabs"
             [type]="'type1-modal-popup'"
@@ -25,7 +28,7 @@
             class="form-container"
             [ngClass]="{
                 'tab-2': selectedTab !== 1,
-                'form-container-with-card-2': selectedTab === 2
+                'form-container-with-card-2': selectedTab === 2,
             }"
         >
             <div
@@ -39,7 +42,7 @@
                 <div class="m-tab" [hidden]="selectedTab !== 1">
                     <div class="row">
                         <div class="col-12">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="businessName"
                                 [inputConfig]="{
                                     name: 'Business Name',
@@ -49,9 +52,9 @@
                                     textTransform: 'uppercase',
                                     autoFocus: editData?.type !== 'edit',
                                     minLength: 2,
-                                    maxLength: 64
+                                    maxLength: 64,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
                     <div class="phone-extension-medium-modal">
@@ -59,7 +62,7 @@
                             [ngClass]="{ 'active-phone-ext': isPhoneExtExist }"
                         >
                             <div class="phone-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="phone"
                                     [inputConfig]="{
                                         name: 'Phone',
@@ -67,13 +70,13 @@
                                         label: 'Phone',
                                         placeholderIcon: 'phone',
                                         mask: '(000) 000-0000',
-                                        maxLength: 14
+                                        maxLength: 14,
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                         <div class="email-field">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="{
                                     name: 'Email',
@@ -82,9 +85,9 @@
                                     placeholderIcon: 'email',
                                     minLength: 5,
                                     maxLength: 64,
-                                    textTransform: 'lowercase'
+                                    textTransform: 'lowercase',
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -102,41 +105,56 @@
                             "
                         >
                             <div class="col-10">
-                                <app-ta-input-address-dropdown
+                                <app-ca-input-address-dropdown
                                     formControlName="address"
-                                    [inputConfig]="getAddressInputConfig"
                                     [placeholderType]="'longAddress'"
+                                    [inputConfig]="{
+                                        name: 'Address',
+                                        type: 'text',
+                                        label: 'Address, City, State Zip',
+                                        isRequired: true,
+                                        placeholderIcon: 'address',
+                                        textTransform: 'capitalize',
+                                        dropdownWidthClass: 'w-col-510',
+                                        minLength: 6,
+                                        maxLength: 256,
+                                    }"
                                     [activeAddress]="selectedAddress"
                                     (selectedAddress)="onHandleAddress($event)"
-                                ></app-ta-input-address-dropdown>
+                                    [receivedAddressList]="addressList"
+                                    [receivedAddressData]="addressData"
+                                    (selectedAddress)="onHandleAddress($event)"
+                                    (sentAddressData)="onAddressChange($event)"
+                                    (sentAddressValue)="getAddressData($event)"
+                                ></app-ca-input-address-dropdown>
                             </div>
                             <div class="col-2">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="addressUnit"
                                     [inputConfig]="getAddressUnitInputConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </ng-container>
 
                         <ng-template #coordinatesContainer>
                             <div class="col-3">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="latitude"
                                     [inputConfig]="getLatitudeInputConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="col-3">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="longitude"
                                     [inputConfig]="getLongitudeInputConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="col-6">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="countryStateAddress"
                                     [inputConfig]="getCountryStateInputConfig"
                                     [placeholderType]="'shortAddress'"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </ng-template>
                     </div>
@@ -146,7 +164,7 @@
                         [disableAnimation]="isCardAnimationDisabled"
                         [animationMarginParams]="{
                             marginTop: '22px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                     >
                         <div class="shipper-work-hours">
@@ -164,11 +182,12 @@
                                     [name]="'receivingOpenTwentyFourHours'"
                                     [customClass]="'medium'"
                                     [label]="'Open 24h'"
+                                    [disabled]="receivingAppointmentControl.value"
                                 ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="receivingFrom"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -177,22 +196,18 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            (shipperForm.get(
-                                                'receivingOpenTwentyFourHours'
-                                            ).value &&
-                                                shipperForm.get(
-                                                    'receivingAppointment'
-                                                ).value) ||
-                                            shipperForm.get(
-                                                'receivingOpenTwentyFourHours'
-                                            ).value,
-                                        customClass: 'datetimeclass'
+                                            receivingAppointmentControl.value || 
+                                            receivingOpenTwentyFourHoursControl.value,
+                                        customClass: 'datetimeclass',
+                                        isRequired: 
+                                            receivingFromControl.value || 
+                                            receivingToControl.value,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="receivingTo"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -201,18 +216,14 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            (shipperForm.get(
-                                                'receivingOpenTwentyFourHours'
-                                            ).value &&
-                                                shipperForm.get(
-                                                    'receivingAppointment'
-                                                ).value) ||
-                                            shipperForm.get(
-                                                'receivingOpenTwentyFourHours'
-                                            ).value,
-                                        customClass: 'datetimeclass'
+                                            receivingAppointmentControl.value || 
+                                            receivingOpenTwentyFourHoursControl.value,
+                                        customClass: 'datetimeclass',
+                                        isRequired: 
+                                            receivingFromControl.value || 
+                                            receivingToControl.value,
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -234,7 +245,7 @@
                         [disableAnimation]="isCardAnimationDisabled"
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                     >
                         <div class="shipper-work-hours">
@@ -252,11 +263,12 @@
                                     [name]="'shippingOpenTwentyFourHours'"
                                     [customClass]="'medium'"
                                     [label]="'Open 24h'"
+                                    [disabled]="shippingAppointmentControl.value"
                                 ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="shippingFrom"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -265,22 +277,15 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            (shipperForm.get(
-                                                'shippingOpenTwentyFourHours'
-                                            ).value &&
-                                                shipperForm.get(
-                                                    'shippingAppointment'
-                                                ).value) ||
-                                            shipperForm.get(
-                                                'shippingOpenTwentyFourHours'
-                                            ).value,
-                                        customClass: 'datetimeclass'
+                                        shippingAppointmentControl.value || 
+                                        shippingOpenTwentyFourHoursControl.value,
+                                        customClass: 'datetimeclass',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="shippingTo"
                                     [inputConfig]="{
                                         name: 'timepicker',
@@ -289,18 +294,11 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            (shipperForm.get(
-                                                'shippingOpenTwentyFourHours'
-                                            ).value &&
-                                                shipperForm.get(
-                                                    'shippingAppointment'
-                                                ).value) ||
-                                            shipperForm.get(
-                                                'shippingOpenTwentyFourHours'
-                                            ).value,
-                                        customClass: 'datetimeclass'
+                                        shippingAppointmentControl.value || 
+                                        shippingOpenTwentyFourHoursControl.value,
+                                        customClass: 'datetimeclass',
                                     }"
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                         </div>
                     </app-ta-custom-card>
@@ -352,7 +350,7 @@
                         [hasScrollBodyXAxis]="true"
                         [animationMarginParams]="{
                             marginTop: '10px',
-                            marginBottom: '5px'
+                            marginBottom: '5px',
                         }"
                         (onActionEvent)="addContact()"
                     >
@@ -375,7 +373,7 @@
                         <div class="no-review-shipper">
                             <svg-icon
                                 class="no-review-svg"
-                                [src]="brokerModalSvgRoutes.noContactIcon"
+                                [src]="svgRoutes.NO_CONTACT_ICON"
                             ></svg-icon>
                         </div>
                     </ng-container>
@@ -408,7 +406,7 @@
                         <div class="no-review-shipper">
                             <svg-icon
                                 class="no-review-svg"
-                                [src]="brokerModalSvgRoutes.noReviewsIcon"
+                                [src]="svgRoutes.NO_REVIEW_ICON"
                             ></svg-icon>
                         </div>
                     </ng-container>
@@ -416,4 +414,103 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (shipperName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ shipperName }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <div class="d-flex">
+                    <app-ca-modal-button
+                        class="mr-12"
+                        text="Delete"
+                        [size]="eModalButtonSize.SMALL"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
+                    >
+                    </app-ca-modal-button>
+                    <app-ca-modal-button
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                        [size]="eModalButtonSize.SMALL"
+                        class="mr-12"
+                        text="Close Business"
+                        (click)="
+                            onModalAction(taModalActionEnum.CLOSE_BUSINESS)
+                        "
+                    >
+                    </app-ca-modal-button>
+                </div>
+                <app-ca-modal-button
+                    [isValid]="isModalValidToSubmit"
+                    [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                    [text]="'Save Changes'"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                >
+                </app-ca-modal-button>
+            </div>
+        } @else {
+            <app-ca-modal-button
+                class="mr-12"
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save and Add New'"
+                [isSpinnerShown]="
+                    activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
+                "
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
+            >
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save'"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>

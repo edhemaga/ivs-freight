@@ -1,5 +1,7 @@
-import { TableDropdownContent } from '@shared/models/card-models/card-table-data.model';
+// models
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import {
+    OpenHoursTodayResponse,
     RepairShopContactListResponse,
     RepairShopListDto,
     RepairShopOpenHoursResponse,
@@ -13,7 +15,7 @@ export interface MappedRepairShop extends RepairShopListDto {
     tableShopServices: RepairShopServiceTypeResponse[];
     tableOpenHours: {
         openHours: RepairShopOpenHoursResponse[];
-        openHoursToday: string;
+        openHoursToday: OpenHoursTodayResponse;
     };
     tableRepairCountBill: number;
     tableRepairCountOrder: number;
@@ -33,5 +35,6 @@ export interface MappedRepairShop extends RepairShopListDto {
     tableAdded: string;
     tableEdited: string;
     isFavorite: boolean;
-    tableDropdownContent: TableDropdownContent;
+    isFavoriteDisabled: boolean;
+    tableDropdownContent: IDropdownMenuItem[];
 }

@@ -1,73 +1,156 @@
 <div class="table-container">
-    <app-ta-table-toolbar
-        #toolbarComponent
-        (toolBarAction)="onToolBarAction($event)"
-        [options]="tableOptions"
-        [tableData]="tableData"
-        [selectedTab]="selectedTab"
-        [columns]="columns"
-        [activeViewMode]="activeViewMode"
-        listName="Load"
-    ></app-ta-table-toolbar>
-    <ng-container *ngIf="activeViewMode === 'List'">
-        <app-ta-table-head
-            [options]="tableOptions"
-            [viewData]="viewData"
-            [columns]="columns"
-            [tableData]="tableData"
-            (headActions)="onTableHeadActions($event)"
-        ></app-ta-table-head>
+    @if (
+        {
+            tableOptions: loadStoreService.tableOptions$ | async,
+            tableData: loadStoreService.tableData$ | async,
+            columns: loadStoreService.columns$ | async,
+            viewData: loadStoreService.viewData$ | async,
+            activeTableData: loadStoreService.activeTableData$ | async,
+            activeViewMode: loadStoreService.activeViewMode$ | async,
+            dispatcherList: loadStoreService.dispatcherList$ | async,
+            statusList: loadStoreService.statusList$ | async,
+        };
+        as store
+    ) {
+        <app-new-table-toolbar
+            [title]="'Load'"
+            [leftSide]="leftSide"
+            [toolbarDropdownContent]="toolbarDropdownMenuOptions"
+            (onPlusClick)="
+                onToolBarAction({
+                    action: tableStringEnum.OPEN_MODAL,
+                })
+            "
+            (toolbarDropdownAction)="handleToolbarDropdownMenuActions($event)"
+        >
+            <ng-template #leftSide>
+                <app-toolbar-tabs-wrapper
+                    class="d-flex align-items-center"
+                    [data]="store.tableData"
+                    [selectedTab]="selectedTab"
+                    [viewMode]="loadStoreService.activeViewMode$ | async"
+                    (onTabChange)="onToolBarAction($event)"
+                ></app-toolbar-tabs-wrapper>
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
 
-        <app-ta-table-body
-            [viewData]="viewData"
-            [columns]="columns"
-            [options]="tableOptions"
-            [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
-            [tableData]="tableData"
-            (saveValueNote)="saveValueNote($event)"
-        ></app-ta-table-body>
-    </ng-container>
-    <!-- Cards -->
+                <div class="d-flex gap-1 align-items-center">
+                    <app-ca-search-multiple-states
+                        [searchType]="'tabel'"
+                        [selectedTabData]="store?.activeTableData"
+                        [toolbarSearch]="true"
+                    ></app-ca-search-multiple-states>
 
-    <ng-container *ngIf="activeViewMode === 'Card'">
-        <div class="elements">
-            <app-load-card
-                (bodyActions)="onTableBodyActions($event)"
-                [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
-                [cardTitleLink]="cardTitleLink"
-                [displayRowsFront]="(displayRows$ | async).displayRowsFront"
-                [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
+                    <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+                    @if (selectedTab !== 'Template') {
+                        <app-ca-filter-time-dropdown
+                            type="TimeFilter"
+                            subType="past"
+                            (setFilter)="setFilters($event)"
+                        >
+                        </app-ca-filter-time-dropdown>
+
+                        <app-ca-filter-list-dropdown
+                            type="Dispatcher"
+                            [list]="store.dispatcherList"
+                            (setFilter)="setFilters($event)"
+                        >
+                        </app-ca-filter-list-dropdown>
+
+                        <app-ca-filter-list-dropdown
+                            type="Status"
+                            [list]="store.statusList"
+                            (setFilter)="setFilters($event)"
+                        >
+                        </app-ca-filter-list-dropdown>
+
+                        <app-ca-filter
+                            subType="all"
+                            type="moneyFilter"
+                            icon="dollar"
+                            filterTitle="Money Filter"
+                            [isMoneyFilter]="true"
+                            [isLoadType]="true"
+                            (setFilter)="setFilters($event)"
+                            (clearAll)="setFilters($event)"
+                        >
+                        </app-ca-filter>
+                    }
+                </div>
+            </ng-template>
+
+            <ng-template #divider>
+                <div class="new-table--toolbar-divider">
+                    <div
+                        class="new-table--toolbar-divider-border background-light-grey-6"
+                    ></div>
+                </div>
+            </ng-template>
+        </app-new-table-toolbar>
+
+        @if (store?.activeViewMode === 'List') {
+            <app-ta-table-head
+                [options]="store?.tableOptions"
+                [viewData]="store?.viewData"
+                [columns]="store?.columns"
+                [tableData]="store?.tableData"
+                (headActions)="onTableHeadActions($event)"
+            ></app-ta-table-head>
+
+            <app-ta-table-body
+                [viewData]="store?.viewData"
+                [columns]="store?.columns"
+                [options]="store?.tableOptions"
+                [selectedTab]="selectedTab | lowercase"
+                (tableBodyActions)="
+                    handleDropdownMenuActions(
+                        $event,
+                        eDropdownMenu.LOAD,
+                        selectedTab
+                    )
+                "
+                [tableData]="store?.tableData"
                 (saveValueNote)="saveValueNote($event)"
-            ></app-load-card>
+            ></app-ta-table-body>
+        }
+        <!-- Cards -->
 
-            <!-- Show More -->
+        @if (store?.activeViewMode === 'Card') {
+            <div class="elements">
+                <app-load-card
+                    [viewData]="store?.viewData"
+                    [selectedTab]="selectedTab"
+                    [displayRowsFront]="
+                        (displayRows$ | async)?.displayRowsFront
+                    "
+                    [displayRowsBack]="(displayRows$ | async)?.displayRowsBack"
+                    (saveValueNote)="saveValueNote($event)"
+                ></app-load-card>
 
-            <ng-container *ngIf="viewData.length">
+                <!-- Show More -->
+
                 <div
                     class="show-more-container d-flex align-items-center justify-content-between"
                     [ngStyle]="{ 'width.px': tableWidth }"
                 >
                     <div class="showing ta-font-semi-bold">
-                        {{ viewData?.length }} OF
-                        {{ activeTableData?.length }}
+                        {{ store?.viewData?.length }} OF
+                        {{ store?.activeTableData?.data?.length }}
                     </div>
-                    <ng-container
-                        *ngIf="viewData?.length < activeTableData?.length"
-                    >
+
+                    @if (
+                        store?.viewData?.length <
+                        store?.activeTableData?.data?.length
+                    ) {
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>
-                    </ng-container>
+                    }
                 </div>
-            </ng-container>
-        </div>
-    </ng-container>
+            </div>
+        }
+    }
 </div>

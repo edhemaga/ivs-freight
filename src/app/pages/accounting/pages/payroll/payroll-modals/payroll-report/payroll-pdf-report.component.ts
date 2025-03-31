@@ -6,7 +6,7 @@ import { CommonModule } from '@angular/common';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
 
 // Services
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
 // Components
 import { CaModalComponent } from 'ca-components';
@@ -23,7 +23,7 @@ const DEFAULT_ZOOM: number = 1;
 const MAX_ZOOM: number = 2;
 
 @Component({
-    selector: 'app-payroll-report',
+    selector: 'app-payroll-report-pdf-preview',
     templateUrl: './payroll-pdf-report.component.html',
     styleUrls: ['./payroll-pdf-report.component.scss'],
     standalone: true,

@@ -1,125 +1,205 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.type !== 'edit-drug' ? 'Add Test' : 'Edit Test'"
-    [editData]="editData"
-    [editName]="modalName"
-    [isModalValid]="drugForm.valid && isFormDirty"
-    [specificCaseModalName]="true"
-    (action)="onModalAction($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <form
-        origin
-        [formGroup]="drugForm"
-        class="form-container form-container-without-mb"
-    >
-        <!-- Issue Date, Type -->
+    <div origin class="new-modal">
+        <div class="divider divider--dark divider--small"></div>
+        <form
+            [formGroup]="drugForm"
+            class="form-container form-container-without-mb"
+        >
+            <!-- Issue Date, Type -->
 
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    formControlName="testingDate"
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'Issue Date',
-                        isDropdown: true,
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        customClass: 'datetimeclass',
-                        autoFocus: editData && editData?.type !== 'edit-drug'
-                    }"
-                ></app-ta-input>
+            <div class="row">
+                <div class="col-6">
+                    <ca-input-datetime-picker
+                        formControlName="testingDate"
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            type: 'text',
+                            label: 'Issue Date',
+                            isDropdown: true,
+                            placeholderIcon: 'date',
+                            isRequired: true,
+                            customClass: 'datetimeclass',
+                            autoFocus:
+                                editData && editData?.type !== 'edit-drug',
+                        }"
+                    ></ca-input-datetime-picker>
+                </div>
+
+                <div class="col-6">
+                    <app-ca-input-dropdown
+                        formControlName="testType"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Type',
+                            isRequired: true,
+                            isDropdown: true,
+                            dropdownWidthClass: 'w-col-228',
+                        }"
+                        [options]="testTypesDropdownList"
+                        [activeItem]="selectedTestType"
+                        (selectedItem)="onSelectDropdown($event, 'test')"
+                    ></app-ca-input-dropdown>
+                </div>
             </div>
 
-            <div class="col-6">
-                <app-ta-input-dropdown
-                    formControlName="testType"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Type',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-228'
-                    }"
-                    [options]="testTypesDropdownList"
-                    [activeItem]="selectedTestType"
-                    (selectedItem)="onSelectDropdown($event, 'test')"
-                ></app-ta-input-dropdown>
+            <!-- Reason, Results -->
+
+            <div class="row last-row">
+                <div class="col-6">
+                    <app-ca-input-dropdown
+                        formControlName="testReasonId"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Reason',
+                            isRequired: true,
+                            isDropdown: true,
+                            dropdownWidthClass: 'w-col-216',
+                        }"
+                        [options]="testReasonsDropdownList"
+                        [activeItem]="selectedTestReason"
+                        (selectedItem)="onSelectDropdown($event, 'reason')"
+                    ></app-ca-input-dropdown>
+                </div>
+
+                <div class="col-6">
+                    <app-ca-input-dropdown
+                        formControlName="result"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Results',
+                            isRequired: true,
+                            isDropdown: true,
+                            dropdownWidthClass: 'w-col-228',
+                        }"
+                        [options]="testResultsDropdownList"
+                        [activeItem]="selectedTestResult"
+                        (selectedItem)="onSelectDropdown($event, 'result')"
+                    ></app-ca-input-dropdown>
+                </div>
             </div>
+
+            <!-- Documents -->
+
+            <div class="ta-card-body-overflow-none">
+                <app-ta-custom-card
+                    [hasCounter]="documents.length"
+                    [cardName]="'Document'"
+                    [disableAnimation]="isCardAnimationDisabled"
+                    [isCardOpen]="!!documents.length"
+                    [hasDarkDivider]="true"
+                    [hasSmallDivider]="true"
+                >
+                    <app-ca-upload-files
+                        [uploadFilesConfig]="uploadFilesConfig"
+                        (onFileEvent)="onFilesEvent($event)"
+                    ></app-ca-upload-files>
+                </app-ta-custom-card>
+            </div>
+
+            <!-- Note -->
+
+            <div class="divider divider--dark divider--small"></div>
+
+            <app-ca-input-note
+                formControlName="note"
+                [isVisibleNote]="
+                    drugForm.get('note').value &&
+                    drugForm.get('note').value != 'null'
+                        ? drugForm.get('note').value
+                        : false
+                "
+                [note]="
+                    drugForm.get('note').value &&
+                    drugForm.get('note').value != 'null'
+                        ? drugForm.get('note').value
+                        : ''
+                "
+            ></app-ca-input-note>
+        </form>
+    </div>
+</app-ca-modal>
+
+<ng-template #leftModalContent>
+    @if (modalName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ modalName }}
         </div>
+    }
+</ng-template>
 
-        <!-- Reason, Results -->
-
-        <div class="row last-row">
-            <div class="col-6">
-                <app-ta-input-dropdown
-                    formControlName="testReasonId"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Reason',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-216'
-                    }"
-                    [options]="testReasonsDropdownList"
-                    [activeItem]="selectedTestReason"
-                    (selectedItem)="onSelectDropdown($event, 'reason')"
-                ></app-ta-input-dropdown>
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider divider--dark divider--small m-0"></div>
+        @if (editData?.type === 'edit-drug') {
+            <div class="d-flex justify-content-between w-full">
+                <div class="d-flex">
+                    <app-ca-modal-button
+                        text="Delete"
+                        [size]="eModalButtonSize.SMALL"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
+                    >
+                    </app-ca-modal-button>
+                </div>
+                <app-ca-modal-button
+                    text="Save Changes"
+                    [isValid]="drugForm.valid && isFormDirty"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
+                    [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                >
+                </app-ca-modal-button>
             </div>
-
-            <div class="col-6">
-                <app-ta-input-dropdown
-                    formControlName="result"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Results',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-228'
-                    }"
-                    [options]="testResultsDropdownList"
-                    [activeItem]="selectedTestResult"
-                    (selectedItem)="onSelectDropdown($event, 'result')"
-                ></app-ta-input-dropdown>
-            </div>
-        </div>
-
-        <!-- Documents -->
-
-        <div class="ta-card-body-overflow-none">
-            <app-ta-custom-card
-                [hasCounter]="documents.length"
-                [cardName]="'Document'"
-                [disableAnimation]="isCardAnimationDisabled"
-                [isCardOpen]="!!documents.length"
+        } @else {
+            <app-ca-modal-button
+                text="Save"
+                [isValid]="drugForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
             >
-                <app-ta-upload-files
-                    [files]="documents"
-                    [showDropzone]="true"
-                    [customClassName]="'modals'"
-                    (onFileEvent)="onFilesEvent($event)"
-                ></app-ta-upload-files>
-            </app-ta-custom-card>
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit-drug') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                test?.createdAt | formatDateP
+            }} <br> Edited    {{ test?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
         </div>
-
-        <!-- Note -->
-
-        <app-ta-input-note
-            formControlName="note"
-            [isVisibleNote]="
-                drugForm.get('note').value &&
-                drugForm.get('note').value != 'null'
-                    ? drugForm.get('note').value
-                    : false
-            "
-            [note]="
-                drugForm.get('note').value &&
-                drugForm.get('note').value != 'null'
-                    ? drugForm.get('note').value
-                    : ''
-            "
-        ></app-ta-input-note>
-    </form>
-</app-ta-modal>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>

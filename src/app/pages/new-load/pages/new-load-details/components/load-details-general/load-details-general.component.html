@@ -1,0 +1,569 @@
+@let load = loadStoreService.resolveLoadDetails$ | async;
+@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
+@let minimalList = loadStoreService.minimalListSelector$ | async;
+@let isSpacingBottom = true;
+
+<div class="background-white p-8 br-3">
+    <div class="d-flex flex-column px-1">
+        <app-ca-skeleton
+            [width]="223"
+            [height]="16"
+            [isLoading]="isLoading"
+            [contentTemplate]="contentTemplate"
+            [class.mb-2]="isLoading"
+        >
+            <ng-template #contentTemplate>
+                <span
+                    class="ta-font-semi-bold text-size-18 text-color-black h-30 mb-1 d-flex align-items-center"
+                >
+                    Ref. {{ load.referenceNumber }}
+                </span>
+            </ng-template>
+        </app-ca-skeleton>
+
+        <div class="d-flex align-items-center flex-wrap row gutter-x-12">
+            <ng-container
+                *ngTemplateOutlet="
+                    iconTextTemplate;
+                    context: {
+                        icon: sharedIcons.STATUS_ICON,
+                        loadStatus: {
+                            name: load.status?.statusString,
+                            id: load.status?.statusValue?.id,
+                        },
+                        isLoading,
+                        isSpacingBottom,
+                        width: 110,
+                        colWidth: 'col-6',
+                    }
+                "
+            >
+            </ng-container>
+            <ng-container
+                *ngTemplateOutlet="
+                    iconTextTemplate;
+                    context: {
+                        icon: sharedIcons.COMPANY_ICON,
+                        text: load.company?.companyName,
+                        isLoading,
+                        isSpacingBottom,
+                        width: 140,
+                        colWidth: 'col-6',
+                        tooltipText: 'Company',
+                    }
+                "
+            >
+            </ng-container>
+            <ng-container
+                *ngTemplateOutlet="
+                    iconTextTemplate;
+                    context: {
+                        icon: sharedIcons.TIME_ICON,
+                        text: load.company?.companyName,
+                        isLoading,
+                        isSpacingBottom,
+                        width: 130,
+                        colWidth: 'col-6',
+                        tooltipText: 'Updated',
+                    }
+                "
+            >
+            </ng-container>
+            <ng-container
+                *ngTemplateOutlet="
+                    iconTextTemplate;
+                    context: {
+                        icon: sharedIcons.USER_ICON,
+                        text: load.dispatcher?.fullName,
+                        isLoading,
+                        isSpacingBottom,
+                        width: 120,
+                        colWidth: 'col-6',
+                        tooltipText: 'Dispatcher',
+                    }
+                "
+            >
+            </ng-container>
+        </div>
+    </div>
+
+    <div class="divider divider--small divider--dark mb-2"></div>
+    <div class="d-flex align-items-center flex-wrap px-1 row gutter-x-12">
+        <ng-container
+            *ngTemplateOutlet="
+                iconTextTemplate;
+                context: {
+                    icon: sharedIcons.ADDED_DATE,
+                    text: load?.createdAt | formatDateP,
+                    isLoading,
+                    width: 64,
+                    colWidth: 'col-6',
+                    tooltipText: 'Date Added',
+                }
+            "
+        >
+        </ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                iconTextTemplate;
+                context: {
+                    icon: sharedIcons.DATE_EDITED,
+                    text: load?.updatedAt | formatDateP,
+                    isLoading,
+                    width: 64,
+                    colWidth: 'col-6',
+                    tooltipText: 'Date Updated',
+                }
+            "
+        >
+        </ng-container>
+    </div>
+</div>
+
+<div class="m-t-8 background-white br-3 pb-2">
+    @if (isLoading) {
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 101, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="skeletonPlaceholder; context: { width: 91 }"
+        ></ng-container>
+    } @else {
+        <div class="d-flex flex-column p-x-12 pt-1">
+            <span
+                class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-1 d-flex align-items-center"
+            >
+                Broker Detail
+            </span>
+
+            <span
+                class="ta-font-medium text-size-18 text-color-black mb-1 text-truncate d-flex align-items-center h-30"
+            >
+                {{ load.broker?.businessName }}
+            </span>
+
+            <div class="d-flex align-items-center flex-wrap row gutter-x-12">
+                <ng-container
+                    *ngTemplateOutlet="
+                        iconTextTemplate;
+                        context: {
+                            icon: sharedIcons.USER_CIRCLE_ICON,
+                            text: load.brokerContact?.contactName,
+                            isLoading,
+                            isSpacingBottom,
+                            width: 160,
+                            colWidth: 'col-12',
+                            textColorClass: 'text-color-black-2',
+                        }
+                    "
+                >
+                </ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        iconTextTemplate;
+                        context: {
+                            icon: sharedIcons.PHONE_ICON,
+                            text: load.brokerContact?.phone,
+                            isLoading,
+                            isSpacingBottom,
+                            width: 140,
+                            colWidth: 'col-12',
+                            extension: load.brokerContact?.extensionPhone,
+                            textColorClass: 'text-color-black-2',
+                        }
+                    "
+                >
+                </ng-container>
+                <ng-container
+                    *ngTemplateOutlet="
+                        iconTextTemplate;
+                        context: {
+                            icon: sharedIcons.EMAIL_ICON,
+                            text: load.brokerContact?.email,
+                            isLoading,
+                            isSpacingBottom,
+                            width: 180,
+                            colWidth: 'col-12',
+                            textColorClass: 'text-color-black-2',
+                        }
+                    "
+                >
+                </ng-container>
+            </div>
+        </div>
+
+        <div class="p-x-6 mb-1">
+            <div class="divider divider--small divider--dark"></div>
+        </div>
+
+        <div class="p-x-12">
+            <span
+                class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
+            >
+                Assigned To
+
+                <svg-icon
+                    [src]="sharedIcons.HALF_TIME_ICON"
+                    class="svg-size-18 m-l-4 svg-fill-muted"
+                ></svg-icon>
+            </span>
+
+            <div class="row gutter-x-12">
+                @let isLoadAssigned = load?.dispatch;
+                <div class="col-6">
+                    <app-ca-unit-info-box
+                        [unitInfoBoxConfig]="{
+                            id: load.dispatch?.truck?.id,
+                            type: eSharedString.TRUCK,
+                            iconPath: load.dispatch?.truck?.truckType.logoName,
+                            label: load.dispatch?.truck?.truckNumber,
+                            isUnitAssigned:
+                                isLoadAssigned && load.dispatch?.truck,
+                            isSvgIcon: true,
+                        }"
+                    ></app-ca-unit-info-box>
+                </div>
+
+                <div class="col-6">
+                    <app-ca-unit-info-box
+                        [unitInfoBoxConfig]="{
+                            id: load?.dispatch?.trailer?.id,
+                            type: eSharedString.TRAILER,
+                            iconPath:
+                                load.dispatch?.trailer?.trailerType.logoName,
+                            label: load.dispatch?.trailer?.trailerNumber,
+                            isUnitAssigned:
+                                isLoadAssigned && load.dispatch?.trailer,
+                            isSvgIcon: true,
+                        }"
+                    ></app-ca-unit-info-box>
+                </div>
+
+                <div class="col-12">
+                    <div class="m-t-12">
+                        @let driver = load?.dispatch?.driver;
+                        @let driverName =
+                            driver?.firstName +
+                            eStringPlaceholder.WHITESPACE +
+                            driver?.lastName;
+                        <app-ca-unit-info-box
+                            [unitInfoBoxConfig]="{
+                                id: driver?.id,
+                                type: eSharedString.DRIVER,
+                                label: driverName,
+                                isUnitAssigned:
+                                    isLoadAssigned && load?.dispatch?.driver,
+                                isImage: true,
+                                imagePath: driver?.avatarFile?.url,
+                            }"
+                        ></app-ca-unit-info-box>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <ng-container
+            *ngTemplateOutlet="
+                billing;
+                context: {
+                    data: load,
+                }
+            "
+        ></ng-container>
+    }
+</div>
+
+<ng-template
+    #iconTextTemplate
+    let-icon="icon"
+    let-text="text"
+    let-isLoading="isLoading"
+    let-width="width"
+    let-isSpacingBottom="isSpacingBottom"
+    let-colWidth="colWidth"
+    let-extension="extension"
+    let-textColorClass="textColorClass"
+    let-tooltipText="tooltipText"
+    let-loadStatus="loadStatus"
+>
+    @if (isLoading || text || loadStatus) {
+        <div
+            class="d-flex align-items-center h-26"
+            [ngClass]="isSpacingBottom && 'mb-2'"
+            [class]="colWidth"
+        >
+            <app-ca-skeleton
+                [width]="15"
+                [height]="15"
+                [isCircle]="true"
+                [isLoading]="isLoading"
+                [contentTemplate]="contentTemplate"
+                [ngClass]="isLoading && 'mr-1'"
+            >
+                <ng-template #contentTemplate>
+                    <div
+                        ngbTooltip
+                        [mainTooltip]="tooltipText"
+                        position="bottom"
+                        [tooltipBackground]="eColor.BLACK"
+                    >
+                        <svg-icon
+                            class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
+                            [class]="
+                                loadStatus &&
+                                (loadStatus.id | loadStatusColors: true)
+                            "
+                            [src]="icon"
+                        ></svg-icon>
+                    </div>
+                </ng-template>
+            </app-ca-skeleton>
+
+            <app-ca-skeleton
+                [width]="width"
+                [height]="16"
+                [isLoading]="isLoading"
+                [contentTemplate]="textTemplate"
+                class="overflow-hidden"
+            >
+                <ng-template #textTemplate>
+                    @if (text) {
+                        <div
+                            class="text-size-14 text-truncate"
+                            [ngClass]="textColorClass || 'text-color-black'"
+                        >
+                            {{ text }}
+                            @if (extension) {
+                                <span class="text-color-grey"
+                                    >x{{ extension }}
+                                </span>
+                            }
+                        </div>
+                    } @else if (loadStatus) {
+                        <app-ca-load-status
+                            [status]="{
+                                name: loadStatus?.name,
+                                id: loadStatus?.id,
+                            }"
+                            [isNoStyle]="true"
+                            [fontSize]="14"
+                        >
+                        </app-ca-load-status>
+                    }
+                </ng-template>
+            </app-ca-skeleton>
+        </div>
+    }
+</ng-template>
+
+<ng-template
+    #skeletonPlaceholder
+    let-width="width"
+    let-isDividerVisible="isDividerVisible"
+>
+    <div class="d-flex align-items-center p-x-12 justify-content-between">
+        <p class="placeholder-glow">
+            <span
+                class="placeholder background-muted br-2 h-16"
+                [ngClass]="'w-' + width"
+            ></span>
+        </p>
+
+        <p class="placeholder-glow">
+            <span class="placeholder background-muted br-2 h-7 w-18"></span>
+        </p>
+    </div>
+
+    <ng-container
+        *ngTemplateOutlet="divider; context: { isDividerVisible }"
+    ></ng-container>
+</ng-template>
+
+<ng-template #divider let-isDividerVisible="isDividerVisible">
+    @if (isDividerVisible) {
+        <div class="p-x-6 mb-1 mt-1">
+            <div class="divider divider--small divider--dark"></div>
+        </div>
+    }
+</ng-template>
+
+<ng-template #billing let-data="data">
+    <div class="p-2" (click)="toggleBilling()">
+        <app-ta-custom-card
+            [cardName]="'Billing'"
+            [hasCounter]="data?.billingCount"
+            [disabledCard]="!data?.billingCount"
+            [bodyTemplate]="'card'"
+            [animationMarginParams]="{
+                marginTop: '6px',
+                marginBottom: '6px',
+            }"
+        >
+            <ng-container
+                *ngTemplateOutlet="
+                    billingBaseRate;
+                    context: {
+                        data,
+                    }
+                "
+            ></ng-container>
+        </app-ta-custom-card>
+    </div>
+</ng-template>
+
+<ng-template
+    #billingRateItem
+    let-label="label"
+    let-value="value"
+    let-color="color"
+    let-isLineThrough="isLineThrough"
+>
+    @let mutedColor = 'text-color-muted';
+    @let blackColor = 'text-color-black';
+    <div
+        class="d-flex justify-content-between align-items-center mb-1 h-26 text-size-14"
+    >
+        <span
+            class="ta-font-medium"
+            [ngClass]="isLineThrough ? mutedColor : blackColor"
+            [class.text-decoration-line-through]="isLineThrough"
+        >
+            {{ label }}
+        </span>
+        <span
+            [ngClass]="isLineThrough ? mutedColor : color"
+            [class.text-decoration-line-through]="isLineThrough"
+        >
+            {{ value | currency: 'USD' }}
+        </span>
+    </div>
+</ng-template>
+
+<ng-template #billingBaseRate let-data="data">
+    @if (data?.baseRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Base Rate',
+                    value: data?.baseRate,
+                    color: data?.tonuRate ? mutedColor : 'text-color-black-2',
+                    isLineThrough:
+                        data?.tonuRate ||
+                        data?.revisedRate ||
+                        data?.adjustedRate,
+                }
+            "
+        ></ng-container>
+    }
+
+    @if (data?.adjustedRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Adjusted',
+                    value: data?.adjustedRate,
+                    color: data?.tonuRate
+                        ? mutedColor
+                        : 'text-color-special-filter-purple',
+                    lineThrough: data?.tonuRate,
+                }
+            "
+        ></ng-container>
+    }
+
+    @if (data?.revisedRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'Revised',
+                    value: data?.revisedRate,
+                    color: data?.tonuRate
+                        ? mutedColor
+                        : 'text-color-special-filter-purple',
+                    isLineThrough: data?.tonuRate,
+                }
+            "
+        ></ng-container>
+    }
+
+    @for (item of data?.additionalBillingRates; track item.id) {
+        @if (item?.rate) {
+            <ng-container
+                *ngTemplateOutlet="
+                    billingRateItem;
+                    context: {
+                        label: item?.additionalBillingType?.name,
+                        value: item?.rate,
+                        color: data?.tonuRate
+                            ? mutedColor
+                            : 'text-color-black-2',
+                        lineThrough: data?.tonuRate,
+                    }
+                "
+            ></ng-container>
+        }
+    }
+
+    <ng-container
+        *ngTemplateOutlet="
+            billingRateItem;
+            context: {
+                label: 'TOTAL RATE',
+                value: data?.totalRate,
+                color: data?.tonuRate ? mutedColor : 'text-color-black',
+                isLineThrough:
+                    data?.tonuRate || data?.revisedRate || data?.adjustedRate,
+            }
+        "
+    ></ng-container>
+
+    @if (data?.totalAdjustedRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'TOTAL ADJUSTED',
+                    value: data?.totalAdjustedRate,
+                    color: data?.tonuRate
+                        ? mutedColor
+                        : 'text-color-special-filter-purple',
+                    isLineThrough: false,
+                }
+            "
+        ></ng-container>
+    }
+
+    @if (data?.driverRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'DRIVER RATE',
+                    value: data?.driverRate,
+                    color: data?.tonuRate ? mutedColor : 'text-color-yellow-5',
+                    isLineThrough: data?.tonuRate,
+                }
+            "
+        ></ng-container>
+    }
+
+    @if (data?.tonuRate) {
+        <ng-container
+            *ngTemplateOutlet="
+                billingRateItem;
+                context: {
+                    label: 'TONU RATE',
+                    value: data?.tonuRate,
+                    color: 'text-color-red-11',
+                    lineThrough: data?.tonuRate,
+                }
+            "
+        ></ng-container>
+    }
+</ng-template>

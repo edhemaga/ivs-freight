@@ -1,5 +1,4 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
-import { of, Subject, switchMap, takeUntil } from 'rxjs';
 import {
     FormsModule,
     ReactiveFormsModule,
@@ -9,7 +8,9 @@ import {
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 
-//Helpers
+import { of, Subject, switchMap, takeUntil } from 'rxjs';
+
+// helpers
 import {
     addressValidation,
     businessNameValidation,
@@ -18,27 +19,35 @@ import {
     phoneFaxRegex,
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-//Services
+// services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { FormService } from '@shared/services/form.service';
 import { FuelService } from '@shared/services/fuel.service';
+import { AddressService } from '@shared/services/address.service';
 
-//Models
+// models
 import { AddressEntity } from 'appcoretruckassist';
 import { FuelStopResponse, GetFuelStopModalResponse } from 'appcoretruckassist';
+import { FileEvent } from '@shared/models';
 
-//Components
+// cmponents
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
+import { CaInputAddressDropdownComponent } from 'ca-components';
 
-//Modules
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
+// Enums
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 @Component({
     selector: 'app-fuel-stop-modal',
@@ -47,64 +56,76 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
     providers: [ModalService],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
 
-        // Component
+        // components
         TaModalComponent,
         TaInputComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
         TaUploadFilesComponent,
         TaInputDropdownComponent,
     ],
 })
-export class FuelStopModalComponent implements OnInit, OnDestroy {
+export class FuelStopModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnDestroy, OnInit
+{
     @Input() editData: any;
+
+    public destroy$ = new Subject<void>();
 
     public fuelStopForm: UntypedFormGroup;
 
-    public fuelStops: any[] = [];
-    public selectedFuelStop: any = null;
+    public isFormDirty: boolean;
+    public isFavouriteFuelStop: boolean = false;
+    public isCardAnimationDisabled: boolean = false;
 
+    public companyId: number;
+
+    public fuelStopName: string;
+    public fuelStops: FuelStopResponse[] = [];
+
+    public selectedFuelStop: FuelStopResponse;
     public selectedAddress: AddressEntity;
 
-    public isFavouriteFuelStop: boolean = false;
-
-    public fuelStopName: string = null;
-
-    public companyId: number = null;
-
+    // documents
     public documents: any[] = [];
-    public fileModified: boolean = false;
     public filesForDelete: any[] = [];
-
-    public disableCardAnimation: boolean = false;
+    public fileModified: boolean = false;
 
     public longitude: number;
     public latitude: number;
 
-    private destroy$ = new Subject<void>();
-
-    public isFormDirty: boolean;
-
     constructor(
         private formBuilder: UntypedFormBuilder,
+
+        // services
         private inputService: TaInputService,
         private modalService: ModalService,
         private formService: FormService,
-        private fuelService: FuelService
-    ) {}
+        private fuelService: FuelService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
+
         this.getModalDropdowns();
 
         this.trackFuelStopPhone();
+
         this.trackFuelStopFranchise();
     }
 
@@ -125,18 +146,19 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
         });
     }
 
-    public onModalAction(data: { action: string; bool: boolean }) {
+    public onModalAction(data: { action: string; bool: boolean }): void {
         switch (data.action) {
-            case 'close': {
+            case eGeneralActions.CLOSE:
                 break;
-            }
-            case 'save': {
+            case 'save':
                 if (this.fuelStopForm.invalid || !this.isFormDirty) {
                     this.inputService.markInvalid(this.fuelStopForm);
                     return;
                 }
+
                 if (this.editData) {
                     this.updateFuelStop(this.editData.id);
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -144,6 +166,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     });
                 } else {
                     this.addFuelStop();
+
                     this.modalService.setModalSpinner({
                         action: null,
                         status: true,
@@ -151,21 +174,20 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                     });
                 }
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public favouriteFuelStop() {
+    public favouriteFuelStop(): void {
         this.isFavouriteFuelStop = !this.isFavouriteFuelStop;
+
         this.fuelStopForm.get('favourite').patchValue(this.isFavouriteFuelStop);
     }
 
-    public onSelectDropdown(event: any, action) {
+    public onSelectDropdown(event: any, action): void {
         switch (action) {
-            case 'fuel-stop': {
+            case 'fuel-stop':
                 this.selectedFuelStop = event;
 
                 if (event) {
@@ -175,33 +197,35 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                             Validators.required,
                             ...fuelStoreValidation,
                         ]);
+
                     this.fuelStopForm.get('store').updateValueAndValidity();
                 } else {
                     this.fuelStopForm.get('store').clearValidators();
                 }
 
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    public onSaveNewFuelStop(event: any) {
+    public onSaveNewFuelStop(event: any): void {
         this.fuelStopForm.get('businessName').patchValue(event.data.name);
         this.fuelStopForm.get('fuelStopFranchiseId').clearValidators();
         this.fuelStopForm.get('fuelStopFranchiseId').patchValue(null);
+
         this.selectedFuelStop = null;
+
         this.fuelStopForm
             .get('businessName')
             .setValidators([Validators.required, ...businessNameValidation]);
     }
 
-    public clearNewFuelStop() {
+    public clearNewFuelStop(): void {
         this.fuelStopForm.get('businessName').patchValue(null);
         this.fuelStopForm.get('businessName').clearValidators();
         this.fuelStopForm.get('fuelStopFranchiseId').patchValue(null);
+
         this.selectedFuelStop = null;
     }
 
@@ -212,48 +236,47 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
     }): void {
         if (event.valid) {
             this.selectedAddress = event.address;
+
             this.longitude = event.longLat.longitude;
             this.latitude = event.longLat.latitude;
         }
 
-        if (this.selectedAddress) {
+        if (this.selectedAddress)
             this.trackFuelStopAddress(this.selectedAddress);
-        }
     }
 
-    public paginationPage(pageIndex: number) {
+    public paginationPage(pageIndex: number): void {
         this.getModalDropdowns(pageIndex, 25);
     }
 
-    public onFilesEvent(event: any) {
+    public onFilesEvent(event: FileEvent): void {
         this.documents = event.files;
+
         switch (event.action) {
-            case 'add': {
+            case eGeneralActions.ADD:
                 this.fuelStopForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
+
                 break;
-            }
-            case 'delete': {
+            case eGeneralActions.DELETE:
                 this.fuelStopForm
-                    .get('files')
+                    .get(eFileFormControls.FILES)
                     .patchValue(
                         event.files.length ? JSON.stringify(event.files) : null
                     );
-                if (event.deleteId) {
-                    this.filesForDelete.push(event.deleteId);
-                }
+
+                if (event.deleteId) this.filesForDelete.push(event.deleteId);
 
                 this.fileModified = true;
+
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
 
-    private trackFuelStopAddress(address: AddressEntity) {
+    private trackFuelStopAddress(address: AddressEntity): void {
         this.fuelService
             .checkFuelStopAddress(
                 address?.city,
@@ -278,11 +301,10 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                         this.fuelStopForm.get('address').setErrors(null);
                     }
                 },
-                error: () => {},
             });
     }
 
-    private trackFuelStopPhone() {
+    private trackFuelStopPhone(): void {
         this.fuelStopForm
             .get('phone')
             .valueChanges.pipe(
@@ -305,7 +327,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private trackFuelStopFranchise() {
+    private trackFuelStopFranchise(): void {
         this.fuelStopForm
             .get('store')
             .valueChanges.pipe(
@@ -317,6 +339,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                             value
                         );
                     }
+
                     return of(false);
                 })
             )
@@ -331,10 +354,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private updateFuelStop(id: number) {
+    private updateFuelStop(id: number): void {
         const { businessName, ...form } = this.fuelStopForm.value;
 
         let documents = [];
+
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
@@ -376,10 +400,11 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private addFuelStop() {
+    private addFuelStop(): void {
         const { businessName, ...form } = this.fuelStopForm.value;
 
         let documents = [];
+
         this.documents.map((item) => {
             if (item.realFile) {
                 documents.push(item.realFile);
@@ -419,12 +444,12 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
             });
     }
 
-    private getFuelStopById(id: number) {
+    private getFuelStopById(id: number): void {
         this.fuelService
             .getFuelStopById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: (res: FuelStopResponse) => {
+                next: (res) => {
                     this.fuelStopForm.patchValue({
                         businessName: res.businessName,
                         fuelStopFranchiseId: res.fuelStopFranchise
@@ -432,7 +457,7 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                             : null,
                         favourite: res.favourite,
                         fax: res.fax,
-                        address: res.address.address,
+                        address: res.address,
                         note: res.note,
                     });
 
@@ -470,14 +495,16 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
 
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
-    private getModalDropdowns(pageIndex: number = 1, pageSize: number = 25) {
+    private getModalDropdowns(
+        pageIndex: number = 1,
+        pageSize: number = 25
+    ): void {
         this.fuelService
             .getFuelStopModalDropdowns(pageIndex, pageSize)
             .pipe(takeUntil(this.destroy$))
@@ -493,23 +520,25 @@ export class FuelStopModalComponent implements OnInit, OnDestroy {
                             };
                         }),
                     ];
+
                     this.fuelStops = this.fuelStops.filter(
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
 
-                    if (this.editData?.type === 'edit') {
-                        this.disableCardAnimation = true;
+                    if (this.editData?.type === eGeneralActions.EDIT) {
+                        this.isCardAnimationDisabled = true;
+
                         this.getFuelStopById(this.editData.id);
                     } else {
                         this.startFormChanges();
                     }
                 },
-                error: () => {},
             });
     }
 
     private startFormChanges() {
         this.formService.checkFormChange(this.fuelStopForm);
+
         this.formService.formValueChange$
             .pipe(takeUntil(this.destroy$))
             .subscribe((isFormChange: boolean) => {

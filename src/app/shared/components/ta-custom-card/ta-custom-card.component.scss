@@ -4,6 +4,7 @@
     from {
         user-select: none;
     }
+
     to {
         user-select: auto !important;
     }
@@ -176,6 +177,7 @@
 
                 &.disabled {
                     pointer-events: none;
+
                     .action-plus-icon {
                         svg {
                             path {
@@ -229,9 +231,11 @@
                 width: 18px;
                 height: 18px;
                 line-height: 18px;
+
                 svg {
                     width: 100%;
                     height: 100%;
+
                     path {
                         fill: #b7b7b7;
                     }
@@ -239,6 +243,7 @@
 
                 &:hover {
                     transition: all 0.3s ease-in-out;
+
                     svg {
                         path {
                             fill: #919191;
@@ -297,7 +302,7 @@
 
             // Weekly status
             .weekly-status {
-                background-color: #f3f3f3;
+                background-color: $bw2;
                 height: 20px;
                 padding: 2.5px 6px;
                 border-radius: 2px;
@@ -305,16 +310,7 @@
                 .weekly-status-value {
                     font-size: 12px;
                     font-weight: 700;
-                    color: #919191;
                     line-height: 15px;
-                    &::-moz-selection {
-                        color: #919191;
-                        background: rgb(145, 145, 145, 0.2);
-                    }
-                    &::selection {
-                        color: #919191;
-                        background: rgb(145, 145, 145, 0.2);
-                    }
                 }
 
                 &.disabledWeeklyStatus {
@@ -322,19 +318,28 @@
                 }
             }
 
-            // Edit & delete actions
-            .edit-delete-actions {
+            // Delete actions
+            .delete-icon-container {
+                width: 26px;
+                text-align: center;
+                cursor: pointer;
+
                 .delete-icon {
-                    cursor: pointer;
+                    svg {
+                        path {
+                            fill: $muted;
+                        }
+                    }
+                }
+
+                &:hover {
+                    background-color: $white-6;
+                    border-radius: 2px;
 
                     svg {
                         path {
-                            fill: #b7b7b7;
+                            fill: $ta-red-14;
                         }
-                    }
-
-                    &.delete-icon {
-                        margin-left: 12px;
                     }
                 }
             }
@@ -354,9 +359,11 @@
                         margin-right: 11px;
                         width: 18px;
                         height: 18px;
+
                         path {
                             fill: #6d82c7;
                         }
+
                         &:hover {
                             path {
                                 fill: #536bc2 !important;
@@ -375,8 +382,10 @@
                 svg {
                     transform: rotate(0deg);
                     transition: all 0.3s ease-in-out;
+
                     path {
-                        fill: #919191;
+                        fill: $muted;
+                        transition: fill $transitionDuration ease-in-out;
                     }
                 }
 
@@ -420,6 +429,7 @@
 
         &.no-data {
             cursor: auto !important;
+
             &:hover {
                 .header-arrow {
                     svg {
@@ -433,6 +443,7 @@
 
         &.disabled {
             cursor: default;
+
             .header-arrow {
                 display: none !important;
             }
@@ -483,7 +494,8 @@
 
         &.scroll {
             overflow-y: scroll !important;
-            scrollbar-width: none !important; /* Firefox */
+            scrollbar-width: none !important;
+            /* Firefox */
 
             &::-webkit-scrollbar {
                 width: 3px;
@@ -511,7 +523,8 @@
 
         &.scroll-x-axis {
             overflow-x: scroll !important;
-            scrollbar-width: none !important; /* Firefox */
+            scrollbar-width: none !important;
+            /* Firefox */
 
             &::-webkit-scrollbar:horizontal {
                 width: 2px !important;
@@ -535,7 +548,9 @@
             height: 0;
             opacity: 0;
             overflow: hidden;
-            transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            transition:
+                height 0.3s ease-in-out,
+                opacity 0.3s ease-in-out;
             will-change: height, opacity;
 
             &.innactive {
@@ -547,8 +562,10 @@
 
             &.active {
                 opacity: 1;
-                overflow: hidden;
-                transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+                overflow: visible;
+                transition:
+                    height 0.3s ease-in-out,
+                    opacity 0.3s ease-in-out;
                 height: 100%;
             }
 
@@ -601,7 +618,22 @@
     .header-text {
         color: $ta-light-grey-2 !important;
     }
+
     .ta-counter {
         background-color: $ta-light-grey-6 !important;
+    }
+}
+
+.ta-custom-card-hover {
+    &:hover {
+        .header-text {
+            color: $ta-black !important;
+        }
+
+        .header-arrow {
+            svg path {
+                fill: $ta-black !important;
+            }
+        }
     }
 }

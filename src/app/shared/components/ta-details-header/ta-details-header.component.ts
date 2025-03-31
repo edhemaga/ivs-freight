@@ -30,6 +30,10 @@ import {
     CaFilterComponent,
     CaSortDropdownComponent,
     SortColumn,
+    CaFilterDropdownComponent,
+    CaFilterTimeDropdownComponent,
+    CaFilterListDropdownComponent,
+    CaDropdownMenuComponent,
 } from 'ca-components';
 
 // icon
@@ -48,6 +52,12 @@ import { DetailsHeaderSvgRoutes } from '@shared/components/ta-details-header/uti
 // constants
 import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/filter-icons-routes.constants';
 
+// helpers
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// interfaces
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
 // models
 import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-select-details-dropdown-item.model';
 import { LoadsSortDropdownModel } from '@pages/customer/models/loads-sort-dropdown.model';
@@ -56,6 +66,7 @@ import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.mo
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
+import { TableCardBodyActions } from '@shared/models';
 
 @Component({
     selector: 'app-ta-details-header',
@@ -79,12 +90,16 @@ import { FilterStateService } from '@shared/components/ta-filter/services/filter
         CaSearchMultipleStatesComponent,
         CaFilterComponent,
         CaSortDropdownComponent,
+        CaFilterDropdownComponent,
+        CaFilterTimeDropdownComponent,
+        CaFilterListDropdownComponent,
+        CaDropdownMenuComponent,
 
         // pipes
         FormatCurrencyPipe,
     ],
 })
-export class TaDetailsHeaderComponent implements OnInit, OnChanges {
+export class TaDetailsHeaderComponent<T> implements OnInit, OnChanges {
     @ViewChild('popover') multipleDetailsPopover: NgbPopover;
 
     @Input() headerText: string = null;
@@ -150,6 +165,7 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     @Input() isSortBtn: boolean = false;
     @Input() sortColumns?: SortColumn[] = [];
     @Input() sortDropdown: LoadsSortDropdownModel[];
+    @Input() isDetailsDropdownImplementation: boolean = false; // delete after dropdown implementation
 
     @Output() openModalAction = new EventEmitter<any>();
     @Output() changeDataArrowUp = new EventEmitter<any>();
@@ -166,6 +182,10 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
         sortDirection: string;
     }>();
     @Output() sortActions = new EventEmitter<any>();
+
+    @Output() onDropdownMenuActions = new EventEmitter<
+        TableCardBodyActions<T>
+    >();
 
     private destroy$ = new Subject<void>();
 
@@ -184,8 +204,8 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public isSortDropdownOpen: boolean = false;
     public activeSortType: SortColumn | null = null;
 
-    public loadStatusOptionsArray: ArrayStatus[];
-    public unselectedDispatcher: ArrayStatus[];
+    public loadStatusOptionsArray: ArrayStatus[] = [];
+    public unselectedDispatcher: ArrayStatus[] = [];
     public truckTypeArray: ArrayStatus[];
     public trailerTypeArray: ArrayStatus[];
     public categoryRepairArray: ArrayStatus[];
@@ -223,8 +243,6 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
                 (item) => item.active
             );
         }
-
-        this.handleFilterInitialization();
     }
 
     public handleFilterInitialization(): void {
@@ -679,6 +697,22 @@ export class TaDetailsHeaderComponent implements OnInit, OnChanges {
     public sortDropdownClosed(): void {
         this.sortPopover?.close();
         this.isSortDropdownOpen = false;
+    }
+
+    // Toggle Dropdown
+    public handleToggleDropdownMenuActions(
+        action: IDropdownMenuOptionEmit,
+        rowData: T
+    ): void {
+        const { type } = action;
+
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
+                type,
+                rowData
+            );
+
+        this.onDropdownMenuActions.emit(emitAction);
     }
 
     ngOnDestroy(): void {

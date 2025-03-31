@@ -13,6 +13,7 @@ import { Subject, takeUntil, tap } from 'rxjs';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { WebsiteActionsService } from '@pages/website/services/website-actions.service';
 import { WebsiteAuthService } from '@pages/website/services/website-auth.service';
+import { AddressService } from '@shared/services/address.service';
 
 // validations
 import {
@@ -30,15 +31,25 @@ import { WebsiteStringEnum } from '@pages/website/enums/website-string.enum';
 // models
 import { AddressEntity, SignupUserCommand } from 'appcoretruckassist';
 
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
 @Component({
     selector: 'app-register-user',
     templateUrl: './register-user.component.html',
     styleUrls: ['./register-user.component.scss'],
 })
-export class RegisterUserComponent implements OnInit, OnDestroy {
+export class RegisterUserComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     @ViewChild('inputAddress', { static: false }) public inputAddress: any;
 
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
     public registerUserForm: UntypedFormGroup;
 
@@ -57,8 +68,11 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
         private formBuilder: UntypedFormBuilder,
         private inputService: TaInputService,
         private websiteActionsService: WebsiteActionsService,
-        private websiteAuthService: WebsiteAuthService
-    ) {}
+        private websiteAuthService: WebsiteAuthService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.createForm();
@@ -195,7 +209,7 @@ export class RegisterUserComponent implements OnInit, OnDestroy {
 
         this.displaySpinner = true;
 
-        const { address, addressUnit, confirmPassword, ...registerUserForm } =
+        const { addressUnit, confirmPassword, ...registerUserForm } =
             this.registerUserForm.value;
 
         if (this.selectedAddress) {

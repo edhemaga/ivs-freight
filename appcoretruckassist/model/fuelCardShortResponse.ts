@@ -17,5 +17,6 @@ export interface FuelCardShortResponse {
     cardNumber?: string | null;
     fuelCardBrand?: EnumValue;
     status?: number | null;
+    accountId?: string | null;
 }
 

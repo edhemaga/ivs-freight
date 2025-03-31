@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-// Modules
+// modules
 import { OwnerRoutingModule } from '@pages/owner/owner-routing.module';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
-// Pipe
+// pipes
 import { MaskNumberPipe } from '@pages/owner/pages/owner-card/pipes/mask-number.pipe';
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 
-// Components
+// components
 import { OwnerTableComponent } from '@pages/owner/pages//owner-table/owner-table.component';
 import { OwnerCardComponent } from '@pages/owner/pages//owner-card/owner-card.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
@@ -19,29 +19,29 @@ import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/
 import { TaInputDropdownTableComponent } from '@shared/components/ta-input-dropdown-table/ta-input-dropdown-table.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaTableCardDropdownActionsComponent } from '@shared/components/ta-table-card-dropdown-actions/ta-table-card-dropdown-actions.component';
+import { CaDropdownMenuComponent } from 'ca-components';
 
 @NgModule({
     declarations: [OwnerTableComponent, OwnerCardComponent],
     imports: [
-        // Module
+        // modules
         CommonModule,
         OwnerRoutingModule,
         AngularSvgIconModule,
         NgbTooltipModule,
 
-        // Pipe
+        // pipes
         MaskNumberPipe,
         FlipCardsPipe,
 
-        // Components
+        // components
         TaTableToolbarComponent,
         TaTableBodyComponent,
         TaTableHeadComponent,
         TaInputDropdownTableComponent,
         TaNoteComponent,
-        TaTableCardDropdownActionsComponent,
         TaAppTooltipV2Component,
+        CaDropdownMenuComponent,
     ],
 })
 export class OwnerModule {}

@@ -45,7 +45,7 @@ import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollb
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { CaFilterComponent } from 'ca-components';
+import { CaFilterComponent, CaFilterListDropdownComponent, CaFilterTimeDropdownComponent } from 'ca-components';
 
 // guards
 import { AuthGuard } from '@core/guards/authentication.guard';
@@ -58,8 +58,9 @@ import { ArrayStatus } from '@shared/components/ta-filter/models/array-status.mo
 
 // enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
-import { TaModalActionEnums } from './enums';
+import { TaModalActionEnum } from './enums';
 import { ToolbarFilterStringEnum } from '@shared/components/ta-filter/enums/toolbar-filter-string.enum';
+import { eFileFormControls, eGeneralActions } from '@shared/enums';
 
 // directive
 import { PreventMultipleclicksDirective } from '@shared/directives/';
@@ -91,6 +92,8 @@ import { FilterIconRoutes } from '@shared/components/ta-filter/utils/constants/f
         TaSpinnerComponent,
         TaTabSwitchComponent,
         CaFilterComponent,
+        CaFilterTimeDropdownComponent,
+        CaFilterListDropdownComponent,
 
         // directives
         PreventMultipleclicksDirective,
@@ -180,7 +183,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
     @Input() specificCaseModalName: boolean;
 
     @Input() dropZoneConfig: DropZoneConfig = {
-        dropZoneType: 'files', // files | image | media
+        dropZoneType: eFileFormControls.FILES, // files | image | media
         dropZoneSvg: 'assets/svg/common/ic_files_dropzone.svg',
         dropZoneAvailableFiles:
             'application/pdf, image/png, image/jpeg, image/jpg',
@@ -458,11 +461,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
             this.runFormValidation.emit(true);
 
         switch (action) {
-            case TaModalActionEnums.SAVE: {
+            case TaModalActionEnum.SAVE: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case TaModalActionEnums.SAVE_AND_ADD_NEW: {
+            case TaModalActionEnum.SAVE_AND_ADD_NEW: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
@@ -470,7 +473,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case 'close': {
+            case eGeneralActions.CLOSE: {
                 this.action.emit({ action: action, bool: false });
                 $('.pac-container').remove();
                 this.ngbActiveModal.close();
@@ -478,7 +481,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.uploadFileService.uploadFiles(null);
                 break;
             }
-            case 'deactivate': {
+            case eGeneralActions.DEACTIVATE: {
                 if (!this.isDeactivateOnly)
                     this.isDeactivated = !this.isDeactivated;
                 this.action.emit({
@@ -488,7 +491,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case 'activate': {
+            case eGeneralActions.ACTIVATE: {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
@@ -504,7 +507,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case TaModalActionEnums.DELETE: {
+            case TaModalActionEnum.DELETE: {
                 this.action.emit({ action: action, bool: false });
                 this.confirmationAction.emit(this.confirmationData);
                 break;
@@ -545,11 +548,11 @@ export class TaModalComponent implements OnInit, OnDestroy {
                 this.confirmationAction.emit(this.confirmationData);
                 break;
             }
-            case TaModalActionEnums.CONVERT_TO_TEMPLATE: {
+            case TaModalActionEnum.CONVERT_TO_TEMPLATE: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
-            case TaModalActionEnums.CONVERT_TO_LOAD: {
+            case TaModalActionEnum.CONVERT_TO_LOAD: {
                 this.action.emit({ action: action, bool: false });
                 break;
             }
@@ -702,7 +705,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
             .pipe(distinctUntilChanged(), takeUntil(this.destroy$))
             .subscribe((data: { name: string; status: boolean }) => {
                 switch (data?.name) {
-                    case 'deactivate': {
+                    case eGeneralActions.DEACTIVATE: {
                         this.isDeactivated = data.status;
                         break;
                     }
@@ -727,7 +730,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
             .subscribe(
                 (data: { action: string; status: boolean; close: boolean }) => {
                     switch (data.action) {
-                        case 'delete': {
+                        case eGeneralActions.DELETE: {
                             this.deleteSpinnerVisibility = data.status;
                             break;
                         }

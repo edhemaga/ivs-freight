@@ -26,10 +26,17 @@ export interface FuelStopResponse {
     pricePerGallon?: number | null;
     lowestPricePerGallon?: number | null;
     highestPricePerGallon?: number | null;
+    priceOutDated?: boolean;
+    defPrice?: number | null;
+    defLowestPrice?: number | null;
+    defHighestPrice?: number | null;
+    defPriceOutDated?: boolean;
     longitude?: number | null;
     latitude?: number | null;
     favourite?: boolean;
     lastUsed?: string | null;
+    dieselLastUsed?: string | null;
+    defLastUsed?: string | null;
     totalCost?: number | null;
     used?: number;
     note?: string | null;

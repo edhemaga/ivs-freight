@@ -14,10 +14,10 @@
     -ms-user-select: none;
     user-select: none;
     overflow: hidden;
-    transition: width .3s;
+    transition: width 0.3s;
 
     &:not(.show-modal) {
-        &.opened-navigation  {
+        &.opened-navigation {
             background-color: $nav-blue-bg;
 
             &:hover {
@@ -75,7 +75,7 @@
             left: 38px;
             top: 8px;
             width: 104px;
-            transition: color .3s;
+            transition: color 0.3s;
         }
 
         .modal-nav-close-text {
@@ -98,13 +98,12 @@
         width: 36px;
     }
     .modal-is-open {
-        padding-right: 4px;
         height: 34px;
         background: $nav-svg-active;
         z-index: 9;
         top: 65px;
-        left: 21px;
-        padding-top: 13px;
+        left: 22.8px;
+        padding-top: 9px;
         position: fixed;
         width: 230px;
         transition: width 0.3s;

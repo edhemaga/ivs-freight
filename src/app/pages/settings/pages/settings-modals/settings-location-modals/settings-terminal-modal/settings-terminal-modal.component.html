@@ -1,12 +1,11 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.type !== 'edit' ? 'Add Terminal' : 'Edit Terminal'"
-    [editData]="editData"
-    [editName]="terminalName"
-    [isModalValid]="terminalForm.valid && isFormDirty"
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    (action)="onModalAction($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
         <form
             [formGroup]="terminalForm"
             class="form-container form-container-mt-12"
@@ -15,36 +14,38 @@
                 <div class="m-tab">
                     <div class="row mt-4">
                         <div class="col-12">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="name"
-                                [inputConfig]="formConfig.getNameInputConfig(editData?.type)"
-                            ></app-ta-input>
+                                [inputConfig]="
+                                    formConfig.getNameInputConfig(
+                                        editData?.type
+                                    )
+                                "
+                            ></app-ca-input>
                         </div>
                     </div>
-                    
+
                     <div
                         class="phone-ext-email-small-modal"
                         [ngClass]="{
-                            'active-phone-ext': isTerminalPhoneExtExist
+                            'active-phone-ext': isTerminalPhoneExtExist,
                         }"
                     >
                         <div
                             class="phone-extension phone-ext-email-small-modal-my-20"
                         >
                             <div class="phone-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="phone"
                                     [inputConfig]="phoneConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
-                            <ng-container *ngIf="isTerminalPhoneExtExist; else showAddExtension">
-                                <app-ta-input
+                            @if (isTerminalPhoneExtExist) {
+                                <app-ca-input
                                     formControlName="extensionPhone"
                                     [inputConfig]="phoneExtConfig"
-                                ></app-ta-input>
-                            </ng-container>
-                            
-                            <ng-template #showAddExtension>
+                                ></app-ca-input>
+                            } @else {
                                 <div
                                     class="extension-field"
                                     (click)="isTerminalPhoneExtExist = true"
@@ -55,32 +56,45 @@
                                 >
                                     <svg-icon [src]="svgRoutes.plus"></svg-icon>
                                 </div>
-                            </ng-template>
-                            
+                            }
                         </div>
                         <div class="email-field">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="emailConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-10">
-                            <app-ta-input-address-dropdown
+                            <app-ca-input-address-dropdown
                                 formControlName="address"
-                                [inputConfig]="addressConfig"
+                                [inputConfig]="{
+                                    name: 'Address',
+                                    type: 'text',
+                                    label: 'Address, City, State Zip',
+                                    isRequired: true,
+                                    placeholderIcon: 'address',
+                                    textTransform: 'capitalize',
+                                    dropdownWidthClass: 'w-col-376',
+                                    minLength: 6,
+                                    maxLength: 256
+                                }"
                                 [placeholderType]="'longAddress'"
                                 [activeAddress]="selectedAddress"
                                 (selectedAddress)="onHandleAddress($event)"
-                            ></app-ta-input-address-dropdown>
+                                [receivedAddressList]="addressList"
+                                [receivedAddressData]="addressData"
+                                (sentAddressData)="onAddressChange($event)"
+                                (sentAddressValue)="getAddressData($event)"
+                            ></app-ca-input-address-dropdown>
                         </div>
                         <div class="col-2">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="addressUnit"
                                 [inputConfig]="addressUnitConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -93,7 +107,7 @@
                         [withoutToggle]="true"
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                         [isCardOpen]="!terminalForm.get('isOwner').value"
                     >
@@ -101,7 +115,7 @@
                             <div class="mt-3 mb-3">
                                 <div class="row row-no-m">
                                     <div class="col-4">
-                                        <app-ta-input-dropdown
+                                        <app-ca-input-dropdown
                                             formControlName="payPeriod"
                                             [inputConfig]="payPeriodConfig"
                                             [options]="payPeriods"
@@ -112,12 +126,18 @@
                                                     'pay-period'
                                                 )
                                             "
-                                        ></app-ta-input-dropdown>
+                                        ></app-ca-input-dropdown>
                                     </div>
                                     <div class="col-4 no-p-left">
-                                        <app-ta-input-dropdown
+                                        <app-ca-input-dropdown
                                             formControlName="monthlyDay"
-                                            [inputConfig]="formConfig.getMonthlyDayConfig(terminalForm.get('payPeriod').value)"
+                                            [inputConfig]="
+                                                formConfig.getMonthlyDayConfig(
+                                                    terminalForm.get(
+                                                        'payPeriod'
+                                                    ).value
+                                                )
+                                            "
                                             [options]="
                                                 selectedPayPeriod?.name ===
                                                 'Weekly'
@@ -128,13 +148,13 @@
                                             (selectedItem)="
                                                 onSelectDropdown($event, 'day')
                                             "
-                                        ></app-ta-input-dropdown>
+                                        ></app-ca-input-dropdown>
                                     </div>
                                     <div class="col-4">
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="rent"
                                             [inputConfig]="rentConfig"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
                                 </div>
                             </div>
@@ -149,31 +169,30 @@
                         [isCardOpen]="terminalForm.get('officeChecked').value"
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                     >
                         <div
                             body
                             class="phone-ext-email-small-modal phone-ext-email-small-modal-my-20 row-no-m"
                             [ngClass]="{
-                                'active-phone-ext': isOfficePhoneExtExist
+                                'active-phone-ext': isOfficePhoneExtExist,
                             }"
                         >
                             <div class="phone-extension">
                                 <div class="phone-field">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="officePhone"
                                         [inputConfig]="phoneConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
-                                <ng-container *ngIf="isOfficePhoneExtExist; else showOfficeAddExtension">
-                                    <app-ta-input
+
+                                @if (isOfficePhoneExtExist) {
+                                    <app-ca-input
                                         formControlName="officeExtPhone"
                                         [inputConfig]="phoneExtConfig"
-                                    ></app-ta-input>
-                                </ng-container>
-                                
-                                <ng-template #showOfficeAddExtension>
+                                    ></app-ca-input>
+                                } @else {
                                     <div
                                         class="extension-field"
                                         ngbTooltip
@@ -182,16 +201,17 @@
                                         tooltipBackground="#6c6c6c"
                                         (click)="isOfficePhoneExtExist = true"
                                     >
-                                        <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                        <svg-icon
+                                            [src]="svgRoutes.plus"
+                                        ></svg-icon>
                                     </div>
-                                </ng-template>
-                                
+                                }
                             </div>
                             <div class="email-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="officeEmail"
                                     [inputConfig]="emailConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                     </app-ta-checkbox-card>
@@ -206,72 +226,77 @@
                         [hasArrow]="false"
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                     >
                         <ng-container body>
                             <div
                                 class="phone-ext-email-small-modal phone-ext-email-mt20-mb-32 last-row"
                                 [ngClass]="{
-                                    'active-phone-ext': isParkingPhoneExtExist
+                                    'active-phone-ext': isParkingPhoneExtExist,
                                 }"
                             >
                                 <div class="phone-extension">
                                     <div class="phone-field">
-                                        <app-ta-input
+                                        <app-ca-input
                                             formControlName="parkingPhone"
                                             [inputConfig]="phoneConfig"
-                                        ></app-ta-input>
+                                        ></app-ca-input>
                                     </div>
-                                    <ng-container *ngIf="isParkingPhoneExtExist; else showParkingAddExtension">
-                                        <app-ta-input
+                                    @if (isParkingPhoneExtExist) {
+                                        <app-ca-input
                                             formControlName="parkingExtPhone"
                                             [inputConfig]="phoneExtConfig"
-                                        ></app-ta-input>
-                                    </ng-container>
-                                    
-                                    <ng-template #showParkingAddExtension>
+                                        ></app-ca-input>
+                                    } @else {
                                         <div
                                             class="extension-field"
-                                            (click)="isParkingPhoneExtExist = true"
+                                            (click)="
+                                                isParkingPhoneExtExist = true
+                                            "
                                             ngbTooltip
                                             mainTooltip="Add Extension"
                                             position="top"
                                             tooltipBackground="#6c6c6c"
                                         >
-                                            <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                            <svg-icon
+                                                [src]="svgRoutes.plus"
+                                            ></svg-icon>
                                         </div>
-                                    </ng-template>
-                                    
+                                    }
                                 </div>
                                 <div class="email-field">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="parkingEmail"
                                         [inputConfig]="emailConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="terminalParkingSlot"
                                         [inputConfig]="parkingSlotConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="terminalFullParkingSlot"
                                         [inputConfig]="fullParkingSlotConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                             <div
                                 class="parking-gate-securityCamera parking-gate-securityCamera-location-terminal"
                             >
                                 <div class="gate-field">
-                                    <p class="m-0 text-color-black-2 text-size-14 ta-font-medium">Gate</p>
+                                    <p
+                                        class="m-0 text-color-black-2 text-size-14 ta-font-medium"
+                                    >
+                                        Gate
+                                    </p>
                                     <div class="gate-radio">
                                         <app-ta-tab-switch
                                             [tabs]="gateBtns"
@@ -284,7 +309,11 @@
                                     </div>
                                 </div>
                                 <div class="camera-field">
-                                    <p class="m-0 text-color-black-2 text-size-14 ta-font-medium">Security Camera</p>
+                                    <p
+                                        class="m-0 text-color-black-2 text-size-14 ta-font-medium"
+                                    >
+                                        Security Camera
+                                    </p>
                                     <div class="camera-radio">
                                         <app-ta-tab-switch
                                             [tabs]="cameraBtns"
@@ -310,48 +339,50 @@
                         "
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                     >
                         <div
                             body
                             class="phone-ext-email-small-modal phone-ext-email-small-modal-my-20 row-no-m"
                             [ngClass]="{
-                                'active-phone-ext': isWarehousePhoneExtExist
+                                'active-phone-ext': isWarehousePhoneExtExist,
                             }"
                         >
                             <div class="phone-extension">
                                 <div class="phone-field">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="warehousePhone"
                                         [inputConfig]="phoneConfig"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
-                                <ng-container *ngIf="isWarehousePhoneExtExist; else showWarehouseAddExtension">
-                                    <app-ta-input
+                                @if (isWarehousePhoneExtExist) {
+                                    <app-ca-input
                                         formControlName="warehouseExtPhone"
                                         [inputConfig]="phoneExtConfig"
-                                    ></app-ta-input>
-                                </ng-container>
-                                
-                                <ng-template #showWarehouseAddExtension>
+                                    ></app-ca-input>
+                                } @else {
                                     <div
                                         class="extension-field"
-                                        (click)="isWarehousePhoneExtExist = true"
+                                        (click)="
+                                            isWarehousePhoneExtExist = true
+                                        "
                                         ngbTooltip
                                         mainTooltip="Add Extension"
                                         position="top"
                                         tooltipBackground="#6c6c6c"
                                     >
-                                        <svg-icon [src]="svgRoutes.plus"></svg-icon>
+                                        <svg-icon
+                                            [src]="svgRoutes.plus"
+                                        ></svg-icon>
                                     </div>
-                                </ng-template>
+                                }
                             </div>
                             <div class="email-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="warehouseEmail"
                                     [inputConfig]="emailConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                     </app-ta-checkbox-card>
@@ -364,7 +395,7 @@
                         [hasArrow]="false"
                         [animationMarginParams]="{
                             marginTop: '0',
-                            marginBottom: '0'
+                            marginBottom: '0',
                         }"
                     >
                     </app-ta-checkbox-card>
@@ -372,4 +403,87 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                data?.createdAt | formatDateP
+            }} <br> Edited    {{ data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutesCommon.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutesCommon.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+<ng-template #leftModalContent>
+    @if (terminalName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ terminalName }}
+        </div>
+    }
+</ng-template>
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <app-ca-modal-button
+                    text="Delete"
+                    size="Small"
+                    (click)="onModalAction(taModalActionEnum.DELETE)"
+                    [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
+                >
+                </app-ca-modal-button>
+                <app-ca-modal-button
+                    text="Save Changes"
+                    [isValid]="terminalForm.valid && isFormDirty"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                    [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
+                >
+                </app-ca-modal-button>
+            </div>
+        } @else {
+            <app-ca-modal-button
+                text=" Save and Add New"
+                [isValid]="terminalForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
+                [isSpinnerShown]="
+                    activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
+                "
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+            >
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                text="Save"
+                [isValid]="terminalForm.valid && isFormDirty"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>

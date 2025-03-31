@@ -1,0 +1,37 @@
+<div class="fuel-stop-details-container">
+    @for (item of fuelStopDetailsConfig; track item.id) {
+        <app-ta-details-header
+            [isDetailsDropdownImplementation]="true"
+            [hasIcon]="item.icon"
+            [hasSearch]="item?.hasSearch"
+            [options]="detailsDropdownOptions"
+            [optionsId]="newFuelStopId"
+            [route]="'/list/fuel'"
+            [tooltipHeaderName]="'Back to List'"
+            [headerText]="item.name"
+            [counterData]="item.length"
+            [showClosedBadge]="item.isClosedBusiness"
+            [businessOpen]="!item.isClosedBusiness"
+            [hasSort]="item.hasSort"
+            [isSortBtn]="item.isSortBtn"
+            [sortColumns]="item.sortColumns"
+            [statusInactive]="item.hide"
+            [totalCost]="item.total"
+            [mainData]="item"
+            [isSearchBtn]="true"
+            (onDropdownMenuActions)="
+                handleDropdownMenuActions($event, eDropdownMenu.FUEL_STOP)
+            "
+            (openModalAction)="onModalAction($event)"
+            (sortActions)="onFuelStopSortActions($event, item?.name)"
+            (searchBtnEmitter)="onSearchBtnClick($event, item?.name)"
+        >
+        </app-ta-details-header>
+    }
+
+    <app-fuel-stop-details-item
+        [detailsConfig]="fuelStopDetailsConfig"
+        [searchConfig]="searchConfig"
+    >
+    </app-fuel-stop-details-item>
+</div>

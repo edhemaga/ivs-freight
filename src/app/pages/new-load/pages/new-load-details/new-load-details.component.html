@@ -1,0 +1,39 @@
+@let load = loadStoreService.resolveLoadDetails$ | async;
+@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
+
+<div class="load-details-row">
+    <aside>
+        @let backLink = '/' + eLoadRouting.LIST;
+        <div class="p-x-6">
+            <app-ta-details-page-title
+                textTitle="Load Detail"
+                [routeLink]="backLink"
+                [detailsDropdownOptions]="detailsDropdownOptions"
+                [isLoading]="isLoading"
+                [rightSide]="rightSide"
+            >
+                <ng-template #rightSide>
+                    @if (isLoading) {
+                        <p class="placeholder-glow">
+                            <span
+                                class="placeholder background-muted br-2 h-26 w-70"
+                            ></span>
+                        </p>
+                    } @else {
+                        <div
+                            class="h-26 text-color-white text-size-14 ta-font-bold p-x-8 text-uppercase br-2 d-flex align-items-center justify-content-center"
+                            [ngClass]="load.statusType?.id | statusClass"
+                        >
+                            {{ load.statusType?.name }}
+                        </div>
+                    }
+                </ng-template>
+            </app-ta-details-page-title>
+        </div>
+
+        <app-load-details-general> </app-load-details-general>
+    </aside>
+
+    <app-load-details-stops></app-load-details-stops>
+    <app-load-details-additional></app-load-details-additional>
+</div>

@@ -1,0 +1,20 @@
+@let isOutdated = _cardData.priceOutDated || _cardData.defPriceOutDated;
+
+<app-ta-custom-card
+    [cardName]="'Last Fuel Price'"
+    [subText]="!isLastFuelPriceCardOpen && (_cardData | lastFuelPriceCardTitle)"
+    [isCardOpen]="!!_cardData?.pricePerGallon || !!_cardData.defPrice"
+    [bodyTemplate]="'card'"
+    [disabledCard]="!_cardData?.pricePerGallon && !_cardData.defPrice"
+    [hasDivider]="false"
+    [animationMarginParams]="{
+        marginTop: '0px',
+        marginBottom: '8px',
+    }"
+    [hasWeeklyStatus]="isLastFuelPriceCardOpen && isOutdated && 'Outdated'"
+    (onOpenCard)="handleLastFuelPriceCardOpen($event)"
+>
+    <app-ca-last-fuel-price-progress
+        [lastFuelPriceData]="_cardData"
+    ></app-ca-last-fuel-price-progress>
+</app-ta-custom-card>

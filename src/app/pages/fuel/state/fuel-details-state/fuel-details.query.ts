@@ -1,13 +1,15 @@
 import { Injectable } from '@angular/core';
+
+// store
 import { QueryEntity } from '@datorama/akita';
 import {
-    FuelItemState,
-    FuelItemStore,
+    FuelDetailsState,
+    FuelDetailsStore,
 } from '@pages/fuel/state/fuel-details-state/fuel-details.store';
 
 @Injectable({ providedIn: 'root' })
-export class FuelDetailsQuery extends QueryEntity<FuelItemState> {
-    constructor(protected fuelItemStore: FuelItemStore) {
-        super(fuelItemStore);
+export class FuelDetailsQuery extends QueryEntity<FuelDetailsState> {
+    constructor(protected fuelDetailsStore: FuelDetailsStore) {
+        super(fuelDetailsStore);
     }
 }

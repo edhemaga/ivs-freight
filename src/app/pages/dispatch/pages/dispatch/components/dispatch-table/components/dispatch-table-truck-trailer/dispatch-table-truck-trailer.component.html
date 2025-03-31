@@ -1,20 +1,20 @@
 <div
     class="main_inside truck-trailer-container"
     [ngClass]="{
-        filled: type === 'truck' ? !!truck : !!trailer,
+        filled: type === eSharedString.TRUCK ? !!truck : !!trailer,
         'drop-disabled':
-            ((type === 'truck' ? !!truck : !!trailer) &&
+            ((type === eSharedString.TRUCK ? !!truck : !!trailer) &&
                 isDrag &&
                 isActiveLoad) ||
             isTrailerAddNewHidden ||
             (isDrag && !isTrailerDropAllowed),
-        'active-load': type === 'trailer' && isActiveLoad
+        'active-load': type === eSharedString.TRAILER && isActiveLoad,
     }"
 >
     <ng-container
         *ngIf="
-            (type === 'truck' && truckIndex !== rowIndex) ||
-                (type === 'trailer' && trailerIndex !== rowIndex);
+            (type === eSharedString.TRUCK && truckIndex !== rowIndex) ||
+                (type === eSharedString.TRAILER && trailerIndex !== rowIndex);
             else dropdown
         "
     >
@@ -22,8 +22,8 @@
 
         <ng-container
             *ngIf="
-                ((type === 'truck' && !truck) ||
-                    (type === 'trailer' &&
+                ((type === eSharedString.TRUCK && !truck) ||
+                    (type === eSharedString.TRAILER &&
                         !trailer &&
                         !isTrailerAddNewHidden)) &&
                     !isBoardLocked;
@@ -41,8 +41,8 @@
         <ng-template #selectedTruckTrailer>
             <ng-container
                 *ngIf="
-                    (type === 'truck' && truck) ||
-                    (type === 'trailer' && trailer)
+                    (type === eSharedString.TRUCK && truck) ||
+                    (type === eSharedString.TRAILER && trailer)
                 "
             >
                 <div
@@ -55,24 +55,28 @@
                         position="bottom"
                         [mainTooltip]="
                             isCircleIconHovering
-                                ? type === 'truck'
+                                ? type === eSharedString.TRUCK
                                     ? truck.truckType.name
                                     : trailer.trailerType.name
                                 : ''
                         "
                         [tooltipBackground]="
                             isCircleIconHovering
-                                ? type === 'truck'
+                                ? type === eSharedString.TRUCK
                                     ? (truck.truckType.id
-                                      | dispatchColorFinder : 'truck' : true)
+                                      | truckTrailerColorFinder
+                                          : eSharedString.TRUCK
+                                          : true)
                                     : (trailer.trailerType.id
-                                      | dispatchColorFinder : 'trailer' : true)
+                                      | truckTrailerColorFinder
+                                          : eSharedString.TRAILER
+                                          : true)
                                 : 'transparent'
                         "
                         [ngStyle]="{
                             padding: isBoardLocked
                                 ? '2px 0 1px 6px'
-                                : '0 0 0 6px'
+                                : '0 0 0 6px',
                         }"
                     >
                         <div
@@ -80,7 +84,7 @@
                             [ngStyle]="{
                                 'max-width': isBoardLocked
                                     ? '100%'
-                                    : 'calc( 100% - 26px )'
+                                    : 'calc( 100% - 26px )',
                             }"
                         >
                             <!-- Circle Icon -->
@@ -88,16 +92,18 @@
                             <svg-icon
                                 class="circle-icon"
                                 [ngClass]="
-                                    type === 'truck'
+                                    type === eSharedString.TRUCK
                                         ? (truck.truckType.id
-                                          | dispatchColorFinder : 'truck')
+                                          | truckTrailerColorFinder
+                                              : eSharedString.TRUCK)
                                         : (trailer.trailerType.id
-                                          | dispatchColorFinder : 'trailer')
+                                          | truckTrailerColorFinder
+                                              : eSharedString.TRAILER)
                                 "
                                 [src]="dispatchTableSvgRoutes.circleSvgRoute"
                                 [svgStyle]="{
                                     'width.px': '10',
-                                    'height.px': '10'
+                                    'height.px': '10',
                                 }"
                                 (mouseenter)="isCircleIconHovering = true"
                                 (mouseleave)="isCircleIconHovering = false"
@@ -114,17 +120,19 @@
                                 <svg-icon
                                     class="truck-trailer-icon"
                                     [ngClass]="
-                                        type === 'truck'
+                                        type === eSharedString.TRUCK
                                             ? (truck.truckType.id
-                                              | dispatchColorFinder : 'truck')
+                                              | truckTrailerColorFinder
+                                                  : eSharedString.TRUCK)
                                             : (trailer.trailerType.id
-                                              | dispatchColorFinder : 'trailer')
+                                              | truckTrailerColorFinder
+                                                  : eSharedString.TRAILER)
                                     "
                                     [svgStyle]="{
-                                        'height.px': '18'
+                                        'height.px': '18',
                                     }"
                                     [src]="
-                                        type === 'truck'
+                                        type === eSharedString.TRUCK
                                             ? 'assets/svg/common/trucks/' +
                                               truck.truckType.logoName
                                             : 'assets/svg/common/trailers/' +
@@ -140,7 +148,7 @@
                                     class="m-0 ta-font-bold truck-trailer-number"
                                 >
                                     {{
-                                        type === 'truck'
+                                        type === eSharedString.TRUCK
                                             ? truck.truckNumber
                                             : trailer.trailerNumber
                                     }}
@@ -148,12 +156,14 @@
                                 <ng-container *ngIf="isYearShown">
                                     <span>
                                         {{
-                                            type === 'truck' && !!truck.year
+                                            type === eSharedString.TRUCK &&
+                                            !!truck.year
                                                 ? '(' + truck.year + ')'
-                                                : type === 'trailer' &&
-                                                  !!trailer.year
-                                                ? '(' + trailer.year + ')'
-                                                : ''
+                                                : type ===
+                                                        eSharedString.TRAILER &&
+                                                    !!trailer.year
+                                                  ? '(' + trailer.year + ')'
+                                                  : ''
                                         }}
                                     </span>
                                 </ng-container>
@@ -176,7 +186,7 @@
                                 tooltipMarginTop="5px"
                                 position="bottom"
                                 (click)="
-                                    type === 'truck'
+                                    type === eSharedString.TRUCK
                                         ? removeTruck(rowIndex)
                                         : removeTrailer(rowIndex)
                                 "
@@ -199,13 +209,21 @@
         <app-ca-input-dropdown
             [formControl]="truckTrailerFormControl"
             [template]="'svgtext-dispatch-template'"
-            [inputConfig]="truckTrailerInputConfig"
+            [inputConfig]="
+                {
+                    type: type,
+                    truckDropdownWidth: _truckDropdownWidth,
+                    trailerDropdownWidth: _trailerDropdownWidth,
+                } | dispatchConfig: eSharedString.TRAILER
+            "
             [canAddNew]="hasAddNew"
             [canOpenModal]="true"
-            [options]="type === 'truck' ? _truckList : _trailerList"
+            [options]="type === eSharedString.TRUCK ? _truckList : _trailerList"
             (selectedItem)="
-                type === 'truck' ? addTruck($event) : addTrailer($event)
+                type === eSharedString.TRUCK
+                    ? addTruck($event)
+                    : addTrailer($event)
             "
-        ></app-ca-input-dropdown> 
+        ></app-ca-input-dropdown>
     </ng-template>
 </div>

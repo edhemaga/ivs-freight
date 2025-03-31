@@ -8,14 +8,20 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// helpers
-import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calculations.helper';
-
 // svg routes
 import { OpenHoursDropdownSvgRoutes } from '@shared/components/ta-open-hours-dropdown/utils/svg-routes';
 
+// enums
+import { eStringPlaceholder } from '@shared/enums';
+
+// helpers
+import { OpenHoursHelper } from '@shared/utils/helpers';
+
 // models
-import { RepairShopOpenHoursCommand } from 'appcoretruckassist';
+import {
+    OpenHoursTodayResponse,
+    RepairShopOpenHoursResponse,
+} from 'appcoretruckassist';
 
 @Component({
     selector: 'app-ta-open-hours-dropdown',
@@ -33,50 +39,38 @@ import { RepairShopOpenHoursCommand } from 'appcoretruckassist';
     ],
 })
 export class TaOpenHoursDropdownComponent {
-    @Input() componentData: {
-        rowId?: number;
-        width?: number;
-        openHours: RepairShopOpenHoursCommand[];
-        openHoursToday: any; // w8 for back
+    @Input() dropdownConfig: {
+        rowId: number;
+        width: number;
+        openHours: RepairShopOpenHoursResponse[];
+        openHoursToday: OpenHoursTodayResponse;
+        openAlways: boolean;
     };
-
-    public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
 
     public openHoursDropdownActiveId: number = -1;
 
-    public trackByIdentity = <T>(index: number, _: T): number => index;
+    // svg routes
+    public openHoursDropdownSvgRoutes = OpenHoursDropdownSvgRoutes;
+
+    // enums
+    public eStringPlaceholder = eStringPlaceholder;
+
+    public onHideOpenHoursDropdown(): void {
+        const isActiveDropdown =
+            this.openHoursDropdownActiveId === this.dropdownConfig?.rowId;
+
+        if (isActiveDropdown) this.openHoursDropdownActiveId = -1;
+    }
 
     public onShowOpenHoursDropdown(popover: NgbPopover): void {
-        let data = [];
-
-        this.componentData?.openHours?.forEach(
-            (dayOfWeek: RepairShopOpenHoursCommand) => {
-                const startTime =
-                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
-                        dayOfWeek?.startTime
-                    );
-                const endTime =
-                    MethodsCalculationsHelper.convertTimeFromBackendBadFormat(
-                        dayOfWeek?.endTime
-                    );
-
-                const workingHourItem = {
-                    workingDays: dayOfWeek?.dayOfWeek,
-                    workingHours: `${startTime} - ${endTime}`,
-                };
-
-                data = [...data, workingHourItem];
-            }
+        const openHours = OpenHoursHelper.createOpenHours(
+            this.dropdownConfig?.openHours
         );
 
-        if (popover.isOpen()) {
-            popover.close();
+        this.openHoursDropdownActiveId = popover.isOpen()
+            ? -1
+            : this.dropdownConfig?.rowId;
 
-            this.openHoursDropdownActiveId = -1;
-        } else {
-            popover.open({ data });
-
-            this.openHoursDropdownActiveId = this.componentData?.rowId;
-        }
+        popover.isOpen() ? popover.close() : popover.open({ openHours });
     }
 }

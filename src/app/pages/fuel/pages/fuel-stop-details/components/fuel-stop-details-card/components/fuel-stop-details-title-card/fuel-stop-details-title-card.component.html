@@ -1,0 +1,100 @@
+@let isFirstFuelStopInList = [0, -1].includes(fuelStopCurrentIndex);
+@let isFirstFuelStopStoreInList = [0, -1].includes(fuelStopStoreCurrentIndex);
+@let isLastFuelStopInList =
+    fuelStopCurrentIndex === fuelStopFranchiseDropdownList?.length - 1;
+@let isLastFuelStopStoreInList =
+    fuelStopStoreCurrentIndex === fuelStopStoreDropdownList?.length - 1;
+
+@let isClosedBusiness = _cardData?.isClosed;
+
+<app-ta-details-header-card
+    [ngClass]="{
+        disabedPreviousArrow: isFirstFuelStopInList,
+        disableNextArrow: isLastFuelStopInList,
+    }"
+    [tooltipNext]="
+        isLastFuelStopInList ? eStringPlaceholder.EMPTY : eGeneralActions.NEXT
+    "
+    [tooltipPrevious]="
+        isFirstFuelStopInList
+            ? eStringPlaceholder.EMPTY
+            : eGeneralActions.PREVIOUS
+    "
+    [cardDetailsDate]="_cardData?.createdAt | formatDateP"
+    [dateChecked]="_cardData?.lastUsed && (_cardData.lastUsed | formatDateP)"
+    [dateClosed]="
+        _cardData?.deactivatedAt && (_cardData.deactivatedAt | formatDateP)
+    "
+    [searchInputName]="eFuelStopDetails.SEARCH_FUEL_STOP"
+    [searchName]="
+        isClosedBusiness
+            ? eBusinessStatus.PERMANENTLY_CLOSED
+            : eBusinessStatus.FAVORITE
+    "
+    [options]="fuelStopFranchiseDropdownList"
+    [currentName]="_cardData?.businessName"
+    [haveDropSVG]="isClosedBusiness || _cardData?.favourite"
+    [customPinnedSvg]="
+        isClosedBusiness
+            ? fuelStopDetailsSvgRoutes.closedRoute
+            : fuelStopDetailsSvgRoutes.favoriteRoute
+    "
+    [hasMultipleInputs]="!!_cardData?.store"
+    [optionsSecondInput]="fuelStopStoreDropdownList"
+    [secondCurrentName]="
+        _cardData?.store && eFuelStopDetails.FUEL_STOP_STORE + _cardData?.store
+    "
+    [isFirstFuelStopStoreInList]="isFirstFuelStopStoreInList"
+    [isLastFuelStopStoreInList]="isLastFuelStopStoreInList"
+    (selectValue)="handleCardChanges($event, eFuelStopDetails.SELECT_FUEL_STOP)"
+    (changeEvent)="handleCardChanges($event, eFuelStopDetails.CHANGE_FUEL_STOP)"
+    (changeEventAdditional)="
+        handleCardChanges($event, eFuelStopDetails.CHANGE_FUEL_STOP, true)
+    "
+>
+    <div class="d-flex flex-column justify-content-center stop-title-card">
+        <!-- Phone -->
+
+        <div class="d-flex align-items-center stop-title-card-item">
+            <div
+                ngbTooltip
+                mainTooltip="Phone"
+                position="bottom"
+                tooltipBackground="#424242"
+            >
+                <svg-icon
+                    class="svg-size-18 svg-fill-muted svg-hover-bw6-2 stop-title-card-item-icon"
+                    [src]="fuelStopDetailsSvgRoutes.phoneRoute"
+                ></svg-icon>
+            </div>
+
+            <app-ta-copy
+                [copyValue]="_cardData?.phone"
+                [textColor]="'#2f2f2f'"
+            ></app-ta-copy>
+        </div>
+
+        <!-- Address -->
+
+        <div
+            class="d-flex align-items-center stop-title-card-item text-truncate"
+        >
+            <div
+                ngbTooltip
+                mainTooltip="Address"
+                position="bottom"
+                tooltipBackground="#424242"
+            >
+                <svg-icon
+                    class="svg-size-18 svg-fill-muted svg-hover-bw6-2 stop-title-card-item-icon"
+                    [src]="fuelStopDetailsSvgRoutes.addressRoute"
+                ></svg-icon>
+            </div>
+
+            <app-ta-copy
+                [copyValue]="_cardData?.address"
+                [textColor]="'#2f2f2f'"
+            ></app-ta-copy>
+        </div>
+    </div>
+</app-ta-details-header-card>

@@ -42,6 +42,10 @@ export interface DetailsConfig {
     locationFilter?: boolean;
     areaFilter?: boolean;
     moneyFilter?: boolean;
+    truckTypeFilter?: boolean;
+    trailerTypeFilter?: boolean;
+    pmFilter?: boolean;
+    repairOrderFilter?: boolean;
     hasSort?: boolean;
     isSortBtn?: boolean;
     sortColumns?: SortColumn[];

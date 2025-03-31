@@ -1,238 +1,158 @@
 @import 'src/theme/variables.scss';
+@import './mixins.scss';
+
+@mixin hover($color) {
+    transition: color $transitionDuration ease-in-out;
+
+    &:hover {
+        color: $color !important;
+    }
+}
 
 .text {
     &-color {
         &-black {
             color: $ta-black !important;
-
-            &::-moz-selection {
-                background: rgb(66, 66, 66, 0.2) !important;
-                color: $ta-black !important;
-            }
-
-            &::selection {
-                background: rgb(66, 66, 66, 0.2) !important;
-                color: $ta-black !important;
-            }
+            @include text-selection($ta-black);
         }
 
         &-black-2 {
             color: $ta-black-2 !important;
-
-            &::-moz-selection {
-                background: rgb(47, 47, 47, 0.2) !important;
-                color: $ta-black-2 !important;
-            }
-
-            &::selection {
-                background: rgb(47, 47, 47, 0.2) !important;
-                color: $ta-black-2 !important;
-            }
+            @include text-selection($ta-black-2);
         }
 
         &-muted {
             color: $muted !important;
-
-            &::-moz-selection {
-                background: rgb(145, 145, 145, 0.2) !important;
-                color: $muted !important;
-            }
-
-            &::selection {
-                background: rgb(145, 145, 145, 0.2) !important;
-                color: $muted !important;
-            }
+            @include text-selection($muted);
         }
 
         &-green {
             color: $ta-green !important;
+            @include text-selection($ta-green);
+        }
 
-            &::-moz-selection {
-                background: rgb(86, 180, 172, 0.2) !important;
-                color: $ta-green !important;
-            }
+        &-green-2 {
+            color: $ta-green-2 !important;
+            @include text-selection($ta-green-2);
+        }
 
-            &::selection {
-                background: rgb(86, 180, 172, 0.2) !important;
-                color: $ta-green !important;
-            }
+        &-green-4 {
+            color: $ta-green-4 !important;
+            @include text-selection($ta-green-4);
         }
 
         &-blue-13 {
             color: $ta-blue-13 !important;
+            @include text-selection($ta-blue-13);
+        }
 
-            &::-moz-selection {
-                background: rgb(102, 146, 24, 0.2) !important;
-                color: $ta-blue-13 !important;
-            }
-
-            &::selection {
-                background: rgb(102, 146, 24, 0.2) !important;
-                color: $ta-blue-13 !important;
-            }
+        &-blue-16 {
+            color: $ta-blue-16 !important;
+            @include text-selection($ta-blue-16);
         }
 
         &-blue-18 {
             color: $ta-blue-18 !important;
+            @include text-selection($ta-blue-18);
+        }
 
-            &::-moz-selection {
-                background: rgb(59, 115, 237, 0.2) !important;
-                color: $ta-blue-18 !important;
-            }
-
-            &::selection {
-                background: rgb(59, 115, 237, 0.2) !important;
-                color: $ta-blue-18 !important;
-            }
+        &-blue-19 {
+            color: $ta-blue-19 !important;
+            @include text-selection($ta-blue-19);
         }
 
         &-red-10 {
             color: $ta-red-10 !important;
+            @include text-selection($ta-red-10);
+        }
 
-            &::-moz-selection {
-                background: rgb(230, 103, 103, 0.2) !important;
-                color: $ta-red-10 !important;
-            }
+        &-red-11 {
+            color: $ta-red-11 !important;
+            @include text-selection($ta-red-11);
+        }
 
-            &::selection {
-                background: rgb(230, 103, 103, 0.2) !important;
-                color: $ta-red-10 !important;
-            }
+        &-red-13 {
+            color: $ta-red-13 !important;
+            @include text-selection($ta-red-13);
+        }
+
+        &-yellow {
+            color: $ta-yellow-1 !important;
+            @include text-selection($ta-yellow-1);
+        }
+        &-yellow-5 {
+            color: $ta-yellow-5 !important;
+            @include text-selection($ta-yellow-5);
+        }
+
+        &-purple {
+            color: $ta-purple-1 !important;
+            @include text-selection($ta-purple-1);
+        }
+
+        &-special-filter-purple {
+            color: $special-filter-purple !important;
+            @include text-selection($special-filter-purple);
         }
 
         &-light-grey {
             color: $ta-light-grey !important;
-
-            &::-moz-selection {
-                background: rgb(229, 229, 229, 0.2) !important;
-                color: $ta-light-grey !important;
-            }
-
-            &::selection {
-                background: rgb(229, 229, 229, 0.2) !important;
-                color: $ta-light-grey !important;
-            }
+            @include text-selection($ta-light-grey);
         }
 
         &-light-grey-2 {
             color: $ta-light-grey-2 !important;
-
-            &::-moz-selection {
-                background: rgb(170, 170, 170, 0.2) !important;
-                color: $ta-light-grey-2 !important;
-            }
-
-            &::selection {
-                background: rgb(170, 170, 170, 0.2) !important;
-                color: $ta-light-grey-2 !important;
-            }
+            @include text-selection($ta-light-grey-2);
         }
 
         &-light-grey-6 {
             color: $ta-light-grey-6 !important;
-
-            &::-moz-selection {
-                color: $ta-light-grey-6 !important;
-                background: rgb(170, 170, 170, 0.2) !important;
-            }
-
-            &::selection {
-                color: $ta-light-grey-6 !important;
-                background: rgb(170, 170, 170, 0.2) !important;
-            }
+            @include text-selection($ta-light-grey-6);
         }
 
         &-white {
             color: $white !important;
+            @include text-selection($white);
+        }
 
-            &::-moz-selection {
-                color: $white !important;
-                background: rgb(255, 255, 255, 0.2) !important;
-            }
-
-            &::selection {
-                color: $white !important;
-                background: rgb(255, 255, 255, 0.2) !important;
-            }
+        &-white-2 {
+            color: $white-2 !important;
+            @include text-selection($white);
         }
 
         &-white-4 {
             color: $white-4 !important;
-
-            &::-moz-selection {
-                color: $white-4 !important;
-                background: rgb(255, 255, 255, 0.2) !important;
-            }
-
-            &::selection {
-                color: $white-4 !important;
-                background: rgb(255, 255, 255, 0.2) !important;
-            }
-        }
-
-        &-dark-grey {
-            color: $bw6-2 !important;
-
-            &::-moz-selection {
-                color: $bw6-2 !important;
-                background: rgb(108, 108, 108, 0.2) !important;
-            }
-
-            &::selection {
-                color: $bw6-2 !important;
-                background: rgb(108, 108, 108, 0.2) !important;
-            }
+            @include text-selection($white-4);
         }
 
         &-bw6-2 {
             color: $bw6-2 !important;
-
-            &::-moz-selection {
-                color: $bw6-2 !important;
-                background: rgba(108, 108, 108, 0.2) !important;
-            }
-            &::selection {
-                color: $bw6-2 !important;
-                background: rgba(108, 108, 108, 0.2) !important;
-            }
+            @include text-selection($bw6-2);
         }
 
         &-bw-9 {
             color: $bw-9 !important;
-
-            &::-moz-selection {
-                color: $bw6-2 !important;
-                background: rgba(108, 108, 108, 0.2) !important;
-            }
-            &::selection {
-                color: $bw6-2 !important;
-                background: rgba(108, 108, 108, 0.2) !important;
-            }
+            @include text-selection($bw-9);
         }
 
         &-grey {
             color: $bw5 !important;
-
-            &::-moz-selection {
-                color: $bw5 !important;
-                background: rgba(145, 145, 145, 0.2) !important;
-            }
-            &::selection {
-                color: $bw5 !important;
-                background: rgba(145, 145, 145, 0.2) !important;
-            }
+            @include text-selection($bw5);
 
             .address-text,
             .marker-bold-text {
-                &::-moz-selection {
-                    color: $bw5 !important;
-                    background: rgba(145, 145, 145, 0.2) !important;
-                }
-                &::selection {
-                    color: $bw5 !important;
-                    background: rgba(145, 145, 145, 0.2) !important;
-                }
+                @include text-selection($bw5);
             }
+        }
+    }
+
+    &-hover {
+        &-black {
+            @include hover($ta-black);
+        }
+
+        &-blue-15 {
+            @include hover($ta-blue-15);
         }
     }
 }

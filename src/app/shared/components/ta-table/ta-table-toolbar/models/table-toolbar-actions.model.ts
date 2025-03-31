@@ -14,7 +14,6 @@ export interface ToolbarActions {
     showFuelStopFilter?: boolean;
     showLtlFilter?: boolean;
     showStatusFilter?: boolean;
-    showDispatcherFilter?: boolean;
     showTruckTypeFilter?: boolean;
     showTrailerTypeFilter?: boolean;
     showRepairOrderFilter?: boolean;

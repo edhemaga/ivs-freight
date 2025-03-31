@@ -1,8 +1,7 @@
 <div class="repair-shop-details-container">
-    <ng-container
-        *ngFor="let item of repairShopDetailsConfig; trackBy: trackByIdentity"
-    >
+    @for (item of repairShopDetailsConfig; track item.id) {
         <app-ta-details-header
+            [isDetailsDropdownImplementation]="true"
             [hasIcon]="item?.icon"
             [hasSearch]="item?.hasSearch"
             [options]="detailsDropdownOptions"
@@ -26,13 +25,16 @@
                 item?.multipleDetailsSelectDropdown
             "
             [isSearchBtn]="true"
-            [timeFilter]="true"
-            [truckTypeFilter]="true"
-            [trailerTypeFilter]="true"
-            [pmFilter]="true"
-            [moneyFilter]="true"
-            [repairOrderFilter]="true"
-            (dropActions)="onRepairShopActions($event)"
+            [timeFilter]="item?.timeFilter"
+            [truckTypeFilter]="item?.truckTypeFilter"
+            [trailerTypeFilter]="item?.trailerTypeFilter"
+            [pmFilter]="item?.pmFilter"
+            [moneyFilter]="item?.moneyFilter"
+            [repairOrderFilter]="item?.repairOrderFilter"
+            [isSortBtn]="item?.isSortBtn"
+            (onDropdownMenuActions)="
+                handleDropdownMenuActions($event, eDropdownMenu.REPAIR_SHOP)
+            "
             (openModalAction)="onModalAction($event)"
             (sortActions)="onRepairShopSortActions($event, item?.name)"
             (searchBtnEmitter)="onSearchBtnClick($event, item?.name)"
@@ -43,7 +45,7 @@
             (specialFilterActions)="onFilter($event)"
         >
         </app-ta-details-header>
-    </ng-container>
+    }
 
     <div>
         <app-repair-shop-details-item

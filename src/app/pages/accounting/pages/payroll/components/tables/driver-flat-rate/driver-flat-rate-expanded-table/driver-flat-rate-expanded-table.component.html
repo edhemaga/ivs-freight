@@ -1,53 +1,53 @@
-<ng-container *ngIf="loading$ | async">
+@let isLoading = loading$ | async;
+
+@if (isLoading) {
     <svg-icon
         [name]="expandTable ? 'payroll_sceleton_collapsed' : 'payroll_sceleton'"
     ></svg-icon>
-</ng-container>
-<ng-container *ngIf="!(loading$ | async)">
+} @else {
     <app-ca-main-table
         [hideFieldsToHide]="!expandTable"
         (onPressEvent)="selectPayrollReport($event)"
         [columns]="columns"
         [data$]="tableData$"
     ></app-ca-main-table>
-</ng-container>
+}
 
 <ng-template #customStatus let-data>
     <div class="custom-status-holder d-flex align-itemst-center">
-        <ng-container *ngIf="data.name === 'Paid'">
+        @if (data.name === 'Paid') {
             <svg-icon
                 class="payment_done d-flex"
                 [svgClass]="'d-flex'"
                 name="mark-as-done"
             ></svg-icon>
-        </ng-container>
+        }
 
-        <ng-container
-            *ngIf="data.name === 'ShortPaid' || data.name === 'NotPaid'"
-        >
+        @if (data.name === 'ShortPaid' || data.name === 'NotPaid') {
             <svg-icon
                 class="caution d-flex"
                 [svgClass]="'d-flex'"
                 name="incorrect"
             ></svg-icon>
-        </ng-container>
+        }
 
-        <ng-container *ngIf="data.name === 'Paid'">
-            <div class="custom-status-text ready-payment">PAID</div>
-        </ng-container>
+        @if (data.name === 'Paid') {
+            <div class="custom-status-text text-color-green-2">PAID</div>
+        }
 
-        <ng-container *ngIf="data.name === 'ShortPaid'">
-            <div class="custom-status-text past-payment">SHORT-P</div>
-        </ng-container>
-        <ng-container *ngIf="data.name === 'NotPaid'">
-            <div class="custom-status-text past-payment">UNPAID</div>
-        </ng-container>
+        @if (data.name === 'ShortPaid') {
+            <div class="custom-status-text text-color-red-11">SHORT-P</div>
+        }
+
+        @if (data.name === 'NotPaid') {
+            <div class="custom-status-text text-color-red-11">UNPAID</div>
+        }
     </div>
 </ng-template>
 
 <ng-template #customMileageHeader let-data>
-    <div class="custom-mileage">
+    <div class="custom-mileage text-color-bw6-2">
         {{ data }}
-        <span>$</span>
+        <span class="text-color-muted">$</span>
     </div>
 </ng-template>

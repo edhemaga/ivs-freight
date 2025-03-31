@@ -8,13 +8,24 @@ import { DispatchConfig } from '@pages/dispatch/pages/dispatch/components/dispat
 import { AddressEntity } from 'appcoretruckassist';
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 import { DispatchBoardParking } from '@pages/dispatch/models/dispatch-parking.model';
+import { AddressData } from '@ca-shared/components/ca-input-address-dropdown/models/address-data.model';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
+// services
+import { AddressService } from '@shared/services/address.service';
 
 @Component({
     selector: 'app-dispatch-table-last-location',
     templateUrl: './dispatch-table-last-location.component.html',
     styleUrls: ['./dispatch-table-last-location.component.scss'],
 })
-export class DispatchTableLastLocationComponentComponent {
+export class DispatchTableLastLocationComponentComponent extends AddressMixin(
+    class {
+        addressService!: AddressService;
+    }
+) {
     @Input() set parkingList(value: DispatchBoardParking[]) {
         if (this.address) this.checkParkingLocation(value);
     }
@@ -29,8 +40,8 @@ export class DispatchTableLastLocationComponentComponent {
         this._locationDropdownWidth = Math.round(value - 2);
     }
 
-    @Output() updateLastLocationEmit: EventEmitter<AddressEntity> =
-        new EventEmitter<AddressEntity>();
+    @Output() updateLastLocationEmit: EventEmitter<AddressData> =
+        new EventEmitter<AddressData>();
     @Output() isDropdownHidden: EventEmitter<boolean> =
         new EventEmitter<boolean>();
 
@@ -42,7 +53,9 @@ export class DispatchTableLastLocationComponentComponent {
 
     public _locationDropdownWidth: number;
 
-    constructor() {}
+    constructor(public addressService: AddressService) {
+        super();
+    }
 
     get lastLocationAddressConfig(): ITaInput {
         return DispatchConfig.getDispatchAddressConfig(
@@ -50,11 +63,17 @@ export class DispatchTableLastLocationComponentComponent {
         );
     }
 
-    public handleInputSelect(event: {
-        address: AddressEntity;
-        valid: boolean;
-    }): void {
-        if (event.valid) this.updateLastLocationEmit.emit(event.address);
+    public handleInputSelect(event: AddressData): void {
+        if (event.valid) {
+            const addressData = {
+                address: event.address,
+                longitude: event.longLat.longitude,
+                latitude: event.longLat.latitude,
+                valid: event.valid,
+            };
+
+            this.updateLastLocationEmit.emit(addressData);
+        }
 
         if (!this.truckAddressControl.value) this.isDropdownHidden.emit(true);
     }

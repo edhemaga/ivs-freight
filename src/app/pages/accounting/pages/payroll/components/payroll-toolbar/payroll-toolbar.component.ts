@@ -12,13 +12,14 @@ import { Subject, takeUntil } from 'rxjs';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 
 // Config
 import {
     PAYROLL_TOOLBAR_STATUS,
     PAYROLL_TOOLBAR_TAB,
-} from '@pages/accounting/pages/payroll/config/payroll_toolbar';
+} from '@pages/accounting/pages/payroll/config';
+import { eStringPlaceholder } from '@shared/enums';
 
 @Component({
     selector: 'app-payroll-toolbar',
@@ -33,7 +34,7 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
 
     public filterConfig = PAYROLL_TOOLBAR_STATUS;
 
-    @Output() toolBarAction: EventEmitter<PayrollTablesStatus> =
+    @Output() toolBarAction: EventEmitter<ePayrollTablesStatus> =
         new EventEmitter();
 
     public tableData: {
@@ -69,12 +70,15 @@ export class PayrollToolbarComponent implements OnInit, OnDestroy {
     // Show Toolbar Options Popup
     public onShowOptions(optionsPopup): void {}
 
-    public onSelectTab(option: PayrollTablesStatus): void {
+    public onSelectTab(option: ePayrollTablesStatus): void {
         this.toolBarAction.emit(option);
     }
 
     public expandTable(): void {
-        this.payrollFacadeService.setPayrollReportTableExpanded(false);
+        this.payrollFacadeService.setPayrollReportTableExpanded(
+            false,
+            eStringPlaceholder.EMPTY
+        );
     }
 
     public identity(item: {

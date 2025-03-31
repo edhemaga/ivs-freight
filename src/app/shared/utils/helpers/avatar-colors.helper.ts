@@ -1,10 +1,11 @@
-import { AvatarColors } from '@pages/driver/pages/driver-table/models/avatar-colors.model';
+// models
+import { AvatarColors } from '@shared/models';
 
 // constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
 export class AvatarColorsHelper {
-    static getAvatarColors(mapingIndex: number): AvatarColors {
+    static getAvatarColors(mapingIndex?: number): AvatarColors {
         const textColors: string[] =
             TableDropdownComponentConstants.TEXT_COLORS;
 

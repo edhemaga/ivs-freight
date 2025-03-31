@@ -7,8 +7,20 @@ import {
     ReactiveFormsModule,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { AngularSvgIconModule } from 'angular-svg-icon';
 
-import { Subject, takeUntil } from 'rxjs';
+import {
+    Subject,
+    takeUntil,
+    tap,
+    filter,
+    switchMap,
+    catchError,
+    of,
+    distinctUntilChanged,
+    debounceTime,
+} from 'rxjs';
 
 // validations
 import {
@@ -20,23 +32,25 @@ import {
 } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 import { phoneFaxRegex } from '@shared/components/ta-input/validators/ta-input.regex-validations';
 
-// animations
-import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
-
 // services
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { UserProfileUpdateService } from '@shared/services/user-profile-update.service';
 import { FormService } from '@shared/services/form.service';
+import { AddressService } from '@shared/services/address.service';
 
 // components
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { CaUploadFilesComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+    CaUploadFilesComponent,
+    CaInputAddressDropdownComponent,
+    eModalButtonClassType,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // models
 import {
@@ -48,13 +62,23 @@ import {
 
 // utils
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
-import { NavigationDataConstants } from '../../utils/constants/navigation-data.constants';
+
+// config
+import { NavigationDataUploadFilesConfig } from '@core/components/navigation/utils/config';
+
+// Enums
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-navigation-profile-update-modal',
     templateUrl: './navigation-profile-update-modal.component.html',
     styleUrls: ['./navigation-profile-update-modal.component.scss'],
-    animations: [tabsModalAnimation('animationTabsModal')],
     providers: [FormService, ModalService],
     standalone: true,
     imports: [
@@ -62,49 +86,40 @@ import { NavigationDataConstants } from '../../utils/constants/navigation-data.c
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
+        AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Modal
-        TaModalComponent,
-        TaTabSwitchComponent,
-        TaInputComponent,
-        TaInputAddressDropdownComponent,
+        CaModalComponent,
+        CaInputComponent,
+        CaModalButtonComponent,
+        CaInputAddressDropdownComponent,
         TaCheckboxCardComponent,
         TaCustomCardComponent,
+        TaAppTooltipV2Component,
+
         // components
         CaUploadFilesComponent,
     ],
 })
 export class NavigationProfileUpdateModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
     implements OnInit, OnDestroy
 {
-    private destroy$ = new Subject<void>();
+    public destroy$ = new Subject<void>();
 
-    public uploadOptionsConstants = NavigationDataConstants.UPLOAD_OPTIONS;
+    public uploadFilesConfig =
+        NavigationDataUploadFilesConfig.NAVIGATION_PROFILE_UPLOAD_FILES_CONFIG;
 
     private user: SignInResponse;
 
-    public selectedTab: number = 1;
-
     public profileUserForm: UntypedFormGroup;
 
-    public disableCardAnimation: boolean = false;
-
-    public tabs: any[] = [
-        {
-            id: 1,
-            name: 'Basic',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'Additional',
-        },
-    ];
-
-    public animationObject = {
-        value: this.selectedTab,
-        params: { height: '0px' },
-    };
+    public isCardAnimationDisabled: boolean = false;
 
     public selectedAddress: AddressEntity = null;
     public userPasswordTyping: boolean = false;
@@ -113,14 +128,25 @@ export class NavigationProfileUpdateModalComponent
     public loadingOldPassword: boolean = false;
 
     public isFormDirty: boolean = false;
+    public activeAction: TaModalActionEnum;
+    public taModalActionEnum = TaModalActionEnum;
+    public svgRoutes = SharedSvgRoutes;
+    public eModalButtonClassType = eModalButtonClassType;
+    public displayName: string;
+    public doesFileExist: boolean = false;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
+        private ngbActiveModal: NgbActiveModal,
+
+        // Services
         private inputService: TaInputService,
         private userProfileUpdateService: UserProfileUpdateService,
-        private modalService: ModalService,
-        private formService: FormService
-    ) {}
+        private formService: FormService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
@@ -128,7 +154,7 @@ export class NavigationProfileUpdateModalComponent
 
         this.getUserById();
         this.changeCheckboxDetection();
-        this.disableCardAnimation = true;
+        this.isCardAnimationDisabled = true;
     }
 
     private createForm() {
@@ -154,18 +180,9 @@ export class NavigationProfileUpdateModalComponent
         );
     }
 
-    public tabChange(event: any): void {
-        this.selectedTab = event.id;
-        let dotAnimation = document.querySelector('.animation-two-tabs');
-
-        this.animationObject = {
-            value: this.selectedTab,
-            params: { height: `${dotAnimation.getClientRects()[0].height}px` },
-        };
-    }
-
-    public onModalAction(data: { action: string; bool: boolean }): void {
-        if (data.action === 'close') {
+    public onModalAction(action: string): void {
+        if (action === TaModalActionEnum.CLOSE) {
+            this.ngbActiveModal.close();
             return;
         }
 
@@ -174,13 +191,9 @@ export class NavigationProfileUpdateModalComponent
             return;
         }
 
-        if (data.action === 'save') {
+        if (action === TaModalActionEnum.SAVE) {
+            this.activeAction = TaModalActionEnum.SAVE;
             this.updateUserProfile();
-            this.modalService.setModalSpinner({
-                action: null,
-                status: true,
-                close: false,
-            });
         }
     }
 
@@ -220,28 +233,36 @@ export class NavigationProfileUpdateModalComponent
         this.profileUserForm
             .get('oldPassword')
             .valueChanges.pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                this.userPasswordTyping = value?.toString().length >= 1;
-                if (value && value.length >= 8) {
-                    this.loadingOldPassword = true;
+            .pipe(
+                tap((value: string) => {
+                    this.userPasswordTyping = value?.toString().length >= 1;
+                }),
+                filter((value: string) => value && value.length >= 8),
+                debounceTime(300), // Debounce to avoid frequent API calls
+                distinctUntilChanged(), // Avoid duplicate calls for the same value
+                tap(() => (this.loadingOldPassword = true)), // Set loading state
+                switchMap((value: string) =>
                     this.userProfileUpdateService
                         .validateUserPassword({ password: value })
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe({
-                            next: (res: any) => {
-                                this.correctPassword = !!res.correctPassword;
+                        .pipe(
+                            catchError(() => {
                                 this.loadingOldPassword = false;
+                                return of({ correctPassword: false }); // Handle errors gracefully
+                            })
+                        )
+                ),
+                tap((res) => {
+                    this.correctPassword = !!res.correctPassword;
+                    this.loadingOldPassword = false;
 
-                                if (!this.correctPassword) {
-                                    this.profileUserForm
-                                        .get('oldPassword')
-                                        .setErrors({ invalid: true });
-                                }
-                            },
-                            error: () => {},
-                        });
-                }
-            });
+                    if (!this.correctPassword) {
+                        this.profileUserForm
+                            .get('oldPassword')
+                            .setErrors({ invalid: true });
+                    }
+                })
+            )
+            .subscribe();
 
         this.passwordsNotSame();
     }
@@ -294,6 +315,8 @@ export class NavigationProfileUpdateModalComponent
         const base64Data = MethodsGlobalHelper.getBase64DataFromEvent(event);
         this.profileUserForm.get('avatar').patchValue(base64Data);
         this.profileUserForm.get('avatar').setErrors(null);
+        this.uploadFilesConfig.files.push(event);
+        this.doesFileExist = !!this.uploadFilesConfig?.files?.length;
     }
 
     public onImageValidation(event: boolean) {
@@ -327,14 +350,16 @@ export class NavigationProfileUpdateModalComponent
                         lastName: res.lastName,
                         phone: res.phone,
                         email: res.email,
-                        address: res.address.address,
+                        address: res.address.address ? res.address : null,
                         addressUnit: res.address.addressUnit,
                         /*  avatar: res.avatar ? res.avatar : null, */
                     });
                     this.selectedAddress = res.address;
+                    this.displayName = `${res.firstName} ${res.lastName}`;
+
                     setTimeout(() => {
                         this.startFormChanges();
-                        this.disableCardAnimation = false;
+                        this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
                 error: () => {},
@@ -342,21 +367,20 @@ export class NavigationProfileUpdateModalComponent
     }
 
     private updateUserProfile() {
-        const { addressUnit, ...form } = this.profileUserForm.value;
+        const { addressUnit, address, ...form } = this.profileUserForm.value;
 
-        if (this.selectedAddress) {
-            this.selectedAddress = {
+        let updateAddress = address;
+        if (address) {
+            updateAddress = {
                 ...this.selectedAddress,
-                addressUnit: addressUnit,
+                addressUnit,
             };
         }
 
         const newData: UpdateUserCommand = {
             id: this.user.userId,
             ...form,
-            address: this.selectedAddress?.address
-                ? this.selectedAddress
-                : null,
+            address: updateAddress?.address ? updateAddress : null,
         };
 
         this.userProfileUpdateService
@@ -372,18 +396,11 @@ export class NavigationProfileUpdateModalComponent
                     };
                     this.userProfileUpdateService.updateUserProfile(true);
                     localStorage.setItem('user', JSON.stringify(newUser));
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    });
+
+                    this.ngbActiveModal.close();
                 },
                 error: () => {
-                    this.modalService.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    });
+                    this.activeAction = null;
                 },
             });
     }

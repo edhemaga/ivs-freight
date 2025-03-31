@@ -15,36 +15,38 @@ import { Observable, takeUntil, Subject } from 'rxjs';
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
 // models
 import {
+    IDropdownMenuLoadItem,
     IGetPayrollByIdAndOptions,
     IPayrollProccessPaymentModal,
     MilesStopShortReponseWithRowType,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollTypes,
 } from '@pages/accounting/pages/payroll/state/models';
-import {
-    MilesStopShortResponse,
-    PayrollCreditType,
-    PayrollDriverMileageByIdResponse,
-} from 'appcoretruckassist';
+import { MilesStopShortResponse, PayrollCreditType } from 'appcoretruckassist';
 import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
-import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu/models/burger-menu.model';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // components
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { ePayrollTable } from '@pages/accounting/pages/payroll/state/enums/payroll-table.enums';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
-// Constants
-import { TableToolbarConstants } from '../constants/report.constants';
+// helpers
+import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
+
 @Component({
     selector: 'app-payroll-report',
     templateUrl: './payroll-report.component.html',
@@ -56,15 +58,17 @@ import { TableToolbarConstants } from '../constants/report.constants';
     changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PayrollReportComponent
-    extends PayrollReportBaseComponent<PayrollDriverMileageByIdResponse>
+    extends PayrollReportBaseComponent<IPayrollDriverMileageByIdResponseNumberId>
     implements OnInit, OnDestroy
 {
     public columns: ColumnConfig[];
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.MILEAGE;
 
-    public optionsPopupContent: OptionsPopupContent[] =
-        TableToolbarConstants.closedReportPayroll;
+    public ePayrollTable = ePayrollTable;
+
+    public dropdownMenuOptions: IDropdownMenuItem[] = [];
+    public loadDropdownList: IDropdownMenuLoadItem[];
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -75,20 +79,23 @@ export class PayrollReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    public _selectedTab: PayrollTablesStatus;
-    @Input() set selectedTab(tab: PayrollTablesStatus) {
-        this.optionsPopupContent =
-            tab === PayrollTablesStatus.OPEN
-                ? TableToolbarConstants.openReportPayroll
-                : TableToolbarConstants.closedReportPayroll;
+    public _selectedTab: ePayrollTablesStatus;
+    @Input() set selectedTab(tab: ePayrollTablesStatus) {
         this._selectedTab = tab;
+
+        this.dropdownMenuOptions =
+            PayrollReportHelper.getPayrollDropdownContent(
+                false,
+                this._selectedTab,
+                this.isEditLoadDropdownActionActive
+            );
     }
 
     public get selectedTab() {
         return this._selectedTab;
     }
 
-    public payrollReport$: Observable<PayrollDriverMileageByIdResponse>;
+    public payrollReport$: Observable<IPayrollDriverMileageByIdResponseNumberId>;
     public payrollMileageDriverLoads$: Observable<
         MilesStopShortReponseWithRowType[]
     >;
@@ -104,6 +111,9 @@ export class PayrollReportComponent
     public readonly customCountTemplate!: ElementRef;
     @ViewChild('customLocationTypeLoad', { static: false })
     public readonly customLocationTypeLoad!: ElementRef;
+
+    @ViewChild('towingTemplate', { static: false })
+    public readonly towingTemplate!: ElementRef;
 
     @ViewChild('customFeeTemplate', { static: false })
     public readonly customFeeTemplate!: ElementRef;
@@ -130,9 +140,11 @@ export class PayrollReportComponent
         // Services
         private payrollFacadeService: PayrollFacadeService,
         modalService: ModalService,
-        payrollService: PayrollService
+        payrollService: PayrollService,
+        public loadStoreService: LoadStoreService,
+        public driverService: DriverService
     ) {
-        super(modalService, payrollService);
+        super(modalService, payrollService, loadStoreService, driverService);
     }
 
     ngAfterViewInit(): void {
@@ -149,6 +161,7 @@ export class PayrollReportComponent
                 header: 'LOCATION, TYPE',
                 row: true,
                 cellType: 'template',
+                cellCustomClasses: 'relative',
                 template: this.customLocationTypeLoad, // Pass the template reference
             },
             {
@@ -163,14 +176,18 @@ export class PayrollReportComponent
             },
             {
                 header: 'LEG',
+                row: true,
                 field: 'leg',
-                cellType: 'text', // Pass the template reference
+                cellType: 'template',
+                template: this.towingTemplate,
                 cellCustomClasses: 'text-right',
             },
             {
                 header: 'EMPTY',
+                row: true,
                 field: 'empty',
-                cellType: 'text', // Pass the template reference
+                cellType: 'template',
+                template: this.towingTemplate,
                 cellCustomClasses: 'text-right',
             },
             {
@@ -181,8 +198,10 @@ export class PayrollReportComponent
             },
             {
                 header: 'MILES',
+                row: true,
                 field: 'miles',
-                cellType: 'text', // Pass the template reference
+                cellType: 'template',
+                template: this.towingTemplate,
                 cellCustomClasses: 'text-right',
             },
             {
@@ -194,12 +213,14 @@ export class PayrollReportComponent
             },
             {
                 header: 'SUBTOTAL',
+                row: true,
                 field: 'subtotal',
-                cellType: 'text',
+                cellType: 'template', // Pass the template reference
                 pipeType: 'currency',
                 pipeString: 'USD',
                 cellCustomClasses: 'text-right',
                 textCustomClasses: 'b-600',
+                template: this.towingTemplate,
             },
         ];
     }
@@ -219,6 +240,13 @@ export class PayrollReportComponent
         this.loading$ = this.payrollFacadeService.payrollReportLoading$;
         this.payrollReport$ =
             this.payrollFacadeService.selectPayrollOpenedReport$;
+
+        this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
+            (loadList) => {
+                this.loadDropdownList = loadList;
+                //console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
+            }
+        );
 
         this.payrollFacadeService.selectPayrollOpenedReport$
             .pipe(takeUntil(this.destroy$))
@@ -272,7 +300,7 @@ export class PayrollReportComponent
             const load = [
                 ...this.openedPayroll.includedLoads,
                 ...this.openedPayroll.excludedLoads,
-            ].find((load) => load.loadId == loadId);
+            ].find((load) => load.id == loadId);
             if (load) {
                 this.getReportDataResults({
                     reportId: `${this.reportId}`,
@@ -284,7 +312,7 @@ export class PayrollReportComponent
     }
 
     public onProccessPayroll(
-        payrollData: PayrollDriverMileageByIdResponse
+        payrollData: IPayrollDriverMileageByIdResponseNumberId
     ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
@@ -317,6 +345,16 @@ export class PayrollReportComponent
                       payrollOpenedTab: this.selectedTab,
                   }
         );
+    }
+
+    public getIsEditLoadDropdownActionActive(): void {
+        this.dropdownMenuOptions =
+            PayrollReportHelper.getPayrollDropdownContent(
+                false,
+                this._selectedTab,
+                this.isEditLoadDropdownActionActive,
+                this.loadDropdownList
+            );
     }
 
     ngOnDestroy(): void {

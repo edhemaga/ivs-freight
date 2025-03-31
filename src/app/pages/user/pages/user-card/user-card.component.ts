@@ -1,26 +1,28 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+
 import { Subject, takeUntil } from 'rxjs';
+
+// base classes
+import { UserDropdownMenuActionsBase } from '@pages/user/base-classes';
+
+// helpers
+import { CardHelper } from '@shared/utils/helpers/card-helper';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// services
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { UserService } from '@pages/user/services/user.service';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
+
+// enums
+import { eDropdownMenu } from '@shared/enums';
 
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
-import { TableBodyActions } from '@pages/driver/pages/driver-table/models/table-body-actions.model';
-
-// helpers
-import { CardHelper } from '@shared/utils/helpers/card-helper';
-
-// services
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ModalService } from '@shared/services/modal.service';
-import { UserService } from '@pages/user/services/user.service';
-
-// enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-
-// components
-import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
-import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { CompanyUserResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-user-card',
@@ -28,39 +30,52 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
     styleUrls: ['./user-card.component.scss'],
     providers: [CardHelper],
 })
-export class UserCardComponent implements OnInit, OnDestroy {
+export class UserCardComponent
+    extends UserDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
 
-    // Card body endpoints
-    @Input() cardTitle: string;
-    @Input() rows: number[];
+    // card body endpoints
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Input() cardTitleLink: string;
+
+    public destroy$ = new Subject<void>();
+
+    public _viewData: CardDetails[];
 
     public isCardFlippedCheckInCards: number[] = [];
-    public _viewData: CardDetails[];
-    public cardsFront: CardDataResult[][][] = [];
-    public cardsBack: CardDataResult[][][] = [];
-    public titleArray: string[][] = [];
-    public isAllCardsFlipp: boolean;
+    public isAllCardsFlipp: boolean = false;
 
-    private destroy$ = new Subject<void>();
+    get viewData() {
+        return this._viewData;
+    }
 
     constructor(
         // services
-        private tableService: TruckassistTableService,
-        private modalService: ModalService,
-        private userService: UserService,
+        protected modalService: ModalService,
+        protected userService: UserService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
 
         // helpers
         private cardHelper: CardHelper
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    public trackCard(item: number): number {
+        return item;
+    }
+
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public flipAllCards(): void {
@@ -74,7 +89,6 @@ export class UserCardComponent implements OnInit, OnDestroy {
             });
     }
 
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -83,84 +97,24 @@ export class UserCardComponent implements OnInit, OnDestroy {
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    // Flip card based on card index
-    public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
+    public handleToggleDropdownMenuActions(
+        action: IDropdownMenuOptionEmit,
+        cardData: CompanyUserResponse
+    ): void {
+        const { type } = action;
+
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
+                type,
+                cardData
+            );
+
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.USER);
     }
 
-    public trackCard(item: number): number {
-        return item;
-    }
+    public handleShowMoreAction(): void {}
 
-    public onCardActions(event: TableBodyActions): void {
-        const confirmationModalData = {
-            ...event,
-            data: {
-                ...event.data,
-                name: event.data?.firstName,
-            },
-        };
-
-        // Edit
-        if (event.type === TableStringEnum.EDIT) {
-            this.modalService.openModal(
-                UserModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    type: TableStringEnum.EDIT,
-                    disableButton:
-                        event.data?.userType?.name !== TableStringEnum.OWNER,
-                }
-            );
-        }
-        // Activate Or Deactivate User
-        else if (
-            event.type === TableStringEnum.DEACTIVATE ||
-            event.type === TableStringEnum.ACTIVATE
-        ) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...confirmationModalData,
-                    template: TableStringEnum.USER_1,
-                    type:
-                        event.data.status === 1
-                            ? TableStringEnum.DEACTIVATE
-                            : TableStringEnum.ACTIVATE,
-                    image: true,
-                }
-            );
-        }
-        // User Reset Password
-        else if (event.type === TableStringEnum.RESET_PASSWORD) {
-            this.userService
-                .userResetPassword(event.data.email as any) // leave this any for now
-                .pipe(takeUntil(this.destroy$))
-                .subscribe();
-        }
-        // User Resend Ivitation
-        else if (event.type === TableStringEnum.RESEND_INVITATION) {
-            this.userService
-                .userResendIvitation(event.data.id)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe();
-        }
-        // User Delete
-        else if (event.type === TableStringEnum.DELETE) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...confirmationModalData,
-                    template: TableStringEnum.USER_1,
-                    type: TableStringEnum.DELETE,
-                    image: true,
-                }
-            );
-        }
-    }
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

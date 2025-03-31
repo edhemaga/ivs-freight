@@ -13,6 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 // Services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TrailerService } from '@shared/services/trailer.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Animations
 import {
@@ -30,7 +31,11 @@ import { TrailersMinimalListQuery } from '@pages/trailer/state/trailer-minimal-l
 // Models
 import { TrailerDropdown } from '@pages/trailer/pages/trailer-details/models/trailer-dropdown.model';
 import { TrailerData } from '@pages/trailer/pages/trailer-table/models/trailer-data.model';
-import { TrailerFuelConsumptionChartResponse, TrailerFuelConsumptionResponse, TrailerMinimalResponse } from 'appcoretruckassist';
+import {
+    TrailerFuelConsumptionChartResponse,
+    TrailerFuelConsumptionResponse,
+    TrailerMinimalResponse,
+} from 'appcoretruckassist';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { Tabs } from '@shared/models';
 
@@ -39,11 +44,17 @@ import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Constants
 import { TrailerDetailsChartsConfiguration } from '@pages/trailer/pages/trailer-details/utils/constants';
-import { ChartConfiguration, ChartLegendConfiguration } from '@shared/utils/constants';
+import {
+    ChartConfiguration,
+    ChartLegendConfiguration,
+} from '@shared/utils/constants';
 
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
+
+// components
+import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
 @Component({
     selector: 'app-trailer-details-card',
@@ -75,7 +86,8 @@ import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.
     ],
 })
 export class TrailerDetailsCardComponent
-    implements OnInit, OnChanges, OnDestroy {
+    implements OnInit, OnChanges, OnDestroy
+{
     @Input() trailer: TrailerData;
     @Input() templateCard: boolean = false;
 
@@ -94,15 +106,19 @@ export class TrailerDetailsCardComponent
     public ownerCardOpened: boolean = true;
 
     // Chart
+    public fuelConsumptionChartData!: TrailerFuelConsumptionResponse;
     public fuelConsumptionChartConfig!: IChartConfiguration;
     public fuelConsumptionChartLegend!: ChartLegendConfiguration[];
     public fuelConsumptionTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public fuelConsumptionLegendTitle!: string;
+    public fuelConsumptionLegendHighlightedBackground!: boolean;
 
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private trailerMinimalQuery: TrailersMinimalListQuery,
-        private trailerService: TrailerService
-    ) { }
+        private trailerService: TrailerService,
+        private modalService: ModalService
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.trailer?.firstChange) {
@@ -193,8 +209,15 @@ export class TrailerDetailsCardComponent
         );
     }
 
-    public onSelectedTrailer(event: { id: number }): void {
+    public onSelectedTrailer(event: { id: number; name?: string }): void {
         if (event && event.id !== this.trailer.id) {
+            if (event.name === TableStringEnum.ADD_NEW_3) {
+                this.modalService.openModal(TrailerModalComponent, {
+                    size: TableStringEnum.SMALL,
+                });
+
+                return;
+            }
             this.trailerDropDowns = this.trailerMinimalQuery
                 .getAll()
                 .map((item) => {
@@ -282,21 +305,71 @@ export class TrailerDetailsCardComponent
     private getTrailerFuelConsumption(timeFilter?: number): void {
         // If not reefer, return
         if (this.trailer.trailerType.id !== 9) return;
-        this.trailerService.getTrailerFuelConsumption(this.trailer.id, timeFilter || 1)
+        this.trailerService
+            .getTrailerFuelConsumption(this.trailer.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: TrailerFuelConsumptionResponse) => {
-                if (timeFilter && this.fuelConsumptionTabs[timeFilter - 1])
-                    this.fuelConsumptionTabs[timeFilter - 1].checked = true;
-                this.fuelConsumptionChartConfig = {
-                    ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
-                    chartData: ChartHelper.generateDataByDateTime<TrailerFuelConsumptionChartResponse>(
-                        response.trailerFuelConsumptionCharts,
-                        ChartConfiguration.trailerFuelExpensesConfiguration,
-                        timeFilter
-                    ),
-                };
-                this.fuelConsumptionChartLegend = ChartLegendConfiguration.trailerFuelConsumptionConfiguration(response)
-            })
+            .subscribe(
+                (response: TrailerFuelConsumptionResponse) => {
+                    if (timeFilter && this.fuelConsumptionTabs[timeFilter - 1])
+                        this.fuelConsumptionTabs =
+                            this.fuelConsumptionTabs?.map(
+                                (tab: Tabs, indx: number) => {
+                                    const tabModified: Tabs = {
+                                        ...tab,
+                                        checked: timeFilter - 1 === indx,
+                                    };
+                                    return tabModified;
+                                }
+                            );
+                    this.fuelConsumptionChartData = response;
+                    this.fuelConsumptionChartConfig = {
+                        ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<TrailerFuelConsumptionChartResponse>(
+                                this.fuelConsumptionChartData
+                                    .trailerFuelConsumptionCharts,
+                                ChartConfiguration.TRAILER_FUEL_EXPENSES_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+                    this.fuelConsumptionChartLegend =
+                        ChartLegendConfiguration.trailerFuelConsumptionConfiguration(
+                            this.fuelConsumptionChartData
+                        );
+                },
+                () => {
+                    this.fuelConsumptionChartConfig = {
+                        ...TrailerDetailsChartsConfiguration.PAYROLL_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
+    }
+
+    public setFuelConsumptionLegendOnHover(index: number | null): void {
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.fuelConsumptionChartConfig.chartData.labels
+        );
+
+        this.fuelConsumptionLegendHighlightedBackground =
+            hasHighlightedBackground;
+        this.fuelConsumptionLegendTitle = title;
+
+        const dataForLegend =
+            isNaN(index) || index < 0 || index === null
+                ? this.fuelConsumptionChartData
+                : this.fuelConsumptionChartData?.trailerFuelConsumptionCharts[
+                      index
+                  ];
+
+        this.fuelConsumptionChartLegend =
+            ChartLegendConfiguration.trailerFuelConsumptionConfiguration(
+                dataForLegend
+            );
     }
 
     public changeFuelConsumptionTab(event: TabOptions): void {

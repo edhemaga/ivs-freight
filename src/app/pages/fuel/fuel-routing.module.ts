@@ -1,9 +1,14 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+// resolvers
+import {
+    FuelDetailsResolver,
+    FuelMinimalResolver,
+} from '@pages/fuel/resolvers';
+
 // components
 import { FuelTableComponent } from '@pages/fuel/pages/fuel-table/fuel-table.component';
-import { FuelDetailsResolver } from '@pages/fuel/resolvers/fuel-details.resolver';
 
 const routes: Routes = [
     {
@@ -13,13 +18,15 @@ const routes: Routes = [
     },
     {
         path: ':id/details',
-        loadChildren: () =>
-            import('@pages/fuel/pages/fuel-details/fuel-details.module').then(
-                (m) => m.FuelDetailsModule
-            ),
+        loadComponent: () =>
+            import(
+                '@pages/fuel/pages/fuel-stop-details/fuel-stop-details.component'
+            ).then((m) => m.FuelStopDetailsComponent),
         resolve: {
-            fuelSingle: FuelDetailsResolver,
+            fuelStop: FuelDetailsResolver,
+            fuelStopMinimal: FuelMinimalResolver,
         },
+        data: { title: 'Fuel Stop Details' },
     },
 ];
 

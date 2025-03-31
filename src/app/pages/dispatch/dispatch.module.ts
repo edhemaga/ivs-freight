@@ -14,7 +14,6 @@ import { DispatchTableComponent } from '@pages/dispatch/pages/dispatch/component
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { DispatchHistoryModalNoGroupComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-no-group/dispatch-history-modal-no-group.component';
 import { TaTableToolbarComponent } from '@shared/components/ta-table/ta-table-toolbar/ta-table-toolbar.component';
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaGpsProgressbarComponent } from '@shared/components/ta-gps-progressbar/ta-gps-progressbar.component';
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { DispatchHistoryModalNoContentComponent } from './pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/components/dispatch-history-modal-no-content/dispatch-history-modal-no-content.component';
@@ -33,7 +32,6 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { LoadStatusStringComponent } from '@pages/load/components/load-status-string/load-status-string.component';
 import { LoadShortDetailsComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-assign-load-modal/components/load-short-details/load-short-details.component';
 import { LoadDetailsItemStopsMainComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-details-item-stops-main/load-details-item-stops-main.component';
-//import { TaMapsComponent } from '@shared/components/ta-maps/ta-maps.component';
 import { DispatchTableLastLocationComponentComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-last-location-component/dispatch-table-last-location.component';
 import { LoadRequirementComponent } from '@pages/load/pages/load-details/components/load-details-item/components/load-details-item-stops/components/load-requirement/load-requirement.component';
 import { DispatchHistoryModalComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-modals/dispatch-history-modal/dispatch-history-modal.component';
@@ -42,13 +40,16 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 import { TaResizerComponent } from '@shared/components/ta-resizer/ta-resizer.component';
 import { DispatchTableInfoComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-info/dispatch-table-info.component';
 import { DispatchTableStatusComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-status/dispatch-table-status.component';
+import { DispatchTablePickupDeliveryComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pickup-delivery/dispatch-table-pickup-delivery.component';
 import {
+    CaInputAddressDropdownComponent,
     CaInputComponent,
     CaInputDropdownComponent,
+    CaModalComponent,
     PickupDeliveryBlockComponent,
     ProgressBarComponent,
+    TruckTrailerColorFinderPipe,
 } from 'ca-components';
-import { DispatchTablePickupDeliveryComponent } from '@pages/dispatch/pages/dispatch/components/dispatch-table/components/dispatch-table-pickup-delivery/dispatch-table-pickup-delivery.component';
 
 // pipes
 import { HosFilterPipe } from '@pages/dispatch/pipes/hos-filter.pipe';
@@ -62,9 +63,9 @@ import { DispatchHistoryModalGroupComponent } from '@pages/dispatch/pages/dispat
 import { DriverEndorsementsPipe } from '@pages/dispatch/pipes/driver-endorsements.pipe';
 import { DispatchAllowedTruckTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-allowed-truck-trailer.pipe';
 import { DispatchHiddenAddTrailerPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-hidden-add-trailer.pipe';
-import { DispatchColorFinderPipe } from '@shared/pipes';
 import { DispatchTableFooterWidthsPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-footer-widths.pipe';
 import { DispatchTableColumnWidthsPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-table-column-widths.pipe';
+import { DispatchConfigPipe } from '@pages/dispatch/pages/dispatch/components/dispatch-table/pipes/dispatch-config.pipe';
 
 // directives
 import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/dispatch-table/directives';
@@ -117,7 +118,8 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         DispatchTableInfoTextPipe,
         DispatchTableHeaderShowPipe,
         DriverEndorsementsPipe,
-        DispatchColorFinderPipe,
+        TruckTrailerColorFinderPipe,
+        DispatchConfigPipe,
 
         //directives
         ResizableDirective,
@@ -125,7 +127,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
         // components
         TaAppTooltipV2Component,
         TaTableToolbarComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaGpsProgressbarComponent,
         TaNoteComponent,
         TaPickupDeliveryComponent,
@@ -138,6 +140,7 @@ import { ResizableDirective } from '@pages/dispatch/pages/dispatch/components/di
 
         CaInputComponent,
         CaInputDropdownComponent,
+        CaModalComponent,
 
         LoadDetailsItemStopsMainComponent,
         LoadStatusStringComponent,

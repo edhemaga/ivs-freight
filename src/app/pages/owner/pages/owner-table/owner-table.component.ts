@@ -1,36 +1,24 @@
 import { Component, OnInit, AfterViewInit, OnDestroy } from '@angular/core';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// Components
+// base classes
+import { OwnerDropdownMenuActionsBase } from '@pages/owner/base-classes';
+
+// components
 import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
-import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
-import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
 
-// Models
-import { GetOwnerListResponse } from 'appcoretruckassist';
-import { getOwnerColumnDefinition } from '@shared/utils/settings/table-settings/owner-columns';
-import {
-    CardDetails,
-    DropdownItem,
-} from '@shared/models/card-models/card-table-data.model';
-import { GridColumn } from '@shared/models/table-models/grid-column.model';
-import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { CardTableData } from '@shared/models/table-models/card-table-data.model';
-import { OwnerTableData } from '@pages/owner/models/owner-table-data.model';
-import { OwnerFilter } from '@pages/owner/models/owner-filter.model';
-import { OwnerData } from '@pages/owner/models/owner-data.model';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-
-// Services
+// services
 import { ModalService } from '@shared/services/modal.service';
 import { OwnerService } from '@pages/owner/services/owner.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { OwnerCardsModalService } from '@pages/owner/pages/owner-card-modal/services/owner-cards-modal.service';
 import { CaSearchMultipleStatesService } from 'ca-components';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
-// Store
+// store
 import { OwnerActiveQuery } from '@pages/owner/state/owner-active-state/owner-active.query';
 import { OwnerActiveState } from '@pages/owner/state/owner-active-state/owner-active.store';
 import { OwnerInactiveQuery } from '@pages/owner/state/owner-inactive-state/owner-inactive.query';
@@ -40,19 +28,34 @@ import {
 } from '@pages/owner/state/owner-inactive-state/owner-inactive.store';
 import { OwnerCardModalQuery } from '@pages/owner/pages/owner-card-modal/state/owner-card-modal.query';
 
-//Enum
+// enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eDropdownMenu } from '@shared/enums';
 
-// Pipes
+// pipes
 import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
 
-//Constants
+// constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 import { OwnerConfiguration } from '@pages/owner/pages/owner-table/utils/constants/owner-configuration.constants';
 
 // helpers
-import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
 import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+
+// models
+import { GetOwnerListResponse } from 'appcoretruckassist';
+import { getOwnerColumnDefinition } from '@shared/utils/settings/table-settings/owner-columns';
+import {
+    CardDetails,
+    DropdownItem,
+} from '@shared/models/card-models/card-table-data.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { OwnerTableData } from '@pages/owner/models/owner-table-data.model';
+import { OwnerFilter } from '@pages/owner/models/owner-filter.model';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { TableColumnConfig } from '@shared/models';
 
 @Component({
     selector: 'app-owner-table',
@@ -60,54 +63,70 @@ import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper
     styleUrls: ['./owner-table.component.scss'],
     providers: [FormatPhonePipe],
 })
-export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class OwnerTableComponent
+    extends OwnerDropdownMenuActionsBase
+    implements OnInit, AfterViewInit, OnDestroy
+{
+    public destroy$ = new Subject<void>();
 
-    public tableOptions: any = {};
-    public tableData: any[] = [];
-    private viewData: any[] = [];
-    public columns: GridColumn[] = [];
-    public selectedTab: string = TableStringEnum.ACTIVE;
+    public eDropdownMenu = eDropdownMenu;
+
+    public resizeObserver: ResizeObserver;
     public activeViewMode: string = TableStringEnum.LIST;
-    private resizeObserver: ResizeObserver;
+
+    public selectedTab: string = TableStringEnum.ACTIVE;
+
     private ownerActive: OwnerActiveState[] = [];
     private ownerInactive: OwnerInactiveState[] = [];
-    private inactiveTabClicked: boolean = false;
-    private backFilterQuery =
-        TableDropdownComponentConstants.OWNER_BACKFILTER_QUERY;
 
-    //Data to display from model Broker
+    // table
+    public tableOptions: any = {};
+    public tableData: any[] = [];
+    public viewData: any[] = [];
+    public columns: TableColumnConfig[] = [];
+
+    // cards
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
+
     public displayRowsFront: CardRows[] =
         OwnerConfiguration.displayRowsFrontActive;
     public displayRowsBack: CardRows[] =
         OwnerConfiguration.displayRowsBackActive;
 
-    //Data to display from model Shipper
     public displayRowsFrontInactive: CardRows[] =
         OwnerConfiguration.displayRowsFrontInactive;
     public displayRowsBackInactive: CardRows[] =
         OwnerConfiguration.displayRowsBackInactive;
-    public cardTitle: string = OwnerConfiguration.cardTitle;
-    public page: string = OwnerConfiguration.page;
-    public rows: number = OwnerConfiguration.rows;
 
-    public sendDataToCardsFront: CardRows[];
-    public sendDataToCardsBack: CardRows[];
+    // filters
+    private backFilterQuery =
+        TableDropdownComponentConstants.OWNER_BACKFILTER_QUERY;
+
+    private inactiveTabClicked: boolean = false;
+
     constructor(
-        private modalService: ModalService,
-        private tableService: TruckassistTableService,
-        private ownerActiveQuery: OwnerActiveQuery,
-        private ownerInactiveQuery: OwnerInactiveQuery,
+        // services
+        protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private ownerService: OwnerService,
-        private phonePipe: FormatPhonePipe,
-        private ownerInactiveStore: OwnerInactiveStore,
         private confirmationService: ConfirmationService,
         private ownerCardsModalService: OwnerCardsModalService,
-        private ownerCardModalQuery: OwnerCardModalQuery,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
-    ) {}
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
 
-    // ---------------------------- ngOnInit ------------------------------
+        // store
+        private ownerActiveQuery: OwnerActiveQuery,
+        private ownerInactiveQuery: OwnerInactiveQuery,
+        private ownerInactiveStore: OwnerInactiveStore,
+        private ownerCardModalQuery: OwnerCardModalQuery,
+
+        // pipes
+        private phonePipe: FormatPhonePipe
+    ) {
+        super();
+    }
+
     ngOnInit(): void {
         this.sendOwnerData();
 
@@ -128,14 +147,12 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.confirmationSubscribe();
     }
 
-    // ---------------------------- ngAfterViewInit ------------------------------
     ngAfterViewInit(): void {
         setTimeout(() => {
             this.observTableContainer();
         }, 10);
     }
 
-    // Reset Columns
     private resetColumns(): void {
         this.tableService.currentResetColumns
             .pipe(takeUntil(this.destroy$))
@@ -146,7 +163,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Resize
     private resize(): void {
         this.tableService.currentColumnWidth
             .pipe(takeUntil(this.destroy$))
@@ -173,37 +189,42 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 switch (res.type) {
                     case TableStringEnum.DELETE:
                         this.deleteOwnerById(res.id ?? res.array[0].id);
-                        break;
 
+                        break;
                     case TableStringEnum.ACTIVATE:
                         if (res.id) this.changeOwnerStatus(res.id);
                         else this.changeOwnerStatusList(res.array);
-                        break;
 
+                        break;
                     case TableStringEnum.DEACTIVATE:
                         if (res.id) this.changeOwnerStatus(res.id);
                         else this.changeOwnerStatusList(res.array);
+
                         break;
                     case TableStringEnum.MULTIPLE_DELETE:
                         this.deleteOwnerList(res.array);
+
                         break;
                     default:
                         break;
                 }
             });
     }
+
     private changeOwnerStatus(data): void {
         this.ownerService
             .updateOwner(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
+
     private changeOwnerStatusList(data): void {
         this.ownerService
             .updateOwner(data)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
+
     private deleteOwnerById(id: number): void {
         this.ownerService
             .deleteOwnerById(id, this.selectedTab)
@@ -229,7 +250,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Toggle Columns
     private toggleColumns(): void {
         this.tableService.currentToaggleColumn
             .pipe(takeUntil(this.destroy$))
@@ -246,7 +266,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Search
     private search(): void {
         this.caSearchMultipleStatesService.currentSearchTableData
             .pipe(takeUntil(this.destroy$))
@@ -274,7 +293,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // On Set Tollbar Filter
     private onSetTolbarFilter(): void {
         this.tableService.currentSetTableFilter
             .pipe(takeUntil(this.destroy$))
@@ -338,7 +356,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Delete Selected Rows
     private deleteSelectedRows(): void {
         this.tableService.currentDeleteSelectedRows
             .pipe(takeUntil(this.destroy$))
@@ -402,7 +419,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             });
     }
 
-    // Owner Actions
     private ownerActions(): void {
         this.tableService.currentActionAnimation
             .pipe(takeUntil(this.destroy$))
@@ -410,7 +426,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 // Add Owner
 
                 if (res?.animation === TableStringEnum.ADD) {
-                    if (this.selectedTab === TableStringEnum.INACTIVE) {
+                    if (this.selectedTab === TableStringEnum.ACTIVE) {
                         this.viewData.push(this.mapOwnerData(res.data));
 
                         this.viewData = this.viewData.map((owner) => {
@@ -522,8 +538,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
 
-                    this.cardTitle = TableStringEnum.NAME;
-
                     this.displayRowsFront = filteredCardRowsFront;
 
                     this.displayRowsBack = filteredCardRowsBack;
@@ -540,8 +554,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                         res.front_side.filter(Boolean);
 
                     const filteredCardRowsBack = res.back_side.filter(Boolean);
-
-                    this.cardTitle = TableStringEnum.NAME;
 
                     this.displayRowsFront = filteredCardRowsFront;
 
@@ -634,6 +646,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
                 tableConfiguration: TableStringEnum.OWNER_2,
                 isActive: this.selectedTab === TableStringEnum.INACTIVE,
                 gridColumns: this.getGridColumns(TableStringEnum.OWNER_2),
+                inactive: !ownerCount.inactive,
             },
         ];
 
@@ -652,6 +665,7 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
 
         updatedTableData[0].length = ownerCount.active;
         updatedTableData[1].length = ownerCount.inactive;
+        updatedTableData[1].inactive = !ownerCount.inactive;
 
         this.tableData = [...updatedTableData];
     }
@@ -688,6 +702,8 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     private mapOwnerData(data): OwnerTableData {
+        const isAddressObject = data.address instanceof Object;
+
         return {
             ...data,
             isSelected: false,
@@ -697,22 +713,21 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
             textPhone: data?.phone
                 ? this.phonePipe.transform(data.phone)
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-            textAddress: data?.address
-                ? data.address
-                : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
+            textAddress: isAddressObject
+                ? data?.address?.address
+                : data?.address,
             textBankName: data?.bankName
                 ? data.bankName
                 : TableStringEnum.EMPTY_STRING_PLACEHOLDER,
             fileCount: data?.fileCount,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownOwnerContent(),
-            },
+            tableDropdownContent: this.getOwnerDropdownContent(),
         };
     }
 
-    private getDropdownOwnerContent(): DropdownItem[] {
-        return DropdownContentHelper.getDropdownOwnerContent();
+    private getOwnerDropdownContent(): DropdownItem[] {
+        return DropdownMenuContentHelper.getOwnerDropdownContent(
+            this.selectedTab
+        );
     }
 
     private getTabData(dataType: string) {
@@ -729,7 +744,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    // Owner Back Filter
     private ownerBackFilter(filter: OwnerFilter, isShowMore?: boolean): void {
         this.ownerService
             .getOwner(
@@ -859,72 +873,6 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         }
     }
 
-    public onTableBodyActions(event: OwnerData): void {
-        if (event.type === TableStringEnum.SHOW_MORE) {
-            this.backFilterQuery.active =
-                this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
-            this.backFilterQuery.pageIndex++;
-
-            this.ownerBackFilter(this.backFilterQuery, true);
-        } else if (event.type === TableStringEnum.ACTIVATE_ITEM) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    template: TableStringEnum.OWNER_3,
-                    type: event.data.isSelected
-                        ? TableStringEnum.DEACTIVATE
-                        : TableStringEnum.ACTIVATE,
-                    svg: true,
-                }
-            );
-        } else if (event.type === TableStringEnum.EDIT) {
-            this.modalService.openModal(
-                OwnerModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    type: TableStringEnum.EDIT,
-                    selectedTab: this.selectedTab,
-                }
-            );
-        } else if (event.type === TableStringEnum.DELETE_ITEM) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...event,
-                    template: TableStringEnum.OWNER_3,
-                    type: TableStringEnum.DELETE,
-                    svg: true,
-                }
-            );
-        } else if (event.type === TableStringEnum.ADD_TRUCK) {
-            this.modalService.setProjectionModal({
-                action: TableStringEnum.OPEN,
-                payload: {
-                    key: null,
-                    value: null,
-                },
-                component: TruckModalComponent,
-                size: TableStringEnum.SMALL,
-                closing: TableStringEnum.FASTEST,
-            });
-        } else if (event.type === TableStringEnum.ADD_TRAILER) {
-            this.modalService.setProjectionModal({
-                action: TableStringEnum.OPEN,
-                payload: {
-                    key: null,
-                    value: null,
-                },
-                component: TrailerModalComponent,
-                size: TableStringEnum.SMALL,
-                closing: TableStringEnum.FASTEST,
-            });
-        }
-    }
-
     public saveValueNote(event: { value: string; id: number }): void {
         this.viewData.map((item: CardDetails) => {
             if (item.id === event.id) {
@@ -941,13 +889,23 @@ export class OwnerTableComponent implements OnInit, AfterViewInit, OnDestroy {
         this.ownerService.updateNote(noteData);
     }
 
+    public handleShowMoreAction(): void {
+        this.backFilterQuery.active =
+            this.selectedTab === TableStringEnum.ACTIVE ? 1 : 0;
+
+        this.backFilterQuery.pageIndex++;
+
+        this.ownerBackFilter(this.backFilterQuery, true);
+    }
+
+    public updateToolbarDropdownMenuContent(): void {}
+
     ngOnDestroy(): void {
+        this.tableService.sendActionAnimation({});
+
+        this.resizeObserver.disconnect();
+
         this.destroy$.next();
         this.destroy$.complete();
-        this.tableService.sendActionAnimation({});
-        // this.resizeObserver.unobserve(
-        //     document.querySelector(TableStringEnum.TABLE_CONTAINER)
-        // );
-        this.resizeObserver.disconnect();
     }
 }

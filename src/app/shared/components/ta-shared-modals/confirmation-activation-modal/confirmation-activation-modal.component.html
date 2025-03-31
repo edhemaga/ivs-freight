@@ -1,5 +1,5 @@
 <app-ta-modal
-    [modalTitle]="editData?.type | confirmationModalTitle : editData?.subType"
+    [modalTitle]="editData?.type | confirmationModalTitle: editData?.subType"
     [customClass]="'modal-container-XS'"
     [bottomDivider]="true"
     [headerSvg]="
@@ -7,8 +7,8 @@
         editData?.type.includes('status')
             ? 'info2'
             : editData?.type.includes('activate')
-            ? 'hire'
-            : editData?.type
+              ? 'hire'
+              : editData?.type
     "
     [isCloseIconRemoved]="true"
     [isModalValid]="
@@ -36,10 +36,10 @@
                           editData?.type +
                           '.svg'
                         : editData?.type.includes('status')
-                        ? 'assets/svg/common/confirmation/ic_confirmation_info2.svg'
-                        : 'assets/svg/common/confirmation/ic_confirmation_modal_' +
-                          editData?.type +
-                          '.svg'
+                          ? 'assets/svg/common/confirmation/ic_confirmation_info2.svg'
+                          : 'assets/svg/common/confirmation/ic_confirmation_modal_' +
+                            editData?.type +
+                            '.svg'
                 "
             ></svg-icon>
         </div>
@@ -56,7 +56,7 @@
                     class="d-flex flex-column justify-content-center confirmation-activation-body-title mb-2 gap-2"
                     [ngClass]="{
                         'status-gap': editData?.template === 'Status',
-                        'gap-2': editData?.template !== 'Status'
+                        'gap-2': editData?.template !== 'Status',
                     }"
                 >
                     <ng-container *ngIf="!editData?.array; else arrayTemplate">
@@ -83,14 +83,14 @@
                                             [ngStyle]="{
                                                 background:
                                                     editData?.data?.avatarColor
-                                                        ?.background
+                                                        ?.background,
                                             }"
                                         >
                                             <p
                                                 class="m-0 ta-font-extra-bold"
                                                 [ngStyle]="{
                                                     color: editData?.data
-                                                        ?.avatarColor?.color
+                                                        ?.avatarColor?.color,
                                                 }"
                                             >
                                                 {{
@@ -176,21 +176,17 @@
                                         [status]="{
                                             name: editData.data.nameFront,
                                             valueForRequest:
-                                                editData.data.nameBack
+                                                editData.data.nameBack,
                                         }"
                                         [isDetailsLayout]="true"
                                     ></app-load-status-string>
                                 </div>
-                                <ng-container
-                                    *ngIf="
-                                        editData.data.nameFront !== 'Unassigned'
-                                    "
-                                >
+                                @if (editData.data.nameFront !== 'Unassigned') {
                                     <div
-                                        class="truck-location d-flex align-items-center flex-row gap-2"
+                                        class="truck-location"
                                         [formGroup]="locationForm"
                                     >
-                                        <app-ta-input-address-dropdown
+                                        <app-ca-input-address-dropdown
                                             formControlName="origin"
                                             [inputConfig]="{
                                                 name: 'Address',
@@ -203,15 +199,30 @@
                                                 placeholder: 'Truck location',
                                                 dropdownWidthClass: 'w-col-264',
                                                 minLength: 6,
-                                                maxLength: 256
+                                                maxLength: 256,
                                             }"
-                                            [placeholderType]="'city'"
+                                            [placeholderType]="'shortAddress'"
+                                            [activeAddress]="selectedAddress?.address"
                                             (selectedAddress)="
                                                 handleLocationSelect($event)
                                             "
-                                        ></app-ta-input-address-dropdown>
+                                            [receivedAddressList]="addressList"
+                                            [receivedAddressData]="addressData"
+                                            (sentAddressData)="
+                                                onAddressChange(
+                                                    $event,
+                                                    addressService
+                                                )
+                                            "
+                                            (sentAddressValue)="
+                                                getAddressData(
+                                                    $event,
+                                                    addressService
+                                                )
+                                            "
+                                        ></app-ca-input-address-dropdown>
                                     </div>
-                                </ng-container>
+                                }
                             </ng-container>
 
                             <ng-container *ngSwitchCase="'User'">
@@ -236,14 +247,14 @@
                                             [ngStyle]="{
                                                 background:
                                                     editData?.data?.avatarColor
-                                                        ?.background
+                                                        ?.background,
                                             }"
                                         >
                                             <p
                                                 class="m-0 ta-font-extra-bold"
                                                 [ngStyle]="{
                                                     color: editData?.data
-                                                        ?.avatarColor?.color
+                                                        ?.avatarColor?.color,
                                                 }"
                                             >
                                                 {{
@@ -313,7 +324,9 @@
                                                     editData.template !==
                                                         'truck' &&
                                                     editData.template !==
-                                                        'trailer'
+                                                        'trailer' &&
+                                                    editData.template !==
+                                                        'fuel-stop'
                                                 "
                                                 [class.shorter-text]="
                                                     editData?.type === 'open'
@@ -321,6 +334,13 @@
                                             >
                                                 {{ editData.modalTitle }}
                                             </div>
+
+                                            @if(editData?.type === tableStringEnum.ACTIVATE) {
+                                                <svg-icon
+                                                    class="m-l-6 svg-fill-muted svg-size-18"
+                                                    [src]="confirmationImageRoutes.activationIconSvg"
+                                                ></svg-icon>
+                                            }
 
                                             <ng-container
                                                 *ngIf="
@@ -369,7 +389,10 @@
                                 >
                                     <img
                                         class="avatar"
-                                        [src]="item.avatarImg?.url ?? item.avatarImg"
+                                        [src]="
+                                            item.avatarImg?.url ??
+                                            item.avatarImg
+                                        "
                                     />
                                 </ng-container>
 
@@ -378,13 +401,13 @@
                                         class="d-flex align-items-center justify-content-center no-avatar"
                                         [ngStyle]="{
                                             background:
-                                                item?.avatarColor?.background
+                                                item?.avatarColor?.background,
                                         }"
                                     >
                                         <p
                                             class="m-0 ta-font-extra-bold"
                                             [ngStyle]="{
-                                                color: item?.avatarColor?.color
+                                                color: item?.avatarColor?.color,
                                             }"
                                         >
                                             {{ item?.textShortName }}
@@ -447,7 +470,10 @@
                                             [class.limit-text]="
                                                 editData?.template !==
                                                     'truck' &&
-                                                editData?.template !== 'trailer'
+                                                editData?.template !==
+                                                    'trailer' &&
+                                                editData.template !==
+                                                    'fuel-stop'
                                             "
                                             [class.shorter-text]="
                                                 editData?.type === 'open'
@@ -455,6 +481,14 @@
                                         >
                                             {{ item?.modalTitle }}
                                         </div>
+
+                                        @if(editData?.type === tableStringEnum.ACTIVATE) {
+                                            <svg-icon
+                                                [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
+                                                class="action-div-icon"
+                                                [src]="confirmationImageRoutes.activationIconSvg"
+                                            ></svg-icon>
+                                        }
 
                                         <ng-container
                                             *ngIf="editData?.type === 'open'"
@@ -506,9 +540,9 @@
                             editData?.type === 'deactivate-multiple'
                                 ? 'deactivate'
                                 : editData?.type === 'activate' ||
-                                  editData?.type === 'activate-multiple'
-                                ? 'activate'
-                                : editData?.type
+                                    editData?.type === 'activate-multiple'
+                                  ? 'activate'
+                                  : editData?.type
                         }}
                         selected {{ editData.tableType }}?
                     </p>

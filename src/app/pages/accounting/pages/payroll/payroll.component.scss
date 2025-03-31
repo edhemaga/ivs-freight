@@ -1,3 +1,6 @@
+@import '/src/theme/variables.scss';
+@import '/src/assets/scss/mixins.scss';
+
 .table-container {
     max-width: 1900px;
     width: 100%;
@@ -127,6 +130,8 @@
                         font-size: 11px;
                         line-height: 14px;
                         min-width: 20px;
+
+                        @include prevent-text-selection();
                     }
                 }
             }
@@ -179,6 +184,7 @@
                 font-size: 11px;
                 font-weight: 700;
                 color: #fff;
+                @include text-selection($white);
 
                 &.blue {
                     background-color: #6692f1;
@@ -356,7 +362,7 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 100%;
+            max-width: 150px;
             font-size: 11px;
             font-weight: 600;
             line-height: 12px;
@@ -374,6 +380,23 @@
         border-radius: 1px;
         font-weight: 700;
         color: #fff;
+    }
+
+    &-small-icon {
+        height: 18px;
+        width: 18px;
+        margin-right: 4px;
+        border-radius: 1px;
+        &-repair {
+            background-color: $ta-brown-2;
+            color: $ta-brown-1;
+        }
+        &-deadhead {
+            background-color: $dark-2;
+        }
+        &-towing {
+            background-color: $ta-purple-3;
+        }
     }
 
     &.delivery {
@@ -504,7 +527,6 @@
 .custom-text-date {
     font-size: 14px;
 }
-
 
 .payroll_count {
     background-color: #91919133;

@@ -17,6 +17,7 @@ import {
     selectPayrollCounts,
     selectPayrollDriverMileageStops,
     selectPayrollLoad,
+    selectPayrollLoadListForDropdown,
     selectPayrollOpenedReport,
     selectPayrollOpenedTab,
     selectPayrollReportLoading,
@@ -32,6 +33,7 @@ import {
 import {
     MilesStopShortResponse,
     PayrollDriverMileageListResponse,
+    PayrollMapLocation,
     PayrollOtherPaymentType,
     PayrollPaymentType,
 } from 'appcoretruckassist';
@@ -46,7 +48,7 @@ import {
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 
 // Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { ICaMapProps } from 'ca-components';
 
 @Injectable({
@@ -106,7 +108,7 @@ export class PayrollFacadeService {
         closed: number;
     }> = this.store.pipe(select(seletPayrollTabsCount));
 
-    public selectPayrollOpenedTab$: Observable<PayrollTablesStatus> =
+    public selectPayrollOpenedTab$: Observable<ePayrollTablesStatus> =
         this.store.pipe(select(selectPayrollOpenedTab));
 
     // Select Driver Mileage Solo
@@ -122,19 +124,29 @@ export class PayrollFacadeService {
         PayrollDriverMileageExpandedListResponse[]
     > = this.store.pipe(select(selectDriverMileageExpandedTable));
 
-    public getPayrollCounts(): void {
+    public selectPayrollDropdownLoadList$: Observable<
+        {
+            id: number;
+            title: string;
+        }[]
+    > = this.store.pipe(select(selectPayrollLoadListForDropdown));
+
+    public getPayrollCounts(showLoading: boolean): void {
         this.store
             .pipe(select(selectPayrollState), take(1))
             .subscribe((payrollState) => {
                 this.store.dispatch(
                     PayrollActions.getPayrollCounts({
-                        ShowOpen: payrollState.payrollOpenedTab === 'open',
+                        ShowOpen:
+                            payrollState.payrollOpenedTab ===
+                            ePayrollTablesStatus.OPEN,
+                        showLoading,
                     })
                 );
             });
     }
 
-    public setPayrollOpenedTab(tabStatus: PayrollTablesStatus): void {
+    public setPayrollOpenedTab(tabStatus: ePayrollTablesStatus): void {
         this.store.dispatch(PayrollActions.setPayrollopenedTab({ tabStatus }));
     }
 
@@ -158,9 +170,15 @@ export class PayrollFacadeService {
         );
     }
 
-    public setPayrollReportTableExpanded(expanded: boolean): void {
+    public setPayrollReportTableExpanded(
+        expanded: boolean,
+        openedPayrollLeftId: string
+    ): void {
         this.store.dispatch(
-            PayrollActions.setTableReportExpanded({ expanded })
+            PayrollActions.setTableReportExpanded({
+                expanded,
+                openedPayrollLeftId,
+            })
         );
     }
 
@@ -317,5 +335,20 @@ export class PayrollFacadeService {
                     );
                 }
             });
+    }
+    public setPayrollMapData(payrollMapLocations: PayrollMapLocation[]): void {
+        if (!payrollMapLocations) return;
+        const mapLocations = JSON.stringify(
+            payrollMapLocations.map(({ longitude, latitude }) => ({
+                longitude,
+                latitude,
+            }))
+        );
+
+        this.store.dispatch(
+            PayrollActions.getPayrollMapData({
+                locations: mapLocations,
+            })
+        );
     }
 }

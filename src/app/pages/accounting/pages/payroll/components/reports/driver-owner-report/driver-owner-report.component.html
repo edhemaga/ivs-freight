@@ -1,21 +1,23 @@
+@let payrollReport = payrollReport$ | async;
+@let isLoading = loading$ | async;
+@let payrollTotals = payrollReport.sums;
 <div class="report-main-holder d-flex">
     <div class="middle-report-info">
         <div class="report-card">
             <div class="report-card-title d-f-aic-jcb">
-                <ng-container *ngIf="payrollReport$ | async as payroll_report">
+                @if (payrollReport) {
                     <div class="d-flex align-items-center">
                         <div class="payroll_report_title">Report</div>
                         <div class="payroll_chip">
-                            {{ payroll_report.includedLoads?.length }} LOAD
+                            {{ payrollReport.includedLoads?.length }} LOAD
                         </div>
                     </div>
-                </ng-container>
-                <ng-container *ngIf="payrollReport$ | async as payroll_report">
+
                     <div class="report-count-item-load d-f-aic-jcb">
                         <div class="report-count-item-load-right d-f-aic">
                             <div class="report-tickets d-f-aic-jcc">
                                 COMMISSION
-                                <span>{{ payroll_report?.commission }}%</span>
+                                <span>{{ payrollReport?.commission }}%</span>
                             </div>
                             <div
                                 class="edit d-f-aic-jcc"
@@ -28,17 +30,20 @@
                                 ></svg-icon>
                             </div>
                             <div class="edit d-f-aic-jcc burger_menu">
-                                <ca-burger-menu
-                                    [optionsPopupContent]="optionsPopupContent"
-                                    (onClick)="openMenu($event)"
-                                ></ca-burger-menu>
+                                <ca-dropdown-menu
+                                    [type]="'select-menu-type'"
+                                    [placement]="'bottom-right'"
+                                    [options]="dropdownMenuOptions"
+                                    (dropdownOptionEmitter)="openMenu($event)"
+                                >
+                                </ca-dropdown-menu>
                             </div>
                         </div>
                     </div>
-                </ng-container>
+                }
             </div>
             <div class="small-table-holder-main d-flex">
-                <ng-container *ngIf="!(loading$ | async)">
+                @if (!isLoading) {
                     <app-ca-main-table
                         [sortPredicate]="customSortPredicate"
                         [columns]="columns"
@@ -49,13 +54,13 @@
                         [transparentTable]="true"
                         (onReorder)="onReorderDone($event)"
                     ></app-ca-main-table>
-                </ng-container>
+                }
             </div>
-            <ng-container *ngIf="showMap">
+            @if (showMap) {
                 <div class="map-holder">
                     <app-ca-map [data]="mapData$ | async"></app-ca-map>
                 </div>
-            </ng-container>
+            }
         </div>
     </div>
     <div class="right-report-info">
@@ -66,7 +71,7 @@
                         Period
                         {{
                             (payrollReport$ | async).periodStart
-                                | date : 'MM/dd/yy'
+                                | date: 'MM/dd/yy'
                         }}
                     </div>
                 </div>
@@ -88,14 +93,16 @@
 
 <!-- TABLE TEMPLATES -->
 <ng-template #customCountTemplate let-data let-index="index">
-    <div class="custom-load-index">{{ index }}</div>
+    <div class="custom-load-index text-color-black">{{ index + 1 }}</div>
 </ng-template>
 
 <ng-template #customInvBrk let-data>
     <div class="load-description d-flex align-items-center">
         <div class="load-description-name">
-            <div class="load-description-address">{{ data.loadNumber }}</div>
-            <div class="load-description-stop-type">
+            <div class="load-description-address text-color-black">
+                {{ data.loadNumber }}
+            </div>
+            <div class="load-description-stop-type text-color-muted">
                 {{ data.brokerName }}
             </div>
         </div>
@@ -105,32 +112,34 @@
 <ng-template #customPickupHeaderTemplate>
     <div class="custom-load-header d-flex align-items-center pickup">
         <svg-icon [svgClass]="'d-flex'" name="pickup"></svg-icon>
-        <div>Pickup</div>
+        <div class="text-color-bw6-2">Pickup</div>
     </div>
 </ng-template>
 <ng-template #customDeliveryHeaderTemplate>
     <div class="custom-load-header d-flex align-items-center delivery">
         <svg-icon [svgClass]="'d-flex'" name="delivery"></svg-icon>
-        <div>Delivery</div>
+        <div class="text-color-bw6-2">Delivery</div>
     </div>
 </ng-template>
 
 <ng-template #cusstomLoadDescriptionTemplate let-data>
     <div class="load-description d-flex align-items-center normal">
-        <ng-container *ngIf="data.length">
+        @if (data.length) {
             <svg-icon
-                [svgClass]="'d-flex'"
+                [svgClass]="'d-flex prevent-text-selection'"
                 name="load_order_num_{{ data.length }}"
             ></svg-icon>
-        </ng-container>
+        }
 
         <div class="load-description-name">
-            <div class="load-description-address">{{ data[0].address }}
-                <ng-container *ngIf="data.isTonu"
-                    ><span class="load-description-tonu">T</span></ng-container
-                ></div>
-            <div class="load-description-stop-type">
-                {{ data[0].date | date : 'MM/dd/yy hh:mm a' }}
+            <div class="load-description-address text-color-black">
+                {{ data[0].address }}
+                @if (data.isTonu) {
+                    <span class="load-description-tonu">T</span>
+                }
+            </div>
+            <div class="load-description-stop-type text-color-muted">
+                {{ data[0].date | date: 'MM/dd/yy hh:mm a' }}
             </div>
         </div>
     </div>
@@ -150,7 +159,9 @@
     <td colspan="4">
         <div class="td-container">
             <div class="td-content-container">
-                <div class="custom-load-index text b-600">Total</div>
+                <div class="custom-load-index text-color-black text b-600">
+                    Total
+                </div>
             </div>
         </div>
     </td>
@@ -164,8 +175,8 @@
 </ng-template>
 
 <ng-template #reorderTemplate let-row="row" let-index="index">
-    <ng-container *ngIf="(payrollReport$ | async).sums as payroll_totals">
-        <ng-container *ngIf="selectedTab === 'open'">
+    @if (payrollTotals) {
+        @if (selectedTab === 'open') {
             <td class="text-center">
                 <div class="td-container">
                     <div class="td-content-container">
@@ -176,20 +187,13 @@
                     </div>
                 </div>
             </td>
-        </ng-container>
+        }
 
         <td [attr.colspan]="selectedTab === 'open' ? 3 : 4">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">Total</div>
-                </div>
-            </div>
-        </td>
-        <td class="text-right">
-            <div class="td-container">
-                <div class="td-content-container">
-                    <div class="custom-load-index text">
-                        {{ payroll_totals.totalEmptyMiles }}
+                    <div class="custom-load-index text-color-black text b-600">
+                        Total
                     </div>
                 </div>
             </div>
@@ -197,8 +201,8 @@
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text">
-                        {{ payroll_totals.totalLoadedMiles }}
+                    <div class="custom-load-index text-color-black text">
+                        {{ payrollTotals.totalEmptyMiles }}
                     </div>
                 </div>
             </div>
@@ -206,8 +210,8 @@
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text">
-                        {{ payroll_totals.totalMiles }}
+                    <div class="custom-load-index text-color-black text">
+                        {{ payrollTotals.totalLoadedMiles }}
                     </div>
                 </div>
             </div>
@@ -215,8 +219,8 @@
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text">
-                        {{ payroll_totals.totalRevenue | currency }}
+                    <div class="custom-load-inde text-color-black text">
+                        {{ payrollTotals.totalMiles }}
                     </div>
                 </div>
             </div>
@@ -224,11 +228,20 @@
         <td class="text-right">
             <div class="td-container">
                 <div class="td-content-container">
-                    <div class="custom-load-index text b-600">
-                        {{ payroll_totals.totalSubtotal | currency }}
+                    <div class="custom-load-index text-color-black text">
+                        {{ payrollTotals.totalRevenue | currency }}
                     </div>
                 </div>
             </div>
         </td>
-    </ng-container>
+        <td class="text-right">
+            <div class="td-container">
+                <div class="td-content-container">
+                    <div class="custom-load-index text-color-black text b-600">
+                        {{ payrollTotals.totalSubtotal | currency }}
+                    </div>
+                </div>
+            </div>
+        </td>
+    }
 </ng-template>

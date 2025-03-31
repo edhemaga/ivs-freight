@@ -28,3 +28,44 @@
 .d-f-aic-jcb {
     @include flex(center, space-between);
 }
+
+@mixin grid-template-columns($columns) {
+    grid-template-columns: $columns;
+}
+
+@mixin text-selection($color, $opacity: 0.2) {
+    &::-moz-selection {
+        background-color: rgb($color, $opacity) !important;
+        color: $color !important;
+    }
+
+    &::selection {
+        background-color: rgb($color, $opacity) !important;
+        color: $color !important;
+    }
+}
+
+@mixin prevent-text-selection() {
+    -ms-user-select: none;
+    -webkit-user-select: none;
+    user-select: none;
+    -moz-user-select: none;
+  }
+  
+  @mixin responsive-grid($small, $medium, $large, $small-max: 1280px, $medium-min: 1281px, $medium-max: 1440px, $large-min: 1441px) {
+    display: grid;
+    gap: 12px;
+    padding-right: 12px;
+
+    @media (max-width: $small-max) {
+      grid-template-columns: $small;
+    }
+  
+    @media (min-width: $medium-min) and (max-width: $medium-max) {
+      grid-template-columns: $medium;
+    }
+  
+    @media (min-width: $large-min) {
+      grid-template-columns: $large;
+    }
+  }

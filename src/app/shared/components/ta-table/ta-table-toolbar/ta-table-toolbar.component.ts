@@ -69,11 +69,11 @@ import {
 // directives
 import { PreventMultipleclicksDirective } from '@shared/directives/';
 
+// helpers
+import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+
 // constants
-import {
-    TableToolbarRoutes,
-    TableToolbarConstants,
-} from '@shared/components/ta-table/ta-table-toolbar/utils/constants';
+import { TableToolbarRoutes } from '@shared/components/ta-table/ta-table-toolbar/utils/constants';
 
 @Titles()
 @Component({
@@ -130,7 +130,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
     public tableLocked: boolean = true;
     public optionsPopupContent: OptionsPopupContent[] =
-        TableToolbarConstants.optionsPopupContent;
+        DropdownMenuContentHelper.getTableToolbarDropdownContent();
     public tableRowsSelected: any[] = [];
     public activeTableData: any = {};
     public toolbarWidth: string = '';
@@ -162,7 +162,9 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.getSelectedTabTableData();
 
-        this.getToolbarWidth();
+        setTimeout(() => {
+            this.getToolbarWidth();
+        });
 
         this.getActiveTableData();
 
@@ -304,7 +306,9 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                                     selectRow.tableData
                                         ?.tablePaymentDetailCreditLimit;
                             } else {
-                                cost = selectRow.tableData?.tableCost;
+                                cost =
+                                    selectRow.tableData?.tableCost ||
+                                    selectRow.tableData?.tableExpense;
                             }
 
                             if (cost) {
@@ -355,9 +359,11 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
             localStorage.getItem(`table-${td.tableConfiguration}-Configuration`)
         );
 
-        this.optionsPopupContent[2].isInactive = tableColumnsConfig
-            ? false
-            : true;
+        if (this.optionsPopupContent.length) {
+            this.optionsPopupContent[2].isInactive = tableColumnsConfig
+                ? false
+                : true;
+        }
 
         this.tableConfigurationType = td.tableConfiguration;
 
@@ -449,9 +455,14 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
                 this.activeViewMode === TableStringEnum.DISPATCH
                     ? TableStringEnum.NUMBER_100
                     : hasMinWidth
-                    ? columnsSumWidth + 26 + TableStringEnum.PX
-                    : 100 + '%';
+                      ? columnsSumWidth + 26 + TableStringEnum.PX
+                      : 100 + '%';
         }
+
+        this.tableService.sendToolbarWidth({
+            width: this.toolbarWidth,
+            maxWidth: this.maxToolbarWidth,
+        });
     }
 
     private setColumnsOptionsGroups(): void {
@@ -762,9 +773,22 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
 
         this.timeOutToaggleColumn = setTimeout(() => {
             if (!column.isPined) {
-                column.hidden = !column.hidden;
+                this.columns = this.columns.map((item) =>
+                    item.field === column.field
+                        ? { ...item, hidden: !column.hidden }
+                        : item
+                );
 
-                this.setTableConfig(column, index);
+                this.columnsOptionsWithGroups =
+                    this.columnsOptionsWithGroups.map((item) =>
+                        item.field === column.field
+                            ? (this.setTableConfig(
+                                  { ...item, hidden: !column.hidden },
+                                  index
+                              ),
+                              { ...item, hidden: !column.hidden })
+                            : item
+                    );
             }
         }, 10);
     }
@@ -853,7 +877,7 @@ export class TaTableToolbarComponent implements OnInit, OnChanges, OnDestroy {
         let newColumns = [...this.columns];
 
         newColumns = newColumns.map((newColumn) => {
-            if (newColumn.title === column.title) newColumn = column;
+            if (newColumn.field === column.field) newColumn = column;
 
             return newColumn;
         });

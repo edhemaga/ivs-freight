@@ -1,18 +1,27 @@
+//modals
+import { IChartConfiguration } from '@ca-shared/components/ca-chart/models';
+
+//enums
 import {
-    ChartImagesStringEnum,
-    ChartTypesStringEnum,
+    eChartTypesString,
 } from 'ca-components/lib/components/ca-chart/enums';
+import { eStringPlaceholder } from '@shared/enums';
 
 export class DashboardByStateChartsConfiguration {
-    static PICK_BY_STATE_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+    public static BY_STATE_CHART_CONFIG: IChartConfiguration = {
+        chartType: eChartTypesString.BAR,
         chartData: {
             labels: [],
             datasets: [],
         },
-        height: 150,
+        height: 260,
         width: 100,
-        noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
+        isMultiYAxis: false,
+        noDataImage: eStringPlaceholder.EMPTY,
         chartOptions: {},
+        showXAxisLabels: true,
+        isTooltipItemInSelectedItems: true,
+        showTooltipBackground: true,
+        isDashboardChart: true,
     };
 }

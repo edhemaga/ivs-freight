@@ -1,29 +1,20 @@
-import { Component, Input, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, Input } from '@angular/core';
 import { Router } from '@angular/router';
 
-// modules
-import { AngularSvgIconModule } from 'angular-svg-icon';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-
 // services
-import { RepairShopDetailsService } from '@pages/repair/pages/repair-shop-details/services';
-
-// svg routes
-import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
+import { DetailsSearchService } from '@shared/services';
 
 // components
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { CaSearchMultipleStatesComponent } from 'ca-components';
+import { CaVehicleListComponent, eVehicleList } from 'ca-components';
 
-// constants
-import { RepairShopDetailsItemConstants } from '@pages/repair/pages/repair-shop-details/components/repair-shop-details-item/utils/constants';
+// enums
+import { eRepairShopDetailsSearchIndex } from '@pages/repair/pages/repair-shop-details/enums';
 
-// pipes
-import { DispatchColorFinderPipe, ThousandSeparatorPipe } from '@shared/pipes';
+// interfaces
+import { IVehicleListActionsEmit } from '@ca-shared/components/ca-vehicle-list/interfaces';
 
 // models
-import { RepairedVehicleListResponse } from 'appcoretruckassist';
+import { RepairedVehicleResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-repair-shop-details-item-repaired-vehicle',
@@ -31,57 +22,39 @@ import { RepairedVehicleListResponse } from 'appcoretruckassist';
     styleUrls: ['./repair-shop-details-item-repaired-vehicle.component.scss'],
     standalone: true,
     imports: [
-        // modules
-        CommonModule,
-        AngularSvgIconModule,
-        NgbModule,
-
         // components
-        TaAppTooltipV2Component,
-        CaSearchMultipleStatesComponent,
-
-        // pipes
-        ThousandSeparatorPipe,
-        DispatchColorFinderPipe,
+        CaVehicleListComponent,
     ],
 })
-export class RepairShopDetailsItemRepairedVehicleComponent implements OnInit {
-    @Input() set repairedVehicleList(data: RepairedVehicleListResponse[]) {
+export class RepairShopDetailsItemRepairedVehicleComponent {
+    @Input() set repairedVehicleList(data: RepairedVehicleResponse[]) {
         this._repairedVehicleList = data;
     }
     @Input() searchConfig: boolean[];
 
-    public _repairedVehicleList: RepairedVehicleListResponse[] = [];
+    public _repairedVehicleList: RepairedVehicleResponse[] = [];
 
-    public repairShopDetailsSvgRoutes = RepairShopDetailsSvgRoutes;
+    public eVehicleList = eVehicleList;
 
-    public repairedVehicleListHeaderItems: string[];
+    // enums
+    public eRepairShopDetailsSearchIndex = eRepairShopDetailsSearchIndex;
 
     constructor(
         private router: Router,
 
         // services
-        private repairShopDetailsService: RepairShopDetailsService
+        private detailsSearchService: DetailsSearchService
     ) {}
 
-    ngOnInit(): void {
-        this.getConstantData();
-    }
+    public handleVehicleListActionsEmit(action: IVehicleListActionsEmit): void {
+        const { unitType, unitId, isCloseSearch } = action;
 
-    public trackByIdentity = (index: number): number => index;
-
-    private getConstantData(): void {
-        this.repairedVehicleListHeaderItems =
-            RepairShopDetailsItemConstants.REPAIRED_VEHICLES_LIST_HEADER_ITEMS;
-    }
-
-    public handleViewDetailClick(unitType: string, id: number): void {
-        this.router.navigate([`/list/${unitType.toLowerCase()}/${id}/details`]);
-    }
-
-    public handleCloseSearchEmit(): void {
-        const detailsPartIndex = 1;
-
-        this.repairShopDetailsService.setCloseSearchStatus(detailsPartIndex);
+        isCloseSearch
+            ? this.detailsSearchService.setCloseSearchStatus(
+                  eRepairShopDetailsSearchIndex.VEHICLE_INDEX
+              )
+            : this.router.navigate([
+                  `/list/${unitType.toLowerCase()}/${unitId}/details`,
+              ]);
     }
 }

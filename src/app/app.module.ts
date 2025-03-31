@@ -1,6 +1,14 @@
-import { ApplicationConfig, CUSTOM_ELEMENTS_SCHEMA, NgModule } from '@angular/core';
+import {
+    ApplicationConfig,
+    CUSTOM_ELEMENTS_SCHEMA,
+    NgModule,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
+import {
+    HTTP_INTERCEPTORS,
+    provideHttpClient,
+    withInterceptorsFromDi,
+} from '@angular/common/http';
 import { CommonModule, DatePipe, CurrencyPipe } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
@@ -8,8 +16,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SharedModule } from '@shared/shared.module';
 import { ApiModule, Configuration } from 'appcoretruckassist';
 import { ToastrModule } from 'ngx-toastr';
-import { StoreModule } from '@ngrx/store';
-import { EffectsModule } from '@ngrx/effects';
+import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 
 // Routing
 import { AppRoutingModule } from '@app/app-routing.module';
@@ -43,20 +50,32 @@ import player from 'lottie-web';
 import { ReactiveFormsModule } from '@angular/forms';
 import { NgIdleModule } from '@ng-idle/core';
 
-
 import { provideLottieOptions } from 'ngx-lottie';
+import { AngularSvgIconPreloaderModule } from 'angular-svg-icon-preloader';
+
+// NGRX
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { MilesEffects } from '@pages/miles/state/effects/miles.effect';
+import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
+// Store
+import { loadReducer } from '@pages/load/state/reducers/load.reducer';
+import { LoadEffect } from '@pages/load/state/effects/load.effect';
 
 export const appConfig: ApplicationConfig = {
-  providers: [
-    provideLottieOptions({
-      player: () => player,
-    }),
-  ],
+    providers: [
+        provideLottieOptions({
+            player: () => player,
+        }),
+    ],
 };
 
-@NgModule({ declarations: [AppComponent, ChangeLogoPipe],
+@NgModule({
+    declarations: [AppComponent, ChangeLogoPipe],
     schemas: [CUSTOM_ELEMENTS_SCHEMA],
-    bootstrap: [AppComponent], imports: [BrowserModule,
+    bootstrap: [AppComponent],
+    imports: [
+        BrowserModule,
         CommonModule,
         //BrowserTransferStateModule,
         BrowserAnimationsModule,
@@ -72,6 +91,9 @@ export const appConfig: ApplicationConfig = {
             toastComponent: TaCustomToastMessagesComponent, // added custom toast!
         }),
         NgIdleModule.forRoot(),
+        AngularSvgIconPreloaderModule.forRoot({
+            configUrl: 'assets/preload-svg/preload-svg.json',
+        }),
         ApiModule,
         BlockedContentPipe,
         NavigationComponent,
@@ -80,15 +102,22 @@ export const appConfig: ApplicationConfig = {
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }),
-        StoreModule.forRoot([]),
-        EffectsModule.forRoot([]),
-        //components 
+        EffectsModule.forRoot([LoadEffect, MilesEffects]),
+        StoreModule.forRoot({ load: loadReducer, miles: milesReducer }),
+        StoreDevtoolsModule.instrument({
+            name: 'Carriera App',
+        }),
+
+        //components
         ReusableTemplatesComponent,
         // routing
-        AppRoutingModule], providers: [
+        AppRoutingModule,
+    ],
+    providers: [
         {
             provide: Configuration,
-            useFactory: (userLoggedService: WebsiteUserLoggedService) => configFactory(userLoggedService),
+            useFactory: (userLoggedService: WebsiteUserLoggedService) =>
+                configFactory(userLoggedService),
             deps: [WebsiteUserLoggedService],
             multi: false,
         },
@@ -111,5 +140,6 @@ export const appConfig: ApplicationConfig = {
         CurrencyPipe,
         BlockedContentPipe,
         provideHttpClient(withInterceptorsFromDi()),
-    ] })
+    ],
+})
 export class AppModule {}

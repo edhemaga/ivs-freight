@@ -8,7 +8,7 @@
         [activeViewMode]="activeViewMode"
     ></app-ta-table-toolbar>
 
-    <ng-container *ngIf="activeViewMode === 'List'">
+    @if (activeViewMode === 'List') {
         <app-ta-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -22,27 +22,22 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
+            (tableBodyActions)="handleDropdownMenuActions($event, selectedTab)"
             [tableData]="tableData"
         ></app-ta-table-body>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="activeViewMode === 'Card'">
+    @if (activeViewMode === 'Card') {
         <div class="elements">
             <app-customer-card
-                (bodyActions)="onTableBodyActions($event)"
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
-                [cardTitleLink]="cardTitleLink"
+                [selectedTab]="selectedTab"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
             ></app-customer-card>
 
             <!-- Show More -->
-            <ng-container *ngIf="viewData.length">
+            @if (viewData.length) {
                 <div
                     class="show-more-container d-flex align-items-center justify-content-between"
                     [ngStyle]="{ 'width.px': tableWidth }"
@@ -52,22 +47,20 @@
                         {{ activeTableDataLength }}
                     </div>
 
-                    <ng-container
-                        *ngIf="viewData.length < activeTableDataLength"
-                    >
+                    @if (viewData.length < activeTableDataLength) {
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>
-                    </ng-container>
+                    }
                 </div>
-            </ng-container>
+            }
         </div>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="activeViewMode === 'Map'">
+    @if (activeViewMode === 'Map') {
         <div class="customer-map-container">
             <app-ta-map-list
                 [type]="'shipper'"
@@ -78,13 +71,11 @@
                 (sortEvent)="onMapListSort($event)"
                 (headActions)="onTableHeadActions($event)"
             >
-                <ng-container
-                    *ngFor="
-                        let latlong of mapListData;
-                        let i = index;
-                        trackByIdentity
-                    "
-                >
+                @for (
+                    latlong of mapListData;
+                    let i = $index;
+                    track latlong.id
+                ) {
                     <app-ta-map-list-card
                         #listCard
                         [title]="latlong?.businessName"
@@ -96,19 +87,17 @@
                         [rating]="latlong?.tableRaiting"
                         [type]="'shipper'"
                         [locationFilterOn]="locationFilterOn"
-                        (bodyActions)="onTableBodyActions($event)"
                         [ngStyle]="{
                             display:
                                 locationFilterOn && latlong?.isShown == false
                                     ? 'none'
-                                    : 'block'
+                                    : 'block',
                         }"
                     ></app-ta-map-list-card>
-                </ng-container>
+                }
             </app-ta-map-list>
 
             <app-ca-map
-                #mapsComponent
                 [data]="mapData"
                 (clusterMarkerClick)="onClusterMarkerClick($event)"
                 (clusterListScrollEvent)="onClusterListScroll($event)"
@@ -117,5 +106,5 @@
                 (resetSelectedMarkerItem)="onResetSelectedMarkerItem($event)"
             ></app-ca-map>
         </div>
-    </ng-container>
+    }
 </div>

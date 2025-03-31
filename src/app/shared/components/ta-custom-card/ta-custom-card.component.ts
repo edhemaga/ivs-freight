@@ -23,6 +23,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
+import { eGeneralActions } from '@shared/enums';
 
 // components
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -31,6 +32,15 @@ import { TaPayrollStatusesComponent } from '@shared/components/ta-payroll-status
 import { TaLikeDislikeComponent } from '@shared/components/ta-like-dislike/ta-like-dislike.component';
 import { TaNoteContainerComponent } from '@shared/components/ta-note-container/ta-note-container.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+//svg Routes
+import { CustomCardSvgRoutes } from '@shared/components/ta-custom-card/utils/svg-routes';
+
+//interfaces
+import { CaIconDropdownComponent, IIconDropdownConfig } from 'ca-components';
+
+//config
+import { IconDropdownConfig } from '@shared/components/ta-custom-card/utils/config';
 
 @Component({
     selector: 'app-ta-custom-card',
@@ -54,6 +64,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         TaLikeDislikeComponent,
         TaNoteContainerComponent,
         TaAppTooltipV2Component,
+        CaIconDropdownComponent,
     ],
 })
 export class TaCustomCardComponent implements OnInit {
@@ -74,6 +85,8 @@ export class TaCustomCardComponent implements OnInit {
     @Input() subText: string = null;
     @Input() subTextClass: string = null;
     @Input() hasDivider: boolean = true;
+    @Input() hasDarkDivider: boolean = false;
+    @Input() hasSmallDivider: boolean = false;
     @Input() hasLikeDislike: boolean = false;
     @Input() hasScrollBody: boolean = false;
     @Input() hasScrollBodyXAxis: boolean = false;
@@ -91,6 +104,8 @@ export class TaCustomCardComponent implements OnInit {
     @Input() isDropdownModalCard: boolean = false;
     @Input() isExtraLargeLayout: boolean = false;
     @Input() isDepartmentContactsCard: boolean = false;
+    @Input() hasColorIcon: boolean = false;
+    @Input() hasScrollBackroundTrack: boolean = true;
 
     @Input() controlName: UntypedFormControl;
 
@@ -117,8 +132,9 @@ export class TaCustomCardComponent implements OnInit {
     @Input() hasXAxisBottomPadding: boolean = false;
     @Input() isInheritingParentSize: boolean = false;
     @Input() isGreyTextWhenDisabled: boolean = false;
-    @Input() headerLightColor = false;
-    @Input() isActionDisabled = false;
+    @Input() isHeaderLightColor: boolean = false;
+    @Input() isActionDisabled: boolean = false;
+    @Input() doesFileExist: boolean = false;
 
     @Output() onActionEvent: EventEmitter<{ check: boolean; action: string }> =
         new EventEmitter<{ check: boolean; action: string }>(null);
@@ -130,6 +146,9 @@ export class TaCustomCardComponent implements OnInit {
     public isHeaderHover: boolean = false;
     public noActive: string = 'innactive';
     public _isCardOpen: string | boolean = 'null';
+    public customCardSvgRoutes = CustomCardSvgRoutes;
+    public iconDropdownConfig: IIconDropdownConfig =
+        IconDropdownConfig.ICON_DROPDOWN_CONFIG;
 
     constructor(private uploadFileService: TaUploadFileService) {}
 
@@ -171,8 +190,11 @@ export class TaCustomCardComponent implements OnInit {
         event.stopPropagation();
 
         switch (action) {
-            case 'add':
-                this.onActionEvent.emit({ check: true, action: 'add' });
+            case eGeneralActions.ADD:
+                this.onActionEvent.emit({
+                    check: true,
+                    action: eGeneralActions.ADD,
+                });
 
                 break;
             case 'download':
@@ -186,8 +208,11 @@ export class TaCustomCardComponent implements OnInit {
                 });
 
                 break;
-            case 'delete':
-                this.onActionEvent.emit({ check: true, action: 'delete' });
+            case eGeneralActions.DELETE:
+                this.onActionEvent.emit({
+                    check: true,
+                    action: eGeneralActions.DELETE,
+                });
 
                 break;
             case 'hours-24':

@@ -3,7 +3,7 @@
     [ngClass]="{ mapToolbarStyle: isMapShowning }"
     [ngStyle]="{
         width: !options.toolbarActions.hideWidth ? toolbarWidth : 'auto',
-        'max-width.px': maxToolbarWidth
+        'max-width.px': maxToolbarWidth,
     }"
 >
     <!-- LIST NAME -->
@@ -11,7 +11,7 @@
         class="list-name d-flex justify-content-center align-items-center ta-font-black"
         *ngIf="listName && !options.toolbarActions.hideListName"
     >
-        {{ listName | listNameCase : isUpperCaseTitle }}
+        {{ listName | listNameCase: isUpperCaseTitle }}
     </div>
 
     <!-- ONE TAB -->
@@ -28,6 +28,7 @@
             <div class="tab-container">
                 <div
                     class="tab-input d-flex justify-content-between align-items-center gap-2"
+                    (click)="showDispatchList(op)"
                 >
                     <div class="d-flex align-items-center gap-1 p-1">
                         <ng-container
@@ -46,7 +47,6 @@
                     <div ngbTooltip>
                         <div
                             #op="ngbPopover"
-                            (click)="showDispatchList(op)"
                             [ngbPopover]="dispatchPopover"
                             [autoClose]="'outside'"
                             popoverClass="toolbar-options-popover"
@@ -54,7 +54,7 @@
                             (hidden)="dispatchPopoverOpen = false"
                             class="dispatch-dropdown d-flex align-items-center"
                             [ngClass]="{
-                                'dispatch-dropdown-active': dispatchPopoverOpen
+                                'dispatch-dropdown-active': dispatchPopoverOpen,
                             }"
                             mainTooltip="Select"
                             [tooltipBackground]="'#424242'"
@@ -97,7 +97,7 @@
                             [ngClass]="{
                                 'tab-inactive': selectedTab !== data.field,
                                 'tab-active': selectedTab === data.field,
-                                disabled: data.inactive
+                                disabled: data.inactive,
                             }"
                             (click)="onSelectTab(data)"
                         >
@@ -113,7 +113,7 @@
                                     *ngIf="data.iconLink"
                                     [svgStyle]="{
                                         'width.px': 20,
-                                        'height.px': 20
+                                        'height.px': 20,
                                     }"
                                     [src]="data.iconLink"
                                 ></svg-icon>
@@ -155,7 +155,7 @@
                     class="selected-container-count ta-font-bold d-flex justify-content-center align-items-center"
                     [ngClass]="{
                         'selected-container-count-select-style':
-                            tableRowsSelected.length
+                            tableRowsSelected.length,
                     }"
                 >
                     {{ tableRowsSelected.length }} Selected
@@ -201,7 +201,7 @@
                             'activate-icon':
                                 options.toolbarActions.showActivateButton,
                             'deactivate-icon':
-                                !options.toolbarActions.showActivateButton
+                                !options.toolbarActions.showActivateButton,
                         }"
                         class="action-div-icon"
                         [src]="
@@ -480,11 +480,11 @@
                     [ngStyle]="{
                         'pointer-events': selectedDispatcher.canUnlock
                             ? 'auto'
-                            : 'none'
+                            : 'none',
                     }"
                     [ngClass]="{
                         'unlock-dispatch': !dispathcboardTableLocked,
-                        'disabled-icon': !selectedDispatcher.canUnlock
+                        'disabled-icon': !selectedDispatcher.canUnlock,
                     }"
                 >
                     <svg-icon
@@ -544,7 +544,7 @@
                     class="settings-dispatch dispach-history d-flex justify-content-center align-items-center"
                     [ngClass]="{
                         'disabled-icon pe-none':
-                            !selectedDispatcher?.dispatchCount
+                            !selectedDispatcher?.dispatchCount,
                     }"
                     ngbTooltip
                     [mainTooltip]="'Dispatch History'"
@@ -566,7 +566,7 @@
                     <div
                         class="modal-open-container d-flex justify-content-center align-items-center"
                         [ngClass]="{
-                            'new-load-locked': !dispathcboardTableLocked
+                            'new-load-locked': !dispathcboardTableLocked,
                         }"
                         (click)="onToolBarAction('open-dispatch-load-modal')"
                     >
@@ -603,7 +603,7 @@
                         <svg-icon
                             [svgStyle]="{
                                 'width.px': 17.78,
-                                'height.px': 17.78
+                                'height.px': 17.78,
                             }"
                             [src]="'assets/svg/truckassist-table/plus-icon.svg'"
                         ></svg-icon>
@@ -617,7 +617,9 @@
 </div>
 
 <ng-template #dispatchPopover let-data="data" data-toggle="popover">
-    <div class="dispatch-dropdown-container d-flex flex-column">
+    <div
+        class="dispatch-dropdown-container d-flex flex-column scrollable-element"
+    >
         <ng-container *ngFor="let option of tableData[0].dropdownData">
             <div
                 class="d-flex align-items-center"
@@ -643,7 +645,8 @@
                             <div
                                 [ngClass]="{
                                     'dispatch-dropdown-icon-inactive':
-                                        selectedDispatcher.name !== option?.name
+                                        selectedDispatcher.name !==
+                                        option?.name,
                                 }"
                             >
                                 <svg-icon
@@ -679,7 +682,7 @@
                                             option.avatarColor?.background ??
                                             unset,
                                         color:
-                                            option.avatarColor?.color ?? unset
+                                            option.avatarColor?.color ?? unset,
                                     }"
                                 >
                                     {{ option.shortName }}
@@ -736,7 +739,7 @@
                         (click)="onOptions(option)"
                         [ngClass]="{
                             'active-option': option.active,
-                            'inactiv-option': option.isInactive
+                            'inactiv-option': option.isInactive,
                         }"
                         class="options"
                         [ngStyle]="{ display: option.hide ? 'none' : 'flex' }"
@@ -756,7 +759,7 @@
                             <svg-icon
                                 [svgStyle]="{
                                     'width.px': 14,
-                                    'height.px': 14
+                                    'height.px': 14,
                                 }"
                                 [src]="option.backToListIcon"
                             ></svg-icon>
@@ -780,7 +783,7 @@
                                 class="option-icon"
                                 [svgStyle]="{
                                     'width.px': 18,
-                                    'height.px': 18
+                                    'height.px': 18,
                                 }"
                                 [src]="option.svgPath"
                             ></svg-icon>
@@ -788,14 +791,14 @@
                             <svg-icon
                                 (click)="
                                     onOptions({
-                                        text: 'Reset Table'
+                                        text: 'Reset Table',
                                     })
                                 "
                                 *ngIf="option.backToListIcon && option.active"
                                 class="columns-active-icon"
                                 [svgStyle]="{
                                     'width.px': 18,
-                                    'height.px': 18
+                                    'height.px': 18,
                                 }"
                                 [src]="
                                     'assets/svg/truckassist-table/reset-icon.svg'
@@ -864,7 +867,7 @@
                                         <svg-icon
                                             [svgStyle]="{
                                                 'width.px': 14,
-                                                'height.px': 14
+                                                'height.px': 14,
                                             }"
                                             [src]="
                                                 'assets/svg/truckassist-table/user-owner-icon.svg'
@@ -878,7 +881,7 @@
                                     [ngClass]="{
                                         'selectable-text':
                                             !column.isPined && !column.disabled,
-                                        'ta-font-bold': !column.hidden
+                                        'ta-font-bold': !column.hidden,
                                     }"
                                 >
                                     {{ column.name || column.title }}
@@ -891,7 +894,7 @@
                             <div
                                 class="group-columns-container"
                                 [ngClass]="{
-                                    'group-columns-active': column.isOpen
+                                    'group-columns-active': column.isOpen,
                                 }"
                             >
                                 <div class="group-columns-title">
@@ -906,7 +909,7 @@
                                         <label
                                             [ngClass]="{
                                                 'some-selected':
-                                                    column.areSomeSelected
+                                                    column.areSomeSelected,
                                             }"
                                             class="columns-options-label"
                                             for="checkbox{{ i }}"
@@ -917,7 +920,7 @@
                                         class="column-text selectable-text"
                                         [ngClass]="{
                                             'ta-font-bold':
-                                                column.areSomeSelected
+                                                column.areSomeSelected,
                                         }"
                                         (click)="openColumnsGroupDropdown(i)"
                                     >
@@ -931,7 +934,7 @@
                                         <svg-icon
                                             [svgStyle]="{
                                                 'width.px': 7.18,
-                                                'height.px': 12.66
+                                                'height.px': 12.66,
                                             }"
                                             [src]="
                                                 'assets/svg/truckassist-table/toolbar-group-dropdown-arrow.svg'
@@ -953,7 +956,7 @@
                                                 'remove-padding':
                                                     tableData[0]
                                                         ?.tableConfiguration ===
-                                                    'broker'
+                                                    'broker',
                                             }"
                                             (click)="
                                                 onToaggleGroupColumn(
@@ -1002,7 +1005,7 @@
                                                     <svg-icon
                                                         [svgStyle]="{
                                                             'width.px': 14,
-                                                            'height.px': 14
+                                                            'height.px': 14,
                                                         }"
                                                         [src]="
                                                             'assets/svg/truckassist-table/user-owner-icon.svg'
@@ -1018,7 +1021,7 @@
                                                         !columnGroup.isPined &&
                                                         !columnGroup.isGroupItemDisabled,
                                                     'ta-font-semi-bold':
-                                                        !columnGroup.hidden
+                                                        !columnGroup.hidden,
                                                 }"
                                             >
                                                 {{ columnGroup.name }}
@@ -1048,7 +1051,7 @@
                         class="option-icon"
                         [svgStyle]="{
                             'width.px': 16,
-                            'height.px': 16
+                            'height.px': 16,
                         }"
                         [src]="
                             'assets/svg/common/telematics/ic_menu_columns.svg'
@@ -1069,7 +1072,7 @@
                         class="option-icon"
                         [svgStyle]="{
                             'width.px': 14,
-                            'height.px': 14
+                            'height.px': 14,
                         }"
                         [src]="'assets/svg/common/resize-arrow.svg'"
                     ></svg-icon>
@@ -1087,7 +1090,7 @@
                         class="option-icon"
                         [svgStyle]="{
                             'width.px': 18,
-                            'height.px': 18
+                            'height.px': 18,
                         }"
                         [src]="'assets/svg/truckassist-table/import-new.svg'"
                     ></svg-icon>
@@ -1101,7 +1104,7 @@
                         class="option-icon"
                         [svgStyle]="{
                             'width.px': 18,
-                            'height.px': 18
+                            'height.px': 18,
                         }"
                         [src]="'assets/svg/truckassist-table/export-new.svg'"
                     ></svg-icon>

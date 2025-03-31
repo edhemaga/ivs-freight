@@ -8,6 +8,7 @@ import { MultipleSelectDetailsDropdownItem } from '@shared/models/multiple-selec
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eGeneralActions } from '@shared/enums';
 
 export class LoadDetailsHelper {
     static getDetailsDropdownOptions(
@@ -28,9 +29,9 @@ export class LoadDetailsHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: 'edit',
+                    name: eGeneralActions.EDIT,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: 'edit',
+                    iconName: eGeneralActions.EDIT,
                     subText: load.statusType.name.toUpperCase(),
                 },
                 {
@@ -59,7 +60,7 @@ export class LoadDetailsHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: 'delete',
+                    iconName: eGeneralActions.DELETE,
                     disabled: LoadDetailsHelper.enableDeleteButton(
                         load.statusType.name
                     ),
@@ -118,6 +119,7 @@ export class LoadDetailsHelper {
                     this.getMultipleSelectDetailsDropdown(load, dropdownItemId),
                 isSearchBtn: !!load?.comments?.length,
                 data: load,
+                businessOpen: true,
                 length:
                     dropdownItemId === 1
                         ? load?.comments?.length
@@ -161,8 +163,8 @@ export class LoadDetailsHelper {
 
     static enableDeleteButton(loadTypeName: string): boolean {
         return !(
-            loadTypeName.toLowerCase() === TableStringEnum.TEMPLATE ||
-            loadTypeName.toLowerCase() === TableStringEnum.PENDING
+            loadTypeName?.toLowerCase() === TableStringEnum.TEMPLATE ||
+            loadTypeName?.toLowerCase() === TableStringEnum.PENDING
         );
     }
 }

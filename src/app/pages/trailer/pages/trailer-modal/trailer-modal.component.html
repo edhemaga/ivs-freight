@@ -1,17 +1,13 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="editData?.id ? 'Edit Trailer' : 'Add Trailer'"
-    [editData]="editData"
-    [editName]="editData?.data?.trailerNumber"
-    [isModalValid]="trailerForm.valid && isFormDirty"
-    [saveAndAddNew]="true"
-    [disableDelete]="true"
-    [isEditDate]="editData?.id"
-    [topDivider]="false"
-    (action)="onModalAction($event)"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin class="origin-part-modal">
+    <div class="new-modal" origin>
         <app-ta-tab-switch
             [tabs]="tabs"
+            customClass="mt-0"
             (switchClicked)="tabChange($event)"
             [type]="'type1-modal-popup'"
         >
@@ -22,7 +18,7 @@
             class="form-container"
             [ngClass]="{
                 'form-container-without-mb': selectedTab === 1,
-                'form-container-with-inputs': selectedTab === 2
+                'form-container-with-inputs': selectedTab === 2,
             }"
         >
             <div
@@ -32,11 +28,11 @@
                 <!-------------------------------- Basic Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 1">
                     <div class="trailer-modal-first-row">
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="trailerNumber"
                             [inputConfig]="TrailerNumberConfig"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
+                        ></app-ca-input>
+                        <app-ca-input-dropdown
                             formControlName="trailerTypeId"
                             [template]="'svgtext-template'"
                             [inputConfig]="TrailerTypeIdConfig"
@@ -45,8 +41,8 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'trailer-type')
                             "
-                        ></app-ta-input-dropdown>
-                        <app-ta-input-dropdown
+                        ></app-ca-input-dropdown>
+                        <app-ca-input-dropdown
                             formControlName="trailerLengthId"
                             [inputConfig]="TrailerLengthConfig"
                             [options]="trailerLengthType"
@@ -54,18 +50,27 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'trailer-length')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </div>
-                    <div class="trailer-modal-second-row d-grid">
-                        <app-ta-input
-                            formControlName="year"
-                            [inputConfig]="TrailerYearConfig"
-                        ></app-ta-input>
-                        <app-ta-input
+                    <div class="trailer-modal-second-row d-grid mb-32">
+                        <app-ca-input
                             formControlName="vin"
-                            [inputConfig]="TrailerVinConfig"
-                        ></app-ta-input>
-                        <app-ta-input-dropdown
+                            [inputConfig]="
+                                {
+                                    configType: 'vinInputConfig',
+                                    loadingVinDecoder: loadingVinDecoder,
+                                } | trailerModalInputConfig
+                            "
+                        ></app-ca-input>
+                        <app-ca-input
+                            formControlName="year"
+                            [inputConfig]="
+                                {
+                                    configType: 'yearInputConfig',
+                                } | trailerModalInputConfig
+                            "
+                        ></app-ca-input>
+                        <app-ca-input-dropdown
                             formControlName="trailerMakeId"
                             [template]="'svg-template'"
                             [inputConfig]="TrailerMakeConfig"
@@ -74,23 +79,23 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'trailer-make')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </div>
-                    <div class="custom-model-color-year-length last-row">
-                        <app-ta-input
+                    <div class="custom-model-color-year-length last-row mb-32">
+                        <app-ca-input
                             formControlName="model"
                             [inputConfig]="TrailerModelConfig"
                             (blurInput)="onBlurTrailerModel()"
-                        ></app-ta-input>
+                        ></app-ca-input>
 
-                        <app-ta-input-dropdown
+                        <app-ca-input-dropdown
                             formControlName="colorId"
                             [template]="'svgtext-template'"
                             [inputConfig]="TrailerColorConfig"
                             [options]="colorType"
                             [activeItem]="selectedColor"
                             (selectedItem)="onSelectDropdown($event, 'color')"
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </div>
                     <!-- Company Owned -->
                     <app-ta-checkbox-card
@@ -101,12 +106,12 @@
                         [isCardOpen]="trailerForm.get('companyOwned').value"
                         [animationMarginParams]="{
                             marginTop: '12px',
-                            marginBottom: '18px'
+                            marginBottom: '18px',
                         }"
                     >
                         <div bodyFalse class="row row-no-m">
                             <div class="col-12">
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="ownerId"
                                     [inputConfig]="TrailerOwnerConfig"
                                     [canAddNew]="true"
@@ -116,7 +121,7 @@
                                     (selectedItem)="
                                         onSelectDropdown($event, 'owner')
                                     "
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </div>
                         </div>
                     </app-ta-checkbox-card>
@@ -137,7 +142,8 @@
                             ></app-ta-upload-files>
                         </app-ta-custom-card>
                     </div>
-                    <app-ta-input-note
+                    <div class="divider"></div>
+                    <app-ca-input-note
                         formControlName="note"
                         [isVisibleNote]="
                             trailerForm.get('note').value &&
@@ -151,7 +157,7 @@
                                 ? trailerForm.get('note').value
                                 : ''
                         "
-                    ></app-ta-input-note>
+                    ></app-ca-input-note>
                 </div>
                 <!-------------------------------- Additional Tab -------------------------------->
                 <div class="m-tab" *ngIf="selectedTab === 2">
@@ -165,10 +171,10 @@
                             )
                                 ? 'trailer-first-grid-reefer'
                                 : volumenTrailers.includes(
-                                      trailerForm.get('trailerTypeId').value
-                                  )
-                                ? 'trailer-first-grid-3-cols'
-                                : 'trailer-first-grid-2-cols'
+                                        trailerForm.get('trailerTypeId').value
+                                    )
+                                  ? 'trailer-first-grid-3-cols'
+                                  : 'trailer-first-grid-2-cols'
                         "
                     >
                         <ng-container
@@ -177,7 +183,7 @@
                                 'Reefer'
                             "
                         >
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="reeferUnit"
                                 [inputConfig]="TrailerReferConfig"
                                 [options]="reeferUnitType"
@@ -185,7 +191,7 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'reefer-unit')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
                         </ng-container>
 
                         <ng-container
@@ -195,18 +201,18 @@
                                 )
                             "
                         >
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="volume"
                                 [inputConfig]="TrailerVolumeConfig"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </ng-container>
 
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="emptyWeight"
                             [inputConfig]="TrailerWeightConfig"
-                        ></app-ta-input>
+                        ></app-ca-input>
 
-                        <app-ta-input-dropdown
+                        <app-ca-input-dropdown
                             formControlName="tireSizeId"
                             [inputConfig]="TrailerTireSizeConfig"
                             [options]="tireSize"
@@ -214,7 +220,7 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'tire-size')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
                     </div>
 
                     <!-------------------------------- SECOND ROW -------------------------------->
@@ -228,12 +234,12 @@
                                 : 'trailer-second-grid-2-cols'
                         "
                     >
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="axles"
                             [inputConfig]="TrailerAxlesConfig"
-                        ></app-ta-input>
+                        ></app-ca-input>
 
-                        <app-ta-input-dropdown
+                        <app-ca-input-dropdown
                             formControlName="suspension"
                             [inputConfig]="TrailerSuspensionConfig"
                             [options]="suspensionType"
@@ -241,7 +247,7 @@
                             (selectedItem)="
                                 onSelectDropdown($event, 'suspension')
                             "
-                        ></app-ta-input-dropdown>
+                        ></app-ca-input-dropdown>
 
                         <ng-container
                             *ngIf="
@@ -250,7 +256,7 @@
                                 )
                             "
                         >
-                            <app-ta-input-dropdown
+                            <app-ca-input-dropdown
                                 formControlName="doorType"
                                 [inputConfig]="TrailerDoorTypeConfig"
                                 [options]="doorType"
@@ -258,7 +264,7 @@
                                 (selectedItem)="
                                     onSelectDropdown($event, 'door-type')
                                 "
-                            ></app-ta-input-dropdown>
+                            ></app-ca-input-dropdown>
                         </ng-container>
 
                         <ng-container
@@ -278,32 +284,32 @@
                     </div>
                     <!-------------------------------- THIRD ROW -------------------------------->
                     <div class="trailer-modal-insurance-fhwa">
-                        <app-ta-input
+                        <app-ca-input
                             formControlName="insurancePolicy"
                             [inputConfig]="TrailerInsurancePolicyConfig"
-                        ></app-ta-input>
-                        <app-ta-input
+                        ></app-ca-input>
+                        <app-ca-input
                             formControlName="mileage"
                             [inputConfig]="TrailerMileageConfig"
-                        ></app-ta-input>
-                        <app-ta-input
+                        ></app-ca-input>
+                        <app-ca-input
                             formControlName="fhwaExp"
                             [inputConfig]="TrailerFhwaExpConfig"
-                        ></app-ta-input>
+                        ></app-ca-input>
                     </div>
                     <ng-container *ngIf="trailerForm.get('companyOwned').value">
                         <div class="row row-no-mb">
                             <div class="col-6">
-                                <app-ta-input
+                                <ca-input-datetime-picker
                                     formControlName="purchaseDate"
                                     [inputConfig]="TrailerPurchaseDateConfig"
-                                ></app-ta-input>
+                                ></ca-input-datetime-picker>
                             </div>
                             <div class="col-6">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="purchasePrice"
                                     [inputConfig]="TrailerPurchasePriceConfig"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                     </ng-container>
@@ -311,4 +317,101 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (editData?.data?.trailerNumber) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ editData?.data?.trailerNumber }}
+        </div>
+    }
+</ng-template>
+@let isModalValidToSubmit = trailerForm.valid && isFormDirty;
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.id) {
+            <div class="d-flex justify-content-between w-full">
+                <div class="d-flex">
+                    <app-ca-modal-button
+                        class="mr-12"
+                        text="Delete"
+                        [size]="eModalButtonSize.SMALL"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
+                    >
+                    </app-ca-modal-button>
+                    <app-ca-modal-button
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                        [size]="eModalButtonSize.SMALL"
+                        class="mr-12"
+                        text="Deactivate"
+                        (click)="onModalAction(taModalActionEnum.DEACTIVATE)"
+                    >
+                    </app-ca-modal-button>
+                </div>
+                <app-ca-modal-button
+                    [isValid]="isModalValidToSubmit"
+                    [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                    [text]="'Save Changes'"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                >
+                </app-ca-modal-button>
+            </div>
+        } @else {
+            <app-ca-modal-button
+                class="mr-12"
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save and Add New'"
+                [isSpinnerShown]="
+                    activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
+                "
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
+            >
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save'"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>

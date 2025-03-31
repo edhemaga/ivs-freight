@@ -82,28 +82,26 @@
                                         class="bottom-item-body d-flex align-items-center"
                                         [ngStyle]="{
                                             'margin-top':
-                                            cardRow.title === 'Label'
+                                                cardRow.title === 'Label'
                                                     ? '3px'
                                                     : '0px',
                                             'padding-left':
-                                            cardRow.title === 'Label'
+                                                cardRow.title === 'Label'
                                                     ? '0px'
-                                                    : '4px'
+                                                    : '4px',
                                         }"
                                     >
                                         <ng-container
                                             *ngIf="
-                                            cardRow.title !== 'Label' &&
-                                            cardRow.title !== 'Password'
+                                                cardRow.title !== 'Label' &&
+                                                cardRow.title !== 'Password'
                                             "
                                         >
                                             {{ card[cardRow.key] ?? '/' }}
                                         </ng-container>
 
                                         <ng-container
-                                            *ngIf="
-                                                cardRow.title === 'Password'
-                                            "
+                                            *ngIf="cardRow.title === 'Password'"
                                         >
                                             <div
                                                 appTextToggle="{{
@@ -116,7 +114,9 @@
                                             *ngIf="cardRow.title === 'Label'"
                                         >
                                             <div
-                                                [style.width.px]="elementWidth"
+                                                [style.width.px]="
+                                                    dropdownElementWidth
+                                                "
                                             >
                                                 <app-ta-input-dropdown-label
                                                     [formControl]="
@@ -131,7 +131,7 @@
                                                         dropdownLabel: true,
                                                         dropdownWidthClass:
                                                             'w-col-' +
-                                                            elementWidth,
+                                                            dropdownElementWidth,
                                                         textTransform:
                                                             'lowercase',
                                                         minLength: 1,
@@ -150,21 +150,21 @@
                                                                 popup: {
                                                                     name: 'Confirm',
                                                                     backgroundColor:
-                                                                        '#3074d3'
+                                                                        '#3074d3',
                                                                 },
                                                                 name: 'confirm',
-                                                                svg: 'assets/svg/ic_spec-confirm.svg'
+                                                                svg: 'assets/svg/ic_spec-confirm.svg',
                                                             },
                                                             secondCommand: {
                                                                 popup: {
                                                                     name: 'Cancel',
                                                                     backgroundColor:
-                                                                        '#2f2f2f'
+                                                                        '#2f2f2f',
                                                                 },
                                                                 name: 'cancel',
-                                                                svg: 'assets/svg/ic_x.svg'
-                                                            }
-                                                        }
+                                                                svg: 'assets/svg/ic_x.svg',
+                                                            },
+                                                        },
                                                     }"
                                                     [colors]="card.colorRes"
                                                     [options]="card.colorLabels"
@@ -204,12 +204,17 @@
 
                 <div class="card-body-right">
                     <div class="top-side">
-                        <!-- Open dropdown element-->
+                        <!-- Dropdown Menu-->
 
-                        <app-ta-table-card-dropdown-actions
-                            [card]="card"
-                            (bodyActions)="onCardActions($event)"
-                        ></app-ta-table-card-dropdown-actions>
+                        <ca-dropdown-menu
+                            [type]="'dots-menu-type'"
+                            [placement]="'right-top'"
+                            [options]="card.tableDropdownContent"
+                            (dropdownOptionEmitter)="
+                                handleToggleDropdownMenuActions($event, card)
+                            "
+                        >
+                        </ca-dropdown-menu>
 
                         <!-- Note element -->
 
@@ -244,7 +249,7 @@
                                         isCardFlippedCheckInCards.includes(i) ||
                                         isAllCardsFlipp,
                                     'svg-position':
-                                        !isCardFlippedCheckInCards.includes(i)
+                                        !isCardFlippedCheckInCards.includes(i),
                                 }"
                                 customClass="mt-2"
                             >

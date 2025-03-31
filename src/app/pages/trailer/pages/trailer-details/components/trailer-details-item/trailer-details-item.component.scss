@@ -18,10 +18,15 @@
 }
 app-trailer-details-item {
     .owner-container {
-        //padding: 0 4px;
-        //margin-top: -4px;
+        .owner-items-name-header {
+            font-size: 11px;
+            line-height: 14px;
+            padding-bottom: 2px;
+            color: $ta-black;
+        }
         .owner-items-name {
-            height: 22px;
+            min-height: 22px;
+            line-height: 22px;
             text-transform: uppercase;
             .firm-name {
                 font-size: 18px;

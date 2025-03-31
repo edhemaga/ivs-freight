@@ -1,4 +1,5 @@
 export enum TaModalTableStringEnum {
+    // form array items
     PHONE_TABLE_ITEMS = 'phoneTableItems',
     EMAIL_TABLE_ITEMS = 'emailTableItems',
     REPAIR_BILL_TABLE_ITEMS = 'repairBillTableItems',
@@ -10,21 +11,31 @@ export enum TaModalTableStringEnum {
     PREVIOUS_ADDRESSES_TABLE_ITEMS = 'previousAddressesTableItems',
     LOAD_MODAL_TABLE_ITEMS = 'loadModalTableItems',
     DEPARTMENT_CONTACT_ITEMS = 'departmentTableItems',
-    PRICE = 'price',
+    CHECKBOX_HEADER_ITEM = 'checkBoxHeaderItem',
+
+    // types
     CONTACT_PHONE_TYPE = 'contact-phone-type',
     CONTACT_EMAIL_TYPE = 'contact-email-type',
     CONTACT_DEPARTMENT_TYPE = 'contact-department-type',
     PM_TRUCK_TYPE = 'pm-truck-type',
     PM_TRAILER_TYPE = 'pm-trailer-type',
     PM_TRUCK_TRAILER_REPAIR_TYPE = 'pm-truck-trailer-repair-type',
-    ADDRESS = 'address',
     FUEL_CARD_TYPE = 'fuel-card-type',
+
+    // properties
+    HAZARDOUS = 'hazardousMaterialId',
+    ADDRESS = 'address',
     EMAIL = 'email',
-    VALID = 'VALID',
     TARP = 'tarp',
     SECURE = 'secure',
     DESCRIPTION = 'description',
-    HAZARDOUS = 'hazardousMaterialId',
+    PRICE = 'price',
+    SUBTOTAL = 'subtotal',
+    CHECKBOX = 'Checkbox',
+    SORT = 'Sort',
 
+    // additional
+    VALID = 'VALID',
     EMPTY_STRING = '',
+
 }

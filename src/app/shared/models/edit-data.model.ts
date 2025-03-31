@@ -1,9 +1,14 @@
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { LoadDataResponse, SelectedStatus } from '@pages/load/pages/load-modal/models';
+import {
+    LoadDataResponse,
+    SelectedStatus,
+} from '@pages/load/pages/load-modal/models';
 import {
     CompanyContactResponse,
     CompanyResponse,
     DriverResponse,
+    LoadModalResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     RepairResponse,
 } from 'appcoretruckassist';
@@ -30,4 +35,7 @@ export interface EditData<T = undefined> {
     isEditMode?: boolean;
     previousStatus?: SelectedStatus;
     preSelectedUnit?: number;
+    statusDropdownData?: LoadPossibleStatusesResponse;
+    loadModalData?: LoadModalResponse;
+    title?: string;
 }

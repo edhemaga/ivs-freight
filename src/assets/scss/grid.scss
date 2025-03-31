@@ -27,10 +27,28 @@
 }
 
 .p {
-    &-x{
+    &-x {
         &-1 {
             padding-left: 0.25rem;
             padding-right: 0.25rem;
         }
     }
+}
+
+.gap {
+    &-6 {
+        gap: 6px;
+    }
+    &-12 {
+        gap: 12px;
+    }
+}
+
+.mb {
+    &-32 {
+        margin-bottom: 32px;
+    }
+}
+.w-full {
+    width: 100%;
 }

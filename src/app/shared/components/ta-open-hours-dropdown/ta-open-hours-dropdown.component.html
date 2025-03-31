@@ -1,5 +1,13 @@
+@let isActiveDropdown = openHoursDropdownActiveId === dropdownConfig?.rowId;
+@let isInactiveDropdown = openHoursDropdownActiveId !== dropdownConfig?.rowId;
+
+@let isCurrentlyOpen = dropdownConfig?.openHoursToday?.id === 1;
+@let isCurrentlyClosing = dropdownConfig?.openHoursToday?.id === 2;
+@let isCurrentlyClosed = dropdownConfig?.openHoursToday?.id === 3;
+@let isAlwaysOpen = dropdownConfig?.openAlways;
+
 <div
-    [ngStyle]="{ 'width.px': componentData?.width ?? '100%' }"
+    [ngStyle]="{ 'width.px': dropdownConfig?.width ?? '100%' }"
     #openHoursPop="ngbPopover"
     [ngbPopover]="openHoursPopover"
     container="body"
@@ -7,59 +15,76 @@
     popoverClass="table-open-hours-popover"
     triggers="manual"
     [autoClose]="'outside'"
-    (hidden)="
-        openHoursDropdownActiveId === componentData?.rowId
-            ? (openHoursDropdownActiveId = -1)
-            : {}
-    "
-    (click)="onShowOpenHoursDropdown(openHoursPop)"
+    (hidden)="onHideOpenHoursDropdown()"
+    (click)="!isAlwaysOpen && onShowOpenHoursDropdown(openHoursPop)"
 >
     <div
         class="d-flex align-items-center open-hours-container"
         [ngClass]="{
-            active: openHoursDropdownActiveId === componentData?.rowId
+            active: isActiveDropdown,
         }"
+        [ngStyle]="{ cursor: isAlwaysOpen ? 'default' : 'pointer' }"
         ngbTooltip
         mainTooltip="Open Hours"
         tooltipBackground="#424242"
         tooltipColor="#ffff"
+        tooltipMarginTop="-6px"
         position="bottom"
     >
-        <ng-container>
-            <!-- w8 for back -->
-            <!-- *ngIf="!!row[column.field]?.openHoursToday?.id" -->
-            <svg-icon
-                class="open-hours-icon"
-                [src]="openHoursDropdownSvgRoutes.circleRoute"
-                [svgStyle]="{
-                    'width.px': 10,
-                    'height.px': 10
-                }"
-            ></svg-icon>
-            <!-- w8 for back -->
-            <!-- [ngClass]="{closing: row[column.field]?.openHoursToday?.id === 2}" -->
-        </ng-container>
+        <svg-icon
+            class="svg-size-14 open-hours-icon"
+            [ngClass]="{
+                'svg-fill-green': isInactiveDropdown && isCurrentlyOpen,
+                'svg-fill-green-4': isActiveDropdown && isCurrentlyOpen,
+                'svg-fill-yellow-1': isInactiveDropdown && isCurrentlyClosing,
+                'svg-fill-yellow-4': isActiveDropdown && isCurrentlyClosing,
+                'svg-fill-muted': isInactiveDropdown && isCurrentlyClosed,
+                'svg-fill-light-grey-2': isActiveDropdown && isCurrentlyClosed,
+            }"
+            [src]="
+                openHoursDropdownSvgRoutes[
+                    isCurrentlyOpen
+                        ? 'openRoute'
+                        : isCurrentlyClosing
+                          ? 'closingRoute'
+                          : 'closedRoute'
+                ]
+            "
+        ></svg-icon>
 
-        <p class="m-0 text-color-black text-size-14">Open Now</p>
-        <!-- w8 for back -->
-        <!-- [ngClass]="{'ta-font-semi-bold': !!row[column.field]?.openHoursToday?.id}" -->
+        <p class="m-0 ta-font-bold text-color-black text-size-11">
+            {{
+                dropdownConfig?.openHoursToday?.status +
+                    (isAlwaysOpen
+                        ? eStringPlaceholder.WHITESPACE +
+                          dropdownConfig?.openHoursToday?.info
+                        : eStringPlaceholder.EMPTY)
+            }}
+        </p>
     </div>
 </div>
 
-<ng-template #openHoursPopover let-data="data">
+<ng-template #openHoursPopover let-openHours="openHours">
     <div class="d-flex flex-column open-hours-dropdown">
-        <ng-container
-            *ngFor="let workingHourItem of data; trackBy: trackByIdentity"
-        >
+        @for (
+            workingHoursItem of openHours;
+            track workingHoursItem?.workingDays
+        ) {
             <div class="d-flex flex-column open-hours-dropdown-item">
                 <p class="m-0 ta-font-bold text-color-white-4 text-size-11">
-                    {{ workingHourItem?.workingDays }}
+                    {{ workingHoursItem?.workingDays }}
                 </p>
 
                 <span class="text-color-white text-size-14">
-                    {{ workingHourItem?.workingHours }}
+                    {{ workingHoursItem?.workingHours }}
                 </span>
+
+                @if (!!workingHoursItem?.splitShiftWorkingHours) {
+                    <span class="text-color-white text-size-14">
+                        {{ workingHoursItem?.splitShiftWorkingHours }}
+                    </span>
+                }
             </div>
-        </ng-container>
+        }
     </div>
 </ng-template>

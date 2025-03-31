@@ -30,6 +30,7 @@ export interface DriverListItemResponse {
     name?: string | null;
     status?: number;
     avatarFile?: FileResponse;
+    colorFlag?: EnumValue;
     note?: string | null;
     fileCount?: number | null;
     dateOfBirth?: string | null;

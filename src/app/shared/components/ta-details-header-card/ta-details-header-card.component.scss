@@ -12,7 +12,7 @@ $font-extrabold: 800;
 
 $border-radius: 3px;
 
-$arrow-default-color: #AAAAAA;
+$arrow-default-color: #aaaaaa;
 
 // GENERAL SWITCHER DRIVER
 .details-header-wrapper {
@@ -61,17 +61,12 @@ $arrow-default-color: #AAAAAA;
             .arrow-left {
                 cursor: pointer;
                 padding: 0 5px;
-                svg {
-                    position: relative;
-                    top: 2px;
-                }
             }
             .arrow-right {
                 cursor: pointer;
                 padding: 0 5px;
+
                 svg {
-                    position: relative;
-                    top: 2px;
                     transform: rotate(-180deg);
                 }
             }
@@ -88,6 +83,7 @@ $arrow-default-color: #AAAAAA;
         margin-bottom: 10px;
     }
 }
+
 // DRIVER GENERAL PERSONAL DATA
 .details-header-wrapper-container {
     .details-header-wrapper-data {
@@ -379,7 +375,7 @@ $arrow-default-color: #AAAAAA;
     .arrows {
         .previousArrow {
             opacity: 0.5;
-            cursor: default !important ;
+            cursor: default !important;
 
             svg-icon {
                 cursor: default !important;
@@ -403,7 +399,7 @@ $arrow-default-color: #AAAAAA;
     .arrows {
         .nextArrow {
             opacity: 0.5;
-            cursor: default !important ;
+            cursor: default !important;
 
             svg-icon {
                 cursor: default !important;

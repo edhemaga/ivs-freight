@@ -14,6 +14,9 @@ import { DriverDetailsItemMvrComponent } from '@pages/driver/pages/driver-detail
 // models
 import { DetailsConfig } from '@shared/models/details-config.model';
 
+// enums
+import { eSharedString } from '@shared/enums';
+
 @Titles()
 @Component({
     selector: 'app-driver-details-item',
@@ -33,13 +36,11 @@ import { DetailsConfig } from '@shared/models/details-config.model';
     ],
 })
 export class DriverDetailsItemComponent implements OnChanges {
-    @Input() detailsConfig: DetailsConfig;
+    @Input() detailsConfig!: DetailsConfig[];
+
+    public eSharedString = eSharedString;
+
+    public ngOnChanges(): void {}
 
     constructor() {}
-
-    ngOnChanges(): void {}
-
-    public trackByIdentity(index: number): number {
-        return index;
-    }
 }

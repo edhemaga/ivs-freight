@@ -13,6 +13,7 @@ import {
     Validators,
 } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -21,17 +22,25 @@ import { FormService } from '@shared/services/form.service';
 import { TaInputService } from '@shared/services/ta-input.service';
 import { ModalService } from '@shared/services/modal.service';
 import { SettingsLocationService } from '@pages/settings/pages/settings-location/services/settings-location.service';
+import { DropDownService } from '@shared/services/drop-down.service';
+import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
+import { AddressService } from '@shared/services/address.service';
 
 // components
-import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
-import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
-import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
 import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
+import {
+    CaInputAddressDropdownComponent,
+    CaInputComponent,
+    CaInputDropdownComponent,
+    CaModalButtonComponent,
+    CaModalComponent,
+    eModalButtonClassType,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // validations
 import {
@@ -69,15 +78,23 @@ import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 import { SettingsOfficeConfig } from './config';
 
 // Svg routes
-import { SettingsLocationSvgRoutes } from '@pages/settings/pages/settings-location/utils';
 import { RepairShopModalSvgRoutes } from '@pages/repair/pages/repair-modals/repair-shop-modal/utils/svg-routes';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Enums
 import { ModalTableTypeEnum } from '@shared/enums/modal-table-type.enum';
 import { SettingsOfficeModalStringEnum } from './enums/settings-office-modal-string.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { TaModalActionEnums } from '@shared/components/ta-modal/enums';
-import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
+import { DropActionsStringEnum, TableStringEnum } from '@shared/enums';
+import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
+
+// Pipes
+import { FormatDatePipe } from '@shared/pipes';
+
+// Helpers
+import { DropActionNameHelper } from '@shared/utils/helpers';
+
+// mixin
+import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 @Component({
     selector: 'app-settings-office-modal',
@@ -92,19 +109,32 @@ import { SettingsFormEnum } from '@pages/settings/pages/settings-modals/enums';
         FormsModule,
         ReactiveFormsModule,
         AngularSvgIconModule,
+        NgbTooltipModule,
 
         // Component
-        TaInputComponent,
-        TaInputDropdownComponent,
-        TaModalComponent,
+        CaInputComponent,
+        CaInputDropdownComponent,
+        CaModalComponent,
         TaTabSwitchComponent,
         TaCheckboxCardComponent,
-        TaInputAddressDropdownComponent,
+        CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaModalTableComponent,
+        TaAppTooltipV2Component,
+        CaModalButtonComponent,
+
+        // Pipes
+        FormatDatePipe,
     ],
 })
-export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
+export class SettingsOfficeModalComponent
+    extends AddressMixin(
+        class {
+            addressService!: AddressService;
+        }
+    )
+    implements OnInit, OnDestroy
+{
     @Input() editData: any;
 
     public officeForm: UntypedFormGroup;
@@ -151,9 +181,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public dayOptions: EnumValue[];
 
-    private destroy$ = new Subject<void>();
-
-    public svgRoutes = SettingsLocationSvgRoutes;
+    public destroy$ = new Subject<void>();
 
     public formConfig = SettingsOfficeConfig;
 
@@ -161,8 +189,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
     public phoneExtConfig: ITaInput =
         SettingsOfficeConfig.getPhoneExtInputConfig();
     public emailConfig: ITaInput = SettingsOfficeConfig.getEmailInputConfig();
-    public addressConfig: ITaInput =
-        SettingsOfficeConfig.getAddressInputConfig();
     public addressUnitConfig: ITaInput =
         SettingsOfficeConfig.getAddressUnitInputConfig();
     public payPeriodConfig: ITaInput =
@@ -181,6 +207,12 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
 
     public departmentOptions: DepartmentResponse[] = [];
 
+    public taModalActionEnum = TaModalActionEnum;
+    public svgRoutes = SharedSvgRoutes;
+    public eModalButtonClassType = eModalButtonClassType;
+    public activeAction!: string;
+    public data: CompanyOfficeResponse;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
 
@@ -191,13 +223,30 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         private inputService: TaInputService,
         private modalService: ModalService,
         private settingsLocationService: SettingsLocationService,
-        private formService: FormService
-    ) {}
+        private formService: FormService,
+        private ngbActiveModal: NgbActiveModal,
+        public dropDownService: DropDownService,
+        private confirmationService: ConfirmationService,
+        public addressService: AddressService
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.createForm();
 
         this.getCompanyOfficeDropdowns();
+
+        this.confirmationActivationSubscribe();
+    }
+
+    private confirmationActivationSubscribe(): void {
+        this.confirmationService.confirmationData$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) => {
+                if (res.action !== TableStringEnum.CLOSE)
+                    this.ngbActiveModal?.close();
+            });
     }
 
     private createForm(): void {
@@ -234,20 +283,16 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         };
     }
 
-    public onModalAction({ action }: { action: string }): void {
-        if (action === TaModalActionEnums.CLOSE) {
+    public onModalAction(action: string): void {
+        this.activeAction = action;
+        if (action === TaModalActionEnum.CLOSE) {
             this.handleModalClose();
-        } else if (action === TaModalActionEnums.SAVE) {
+        } else if (action === TaModalActionEnum.SAVE) {
             this.handleModalSave();
-        } else if (action === TaModalActionEnums.SAVE_AND_ADD_NEW) {
+        } else if (action === TaModalActionEnum.SAVE_AND_ADD_NEW) {
             this.handleModalSave(true);
-        } else if (action === TaModalActionEnums.DELETE) {
-            this.deleteCompanyOfficeById(this.editData.id);
-            this.setModalSpinner({
-                action: TaModalActionEnums.DELETE,
-                status: true,
-                close: false,
-            });
+        } else if (action === TaModalActionEnum.DELETE) {
+            this.deleteCompanyOfficeById();
         }
     }
 
@@ -267,6 +312,8 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 default:
                     break;
             }
+        } else {
+            this.ngbActiveModal.close();
         }
     }
 
@@ -280,7 +327,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         } else {
             this.addCompanyOffice(addNew);
         }
-        this.setModalSpinner({ action: null, status: true, close: false });
     }
 
     public onHandleAddress(event: {
@@ -335,7 +381,10 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         const updatedOffice: UpdateCompanyOfficeCommand = {
             id,
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -344,7 +393,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 SettingsOfficeModalStringEnum.WEEKLY
             ),
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             departmentContacts,
         };
@@ -353,29 +402,23 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             .updateCompanyOffice(updatedOffice)
             .pipe(takeUntil(this.destroy$))
             .subscribe({
-                next: () =>
-                    this.setModalSpinner({
-                        action: null,
-                        status: true,
-                        close: true,
-                    }),
-                error: () =>
-                    this.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    }),
+                next: () => this.handleModalClose(),
+                error: () => (this.activeAction = null),
             });
     }
 
     private addCompanyOffice(addNew?: boolean): void {
-        const { addressUnit, rent, ...formValues } = this.officeForm.value;
+        const { addressUnit, rent, ...formValues } =
+            this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 
         const newOffice: CreateCompanyOfficeCommand = {
             ...formValues,
-            address: { ...this.selectedAddress, addressUnit },
+            address: {
+                ...this.selectedAddress,
+                addressUnit,
+            },
             payPeriod: this.selectedPayPeriod?.id || null,
             monthlyDay: this.getSelectedDay(
                 SettingsOfficeModalStringEnum.MONTHLY
@@ -384,7 +427,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 SettingsOfficeModalStringEnum.WEEKLY
             ),
             rent: rent
-                ? MethodsCalculationsHelper.convertThousanSepInNumber(rent)
+                ? MethodsCalculationsHelper.convertThousandSepInNumber(rent)
                 : null,
             departmentContacts,
         };
@@ -394,28 +437,17 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             .pipe(takeUntil(this.destroy$))
             .subscribe({
                 next: () => {
+                    this.handleModalResponse();
                     if (addNew) {
-                        this.officeForm.reset();
-
-                        this.officeForm
-                            .get(SettingsFormEnum.IS_OWNER)
-                            .patchValue(true);
-
-                        this.setModalSpinner({
-                            action: null,
-                            status: false,
-                            close: false,
-                        });
-                    } else {
-                        this.handleModalResponse();
+                        this.modalService.openModal(
+                            SettingsOfficeModalComponent,
+                            {
+                                size: TableStringEnum.SMALL,
+                            }
+                        );
                     }
                 },
-                error: () =>
-                    this.setModalSpinner({
-                        action: null,
-                        status: false,
-                        close: false,
-                    }),
+                error: () => (this.activeAction = null),
             });
     }
 
@@ -430,7 +462,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                 closing: 'slowlest',
             });
         } else {
-            this.setModalSpinner({ action: null, status: true, close: true });
+            this.ngbActiveModal.close();
         }
     }
 
@@ -470,24 +502,22 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
             : null;
     }
 
-    private deleteCompanyOfficeById(id: number): void {
-        this.settingsLocationService
-            .deleteCompanyOfficeById(id)
-            .pipe(takeUntil(this.destroy$))
-            .subscribe({
-                next: () =>
-                    this.setModalSpinner({
-                        action: TableStringEnum.DELETE,
-                        status: true,
-                        close: true,
-                    }),
-                error: () =>
-                    this.setModalSpinner({
-                        action: TableStringEnum.DELETE,
-                        status: false,
-                        close: false,
-                    }),
-            });
+    private deleteCompanyOfficeById(): void {
+        const eventData = {
+            id: this.editData.id,
+            type: DropActionsStringEnum.DELETE_ITEM,
+        };
+
+        const name = DropActionNameHelper.dropActionNameDriver(
+            eventData,
+            DropActionsStringEnum.OFFICE
+        );
+
+        this.dropDownService.dropActionCompanyLocation(
+            eventData,
+            name,
+            this.data
+        );
     }
 
     private editCompanyOfficeById(id: number): void {
@@ -499,7 +529,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                     this.officeForm.patchValue({
                         isOwner: res.isOwner,
                         name: res.name,
-                        address: res.address.address,
+                        address: res.address,
                         addressUnit: res.address.addressUnit,
                         phone: res.phone,
                         extensionPhone: res.extensionPhone,
@@ -525,7 +555,7 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                             true
                         ),
                     });
-
+                    this.data = res;
                     this.officeName = res.name;
                     this.selectedAddress = res.address;
                     this.selectedPayPeriod = res.payPeriod;
@@ -547,7 +577,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
                         this.isCardAnimationDisabled = false;
                     }, 1000);
                 },
-                error: () => {},
             });
     }
 
@@ -607,14 +636,6 @@ export class SettingsOfficeModalComponent implements OnInit, OnDestroy {
         isEachContactRowValid: boolean
     ): void {
         this.isEachContactRowValid = isEachContactRowValid;
-    }
-
-    private setModalSpinner(config: {
-        action: string;
-        status: boolean;
-        close: boolean;
-    }): void {
-        this.modalService.setModalSpinner(config);
     }
 
     ngOnDestroy(): void {

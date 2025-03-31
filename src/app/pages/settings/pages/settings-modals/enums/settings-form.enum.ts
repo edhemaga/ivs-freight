@@ -1,4 +1,4 @@
-export enum SettingsFormEnum {
+export enum ESettingsFormEnum {
     EMAIL = 'email',
     OFFICE_CHECKED = 'officeChecked',
     OFFICE_EMAIL = 'officeEmail',
@@ -21,4 +21,70 @@ export enum SettingsFormEnum {
     PREFERRED_LOAD_TYPE = 'preferredLoadType',
 
     DIVISION = 'division',
+
+    // New values appended below
+    DISPATCH_CHECKED = 'dispatchChecked',
+    DISPATCH_EMAIL = 'dispatchEmail',
+    DISPATCH_PHONE = 'dispatchPhone',
+    MAINTENANCE_CHECKED = 'maintenanceChecked',
+    MAINTENANCE_EMAIL = 'maintenanceEmail',
+    MAINTENANCE_PHONE = 'maintenancePhone',
+    INSURANCE_CHECKED = 'insuranceChecked',
+    INSURANCE_EMAIL = 'insuranceEmail',
+    INSURANCE_PHONE = 'insurancePhone',
+
+    REEFER_BREAKDOWN = 'reeferBreakdown',
+
+    ISSUED = 'issued',
+    EXPIRES = 'expires',
+
+    COMMERCIAL = 'commercial',
+    COMMERCIAL_GENERAL_LIABILITY = 'commericalGeneralLiability',
+    COMMERCIAL_POLICY = 'commericalPolicy',
+    COMMERCIAL_INSURER_NAME = 'commericalInsurerName',
+    COMMERCIAL_RATING = 'commericalRating',
+    COMMERCIAL_OCCURRENCE = 'commericalOccurrence',
+    COMMERCIAL_DAMAGE = 'commericalDamage',
+    COMMERCIAL_INJURY = 'commericalInj',
+    COMMERCIAL_MEDICAL = 'commericalMedical',
+    COMMERCIAL_GENERAL_AGGREGATE = 'commericalGeneralAggregate',
+    COMMERCIAL_PRODUCTS = 'commericalProducts',
+    COMMERCIAL_INJ = 'commercialInj',
+
+    AUTOMOBILE = 'automobile',
+    AUTOMOBILE_LIABILITY = 'automobileLiability',
+    AUTOMOBILE_POLICY = 'automobilePolicy',
+    AUTOMOBILE_INSURER_NAME = 'automobileInsurerName',
+    AUTOMOBILE_RATING = 'automobileRating',
+    AUTOMOBILE_ACCIDENT = 'automobileAccident',
+    AUTOMOBILE_INJURY_PERSON = 'automobileInjuryPerson',
+    AUTOMOBILE_LIMIT = 'automobileLimit',
+    AUTOMOBILE_DAMAGE = 'automobileDamage',
+
+    MOTOR = 'motor',
+    MOTOR_TRUCK_CARGO = 'motorTruckCargo',
+    MOTOR_POLICY = 'motorPolicy',
+    MOTOR_INSURER_NAME = 'motorInsurerName',
+    MOTOR_RATING = 'motorRating',
+    MOTOR_CONVEYANCE = 'motorConveyance',
+    MOTOR_DEDUCTIBLE = 'motorDeductable',
+    MOTOR_TRUCK_CARGO_BREAKDOWN = 'Motor Truck Cargo Breakdown',
+
+    PHYSICAL = 'physical',
+    PHYSICAL_DAMAGE = 'physicalDamage',
+    PHYSICAL_DAMAGE_WITH_WHITESPACE = 'Physical Damage',
+    PHYSICAL_POLICY = 'physicalPolicy',
+    PHYSICAL_INSURER_NAME = 'physicalInsurerName',
+    PHYSICAL_COLLISION = 'physicalCollision',
+    PHYSICAL_DEDUCTIBLE = 'physicalDeductable',
+    PHYSICAL_RATING = 'physicalRating',
+
+    TRAILER = 'trailer',
+    TRAILER_INTERCHANGE = 'trailerInterchange',
+    TRAILER_POLICY = 'trailerPolicy',
+    TRAILER_INSURER_NAME = 'trailerInsurerName',
+    TRAILER_RATING = 'trailerRating',
+    TRAILER_VALUE = 'trailerValue',
+
+    TRUCK_INTERCHANGE = 'Trailer Interchange',
 }

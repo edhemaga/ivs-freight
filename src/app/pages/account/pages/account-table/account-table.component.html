@@ -22,21 +22,20 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
             [tableData]="tableData"
             (saveValueNote)="saveValueNote($event)"
+            (tableBodyActions)="
+                handleDropdownMenuActions($event, eDropdownMenu.ACCOUNT)
+            "
         ></app-ta-table-body>
     </ng-container>
+
     <ng-container *ngIf="activeViewMode === 'Card'">
         <div class="elements">
             <app-account-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
                 [displayRowsFront]="displayRowsFront"
                 [displayRowsBack]="displayRowsBack"
-                [page]="page"
-                [selectedTab]="selectedTab"
                 (saveValueNote)="saveValueNote($event)"
             ></app-account-card>
         </div>

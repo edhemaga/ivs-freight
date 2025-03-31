@@ -1,19 +1,22 @@
 <div class="details-container-items">
-    <div *ngFor="let item of trailerDetailsConfig; trackBy: identity">
-        <app-ta-details-header
-            [route]="'/list/trailer'"
-            [tooltipHeaderName]="'Back to Trailer List'"
-            [headerText]="item.name"
-            [counterData]="item.length"
-            [optionsId]="trailerId"
-            [options]="dataHeaderDropDown"
-            [statusInactive]="item.status"
-            [isInactive]="item.status"
-            (dropActions)="onTrailerActions($event)"
-            (openModalAction)="onModalAction($event)"
-        >
-        </app-ta-details-header>
-    </div>
+    @for (item of trailerDetailsConfig; let ind = $index; track ind) {
+        <div>
+            <app-ta-details-header
+                [route]="'/list/trailer'"
+                [tooltipHeaderName]="'Back to Trailer List'"
+                [headerText]="item.name"
+                [counterData]="item.length"
+                [optionsId]="trailerId"
+                [options]="dataHeaderDropDown"
+                [statusInactive]="item.status"
+                [isInactive]="item.status"
+                [businessOpen]="item.businessOpen"
+                (dropActions)="onTrailerActions($event)"
+                (openModalAction)="onModalAction($event)"
+            >
+            </app-ta-details-header>
+        </div>
+    }
     <app-trailer-details-item [trailer]="trailerDetailsConfig">
     </app-trailer-details-item>
 </div>

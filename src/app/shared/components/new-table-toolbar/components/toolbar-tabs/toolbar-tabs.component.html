@@ -1,0 +1,49 @@
+@let isLargeLayout = variant === toolbarVariant.Large;
+
+<div [ngClass]="isLargeLayout ? 'd-flex' : 'd-flex gap-1'">
+    @for (item of data; track $index) {
+        @let name = item.name;
+        @let title = item.title;
+        @let isSmallActive = !isLargeLayout && selectedTab === name;
+        @let isSmallAndInActive = !isLargeLayout && selectedTab !== name;
+        @let isLargeAndActive = isLargeLayout && selectedTab === title;
+        @let isLargeAndInActive = isLargeLayout && selectedTab !== title;
+
+        <div
+            class="c-pointer ta-font-extra-bold"
+            [ngClass]="
+                {
+                    isLargeLayout,
+                    isLargeAndActive,
+                    isLargeAndInActive,
+                    isSmallActive,
+                    isSmallAndInActive,
+                } | toolbarTabsClassPipe
+            "
+            (click)="onTabClick(isLargeLayout ? title! : name!)"
+        >
+            <span
+                class="new-table--toolbar-action-inactive-title"
+                [ngClass]="
+                    isLargeLayout
+                        ? 'new-table--toolbar-action-inactive-title-large'
+                        : 'new-table--toolbar-action-inactive-title-small'
+                "
+            >
+                {{ isLargeLayout ? title : name }}</span
+            >
+            @if (isLargeLayout) {
+                <span
+                    class="new-table--toolbar-action-counter m-l-4"
+                    [ngClass]="
+                        selectedTab === title
+                            ? 'background-white text-color-black'
+                            : 'background-muted text-color-white'
+                    "
+                >
+                    {{ item.length }}
+                </span>
+            }
+        </div>
+    }
+</div>

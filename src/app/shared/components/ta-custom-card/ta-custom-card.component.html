@@ -6,14 +6,18 @@
         {{ _isCardOpen }}
     </div>
 
-    <ng-container *ngIf="hasDivider">
-        <div class="divider"></div>
-    </ng-container>
+    @if (hasDivider) {
+        <div
+            class="divider"
+            [class.divider--dark]="hasDarkDivider"
+            [class.divider--small]="hasSmallDivider"
+        ></div>
+    }
 
     <div
         [ngClass]="{
             'has-counter': hasCounter,
-            'width-xxl': isExtraLargeLayout
+            'width-xxl': isExtraLargeLayout,
         }"
         class="ta-card-header"
         [class.no-data]="!hasBodyData"
@@ -25,6 +29,7 @@
         [class.dropdown-modal-card]="isDropdownModalCard"
         [class.ta-card-spacing-x]="hasXAxisBottomPadding"
         [class.active-dropdown-modal-card]="isDropdownModalCard && _isCardOpen"
+        [class.ta-custom-card-hover]="!isHeaderLightColor"
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
         (click)="isCardOpenEvent($event)"
@@ -36,51 +41,49 @@
             [class.grey-text]="isGreyTextWhenDisabled && disabledCard"
         >
             <!-- Checkbox -->
-            <ng-container *ngIf="hasCheckbox">
+            @if (hasCheckbox) {
                 <app-ta-checkbox [formControl]="controlName" [label]="''">
                 </app-ta-checkbox>
-            </ng-container>
+            }
 
             <!-- Payroll left Counter -->
-
-            <ng-container *ngIf="hasLeftCounter !== -1">
+            @if (hasLeftCounter !== -1) {
                 <div class="payroll-left-counter">
                     {{ hasLeftCounter }}
                 </div>
-            </ng-container>
+            }
 
             <!-- Name -->
 
             <span
                 class="header-text"
                 [ngClass]="{
-                    'dropdown-card': isDropdownCard && !isDropdownModalCard
+                    'dropdown-card': isDropdownCard && !isDropdownModalCard,
                 }"
                 [ngStyle]="{
                     color: _isCardOpen
                         ? '#424242'
-                        : headerLightColor && hasCounter === -1
-                        ? '#aaaaaa'
-                        : '#6C6C6C'
+                        : isHeaderLightColor && hasCounter === -1
+                          ? '#aaaaaa'
+                          : '#6C6C6C',
                 }"
             >
                 {{ cardName }}
             </span>
 
             <!-- Counter -->
-
-            <app-ta-counter
-                *ngIf="hasCounter !== -1"
-                [count]="hasCounter"
-                [countBackground]="'#6C6C6C'"
-                [countColor]="'#ffffff'"
-                countBorderRadius="60px"
-                [marginLeft]="'4px'"
-            ></app-ta-counter>
+            @if (hasCounter !== -1) {
+                <app-ta-counter
+                    [count]="hasCounter"
+                    [countBackground]="'#6C6C6C'"
+                    [countColor]="'#ffffff'"
+                    countBorderRadius="60px"
+                    [marginLeft]="'4px'"
+                ></app-ta-counter>
+            }
 
             <!-- Capsula Text -->
-
-            <ng-container *ngIf="capsulaText">
+            @if (capsulaText) {
                 <div
                     class="d-flex align-items-center justify-content-center capsula-wrapper"
                 >
@@ -88,11 +91,10 @@
                         {{ capsulaText }}
                     </p>
                 </div>
-            </ng-container>
+            }
 
             <!-- Sub Text -->
-
-            <ng-container *ngIf="subText">
+            @if (subText) {
                 <div
                     class="d-flex align-items-center subtext-container"
                     [ngClass]="subTextClass"
@@ -101,16 +103,13 @@
                         {{ subText }}
                     </p>
                 </div>
-            </ng-container>
+            }
 
             <!-- Svg near name -->
-
-            <ng-container
-                *ngIf="
-                    hasHeaderSvg &&
-                    ((_isCardOpen && _isCardOpen != 'null') || headerSvgEnabled)
-                "
-            >
+            @if (
+                hasHeaderSvg &&
+                ((_isCardOpen && _isCardOpen != 'null') || headerSvgEnabled)
+            ) {
                 <div>
                     <svg-icon
                         [ngClass]="{ 'header-svg-bank': customClassHeaderSvg }"
@@ -118,7 +117,7 @@
                         src="{{ hasHeaderSvg }}"
                     ></svg-icon>
                 </div>
-            </ng-container>
+            }
         </div>
 
         <!-- Right Side (action side) of header -->
@@ -127,12 +126,11 @@
             class="header-actions"
             [ngClass]="{
                 'like-dislike-template': hasLikeDislike,
-                'hidden-add-new-action': disableMultipleReviews
+                'hidden-add-new-action': disableMultipleReviews,
             }"
         >
             <!-- Payroll status -->
-
-            <ng-container *ngIf="hasPayrollStatus">
+            @if (hasPayrollStatus) {
                 <div class="payroll-status d-flex">
                     <app-ta-payroll-statuses
                         [active]="_isCardOpen && _isCardOpen != 'null'"
@@ -144,50 +142,46 @@
                         [options]="{ value: 'EVERY MONDAY', type: 'normal' }"
                     ></app-ta-payroll-statuses>
                 </div>
-            </ng-container>
+            }
 
             <!-- Like & Dislike -->
 
-            <app-ta-like-dislike *ngIf="hasLikeDislike"></app-ta-like-dislike>
-
-            <ng-container *ngIf="customTextAction">
+            @if (hasLikeDislike) {
+                <app-ta-like-dislike></app-ta-like-dislike>
+            }
+            @if (customTextAction) {
                 <div
                     class="header-custom-text-action"
                     (click)="onAction($event, 'custom', customTextAction)"
                 >
                     <p class="header-action-text">{{ customTextAction }}</p>
                 </div>
-            </ng-container>
+            }
 
             <!-- Download -->
-
-            <ng-container *ngIf="hasDownload">
+            @if (hasDownload) {
                 <svg-icon
                     class="header-action-download"
                     (click)="onAction($event, 'download')"
                     [src]="hasDownload"
                 ></svg-icon>
-            </ng-container>
+            }
 
             <!-- Plus Add New Things -->
-            <ng-container *ngIf="hasHistoryButton">
+            @if (hasHistoryButton) {
                 <div
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
                     (click)="onAction($event, 'add')"
                 >
-                    <svg-icon
-                        [src]="'assets/svg/common/ic_history.svg'"
-                    ></svg-icon>
+                    <svg-icon [src]="customCardSvgRoutes.IC_HISTORY"></svg-icon>
                 </div>
-            </ng-container>
+            }
 
-            <ng-container
-                *ngIf="
-                    hasActionSvg &&
-                    !disableMultipleReviews &&
-                    !isFinishReorderingButtonVisible
-                "
-            >
+            @if (
+                hasActionSvg &&
+                !disableMultipleReviews &&
+                !isFinishReorderingButtonVisible
+            ) {
                 <div
                     class="d-flex align-items-center justify-content-center action-plus-icon-container"
                     (click)="onAction($event, 'add')"
@@ -195,18 +189,14 @@
                 >
                     <svg-icon
                         class="action-plus-icon"
-                        [src]="'assets/svg/common/ic_plus.svg'"
+                        [src]="customCardSvgRoutes.IC_PLUS"
                         [svgStyle]="{ 'width.px': '16', 'height.px': '16' }"
                     ></svg-icon>
                 </div>
-            </ng-container>
+            }
 
             <!-- Header (Details page, Calendar...) -->
-
-            <ng-container
-                *ngIf="hasPlusHeader || stayOpen"
-                class="arrow-down-plus"
-            >
+            @if (hasPlusHeader || stayOpen) {
                 <div
                     class="add-custom-card"
                     [ngClass]="{ 'show-pointer': stayOpen }"
@@ -214,14 +204,13 @@
                 >
                     <svg-icon
                         class="plus-custom-card"
-                        src="assets/svg/common/ic_plus.svg"
+                        [src]="customCardSvgRoutes.IC_PLUS"
                     ></svg-icon>
                 </div>
-            </ng-container>
+            }
 
             <!-- 24/7 button -->
-
-            <ng-container *ngIf="has24Hours">
+            @if (has24Hours) {
                 <div
                     class="_24-7-status"
                     [ngClass]="{ active: is24Hours }"
@@ -233,31 +222,29 @@
                 >
                     <p>24/7</p>
                 </div>
-            </ng-container>
+            }
 
             <!-- Weekly status -->
-
-            <ng-container *ngIf="hasWeeklyStatus">
+            @if (hasWeeklyStatus) {
                 <div
                     class="weekly-status"
                     [class.disabledWeeklyStatus]="disabledCard"
                 >
-                    <div class="weekly-status-value">
+                    <div class="weekly-status-value text-color-black">
                         {{ hasWeeklyStatus }}
                     </div>
                 </div>
-            </ng-container>
+            }
 
-            <ng-container *ngIf="isReorderingButtonVisible">
+            @if (isReorderingButtonVisible) {
                 <button
                     class="reodering-button reodering-button-mild ta-font-bold"
                     (click)="onAction($event, 'start-reordering')"
                 >
                     REORDER
                 </button>
-            </ng-container>
-
-            <ng-container *ngIf="isFinishReorderingButtonVisible">
+            }
+            @if (isFinishReorderingButtonVisible) {
                 <button
                     class="reodering-button ta-font-bold reodering-button-finish"
                     (click)="onAction($event, 'reordering')"
@@ -265,45 +252,53 @@
                 >
                     FINISH REORDERING
                 </button>
-            </ng-container>
+            }
 
-            <!-- Edit & Delete Actions -->
-
-            <svg-icon
-                *ngIf="hasDeleteAction"
-                class="edit-delete-actions"
-                class="delete-icon"
-                src="assets/svg/truckassist-table/dropdown/content/delete.svg"
-                [svgStyle]="{
-                    'width.px': 18,
-                    'height.px': 18
-                }"
-                (click)="onAction($event, 'delete')"
-            ></svg-icon>
+            <!-- Delete Actions -->
+            @if (_isCardOpen && hasDeleteAction && doesFileExist) {
+                <div
+                    class="delete-icon-container"
+                    (click)="onAction($event, 'delete')"
+                >
+                    <svg-icon
+                        class="delete-icon"
+                        [src]="customCardSvgRoutes.TRASH_BIN"
+                    ></svg-icon>
+                </div>
+            }
 
             <!-- Format Text Actions -->
+            @if (isCardOpen && hasFormatTextActionButtons) {
+                <app-ta-note-container
+                    #noteContainer
+                    [isExpanded]="true"
+                    [range]="range"
+                    [selectionTaken]="selectionTaken"
+                    [value]="value"
+                    [parking]="parking"
+                    [popoverNote]="true"
+                    [selectedEditor]="main_editor?.nativeElement"
+                    [type]="type"
+                ></app-ta-note-container>
+            }
 
-            <app-ta-note-container
-                *ngIf="_isCardOpen && hasFormatTextActionButtons"
-                #noteContainer
-                [isExpanded]="true"
-                [range]="range"
-                [selectionTaken]="selectionTaken"
-                [value]="value"
-                [parking]="parking"
-                [popoverNote]="true"
-                [selectedEditor]="main_editor?.nativeElement"
-                [type]="type"
-            ></app-ta-note-container>
+            <!-- Color Picker -->
+            @if (hasColorIcon && _isCardOpen && !doesFileExist) {
+                <app-ca-icon-dropdown
+                    [iconDropdownConfig]="iconDropdownConfig"
+                    (click)="onAction($event, 'custom', customTextAction)"
+                >
+                </app-ca-icon-dropdown>
+            }
 
             <!-- Arrow -->
-
-            <svg-icon
-                *ngIf="hasArrow && hasBodyData"
-                class="header-arrow"
-                [ngClass]="{ rotate: _isCardOpen && _isCardOpen != 'null' }"
-                src="assets/svg/common/ic_arrow_down_updated.svg"
-            ></svg-icon>
+            @if (hasArrow && hasBodyData) {
+                <svg-icon
+                    class="header-arrow"
+                    [ngClass]="{ rotate: _isCardOpen && _isCardOpen != 'null' }"
+                    [src]="customCardSvgRoutes.ARROW_DOWN"
+                ></svg-icon>
+            }
         </div>
     </div>
 
@@ -316,11 +311,14 @@
             'scroll-x-axis scrollable': hasScrollBodyXAxis && _isCardOpen,
             'department-contacts-x-axis': isDepartmentContactsCard,
             'scrollable-element overflow-auto': isInheritingParentSize,
-            'set-max-height': isInheritingParentSize
+            'remove-scroll-track': !hasScrollBackroundTrack,
+            'set-max-height': isInheritingParentSize,
         }"
-        [ngStyle]="{ 
-             'max-height': isInheritingParentSize ? cardHeight - 40 + 'px' : 'auto',
-            }"
+        [ngStyle]="{
+            'max-height': isInheritingParentSize
+                ? cardHeight - 40 + 'px'
+                : 'auto',
+        }"
         [@.disabled]="disableAnimation"
     >
         <div
@@ -329,7 +327,7 @@
             [class.openedCardClass]="_isCardOpen"
             [@showHideCardBody]="{
                 value: _isCardOpen.toString(),
-                params: animationMarginParams
+                params: animationMarginParams,
             }"
             class="content-holder {{ customClass }}"
         >

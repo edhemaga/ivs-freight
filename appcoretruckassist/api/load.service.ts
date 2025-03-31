@@ -12,7 +12,9 @@
 /* tslint:disable:no-unused-variable member-ordering */
 
 import { Inject, Injectable, Optional }                      from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams, HttpResponse, HttpEvent, HttpParameterCodec, HttpContext }       from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams,
+         HttpResponse, HttpEvent, HttpParameterCodec, HttpContext 
+        }       from '@angular/common/http';
 import { CustomHttpParameterCodec }                          from '../encoder';
 import { Observable }                                        from 'rxjs';
 
@@ -21,9 +23,9 @@ import { AssignLoadModalResponse } from '../model/assignLoadModalResponse';
 // @ts-ignore
 import { AssignedLoadListResponse } from '../model/assignedLoadListResponse';
 // @ts-ignore
-import { CreateLoadTemplateCommand } from '../model/createLoadTemplateCommand';
+import { BrokerShipperContact } from '../model/brokerShipperContact';
 // @ts-ignore
-import { CreateResponse } from '../model/createResponse';
+import { CreateLoadTemplateCommand } from '../model/createLoadTemplateCommand';
 // @ts-ignore
 import { CreateTagCommand } from '../model/createTagCommand';
 // @ts-ignore
@@ -42,6 +44,8 @@ import { HazardousMaterialResponse } from '../model/hazardousMaterialResponse';
 import { LoadBillingAdditionalCommand } from '../model/loadBillingAdditionalCommand';
 // @ts-ignore
 import { LoadDetailsMobileResponse } from '../model/loadDetailsMobileResponse';
+// @ts-ignore
+import { LoadListDtoCreateGenericWithUploadsResponse } from '../model/loadListDtoCreateGenericWithUploadsResponse';
 // @ts-ignore
 import { LoadListLoadStopResponse } from '../model/loadListLoadStopResponse';
 // @ts-ignore
@@ -69,7 +73,11 @@ import { LoadSortBy } from '../model/loadSortBy';
 // @ts-ignore
 import { LoadStatus } from '../model/loadStatus';
 // @ts-ignore
+import { LoadStatusFilterResponse } from '../model/loadStatusFilterResponse';
+// @ts-ignore
 import { LoadStatusHistoryCommand } from '../model/loadStatusHistoryCommand';
+// @ts-ignore
+import { LoadStatusResponse } from '../model/loadStatusResponse';
 // @ts-ignore
 import { LoadStatusType } from '../model/loadStatusType';
 // @ts-ignore
@@ -77,9 +85,13 @@ import { LoadStopCommand } from '../model/loadStopCommand';
 // @ts-ignore
 import { LoadStopItemAutocompleteDescriptionResponse } from '../model/loadStopItemAutocompleteDescriptionResponse';
 // @ts-ignore
+import { LoadStopMobileListResponse } from '../model/loadStopMobileListResponse';
+// @ts-ignore
 import { LoadTemplateListResponse } from '../model/loadTemplateListResponse';
 // @ts-ignore
 import { LoadTemplateResponse } from '../model/loadTemplateResponse';
+// @ts-ignore
+import { LoadTemplateResponseCreateGenericWithUploadsResponse } from '../model/loadTemplateResponseCreateGenericWithUploadsResponse';
 // @ts-ignore
 import { LoadType } from '../model/loadType';
 // @ts-ignore
@@ -174,6 +186,87 @@ export class LoadService {
             throw Error("key may not be null if value is not object or array");
         }
         return httpParams;
+    }
+
+    /**
+     * @param id 
+     * @param brokerShipperContact 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiLoadBrokerShipperContactGet(id?: number, brokerShipperContact?: BrokerShipperContact, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
+    public apiLoadBrokerShipperContactGet(id?: number, brokerShipperContact?: BrokerShipperContact, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
+    public apiLoadBrokerShipperContactGet(id?: number, brokerShipperContact?: BrokerShipperContact, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiLoadBrokerShipperContactGet(id?: number, brokerShipperContact?: BrokerShipperContact, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+        if (id !== undefined && id !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>id, 'Id');
+        }
+        if (brokerShipperContact !== undefined && brokerShipperContact !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>brokerShipperContact, 'BrokerShipperContact');
+        }
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/load/broker-shipper/contact`;
+        return this.httpClient.request<any>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
     }
 
     /**
@@ -824,6 +917,7 @@ export class LoadService {
      * @param brokerId 
      * @param shipperId 
      * @param loadId 
+     * @param loadIds 
      * @param dateFrom 
      * @param dateTo 
      * @param revenueFrom 
@@ -853,10 +947,10 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadListResponse>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadListResponse>>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadListResponse>>;
-    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, loadIds?: Array<number>, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadListResponse>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, loadIds?: Array<number>, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadListResponse>>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, loadIds?: Array<number>, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadListResponse>>;
+    public apiLoadListGet(loadType?: number, statusType?: number, status?: Array<number>, dispatcherIds?: Array<number>, dispatcherId?: number, dispatchId?: number, brokerId?: number, shipperId?: number, loadId?: number, loadIds?: Array<number>, dateFrom?: string, dateTo?: string, revenueFrom?: number, revenueTo?: number, truckId?: number, driverId?: number, rateFrom?: number, rateTo?: number, paidFrom?: number, paidTo?: number, dueFrom?: number, dueTo?: number, pickup?: boolean, delivery?: boolean, longitude?: number, latitude?: number, distance?: number, pageIndex?: number, pageSize?: number, companyId?: number, sort?: string, sortOrder?: SortOrder, sortBy?: LoadSortBy, search?: string, search1?: string, search2?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (loadType !== undefined && loadType !== null) {
@@ -898,6 +992,12 @@ export class LoadService {
         if (loadId !== undefined && loadId !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>loadId, 'LoadId');
+        }
+        if (loadIds) {
+            loadIds.forEach((element) => {
+                localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+                  <any>element, 'LoadIds');
+            })
         }
         if (dateFrom !== undefined && dateFrom !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
@@ -1777,6 +1877,81 @@ export class LoadService {
     }
 
     /**
+     * @param id 
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public apiLoadMobileStopsIdGet(id: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadStopMobileListResponse>;
+    public apiLoadMobileStopsIdGet(id: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadStopMobileListResponse>>;
+    public apiLoadMobileStopsIdGet(id: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadStopMobileListResponse>>;
+    public apiLoadMobileStopsIdGet(id: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+        if (id === null || id === undefined) {
+            throw new Error('Required parameter id was null or undefined when calling apiLoadMobileStopsIdGet.');
+        }
+
+        let localVarQueryParameters = new HttpParams({encoder: this.encoder});
+
+        let localVarHeaders = this.defaultHeaders;
+
+        let localVarCredential: string | undefined;
+        // authentication (ApiKeyInQueryParams) required
+        localVarCredential = this.configuration.lookupCredential('ApiKeyInQueryParams');
+        if (localVarCredential) {
+            localVarQueryParameters = localVarQueryParameters.set('ApiKey', localVarCredential);
+        }
+
+        // authentication (bearer) required
+        localVarCredential = this.configuration.lookupCredential('bearer');
+        if (localVarCredential) {
+            localVarHeaders = localVarHeaders.set('Authorization', 'Bearer ' + localVarCredential);
+        }
+
+        let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
+        if (localVarHttpHeaderAcceptSelected === undefined) {
+            // to determine the Accept header
+            const httpHeaderAccepts: string[] = [
+                'text/plain',
+                'application/json',
+                'text/json'
+            ];
+            localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        }
+        if (localVarHttpHeaderAcceptSelected !== undefined) {
+            localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
+        }
+
+        let localVarHttpContext: HttpContext | undefined = options && options.context;
+        if (localVarHttpContext === undefined) {
+            localVarHttpContext = new HttpContext();
+        }
+
+
+        let responseType_: 'text' | 'json' | 'blob' = 'json';
+        if (localVarHttpHeaderAcceptSelected) {
+            if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
+                responseType_ = 'text';
+            } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
+                responseType_ = 'json';
+            } else {
+                responseType_ = 'blob';
+            }
+        }
+
+        let localVarPath = `/api/load/mobile/stops/${this.configuration.encodeParam({name: "id", value: id, in: "path", style: "simple", explode: false, dataType: "number", dataFormat: "int32"})}`;
+        return this.httpClient.request<LoadStopMobileListResponse>('get', `${this.configuration.basePath}${localVarPath}`,
+            {
+                context: localVarHttpContext,
+                params: localVarQueryParameters,
+                responseType: <any>responseType_,
+                withCredentials: this.configuration.withCredentials,
+                headers: localVarHeaders,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
      * @param dispatchFutureTime 
      * @param truckType 
      * @param trailerType 
@@ -2058,9 +2233,9 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, coDriverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, coDriverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, coDriverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, coDriverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadListDtoCreateGenericWithUploadsResponse>;
+    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, coDriverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadListDtoCreateGenericWithUploadsResponse>>;
+    public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, coDriverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadListDtoCreateGenericWithUploadsResponse>>;
     public apiLoadPost(type?: LoadType, loadTemplateId?: number, dispatcherId?: number, companyId?: number, dispatchId?: number, dateCreated?: string, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, driverRate?: number, coDriverRate?: number, advancePay?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, stops?: Array<LoadStopCommand>, pays?: Array<LoadPaymentPayCommand>, files?: Array<Blob>, tags?: Array<CreateTagCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -2246,7 +2421,7 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load`;
-        return this.httpClient.request<CreateWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LoadListDtoCreateGenericWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
@@ -2321,9 +2496,9 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, coDriverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateWithUploadsResponse>;
-    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, coDriverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateWithUploadsResponse>>;
-    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, coDriverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateWithUploadsResponse>>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, coDriverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadListDtoCreateGenericWithUploadsResponse>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, coDriverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadListDtoCreateGenericWithUploadsResponse>>;
+    public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, coDriverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadListDtoCreateGenericWithUploadsResponse>>;
     public apiLoadPut(id?: number, dispatcherId?: number, dateCreated?: string, status?: LoadStatus, dispatchId?: number, brokerId?: number, brokerContactId?: number, referenceNumber?: string, generalCommodity?: number, weight?: number, loadRequirementsId?: number, loadRequirementsTruckTypeId?: number, loadRequirementsTrailerTypeId?: number, loadRequirementsDoorType?: number, loadRequirementsSuspension?: number, loadRequirementsTrailerLengthId?: number, loadRequirementsYear?: number, loadRequirementsLiftgate?: boolean, loadRequirementsDriverMessage?: string, note?: string, baseRate?: number, adjustedRate?: number, revisedRate?: number, tonuRate?: number, driverRate?: number, coDriverRate?: number, emptyMiles?: number, totalMiles?: number, totalHours?: number, totalMinutes?: number, invoicedDate?: string, additionalBillingRates?: Array<LoadBillingAdditionalCommand>, pays?: Array<LoadPaymentPayCommand>, stops?: Array<LoadStopCommand>, splitLoadPreviousStopOrder?: number, splitLoadNextStopOrder?: number, splitLoadSplitDate?: string, splitLoadSplitTime?: string, splitLoadSplitLocationCity?: string, splitLoadSplitLocationState?: string, splitLoadSplitLocationCounty?: string, splitLoadSplitLocationAddress?: string, splitLoadSplitLocationStreet?: string, splitLoadSplitLocationStreetNumber?: string, splitLoadSplitLocationCountry?: string, splitLoadSplitLocationZipCode?: string, splitLoadSplitLocationStateShortName?: string, splitLoadSplitLocationAddressUnit?: string, splitLoadNewDispatchId?: number, splitLoadRateFirstLoad?: number, splitLoadRateSecondLoad?: number, splitLoadFirstLegMiles?: number, splitLoadSecondLegMiles?: number, files?: Array<Blob>, tags?: Array<CreateTagCommand>, filesForDeleteIds?: Array<number>, statusHistory?: Array<LoadStatusHistoryCommand>, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -2579,7 +2754,7 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load`;
-        return this.httpClient.request<CreateWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LoadListDtoCreateGenericWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
@@ -2844,9 +3019,9 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<DispatcherFilterResponse>>;
-    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<DispatcherFilterResponse>>>;
-    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<DispatcherFilterResponse>>>;
+    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<LoadStatusFilterResponse>>;
+    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<LoadStatusFilterResponse>>>;
+    public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<LoadStatusFilterResponse>>>;
     public apiLoadStatusFilterGet(loadStatusType?: LoadStatusType, sort?: string, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -2906,7 +3081,7 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load/status/filter`;
-        return this.httpClient.request<Array<DispatcherFilterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<Array<LoadStatusFilterResponse>>('get', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 params: localVarQueryParameters,
@@ -2924,9 +3099,9 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadStatusResponse>;
+    public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadStatusResponse>>;
+    public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadStatusResponse>>;
     public apiLoadStatusPut(updateLoadStatusCommand?: UpdateLoadStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -2989,7 +3164,7 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load/status`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LoadStatusResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: updateLoadStatusCommand,
@@ -3008,9 +3183,9 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadStatusResponse>;
+    public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadStatusResponse>>;
+    public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadStatusResponse>>;
     public apiLoadStatusRevertPut(revertLoadStatusCommand?: RevertLoadStatusCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -3073,7 +3248,7 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load/status/revert`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LoadStatusResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: revertLoadStatusCommand,
@@ -3531,9 +3706,9 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<CreateResponse>;
-    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<CreateResponse>>;
-    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<CreateResponse>>;
+    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse>;
+    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadTemplateResponseCreateGenericWithUploadsResponse>>;
+    public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadTemplateResponseCreateGenericWithUploadsResponse>>;
     public apiLoadTemplatePost(createLoadTemplateCommand?: CreateLoadTemplateCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -3596,7 +3771,7 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load/template`;
-        return this.httpClient.request<CreateResponse>('post', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LoadTemplateResponseCreateGenericWithUploadsResponse>('post', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: createLoadTemplateCommand,
@@ -3615,9 +3790,9 @@ export class LoadService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any>;
-    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<any>>;
-    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<any>>;
+    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<LoadTemplateResponseCreateGenericWithUploadsResponse>;
+    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<LoadTemplateResponseCreateGenericWithUploadsResponse>>;
+    public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<LoadTemplateResponseCreateGenericWithUploadsResponse>>;
     public apiLoadTemplatePut(updateLoadTemplateCommand?: UpdateLoadTemplateCommand, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
@@ -3680,7 +3855,7 @@ export class LoadService {
         }
 
         let localVarPath = `/api/load/template`;
-        return this.httpClient.request<any>('put', `${this.configuration.basePath}${localVarPath}`,
+        return this.httpClient.request<LoadTemplateResponseCreateGenericWithUploadsResponse>('put', `${this.configuration.basePath}${localVarPath}`,
             {
                 context: localVarHttpContext,
                 body: updateLoadTemplateCommand,

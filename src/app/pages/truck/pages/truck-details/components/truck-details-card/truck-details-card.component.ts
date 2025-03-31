@@ -21,6 +21,7 @@ import { Subject, takeUntil } from 'rxjs';
 // Services
 import { DetailsPageService } from '@shared/services/details-page.service';
 import { TruckService } from '@shared/services/truck.service';
+import { ModalService } from '@shared/services/modal.service';
 
 // Animations
 import { cardComponentAnimation } from '@shared/animations/card-component.animation';
@@ -58,10 +59,16 @@ import {
 } from 'appcoretruckassist';
 import { IChartConfiguration } from 'ca-components/lib/components/ca-chart/models';
 import { ChartLegendProperty, Tabs } from '@shared/models';
-import { TabOptions } from '@shared/components/ta-tab-switch/models/tab-options.model';
+import { TabOptions } from '@shared/components/ta-tab-switch/models';
 
 // Helpers
 import { ChartHelper } from '@shared/utils/helpers';
+
+// components
+import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+
+// svg-routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-truck-details-card',
@@ -112,28 +119,41 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public ownerCardOpened: boolean = true;
     public featureNumber: number = 0;
 
+    public fuelConsumptionChartData!: TruckFuelConsumptionResponse;
     public fuelConsumptionChartConfig!: IChartConfiguration;
     public fuelConsumptionChartLegend!: ChartLegendProperty[];
     public fuelConsumptionChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public fuelConsumptionLegendHighlightedBackground!: boolean;
+    public fuelConsumptionLegendTitle!: string;
 
+    public revenueChartData!: TruckRevenueResponse;
     public revenueChartConfig!: IChartConfiguration;
     public revenueChartLegend!: ChartLegendProperty[];
     public revenueChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public revenueLegendHighlightedBackground!: boolean;
+    public revenueLegendTitle!: string;
 
+    public expensesChartData!: TruckExpensesResponse;
     public expensesChartConfig!: IChartConfiguration;
-    public expensesChartChartLegend!: ChartLegendProperty[];
-    public expensesChartChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public expensesChartLegend!: ChartLegendProperty[];
+    public expensesChartTabs: Tabs[] = ChartHelper.generateTimeTabs();
+    public expensesLegendHighlightedBackground!: boolean;
+    public expensesLegendTitle!: string;
 
     public performance: TruckPerformanceResponse;
     public isWideScreen: boolean = false;
     public ownerHistoryHeader: { label: string }[] =
         TruckDetailsConstants.ownerHistoryHeader;
 
+    // svg-routes
+    public svgRoutes = SharedSvgRoutes;
+
     constructor(
         private detailsPageDriverSer: DetailsPageService,
         private truckMinimalListQuery: TrucksMinimalListQuery,
-        private truckService: TruckService
-    ) { }
+        private truckService: TruckService,
+        private modalService: ModalService
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         if (!changes?.truck.firstChange && changes?.truck) {
@@ -224,70 +244,125 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         this.truckService
             .getFuelConsumption(this.truck.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: TruckFuelConsumptionResponse) => {
-                if (timeFilter && this.fuelConsumptionChartTabs[timeFilter - 1])
-                    this.fuelConsumptionChartTabs[timeFilter - 1].checked =
-                        true;
-                this.fuelConsumptionChartConfig = {
-                    ...TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG,
-                    chartData:
-                        ChartHelper.generateDataByDateTime<TruckFuelConsumptionChartResponse>(
-                            response.truckFuelConsumptionCharts,
-                            ChartConfiguration.truckFuelConsumptionConfiguration,
-                            timeFilter
-                        ),
-                };
-                this.fuelConsumptionChartLegend =
-                    ChartLegendConfiguration.truckFuelConsumptionConfiguration(
-                        response
-                    );
-            });
+            .subscribe(
+                (response: TruckFuelConsumptionResponse) => {
+                    if (
+                        timeFilter &&
+                        this.fuelConsumptionChartTabs[timeFilter - 1]
+                    )
+                        this.fuelConsumptionChartTabs[timeFilter - 1].checked =
+                            true;
+                    this.fuelConsumptionChartData = response;
+                    this.fuelConsumptionChartConfig = {
+                        ...TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<TruckFuelConsumptionChartResponse>(
+                                response.truckFuelConsumptionCharts,
+                                ChartConfiguration.TRUCK_FUEL_CONSUMPTION_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+                    this.fuelConsumptionChartLegend =
+                        ChartLegendConfiguration.TRUCK_FUEL_CONSUMPTION_CONFIGURATION(
+                            response
+                        );
+                },
+                () => {
+                    this.fuelConsumptionChartConfig = {
+                        ...TruckDetailsChartsConfiguration.FUEL_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     private getRevenue(timeFilter?: number): void {
         this.truckService
             .getRevenue(this.truck.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: TruckRevenueResponse) => {
-                if (timeFilter && this.revenueChartTabs[timeFilter - 1])
-                    this.revenueChartTabs[timeFilter - 1].checked = true;
-                this.revenueChartConfig = {
-                    ...TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG,
-                    chartData:
-                        ChartHelper.generateDataByDateTime<TruckRevenueChartResponse>(
-                            response.truckRevenueCharts,
-                            ChartConfiguration.truckRevenueConfiguration,
-                            timeFilter
-                        ),
-                };
-                this.revenueChartLegend =
-                    ChartLegendConfiguration.truckRevenueConfiguration(
-                        response
-                    );
-            });
+            .subscribe(
+                (response: TruckRevenueResponse) => {
+                    if (timeFilter && this.revenueChartTabs[timeFilter - 1])
+                        this.revenueChartTabs = this.revenueChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
+                    this.revenueChartData = { ...response };
+                    this.revenueChartConfig = {
+                        ...TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<TruckRevenueChartResponse>(
+                                response.truckRevenueCharts,
+                                ChartConfiguration.TRUCK_REVENUE_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+                    this.revenueChartLegend =
+                        ChartLegendConfiguration.TRUCK_REVENUE_CONFIGURATION(
+                            response
+                        );
+                },
+                () => {
+                    this.fuelConsumptionChartConfig = {
+                        ...TruckDetailsChartsConfiguration.REVENUE_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     private getExpenses(timeFilter?: number): void {
         this.truckService
             .getExpenses(this.truck.id, timeFilter || 1)
             .pipe(takeUntil(this.destroy$))
-            .subscribe((response: TruckExpensesResponse) => {
-                if (timeFilter && this.expensesChartChartTabs[timeFilter - 1])
-                    this.expensesChartChartTabs[timeFilter - 1].checked = true;
-                this.expensesChartConfig = {
-                    ...TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG,
-                    chartData:
-                        ChartHelper.generateDataByDateTime<TruckExpensesChartResponse>(
-                            response.truckExpensesCharts,
-                            ChartConfiguration.truckExpensesConfiguration,
-                            timeFilter
-                        ),
-                };
-                this.expensesChartChartLegend =
-                    ChartLegendConfiguration.truckExpensesConfiguration(
-                        response
-                    );
-            });
+            .subscribe(
+                (response: TruckExpensesResponse) => {
+                    if (timeFilter && this.expensesChartLegend[timeFilter - 1])
+                        this.expensesChartTabs = this.expensesChartTabs?.map(
+                            (tab: Tabs, indx: number) => {
+                                const tabModified: Tabs = {
+                                    ...tab,
+                                    checked: timeFilter - 1 === indx,
+                                };
+                                return tabModified;
+                            }
+                        );
+                    this.expensesChartData = { ...response };
+                    this.expensesChartConfig = {
+                        ...TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG,
+                        chartData:
+                            ChartHelper.generateDataByDateTime<TruckExpensesChartResponse>(
+                                response.truckExpensesCharts,
+                                ChartConfiguration.TRUCK_EXPENSES_CONFIGURATION,
+                                timeFilter
+                            ),
+                    };
+                    this.expensesChartLegend =
+                        ChartLegendConfiguration.TRUCK_EXPENSES_CONFIGURATION(
+                            response
+                        );
+                },
+                () => {
+                    this.fuelConsumptionChartConfig = {
+                        ...TruckDetailsChartsConfiguration.EXPENSES_CHART_CONFIG,
+                        chartData: {
+                            datasets: [],
+                            labels: [],
+                        },
+                    };
+                }
+            );
     }
 
     // Function for toggle page in cards
@@ -299,6 +374,7 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
     public identity(index: number, _: any): number {
         return index;
     }
+
     public getTruckDropdown(): void {
         this.truckDropDowns = this.truckMinimalListQuery
             .getAll()
@@ -319,8 +395,15 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         );
     }
 
-    public onSelectedTruck(event: any) {
+    public onSelectedTruck(event: { id: number; name?: string }): void {
         if (event && event.id !== this.truck.id) {
+            if (event.name === TableStringEnum.ADD_NEW_3) {
+                this.modalService.openModal(TruckModalComponent, {
+                    size: TableStringEnum.SMALL,
+                });
+
+                return;
+            }
             this.truckDropDowns = this.truckMinimalListQuery
                 .getAll()
                 .map((item) => {
@@ -391,27 +474,19 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public setFeatureNumber(truck: TruckResponse): void {
         this.featureNumber = 0;
-        if (truck.doubleBunk) {
-            this.featureNumber++;
-        }
-        if (truck.refrigerator) {
-            this.featureNumber++;
-        }
-        if (truck.blower) {
-            this.featureNumber++;
-        }
-        if (truck.pto) {
-            this.featureNumber++;
-        }
-        if (truck.dashCam) {
-            this.featureNumber++;
-        }
-        if (truck.headacheRack) {
-            this.featureNumber++;
-        }
-        if (truck.dcInverter) {
-            this.featureNumber++;
-        }
+        if (truck.doubleBunk) this.featureNumber++;
+
+        if (truck.refrigerator) this.featureNumber++;
+
+        if (truck.blower) this.featureNumber++;
+
+        if (truck.pto) this.featureNumber++;
+
+        if (truck.dashCam) this.featureNumber++;
+
+        if (truck.headacheRack) this.featureNumber++;
+
+        if (truck.dcInverter) this.featureNumber++;
     }
 
     public getLastSixChars(mod: string): string | string[] {
@@ -420,15 +495,11 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
         if (mod?.length > 6) {
             lastSixChars = mod.slice(-6);
 
-            let stringLength = mod.length;
-            let firsNum = stringLength - 6;
+            const stringLength = mod.length;
+            const firsNum = stringLength - 6;
             lastSixChars = [mod.slice(0, firsNum), mod.slice(-6)];
         }
         return lastSixChars;
-    }
-
-    public changeTabPerfomance(event: TabOptions): void {
-        console.log('Selected tab is:', event.name);
     }
 
     public changeTabFuel(event: TabOptions): void {
@@ -441,5 +512,73 @@ export class TruckDetailsCardComponent implements OnInit, OnChanges, OnDestroy {
 
     public changeTabRevenue(event: TabOptions): void {
         this.getRevenue(event.id);
+    }
+
+    public setFuelConsumptionLegendOnHover(index: number | null): void {
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.fuelConsumptionChartConfig?.chartData?.labels
+        );
+
+        this.fuelConsumptionLegendHighlightedBackground =
+            hasHighlightedBackground;
+        this.fuelConsumptionLegendTitle = title;
+
+        const dataForLegend =
+            isNaN(index) || index < 0 || index === null
+                ? this.fuelConsumptionChartData
+                : this.fuelConsumptionChartData?.truckFuelConsumptionCharts[
+                      index
+                  ];
+
+        this.fuelConsumptionChartLegend =
+            ChartLegendConfiguration.TRUCK_FUEL_CONSUMPTION_CONFIGURATION(
+                dataForLegend
+            );
+    }
+
+    public setExpensesRevenueLegendOnHover(index: number | null): void {
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.expensesChartConfig.chartData.labels
+        );
+
+        this.expensesLegendHighlightedBackground = hasHighlightedBackground;
+        this.expensesLegendTitle = title;
+
+        if (index === null || index === undefined) {
+            this.expensesChartLegend =
+                ChartLegendConfiguration.TRUCK_EXPENSES_CONFIGURATION(
+                    this.expensesChartData
+                );
+            return;
+        }
+
+        const dataForLegend =
+            isNaN(index) || index < 0 || index === null
+                ? this.expensesChartData
+                : this.expensesChartData?.truckExpensesCharts[index];
+
+        this.expensesChartLegend =
+            ChartLegendConfiguration.TRUCK_EXPENSES_CONFIGURATION(
+                dataForLegend
+            );
+    }
+
+    public setRevenueLegendOnHover(index: number | null): void {
+        const { hasHighlightedBackground, title } = ChartHelper.setChartLegend(
+            index,
+            this.revenueChartConfig.chartData.labels
+        );
+        this.revenueLegendHighlightedBackground = hasHighlightedBackground;
+        this.revenueLegendTitle = title;
+
+        const dataForLegend =
+            isNaN(index) || index < 0 || index === null
+                ? this.revenueChartData
+                : this.revenueChartData?.truckRevenueCharts[index];
+
+        this.revenueChartLegend =
+            ChartLegendConfiguration.TRUCK_REVENUE_CONFIGURATION(dataForLegend);
     }
 }

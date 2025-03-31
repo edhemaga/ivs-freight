@@ -93,7 +93,7 @@
                 [ngClass]="{ 'display-box': displayRequestsBox }"
                 [ngStyle]="{
                     top: -requestsBoxHeight + -41 + 'px',
-                    'padding-bottom': isDocumentsCardOpen ? 0 : '8px'
+                    'padding-bottom': isDocumentsCardOpen ? 0 : '8px',
                 }"
             >
                 <div class="d-flex align-items-center box-header">
@@ -133,7 +133,7 @@
                                                 type: 'text',
                                                 label: 'Previous Employer',
                                                 textTransform: 'capitalize',
-                                                isDisabled: true
+                                                isDisabled: true,
                                             }"
                                         ></app-ta-input>
                                     </ng-container>
@@ -149,7 +149,7 @@
                                                 label: 'Previous Employer',
                                                 isDropdown: true,
                                                 dropdownWidthClass: 'w-col-376',
-                                                hideClear: true
+                                                hideClear: true,
                                             }"
                                             [options]="previousEmployersList"
                                             [activeItem]="selectedEmployer"
@@ -173,7 +173,7 @@
                                             type: 'text',
                                             label: 'Applicant Name',
                                             textTransform: 'capitalize',
-                                            isDisabled: true
+                                            isDisabled: true,
                                         }"
                                     ></app-ta-input>
                                 </div>
@@ -203,10 +203,10 @@
                                                 class="date-group"
                                                 [ngStyle]="{
                                                     'margin-bottom':
-                                                        i === 4 ? '0' : '2px'
+                                                        i === 4 ? '0' : '2px',
                                                 }"
                                             >
-                                                <app-ta-input
+                                                <ca-input-datetime-picker
                                                     formControlName="dateOfRequest"
                                                     [inputConfig]="{
                                                         name: 'datepicker',
@@ -217,12 +217,12 @@
                                                             'datetimeclass',
                                                         isDisabled: true,
                                                         placeholderInsteadOfLabel:
-                                                            i !== 0
+                                                            i !== 0,
                                                     }"
-                                                ></app-ta-input>
+                                                ></ca-input-datetime-picker>
                                             </div>
                                             <div class="time-group">
-                                                <app-ta-input
+                                                <ca-input-datetime-picker
                                                     formControlName="timeOfRequest"
                                                     [inputConfig]="{
                                                         name: 'timepicker',
@@ -233,9 +233,9 @@
                                                             'datetimeclass',
                                                         isDisabled: true,
                                                         placeholderInsteadOfLabel:
-                                                            i !== 0
+                                                            i !== 0,
                                                     }"
-                                                ></app-ta-input>
+                                                ></ca-input-datetime-picker>
                                             </div>
                                         </div>
                                     </div>
@@ -259,7 +259,7 @@
                                             'margin-top': !previousRequests
                                                 ?.controls.length
                                                 ? '0'
-                                                : '20px'
+                                                : '20px',
                                         }"
                                     >
                                         <div class="d-flex align-items-center">
@@ -271,7 +271,7 @@
                                                     src="assets/svg/common/ic_date.svg"
                                                     [svgStyle]="{
                                                         'width.px': 18,
-                                                        'height.px': 18
+                                                        'height.px': 18,
                                                     }"
                                                 ></svg-icon>
 
@@ -319,16 +319,17 @@
                                 <div class="d-flex">
                                     <div class="d-flex">
                                         <div class="date-group">
-                                            <app-ta-input
+                                            <ca-input-datetime-picker
                                                 formControlName="dateReceivedRequest"
                                                 [inputConfig]="{
                                                     name: 'datepicker',
                                                     type: 'text',
                                                     label: 'Date Received',
                                                     placeholderIcon: 'date',
-                                                    customClass: 'datetimeclass'
+                                                    customClass:
+                                                        'datetimeclass',
                                                 }"
-                                            ></app-ta-input>
+                                            ></ca-input-datetime-picker>
                                         </div>
 
                                         <div class="received-by-group">
@@ -340,7 +341,7 @@
                                                     label: 'Received By',
                                                     isDropdown: true,
                                                     dropdownWidthClass:
-                                                        'w-col-182'
+                                                        'w-col-182',
                                                 }"
                                                 [options]="sphReceivedByList"
                                                 [activeItem]="
@@ -388,7 +389,7 @@
                 class="d-flex flex-column documents-box"
                 [ngClass]="{ 'display-box': displayDocumentsBox }"
                 [ngStyle]="{
-                    top: -documentsBoxHeight + -53 + 'px'
+                    top: -documentsBoxHeight + -53 + 'px',
                 }"
             >
                 <div class="d-flex align-items-center box-header">
@@ -449,7 +450,7 @@
                             <svg-icon
                                 class="requests-icon"
                                 [ngClass]="{
-                                    'display-box': displayRequestsBox
+                                    'display-box': displayRequestsBox,
                                 }"
                                 src="assets/svg/common/ic_document.svg"
                                 [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
@@ -474,7 +475,7 @@
                             <svg-icon
                                 class="documents-icon"
                                 [ngClass]="{
-                                    'display-box': displayDocumentsBox
+                                    'display-box': displayDocumentsBox,
                                 }"
                                 src="assets/svg/common/ic_filemanager.svg"
                                 [svgStyle]="{ 'width.px': 20, 'height.px': 20 }"
@@ -486,7 +487,7 @@
                             <p
                                 class="m-0 ta-font-medium"
                                 [ngClass]="{
-                                    'display-box': displayDocumentsBox
+                                    'display-box': displayDocumentsBox,
                                 }"
                                 (click)="
                                     onDisplayOrHidePopupBox('DOCUMENTS-BOX')

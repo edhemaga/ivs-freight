@@ -9,7 +9,6 @@ export enum DropActionsStringEnum {
     DEACTIVATE_ITEM = 'deactivate-item',
     ACTIVATE_ITEM = 'activate-item',
     OPEN_BUSINESS = 'open-business',
-    CLOSE_BUSINESS = 'close-business',
     VOID = 'void',
     RENEW = 'renew',
     FAVORITE = 'favorite',
@@ -31,7 +30,6 @@ export enum DropActionsStringEnum {
     TRAILER = 'trailer',
     DRIVER = 'driver',
     REPAIR = 'repair',
-    REPAIR_2 = 'Repair',
     REPAIR_DETAIL = 'repair-detail',
     REPAIR_SHOP = 'repair shop',
     REPAIR_SHOP_2 = 'Repair Shop',
@@ -43,6 +41,7 @@ export enum DropActionsStringEnum {
     COMPANY_TERMINAL = 'Company Terminal',
     TEMPLATE = 'template',
     TEMPLATES = 'templates',
+    FUEL = 'fuel',
 
     // Delete titles
     DELETE_MEDICAL_TITLE = 'Delete Medical',
@@ -64,6 +63,8 @@ export enum DropActionsStringEnum {
     DELETE_PARKING = 'delete-parking',
     DELETE_OFFICE = 'delete-office',
     DELETE_TERMINAL = 'delete-terminal',
+    DELETE_FUEL_TRANSACTION = 'delete-fuel-transaction',
+    DELETE_FUEL_STOP = 'delete-fuel-stop',
 
     // Edit actions
     EDIT_LICENCE = 'edit-licence',
@@ -83,7 +84,6 @@ export enum DropActionsStringEnum {
     ADD_FAVOURITES = 'add-favourites',
     REMOVE_FAVOURITES = 'remove-favourites',
     REMOVE_FROM_FAVOURITE = 'remove-from-favourite',
-    MOVE_TO_FAVOURITE = 'move-to-favourite',
 
     // Other
     RENEW_LICENCE = 'renew-licence',
@@ -98,5 +98,7 @@ export enum DropActionsStringEnum {
 
     // Size
     SMALL = 'small',
-    LARGE = 'large',
+
+    FUEL_TRANSACTION_TEXT = 'fuel transaction',
+    FUEL_STOP_TEXT = 'fuel stop',
 }

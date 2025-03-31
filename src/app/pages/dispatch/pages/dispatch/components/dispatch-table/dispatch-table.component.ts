@@ -32,7 +32,7 @@ import { dispatchBackgroundAnimation } from '@shared/animations/dispatch-backgro
 import { CdkDrag, CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 // pipes
-import { DispatchColorFinderPipe } from '@shared/pipes';
+import { TruckTrailerColorFinderPipe } from 'ca-components';
 
 // helpers
 import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/helpers';
@@ -40,6 +40,7 @@ import { DispatchTableDragNDropHelper } from '@pages/dispatch/pages/dispatch/com
 // services
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { DispatchHubService } from '@shared/services/dispatch-hub.service';
+import { LoadService } from '@shared/services/load.service';
 
 // constants
 import { DispatchTableConstants } from '@pages/dispatch/pages/dispatch/components/dispatch-table/utils/constants';
@@ -87,7 +88,7 @@ import { IGpsProgress } from 'ca-components/lib/components/ca-progress-bar/model
     styleUrls: ['./dispatch-table.component.scss'],
     encapsulation: ViewEncapsulation.None,
     changeDetection: ChangeDetectionStrategy.OnPush,
-    providers: [DispatchColorFinderPipe],
+    providers: [TruckTrailerColorFinderPipe],
     animations: [dispatchBackgroundAnimation()],
 })
 export class DispatchTableComponent implements OnInit, OnDestroy {
@@ -211,13 +212,14 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         private cdRef: ChangeDetectorRef,
 
         // pipes
-        private dispatchColorFinderPipe: DispatchColorFinderPipe,
+        private truckTrailerColorFinderPipe: TruckTrailerColorFinderPipe,
         public datePipe: DatePipe,
 
         // services
         private dispatcherService: DispatcherService,
         private parkingService: ParkingService,
-        private dispatchHubService: DispatchHubService
+        private dispatchHubService: DispatchHubService,
+        private loadService: LoadService
     ) {}
 
     set checkEmptySet(value: string) {
@@ -283,7 +285,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             return {
                 ...truck,
                 name: truck.truckNumber,
-                class: this.dispatchColorFinderPipe.transform(
+                class: this.truckTrailerColorFinderPipe.transform(
                     truck.truckType.id,
                     DispatchTableStringEnum.TRUCK
                 ),
@@ -297,7 +299,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             return {
                 ...trailer,
                 name: trailer.trailerNumber,
-                class: this.dispatchColorFinderPipe.transform(
+                class: this.truckTrailerColorFinderPipe.transform(
                     trailer.trailerType.id,
                     DispatchTableStringEnum.TRAILER
                 ),
@@ -565,10 +567,10 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                 (locationValue?.address?.address
                     ? locationValue.address
                     : typeof locationValue === DispatchTableStringEnum.NUMBER
-                    ? null
-                    : locationValue
-                    ? locationValue
-                    : null),
+                      ? null
+                      : locationValue
+                        ? locationValue
+                        : null),
             longitude: longitude || locationValue?.longitude || null,
             latitude: latitude || locationValue?.latitude || null,
             note,
@@ -1167,12 +1169,12 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             event.column.field === DispatchTableStringEnum.PICKUP_DELIVERY_2
                 ? DispatchTableStringEnum.PICKUP_DELIVERY_3
                 : event.column.field === DispatchTableStringEnum.PROGRESS_2
-                ? DispatchTableStringEnum.PROGRESS_3
-                : event.column.field === DispatchTableStringEnum.DISPATCHER_2
-                ? DispatchTableStringEnum.DISPATCHER
-                : event.column.field === DispatchTableStringEnum.NOTE_2
-                ? DispatchTableStringEnum.NOTE_3
-                : event.column.field;
+                  ? DispatchTableStringEnum.PROGRESS_3
+                  : event.column.field === DispatchTableStringEnum.DISPATCHER_2
+                    ? DispatchTableStringEnum.DISPATCHER
+                    : event.column.field === DispatchTableStringEnum.NOTE_2
+                      ? DispatchTableStringEnum.NOTE_3
+                      : event.column.field;
 
         const maxColWidth =
             event.column.field === DispatchTableStringEnum.DISPATCHER_2
@@ -1203,7 +1205,7 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
                     this.dispatchData.dispatches[index].loadProgress
                         .activeLoadProgressBar;
 
-                let dispatchStopData: IGpsProgress[] =
+                const dispatchStopData: IGpsProgress[] =
                     dispatchLoadProgress.loadStops.map(
                         (stop, index, currentArray) => {
                             const checkedInStop = currentArray.find(
@@ -1293,6 +1295,64 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
         });
     }
 
+    public onOpenProgressMap(
+        progressData: DispatchProgressBarData,
+        progressIndex: number
+    ): void {
+        if (!progressData.gpsProgress[1].routeShape) {
+            const mapLocations = JSON.stringify(
+                progressData.gpsProgress.map(({ longitude, latitude }) => ({
+                    longitude,
+                    latitude,
+                }))
+            );
+
+            this.loadService
+                .getRouting(mapLocations)
+                .pipe(takeUntil(this.destroy$))
+                .subscribe({
+                    next: (res) => {
+                        this.progressBarData = this.progressBarData.map(
+                            (progressData, index) => {
+                                if (index === progressIndex) {
+                                    const gpsProgressData =
+                                        progressData.gpsProgress.map(
+                                            (item, index) => {
+                                                const routeShape =
+                                                    res.legs?.[index - 1]
+                                                        ?.decodedShape;
+
+                                                if (routeShape) {
+                                                    const newItem = {
+                                                        ...item,
+                                                        routeShape,
+                                                    };
+
+                                                    return newItem;
+                                                }
+
+                                                return item;
+                                            }
+                                        );
+
+                                    const newProgressData = {
+                                        ...progressData,
+                                        gpsProgress: gpsProgressData,
+                                    };
+
+                                    return newProgressData;
+                                }
+
+                                return progressData;
+                            }
+                        );
+
+                        this.cdRef.detectChanges();
+                    },
+                });
+        }
+    }
+
     private getColumnWidths(): void {
         if (
             localStorage.getItem(
@@ -1310,23 +1370,17 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     }
 
     private manageDispatchHubListeners(): void {
-        this.dispatchHubService.onDispatchChanged()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(response => {
-            this.refreshDispatchTable(response);
-            console.log(response);
-        });
-
-        this.dispatchHubService.onDispatchBoardChanged()
-        .pipe(takeUntil(this.destroy$))
-        .subscribe(response => {
-            console.log('onDispatchBoardChanged', response);
-        });
+        this.dispatchHubService
+            .onDispatchChanged()
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((response) => {
+                this.refreshDispatchTable(response);
+            });
     }
 
     private refreshDispatchTable(dispatchChanged: DispatchResponse): void {
         const { dispatches } = this.dispatchData || {};
-        const index = dispatches?.findIndex(d => d.id === dispatchChanged.id)
+        const index = dispatches?.findIndex((d) => d.id === dispatchChanged.id);
         // let dispatchToChange = dispatches?.find(d => d.id === dispatchChange.id);
 
         if (index >= 0)

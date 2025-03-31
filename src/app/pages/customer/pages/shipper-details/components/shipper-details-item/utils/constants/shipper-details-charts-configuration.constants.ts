@@ -1,8 +1,8 @@
-import { ChartImagesStringEnum, ChartTypesStringEnum } from "ca-components";
+import { ChartImagesStringEnum, eChartTypesString } from 'ca-components';
 
 export class ShipperDetailsChartsConfiguration {
     static PAYROLL_CHART_CONFIG = {
-        chartType: ChartTypesStringEnum.LINE,
+        chartType: eChartTypesString.LINE,
         chartData: {
             labels: [],
             datasets: [],
@@ -12,6 +12,7 @@ export class ShipperDetailsChartsConfiguration {
         noDataImage: ChartImagesStringEnum.CHART_NO_DATA_YELLOW,
         chartOptions: {},
         showTooltipBackground: false,
-        showXAxisLabels: true
+        showXAxisLabels: true,
+        hasVerticalDashedAnnotation: true,
     };
 }

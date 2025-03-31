@@ -15,6 +15,8 @@ export enum RepairOrderModalStringEnum {
 
     REPAIR_UNIT = 'repair-unit',
 
+    TRUCK_NUMBER = 'truckNumber',
+
     ORDER = 'Order',
     BILL = 'Bill',
 
@@ -63,9 +65,6 @@ export enum RepairOrderModalStringEnum {
     FILES = 'files',
     TAG = 'tag',
     TAGS = 'tags',
-
-    FORMAT_DATE = 'MM/DD/YY',
-    FORMAT_DATE_1 = 'YYYY-MM-DD',
 
     COMMON = 'common',
     REPAIR_PM = 'repair-pm',

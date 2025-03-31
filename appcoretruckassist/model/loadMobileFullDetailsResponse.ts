@@ -11,42 +11,50 @@
  */
 import { CommentResponse } from './commentResponse';
 import { LoadDispatcherMobileResponse } from './loadDispatcherMobileResponse';
-import { LoadStatusResponse } from './loadStatusResponse';
 import { LoadStopMobileResponse } from './loadStopMobileResponse';
-import { DispatchShortResponse } from './dispatchShortResponse';
+import { DispatchShortMobileResponse } from './dispatchShortMobileResponse';
+import { LoadRequirementsMobileResponse } from './loadRequirementsMobileResponse';
+import { LoadStopMobileShortResponse } from './loadStopMobileShortResponse';
 import { EnumValue } from './enumValue';
 import { BrokerShortMobileResponse } from './brokerShortMobileResponse';
-import { LoadRequirementsResponse } from './loadRequirementsResponse';
-import { LoadProgressResponse } from './loadProgressResponse';
-import { LoadStopShortResponse } from './loadStopShortResponse';
+import { LoadProgressMobileResponse } from './loadProgressMobileResponse';
+import { MilesMobileResponse } from './milesMobileResponse';
 
 
 export interface LoadMobileFullDetailsResponse { 
     id?: number;
     loadNumber?: string | null;
     referenceNumber?: string | null;
-    payType?: EnumValue;
+    payType?: string | null;
     totalRate?: number | null;
-    isInActivePayroll?: boolean;
-    closingPayrollDate?: string | null;
+    weight?: number | null;
+    loadedMilesRate?: number | null;
+    emptyMilesRate?: number | null;
+    milesRate?: number | null;
+    extraStopRate?: number | null;
+    extraStopsCount?: number;
+    commision?: number | null;
     loadDeliveryTime?: string | null;
-    pickup?: LoadStopShortResponse;
-    delivery?: LoadStopShortResponse;
-    pickupCount?: number;
-    deliveryCount?: number;
-    progress?: LoadProgressResponse;
+    assignedDate?: string | null;
+    pickup?: LoadStopMobileShortResponse;
+    delivery?: LoadStopMobileShortResponse;
+    miles?: MilesMobileResponse;
+    loadProgress?: LoadProgressMobileResponse;
     statusType?: EnumValue;
-    status?: LoadStatusResponse;
-    lastStatusPassed?: { [key: string]: number; } | null;
     dispatcher?: LoadDispatcherMobileResponse;
-    dispatch?: DispatchShortResponse;
-    loadRequirements?: LoadRequirementsResponse;
+    dispatch?: DispatchShortMobileResponse;
+    loadRequirements?: LoadRequirementsMobileResponse;
     driverAssist?: string | null;
+    generalCommodity?: EnumValue;
     broker?: BrokerShortMobileResponse;
     stopsCount?: number;
     stops?: Array<LoadStopMobileResponse> | null;
     commentsCount?: number;
     comments?: Array<CommentResponse> | null;
+    est?: { [key: string]: number; } | null;
+    duration?: { [key: string]: number; } | null;
+    totalWait?: { [key: string]: number; } | null;
+    totalDriving?: { [key: string]: number; } | null;
     createdAt?: string;
     updatedAt?: string;
 }

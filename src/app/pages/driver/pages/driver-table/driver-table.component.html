@@ -8,7 +8,7 @@
         [activeViewMode]="activeViewMode"
     ></app-ta-table-toolbar>
 
-    <ng-container *ngIf="activeViewMode === 'List'">
+    @if (activeViewMode === 'List') {
         <app-ta-table-head
             [options]="tableOptions"
             [viewData]="viewData"
@@ -22,26 +22,25 @@
             [columns]="columns"
             [options]="tableOptions"
             [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
+            (tableBodyActions)="
+                handleDropdownMenuActions($event, eDropdownMenu.DRIVER)
+            "
             [tableData]="tableData"
         ></app-ta-table-body>
-    </ng-container>
+    }
 
-    <ng-container *ngIf="activeViewMode === 'Card'">
+    @if (activeViewMode === 'Card') {
         <div class="elements">
             <app-driver-card
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
                 [displayRowsFront]="(displayRows$ | async).displayRowsFront"
                 [displayRowsBack]="(displayRows$ | async).displayRowsBack"
-                [page]="page"
                 [selectedTab]="selectedTab"
             ></app-driver-card>
 
             <!-- Show More -->
 
-            <ng-container *ngIf="viewData.length">
+            @if (viewData.length) {
                 <div
                     class="show-more-container d-flex align-items-center justify-content-between"
                     [ngStyle]="{ 'width.px': tableWidth }"
@@ -51,21 +50,18 @@
                         {{ activeTableData.length }}
                     </div>
 
-                    <ng-container
-                        *ngIf="
-                            viewData.length < activeTableData.length &&
-                            !isSearching
-                        "
-                    >
+                    @if (
+                        viewData.length < activeTableData.length && !isSearching
+                    ) {
                         <div
                             class="show-more ta-font-bold w-fit-content align-items-center d-flex justify-content-between"
-                            (click)="onShowMore()"
+                            (click)="handleShowMoreAction()"
                         >
                             SHOW MORE
                         </div>
-                    </ng-container>
+                    }
                 </div>
-            </ng-container>
+            }
         </div>
-    </ng-container>
+    }
 </div>

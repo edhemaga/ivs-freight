@@ -14,7 +14,7 @@
                 ssn: driver?.ssn,
                 phone: driver?.phone,
                 email: driver?.email,
-                owner: driver?.owner
+                owner: driver?.owner,
             }"
             (cardValuesEmitter)="handleDriverDetailsTitleCardEmit($event)"
         ></app-driver-details-title-card>
@@ -27,7 +27,7 @@
 
                 <app-driver-details-assign-to-card
                     [cardData]="{
-                        assignedTo: driver?.assignedTo
+                        assignedTo: driver?.assignedTo,
                     }"
                 ></app-driver-details-assign-to-card>
 
@@ -39,7 +39,7 @@
                         dateOfBirth: driver?.dateOfBirth,
                         fuelCards: driver?.fuelCards,
                         twicExpDate: driver?.twicExpDate,
-                        mvrExpiration: driver?.mvrExpiration
+                        mvrExpiration: driver?.mvrExpiration,
                     }"
                 ></app-driver-details-additional-info-card>
 
@@ -47,7 +47,7 @@
 
                 <app-driver-employment-history-card
                     [cardData]="{
-                        employmentHistories: driver?.employmentHistories
+                        employmentHistories: driver?.employmentHistories,
                     }"
                 ></app-driver-employment-history-card>
 
@@ -56,7 +56,7 @@
                 <app-driver-owner-info-card
                     [cardData]="{
                         owner: driver?.owner,
-                        driverType: driver?.driverType
+                        driverType: driver?.driverType,
                     }"
                 >
                 </app-driver-owner-info-card>
@@ -69,7 +69,7 @@
                         solo: driver?.solo,
                         team: driver?.team,
                         isOpenPayrollShared: driver?.isOpenPayrollShared,
-                        fleetType: driver?.fleetType
+                        fleetType: driver?.fleetType,
                     }"
                 >
                 </app-driver-pay-types-card>
@@ -82,26 +82,31 @@
                     [bodyTemplate]="'card'"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '4px'
+                        marginBottom: '4px',
                     }"
                 >
-                    <div class="charts-template perfomance">
-                        <!-- <ng-container *ngIf="!payrollChart.hoveringStatus"> -->
-                        <div>
-                            <app-ta-tab-switch
-                                [tabs]="barChartTabs"
-                                (switchClicked)="onPayrollTabChange($event)"
-                                [type]="'type2-modal-popup'"
-                            >
-                            </app-ta-tab-switch>
-                        </div>
-                        <ng-container *ngIf="payrollChartConfig?.chartData">
-                            <app-ta-chart-legend
-                                [data]="chartLegendData"
-                            ></app-ta-chart-legend>
-                            <app-ca-chart [chartConfig]="payrollChartConfig">
-                            </app-ca-chart>
-                        </ng-container>
+                    <div>
+                        @if (!driverLegendHighlightedBackground) {
+                            <div>
+                                <app-ta-tab-switch
+                                    [tabs]="barChartTabs"
+                                    (switchClicked)="onPayrollTabChange($event)"
+                                    [type]="'type2-modal-popup'"
+                                >
+                                </app-ta-tab-switch>
+                            </div>
+                        }
+                        <app-ca-chart
+                            [chartConfig]="payrollChartConfig"
+                            [legendData]="{
+                                data: driverLegendConfig,
+                                hasHighlightedBackground:
+                                    driverLegendHighlightedBackground,
+                                title: driverLegendTitle,
+                            }"
+                            (hoveredIndex)="setDriverLegendOnHover($event)"
+                        >
+                        </app-ca-chart>
                     </div>
                 </app-ta-custom-card>
 
@@ -109,7 +114,7 @@
 
                 <app-driver-bank-info-card
                     [cardData]="{
-                        bank: driver?.bank
+                        bank: driver?.bank,
                     }"
                 >
                 </app-driver-bank-info-card>
@@ -118,7 +123,7 @@
 
                 <app-driver-off-duty-location-card
                     [cardData]="{
-                        offDutyLocations: driver?.offDutyLocations
+                        offDutyLocations: driver?.offDutyLocations,
                     }"
                 >
                 </app-driver-off-duty-location-card>
@@ -127,7 +132,7 @@
 
                 <app-driver-emergency-contact-card
                     [cardData]="{
-                        emergencyContact: driver?.emergencyContact
+                        emergencyContact: driver?.emergencyContact,
                     }"
                 >
                 </app-driver-emergency-contact-card>
@@ -137,7 +142,7 @@
                 <app-driver-notification-card
                     [cardData]="{
                         general: driver?.general,
-                        payroll: driver?.payroll
+                        payroll: driver?.payroll,
                     }"
                 >
                 </app-driver-notification-card>
@@ -152,7 +157,7 @@
                     [bodyTemplate]="'card'"
                     [animationMarginParams]="{
                         marginTop: '0px',
-                        marginBottom: '4px'
+                        marginBottom: '4px',
                     }"
                 >
                     <app-ta-upload-files

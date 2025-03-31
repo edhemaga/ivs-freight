@@ -1,21 +1,13 @@
-<app-ta-modal
+<app-ca-modal
     [modalTitle]="
         !editData?.type?.includes('edit') ? 'Add Broker' : 'Edit Broker'
     "
-    [editData]="editData"
-    [editName]="brokerName"
-    [isModalValid]="isModalValidToSubmit"
-    [saveAndAddNew]="editData?.type !== 'edit'"
-    [customClass]="'modal-container-M'"
-    [isResetDnuBtn]="isResetDnuBtn"
-    [isResetBfbBtn]="isResetBfbBtn"
-    [isClickEnabledWhileFormInvalid]="true"
-    [hasCalendarIcon]="!!editData"
-    [isEditDate]="!!editData"
-    [topDivider]="false"
-    (action)="onModalAction($event)"
+    customClass="modal-container-M"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
 >
-    <div origin>
+    <div class="new-modal" origin>
         <app-ta-tab-switch
             [tabs]="tabs"
             [type]="'type1-modal-popup'"
@@ -29,7 +21,7 @@
             class="form-container"
             [ngClass]="{
                 'tab-2': selectedTab !== 1,
-                'form-container-with-card-2': selectedTab === 2
+                'form-container-with-card-2': selectedTab === 2,
             }"
         >
             <div
@@ -43,7 +35,7 @@
                 <div class="m-tab" [hidden]="selectedTab !== 1">
                     <div class="row">
                         <div class="col-12">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="businessName"
                                 [inputConfig]="{
                                     name: 'Business Name',
@@ -53,15 +45,15 @@
                                     textTransform: 'uppercase',
                                     autoFocus: editData?.type !== 'edit',
                                     minLength: 2,
-                                    maxLength: 64
+                                    maxLength: 64,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
                     <div class="row">
                         <div class="col-6">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="dbaName"
                                 [inputConfig]="{
                                     name: 'Name',
@@ -69,24 +61,24 @@
                                     label: 'DBA Name',
                                     textTransform: 'uppercase',
                                     minLength: 2,
-                                    maxLength: 24
+                                    maxLength: 24,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                         <div class="col-3">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="ein"
                                 [inputConfig]="{
                                     name: 'EIN',
                                     type: 'text',
                                     label: 'EIN #',
                                     mask: '00-0000000',
-                                    maxLength: 10
+                                    maxLength: 10,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                         <div class="col-3">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="mcNumber"
                                 [inputConfig]="{
                                     name: 'MC/FF',
@@ -94,15 +86,15 @@
                                     label: 'MC/FF #',
                                     textTransform: 'capitalize',
                                     minLength: 6,
-                                    maxLength: 7
+                                    maxLength: 7,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
                     <div class="row last-row">
                         <div class="col-6">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="phone"
                                 [inputConfig]="{
                                     name: 'Phone',
@@ -111,12 +103,12 @@
                                     isRequired: true,
                                     placeholderIcon: 'phone',
                                     mask: '(000) 000-0000',
-                                    maxLength: 14
+                                    maxLength: 14,
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                         <div class="col-6">
-                            <app-ta-input
+                            <app-ca-input
                                 formControlName="email"
                                 [inputConfig]="{
                                     name: 'Email',
@@ -125,9 +117,9 @@
                                     placeholderIcon: 'email',
                                     minLength: 5,
                                     maxLength: 64,
-                                    textTransform: 'lowercase'
+                                    textTransform: 'lowercase',
                                 }"
-                            ></app-ta-input>
+                            ></app-ca-input>
                         </div>
                     </div>
 
@@ -146,12 +138,12 @@
                         class="animation-checkbox-card-tabs"
                         [ngClass]="{
                             'fade-checkbox-inputs':
-                                selectedPhysicalAddressTab === 3
+                                selectedPhysicalAddressTab === 3,
                         }"
                     >
                         <div class="row first-row last-row">
                             <div class="col-10">
-                                <app-ta-input-address-dropdown
+                                <app-ca-input-address-dropdown
                                     formControlName="physicalAddress"
                                     [inputConfig]="{
                                         name: 'Address',
@@ -162,20 +154,34 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-510',
                                         minLength: 6,
-                                        maxLength: 256
+                                        maxLength: 256,
                                     }"
-                                    [placeholderType]="'longAddress'"
                                     [activeAddress]="selectedPhysicalAddress"
+                                    [placeholderType]="'longAddress'"
                                     (selectedAddress)="
                                         onHandleAddress(
                                             $event,
                                             'physical-address'
                                         )
                                     "
-                                ></app-ta-input-address-dropdown>
+                                    [receivedAddressList]="addressList"
+                                    [receivedAddressData]="addressData"
+                                    (sentAddressData)="
+                                        onAddressChange(
+                                            $event,
+                                            'physical-address'
+                                        )
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData(
+                                            $event,
+                                            'physical-address'
+                                        )
+                                    "
+                                ></app-ca-input-address-dropdown>
                             </div>
                             <div class="col-2">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="physicalAddressUnit"
                                     [inputConfig]="{
                                         name: 'address-unit',
@@ -183,9 +189,9 @@
                                         label: 'Unit #',
                                         textTransform: 'uppercase',
                                         minLength: 1,
-                                        maxLength: 10
+                                        maxLength: 10,
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                         </div>
                     </div>
@@ -197,12 +203,12 @@
                         class="animation-checkbox-card-tabs"
                         [ngClass]="{
                             'fade-checkbox-inputs':
-                                selectedPhysicalAddressTab === 4
+                                selectedPhysicalAddressTab === 4,
                         }"
                     >
                         <div class="row first-row last-row">
                             <div class="col-4">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="physicalPoBox"
                                     [inputConfig]="{
                                         name: 'PO Box',
@@ -210,12 +216,12 @@
                                         label: 'PO Box #',
                                         isRequired: true,
                                         minLength: 1,
-                                        maxLength: 6
+                                        maxLength: 6,
                                     }"
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
                             <div class="col-8">
-                                <app-ta-input-address-dropdown
+                                <app-ca-input-address-dropdown
                                     formControlName="physicalPoBoxCity"
                                     [inputConfig]="{
                                         name: 'Address',
@@ -226,17 +232,28 @@
                                         textTransform: 'capitalize',
                                         dropdownWidthClass: 'w-col-414',
                                         minLength: 6,
-                                        maxLength: 256
+                                        maxLength: 256,
                                     }"
-                                    [placeholderType]="'shortAddress'"
                                     [activeAddress]="selectedPhysicalPoBox"
+                                    [placeholderType]="'shortAddress'"
                                     (selectedAddress)="
                                         onHandleAddress(
                                             $event,
                                             'physical-pobox'
                                         )
                                     "
-                                ></app-ta-input-address-dropdown>
+                                    [receivedAddressList]="addressListPoBox"
+                                    [receivedAddressData]="addressDataPoBox"
+                                    (sentAddressData)="
+                                        onAddressChange(
+                                            $event,
+                                            'physical-pobox'
+                                        )
+                                    "
+                                    (sentAddressValue)="
+                                        getAddressData($event, 'physical-pobox')
+                                    "
+                                ></app-ca-input-address-dropdown>
                             </div>
                         </div>
                     </div>
@@ -268,12 +285,12 @@
                             class="animation-checkbox-card-tabs"
                             [ngClass]="{
                                 'fade-checkbox-inputs':
-                                    selectedBillingAddressTab === 5
+                                    selectedBillingAddressTab === 5,
                             }"
                         >
                             <div class="row first-row last-row">
                                 <div class="col-10">
-                                    <app-ta-input-address-dropdown
+                                    <app-ca-input-address-dropdown
                                         formControlName="billingAddress"
                                         [inputConfig]="{
                                             name: 'Address',
@@ -284,7 +301,7 @@
                                             textTransform: 'capitalize',
                                             dropdownWidthClass: 'w-col-510',
                                             minLength: 6,
-                                            maxLength: 256
+                                            maxLength: 256,
                                         }"
                                         [placeholderType]="'longAddress'"
                                         [activeAddress]="selectedBillingAddress"
@@ -294,10 +311,28 @@
                                                 'billing-address'
                                             )
                                         "
-                                    ></app-ta-input-address-dropdown>
+                                        [receivedAddressList]="
+                                            addressListBilling
+                                        "
+                                        [receivedAddressData]="
+                                            addressDataBilling
+                                        "
+                                        (sentAddressData)="
+                                            onAddressChange(
+                                                $event,
+                                                'billing-address'
+                                            )
+                                        "
+                                        (sentAddressValue)="
+                                            getAddressData(
+                                                $event,
+                                                'billing-address'
+                                            )
+                                        "
+                                    ></app-ca-input-address-dropdown>
                                 </div>
                                 <div class="col-2">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="billingAddressUnit"
                                         [inputConfig]="{
                                             name: 'address-unit',
@@ -305,9 +340,9 @@
                                             label: 'Unit #',
                                             textTransform: 'uppercase',
                                             minLength: 1,
-                                            maxLength: 10
+                                            maxLength: 10,
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                             </div>
                         </div>
@@ -317,12 +352,12 @@
                             class="animation-checkbox-card-tabs"
                             [ngClass]="{
                                 'fade-checkbox-inputs':
-                                    selectedBillingAddressTab === 6
+                                    selectedBillingAddressTab === 6,
                             }"
                         >
                             <div class="row first-row last-row">
                                 <div class="col-4">
-                                    <app-ta-input
+                                    <app-ca-input
                                         formControlName="billingPoBox"
                                         [inputConfig]="{
                                             name: 'PO Box',
@@ -330,12 +365,12 @@
                                             label: 'PO Box #',
                                             isRequired: true,
                                             minLength: 1,
-                                            maxLength: 6
+                                            maxLength: 6,
                                         }"
-                                    ></app-ta-input>
+                                    ></app-ca-input>
                                 </div>
                                 <div class="col-8">
-                                    <app-ta-input-address-dropdown
+                                    <app-ca-input-address-dropdown
                                         formControlName="billingPoBoxCity"
                                         [inputConfig]="{
                                             name: 'Address',
@@ -347,7 +382,7 @@
                                             textTransform: 'capitalize',
                                             dropdownWidthClass: 'w-col-414',
                                             minLength: 6,
-                                            maxLength: 256
+                                            maxLength: 256,
                                         }"
                                         [placeholderType]="'shortAddress'"
                                         [activeAddress]="selectedBillingPoBox"
@@ -357,7 +392,25 @@
                                                 'billing-pobox'
                                             )
                                         "
-                                    ></app-ta-input-address-dropdown>
+                                        [receivedAddressList]="
+                                            addressListBillingPoBox
+                                        "
+                                        [receivedAddressData]="
+                                            addressDataBillingPoBox
+                                        "
+                                        (sentAddressData)="
+                                            onAddressChange(
+                                                $event,
+                                                'billing-pobox'
+                                            )
+                                        "
+                                        (sentAddressValue)="
+                                            getAddressData(
+                                                $event,
+                                                'billing-pobox'
+                                            )
+                                        "
+                                    ></app-ca-input-address-dropdown>
                                 </div>
                             </div>
                         </div>
@@ -368,7 +421,7 @@
                         [disableAnimation]="isCardAnimationDisabled"
                         [animationMarginParams]="{
                             marginTop: '18px',
-                            marginBottom: '22px'
+                            marginBottom: '22px',
                         }"
                     >
                         <div
@@ -378,7 +431,7 @@
                                     this.brokerForm.get('creditType').value ===
                                         'Custom' &&
                                     brokerForm.get('creditLimit').value &&
-                                    brokerForm.get('availableCredit').value
+                                    brokerForm.get('availableCredit').value,
                             }"
                         >
                             <div
@@ -395,7 +448,7 @@
                             </div>
 
                             <div class="broker-billing-field">
-                                <app-ta-input
+                                <app-ca-input
                                     formControlName="creditLimit"
                                     [inputConfig]="{
                                         name: 'Credit Limit',
@@ -410,28 +463,28 @@
                                         placeholderIcon: 'dollar',
                                         thousandSeparator: true,
                                         minLength: 4,
-                                        maxLength: 11
+                                        maxLength: 11,
                                     }"
                                     (blurInput)="
                                         editData && onBlurCreditLimit()
                                     "
-                                ></app-ta-input>
+                                ></app-ca-input>
                             </div>
 
                             <div class="broker-billing-field">
-                                <app-ta-input-dropdown
+                                <app-ca-input-dropdown
                                     formControlName="payTerm"
                                     [inputConfig]="{
                                         name: 'Input Dropdown',
                                         type: 'text',
                                         label: 'Pay term',
                                         isDropdown: true,
-                                        dropdownWidthClass: 'w-col-163'
+                                        dropdownWidthClass: 'w-col-163',
                                     }"
                                     [options]="payTermOptions"
                                     [activeItem]="selectedPayTerm"
                                     (selectedItem)="onSelectDropDown($event)"
-                                ></app-ta-input-dropdown>
+                                ></app-ca-input-dropdown>
                             </div>
 
                             <ng-container
@@ -511,7 +564,7 @@
                         [hasScrollBodyXAxis]="true"
                         [animationMarginParams]="{
                             marginTop: '10px',
-                            marginBottom: '5px'
+                            marginBottom: '5px',
                         }"
                         (onActionEvent)="addContact()"
                     >
@@ -534,7 +587,7 @@
                         <div class="no-review-broker">
                             <svg-icon
                                 class="no-review-svg"
-                                [src]="brokerModalSvgRoutes.noContactIcon"
+                                [src]="svgRoutes.NO_CONTACT_ICON"
                             ></svg-icon>
                         </div>
                     </ng-container>
@@ -567,7 +620,7 @@
                         <div class="no-review-broker">
                             <svg-icon
                                 class="no-review-svg"
-                                [src]="brokerModalSvgRoutes.noReviewsIcon"
+                                [src]="svgRoutes.NO_REVIEW_ICON"
                             ></svg-icon>
                         </div>
                     </ng-container>
@@ -575,4 +628,108 @@
             </div>
         </form>
     </div>
-</app-ta-modal>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (isEditMode) {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.data?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.data?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(taModalActionEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    @if (brokerName) {
+        <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+            {{ brokerName }}
+        </div>
+    }
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div class="modal-footer modal-footer-payroll">
+        <div class="divider"></div>
+        @if (editData?.type === 'edit') {
+            <div class="d-flex justify-content-between w-full">
+                <div class="d-flex">
+                    <app-ca-modal-button
+                        class="mr-12"
+                        text="Delete"
+                        [size]="eModalButtonSize.SMALL"
+                        (click)="onModalAction(taModalActionEnum.DELETE)"
+                        [type]="eModalButtonClassType.SECONDARY_NEGATIVE"
+                    >
+                    </app-ca-modal-button>
+                    <app-ca-modal-button
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                        [size]="eModalButtonSize.SMALL"
+                        class="mr-12"
+                        text="Move to DNU"
+                        (click)="onModalAction(taModalActionEnum.MOVE_TO_DNU)"
+                    >
+                    </app-ca-modal-button>
+                    <app-ca-modal-button
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                        [size]="eModalButtonSize.SMALL"
+                        text="Move to BFB"
+                        (click)="onModalAction(taModalActionEnum.MOVE_TO_BFB)"
+                    >
+                    </app-ca-modal-button>
+                </div>
+                <app-ca-modal-button
+                    [isValid]="isModalValidToSubmit"
+                    [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                    [text]="'Save Changes'"
+                    (click)="onModalAction(taModalActionEnum.SAVE)"
+                    [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                >
+                </app-ca-modal-button>
+            </div>
+        } @else {
+            <app-ca-modal-button
+                class="mr-12"
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save and Add New'"
+                [isSpinnerShown]="
+                    activeAction === taModalActionEnum.SAVE_AND_ADD_NEW
+                "
+                [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                (click)="onModalAction(taModalActionEnum.SAVE_AND_ADD_NEW)"
+            >
+            </app-ca-modal-button>
+            <app-ca-modal-button
+                [isValid]="isModalValidToSubmit"
+                [text]="'Save'"
+                [isSpinnerShown]="activeAction === taModalActionEnum.SAVE"
+                [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                (click)="onModalAction(taModalActionEnum.SAVE)"
+            >
+            </app-ca-modal-button>
+        }
+    </div>
+</ng-template>

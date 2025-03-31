@@ -2,10 +2,12 @@ import { Injectable } from '@angular/core';
 
 import { BehaviorSubject, Observable } from 'rxjs';
 
+// interfaces
+import { IToolbarWidth } from '@shared/interfaces';
+
 // models
 import {
     BrokerResponse,
-    DispatcherFilterResponse,
     DriverResponse,
     ShipperResponse,
     TableConfigResponse,
@@ -58,7 +60,6 @@ export class TruckassistTableService {
     /* Showing Scroll */
     private showingScroll = new BehaviorSubject<boolean>(null);
     public currentShowingScroll = this.showingScroll.asObservable();
-    /* Reset Columns */
 
     // Flip cards
     private flipCards = new BehaviorSubject<boolean>(false);
@@ -113,11 +114,6 @@ export class TruckassistTableService {
     public currentResetSelectedColumns =
         this.resetSelectedColumns.asObservable();
 
-    /* Switch Select  */
-    private toolBarSwitchActive = new BehaviorSubject<any>(null);
-    public currentSwitchOptionSelected =
-        this.toolBarSwitchActive.asObservable();
-
     /* Search  */
     private searchTableData = new BehaviorSubject<any>(null);
     public currentSearchTableData = this.searchTableData.asObservable();
@@ -154,6 +150,10 @@ export class TruckassistTableService {
     /* Reset Horizontal Scroll */
     private scrollReseting = new BehaviorSubject<boolean>(false);
     public isScrollReseting = this.scrollReseting.asObservable();
+
+    /* Toolbar Width - For Table Empty State */
+    private toolbarWidth = new BehaviorSubject<IToolbarWidth>(null);
+    public currentToolbarWidth = this.toolbarWidth.asObservable();
 
     constructor(private tableColumnsConfigService: TableConfigService) {}
 
@@ -202,11 +202,6 @@ export class TruckassistTableService {
     /* Send Chips For Highlight Search To Table */
     public sendChipsForHighlightSearchToTable(chip: string[]) {
         this.chipsForHighlightSearchToTable.next(chip);
-    }
-
-    /*  Switch Select  */
-    public sendCurrentSwitchOptionSelected(option: any) {
-        this.toolBarSwitchActive.next(option);
     }
 
     /* Reset Selected Columns  */
@@ -303,5 +298,10 @@ export class TruckassistTableService {
     /* Load Status Filter */
     public sendLoadStatusFilter(statusFilterOptions): void {
         this.setLoadStatusFilterOptions.next(statusFilterOptions);
+    }
+
+    /* Toolbar Width - For Table Empty State */
+    public sendToolbarWidth(toolbarWidth: IToolbarWidth) {
+        this.toolbarWidth.next(toolbarWidth);
     }
 }

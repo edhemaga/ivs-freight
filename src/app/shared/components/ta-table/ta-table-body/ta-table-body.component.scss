@@ -780,6 +780,27 @@ table.truckassist-table-body-style {
                                     }
                                 }
                             }
+
+                            .integrated-fuel-transaction {
+                                svg {
+                                    circle {
+                                        fill: $ta-green;
+                                    }
+                                }
+                            }
+
+                            .manual-fuel-transaction {
+                                svg {
+                                    circle {
+                                        fill: $ta-light-grey-6;
+                                    }
+                                }
+                            }
+
+                            .company-owned-icon {
+                                position: relative;
+                                bottom: 1px;
+                            }
                         }
 
                         .has-details-page {
@@ -1533,7 +1554,8 @@ table.truckassist-table-body-style {
                             border-radius: 2px;
                             color: $ta-blue-18;
                             cursor: pointer;
-                            transition: background 0.2s ease-in,
+                            transition:
+                                background 0.2s ease-in,
                                 color 0.2s ease-in;
 
                             &:hover {
@@ -2286,6 +2308,24 @@ table.truckassist-table-body-style {
                 }
             }
 
+            &:hover {
+                .columns-container {
+                    .not-pined-columns {
+                        .not-pined-td {
+                            .td-content {
+                                .column-text-svg-transaction-incomplete {
+                                    svg {
+                                        path {
+                                            fill: $ta-red-11 !important;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
             // Attachment, Media And Insurance Dropdown
             .attachemnt-dropdown,
             .media-dropdown,
@@ -2819,6 +2859,21 @@ table.truckassist-table-body-style {
             }
         }
 
+        tr,
+        tr:hover {
+            .columns-container {
+                .not-pined-columns {
+                    .not-pined-td {
+                        .td-content {
+                            .column-text-red {
+                                color: $ta-red-11 !important;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
         // For User Table Only
         .user-archived {
             .table-text,
@@ -3145,7 +3200,9 @@ table.truckassist-table-body-style {
 .add-animation {
     position: relative !important;
     z-index: -1;
-    animation: drop-new-row 0.3s ease-out, show-new-row 0.25s ease-out;
+    animation:
+        drop-new-row 0.3s ease-out,
+        show-new-row 0.25s ease-out;
 
     .columns-container {
         animation: hide-new-row-background 2s ease-in 0.3s;
@@ -3200,7 +3257,8 @@ table.truckassist-table-body-style {
 .deactivate-animation {
     position: relative;
 
-    animation: deactivate-row-move-right 0.3s ease-in 0.3s,
+    animation:
+        deactivate-row-move-right 0.3s ease-in 0.3s,
         deactivate-row-visibility 0.25s ease-in 0.3s,
         deactivate-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3212,7 +3270,8 @@ table.truckassist-table-body-style {
 .multiple-deactivate-animation {
     position: relative;
 
-    animation: deactivate-row-move-right 0.3s ease-in 0.3s,
+    animation:
+        deactivate-row-move-right 0.3s ease-in 0.3s,
         deactivate-row-visibility 0.25s ease-in 0.3s,
         deactivate-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3283,8 +3342,10 @@ table.truckassist-table-body-style {
 .activate-animation {
     position: relative;
 
-    animation: activate-row-move-right 0.3s ease-in 0.3s,
-        activate-row-visibility 0.25s cubic-bezier(0.5, 1, 0.89, 1), 0.3s,
+    animation:
+        activate-row-move-right 0.3s ease-in 0.3s,
+        activate-row-visibility 0.25s cubic-bezier(0.5, 1, 0.89, 1),
+        0.3s,
         activate-row-decrease-height 0.3s ease-in 0.6s;
 
     .columns-container {
@@ -3295,7 +3356,8 @@ table.truckassist-table-body-style {
 .multiple-activate-animation {
     position: relative;
 
-    animation: activate-row-move-right 0.3s ease-in 0.3s,
+    animation:
+        activate-row-move-right 0.3s ease-in 0.3s,
         activate-row-visibility 0.25s ease-in 0.3s,
         activate-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3367,7 +3429,8 @@ table.truckassist-table-body-style {
     overflow: hidden !important;
     min-height: unset !important;
 
-    animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+    animation:
+        deleting-row-decrease-size 0.3s ease-in 0.3s,
         deleting-row-visibility 0.3s ease-in 0.3s,
         deleting-row-decrease-height 0.3s ease-in 0.6s;
 
@@ -3380,18 +3443,14 @@ table.truckassist-table-body-style {
     overflow: hidden !important;
     min-height: unset !important;
 
-    animation: deleting-row-decrease-size 0.3s ease-in 0.3s,
+    animation:
+        deleting-row-decrease-size 0.3s ease-in 0.3s,
         deleting-row-visibility 0.3s ease-in 0.3s,
         deleting-row-decrease-height 0.3s ease-in 0.6s;
 
     .columns-container {
         animation: multiple-deleting-row-add-color 0.3s ease-in;
     }
-}
-
-// Fuel Integrated Transactions
-.fuel-integrated-transaction {
-    border: 1px solid $ta-green;
 }
 
 // 1
@@ -3461,4 +3520,12 @@ table.truckassist-table-body-style {
         right: -3px;
         bottom: -3px;
     }
+}
+
+.lh-0 {
+    line-height: 0px;
+}
+
+.lh-1 {
+    line-height: 1px;
 }

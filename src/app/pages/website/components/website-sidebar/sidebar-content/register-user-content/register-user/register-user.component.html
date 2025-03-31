@@ -38,7 +38,7 @@
                         isRequired: true,
                         minLength: 2,
                         maxLength: 26,
-                        textTransform: 'capitalize'
+                        textTransform: 'capitalize',
                     }"
                 ></app-ta-input>
             </div>
@@ -53,7 +53,7 @@
                         isRequired: true,
                         minLength: 2,
                         maxLength: 26,
-                        textTransform: 'capitalize'
+                        textTransform: 'capitalize',
                     }"
                 ></app-ta-input>
             </div>
@@ -63,7 +63,7 @@
 
         <div class="d-flex">
             <div class="group address-group">
-                <app-ta-input-address-dropdown
+                <app-ca-input-address-dropdown
                     #inputAddress
                     formControlName="address"
                     [inputConfig]="{
@@ -79,7 +79,11 @@
                     [placeholderType]="'longAddress'"
                     [activeAddress]="selectedAddress"
                     (selectedAddress)="handleAddressChange($event)"
-                ></app-ta-input-address-dropdown>
+                    [receivedAddressList]="addressList"
+                    [receivedAddressData]="addressData"
+                    (sentAddressData)="onAddressChange($event)"
+                    (sentAddressValue)="getAddressData($event)"
+                ></app-ca-input-address-dropdown>
             </div>
 
             <div class="group address-unit-group">
@@ -91,7 +95,7 @@
                         label: 'Unit #',
                         textTransform: 'uppercase',
                         minLength: 1,
-                        maxLength: 10
+                        maxLength: 10,
                     }"
                 ></app-ta-input>
             </div>
@@ -109,7 +113,7 @@
                         label: 'Phone',
                         placeholderIcon: 'phone',
                         mask: '(000) 000-0000',
-                        maxLength: 14
+                        maxLength: 14,
                     }"
                 ></app-ta-input>
             </div>
@@ -127,7 +131,7 @@
                         isDisabled: true,
                         minLength: 5,
                         maxLength: 64,
-                        textTransform: 'lowercase'
+                        textTransform: 'lowercase',
                     }"
                 ></app-ta-input>
             </div>
@@ -147,7 +151,7 @@
                         isRequired: true,
                         autocomplete: 'off',
                         minLength: 8,
-                        maxLength: 64
+                        maxLength: 64,
                     }"
                 ></app-ta-input>
             </div>
@@ -163,7 +167,7 @@
                         isRequired: true,
                         autocomplete: 'off',
                         minLength: 8,
-                        maxLength: 64
+                        maxLength: 64,
                     }"
                 ></app-ta-input>
             </div>

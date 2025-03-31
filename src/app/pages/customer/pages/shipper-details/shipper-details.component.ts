@@ -10,7 +10,10 @@ import { DropDownService } from '@shared/services/drop-down.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
-import { CaSearchMultipleStatesService } from 'ca-components';
+import {
+    CaSearchMultipleStatesService,
+    eFilterDropdownEnum,
+} from 'ca-components';
 
 // Store
 import { ShipperMinimalListStore } from '@pages/customer/state/shipper-state/shipper-details-state/shipper-minimal-list-state/shipper-minimal-list.store';
@@ -255,8 +258,8 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
             event.type === TableStringEnum.EDIT
                 ? TableStringEnum.BASIC
                 : event.type === TableStringEnum.CONTRACT
-                ? TableStringEnum.ADDITIONAL
-                : TableStringEnum.REVIEW;
+                  ? TableStringEnum.ADDITIONAL
+                  : TableStringEnum.REVIEW;
 
         const eventObject = {
             data: undefined,
@@ -482,23 +485,13 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
 
     public setFilter(data): void {
         switch (data?.filterType) {
-            case LoadFilterStringEnum.TIME_FILTER:
-                if (data.queryParams?.timeSelected) {
-                    const { fromDate, toDate } =
-                        RepairTableDateFormaterHelper.getDateRange(
-                            data.queryParams?.timeSelected,
-                            data.queryParams.year ?? null
-                        );
-
-                    this.backLoadFilterQuery.dateTo = toDate;
-                    this.backLoadFilterQuery.dateFrom = fromDate;
-                } else {
-                    this.backLoadFilterQuery.dateTo = null;
-                    this.backLoadFilterQuery.dateFrom = null;
-                }
-
+            case eFilterDropdownEnum.TIME_FILTER:
+                this.backLoadFilterQuery = {
+                    ...this.backLoadFilterQuery,
+                    dateTo: data.queryParams.toDate,
+                    dateFrom: data.queryParams.fromDate,
+                };
                 this.loadBackFilter(this.backLoadFilterQuery);
-
                 break;
             default:
                 break;
@@ -517,6 +510,7 @@ export class ShipperDetailsComponent implements OnInit, OnDestroy {
                 filter.brokerId,
                 filter.shipperId,
                 filter.loadId,
+                filter.loadIds,
                 filter.dateFrom,
                 filter.dateTo,
                 filter.revenueFrom,

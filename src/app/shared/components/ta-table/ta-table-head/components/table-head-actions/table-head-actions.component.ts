@@ -29,8 +29,4 @@ export class TableHeadActionsComponent {
     @Input() isDisplayBorder: boolean;
 
     constructor() {}
-
-    public trackByIdentity(_: number, item: any): string {
-        return item.title;
-    }
 }

@@ -1,3 +1,9 @@
+@let tableOptions = contactStoreService.tableOptions$ | async;
+@let tableData = contactStoreService.tableData$ | async;
+@let columns = contactStoreService.columns$ | async;
+@let viewData = contactStoreService.viewData$ | async;
+@let activeViewMode = contactStoreService.activeViewMode$ | async;
+
 <div class="table-container">
     <app-ta-table-toolbar
         (toolBarAction)="onToolBarAction($event)"
@@ -8,34 +14,36 @@
         [activeViewMode]="activeViewMode"
     ></app-ta-table-toolbar>
 
-    <ng-container *ngIf="activeViewMode === 'List'">
-        <app-ta-table-head
-            [options]="tableOptions"
-            [viewData]="viewData"
-            [columns]="columns"
-            [tableData]="tableData"
-            (headActions)="onTableHeadActions($event)"
-        ></app-ta-table-head>
-
-        <app-ta-table-body
-            [viewData]="viewData"
-            [columns]="columns"
-            [options]="tableOptions"
-            [selectedTab]="selectedTab"
-            (bodyActions)="onTableBodyActions($event)"
-            [tableData]="tableData"
-        ></app-ta-table-body>
-    </ng-container>
-
-    <ng-container *ngIf="activeViewMode === 'Card'">
-        <div class="elements">
-            <app-contacts-card
+    @switch (activeViewMode) {
+        @case (eCommonElement.LIST) {
+            <app-ta-table-head
+                [options]="tableOptions"
                 [viewData]="viewData"
-                [rows]="rows"
-                [cardTitle]="cardTitle"
-                [displayRowsFront]="sendDataToCardsFront"
-                [displayRowsBack]="sendDataToCardsBack"
-                [page]="page"
-            ></app-contacts-card></div
-    ></ng-container>
+                [columns]="columns"
+                [tableData]="tableData"
+                (headActions)="onTableHeadActions($event)"
+            ></app-ta-table-head>
+
+            <app-ta-table-body
+                [viewData]="viewData"
+                [columns]="columns"
+                [options]="tableOptions"
+                [selectedTab]="selectedTab"
+                [tableData]="tableData"
+                (tableBodyActions)="
+                    handleDropdownMenuActions($event, eDropdownMenu.CONTACT)
+                "
+            ></app-ta-table-body>
+        }
+
+        @case (eCommonElement.CARD) {
+            <div class="elements">
+                <app-contacts-card
+                    [viewData]="viewData"
+                    [displayRowsFront]="sendDataToCardsFront"
+                    [displayRowsBack]="sendDataToCardsBack"
+                ></app-contacts-card>
+            </div>
+        }
+    }
 </div>

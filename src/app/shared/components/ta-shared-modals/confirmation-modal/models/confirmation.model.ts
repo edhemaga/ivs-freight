@@ -1,4 +1,4 @@
-import { PayrollDeleteModal } from "@pages/accounting/pages/payroll/state/models";
+import { PayrollDeleteModal } from '@pages/accounting/pages/payroll/state/models';
 
 export interface Confirmation {
     template: string; // examples: driver, broker, shipper, cdl.....
@@ -30,6 +30,7 @@ export interface Confirmation {
         | 'pending'
         | 'template'
         | 'closed'
+        | 'fuel'
         | 'favorite'; // if subType set, must set and subTypeStatus (except when subType: cdl void)
     subTypeStatus?: 'move' | 'remove'; // example: move -> 'Move to Ban List', remove -> 'Remove from Ban List', void -> void
     cdlStatus?: 'New' | 'Renew' | 'Activate';

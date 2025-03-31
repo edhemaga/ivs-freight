@@ -31,11 +31,8 @@ export enum TableStringEnum {
     UPDATE_STATUS = 'update-status',
     DELETE_MULTIPLE = 'delete-multiple',
     UPDATE_MULTIPLE = 'update-multiple',
-    RESET_PASSWORD = 'reset-password',
-    RESEND_INVITATION = 'resend-invitation',
     RESET = 'reset',
     RESET_MODAL = 'reset modal',
-    EDIT_IMAGE = 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
 
     // List or card
     LIST = 'List',
@@ -63,14 +60,10 @@ export enum TableStringEnum {
     LOADS = 'loads',
     VIEW_MODE = 'view-mode',
     REGULAR = 'regular',
-    CHECK = 'check',
 
     ADD_NEW = 'add-new',
     ADD_NEW_2 = 'Add New',
     ADD_NEW_3 = 'ADD NEW',
-
-    SEND_MESSAGE = 'send-message',
-    SEND_MESSAGE_2 = 'Send Message',
 
     VIEW_DETAILS = 'view-details',
     VIEW_DETAILS_2 = 'View Details',
@@ -88,7 +81,6 @@ export enum TableStringEnum {
     DATE_FORMAT = 'MM/dd/yy',
     HOURS = 'h',
     MINUTES = 'min',
-    PM = 'pm',
     PM_2 = 'PM',
 
     // Distance
@@ -143,11 +135,7 @@ export enum TableStringEnum {
     //Load
     NAME_1 = 'name',
     LOAD_INVOICE = 'loadInvoice.invoice',
-    NEW_LICENCE = 'new-licence',
-    NEW_MEDICAL = 'new-medical',
-    NEW_MVR = 'new-mvr',
     CDL = 'CDL',
-    NEW_DRUG = 'new-drug',
     ACTIVATE_ITEM = 'activate-item',
     DELETE_ITEM = 'delete-item',
     LOAD_EXTRA_STOPS = ' EXTRA',
@@ -157,9 +145,6 @@ export enum TableStringEnum {
 
     SHARE = 'share',
     SHARE_2 = 'Share',
-
-    ADD_REPAIR = 'add-repair',
-    ADD_REPAIR_2 = 'Add Repair',
 
     MARGIN_BOTTOM = 'margin-bottom.px',
 
@@ -231,21 +216,6 @@ export enum TableStringEnum {
     HOS = 'HOS',
     TEST = 'TEST',
 
-    TEST_MVR = 'test-mvr',
-
-    TEST_DRUG_ALCOHOL = 'Test (Drug, Alcohol)',
-    TEST_DRUG = 'test-drug',
-
-    MEDICAL_EXAM = 'medical-exam',
-    MEDICAL_EXAM_2 = 'Medical-exam',
-    MEDICAL_EXAM_3 = 'Medical-Exam',
-
-    BACKGROUND_CHECK = 'background-check',
-    BACKGROUND_CHECK_2 = 'Background-check',
-
-    REQUEST = 'Request',
-    ADD_TO_FAVORITES = 'add-to-favourites',
-
     SSN = 'Ssn',
     EMAIL = 'Email • ',
     PUSH = 'Push • ',
@@ -254,7 +224,6 @@ export enum TableStringEnum {
 
     // Truck
     EDIT_TRUCK = 'edit-truck',
-    ADD_TRUCK = 'add-truck',
     TRUCK_NUMBER = 'truckNumber',
     ADD_REGISTRATION = 'add-registration',
     ADD_REGISTRATION_2 = 'Add Registration',
@@ -291,41 +260,26 @@ export enum TableStringEnum {
     EDIT_TRAILER = 'edit-trailer',
     TRAILER_TABLE_COUNT = 'trailerTableCount',
     TRAILER_TAB_VIEW = 'Trailer-table-view',
-    ADD_TRAILER = 'add-trailer',
     ADD_TITLE = 'add-title',
     // Repair
     SHOP = 'Shop',
     FAVORITE = 'favorite',
-    FAVOURITE = 'favourite',
-    FINISH_ORDER = 'finish-order',
-    FINISH_ORDER_2 = 'finish order',
-    FINISH_ORDER_3 = 'Finish Order',
-    ADD_BILL = 'add-bill',
-    DELETE_REPAIR = 'delete-repair',
     DELETE_REPAIR_DETAIL = 'delete-repair-detail',
     EDIT_FO_TRAILER = 'edit-fo-trailer',
     EDIT_FO_TRUCK = 'edit-fo-truck',
     REPAIR_SHOP = 'repair_shop',
     REPAIR_SHOP_2 = 'Repair-shop',
     REPAIR_SHOP_3 = 'repair-shop',
-    NEW_TRAILER = 'new-trailer',
-    NEW_TRUCK = 'new-truck',
     REPAIR_TRUCK_TRAILER_TABLE_COUNT = 'repairTruckTrailerTableCount',
-    ORDER = 'Order',
     ORDER_2 = 'order',
     REPAIR_TRUCK = 'REPAIR_TRUCK',
     REPAIR_TRAILER = 'REPAIR_TRAILER',
     REPAIR_TABLE_VIEW = 'Repair-table-view',
-    TRUCK_TRUCK_NUMBER = 'truck.truckNumber',
     TRAILER_TRAILER_NUMBER = 'trailer.trailerNumber',
     NAME = 'name',
     SERVICE_TYPES = 'serviceTypes',
     REPAIR_TYPE = 'repairType',
     REPAIR_MODAL = 'repair-modal',
-    ALL_BILS = 'All Bills',
-    ALL_BILS_2 = 'all-bills',
-    ALL_ORDERS = 'All Orders',
-    ALL_ORDERS_2 = 'all-orders',
     UNIT = 'Unit ',
     SHOP_DETAIL = 'Shop Detail ',
     ITEM_DETAIL = 'Item Detail ',
@@ -344,10 +298,9 @@ export enum TableStringEnum {
     NEW = 'new',
     GENERIC_PM = 'generic-pm',
     UNIT_PM = 'unit-pm',
-    CONFIGURE = 'configure',
     ADD_REPAIR_BILL = 'add-repair-bill',
-    EDIT_TRUCK_PM_HEADER = 'Edit Truck PM',
-    EDIT_TRAILER_PM_HEADER = 'Edit Trailer PM',
+    CONFIGURE_TRUCK_PM_HEADER = 'Configure Truck PM',
+    CONFIGURE_TRAILER_PM_HEADER = 'Configure Trailer PM',
     CUSTOM = 'custom',
     DEFAULT_PMS = 'defaultPMs',
     NEW_PMS = 'newPMs',
@@ -386,17 +339,20 @@ export enum TableStringEnum {
     FUEL = 'FUEL',
     FUEL_1 = 'fuel',
     FUEL_TRANSACTION = 'FUEL_TRANSACTION',
-    FUEL_TRANSACTION_TEXT = 'fuel transaction',
+    FUEL_TRANSACTION_EFS = 'FUEL_TRANSACTION_EFS',
     FUEL_STOP = 'FUEL_STOP',
     FUEL_STOP_2 = 'fuel stop',
     STOP = 'Stop',
+    STOP_LOWERCASE = 'stop',
     TRANSACTIONS = 'Transactions',
+    TRANSACTION = 'transaction',
     REGULAR_TEXT = 'regular-text',
     DELETE_TEXT = 'delete-text',
     FUEL_TABLE_COUNT = 'fuelTableCount',
     FUEL_TABLE_VIEW = 'Fuel-table-view',
     ASC = 'asc',
     FUEL_TRANSACTION_FILTER_INTEGRATED = 'fuel-filter',
+    FUEL_TRANSACTION_FILTER_INCOMPLETE = 'fuel-filter-incomplete',
     FUEL_STOP_FILTER_CLOSED = 'closed-filter',
 
     // Contact
@@ -447,8 +403,6 @@ export enum TableStringEnum {
     NO_ENDPOINT = 'no-endpoint',
     NO_ENDPOINT_2 = 'No Endpoint',
     SLASH = '/',
-    UPDATE_LABEL = 'update-label',
-    LABEL_CHANGE = 'label-change',
 
     //Toolbar
     EXPORT = 'Export',
@@ -483,6 +437,7 @@ export enum TableStringEnum {
     REPAIR_ARRAY = 'repairArray',
     FUEL_ARRAY = 'fuelArray',
     CLOSED_ARRAY = 'closedArray',
+    FUEL_INCOMPLETE_ARRAY = 'fuelIncompleteArray',
     DRIVER_ARCHIVED_ARRAY = 'driverArhivedArray',
     DEACTIVATED_ARHIVED_ARRAY = 'deactivatedUserArray',
     DNU_FILTER = 'dnu-filter',
@@ -510,28 +465,12 @@ export enum TableStringEnum {
     SSN_2 = 'SSN',
     SSN_EIN = 'ssnEin',
     CHANGE = 'Change',
-    // Links
-    LOAD_DETAILS = '/list/load/',
 
     // reset modal
     RESET_MODAL_CONTACTS_TITLE = 'List | Contacts',
     RESET_MODAL_CONTACTS_TABLE_TYPE = 'contacts',
 
     //Account
-    DELETE_ACCOUNT = 'delete-account',
-    COPY_PASSWORD = 'Copy Password',
-    COPY_PASSWORD_2 = 'copy-password',
-    COPY_USERNAME = 'Copy Username',
-    COPY_USERNAME_2 = 'copy-username',
-    EDIT_ACCOUNT = 'edit-account',
-    GO_TO_LINK = 'Go to Link',
-    NO_LINK = 'No Link',
-    GO_TO_LINK_2 = 'go-to-link',
-    NO_LINK_2 = 'no-link',
-    USER_IMAGE = 'assets/svg/applicant/user.svg',
-    WEB_IMAGE = 'assets/svg/common/ic_web.svg',
-    PASSWORD_IMAGE = 'assets/svg/common/ic_password.svg',
-    DELETE_IMAGE = 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
     ACCOUNT = 'Account',
 
     // Actions
@@ -553,8 +492,7 @@ export enum TableStringEnum {
     COLUMN_TOGGLE = 'columnToggle',
     CONVERT_TO_LOAD = 'create-new-load',
     CONVERT_TO_TEMPLATE = 'create-template-from-load',
-    INVITED = 'Invited',
-    EXPIRED = 'Expired',
+
     ZERO = '0',
 
     BROKER_CONTACT = 'broker contact',
@@ -587,4 +525,5 @@ export enum TableStringEnum {
     ADD_PM_ITEM = 'ADD_PM_ITEM',
     TRUCK_PM_SETTINGS = 'Truck PM Settings',
     TRAILER_PM_SETTINGS = 'Trailer PM Settings',
+    LOAD_DETAILS = 'Load Details',
 }

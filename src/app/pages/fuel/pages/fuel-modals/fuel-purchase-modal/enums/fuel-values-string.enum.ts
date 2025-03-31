@@ -1,6 +1,8 @@
 export enum FuelValuesStringEnum {
     TRUCK_ID = 'truckId',
     TRAILER_ID = 'trailerId',
+    TOTAL = 'total',
+    FUEL_STOP_STORE_ID = 'fuelStopStoreId',
     TRANSACTION_DATE = 'transactionDate',
     TRANSACTION_TIME = 'transactionTime',
     UPDATE = 'update',
@@ -16,4 +18,5 @@ export enum FuelValuesStringEnum {
     MANUAL = 'Manual',
     INVOICE = 'invoice',
     CREATE = 'create',
+    TRUCK = 'truck',
 }

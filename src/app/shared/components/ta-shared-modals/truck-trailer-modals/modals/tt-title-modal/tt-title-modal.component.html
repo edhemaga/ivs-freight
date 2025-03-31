@@ -1,124 +1,206 @@
-<app-ta-modal
-    (action)="onModalAction($event)"
-    [editData]="editData"
-    [editName]="
-        editData?.modal === 'trailer'
-            ? 'Trailer ' + editData?.payload?.trailerNumber
-            : 'Truck ' + editData?.payload?.truckNumber
-    "
-    [isModalValid]="ttTitleForm.valid && isFormDirty"
+<app-ca-modal
     [modalTitle]="editData?.type !== 'edit-title' ? 'Add Title' : 'Edit Title'"
-    [specificCaseModalName]="true"
+    [leftHeaderTemplate]="leftModalContent"
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
 >
-    <form
-        [formGroup]="ttTitleForm"
-        class="form-container form-container-without-mb"
-        origin
-    >
-        <div class="row">
-            <div class="col-6">
-                <app-ta-input
-                    [inputConfig]="{
-                        name: 'Title Number',
-                        type: 'text',
-                        label: 'Title No.',
-                        isRequired: true,
-                        textTransform: 'capitalize',
-                        autoFocus: editData?.type !== 'edit-title'
-                    }"
-                    formControlName="number"
-                ></app-ta-input>
+    <div class="new-modal" origin>
+        <div class="divider divider--dark divider--small"></div>
+        <form
+            [formGroup]="ttTitleForm"
+            class="form-container form-container-without-mb"
+            origin
+        >
+            <div class="row">
+                <div class="col-6">
+                    <app-ca-input
+                        [inputConfig]="{
+                            name: 'Title Number',
+                            type: 'text',
+                            label: 'Title No.',
+                            isRequired: true,
+                            textTransform: 'capitalize',
+                            autoFocus: editData?.type !== 'edit-title',
+                        }"
+                        formControlName="number"
+                    ></app-ca-input>
+                </div>
+                <div class="col-6">
+                    <app-ca-input-dropdown
+                        (selectedItem)="onSelectDropdown($event, 'state')"
+                        [activeItem]="selectedStateType"
+                        [template]="'svgtext-template'"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'States',
+                            textTransform: 'uppercase',
+                            dropdownImageInput: {
+                                withText: true,
+                                svg: true,
+                                image: false,
+                                url: selectedStateType?.logoName
+                                    ? logoStateRoutes +
+                                      selectedStateType?.logoName
+                                    : '',
+                                template: 'color',
+                                class: 'state',
+                            },
+                            customClass: 'state-dropdown',
+                            isRequired: true,
+                            isDropdown: true,
+                            dropdownWidthClass: 'w-col-228',
+                        }"
+                        [options]="stateTypes"
+                        formControlName="stateId"
+                    ></app-ca-input-dropdown>
+                </div>
             </div>
-            <div class="col-6">
-                <app-ta-input-dropdown
-                    (selectedItem)="onSelectDropdown($event, 'state')"
-                    [activeItem]="selectedStateType"
-                    [template]="'svgtext-template'"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'States',
-                        textTransform: 'uppercase',
-                        dropdownImageInput: {
-                            withText: true,
-                            svg: true,
-                            image: false,
-                            url: selectedStateType?.logoName
-                                ? logoStateRoutes + selectedStateType?.logoName
-                                : '',
-                            template: 'color',
-                            class: 'state'
-                        },
-                        customClass: 'state-dropdown',
-                        isRequired: true,
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-228'
-                    }"
-                    [options]="stateTypes"
-                    formControlName="stateId"
-                ></app-ta-input-dropdown>
+            <div class="row last-row">
+                <div class="col-6">
+                    <ca-input-datetime-picker
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            type: 'text',
+                            label: 'Purchase Date',
+                            placeholderIcon: 'date',
+                            isDropdown: true,
+                            isRequired: true,
+                            customClass: 'datetimeclass',
+                        }"
+                        formControlName="purchaseDate"
+                    ></ca-input-datetime-picker>
+                </div>
+                <div class="col-6">
+                    <ca-input-datetime-picker
+                        [inputConfig]="{
+                            name: 'datepicker',
+                            type: 'text',
+                            isDropdown: true,
+                            label: 'Issue Date',
+                            placeholderIcon: 'date',
+                            isRequired: true,
+                            customClass: 'datetimeclass',
+                        }"
+                        formControlName="issueDate"
+                    ></ca-input-datetime-picker>
+                </div>
             </div>
-        </div>
-        <div class="row last-row">
-            <div class="col-6">
-                <app-ta-input
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        label: 'Purchase Date',
-                        placeholderIcon: 'date',
-                        isDropdown: true,
-                        isRequired: true,
-                        customClass: 'datetimeclass'
-                    }"
-                    formControlName="purchaseDate"
-                ></app-ta-input>
+            <div class="ta-card-body-overflow-none">
+                <app-ta-custom-card
+                    [cardName]="'Document'"
+                    [disableAnimation]="isCardAnimationDisabled"
+                    [hasCounter]="documents.length ? documents.length : 0"
+                    [isCardOpen]="!!documents.length"
+                    [hasDarkDivider]="true"
+                    [hasSmallDivider]="true"
+                >
+                    <app-ta-upload-files
+                        (onFileEvent)="onFilesEvent($event)"
+                        [customClassName]="'modals'"
+                        [files]="documents"
+                        [showDropzone]="true"
+                    ></app-ta-upload-files>
+                </app-ta-custom-card>
             </div>
-            <div class="col-6">
-                <app-ta-input
-                    [inputConfig]="{
-                        name: 'datepicker',
-                        type: 'text',
-                        isDropdown: true,
-                        label: 'Issue Date',
-                        placeholderIcon: 'date',
-                        isRequired: true,
-                        customClass: 'datetimeclass'
-                    }"
-                    formControlName="issueDate"
-                ></app-ta-input>
-            </div>
-        </div>
-        <div class="ta-card-body-overflow-none">
-            <app-ta-custom-card
-                [cardName]="'Document'"
-                [disableAnimation]="disableCardAnimation"
-                [hasCounter]="documents.length ? documents.length : 0"
-                [isCardOpen]="!!documents.length"
-            >
-                <app-ta-upload-files
-                    (onFileEvent)="onFilesEvent($event)"
-                    [customClassName]="'modals'"
-                    [files]="documents"
-                    [showDropzone]="true"
-                ></app-ta-upload-files>
-            </app-ta-custom-card>
-        </div>
 
-        <app-ta-input-note
-            [isVisibleNote]="
-                ttTitleForm.get('note').value &&
-                ttTitleForm.get('note').value != 'null'
-                    ? ttTitleForm.get('note').value
-                    : false
-            "
-            [note]="
-                ttTitleForm.get('note').value &&
-                ttTitleForm.get('note').value != 'null'
-                    ? ttTitleForm.get('note').value
-                    : ''
-            "
-            formControlName="note"
-        ></app-ta-input-note>
-    </form>
-</app-ta-modal>
+            <div class="divider divider--dark divider--small"></div>
+
+            <app-ca-input-note
+                [isVisibleNote]="
+                    ttTitleForm.get('note').value &&
+                    ttTitleForm.get('note').value != 'null'
+                        ? ttTitleForm.get('note').value
+                        : false
+                "
+                [note]="
+                    ttTitleForm.get('note').value &&
+                    ttTitleForm.get('note').value != 'null'
+                        ? ttTitleForm.get('note').value
+                        : ''
+                "
+                formControlName="note"
+            ></app-ca-input-note>
+        </form>
+    </div>
+</app-ca-modal>
+
+<ng-template #rightModalContent>
+    @if (editData?.type === 'edit-title') {
+        <div
+            ngbTooltip
+            mainTooltip="Added    {{
+                editData?.payload?.createdAt | formatDateP
+            }} <br> Edited    {{ editData?.payload?.updatedAt | formatDateP }}"
+            tooltipBackground="#424242"
+            position="bottom"
+            class="modal-date-logo"
+        >
+            <svg-icon
+                [src]="svgRoutes.DATE_ICON"
+                class="modal-buttons"
+            ></svg-icon>
+        </div>
+        <div class="modal-date-border"></div>
+    }
+    <div
+        class="d-flex justify-content-center align-items-center modal-close-container"
+        ngbTooltip
+        mainTooltip="Cancel"
+        tooltipBackground="#424242"
+        position="bottom"
+        (click)="onModalAction(actionTypesEnum.CLOSE)"
+    >
+        <svg-icon
+            class="modal-close svg-size-14 svg-fill-muted modal-buttons"
+            [src]="svgRoutes.CLOSE_ICON"
+        ></svg-icon>
+    </div>
+</ng-template>
+
+<ng-template #leftModalContent>
+    <div class="payroll-number text-color-white text-size-14 ta-font-bold">
+        {{
+            editData?.modal === 'trailer'
+                ? 'Trailer ' + editData?.payload?.trailerNumber
+                : 'Truck ' + editData?.payload?.truckNumber
+        }}
+    </div>
+</ng-template>
+
+<ng-template #footerTemplate>
+    <div
+        class="modal-footer modal-footer-payroll"
+        [class.justify-content-between]="isEditMode"
+    >
+        <div class="divider divider--dark divider--small"></div>
+        @if (editData?.type === 'edit-title') {
+            <div class="d-flex justify-content-between w-full">
+                <div>
+                    <button
+                        class="modal-delete-btn ta-font-bold mr-12"
+                        (click)="onModalAction(actionTypesEnum.DELETE)"
+                        [class.valid]="ttTitleForm.valid && isFormDirty"
+                    >
+                        Delete
+                    </button>
+                </div>
+                <button
+                    class="modal-save-btn ta-font-bold"
+                    (click)="onModalAction(actionTypesEnum.SAVE)"
+                    [class.valid]="ttTitleForm.valid && isFormDirty"
+                >
+                    Save Changes
+                </button>
+            </div>
+        } @else {
+            <button
+                class="modal-save-btn ta-font-bold"
+                (click)="onModalAction(actionTypesEnum.SAVE)"
+                [class.valid]="ttTitleForm.valid && isFormDirty"
+            >
+                Save
+            </button>
+        }
+    </div>
+</ng-template>

@@ -1,0 +1,11 @@
+@import 'src/theme/variables.scss';
+@import 'src/assets/scss/mixins.scss';
+
+.stops-container {
+    @include grid-template-columns(86px 58px 50px);
+}
+
+.miles-unit-total-list {
+    max-height: calc(100vh - 71px);
+    min-width: 250px;
+}

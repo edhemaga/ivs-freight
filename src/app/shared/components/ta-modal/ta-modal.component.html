@@ -1,7 +1,7 @@
 <app-ta-custom-scrollbar
     [scrollBarOptions]="{
         showVerticalScrollBar: true,
-        showHorizontalScrollBar: false
+        showHorizontalScrollBar: false,
     }"
 >
     <div cdkDrag class="modal-container {{ customClass }}" ngBAutofocus>
@@ -22,7 +22,7 @@
                             class="modal-header-tab-change"
                             [ngClass]="{
                                 'modal-header-tab-change-reorder':
-                                    tabChangePosition === 'right'
+                                    tabChangePosition === 'right',
                             }"
                         >
                             <app-ta-tab-switch
@@ -83,7 +83,7 @@
                                     [searchType]="'tabel'"
                                     [toolbarSearch]="true"
                                     [selectedTabData]="{
-                                        gridNameTitle: modalTitle
+                                        gridNameTitle: modalTitle,
                                     }"
                                 ></app-ca-search-multiple-states>
                             </span>
@@ -132,7 +132,7 @@
                                 [src]="modalSvgRoutes.calendarRoute"
                                 [svgStyle]="{
                                     'width.px': '14',
-                                    'height.px': '16'
+                                    'height.px': '16',
                                 }"
                             ></svg-icon>
                         </div>
@@ -173,87 +173,60 @@
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="hasFutureTimeFilter">
+                    @if (hasFutureTimeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'timeFilter'"
-                                [icon]="'ic_time'"
-                                [filterTitle]="'Time Filter'"
-                                [timeSubType]="'future'"
+                            <app-ca-filter-list-dropdown
+                                type="TimeFilter"
+                                subType="future"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-list-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
-                    <ng-container *ngIf="hasTimeFilter">
+                    @if (hasTimeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'timeFilter'"
-                                [icon]="'ic_time'"
-                                [filterTitle]="'Time Filter'"
-                                [timeSubType]="'past'"
-                                (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
+                            <app-ca-filter-time-dropdown
+                                type="TimeFilter"
+                                subType="past"
+                                (setFilter)="setFilters($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-time-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
                     <ng-container *ngIf="hasDispatcherFilter">
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'dispatcherFilter'"
-                                [icon]="'user'"
-                                [searchState]="true"
-                                [filterTitle]="'Dispatcher Filter'"
-                                [defFilterHolder]="true"
+                            <app-ca-filter-list-dropdown
+                                type="Dispatcher"
+                                [list]="unselectedDispatcher"
                                 (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
-                                [unselectedUser]="unselectedDispatcher"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-list-dropdown>
                         </div>
                     </ng-container>
 
-                    <ng-container *ngIf="hasTruckTypeFilter">
+                    @if (hasTruckTypeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'truckTypeFilter'"
-                                [icon]="'truck'"
-                                [filterTitle]="'Truck Type Filter'"
-                                [defFilterHolder]="true"
-                                [noLeftIcon]="true"
-                                [isAssignLoadModal]="isAssignLoadModal"
-                                [isDispatchFilter]="!isAssignLoadModal"
-                                [isRepairFilter]="false"
-                                (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
-                                [truckTypeArray]="truckTypeArray"
+                            <app-ca-filter-list-dropdown
+                                type="TruckType"
+                                [list]="truckTypeArray"
+                                (setFilter)="onFilter($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-list-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
-                    <ng-container *ngIf="hasTrailerTypeFilter">
+                    @if (hasTrailerTypeFilter) {
                         <div class="me-1">
-                            <app-ca-filter
-                                [type]="'trailerTypeFilter'"
-                                [icon]="'trailer'"
-                                [filterTitle]="'Trailer Type Filter'"
-                                [defFilterHolder]="true"
-                                [noLeftIcon]="true"
-                                [isAssignLoadModal]="isAssignLoadModal"
-                                [isDispatchFilter]="!isAssignLoadModal"
-                                [isRepairFilter]="false"
-                                (setFilter)="setFilterValue($event)"
-                                (clearAll)="setFilterValue($event)"
-                                [trailerTypeArray]="trailerTypeArray"
+                            <app-ca-filter-list-dropdown
+                                type="TrailerType"
+                                [list]="trailerTypeArray"
+                                (setFilter)="onFilter($event)"
                             >
-                            </app-ca-filter>
+                            </app-ca-filter-list-dropdown>
                         </div>
-                    </ng-container>
+                    }
 
                     <ng-container *ngIf="hasLocationFilter">
                         <div class="me-1">
@@ -280,7 +253,7 @@
                             position="bottom"
                             class="d-flex align-items-center justify-content-center modal-header-load-map-button"
                             [ngClass]="{
-                                active: isAdditionalAssignLoadModalVisible
+                                active: isAdditionalAssignLoadModalVisible,
                             }"
                             (click)="toggleAdditionalPart('side-panel')"
                         >
@@ -302,8 +275,8 @@
                                     stepperCounter === 1
                                         ? '2'
                                         : stepperCounter === 2
-                                        ? '3'
-                                        : '1'
+                                          ? '3'
+                                          : '1'
                                 }}
                                 OF 3
                             </p>
@@ -316,8 +289,8 @@
                                             stepperCounter === 1
                                                 ? '66.66%'
                                                 : stepperCounter === 2
-                                                ? '100%'
-                                                : '33%'
+                                                  ? '100%'
+                                                  : '33%',
                                     }"
                                 ></div>
                             </div>
@@ -340,7 +313,7 @@
                                 [src]="modalSvgRoutes.closeRoute"
                                 [svgStyle]="{
                                     'width.px': '13',
-                                    'height.px': '13'
+                                    'height.px': '13',
                                 }"
                             ></svg-icon>
                         </div>
@@ -400,7 +373,7 @@
                             loadModalTemplate ||
                             mapSettingsModal ||
                             mapRouteModal
-                        )
+                        ),
                     }"
                 >
                     <!-- Footer Left Side -->
@@ -647,15 +620,15 @@
                                         isClickEnabledWhileFormInvalid ||
                                         isModalValid
                                             ? 'all'
-                                            : 'none'
+                                            : 'none',
                                 }"
                             >
                                 {{
                                     saveAddNewSpinnerVisibility
                                         ? 'Saving'
                                         : customTextSaveAndAddNew
-                                        ? customTextSaveAndAddNew
-                                        : 'Save and Add New'
+                                          ? customTextSaveAndAddNew
+                                          : 'Save and Add New'
                                 }}
                                 <ng-container
                                     *ngIf="saveAddNewSpinnerVisibility"
@@ -711,8 +684,8 @@
                                     setMapRouteSpinnerVisibility
                                         ? 'Saving'
                                         : editData.id
-                                        ? 'Save Changes'
-                                        : 'Save'
+                                          ? 'Save Changes'
+                                          : 'Save'
                                 }}
 
                                 <ng-container
@@ -794,7 +767,7 @@
                                         isClickEnabledWhileFormInvalid ||
                                         isModalValid
                                             ? 'all'
-                                            : 'none'
+                                            : 'none',
                                 }"
                             >
                                 {{
@@ -803,17 +776,21 @@
                                             ? 'Saving'
                                             : 'Save Changes'
                                         : applicantText
-                                        ? saveSpinnerVisibility
-                                            ? 'Inviting'
-                                            : 'Invite'
-                                        : saveSpinnerVisibility
-                                        ? 'Saving'
-                                        : editData?.type?.includes('edit') ||
-                                          editData?.type?.includes('payroll')
-                                        ? isFinishOrder
-                                            ? 'Finish'
-                                            : 'Save Changes'
-                                        : 'Save'
+                                          ? saveSpinnerVisibility
+                                              ? 'Inviting'
+                                              : 'Invite'
+                                          : saveSpinnerVisibility
+                                            ? 'Saving'
+                                            : editData?.type?.includes(
+                                                    'edit'
+                                                ) ||
+                                                editData?.type?.includes(
+                                                    'payroll'
+                                                )
+                                              ? isFinishOrder
+                                                  ? 'Finish'
+                                                  : 'Save Changes'
+                                              : 'Save'
                                 }}
 
                                 <ng-container *ngIf="saveSpinnerVisibility">
@@ -904,14 +881,18 @@
                             class="ta-font-bold modal-cancel-btn"
                             [ngClass]="{
                                 'active-cancel-btn': [
+                                    'fuel-stop',
                                     'fuel stop',
+                                    'fuel-transaction',
+                                    'fuel transaction',
                                     'contact',
                                     'reset modal',
                                     'user',
+                                    'account',
                                     'truck',
                                     'owner',
                                     'repair',
-                                    'repair_shop',
+                                    'repair-shop',
                                     'info',
                                     'repair-detail',
                                     'repair-review',
@@ -942,8 +923,8 @@
                                     'deduction',
                                     'credit',
                                     'fuel',
-                                    'bonus'
-                                ].includes(confirmationData?.template)
+                                    'bonus',
+                                ].includes(confirmationData?.template),
                             }"
                             type="button"
                         >
@@ -964,7 +945,7 @@
                                 'active-cancel-btn':
                                     ['cdl'].includes(
                                         confirmationData?.template
-                                    ) || confirmationData.type === 'status'
+                                    ) || confirmationData.type === 'status',
                             }"
                             type="button"
                         >
@@ -990,7 +971,7 @@
                                 'delete',
                                 'multiple delete',
                                 'reset',
-                                'void'
+                                'void',
                             ].includes(confirmationData?.type)
                         "
                     >
@@ -1012,9 +993,9 @@
                                     'load',
                                     'comment',
                                     'delete-review',
-                                    'user'
+                                    'user',
                                 ].includes(confirmationData.template),
-                                'not-clickable': disableDelete
+                                'not-clickable': disableDelete,
                             }"
                         >
                             Yes
@@ -1152,7 +1133,7 @@
                                 'modal-blue-btn':
                                     confirmationData?.type === 'open',
                                 'modal-gray-btn':
-                                    confirmationData?.type !== 'open'
+                                    confirmationData?.type !== 'open',
                             }"
                             type="button"
                         >

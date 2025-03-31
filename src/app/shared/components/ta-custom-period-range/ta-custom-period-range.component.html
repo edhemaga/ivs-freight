@@ -17,21 +17,21 @@
         <div
             class="d-flex align-items-center custom-period-range-form-date-inputs"
             [ngStyle]="{
-                'margin-bottom': !isOnlyDateInputsLayout ? '42px' : '24px'
+                'margin-bottom': !isOnlyDateInputsLayout ? '42px' : '24px',
             }"
         >
             <div class="custom-period-range-form-date-inputs-input">
-                <app-ta-input
+                <ca-input-datetime-picker
                     formControlName="fromDate"
                     [inputConfig]="fromDateConfig"
-                ></app-ta-input>
+                ></ca-input-datetime-picker>
             </div>
 
             <div class="custom-period-range-form-date-inputs-input">
-                <app-ta-input
+                <ca-input-datetime-picker
                     formControlName="toDate"
                     [inputConfig]="toDateConfig"
-                ></app-ta-input>
+                ></ca-input-datetime-picker>
             </div>
         </div>
 
@@ -64,7 +64,7 @@
             type="button"
             [disabled]="customPeriodRangeForm.invalid || !isFormDirty"
             [ngClass]="{
-                disabled: customPeriodRangeForm.invalid || !isFormDirty
+                disabled: customPeriodRangeForm.invalid || !isFormDirty,
             }"
             (click)="handleCancelOrSetClick(false)"
         >

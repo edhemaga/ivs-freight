@@ -1,20 +1,27 @@
+// Models
 import {
     DriverShortResponse,
     MilesStopShortResponse,
     PayrollCountsResponse,
     PayrollDriverMileageByIdResponse,
+    PayrollDriverMileageClosedByIdResponse,
     PayrollDriverMileageListResponse,
     PayrollOwnerResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
-import { IDriverCommissionList } from './driver_commission.model';
-import { IDriverOwnerList } from './driver_owner.model';
-import { IDriverFlatRateList } from './driver_flat_rate.model';
-import { PayrollTablesStatus } from '../enums';
+import { IDriverCommissionList } from './driver-commission.model';
+import { IDriverOwnerList } from './driver-owner.model';
+import { IDriverFlatRateList } from './driver-flat-rate.model';
+import { LoadWithMilesStopResponse } from 'appcoretruckassist';
+
+// Enums
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export interface PayrollState {
     payrollCounts: PayrollCountsResponse;
     payrollDriverMileage: PayrollDriverMileageListResponse[];
-    payrollOpenedReport?: PayrollDriverMileageByIdResponse;
+    payrollOpenedReport?: IPayrollDriverMileageByIdResponseNumberId;
     payrollCommissionDriverList: IDriverCommissionList;
     ownerPayrollList: IDriverOwnerList;
     ownerPayrollResponse?: PayrollOwnerResponse;
@@ -40,7 +47,10 @@ export interface PayrollState {
     driverFlatRateExpandedList?: PayrollDriverMileageExpandedListResponse[];
     driverOwnerExpandedList?: PayrollDriverMileageExpandedListResponse[];
     driverFlatRateList?: IDriverFlatRateList;
-    payrollOpenedTab: PayrollTablesStatus;
+    payrollOpenedTab: ePayrollTablesStatus;
+
+    payrollMapRoutes: RoutingResponse;
+    openedPayrollLeftId: string;
 }
 
 export interface IPayrollCountsSelector {
@@ -117,7 +127,7 @@ export interface IPayrollProccessPaymentModal {
     id: number;
     totalEarnings: number;
     payrollNumber: string;
-    selectedTab: PayrollTablesStatus;
+    selectedTab: ePayrollTablesStatus;
     payrollType?: PayrollTypes;
 }
 export interface IAddPayrollClosedPayment {
@@ -153,11 +163,11 @@ export enum PayrollTypes {
     MILES = 'miles',
     COMMISSION = 'commission',
     FLAT_RATE = 'flat rate',
-    OWNER = 'owner'
+    OWNER = 'owner',
 }
 export interface IGetPayrollByIdAndOptions {
     reportId: string;
-    payrollOpenedTab: PayrollTablesStatus;
+    payrollOpenedTab: ePayrollTablesStatus;
     lastLoadDate?: string;
     selectedLoadIds?: number[];
     selectedCreditIds?: number[];
@@ -165,3 +175,26 @@ export interface IGetPayrollByIdAndOptions {
     selectedDeductionIds?: number[];
     selectedFuelIds?: number[];
 }
+
+export interface ILoadWithMilesStopResponseNumberId
+    extends Omit<LoadWithMilesStopResponse, 'id'> {
+    id?: number | null;
+}
+export interface IPayrollDriverMileageByIdResponseNumberId
+    extends Omit<
+        PayrollDriverMileageByIdResponse,
+        'includedLoads' | 'excludedLoads'
+    > {
+    includedLoads?: Array<ILoadWithMilesStopResponseNumberId> | null;
+    excludedLoads?: Array<ILoadWithMilesStopResponseNumberId> | null;
+}
+export interface IPayrollDriverMileageClosedByIdResponse
+    extends Omit<
+        PayrollDriverMileageClosedByIdResponse,
+        'includedLoads' | 'excludedLoads'
+    > {
+    includedLoads?: Array<ILoadWithMilesStopResponseNumberId> | null;
+    excludedLoads?: Array<ILoadWithMilesStopResponseNumberId> | null;
+}
+
+export interface IDropdownMenuLoadItem extends Pick<IDropdownMenuItem, "id" | "title"> {};

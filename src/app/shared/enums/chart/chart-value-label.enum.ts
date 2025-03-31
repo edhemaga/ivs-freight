@@ -1,4 +1,4 @@
-export enum ChartValueLabelEnum {
+export enum eChartValueLabel {
     MILES = 'miles',
     EARNINGS = 'earnings',
     AVERAGE_RATE = 'averageRate',
@@ -11,7 +11,15 @@ export enum ChartValueLabelEnum {
     FUEL_COST = 'fuelCost',
     COST = 'cost',
     GALLON = 'gallon',
+    REPAIR = 'repair',
     REPAIR_COST = 'repairCost',
-    AVERAGE_PAY_PERIOD_DAYS = 'averagePayPeriod.days',
-    PAY_TERM = 'payTerm'
+    AVERAGE_PAY_PERIOD_DAYS = 'averagePayPeriod',
+    PAY_TERM = 'payTerm',
+    AVERAGE_PICKUP_TIME = 'avgPickupTime',
+    AVERAGE_DELIVERY_TIME = 'avgDeliveryTime',
+    MILEAGE_PERCENTAGE = 'mileagePercentage',
+    REVENUE_PERCENTAGE = 'revenuePercentage',
+    LOAD_PERCENTAGE = 'loadPercentage',
+    COST_PERCENTAGE = 'costPercentage',
+    VISIT_PERCENTAGE = 'visitPercentage',
 }

@@ -8,10 +8,11 @@ import { RepairTrailerStore } from '@pages/repair/state/repair-trailer-state/rep
 import { RepairShopStore } from '@pages/repair/state/repair-shop-state/repair-shop.store';
 import { RepairDetailsStore } from '@pages/repair/state/repair-details-state/repair-details.store';
 import { RepairItemStore } from '@pages/repair/state/repair-details-item-state/repair-details-item.store';
-import { RepairMinimalListStore } from '@pages/repair/state/driver-details-minimal-list-state/repair-minimal-list.store';
+import { RepairMinimalListStore } from '@pages/repair/state/repair-details-minimal-list-state/repair-minimal-list.store';
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
+import { eGeneralActions } from '@shared/enums';
 
 // services
 import { RepairService as RepairMainService } from 'appcoretruckassist/api/repair.service';
@@ -29,7 +30,6 @@ import {
     RepairListResponse,
     ClusterResponse,
     RepairShopNewListResponse,
-    RepairDriverResponse,
     RepairModalResponse,
     RepairShopMinimalListResponse,
     RepairShopResponse,
@@ -42,9 +42,14 @@ import {
     RepairShopListResponse,
     CreateWithUploadsResponse,
     RepairShopSortBy,
+    RepairSortBy,
+    RepairOrderBillDriverListResponse,
 } from 'appcoretruckassist';
 import { AddUpdateRepairProperties } from '@pages/repair/pages/repair-modals/repair-order-modal/models';
 import { CreateShopModel } from '@pages/repair/pages/repair-modals/repair-shop-modal/models';
+
+// Helpers
+import { getOrderAndSort } from '@shared/utils/helpers';
 
 @Injectable({
     providedIn: 'root',
@@ -90,6 +95,8 @@ export class RepairService {
         search1?: string,
         search2?: string
     ): Observable<RepairListResponse> {
+        const sorting = getOrderAndSort(sort);
+
         return this.repairService.apiRepairListGet(
             repairShopId,
             unitType,
@@ -107,9 +114,9 @@ export class RepairService {
             pageIndex,
             pageSize,
             companyId,
-            sort,
             null,
-            null,
+            sorting.order,
+            sorting.sortBy as RepairSortBy,
             search,
             search1,
             search2
@@ -120,7 +127,7 @@ export class RepairService {
         truckId: number,
         trailerId: number,
         repairDate: string
-    ): Observable<RepairDriverResponse[]> {
+    ): Observable<RepairOrderBillDriverListResponse> {
         return this.repairService.apiRepairDriversGet(
             truckId,
             trailerId,
@@ -164,6 +171,17 @@ export class RepairService {
                             repairCount.repairTrailers++;
                         }
 
+                        const updateStore = (store: RepairStoresType) =>
+                            store.update(repair?.repairShop?.id, (entity) => ({
+                                ...entity,
+                                repairList: [...entity.repairList, repair],
+                            }));
+
+                        [
+                            this.repairDetailsStore,
+                            this.repairItemStore,
+                        ]?.forEach((store) => updateStore(store));
+
                         localStorage.setItem(
                             TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
                             JSON.stringify({
@@ -174,7 +192,7 @@ export class RepairService {
                         );
 
                         this.tableService.sendActionAnimation({
-                            animation: 'add',
+                            animation: eGeneralActions.ADD,
                             tab: repair?.truckId
                                 ? TableStringEnum.ACTIVE
                                 : TableStringEnum.INACTIVE,
@@ -222,38 +240,16 @@ export class RepairService {
 
     public deleteRepairList(
         repairIds: number[],
+        repairShopIds: number[],
         tabSelected?: string
     ): Observable<any> {
         return this.repairService.apiRepairListDelete(repairIds).pipe(
             tap(() => {
-                const repairCount = JSON.parse(
-                    localStorage.getItem(
-                        TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT
-                    )
-                );
-
-                repairIds.forEach((repairId) => {
-                    if (tabSelected === TableStringEnum.ACTIVE) {
-                        this.repairTruckStore.remove(
-                            ({ id }) => id === repairId
-                        );
-
-                        repairCount.repairTrucks--;
-                    } else if (tabSelected === TableStringEnum.INACTIVE) {
-                        this.repairTrailerStore.remove(
-                            ({ id }) => id === repairId
-                        );
-
-                        repairCount.repairTrailers--;
-                    }
-
-                    localStorage.setItem(
-                        TableStringEnum.REPAIR_TRUCK_TRAILER_TABLE_COUNT,
-                        JSON.stringify({
-                            repairTrucks: repairCount.repairTrucks,
-                            repairTrailers: repairCount.repairTrailers,
-                            repairShops: repairCount.repairShops,
-                        })
+                repairIds.forEach((repairId, index) => {
+                    this.handleRepairDeleteStores(
+                        repairId,
+                        repairShopIds[index],
+                        tabSelected
                     );
                 });
             })
@@ -287,6 +283,8 @@ export class RepairService {
         search1: string = null,
         search2: string = null
     ): Observable<RepairShopNewListResponse> {
+        const sorting = getOrderAndSort(sort);
+
         return this.repairShopService.apiRepairshopListGet(
             active,
             pinned,
@@ -306,9 +304,9 @@ export class RepairService {
             pageIndex,
             pageSize,
             companyId,
-            sort,
-            sortOrder,
-            sortBy,
+            null,
+            sorting.order,
+            sorting.sortBy as RepairShopSortBy,
             search,
             search1,
             search2
@@ -463,14 +461,22 @@ export class RepairService {
         pageIndex?: number,
         pageSize?: number,
         companyId?: number,
-        sort?: string
+        sort?: string,
+        search?: string,
+        search1?: string,
+        search2?: string
     ): Observable<RepairedVehicleListResponse> {
         return this.repairShopService.apiRepairshopRepairedvehicleGet(
             repairShopId,
             pageIndex,
             pageSize,
             companyId,
-            sort
+            sort,
+            null,
+            null,
+            search,
+            search1,
+            search2
         );
     }
 
@@ -607,6 +613,20 @@ export class RepairService {
         repairShopData.ratingReviews = filteredRatingReviews;
 
         this.handleRepairShopUpdateStores(repairShopData);
+    }
+
+    public deleteRepairShopContact(
+        repairShopContactId: number,
+        repairShopId: number
+    ): Observable<any> {
+        return this.repairShopService
+            .apiRepairshopContactIdDelete(repairShopContactId)
+            .pipe(
+                switchMap(() => this.getRepairShopById(repairShopId)),
+                tap((repairShop) =>
+                    this.handleRepairShopUpdateStores(repairShop)
+                )
+            );
     }
 
     /* Store Actions */

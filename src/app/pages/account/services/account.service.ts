@@ -24,6 +24,9 @@ import {
     CompanyAccountService,
 } from 'appcoretruckassist';
 
+// enums
+import { eGeneralActions } from '@shared/enums';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -61,7 +64,7 @@ export class AccountService {
                             );
 
                             this.tableService.sendActionAnimation({
-                                animation: 'add',
+                                animation: eGeneralActions.ADD,
                                 data: account,
                                 id: account.id,
                             });
@@ -76,7 +79,7 @@ export class AccountService {
 
     // Update Account
     public updateCompanyAccount(
-        data: UpdateCompanyAccountCommand,
+        data: UpdateCompanyAccountCommand
     ): Observable<any> {
         return this.accountService.apiCompanyaccountPut(data).pipe(
             tap(() => {
@@ -92,7 +95,7 @@ export class AccountService {
                         this.accountStore.add(account);
 
                         this.tableService.sendActionAnimation({
-                            animation: 'update',
+                            animation: eGeneralActions.UPDATE,
                             data: account,
                             id: account.id,
                         });
@@ -138,32 +141,30 @@ export class AccountService {
 
     // Delete Account List
     public deleteAccountList(ids: number[]): Observable<any> {
-        return this.accountService
-            .apiCompanyaccountListDelete(ids)
-            .pipe(
-                tap(() => {
-                    let storeAccounts = this.accountQuery.getAll();
-                    let countDeleted = 0;
+        return this.accountService.apiCompanyaccountListDelete(ids).pipe(
+            tap(() => {
+                let storeAccounts = this.accountQuery.getAll();
+                let countDeleted = 0;
 
-                    storeAccounts.map((account: any) => {
-                        ids.map((id) => {
-                            if (id === account.id) {
-                                this.accountStore.remove(
-                                    ({ id }) => id === account.id
-                                );
-                                countDeleted++;
-                            }
-                        });
+                storeAccounts.map((account: any) => {
+                    ids.map((id) => {
+                        if (id === account.id) {
+                            this.accountStore.remove(
+                                ({ id }) => id === account.id
+                            );
+                            countDeleted++;
+                        }
                     });
+                });
 
-                    localStorage.setItem(
-                        'accountTableCount',
-                        JSON.stringify({
-                            account: storeAccounts.length - countDeleted,
-                        })
-                    );
-                })
-            );
+                localStorage.setItem(
+                    'accountTableCount',
+                    JSON.stringify({
+                        account: storeAccounts.length - countDeleted,
+                    })
+                );
+            })
+        );
     }
 
     // Delete Account By Id
@@ -186,7 +187,7 @@ export class AccountService {
                 );
 
                 this.tableService.sendActionAnimation({
-                    animation: 'delete',
+                    animation: eGeneralActions.DELETE,
                     id: accountId,
                 });
             })

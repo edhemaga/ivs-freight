@@ -22,10 +22,10 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 // pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
-import { LoadStatusColorPipe } from '@shared/pipes/load-status-color.pipe';
 
 // enums
 import { LoadStatusEnum } from '@shared/enums/load-status.enum';
+import { eGeneralActions, eStringPlaceholder } from '@shared/enums';
 
 // models
 import {
@@ -54,7 +54,6 @@ import { StatusOrder } from '@pages/load/models/status-order.model';
 
         // pipes
         FormatDatePipe,
-        LoadStatusColorPipe,
     ],
 })
 export class LoadDetailsTitleCardComponent implements OnChanges {
@@ -67,12 +66,17 @@ export class LoadDetailsTitleCardComponent implements OnChanges {
         type: string;
     }>();
 
-    public loadDetailsCardSvgRoutes = LoadDetailsCardSvgRoutes;
-    public loadStatusEnum = LoadStatusEnum;
-
     public statusId: number;
 
     public statusOrder: StatusOrder;
+
+    // svg routes
+    public loadDetailsCardSvgRoutes = LoadDetailsCardSvgRoutes;
+
+    // enums
+    public loadStatusEnum = LoadStatusEnum;
+    public eGeneralActions = eGeneralActions;
+    public eStringPlaceholder = eStringPlaceholder;
 
     constructor() {}
 

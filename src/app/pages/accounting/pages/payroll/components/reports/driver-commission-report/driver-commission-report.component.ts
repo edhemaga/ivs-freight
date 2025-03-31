@@ -1,3 +1,4 @@
+import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 import {
     AfterViewInit,
     ChangeDetectionStrategy,
@@ -9,45 +10,48 @@ import {
     ViewChild,
 } from '@angular/core';
 import { Observable, Subject, takeUntil } from 'rxjs';
-import { CdkDrag, CdkDragDrop } from '@angular/cdk/drag-drop';
 
 // Components
-import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 import { PayrollProccessPaymentModalComponent } from '@pages/accounting/pages/payroll/payroll-modals/payroll-proccess-payment-modal/payroll-proccess-payment-modal.component';
+import { ColumnConfig, ICaMapProps, PayrollTypeEnum } from 'ca-components';
 
 // Services
+import { PayrollService } from '@pages/accounting/pages/payroll/services';
+import {
+    PayrollDriverCommissionFacadeService,
+    PayrollFacadeService,
+} from '@pages/accounting/pages/payroll/state/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 import { ModalService } from '@shared/services/modal.service';
-import { PayrollDriverCommissionFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollFacadeService } from '@pages/accounting/pages/payroll/state/services';
-import { PayrollService } from '@pages/accounting/pages/payroll/services/payroll.service';
+import { DriverService } from '@pages/driver/services/driver.service';
 
 // Models
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import {
-    LoadWithMilesStopResponse,
-    PayrollCreditType,
-    PayrollDriverCommissionByIdResponse,
-    PayrollDriverMileageByIdResponse,
-} from 'appcoretruckassist';
-import {
-    MilesStopShortReponseWithRowType,
-    IPayrollProccessPaymentModal,
+    IDropdownMenuLoadItem,
     IGetPayrollByIdAndOptions,
+    ILoadWithMilesStopResponseNumberId,
+    IPayrollProccessPaymentModal,
+    MilesStopShortReponseWithRowType,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollTypes,
 } from '@pages/accounting/pages/payroll/state/models';
-import { OptionsPopupContent } from 'ca-components/lib/components/ca-burger-menu/models/burger-menu.model';
+import {
+    PayrollCreditType,
+    PayrollDriverCommissionByIdResponse,
+} from 'appcoretruckassist';
 
 import { CommissionLoadShortReponseWithRowType } from '@pages/accounting/pages/payroll/state/models';
 
 // Classes
 import { PayrollReportBaseComponent } from '@pages/accounting/pages/payroll/components/reports/payroll-report.base';
 
-// Enums
-import { PayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
+import { ePayrollTablesStatus } from '@pages/accounting/pages/payroll/state/enums';
 import { DriverMVrModalStringEnum } from '@pages/driver/pages/driver-modals/driver-mvr-modal/enums/driver-mvrl-modal-string.enum';
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
-// Constants
-import { TableToolbarConstants } from '../constants/report.constants';
+// helpers
+import { PayrollReportHelper } from '@pages/accounting/pages/payroll/components/reports/payroll-report/utils/helpers';
 
 @Component({
     selector: 'app-driver-commission-report',
@@ -66,8 +70,9 @@ export class DriverCommissionReportComponent
     public creditType = PayrollCreditType.Driver;
     public payrollType = PayrollTypeEnum.COMMISSION;
 
-    public optionsPopupContent: OptionsPopupContent[] =
-        TableToolbarConstants.closedReportPayroll;
+    public loadDropdownList: IDropdownMenuLoadItem[];
+
+    public dropdownMenuOptions: IDropdownMenuItem[] = [];
 
     @Input() set reportId(report_id: string) {
         this._reportId = report_id;
@@ -78,13 +83,16 @@ export class DriverCommissionReportComponent
         return super.reportId; // Call the base class getter
     }
 
-    public _selectedTab: PayrollTablesStatus;
-    @Input() set selectedTab(tab: PayrollTablesStatus) {
-        this.optionsPopupContent =
-            tab === PayrollTablesStatus.OPEN
-                ? TableToolbarConstants.openReportPayroll
-                : TableToolbarConstants.closedReportPayroll;
+    public _selectedTab: ePayrollTablesStatus;
+    @Input() set selectedTab(tab: ePayrollTablesStatus) {
         this._selectedTab = tab;
+
+        this.dropdownMenuOptions =
+            PayrollReportHelper.getPayrollDropdownContent(
+                false,
+                this._selectedTab,
+                this.isEditLoadDropdownActionActive
+            );
     }
 
     public get selectedTab() {
@@ -105,7 +113,7 @@ export class DriverCommissionReportComponent
         CommissionLoadShortReponseWithRowType[]
     >;
 
-    public includedLoads$: Observable<LoadWithMilesStopResponse[]>;
+    public includedLoads$: Observable<ILoadWithMilesStopResponseNumberId[]>;
 
     // Templates
     @ViewChild('customCountTemplate', { static: false })
@@ -131,9 +139,11 @@ export class DriverCommissionReportComponent
         private payrollCommissionFacadeService: PayrollDriverCommissionFacadeService,
         private payrollFacadeService: PayrollFacadeService,
         modalService: ModalService,
-        payrollService: PayrollService
+        payrollService: PayrollService,
+        public loadStoreService: LoadStoreService,
+        public driverService: DriverService
     ) {
-        super(modalService, payrollService);
+        super(modalService, payrollService, loadStoreService, driverService);
     }
 
     ngOnInit(): void {
@@ -222,8 +232,21 @@ export class DriverCommissionReportComponent
                 this.openedPayroll = payroll;
             });
 
+        this.payrollFacadeService.selectPayrollDropdownLoadList$.subscribe(
+            (loadList) => {
+                this.loadDropdownList = loadList;
+                //console.log('WHAT IS LOAD LIST HERE', loadList); // CONSOLE LOG FOR TESTING
+            }
+        );
+
         this.payrollCommissionDriverLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$;
+
+        this.payrollCommissionFacadeService.selectPayrollReportDriverCommissionLoads$.subscribe(
+            (res) => {
+                //console.log("SUBSS", res); // CONSOLE LOG FOR DEVELOPMENT
+            }
+        );
 
         this.includedLoads$ =
             this.payrollCommissionFacadeService.selectPayrollReportIncludedLoads$;
@@ -232,7 +255,7 @@ export class DriverCommissionReportComponent
     }
 
     public onProccessPayroll(
-        payrollData: PayrollDriverMileageByIdResponse
+        payrollData: IPayrollDriverMileageByIdResponseNumberId
     ): void {
         this.modalService.openModal(
             PayrollProccessPaymentModalComponent,
@@ -292,6 +315,16 @@ export class DriverCommissionReportComponent
                       payrollOpenedTab: this.selectedTab,
                   }
         );
+    }
+
+    public getIsEditLoadDropdownActionActive(): void {
+        this.dropdownMenuOptions =
+            PayrollReportHelper.getPayrollDropdownContent(
+                false,
+                this._selectedTab,
+                this.isEditLoadDropdownActionActive,
+                this.loadDropdownList
+            );
     }
 
     ngOnDestroy(): void {

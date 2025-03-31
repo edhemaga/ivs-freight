@@ -2,7 +2,6 @@ import {
     Component,
     OnInit,
     OnDestroy,
-    ViewChild,
     AfterViewInit,
     ChangeDetectorRef,
 } from '@angular/core';
@@ -17,31 +16,36 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 
-// modals
-import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
+// base classes
+import { CustomerDropdownMenuActionsBase } from '@pages/customer/base-classes';
+
+// settings
+import {
+    getBrokerColumnDefinition,
+    getShipperColumnDefinition,
+} from '@shared/utils/settings/table-settings/customer-columns';
 
 // services
 import { ModalService } from '@shared/services/modal.service';
 import { BrokerService, ShipperService } from '@pages/customer/services';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
-import { ReviewsRatingService } from '@shared/services/reviews-rating.service';
 import { MapsService } from '@shared/services/maps.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
-import { TableCardDropdownActionsService } from '@shared/components/ta-table-card-dropdown-actions/services/table-card-dropdown-actions.service';
 import { ConfirmationMoveService } from '@shared/components/ta-shared-modals/confirmation-move-modal/services/confirmation-move.service';
 import { ConfirmationActivationService } from '@shared/components/ta-shared-modals/confirmation-activation-modal/services/confirmation-activation.service';
 import { CustomerCardsModalService } from '@pages/customer/pages/customer-table/components/customer-card-modal/services';
 import {
     CaSearchMultipleStatesService,
-    CaMapComponent,
     ICaMapProps,
     IMapBoundsZoom,
     IMapMarkers,
     IMapSelectedMarkerData,
     SortColumn,
-    MapMarkerIconHelper,
+    MapMarkerIconService,
 } from 'ca-components';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // store
 import { BrokerState } from '@pages/customer/state/broker-state/broker.store';
@@ -52,27 +56,17 @@ import { Store, select } from '@ngrx/store';
 import {
     selectActiveTabCards,
     selectInactiveTabCards,
-} from '@pages/customer/pages/customer-table/components/customer-card-modal/state/';
+} from '@pages/customer/pages/customer-table/components/customer-card-modal/state';
 
-// models
-import {
-    BrokerResponse,
-    GetBrokerListResponse,
-    RatingSetResponse,
-    ShipperListResponse,
-    ShipperResponse,
-} from 'appcoretruckassist';
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CustomerUpdateRating } from '@pages/customer/pages/customer-table/models/customer-update-rating.model';
-import { CustomerViewDataResponse } from '@pages/customer/pages/customer-table/models/customer-viewdata-response.model';
-import { DropdownItem } from '@shared/models/card-models/card-table-data.model';
-import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
-import { MappedShipperBroker } from '@pages/customer/pages/customer-table/models/mapped-shipper-broker.model';
-import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
-import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models/filter-option-shipper.model';
-import { CardTableData } from '@shared/models/table-models/card-table-data.model';
-import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
-import { MapList } from '@pages/repair/pages/repair-table/models';
+// pipes
+import { ThousandSeparatorPipe, FormatCurrencyPipe } from '@shared/pipes';
+
+// enums
+import { TableStringEnum, TableActionsStringEnum } from '@shared/enums';
+import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
+import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
+import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums';
+import { CustomerTableStringEnum } from '@pages/customer/pages/customer-table/enums';
 
 // constants
 import {
@@ -81,28 +75,31 @@ import {
 } from './utils/constants';
 import { TableDropdownComponentConstants } from '@shared/utils/constants/table-dropdown-component.constants';
 
-// pipes
-import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
-import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
-
-// enums
-import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { ConfirmationMoveStringEnum } from '@shared/components/ta-shared-modals/confirmation-move-modal/enums/confirmation-move-string.enum';
-import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
-import { ConfirmationModalStringEnum } from '@shared/components/ta-shared-modals/confirmation-modal/enums/confirmation-modal-string.enum';
-import { ConfirmationActivationStringEnum } from '@shared/components/ta-shared-modals/confirmation-activation-modal/enums/confirmation-activation-string.enum';
-import { BrokerModalStringEnum } from '@pages/customer/pages/broker-modal/enums/';
-import { CustomerTableStringEnum } from '@pages/customer/pages/customer-table/enums';
-
 // helpers
-import { DropdownContentHelper } from '@shared/utils/helpers/dropdown-content.helper';
-import { DataFilterHelper } from '@shared/utils/helpers/data-filter.helper';
 import {
-    getBrokerColumnDefinition,
-    getShipperColumnDefinition,
-} from '@shared/utils/settings/table-settings/customer-columns';
-import { MethodsGlobalHelper } from '@shared/utils/helpers/methods-global.helper';
+    DropdownMenuContentHelper,
+    DataFilterHelper,
+    MethodsGlobalHelper,
+} from '@shared/utils/helpers';
 import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/utils/helpers';
+
+// models
+import {
+    BrokerResponse,
+    GetBrokerListResponse,
+    ShipperListResponse,
+    ShipperResponse,
+} from 'appcoretruckassist';
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CustomerViewDataResponse } from '@pages/customer/pages/customer-table/models/customer-viewdata-response.model';
+import { TableToolbarActions } from '@shared/models/table-models/table-toolbar-actions.model';
+import { MappedShipperBroker } from '@pages/customer/pages/customer-table/models/mapped-shipper-broker.model';
+import { FilterOptionBroker } from '@pages/customer/pages/customer-table/models/filter-option-broker.model';
+import { FilterOptionShipper } from '@pages/customer/pages/customer-table/models/filter-option-shipper.model';
+import { CardTableData } from '@shared/models/table-models/card-table-data.model';
+import { TableColumnConfig } from '@shared/models/table-models/table-column-config.model';
+import { MapList } from '@pages/repair/pages/repair-table/models';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-customer-table',
@@ -114,62 +111,41 @@ import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/u
     providers: [ThousandSeparatorPipe, FormatCurrencyPipe],
 })
 export class CustomerTableComponent
+    extends CustomerDropdownMenuActionsBase
     implements OnInit, AfterViewInit, OnDestroy
 {
-    @ViewChild('mapsComponent', { static: false })
-    public mapsComponent: CaMapComponent;
-
-    private destroy$ = new Subject<void>();
-
-    public viewData: any[] = [];
-    public tableData: any[] = [];
-    public tableOptions: any;
-
-    public activeViewMode: string = TableStringEnum.LIST;
-    public columns: TableColumnConfig[] = [];
+    protected destroy$ = new Subject<void>();
 
     public resizeObserver: ResizeObserver;
+    public activeViewMode: string = TableStringEnum.LIST;
 
     public selectedTab = TableStringEnum.ACTIVE;
 
-    public activeTableDataLength: number;
+    public customerTableData: (BrokerState | ShipperState)[] = [];
 
     public isShipperTabClicked: boolean = false;
 
-    public brokers: BrokerState[] = [];
-    public shipper: ShipperState[] = [];
-
-    public customerTableData: (BrokerState | ShipperState)[] = [];
-
-    // filters
-    public filter: string;
-
-    public backBrokerFilterQuery: FilterOptionBroker =
-        TableDropdownComponentConstants.BROKER_BACK_FILTER;
-
-    public backShipperFilterQuery: FilterOptionShipper =
-        TableDropdownComponentConstants.SHIPPER_BACK_FILTER;
+    // table
+    public tableOptions: any;
+    public tableData: any[] = [];
+    public viewData: any[] = [];
+    public columns: TableColumnConfig[] = [];
 
     // cards
-    public cardTitle: string = CustomerCardDataConfigConstants.cardTitle;
-
-    public page: string = CustomerCardDataConfigConstants.page;
-    public rows: number = CustomerCardDataConfigConstants.rows;
-
-    public displayRows$: Observable<any>; //leave this as any for now
-
-    public sendDataToCardsFront: CardRows[];
-    public sendDataToCardsBack: CardRows[];
-
     public displayRowsFront: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsFrontBroker;
     public displayRowsBack: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsBackBroker;
-
     public displayRowsFrontShipper: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsFrontShipper;
     public displayRowsBackShipper: CardRows[] =
         CustomerCardDataConfigConstants.displayRowsBackShipper;
+
+    public activeTableDataLength: number;
+
+    public sendDataToCardsFront: CardRows[];
+    public sendDataToCardsBack: CardRows[];
+    public displayRows$: Observable<any>; //leave this as any for now
 
     // map
     public mapListData: MapList[] = [];
@@ -196,24 +172,32 @@ export class CustomerTableComponent
     public mapListCount: number = 0;
     public isSelectedFromDetails: boolean = false;
 
+    // filters
+    public filter: string;
+    public backBrokerFilterQuery: FilterOptionBroker =
+        TableDropdownComponentConstants.BROKER_BACK_FILTER;
+    public backShipperFilterQuery: FilterOptionShipper =
+        TableDropdownComponentConstants.SHIPPER_BACK_FILTER;
+
     constructor(
         // ref
         private ref: ChangeDetectorRef,
 
         // services
-        private modalService: ModalService,
-        private tableService: TruckassistTableService,
-        private tableDropdownService: TableCardDropdownActionsService,
+        protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected detailsDataService: DetailsDataService,
+        protected confirmationResetService: ConfirmationResetService,
+        protected loadStoreService: LoadStoreService,
         private brokerService: BrokerService,
         private shipperService: ShipperService,
-        private reviewRatingService: ReviewsRatingService,
-        private DetailsDataService: DetailsDataService,
         private mapsService: MapsService,
         private confirmationService: ConfirmationService,
         private confirmationMoveService: ConfirmationMoveService,
         private confirmationActivationService: ConfirmationActivationService,
         private customerCardsModalService: CustomerCardsModalService,
         private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private markerIconService: MapMarkerIconService,
 
         // store
         private brokerQuery: BrokerQuery,
@@ -226,8 +210,10 @@ export class CustomerTableComponent
         private formatCurrencyPipe: FormatCurrencyPipe,
 
         // router
-        private router: Router
-    ) {}
+        protected router: Router
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.sendCustomerData();
@@ -271,10 +257,6 @@ export class CustomerTableComponent
         }, 10);
     }
 
-    public trackByIdentity(id: number): number {
-        return id;
-    }
-
     private confirmationSubscribe(): void {
         this.confirmationService.confirmationData$
             .pipe(takeUntil(this.destroy$))
@@ -309,11 +291,9 @@ export class CustomerTableComponent
                             if (
                                 res.template !==
                                 BrokerModalStringEnum.DELETE_REVIEW
-                            ) {
+                            )
                                 this.changeBussinesStatusShipper(res.data);
-                            }
                         }
-
                         break;
                     case TableStringEnum.OPEN:
                         if (this.selectedTab === TableStringEnum.INACTIVE)
@@ -655,15 +635,15 @@ export class CustomerTableComponent
                             res.filterName === TableStringEnum.BAN
                                 ? TableStringEnum.DNU_FILTER
                                 : res.filterName === TableStringEnum.DNU
-                                ? TableStringEnum.CLOSED_FILTER
-                                : TableStringEnum.BAN_FILTER;
+                                  ? TableStringEnum.CLOSED_FILTER
+                                  : TableStringEnum.BAN_FILTER;
 
                         const resetSecondFilter =
                             res.filterName === TableStringEnum.BAN
                                 ? TableStringEnum.CLOSED_FILTER
                                 : res.filterName === TableStringEnum.DNU
-                                ? TableStringEnum.BAN_FILTER
-                                : TableStringEnum.DNU_FILTER;
+                                  ? TableStringEnum.BAN_FILTER
+                                  : TableStringEnum.DNU_FILTER;
 
                         this.tableService.sendResetSpecialFilters(
                             true,
@@ -1581,10 +1561,11 @@ export class CustomerTableComponent
                       TableStringEnum.DATE_FORMAT
                   )
                 : null,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownBrokerContent(data),
-            },
+            tableDropdownContent: this.getBrokerDropdownContent(
+                data.status,
+                data.ban,
+                data.dnu
+            ),
         };
     }
 
@@ -1615,8 +1596,8 @@ export class CustomerTableComponent
                       CustomerTableStringEnum.FROM_TO +
                       (data?.shippingTo ?? CustomerTableStringEnum.EMPTY_STRING)
                     : data?.shippingAppointment
-                    ? CustomerTableStringEnum.APPOINTMENT
-                    : null,
+                      ? CustomerTableStringEnum.APPOINTMENT
+                      : null,
             tableAvailableHoursReceiving:
                 data?.receivingFrom || data?.receivingTo
                     ? (data?.receivingFrom ??
@@ -1625,8 +1606,8 @@ export class CustomerTableComponent
                       (data?.receivingTo ??
                           CustomerTableStringEnum.EMPTY_STRING)
                     : data?.receivingAppointment
-                    ? CustomerTableStringEnum.APPOINTMENT
-                    : null,
+                      ? CustomerTableStringEnum.APPOINTMENT
+                      : null,
             reviews: data?.ratingReviews,
             tableRaiting: {
                 hasLiked: data?.currentCompanyUserRating === 1,
@@ -1651,43 +1632,24 @@ export class CustomerTableComponent
                       TableStringEnum.DATE_FORMAT
                   )
                 : null,
-            tableDropdownContent: {
-                hasContent: true,
-                content: this.getDropdownShipperContent(data),
-            },
+            tableDropdownContent: this.getShipperDropdownContent(data?.status),
         };
     }
 
-    private getDropdownBrokerContent(data: BrokerResponse): DropdownItem[] {
-        const dropdownContent =
-            DropdownContentHelper.getDropdownBrokerContent(data);
-
-        dropdownContent.map((dropItem) => {
-            const firstDisableCondition =
-                dropItem.name === TableStringEnum.CREATE_LOAD &&
-                (data.ban || data.dnu);
-            const secondDisableCondition =
-                !data.status &&
-                [
-                    TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER.toString(),
-                    TableStringEnum.CREATE_LOAD.toString(),
-                    TableStringEnum.ADD_CONTRACT.toString(),
-                    TableStringEnum.WRITE_REVIEW.toString(),
-                    TableStringEnum.MOVE_TO_BAN_LIST.toString(),
-                ].includes(dropItem.name);
-
-            if (firstDisableCondition || secondDisableCondition)
-                dropItem.mutedStyle = true;
-            else dropItem.mutedStyle = false;
-
-            return dropItem;
-        });
-
-        return dropdownContent;
+    private getBrokerDropdownContent(
+        status: number,
+        ban: boolean,
+        dnu: boolean
+    ): IDropdownMenuItem[] {
+        return DropdownMenuContentHelper.getBrokerDropdownContent(
+            status,
+            ban,
+            dnu
+        );
     }
 
-    private getDropdownShipperContent(data): DropdownItem[] {
-        return DropdownContentHelper.getDropdownShipperContent(data);
+    private getShipperDropdownContent(status: number): IDropdownMenuItem[] {
+        return DropdownMenuContentHelper.getShipperDropdownContent(status);
     }
 
     private updateDataCount(): void {
@@ -1901,246 +1863,6 @@ export class CustomerTableComponent
         }
     }
 
-    public onDropdownActions(): void {
-        this.tableDropdownService.openModal$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.onTableBodyActions(res);
-            });
-    }
-
-    private onTableBodyActions(event: {
-        id?: number;
-        data?: any; // leave as any for now
-        type?: string;
-        subType?: string;
-    }): void {
-        this.DetailsDataService.setNewData(event.data);
-
-        // Edit Call
-        if (event.type === TableStringEnum.SHOW_MORE) {
-            if (this.selectedTab === TableStringEnum.ACTIVE) {
-                this.backBrokerFilterQuery.pageIndex++;
-
-                this.brokerBackFilter(this.backBrokerFilterQuery, true);
-            } else {
-                this.backShipperFilterQuery.pageIndex++;
-
-                this.shipperBackFilter(this.backShipperFilterQuery, true);
-            }
-        } else if (
-            event.type === TableStringEnum.EDIT_CUSTOMER_OR_SHIPPER ||
-            event.type === TableStringEnum.ADD_CONTRACT ||
-            event.type === TableStringEnum.EDIT_CONTACT ||
-            event.type === TableStringEnum.DELTETE_CONTACT ||
-            event.type === TableStringEnum.WRITE_REVIEW
-        ) {
-            // Edit Broker Call Modal
-            if (this.selectedTab === TableStringEnum.ACTIVE) {
-                this.modalService.openModal(
-                    BrokerModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        type: TableStringEnum.EDIT,
-                        dnuButton: true,
-                        bfbButton: true,
-                        tab: 3,
-                        openedTab:
-                            event.type === TableStringEnum.ADD_CONTRACT ||
-                            event.type === TableStringEnum.EDIT_CONTACT ||
-                            event.type === TableStringEnum.DELTETE_CONTACT
-                                ? TableStringEnum.ADDITIONAL
-                                : event.type === TableStringEnum.WRITE_REVIEW
-                                ? TableStringEnum.REVIEW
-                                : TableStringEnum.BASIC,
-                    }
-                );
-            }
-            // Edit Shipper Call Modal
-            else {
-                this.modalService.openModal(
-                    ShipperModalComponent,
-                    { size: TableStringEnum.SMALL },
-                    {
-                        ...event,
-                        type: TableStringEnum.EDIT,
-                        openedTab:
-                            event.type === TableStringEnum.ADD_CONTRACT ||
-                            event.type === TableStringEnum.EDIT_CONTACT ||
-                            event.type === TableStringEnum.DELTETE_CONTACT
-                                ? TableStringEnum.ADDITIONAL
-                                : event.type === TableStringEnum.WRITE_REVIEW
-                                ? TableStringEnum.REVIEW
-                                : TableStringEnum.BASIC,
-                    }
-                );
-            }
-        } else if (event.type === TableStringEnum.MOVE_TO_BAN_LIST) {
-            const mappedEvent = {
-                ...event,
-                type: !event.data.ban
-                    ? TableStringEnum.MOVE
-                    : TableStringEnum.REMOVE,
-            };
-
-            this.modalService.openModal(
-                ConfirmationMoveModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...mappedEvent,
-                    template: TableStringEnum.BROKER,
-                    subType: TableStringEnum.BAN,
-                    tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
-                    modalTitle:
-                        event.data.businessName.name ?? event.data.businessName,
-                    modalSecondTitle:
-                        event.data?.billingAddress?.address ??
-                        TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                }
-            );
-        } else if (event.type === TableStringEnum.MOVE_TO_DNU_LIST) {
-            const mappedEvent = {
-                ...event,
-                type: !event.data.dnu
-                    ? TableStringEnum.MOVE
-                    : TableStringEnum.REMOVE,
-            };
-
-            this.modalService.openModal(
-                ConfirmationMoveModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...mappedEvent,
-                    template: TableStringEnum.BROKER,
-                    subType: TableStringEnum.DNU,
-                    tableType: ConfirmationMoveStringEnum.BROKER_TEXT,
-                    modalTitle:
-                        event.data.businessName.name ?? event.data.businessName,
-                    modalSecondTitle:
-                        event.data?.billingAddress?.address ??
-                        TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                }
-            );
-        } else if (event.type === TableStringEnum.CLOSE_BUSINESS) {
-            const mappedEvent = {
-                ...event,
-                type: event.data.status
-                    ? TableStringEnum.CLOSE
-                    : TableStringEnum.OPEN,
-            };
-
-            this.modalService.openModal(
-                ConfirmationActivationModalComponent,
-                { size: TableStringEnum.SMALL },
-                {
-                    ...mappedEvent,
-                    template: TableStringEnum.INFO,
-                    subType:
-                        this.selectedTab === TableStringEnum.ACTIVE
-                            ? TableStringEnum.BROKER_2
-                            : TableStringEnum.SHIPPER_3,
-                    subTypeStatus: TableStringEnum.BUSINESS,
-                    tableType:
-                        this.selectedTab === TableStringEnum.ACTIVE
-                            ? ConfirmationActivationStringEnum.BROKER_TEXT
-                            : ConfirmationActivationStringEnum.SHIPPER_TEXT,
-                    modalTitle:
-                        event.data.businessName.name ?? event.data.businessName,
-                    modalSecondTitle:
-                        event.data?.address?.address ??
-                        event.data?.billingAddress?.address ??
-                        TableStringEnum.EMPTY_STRING_PLACEHOLDER,
-                }
-            );
-        } else if (event.type === TableStringEnum.VIEW_DETAILS) {
-            if (this.selectedTab === TableStringEnum.ACTIVE) {
-                this.router.navigate([
-                    `/list/customer/${event.id}/broker-details`,
-                ]);
-            } else {
-                this.router.navigate([
-                    `/list/customer/${event.id}/shipper-details`,
-                ]);
-            }
-        }
-        // Delete Call
-        else if (event.type === TableStringEnum.DELETE) {
-            this.modalService.openModal(
-                ConfirmationModalComponent,
-                { size: TableStringEnum.DELETE },
-                {
-                    ...event,
-                    template:
-                        this.selectedTab === TableStringEnum.ACTIVE
-                            ? TableStringEnum.BROKER
-                            : TableStringEnum.SHIPPER,
-                    type: TableStringEnum.DELETE,
-                    svg: true,
-                    modalHeaderTitle:
-                        this.selectedTab === TableStringEnum.ACTIVE
-                            ? ConfirmationModalStringEnum.DELETE_BROKER
-                            : ConfirmationModalStringEnum.DELETE_SHIPPER,
-                }
-            );
-        }
-        // Raiting
-        else if (event.type === TableStringEnum.RATING) {
-            let raitingData = {
-                entityTypeRatingId:
-                    this.selectedTab === TableStringEnum.ACTIVE ? 1 : 3,
-                entityTypeId: event.data.id,
-                thumb: event.subType === TableStringEnum.LIKE ? 1 : -1,
-                tableData: event.data,
-            };
-
-            this.reviewRatingService
-                .addRating(raitingData)
-                .pipe(takeUntil(this.destroy$))
-                .subscribe((res: RatingSetResponse) => {
-                    const newViewData = [...this.viewData];
-
-                    newViewData.map((data: CustomerUpdateRating) => {
-                        if (data.id === event.data.id) {
-                            data.actionAnimation = TableStringEnum.UPDATE;
-                            data.tableRaiting = {
-                                hasLiked: res.currentCompanyUserRating === 1,
-                                hasDislike: res.currentCompanyUserRating === -1,
-                                likeCount: res?.upCount,
-                                dislikeCount: res?.downCount,
-                            };
-                        }
-                    });
-
-                    this.viewData = [...newViewData];
-
-                    const interval = setInterval(() => {
-                        this.viewData =
-                            MethodsGlobalHelper.closeAnimationAction(
-                                false,
-                                this.viewData
-                            );
-
-                        clearInterval(interval);
-                    }, 1000);
-
-                    this.mapsService.addRating(res);
-
-                    this.updateMapItem(
-                        this.viewData.find((item) => item.id === event.data.id)
-                    );
-                });
-        } else if (event.type === TableStringEnum.CREATE_LOAD) {
-            this.modalService.openModal(
-                LoadModalComponent,
-                { size: TableStringEnum.LOAD },
-                {
-                    data: { broker: event.data },
-                }
-            );
-        }
-    }
-
     private getSelectedTabTableData(): void {
         if (this.tableData?.length)
             this.activeTableDataLength = this.tableData.find(
@@ -2148,12 +1870,6 @@ export class CustomerTableComponent
             ).length;
 
         return;
-    }
-
-    public onShowMore(): void {
-        this.onTableBodyActions({
-            type: TableStringEnum.SHOW_MORE,
-        });
     }
 
     private addData(dataId: number): void {
@@ -2288,8 +2004,6 @@ export class CustomerTableComponent
     public updateCardView(): void {
         switch (this.selectedTab) {
             case TableStringEnum.ACTIVE:
-                this.cardTitle = TableStringEnum.INVOICE;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectActiveTabCards)
                 );
@@ -2297,8 +2011,6 @@ export class CustomerTableComponent
                 break;
 
             case TableStringEnum.INACTIVE:
-                this.cardTitle = TableStringEnum.INVOICE;
-
                 this.displayRows$ = this.store.pipe(
                     select(selectInactiveTabCards)
                 );
@@ -2506,6 +2218,12 @@ export class CustomerTableComponent
                                     item.position.lng === data.longitude
                             );
 
+                        const previousMarkerData = this.mapData.markers.find(
+                            (item2) =>
+                                item2.position.lat === data.latitude &&
+                                item2.position.lng === data.longitude
+                        );
+
                         let clusterInfoWindowContent = data.pagination?.data
                             ? {
                                   clusterData: [...data.pagination.data],
@@ -2525,45 +2243,49 @@ export class CustomerTableComponent
                             };
                         }
 
-                        const markerIcon =
-                            data?.count > 1
-                                ? MapMarkerIconHelper.getClusterMarker(
-                                      data?.count,
-                                      !!clusterInfoWindowContent?.selectedClusterItemData
-                                  )
-                                : MapMarkerIconHelper.getMapMarker(
-                                      data.favourite,
-                                      data.isClosed
-                                  );
+                        if (previousClusterData || previousMarkerData) {
+                            const newMarkerData = {
+                                ...(previousMarkerData || previousClusterData),
+                                infoWindowContent: clusterInfoWindowContent,
+                            };
 
-                        const markerData = {
-                            position: {
-                                lat: data.latitude,
-                                lng: data.longitude,
-                            },
-                            icon: {
-                                url: markerIcon,
-                                labelOrigin: new google.maps.Point(80, 15),
-                            },
-                            infoWindowContent: clusterInfoWindowContent,
-                            label: data.name
-                                ? {
-                                      text: data.name.toUpperCase(),
-                                      fontSize: '11px',
-                                      color: '#424242',
-                                      fontWeight: '500',
-                                  }
-                                : null,
-                            labelOrigin: { x: 90, y: 15 },
-                            options: {
-                                zIndex: index + 1,
-                                animation: google.maps.Animation.DROP,
-                            },
-                            data,
-                        };
+                            if (data.count > 1)
+                                clusterMarkers.push(newMarkerData);
+                            else markers.push(newMarkerData);
+                        } else {
+                            let markerData: IMapMarkers = {
+                                position: {
+                                    lat: data.latitude,
+                                    lng: data.longitude,
+                                },
+                                infoWindowContent: clusterInfoWindowContent,
+                                label: data.name,
+                                isFavorite: data.favourite,
+                                isClosed: data.isClosed,
+                                id: data.id,
+                                data,
+                            };
 
-                        if (data.count > 1) clusterMarkers.push(markerData);
-                        else markers.push(markerData);
+                            const markerIcon =
+                                data.count > 1
+                                    ? this.markerIconService.getClusterMarkerIcon(
+                                          markerData
+                                      )
+                                    : this.markerIconService.getMarkerIcon(
+                                          data.id,
+                                          data.name,
+                                          data.isClosed,
+                                          data.favourite
+                                      );
+
+                            markerData = {
+                                ...markerData,
+                                content: markerIcon,
+                            };
+
+                            if (data.count > 1) clusterMarkers.push(markerData);
+                            else markers.push(markerData);
+                        }
                     });
 
                     this.mapData = {
@@ -2621,7 +2343,6 @@ export class CustomerTableComponent
                     this.mapListPagination.pageIndex > 1
                         ? [...this.mapListData, ...mappedListData]
                         : mappedListData;
-
                 this.ref.detectChanges();
             });
     }
@@ -2752,6 +2473,20 @@ export class CustomerTableComponent
         if (this.mapsService.selectedMarkerId && !isAlreadySelectedMarker)
             this.isSelectedFromDetails = true;
     }
+
+    public handleShowMoreAction(): void {
+        if (this.selectedTab === TableStringEnum.ACTIVE) {
+            this.backBrokerFilterQuery.pageIndex++;
+
+            this.brokerBackFilter(this.backBrokerFilterQuery, true);
+        } else {
+            this.backShipperFilterQuery.pageIndex++;
+
+            this.shipperBackFilter(this.backShipperFilterQuery, true);
+        }
+    }
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

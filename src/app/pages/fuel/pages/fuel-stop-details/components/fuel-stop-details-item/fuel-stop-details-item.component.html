@@ -1,0 +1,35 @@
+<div class="fuel-stop-details-item-container">
+    @for (fuelStopItem of detailsConfig; track fuelStopItem.id) {
+        @switch (fuelStopItem.template) {
+            <!-- General -->
+
+            @case ('general') {
+                <app-fuel-stop-details-card
+                    [fuelStop]="detailsConfig[0]?.data"
+                ></app-fuel-stop-details-card>
+            }
+
+            <!-- Transaction -->
+
+            @case ('transaction') {
+                <app-fuel-stop-details-item-transaction
+                    [transactionList]="detailsConfig[1]?.data?.transactionList"
+                    [searchConfig]="searchConfig"
+                >
+                </app-fuel-stop-details-item-transaction>
+            }
+
+            <!-- Vehilce -->
+
+            @case ('fuelled-vehicle') {
+                <app-fuel-stop-details-item-fuelled-vehicle
+                    [fuelledVehicleList]="
+                        detailsConfig[2]?.data?.fuelledVehicleList
+                    "
+                    [searchConfig]="searchConfig"
+                >
+                </app-fuel-stop-details-item-fuelled-vehicle>
+            }
+        }
+    }
+</div>

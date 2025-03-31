@@ -31,6 +31,7 @@ import moment from 'moment';
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 import { TruckDetailsEnum } from '@pages/truck/pages/truck-details/enums/truck-details.enum';
+import { eStringPlaceholder } from 'ca-components';
 
 // models
 import { TruckDetailsConfig } from '@pages/truck/pages/truck-details/models/truck-details-config.model';
@@ -96,7 +97,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     public toggler: boolean[] = [];
     public cardNumberFake = '125335533513';
     private destroy$ = new Subject<void>();
-    truckName: string = '';
+    truckName: string = eStringPlaceholder.EMPTY;
     isAccountVisible: boolean = true;
     accountText: string = null;
     public isVoidActive: boolean = false;
@@ -107,22 +108,16 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
     constructor(
         private tableService: TruckassistTableService,
         private confirmationService: ConfirmationService,
-        private notificationService: NotificationService,
         private commonTruckService: TruckTrailerService,
         private dropDownService: DropDownService,
         private truckService: TruckService
-    ) { }
+    ) {}
 
     ngOnChanges(changes: SimpleChanges): void {
         this.truck.map((object: TruckDetailsConfig) => {
-            if (object.name === TruckDetailsEnum.REGISTRATION) {
+            if (object.name === TruckDetailsEnum.REGISTRATION)
                 this.isVoidActive = this.checkVoidedAndNotExpired(object.data);
-            }
         });
-        if (changes.truck?.currentValue != changes.truck?.previousValue) {
-            //this.truck = changes.truck?.currentValue;
-            //his.initTableOptions();
-        }
     }
 
     ngOnInit(): void {
@@ -136,17 +131,15 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                         case TableStringEnum.DELETE: {
                             if (
                                 res.template === TruckDetailsEnum.REGISTRATION_2
-                            ) {
+                            )
                                 this.deleteRegistrationByIdFunction(res?.id);
-                            } else if (
+                            else if (
                                 res.template === TruckDetailsEnum.INSPECTION
-                            ) {
+                            )
                                 this.deleteInspectionByIdFunction(res?.id);
-                            } else if (
-                                res.template === TruckDetailsEnum.TITLE
-                            ) {
+                            else if (res.template === TruckDetailsEnum.TITLE)
                                 this.deleteTitleByIdFunction(res?.id);
-                            }
+
                             break;
                         }
                         case TruckDetailsEnum.VOID_2:
@@ -155,9 +148,8 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
                             if (res.array.length) {
                                 voidedReg = res?.array[0]?.id;
                                 unVoidedReg = res.data.id;
-                            } else {
-                                voidedReg = res.data.id;
-                            }
+                            } else voidedReg = res.data.id;
+
                             this.truckService
                                 .voidRegistration(voidedReg, unVoidedReg)
                                 .pipe(takeUntil(this.destroy$))
@@ -182,7 +174,7 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         this.currentDate = moment(new Date()).format();
     }
 
-    public onShowDetails(componentData: any) {
+    public onShowDetails(componentData: any): void {
         componentData.showDetails = !componentData.showDetails;
     }
     public checkVoidedAndNotExpired(
@@ -204,8 +196,8 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             },
             config: {
                 showSort: true,
-                sortBy: '',
-                sortDirection: '',
+                sortBy: eStringPlaceholder.EMPTY,
+                sortDirection: eStringPlaceholder.EMPTY,
                 disabledColumns: [0],
                 minWidth: 60,
             },
@@ -259,8 +251,8 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             },
             config: {
                 showSort: true,
-                sortBy: '',
-                sortDirection: '',
+                sortBy: eStringPlaceholder.EMPTY,
+                sortDirection: eStringPlaceholder.EMPTY,
                 disabledColumns: [0],
                 minWidth: 60,
             },
@@ -301,17 +293,12 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         };
     }
 
-    /**Function retrun id */
-    public identity(index: number, _: any): number {
-        return index;
-    }
-
     /**Function for toggle page in cards */
-    public toggleResizePage(value: number, indexName: string) {
+    public toggleResizePage(value: number, indexName: string): void {
         this.toggler[value + indexName] = !this.toggler[value + indexName];
     }
 
-    public optionsEvent(file: any, data: any, action: string) {
+    public optionsEvent(file: any, data: any, action: string): void {
         data = this.truck[0]?.data;
         const name = DropActionNameHelper.dropActionNameTrailerTruck(
             file,
@@ -331,39 +318,39 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
             'truck'
         );
     }
-    private deleteRegistrationByIdFunction(id: number) {
+    private deleteRegistrationByIdFunction(id: number): void {
         this.commonTruckService
             .deleteRegistrationById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    private deleteInspectionByIdFunction(id: number) {
+    private deleteInspectionByIdFunction(id: number): void {
         this.commonTruckService
             .deleteInspectionById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
-    private deleteTitleByIdFunction(id: number) {
+    private deleteTitleByIdFunction(id: number): void {
         this.commonTruckService
             .deleteTitleById(id)
             .pipe(takeUntil(this.destroy$))
             .subscribe();
     }
 
-    public hiddenPassword(value: any, numberOfCharacterToHide: number) {
-        const lastFourCharaters = value.substring(
+    public hiddenPassword(value: any, numberOfCharacterToHide: number): string {
+        const lastFourCharacters = value.substring(
             value.length - numberOfCharacterToHide
         );
-        let hiddenCharacter = '';
+        let hiddenCharacter: string = eStringPlaceholder.EMPTY;
 
-        for (let i = 0; i < numberOfCharacterToHide; i++) {
+        for (let i = 0; i < numberOfCharacterToHide; i++)
             hiddenCharacter += '*';
-        }
-        return hiddenCharacter + lastFourCharaters;
+
+        return `${hiddenCharacter}${lastFourCharacters}`;
     }
 
-    public showHideValue(value: string) {
+    public showHideValue(value: string): void {
         this.isAccountVisible = !this.isAccountVisible;
         if (!this.isAccountVisible) {
             this.accountText = this.hiddenPassword(value, 4);
@@ -372,72 +359,35 @@ export class TruckDetailsItemComponent implements OnInit, OnDestroy, OnChanges {
         this.accountText = value;
     }
 
-    public downloadAllFiles(type: string, index: number) {
+    public downloadAllFiles(type: string, index: number): void {
         switch (type) {
-            case TruckDetailsEnum.FHWA: {
+            case TruckDetailsEnum.FHWA:
                 if (
                     this.fhwaUpload._results[index] &&
                     this.fhwaUpload._results[index].downloadAllFiles
-                ) {
+                )
                     this.fhwaUpload._results[index].downloadAllFiles();
-                }
                 break;
-            }
-            case TruckDetailsEnum.REGISTRATION_2: {
+            case TruckDetailsEnum.REGISTRATION_2:
                 if (
                     this.registrationUpload._results[index] &&
                     this.registrationUpload._results[index].downloadAllFiles
-                ) {
+                )
                     this.registrationUpload._results[index].downloadAllFiles();
-                }
                 break;
-            }
-            case TruckDetailsEnum.TITLE: {
+            case TruckDetailsEnum.TITLE:
                 if (
                     this.titleUpload._results[index] &&
                     this.titleUpload._results[index].downloadAllFiles
-                ) {
+                )
                     this.titleUpload._results[index].downloadAllFiles();
-                }
                 break;
-            }
-            default: {
+            default:
                 break;
-            }
         }
     }
-    private chechVoidStatus(
-        id: number,
-        data: TruckDetailsConfigData[],
-        action: string
-    ) {
-        const isVoided = data.find((registration) => registration.voidedOn);
-        const cdlsArray = data
-            .map((registration) => {
-                const currentDate = moment().valueOf();
 
-                const expDate = moment(registration.expDate).valueOf();
-                if (isVoided) {
-                    if (expDate > currentDate && !registration.voidedOn) {
-                        return {
-                            id: registration.id,
-                            name: registration.licensePlate,
-                        };
-                    }
-                }
-            })
-            .filter((registration) => registration !== undefined);
-
-        cdlsArray.length
-            ? this.optionsEvent({ id: id, type: 'void' }, data, 'registration')
-            : this.optionsEvent(
-                { id: id, type: 'activate' },
-                data,
-                'registration'
-            );
-    }
-
-    public formatDate(mod) {
+    public formatDate(mod): string {
         return MethodsCalculationsHelper.convertDateFromBackend(mod);
     }
 

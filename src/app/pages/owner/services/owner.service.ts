@@ -14,6 +14,7 @@ import { FormDataService } from '@shared/services/form-data.service';
 
 // Enums
 import { TableActionsStringEnum } from '@shared/enums/table-actions-string.enum';
+import { eGeneralActions } from '@shared/enums';
 
 // models
 import {
@@ -46,9 +47,9 @@ export class OwnerService {
         this.formDataService.extractFormDataFromFunction(data);
         return this.ownerService.apiOwnerPost().pipe(
             tap((res: any) => {
-                const subOwner = this.getOwnerById(res.id).subscribe({
+                this.getOwnerById(res.id).subscribe({
                     next: (owner: OwnerResponse | any) => {
-                        this.ownerInactiveStore.add(owner);
+                        this.ownerActiveStore.add(owner);
 
                         const ownerCount = JSON.parse(
                             localStorage.getItem(
@@ -56,7 +57,7 @@ export class OwnerService {
                             )
                         );
 
-                        ownerCount.inactive++;
+                        ownerCount.active++;
 
                         localStorage.setItem(
                             TableActionsStringEnum.OWNER_TABLE_COUNT,
@@ -71,8 +72,6 @@ export class OwnerService {
                             data: owner,
                             id: owner.id,
                         });
-
-                        subOwner.unsubscribe();
                     },
                 });
             })
@@ -82,9 +81,10 @@ export class OwnerService {
     // Update Owner
     public updateOwner(data: any): Observable<any> {
         this.formDataService.extractFormDataFromFunction(data);
+
         return this.ownerService.apiOwnerPut().pipe(
             tap(() => {
-                const subOwner = this.getOwnerById(data.id).subscribe({
+                this.getOwnerById(data.id).subscribe({
                     next: (owner: OwnerResponse | any) => {
                         if (!owner.truckCount && !owner.trailerCount) {
                             this.ownerInactiveStore.remove(
@@ -115,8 +115,6 @@ export class OwnerService {
                             data: owner,
                             id: owner.id,
                         });
-
-                        subOwner.unsubscribe();
                     },
                 });
             })
@@ -253,7 +251,7 @@ export class OwnerService {
                 );
 
                 this.tableService.sendActionAnimation({
-                    animation: 'delete',
+                    animation: eGeneralActions.DELETE,
                     tab: tableSelectedTab,
                     id: ownerId,
                 });

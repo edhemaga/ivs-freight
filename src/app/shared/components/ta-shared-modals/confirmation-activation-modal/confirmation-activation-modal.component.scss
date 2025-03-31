@@ -94,6 +94,7 @@
                 margin-right: 6px;
             }
             .truck-location {
+                width: 264px;
                 margin: 14px 0;
                 app-ta-input-address-dropdown {
                     width: 264px;
@@ -180,6 +181,16 @@
                     background: rgb(66, 66, 66, 0.2);
                 }
             }
+        }
+    }
+}
+
+.action-div-icon {
+    margin-left: 6px;
+    svg {
+        path,
+        rect {
+            fill: $muted !important;
         }
     }
 }

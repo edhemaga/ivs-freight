@@ -1,30 +1,32 @@
-import {
-    Component,
-    EventEmitter,
-    Input,
-    Output,
-    OnDestroy,
-    OnInit,
-} from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { Subject, takeUntil } from 'rxjs';
 
-// models
-import { CardRows } from '@shared/models/card-models/card-rows.model';
-import { CardDetails } from '@shared/models/card-models/card-table-data.model';
-import { CardDataResult } from '@shared/models/card-models/card-data-result.model';
+// base classes
+import { TruckDropdownMenuActionsBase } from '@pages/truck/base-classes';
 
 // helpers
 import { CardHelper } from '@shared/utils/helpers/card-helper';
-import { TruckFeaturesDataHelper } from '@pages/truck/pages/truck-table/utils/helpers/truck-features-data.helper';
-
-// constants
-import { TruckCardIcons } from '@pages/truck/pages/truck-card/utils/constants/truck-card-icons.constants';
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 // services
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { DetailsDataService } from '@shared/services/details-data.service';
-import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-body-response.model';
+import { ModalService } from '@shared/services/modal.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
+
+// enums
+import { eDropdownMenu } from '@shared/enums';
+
+// constants
+import { TruckCardIcons } from '@pages/truck/pages/truck-card/utils/constants/truck-card-icons.constants';
+
+// models
+import { CardRows } from '@shared/models/card-models/card-rows.model';
+import { CardDetails } from '@shared/models/card-models/card-table-data.model';
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { TruckMapped } from '@pages/truck/pages/truck-table/models/truck-mapped.model';
 
 @Component({
     selector: 'app-truck-card',
@@ -32,32 +34,48 @@ import { TruckBodyResponse } from '@pages/truck/pages/truck-table/models/truck-b
     styleUrls: ['./truck-card.component.scss'],
     providers: [CardHelper],
 })
-export class TruckCardComponent implements OnInit, OnDestroy {
+export class TruckCardComponent
+    extends TruckDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
     @Input() set viewData(value: CardDetails[]) {
         this._viewData = value;
     }
-    @Input() cardTitle: string;
+
+    // card body endpoints
     @Input() displayRowsFront: CardRows[];
     @Input() displayRowsBack: CardRows[];
-    @Output() onCardAction = new EventEmitter<TruckBodyResponse>();
-    public isCardFlippedCheckInCards: number[] = [];
 
-    private destroy$ = new Subject<void>();
-    public isAllCardsFlipp: boolean = false;
+    public destroy$ = new Subject<void>();
+
     public _viewData: CardDetails[];
-    public cardsFront: CardDataResult[][][] = [];
-    public cardsBack: CardDataResult[][][] = [];
-    public titleArray: string[][] = [];
+
+    public isCardFlippedCheckInCards: number[] = [];
+    public isAllCardsFlipp: boolean = false;
+
     public truckCardImageRoutes = TruckCardIcons;
+
     constructor(
-        private tableService: TruckassistTableService,
-        private cardHelper: CardHelper,
+        protected router: Router,
+
+        // services
+        protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService,
         private detailsDataService: DetailsDataService,
-        private router: Router
-    ) {}
+
+        // helpers
+        private cardHelper: CardHelper
+    ) {
+        super();
+    }
 
     ngOnInit() {
         this.flipAllCards();
+    }
+
+    public flipCard(index: number): void {
+        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
     }
 
     public flipAllCards(): void {
@@ -71,16 +89,6 @@ export class TruckCardComponent implements OnInit, OnDestroy {
             });
     }
 
-    // Flip card based on card index
-    public flipCard(index: number): void {
-        this.isCardFlippedCheckInCards = this.cardHelper.flipCard(index);
-    }
-    public goToDetailsPage(card: CardDetails, link: string): void {
-        this.detailsDataService.setNewData(card);
-
-        this.router.navigate([link]);
-    }
-    // When checkbox is selected
     public onCheckboxSelect(index: number, card: CardDetails): void {
         this._viewData[index].isSelected = !this._viewData[index].isSelected;
 
@@ -89,12 +97,30 @@ export class TruckCardComponent implements OnInit, OnDestroy {
         this.tableService.sendRowsSelected(checkedCard);
     }
 
-    public trackCard(id: number): number {
-        return id;
+    public handleToggleDropdownMenuActions<T extends TruckMapped>(
+        action: IDropdownMenuOptionEmit,
+        cardData: T
+    ): void {
+        const { type } = action;
+
+        const emitAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
+                type,
+                cardData
+            );
+
+        this.handleDropdownMenuActions(emitAction, eDropdownMenu.TRUCK);
     }
-    public onCardActions(event: TruckBodyResponse): void {
-        this.onCardAction.emit(event);
+
+    public goToDetailsPage(card: CardDetails, link: string): void {
+        this.detailsDataService.setNewData(card);
+
+        this.router.navigate([link]);
     }
+
+    public handleShowMoreAction(): void {}
+
+    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

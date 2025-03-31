@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { Injectable, Type } from '@angular/core';
+import { Observable } from 'rxjs';
 
 // Models
 import {
@@ -8,6 +8,7 @@ import {
     ClosePayrollDriverFlatRateCommand,
     ClosePayrollOwnerCommand,
     PayrollCountsResponse,
+    PayrollCreditType,
     PayrollDriverCommissionByIdResponse,
     PayrollDriverCommissionClosedByIdResponse,
     PayrollDriverFlatRateByIdResponse,
@@ -17,10 +18,13 @@ import {
     PayrollOwnerClosedResponse,
     PayrollOwnerResponse,
     PayrollPaymentType,
+    RoutingResponse
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import {
     IAddPayrollClosedPayment,
+    IPayrollDriverMileageClosedByIdResponse,
+    IPayrollDriverMileageByIdResponseNumberId,
     PayrollDriverMileageCollapsedListResponse,
     PayrollDriverMileageExpandedListResponse,
 } from '@pages/accounting/pages/payroll/state/models';
@@ -29,6 +33,7 @@ import { IDriverCommissionList } from '@pages/accounting/pages/payroll/state/mod
 import { IDriverFlatRateList } from '@pages/accounting/pages/payroll/state/models';
 import { IGet_Payroll_Commission_Driver_Report } from '@pages/accounting/pages/payroll/state/models';
 import { PayrollDeleteModal } from '@pages/accounting/pages/payroll/state/models';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Environment
 import { environment } from 'src/environments/environment';
@@ -46,18 +51,28 @@ import {
     PayrollType,
     PayrollTypeEnum,
 } from '@pages/accounting/pages/payroll/state/types/payroll.type';
+import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
 // TODO: Slaviša
 // import { PayrollTypeEnum } from 'ca-components/lib/components/ca-period-content/enums';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
-    constructor(public http: HttpClient, private modalService: ModalService) {}
+    constructor(
+        public http: HttpClient,
+        private modalService: ModalService
+    ) {}
 
     public getPayrollCounts(
         showOpen: boolean
     ): Observable<PayrollCountsResponse> {
         return this.http.get(
             `${environment.API_ENDPOINT}/api/payroll/counts?ShowOpen=${showOpen}`
+        );
+    }
+
+    public getPayrollMapData(locations: string): Observable<RoutingResponse> {
+        return this.http.get(
+            `${environment.API_ENDPOINT}/api/routing?locations=${locations}`
         );
     }
 
@@ -124,7 +139,9 @@ export class PayrollService {
         );
     }
 
-    public getPayrollSoloMileageDriverClosedById(payrollId: number) {
+    public getPayrollSoloMileageDriverClosedById(
+        payrollId: number
+    ): Observable<IPayrollDriverMileageClosedByIdResponse> {
         return this.http.get<any>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/closed/${payrollId}`
         );
@@ -224,7 +241,7 @@ export class PayrollService {
                 selectedDeducionIds.toString()
             );
 
-        return this.http.get<PayrollDriverMileageResponse>(
+        return this.http.get<IPayrollDriverMileageByIdResponseNumberId>(
             `${environment.API_ENDPOINT}/api/payroll/driver/mileage/${reportId}`,
             { params }
         );
@@ -551,23 +568,25 @@ export class PayrollService {
             | TableStringEnum.DEDUCTION
             | TableStringEnum.CREDIT
             | TableStringEnum.BONUS
-            | TableStringEnum.FUEL_1,
+            | TableStringEnum.FUEL_TRANSACTION,
         action:
             | ConfirmationModalStringEnum.DELETE_DEDUCTION
             | ConfirmationModalStringEnum.DELETE_CREDIT
-            | ConfirmationModalStringEnum.DELETE_FUEL
+            | ConfirmationModalStringEnum.DELETE_FUEL_TRANSACTION
             | ConfirmationModalStringEnum.DELETE_BONUS,
         id: number,
-        data: PayrollDeleteModal
+        data: PayrollDeleteModal,
+        subType?: string
     ) {
-        return this.showDeductionModal(modalType, action, id, data);
+        return this.showDeductionModal(modalType, action, id, data, subType);
     }
 
     public showDeductionModal(
         template: string,
         modalHeaderTitle: string,
         id: number,
-        extras: PayrollDeleteModal
+        extras: PayrollDeleteModal,
+        subType?: string
     ): Promise<any> {
         return this.modalService.openModal(
             ConfirmationModalComponent,
@@ -579,7 +598,33 @@ export class PayrollService {
                 svg: true,
                 modalHeaderTitle,
                 extras,
+                subType,
             }
+        );
+    }
+
+    public saveAndAddNew(
+        component: Type<any>,
+        preselectedDriver: boolean,
+        driverId: number,
+        ngbActiveModal: NgbActiveModal
+    ): void {
+        ngbActiveModal.close();
+        this.modalService.openModal(
+            component,
+            {
+                size: ContactsModalStringEnum.SMALL,
+            },
+            preselectedDriver
+                ? {
+                      data: {
+                          driverId: preselectedDriver ? driverId : null,
+                      },
+                      creditType: preselectedDriver
+                          ? PayrollCreditType.Driver
+                          : null,
+                  }
+                : undefined
         );
     }
 }
