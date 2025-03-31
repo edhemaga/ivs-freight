@@ -62,6 +62,7 @@ import {
     CaInputNoteComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     eModalButtonClassType,
     eModalButtonSize,
 } from 'ca-components';
@@ -129,7 +130,7 @@ import { ICaInput } from '@ca-shared/components/ca-input/config';
         TaAppTooltipV2Component,
         CaInputDatetimePickerComponent,
         CaModalButtonComponent,
-
+        CaTabSwitchComponent,
         // Pipes
         FormatDatePipe,
         TrailerModalInputConfigPipe,
