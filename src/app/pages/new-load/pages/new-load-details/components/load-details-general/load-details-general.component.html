@@ -143,6 +143,12 @@
         <ng-container
             *ngTemplateOutlet="
                 skeletonPlaceholder;
+                context: { width: 116, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
                 context: { width: 49, isCircle: true, isDividerVisible: true }
             "
         ></ng-container>
@@ -297,9 +303,58 @@
                 </div>
             </div>
         </div>
-        <div class="p-x-6 m-t-8">
+
+        <ng-container
+            *ngTemplateOutlet="
+                divider;
+                context: { isDividerVisible: true, isMarginTopDisabled: true }
+            "
+        ></ng-container>
+
+        <div class="p-x-12">
+            @let loadRequirements =
+                load.loadRequirements
+                    | loadRequirementsFormat
+                        : load.generalCommodity
+                        : load.weight;
+
+            <app-ta-custom-card
+                [cardName]="'Load Detail & Requirement'"
+                [isCardOpen]="!!loadRequirements"
+                [hasDivider]="false"
+                [disabledCard]="!loadRequirements"
+            >
+                @if (loadRequirements) {
+                    <div
+                        class="d-flex align-items-center flex-wrap row gutter-x-12 gutter-y-12"
+                    >
+                        @for (
+                            requirement of loadRequirements;
+                            track requirement.title
+                        ) {
+                            <div class="col-6">
+                                <div class="d-flex flex-column">
+                                    <div
+                                        class="text-size-11 text-color-black ta-font-bold m-b-2"
+                                    >
+                                        {{ requirement.title }}
+                                    </div>
+                                    <div
+                                        class="text-size-14 text-color-black-2"
+                                    >
+                                        {{ requirement.value }}
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </app-ta-custom-card>
+        </div>
+        <div class="p-x-6">
             <div class="divider divider--small divider--dark"></div>
         </div>
+
         <ng-container *ngTemplateOutlet="messageForDriver"></ng-container>
 
         <ng-container
@@ -482,7 +537,7 @@
                   : eStringPlaceholder.EMPTY
             : eStringPlaceholder.EMPTY;
 
-    <div class="px-3">
+    <div class="p-x-12">
         <app-ta-custom-card
             [cardName]="'Billing'"
             [hasCounter]="data?.billingCount"
@@ -686,7 +741,7 @@
                 : 'green'
             : eStringPlaceholder.EMPTY;
 
-    <div class="px-3">
+    <div class="p-x-12">
         <app-ta-custom-card
             [cardName]="'Payment'"
             [hasCounter]="data?.paymentCount"
@@ -766,7 +821,7 @@
         <ng-container
             *ngTemplateOutlet="divider; context: { isDividerVisible: true }"
         ></ng-container>
-        <div class="p-x-16" [formGroup]="cardForm">
+        <div class="p-x-12" [formGroup]="cardForm">
             <app-ta-input-note
                 formControlName="driverMessage"
                 [noteLabel]="'Driver Message'"
