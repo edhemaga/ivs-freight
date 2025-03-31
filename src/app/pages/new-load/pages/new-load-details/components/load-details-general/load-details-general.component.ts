@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     ReactiveFormsModule,
@@ -18,6 +18,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { LoadRequirementsFormatPipe } from '@pages/new-load/pages/new-load-details/pipes';
 
 // Components
 import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.component';
@@ -41,6 +42,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
         // Pipes
         FormatDatePipe,
         LoadStatusColorsPipe,
+        LoadRequirementsFormatPipe,
 
         // Components
         CaSkeletonComponent,
