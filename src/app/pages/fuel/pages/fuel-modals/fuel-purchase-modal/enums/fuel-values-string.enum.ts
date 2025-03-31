@@ -14,6 +14,7 @@ export enum FuelValuesStringEnum {
     TRUCKS = 'trucks',
     TRAILERS = 'trailers',
     DRIVER_FULL_NAME = 'driverFullName',
+    DRIVER_ID = 'driverId',
     FUEL_ITEMS = 'fuelItems',
     MANUAL = 'Manual',
     INVOICE = 'invoice',

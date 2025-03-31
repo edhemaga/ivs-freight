@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 // Services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
@@ -21,6 +26,7 @@ import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-u
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-load-details-general',
@@ -30,6 +36,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
     imports: [
         CommonModule,
         NgbModule,
+        ReactiveFormsModule,
 
         // Pipes
         FormatDatePipe,
@@ -42,6 +49,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
         TaAppTooltipV2Component,
         CaLoadStatusComponent,
         TaCustomCardComponent,
+        TaInputNoteComponent,
     ],
 })
 export class LoadDetailsGeneralComponent {
@@ -56,7 +64,16 @@ export class LoadDetailsGeneralComponent {
     public isBillingExpanded: boolean = false;
     public isPaymentExpanded: boolean = false;
 
-    constructor(protected loadStoreService: LoadStoreService) {}
+    public cardForm: UntypedFormGroup;
+
+    constructor(
+        protected loadStoreService: LoadStoreService,
+        private formBuilder: UntypedFormBuilder
+    ) {}
+
+    ngOnInit(): void {
+        this.createForm();
+    }
 
     public toggleBilling(): void {
         this.isBillingExpanded = !this.isBillingExpanded;
@@ -64,5 +81,12 @@ export class LoadDetailsGeneralComponent {
 
     public togglePayment(): void {
         this.isPaymentExpanded = !this.isPaymentExpanded;
+    }
+
+    private createForm(): void {
+        this.cardForm = this.formBuilder.group({
+            driverMessage: [],
+            note: [],
+        });
     }
 }

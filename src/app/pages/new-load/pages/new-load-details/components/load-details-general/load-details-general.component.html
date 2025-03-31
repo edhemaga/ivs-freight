@@ -120,7 +120,7 @@
     </div>
 </div>
 
-<div class="m-t-8 background-white br-3 pb-2">
+<div class="m-t-8 background-white br-3 pb-1">
     @if (isLoading) {
         <ng-container
             *ngTemplateOutlet="
@@ -129,7 +129,40 @@
             "
         ></ng-container>
         <ng-container
-            *ngTemplateOutlet="skeletonPlaceholder; context: { width: 91 }"
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 91, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 202, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 49, isCircle: true, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 68, isCircle: true, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 80, isCircle: true, isDividerVisible: true }
+            "
+        ></ng-container>
+        <ng-container
+            *ngTemplateOutlet="
+                skeletonPlaceholder;
+                context: { width: 36, isCircle: true }
+            "
         ></ng-container>
     } @else {
         <div class="d-flex flex-column p-x-12 pt-1">
@@ -199,7 +232,7 @@
             <div class="divider divider--small divider--dark"></div>
         </div>
 
-        <div class="p-x-12">
+        <div class="p-x-12 m-b-8">
             <span
                 class="ta-font-extra-bold text-size-14 text-color-black h-26 mb-2 d-flex align-items-center m-b-8"
             >
@@ -267,6 +300,8 @@
         <div class="p-x-6 m-t-8">
             <div class="divider divider--small divider--dark"></div>
         </div>
+        <ng-container *ngTemplateOutlet="messageForDriver"></ng-container>
+
         <ng-container
             *ngTemplateOutlet="
                 billing;
@@ -286,6 +321,14 @@
                 }
             "
         ></ng-container>
+
+        <ng-container
+            *ngTemplateOutlet="
+                divider;
+                context: { isDividerVisible: true, isMarginTopDisabled: true }
+            "
+        ></ng-container>
+        <ng-container *ngTemplateOutlet="noteCard"></ng-container>
     }
 </div>
 
@@ -376,14 +419,25 @@
     #skeletonPlaceholder
     let-width="width"
     let-isDividerVisible="isDividerVisible"
+    let-isCircle="isCircle"
 >
     <div class="d-flex align-items-center p-x-12 justify-content-between">
-        <p class="placeholder-glow">
-            <span
-                class="placeholder background-muted br-2 h-16"
-                [ngClass]="'w-' + width"
-            ></span>
-        </p>
+        <div class="d-flex align-items-center">
+            <p class="placeholder-glow">
+                <span
+                    class="placeholder background-muted br-2 h-16"
+                    [ngClass]="'w-' + width"
+                ></span>
+            </p>
+
+            @if (isCircle) {
+                <p class="placeholder-glow m-l-8">
+                    <span
+                        class="placeholder background-muted rounded-circle h-18 w-18"
+                    ></span>
+                </p>
+            }
+        </div>
 
         <p class="placeholder-glow">
             <span class="placeholder background-muted br-2 h-7 w-18"></span>
@@ -395,9 +449,16 @@
     ></ng-container>
 </ng-template>
 
-<ng-template #divider let-isDividerVisible="isDividerVisible">
+<ng-template
+    #divider
+    let-isDividerVisible="isDividerVisible"
+    let-isMarginTopDisabled="isMarginTopDisabled"
+>
     @if (isDividerVisible) {
-        <div class="p-x-6 mb-1 mt-1">
+        <div
+            class="p-x-6 mb-1"
+            [ngClass]="isMarginTopDisabled ? ' mt-0' : ' mt-1'"
+        >
             <div class="divider divider--small divider--dark"></div>
         </div>
     }
@@ -681,4 +742,48 @@
             ></ng-container>
         </app-ta-custom-card>
     </div>
+</ng-template>
+
+<ng-template #noteCard>
+    <div class="p-x-16" [formGroup]="cardForm">
+        <app-ta-input-note
+            formControlName="note"
+            [isVisibleNote]="
+                load?.note && load?.note !== 'null' ? load?.note : false
+            "
+            [note]="load?.note && load?.note !== 'null' ? load?.note : ''"
+            [note]="load.note"
+            [noteType]="'details-card'"
+            [entityId]="load.id"
+            [entityType]="'Load'"
+            [isVisibleDivider]="false"
+        ></app-ta-input-note>
+    </div>
+</ng-template>
+
+<ng-template #messageForDriver>
+    @if (load.loadRequirements?.driverMessage) {
+        <ng-container
+            *ngTemplateOutlet="divider; context: { isDividerVisible: true }"
+        ></ng-container>
+        <div class="p-x-16" [formGroup]="cardForm">
+            <app-ta-input-note
+                formControlName="driverMessage"
+                [noteLabel]="'Driver Message'"
+                [isVisibleNote]="
+                    load.loadRequirements?.driverMessage &&
+                    load.loadRequirements?.driverMessage !== 'null'
+                        ? load.loadRequirements?.driverMessage
+                        : false
+                "
+                [note]="
+                    load.loadRequirements?.driverMessage &&
+                    load.loadRequirements?.driverMessage !== 'null'
+                        ? load.loadRequirements?.driverMessage
+                        : ''
+                "
+                [isVisibleDivider]="false"
+            ></app-ta-input-note>
+        </div>
+    }
 </ng-template>
