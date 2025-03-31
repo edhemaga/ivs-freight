@@ -240,7 +240,7 @@ export function getTrailerColumnDefinition() {
                 imgPath: 'assets/svg/truckassist-table/length-icon.svg',
             },
             headAlign: 'row-reverse',
-            sortName: 'color',
+            sortName: 'trailerLength',
             hidden: false,
             width: 34,
             minWidth: 34,
