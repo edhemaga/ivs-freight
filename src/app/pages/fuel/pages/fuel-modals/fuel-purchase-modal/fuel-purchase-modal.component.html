@@ -139,43 +139,27 @@
                     ></app-ca-input-dropdown>
                 }
 
-                @if (
-                    fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)
-                        ?.value &&
-                    !fuelForm.get(fuelValuesStringEnum.DRIVER_FULL_NAME)?.dirty
-                ) {
-                    <app-ca-input
-                        formControlName="driverFullName"
-                        [inputConfig]="
-                            {
-                                configType: 'driverInputConfig',
-                                trailerId: fuelForm.get(
-                                    fuelValuesStringEnum.TRAILER_ID
-                                ).value,
-                            } | fuelPurchaseModalInputConfig
-                        "
-                    ></app-ca-input>
-                } @else {
-                    <ca-input-dropdown-test
-                        [label]="'name'"
-                        [optionValue]="'id'"
-                        formControlName="driverFullName"
-                        [template]="'load-dispatcher'"
-                        [inputConfig]="
-                            {
-                                configType: 'driverDropdownInputConfig',
-                                trailerId: fuelForm.get(
-                                    fuelValuesStringEnum.TRAILER_ID
-                                ).value,
-                                selectedDriver,
-                                fuelCardHolderName,
-                            } | fuelPurchaseModalInputConfig
-                        "
-                        [options]="driverOptions"
-                        [activeItem]="selectedDriver"
-                        (selectedItem)="onSelectDropDown($event, 'driver')"
-                    ></ca-input-dropdown-test>
-                }
+                <ca-input-dropdown-test
+                    [label]="'name'"
+                    [optionValue]="'id'"
+                    formControlName="driverId"
+                    [template]="'load-dispatcher'"
+                    [inputConfig]="
+                        {
+                            configType: 'driverDropdownInputConfig',
+                            trailerId: fuelForm.get(
+                                fuelValuesStringEnum.TRAILER_ID
+                            ).value,
+                            selectedDriver,
+                            fuelCardHolderName,
+                            isDisabled: fuelForm.get(
+                                    fuelValuesStringEnum.DRIVER_ID
+                                ).valid
+                        } | fuelPurchaseModalInputConfig
+                    "
+                    [options]="driverOptions"
+                    (selectedItem)="onSelectDropDown($event, 'driver')"
+                ></ca-input-dropdown-test>
             </div>
             <div class="row last-row">
                 <div class="col-12">
