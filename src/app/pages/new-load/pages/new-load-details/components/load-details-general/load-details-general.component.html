@@ -303,9 +303,7 @@
                 </div>
             </div>
         </div>
-        <div class="p-x-6 m-t-8">
-            <div class="divider divider--small divider--dark"></div>
-        </div>
+
         <ng-container
             *ngTemplateOutlet="
                 divider;
@@ -352,6 +350,9 @@
                     </div>
                 }
             </app-ta-custom-card>
+        </div>
+        <div class="p-x-6">
+            <div class="divider divider--small divider--dark"></div>
         </div>
 
         <ng-container *ngTemplateOutlet="messageForDriver"></ng-container>
@@ -536,7 +537,7 @@
                   : eStringPlaceholder.EMPTY
             : eStringPlaceholder.EMPTY;
 
-    <div class="px-3">
+    <div class="p-x-12">
         <app-ta-custom-card
             [cardName]="'Billing'"
             [hasCounter]="data?.billingCount"
@@ -740,7 +741,7 @@
                 : 'green'
             : eStringPlaceholder.EMPTY;
 
-    <div class="px-3">
+    <div class="p-x-12">
         <app-ta-custom-card
             [cardName]="'Payment'"
             [hasCounter]="data?.paymentCount"
@@ -820,7 +821,7 @@
         <ng-container
             *ngTemplateOutlet="divider; context: { isDividerVisible: true }"
         ></ng-container>
-        <div class="p-x-16" [formGroup]="cardForm">
+        <div class="p-x-12" [formGroup]="cardForm">
             <app-ta-input-note
                 formControlName="driverMessage"
                 [noteLabel]="'Driver Message'"
