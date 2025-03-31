@@ -474,3 +474,8 @@ export const minimalListSelector = createSelector(loadState, (state) => {
     const { minimalList } = state;
     return minimalList;
 });
+
+export const tableColumnsSelector = createSelector(loadState, (state) => {
+    const { tableColumns } = state;
+    return tableColumns;
+});
