@@ -59,11 +59,10 @@ export class LoadRequirementsFormatPipe implements PipeTransform {
             suspension: loadRequirements?.suspension?.name,
             year: yearValue,
             liftgate: liftGateValue,
-            // driverAssist
         };
 
         const formattedLoadRequirements = Object.entries(requirementsData)
-            .filter(([_, value]) => value !== undefined && value !== null)
+            .filter(([_, value]) => value)
             .map(([key, value]) => ({
                 title: this.loadRequirementsTitles[key] || key,
                 value,
