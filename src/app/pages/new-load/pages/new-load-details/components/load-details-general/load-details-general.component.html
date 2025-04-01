@@ -457,7 +457,7 @@
             "
         ></ng-container>
         <ng-container
-            *ngTemplateOutlet="invoiceAgeing; context: { data }"
+            *ngTemplateOutlet="invoiceAgeing; context: { data: load }"
         ></ng-container>
         <ng-container
             *ngTemplateOutlet="
@@ -915,7 +915,6 @@
                         </div>
                     </div>
                 </div>
-
                 <ng-container
                     *ngTemplateOutlet="
                         invoiceAgeingProgressBar;
@@ -923,7 +922,7 @@
                             args: {
                                 label: data?.invoiceAgingProgressBar
                                     ?.expirationInDays,
-                                payTerm: data?.payTerm || 0,
+                                payTerm: data?.broker?.payTerm?.name || 0,
                                 percent:
                                     data?.invoiceAgingProgressBar?.percentage,
                             },
@@ -1045,7 +1044,7 @@
                     </div>
                 </div>
                 <div class="text-size-14 text-right text-color-black">
-                    {{ args?.payTerm }} day term
+                    {{ args?.payTerm }} Term
                 </div>
             </div>
         }
