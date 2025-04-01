@@ -77,6 +77,7 @@ import {
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     CaUploadFilesComponent,
     InputTestComponent,
 } from 'ca-components';
@@ -156,7 +157,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         // components
         TaAppTooltipV2Component,
         CaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
@@ -616,12 +617,12 @@ export class DriverModalComponent
     public onTabChange(event: Tabs): void {
         this.selectedTabId = event.id;
 
-        this.mainTabs = this.mainTabs?.map((tab) => {
-            return {
-                ...tab,
-                checked: tab.id === event?.id,
-            };
-        });
+        // this.mainTabs = this.mainTabs?.map((tab) => {
+        //     return {
+        //         ...tab,
+        //         checked: tab.id === event?.id,
+        //     };
+        // });
 
         this.uploadFileService.visibilityDropZone(this.selectedTabId === 2);
 
@@ -665,12 +666,12 @@ export class DriverModalComponent
                 );
             }
 
-            this.ownerTabs = this.ownerTabs?.map((ownerTab) => {
-                return {
-                    ...ownerTab,
-                    checked: ownerTab.id === event.id,
-                };
-            });
+            // this.ownerTabs = this.ownerTabs?.map((ownerTab) => {
+            //     return {
+            //         ...ownerTab,
+            //         checked: ownerTab.id === event.id,
+            //     };
+            // });
         }
     }
 
@@ -680,12 +681,12 @@ export class DriverModalComponent
                 .get(DriverModalStringEnum.PAYROLL_TYPE)
                 .patchValue(event.name);
 
-            this.payrollTabs = this.payrollTabs?.map((payrollTab) => {
-                return {
-                    ...payrollTab,
-                    checked: payrollTab.id === event?.id,
-                };
-            });
+            // this.payrollTabs = this.payrollTabs?.map((payrollTab) => {
+            //     return {
+            //         ...payrollTab,
+            //         checked: payrollTab.id === event?.id,
+            //     };
+            // });
 
             const payrollType = this.driverForm.get(
                 DriverModalStringEnum.PAYROLL_TYPE
