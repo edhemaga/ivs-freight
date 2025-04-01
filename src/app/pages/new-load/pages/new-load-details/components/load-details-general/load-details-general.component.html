@@ -13,7 +13,7 @@
             title: loadNumberFormated,
             tooltip: 'Search load',
             placeholder: load.loadNumber,
-            width: 364,
+            width: 372,
             tooltipNext: 'Next',
             tooltipPrevious: 'Previous',
         }"
@@ -72,7 +72,7 @@
         ></svg-icon>
     </ng-template>
 
-    <div class="d-flex flex-column px-1">
+    <div class="d-flex flex-column px-1 m-t-12">
         <app-ca-skeleton
             [width]="223"
             [height]="16"
@@ -486,7 +486,7 @@
     @if (isLoading || text || loadStatus) {
         <div
             class="d-flex align-items-center h-26"
-            [ngClass]="isSpacingBottom && 'mb-2'"
+            [ngClass]="isSpacingBottom && 'mb-1'"
             [class]="colWidth"
         >
             <app-ca-skeleton
