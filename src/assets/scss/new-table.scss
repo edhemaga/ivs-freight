@@ -7,6 +7,18 @@
 
     &--row {
         &-heading {
+            position: relative;
+
+            .resize-handle {
+                position: absolute;
+                right: 0;
+                top: 0;
+                width: 6px;
+                height: 100%;
+                cursor: col-resize;
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+
             &-group {
                 border-left: 1px solid $ta-light-grey-6;
             }
