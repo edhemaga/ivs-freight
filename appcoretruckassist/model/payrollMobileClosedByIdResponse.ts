@@ -13,35 +13,47 @@ import { PayrollPaymentsMinimalResponse } from './payrollPaymentsMinimalResponse
 import { PayrollDeductionMinimalResponse } from './payrollDeductionMinimalResponse';
 import { PayrollLoadMinimalResponse } from './payrollLoadMinimalResponse';
 import { PayrollCreditMinimalResponse } from './payrollCreditMinimalResponse';
-import { PayrollFlatRateTotalSum } from './payrollFlatRateTotalSum';
 import { PayrollBonusMinimalResponse } from './payrollBonusMinimalResponse';
 import { EnumValue } from './enumValue';
-import { DriverShortResponse } from './driverShortResponse';
+import { LoadWithMilesStopResponse } from './loadWithMilesStopResponse';
 import { PayrollMapLocation } from './payrollMapLocation';
+import { PerMileEntity } from './perMileEntity';
+import { PayrollPercentage } from './payrollPercentage';
 
 
-export interface PayrollDriverFlatRateClosedByIdResponse { 
+export interface PayrollMobileClosedByIdResponse { 
     id?: number;
-    driver?: DriverShortResponse;
-    payrollNumber?: string | null;
+    typeId?: number;
     periodStart?: string;
     periodEnd?: string;
+    closedDate?: string | null;
+    payrollNumber?: string | null;
     status?: EnumValue;
+    basePay?: number | null;
     earnings?: number | null;
     salary?: number | null;
-    rate?: string | null;
-    flatPay?: number | null;
-    debt?: number | null;
+    extraStopPay?: number | null;
+    extraStopCount?: number | null;
+    stopCount?: number | null;
+    loadCount?: number | null;
+    perMilesEntity?: PerMileEntity;
     includedDeductions?: Array<PayrollDeductionMinimalResponse> | null;
-    totalDeduction?: number;
+    totalDeduction?: number | null;
     includedCredits?: Array<PayrollCreditMinimalResponse> | null;
-    totalCredits?: number;
+    totalCredits?: number | null;
     includedBonuses?: Array<PayrollBonusMinimalResponse> | null;
-    totalBonuses?: number;
-    includedLoads?: Array<PayrollLoadMinimalResponse> | null;
+    totalBonus?: number | null;
+    includedLoadsMiles?: Array<LoadWithMilesStopResponse> | null;
+    includedLoadsOther?: Array<PayrollLoadMinimalResponse> | null;
     mapLocations?: Array<PayrollMapLocation> | null;
-    sums?: PayrollFlatRateTotalSum;
-    totalPayments?: number;
+    totalPayments?: number | null;
     payments?: Array<PayrollPaymentsMinimalResponse> | null;
+    debt?: number | null;
+    commission?: number;
+    rate?: string | null;
+    totalMiles?: number | null;
+    loadedMiles?: number | null;
+    emptyMiles?: number | null;
+    percentages?: PayrollPercentage;
 }
 
