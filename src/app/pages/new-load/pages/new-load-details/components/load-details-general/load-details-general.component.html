@@ -2,8 +2,75 @@
 @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
 @let minimalList = loadStoreService.minimalListSelector$ | async;
 @let isSpacingBottom = true;
+@let groupedByStatusTypeList = loadStoreService.groupedByStatusTypeListSelector$ | async;
+@let loadNumberFormated = 'Load ' + load.loadNumber;
 
 <div class="background-white p-8 br-3">
+    <app-ca-details-title-card
+        #detailsTitleCard
+        [detailsTitleCardConfig]="{
+            title: loadNumberFormated,
+            tooltip: 'Search load',
+            placeholder: load.loadNumber,
+            width: 364,
+            tooltipNext: 'Next',
+            tooltipPrevious: 'Previous'
+        }"
+        [dropdownTemplate]="titleDropdown"
+        [titleRightIconTemplate]="titleRightIconTemplate"
+        (onNextAction)="onNextAction()"
+        (onPreviousAction)="onPreviousAction()"
+    >
+    </app-ca-details-title-card>
+
+    <ng-template #titleDropdown>
+        <div 
+            class="d-flex align-items-center justify-content-between ta-font-bold font-size-11 text-color-white dropdown-option add-new background-hover-black"
+            (click)="onAddNewItemAction()"
+        >
+            <div class="text-color-blue-19">ADD NEW</div>
+            <svg-icon
+                class="plus-icon svg-size-14 svg-fill-blue-13"
+                [src]="sharedIcons.PLUS_ICON"
+            ></svg-icon>
+        </div>
+
+        @for(listItem of groupedByStatusTypeList | keyvalue; track $index) {
+            <app-ta-custom-card
+                [cardName]="listItem.key"
+                [hasCounter]="listItem.value.length"
+                [disabledCard]="!listItem.value"
+                [bodyTemplate]="'card'"
+                [hasBlackDivider]="true"
+                [hasSmallDivider]="true"
+                [isDetailsCardDropdown]="true"
+                [animationMarginParams]="{
+                    marginTop: '6px',
+                    marginBottom: '6px',
+                }"
+            >
+                @for (item of listItem.value; track item.id; let i = $index) {
+                    <ng-container 
+                        *ngTemplateOutlet=" 
+                            dropdownItem,
+                            context: {
+                                item
+                            }
+                        "
+                    >
+                    </ng-container>
+                }
+            </app-ta-custom-card>
+        }
+    </ng-template>
+
+    <ng-template #titleRightIconTemplate>
+        <svg-icon
+            [src]="sharedIcons.LTL_FILLED"
+            class="d-flex align-items-center svg-size-18 m-l-6 svg-fill-muted"
+        ></svg-icon>
+    </ng-template>
+
     <div class="d-flex flex-column px-1">
         <app-ca-skeleton
             [width]="223"
@@ -246,7 +313,7 @@
 
                 <svg-icon
                     [src]="sharedIcons.HALF_TIME_ICON"
-                    class="svg-size-18 m-l-4 svg-fill-muted"
+                    class="svg-size-18 m-l-6 svg-fill-muted"
                 ></svg-icon>
             </span>
 
@@ -841,4 +908,46 @@
             ></app-ta-input-note>
         </div>
     }
+</ng-template>
+
+<ng-template
+    #dropdownItem
+    let-item="item"
+>
+    <div 
+        class="d-flex align-items-center justify-content-between text-color-white background-hover-black ta-font-regular font-size-14 br-2 dropdown-option dropdown-item"
+        (click)="onDropdownItemAction()"
+    >
+        <div class="dropdown-option-left-side d-flex">
+            <svg-icon
+                [src]="sharedIcons.LTL_FILLED"
+                class="d-flex align-items-center svg-size-18 m-r-4 svg-fill-muted"
+            ></svg-icon>
+            <div class="ta-font-regular text-size-14 m-r-10">
+                {{ item.loadNumber }}
+            </div>
+            <div class="ta-font-regular text-color-light-grey-2 font-size-11 line-height-18 additional-text-default">
+                {{ item.referenceNumber }}
+            </div>
+            <div class="ta-font-regular text-color-light-grey-2 font-size-11 line-height-18 additional-text-hover">
+                ${{ item?.totalBill }}K
+            </div>
+        </div>
+
+        <div class="dropdown-option-right-side">
+            <div class="right-side-default">
+                <app-ca-load-status
+                    [status]="{
+                        name: item.status?.statusString,
+                        id: item.status?.statusValue?.id,
+                    }"
+                    [isTitleCardDropdown]="true"
+                >
+                </app-ca-load-status>
+            </div>
+            <div class="ta-font-regular text-color-light-grey-2 font-size-11 line-height-18 right-side-hover">
+                {{ item.brokerName }} 
+            </div>
+        </div>
+    </div>
 </ng-template>
