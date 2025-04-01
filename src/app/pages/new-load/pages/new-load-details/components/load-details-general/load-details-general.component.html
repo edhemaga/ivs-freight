@@ -7,22 +7,58 @@
 @let loadNumberFormated = 'Load ' + load.loadNumber;
 
 <div class="background-white p-8 br-3">
-    <app-ca-details-title-card
-        #detailsTitleCard
-        [detailsTitleCardConfig]="{
-            title: loadNumberFormated,
-            tooltip: 'Search load',
-            placeholder: load.loadNumber,
-            width: 372,
-            tooltipNext: 'Next',
-            tooltipPrevious: 'Previous',
-        }"
-        [dropdownTemplate]="titleDropdown"
-        [titleRightIconTemplate]="titleRightIconTemplate"
-        (onNextAction)="onNextAction()"
-        (onPreviousAction)="onPreviousAction()"
-    >
-    </app-ca-details-title-card>
+    @if (isLoading) {
+        <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center">
+                <p class="placeholder-glow">
+                    <span
+                        class="placeholder background-muted br-2 h-20 w-93"
+                    ></span>
+                </p>
+
+                <p class="placeholder-glow m-l-8">
+                    <span
+                        class="placeholder background-muted rounded-circle h-18 w-18"
+                    ></span>
+                </p>
+            </div>
+
+            <div class="d-flex">
+                <div class="d-flex w-26 h-26 justify-content-center">
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder background-muted br-2 w-7 h-18"
+                        ></span>
+                    </p>
+                </div>
+
+                <div class="d-flex w-26 h-26 justify-content-center ml-1">
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder background-muted br-2 w-7 h-18"
+                        ></span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    } @else {
+        <app-ca-details-title-card
+            #detailsTitleCard
+            [detailsTitleCardConfig]="{
+                title: loadNumberFormated,
+                tooltip: 'Search load',
+                placeholder: load.loadNumber,
+                width: 372,
+                tooltipNext: 'Next',
+                tooltipPrevious: 'Previous',
+            }"
+            [dropdownTemplate]="titleDropdown"
+            [titleRightIconTemplate]="titleRightIconTemplate"
+            (onNextAction)="onNextAction()"
+            (onPreviousAction)="onPreviousAction()"
+        >
+        </app-ca-details-title-card>
+    }
 
     <ng-template #titleDropdown>
         <div
