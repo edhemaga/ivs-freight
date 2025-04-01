@@ -10,8 +10,8 @@
         flex-direction: column;
         box-shadow: 0px 0px 4px 0px $ta-border-grey inset;
         border-radius: 50px;
-        padding: 4px; 
-        margin-left: auto;    
+        padding: 4px;
+        margin-left: auto;
         bottom: 12px;
         right: 12px;
         z-index: 2;
@@ -19,11 +19,28 @@
     }
 }
 
-.wrapper {
-    height: 600px;
+.zoom-controls button {
+    margin: 5px;
+    padding: 10px;
+    cursor: pointer;
+}
+
+.zoomable-div {
+    transition: transform 0.3s ease;
+    /* You can define the default size of the div here */
+    width: 400px;
+    height: 300px;
+    overflow: hidden;
+    background-color: lightblue;
+    border: 1px solid #ccc;
+    padding: 20px;
+}
+
+.no-data-container {
+    height: 800px;
 }
 
 .modal-date-border {
-    height: 18px; 
+    height: 18px;
     border-right: 1px solid $ta-light-grey-6;
 }

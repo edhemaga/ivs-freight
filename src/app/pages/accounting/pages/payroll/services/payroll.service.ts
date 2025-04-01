@@ -18,7 +18,7 @@ import {
     PayrollOwnerClosedResponse,
     PayrollOwnerResponse,
     PayrollPaymentType,
-    RoutingResponse
+    RoutingResponse,
 } from 'appcoretruckassist';
 import { PayrollDriverMileageResponse } from 'appcoretruckassist/model/payrollDriverMileageResponse';
 import {
@@ -84,10 +84,9 @@ export class PayrollService {
         );
     }
 
-    public generateReport(id: number, type: PayrollType) {
+    public generateReport(id: number, type: PayrollType): Observable<any> {
         return this.http.get(
-            `${environment.API_ENDPOINT}${this.getReportURL(type)}/${id}`,
-            { responseType: 'blob' }
+            `${environment.API_ENDPOINT}${this.getReportURL(type)}/${id}`
         );
     }
 

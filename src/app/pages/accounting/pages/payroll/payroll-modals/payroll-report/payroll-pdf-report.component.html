@@ -3,18 +3,55 @@
     [rightHeaderTemplate]="rightModalContent"
     [customClass]="'modal-container-load modal-payroll-report'"
 >
-    <div origin class="w-full">
+    <div origin class="w-full scrollable-element remove-scroll-track">
+        <div class="divider divider--dark divider--small"></div>
+
+        @if (!isLoading) {
+            <div class="zoom-controls">
+                <button (click)="setZoom(2)">2X</button>
+                <button (click)="setZoom(1.5)">1.5X</button>
+                <button (click)="setZoom(1.25)">1.25X</button>
+                <button (click)="setZoom(1)">DEF LVL</button>
+                <button (click)="setZoom(0.75)">0.75X</button>
+                <button (click)="setZoom(0.5)">0.5X</button>
+            </div>
+
+            <div
+                class="zoomable-div"
+                [ngStyle]="{
+                    transform: 'scale(' + zoomLevel + ')',
+                    'margin-top': '200px',
+                }"
+            >
+                <!-- Your content goes here -->
+                <p>This is a zoomable div!</p>
+            </div>
+
+            <iframe
+                [srcdoc]="pdfReport?.html"
+                width="100%"
+                height="960px"
+            ></iframe>
+        } @else {
+            <div class="no-data-container">
+                <div
+                    class="d-flex align-items-center justify-content-center h-full w-full"
+                >
+                    <app-ta-spinner
+                        [size]="'small'"
+                        [color]="'black'"
+                    ></app-ta-spinner>
+                </div>
+            </div>
+        }
+    </div>
+
+    <!-- <div origin class="w-full">
         <div class="divider divider--dark divider--small"></div>
         <ng-container *ngIf="!isLoading; else loading">
             <div class="wrapper">
                 <div class="h-full pos-relative">
-                    <pdf-viewer
-                        [src]="pdfSrc"
-                        [render-text]="true"
-                        [original-size]="true"
-                        [zoom]="pdfZoom"
-                        style="display: block; width: 100%; height: 600px"
-                    ></pdf-viewer>
+                    
 
                     <div
                         class="pdf-button-wrapper pos-absolute d-flex align-items-center justify-content-center"
@@ -51,20 +88,7 @@
                 </div>
             </div>
         </ng-container>
-
-        <ng-template #loading>
-            <div class="wrapper">
-                <div
-                    class="d-flex align-items-center justify-content-center h-full w-full"
-                >
-                    <app-ta-spinner
-                        [size]="'small'"
-                        [color]="'black'"
-                    ></app-ta-spinner>
-                </div>
-            </div>
-        </ng-template>
-    </div>
+    </div> -->
 </app-ca-modal>
 
 <ng-template #rightModalContent>
@@ -72,28 +96,29 @@
         <div
             class="d-flex justify-content-center align-items-center modal-close-container"
             ngbTooltip
-            mainTooltip="Cancel"
-            tooltipBackground="#424242"
-            position="bottom"
-            (click)="onCloseModal()"
+            [mainTooltip]="eGeneralActions.DOWNLOAD"
+            [tooltipBackground]="eColor.BLACK"
+            [position]="ePosition.BOTTOM"
         >
             <svg-icon
                 [src]="svgRoutes.downloadIcon"
                 class="modal-buttons"
-                (click)="downloadReport()"
+                (click)="handleDownloadReportClick()"
             ></svg-icon>
         </div>
+
         <div
             class="modal-date-border d-flex align-items-center justify-content-center"
         ></div>
     </ng-container>
+
     <div
         class="d-flex justify-content-center align-items-center modal-close-container"
         ngbTooltip
-        mainTooltip="Cancel"
-        tooltipBackground="#424242"
-        position="bottom"
-        (click)="onCloseModal()"
+        [mainTooltip]="eGeneralActions.CANCEL_CAPITALIZED"
+        [tooltipBackground]="eColor.BLACK"
+        [position]="ePosition.BOTTOM"
+        (click)="handleCloseModalClick()"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"
