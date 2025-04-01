@@ -45,12 +45,8 @@
     }
 }
 
-.card-container {
-    padding: 0 4px;
-}
-
 .add-new {
-    padding: 4.5px 6px 4.5px 4px;
+    padding: 4px 6px 4px 4px;
     position: relative;
     transition:
         background 0.2s ease-in-out,
@@ -61,8 +57,4 @@
     padding: 4px 0 4px 4px;
     height: 26px;
     min-height: 26px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: #fff;
 }
