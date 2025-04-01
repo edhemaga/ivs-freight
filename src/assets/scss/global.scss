@@ -657,3 +657,8 @@ html ngb-modal-backdrop {
 .line-0 {
     line-height: 0;
 }
+
+ngb-modal-window.modal {
+    backdrop-filter: blur(0.0625rem);
+    background: $dark-3 !important;
+}
