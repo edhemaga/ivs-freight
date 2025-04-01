@@ -68,6 +68,7 @@ import {
     isLoadDetailsMapOpenSelector,
     minimalListSelector,
     tableColumnsSelector,
+    groupedByStatusTypeListSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -186,6 +187,9 @@ export class LoadStoreService {
     public tableColumnsSelector$: Observable<ITableColumn[]> = this.store.pipe(
         select(tableColumnsSelector)
     );
+
+    public groupedByStatusTypeListSelector$: Observable<LoadMinimalListResponse> =
+        this.store.pipe(select(groupedByStatusTypeListSelector));
 
     public dispatchLoadList(
         apiParam: IGetLoadListParam,

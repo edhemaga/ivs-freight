@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import {
     ReactiveFormsModule,
@@ -25,13 +25,14 @@ import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import {
-    CaLoadStatusComponent,
-    LoadStatusColorsPipe,
-    CaProgressExpirationComponent,
-} from 'ca-components';
+import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import {
+    CaLoadStatusComponent,
+    CaDetailsTitleCardComponent,
+    LoadStatusColorsPipe,
+} from 'ca-components';
 
 @Component({
     selector: 'app-load-details-general',
@@ -56,9 +57,13 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
         CaLoadStatusComponent,
         TaCustomCardComponent,
         TaInputNoteComponent,
+        CaDetailsTitleCardComponent,
     ],
 })
 export class LoadDetailsGeneralComponent {
+    @ViewChild('detailsTitleCard')
+    detailsTitleCard: CaDetailsTitleCardComponent;
+
     // assets
     public sharedIcons = SharedSvgRoutes;
 
@@ -99,5 +104,17 @@ export class LoadDetailsGeneralComponent {
             driverMessage: [],
             note: [],
         });
+    }
+
+    public onNextAction(): void {}
+
+    public onPreviousAction(): void {}
+
+    public onDropdownItemAction(): void {
+        this.detailsTitleCard.dropdownPopover?.close();
+    }
+
+    public onAddNewItemAction(): void {
+        this.detailsTitleCard.dropdownPopover?.close();
     }
 }
