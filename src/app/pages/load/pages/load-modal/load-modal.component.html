@@ -39,10 +39,7 @@
                 [ngClass]="{
                     'template-row': isConvertedToTemplate,
                     'edit-load': editData.type === 'edit',
-                    'select-template':
-                        !isConvertedToTemplate &&
-                        !isActiveLoad &&
-                        labelsTemplate.length,
+                    'select-template': !isConvertedToTemplate && !isActiveLoad,
                 }"
             >
                 <!-- FTL-LTL Switcher -->
@@ -67,11 +64,7 @@
 
                 <!-- Load Template Picker -->
 
-                @if (
-                    !isConvertedToTemplate &&
-                    !isActiveLoad &&
-                    labelsTemplate.length
-                ) {
+                @if (!isConvertedToTemplate && !isActiveLoad) {
                     @if (!isTemplateSelected) {
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
@@ -87,10 +80,13 @@
                             container="body"
                             ngbTooltip
                             [mainTooltip]="
-                                !popover.isOpen() ? 'Select Template' : null
+                                !popover.isOpen() && labelsTemplate.length
+                                    ? 'Select Template'
+                                    : null
                             "
                             position="bottom"
                             tooltipBackground="#424242"
+                            [disabled]="!labelsTemplate.length"
                         >
                             <svg-icon
                                 class="load-template-switcher-icon"
@@ -480,7 +476,7 @@
                                 [inputConfig]="
                                     loadPickupShipperContactsInputConfig
                                 "
-                                [canAddNew]="true" 
+                                [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [options]="labelsShipperContacts"
                                 [activeItem]="selectedPickupShipperContact"
