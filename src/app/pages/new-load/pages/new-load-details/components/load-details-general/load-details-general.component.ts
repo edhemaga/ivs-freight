@@ -25,6 +25,7 @@ import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import {
@@ -73,6 +74,7 @@ export class LoadDetailsGeneralComponent {
 
     public isBillingExpanded: boolean = false;
     public isPaymentExpanded: boolean = false;
+    public isInvoiceAgeingExpanded: boolean = false;
 
     public cardForm: UntypedFormGroup;
 
@@ -91,6 +93,10 @@ export class LoadDetailsGeneralComponent {
 
     public togglePayment(): void {
         this.isPaymentExpanded = !this.isPaymentExpanded;
+    }
+
+    public toggleInvoiceAgeing(): void {
+        this.isInvoiceAgeingExpanded = !this.isInvoiceAgeingExpanded;
     }
 
     private createForm(): void {
