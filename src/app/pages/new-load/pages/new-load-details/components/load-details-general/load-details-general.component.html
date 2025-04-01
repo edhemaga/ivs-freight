@@ -389,7 +389,7 @@
             "
         ></ng-container>
         <ng-container
-            *ngTemplateOutlet="invoiceAgeing; context: {}"
+            *ngTemplateOutlet="invoiceAgeing; context: { data }"
         ></ng-container>
         <ng-container
             *ngTemplateOutlet="
@@ -818,7 +818,7 @@
     <div class="p-x-12">
         <app-ta-custom-card
             [cardName]="'Invoice Ageing'"
-            [disabledCard]="!!data?.invoicedDate"
+            [disabledCard]="!data?.invoicedDate || !data?.invoiceDueDate"
             [subText]="!isInvoiceAgeingExpanded && cardSubTitle"
             [bodyTemplate]="'card'"
             [animationMarginParams]="{
@@ -828,12 +828,12 @@
             [hasDivider]="false"
             (onOpenCard)="toggleInvoiceAgeing()"
         >
-            @if (true) {
+            @if (data?.invoicedDate && data?.invoiceDueDate) {
                 <div class="d-flex m-b-4">
                     <div class="w-50">
                         <div class="text-size-11 ta-font-bold">Invoiced</div>
                         <div class="text-size-14 m-t-2">
-                            {{ data?.invoicedDate }} 04/04/25
+                            {{ data?.invoicedDate }}
                         </div>
                     </div>
 
@@ -842,7 +842,9 @@
                         <div class="text-size-11 text-color-black ta-font-bold">
                             {{ statusText }}
                         </div>
-                        <div class="text-size-14 m-t-2">04/04/25</div>
+                        <div class="text-size-14 m-t-2">
+                            {{ data?.invoiceDueDate }}
+                        </div>
                     </div>
                 </div>
 
@@ -851,13 +853,11 @@
                         invoiceAgeingProgressBar;
                         context: {
                             args: {
-                                label:
-                                    data?.invoiceAgingProgressBar
-                                        ?.expirationInDays || '5 days overdue',
-                                payTerm: 40,
+                                label: data?.invoiceAgingProgressBar
+                                    ?.expirationInDays,
+                                payTerm: data?.payTerm || 0,
                                 percent:
-                                    data?.invoiceAgingProgressBar?.percentage ||
-                                    40,
+                                    data?.invoiceAgingProgressBar?.percentage,
                             },
                         }
                     "
