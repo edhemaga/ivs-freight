@@ -132,9 +132,8 @@
         &-red-10 {
             @include svg-fill($ta-red-10);
         }
-
-        &-red-11 {
-            @include svg-fill($ta-red-11);
+        &-grey {
+            @include svg-fill($bw5);
         }
 
         &-red-14 {
@@ -151,6 +150,15 @@
 
         &-orange-5 {
             @include svg-fill($ta-orange-5);
+        }
+        &-red-11 {
+            @include svg-fill($ta-red-11);
+        }
+        &-red-14 {
+            @include svg-fill($ta-red-14);
+        }
+        &-red-18 {
+            @include svg-fill($ta-red-18);
         }
     }
 
