@@ -73,6 +73,7 @@ export class LoadDetailsGeneralComponent {
 
     public isBillingExpanded: boolean = false;
     public isPaymentExpanded: boolean = false;
+    public isInvoiceAgeingExpanded: boolean = false;
 
     public cardForm: UntypedFormGroup;
 
@@ -91,6 +92,10 @@ export class LoadDetailsGeneralComponent {
 
     public togglePayment(): void {
         this.isPaymentExpanded = !this.isPaymentExpanded;
+    }
+
+    public toggleInvoiceAgeing(): void {
+        this.isInvoiceAgeingExpanded = !this.isInvoiceAgeingExpanded;
     }
 
     private createForm(): void {
