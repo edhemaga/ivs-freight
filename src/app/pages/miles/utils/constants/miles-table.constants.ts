@@ -182,7 +182,7 @@ const fuelMpg: ITableColumn = {
 const fuelGroup = {
     key: 'fuel',
     label: 'Fuel',
-    sort: false,
+    hasSort: false,
     columns: [fuelGalons, fuelCost, fuelMpg],
 };
 
@@ -237,7 +237,7 @@ const revenue: ITableColumn = {
 const milesGroup = {
     key: 'miles',
     label: 'Miles',
-    sort: false,
+    hasSort: false,
     columns: [milesLoaded, milesEmpty, milesTotal],
 };
 
@@ -265,6 +265,7 @@ const loadGroup = {
 const revenueGroup = {
     key: 'revenueGroup',
     label: '',
+    isAlignedRight: true,
     columns: [revenue],
 };
 

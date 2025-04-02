@@ -61,15 +61,10 @@ export class NewTableComponent<T> {
     }
 
     @Input() rows: T[] = [];
-
     @Input() isTableLocked: boolean;
-    @Input() isEmptyTable: boolean;
-    @Input() totalResult: number;
-    @Input() pageResult: number;
-
+    @Input() totalDataCount: number;
     @Input() headerTemplates: { [key: string]: TemplateRef<T> } = {};
     @Input() templates: { [key: string]: TemplateRef<T> } = {};
-
     @Input() expandedRows: Set<number> = new Set([]);
 
     @Output() onHandleShowMoreClick: EventEmitter<boolean> = new EventEmitter();
@@ -111,7 +106,10 @@ export class NewTableComponent<T> {
     }
 
     public handleSortColumnClick(column: ITableColumn): void {
-        if (!this.isTableLocked || this.isEmptyTable || !column.hasSort) return;
+        const isSortDisabled =
+            !this.isTableLocked || !this.rows.length || !column.hasSort;
+
+        if (isSortDisabled) return;
 
         this.onSortingChange.emit(column);
     }

@@ -16,6 +16,7 @@ export interface ITableColumn {
     direction?: SortOrder | null;
     isPinEnabled?: boolean;
     isResizable?: boolean;
+    isAlignedRight?: boolean;
     columns?: ITableColumn[];
     sortName?: MilesStopSortBy;
 }

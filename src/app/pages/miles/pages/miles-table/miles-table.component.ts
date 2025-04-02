@@ -24,6 +24,7 @@ import {
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
+import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
 
 @Component({
     selector: 'app-miles-table',
@@ -41,6 +42,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
 
         // pipes
         ThousandSeparatorPipe,
+        TableColumnClassPipe,
     ],
 })
 export class MilesTableComponent {
