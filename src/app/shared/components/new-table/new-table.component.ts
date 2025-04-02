@@ -26,7 +26,7 @@ import { ePosition, eUnit } from 'ca-components';
 import { eColor, eGeneralActions } from '@shared/enums';
 
 // directives
-import { ResizableColumnDirective } from '@shared/components/new-table/directives/resize.directive';
+import { ResizableColumnDirective } from '@shared/components/new-table/directives';
 
 // interfaces
 import {

@@ -21,7 +21,7 @@ export class ResizableColumnDirective implements AfterViewInit {
     @Input() minWidth: number = 0;
     @Input() maxWidth: number = 0;
 
-    @Output() onColumnWidthResize = new EventEmitter<ITableResizeAction>();
+    @Output() onColumnResize = new EventEmitter<ITableResizeAction>();
 
     // listeners
     private mouseMoveListener: () => void;
@@ -95,7 +95,7 @@ export class ResizableColumnDirective implements AfterViewInit {
                 newWidth,
             };
 
-            this.onColumnWidthResize.emit(resizeAction);
+            this.onColumnResize.emit(resizeAction);
         }
     };
 
