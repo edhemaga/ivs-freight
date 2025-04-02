@@ -23,7 +23,7 @@
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
-        [isTableLocked]="false"
+        [isTableLocked]="store.tableSettings.isTableLocke"
         [isEmptyTable]="!store.miles.length"
         [pageResult]="store.miles.length"
         [totalResult]="tabCount"
