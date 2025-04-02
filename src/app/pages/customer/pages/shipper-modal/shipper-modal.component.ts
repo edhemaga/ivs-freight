@@ -81,6 +81,7 @@ import {
     CaInputDatetimePickerComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     eModalButtonClassType,
     eModalButtonSize,
 } from 'ca-components';
@@ -152,6 +153,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaModalButtonComponent,
         CaInputDatetimePickerComponent,
+        CaTabSwitchComponent,
 
         // Pipes
         FormatDatePipe,
@@ -1178,13 +1180,6 @@ export class ShipperModalComponent
         this.selectedPhysicalAddressTab = event.id;
 
         this.setAddressValidations(event.name, true);
-
-        this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === this.selectedPhysicalAddressTab,
-            };
-        });
     }
 
     private setAddressValidations(type: string, tabChanged?: boolean): void {
