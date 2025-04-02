@@ -8,7 +8,7 @@ import { SortOrder } from 'appcoretruckassist';
     standalone: true,
 })
 export class TableColumnClassPipe<
-    T extends { sort?: string; direction?: SortOrder | null },
+    T extends { hasSort?: string; direction?: SortOrder | null },
 > implements PipeTransform
 {
     transform(args: {
@@ -18,19 +18,18 @@ export class TableColumnClassPipe<
         isEmptyTable: boolean;
     }): object {
         const { column, isTableLocked, isGroup, isEmptyTable } = args;
+
         return {
-            'text-color-bw6-2': !column.sort || !column.direction,
+            'text-color-bw6-2': !column.hasSort || !column.direction,
+            'text-hover-black svg-fill-black':
+                column.hasSort &&
+                isTableLocked &&
+                !isEmptyTable &&
+                !column.direction,
             'c-pointer new-table--row-heading-sortable':
-                column.sort && !isTableLocked && !isEmptyTable,
-            'text-hover-black':
-                column.sort &&
-                !isTableLocked &&
-                !column.direction &&
-                !isEmptyTable,
-            'new-table--row-heading-sorting-active text-color-blue-13 svg-fill-blue-13 text-hover-blue-18 svg-hover-blue-18':
-                column.direction && !isTableLocked,
-            'new-table--row-heading-unlocked  justify-content-between':
-                isTableLocked,
+                column.hasSort && isTableLocked && !isEmptyTable,
+            'text-color-blue-18 text-hover-blue-15 svg-fill-blue-13 svg-hover-blue-18':
+                column.direction && isTableLocked,
             'flex-column align-items-start mt-auto': isGroup,
             'align-items-end': !isGroup,
             'disable-text-selection': !isTableLocked,
