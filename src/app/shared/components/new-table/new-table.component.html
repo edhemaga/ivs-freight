@@ -1,8 +1,6 @@
 <!-- TODO: REMOVE MARGIN -->
 
 <div class="table-container">
-    <p>T{{ isTableLocked }}</p>
-
     <div class="w-full">
         <!-- Header -->
 
@@ -190,7 +188,7 @@
                 [minWidth]="column.minWidth"
                 [maxWidth]="column.maxWidth"
                 (click)="handleSortColumnClick(column)"
-                (onColumnWidthResize)="onColumnWidthResize($event)"
+                (onColumnResize)="onColumnWidthResize($event)"
             >
                 @if (isFirst) {
                     <span
