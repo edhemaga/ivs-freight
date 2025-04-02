@@ -119,7 +119,10 @@
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center visible-large">
+                    <div
+                        class="d-flex align-items-center"
+                        [class.visible-large]="!isPendingLoad"
+                    >
                         <p class="placeholder-glow">
                             <span
                                 class="placeholder background-muted br-2 w-116 h-10"
@@ -127,7 +130,10 @@
                         </p>
                     </div>
 
-                    <div class="d-flex align-items-center visible-xl">
+                    <div
+                        class="d-flex align-items-center"
+                        [class.visible-xl]="!isPendingLoad"
+                    >
                         <p class="placeholder-glow">
                             <span
                                 class="placeholder background-muted br-2 w-108 h-10"
@@ -199,7 +205,7 @@
                                 </div>
                             </div>
 
-                            <div class="visible-large">
+                            <div [class.visible-large]="!isPendingLoad">
                                 <div class="d-flex gap-1 flex-column flex-1">
                                     <p class="placeholder-glow line-0">
                                         <span
@@ -215,7 +221,7 @@
                                 </div>
                             </div>
 
-                            <div class="visible-xl">
+                            <div [class.visible-xl]="!isPendingLoad">
                                 <div class="d-flex gap-1 flex-column flex-1">
                                     <p class="placeholder-glow line-0">
                                         <span
@@ -299,12 +305,16 @@
                         </div>
                     </div>
                     <div
-                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold visible-large"
+                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold"
+                        [class.visible-large]="!isPendingLoad"
+                        [class.visible-md]="isPendingLoad"
                     >
                         SHIPPER • ADDRESS
                     </div>
                     <div
-                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold visible-xl"
+                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold"
+                        [class.visible-xl]="!isPendingLoad"
+                        [class.visible-large]="isPendingLoad"
                     >
                         CONTACT • PHONE
                     </div>
@@ -353,7 +363,9 @@
                             }"
                             (click)="hasItems && toggleStopDetails(i)"
                         >
-                            <div class="d-flex align-items-center">
+                            <div
+                                class="d-flex align-items-center overflow-hidden"
+                            >
                                 <div
                                     class="h-18 w-18 br-1 text-size-11 ta-font-bold d-flex align-items-center justify-content-center"
                                     [ngClass]="
@@ -410,7 +422,11 @@
                                 </div>
                             </div>
 
-                            <div class="visible-large flex-column">
+                            <div
+                                class="flex-column"
+                                [class.visible-large]="!isPendingLoad"
+                                [class.visible-md]="isPendingLoad"
+                            >
                                 <div
                                     class="text-size-11 text-color-black ta-font-medium"
                                 >
@@ -422,7 +438,11 @@
                                 </div>
                             </div>
 
-                            <div class="visible-xl flex-column">
+                            <div
+                                class="flex-column"
+                                [class.visible-xl]="!isPendingLoad"
+                                [class.visible-large]="isPendingLoad"
+                            >
                                 <div
                                     class="text-size-11 ta-font-medium"
                                     [ngClass]="
