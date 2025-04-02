@@ -1,12 +1,12 @@
-@let tableWidth = rowWidth + eUnit.PX;
-
 <!-- TODO: REMOVE MARGIN -->
 
-<div class="table-container" [ngStyle]="{ width: tableWidth }">
+<div class="table-container">
+    <p>T{{ isTableLocked }}</p>
+
     <div class="w-full">
         <!-- Header -->
 
-        <div #tableRow class="d-flex m-b-6 p-x-8 table-header">
+        <div class="d-flex m-b-6 p-x-8 table-header">
             <div class="d-flex new-table--pinned-left">
                 @for (column of leftPinnedColumns; track column.key) {
                     <ng-container
@@ -139,7 +139,10 @@
 
 <ng-template #columnTemplate let-column="column">
     @if (column.columns?.length) {
-        <div class="d-flex p-l-6 h-30 new-table--row-heading-group">
+        <div
+            class="d-flex h-30 new-table--row-heading-group"
+            [ngClass]="{ 'p-l-6 border-left-light-grey-6': isTableLocked }"
+        >
             @for (
                 _column of column.columns;
                 track _column.key;
@@ -172,18 +175,22 @@
         let-label="label"
     >
         @if (!column.hidden) {
+            @let isResizableColumn = !isTableLocked && column.isResizable;
+            @let columnWidth = column.width + eUnit.PX;
+
             <div
-                class="new-table--row-heading text-color-bw6-2 d-flex"
-                appResizableColumn
-                [style.max-width]="'400px'"
-                (onColumnResize)="handleResize($event)"
+                class="d-flex new-table--row-heading text-color-bw6-2"
                 [ngClass]="
                     { column, isTableLocked, isGroup, isEmptyTable }
                         | tableColumnClass
                 "
-                [style.min-width]="column.width + eUnit.PX"
-                [style.width]="column.width + eUnit.PX"
+                [style.width]="columnWidth"
+                [appResizableColumn]="isResizableColumn"
+                [columnId]="column.id"
+                [minWidth]="column.minWidth"
+                [maxWidth]="column.maxWidth"
                 (click)="handleSortColumnClick(column)"
+                (onColumnWidthResize)="onColumnWidthResize($event)"
             >
                 @if (isFirst) {
                     <span
@@ -192,6 +199,7 @@
                         {{ label }}
                     </span>
                 }
+
                 <div class="d-flex flex-row">
                     <!-- Display custom header template if template exists -->
 
@@ -209,7 +217,7 @@
                         </span>
                     }
 
-                    @if (isTableLocked) {
+                    @if (!isTableLocked && false) {
                         <div class="d-flex">
                             <div
                                 class="c-pointer"
@@ -251,6 +259,7 @@
                         </div>
                     } @else {
                         <!-- Show this on hover if column.direction is not null -->
+
                         <svg-icon
                             class="new-table--row-heading-arrow ml-1 svg-size-12"
                             [ngClass]="column.direction ? 'd-flex' : 'd-none'"
@@ -285,8 +294,9 @@
                     cellColumnTemplate;
                     context: {
                         column: _column,
-                        hasPaddingLeft: true,
+                        hasPaddingLeft: isTableLocked,
                         hasMarginRight:
+                            isTableLocked &&
                             _columnIndex === column.columns.length - 1 &&
                             mainColumnIndex !== mainColumns.length - 1,
                     }

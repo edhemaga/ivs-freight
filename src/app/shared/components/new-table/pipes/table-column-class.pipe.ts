@@ -33,6 +33,7 @@ export class TableColumnClassPipe<
                 isTableLocked,
             'flex-column align-items-start mt-auto': isGroup,
             'align-items-end': !isGroup,
+            'disable-text-selection': !isTableLocked,
         };
     }
 }

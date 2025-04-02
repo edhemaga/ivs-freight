@@ -1,28 +1,41 @@
 import {
     Directive,
     ElementRef,
-    HostListener,
     Renderer2,
     AfterViewInit,
     Output,
     EventEmitter,
+    Input,
 } from '@angular/core';
+
+// interfaces
+import { ITableResizeAction } from '@shared/components/new-table/interface';
 
 @Directive({
     selector: '[appResizableColumn]',
     standalone: true,
 })
 export class ResizableColumnDirective implements AfterViewInit {
-    private resizer!: HTMLElement;
-    private startX = 0;
-    private startWidth = 0;
-    private minWidth = 100; // Default min width
-    private maxWidth = 300; // Default max width
+    @Input() appResizableColumn: boolean = false;
+    @Input() columnId: number = null;
+    @Input() minWidth: number = 0;
+    @Input() maxWidth: number = 0;
 
-    @Output() onColumnResize = new EventEmitter<any>();
+    @Output() onColumnWidthResize = new EventEmitter<ITableResizeAction>();
+
+    // listeners
+    private mouseMoveListener: () => void;
+    private mouseUpListener: () => void;
+
+    // resizer
+    private resizer!: HTMLElement;
+    private startX: number = 0;
+    private startWidth: number = 0;
 
     constructor(
-        private el: ElementRef,
+        private column: ElementRef,
+
+        // renderer
         private renderer: Renderer2
     ) {}
 
@@ -31,19 +44,35 @@ export class ResizableColumnDirective implements AfterViewInit {
     }
 
     private initializeResizer(): void {
-        // Create a resize handle
+        if (!this.appResizableColumn) return;
+
+        // create a resize handle
         this.resizer = this.renderer.createElement('div');
-        this.renderer.addClass(this.resizer, 'resize-handle');
 
-        // Attach the resizer to the element
-        this.renderer.appendChild(this.el.nativeElement, this.resizer);
+        // add style classes
+        const classes = [
+            'resize-handler',
+            'pos-absolute',
+            'bottom-0',
+            'end-0',
+            'w-2',
+            'h-14',
+            'm-r-4',
+            'background-muted',
+            'background-hover-black',
+        ];
+        classes.forEach((cls) => this.renderer.addClass(this.resizer, cls));
 
-        // Extract min/max width from styles if available
-        const style = window.getComputedStyle(this.el.nativeElement);
-        this.minWidth = parseInt(style.minWidth) || this.minWidth;
-        this.maxWidth = parseInt(style.maxWidth) || this.maxWidth;
+        // attach the resizer to the column
+        this.renderer.appendChild(this.column.nativeElement, this.resizer);
 
-        // Add event listeners
+        // extract min/max width from styles if available
+        const style = window.getComputedStyle(this.column.nativeElement);
+
+        this.minWidth = Number(style.minWidth) || this.minWidth;
+        this.maxWidth = Number(style.maxWidth) || this.maxWidth;
+
+        // add event listeners
         this.renderer.listen(
             this.resizer,
             'mousedown',
@@ -51,29 +80,50 @@ export class ResizableColumnDirective implements AfterViewInit {
         );
     }
 
-    private onMouseDown(event: MouseEvent): void {
-        this.startX = event.clientX;
-        this.startWidth = this.el.nativeElement.offsetWidth;
-
-        document.addEventListener('mousemove', this.onMouseMove);
-        document.addEventListener('mouseup', this.onMouseUp);
-    }
-
     private onMouseMove = (event: MouseEvent): void => {
         const newWidth = this.startWidth + (event.clientX - this.startX);
+
         if (newWidth >= this.minWidth && newWidth <= this.maxWidth) {
             this.renderer.setStyle(
-                this.el.nativeElement,
+                this.column.nativeElement,
                 'width',
                 `${newWidth}px`
             );
 
-            this.onColumnResize.emit(newWidth);
+            const resizeAction = {
+                id: this.columnId,
+                newWidth,
+            };
+
+            this.onColumnWidthResize.emit(resizeAction);
         }
     };
 
+    private onMouseDown(event: MouseEvent): void {
+        this.startX = event.clientX;
+        this.startWidth = this.column.nativeElement.offsetWidth;
+
+        this.mouseMoveListener = this.renderer.listen(
+            'document',
+            'mousemove',
+            this.onMouseMove
+        );
+        this.mouseUpListener = this.renderer.listen(
+            'document',
+            'mouseup',
+            this.onMouseUp
+        );
+    }
+
     private onMouseUp = (): void => {
-        document.removeEventListener('mousemove', this.onMouseMove);
-        document.removeEventListener('mouseup', this.onMouseUp);
+        if (this.mouseMoveListener) {
+            this.mouseMoveListener();
+            this.mouseMoveListener = null;
+        }
+
+        if (this.mouseUpListener) {
+            this.mouseUpListener();
+            this.mouseUpListener = null;
+        }
     };
 }

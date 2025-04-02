@@ -19,6 +19,7 @@ import { IMilesState } from '@pages/miles/interface';
 
 // functions
 import * as Functions from '@pages/miles/utils/functions/miles-reducer.functions';
+import { ITableResizeAction } from '@shared/components/new-table/interface';
 
 export const initialState: IMilesState = {
     items: [],
@@ -50,7 +51,7 @@ export const initialState: IMilesState = {
         isLastInCurrentList: false,
     },
     tableSettings: {
-        isTableLocked: false,
+        isTableLocked: true,
         sortKey: null,
         sortDirection: null,
     },
@@ -147,6 +148,10 @@ export const milesReducer = createReducer(
 
     on(MilesAction.tableSortingChange, (state, { column }) =>
         Functions.tableSortingChange(state, column)
+    ),
+
+    on(MilesAction.tableResizeChange, (state, { resizeAction }) =>
+        Functions.tableResizeChange(state, resizeAction)
     ),
 
     on(MilesAction.onSearchChange, (state, { search }) =>

@@ -16,10 +16,14 @@
             ? store.tabResultsSelector.activeTruckCount
             : store.tabResultsSelector.inactiveTruckCount;
 
+    <button (click)="milesStoreService.toggleTableLockingStatus()">
+        {{ store.tableSettings.isTableLocked }}
+    </button>
+
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
-        [isTableLocked]="store.tableSettings.isTableLocked"
+        [isTableLocked]="false"
         [isEmptyTable]="!store.miles.length"
         [pageResult]="store.miles.length"
         [totalResult]="tabCount"
@@ -43,6 +47,7 @@
         }"
         (onColumnPinned)="onColumnPinned($event)"
         (onSortingChange)="onSortingChange($event)"
+        (onColumnResize)="onColumnResize($event)"
         (onHandleShowMoreClick)="onHandleShowMoreClick()"
     >
         <!-- Header Templates -->

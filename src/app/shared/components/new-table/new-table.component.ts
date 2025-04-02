@@ -1,16 +1,11 @@
 import { CommonModule } from '@angular/common';
 import {
-    AfterViewChecked,
     ChangeDetectionStrategy,
-    ChangeDetectorRef,
     Component,
-    ElementRef,
     EventEmitter,
     Input,
-    OnDestroy,
     Output,
     TemplateRef,
-    ViewChild,
 } from '@angular/core';
 
 // modules
@@ -26,16 +21,18 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // pipes
 import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
 
-// constants
-import { TableConstants } from '@shared/components/new-table/utils/constants';
-
 // enums
 import { ePosition, eUnit } from 'ca-components';
 import { eColor, eGeneralActions } from '@shared/enums';
 
-// interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+// directives
 import { ResizableColumnDirective } from '@shared/components/new-table/directives/resize.directive';
+
+// interfaces
+import {
+    ITableColumn,
+    ITableResizeAction,
+} from '@shared/components/new-table/interface';
 
 @Component({
     selector: 'app-new-table',
@@ -54,12 +51,11 @@ import { ResizableColumnDirective } from '@shared/components/new-table/directive
         // pipes
         TableColumnClassPipe,
 
+        // directives
         ResizableColumnDirective,
     ],
 })
-export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
-    @ViewChild('tableRow') tableRow!: ElementRef<HTMLDivElement>;
-
+export class NewTableComponent<T> {
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
@@ -79,10 +75,8 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     @Output() onHandleShowMoreClick: EventEmitter<boolean> = new EventEmitter();
     @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
-
-    private resizeObserver!: ResizeObserver;
-
-    public rowWidth: number;
+    @Output() onColumnResize: EventEmitter<ITableResizeAction> =
+        new EventEmitter();
 
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
@@ -98,28 +92,9 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
-    constructor(private cdRef: ChangeDetectorRef) {}
-
-    ngAfterViewChecked() {
-        this.getTableWidth();
-    }
-
-    private getTableWidth(): void {
-        this.resizeObserver = new ResizeObserver(([entry]) => {
-            if (!entry) return;
-
-            this.rowWidth =
-                entry.contentRect.width +
-                TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
-
-            this.cdRef.detectChanges();
-        });
-
-        this.resizeObserver.observe(this.tableRow.nativeElement);
-    }
+    constructor() {}
 
     private processColumns(columns: ITableColumn[]): void {
-        console.log('columns', columns);
         this.leftPinnedColumns = columns.filter(
             (col) => col.pinned === ePosition.LEFT
         );
@@ -129,8 +104,6 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
         );
 
         this.mainColumns = columns.filter((col) => !col.pinned);
-
-        console.log('this.mainColumns', this.mainColumns);
     }
 
     public handlePinColumnClick(column: ITableColumn): void {
@@ -147,32 +120,11 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
         this.onHandleShowMoreClick.emit(true);
     }
 
+    public onColumnWidthResize(resizeAction: ITableResizeAction): void {
+        this.onColumnResize.emit(resizeAction);
+    }
+
     public isRowExpanded(rowId: number): boolean {
         return this.expandedRows?.has(rowId);
-    }
-
-    public handleResize(width: any): void {
-        console.log('RESIZE WIDTH', width);
-        console.log(
-            'this.mainColumns[2].columns[0]',
-            this.mainColumns[2].columns[0].width
-        );
-        this.mainColumns = this.mainColumns.map((col, colIndex) => {
-            if (colIndex === 2) {
-                return {
-                    ...col,
-                    columns: col.columns.map((subCol, subIndex) =>
-                        subIndex === 0 ? { ...subCol, width } : subCol
-                    ),
-                };
-            }
-            return col;
-        });
-
-        this.cdRef.detectChanges();
-    }
-
-    ngOnDestroy() {
-        this.resizeObserver.disconnect();
     }
 }

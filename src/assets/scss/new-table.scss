@@ -9,25 +9,24 @@
         &-heading {
             position: relative;
 
-            .resize-handle {
-                position: absolute;
-                right: 0;
-                top: 0;
-                width: 6px;
-                height: 100%;
-                cursor: col-resize;
-                background-color: rgba(0, 0, 0, 0.2);
-            }
-
-            &-group {
-                border-left: 1px solid $ta-light-grey-6;
-            }
-
+            // sort
             &-sortable {
                 &:hover {
                     .new-table--row-heading-arrow {
                         display: flex !important;
                     }
+                }
+            }
+
+            // resize
+            .resize-handler {
+                border-radius: 1px;
+                cursor:
+                    url('/assets/svg/common/resize-arrow-outline.svg') 8 32,
+                    col-resize;
+
+                &:hover {
+                    transform: scaleX(2);
                 }
             }
         }
