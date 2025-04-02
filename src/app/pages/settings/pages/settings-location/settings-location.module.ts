@@ -19,7 +19,6 @@ import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCounterComponent } from '@shared/components/ta-counter/ta-counter.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCommonCardComponent } from '@shared/components/ta-common-card/ta-common-card.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { SettingsRepairShopComponent } from '@pages/settings/pages/settings-location/components/settings-repair-shop/settings-repair-shop.component';
@@ -31,6 +30,7 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
 import { TaProgressExpirationComponent } from '@shared/components/ta-progress-expiration/ta-progress-expiration.component';
 import { TaPasswordAccountHiddenCharactersComponent } from '@shared/components/ta-password-account-hidden-characters/ta-password-account-hidden-characters.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { CaTabSwitchComponent } from 'ca-components';
 @NgModule({
     imports: [
         CommonModule,
@@ -41,7 +41,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
         TaCounterComponent,
         AngularSvgIconModule,
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         ActiveItemsPipe,
         TaCommonCardComponent,
         TaCopyComponent,
@@ -49,7 +49,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
         TaProgressExpirationComponent,
         TaPasswordAccountHiddenCharactersComponent,
         TaInputNoteComponent,
-        
+
         FormatDatePipe,
     ],
     declarations: [

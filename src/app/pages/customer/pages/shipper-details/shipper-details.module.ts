@@ -19,10 +19,9 @@ import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { TaDetailsHeaderComponent } from '@shared/components/ta-details-header/ta-details-header.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaContactsCardComponent } from '@shared/components/ta-contacts-card/ta-contacts-card.component';
 import { ShipperDetailsMapCoverCardComponent } from '@pages/customer/pages/shipper-details/components/shipper-details-card/components/shipper-details-map-cover-card/shipper-details-map-cover-card.component';
-import { CaChartComponent } from 'ca-components';
+import { CaChartComponent, CaTabSwitchComponent } from 'ca-components';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
@@ -53,7 +52,7 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
         TaCustomCardComponent,
         TaInputNoteComponent,
         TaDetailsHeaderComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaContactsCardComponent,
         ShipperDetailsMapCoverCardComponent,
         CaChartComponent,
@@ -65,4 +64,4 @@ import { FormatPhonePipe } from '@shared/pipes/format-phone.pipe';
     ],
     providers: [FormatDatePipe],
 })
-export class ShipperDetailsModule { }
+export class ShipperDetailsModule {}

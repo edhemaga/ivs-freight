@@ -122,12 +122,12 @@
                 <div>
                     @if (!invoiceLegendHighlightedBackground) {
                         <div>
-                            <app-ta-tab-switch
-                                [type]="'type2-modal-popup'"
+                            <app-ca-tab-switch
+                                [type]="'type4-modal-popup'"
                                 (switchClicked)="changeInvoiceTab($event)"
                                 [tabs]="invoiceChartTabs"
                             >
-                            </app-ta-tab-switch>
+                            </app-ca-tab-switch>
                         </div>
                     }
                     <app-ca-chart
@@ -159,12 +159,12 @@
                 <div>
                     @if (!mileageLegendHighlightedBackground) {
                         <div>
-                            <app-ta-tab-switch
-                                [type]="'type2-modal-popup'"
+                            <app-ca-tab-switch
+                                [type]="'type4-modal-popup'"
                                 [tabs]="mileageChartTabs"
                                 (switchClicked)="changeMileageTab($event)"
                             >
-                            </app-ta-tab-switch>
+                            </app-ca-tab-switch>
                         </div>
                     }
                     <app-ca-chart
@@ -262,12 +262,12 @@
                 }"
                 [customClass]="'detailsPadding'"
             >
-                <app-ta-tab-switch
+                <app-ca-tab-switch
                     [tabs]="invoiceAgingTabs"
                     (switchClicked)="changeInvoiceAgingTab($event)"
-                    [type]="'type2-modal-popup'"
+                    [type]="'type4-modal-popup'"
                 >
-                </app-ta-tab-switch>
+                </app-ca-tab-switch>
 
                 <div class="invoice-ageing-template my-2">
                     <div class="invoice-ageing-template-item">
@@ -436,12 +436,12 @@
                 <div>
                     @if (!paymentLegendHighlightedBackground) {
                         <div>
-                            <app-ta-tab-switch
-                                [type]="'type2-modal-popup'"
+                            <app-ca-tab-switch
+                                [type]="'type4-modal-popup'"
                                 [tabs]="paymentChartTabs"
                                 (switchClicked)="changePaymentTab($event)"
                             >
-                            </app-ta-tab-switch>
+                            </app-ca-tab-switch>
                         </div>
                     }
                     <app-ca-chart
