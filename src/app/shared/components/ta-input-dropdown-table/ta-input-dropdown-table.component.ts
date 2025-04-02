@@ -53,9 +53,9 @@ import { AvatarColorsHelper } from '@shared/utils/helpers/avatar-colors.helper';
 // components
 import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.component';
 import { TaNewCommentComponent } from '@shared/components/ta-input-dropdown-table/components/ta-new-comment/ta-new-comment.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaAppTooltipComponent } from '@shared/components/ta-app-tooltip/ta-app-tooltip.component';
+import { CaTabSwitchComponent } from 'ca-components';
 
 // models
 import { DepartmentResponse } from 'appcoretruckassist';
@@ -79,7 +79,7 @@ import { ContactsData } from '@shared/components/ta-input-dropdown-table/models/
         TaCommentComponent,
         TaAppTooltipComponent,
         TaNewCommentComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCustomCardComponent,
     ],
     templateUrl: './ta-input-dropdown-table.component.html',

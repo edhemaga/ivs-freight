@@ -66,11 +66,11 @@
                 }
                 <!-- Tabs -->
 
-                <app-ta-tab-switch
+                <app-ca-tab-switch
                     (switchClicked)="onTabChange($event)"
                     [tabs]="unitTabs"
-                    [type]="'type2-modal-popup'"
-                ></app-ta-tab-switch>
+                    [type]="'type4-modal-popup'"
+                ></app-ca-tab-switch>
 
                 <!-- Unit -->
 
@@ -345,12 +345,12 @@
                 [hasCounter]="services | activeItems"
                 [isCardOpen]="true"
             >
-                <app-ta-tab-switch
+                <app-ca-tab-switch
                     [tabs]="serviceTabs"
-                    [type]="'type2-modal-popup'"
+                    [type]="'type4-modal-popup'"
                     [isDisabled]="!this.selectedRepairShop"
                     (switchClicked)="onTabChange($event, null, 'service')"
-                ></app-ta-tab-switch>
+                ></app-ca-tab-switch>
 
                 <div class="repair-shop-services">
                     @for (
@@ -466,11 +466,11 @@
     }
 
     @if (!isEditMode) {
-        <app-ta-tab-switch
+        <app-ca-tab-switch
             (switchClicked)="onModalHeaderTabChange($event)"
             [tabs]="headerTabs"
-            [type]="'type2-modal-popup'"
-        ></app-ta-tab-switch>
+            [type]="'type4-modal-popup'"
+        ></app-ca-tab-switch>
     }
 </ng-template>
 

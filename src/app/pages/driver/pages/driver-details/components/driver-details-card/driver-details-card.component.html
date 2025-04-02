@@ -88,12 +88,12 @@
                     <div>
                         @if (!driverLegendHighlightedBackground) {
                             <div>
-                                <app-ta-tab-switch
+                                <app-ca-tab-switch
                                     [tabs]="barChartTabs"
                                     (switchClicked)="onPayrollTabChange($event)"
-                                    [type]="'type2-modal-popup'"
+                                    [type]="'type4-modal-popup'"
                                 >
-                                </app-ta-tab-switch>
+                                </app-ca-tab-switch>
                             </div>
                         }
                         <app-ca-chart

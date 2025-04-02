@@ -68,7 +68,6 @@ import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -142,7 +141,6 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         // Component
         TaAppTooltipV2Component,
         CaModalComponent,
-        TaTabSwitchComponent,
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
