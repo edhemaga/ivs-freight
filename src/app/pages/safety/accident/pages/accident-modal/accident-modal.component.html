@@ -8,12 +8,12 @@
     [modalTitle]="editData ? 'Edit Accident' : 'Add Accident'"
 >
     <div origin>
-        <app-ta-tab-switch
+        <app-ca-tab-switch
             (switchClicked)="tabChange($event)"
             [tabs]="tabs"
             [type]="'type1-modal-popup'"
         >
-        </app-ta-tab-switch>
+        </app-ca-tab-switch>
 
         <form
             [formGroup]="accidentForm"

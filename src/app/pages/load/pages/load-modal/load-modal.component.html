@@ -45,12 +45,12 @@
                 <!-- FTL-LTL Switcher -->
                 <div class="tabs-container">
                     @if (!isActiveLoad) {
-                        <app-ta-tab-switch
+                        <app-ca-tab-switch
                             [tabs]="tabs"
                             (switchClicked)="onTabChange($event, 'ftl-ltl')"
-                            [type]="'type2-modal-popup'"
+                            [type]="'type4-modal-popup'"
                         >
-                        </app-ta-tab-switch>
+                        </app-ca-tab-switch>
                     } @else {
                         <ta-input-dropdown-status
                             [options]="statusDropDownList"
@@ -463,13 +463,13 @@
 
                         <!-- Work Hours, Appointment, Shipper Contact -->
                         <div class="load-shipper-contact-row">
-                            <app-ta-tab-switch
+                            <app-ca-tab-switch
                                 [tabs]="stopTimeTabsPickup"
                                 (switchClicked)="
                                     onTabChange($event, 'stop-time-pickup')
                                 "
-                                [type]="'type2-modal-popup'"
-                            ></app-ta-tab-switch>
+                                [type]="'type4-modal-popup'"
+                            ></app-ca-tab-switch>
                             <app-ca-input-dropdown
                                 formControlName="pickupShipperContactId"
                                 [template]="'load-broker-contact'"
@@ -764,7 +764,7 @@
                                                 <!-- Tabs  -->
                                                 <div class="row">
                                                     <div class="col-12">
-                                                        <app-ta-tab-switch
+                                                        <app-ca-tab-switch
                                                             [tabs]="
                                                                 typeOfExtraStops[
                                                                     indx
@@ -778,9 +778,9 @@
                                                                 )
                                                             "
                                                             [type]="
-                                                                'type2-modal-popup'
+                                                                'type4-modal-popup'
                                                             "
-                                                        ></app-ta-tab-switch>
+                                                        ></app-ca-tab-switch>
                                                     </div>
                                                 </div>
 
@@ -835,7 +835,7 @@
                                                 <div
                                                     class="load-shipper-contact-row"
                                                 >
-                                                    <app-ta-tab-switch
+                                                    <app-ca-tab-switch
                                                         [tabs]="
                                                             stopTimeTabsExtraStops[
                                                                 indx
@@ -849,9 +849,9 @@
                                                             )
                                                         "
                                                         [type]="
-                                                            'type2-modal-popup'
+                                                            'type4-modal-popup'
                                                         "
-                                                    ></app-ta-tab-switch>
+                                                    ></app-ca-tab-switch>
 
                                                     <app-ca-input-dropdown
                                                         formControlName="shipperContactId"
@@ -1229,13 +1229,13 @@
                         <!-- Work Hours, Appointment, Contact -->
 
                         <div class="load-shipper-contact-row">
-                            <app-ta-tab-switch
+                            <app-ca-tab-switch
                                 [tabs]="stopTimeTabsDelivery"
                                 (switchClicked)="
                                     onTabChange($event, 'stop-time-delivery')
                                 "
                                 [type]="'type2-modal-popup'"
-                            ></app-ta-tab-switch>
+                            ></app-ca-tab-switch>
 
                             <app-ca-input-dropdown
                                 formControlName="deliveryShipperContactId"

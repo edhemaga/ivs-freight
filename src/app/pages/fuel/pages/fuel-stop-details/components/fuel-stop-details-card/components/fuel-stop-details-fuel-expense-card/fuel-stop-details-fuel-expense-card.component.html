@@ -13,12 +13,12 @@
     <div>
         @if (!fuelLegendHighlightedBackground) {
             <div>
-                <app-ta-tab-switch
+                <app-ca-tab-switch
                     [tabs]="fuelExpenseChartTabs"
-                    [type]="'type2-modal-popup'"
+                    [type]="'type4-modal-popup'"
                     (switchClicked)="onChartTabChange($event)"
                 >
-                </app-ta-tab-switch>
+                </app-ca-tab-switch>
             </div>
         }
         <app-ca-chart

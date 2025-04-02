@@ -86,7 +86,6 @@ import { RepairShopHelper } from '@pages/repair/pages/repair-modals/repair-shop-
 import { tabsModalAnimation } from '@shared/animations/tabs-modal.animation';
 
 // components
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
@@ -102,6 +101,7 @@ import {
     CaInputDatetimePickerComponent,
     eModalButtonClassType,
     eModalButtonSize,
+    CaTabSwitchComponent,
 } from 'ca-components';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
@@ -163,7 +163,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         TaAppTooltipV2Component,
         CaModalComponent,
         CaModalButtonComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaInputComponent,
         TaCustomCardComponent,
         CaInputDropdownComponent,

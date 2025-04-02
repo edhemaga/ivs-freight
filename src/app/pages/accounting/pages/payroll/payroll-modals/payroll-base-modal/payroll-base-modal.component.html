@@ -26,14 +26,14 @@
 
                 @if (isDropdownEnabled && !isBonusModal) {
                     <div class="payroll-mb-32">
-                        <app-ta-tab-switch
+                        <app-ca-tab-switch
                             [tabs]="tabs"
                             (switchClicked)="onDriverTruckTabChange($event)"
                             [type]="
                                 'type2-modal-popup type2-modal-popup-header'
                             "
                         >
-                        </app-ta-tab-switch>
+                        </app-ca-tab-switch>
                     </div>
                     <div class="row">
                         <div class="col-12 payroll-mb-32">
@@ -97,13 +97,13 @@
                         Bi-Weekly
                         Semi Monthly
                         Monthly -->
-                        <app-ta-tab-switch
+                        <app-ca-tab-switch
                             [tabs]="periodTabs"
                             [type]="'type2-modal-popup'"
                             [isDisabled]="isNotRecuringPayment"
                             (switchClicked)="onPeriodTabChange($event)"
                         >
-                        </app-ta-tab-switch>
+                        </app-ca-tab-switch>
                     </div>
 
                     <div class="d-grid d-grid-limited">
