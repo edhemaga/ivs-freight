@@ -524,6 +524,11 @@ export const createCommentError = createAction(
 );
 // #endregion
 
+export const updateComment = createAction(
+    LoadStoreConstants.ACTION_UPDATE_COMMENT,
+    props<{}>
+);
+
 // #region updateLoad
 export const updateLoad = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD,

@@ -528,6 +528,38 @@ export class LoadEffect {
         )
     );
 
+    public deleteComment$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.deleteCommentById),
+            exhaustMap((action) => {
+                const { apiParam, loadId } = action;
+                return this.commentService
+                    .deleteCommentById(apiParam, loadId)
+                    .pipe(
+                        tap(
+                            () => {
+                                LoadActions.deleteCommentByIdSuccess({
+                                    loadId,
+                                    commentId: apiParam,
+                                });
+                            },
+                            catchError((error) => {
+                                return of(
+                                    LoadActions.deleteCommentByIdError({
+                                        error,
+                                    })
+                                );
+                            })
+                        )
+                    );
+            })
+        )
+    );
+
+    public updateComment$ = createEffect(() =>
+        this.actions$.pipe(ofType(LoadActions.comment))
+    );
+
     public updateLoad$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.updateLoad),

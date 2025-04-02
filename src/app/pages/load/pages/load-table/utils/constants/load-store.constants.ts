@@ -103,6 +103,10 @@ export class LoadStoreConstants {
     static ACTION_CREATE_COMMENT_SUCCESS = `${this.COMPONENT_NAME_KEY} Create Comment Success`;
     static ACTION_CREATE_COMMENT_ERROR = `${this.COMPONENT_NAME_KEY} Create Comment Error`;
 
+    static ACTION_UPDATE_COMMENT = `${this.COMPONENT_NAME_KEY} Update Comment`;
+    static ACTION_UPDATE_COMMENT_SUCCESS = `${this.COMPONENT_NAME_KEY} Update Comment Success`;
+    static ACTION_UPDATE_COMMENT_ERROR = `${this.COMPONENT_NAME_KEY} Update Comment Error`;
+
     static ACTION_UPDATE_LOAD = `${this.COMPONENT_NAME_KEY} Update Load`;
     static ACTION_UPDATE_LOAD_SUCCESS = `${this.COMPONENT_NAME_KEY} Update Load Success`;
     static ACTION_UPDATE_LOAD_ERROR = `${this.COMPONENT_NAME_KEY} Update Load Error`;

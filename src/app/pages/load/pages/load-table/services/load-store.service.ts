@@ -466,6 +466,8 @@ export class LoadStoreService {
         });
     }
 
+    public dispatchUpdateComment(): void {}
+
     public dispatchUpdateLoad(apiParam: Load): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_LOAD,

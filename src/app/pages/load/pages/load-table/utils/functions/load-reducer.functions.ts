@@ -416,6 +416,13 @@ export const deleteCommentByIdSuccessResult = function (
     return result;
 };
 
+export const updateCommentSuccessResult = (
+    state: ILoadState,
+    loadId: number,
+    commentId: number,
+    content: string
+) => {};
+
 export const updateLoadStatusSignalRSuccess = function (
     state: ILoadState,
     response: LoadListResponse
