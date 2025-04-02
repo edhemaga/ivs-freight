@@ -42,6 +42,7 @@ import {
     CaInputNoteComponent,
     CaModalComponent,
     CaInputAddressDropdownComponent,
+    CaTabSwitchComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -110,6 +111,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputNoteComponent,
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
+        CaTabSwitchComponent,
 
         // Pipes
         FormatDatePipe,
@@ -222,13 +224,6 @@ export class OwnerModalComponent
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
-
-        this.tabs = this.tabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === event.id,
-            };
-        });
 
         this.manipulateWithOwnerInputs();
     }

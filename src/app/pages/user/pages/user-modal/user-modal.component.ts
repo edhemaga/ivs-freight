@@ -77,6 +77,7 @@ import {
     CaInputDropdownComponent,
     CaInputAddressDropdownComponent,
     CaInputDatetimePickerComponent,
+    CaTabSwitchComponent,
 } from 'ca-components';
 
 // enums
@@ -108,7 +109,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         // components
         TaAppTooltipV2Component,
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
@@ -314,7 +315,6 @@ export class UserModalComponent
     }
 
     public onSelectedTab(event: Tabs, action: string): void {
-        event.checked = true;
         switch (action) {
             case UserModalStringEnum.USER_ADMIN:
                 this.selectedUserAdmin = event;

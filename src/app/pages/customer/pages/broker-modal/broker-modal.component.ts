@@ -77,6 +77,7 @@ import {
     CaInputAddressDropdownComponent,
     eModalButtonClassType,
     eModalButtonSize,
+    CaTabSwitchComponent,
 } from 'ca-components';
 
 // enums
@@ -156,6 +157,7 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
         CaInputDropdownComponent,
         CaModalButtonComponent,
         CaInputAddressDropdownComponent,
+        CaTabSwitchComponent,
 
         // Pipes
         FormatDatePipe,
@@ -527,13 +529,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 this.brokerForm.get(BrokerModalStringEnum.PHYSICAL_PO_BOX_CITY)
             );
         }
-
-        this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === this.selectedPhysicalAddressTab,
-            };
-        });
     }
 
     public tabBillingAddressChange(event: Tabs): void {
@@ -564,13 +559,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 this.brokerForm.get('billingPoBoxCity')
             );
         }
-
-        this.billingAddressTabs = this.billingAddressTabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === this.selectedBillingAddressTab,
-            };
-        });
     }
 
     public tabCreditChange(event: Tabs): void {
@@ -590,10 +578,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 false
             );
         }
-
-        this.billingCredit = this.billingCredit.map((item) => {
-            return { ...item, checked: item.id === event.id };
-        });
     }
 
     public onModalAction(action: string, cancelWrapper): void {
