@@ -108,7 +108,8 @@
         ></svg-icon>
     </ng-template>
 
-    <div class="d-flex flex-column px-1 m-t-12">
+    @let loadingMarginTop = isLoading ? 'm-t-20' : 'm-t-12';
+    <div class="d-flex flex-column px-1" [ngClass]="loadingMarginTop">
         <app-ca-skeleton
             [width]="223"
             [height]="16"
