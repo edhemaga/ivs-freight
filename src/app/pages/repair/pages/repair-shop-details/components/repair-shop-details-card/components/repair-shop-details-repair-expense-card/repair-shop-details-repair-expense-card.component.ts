@@ -5,8 +5,7 @@ import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
-import { CaChartComponent } from 'ca-components';
+import { CaChartComponent, CaTabSwitchComponent } from 'ca-components';
 
 // svg routes
 import { RepairShopDetailsSvgRoutes } from '@pages/repair/pages/repair-shop-details/utils/svg-routes';
@@ -48,7 +47,7 @@ import { ChartLegendProperty } from '@shared/models';
 
         // components
         TaCustomCardComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaChartComponent,
     ],
 })

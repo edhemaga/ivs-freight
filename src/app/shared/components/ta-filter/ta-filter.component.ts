@@ -41,7 +41,7 @@ import { TaProfileImagesComponent } from '@shared/components/ta-profile-images/t
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { CaTabSwitchComponent } from 'ca-components';
 
 // services
 import { FilterStateService } from '@shared/components/ta-filter/services/filter-state.service';
@@ -88,7 +88,7 @@ import { AssignedLoadResponse } from 'appcoretruckassist';
         TaInputComponent,
         TaInputAddressDropdownComponent,
         TaNgxSliderComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
 
         // pipes
         TaSvgPipe,

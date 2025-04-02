@@ -20,7 +20,7 @@ import { UpdateMapCommand } from 'appcoretruckassist';
 
 // components
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { CaTabSwitchComponent } from 'ca-components';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 
 // enums
@@ -39,7 +39,7 @@ import { eGeneralActions } from '@shared/enums';
 
         // Component
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaInputComponent,
     ],
 })
