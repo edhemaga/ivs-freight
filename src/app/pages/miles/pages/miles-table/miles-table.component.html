@@ -16,10 +16,6 @@
             ? store.tabResultsSelector.activeTruckCount
             : store.tabResultsSelector.inactiveTruckCount;
 
-    <button (click)="milesStoreService.toggleTableLockingStatus()">
-        {{ store.tableSettings.isTableLocked }}
-    </button>
-
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
