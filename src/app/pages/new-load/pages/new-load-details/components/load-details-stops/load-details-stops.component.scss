@@ -26,9 +26,9 @@
             gap: 0;
         }
         @include responsive-grid(
-            minmax(168px, 192px) 130px 140px 76px,
-            minmax(168px, 192px) 130px 140px 76px,
-            minmax(168px, 192px) 130px 140px 76px,
+            minmax(168px, 192px) 140px 76px,
+            168px 130px 65px,
+            minmax(168px, 220px) minmax(168px, 220px) 130px 65px,
             200px 220px 140px 130px 76px,
             200px 220px 140px 130px 76px
         );

@@ -119,7 +119,10 @@
                         </div>
                     </div>
 
-                    <div class="d-flex align-items-center visible-large">
+                    <div
+                        class="d-flex align-items-center"
+                        [class.visible-large]="!isPendingLoad"
+                    >
                         <p class="placeholder-glow">
                             <span
                                 class="placeholder background-muted br-2 w-116 h-10"
@@ -127,7 +130,10 @@
                         </p>
                     </div>
 
-                    <div class="d-flex align-items-center visible-xl">
+                    <div
+                        class="d-flex align-items-center"
+                        [class.visible-xl]="!isPendingLoad"
+                    >
                         <p class="placeholder-glow">
                             <span
                                 class="placeholder background-muted br-2 w-108 h-10"
@@ -199,7 +205,7 @@
                                 </div>
                             </div>
 
-                            <div class="visible-large">
+                            <div [class.visible-large]="!isPendingLoad">
                                 <div class="d-flex gap-1 flex-column flex-1">
                                     <p class="placeholder-glow line-0">
                                         <span
@@ -215,7 +221,7 @@
                                 </div>
                             </div>
 
-                            <div class="visible-xl">
+                            <div [class.visible-xl]="!isPendingLoad">
                                 <div class="d-flex gap-1 flex-column flex-1">
                                     <p class="placeholder-glow line-0">
                                         <span
@@ -299,12 +305,16 @@
                         </div>
                     </div>
                     <div
-                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold visible-large"
+                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold"
+                        [class.visible-large]="!isPendingLoad"
+                        [class.visible-md]="isPendingLoad"
                     >
                         SHIPPER • ADDRESS
                     </div>
                     <div
-                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold visible-xl"
+                        class="d-flex align-items-center text-size-11 text-color-bw6-2 ta-font-bold"
+                        [class.visible-xl]="!isPendingLoad"
+                        [class.visible-large]="isPendingLoad"
                     >
                         CONTACT • PHONE
                     </div>
@@ -353,7 +363,9 @@
                             }"
                             (click)="hasItems && toggleStopDetails(i)"
                         >
-                            <div class="d-flex align-items-center">
+                            <div
+                                class="d-flex align-items-center overflow-hidden"
+                            >
                                 <div
                                     class="h-18 w-18 br-1 text-size-11 ta-font-bold d-flex align-items-center justify-content-center"
                                     [ngClass]="
@@ -410,7 +422,11 @@
                                 </div>
                             </div>
 
-                            <div class="visible-large flex-column">
+                            <div
+                                class="flex-column"
+                                [class.visible-large]="!isPendingLoad"
+                                [class.visible-md]="isPendingLoad"
+                            >
                                 <div
                                     class="text-size-11 text-color-black ta-font-medium"
                                 >
@@ -422,7 +438,11 @@
                                 </div>
                             </div>
 
-                            <div class="visible-xl flex-column">
+                            <div
+                                class="flex-column"
+                                [class.visible-xl]="!isPendingLoad"
+                                [class.visible-large]="isPendingLoad"
+                            >
                                 <div
                                     class="text-size-11 ta-font-medium"
                                     [ngClass]="
@@ -498,9 +518,9 @@
                                 <div>
                                     @if (time) {
                                         <div
-                                            class="text-size-11 text-color-black ta-font-medium"
+                                            class="text-size-11 ta-font-medium"
                                         >
-                                            <span
+                                            <span class="text-color-black"
                                                 >{{ time | formatDateP }}
                                                 {{
                                                     stop.wait ? '• ' : ''
@@ -529,10 +549,22 @@
                                                           's'
                                                         : '';
 
-                                                <span>{{ days }}</span>
-                                                <span>{{ hours }}</span>
-                                                <span>{{ minutes }}</span>
-                                                <span>{{ seconds }}</span>
+                                                <span
+                                                    class="text-color-blue-13"
+                                                    >{{ days }}</span
+                                                >
+                                                <span
+                                                    class="text-color-blue-13"
+                                                    >{{ hours }}</span
+                                                >
+                                                <span
+                                                    class="text-color-blue-13"
+                                                    >{{ minutes }}</span
+                                                >
+                                                <span
+                                                    class="text-color-blue-13"
+                                                    >{{ seconds }}</span
+                                                >
                                             </span>
                                         </div>
                                         <div
@@ -638,68 +670,68 @@
                             >
                                 <div class="d-flex align-items-center">
                                     <div
-                                        class="h-18 w-18 text-muted text-size-11 ta-font-bold text-center d-flex align-items-center justify-content-center"
+                                        class="h-18 w-18 text-color-muted text-size-11 ta-font-bold text-center d-flex align-items-center justify-content-center"
                                     >
                                         #
                                     </div>
                                     <div
-                                        class="text-muted text-size-11 ta-font-bold m-l-8"
+                                        class="text-color-muted text-size-11 ta-font-bold m-l-8"
                                     >
                                         DESCRIPTION
                                     </div>
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-bold"
+                                    class="text-color-muted text-size-11 ta-font-bold"
                                 >
                                     QUANTITY
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                    class="text-color-muted text-size-11 ta-font-medium d-flex align-items-center"
                                 >
                                     <svg-icon
                                         [src]="sharedSvgRoutes.TEMPERATURE_ICON"
                                         class="svg-size-14 svg-fill-muted"
                                     ></svg-icon>
-                                    <span>°F</span>
+                                    <span class="text-color-muted">°F</span>
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                    class="text-color-muted text-size-11 ta-font-medium d-flex align-items-center"
                                 >
                                     <svg-icon
                                         [src]="sharedSvgRoutes.WEIGHT_ICON"
                                         class="svg-size-14 svg-fill-muted"
                                     ></svg-icon>
-                                    <span>lbs</span>
+                                    <span class="text-color-muted">lbs</span>
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                    class="text-color-muted text-size-11 ta-font-medium d-flex align-items-center"
                                 >
                                     <svg-icon
                                         [src]="sharedSvgRoutes.LENGTH_ICON"
                                         class="svg-size-14 svg-fill-muted"
                                     ></svg-icon>
-                                    <span>ft</span>
+                                    <span class="text-color-muted">ft</span>
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                    class="text-color-muted text-size-11 ta-font-medium d-flex align-items-center"
                                 >
                                     <svg-icon
                                         [src]="sharedSvgRoutes.HEIGHT_ICON"
                                         class="svg-size-14 svg-fill-muted"
                                     ></svg-icon>
-                                    <span>ft</span>
+                                    <span class="text-color-muted">ft</span>
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                    class="text-color-muted text-size-11 ta-font-medium d-flex align-items-center"
                                 >
                                     <svg-icon
                                         [src]="sharedSvgRoutes.TARP_ICON"
                                         class="svg-size-14 svg-fill-muted"
                                     ></svg-icon>
-                                    <span>ft</span>
+                                    <span class="text-color-muted">ft</span>
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-medium d-flex align-items-center"
+                                    class="text-color-muted text-size-11 ta-font-medium d-flex align-items-center"
                                 >
                                     <svg-icon
                                         [src]="sharedSvgRoutes.STACKABLE_ICON"
@@ -707,27 +739,27 @@
                                     ></svg-icon>
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-bold"
+                                    class="text-color-muted text-size-11 ta-font-bold"
                                 >
                                     SECURE
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-bold"
+                                    class="text-color-muted text-size-11 ta-font-bold"
                                 >
                                     BOL NO
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-bold"
+                                    class="text-color-muted text-size-11 ta-font-bold"
                                 >
                                     PICKUP NO
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-bold"
+                                    class="text-color-muted text-size-11 ta-font-bold"
                                 >
                                     SEAL NO
                                 </div>
                                 <div
-                                    class="text-muted text-size-11 ta-font-bold"
+                                    class="text-color-muted text-size-11 ta-font-bold"
                                 >
                                     CODE
                                 </div>
@@ -749,48 +781,74 @@
                                                 {{ stopIndex + 1 }}
                                             </div>
                                             <div
-                                                class="text-black-2 text-size-11 m-l-8"
+                                                class="text-color-black-2 text-size-11 m-l-8"
                                             >
                                                 {{ item.description }}
                                             </div>
                                         </div>
-                                        <div class="text-black-2 text-size-11">
-                                            {{ item.quantity }}
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
+                                            <span class="text-color-black-2">{{
+                                                item.quantity
+                                            }}</span>
                                             <span class="text-color-muted">
                                                 {{ item.units?.name }}</span
                                             >
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.temperature }}°F
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.weight }}lbs
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.length }} ft
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.height }} ft
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.tarp?.name }}
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.stackable?.name }}
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.secure?.name }}
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.bolNumber }}
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.pickupNumber }}
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.sealNumber }}
                                         </div>
-                                        <div class="text-black-2 text-size-11">
+                                        <div
+                                            class="text-color-black-2 text-size-11"
+                                        >
                                             {{ item.code }}
                                         </div>
                                     </div>
