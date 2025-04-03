@@ -1,7 +1,10 @@
 // interfaces
 import { IMilesModel, IMilesState } from '@pages/miles/interface';
 import { IStateFilters } from '@shared/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableResizeAction,
+} from '@shared/components/new-table/interface';
 
 // enums
 import { eActiveViewMode, eGeneralActions } from '@shared/enums';
@@ -198,6 +201,7 @@ export const toggleTableLockingStatus = function (
     state: IMilesState
 ): IMilesState {
     const { tableSettings } = state;
+
     return {
         ...state,
         tableSettings: {
@@ -281,5 +285,45 @@ export function onSearchChange(
             ...state.unitsPagination,
             search,
         },
+    };
+}
+export function tableResizeChange(
+    state: IMilesState,
+    resizeAction: ITableResizeAction
+): IMilesState {
+    const { columns } = state;
+    const { id, newWidth } = resizeAction;
+
+    function updateColumnWidth(
+        columns: ITableColumn[],
+        columnId: number,
+        newWidth: number
+    ): ITableColumn[] {
+        return columns.map((col) => {
+            // if this column contains nested columns, recursively call updateColumnWidth
+
+            if (col.columns)
+                return {
+                    ...col,
+                    columns: updateColumnWidth(col.columns, columnId, newWidth), // recursive call
+                };
+
+            // if column id matches, update the width
+
+            if (col.id === columnId)
+                return {
+                    ...col,
+                    width: newWidth,
+                };
+
+            return col;
+        });
+    }
+
+    const resizedColumns = updateColumnWidth(columns, id, newWidth);
+
+    return {
+        ...state,
+        columns: resizedColumns,
     };
 }

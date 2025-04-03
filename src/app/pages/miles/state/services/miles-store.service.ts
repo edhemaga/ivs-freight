@@ -50,6 +50,7 @@ import { MilesHelper } from '@pages/miles/utils/helpers';
 import {
     ITableColumn,
     ITableConfig,
+    ITableResizeAction,
 } from '@shared/components/new-table/interface';
 
 @Injectable({
@@ -194,6 +195,13 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SORTING_CHANGE,
             column,
+        });
+    }
+
+    public dispatchResizeColumn(resizeAction: ITableResizeAction): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESIZE_CHANGE,
+            resizeAction,
         });
     }
 

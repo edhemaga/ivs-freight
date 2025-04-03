@@ -11,18 +11,22 @@
     };
 
 @if (store) {
-    @let tabCount =
+    @let selectedTabTotalDataCount =
         store.selectedTab === eMileTabs?.ACTIVE
             ? store.tabResultsSelector.activeTruckCount
             : store.tabResultsSelector.inactiveTruckCount;
+
+    @let isTableLocked = store.tableSettings.isTableLocked;
+
+    <button (click)="milesStoreService.toggleTableLockingStatus()">
+        {{ isTableLocked }}
+    </button>
 
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
         [isTableLocked]="store.tableSettings.isTableLocked"
-        [isEmptyTable]="!store.miles.length"
-        [pageResult]="store.miles.length"
-        [totalResult]="tabCount"
+        [totalDataCount]="selectedTabTotalDataCount"
         [headerTemplates]="{
             select: selectHeaderTemplate,
             revenue: revenueHeaderTemplate,
@@ -43,6 +47,7 @@
         }"
         (onColumnPinned)="onColumnPinned($event)"
         (onSortingChange)="onSortingChange($event)"
+        (onColumnResize)="onColumnResize($event)"
         (onHandleShowMoreClick)="onHandleShowMoreClick()"
     >
         <!-- Header Templates -->
@@ -56,9 +61,20 @@
         </ng-template>
 
         <ng-template #revenueHeaderTemplate let-data="data">
-            <div class="d-flex align-self-end m-r-6">
+            <div
+                class="d-flex justify-content-end w-100 m-l-4 order-2"
+                [ngClass]="
+                    {
+                        column: data,
+                        isTableLocked,
+                        isGroup: true,
+                        isEmptyTable: !store.miles.length,
+                        isAlignedRight: true,
+                    } | tableColumnClass
+                "
+            >
                 <span
-                    class="text-size-11 ta-font-bold color-inherit text-uppercase text-color-bw6-2"
+                    class="text-size-11 ta-font-bold color-inherit text-uppercase"
                 >
                     Revenue
                 </span>

@@ -50,7 +50,7 @@ export const initialState: IMilesState = {
         isLastInCurrentList: false,
     },
     tableSettings: {
-        isTableLocked: false,
+        isTableLocked: true,
         sortKey: null,
         sortDirection: null,
     },
@@ -147,6 +147,10 @@ export const milesReducer = createReducer(
 
     on(MilesAction.tableSortingChange, (state, { column }) =>
         Functions.tableSortingChange(state, column)
+    ),
+
+    on(MilesAction.tableResizeChange, (state, { resizeAction }) =>
+        Functions.tableResizeChange(state, resizeAction)
     ),
 
     on(MilesAction.onSearchChange, (state, { search }) =>
