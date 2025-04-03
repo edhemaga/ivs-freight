@@ -218,8 +218,6 @@ export const setFollowingUnitDetails = function (
 export const toggleTableLockingStatus = function (
     state: IMilesState
 ): IMilesState {
-    console.log('unlocking-toggle-reducer');
-
     const {
         tableSettings,
         activeViewMode,
@@ -263,10 +261,6 @@ export function tableSortingChange(
         column,
         state.columns
     );
-
-    console.log('columns', columns);
-    console.log('sortKey', sortKey);
-    console.log('sortDirection', sortDirection);
 
     return {
         ...state,
@@ -370,9 +364,6 @@ export function toggleToolbarDropdownMenuColumnsActive(
         isToolbarDropdownMenuColumnsActive,
         columns,
     } = state;
-
-    console.log('toggle-tolbar-columns-active.reduer')
-    console.log('columns', columns);
 
     const toolbarDropdownColumns =
         DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(columns);
