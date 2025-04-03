@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { Injectable, Type } from '@angular/core';
+import { Injectable, Renderer2, RendererFactory2, Type } from '@angular/core';
+
 import { Observable } from 'rxjs';
 
 // Models
@@ -52,15 +53,22 @@ import {
     PayrollTypeEnum,
 } from '@pages/accounting/pages/payroll/state/types/payroll.type';
 import { ContactsModalStringEnum } from '@pages/contacts/pages/contacts-modal/enums';
-// TODO: Slaviša
-// import { PayrollTypeEnum } from 'ca-components/lib/components/ca-period-content/enums';
 
 @Injectable({ providedIn: 'root' })
 export class PayrollService {
+    private renderer: Renderer2;
+
     constructor(
         public http: HttpClient,
+
+        // renderer
+        private rendererFactory: RendererFactory2,
+
+        // services
         private modalService: ModalService
-    ) {}
+    ) {
+        this.renderer = this.rendererFactory.createRenderer(null, null);
+    }
 
     public getPayrollCounts(
         showOpen: boolean
@@ -190,7 +198,6 @@ export class PayrollService {
             pay: {
                 type: paymentType,
                 otherPaymentType,
-                //date: '2024-10-15T16:09:54.299Z',
                 amount: amount,
             },
         };
@@ -625,5 +632,27 @@ export class PayrollService {
                   }
                 : undefined
         );
+    }
+
+    // download PDF
+
+    public downloadPayrollPdfReport(url: string, filename: string): void {
+        this.http.get(url, { responseType: 'blob' }).subscribe({
+            next: (blob) => {
+                const blobUrl = URL.createObjectURL(blob);
+                const a = this.renderer.createElement('a');
+
+                this.renderer.setAttribute(a, 'href', blobUrl);
+                this.renderer.setAttribute(a, 'download', filename);
+
+                this.renderer.appendChild(document.body, a);
+
+                a.click();
+
+                this.renderer.removeChild(document.body, a);
+
+                URL.revokeObjectURL(blobUrl); // clean up blob URL, prevent memory leaks
+            },
+        });
     }
 }

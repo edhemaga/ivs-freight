@@ -1,5 +1,4 @@
-import { Component, Input, OnInit, Renderer2 } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
@@ -20,8 +19,11 @@ import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
 import { CaModalComponent, eColor, ePosition } from 'ca-components';
 import { eGeneralActions } from '@shared/enums';
 
+// pipes
+
 // models
 import { PayrollModal } from '@pages/accounting/pages/payroll/state/models';
+import { SafeHtmlPipe } from '@shared/pipes';
 
 const ZOOM_STEP: number = 0.2;
 const DEFAULT_ZOOM: number = 1;
@@ -43,6 +45,7 @@ const MAX_ZOOM: number = 2;
         TaSpinnerComponent,
         TaAppTooltipV2Component,
     ],
+    providers: [SafeHtmlPipe],
 })
 export class PayrollPdfReportComponent implements OnInit {
     @Input() editData: PayrollModal;
@@ -63,23 +66,18 @@ export class PayrollPdfReportComponent implements OnInit {
 
     zoomLevel: number = 1;
 
-    setZoom(level: number): void {
-        this.zoomLevel = level;
-    }
-
     public maxZoom: number = MAX_ZOOM;
 
     public pdfZoom: number = DEFAULT_ZOOM;
 
     constructor(
-        private renderer: Renderer2,
-        // sanitizer
-        private sanitizer: DomSanitizer,
-        // services
         private payrollService: PayrollService,
 
         // modules
-        private ngbActiveModal: NgbActiveModal
+        private ngbActiveModal: NgbActiveModal,
+
+        // pipes
+        private safeHtmlPipe: SafeHtmlPipe
     ) {}
 
     ngOnInit(): void {
@@ -89,21 +87,11 @@ export class PayrollPdfReportComponent implements OnInit {
     private getReportById(): void {
         const { id, type } = this.editData?.data;
 
-        if (!id || !type) {
-            console.error(
-                !id ? 'Report id is required' : 'Report type is required'
-            );
-
-            return;
-        }
+        if (!id || !type) return;
 
         this.payrollService.generateReport(id, type).subscribe({
             next: (pdfReport) => {
-                console.log('pdfReport', pdfReport);
-
-                const html = this.sanitizer.bypassSecurityTrustHtml(
-                    pdfReport.html
-                );
+                const html = this.safeHtmlPipe.transform(pdfReport.html);
 
                 this.pdfReport = {
                     ...pdfReport,
@@ -112,53 +100,27 @@ export class PayrollPdfReportComponent implements OnInit {
 
                 this.isLoading = false;
             },
-            error: (error) => {
-                console.error('Error loading the PDF:', error);
-            },
-        });
-    }
-
-    public downloadFile(url: string, filename: string) {
-        fetch(url).then((t) => {
-            return t.blob().then((b) => {
-                const a = document.createElement('a');
-                a.href = URL.createObjectURL(b);
-                a.setAttribute('download', filename);
-                a.click();
-                /* 
-                this.renderer.removeChild(document.body, link); */
-            });
         });
     }
 
     public handleDownloadReportClick(): void {
-        this.downloadFile(this.pdfReport.downloadUrl, 'aa');
+        const { downloadUrl } = this.pdfReport;
 
-        /*  if (this.pdfReport?.downloadUrl) {
-            const link = this.renderer.createElement('a');
+        if (!downloadUrl) return;
 
-            this.renderer.setAttribute(
-                link,
-                'href',
-                this.pdfReport.downloadUrl
-            );
-            this.renderer.setAttribute(link, 'target', '_blank');
-            this.renderer.setAttribute(
-                link,
-                'download',
-                this.pdfReport.downloadUrl.split('/').pop() || 'report.pdf'
-            );
+        const { type, id } = this.editData?.data;
 
-            this.renderer.appendChild(document.body, link);
+        const filename = `Report-${type}-${id}.pdf`;
 
-            link.click();
-
-            this.renderer.removeChild(document.body, link);
-        } */
+        this.payrollService.downloadPayrollPdfReport(downloadUrl, filename);
     }
 
     public handleCloseModalClick(): void {
         this.ngbActiveModal.close();
+    }
+
+    setZoom(level: number): void {
+        this.zoomLevel = level;
     }
 
     public zoomIn(): void {
@@ -171,9 +133,5 @@ export class PayrollPdfReportComponent implements OnInit {
         if (this.pdfZoom > DEFAULT_ZOOM) {
             this.pdfZoom -= ZOOM_STEP;
         }
-    }
-
-    public resetZoom(): void {
-        this.pdfZoom = DEFAULT_ZOOM;
     }
 }
