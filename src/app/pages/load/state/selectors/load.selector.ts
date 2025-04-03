@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 // appcoretruckassist
-import { TableType } from 'appcoretruckassist';
+import { LoadStatusHistoryResponse, TableType } from 'appcoretruckassist';
 
 // table settings
 import {
@@ -396,6 +396,54 @@ export const loadDetailsSelector = createSelector(loadState, (state) => {
     const { details } = state;
 
     return details;
+});
+export const closedLoadStatusSelector = createSelector(loadState, (state) => {
+    const { details } = state;
+
+    const calculateWidths = (statuses: LoadStatusHistoryResponse[]) => {
+        let totalDuration = 0;
+
+        statuses.forEach((curr) => {
+            if (curr.dateTimeTo) {
+                const duration =
+                    new Date(curr.dateTimeTo).getTime() -
+                    new Date(curr.dateTimeFrom).getTime();
+                totalDuration += duration;
+            }
+        });
+
+        const sortedDataWithWidth = [...statuses].reverse().map((item) => {
+            const fromTime = new Date(item.dateTimeFrom).getTime();
+            const toTime = item.dateTimeTo
+                ? new Date(item.dateTimeTo).getTime()
+                : null;
+
+            if (toTime) {
+                const duration = toTime - fromTime;
+                const widthPercentage = (duration / totalDuration) * 100;
+
+                return {
+                    status: item.status.name,
+                    dateTimeFrom: item.dateTimeFrom,
+                    dateTimeTo: item.dateTimeTo,
+                    id: item.status?.id,
+                    width: widthPercentage.toFixed(2) + '%',
+                };
+            } else {
+                return {
+                    status: item.status.name,
+                    dateTimeFrom: item.dateTimeFrom,
+                    dateTimeTo: null,
+                    id: item.status?.id,
+                    width: '0.00%',
+                };
+            }
+        });
+
+        return sortedDataWithWidth;
+    };
+
+    return calculateWidths(details.statusHistory);
 });
 
 export const isLoadDetailsLoadedSelector = createSelector(

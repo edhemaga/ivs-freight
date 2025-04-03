@@ -69,6 +69,7 @@ import {
     minimalListSelector,
     tableColumnsSelector,
     groupedByStatusTypeListSelector,
+    closedLoadStatusSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -147,6 +148,11 @@ export class LoadStoreService {
 
     public resolveLoadDetails$: Observable<LoadResponse> = this.store.pipe(
         select(loadDetailsSelector)
+    );
+
+    // TODO:
+    public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
+        select(closedLoadStatusSelector)
     );
 
     public isLoadDetailsLoaded$: Observable<boolean> = this.store.pipe(
