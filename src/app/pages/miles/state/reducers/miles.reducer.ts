@@ -19,7 +19,6 @@ import { IMilesState } from '@pages/miles/interface';
 
 // functions
 import * as Functions from '@pages/miles/utils/functions/miles-reducer.functions';
-import { ITableResizeAction } from '@shared/components/new-table/interface';
 
 export const initialState: IMilesState = {
     items: [],
