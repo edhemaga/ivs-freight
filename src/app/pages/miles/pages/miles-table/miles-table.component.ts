@@ -3,13 +3,15 @@ import { Component } from '@angular/core';
 
 // interfaces
 import { IMilesModel } from '@pages/miles/interface';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableResizeAction,
+} from '@shared/components/new-table/interface';
 
 // services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 
 // enums
-import { eGeneralActions } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // components
@@ -22,6 +24,7 @@ import {
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
+import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
 
 @Component({
     selector: 'app-miles-table',
@@ -39,6 +42,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
 
         // pipes
         ThousandSeparatorPipe,
+        TableColumnClassPipe,
     ],
 })
 export class MilesTableComponent {
@@ -64,5 +68,9 @@ export class MilesTableComponent {
 
     public onCheckboxCountClick(action: string): void {
         this.milesStoreService.dispatchSelectAll(action);
+    }
+
+    public onColumnResize(resizeAction: ITableResizeAction): void {
+        this.milesStoreService.dispatchResizeColumn(resizeAction);
     }
 }

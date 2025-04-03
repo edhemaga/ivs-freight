@@ -11,7 +11,7 @@
 
 <div
     class="d-inline-block"
-    [class.w-100]="store?.activeViewMode === eCommonElement.MAP"
+    [class.w-100]="store?.activeViewMode !== eCommonElement.LIST"
 >
     @if (store) {
         <!-- Toolbar -->

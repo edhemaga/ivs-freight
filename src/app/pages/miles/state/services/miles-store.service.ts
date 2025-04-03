@@ -51,6 +51,7 @@ import { MilesHelper } from '@pages/miles/utils/helpers';
 import {
     ITableColumn,
     ITableConfig,
+    ITableResizeAction,
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
@@ -211,6 +212,13 @@ export class MilesStoreService {
             type: MilesStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
             columnKey,
             isActive,
+        });
+    }
+
+    public dispatchResizeColumn(resizeAction: ITableResizeAction): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESIZE_CHANGE,
+            resizeAction,
         });
     }
 

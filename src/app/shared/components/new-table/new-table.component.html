@@ -1,12 +1,11 @@
-@let tableWidth = rowWidth + eUnit.PX;
-
 <!-- TODO: REMOVE MARGIN -->
+@let displayedDataCount = rows.length;
 
-<div class="table-container" [ngStyle]="{ width: tableWidth }">
+<div class="table-container">
     <div class="w-full">
         <!-- Header -->
 
-        <div #tableRow class="d-flex m-b-6 p-x-8 table-header">
+        <div class="d-flex m-b-6 p-x-8 table-header">
             <div class="d-flex new-table--pinned-left">
                 @for (column of leftPinnedColumns; track column.key) {
                     <ng-container
@@ -125,7 +124,7 @@
 
         <!-- Footer -->
 
-        @if (rows?.length) {
+        @if (displayedDataCount) {
             <div
                 class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
             >
@@ -139,7 +138,13 @@
 
 <ng-template #columnTemplate let-column="column">
     @if (column.columns?.length) {
-        <div class="d-flex p-l-6 h-30 new-table--row-heading-group">
+        <div
+            class="d-flex h-30 new-table--row-heading-group"
+            [class]="{
+                'p-l-6': !column.isAlignedRight,
+                'border-left-light-grey-6': isTableLocked,
+            }"
+        >
             @for (
                 _column of column.columns;
                 track _column.key;
@@ -172,15 +177,29 @@
         let-label="label"
     >
         @if (column.isChecked) {
+            @let isResizableColumn = !isTableLocked && column.isResizable;
+            @let isEmptyTable = !displayedDataCount;
+            @let columnWidth = column.width + eUnit.PX;
+            @let isAlignedRight = column.isAlignedRight;
+
             <div
-                class="new-table--row-heading text-color-bw6-2 d-flex"
+                class="d-flex new-table--row-heading"
                 [ngClass]="
-                    { column, isTableLocked, isGroup, isEmptyTable }
-                        | tableColumnClass
+                    {
+                        column,
+                        isTableLocked,
+                        isGroup,
+                        isEmptyTable,
+                        isAlignedRight,
+                    } | tableColumnClass
                 "
-                [style.min-width]="column.width + eUnit.PX"
-                [style.width]="column.width + eUnit.PX"
+                [style.width]="columnWidth"
+                [appResizableColumn]="isResizableColumn"
+                [columnId]="column.id"
+                [minWidth]="column.minWidth"
+                [maxWidth]="column.maxWidth"
                 (click)="handleSortColumnClick(column)"
+                (onColumnResize)="onColumnWidthResize($event)"
             >
                 @if (isFirst) {
                     <span
@@ -189,12 +208,16 @@
                         {{ label }}
                     </span>
                 }
-                <div class="d-flex flex-row">
+
+                <div class="d-flex w-100">
                     <!-- Display custom header template if template exists -->
 
                     @if (headerTemplates[column.key]) {
                         <ng-container
-                            *ngTemplateOutlet="headerTemplates[column.key]"
+                            *ngTemplateOutlet="
+                                headerTemplates[column.key];
+                                context: { data: column }
+                            "
                         ></ng-container>
                     } @else {
                         <!-- Default header template - if no custom template -->
@@ -206,7 +229,7 @@
                         </span>
                     }
 
-                    @if (isTableLocked) {
+                    @if (!isTableLocked && false) {
                         <div class="d-flex">
                             <div
                                 class="c-pointer"
@@ -248,15 +271,20 @@
                         </div>
                     } @else {
                         <!-- Show this on hover if column.direction is not null -->
+
+                        @let sortIconClass =
+                            column.direction ? 'd-flex' : 'd-none';
+
+                        @let sortIconSrc =
+                            column.direction === sortOrder.Ascending ||
+                            !column.direction
+                                ? sharedSvgRoutes.SORT_ICON
+                                : sharedSvgRoutes.SORT_ICON_ASC;
+
                         <svg-icon
-                            class="new-table--row-heading-arrow ml-1 svg-size-12"
-                            [ngClass]="column.direction ? 'd-flex' : 'd-none'"
-                            [src]="
-                                column.direction === 'Ascending' ||
-                                !column.direction
-                                    ? sharedSvgRoutes.SORT_ICON
-                                    : sharedSvgRoutes.SORT_ICON_ASC
-                            "
+                            class="new-table--row-heading-arrow m-l-4 svg-size-14"
+                            [ngClass]="sortIconClass"
+                            [src]="sortIconSrc"
                         ></svg-icon>
                     }
                 </div>
@@ -282,8 +310,9 @@
                     cellColumnTemplate;
                     context: {
                         column: _column,
-                        hasPaddingLeft: true,
+                        hasPaddingLeft: isTableLocked,
                         hasMarginRight:
+                            isTableLocked &&
                             _columnIndex === column.columns.length - 1 &&
                             mainColumnIndex !== mainColumns.length - 1,
                     }
@@ -341,10 +370,10 @@
 
 <ng-template #footerTemplate>
     <p class="text-size-11 text-color-bw6-2 ta-font-semi-bold">
-        {{ pageResult }} OF {{ totalResult }}
+        {{ displayedDataCount }} OF {{ totalDataCount }}
     </p>
 
-    @if (pageResult < totalResult) {
+    @if (displayedDataCount < totalDataCount) {
         <button
             type="button"
             class="text-size-11 text-color-black text-hover-blue-15 ta-font-bold m-0 p-0 background-transparent border-0 text-uppercase"
