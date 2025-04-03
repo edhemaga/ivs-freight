@@ -733,24 +733,8 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    static getLoadToolbarColumnsDropdownContent(
-        loadColumnsList: IDropdownMenuItem[]
-    ): IDropdownMenuItem[] {
-        loadColumnsList = loadColumnsList ?? [];
-
-        const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
-
-        const conditionalItems =
-            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
-                requestedSharedItems,
-                true
-            );
-
-        return [...conditionalItems, ...loadColumnsList];
-    }
-
-    // miles toolbar
-    static getMilesToolbarDropdownContent(
+    // toolbar
+    static getToolbarDropdownContent(
         isTableLocked: boolean
     ): IDropdownMenuItem[] {
         const requestedSharedItems = [
@@ -770,7 +754,7 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    static getMilesCardToolbarDropdownContent(
+    static getCardToolbarDropdownContent(
         cardFlipViewMode: eCardFlipViewMode
     ): IDropdownMenuItem[] {
         const requestedSharedItems = [
@@ -789,11 +773,9 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    static getMilesToolbarColumnsDropdownContent(
+    static getToolbarColumnsDropdownContent(
         milesColumnsList: IDropdownMenuItem[]
     ): IDropdownMenuItem[] {
-        milesColumnsList = milesColumnsList ?? [];
-
         const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
 
         const conditionalItems =

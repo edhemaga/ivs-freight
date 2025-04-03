@@ -131,7 +131,7 @@ export class MilesComponent
         this.milesStoreService.dispatchResetTable();
     }
 
-    private openReserConfirmationModal(): void {
+    private openResetConfirmationModal(): void {
         this.modalService.openModal(
             ConfirmationResetModalComponent,
             { size: eDropdownMenu.SMALL },
@@ -199,7 +199,6 @@ export class MilesComponent
 
         switch (type) {
             case eDropdownMenuColumns.OPEN_TYPE:
-                break;
             case eDropdownMenuColumns.CLOSE_TYPE:
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
@@ -212,7 +211,7 @@ export class MilesComponent
 
                 break;
             case eDropdownMenuColumns.RESET_TABLE_TYPE:
-                this.openReserConfirmationModal();
+                this.openResetConfirmationModal();
                 break;
             case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
                 this.handleResetTable();

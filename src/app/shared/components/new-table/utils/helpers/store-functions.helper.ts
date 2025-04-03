@@ -18,7 +18,7 @@ export class StoreFunctionsHelper {
                 return {
                     ...column,
                     isChecked: isActive,
-                    pinned: undefined,
+                    pinned: null,
                     ...(hasChildren && {
                         columns: column.columns!.map((child) => ({
                             ...child,
@@ -31,7 +31,7 @@ export class StoreFunctionsHelper {
             if (hasChildren) {
                 const columns = column.columns!.map((child) =>
                     child.key === columnKey
-                        ? { ...child, isChecked: isActive, pinned: undefined }
+                        ? { ...child, isChecked: isActive, pinned: null }
                         : child
                 );
 
@@ -55,13 +55,14 @@ export class StoreFunctionsHelper {
         return columns.map((col) => {
             if (col.key === column.key) {
                 // Use left as pinned side
-                return { ...col, pinned: col.pinned ? undefined : 'left' };
+                return { ...col, pinned: col.pinned ? null : 'left' };
             }
             if (col.columns && col.columns.length) {
                 // Check all sub group column
+                const updatedColumns = this.togglePinned(column, col.columns);
                 return {
                     ...col,
-                    columns: this.togglePinned(column, col.columns),
+                    columns: updatedColumns,
                 };
             }
             return col;
@@ -106,8 +107,9 @@ export class StoreFunctionsHelper {
             });
         }
 
+        const updatedColumns = toggleSort(columns);
         return {
-            columns: toggleSort(columns),
+            columns: updatedColumns,
             sortKey: updatedSortDirection ? updatedSortKey : null,
             sortDirection: updatedSortDirection,
         };

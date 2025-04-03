@@ -123,20 +123,23 @@ export class DropdownMenuColumnsActionsHelper {
 
                     dropdownItems.push(item);
                 } else {
+                    const isChecked = children.some((col) => col.isChecked);
+                    const innerDropdownContent = children.map((col) => ({
+                        title: col.labelToolbar,
+                        type: col.key,
+                        isChecked: col.isChecked ?? true,
+                        isColumnDropdown: true,
+                        ...(col.isDisabled && { isCheckBoxDisabled: true }),
+                    }));
+
                     const group: IDropdownMenuItem = {
                         title: column.labelToolbar,
                         type: column.key,
                         groupName: column.key,
                         svgClass: 'regular',
-                        isChecked: children.some((col) => col.isChecked),
+                        isChecked,
                         isColumnDropdown: true,
-                        innerDropdownContent: children.map((col) => ({
-                            title: col.labelToolbar,
-                            type: col.key,
-                            isChecked: col.isChecked ?? true,
-                            isColumnDropdown: true,
-                            ...(col.isDisabled && { isCheckBoxDisabled: true }),
-                        })),
+                        innerDropdownContent,
                     };
 
                     dropdownItems.push(group);

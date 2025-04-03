@@ -16,6 +16,8 @@ import { IMilesState } from '@pages/miles/interface';
 
 // functions
 import * as Functions from '@pages/miles/state/functions/miles-reducer.functions';
+
+// configs
 import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
 
 // helpers

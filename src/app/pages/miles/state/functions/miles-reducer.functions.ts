@@ -15,10 +15,10 @@ import { eMileTabs } from '@pages/miles/enums';
 import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
 
 // configs
-import { MilesTableColumnsConfig } from '../../utils/config';
+import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
 
 // helpers
-import { MilesDropdownMenuHelper } from '../../utils/helpers';
+import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 

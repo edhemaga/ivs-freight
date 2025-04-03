@@ -17,13 +17,13 @@ export class MilesDropdownMenuHelper {
     ): IDropdownMenuItem[] {
         return !isColumnsDropdownActive
             ? activeViewMode === eActiveViewMode.Card
-                ? DropdownMenuContentHelper.getMilesCardToolbarDropdownContent(
+                ? DropdownMenuContentHelper.getCardToolbarDropdownContent(
                       cardFlipViewMode
                   )
-                : DropdownMenuContentHelper.getMilesToolbarDropdownContent(
+                : DropdownMenuContentHelper.getToolbarDropdownContent(
                       isTableLocked
                   )
-            : DropdownMenuContentHelper.getMilesToolbarColumnsDropdownContent(
+            : DropdownMenuContentHelper.getToolbarColumnsDropdownContent(
                   milesColumnsList
               );
         return [];
