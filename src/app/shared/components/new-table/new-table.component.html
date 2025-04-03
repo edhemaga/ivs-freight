@@ -214,7 +214,10 @@
 
                     @if (headerTemplates[column.key]) {
                         <ng-container
-                            *ngTemplateOutlet="headerTemplates[column.key]"
+                            *ngTemplateOutlet="
+                                headerTemplates[column.key];
+                                context: { data: column }
+                            "
                         ></ng-container>
                     } @else {
                         <!-- Default header template - if no custom template -->
