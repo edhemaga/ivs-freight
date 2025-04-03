@@ -99,11 +99,11 @@
             [mainTooltip]="eGeneralActions.DOWNLOAD"
             [tooltipBackground]="eColor.BLACK"
             [position]="ePosition.BOTTOM"
+            (click)="handleDownloadReportClick()"
         >
             <svg-icon
                 [src]="svgRoutes.downloadIcon"
                 class="modal-buttons"
-                (click)="handleDownloadReportClick()"
             ></svg-icon>
         </div>
 

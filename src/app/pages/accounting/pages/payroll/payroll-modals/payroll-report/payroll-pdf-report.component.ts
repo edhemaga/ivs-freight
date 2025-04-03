@@ -118,8 +118,23 @@ export class PayrollPdfReportComponent implements OnInit {
         });
     }
 
+    public downloadFile(url: string, filename: string) {
+        fetch(url).then((t) => {
+            return t.blob().then((b) => {
+                const a = document.createElement('a');
+                a.href = URL.createObjectURL(b);
+                a.setAttribute('download', filename);
+                a.click();
+                /* 
+                this.renderer.removeChild(document.body, link); */
+            });
+        });
+    }
+
     public handleDownloadReportClick(): void {
-        if (this.pdfReport?.downloadUrl) {
+        this.downloadFile(this.pdfReport.downloadUrl, 'aa');
+
+        /*  if (this.pdfReport?.downloadUrl) {
             const link = this.renderer.createElement('a');
 
             this.renderer.setAttribute(
@@ -139,7 +154,7 @@ export class PayrollPdfReportComponent implements OnInit {
             link.click();
 
             this.renderer.removeChild(document.body, link);
-        }
+        } */
     }
 
     public handleCloseModalClick(): void {
