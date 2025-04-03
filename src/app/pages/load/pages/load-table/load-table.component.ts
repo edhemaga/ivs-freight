@@ -400,11 +400,26 @@ export class LoadTableComponent
                     [LoadStatusEnum[25]].includes(status.dataBack) &&
                     updatingItem?.status.statusString === LoadStatusEnum[55];
 
+                const isNewStatusFromTonu =
+                    status.dataBack ===
+                        LoadStatusEnum[LoadStatusEnum.TonuUnpaid] ||
+                    status.dataBack ===
+                        LoadStatusEnum[LoadStatusEnum.TonuShortPaid] ||
+                    status.dataBack ===
+                        LoadStatusEnum[LoadStatusEnum.TonuClaim] ||
+                    status.dataBack ===
+                        LoadStatusEnum[LoadStatusEnum.TonuPaid] ||
+                    status.dataBack ===
+                        LoadStatusEnum[LoadStatusEnum.TonuInvoiced] ||
+                    status.dataBack ===
+                        LoadStatusEnum[LoadStatusEnum.TonuInvoicedFactoring];
+
                 if (
                     (isAssignedStatusSelected &&
                         !isTruckTrailerDriverSelected) ||
                     isPaidOrShortPaid ||
-                    isTonuFromCancelled
+                    isTonuFromCancelled ||
+                    isNewStatusFromTonu
                 ) {
                     const selectedTab: eLoadStatusType =
                         eLoadStatusType[this.selectedTab];

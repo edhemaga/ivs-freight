@@ -1,6 +1,3 @@
-// models
-import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
-
 // enums
 import {
     eCardFlipViewMode,
@@ -10,15 +7,17 @@ import {
     TableStringEnum,
 } from '@shared/enums';
 
-// interfaces
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
-
 // helpers
 import {
     DropdownMenuColumnsActionsHelper,
     DropdownMenuContentConditionalItemsHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// models
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
+import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
+import { DropdownMenuContentConstants } from '@shared/utils/constants';
 
 export class DropdownMenuContentHelper {
     // contact
@@ -660,12 +659,7 @@ export class DropdownMenuContentHelper {
     ): IDropdownMenuItem[] {
         // requested items
         const requestedConditionalItems = isOpenPayroll
-            ? [
-                  eDropdownMenu.EDIT_LOAD,
-                  eDropdownMenu.EDIT_PAYROLL,
-                  eDropdownMenu.PREVIEW_REPORT,
-                  eDropdownMenu.DOWNLOAD,
-              ]
+            ? [eDropdownMenu.EDIT_LOAD, eDropdownMenu.EDIT_PAYROLL]
             : [
                   eDropdownMenu.RESEND_REPORT,
                   eDropdownMenu.PREVIEW_REPORT,
@@ -687,11 +681,7 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [
-            ...conditionalItems.slice(0, isOpenPayroll ? 2 : 1),
-            ...sharedItems,
-            ...conditionalItems.slice(-2),
-        ];
+        return [...conditionalItems, ...sharedItems];
     }
 
     // payroll select load

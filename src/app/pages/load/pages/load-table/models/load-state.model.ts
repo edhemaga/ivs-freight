@@ -16,6 +16,9 @@ import { IFilterDropdownList } from 'ca-components';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 import { eActiveViewMode } from '@shared/enums';
 
+// interface
+import { ITableColumn } from '@shared/components/new-table/interface';
+
 export interface ILoadState {
     data: ILoadGridItem[] | ILoadTemplateGridItem[]; // list entity data
 
@@ -44,4 +47,6 @@ export interface ILoadState {
     hasAllLoadsSelected: boolean;
     isLoadDetailsMapOpen: boolean;
     minimalList: LoadMinimalListResponse;
+
+    tableColumns: ITableColumn[];
 }

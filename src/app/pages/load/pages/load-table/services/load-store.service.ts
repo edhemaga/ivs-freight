@@ -67,6 +67,8 @@ import {
     loadDetailsExtraStopCountSelector,
     isLoadDetailsMapOpenSelector,
     minimalListSelector,
+    tableColumnsSelector,
+    groupedByStatusTypeListSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -78,6 +80,7 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadRouting } from '@pages/new-load/enums';
 
 import { IFilterDropdownList } from 'ca-components';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 @Injectable({
     providedIn: 'root',
@@ -180,6 +183,13 @@ export class LoadStoreService {
 
     public minimalListSelector$: Observable<LoadMinimalListResponse> =
         this.store.pipe(select(minimalListSelector));
+
+    public tableColumnsSelector$: Observable<ITableColumn[]> = this.store.pipe(
+        select(tableColumnsSelector)
+    );
+
+    public groupedByStatusTypeListSelector$: Observable<LoadMinimalListResponse> =
+        this.store.pipe(select(groupedByStatusTypeListSelector));
 
     public dispatchLoadList(
         apiParam: IGetLoadListParam,

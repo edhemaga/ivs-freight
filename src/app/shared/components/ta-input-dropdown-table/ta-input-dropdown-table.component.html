@@ -19,14 +19,14 @@
                     class="d-flex justify-content-center svg-holder"
                     [src]="'assets/svg/common/dropdown-truck.svg'"
                     [ngClass]="{
-                        'no-count': !filteredData.truckCount
+                        'no-count': !filteredData.truckCount,
                     }"
                 ></svg-icon>
 
                 <span
                     class="d-flex justify-content-center"
                     [ngClass]="{
-                        'no-count-text': !filteredData.truckCount
+                        'no-count-text': !filteredData.truckCount,
                     }"
                 >
                     {{ filteredData.truckCount }}
@@ -40,14 +40,14 @@
                     class="d-flex justify-content-center svg-holder"
                     [src]="'assets/svg/common/dropdown-trailer.svg'"
                     [ngClass]="{
-                        'no-count': !filteredData.trailerCount
+                        'no-count': !filteredData.trailerCount,
                     }"
                 ></svg-icon>
 
                 <span
                     class="d-flex justify-content-center"
                     [ngClass]="{
-                        'no-count-text': !filteredData.trailerCount
+                        'no-count-text': !filteredData.trailerCount,
                     }"
                 >
                     {{ filteredData.trailerCount }}
@@ -172,14 +172,14 @@
                     [src]="'assets/svg/common/ic_like.svg'"
                     [ngClass]="{
                         'no-count': !filteredData.total.totalLikes,
-                        'user-liked': filteredData.total.liked
+                        'user-liked': filteredData.total.liked,
                     }"
                 ></svg-icon>
 
                 <span
                     class="d-flex justify-content-center"
                     [ngClass]="{
-                        'no-count-text': !filteredData.total.totalLikes
+                        'no-count-text': !filteredData.total.totalLikes,
                     }"
                 >
                     {{ filteredData.total.totalLikes }}
@@ -193,14 +193,14 @@
                     [src]="'assets/svg/common/ic_dislike.svg'"
                     [ngClass]="{
                         'no-count': !filteredData.total.totalDislikes,
-                        'user-disliked': filteredData.total.disliked
+                        'user-disliked': filteredData.total.disliked,
                     }"
                 ></svg-icon>
 
                 <span
                     class="d-flex justify-content-center"
                     [ngClass]="{
-                        'no-count-text': !filteredData.total.totalDislikes
+                        'no-count-text': !filteredData.total.totalDislikes,
                     }"
                 >
                     {{ filteredData.total.totalDislikes }}
@@ -212,18 +212,18 @@
                     class="d-flex justify-content-center svg-holder align-items-center"
                     [src]="'assets/svg/common/review-pen.svg'"
                     [ngClass]="{
-                        'no-count': !filteredData.total.totalComments
+                        'no-count': !filteredData.total.totalComments,
                     }"
                     [svgStyle]="{
                         'width.px': 14,
-                        'height.px': 14
+                        'height.px': 14,
                     }"
                 ></svg-icon>
 
                 <span
                     class="d-flex justify-content-center"
                     [ngClass]="{
-                        'no-count-text': !filteredData.total.totalComments
+                        'no-count-text': !filteredData.total.totalComments,
                     }"
                 >
                     {{ filteredData.total.totalComments }}
@@ -426,7 +426,7 @@
                         <div
                             class="items-holder"
                             [ngClass]="{
-                                'hide-dropdown-items': trailerDropdown
+                                'hide-dropdown-items': trailerDropdown,
                             }"
                         >
                             <ng-container
@@ -633,13 +633,14 @@
                                         class="d-flex justify-content-center align-items-center contact-item-avatar-div-img"
                                         [ngStyle]="{
                                             background:
-                                                contact.avatarColor.background
+                                                contact.avatarColor.background,
                                         }"
                                     >
                                         <p
                                             class="m-0 ta-font-bold"
                                             [ngStyle]="{
-                                                color: contact.avatarColor.color
+                                                color: contact.avatarColor
+                                                    .color,
                                             }"
                                         >
                                             {{
@@ -708,12 +709,12 @@
             </div>
 
             <!-- Tabs -->
-            <app-ta-tab-switch
+            <app-ca-tab-switch
                 [tabs]="tabs"
                 (switchClicked)="onPrefferedLoadCheck($event)"
                 [type]="'rating-review'"
             >
-            </app-ta-tab-switch>
+            </app-ca-tab-switch>
 
             <!-- Add new comment button -->
             <ng-container *ngIf="!loggedUserCommented">

@@ -11,4 +11,5 @@ export interface IFuelPurchaseModalConfigPipeArgs {
     selectedDriver?: PayrollDriver;
     trailerId?: number;
     logoName?: string;
+    isDisabled?: boolean;
 }

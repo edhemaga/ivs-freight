@@ -29,6 +29,10 @@
 
     &-green {
         background: $ta-green;
+
+        &-7 {
+            background: $ta-green-7;
+        }
     }
 
     &-bw1 {
@@ -54,6 +58,10 @@
             background-color: $ta-light-grey-2;
         }
 
+        &-5 {
+            background-color: $ta-light-grey-5;
+        }
+
         &-6 {
             background-color: $ta-light-grey-6;
         }
@@ -69,6 +77,14 @@
 
     &-orange-5 {
         background-color: $ta-orange-5;
+    }
+
+    &-orange-8 {
+        background-color: $ta-orange-8;
+    }
+
+    &-red-10 {
+        background-color: $ta-red-10;
     }
 
     &-blue {

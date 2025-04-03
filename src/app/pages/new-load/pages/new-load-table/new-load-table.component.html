@@ -3,30 +3,78 @@
         viewData: loadStoreService.viewData$ | async,
         hasAllLoadsSelected: loadStoreService.hasAllLoadsSelected$ | async,
         selectedTab: loadStoreService.selectedTab$ | async,
+        columns: loadStoreService.tableColumnsSelector$ | async,
     };
 @if (store) {
-    <div>
-        @let loadListName = 'List' - store.selectedTab;
-        <app-ca-checkbox
-            [isRegularCheckbox]="false"
-            [isChecked]="store.hasAllLoadsSelected"
-            [name]="loadListName"
-            (columnCheckAction)="selectAll()"
-        ></app-ca-checkbox>
-    </div>
-    @for (load of store.viewData; track load.id) {
-        <div class="d-flex">
-            @let loadName = 'Load-' + load.id;
-            <app-ca-checkbox
-                [isChecked]="load.isSelected"
-                [isRegularCheckbox]="false"
-                [itemIndex]="load.id"
-                [name]="loadName"
-                (columnCheckAction)="selectLoad(load)"
-            ></app-ca-checkbox>
-            <div (click)="navigateToLoadDetails(load.id)">
-                Load id: {{ load.id }}
+    <app-new-table
+        [columns]="store.columns"
+        [rows]="store.viewData"
+        [templates]="{
+            loadNumber,
+            dispatcher,
+            tableAssignedUnitTruck,
+            tableAssignedUnitTrailer,
+            loadBroker,
+            loadStatus,
+        }"
+    >
+        <ng-template let-data="data" #loadNumber>
+            <span
+                class="ta-font-bold text-size-14 text-color-black c-pointer text-hover-blue-15"
+                (click)="navigateToLoadDetails(data.id)"
+            >
+                {{ data.loadNumber }}
+            </span>
+        </ng-template>
+
+        <ng-template let-data="data" #dispatcher>
+            <div class="d-flex align-items-center">
+                <app-ca-profile-image
+                    [avatarColor]="{
+                        background: eColor.BLUE_27,
+                        color: eColor.BLUE_28,
+                    }"
+                    [textShortName]="data.dispatcher?.fullName | nameInitials"
+                    [avatarImg]="data.dispatcher?.avatarFile?.url"
+                    [isRound]="true"
+                ></app-ca-profile-image>
+
+                <span class="text-color-black text-size-14 ml-1">{{
+                    data.dispatcher?.fullName
+                }}</span>
             </div>
-        </div>
-    }
+        </ng-template>
+
+        <ng-template let-data="data" #tableAssignedUnitTruck>
+            <span class="text-size-14 text-color-black">
+                {{ data.driver?.truckNumber }}
+            </span>
+        </ng-template>
+
+        <ng-template let-data="data" #tableAssignedUnitTrailer>
+            <span class="text-size-14 text-color-black">
+                {{ data.driver?.trailerNumber }}
+            </span>
+        </ng-template>
+
+        <ng-template let-data="data" #loadBroker>
+            <span class="text-size-14 text-color-black">
+                {{ data.broker?.businessName }}
+            </span>
+        </ng-template>
+
+        <ng-template let-data="data" #loadStatus>
+            <span class="ta-font-bold text-size-14 text-color-black">
+                <app-ca-load-status
+                    [status]="{
+                        name: data.status?.statusString,
+                        id: data.status?.statusValue?.id,
+                    }"
+                    [isNoStyle]="false"
+                    [fontSize]="14"
+                >
+                </app-ca-load-status>
+            </span>
+        </ng-template>
+    </app-new-table>
 }

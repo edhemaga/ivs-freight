@@ -129,12 +129,7 @@
             <div
                 class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
             >
-                <ng-container
-                    *ngTemplateOutlet="
-                        footerTemplate;
-                        context: { rowsLength: rows?.length }
-                    "
-                ></ng-container>
+                <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
             </div>
         }
     </div>
@@ -178,9 +173,10 @@
     >
         @if (column.isChecked) {
             <div
-                class="new-table--row-heading d-flex flex-row"
+                class="new-table--row-heading text-color-bw6-2 d-flex"
                 [ngClass]="
-                    { column, isTableLocked, isGroup } | tableColumnClass
+                    { column, isTableLocked, isGroup, isEmptyTable }
+                        | tableColumnClass
                 "
                 [style.min-width]="column.width + eUnit.PX"
                 [style.width]="column.width + eUnit.PX"
@@ -193,73 +189,77 @@
                         {{ label }}
                     </span>
                 }
+                <div class="d-flex flex-row">
+                    <!-- Display custom header template if template exists -->
 
-                <!-- Display custom header template if template exists -->
-                @if (headerTemplates[column.key]) {
-                    <ng-container
-                        *ngTemplateOutlet="headerTemplates[column.key]"
-                    ></ng-container>
-                } @else {
-                    <!-- Default header template - if no custom template -->
+                    @if (headerTemplates[column.key]) {
+                        <ng-container
+                            *ngTemplateOutlet="headerTemplates[column.key]"
+                        ></ng-container>
+                    } @else {
+                        <!-- Default header template - if no custom template -->
 
-                    <span
-                        class="text-size-11 ta-font-bold color-inherit text-uppercase text-color-bw6-2"
-                    >
-                        {{ column.label }}
-                    </span>
-                }
-
-                @if (isTableLocked) {
-                    <div class="d-flex">
-                        <div
-                            class="c-pointer"
-                            [ngClass]="{
-                                'svg-hover-black': !column.pinned,
-                                'svg-hover-blue-15 svg-fill-blue-13':
-                                    column.pinned,
-                            }"
-                            ngbTooltip
-                            [mainTooltip]="
-                                column.pinned ? 'Remove Pin' : 'Pin Column'
-                            "
-                            [tooltipBackground]="eColor.BLACK"
-                            position="bottom"
+                        <span
+                            class="text-size-11 ta-font-bold color-inherit text-uppercase"
                         >
-                            <svg-icon
-                                class="new-table--row-heading-arrow mr-1 svg-size-14"
-                                [src]="sharedSvgRoutes.PIN_ICON"
-                                (click)="handlePinColumnClick(column)"
-                            ></svg-icon>
-                        </div>
+                            {{ column.label }}
+                        </span>
+                    }
 
-                        @if (!column.pinned) {
+                    @if (isTableLocked) {
+                        <div class="d-flex">
                             <div
-                                class="svg-hover-black c-pointer"
+                                class="c-pointer"
+                                [ngClass]="{
+                                    'svg-hover-black': !column.pinned,
+                                    'svg-hover-blue-15 svg-fill-blue-13':
+                                        column.pinned,
+                                }"
                                 ngbTooltip
-                                mainTooltip="Remove Column"
+                                [mainTooltip]="
+                                    column.pinned ? 'Remove Pin' : 'Pin Column'
+                                "
                                 [tooltipBackground]="eColor.BLACK"
                                 position="bottom"
                             >
                                 <svg-icon
-                                    class="new-table--row-heading-arrow svg-size-14"
-                                    [src]="sharedSvgRoutes.CLOSE_ICON_NORMAL"
+                                    class="new-table--row-heading-arrow mr-1 svg-size-14"
+                                    [src]="sharedSvgRoutes.PIN_ICON"
+                                    (click)="handlePinColumnClick(column)"
                                 ></svg-icon>
                             </div>
-                        }
-                    </div>
-                } @else {
-                    <!-- Show this on hover if column.direction is not null -->
-                    <svg-icon
-                        class="new-table--row-heading-arrow ml-1 svg-size-12"
-                        [ngClass]="column.direction ? 'd-flex' : 'd-none'"
-                        [src]="
-                            column.direction === 'Ascending' ||
-                            !column.direction
-                                ? sharedSvgRoutes.SORT_ICON
-                                : sharedSvgRoutes.SORT_ICON_ASC
-                        "
-                    ></svg-icon>
-                }
+
+                            @if (!column.pinned) {
+                                <div
+                                    class="svg-hover-black c-pointer"
+                                    ngbTooltip
+                                    mainTooltip="Remove Column"
+                                    [tooltipBackground]="eColor.BLACK"
+                                    position="bottom"
+                                >
+                                    <svg-icon
+                                        class="new-table--row-heading-arrow svg-size-14"
+                                        [src]="
+                                            sharedSvgRoutes.CLOSE_ICON_NORMAL
+                                        "
+                                    ></svg-icon>
+                                </div>
+                            }
+                        </div>
+                    } @else {
+                        <!-- Show this on hover if column.direction is not null -->
+                        <svg-icon
+                            class="new-table--row-heading-arrow ml-1 svg-size-12"
+                            [ngClass]="column.direction ? 'd-flex' : 'd-none'"
+                            [src]="
+                                column.direction === 'Ascending' ||
+                                !column.direction
+                                    ? sharedSvgRoutes.SORT_ICON
+                                    : sharedSvgRoutes.SORT_ICON_ASC
+                            "
+                        ></svg-icon>
+                    }
+                </div>
             </div>
         }
     </ng-template>
@@ -339,14 +339,12 @@
     </ng-template>
 </ng-template>
 
-<ng-template #footerTemplate let-rowsLength="rowsLength">
-    @let rowsPageSize = 25;
-
+<ng-template #footerTemplate>
     <p class="text-size-11 text-color-bw6-2 ta-font-semi-bold">
-        {{ rowsLength }} OF {{ rowsLength }}
+        {{ pageResult }} OF {{ totalResult }}
     </p>
 
-    @if (rowsLength >= rowsPageSize) {
+    @if (pageResult < totalResult) {
         <button
             type="button"
             class="text-size-11 text-color-black text-hover-blue-15 ta-font-bold m-0 p-0 background-transparent border-0 text-uppercase"

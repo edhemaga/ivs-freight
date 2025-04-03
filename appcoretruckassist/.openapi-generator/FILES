@@ -723,6 +723,7 @@ model/milesStopItemResponse.ts
 model/milesStopItemResponsePagination.ts
 model/milesStopResponse.ts
 model/milesStopShortResponse.ts
+model/milesStopSortBy.ts
 model/mobileFuelStopExpensesChartResponse.ts
 model/mobileFuelStopExpensesResponse.ts
 model/mobileFuelStopListResponse.ts

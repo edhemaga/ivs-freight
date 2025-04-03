@@ -8,8 +8,8 @@
     (action)="onModalAction($event)"
 >
     <div origin>
-        <app-ta-tab-switch [tabs]="tabs" [type]="'type1-modal-popup'">
-        </app-ta-tab-switch>
+        <app-ca-tab-switch [tabs]="tabs" [type]="'type1-modal-popup'">
+        </app-ca-tab-switch>
 
         <form
             [formGroup]="userForm"
@@ -62,14 +62,14 @@
                                 *ngIf="selectedUserType?.name !== 'Owner'"
                             >
                                 <div class="col-4">
-                                    <app-ta-tab-switch
+                                    <app-ca-tab-switch
                                         [tabs]="typeOfEmploye"
-                                        [type]="'type2-modal-popup'"
+                                        [type]="'type4-modal-popup'"
                                         (switchClicked)="
                                             onSelectedTab($event, 'user-admin')
                                         "
                                     >
-                                    </app-ta-tab-switch>
+                                    </app-ca-tab-switch>
                                 </div>
                             </ng-container>
                             <div
@@ -386,14 +386,14 @@
                                         ></ca-input-datetime-picker>
                                     </div>
                                     <div class="col-3 no-p-left">
-                                        <app-ta-tab-switch
+                                        <app-ca-tab-switch
                                             [tabs]="typeOfPayroll"
-                                            [type]="'type2-modal-popup'"
+                                            [type]="'type4-modal-popup'"
                                             (switchClicked)="
                                                 onSelectedTab($event, '1099-w2')
                                             "
                                         >
-                                        </app-ta-tab-switch>
+                                        </app-ca-tab-switch>
                                     </div>
                                 </div>
                                 <ng-container

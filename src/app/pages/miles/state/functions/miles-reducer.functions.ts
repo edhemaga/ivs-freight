@@ -33,6 +33,10 @@ export const updateTruckCounts = function (
             { ...state.tableViewData[0], length: activeTruckCount },
             { ...state.tableViewData[1], length: inactiveTruckCount },
         ],
+        tabResults: {
+            activeTruckCount,
+            inactiveTruckCount,
+        },
     };
 };
 
@@ -72,12 +76,20 @@ export const updateMilesData = function (
     return {
         ...state,
         items: miles,
+        page: 1,
         loading: false,
         unitsPagination: {
             ...state.unitsPagination,
             activeUnitIndex: 0,
             totalResultsCount,
         },
+    };
+};
+
+export const pageChanges = function (state: IMilesState): IMilesState {
+    return {
+        ...state,
+        page: state.page + 1,
     };
 };
 
@@ -206,6 +218,8 @@ export const setFollowingUnitDetails = function (
 export const toggleTableLockingStatus = function (
     state: IMilesState
 ): IMilesState {
+    console.log('unlocking-toggle-reducer');
+
     const {
         tableSettings,
         activeViewMode,
@@ -246,9 +260,13 @@ export function tableSortingChange(
     column: ITableColumn
 ): IMilesState {
     const { columns, sortKey, sortDirection } = StoreFunctionsHelper.toggleSort(
-        state.columns,
-        column.key
+        column,
+        state.columns
     );
+
+    console.log('columns', columns);
+    console.log('sortKey', sortKey);
+    console.log('sortDirection', sortDirection);
 
     return {
         ...state,
@@ -292,14 +310,27 @@ export function onSearchChange(
 }
 
 export function resetTable(state: IMilesState): IMilesState {
+    const {
+        activeViewMode,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+
     return {
         ...state,
         columns: MilesTableColumnsConfig.columnsConfig,
         tableSettings: {
             isTableLocked: false,
-            sortKey: '',
+            sortKey: null,
             sortDirection: null,
         },
+        toolbarDropdownMenuOptions:
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                false,
+                cardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
     };
 }
 
@@ -311,19 +342,19 @@ export function toggleCardFlipViewMode(state: IMilesState): IMilesState {
         isToolbarDropdownMenuColumnsActive,
     } = state;
 
-    const nextViewMode =
+    const nextCardFlipViewMode =
         cardFlipViewMode === eCardFlipViewMode.FRONT
             ? eCardFlipViewMode.BACK
             : eCardFlipViewMode.FRONT;
 
     return {
         ...state,
-        cardFlipViewMode: nextViewMode,
+        cardFlipViewMode: nextCardFlipViewMode,
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
                 tableSettings.isTableLocked,
-                nextViewMode,
+                nextCardFlipViewMode,
                 isToolbarDropdownMenuColumnsActive
             ),
     };
@@ -339,6 +370,9 @@ export function toggleToolbarDropdownMenuColumnsActive(
         isToolbarDropdownMenuColumnsActive,
         columns,
     } = state;
+
+    console.log('toggle-tolbar-columns-active.reduer')
+    console.log('columns', columns);
 
     const toolbarDropdownColumns =
         DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(columns);

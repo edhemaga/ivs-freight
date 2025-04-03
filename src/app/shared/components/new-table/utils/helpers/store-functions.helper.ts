@@ -1,5 +1,5 @@
 // enums
-import { SortOrder } from 'appcoretruckassist';
+import { MilesStopSortBy, SortOrder } from 'appcoretruckassist';
 
 // interfaces
 import { ITableColumn } from '@shared/components/new-table/interface';
@@ -18,6 +18,7 @@ export class StoreFunctionsHelper {
                 return {
                     ...column,
                     isChecked: isActive,
+                    pinned: undefined,
                     ...(hasChildren && {
                         columns: column.columns!.map((child) => ({
                             ...child,
@@ -30,7 +31,7 @@ export class StoreFunctionsHelper {
             if (hasChildren) {
                 const columns = column.columns!.map((child) =>
                     child.key === columnKey
-                        ? { ...child, isChecked: isActive }
+                        ? { ...child, isChecked: isActive, pinned: undefined }
                         : child
                 );
 
@@ -68,21 +69,21 @@ export class StoreFunctionsHelper {
     }
 
     static toggleSort(
-        columns: ITableColumn[],
-        columnKey: string
+        column: ITableColumn,
+        columns: ITableColumn[]
     ): {
         columns: ITableColumn[];
-        sortKey: string;
+        sortKey: MilesStopSortBy;
         sortDirection: SortOrder | null;
     } {
-        let updatedSortKey: string | null = null;
+        const { sortName, key } = column;
+
+        let updatedSortKey = sortName;
         let updatedSortDirection: SortOrder | null = SortOrder.Ascending;
 
         function toggleSort(cols: ITableColumn[]): ITableColumn[] {
             return cols.map((col) => {
-                if (col.key === columnKey) {
-                    updatedSortKey = col.key;
-
+                if (col.key === key) {
                     if (col.direction === SortOrder.Ascending) {
                         updatedSortDirection = SortOrder.Descending;
                     } else if (col.direction === SortOrder.Descending) {
@@ -100,9 +101,7 @@ export class StoreFunctionsHelper {
                 return {
                     ...col,
                     direction: null,
-                    columns: col.columns
-                        ? toggleSort(col.columns)
-                        : col.columns,
+                    ...(col.columns && { columns: toggleSort(col.columns) }),
                 };
             });
         }

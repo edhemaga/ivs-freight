@@ -17,6 +17,7 @@ import {
     unitsPaginationSelector,
     tableSettingsSelector,
     toolbarDropdownMenuOptionsSelector,
+    tabResultsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -24,6 +25,7 @@ import {
     IMilesDetailsFilters,
     IMilesModel,
     IMilesState,
+    IMilesTabResults,
 } from '@pages/miles/interface';
 import {
     MilesByUnitListResponse,
@@ -101,6 +103,10 @@ export class MilesStoreService {
     public toolbarDropdownMenuOptionsSelector$: Observable<
         IDropdownMenuItem[]
     > = this.store.pipe(select(toolbarDropdownMenuOptionsSelector));
+
+    public tabResultsSelector$: Observable<IMilesTabResults> = this.store.pipe(
+        select(tabResultsSelector)
+    );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -237,6 +243,11 @@ export class MilesStoreService {
     public dispatchToggleToolbarDropdownMenuColumnsActive(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_TOGGLE_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+        });
+    }
+    public getNewPage(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
         });
     }
 }

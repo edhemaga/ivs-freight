@@ -16,7 +16,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCopyComponent } from '@shared/components/ta-copy/ta-copy.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { CaTabSwitchComponent } from 'ca-components';
 import { TaInputComponent } from '@shared/components/ta-input/ta-input.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
@@ -51,7 +51,7 @@ import { SettingsCompanyAdditionalInfoHasDataPipe } from './pipes';
         TaCustomCardComponent,
         TaCopyComponent,
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaInputComponent,
         TaInputAddressDropdownComponent,
         TaCheckboxCardComponent,

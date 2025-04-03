@@ -11,8 +11,7 @@ import {
     Component,
     Input,
     OnDestroy,
-    OnInit,
-    ViewChild,
+    OnInit
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -62,7 +61,6 @@ import {
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
@@ -77,6 +75,7 @@ import {
     CaInputDropdownComponent,
     CaInputNoteComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     CaUploadFilesComponent,
     InputTestComponent,
 } from 'ca-components';
@@ -156,7 +155,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         // components
         TaAppTooltipV2Component,
         CaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
@@ -179,7 +178,6 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 export class DriverModalComponent
     extends AddressMixin(class { addressService!: AddressService; })
     implements OnInit, OnDestroy {
-    @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
     @Input() editData: DriverModalEditData;
 
@@ -616,13 +614,6 @@ export class DriverModalComponent
     public onTabChange(event: Tabs): void {
         this.selectedTabId = event.id;
 
-        this.mainTabs = this.mainTabs?.map((tab) => {
-            return {
-                ...tab,
-                checked: tab.id === event?.id,
-            };
-        });
-
         this.uploadFileService.visibilityDropZone(this.selectedTabId === 2);
 
         const dotAnimation = document.querySelector(
@@ -664,13 +655,6 @@ export class DriverModalComponent
                     false
                 );
             }
-
-            this.ownerTabs = this.ownerTabs?.map((ownerTab) => {
-                return {
-                    ...ownerTab,
-                    checked: ownerTab.id === event.id,
-                };
-            });
         }
     }
 
@@ -679,13 +663,6 @@ export class DriverModalComponent
             this.driverForm
                 .get(DriverModalStringEnum.PAYROLL_TYPE)
                 .patchValue(event.name);
-
-            this.payrollTabs = this.payrollTabs?.map((payrollTab) => {
-                return {
-                    ...payrollTab,
-                    checked: payrollTab.id === event?.id,
-                };
-            });
 
             const payrollType = this.driverForm.get(
                 DriverModalStringEnum.PAYROLL_TYPE

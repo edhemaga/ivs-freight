@@ -16,14 +16,13 @@ import { TaTableBodyComponent } from '@shared/components/ta-table/ta-table-body/
 import { TaTableHeadComponent } from '@shared/components/ta-table/ta-table-head/ta-table-head.component';
 import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
 import { TaProgresBarComponent } from '@shared/components/ta-progres-bar/ta-progres-bar.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
+import { CaDropdownMenuComponent, CaTabSwitchComponent } from 'ca-components';
 
 // pipes
 import { FlipCardsPipe } from '@shared/pipes/flip-cards.pipe';
 import { ThousandSeparatorPipe } from '@shared/pipes/thousand-separator.pipe';
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { CardValuePipe } from '@shared/pipes/card-value.pipe';
-import { CaDropdownMenuComponent } from 'ca-components';
 
 // store
 import { StoreModule } from '@ngrx/store';
@@ -45,7 +44,7 @@ import { truckCardModalReducer } from '@pages/truck/pages/truck-card-modal/state
         TaTableHeadComponent,
         TaNoteComponent,
         TaProgresBarComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         CaDropdownMenuComponent,
 
         //pipes

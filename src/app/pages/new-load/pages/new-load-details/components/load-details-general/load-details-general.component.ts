@@ -1,6 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 // Services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
@@ -13,14 +18,20 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
+import { LoadRequirementsFormatPipe } from '@pages/new-load/pages/new-load-details/pipes';
 
 // Components
 import { CaSkeletonComponent } from '@shared/components/ca-skeleton/ca-skeleton.component';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { CaUnitInfoBoxComponent } from '@shared/components/ca-unit-info-box/ca-unit-info-box.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { CaLoadStatusComponent, LoadStatusColorsPipe } from 'ca-components';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import {
+    CaLoadStatusComponent,
+    CaDetailsTitleCardComponent,
+    LoadStatusColorsPipe,
+} from 'ca-components';
 
 @Component({
     selector: 'app-load-details-general',
@@ -30,10 +41,12 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
     imports: [
         CommonModule,
         NgbModule,
+        ReactiveFormsModule,
 
         // Pipes
         FormatDatePipe,
         LoadStatusColorsPipe,
+        LoadRequirementsFormatPipe,
 
         // Components
         CaSkeletonComponent,
@@ -42,9 +55,14 @@ import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-cust
         TaAppTooltipV2Component,
         CaLoadStatusComponent,
         TaCustomCardComponent,
+        TaInputNoteComponent,
+        CaDetailsTitleCardComponent,
     ],
 })
 export class LoadDetailsGeneralComponent {
+    @ViewChild('detailsTitleCard')
+    detailsTitleCard: CaDetailsTitleCardComponent;
+
     // assets
     public sharedIcons = SharedSvgRoutes;
 
@@ -54,10 +72,48 @@ export class LoadDetailsGeneralComponent {
     public eColor = eColor;
 
     public isBillingExpanded: boolean = false;
+    public isPaymentExpanded: boolean = false;
+    public isInvoiceAgeingExpanded: boolean = false;
 
-    constructor(protected loadStoreService: LoadStoreService) {}
+    public cardForm: UntypedFormGroup;
+
+    constructor(
+        protected loadStoreService: LoadStoreService,
+        private formBuilder: UntypedFormBuilder
+    ) {}
+
+    ngOnInit(): void {
+        this.createForm();
+    }
 
     public toggleBilling(): void {
         this.isBillingExpanded = !this.isBillingExpanded;
+    }
+
+    public togglePayment(): void {
+        this.isPaymentExpanded = !this.isPaymentExpanded;
+    }
+
+    public toggleInvoiceAgeing(): void {
+        this.isInvoiceAgeingExpanded = !this.isInvoiceAgeingExpanded;
+    }
+
+    private createForm(): void {
+        this.cardForm = this.formBuilder.group({
+            driverMessage: [],
+            note: [],
+        });
+    }
+
+    public onNextAction(): void {}
+
+    public onPreviousAction(): void {}
+
+    public onDropdownItemAction(): void {
+        this.detailsTitleCard.dropdownPopover?.close();
+    }
+
+    public onAddNewItemAction(): void {
+        this.detailsTitleCard.dropdownPopover?.close();
     }
 }

@@ -474,3 +474,27 @@ export const minimalListSelector = createSelector(loadState, (state) => {
     const { minimalList } = state;
     return minimalList;
 });
+
+export const tableColumnsSelector = createSelector(loadState, (state) => {
+    const { tableColumns } = state;
+    return tableColumns;
+});
+
+export const groupedByStatusTypeListSelector = createSelector(
+    minimalListSelector,
+    (minimalList) => {
+        let groupedByStatusType;
+        const data = minimalList?.pagination?.data;
+
+        if (data) {
+            groupedByStatusType = data?.reduce((acc, item) => {
+                const key = item.statusType.name;
+                acc[key] = acc[key] || [];
+                acc[key].push(item);
+                return acc;
+            }, {});
+        }
+
+        return groupedByStatusType;
+    }
+);

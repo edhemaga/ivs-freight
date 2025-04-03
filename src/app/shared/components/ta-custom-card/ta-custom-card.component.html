@@ -11,6 +11,7 @@
             class="divider"
             [class.divider--dark]="hasDarkDivider"
             [class.divider--small]="hasSmallDivider"
+            [class.divider--black]="hasBlackDivider"
         ></div>
     }
 
@@ -33,6 +34,7 @@
         (mouseenter)="isHeaderHover = true"
         (mouseleave)="isHeaderHover = false"
         (click)="isCardOpenEvent($event)"
+        [class.details-card-dropdown]="isDetailsCardDropdown"
     >
         <!-- Left side of header -->
 
@@ -60,6 +62,7 @@
                 [ngClass]="{
                     'dropdown-card': isDropdownCard && !isDropdownModalCard,
                 }"
+                [class.header-text-details-card-dropdown]="isDetailsCardDropdown"
                 [ngStyle]="{
                     color: _isCardOpen
                         ? '#424242'

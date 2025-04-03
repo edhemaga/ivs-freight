@@ -14,6 +14,9 @@ import { eActiveViewMode } from '@shared/enums';
 // functions
 import * as Functions from '@pages/load/pages/load-table/utils/functions/load-reducer.functions';
 
+// Helpers
+import { LoadTableColumns } from '@pages/load/pages/load-table/utils/constants';
+
 // #region initialState
 export const initialState: ILoadState = {
     data: [],
@@ -40,9 +43,11 @@ export const initialState: ILoadState = {
     selectLoadCount: 0,
     totalLoadSum: 0,
     hasAllLoadsSelected: false,
-    isLoadDetailsMapOpen: false,
+    isLoadDetailsMapOpen: true,
 
     minimalList: {},
+
+    tableColumns: LoadTableColumns,
 };
 // #endregion
 

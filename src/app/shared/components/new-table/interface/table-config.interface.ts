@@ -1,7 +1,7 @@
-import { SortOrder } from 'appcoretruckassist';
+import { MilesStopSortBy, SortOrder } from 'appcoretruckassist';
 
 export interface ITableConfig {
     isTableLocked: boolean;
-    sortKey: string;
+    sortKey: MilesStopSortBy;
     sortDirection: SortOrder;
 }

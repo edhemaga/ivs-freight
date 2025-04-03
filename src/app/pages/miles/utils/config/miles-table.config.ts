@@ -1,3 +1,7 @@
+// models
+import { MilesStopSortBy } from 'appcoretruckassist';
+
+// interfaces
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 export class MilesTableColumnsConfig {
@@ -16,6 +20,8 @@ export class MilesTableColumnsConfig {
             width: 80,
             isDisabled: true,
             isChecked: true,
+            hasSort: true,
+            sortName: MilesStopSortBy.UnitNumber,
         },
         {
             key: 'truckType',
@@ -23,6 +29,8 @@ export class MilesTableColumnsConfig {
             labelToolbar: 'Type',
             width: 64,
             isChecked: true,
+            hasSort: true,
+            sortName: MilesStopSortBy.UnitType,
         },
         {
             key: 'stops',
@@ -35,6 +43,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Count',
                     width: 62,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Count,
                 },
                 {
                     key: 'stopsPickup',
@@ -42,6 +52,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Pickup',
                     width: 90,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Pickup,
                 },
                 {
                     key: 'stopsDelivery',
@@ -49,6 +61,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Delivery',
                     width: 90,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Delivery,
                 },
                 {
                     key: 'fuelCount',
@@ -56,6 +70,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Fuel',
                     width: 90,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Fuel,
                 },
                 {
                     key: 'parkingCount',
@@ -63,6 +79,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Parking',
                     width: 90,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Parking,
                 },
                 {
                     key: 'deadHeadCount',
@@ -70,6 +88,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Deadhead',
                     width: 90,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Deadhead,
                 },
                 {
                     key: 'repairCount',
@@ -77,6 +97,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Repair',
                     width: 90,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Repair,
                 },
                 {
                     key: 'towingCount',
@@ -84,6 +106,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Towing',
                     width: 90,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Towing,
                 },
             ],
         },
@@ -97,6 +121,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Load',
                     width: 62,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Load,
                 },
             ],
         },
@@ -111,6 +137,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Gallon',
                     width: 62,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.FuelGallons,
                 },
                 {
                     key: 'fuelCost',
@@ -118,6 +146,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Cost',
                     width: 101,
                     isChecked: false,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.FuelCost,
                 },
                 {
                     key: 'fuelMpg',
@@ -125,6 +155,7 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'MPG',
                     width: 64,
                     isChecked: true,
+                    hasSort: true,
                 },
             ],
         },
@@ -139,6 +170,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Loaded',
                     width: 78,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.LoadedMiles,
                 },
                 {
                     key: 'milesEmpty',
@@ -146,6 +179,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Empty',
                     width: 78,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.EmptyMiles,
                 },
                 {
                     key: 'milesTotal',
@@ -153,6 +188,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Total',
                     width: 78,
                     isChecked: true,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.TotalMiles,
                 },
             ],
         },
@@ -166,6 +203,8 @@ export class MilesTableColumnsConfig {
                     labelToolbar: 'Revenue',
                     width: 78,
                     isChecked: false,
+                    hasSort: true,
+                    sortName: MilesStopSortBy.Revenue,
                 },
             ],
         },
