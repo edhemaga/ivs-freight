@@ -9,70 +9,27 @@
     >
         <div class="divider divider--dark divider--small"></div>
 
-        <div class="zoom-controls">
-            <button (click)="setZoom(2)">2X</button>
-            <button (click)="setZoom(1.5)">1.5X</button>
-            <button (click)="setZoom(1.25)">1.25X</button>
-            <button (click)="setZoom(1)">DEF LVL</button>
-            <button (click)="setZoom(0.75)">0.75X</button>
-            <button (click)="setZoom(0.5)">0.5X</button>
-        </div>
-
         <div
-            class="d-flex justify-content-center overflow-hidden pos-relative w-full h-full zoom-container"
+            class="d-flex justify-content-center overflow-hidden pos-relative w-full h-full"
         >
+            <!-- Zoom Content -->
+
             @let zoomElementStyles =
                 {
                     transform: 'scale(' + zoomLevel + ')',
-                    transformOrigin: 'top',
                     width: 100 / zoomLevel + '%',
                 };
 
-            <div [ngStyle]="zoomElementStyles">
+            <div
+                class="disable-text-selection zoom-container"
+                [ngStyle]="zoomElementStyles"
+            >
                 @if (!isLoading) {
                     <iframe
                         [srcdoc]="pdfReport?.html"
                         width="100%"
                         height="960px"
                     ></iframe>
-
-                    <div class="h-full pos-relative">
-                        <div
-                            class="d-flex flex-column align-items-center justify-content-center pos-absolute bottom-12 right-12 w-30 h-52 br-50 p-x-4 p-y-4 background-white zoom-controls-container"
-                        >
-                            @let zoomInControlSvgClass =
-                                pdfZoom >= maxZoom
-                                    ? 'svg-fill-light-grey-6'
-                                    : 'svg-fill-muted svg-hover-black';
-
-                            @let zoomOutControlSvgClass =
-                                pdfZoom === 1
-                                    ? 'svg-fill-light-grey-6'
-                                    : 'svg-fill-muted svg-hover-black';
-
-                            <div
-                                class="d-flex align-items-center justify-content-center c-pointer"
-                                (click)="zoomIn()"
-                            >
-                                <svg-icon
-                                    class="svg-size-12"
-                                    [ngClass]="zoomInControlSvgClass"
-                                    [src]="svgRoutes.plusIcon"
-                                ></svg-icon>
-                            </div>
-
-                            <div
-                                class="d-flex align-items-center justify-content-center c-pointer"
-                                (click)="zoomOut()"
-                            >
-                                <svg-icon
-                                    class="svg-size-12"
-                                    [ngClass]="zoomOutControlSvgClass"
-                                    [src]="svgRoutes.minusIcon"
-                                ></svg-icon>
-                            </div>
-                        </div>
-                    </div>
                 } @else {
                     <div class="h-800">
                         <div
@@ -85,6 +42,46 @@
                         </div>
                     </div>
                 }
+            </div>
+
+            <!-- Zoom Controls -->
+
+            <div class="h-full pos-relative">
+                <div
+                    class="d-flex flex-column align-items-center justify-content-center pos-absolute bottom-12 right-12 w-30 h-52 br-50 p-x-4 p-y-4 background-white shadow-100 z-2"
+                >
+                    @let zoomInControlSvgClass =
+                        zoomLevel === maxZoom
+                            ? 'pe-none svg-fill-light-grey-6'
+                            : 'c-pointer svg-fill-muted svg-hover-black';
+
+                    @let zoomOutControlSvgClass =
+                        zoomLevel === minZoom
+                            ? 'pe-none svg-fill-light-grey-6'
+                            : 'c-pointer svg-fill-muted svg-hover-black';
+
+                    <div
+                        class="d-flex align-items-center justify-content-center"
+                    >
+                        <svg-icon
+                            class="svg-size-12"
+                            [ngClass]="zoomInControlSvgClass"
+                            [src]="svgRoutes.plusIcon"
+                            (click)="handleZoomClick(1)"
+                        ></svg-icon>
+                    </div>
+
+                    <div
+                        class="d-flex align-items-center justify-content-center"
+                    >
+                        <svg-icon
+                            class="svg-size-12"
+                            [ngClass]="zoomOutControlSvgClass"
+                            [src]="svgRoutes.minusIcon"
+                            (click)="handleZoomClick(-1)"
+                        ></svg-icon>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

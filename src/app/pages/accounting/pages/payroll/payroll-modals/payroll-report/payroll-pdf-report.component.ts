@@ -20,14 +20,13 @@ import { CaModalComponent, eColor, ePosition } from 'ca-components';
 import { eGeneralActions } from '@shared/enums';
 
 // pipes
+import { SafeHtmlPipe } from '@shared/pipes';
+
+// constants
+import { PayrollPdfReportConstants } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/utils/constants';
 
 // models
 import { PayrollModal } from '@pages/accounting/pages/payroll/state/models';
-import { SafeHtmlPipe } from '@shared/pipes';
-
-const ZOOM_STEP: number = 0.2;
-const DEFAULT_ZOOM: number = 1;
-const MAX_ZOOM: number = 2;
 
 @Component({
     selector: 'app-payroll-report-pdf-preview',
@@ -50,9 +49,11 @@ const MAX_ZOOM: number = 2;
 export class PayrollPdfReportComponent implements OnInit {
     @Input() editData: PayrollModal;
 
-    public pdfReport: { downloadUrl: string; html: string };
-
-    public isLoading = true;
+    // zoom
+    public zoomLevel = PayrollPdfReportConstants.ZOOM_LEVEL;
+    public minZoom = PayrollPdfReportConstants.MIN_ZOOM;
+    public maxZoom = PayrollPdfReportConstants.MAX_ZOOM;
+    public zoomStep = PayrollPdfReportConstants.ZOOM_STEP;
 
     // svg routes
     public svgRoutes = PayrollSvgRoutes;
@@ -62,13 +63,10 @@ export class PayrollPdfReportComponent implements OnInit {
     public ePosition = ePosition;
     public eGeneralActions = eGeneralActions;
 
-    //////////////////////////////
+    // pdf
+    public pdfReport: { downloadUrl: string; html: string };
 
-    zoomLevel: number = 1;
-
-    public maxZoom: number = MAX_ZOOM;
-
-    public pdfZoom: number = DEFAULT_ZOOM;
+    public isLoading = true;
 
     constructor(
         private payrollService: PayrollService,
@@ -119,19 +117,12 @@ export class PayrollPdfReportComponent implements OnInit {
         this.ngbActiveModal.close();
     }
 
-    setZoom(level: number): void {
-        this.zoomLevel = level;
-    }
+    public handleZoomClick(change: number): void {
+        const newZoom = this.zoomLevel + change * this.zoomStep;
 
-    public zoomIn(): void {
-        if (this.pdfZoom < MAX_ZOOM) {
-            this.pdfZoom += ZOOM_STEP;
-        }
-    }
-
-    public zoomOut(): void {
-        if (this.pdfZoom > DEFAULT_ZOOM) {
-            this.pdfZoom -= ZOOM_STEP;
-        }
+        this.zoomLevel = Math.min(
+            this.maxZoom,
+            Math.max(this.minZoom, newZoom)
+        );
     }
 }

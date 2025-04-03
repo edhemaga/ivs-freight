@@ -1,23 +1,6 @@
 @import 'src/theme/variables.scss';
 
-.zoom-controls-container {
-    box-shadow: 0px 0px 4px 0px $ta-border-grey inset;
-    z-index: 2;
-}
-
-.zoom-controls button {
-    margin: 5px;
-    padding: 10px;
-    cursor: pointer;
-}
-
-.zoomable-div {
-    transition: transform 0.3s ease;
-    /* You can define the default size of the div here */
-    width: 400px;
-    height: 300px;
-    overflow: hidden;
-    background-color: lightblue;
-    border: 1px solid #ccc;
-    padding: 20px;
+.zoom-container {
+    transform-origin: top;
+    transition: transform $transitionDuration ease-in-out;
 }
