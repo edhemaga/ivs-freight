@@ -1,4 +1,5 @@
 <ng-container *ngTemplateOutlet="stopsHeader"></ng-container>
+<ng-container *ngTemplateOutlet="progressBar"></ng-container>
 <ng-container *ngTemplateOutlet="stopList"></ng-container>
 
 <ng-template #stopsHeader>
@@ -877,4 +878,105 @@
 
 <ng-template #timeFormat let-time="time">
     {{ time }} {{ time?.substring(0, time?.indexOf(':')) < 12 ? 'AM' : 'PM' }}
+</ng-template>
+
+<ng-template #progressBar>
+    @let load = loadStoreService.resolveLoadDetails$ | async;
+
+    <div class="background-white br-3 m-t-8 p-y-8 p-x-12">
+        <div class="d-flex justify-content-between">
+            <div>
+                <div class="text-color-bw6-2 text-size-11 ta-font-semi-bold">
+                    Delivered
+                </div>
+                <div class="text-color-black text-size-18 ta-font-medium">
+                    {{ load.lastDeliveryTime | formatDuration: true }}
+                </div>
+            </div>
+
+            <div>
+                <div
+                    class="text-color-bw6-2 text-size-11 ta-font-semi-bold text-right"
+                >
+                    {{ load.totalLoadTime | formatDuration }}
+                </div>
+                <div
+                    class="text-color-black text-size-18 ta-font-medium text-right"
+                >
+                    {{ load.totalMiles | number: '1.1-1' }} mi
+                </div>
+            </div>
+        </div>
+        <div
+            class="d-flex gap-1px h-16 align-items-center m-t-6 overflow-hidden br-2"
+        >
+            @for (status of load.teo; let index = $index; track index) {
+                <div
+                    class="d-inline-block background-muted h-8"
+                    #t2="ngbPopover"
+                    #input
+                    [ngbPopover]="statusHistoryPopover"
+                    [autoClose]="'outside'"
+                    [container]="'body'"
+                    [placement]="'bottom auto'"
+                    [ngStyle]="{ width: status.width }"
+                    [ngClass]="{
+                        'h-8': index !== hoveredIndex,
+                        'h-16': index === hoveredIndex,
+                        'opacity-40':
+                            index !== hoveredIndex && hoveredIndex !== null,
+                    }"
+                    (mouseenter)="setHoveredStatus(index)"
+                    (mouseleave)="resetHovered()"
+                >
+                    <ng-template #statusHistoryPopover>
+                        <svg-icon
+                            class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
+                            [class]="status.id | loadStatusColors: true"
+                            [src]="'assets/svg/common/ic_broker-user.svg'"
+                        ></svg-icon>
+                    </ng-template>
+                </div>
+                <!-- -->
+            }
+        </div>
+
+        <div class="d-flex justify-content-between m-t-6">
+            <div
+                class="d-flex justify-content-between text-size-14 ta-font-medium"
+            >
+                <span class="text-color-black"
+                    >{{ '2025-04-02T19:05:46.502675' | formatDateP }}
+                </span>
+                <span class="text-color-bw6-2">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            timeFormat;
+                            context: {
+                                time: '05:46.502675',
+                            }
+                        "
+                    ></ng-container
+                ></span>
+            </div>
+
+            <div
+                class="d-flex justify-content-between text-size-14 ta-font-medium"
+            >
+                <span class="text-color-black">
+                    {{ '2025-04-02T19:05:46.502675' | formatDateP }}
+                </span>
+                <span class="text-color-bw6-2">
+                    <ng-container
+                        *ngTemplateOutlet="
+                            timeFormat;
+                            context: {
+                                time: '05:46.502675',
+                            }
+                        "
+                    ></ng-container
+                ></span>
+            </div>
+        </div>
+    </div>
 </ng-template>

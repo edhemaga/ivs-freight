@@ -592,9 +592,71 @@ export const getLoadDetails = function (
     state: ILoadState,
     details: LoadResponse
 ): ILoadState {
-    return { ...state, details, isLoadDetailsLoaded: true };
-};
+    const calculateWidths = (statuses: any) => {
+        let totalDuration = 0;
 
+        // Izračunaj i ispiši trajanja za svaki status
+        statuses.forEach((curr) => {
+            if (curr.dateTimeTo) {
+                const duration =
+                    new Date(curr.dateTimeTo).getTime() -
+                    new Date(curr.dateTimeFrom).getTime();
+                totalDuration += duration;
+                console.log(
+                    `Status: ${curr.status.name}, Duration (ms): ${duration}`
+                ); // Ispis trajanja za svaki status
+            }
+        });
+
+        console.log('Total Duration (in ms):', totalDuration); // Ukupno trajanje
+
+        const sortedDataWithWidth = [...statuses].reverse().map((item) => {
+            const fromTime = new Date(item.dateTimeFrom).getTime();
+            const toTime = item.dateTimeTo
+                ? new Date(item.dateTimeTo).getTime()
+                : null; // Provjerite ako je dateTimeTo prisutan
+
+            if (toTime) {
+                const duration = toTime - fromTime;
+                const widthPercentage = (duration / totalDuration) * 100;
+
+                console.log(
+                    `Status: ${item.status.name}, Duration (ms): ${duration}, Width Percentage: ${widthPercentage.toFixed(2)}%`
+                ); // debug duration and width
+
+                return {
+                    status: item.status.name,
+                    dateTimeFrom: item.dateTimeFrom,
+                    dateTimeTo: item.dateTimeTo,
+                    id: item.status?.id,
+                    width: widthPercentage.toFixed(2) + '%',
+                };
+            } else {
+                // Kada dateTimeTo ne postoji
+                return {
+                    status: item.status.name,
+                    dateTimeFrom: item.dateTimeFrom,
+                    dateTimeTo: null,
+                    id: item.status?.id,
+                    width: '0.00%', // Ako dateTimeTo je null, širina će biti 0%
+                };
+            }
+        });
+
+        return sortedDataWithWidth;
+    };
+
+    const widths = calculateWidths(details.statusHistory);
+    console.log(widths); // Ispiši rezultate
+    return {
+        ...state,
+        details: {
+            ...details,
+            teo: widths,
+        } as any,
+        isLoadDetailsLoaded: true,
+    };
+};
 export function updateAllLoadsSelectStatus(state: ILoadState): ILoadState {
     const hasAllLoadsSelected = !state.hasAllLoadsSelected;
     const { data } = state;
