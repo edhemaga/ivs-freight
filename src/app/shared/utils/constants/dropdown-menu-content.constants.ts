@@ -227,6 +227,31 @@ export class DropdownMenuContentConstants {
             svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
             svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
         },
+
+        [eDropdownMenuColumns.COLUMNS_CARD]: {
+            title: eDropdownMenuColumns.COLUMNS,
+            type: eDropdownMenuColumns.COLUMNS_CARD_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/columns-new.svg',
+            svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
+        },
+
+        [eDropdownMenuColumns.FLIP_ALL_CARDS]: {
+            title: eDropdownMenuColumns.FLIP_ALL_CARDS,
+            type: eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE,
+            svgUrl: 'assets/svg/common/resize-arrow.svg',
+            svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
+            isSelectMenuTypeActionItem: true,
+            hasBorder: true,
+        },
+
+        [eDropdownMenuColumns.FLIP_ALL_CARDS_BACK]: {
+            title: eDropdownMenuColumns.FLIP_ALL_CARDS,
+            type: eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE,
+            svgUrl: 'assets/svg/common/ic_resize-arrow-top.svg',
+            svgClass: eDropdownMenu.ACTIVATE_SVG_CLASS,
+            isSelectMenuTypeActionItem: true,
+            hasBorder: true,
+        },
     };
 
     // conditional items

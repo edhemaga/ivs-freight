@@ -16,6 +16,7 @@ import {
     detailsSelector,
     unitsPaginationSelector,
     tableSettingsSelector,
+    toolbarDropdownMenuOptionsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // Models
@@ -49,6 +50,7 @@ import {
     ITableColumn,
     ITableConfig,
 } from '@shared/components/new-table/interface';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Injectable({
     providedIn: 'root',
@@ -95,6 +97,10 @@ export class MilesStoreService {
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(tableSettingsSelector)
     );
+
+    public toolbarDropdownMenuOptionsSelector$: Observable<
+        IDropdownMenuItem[]
+    > = this.store.pipe(select(toolbarDropdownMenuOptionsSelector));
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -196,7 +202,7 @@ export class MilesStoreService {
         isActive: boolean
     ) {
         this.store.dispatch({
-            type: MilesStoreConstants.ACTION_COLUMN_VISIBILITY_CHANGE,
+            type: MilesStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
             columnKey,
             isActive,
         });
@@ -213,6 +219,24 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_UNIT_SELECTED,
             unit,
+        });
+    }
+
+    public dispatchResetTable(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESET_TABLE,
+        });
+    }
+
+    public dispatchToggleCardFlipViewMode(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE,
+        });
+    }
+
+    public dispatchToggleToolbarDropdownMenuColumnsActive(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
         });
     }
 }

@@ -6,7 +6,7 @@ import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
 // Enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 
 // Constants
 import { MilesToolbarTabs } from '@pages/miles/utils/constants';
@@ -15,8 +15,11 @@ import { MilesToolbarTabs } from '@pages/miles/utils/constants';
 import { IMilesState } from '@pages/miles/interface';
 
 // functions
-import * as Functions from '@pages/miles/utils/functions/miles-reducer.functions';
+import * as Functions from '@pages/miles/state/functions/miles-reducer.functions';
 import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
+
+// helpers
+import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';
 
 export const initialState: IMilesState = {
     items: [],
@@ -28,6 +31,15 @@ export const initialState: IMilesState = {
     states: [],
     selectedCount: 0,
     hasAllItemsSelected: false,
+    cardFlipViewMode: eCardFlipViewMode.FRONT,
+    isToolbarDropdownMenuColumnsActive: false,
+    toolbarDropdownMenuOptions:
+        MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+            eActiveViewMode.List,
+            false,
+            eCardFlipViewMode.FRONT,
+            false
+        ),
 
     // Table
     columns: MilesTableColumnsConfig.columnsConfig,
@@ -140,12 +152,22 @@ export const milesReducer = createReducer(
         Functions.tableSortingChange(state, column)
     ),
 
-    on(MilesAction.toggledColumnVisibility, (state, { columnKey, isActive }) =>
-        Functions.toggledColumnVisibility(state, columnKey, isActive)
+    on(MilesAction.toggleColumnVisibility, (state, { columnKey, isActive }) =>
+        Functions.toggleColumnVisibility(state, columnKey, isActive)
     ),
 
     on(MilesAction.onSearchChange, (state, { search }) =>
         Functions.onSearchChange(state, search)
+    ),
+
+    on(MilesAction.resetTable, (state) => Functions.resetTable(state)),
+
+    on(MilesAction.toggleCardFlipViewMode, (state) =>
+        Functions.toggleCardFlipViewMode(state)
+    ),
+
+    on(MilesAction.toggleToolbarDropdownMenuColumnsActive, (state) =>
+        Functions.toggleToolbarDropdownMenuColumnsActive(state)
     )
     // #endregion
 );

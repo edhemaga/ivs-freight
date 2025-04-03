@@ -22,7 +22,7 @@
             [leftSide]="leftSide"
             [hasPlusIcon]="false"
             [toolbarDropdownContent]="toolbarDropdownMenuOptions"
-            (toolbarDropdownAction)="handleToolbarDropdownMenuActions($event)"
+            (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
         >
             <ng-template #leftSide>
                 <app-toolbar-tabs-wrapper

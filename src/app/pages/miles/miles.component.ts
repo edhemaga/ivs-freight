@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Subject, takeUntil } from 'rxjs';
+import { combineLatest, Subject, takeUntil } from 'rxjs';
 
 // components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
@@ -18,32 +18,35 @@ import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.com
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
+
+// base classes
+import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 import { ModalService } from '@shared/services';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
 import { eMileTabs } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
+    eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
     eSharedString,
 } from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
+// models
+import { TableCardBodyActions } from '@shared/models';
+
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { DropdownMenuActionsBase } from '@shared/base-classes';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
-import { TableCardBodyActions } from '@shared/models';
-import { MilesDropdownMenuHelper } from './utils/helpers/miles-dropdown-menu.helper';
-import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
-import { ITableColumn } from '@shared/components/new-table/interface';
 
 @Component({
     selector: 'app-miles',
@@ -80,9 +83,6 @@ export class MilesComponent
     public eCommonElement = eCommonElement;
 
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
-    private isToolbarDropdownMenuColumnsActive: boolean = false;
-    private isTableLocked: boolean = true;
-    private tableColumns: ITableColumn[];
 
     constructor(
         public milesStoreService: MilesStoreService,
@@ -98,52 +98,19 @@ export class MilesComponent
     }
 
     private storeSubscription(): void {
-        this.milesStoreService.filter$
+        combineLatest([
+            this.milesStoreService.filter$,
+            this.milesStoreService.toolbarDropdownMenuOptionsSelector$,
+        ])
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.filter = res));
-
-        this.milesStoreService.tableSettingsSelector$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.isTableLocked = res.isTableLocked));
-
-        this.milesStoreService.columns$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.tableColumns = res));
+            .subscribe(([filter, toolbarDropdownMenuOptions]) => {
+                this.filter = filter;
+                this.toolbarDropdownMenuOptions = toolbarDropdownMenuOptions;
+            });
     }
 
-    private updateToolbarDropdownMenuContentInitial(): void {
-        this.isToolbarDropdownMenuColumnsActive = false;
-
-        this.setToolbarDropdownMenuContent(
-            this.isToolbarDropdownMenuColumnsActive
-        );
-    }
-
-    private updateToolbarDropdownMenuContentColumnsAction(): void {
-        this.isToolbarDropdownMenuColumnsActive =
-            !this.isToolbarDropdownMenuColumnsActive;
-
-        const milesColumns =
-            DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(
-                this.tableColumns
-            );
-
-        this.setToolbarDropdownMenuContent(
-            this.isToolbarDropdownMenuColumnsActive,
-            milesColumns
-        );
-    }
-
-    private setToolbarDropdownMenuContent(
-        isColumnsDropdownActive: boolean,
-        milesColumnsList?: IDropdownMenuItem[]
-    ): void {
-        this.toolbarDropdownMenuOptions =
-            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
-                this.isTableLocked,
-                isColumnsDropdownActive,
-                milesColumnsList
-            );
+    private toggleToolbarDropdownMenuColumnsActive(): void {
+        this.milesStoreService.dispatchToggleToolbarDropdownMenuColumnsActive();
     }
 
     private handleTableEmptyImportListClick(): void {
@@ -158,6 +125,34 @@ export class MilesComponent
 
     private handleTableLockingStatus(): void {
         this.milesStoreService.toggleTableLockingStatus();
+    }
+
+    private handleResetTable(): void {
+        this.milesStoreService.dispatchResetTable();
+    }
+
+    private openReserConfirmationModal(): void {
+        this.modalService.openModal(
+            ConfirmationResetModalComponent,
+            { size: eDropdownMenu.SMALL },
+            {
+                template: eGeneralActions.RESET_MODAL,
+                type: eGeneralActions.RESET,
+                modalTitle: 'List | Miles',
+                tableType: 'Miles',
+            }
+        );
+    }
+
+    private handleFlipAllCards(): void {
+        this.milesStoreService.dispatchToggleCardFlipViewMode();
+    }
+
+    private toggleColumnVisibility(columnType: string, isChecked): void {
+        this.milesStoreService.dispatchToggleColumnsVisiblity(
+            columnType,
+            isChecked
+        );
     }
 
     public handleShowMoreAction(): void {}
@@ -199,36 +194,37 @@ export class MilesComponent
         console.log(query);
     }
 
-    public handleToolbarDropdownMenuActions<T>(
-        action: TableCardBodyActions<T>
-    ) {
+    public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {
         const { type, isActive } = action;
 
         switch (type) {
             case eDropdownMenuColumns.OPEN_TYPE:
-                this.updateToolbarDropdownMenuContentInitial();
-
+                break;
+            case eDropdownMenuColumns.CLOSE_TYPE:
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
-                this.updateToolbarDropdownMenuContentColumnsAction();
+                this.toggleToolbarDropdownMenuColumnsActive();
 
                 break;
             case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
             case eDropdownMenuColumns.LOCK_TABLE_TYPE:
                 this.handleTableLockingStatus();
-                this.setToolbarDropdownMenuContent(
-                    this.isToolbarDropdownMenuColumnsActive
-                );
 
                 break;
             case eDropdownMenuColumns.RESET_TABLE_TYPE:
-                // todo
+                this.openReserConfirmationModal();
+                break;
+            case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
+                this.handleResetTable();
+                break;
+            case eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE:
+                this.handleFlipAllCards();
+                break;
+            case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
+                // TODO - open miles card modal
                 break;
             default:
-                this.milesStoreService.dispatchToggleColumnsVisiblity(
-                    type,
-                    isActive
-                );
+                this.toggleColumnVisibility(type, isActive);
 
                 break;
         }

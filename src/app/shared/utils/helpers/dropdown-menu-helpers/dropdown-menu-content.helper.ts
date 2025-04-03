@@ -1,21 +1,24 @@
+// models
+import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
+
 // enums
 import {
+    eCardFlipViewMode,
     eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
     TableStringEnum,
 } from '@shared/enums';
 
+// interfaces
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
+
 // helpers
 import {
     DropdownMenuColumnsActionsHelper,
     DropdownMenuContentConditionalItemsHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
-
-// models
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
-import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
 
 export class DropdownMenuContentHelper {
     // contact
@@ -766,6 +769,25 @@ export class DropdownMenuContentHelper {
                 ? eDropdownMenuColumns.LOCK_TABLE
                 : eDropdownMenuColumns.UNLOCK_TABLE,
             eDropdownMenuColumns.RESET_TABLE,
+        ];
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...sharedItems];
+    }
+
+    static getMilesCardToolbarDropdownContent(
+        cardFlipViewMode: eCardFlipViewMode
+    ): IDropdownMenuItem[] {
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS_CARD,
+            cardFlipViewMode === eCardFlipViewMode.FRONT
+                ? eDropdownMenuColumns.FLIP_ALL_CARDS
+                : eDropdownMenuColumns.FLIP_ALL_CARDS_BACK,
         ];
 
         const sharedItems =

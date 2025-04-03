@@ -83,3 +83,11 @@ export const tableSettingsSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.tableSettings
 );
+
+export const toolbarDropdownMenuOptionsSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { toolbarDropdownMenuOptions } = state || {};
+        return toolbarDropdownMenuOptions;
+    }
+);

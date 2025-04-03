@@ -112,8 +112,8 @@ export const tableSortingChange = createAction(
     props<{ column: ITableColumn }>()
 );
 
-export const toggledColumnVisibility = createAction(
-    MilesStoreConstants.ACTION_COLUMN_VISIBILITY_CHANGE,
+export const toggleColumnVisibility = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
     props<{ columnKey: string; isActive: boolean }>()
 );
 
@@ -125,4 +125,14 @@ export const onSearchChange = createAction(
 export const onUnitSelection = createAction(
     MilesStoreConstants.ACTION_UNIT_SELECTED,
     props<{ unit: IMilesModel }>()
+);
+
+export const resetTable = createAction(MilesStoreConstants.ACTION_RESET_TABLE);
+
+export const toggleCardFlipViewMode = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
+);
+
+export const toggleToolbarDropdownMenuColumnsActive = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE
 );

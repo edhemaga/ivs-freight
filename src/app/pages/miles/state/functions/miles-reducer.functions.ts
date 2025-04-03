@@ -4,14 +4,23 @@ import { IStateFilters } from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 // enums
-import { eActiveViewMode, eGeneralActions } from '@shared/enums';
+import {
+    eActiveViewMode,
+    eCardFlipViewMode,
+    eGeneralActions,
+} from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // models
-import {
-    MilesByUnitPaginatedStopsResponse,
-    SortOrder,
-} from 'appcoretruckassist';
+import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
+
+// configs
+import { MilesTableColumnsConfig } from '../../utils/config';
+
+// helpers
+import { MilesDropdownMenuHelper } from '../../utils/helpers';
+import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 export const updateTruckCounts = function (
     state: IMilesState,
@@ -31,6 +40,11 @@ export const changeViewMode = function (
     state: IMilesState,
     activeViewMode: eActiveViewMode
 ): IMilesState {
+    const {
+        tableSettings,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
     return {
         ...state,
         activeViewMode,
@@ -40,6 +54,13 @@ export const changeViewMode = function (
             ...state.unitsPagination,
             activeUnitIndex: 0,
         },
+        toolbarDropdownMenuOptions:
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                cardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
     };
 };
 
@@ -185,36 +206,38 @@ export const setFollowingUnitDetails = function (
 export const toggleTableLockingStatus = function (
     state: IMilesState
 ): IMilesState {
-    const { tableSettings } = state;
+    const {
+        tableSettings,
+        activeViewMode,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+
+    const toolbarDropdownMenuOptions =
+        MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+            activeViewMode,
+            !tableSettings.isTableLocked,
+            cardFlipViewMode,
+            isToolbarDropdownMenuColumnsActive
+        );
+
     return {
         ...state,
         tableSettings: {
             ...tableSettings,
             isTableLocked: !tableSettings.isTableLocked,
         },
+        toolbarDropdownMenuOptions,
     };
 };
+
 export function pinTableColumn(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
-    function togglePinned(columns: ITableColumn[]): ITableColumn[] {
-        return columns.map((col) => {
-            if (col.key === column.key) {
-                // Use left as pinned side
-                return { ...col, pinned: col.pinned ? undefined : 'left' };
-            }
-            if (col.columns && col.columns.length) {
-                // Check all sub group column
-                return { ...col, columns: togglePinned(col.columns) };
-            }
-            return col;
-        });
-    }
-
     return {
         ...state,
-        columns: togglePinned(state.columns),
+        columns: StoreFunctionsHelper.togglePinned(column, state.columns),
     };
 }
 
@@ -222,93 +245,36 @@ export function tableSortingChange(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
-    let updatedSortKey = column.key;
-    let updatedSortDirection: SortOrder | null = SortOrder.Ascending;
-
-    function toggleSort(columns: ITableColumn[]): ITableColumn[] {
-        return columns.map((col) => {
-            if (col.key === column.key) {
-                if (col.direction === SortOrder.Ascending) {
-                    updatedSortDirection = SortOrder.Descending;
-                } else if (col.direction === SortOrder.Descending) {
-                    updatedSortDirection = null;
-                } else {
-                    updatedSortDirection = SortOrder.Ascending;
-                }
-
-                return { ...col, direction: updatedSortDirection };
-            }
-
-            // Reset all the other columns
-            return {
-                ...col,
-                direction: null,
-                columns: col.columns ? toggleSort(col.columns) : col.columns,
-            };
-        });
-    }
+    const { columns, sortKey, sortDirection } = StoreFunctionsHelper.toggleSort(
+        state.columns,
+        column.key
+    );
 
     return {
         ...state,
-        columns: toggleSort(state.columns),
+        columns,
         tableSettings: {
             ...state.tableSettings,
-            sortDirection: updatedSortDirection,
-            sortKey: updatedSortDirection ? updatedSortKey : null,
+            sortDirection,
+            sortKey,
         },
     };
 }
 
-export function toggledColumnVisibility(
+export function toggleColumnVisibility(
     state: IMilesState,
     columnKey: string,
     isActive: boolean
 ): IMilesState {
-    function mapColumnsVisibility(
-        columns: ITableColumn[],
-        columnKey: string,
-        isActive: boolean
-    ): ITableColumn[] {
-        return columns.map((column) => {
-            const isParentMatch = column.key === columnKey;
-            const hasChildren = Array.isArray(column.columns);
-
-            if (isParentMatch) {
-                return {
-                    ...column,
-                    isChecked: isActive,
-                    ...(hasChildren && {
-                        columns: column.columns!.map((child) => ({
-                            ...child,
-                            isChecked: isActive,
-                        })),
-                    }),
-                };
-            }
-
-            if (hasChildren) {
-                const columns = column.columns!.map((child) =>
-                    child.key === columnKey
-                        ? { ...child, isChecked: isActive }
-                        : child
-                );
-
-                const isChecked = columns.some((child) => child.isChecked);
-
-                return {
-                    ...column,
-                    columns,
-                    isChecked,
-                };
-            }
-
-            return column;
-        });
-    }
+    const columns = StoreFunctionsHelper.mapColumnsVisibility(
+        state.columns,
+        columnKey,
+        isActive
+    );
 
     return {
         ...state,
-        columns: mapColumnsVisibility(state.columns, columnKey, isActive),
+        columns,
     };
 }
 
@@ -322,5 +288,71 @@ export function onSearchChange(
             ...state.unitsPagination,
             search,
         },
+    };
+}
+
+export function resetTable(state: IMilesState): IMilesState {
+    return {
+        ...state,
+        columns: MilesTableColumnsConfig.columnsConfig,
+        tableSettings: {
+            isTableLocked: false,
+            sortKey: '',
+            sortDirection: null,
+        },
+    };
+}
+
+export function toggleCardFlipViewMode(state: IMilesState): IMilesState {
+    const {
+        cardFlipViewMode,
+        activeViewMode,
+        tableSettings,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+
+    const nextViewMode =
+        cardFlipViewMode === eCardFlipViewMode.FRONT
+            ? eCardFlipViewMode.BACK
+            : eCardFlipViewMode.FRONT;
+
+    return {
+        ...state,
+        cardFlipViewMode: nextViewMode,
+        toolbarDropdownMenuOptions:
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                nextViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
+    };
+}
+
+export function toggleToolbarDropdownMenuColumnsActive(
+    state: IMilesState
+): IMilesState {
+    const {
+        cardFlipViewMode,
+        activeViewMode,
+        tableSettings,
+        isToolbarDropdownMenuColumnsActive,
+        columns,
+    } = state;
+
+    const toolbarDropdownColumns =
+        DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(columns);
+
+    return {
+        ...state,
+        isToolbarDropdownMenuColumnsActive: !isToolbarDropdownMenuColumnsActive,
+        toolbarDropdownMenuOptions:
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                cardFlipViewMode,
+                !isToolbarDropdownMenuColumnsActive,
+                toolbarDropdownColumns
+            ),
     };
 }

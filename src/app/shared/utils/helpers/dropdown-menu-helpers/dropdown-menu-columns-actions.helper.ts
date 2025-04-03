@@ -6,13 +6,15 @@ import { TableType, UpdateTableConfigCommand } from 'appcoretruckassist';
 // enums
 import { eDropdownMenu, eDropdownMenuColumns } from '@shared/enums';
 
+// interfaces
+import { ITableColumn } from '@shared/components/new-table/interface';
+
 // configs
 import {
     getLoadActiveAndPendingColumnDefinition,
     getLoadClosedColumnDefinition,
     getLoadTemplateColumnDefinition,
 } from '@shared/utils/settings/table-settings/load-columns';
-import { ITableColumn } from '@shared/components/new-table/interface';
 
 export class DropdownMenuColumnsActionsHelper {
     static getColumnDefinition(tableType: string): ITableColummn[] {
