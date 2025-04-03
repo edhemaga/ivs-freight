@@ -124,6 +124,11 @@ export const pageChanges = createAction(
     MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
 );
 
+export const toggleColumnVisibility = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+    props<{ columnKey: string; isActive: boolean }>()
+);
+
 export const onSearchChange = createAction(
     MilesStoreConstants.ACTION_SEARCH_CHANGED,
     props<{ search: string }>()
@@ -132,4 +137,14 @@ export const onSearchChange = createAction(
 export const onUnitSelection = createAction(
     MilesStoreConstants.ACTION_UNIT_SELECTED,
     props<{ unit: IMilesModel }>()
+);
+
+export const resetTable = createAction(MilesStoreConstants.ACTION_RESET_TABLE);
+
+export const toggleCardFlipViewMode = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
+);
+
+export const toggleToolbarDropdownMenuColumnsActive = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE
 );

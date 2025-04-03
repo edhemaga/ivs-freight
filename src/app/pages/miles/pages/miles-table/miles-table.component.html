@@ -18,14 +18,10 @@
 
     @let isTableLocked = store.tableSettings.isTableLocked;
 
-    <button (click)="milesStoreService.toggleTableLockingStatus()">
-        {{ isTableLocked }}
-    </button>
-
     <app-new-table
         [columns]="store.columns"
         [rows]="store.miles"
-        [isTableLocked]="store.tableSettings.isTableLocked"
+        [isTableLocked]="isTableLocked"
         [totalDataCount]="selectedTabTotalDataCount"
         [headerTemplates]="{
             select: selectHeaderTemplate,

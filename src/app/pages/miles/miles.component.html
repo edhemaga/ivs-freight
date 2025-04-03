@@ -21,6 +21,8 @@
             [isMarginTopDisabled]="true"
             [leftSide]="leftSide"
             [hasPlusIcon]="false"
+            [toolbarDropdownContent]="toolbarDropdownMenuOptions"
+            (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
         >
             <ng-template #leftSide>
                 <app-toolbar-tabs-wrapper

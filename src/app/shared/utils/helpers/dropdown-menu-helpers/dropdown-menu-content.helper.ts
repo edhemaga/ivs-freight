@@ -1,5 +1,6 @@
 // enums
 import {
+    eCardFlipViewMode,
     eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
@@ -732,11 +733,49 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    static getLoadToolbarColumnsDropdownContent(
-        loadColumnsList: IDropdownMenuItem[]
+    // toolbar
+    static getToolbarDropdownContent(
+        isTableLocked: boolean
     ): IDropdownMenuItem[] {
-        loadColumnsList = loadColumnsList ?? [];
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS,
+            isTableLocked
+                ? eDropdownMenuColumns.LOCK_TABLE
+                : eDropdownMenuColumns.UNLOCK_TABLE,
+            eDropdownMenuColumns.RESET_TABLE,
+        ];
 
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...sharedItems];
+    }
+
+    static getCardToolbarDropdownContent(
+        cardFlipViewMode: eCardFlipViewMode
+    ): IDropdownMenuItem[] {
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS_CARD,
+            cardFlipViewMode === eCardFlipViewMode.FRONT
+                ? eDropdownMenuColumns.FLIP_ALL_CARDS
+                : eDropdownMenuColumns.FLIP_ALL_CARDS_BACK,
+        ];
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...sharedItems];
+    }
+
+    static getToolbarColumnsDropdownContent(
+        milesColumnsList: IDropdownMenuItem[]
+    ): IDropdownMenuItem[] {
         const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
 
         const conditionalItems =
@@ -745,7 +784,7 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [...conditionalItems, ...loadColumnsList];
+        return [...conditionalItems, ...milesColumnsList];
     }
 
     /////////////////////////////////////////////////////////////////////////////////

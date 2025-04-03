@@ -176,7 +176,7 @@
         let-isGroup="isGroup"
         let-label="label"
     >
-        @if (!column.hidden) {
+        @if (column.isChecked) {
             @let isResizableColumn = !isTableLocked && column.isResizable;
             @let isEmptyTable = !displayedDataCount;
             @let columnWidth = column.width + eUnit.PX;
@@ -331,7 +331,7 @@
         let-hasPaddingLeft="hasPaddingLeft"
         let-hasMarginRight="hasMarginRight"
     >
-        @if (!column.hidden) {
+        @if (column.isChecked) {
             <div
                 [class]="{
                     'p-l-6': hasPaddingLeft,

@@ -7,14 +7,23 @@ import {
 } from '@shared/components/new-table/interface';
 
 // enums
-import { eActiveViewMode, eGeneralActions } from '@shared/enums';
+import {
+    eActiveViewMode,
+    eCardFlipViewMode,
+    eGeneralActions,
+} from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // models
-import {
-    MilesByUnitPaginatedStopsResponse,
-    SortOrder,
-} from 'appcoretruckassist';
+import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
+
+// configs
+import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
+
+// helpers
+import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';
+import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 export const updateTruckCounts = function (
     state: IMilesState,
@@ -38,6 +47,11 @@ export const changeViewMode = function (
     state: IMilesState,
     activeViewMode: eActiveViewMode
 ): IMilesState {
+    const {
+        tableSettings,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
     return {
         ...state,
         activeViewMode,
@@ -47,6 +61,13 @@ export const changeViewMode = function (
             ...state.unitsPagination,
             activeUnitIndex: 0,
         },
+        toolbarDropdownMenuOptions:
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                cardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
     };
 };
 
@@ -200,7 +221,20 @@ export const setFollowingUnitDetails = function (
 export const toggleTableLockingStatus = function (
     state: IMilesState
 ): IMilesState {
-    const { tableSettings } = state;
+    const {
+        tableSettings,
+        activeViewMode,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+
+    const toolbarDropdownMenuOptions =
+        MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+            activeViewMode,
+            !tableSettings.isTableLocked,
+            cardFlipViewMode,
+            isToolbarDropdownMenuColumnsActive
+        );
 
     return {
         ...state,
@@ -208,29 +242,17 @@ export const toggleTableLockingStatus = function (
             ...tableSettings,
             isTableLocked: !tableSettings.isTableLocked,
         },
+        toolbarDropdownMenuOptions,
     };
 };
+
 export function pinTableColumn(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
-    function togglePinned(columns: ITableColumn[]): ITableColumn[] {
-        return columns.map((col) => {
-            if (col.key === column.key) {
-                // Use left as pinned side
-                return { ...col, pinned: col.pinned ? undefined : 'left' };
-            }
-            if (col.columns && col.columns.length) {
-                // Check all sub group column
-                return { ...col, columns: togglePinned(col.columns) };
-            }
-            return col;
-        });
-    }
-
     return {
         ...state,
-        columns: togglePinned(state.columns),
+        columns: StoreFunctionsHelper.togglePinned(column, state.columns),
     };
 }
 
@@ -238,40 +260,36 @@ export function tableSortingChange(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
-    let updatedSortKey = column.sortName;
-    let updatedSortDirection: SortOrder | null = SortOrder.Ascending;
-
-    function toggleSort(columns: ITableColumn[]): ITableColumn[] {
-        return columns.map((col) => {
-            if (col.key === column.key) {
-                if (col.direction === SortOrder.Ascending) {
-                    updatedSortDirection = SortOrder.Descending;
-                } else if (col.direction === SortOrder.Descending) {
-                    updatedSortDirection = null;
-                } else {
-                    updatedSortDirection = SortOrder.Ascending;
-                }
-
-                return { ...col, direction: updatedSortDirection };
-            }
-
-            // Reset all the other columns
-            return {
-                ...col,
-                direction: null,
-                columns: col.columns ? toggleSort(col.columns) : col.columns,
-            };
-        });
-    }
+    const { columns, sortKey, sortDirection } = StoreFunctionsHelper.toggleSort(
+        column,
+        state.columns
+    );
 
     return {
         ...state,
-        columns: toggleSort(state.columns),
+        columns,
         tableSettings: {
             ...state.tableSettings,
-            sortDirection: updatedSortDirection,
-            sortKey: updatedSortDirection ? updatedSortKey : null,
+            sortDirection,
+            sortKey,
         },
+    };
+}
+
+export function toggleColumnVisibility(
+    state: IMilesState,
+    columnKey: string,
+    isActive: boolean
+): IMilesState {
+    const columns = StoreFunctionsHelper.mapColumnsVisibility(
+        state.columns,
+        columnKey,
+        isActive
+    );
+
+    return {
+        ...state,
+        columns,
     };
 }
 
@@ -287,6 +305,86 @@ export function onSearchChange(
         },
     };
 }
+
+export function resetTable(state: IMilesState): IMilesState {
+    const {
+        activeViewMode,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+
+    return {
+        ...state,
+        columns: MilesTableColumnsConfig.columnsConfig,
+        tableSettings: {
+            isTableLocked: false,
+            sortKey: null,
+            sortDirection: null,
+        },
+        toolbarDropdownMenuOptions:
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                false,
+                cardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
+    };
+}
+
+export function toggleCardFlipViewMode(state: IMilesState): IMilesState {
+    const {
+        cardFlipViewMode,
+        activeViewMode,
+        tableSettings,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+
+    const nextCardFlipViewMode =
+        cardFlipViewMode === eCardFlipViewMode.FRONT
+            ? eCardFlipViewMode.BACK
+            : eCardFlipViewMode.FRONT;
+
+    return {
+        ...state,
+        cardFlipViewMode: nextCardFlipViewMode,
+        toolbarDropdownMenuOptions:
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                nextCardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
+    };
+}
+
+export function toggleToolbarDropdownMenuColumnsActive(
+    state: IMilesState
+): IMilesState {
+    const {
+        cardFlipViewMode,
+        activeViewMode,
+        tableSettings,
+        isToolbarDropdownMenuColumnsActive,
+        columns,
+    } = state;
+
+    const toolbarDropdownColumns =
+        DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(columns);
+
+    return {
+        ...state,
+        isToolbarDropdownMenuColumnsActive: !isToolbarDropdownMenuColumnsActive,
+        toolbarDropdownMenuOptions:
+            MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                cardFlipViewMode,
+                !isToolbarDropdownMenuColumnsActive,
+                toolbarDropdownColumns
+            ),
+    };
+}
+
 export function tableResizeChange(
     state: IMilesState,
     resizeAction: ITableResizeAction

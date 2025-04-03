@@ -1508,8 +1508,6 @@ export class DriverTableComponent
         }
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

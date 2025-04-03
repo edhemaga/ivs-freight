@@ -18,5 +18,8 @@ export interface ITableColumn {
     isResizable?: boolean;
     isAlignedRight?: boolean;
     columns?: ITableColumn[];
+    isDisabled?: boolean;
+    isChecked?: boolean;
+    labelToolbar?: string;
     sortName?: MilesStopSortBy;
 }

@@ -137,8 +137,6 @@ export class TrailerCardComponent
 
     public handleShowMoreAction(): void {}
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();

@@ -6,6 +6,9 @@ import { TableType, UpdateTableConfigCommand } from 'appcoretruckassist';
 // enums
 import { eDropdownMenu, eDropdownMenuColumns } from '@shared/enums';
 
+// interfaces
+import { ITableColumn } from '@shared/components/new-table/interface';
+
 // configs
 import {
     getLoadActiveAndPendingColumnDefinition,
@@ -21,6 +24,7 @@ export class DropdownMenuColumnsActionsHelper {
             [eDropdownMenuColumns.LOAD_REGULAR]:
                 getLoadActiveAndPendingColumnDefinition(),
             [eDropdownMenuColumns.LOAD_CLOSED]: getLoadClosedColumnDefinition(),
+            [eDropdownMenuColumns.MILES]: getLoadClosedColumnDefinition(),
         };
 
         return columnDefinitionMap[tableType];
@@ -63,7 +67,7 @@ export class DropdownMenuColumnsActionsHelper {
         const dropdownItems: IDropdownMenuItem[] = [];
 
         columns.forEach((column) => {
-            if (column.ngTemplate === 'checkbox') return;
+            if (column.ngTemplate === 'checkbox' || !column) return;
 
             const mappedColumn: IDropdownMenuItem = {
                 title: column.title,
@@ -93,6 +97,64 @@ export class DropdownMenuColumnsActionsHelper {
                 groupedColumns[column.groupName].isChecked ||=
                     mappedColumn.isChecked;
             } else dropdownItems.push(mappedColumn);
+        });
+
+        return dropdownItems;
+    }
+
+    static mapToolbarDropdownColumnsNew(
+        columns: ITableColumn[]
+    ): IDropdownMenuItem[] {
+        const dropdownItems: IDropdownMenuItem[] = [];
+
+        columns.forEach((column) => {
+            if ('columns' in column) {
+                const children = column.columns;
+
+                if (children.length === 1) {
+                    const col = children[0];
+                    const item: IDropdownMenuItem = {
+                        title: col.labelToolbar,
+                        type: col.key,
+                        isChecked: col.isChecked ?? true,
+                        isColumnDropdown: true,
+                        ...(col.isDisabled && { isCheckBoxDisabled: true }),
+                    };
+
+                    dropdownItems.push(item);
+                } else {
+                    const isChecked = children.some((col) => col.isChecked);
+                    const innerDropdownContent = children.map((col) => ({
+                        title: col.labelToolbar,
+                        type: col.key,
+                        isChecked: col.isChecked ?? true,
+                        isColumnDropdown: true,
+                        ...(col.isDisabled && { isCheckBoxDisabled: true }),
+                    }));
+
+                    const group: IDropdownMenuItem = {
+                        title: column.labelToolbar,
+                        type: column.key,
+                        groupName: column.key,
+                        svgClass: 'regular',
+                        isChecked,
+                        isColumnDropdown: true,
+                        innerDropdownContent,
+                    };
+
+                    dropdownItems.push(group);
+                }
+            } else if (column.key !== 'select') {
+                const item: IDropdownMenuItem = {
+                    title: column.labelToolbar,
+                    type: column.key,
+                    isChecked: column.isChecked ?? true,
+                    isColumnDropdown: true,
+                    ...(column.isDisabled && { isCheckBoxDisabled: true }),
+                };
+
+                dropdownItems.push(item);
+            }
         });
 
         return dropdownItems;

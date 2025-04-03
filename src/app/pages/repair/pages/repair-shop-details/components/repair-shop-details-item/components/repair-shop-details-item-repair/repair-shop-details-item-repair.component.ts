@@ -263,8 +263,6 @@ export class RepairShopDetailsItemRepairComponent
 
     public handleShowMoreAction(): void {}
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     public handleCloseSearchEmit(): void {
         this.detailsSearchService.setCloseSearchStatus(
             eRepairShopDetailsSearchIndex.REPAIR_INDEX
