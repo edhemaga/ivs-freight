@@ -24,6 +24,7 @@ import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
 // enums
 import { ePosition, eUnit } from 'ca-components';
 import { eColor, eGeneralActions } from '@shared/enums';
+import { SortOrder } from 'appcoretruckassist';
 
 // directives
 import { ResizableColumnDirective } from '@shared/components/new-table/directives';
@@ -83,6 +84,7 @@ export class NewTableComponent<T> {
     public eColor = eColor;
     public eGeneralActions = eGeneralActions;
     public eUnit = eUnit;
+    public sortOrder = SortOrder;
 
     // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;

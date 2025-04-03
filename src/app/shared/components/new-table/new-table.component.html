@@ -269,15 +269,19 @@
                     } @else {
                         <!-- Show this on hover if column.direction is not null -->
 
+                        @let sortIconClass =
+                            column.direction ? 'd-flex' : 'd-none';
+
+                        @let sortIconSrc =
+                            column.direction === sortOrder.Ascending ||
+                            !column.direction
+                                ? sharedSvgRoutes.SORT_ICON
+                                : sharedSvgRoutes.SORT_ICON_ASC;
+
                         <svg-icon
                             class="new-table--row-heading-arrow m-l-4 svg-size-14"
-                            [ngClass]="column.direction ? 'd-flex' : 'd-none'"
-                            [src]="
-                                column.direction === 'Ascending' ||
-                                !column.direction
-                                    ? sharedSvgRoutes.SORT_ICON
-                                    : sharedSvgRoutes.SORT_ICON_ASC
-                            "
+                            [ngClass]="sortIconClass"
+                            [src]="sortIconSrc"
                         ></svg-icon>
                     }
                 </div>
