@@ -46,7 +46,6 @@ import { BrokerModalComponent } from '@pages/customer/pages/broker-modal/broker-
 import { ShipperModalComponent } from '@pages/customer/pages/shipper-modal/shipper-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
@@ -168,6 +167,7 @@ import {
     CaInputDatetimePickerComponent,
     InputTestComponent,
     CaInputComponent,
+    CaTabSwitchComponent,
 } from 'ca-components';
 
 @Component({
@@ -186,7 +186,7 @@ import {
         // components
         TaAppTooltipV2Component,
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCustomCardComponent,
         TaCheckboxComponent,
         LoadModalStopComponent,

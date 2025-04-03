@@ -2,20 +2,32 @@
 
 .new-table {
     &--header {
-        max-width: calc(100vw - 80px);
+        max-width: calc(100vw - 85px);
     }
 
     &--row {
         &-heading {
-            &-group {
-                border-left: 1px solid $ta-light-grey-6;
-            }
+            cursor: default;
+            position: relative;
 
+            // sort
             &-sortable {
                 &:hover {
                     .new-table--row-heading-arrow {
                         display: flex !important;
                     }
+                }
+            }
+
+            // resize
+            .resize-handler {
+                border-radius: 1px;
+                cursor:
+                    url('/assets/svg/common/resize-arrow-outline.svg') 8 32,
+                    col-resize;
+
+                &:hover {
+                    transform: scaleX(2);
                 }
             }
         }

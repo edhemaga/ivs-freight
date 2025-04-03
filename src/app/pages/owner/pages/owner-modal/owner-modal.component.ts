@@ -34,7 +34,6 @@ import {
 //Components
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import {
     CaInputComponent,
@@ -103,7 +102,6 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
         // Component
         CaModalComponent,
-        TaTabSwitchComponent,
         CaInputComponent,
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,

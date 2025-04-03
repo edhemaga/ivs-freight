@@ -1015,8 +1015,6 @@ export class TrailerTableComponent
         this.trailerBackFilter(this.backFilterQuery, true);
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
 

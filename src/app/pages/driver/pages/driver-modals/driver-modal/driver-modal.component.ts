@@ -11,8 +11,7 @@ import {
     Component,
     Input,
     OnDestroy,
-    OnInit,
-    ViewChild,
+    OnInit
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -62,7 +61,6 @@ import {
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
@@ -72,7 +70,6 @@ import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import {
     CaInputAddressDropdownComponent,
-    CaInputComponent,
     CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
@@ -167,7 +164,6 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaUploadFilesComponent,
 
         CaInputDropdownComponent,
-        CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
         CaInputDatetimePickerComponent,
@@ -180,7 +176,6 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 export class DriverModalComponent
     extends AddressMixin(class { addressService!: AddressService; })
     implements OnInit, OnDestroy {
-    @ViewChild(TaTabSwitchComponent) tabSwitch: TaTabSwitchComponent;
 
     @Input() editData: DriverModalEditData;
 

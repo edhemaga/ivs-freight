@@ -93,3 +93,11 @@ export const tabResultsSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.tabResults
 );
+
+export const toolbarDropdownMenuOptionsSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { toolbarDropdownMenuOptions } = state || {};
+        return toolbarDropdownMenuOptions;
+    }
+);

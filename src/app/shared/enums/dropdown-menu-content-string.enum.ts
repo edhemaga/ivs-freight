@@ -134,6 +134,7 @@ export enum eDropdownMenu {
     SHIPPER = 'shipper',
     BROKER = 'broker',
     CUSTOMER = 'customer',
+    MILES = 'miles',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',

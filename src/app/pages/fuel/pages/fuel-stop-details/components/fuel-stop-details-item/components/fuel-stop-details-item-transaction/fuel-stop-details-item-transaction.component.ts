@@ -304,8 +304,6 @@ export class FuelStopDetailsItemTransactionComponent
         );
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

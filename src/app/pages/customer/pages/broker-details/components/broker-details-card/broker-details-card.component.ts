@@ -553,14 +553,6 @@ export class BrokerDetailsCardComponent
 
     public changeInvoiceAgingTab(event: { id: number }): void {
         this.invoiceAgingSelectedTab = event.id;
-
-        this.invoiceAgingTabs = this.invoiceAgingTabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === event.id,
-            };
-        });
-
         if (event.id === 1)
             this.invoiceAgingData = this.broker.brokerUnpaidInvoiceAgeing;
         else this.invoiceAgingData = this.broker.brokerPaidInvoiceAgeing;

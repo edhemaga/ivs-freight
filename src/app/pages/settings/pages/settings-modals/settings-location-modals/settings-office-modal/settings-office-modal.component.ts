@@ -28,7 +28,6 @@ import { AddressService } from '@shared/services/address.service';
 
 // components
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { UserModalComponent } from '@pages/user/pages/user-modal/user-modal.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaModalTableComponent } from '@shared/components/ta-modal-table/ta-modal-table.component';
@@ -38,6 +37,7 @@ import {
     CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
+    CaTabSwitchComponent,
     eModalButtonClassType,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -115,7 +115,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaInputDropdownComponent,
         CaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCheckboxCardComponent,
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
@@ -408,8 +408,7 @@ export class SettingsOfficeModalComponent
     }
 
     private addCompanyOffice(addNew?: boolean): void {
-        const { addressUnit, rent, ...formValues } =
-            this.officeForm.value;
+        const { addressUnit, rent, ...formValues } = this.officeForm.value;
 
         const departmentContacts = this.mapContacts(this.departmentContacts);
 

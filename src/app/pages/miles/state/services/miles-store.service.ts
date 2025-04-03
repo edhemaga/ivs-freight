@@ -16,6 +16,7 @@ import {
     detailsSelector,
     unitsPaginationSelector,
     tableSettingsSelector,
+    toolbarDropdownMenuOptionsSelector,
     tabResultsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
@@ -50,7 +51,9 @@ import { MilesHelper } from '@pages/miles/utils/helpers';
 import {
     ITableColumn,
     ITableConfig,
+    ITableResizeAction,
 } from '@shared/components/new-table/interface';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Injectable({
     providedIn: 'root',
@@ -97,6 +100,10 @@ export class MilesStoreService {
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(tableSettingsSelector)
     );
+
+    public toolbarDropdownMenuOptionsSelector$: Observable<
+        IDropdownMenuItem[]
+    > = this.store.pipe(select(toolbarDropdownMenuOptionsSelector));
 
     public tabResultsSelector$: Observable<IMilesTabResults> = this.store.pipe(
         select(tabResultsSelector)
@@ -197,6 +204,24 @@ export class MilesStoreService {
         });
     }
 
+    public dispatchToggleColumnsVisiblity(
+        columnKey: string,
+        isActive: boolean
+    ) {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+            columnKey,
+            isActive,
+        });
+    }
+
+    public dispatchResizeColumn(resizeAction: ITableResizeAction): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESIZE_CHANGE,
+            resizeAction,
+        });
+    }
+
     public dispatchSearchInputChanged(search: string): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SEARCH_CHANGED,
@@ -211,6 +236,23 @@ export class MilesStoreService {
         });
     }
 
+    public dispatchResetTable(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESET_TABLE,
+        });
+    }
+
+    public dispatchToggleCardFlipViewMode(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE,
+        });
+    }
+
+    public dispatchToggleToolbarDropdownMenuColumnsActive(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+        });
+    }
     public getNewPage(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,

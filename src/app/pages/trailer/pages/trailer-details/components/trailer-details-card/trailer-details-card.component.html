@@ -511,14 +511,14 @@
                     >
                         <div>
                             @if (!fuelConsumptionLegendHighlightedBackground) {
-                                <app-ta-tab-switch
-                                    [type]="'type2-modal-popup'"
+                                <app-ca-tab-switch
+                                    [type]="'type4-modal-popup'"
                                     (switchClicked)="
                                         changeFuelConsumptionTab($event)
                                     "
                                     [tabs]="fuelConsumptionTabs"
                                 >
-                                </app-ta-tab-switch>
+                                </app-ca-tab-switch>
                             }
                             <app-ca-chart
                                 [chartConfig]="fuelConsumptionChartConfig"

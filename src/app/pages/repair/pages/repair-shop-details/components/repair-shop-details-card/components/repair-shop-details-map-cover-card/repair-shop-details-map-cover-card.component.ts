@@ -4,10 +4,10 @@ import { Router } from '@angular/router';
 
 // components
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import {
     CaMapComponent,
+    CaTabSwitchComponent,
     ICaMapProps,
     IMapMarkers,
     MapMarkerIconService,
@@ -39,7 +39,7 @@ import { Tabs } from '@shared/models/tabs.model';
 
         // components
         TaCustomCardComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaUploadFilesComponent,
         CaMapComponent,
     ],

@@ -36,8 +36,8 @@ export class LoadTableHelper {
                   tableType,
                   isTableLocked
               )
-            : DropdownMenuContentHelper.getLoadToolbarColumnsDropdownContent(
-                  loadColumnsList
+            : DropdownMenuContentHelper.getToolbarColumnsDropdownContent(
+                  loadColumnsList ?? []
               );
     }
 }
