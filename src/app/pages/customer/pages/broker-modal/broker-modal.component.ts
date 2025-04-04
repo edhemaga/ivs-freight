@@ -57,14 +57,12 @@ import {
 
 // Components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputAddressDropdownComponent } from '@shared/components/ta-input-address-dropdown/ta-input-address-dropdown.component';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaCurrencyProgressBarComponent } from '@shared/components/ta-currency-progress-bar/ta-currency-progress-bar.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { LoadModalComponent } from '@pages/load/pages/load-modal/load-modal.component';
 import { TaUserReviewComponent } from '@shared/components/ta-user-review/ta-user-review.component';
 import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/confirmation-modal/confirmation-modal.component';
 import { ConfirmationMoveModalComponent } from '@shared/components/ta-shared-modals/confirmation-move-modal/confirmation-move-modal.component';
@@ -77,6 +75,7 @@ import {
     CaInputAddressDropdownComponent,
     eModalButtonClassType,
     eModalButtonSize,
+    CaTabSwitchComponent,
 } from 'ca-components';
 
 // enums
@@ -143,7 +142,6 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
         // Component
         TaAppTooltipV2Component,
         CaModalComponent,
-        TaTabSwitchComponent,
         TaInputAddressDropdownComponent,
         TaCheckboxComponent,
         TaCurrencyProgressBarComponent,
@@ -156,6 +154,7 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
         CaInputDropdownComponent,
         CaModalButtonComponent,
         CaInputAddressDropdownComponent,
+        CaTabSwitchComponent,
 
         // Pipes
         FormatDatePipe,
@@ -527,13 +526,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 this.brokerForm.get(BrokerModalStringEnum.PHYSICAL_PO_BOX_CITY)
             );
         }
-
-        this.physicalAddressTabs = this.physicalAddressTabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === this.selectedPhysicalAddressTab,
-            };
-        });
     }
 
     public tabBillingAddressChange(event: Tabs): void {
@@ -564,13 +556,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 this.brokerForm.get('billingPoBoxCity')
             );
         }
-
-        this.billingAddressTabs = this.billingAddressTabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === this.selectedBillingAddressTab,
-            };
-        });
     }
 
     public tabCreditChange(event: Tabs): void {
@@ -590,10 +575,6 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                 false
             );
         }
-
-        this.billingCredit = this.billingCredit.map((item) => {
-            return { ...item, checked: item.id === event.id };
-        });
     }
 
     public onModalAction(action: string, cancelWrapper): void {
@@ -1620,11 +1601,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                     };
 
                                 if (type)
-                                    this.loadStoreService.dispatchAddNewBrokerToStaticModalData(modalSingleBrokerItem);
-
-                                    this.loadStoreService.dispatchGetCreateLoadModalData(
+                                    this.loadStoreService.dispatchAddNewBrokerToStaticModalData(
                                         modalSingleBrokerItem
                                     );
+
+                                this.loadStoreService.dispatchGetCreateLoadModalData(
+                                    modalSingleBrokerItem
+                                );
                             }
                         }
                     }
@@ -1677,8 +1660,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 const { canOpenModal, key } = this.editData;
 
                                 if (canOpenModal && key) {
-                                    this.loadStoreService.dispatchUpdateEditedBrokerStaticModalData(newData, brokerContacts);
-                                    this.loadStoreService.dispatchGetCreateLoadModalData(newData);
+                                    this.loadStoreService.dispatchUpdateEditedBrokerStaticModalData(
+                                        newData,
+                                        brokerContacts
+                                    );
+                                    this.loadStoreService.dispatchGetCreateLoadModalData(
+                                        newData
+                                    );
                                 }
 
                                 break;

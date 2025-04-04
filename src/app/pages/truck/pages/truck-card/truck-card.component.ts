@@ -120,8 +120,6 @@ export class TruckCardComponent
 
     public handleShowMoreAction(): void {}
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();

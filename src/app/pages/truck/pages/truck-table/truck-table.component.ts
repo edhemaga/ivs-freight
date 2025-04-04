@@ -928,7 +928,8 @@ export class TruckTableComponent
                                         : `/assets/svg/common/trucks/${data?.truckType?.logoName}`,
                                 },
                             },
-                            modalTitle: TableStringEnum.UNIT + data?.truckNumber,
+                            modalTitle:
+                                TableStringEnum.UNIT + data?.truckNumber,
                             modalSecondTitle: data?.tableVin
                                 ? data?.tableVin?.regularText +
                                   data?.tableVin?.boldText
@@ -1053,8 +1054,6 @@ export class TruckTableComponent
 
         this.truckBackFilter(this.backFilterQuery, true);
     }
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

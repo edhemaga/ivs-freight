@@ -34,7 +34,6 @@ import {
 //Components
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { TrailerModalComponent } from '@pages/trailer/pages/trailer-modal/trailer-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import {
     CaInputComponent,
@@ -42,6 +41,7 @@ import {
     CaInputNoteComponent,
     CaModalComponent,
     CaInputAddressDropdownComponent,
+    CaTabSwitchComponent,
 } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaUploadFilesComponent } from '@shared/components/ta-upload-files/ta-upload-files.component';
@@ -102,7 +102,6 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
         // Component
         CaModalComponent,
-        TaTabSwitchComponent,
         CaInputComponent,
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
@@ -110,6 +109,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputNoteComponent,
         TaUploadFilesComponent,
         TaAppTooltipV2Component,
+        CaTabSwitchComponent,
 
         // Pipes
         FormatDatePipe,
@@ -222,13 +222,6 @@ export class OwnerModalComponent
 
     public tabChange(event: any): void {
         this.selectedTab = event.id;
-
-        this.tabs = this.tabs.map((item) => {
-            return {
-                ...item,
-                checked: item.id === event.id,
-            };
-        });
 
         this.manipulateWithOwnerInputs();
     }

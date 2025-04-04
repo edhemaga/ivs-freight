@@ -11,7 +11,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 import { ClickOutsideCustomRangeDirective } from '@pages/dashboard/directives/click-outside-custom-range.directive';
 
 // pipes
-import { ThousandFormatterPipe } from 'ca-components';
+import { CaTabSwitchComponent, ThousandFormatterPipe } from 'ca-components';
 import { SetTrendIconPipe } from '@pages/dashboard/pages/dashboard-performance/pipes/set-trend-icon.pipe';
 import { SetTrendLabelPipe } from '@pages/dashboard/pages/dashboard-performance/pipes/set-trend-label.pipe';
 import { TextColorPipe } from '@pages/dashboard/pages/dashboard-by-state/pipes/text-color.pipe';
@@ -34,7 +34,6 @@ import { DashboardDataPlaceholderComponent } from '@pages/dashboard/components/d
 import { DashboardLoadingPlaceholderComponent } from '@pages/dashboard/components/dashboard-loading-placeholder/dashboard-loading-placeholder.component';
 import { DashboardDropdownComponent } from '@pages/dashboard/components/dashboard-dropdown/dashboard-dropdown.component';
 
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaInputDropdownComponent } from '@shared/components/ta-input-dropdown/ta-input-dropdown.component';
 import { TaCustomPeriodRangeComponent } from '@shared/components/ta-custom-period-range/ta-custom-period-range.component';
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
@@ -81,7 +80,7 @@ import {
         ShowMorePipe,
 
         // components
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaInputDropdownComponent,
         TaCustomPeriodRangeComponent,
         TaSearchV2Component,

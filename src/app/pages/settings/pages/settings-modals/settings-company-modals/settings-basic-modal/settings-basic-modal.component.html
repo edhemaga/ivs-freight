@@ -38,7 +38,7 @@
 >
     <div origin>
         @if (!isSetupCompany) {
-            <app-ta-tab-switch
+            <app-ca-tab-switch
                 [tabs]="
                     editData.type === 'new-division' ||
                     editData.type === 'edit-division'
@@ -48,7 +48,7 @@
                 (switchClicked)="tabChange($event)"
                 [type]="'type1-modal-popup'"
             >
-            </app-ta-tab-switch>
+            </app-ca-tab-switch>
         }
         <form
             [formGroup]="companyForm"
@@ -963,14 +963,14 @@
                                             Pref. Load Type
                                         </p>
 
-                                        <app-ta-tab-switch
+                                        <app-ca-tab-switch
                                             [tabs]="prefferedLoadTabs"
                                             (switchClicked)="
                                                 onPrefferedLoadCheck($event)
                                             "
-                                            [type]="'type2-modal-popup'"
+                                            [type]="'type4-modal-popup'"
                                         >
-                                        </app-ta-tab-switch>
+                                        </app-ca-tab-switch>
                                     </div>
 
                                     <div
@@ -980,14 +980,14 @@
                                             Fleet Type
                                         </p>
 
-                                        <app-ta-tab-switch
+                                        <app-ca-tab-switch
                                             [tabs]="fleetTypeTabs"
                                             (switchClicked)="
                                                 onFleetTypeCheck($event)
                                             "
-                                            [type]="'type2-modal-popup'"
+                                            [type]="'type4-modal-popup'"
                                         >
-                                        </app-ta-tab-switch>
+                                        </app-ca-tab-switch>
                                     </div>
 
                                     <app-ta-checkbox

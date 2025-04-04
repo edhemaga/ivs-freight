@@ -129,8 +129,6 @@ export class OwnerCardComponent
                this.accountBackFilter(this.backFilterQuery, true); */
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy() {
         this.destroy$.next();
         this.destroy$.complete();

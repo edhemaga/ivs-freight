@@ -31,12 +31,13 @@
                 class="d-flex align-items-center dashboard-top-rated-header-tabs"
             >
                 @if (topRatedTitle !== 'Shipper') {
-                    <app-ta-tab-switch
+                    <app-ca-tab-switch
+                        [type]="'type4-modal-popup'"
                         [tabs]="topRatedTabs"
                         [dashboardHeight]="true"
                         (switchClicked)="handleSwitchTabClick($event)"
                     >
-                    </app-ta-tab-switch>
+                    </app-ca-tab-switch>
                 }
                 @if (topRatedTitle === 'Shipper') {
                     <div class="shipper-tab-container">

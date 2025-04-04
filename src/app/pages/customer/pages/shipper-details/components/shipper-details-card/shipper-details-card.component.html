@@ -139,12 +139,12 @@
             >
                 <div>
                     @if (!payrollLegendHighlightedBackground) {
-                        <app-ta-tab-switch
+                        <app-ca-tab-switch
                             [tabs]="payrollChartTabs"
                             (switchClicked)="changeShipperTabs($event)"
-                            [type]="'type2-modal-popup'"
+                            [type]="'type4-modal-popup'"
                         >
-                        </app-ta-tab-switch>
+                        </app-ca-tab-switch>
                     }
                     <app-ca-chart
                         [chartConfig]="payrollChartConfig"

@@ -50,6 +50,9 @@
         &-16 {
             margin-top: 16px;
         }
+        &-20 {
+            margin-top: 20px;
+        }
     }
     &-r {
         &-4 {
@@ -61,10 +64,16 @@
         &-7 {
             margin-right: 7px;
         }
+        &-10 {
+            margin-right: 10px;
+        }
     }
     &-l {
         &-4 {
             margin-left: 4px;
+        }
+        &-6 {
+            margin-left: 6px;
         }
         &-8 {
             margin-left: 8px;
@@ -172,6 +181,11 @@
             padding-top: 8px;
         }
     }
+
+    &-4 {
+        padding: 4px;
+    }
+
     &-6 {
         padding: 6px;
     }

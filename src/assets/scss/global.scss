@@ -574,6 +574,8 @@ html ngb-modal-backdrop {
 }
 
 .modal-payroll-report {
+    width: 1410px !important;
+
     .modal-original-part {
         width: 100%;
     }
@@ -656,4 +658,9 @@ html ngb-modal-backdrop {
 
 .line-0 {
     line-height: 0;
+}
+
+ngb-modal-window.modal {
+    backdrop-filter: blur(0.0625rem);
+    background: $dark-3 !important;
 }

@@ -832,6 +832,7 @@ model/payrollLoadMinimalResponse.ts
 model/payrollLoadStopMinimalResponse.ts
 model/payrollMapLocation.ts
 model/payrollMileageTotalSum.ts
+model/payrollMobileClosedByIdResponse.ts
 model/payrollMobileClosedListResponse.ts
 model/payrollMobileClosedListSortBy.ts
 model/payrollMobileClosedResponse.ts
@@ -842,6 +843,7 @@ model/payrollOwnerResponse.ts
 model/payrollPaymentCommand.ts
 model/payrollPaymentType.ts
 model/payrollPaymentsMinimalResponse.ts
+model/payrollPercentage.ts
 model/pendingLoadProgressBarResponse.ts
 model/perMileEntity.ts
 model/performanceGraphListResponse.ts

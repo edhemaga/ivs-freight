@@ -898,8 +898,6 @@ export class OwnerTableComponent
         this.ownerBackFilter(this.backFilterQuery, true);
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
 

@@ -80,6 +80,14 @@
     }
 }
 .visible {
+    &-md {
+        @media (max-width: $medium-max) {
+            display: none !important;
+        }
+        @media (min-width: $large-min) {
+            display: flex !important;
+        }
+    }
     &-large {
         @media (max-width: $large-max) {
             display: none !important;

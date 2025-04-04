@@ -65,7 +65,6 @@ import { Tabs } from '@shared/models/tabs.model';
 import { SettingsOfficeModalComponent } from '@pages/settings/pages/settings-modals/settings-location-modals/settings-office-modal/settings-office-modal.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaModalComponent } from '@shared/components/ta-modal/ta-modal.component';
-import { TaTabSwitchComponent } from '@shared/components/ta-tab-switch/ta-tab-switch.component';
 import { TaCustomCardComponent } from '@shared/components/ta-custom-card/ta-custom-card.component';
 import { TaCheckboxCardComponent } from '@shared/components/ta-checkbox-card/ta-checkbox-card.component';
 import { TaNgxSliderComponent } from '@shared/components/ta-ngx-slider/ta-ngx-slider.component';
@@ -77,6 +76,7 @@ import {
     CaInputDropdownComponent,
     CaInputAddressDropdownComponent,
     CaInputDatetimePickerComponent,
+    CaTabSwitchComponent,
 } from 'ca-components';
 
 // enums
@@ -108,7 +108,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         // components
         TaAppTooltipV2Component,
         TaModalComponent,
-        TaTabSwitchComponent,
+        CaTabSwitchComponent,
         TaCustomCardComponent,
         TaCheckboxCardComponent,
         TaNgxSliderComponent,
@@ -314,7 +314,6 @@ export class UserModalComponent
     }
 
     public onSelectedTab(event: Tabs, action: string): void {
-        event.checked = true;
         switch (action) {
             case UserModalStringEnum.USER_ADMIN:
                 this.selectedUserAdmin = event;
