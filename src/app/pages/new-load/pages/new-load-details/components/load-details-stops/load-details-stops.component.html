@@ -975,12 +975,10 @@
                 ) {
                     <div
                         class="d-inline-block background-muted h-8"
-                        #t2="ngbPopover"
-                        #input
-                        [ngbPopover]="statusHistoryPopover"
-                        [autoClose]="'outside'"
-                        [container]="'body'"
-                        [placement]="'bottom auto'"
+                        #dropdownPopover="ngbPopover"
+                        [ngbPopover]="dropdownOptions"
+                        [autoClose]="true"
+                        [placement]="'bottom'"
                         [ngStyle]="{ width: status.width }"
                         [ngClass]="{
                             'h-8': index !== hoveredIndex,
@@ -988,17 +986,11 @@
                             'opacity-40':
                                 index !== hoveredIndex && hoveredIndex !== null,
                         }"
-                        (mouseenter)="setHoveredStatus(index)"
-                        (mouseleave)="resetHovered()"
-                    >
-                        <ng-template #statusHistoryPopover>
-                            <svg-icon
-                                class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
-                                [class]="status.id | loadStatusColors: true"
-                                [src]="'assets/svg/common/ic_broker-user.svg'"
-                            ></svg-icon>
-                        </ng-template>
-                    </div>
+                        triggers="manual"
+                        (mouseenter)="setHoveredStatus(index, dropdownPopover)"
+                        (mouseleave)="resetHovered(dropdownPopover)"
+                    ></div>
+
                     <!-- -->
                 }
             </div>
@@ -1030,6 +1022,32 @@
                     </span>
                 </div>
             </div>
+
+            <ng-template #dropdownOptions data-toggle="popover">
+                <!-- <svg-icon
+                    class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
+                    [class]="status.id | loadStatusColors: true"
+                    [src]="'assets/svg/common/ic_broker-user.svg'"
+                ></svg-icon> -->
+                @let selectStatusHistory = statusHistory[hoveredIndex];
+                @if (hoveredIndex !== -1 && selectStatusHistory) {
+                    <!-- {{ selectStatusHistory | json }} -->
+
+                    <span class="text-color-black">
+                        {{ selectStatusHistory.dateTimeFrom | formatDateP }}
+                    </span>
+                    <span class="text-color-bw6-2 m-l-2">
+                        {{ selectStatusHistory.dateTimeFrom | formatTime }}
+                    </span>
+
+                    <span class="text-color-black">
+                        {{ selectStatusHistory.dateTimeTo | formatDateP }}
+                    </span>
+                    <span class="text-color-bw6-2 m-l-2">
+                        {{ selectStatusHistory.dateTimeTo | formatTime }}
+                    </span>
+                }
+            </ng-template>
         }
     </div>
 </ng-template>

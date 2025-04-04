@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopover,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -50,7 +52,6 @@ import {
 
         // Components
         CaMapComponent,
-        NgbPopover,
 
         // Components
         TaAppTooltipV2Component,
@@ -79,11 +80,14 @@ export class LoadDetailsStopsComponent {
     }
 
     // Status hover
-    public setHoveredStatus(index: number): void {
+    public setHoveredStatus(index: number, popover: NgbPopover): void {
         this.hoveredIndex = index;
+
+        popover.open();
     }
 
-    public resetHovered(): void {
+    public resetHovered(popover: NgbPopover): void {
         this.hoveredIndex = null;
+        popover.close();
     }
 }
