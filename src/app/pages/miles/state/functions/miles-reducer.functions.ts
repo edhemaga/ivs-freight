@@ -55,8 +55,6 @@ export const changeViewMode = function (
     return {
         ...state,
         activeViewMode,
-        selectedCount: 0,
-        hasAllItemsSelected: false,
         unitsPagination: {
             ...state.unitsPagination,
             activeUnitIndex: 0,
@@ -113,49 +111,6 @@ export const updateMilesListData = function (
     };
 };
 
-export const toggleRowSelection = function (
-    state: IMilesState,
-    mile: IMilesModel
-): IMilesState {
-    const updatedItems = state.items.map((item) =>
-        item.id === mile.id ? { ...item, isSelected: !item.isSelected } : item
-    );
-
-    const newSelectedCount = updatedItems.filter(
-        (item) => item.isSelected
-    ).length;
-
-    return {
-        ...state,
-        items: updatedItems,
-        selectedCount: newSelectedCount,
-        hasAllItemsSelected: newSelectedCount === updatedItems.length,
-    };
-};
-
-export const toggleSelectAll = function (
-    state: IMilesState,
-    action: string
-): IMilesState {
-    const hasAllItemsSelected =
-        action === eGeneralActions.SELECT_ALL ||
-        action === eGeneralActions.CLEAR_SELECTED
-            ? !state.hasAllItemsSelected
-            : true;
-
-    const updatedItems = state.items.map((item) => ({
-        ...item,
-        isSelected: hasAllItemsSelected,
-    }));
-
-    return {
-        ...state,
-        items: updatedItems,
-        selectedCount: hasAllItemsSelected && updatedItems.length,
-        hasAllItemsSelected,
-    };
-};
-
 export const updateFilters = function (
     state: IMilesState,
     filters: IStateFilters
@@ -163,8 +118,6 @@ export const updateFilters = function (
     return {
         ...state,
         filters,
-        selectedCount: 0,
-        hasAllItemsSelected: false,
     };
 };
 
@@ -175,9 +128,7 @@ export const updateTabSelection = function (
     return {
         ...state,
         selectedTab,
-        selectedCount: 0,
         filters: {},
-        hasAllItemsSelected: false,
     };
 };
 

@@ -30,14 +30,12 @@ export interface IMilesState {
     activeViewMode: eActiveViewMode;
     filters: IStateFilters;
     states: MilesStateFilterResponse[];
-    selectedCount: number;
     columns: ITableColumn[];
-    hasAllItemsSelected: boolean;
     cardFlipViewMode: eCardFlipViewMode;
     toolbarDropdownMenuOptions: IDropdownMenuItem[];
     isToolbarDropdownMenuColumnsActive: boolean;
     page: number;
-    
+
     tabResults: IMilesTabResults;
 
     // Is used for next, prev icons to navigate throught list

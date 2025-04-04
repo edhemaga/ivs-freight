@@ -140,22 +140,23 @@
     @if (column.columns?.length) {
         <div
             class="d-flex h-30 new-table--row-heading-group"
-            [class]="{
-                'p-l-6': !column.isAlignedRight,
-                'border-left-light-grey-6': isTableLocked,
-            }"
+            [class]="column | tableGroupClass: isTableLocked"
         >
             @for (
                 _column of column.columns;
                 track _column.key;
-                let isFirst = $first
+                let _columnIndex = $index
             ) {
+                @let hasLabelTop =
+                    _column.isChecked &&
+                    !column.columns[_columnIndex - 1]?.isChecked;
+
                 <ng-container
                     *ngTemplateOutlet="
                         columnDisplay;
                         context: {
                             column: _column,
-                            isFirst,
+                            hasLabelTop,
                             isGroup: true,
                             label: column.label,
                         }
@@ -172,7 +173,7 @@
     <ng-template
         #columnDisplay
         let-column="column"
-        let-isFirst="isFirst"
+        let-hasLabelTop="hasLabelTop"
         let-isGroup="isGroup"
         let-label="label"
     >
@@ -201,7 +202,7 @@
                 (click)="handleSortColumnClick(column)"
                 (onColumnResize)="onColumnWidthResize($event)"
             >
-                @if (isFirst) {
+                @if (hasLabelTop) {
                     <span
                         class="text-size-9 ta-font-extra-bold text-color-light-grey-2 text-uppercase"
                     >
@@ -305,16 +306,18 @@
             track _column.key;
             let _columnIndex = $index
         ) {
+            @let hasMarginRight =
+                isTableLocked &&
+                _columnIndex === column.columns.length - 1 &&
+                mainColumnIndex !== mainColumns.length - 1;
+
             <ng-container
                 *ngTemplateOutlet="
                     cellColumnTemplate;
                     context: {
                         column: _column,
                         hasPaddingLeft: isTableLocked,
-                        hasMarginRight:
-                            isTableLocked &&
-                            _columnIndex === column.columns.length - 1 &&
-                            mainColumnIndex !== mainColumns.length - 1,
+                        hasMarginRight,
                     }
                 "
             ></ng-container>
@@ -332,11 +335,14 @@
         let-hasMarginRight="hasMarginRight"
     >
         @if (column.isChecked) {
-            <div
-                [class]="{
+            @let cellColumnTemplateClass =
+                {
                     'p-l-6': hasPaddingLeft,
                     'm-r-7': hasMarginRight,
-                }"
+                };
+
+            <div
+                [class]="cellColumnTemplateClass"
                 [style.min-width]="column.width + eUnit.PX"
                 [style.width]="column.width + eUnit.PX"
             >
@@ -346,20 +352,18 @@
                     <ng-container
                         *ngTemplateOutlet="
                             templates[column.key];
-                            context: { data: row, key: column.key }
+                            context: { data: row, key: column.key, column }
                         "
                     ></ng-container>
                 } @else {
-                    <!-- Default template - if no custom template -->
+                    <!-- Default - text - if no custom template -->
 
-                    <p
-                        class="text-size-14"
-                        [class]="
-                            !!row[column.key]
-                                ? 'text-color-black-2'
-                                : 'text-color-muted'
-                        "
-                    >
+                    @let cellColumnNoTemplateClass =
+                        !!row[column.key]
+                            ? 'text-color-black-2'
+                            : 'text-color-muted';
+
+                    <p class="text-size-14" [class]="cellColumnNoTemplateClass">
                         {{ row[column.key] }}
                     </p>
                 }

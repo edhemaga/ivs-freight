@@ -1,10 +1,9 @@
-// External Libraries
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-// Enums
+// enums
 import { eActiveViewMode } from '@shared/enums';
 
-// Models
+// models
 import { IMilesState } from '@pages/miles/interface';
 
 export const milesFeatureKey: string = 'miles';
@@ -45,27 +44,11 @@ export const statesSelector = createSelector(selectMilesState, (state) => {
     return states;
 });
 
-export const selectedCountSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { selectedCount } = state || {};
-        return selectedCount;
-    }
-);
-
 export const tableColumnsSelector = createSelector(
     selectMilesState,
     (state) => {
         const { columns } = state || {};
         return columns;
-    }
-);
-
-export const hasAllItemsSelectedSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { hasAllItemsSelected } = state || {};
-        return hasAllItemsSelected;
     }
 );
 
