@@ -33,6 +33,17 @@
         }
     }
 
+    &--pinned-left {
+        position: sticky;
+        left: 0;
+        background-color: inherit;
+    }
+    &--pinned-right {
+        position: sticky;
+        right: 0;
+        background-color: inherit;
+    }
+
     &--toolbar {
         height: 34px;
         // Extract to radius

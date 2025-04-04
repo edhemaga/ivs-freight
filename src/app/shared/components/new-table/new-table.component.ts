@@ -14,6 +14,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -48,6 +49,7 @@ import {
 
         // components
         TaAppTooltipV2Component,
+        TaCustomScrollbarComponent,
 
         // pipes
         TableColumnClassPipe,
@@ -126,5 +128,12 @@ export class NewTableComponent<T> {
 
     public isRowExpanded(rowId: number): boolean {
         return this.expandedRows?.has(rowId);
+    }
+
+    public onHorizontalScroll(scrollEvent: any): void {
+        let elements = document.getElementsByClassName('scrollable-columns');
+        Array.from(elements).forEach((el) => {
+            el.scrollLeft = scrollEvent.scrollPosition;
+        });
     }
 }
