@@ -977,6 +977,7 @@
                         class="d-inline-block background-muted h-8"
                         #dropdownPopover="ngbPopover"
                         [ngbPopover]="dropdownOptions"
+                        popoverClass="load-stops-options-popover"
                         [autoClose]="true"
                         [placement]="'bottom'"
                         [ngStyle]="{ width: status.width }"
@@ -990,8 +991,6 @@
                         (mouseenter)="setHoveredStatus(index, dropdownPopover)"
                         (mouseleave)="resetHovered(dropdownPopover)"
                     ></div>
-
-                    <!-- -->
                 }
             </div>
 
@@ -1033,19 +1032,59 @@
                 @if (hoveredIndex !== -1 && selectStatusHistory) {
                     <!-- {{ selectStatusHistory | json }} -->
 
-                    <span class="text-color-black">
-                        {{ selectStatusHistory.dateTimeFrom | formatDateP }}
-                    </span>
-                    <span class="text-color-bw6-2 m-l-2">
-                        {{ selectStatusHistory.dateTimeFrom | formatTime }}
-                    </span>
+                    <div class="d-flex align-items-center">
+                        <div
+                            class="h-10 w-10 m-r-6 rounded-circle background-white"
+                        ></div>
+                        <div class="d-flex flex-column align-items-center">
+                            <div class="d-flex justify-content-between w-full">
+                                <app-ca-load-status
+                                    [status]="{
+                                        name: selectStatusHistory?.status,
+                                        id: selectStatusHistory?.id,
+                                    }"
+                                    [isNoStyle]="true"
+                                    [fontSize]="11"
+                                >
+                                </app-ca-load-status>
+                                <span
+                                    class="text-white text-size-11 ta-font-medium"
+                                    >6h 45m</span
+                                >
+                            </div>
 
-                    <span class="text-color-black">
-                        {{ selectStatusHistory.dateTimeTo | formatDateP }}
-                    </span>
-                    <span class="text-color-bw6-2 m-l-2">
-                        {{ selectStatusHistory.dateTimeTo | formatTime }}
-                    </span>
+                            <div class="d-flex">
+                                <div class="d-flex">
+                                    <span class="text-color-white-4">
+                                        {{
+                                            selectStatusHistory.dateTimeFrom
+                                                | formatDateP
+                                        }}
+                                    </span>
+                                    <span class="text-color-white-4">
+                                        {{
+                                            selectStatusHistory.dateTimeFrom
+                                                | formatTime
+                                        }}
+                                    </span>
+                                </div>
+                                <div class="d-flex">
+                                    <span class="text-color-white-4">
+                                        {{
+                                            selectStatusHistory.dateTimeTo
+                                                | formatDateP
+                                        }}
+                                    </span>
+                                    <span class="text-color-white-4">
+                                        {{
+                                            selectStatusHistory.dateTimeTo
+                                                | formatTime
+                                        }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 }
             </ng-template>
         }

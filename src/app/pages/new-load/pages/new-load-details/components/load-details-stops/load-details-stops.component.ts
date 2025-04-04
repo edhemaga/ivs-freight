@@ -24,12 +24,13 @@ import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
 import { StopStatusPipe } from '@pages/new-load/pages/new-load-details/components/load-details-stops/pipes/stop-status.pipe';
 import { FormatDurationPipe } from '@shared/pipes/format-duration.pipe';
 
-// COmponents
+// Components
 import {
     CaMapComponent,
     ICaMapProps,
     MapOptionsConstants,
     LoadStatusColorsPipe,
+    CaLoadStatusComponent,
 } from 'ca-components';
 
 @Component({
@@ -52,8 +53,7 @@ import {
 
         // Components
         CaMapComponent,
-
-        // Components
+        CaLoadStatusComponent,
         TaAppTooltipV2Component,
         AngularSvgIconModule,
     ],
