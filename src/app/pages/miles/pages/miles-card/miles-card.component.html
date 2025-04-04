@@ -10,86 +10,46 @@
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
-        <ng-container
-            *ngTemplateOutlet="
-                textWithTitle;
-                context: {
-                    title: 'Stops • Count',
-                    text: (data?.fuelCount?.count | thousandSeparator) ?? 0,
-                }
-            "
-        ></ng-container>
-
-        <ng-container
-            *ngTemplateOutlet="
-                textWithTitle;
-                context: {
-                    title: 'Miles • Empty',
-                    text: (data?.milesEmpty | thousandSeparator) ?? 0,
-                }
-            "
-        ></ng-container>
-
-        <ng-container
-            *ngTemplateOutlet="
-                textWithTitle;
-                context: {
-                    title: 'Miles • Loaded',
-                    text: (data?.milesLoaded | thousandSeparator) ?? 0,
-                }
-            "
-        ></ng-container>
-
-        <ng-container
-            *ngTemplateOutlet="
-                textWithTitle;
-                context: {
-                    title: 'Miles • Total',
-                    text: (data?.milesTotal | thousandSeparator) ?? 0,
-                }
-            "
-        ></ng-container>
+        @for (item of frontSideData; track $index) {
+            <ng-container
+                *ngTemplateOutlet="
+                    cardTemplate;
+                    context: { item: item, data: data }
+                "
+            ></ng-container>
+        }
     </ng-template>
 
     <ng-template #backSide let-data="data">
-        <ng-container
-            *ngTemplateOutlet="
-                textWithTitle;
-                context: {
-                    title: 'Load',
-                    text: (data?.loadCount | thousandSeparator) ?? 0,
-                }
-            "
-        ></ng-container>
+        @for (item of backSideData; track $index) {
+            <ng-container
+                *ngTemplateOutlet="
+                    cardTemplate;
+                    context: { item: item, data: data }
+                "
+            ></ng-container>
+        }
+    </ng-template>
 
+    <ng-template #cardTemplate let-item="item" let-data="data">
         <ng-container
             *ngTemplateOutlet="
-                doubleTextPercent;
+                item.template === 'doubleTextPercent'
+                    ? doubleTextPercent
+                    : textWithTitle;
                 context: {
-                    title: 'Stops • Pickup',
-                    text: (data?.stopsPickup?.count | thousandSeparator) ?? 0,
-                    percent: data?.stopsPickup?.percent,
-                }
-            "
-        ></ng-container>
-
-        <ng-container
-            *ngTemplateOutlet="
-                doubleTextPercent;
-                context: {
-                    title: 'Stops • Delivery',
-                    text: (data?.stopsDelivery?.count | thousandSeparator) ?? 0,
-                    percent: data?.stopsDelivery?.percent,
-                }
-            "
-        ></ng-container>
-
-        <ng-container
-            *ngTemplateOutlet="
-                textWithTitle;
-                context: {
-                    title: 'Miles • Revenue',
-                    text: data?.revenue | formatCurrency,
+                    title: item.title,
+                    text:
+                        item.format === 'currency'
+                            ? ((data
+                                  | getNestedValue: item.key
+                                  | formatCurrency) ?? 0)
+                            : ((data
+                                  | getNestedValue: item.key
+                                  | thousandSeparator) ?? 0),
+                    percent: item.percentKey
+                        ? (data | getNestedValue: item.percentKey)
+                        : null,
                 }
             "
         ></ng-container>

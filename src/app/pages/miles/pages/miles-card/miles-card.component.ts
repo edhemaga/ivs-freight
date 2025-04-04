@@ -8,7 +8,20 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 import { CaTableCardViewComponent } from 'ca-components';
 
 // pipes
-import { FormatCurrencyPipe, ThousandSeparatorPipe } from '@shared/pipes';
+import {
+    FormatCurrencyPipe,
+    ThousandSeparatorPipe,
+    GetNestedValuePipe,
+} from '@shared/pipes';
+
+import { ModalService } from '@shared/services';
+import { CardColumnsComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
+
+// configs
+import { MilesCardDataConfig } from './utils/configs/miles-card-data.config';
+
+// interfaces
+import { ICardValueData } from '@shared/interfaces';
 
 @Component({
     selector: 'app-miles-card',
@@ -24,8 +37,24 @@ import { FormatCurrencyPipe, ThousandSeparatorPipe } from '@shared/pipes';
         // pipes
         FormatCurrencyPipe,
         ThousandSeparatorPipe,
+        GetNestedValuePipe,
     ],
 })
 export class MilesCardComponent {
-    constructor(public milesStoreService: MilesStoreService) {}
+    public frontSideData: ICardValueData[] =
+        MilesCardDataConfig.FRONT_SIDE_DATA;
+    public backSideData: ICardValueData[] = MilesCardDataConfig.BACK_SIDE_DATA;
+
+    constructor(
+        public milesStoreService: MilesStoreService,
+        private modalService: ModalService
+    ) {}
+
+    ngOnInit(): void {
+        setTimeout(() => {
+            // this.modalService.openModal(CardColumnsComponent, {
+            //     size: 'small',
+            // });
+        }, 5000);
+    }
 }
