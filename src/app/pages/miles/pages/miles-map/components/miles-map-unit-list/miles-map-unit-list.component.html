@@ -56,68 +56,71 @@
             </div>
         </div>
         <div
-            class="background-white br-3 p-x-6 p-y-6 miles-unit-list overflow-hidden"
+            class="background-white br-3 p-l-6 p-y-6 miles-unit-list overflow-hidden"
             [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
-            [class.miles-unit-list-minimal]="isStopListHeightExpanded"
         >
-            <form [formGroup]="searchForm">
-                <app-ca-input
-                    formControlName="search"
-                    [inputConfig]="searchField"
-                ></app-ca-input>
-            </form>
+            <div class="p-r-6">
+                <form [formGroup]="searchForm">
+                    <app-ca-input
+                        formControlName="search"
+                        [inputConfig]="searchField"
+                    ></app-ca-input>
+                </form>
 
-            <div
-                class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-4"
-                [ngClass]="
-                    isStopListWidthExpanded
-                        ? 'stops-container-large'
-                        : 'stops-container-small'
-                "
-            >
-                @for (item of stopsConfig; let i = $index; track i) {
-                    @if (!item.isExpandable || isStopListWidthExpanded) {
-                        <div
-                            class="text-color-muted text-size-11 ta-font-bold"
-                            [ngClass]="{
-                                'text-right': item.isAlignedRight,
-                                'text-center': item.isAlignedCenter,
-                            }"
-                        >
-                            {{ item.label }}
-                        </div>
-                    }
-                }
-            </div>
-
-            <div class="divider mt-1 mb-1"></div>
-
-            <div class="">
                 <div
-                    #stopListViewport
-                    class="gap-1 d-flex flex-column scrollable-element overflow-scroll"
-                    style="height: calc(100vh - 188px)"
-                    (scroll)="onScrollEvent()"
+                    class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-4"
+                    [ngClass]="
+                        isStopListWidthExpanded
+                            ? 'stops-container-large'
+                            : 'stops-container-small'
+                    "
                 >
-                    @for (stop of stops; track stop.id; let index = $index) {
-                        <ng-container
-                            *ngTemplateOutlet="
-                                stopRows;
-                                context: {
-                                    stop,
-                                    index,
-                                }
-                            "
-                        >
-                        </ng-container>
+                    @for (item of stopsConfig; let i = $index; track i) {
+                        @if (!item.isExpandable || isStopListWidthExpanded) {
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold"
+                                [ngClass]="{
+                                    'text-right': item.isAlignedRight,
+                                    'text-center': item.isAlignedCenter,
+                                }"
+                            >
+                                {{ item.label }}
+                            </div>
+                        }
                     }
                 </div>
+
+                <div class="divider mt-1 mb-1"></div>
+            </div>
+
+            <div
+                #stopListViewport
+                class="gap-1 d-flex flex-column scrollable-element overflow-scroll p-r-4"
+                [ngStyle]="{
+                    height: isStopListHeightExpanded
+                        ? 'calc(100vh - 188px)'
+                        : '396px',
+                }"
+                (scroll)="onScrollEvent()"
+            >
+                @for (stop of stops; track stop.id; let index = $index) {
+                    <ng-container
+                        *ngTemplateOutlet="
+                            stopRows;
+                            context: {
+                                stop,
+                                index,
+                            }
+                        "
+                    >
+                    </ng-container>
+                }
             </div>
 
             <div
                 (click)="toogleStopListHeight()"
                 class="position-absolute z-2 arrow arrow-bottom"
-                [class.arrow-bottom-opened]="isStopListHeightExpanded"
+                [class.arrow-bottom-opened]="!isStopListHeightExpanded"
             >
                 <ng-container *ngTemplateOutlet="resizeButton"> </ng-container>
             </div>

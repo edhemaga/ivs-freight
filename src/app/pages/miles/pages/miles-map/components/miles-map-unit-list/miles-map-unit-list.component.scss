@@ -13,10 +13,7 @@
 
 .miles-unit-list {
     max-height: calc(100vh - 130px);
-
-    &-minimal {
-        height: 462px;
-    }
+    height: fit-content;
 }
 
 .arrow {
