@@ -191,11 +191,36 @@
 
 <ng-template #mileUnits let-unit="unit">
     <div
-        class="h-26 br-2 p-y-4 p-x-6 background-hover-black d-flex justify-content-between c-pointer"
+        class="h-26 br-2 p-y-4 p-x-6 background-hover-black d-flex justify-content-between c-pointer miles-unit-dropdown"
         (click)="selectUnit(unit)"
     >
         <p class="text-size-14 text-color-white">
             {{ unit.truck.truckNumber }}
         </p>
+
+        <div class="d-flex align-items-center">
+            <span
+                class="m-r-4 text-color-muted text-size-11 miles-unit-dropdown-owner"
+            >
+                {{ unit.truck.owner }}
+            </span>
+
+            <!-- TODO: ADD VIN, ONCE BACKEND ADDS IT -->
+            <span
+                class="m-r-4 text-color-muted text-size-11 miles-unit-dropdown-vin"
+            >
+                {{ unit.id }}
+            </span>
+
+            <div class="w-42 h-18">
+                <svg-icon
+                    class="svg-size-42-18 d-flex"
+                    [src]="
+                        sharedSvgRoutes.TRUCK_PATH_BASE +
+                        unit.truck.truckType.logoName
+                    "
+                ></svg-icon>
+            </div>
+        </div>
     </div>
 </ng-template>

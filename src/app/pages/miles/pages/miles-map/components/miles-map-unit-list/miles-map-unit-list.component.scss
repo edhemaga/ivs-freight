@@ -38,3 +38,17 @@
         }
     }
 }
+
+.miles-unit-dropdown {
+    &-vin {
+        display: none;
+    }
+    &:hover {
+        .miles-unit-dropdown-vin {
+            display: block;
+        }
+        .miles-unit-dropdown-owner {
+            display: none;
+        }
+    }
+}
