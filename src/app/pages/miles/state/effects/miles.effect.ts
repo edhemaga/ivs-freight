@@ -122,7 +122,7 @@ export class MilesEffects {
         if (!firstItemId) return of(MilesAction.getLoadsPayloadError());
 
         return this.milesService
-            .apiMilesUnitGet(null, null, null, firstItemId)
+            .apiMilesUnitGet(firstItemId, null, null, null)
             .pipe(
                 map((unitResponse) =>
                     MilesAction.setUnitDetails({
@@ -205,7 +205,7 @@ export class MilesEffects {
                         );
 
                         return this.milesService
-                            .apiMilesUnitGet(null, null, null, truckId)
+                            .apiMilesUnitGet(truckId, null, null, null)
                             .pipe(
                                 map((unitResponse) =>
                                     MilesAction.setFollowingUnitDetails({
@@ -238,10 +238,10 @@ export class MilesEffects {
                     switchMap(([unitsPagination, details]) => {
                         return this.milesService
                             .apiMilesUnitGet(
+                                details.id,
                                 null,
                                 unitsPagination.search,
-                                null,
-                                details.id
+                                null
                             )
                             .pipe(
                                 map((unitResponse) =>
@@ -304,7 +304,7 @@ export class MilesEffects {
                             const hasOnlyOneResult = miles.length === 1;
 
                             return this.milesService
-                                .apiMilesUnitGet(null, null, null, newTruckId)
+                                .apiMilesUnitGet(newTruckId, null, null, null)
                                 .pipe(
                                     mergeMap((unitResponse) => [
                                         MilesAction.updateMilesList({ miles }),

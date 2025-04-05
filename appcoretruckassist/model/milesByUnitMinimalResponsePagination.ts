@@ -9,17 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadListDtoPagination } from './loadListDtoPagination';
+import { MilesByUnitMinimalResponse } from './milesByUnitMinimalResponse';
 
 
-export interface LoadListResponse { 
-    pagination?: LoadListDtoPagination;
-    pendingCount?: number;
-    activeCount?: number;
-    closedCount?: number;
-    templateCount?: number;
-    totalSum?: number;
-    includedInComboCount?: number;
-    comboCount?: number;
+export interface MilesByUnitMinimalResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<MilesByUnitMinimalResponse> | null;
 }
 

@@ -649,6 +649,7 @@ export class BrokerService {
         return this.brokerService.apiBrokerLoadsGet(
             loadType,
             statusType,
+            false,
             status,
             dispatcherIds,
             dispatcherId,

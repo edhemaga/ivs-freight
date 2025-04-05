@@ -508,6 +508,7 @@ export class ShipperService {
         return this.shipperService.apiShipperLoadsGet(
             loadType,
             statusType,
+            false,
             status,
             dispatcherIds,
             dispatcherId,

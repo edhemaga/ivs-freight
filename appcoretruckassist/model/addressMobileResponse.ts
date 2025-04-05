@@ -9,17 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadListDtoPagination } from './loadListDtoPagination';
 
 
-export interface LoadListResponse { 
-    pagination?: LoadListDtoPagination;
-    pendingCount?: number;
-    activeCount?: number;
-    closedCount?: number;
-    templateCount?: number;
-    totalSum?: number;
-    includedInComboCount?: number;
-    comboCount?: number;
+export interface AddressMobileResponse { 
+    city?: string | null;
+    state?: string | null;
+    stateShortName?: string | null;
 }
 
