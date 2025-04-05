@@ -64,11 +64,12 @@ export const initialState: IMilesState = {
         sortDirection: null,
     },
 
-    minimalList: [],
-    isMinimalListLoading: false,
-    currentMinimalListPage: 1,
-    totalMinimalListCount: 1,
-    minimalListSearchString: '',
+    minimalList: {
+        data: [],
+        currentPage: 1,
+        totalCount: 1,
+        searchString: '',
+    },
 };
 
 export const milesReducer = createReducer(

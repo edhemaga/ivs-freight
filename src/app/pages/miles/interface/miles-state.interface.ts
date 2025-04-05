@@ -12,7 +12,6 @@ import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interf
 
 // External Services or Models
 import {
-    MilesByUnitMinimalResponse,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
@@ -20,6 +19,7 @@ import {
     IMilesDetailsFilters,
     IMilesModel,
     IMilesTabResults,
+    MinimalListState,
 } from '@pages/miles/interface';
 import { ITableConfig } from '@shared/components/new-table/interface';
 
@@ -43,9 +43,5 @@ export interface IMilesState {
     details: MilesByUnitPaginatedStopsResponse;
     unitsPagination: IMilesDetailsFilters;
     tableSettings: ITableConfig;
-    minimalList: MilesByUnitMinimalResponse[];
-    isMinimalListLoading: boolean;
-    currentMinimalListPage: number;
-    totalMinimalListCount: number;
-    minimalListSearchString: string;
+    minimalList: MinimalListState;
 }

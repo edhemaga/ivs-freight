@@ -95,20 +95,20 @@ export const cardFlipViewModeSelector = createSelector(
 
 export const minimalListSelector = createSelector(
     selectMilesState,
-    (state: IMilesState) => state.minimalList || []
+    (state: IMilesState) => state.minimalList.data || []
 );
 
 export const currentPageSelector = createSelector(
     selectMilesState,
-    (state: IMilesState) => state.currentMinimalListPage
+    (state: IMilesState) => state.minimalList.currentPage
 );
 
 export const searchTextSelector = createSelector(
     selectMilesState,
-    (state: IMilesState) => state.minimalListSearchString
+    (state: IMilesState) => state.minimalList.searchString
 );
 
 export const totalMinimalListCountSelector = createSelector(
     selectMilesState,
-    (state: IMilesState) => state.totalMinimalListCount
+    (state: IMilesState) => state.minimalList.totalCount
 );

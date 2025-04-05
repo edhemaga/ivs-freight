@@ -379,18 +379,22 @@ export function tableResizeChange(
         columns: resizedColumns,
     };
 }
-
 export function setInitalMinimalList(
     state: IMilesState,
     list: MilesByUnitMinimalListResponse,
     text: string
 ): IMilesState {
+    const data = list.pagination?.data ?? [];
+    const count = list.pagination?.count ?? 0;
+
     return {
         ...state,
-        minimalList: list.pagination?.data ?? [],
-        currentMinimalListPage: 1,
-        totalMinimalListCount: list.pagination?.count ?? 0,
-        minimalListSearchString: text,
+        minimalList: {
+            data: data,
+            currentPage: 1,
+            totalCount: count,
+            searchString: text,
+        },
     };
 }
 
@@ -399,12 +403,15 @@ export function appendToMinimalList(
     list: MilesByUnitMinimalListResponse
 ): IMilesState {
     const newData = list.pagination?.data ?? [];
+    const count = list.pagination?.count ?? state.minimalList.totalCount;
 
     return {
         ...state,
-        minimalList: [...state.minimalList, ...newData],
-        currentMinimalListPage: (state.currentMinimalListPage ?? 0) + 1,
-        totalMinimalListCount:
-            list.pagination?.count ?? state.totalMinimalListCount,
+        minimalList: {
+            ...state.minimalList,
+            data: [...state.minimalList.data, ...newData],
+            currentPage: state.minimalList.currentPage + 1,
+            totalCount: count,
+        },
     };
 }
