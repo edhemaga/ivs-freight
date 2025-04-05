@@ -32,25 +32,22 @@
                     (onSearchTextChange)="onSearchTextChange($event)"
                 >
                     <ng-template #titleDropdown>
-                        <div class="gap-1 d-flex flex-column">
-                            <cdk-virtual-scroll-viewport
-                                #minimalListViewport
-                                (scroll)="onMinimalListScroll()"
-                                [itemSize]="26"
-                                style="height: 190px"
-                            >
-                                <div *cdkVirtualFor="let unit of minimalList">
-                                    <ng-container
-                                        *ngTemplateOutlet="
-                                            mileUnits;
-                                            context: {
-                                                unit,
-                                            }
-                                        "
-                                    >
-                                    </ng-container>
-                                </div>
-                            </cdk-virtual-scroll-viewport>
+                        <div
+                            #minimalListViewport
+                            class="gap-1 d-flex flex-column"
+                            (scroll)="onMinimalListScroll()"
+                        >
+                            @for (unit of minimalList; track unit.id) {
+                                <ng-container
+                                    *ngTemplateOutlet="
+                                        mileUnits;
+                                        context: {
+                                            unit,
+                                        }
+                                    "
+                                >
+                                </ng-container>
+                            }
                         </div>
                     </ng-template>
                 </app-ca-details-title-card>

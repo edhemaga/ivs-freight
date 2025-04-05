@@ -1,5 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit, OnDestroy, ViewChild } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    OnDestroy,
+    ViewChild,
+    ElementRef,
+} from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
 import {
@@ -56,8 +62,7 @@ import { IMilesModel, IMilesState } from '@pages/miles/interface';
 })
 export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
-    @ViewChild(CdkVirtualScrollViewport)
-    minimalListViewport!: CdkVirtualScrollViewport;
+    @ViewChild('minimalListViewport') minimalListViewport!: ElementRef;
 
     public sharedSvgRoutes = SharedSvgRoutes;
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
@@ -125,11 +130,11 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     }
 
     public onMinimalListScroll(): void {
-        const viewport = this.minimalListViewport;
-        const scrollOffset = viewport.measureScrollOffset('bottom');
+        const element = this.minimalListViewport.nativeElement;
+        const scrollOffset = element.scrollHeight - element.scrollTop;
         const threshold = 100;
 
-        if (scrollOffset < threshold) {
+        if (scrollOffset <= element.clientHeight + threshold) {
             this.milesStoreService.loadNextMinimalListPage();
         }
     }
