@@ -17,6 +17,9 @@ import { MilesResolver } from '@pages/miles/resolvers/miles.resolver';
 import { TodoResolver } from '@pages/to-do/resolvers/to-do.resolver';
 import { RoutingStateResolver } from '@pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from '@pages/telematic/resolvers/telematic-state.resolver';
+import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
+import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
+import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 
 export class PageRoutes {
     static routes = [
@@ -101,6 +104,20 @@ export class PageRoutes {
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: { miles: MilesResolver },
             data: { title: 'Miles' },
+            children: [
+                {
+                    path: 'cards',
+                    component: MilesCardComponent,
+                },
+                {
+                    path: 'table',
+                    component: MilesTableComponent,
+                },
+                {
+                    path: 'map',
+                    component: MilesMapComponent,
+                },
+            ],
         },
         {
             path: 'tools/calendar',
@@ -172,9 +189,8 @@ export class PageRoutes {
         },
         {
             path: 'chat',
-            loadChildren: () => import('@pages/chat/chat.module').then(
-                (m) => m.ChatModule
-            ),
+            loadChildren: () =>
+                import('@pages/chat/chat.module').then((m) => m.ChatModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
             data: { title: 'Chat' },
         },

@@ -89,7 +89,7 @@
 
         <!-- List, Card, Map -->
 
-        @switch (store.activeViewMode) {
+        <!-- @switch (store.activeViewMode) {
             @case (eCommonElement.LIST) {
                 <app-miles-table></app-miles-table>
             }
@@ -101,7 +101,8 @@
             @case (eCommonElement.MAP) {
                 <app-miles-map></app-miles-map>
             }
-        }
+        } -->
+        <router-outlet></router-outlet>
 
         <!-- Empty State - List, Card -->
 

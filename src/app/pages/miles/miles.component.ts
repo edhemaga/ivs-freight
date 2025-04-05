@@ -47,6 +47,7 @@ import { TableCardBodyActions } from '@shared/models';
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-miles',
@@ -55,6 +56,7 @@ import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interf
     standalone: true,
     imports: [
         CommonModule,
+        RouterOutlet,
 
         // Components
         NewTableToolbarComponent,
@@ -63,9 +65,6 @@ import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interf
         CaSearchMultipleStates2Component,
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
-        MilesMapComponent,
-        MilesCardComponent,
-        MilesTableComponent,
         TaTableEmptyComponent,
     ],
 })
