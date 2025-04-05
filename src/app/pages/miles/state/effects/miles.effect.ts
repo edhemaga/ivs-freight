@@ -63,7 +63,7 @@ export class MilesEffects {
         private router: Router
     ) {}
 
-    private fetchMilesData(fetchInitialUnitDetails = false): Observable<
+    private fetchMilesData(): Observable<
         | Action<string>
         | ({
               miles: IMilesModel[];
@@ -115,34 +115,10 @@ export class MilesEffects {
                                 action: MilesAction.getLoadsPayloadError(),
                             })
                         ),
-                        switchMap(({ miles, action }) =>
-                            fetchInitialUnitDetails
-                                ? this.fetchInitialUnitDetails(miles).pipe(
-                                      startWith(action)
-                                  )
-                                : of(action)
-                        )
+                        switchMap(({ miles, action }) => of(action))
                     );
             })
         );
-    }
-
-    private fetchInitialUnitDetails(
-        milesItems: IMilesModel[]
-    ): Observable<Action<string>> {
-        const firstItemId = milesItems?.[0]?.truckId;
-        if (!firstItemId) return of(MilesAction.getLoadsPayloadError());
-
-        return this.milesService
-            .apiMilesUnitGet(368, null, null, null, 1, 25)
-            .pipe(
-                map((unitResponse) =>
-                    MilesAction.setUnitDetails({
-                        details: unitResponse,
-                    })
-                ),
-                catchError(() => of(MilesAction.getLoadsPayloadError()))
-            );
     }
 
     public fetchUnitStopsOnScroll$ = createEffect(() =>
@@ -199,12 +175,7 @@ export class MilesEffects {
             exhaustMap(() =>
                 this.store.select(activeViewModeSelector).pipe(
                     take(1),
-                    switchMap((activeViewMode) =>
-                        this.fetchMilesData(
-                            activeViewMode ===
-                                eActiveViewMode[eActiveViewMode.Map]
-                        )
-                    )
+                    switchMap((activeViewMode) => this.fetchMilesData())
                 )
             )
         )
@@ -228,30 +199,6 @@ export class MilesEffects {
                         })
                     )
             )
-        )
-    );
-
-    public loadInitialUnitDetails$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(MilesAction.getInitalUnitDetails),
-            exhaustMap(() =>
-                this.store.select(selectMilesItems).pipe(
-                    take(1),
-                    switchMap((milesItems) =>
-                        this.fetchInitialUnitDetails(milesItems)
-                    )
-                )
-            )
-        )
-    );
-
-    public getUnitOnSelection$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(MilesAction.onUnitSelection),
-            exhaustMap((action) => {
-                const { unit } = action;
-                return this.fetchInitialUnitDetails([unit]);
-            })
         )
     );
 

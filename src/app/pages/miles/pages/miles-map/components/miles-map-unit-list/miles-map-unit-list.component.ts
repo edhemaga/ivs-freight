@@ -114,9 +114,9 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         this.milesStoreService.dispatchFollowingUnit(getFollowingUnitDirection);
     }
 
-    public selectUnit(unit: IMilesModel): void {
+    public selectUnit(truckId: string): void {
         this.resetFormValue();
-        this.milesStoreService.dispatchSelectUnit(unit);
+        this.milesStoreService.goToMilesDetailsPage(truckId);
     }
 
     public toogleStopListWidth(): void {

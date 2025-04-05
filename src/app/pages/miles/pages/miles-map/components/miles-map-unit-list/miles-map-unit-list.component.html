@@ -192,7 +192,7 @@
 <ng-template #mileUnits let-unit="unit">
     <div
         class="h-26 br-2 p-y-4 p-x-6 background-hover-black d-flex justify-content-between c-pointer miles-unit-dropdown"
-        (click)="selectUnit(unit)"
+        (click)="selectUnit(unit.truck.id)"
     >
         <p class="text-size-14 text-color-white">
             {{ unit.truck.truckNumber }}

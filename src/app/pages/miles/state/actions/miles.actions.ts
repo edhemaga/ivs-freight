@@ -66,10 +66,6 @@ export const setStates = createAction(
     props<{ states: MilesStateFilterResponse[] }>()
 );
 
-export const getInitalUnitDetails = createAction(
-    MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE
-);
-
 export const getInitalUnitDetailsOnRouteChange = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE_ON_NEW_PAGE,
     props<{ unitId: number }>()
@@ -118,11 +114,6 @@ export const onSearchChange = createAction(
     props<{ search: string }>()
 );
 
-export const onUnitSelection = createAction(
-    MilesStoreConstants.ACTION_UNIT_SELECTED,
-    props<{ unit: IMilesModel }>()
-);
-
 export const resetTable = createAction(MilesStoreConstants.ACTION_RESET_TABLE);
 
 export const toggleCardFlipViewMode = createAction(
@@ -159,9 +150,4 @@ export const getMinimalListError = createAction(
 
 export const fetchNextStopsPage = createAction(
     MilesStoreConstants.ACTION_FETCH_NEXT_STOPS_PAGE
-);
-
-export const appendStopsToList = createAction(
-    MilesStoreConstants.ACTION_APPEND_NEXT_STOPS_PAGE,
-    props<{ list: MilesByUnitMinimalListResponse }>()
 );
