@@ -18,11 +18,17 @@ import {
     toolbarDropdownMenuOptionsSelector,
     tabResultsSelector,
     cardFlipViewModeSelector,
+    minimalListSelector,
+    currentPageSelector,
+    searchTextSelector,
+    totalMinimalListCountSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
 import {
     MilesByUnitListResponse,
+    MilesByUnitMinimalResponse,
+    MilesByUnitMinimalResponsePagination,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
@@ -101,9 +107,23 @@ export class MilesStoreService {
         select(tabResultsSelector)
     );
 
+    public currentPageSelector$: Observable<number> = this.store.pipe(
+        select(currentPageSelector)
+    );
+
+    public totalMinimalListCountSelector$: Observable<number> = this.store.pipe(
+        select(totalMinimalListCountSelector)
+    );
+    public searchTextSelector$: Observable<string> = this.store.pipe(
+        select(searchTextSelector)
+    );
+
     public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
         select(cardFlipViewModeSelector)
     );
+
+    public minimalListSelector$: Observable<MilesByUnitMinimalResponse[]> =
+        this.store.pipe(select(minimalListSelector));
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
@@ -238,6 +258,19 @@ export class MilesStoreService {
     public getNewPage(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
+        });
+    }
+
+    public dispatchSearchMinimalUnitList(text: string) {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SEARCH_MINIMAL_UNIT_LIST,
+            text,
+        });
+    }
+
+    public loadNextMinimalListPage(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_FETCH_NEXT_MINIMAL_UNIT_LIST,
         });
     }
 }

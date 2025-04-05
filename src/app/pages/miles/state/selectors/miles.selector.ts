@@ -92,3 +92,23 @@ export const cardFlipViewModeSelector = createSelector(
         return eCardFlipViewMode[cardFlipViewMode];
     }
 );
+
+export const minimalListSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.minimalList || []
+);
+
+export const currentPageSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.currentMinimalListPage
+);
+
+export const searchTextSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.minimalListSearchString
+);
+
+export const totalMinimalListCountSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.totalMinimalListCount
+);

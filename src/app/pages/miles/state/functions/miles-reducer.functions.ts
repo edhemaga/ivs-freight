@@ -15,7 +15,10 @@ import {
 import { eMileTabs } from '@pages/miles/enums';
 
 // models
-import { MilesByUnitPaginatedStopsResponse } from 'appcoretruckassist';
+import {
+    MilesByUnitMinimalListResponse,
+    MilesByUnitPaginatedStopsResponse,
+} from 'appcoretruckassist';
 
 // configs
 import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
@@ -374,5 +377,34 @@ export function tableResizeChange(
     return {
         ...state,
         columns: resizedColumns,
+    };
+}
+
+export function setInitalMinimalList(
+    state: IMilesState,
+    list: MilesByUnitMinimalListResponse,
+    text: string
+): IMilesState {
+    return {
+        ...state,
+        minimalList: list.pagination?.data ?? [],
+        currentMinimalListPage: 1,
+        totalMinimalListCount: list.pagination?.count ?? 0,
+        minimalListSearchString: text,
+    };
+}
+
+export function appendToMinimalList(
+    state: IMilesState,
+    list: MilesByUnitMinimalListResponse
+): IMilesState {
+    const newData = list.pagination?.data ?? [];
+
+    return {
+        ...state,
+        minimalList: [...state.minimalList, ...newData],
+        currentMinimalListPage: (state.currentMinimalListPage ?? 0) + 1,
+        totalMinimalListCount:
+            list.pagination?.count ?? state.totalMinimalListCount,
     };
 }

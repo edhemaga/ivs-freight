@@ -9,6 +9,7 @@ import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
 // models
 import {
+    MilesByUnitMinimalListResponse,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
@@ -74,22 +75,6 @@ export const setUnitDetails = createAction(
     props<{ details: MilesByUnitPaginatedStopsResponse; isLast: boolean }>()
 );
 
-export const getFollowingUnit = createAction(
-    MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
-    props<{ getFollowingUnitDirection: ArrowActionsStringEnum }>()
-);
-
-export const setFollowingUnitDetails = createAction(
-    MilesStoreConstants.ACTION_SET_FOLLOWING_UNIT,
-    props<{
-        unitResponse: MilesByUnitPaginatedStopsResponse;
-        index: number;
-        isFirst: boolean;
-        isLast: boolean;
-        isLastInCurrentList: boolean;
-    }>()
-);
-
 export const toggleTableLockingStatus = createAction(
     MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS
 );
@@ -136,4 +121,28 @@ export const toggleCardFlipViewMode = createAction(
 
 export const toggleToolbarDropdownMenuColumnsActive = createAction(
     MilesStoreConstants.ACTION_TOGGLE_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE
+);
+
+// Minimal list
+export const setInitalMinimalList = createAction(
+    MilesStoreConstants.ACTION_SET_INITAL_MINIMAL_LIST,
+    props<{ list: MilesByUnitMinimalListResponse; text: string }>()
+);
+
+export const searchMinimalUnitList = createAction(
+    MilesStoreConstants.ACTION_SEARCH_MINIMAL_UNIT_LIST,
+    props<{ text: string }>()
+);
+
+export const appendToMinimalList = createAction(
+    MilesStoreConstants.ACTION_APPEND_TO_MINIMAL_LIST,
+    props<{ list: MilesByUnitMinimalListResponse }>()
+);
+
+export const fetchMinimalList = createAction(
+    MilesStoreConstants.ACTION_FETCH_NEXT_MINIMAL_UNIT_LIST
+);
+
+export const getMinimalListError = createAction(
+    MilesStoreConstants.ACTION_MINIMAL_LIST_ERROR
 );

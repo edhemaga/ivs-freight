@@ -63,6 +63,12 @@ export const initialState: IMilesState = {
         sortKey: null,
         sortDirection: null,
     },
+
+    minimalList: [],
+    isMinimalListLoading: false,
+    currentMinimalListPage: 1,
+    totalMinimalListCount: 1,
+    minimalListSearchString: '',
 };
 
 export const milesReducer = createReducer(
@@ -119,22 +125,6 @@ export const milesReducer = createReducer(
     on(MilesAction.setUnitDetails, (state, { details, isLast }) =>
         Functions.setUnitDetails(state, details, isLast)
     ),
-
-    on(
-        MilesAction.setFollowingUnitDetails,
-        (
-            state,
-            { unitResponse, index, isFirst, isLast, isLastInCurrentList }
-        ) =>
-            Functions.setFollowingUnitDetails(
-                state,
-                unitResponse,
-                index,
-                isFirst,
-                isLast,
-                isLastInCurrentList
-            )
-    ),
     // #endregion
 
     on(MilesAction.toggleTableLockingStatus, (state) =>
@@ -169,5 +159,17 @@ export const milesReducer = createReducer(
 
     on(MilesAction.toggleToolbarDropdownMenuColumnsActive, (state) =>
         Functions.toggleToolbarDropdownMenuColumnsActive(state)
-    )
+    ),
+
+    // #region Miles minimal list
+    on(MilesAction.setInitalMinimalList, (state, { list, text }) =>
+        Functions.setInitalMinimalList(state, list, text)
+    ),
+    on(MilesAction.appendToMinimalList, (state, { list }) =>
+        Functions.appendToMinimalList(state, list)
+    ),
+    on(MilesAction.getMinimalListError, (state) => ({
+        ...state,
+        isMinimalListLoading: false,
+    }))
 );

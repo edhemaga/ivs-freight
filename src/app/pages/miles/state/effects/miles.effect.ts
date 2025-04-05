@@ -12,7 +12,10 @@ import {
     take,
     switchMap,
     startWith,
-    mergeMap,
+    distinctUntilChanged,
+    merge,
+    filter,
+    withLatestFrom,
 } from 'rxjs';
 
 // functions
@@ -24,24 +27,27 @@ import { MilesService } from 'appcoretruckassist';
 // selectors
 import {
     activeViewModeSelector,
-    detailsSelector,
+    currentPageSelector,
     filterSelector,
+    minimalListSelector,
     pageSelector,
+    searchTextSelector,
     selectMilesItems,
     selectSelectedTab,
     tableSettingsSelector,
-    unitsPaginationSelector,
+    totalMinimalListCountSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // helpers
 import { MilesHelper } from '@pages/miles/utils/helpers';
 
 // enums
-import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // intefaces
 import { IMilesModel } from '@pages/miles/interface';
+import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 @Injectable()
 export class MilesEffects {
@@ -169,162 +175,6 @@ export class MilesEffects {
         )
     );
 
-    public getFollowingUnitDetails$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(MilesAction.getFollowingUnit),
-            exhaustMap(({ getFollowingUnitDirection }) =>
-                combineLatest([
-                    this.store.select(selectMilesItems),
-                    this.store.select(unitsPaginationSelector),
-                ]).pipe(
-                    take(1),
-                    switchMap(([milesItems, unitsPagination]) => {
-                        // User reached last item in miles list, fetch new list
-                        if (
-                            unitsPagination.isLastInCurrentList &&
-                            getFollowingUnitDirection ===
-                                ArrowActionsStringEnum.NEXT
-                        ) {
-                            return this.loadMoreMiles(
-                                unitsPagination.currentPage + 1,
-                                milesItems.length
-                            );
-                        }
-
-                        const {
-                            index,
-                            isFirst,
-                            isLast,
-                            truckId,
-                            isLastInCurrentList,
-                        } = MilesHelper.findAdjacentId(
-                            milesItems,
-                            unitsPagination.activeUnitIndex,
-                            getFollowingUnitDirection,
-                            unitsPagination.totalResultsCount
-                        );
-
-                        return this.milesService
-                            .apiMilesUnitGet(truckId, null, null, null)
-                            .pipe(
-                                map((unitResponse) =>
-                                    MilesAction.setFollowingUnitDetails({
-                                        unitResponse,
-                                        index,
-                                        isFirst,
-                                        isLast,
-                                        isLastInCurrentList,
-                                    })
-                                ),
-                                catchError(() =>
-                                    of(MilesAction.getLoadsPayloadError())
-                                )
-                            );
-                    })
-                )
-            )
-        )
-    );
-
-    public searchUnitStops$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(MilesAction.onSearchChange),
-            exhaustMap(() =>
-                combineLatest([
-                    this.store.select(unitsPaginationSelector),
-                    this.store.select(detailsSelector),
-                ]).pipe(
-                    take(1),
-                    switchMap(([unitsPagination, details]) => {
-                        return this.milesService
-                            .apiMilesUnitGet(
-                                details.id,
-                                null,
-                                unitsPagination.search,
-                                null
-                            )
-                            .pipe(
-                                map((unitResponse) =>
-                                    MilesAction.setFollowingUnitDetails({
-                                        unitResponse,
-                                        index: unitsPagination.activeUnitIndex,
-                                        isFirst:
-                                            unitsPagination.activeUnitIndex ===
-                                            0,
-                                        isLast:
-                                            unitsPagination.activeUnitIndex ===
-                                            unitsPagination.totalResultsCount -
-                                                1,
-                                        isLastInCurrentList:
-                                            unitsPagination.isLastInCurrentList,
-                                    })
-                                ),
-                                catchError(() =>
-                                    of(MilesAction.getLoadsPayloadError())
-                                )
-                            );
-                    })
-                )
-            )
-        )
-    );
-
-    private loadMoreMiles(page: number, currentLength: number) {
-        return combineLatest([
-            this.store.select(selectSelectedTab),
-            this.store.select(filterSelector),
-            this.store.select(tableSettingsSelector),
-        ]).pipe(
-            take(1),
-            switchMap(([selectedTab, filters, tableSettings]) => {
-                const tabValue = Number(selectedTab === eMileTabs.ACTIVE);
-
-                return this.milesService
-                    .apiMilesListGet(
-                        null,
-                        tabValue,
-                        filters.dateFrom,
-                        filters.dateTo,
-                        filters.states,
-                        filters.revenueFrom,
-                        filters.revenueTo,
-                        page,
-                        null,
-                        null,
-                        null,
-                        tableSettings.sortDirection,
-                        tableSettings.sortKey
-                    )
-                    .pipe(
-                        switchMap((response) => {
-                            const miles = MilesHelper.milesMapper(
-                                response.pagination.data
-                            );
-                            const newTruckId = miles[0]?.truckId;
-                            const hasOnlyOneResult = miles.length === 1;
-
-                            return this.milesService
-                                .apiMilesUnitGet(newTruckId, null, null, null)
-                                .pipe(
-                                    mergeMap((unitResponse) => [
-                                        MilesAction.updateMilesList({ miles }),
-                                        MilesAction.setFollowingUnitDetails({
-                                            unitResponse,
-                                            index: currentLength,
-                                            isFirst: true,
-                                            isLast: hasOnlyOneResult,
-                                            isLastInCurrentList:
-                                                hasOnlyOneResult,
-                                        }),
-                                    ])
-                                );
-                        }),
-                        catchError(() => of(MilesAction.getLoadsPayloadError()))
-                    );
-            })
-        );
-    }
-
     public getUnitOnSelection$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.onUnitSelection),
@@ -383,6 +233,70 @@ export class MilesEffects {
                     })
                 );
             })
+        )
+    );
+
+    // We will return only first page here once user switched to map view for the first time
+    // From here we need to check if there are more pages to load them later on scroll
+    // Or we will call this on search change
+    public loadMinimalList$ = createEffect(() =>
+        merge(
+            this.store.select(activeViewModeSelector).pipe(
+                distinctUntilChanged(),
+                filter(
+                    (selectedTab) =>
+                        selectedTab === eActiveViewMode[eActiveViewMode.Map]
+                ),
+                map(() => MilesAction.searchMinimalUnitList({ text: null }))
+            ),
+            this.actions$.pipe(ofType(MilesAction.searchMinimalUnitList))
+        ).pipe(
+            exhaustMap(({ text }) =>
+                this.milesService
+                    .apiMilesListMinimalGet(
+                        null,
+                        MilesStoreConstants.MINIMAL_LIST_RESULTS_PER_PAGE,
+                        null,
+                        text
+                    )
+                    .pipe(
+                        map((list) =>
+                            MilesAction.setInitalMinimalList({ list, text })
+                        ),
+                        catchError(() => of(MilesAction.getMinimalListError()))
+                    )
+            )
+        )
+    );
+
+    public loadNextMinimalListPageOnScroll$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.fetchMinimalList),
+            withLatestFrom(
+                this.store.select(currentPageSelector),
+                this.store.select(searchTextSelector),
+                this.store.select(minimalListSelector),
+                this.store.select(totalMinimalListCountSelector)
+            ),
+            // Call API if we aren't on last page and there are more items to load
+            filter(([_, __, ___, minimalList, totalCount]) => {
+                return minimalList.length < totalCount;
+            }),
+            exhaustMap(([_, currentPage, searchText]) =>
+                this.milesService
+                    .apiMilesListMinimalGet(
+                        currentPage + 1,
+                        MilesStoreConstants.MINIMAL_LIST_RESULTS_PER_PAGE,
+                        null,
+                        searchText
+                    )
+                    .pipe(
+                        map((list) =>
+                            MilesAction.appendToMinimalList({ list })
+                        ),
+                        catchError(() => of(MilesAction.getLoadsPayloadError()))
+                    )
+            )
         )
     );
 }

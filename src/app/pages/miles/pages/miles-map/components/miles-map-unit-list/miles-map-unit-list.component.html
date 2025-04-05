@@ -1,5 +1,5 @@
 @let details = milesStoreService.detailsSelector$ | async;
-@let miles = milesStoreService.miles$ | async;
+@let minimalList = milesStoreService.minimalListSelector$ | async;
 @let pagination = milesStoreService.unitsPaginationSelector$ | async;
 @let isPreviousButtonDisabled = pagination.isFirstUnit;
 @let isNextButtonDisabled = pagination.isLastUnit;
@@ -29,20 +29,28 @@
                     (onPreviousAction)="
                         getTruckUnit(ArrowActionsStringEnum.PREV)
                     "
+                    (onSearchTextChange)="onSearchTextChange($event)"
                 >
                     <ng-template #titleDropdown>
                         <div class="gap-1 d-flex flex-column">
-                            @for (unit of miles; track unit.id) {
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        mileUnits;
-                                        context: {
-                                            unit,
-                                        }
-                                    "
-                                >
-                                </ng-container>
-                            }
+                            <cdk-virtual-scroll-viewport
+                                #minimalListViewport
+                                (scroll)="onMinimalListScroll()"
+                                [itemSize]="26"
+                                style="height: 190px"
+                            >
+                                <div *cdkVirtualFor="let unit of minimalList">
+                                    <ng-container
+                                        *ngTemplateOutlet="
+                                            mileUnits;
+                                            context: {
+                                                unit,
+                                            }
+                                        "
+                                    >
+                                    </ng-container>
+                                </div>
+                            </cdk-virtual-scroll-viewport>
                         </div>
                     </ng-template>
                 </app-ca-details-title-card>
@@ -185,7 +193,7 @@
         (click)="selectUnit(unit)"
     >
         <p class="text-size-14 text-color-white">
-            {{ unit.unit }}
+            {{ unit.truck.truckNumber }}
         </p>
     </div>
 </ng-template>
