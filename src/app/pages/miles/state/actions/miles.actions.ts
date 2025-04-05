@@ -70,6 +70,11 @@ export const getInitalUnitDetails = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE
 );
 
+export const getInitalUnitDetailsOnRouteChange = createAction(
+    MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE_ON_NEW_PAGE,
+    props<{ unitId: number }>()
+);
+
 export const setUnitDetails = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS_SET_PAGE,
     props<{ details: MilesByUnitPaginatedStopsResponse }>()

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
@@ -60,7 +61,10 @@ import { IMilesModel, IMilesTabResults } from '@pages/miles/interface';
     providedIn: 'root',
 })
 export class MilesStoreService {
-    constructor(private store: Store) {}
+    constructor(
+        private store: Store,
+        private router: Router
+    ) {}
 
     public miles$: Observable<IMilesModel[]> = this.store.pipe(
         select(selectMilesItems)
@@ -274,5 +278,16 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_FETCH_NEXT_STOPS_PAGE,
         });
+    }
+
+    public loadUnitsOnPageChange(unitId: string): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE_ON_NEW_PAGE,
+            unitId,
+        });
+    }
+
+    public goToMilesDetailsPage(unitId: string): void {
+        this.router.navigate([`/tools/miles/map/${unitId}`]);
     }
 }

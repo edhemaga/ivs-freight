@@ -20,6 +20,7 @@ import { TelematicResolver } from '@pages/telematic/resolvers/telematic-state.re
 import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
 import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
+import { MilesDetailsResolver } from '@pages/miles/resolvers/miles-details.resolver';
 
 export class PageRoutes {
     static routes = [
@@ -106,16 +107,21 @@ export class PageRoutes {
             data: { title: 'Miles' },
             children: [
                 {
-                    path: 'cards',
-                    component: MilesCardComponent,
-                },
-                {
-                    path: 'table',
+                    path: '',
                     component: MilesTableComponent,
                 },
                 {
-                    path: 'map',
+                    path: 'card',
+                    component: MilesCardComponent,
+                },
+                {
+                    path: 'list',
+                    component: MilesTableComponent,
+                },
+                {
+                    path: 'map/:id',
                     component: MilesMapComponent,
+                    resolve: { miles: MilesDetailsResolver },
                 },
             ],
         },

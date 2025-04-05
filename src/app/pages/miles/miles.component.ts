@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterOutlet } from '@angular/router';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
 
@@ -47,7 +48,6 @@ import { TableCardBodyActions } from '@shared/models';
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { RouterOutlet } from '@angular/router';
 
 @Component({
     selector: 'app-miles',
@@ -87,7 +87,8 @@ export class MilesComponent
         public milesStoreService: MilesStoreService,
         protected modalService: ModalService,
         protected tableService: TruckassistTableService,
-        protected confirmationResetService: ConfirmationResetService
+        protected confirmationResetService: ConfirmationResetService,
+        public router: Router
     ) {
         super();
     }
@@ -165,10 +166,13 @@ export class MilesComponent
 
         if (action === eGeneralActions.TAB_SELECTED) {
             this.milesStoreService.dispatchListChange(mode);
-        } else if (action === eGeneralActions.VIEW_MODE)
+        } else if (action === eGeneralActions.VIEW_MODE) {
             this.milesStoreService.dispatchSetActiveViewMode(
                 eActiveViewMode[mode]
             );
+
+            this.router.navigate([`/tools/miles/${mode.toLowerCase()}`]);
+        }
     }
 
     public onTableEmptyBtnClick(btnClickType: string): void {

@@ -60,4 +60,8 @@ export class MilesTableComponent {
     public onColumnResize(resizeAction: ITableResizeAction): void {
         this.milesStoreService.dispatchResizeColumn(resizeAction);
     }
+
+    public goToMilesDetailsPage(id: string): void {
+        this.milesStoreService.goToMilesDetailsPage(id);
+    }
 }

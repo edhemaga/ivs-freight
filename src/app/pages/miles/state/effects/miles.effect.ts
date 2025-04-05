@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 import {
     combineLatest,
@@ -58,7 +59,8 @@ export class MilesEffects {
     constructor(
         private actions$: Actions,
         private milesService: MilesService,
-        private store: Store
+        private store: Store,
+        private router: Router
     ) {}
 
     private fetchMilesData(fetchInitialUnitDetails = false): Observable<
@@ -204,6 +206,27 @@ export class MilesEffects {
                         )
                     )
                 )
+            )
+        )
+    );
+
+    public loadInitialUnitDetailsOnPageResolver$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getInitalUnitDetailsOnRouteChange),
+            exhaustMap((action) =>
+                this.milesService
+                    .apiMilesUnitGet(action.unitId, null, null, null, 1, 25)
+                    .pipe(
+                        map((unitResponse) =>
+                            MilesAction.setUnitDetails({
+                                details: unitResponse,
+                            })
+                        ),
+                        catchError(() => {
+                            this.router.navigate(['tools/miles/list']);
+                            return of(MilesAction.getLoadsPayloadError());
+                        })
+                    )
             )
         )
     );
