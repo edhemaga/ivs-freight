@@ -11,15 +11,12 @@ import { ITableColumn } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // External Services or Models
+import { MilesStateFilterResponse } from 'appcoretruckassist';
 import {
-    MilesByUnitPaginatedStopsResponse,
-    MilesStateFilterResponse,
-} from 'appcoretruckassist';
-import {
-    IMilesDetailsFilters,
     IMilesModel,
     IMilesTabResults,
-    MinimalListState,
+    IMinimalListState,
+    IMinimalStopsState,
 } from '@pages/miles/interface';
 import { ITableConfig } from '@shared/components/new-table/interface';
 
@@ -39,9 +36,7 @@ export interface IMilesState {
 
     tabResults: IMilesTabResults;
 
-    // Is used for next, prev icons to navigate throught list
-    details: MilesByUnitPaginatedStopsResponse;
-    unitsPagination: IMilesDetailsFilters;
+    details: IMinimalStopsState;
     tableSettings: ITableConfig;
-    minimalList: MinimalListState;
+    minimalList: IMinimalListState;
 }

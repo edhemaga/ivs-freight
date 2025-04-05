@@ -28,14 +28,18 @@ import { MilesService } from 'appcoretruckassist';
 import {
     activeViewModeSelector,
     currentPageSelector,
+    currentStopsPageSelector,
     filterSelector,
     minimalListSelector,
     pageSelector,
     searchTextSelector,
     selectMilesItems,
     selectSelectedTab,
+    stopsSearchSelector,
+    stopsSelector,
     tableSettingsSelector,
     totalMinimalListCountSelector,
+    totalStopsCountSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // helpers
@@ -128,17 +132,60 @@ export class MilesEffects {
         if (!firstItemId) return of(MilesAction.getLoadsPayloadError());
 
         return this.milesService
-            .apiMilesUnitGet(firstItemId, null, null, null)
+            .apiMilesUnitGet(368, null, null, null, 1, 25)
             .pipe(
                 map((unitResponse) =>
                     MilesAction.setUnitDetails({
                         details: unitResponse,
-                        isLast: milesItems.length === 1,
                     })
                 ),
                 catchError(() => of(MilesAction.getLoadsPayloadError()))
             );
     }
+
+    public fetchUnitStopsOnScroll$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.fetchNextStopsPage),
+            withLatestFrom(
+                this.store.select(stopsSelector),
+                this.store.select(totalStopsCountSelector),
+                this.store.select(currentStopsPageSelector),
+                this.store.select(stopsSearchSelector)
+            ),
+            // Call API if we aren't on last page and there are more items to load
+            filter(([_, stopsSelector, totalCount]) => {
+                return stopsSelector.length < totalCount;
+            }),
+            exhaustMap(
+                ([_, stopsSelector, totalPage, currentPage, searchString]) => {
+                    return this.milesService
+                        .apiMilesUnitGet(
+                            368,
+                            null,
+                            null,
+                            null,
+                            currentPage + 1,
+                            25,
+                            null,
+                            null,
+                            null,
+                            null,
+                            searchString
+                        )
+                        .pipe(
+                            map((unitResponse) =>
+                                MilesAction.updateUnitDetails({
+                                    details: unitResponse,
+                                })
+                            ),
+                            catchError(() =>
+                                of(MilesAction.getLoadsPayloadError())
+                            )
+                        );
+                }
+            )
+        )
+    );
 
     public loadMilesEffect$ = createEffect(() =>
         this.actions$.pipe(
@@ -182,6 +229,45 @@ export class MilesEffects {
                 const { unit } = action;
                 return this.fetchInitialUnitDetails([unit]);
             })
+        )
+    );
+
+    public loadNextPageOnSearchChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.onSearchChange),
+            switchMap((action) =>
+                this.store.select(selectMilesItems).pipe(
+                    take(1),
+                    switchMap((milesItems) => {
+                        const searchText = action.search;
+
+                        return this.milesService
+                            .apiMilesUnitGet(
+                                368,
+                                null,
+                                null,
+                                null,
+                                1,
+                                25,
+                                null,
+                                null,
+                                null,
+                                null,
+                                searchText
+                            )
+                            .pipe(
+                                map((unitResponse) =>
+                                    MilesAction.setUnitDetails({
+                                        details: unitResponse,
+                                    })
+                                ),
+                                catchError(() =>
+                                    of(MilesAction.getLoadsPayloadError())
+                                )
+                            );
+                    })
+                )
+            )
         )
     );
 

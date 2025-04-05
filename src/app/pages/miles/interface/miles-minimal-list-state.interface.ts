@@ -1,6 +1,6 @@
 import { MilesByUnitMinimalResponse } from 'appcoretruckassist';
 
-export interface MinimalListState {
+export interface IMinimalListState {
     data: MilesByUnitMinimalResponse[];
     currentPage: number;
     totalCount: number;

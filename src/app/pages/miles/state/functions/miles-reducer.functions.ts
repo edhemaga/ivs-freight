@@ -58,10 +58,6 @@ export const changeViewMode = function (
     return {
         ...state,
         activeViewMode,
-        unitsPagination: {
-            ...state.unitsPagination,
-            activeUnitIndex: 0,
-        },
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
@@ -82,11 +78,6 @@ export const updateMilesData = function (
         items: miles,
         page: 1,
         loading: false,
-        unitsPagination: {
-            ...state.unitsPagination,
-            activeUnitIndex: 0,
-            totalResultsCount,
-        },
     };
 };
 
@@ -106,11 +97,6 @@ export const updateMilesListData = function (
     return {
         ...state,
         items,
-        // New items are not selected no need to filter it
-        unitsPagination: {
-            ...state.unitsPagination,
-            currentPage: state.unitsPagination.currentPage + 1,
-        },
     };
 };
 
@@ -137,37 +123,31 @@ export const updateTabSelection = function (
 
 export const setUnitDetails = function (
     state: IMilesState,
-    details: MilesByUnitPaginatedStopsResponse,
-    isLast: boolean
+    details: MilesByUnitPaginatedStopsResponse
 ): IMilesState {
     return {
         ...state,
-        details,
-        unitsPagination: {
-            ...state.unitsPagination,
-            isLastUnit: isLast,
-            isFirstUnit: true,
+        details: {
+            ...state.details,
+            data: details,
+            currentPage: details.stops.pageIndex,
+            totalCount: details.stops.count,
+            stops: details.stops.data,
         },
     };
 };
-export const setFollowingUnitDetails = function (
+export const updateUnitDetails = function (
     state: IMilesState,
-    details: MilesByUnitPaginatedStopsResponse,
-    activeUnitIndex: number,
-    isFirstUnit: boolean,
-    isLastUnit: boolean,
-    isLastInCurrentList: boolean
+    details: MilesByUnitPaginatedStopsResponse
 ): IMilesState {
-    const { unitsPagination } = state;
+    const newData = details.stops?.data ?? [];
+
     return {
         ...state,
-        details,
-        unitsPagination: {
-            ...unitsPagination,
-            isFirstUnit,
-            isLastUnit,
-            activeUnitIndex,
-            isLastInCurrentList,
+        details: {
+            ...state.details,
+            stops: [...state.details.stops, ...newData],
+            currentPage: state.details.currentPage + 1,
         },
     };
 };
@@ -253,9 +233,9 @@ export function onSearchChange(
 ): IMilesState {
     return {
         ...state,
-        unitsPagination: {
-            ...state.unitsPagination,
-            search,
+        details: {
+            ...state.details,
+            searchString: search,
         },
     };
 }

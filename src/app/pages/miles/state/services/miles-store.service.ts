@@ -13,7 +13,6 @@ import {
     tableColumnsSelector,
     filterSelector,
     detailsSelector,
-    unitsPaginationSelector,
     tableSettingsSelector,
     toolbarDropdownMenuOptionsSelector,
     tabResultsSelector,
@@ -22,15 +21,16 @@ import {
     currentPageSelector,
     searchTextSelector,
     totalMinimalListCountSelector,
+    stopsSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
 import {
     MilesByUnitListResponse,
     MilesByUnitMinimalResponse,
-    MilesByUnitMinimalResponsePagination,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
+    MilesStopItemResponse,
 } from 'appcoretruckassist';
 import { ITableData } from '@shared/models';
 
@@ -54,11 +54,7 @@ import {
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFilterAction } from 'ca-components';
 import { IStateFilters } from '@shared/interfaces';
-import {
-    IMilesDetailsFilters,
-    IMilesModel,
-    IMilesTabResults,
-} from '@pages/miles/interface';
+import { IMilesModel, IMilesTabResults } from '@pages/miles/interface';
 
 @Injectable({
     providedIn: 'root',
@@ -89,11 +85,11 @@ export class MilesStoreService {
         select(filterSelector)
     );
 
-    public unitsPaginationSelector$: Observable<IMilesDetailsFilters> =
-        this.store.pipe(select(unitsPaginationSelector));
-
     public detailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
         this.store.pipe(select(detailsSelector));
+
+    public stopsSelector$: Observable<MilesStopItemResponse[]> =
+        this.store.pipe(select(stopsSelector));
 
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(tableSettingsSelector)
@@ -271,6 +267,12 @@ export class MilesStoreService {
     public loadNextMinimalListPage(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_FETCH_NEXT_MINIMAL_UNIT_LIST,
+        });
+    }
+
+    public loadNextStopsPage(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_FETCH_NEXT_STOPS_PAGE,
         });
     }
 }

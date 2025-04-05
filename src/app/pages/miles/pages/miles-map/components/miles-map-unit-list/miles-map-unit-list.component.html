@@ -1,8 +1,9 @@
 @let details = milesStoreService.detailsSelector$ | async;
+@let stops = milesStoreService.stopsSelector$ | async;
 @let minimalList = milesStoreService.minimalListSelector$ | async;
-@let pagination = milesStoreService.unitsPaginationSelector$ | async;
-@let isPreviousButtonDisabled = pagination.isFirstUnit;
-@let isNextButtonDisabled = pagination.isLastUnit;
+<!-- @let pagination = milesStoreService.unitsPaginationSelector$ | async; -->
+@let isPreviousButtonDisabled = true;
+@let isNextButtonDisabled = true;
 
 @if (details) {
     <div class="position-relative z-2">
@@ -54,7 +55,7 @@
             </div>
         </div>
         <div
-            class="background-white br-3 p-x-6 p-y-6 miles-unit-list"
+            class="background-white br-3 p-x-6 p-y-6 miles-unit-list overflow-hidden"
             [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
             [class.miles-unit-list-minimal]="isStopListHeightExpanded"
         >
@@ -90,26 +91,26 @@
 
             <div class="divider mt-1 mb-1"></div>
 
-            <!-- TODO:  Virtaul scroll is inside new ticket -->
-            <div class="scrollable-element">
-                <cdk-virtual-scroll-viewport
-                    #viewport
-                    (scroll)="onScrollEvent()"
-                    [itemSize]="26"
+            <div class="">
+                <div
+                    #stopListViewport
+                    class="gap-1 d-flex flex-column scrollable-element overflow-scroll"
                     style="height: calc(100vh - 188px)"
+                    (scroll)="onScrollEvent()"
                 >
-                    <div *cdkVirtualFor="let stop of details?.stops?.data">
+                    @for (stop of stops; track stop.id; let index = $index) {
                         <ng-container
                             *ngTemplateOutlet="
                                 stopRows;
                                 context: {
                                     stop,
+                                    index,
                                 }
                             "
                         >
                         </ng-container>
-                    </div>
-                </cdk-virtual-scroll-viewport>
+                    }
+                </div>
             </div>
 
             <div
@@ -131,7 +132,7 @@
     </div>
 }
 
-<ng-template #stopRows let-stop="stop">
+<ng-template #stopRows let-stop="stop" let-index="index">
     <div
         class="stops-container h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
         [ngClass]="
@@ -141,7 +142,7 @@
         "
     >
         <div class="text-color-muted text-size-11 text-center">
-            {{ stop.order }}
+            {{ index + 1 }}
         </div>
         <div
             class="text-color-black text-size-11 ta-font-bold text-truncate d-flex"

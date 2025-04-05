@@ -72,7 +72,12 @@ export const getInitalUnitDetails = createAction(
 
 export const setUnitDetails = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS_SET_PAGE,
-    props<{ details: MilesByUnitPaginatedStopsResponse; isLast: boolean }>()
+    props<{ details: MilesByUnitPaginatedStopsResponse }>()
+);
+
+export const updateUnitDetails = createAction(
+    MilesStoreConstants.ACTION_UPDATE_UNIT_DETAILS_ON_SCROLL,
+    props<{ details: MilesByUnitPaginatedStopsResponse }>()
 );
 
 export const toggleTableLockingStatus = createAction(
@@ -145,4 +150,13 @@ export const fetchMinimalList = createAction(
 
 export const getMinimalListError = createAction(
     MilesStoreConstants.ACTION_MINIMAL_LIST_ERROR
+);
+
+export const fetchNextStopsPage = createAction(
+    MilesStoreConstants.ACTION_FETCH_NEXT_STOPS_PAGE
+);
+
+export const appendStopsToList = createAction(
+    MilesStoreConstants.ACTION_APPEND_NEXT_STOPS_PAGE,
+    props<{ list: MilesByUnitMinimalListResponse }>()
 );
