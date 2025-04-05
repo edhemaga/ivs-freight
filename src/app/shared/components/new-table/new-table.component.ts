@@ -19,7 +19,10 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // pipes
-import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
+import {
+    TableColumnClassPipe,
+    TableGroupClassPipe,
+} from '@shared/components/new-table/pipes';
 
 // enums
 import { ePosition, eUnit } from 'ca-components';
@@ -51,6 +54,7 @@ import {
 
         // pipes
         TableColumnClassPipe,
+        TableGroupClassPipe,
 
         // directives
         ResizableColumnDirective,

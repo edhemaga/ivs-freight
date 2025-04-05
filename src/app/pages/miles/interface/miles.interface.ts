@@ -26,5 +26,4 @@ export interface IMilesModel {
     milesEmpty: number | undefined;
     milesTotal: number | undefined;
     revenue: number | undefined;
-    isSelected: boolean;
 }

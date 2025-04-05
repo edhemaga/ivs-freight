@@ -25,6 +25,8 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
 
     @Output() onColumnResize = new EventEmitter<ITableResizeAction>();
 
+    private isInitialized = false;
+
     // listeners
     private mouseMoveListener: () => void;
     private mouseUpListener: () => void;
@@ -46,15 +48,27 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
     }
 
     ngOnChanges(changes: SimpleChanges): void {
-        if (changes.appResizableColumn.currentValue) {
-            this.appResizableColumn
-                ? this.initializeResizer()
-                : this.renderer.addClass(this.resizer, 'd-none');
+        this.initializeDirective(changes);
+    }
+
+    private initializeDirective(changes: SimpleChanges): void {
+        if (!changes.appResizableColumn.currentValue) {
+            if (this.resizer) {
+                // element is there just hide it
+                this.renderer.addClass(this.resizer, 'd-none');
+            }
+        } else {
+            // if element is there just show it, no need to create it
+            if (this.isInitialized) {
+                this.renderer.removeClass(this.resizer, 'd-none');
+            } else {
+                this.initializeResizer();
+            }
         }
     }
 
     private initializeResizer(): void {
-        if (!this.appResizableColumn) return;
+        if (!this.appResizableColumn || this.isInitialized) return;
 
         // create a resize handle
         this.resizer = this.renderer.createElement('div');
@@ -88,6 +102,8 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
             'mousedown',
             this.onMouseDown.bind(this)
         );
+
+        this.isInitialized = true;
     }
 
     private onMouseMove = (event: MouseEvent): void => {

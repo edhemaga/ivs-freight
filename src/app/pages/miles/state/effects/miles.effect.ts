@@ -1,8 +1,11 @@
 import { Injectable } from '@angular/core';
-import { combineLatest, Observable, of } from 'rxjs';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { Action, Store } from '@ngrx/store';
+
 import {
+    combineLatest,
+    Observable,
+    of,
     catchError,
     map,
     exhaustMap,
@@ -10,15 +13,15 @@ import {
     switchMap,
     startWith,
     mergeMap,
-} from 'rxjs/operators';
+} from 'rxjs';
 
-// Actions
+// functions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
-// Services
+// services
 import { MilesService } from 'appcoretruckassist';
 
-// Selectors & Helpers
+// selectors
 import {
     activeViewModeSelector,
     detailsSelector,
@@ -30,14 +33,14 @@ import {
     unitsPaginationSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
-// Helpers
+// helpers
 import { MilesHelper } from '@pages/miles/utils/helpers';
 
-// Enums
+// enums
 import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
-// Inteface
+// intefaces
 import { IMilesModel } from '@pages/miles/interface';
 
 @Injectable()
