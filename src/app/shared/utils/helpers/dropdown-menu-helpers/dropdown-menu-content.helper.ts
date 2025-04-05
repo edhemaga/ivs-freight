@@ -13,11 +13,12 @@ import {
     DropdownMenuContentConditionalItemsHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// models
+// interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
+// models
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
-import { DropdownMenuContentConstants } from '@shared/utils/constants';
 
 export class DropdownMenuContentHelper {
     // contact
@@ -681,7 +682,13 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [...conditionalItems, ...sharedItems];
+        return isOpenPayroll
+            ? [...conditionalItems, ...sharedItems]
+            : [
+                  conditionalItems[0],
+                  ...sharedItems,
+                  ...conditionalItems.slice(1),
+              ];
     }
 
     // payroll select load
@@ -754,6 +761,7 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
+    // cards
     static getCardToolbarDropdownContent(
         cardFlipViewMode: eCardFlipViewMode
     ): IDropdownMenuItem[] {
@@ -773,6 +781,7 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
+    // columns
     static getToolbarColumnsDropdownContent(
         milesColumnsList: IDropdownMenuItem[]
     ): IDropdownMenuItem[] {

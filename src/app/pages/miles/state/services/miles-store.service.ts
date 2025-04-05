@@ -17,6 +17,7 @@ import {
     tableSettingsSelector,
     toolbarDropdownMenuOptionsSelector,
     tabResultsSelector,
+    cardFlipViewModeSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -98,6 +99,10 @@ export class MilesStoreService {
 
     public tabResultsSelector$: Observable<IMilesTabResults> = this.store.pipe(
         select(tabResultsSelector)
+    );
+
+    public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
+        select(cardFlipViewModeSelector)
     );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {

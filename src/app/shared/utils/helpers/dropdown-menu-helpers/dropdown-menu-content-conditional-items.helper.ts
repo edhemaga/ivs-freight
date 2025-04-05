@@ -34,7 +34,7 @@ export class DropdownMenuContentConditionalItemsHelper {
             });
         };
 
-        return mapDropdownMenuItems();
+        return modifiers ? mapDropdownMenuItems() : requestedItems;
     }
 
     // modifier items

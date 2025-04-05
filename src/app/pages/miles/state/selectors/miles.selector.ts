@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-// enums
-import { eActiveViewMode } from '@shared/enums';
+// Enums
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 
 // models
 import { IMilesState } from '@pages/miles/interface';
@@ -82,5 +82,13 @@ export const toolbarDropdownMenuOptionsSelector = createSelector(
     (state) => {
         const { toolbarDropdownMenuOptions } = state || {};
         return toolbarDropdownMenuOptions;
+    }
+);
+
+export const cardFlipViewModeSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => {
+        const { cardFlipViewMode } = state || {};
+        return eCardFlipViewMode[cardFlipViewMode];
     }
 );
