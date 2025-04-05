@@ -33,12 +33,13 @@
                     (onSearchTextChange)="onSearchTextChange($event)"
                 >
                     <ng-template #titleDropdown>
-                        <div
+                        <cdk-virtual-scroll-viewport
                             #minimalListViewport
-                            class="gap-1 d-flex flex-column"
                             (scroll)="onMinimalListScroll()"
+                            [itemSize]="26"
+                            style="height: 190px"
                         >
-                            @for (unit of minimalList; track unit.id) {
+                            <div *cdkVirtualFor="let unit of minimalList">
                                 <ng-container
                                     *ngTemplateOutlet="
                                         mileUnits;
@@ -48,8 +49,8 @@
                                     "
                                 >
                                 </ng-container>
-                            }
-                        </div>
+                            </div>
+                        </cdk-virtual-scroll-viewport>
                     </ng-template>
                 </app-ca-details-title-card>
             </div>

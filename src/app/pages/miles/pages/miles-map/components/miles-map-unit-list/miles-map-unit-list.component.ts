@@ -62,7 +62,8 @@ import { IMilesModel, IMilesState } from '@pages/miles/interface';
 })
 export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild('stopListViewport') stopListViewport!: ElementRef;
-    @ViewChild('minimalListViewport') minimalListViewport!: ElementRef;
+    @ViewChild(CdkVirtualScrollViewport)
+    minimalListViewport!: CdkVirtualScrollViewport;
 
     public sharedSvgRoutes = SharedSvgRoutes;
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
@@ -129,17 +130,14 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public onSearchTextChange(text: string): void {
         this.milesStoreService.dispatchSearchMinimalUnitList(text);
     }
-
     public onMinimalListScroll(): void {
-        const element = this.minimalListViewport.nativeElement;
-        const scrollOffset = element.scrollHeight - element.scrollTop;
+        const viewport = this.minimalListViewport;
+        const scrollOffset = viewport.measureScrollOffset('bottom');
         const threshold = 100;
-
-        if (scrollOffset <= element.clientHeight + threshold) {
+        if (scrollOffset < threshold) {
             this.milesStoreService.loadNextMinimalListPage();
         }
     }
-
     private manageScrollDebounce(): void {
         this.subscriptions.add(
             this.scrollSubject
