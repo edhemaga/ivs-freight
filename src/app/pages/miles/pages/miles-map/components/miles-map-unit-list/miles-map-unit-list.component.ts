@@ -65,6 +65,9 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild(CdkVirtualScrollViewport)
     minimalListViewport!: CdkVirtualScrollViewport;
 
+    @ViewChild('detailsTitleCard')
+    detailsTitleCard: CaDetailsTitleCardComponent;
+
     public sharedSvgRoutes = SharedSvgRoutes;
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
     public searchField = MilesStopsTable.SEARCH_FIELD;
@@ -117,6 +120,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public selectUnit(truckId: string): void {
         this.resetFormValue();
         this.milesStoreService.goToMilesDetailsPage(truckId);
+        this.detailsTitleCard.dropdownPopover?.close();
     }
 
     public toogleStopListWidth(): void {
@@ -138,6 +142,11 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
             this.milesStoreService.loadNextMinimalListPage();
         }
     }
+
+    public onClearInputEvent(): void {
+        this.searchForm.get('search').patchValue('');
+    }
+
     private manageScrollDebounce(): void {
         this.subscriptions.add(
             this.scrollSubject

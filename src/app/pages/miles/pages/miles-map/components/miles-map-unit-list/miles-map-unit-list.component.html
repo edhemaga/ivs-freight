@@ -14,6 +14,7 @@
             <div class="h-42 d-flex align-items-center justify-content-between">
                 @let title = 'UNIT ' + details?.truck?.truckNumber;
                 <app-ca-details-title-card
+                    #detailsTitleCard
                     [detailsTitleCardConfig]="{
                         title: title,
                         tooltip: 'Search Truck',
@@ -64,6 +65,7 @@
                     <app-ca-input
                         formControlName="search"
                         [inputConfig]="searchField"
+                        (clear)="onClearInputEvent()"
                     ></app-ca-input>
                 </form>
 
