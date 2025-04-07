@@ -5,6 +5,9 @@ import { MilesComponent } from '@pages/miles/miles.component';
 import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
 import { AuthGuard } from '@core/guards/authentication.guard';
 
+// enums
+import { MILES_ROUTING } from '@pages/miles/enums';
+
 // resolvers
 import { DashboardResolver } from '@pages/dashboard/resolvers/dashboard.resolver';
 import { DispatcherResolver } from '@pages/dispatch/resolvers/dispatcher.resolver';
@@ -100,7 +103,7 @@ export class PageRoutes {
             data: { title: 'Test' },
         },
         {
-            path: 'tools/miles',
+            path: MILES_ROUTING.BASE,
             component: MilesComponent,
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: { miles: MilesResolver },
@@ -111,15 +114,15 @@ export class PageRoutes {
                     component: MilesTableComponent,
                 },
                 {
-                    path: 'card',
+                    path: MILES_ROUTING.CARD,
                     component: MilesCardComponent,
                 },
                 {
-                    path: 'list',
+                    path: MILES_ROUTING.LIST,
                     component: MilesTableComponent,
                 },
                 {
-                    path: 'map/:id',
+                    path: `${MILES_ROUTING.MAP}/:id`,
                     component: MilesMapComponent,
                     resolve: { miles: MilesDetailsResolver },
                 },

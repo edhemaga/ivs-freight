@@ -14,9 +14,6 @@ import {
     CaFilterStateDropdownComponent,
     CaFilterTimeDropdownComponent,
 } from 'ca-components';
-import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
-import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
-import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
@@ -31,7 +28,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { eMileTabs } from '@pages/miles/enums';
+import { eMileTabs, MILES_ROUTING } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
@@ -171,7 +168,9 @@ export class MilesComponent
                 eActiveViewMode[mode]
             );
 
-            this.router.navigate([`/tools/miles/${mode.toLowerCase()}`]);
+            this.router.navigate([
+                `/${MILES_ROUTING.BASE}/${mode.toLowerCase()}`,
+            ]);
         }
     }
 
