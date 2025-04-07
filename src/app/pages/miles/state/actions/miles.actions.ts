@@ -1,21 +1,20 @@
-// External Libraries
 import { createAction, props } from '@ngrx/store';
 
-// Constants
+// constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
-// Models
+// models
 import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IMilesModel } from '@pages/miles/interface';
 
-// Interface
+// interfaces
 import { IStateFilters } from '@shared/interfaces';
 import {
     ITableColumn,
@@ -64,16 +63,6 @@ export const changeFilters = createAction(
 export const setStates = createAction(
     MilesStoreConstants.SET_STATES,
     props<{ states: MilesStateFilterResponse[] }>()
-);
-
-export const selectOneRow = createAction(
-    MilesStoreConstants.ACTION_SELECT_ONE_ROW,
-    props<{ mile: IMilesModel }>()
-);
-
-export const selectAll = createAction(
-    MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
-    props<{ action: string }>()
 );
 
 export const getInitalUnitDetails = createAction(
