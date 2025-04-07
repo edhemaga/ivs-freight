@@ -14,7 +14,7 @@ export class TableGroupClassPipe implements PipeTransform {
         const hasCheckedColumn = columns.some((column) => column.isChecked);
 
         return {
-            'p-l-6': !isAlignedRight,
+            'p-l-6': !isAlignedRight && isTableLocked,
             'border-left-light-grey-6': hasCheckedColumn && isTableLocked,
         };
     }
