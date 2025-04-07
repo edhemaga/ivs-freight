@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CardColumnsComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
+import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
 
-describe('CardColumnsComponent', () => {
-  let component: CardColumnsComponent;
-  let fixture: ComponentFixture<CardColumnsComponent>;
+describe('CardColumnsModalComponent', () => {
+  let component: CardColumnsModalComponent;
+  let fixture: ComponentFixture<CardColumnsModalComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CardColumnsComponent ]
+      declarations: [ CardColumnsModalComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(CardColumnsComponent);
+    fixture = TestBed.createComponent(CardColumnsModalComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

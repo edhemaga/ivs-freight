@@ -1,4 +1,5 @@
 @let store = milesStoreService.miles$ | async;
+@let cardsFlipType = milesStoreService.cardFlipViewModeSelector$ | async;
 
 @if (store) {
     <ca-table-card-view
@@ -7,6 +8,7 @@
         [backSide]="backSide"
         [cardTitle]="'unit'"
         [isDropdownMenuHidden]="true"
+        [cardsFlipType]="cardsFlipType"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
@@ -56,6 +58,15 @@
     </ng-template>
 
     <ng-template #textWithTitle let-title="title" let-text="text">
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="text-size-14 text-color-black-2">{{ text }}</div>
+        </div>
+    </ng-template>
+
+    <ng-template #textWithImage let-title="title" let-text="text" let-image="image">
         <div class="d-flex flex-column px-1 gap-1">
             <div class="text-size-11 text-color-black ta-font-bold">
                 {{ title }}

@@ -46,28 +46,27 @@
                         Front Side
                     </div>
 
-                    <div class="d-grid inputs-holder">
-                        <ng-container
-                            formArrayName="front_side"
-                            *ngFor="
-                                let frontRow of cardsForm.controls
-                                    | ngForLengthFilter
-                                        : cardsForm.get('numberOfRows').value;
-                                let i = index;
-                                trackBy: identity
-                            "
-                        >
+                    <div
+                        class="d-grid inputs-holder"
+                        formArrayName="front_side"
+                    >
+                        @for (
+                            frontRow of cardsForm.controls
+                                | ngForLengthFilter
+                                    : cardsForm.get('numberOfRows').value;
+                            track $index
+                        ) {
                             <div
-                                [formGroupName]="i"
+                                [formGroupName]="$index"
                                 class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
                             >
                                 @if (
-                                    front_side_form.at(i).get('inputItem').value
-                                        .title !== 'empty'
+                                    front_side_form.at($index).get('inputItem')
+                                        .value.title !== 'empty'
                                 ) {
                                     <span
                                         class="input-title ta-font-semi-bold"
-                                        >{{ i + 1 | numberOrdinal }}</span
+                                        >{{ $index + 1 | numberOrdinal }}</span
                                     >
                                 }
 
@@ -75,18 +74,18 @@
                                     [dataCardModal]="cardsAllData"
                                     [defaultValue]="
                                         (displayData$ | async)?.front_side[
-                                            i
+                                            $index
                                         ] || {
-                                            title: i + 1 | numberOrdinal,
+                                            title: $index + 1 | numberOrdinal,
                                         }
                                     "
-                                    [backupValue]="i + 1 | numberOrdinal"
+                                    [backupValue]="$index + 1 | numberOrdinal"
                                     formControlName="inputItem"
                                     [titlesInForm]="titlesInForm"
                                 >
                                 </app-modal-input-form>
                             </div>
-                        </ng-container>
+                        }
                     </div>
                 </div>
 
@@ -108,30 +107,32 @@
                             [label]="'Back Side'"
                         ></app-ta-checkbox>
                     </div>
-                    @if(cardsForm.get('checked').value) {
-                        <div class="d-grid inputs-holder">
-                            <ng-container
-                                formArrayName="back_side"
-                                *ngFor="
-                                    let backRow of cardsForm.controls
-                                        | ngForLengthFilter
-                                            : cardsForm.get('numberOfRows')
-                                                  .value;
-                                    let i = index;
-                                    trackBy: identity
-                                "
-                            >
+                    @if (cardsForm.get('checked').value) {
+                        <div
+                            class="d-grid inputs-holder"
+                            formArrayName="back_side"
+                        >
+                            @for (
+                                backRow of cardsForm.controls
+                                    | ngForLengthFilter
+                                        : cardsForm.get('numberOfRows').value;
+                                track $index
+                            ) {
                                 <div
-                                    [formGroupName]="i"
+                                    [formGroupName]="$index"
                                     class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
                                 >
                                     @if (
-                                        back_side_form.at(i).get('inputItem')
-                                            .value.title !== 'empty'
+                                        back_side_form
+                                            .at($index)
+                                            .get('inputItem').value.title !==
+                                        'empty'
                                     ) {
                                         <span
                                             class="input-title ta-font-semi-bold"
-                                            >{{ i + 1 | numberOrdinal }}</span
+                                            >{{
+                                                $index + $index | numberOrdinal
+                                            }}</span
                                         >
                                     }
 
@@ -139,18 +140,21 @@
                                         [dataCardModal]="cardsAllData"
                                         [defaultValue]="
                                             (displayData$ | async)?.back_side[
-                                                i
+                                                $index
                                             ] || {
-                                                title: i + 1 | numberOrdinal,
+                                                title:
+                                                    $index + 1 | numberOrdinal,
                                             }
                                         "
-                                        [backupValue]="i + 1 | numberOrdinal"
+                                        [backupValue]="
+                                            $index + 1 | numberOrdinal
+                                        "
                                         formControlName="inputItem"
                                         [titlesInForm]="titlesInForm"
                                     >
                                     </app-modal-input-form>
                                 </div>
-                            </ng-container>
+                            }
                         </div>
                     }
                 </div>
@@ -176,11 +180,7 @@
 </ng-template>
 <ng-template #leftModalContent>
     <div class="payroll-number text-color-white text-size-14 ta-font-bold">
-        <span>
-            {{
-                tabSelected === 'inactive' ? 'User | Inactive' : 'User | Active'
-            }}</span
-        >
+        {{ editData?.title }}
     </div>
 </ng-template>
 <ng-template #footerTemplate>

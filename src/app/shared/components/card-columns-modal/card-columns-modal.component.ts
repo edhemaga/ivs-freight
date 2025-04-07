@@ -5,6 +5,7 @@ import {
     ViewEncapsulation,
     ChangeDetectorRef,
     OnDestroy,
+    Input,
 } from '@angular/core';
 import {
     FormsModule,
@@ -37,7 +38,6 @@ import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-m
 // Models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
-
 
 //Store
 import { Store } from '@ngrx/store';
@@ -75,11 +75,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         NumberOrdinalPipe,
     ],
 })
-export class CardColumnsComponent implements OnInit, OnDestroy {
+export class CardColumnsModalComponent implements OnInit, OnDestroy {
+    @Input() editData: any;
     public cardsForm: FormGroup;
-
-    public dataFront: CardRows[];
-    public dataBack: CardRows[];
 
     public setDefaultDataFront: CardRows[];
     public setDefaultDataBack: CardRows[];
@@ -94,7 +92,6 @@ export class CardColumnsComponent implements OnInit, OnDestroy {
 
     public titlesInForm: string[] = [];
     public displayData$: Observable<CardsModalData>;
-    private subscription: Subscription = new Subscription();
     public rowValues: number[] = [3, 4, 5, 6];
     private destroy$ = new Subject<void>();
 
@@ -112,7 +109,7 @@ export class CardColumnsComponent implements OnInit, OnDestroy {
     ngOnInit(): void {
         this.createFormData();
 
-        this.getDataFromStore();
+        this.createForm({ ...this.editData.data });
 
         this.getFormValueOnInit();
 
@@ -242,18 +239,9 @@ export class CardColumnsComponent implements OnInit, OnDestroy {
                         : item,
             });
         });
-        this.cdr.detectChanges();
-    }
 
-    public getDataFromStore(): void {
-        // this.modalService.tabObservable$
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe(
-        //         (res: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE) => {
-        //             this.tabSelected = res;
-        //             this.setDefaultValues(res);
-        //         }
-        //     );
+        this.cardsAllData = dataState.cardsAllData;
+        this.cdr.detectChanges();
     }
 
     public onActionModal(action: string): void {
@@ -279,6 +267,8 @@ export class CardColumnsComponent implements OnInit, OnDestroy {
     }
 
     private updateStore(): void {
+        console.log(this.cardsForm.value, 'this.cardsForm.value');
+        this.activeModal.close({ selectedColumns: this.cardsForm.value });
         // this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
         // this.activeModal.close();
     }
@@ -297,7 +287,7 @@ export class CardColumnsComponent implements OnInit, OnDestroy {
         //             : UserCardsModalConfig.displayRowsBackInactive,
         // };
 
-       // this.createForm(cardsData);
+        // this.createForm(cardsData);
 
         this.resetForm = false;
     }
@@ -347,14 +337,12 @@ export class CardColumnsComponent implements OnInit, OnDestroy {
         //         : UserCardsModalConfig.displayRowsFrontInactive,
         //     this.setDefaultDataFront
         // );
-
         // const areBackSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
         //     this.tabSelected === TableStringEnum.ACTIVE
         //         ? UserCardsModalConfig.displayRowsBackActive
         //         : UserCardsModalConfig.displayRowsBackInactive,
         //     this.setDefaultDataBack
         // );
-
         // if (
         //     isFrontSidesEqual &&
         //     areBackSidesEqual &&
@@ -363,22 +351,6 @@ export class CardColumnsComponent implements OnInit, OnDestroy {
         // )
         //     this.resetForm = false;
         // else this.resetForm = true;
-    }
-
-    private setDefaultValues(
-        type: TableStringEnum.ACTIVE | TableStringEnum.INACTIVE
-    ): void {
-        // this.displayData$ = this.store.select(selectActiveModalTabs(type));
-        // this.subscription.add(
-        //     this.displayData$
-        //         .pipe(takeUntil(this.destroy$), first())
-        //         .subscribe((data) => {
-        //             this.createForm(data);
-        //             this.setDefaultDataFront = data.front_side;
-        //             this.setDefaultDataBack = data.back_side;
-        //         })
-        // );
-        // this.cardsAllData = UserCardsModalData.allDataLoad;
     }
 
     public identity(item: CardRows): number {
