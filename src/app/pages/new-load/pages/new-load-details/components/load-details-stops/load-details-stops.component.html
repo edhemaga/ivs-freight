@@ -1048,8 +1048,12 @@
                                 </app-ca-load-status>
                                 <span
                                     class="text-white text-size-11 ta-font-medium"
-                                    >6h 45m</span
                                 >
+                                    {{
+                                        selectStatusHistory.wait
+                                            | formatDuration: true
+                                    }}
+                                </span>
                             </div>
 
                             <div class="d-flex">

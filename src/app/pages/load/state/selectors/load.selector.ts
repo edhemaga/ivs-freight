@@ -19,6 +19,7 @@ import {
     LoadModel,
 } from '@pages/load/pages/load-table/models/index';
 import { ITableOptions } from '@shared/models';
+import { IClosedLoadStatus } from '@pages/load/models/close-load-status.interface';
 
 // enums
 import { eActiveViewMode, TableStringEnum } from '@shared/enums';
@@ -400,7 +401,9 @@ export const loadDetailsSelector = createSelector(loadState, (state) => {
 export const closedLoadStatusSelector = createSelector(loadState, (state) => {
     const { details } = state;
 
-    const calculateWidths = (statuses: LoadStatusHistoryResponse[]) => {
+    const calculateWidths = (
+        statuses: LoadStatusHistoryResponse[]
+    ): IClosedLoadStatus[] => {
         let totalDuration = 0;
 
         statuses.forEach((curr) => {
@@ -412,6 +415,7 @@ export const closedLoadStatusSelector = createSelector(loadState, (state) => {
             }
         });
 
+        // This will come from backend in the future
         const sortedDataWithWidth = [...statuses].reverse().map((item) => {
             const fromTime = new Date(item.dateTimeFrom).getTime();
             const toTime = item.dateTimeTo
@@ -423,20 +427,22 @@ export const closedLoadStatusSelector = createSelector(loadState, (state) => {
                 const widthPercentage = (duration / totalDuration) * 100;
 
                 return {
-                    status: item.status.name,
+                    status: item.status,
                     statusString: item.statusString,
                     dateTimeFrom: item.dateTimeFrom,
                     dateTimeTo: item.dateTimeTo,
                     id: item.status?.id,
                     width: widthPercentage.toFixed(2) + '%',
+                    wait: item.wait,
                 };
             } else {
                 return {
-                    status: item.status.name,
+                    status: item.status,
                     statusString: item.statusString,
                     dateTimeFrom: item.dateTimeFrom,
                     dateTimeTo: null,
                     id: item.status?.id,
+                    wait: item.wait,
                     width: '0.00%',
                 };
             }

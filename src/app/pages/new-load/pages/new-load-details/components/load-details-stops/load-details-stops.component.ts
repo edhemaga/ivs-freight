@@ -22,7 +22,6 @@ import { eColor } from '@shared/enums';
 // Pipes
 import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
 import { StopStatusPipe } from '@pages/new-load/pages/new-load-details/components/load-details-stops/pipes/stop-status.pipe';
-import { FormatDurationPipe } from '@shared/pipes/format-duration.pipe';
 
 // Components
 import {
@@ -31,6 +30,7 @@ import {
     MapOptionsConstants,
     LoadStatusBackgroundColorPipe,
     CaLoadStatusComponent,
+    FormatDurationPipe,
 } from 'ca-components';
 
 @Component({
