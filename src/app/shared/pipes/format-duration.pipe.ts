@@ -7,41 +7,66 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormatDurationPipe implements PipeTransform {
     transform(
         time: { days: number; hours: number; minutes: number; seconds: number },
-        showDaysAgo: boolean = false // Boolean input to decide whether to show "days ago"
+        showDaysAgo: boolean = false,
+        short: boolean = false
     ): string {
-        // Define time units with singular and plural labels
         const timeUnits = [
-            { value: time.days, label: 'day', labelPlural: 'days' },
-            { value: time.hours, label: 'hour', labelPlural: 'hours' },
-            { value: time.minutes, label: 'minute', labelPlural: 'minutes' },
-            { value: time.seconds, label: 'second', labelPlural: 'seconds' },
+            {
+                value: time.days,
+                label: 'day',
+                labelPlural: 'days',
+                shortLabel: 'd',
+            },
+            {
+                value: time.hours,
+                label: 'hour',
+                labelPlural: 'hours',
+                shortLabel: 'h',
+            },
+            {
+                value: time.minutes,
+                label: 'minute',
+                labelPlural: 'minutes',
+                shortLabel: 'm',
+            },
+            {
+                value: time.seconds,
+                label: 'second',
+                labelPlural: 'seconds',
+                shortLabel: 's',
+            },
         ];
 
-        // Filter out units with zero values
         const filteredUnits = timeUnits.filter((unit) => unit.value > 0);
 
-        // If we need to show "days ago"
-        if (showDaysAgo) {
-            // Get the largest time unit (day, hour, minute, second)
-            const largestUnit = filteredUnits[0];
-
-            // Return the largest unit with the "ago" suffix
-            const label =
-                largestUnit.value === 1
-                    ? largestUnit.label
-                    : largestUnit.labelPlural;
-            return `${largestUnit.value} ${label} ago`;
+        if (filteredUnits.length === 0) {
+            return short ? '0s' : '0 seconds';
         }
 
-        // Otherwise, take the first two largest time units
-        const topUnits = filteredUnits.slice(0, 2);
+        if (showDaysAgo) {
+            const largestUnit = filteredUnits[0];
+            const label = short
+                ? largestUnit.shortLabel
+                : largestUnit.value === 1
+                  ? largestUnit.label
+                  : largestUnit.labelPlural;
+            return short
+                ? `${largestUnit.value}${label} ago`
+                : `${largestUnit.value} ${label} ago`;
+        }
 
-        // Format and return the result with proper singular or plural labels
+        const topUnits = filteredUnits.slice(0, 2);
         return topUnits
             .map((unit) => {
-                const label = unit.value === 1 ? unit.label : unit.labelPlural;
-                return `${unit.value} ${label}`;
+                const label = short
+                    ? unit.shortLabel
+                    : unit.value === 1
+                      ? unit.label
+                      : unit.labelPlural;
+                return short
+                    ? `${unit.value}${label}`
+                    : `${unit.value} ${label}`;
             })
-            .join(' ');
+            .join(short ? ' ' : ' ');
     }
 }
