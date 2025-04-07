@@ -186,4 +186,7 @@ export enum eDropdownMenu {
     DETAILS = 'details',
     SHIPPER_DETAILS = 'shipper-details',
     BROKER_DETAILS = 'broker-details',
+
+    // placement
+    TABLE_CARDS_PLACEMENT = 'right-top bottom-right right-bottom top-right',
 }

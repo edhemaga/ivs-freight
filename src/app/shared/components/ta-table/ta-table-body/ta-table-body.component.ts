@@ -254,6 +254,9 @@ export class TaTableBodyComponent<
     public isRightScrollLineShown = false;
     public loadId: number;
 
+    // enums
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         private router: Router,
         private tableService: TruckassistTableService,
@@ -1243,7 +1246,7 @@ export class TaTableBodyComponent<
 
     public addPmItem(row: any, column: any): void {
         this.tableBodyActions.emit({
-            data: {...row, title: column.name },
+            data: { ...row, title: column.name },
             type: TableStringEnum.ADD_PM_ITEM,
         });
     }
