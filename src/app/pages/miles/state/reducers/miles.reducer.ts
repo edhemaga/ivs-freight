@@ -1,14 +1,13 @@
-// External Libraries
 import { createReducer, on } from '@ngrx/store';
 
-// Feature Actions
+// feature Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 
-// Constants
+// constants
 import { MilesToolbarTabs } from '@pages/miles/utils/constants';
 
 // interface
@@ -31,14 +30,12 @@ export const initialState: IMilesState = {
     activeViewMode: eActiveViewMode.List,
     filters: {},
     states: [],
-    selectedCount: 0,
-    hasAllItemsSelected: false,
     cardFlipViewMode: eCardFlipViewMode.FRONT,
     isToolbarDropdownMenuColumnsActive: false,
     toolbarDropdownMenuOptions:
         MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
             eActiveViewMode.List,
-            false,
+            true,
             eCardFlipViewMode.FRONT,
             false
         ),
@@ -116,16 +113,6 @@ export const milesReducer = createReducer(
         Functions.updateFilters(state, filters)
     ),
     on(MilesAction.setStates, (state, { states }) => ({ ...state, states })),
-    // #endregion
-
-    // #region Checkbox selection
-    on(MilesAction.selectOneRow, (state, { mile }) =>
-        Functions.toggleRowSelection(state, mile)
-    ),
-
-    on(MilesAction.selectAll, (state, { action }) =>
-        Functions.toggleSelectAll(state, action)
-    ),
     // #endregion
 
     // #region Unit detail

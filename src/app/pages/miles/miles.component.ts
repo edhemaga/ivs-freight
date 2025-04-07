@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { combineLatest, Subject, takeUntil } from 'rxjs';
@@ -73,6 +73,8 @@ export class MilesComponent
     extends DropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
+    @ViewChild(MilesCardComponent) milesCardComponent!: MilesCardComponent;
+
     protected destroy$ = new Subject<void>();
 
     private filter: IStateFilters = {};
@@ -220,7 +222,7 @@ export class MilesComponent
                 this.handleFlipAllCards();
                 break;
             case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
-                // TODO - open miles card modal
+                this.milesCardComponent.openColumnsModal();
                 break;
             default:
                 this.toggleColumnVisibility(type, isActive);

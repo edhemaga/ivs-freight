@@ -251,6 +251,6 @@ export abstract class DropdownMenuActionsBase extends ColumnsDropdownMenuActions
             .subscribe();
     }
 
-    // protected abstract - dependency
-    protected abstract handleShowMoreAction(): void;
+    // Optional override in component
+    protected handleShowMoreAction(): void {}
 }

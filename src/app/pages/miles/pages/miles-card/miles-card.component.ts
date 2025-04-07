@@ -86,4 +86,8 @@ export class MilesCardComponent {
                 });
         }, 5000);
     }
+
+    public openColumnsModal(): void {
+        // todo open columns modal
+    }
 }

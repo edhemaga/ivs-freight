@@ -1,18 +1,17 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+
 import { Observable } from 'rxjs';
 
-// Selectors
+// selectors
 import {
     selectMilesItems,
     activeViewModeSelector,
     selectTableViewData,
     selectSelectedTab,
     statesSelector,
-    selectedCountSelector,
     tableColumnsSelector,
     filterSelector,
-    hasAllItemsSelectedSelector,
     detailsSelector,
     unitsPaginationSelector,
     tableSettingsSelector,
@@ -21,40 +20,39 @@ import {
     cardFlipViewModeSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
-// Models
-import {
-    IMilesDetailsFilters,
-    IMilesModel,
-    IMilesState,
-    IMilesTabResults,
-} from '@pages/miles/interface';
+// models
 import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
-import { IFilterAction } from 'ca-components';
 import { ITableData } from '@shared/models';
-import { IStateFilters } from '@shared/interfaces';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
-// Constants
+// constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
-// Helpers
+// helpers
 import { FilterHelper } from '@shared/utils/helpers';
 import { MilesHelper } from '@pages/miles/utils/helpers';
 
-// interface
+// interfaces
 import {
     ITableColumn,
     ITableConfig,
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { IFilterAction } from 'ca-components';
+import { IStateFilters } from '@shared/interfaces';
+import {
+    IMilesDetailsFilters,
+    IMilesModel,
+    IMilesTabResults,
+} from '@pages/miles/interface';
 
 @Injectable({
     providedIn: 'root',
@@ -77,19 +75,12 @@ export class MilesStoreService {
     public statesSelector$: Observable<MilesStateFilterResponse[]> =
         this.store.pipe(select(statesSelector));
 
-    public selectedCountSelector$: Observable<number> = this.store.pipe(
-        select(selectedCountSelector)
-    );
     public columns$: Observable<ITableColumn[]> = this.store.pipe(
         select(tableColumnsSelector)
     );
 
     public filter$: Observable<IStateFilters> = this.store.pipe(
         select(filterSelector)
-    );
-
-    public hasAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(
-        select(hasAllItemsSelectedSelector)
     );
 
     public unitsPaginationSelector$: Observable<IMilesDetailsFilters> =
@@ -163,20 +154,6 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SET_FILTERS,
             filters: FilterHelper.mapFilters(filters, currentFilter),
-        });
-    }
-
-    public dispatchSelectOneRow(mile: IMilesModel): void {
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_SELECT_ONE_ROW,
-            mile,
-        });
-    }
-
-    public dispatchSelectAll(action: string): void {
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
-            action,
         });
     }
 
