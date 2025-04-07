@@ -75,6 +75,8 @@ export class FuelCardComponent
 
     public fuelCardSvgRoutes = FuelCardSvgRoutes;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         // zone
         private ngZone: NgZone,

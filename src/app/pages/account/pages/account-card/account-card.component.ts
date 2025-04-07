@@ -77,6 +77,8 @@ export class AccountCardComponent
 
     public dropdownElementWidth: number;
 
+    public eDropdownMenu = eDropdownMenu;
+
     get viewData() {
         return this._viewData;
     }
