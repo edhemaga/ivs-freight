@@ -30,6 +30,9 @@ import { ICardValueData } from '@shared/interfaces';
 import { eMilesCardData } from '@pages/miles/pages/miles-card/enums';
 import { eTableCardViewData, TableStringEnum } from '@shared/enums';
 
+// svg-routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 @Component({
     selector: 'app-miles-card',
     templateUrl: './miles-card.component.html',
@@ -55,6 +58,9 @@ export class MilesCardComponent {
 
     // enums
     public tableCardViewEnums = eTableCardViewData;
+
+    // svg-routes
+    public sharedSvgRoutes = SharedSvgRoutes;
 
     constructor(
         public milesStoreService: MilesStoreService,
