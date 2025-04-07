@@ -4,6 +4,7 @@ export enum eGeneralActions {
     DELETE = 'delete',
     EDIT = 'edit',
     CANCEL = 'cancel',
+    CANCEL_CAPITALIZED = 'Cancel',
     ENTER = 'Enter',
     ESCAPE = 'Escape',
     CONFIRM = 'confirm',
@@ -29,4 +30,6 @@ export enum eGeneralActions {
     RESET = 'reset',
     TAB_SELECTED = 'tab-selected',
     VIEW_MODE = 'view-mode',
+
+    DOWNLOAD = 'Download',
 }

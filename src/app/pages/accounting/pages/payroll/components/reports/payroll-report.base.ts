@@ -111,25 +111,19 @@ export abstract class PayrollReportBaseComponent<
                 this.isEditLoadDropdownActionActive = isActive;
 
                 this.getIsEditLoadDropdownActionActive();
+
                 break;
             case eDropdownMenu.EDIT_PAYROLL_TYPE:
                 this.openDriverOrTruckModal(id);
 
                 break;
             case eDropdownMenu.PREVIEW_REPORT_TYPE:
-                this.modalService.openModal(
-                    PayrollPdfReportComponent,
-                    {},
-                    {
-                        data: {
-                            id: this.openedPayroll.id,
-                            type: this.payrollType,
-                        },
-                    }
-                );
+                this.openPayrollReportModal();
 
                 break;
             case eDropdownMenu.DOWNLOAD_TYPE:
+                this.downloadPayrollReport();
+
                 break;
             default:
                 break;
@@ -379,6 +373,19 @@ export abstract class PayrollReportBaseComponent<
         }
     }
 
+    public openPayrollReportModal(): void {
+        this.modalService.openModal(
+            PayrollPdfReportComponent,
+            {},
+            {
+                data: {
+                    id: this.openedPayroll.id,
+                    type: this.payrollType,
+                },
+            }
+        );
+    }
+
     public openDriverOrTruckModal(id: number) {
         if (this.openedPayroll.driver?.id) {
             this.driverService
@@ -424,6 +431,23 @@ export abstract class PayrollReportBaseComponent<
                     this.getReportDataResults();
                 });
         }
+    }
+
+    public downloadPayrollReport(): void {
+        this.payrollService
+            .generateReport(this.openedPayroll.id, this.payrollType)
+            .subscribe({
+                next: (pdfReport) => {
+                    const { downloadUrl } = pdfReport;
+
+                    const filename = `Report-${this.payrollType}-${this.openedPayroll.id}.pdf`;
+
+                    this.payrollService.downloadPayrollPdfReport(
+                        downloadUrl,
+                        filename
+                    );
+                },
+            });
     }
 
     public openDeleteModal(deleteServiceData: TPopup) {

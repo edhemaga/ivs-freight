@@ -1,5 +1,6 @@
 // enums
 import {
+    eCardFlipViewMode,
     eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
@@ -12,11 +13,12 @@ import {
     DropdownMenuContentConditionalItemsHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// models
+// interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
+// models
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
-import { DropdownMenuContentConstants } from '@shared/utils/constants';
 
 export class DropdownMenuContentHelper {
     // contact
@@ -442,7 +444,10 @@ export class DropdownMenuContentHelper {
     }
 
     // load
-    static getLoadDropdownContent(selectedTab: string): IDropdownMenuItem[] {
+    static getLoadDropdownContent(
+        selectedTab: string,
+        isDetailsPageDropdown: boolean = false
+    ): IDropdownMenuItem[] {
         const isPendingLoad = selectedTab === eDropdownMenu.PENDING;
         const isClosedLoad = selectedTab === eDropdownMenu.CLOSED;
 
@@ -456,7 +461,7 @@ export class DropdownMenuContentHelper {
 
         const requestedSharedItems = [
             eDropdownMenu.EDIT,
-            eDropdownMenu.VIEW_DETAILS,
+            !isDetailsPageDropdown && eDropdownMenu.VIEW_DETAILS,
             isClosedLoad && eDropdownMenu.EXPORT_BATCH,
             eDropdownMenu.SHARE,
             eDropdownMenu.PRINT,
@@ -680,7 +685,13 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [...conditionalItems, ...sharedItems];
+        return isOpenPayroll
+            ? [...conditionalItems, ...sharedItems]
+            : [
+                  conditionalItems[0],
+                  ...sharedItems,
+                  ...conditionalItems.slice(1),
+              ];
     }
 
     // payroll select load
@@ -732,11 +743,51 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
-    static getLoadToolbarColumnsDropdownContent(
-        loadColumnsList: IDropdownMenuItem[]
+    // toolbar
+    static getToolbarDropdownContent(
+        isTableLocked: boolean
     ): IDropdownMenuItem[] {
-        loadColumnsList = loadColumnsList ?? [];
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS,
+            isTableLocked
+                ? eDropdownMenuColumns.UNLOCK_TABLE
+                : eDropdownMenuColumns.LOCK_TABLE,
+            eDropdownMenuColumns.RESET_TABLE,
+        ];
 
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...sharedItems];
+    }
+
+    // cards
+    static getCardToolbarDropdownContent(
+        cardFlipViewMode: eCardFlipViewMode
+    ): IDropdownMenuItem[] {
+        const requestedSharedItems = [
+            eDropdownMenuColumns.COLUMNS_CARD,
+            cardFlipViewMode === eCardFlipViewMode.FRONT
+                ? eDropdownMenuColumns.FLIP_ALL_CARDS
+                : eDropdownMenuColumns.FLIP_ALL_CARDS_BACK,
+        ];
+
+        const sharedItems =
+            DropdownMenuContentConditionalItemsHelper.getConditionalItems(
+                requestedSharedItems,
+                true
+            );
+
+        return [...sharedItems];
+    }
+
+    // columns
+    static getToolbarColumnsDropdownContent(
+        milesColumnsList: IDropdownMenuItem[]
+    ): IDropdownMenuItem[] {
         const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
 
         const conditionalItems =
@@ -745,7 +796,7 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [...conditionalItems, ...loadColumnsList];
+        return [...conditionalItems, ...milesColumnsList];
     }
 
     /////////////////////////////////////////////////////////////////////////////////

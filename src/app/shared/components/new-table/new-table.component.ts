@@ -1,16 +1,11 @@
 import { CommonModule } from '@angular/common';
 import {
-    AfterViewChecked,
     ChangeDetectionStrategy,
-    ChangeDetectorRef,
     Component,
-    ElementRef,
     EventEmitter,
     Input,
-    OnDestroy,
     Output,
     TemplateRef,
-    ViewChild,
 } from '@angular/core';
 
 // modules
@@ -24,17 +19,24 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // pipes
-import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
-
-// constants
-import { TableConstants } from '@shared/components/new-table/utils/constants';
+import {
+    TableColumnClassPipe,
+    TableGroupClassPipe,
+} from '@shared/components/new-table/pipes';
 
 // enums
 import { ePosition, eUnit } from 'ca-components';
 import { eColor, eGeneralActions } from '@shared/enums';
+import { SortOrder } from 'appcoretruckassist';
+
+// directives
+import { ResizableColumnDirective } from '@shared/components/new-table/directives';
 
 // interfaces
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableResizeAction,
+} from '@shared/components/new-table/interface';
 
 @Component({
     selector: 'app-new-table',
@@ -52,34 +54,29 @@ import { ITableColumn } from '@shared/components/new-table/interface';
 
         // pipes
         TableColumnClassPipe,
+        TableGroupClassPipe,
+
+        // directives
+        ResizableColumnDirective,
     ],
 })
-export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
-    @ViewChild('tableRow') tableRow!: ElementRef<HTMLDivElement>;
-
+export class NewTableComponent<T> {
     @Input() set columns(value: ITableColumn[]) {
         this.processColumns(value);
     }
 
     @Input() rows: T[] = [];
-
     @Input() isTableLocked: boolean;
-    @Input() isEmptyTable: boolean;
-    @Input() totalResult: number;
-    @Input() pageResult: number;
-
+    @Input() totalDataCount: number;
     @Input() headerTemplates: { [key: string]: TemplateRef<T> } = {};
     @Input() templates: { [key: string]: TemplateRef<T> } = {};
-
     @Input() expandedRows: Set<number> = new Set([]);
 
     @Output() onHandleShowMoreClick: EventEmitter<boolean> = new EventEmitter();
     @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
-
-    private resizeObserver!: ResizeObserver;
-
-    public rowWidth: number;
+    @Output() onColumnResize: EventEmitter<ITableResizeAction> =
+        new EventEmitter();
 
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
@@ -91,29 +88,12 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     public eColor = eColor;
     public eGeneralActions = eGeneralActions;
     public eUnit = eUnit;
+    public sortOrder = SortOrder;
 
     // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
-    constructor(private cdRef: ChangeDetectorRef) {}
-
-    ngAfterViewChecked() {
-        this.getTableWidth();
-    }
-
-    private getTableWidth(): void {
-        this.resizeObserver = new ResizeObserver(([entry]) => {
-            if (!entry) return;
-
-            this.rowWidth =
-                entry.contentRect.width +
-                TableConstants.TABLE_WIDTH_ADDITIONAL_PX; // add additional 16px (empty space)
-
-            this.cdRef.detectChanges();
-        });
-
-        this.resizeObserver.observe(this.tableRow.nativeElement);
-    }
+    constructor() {}
 
     private processColumns(columns: ITableColumn[]): void {
         this.leftPinnedColumns = columns.filter(
@@ -132,7 +112,10 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
     }
 
     public handleSortColumnClick(column: ITableColumn): void {
-        if (this.isTableLocked || this.isEmptyTable || !column.hasSort) return;
+        const isSortDisabled =
+            !this.isTableLocked || !this.rows.length || !column.hasSort;
+
+        if (isSortDisabled) return;
 
         this.onSortingChange.emit(column);
     }
@@ -141,11 +124,11 @@ export class NewTableComponent<T> implements AfterViewChecked, OnDestroy {
         this.onHandleShowMoreClick.emit(true);
     }
 
-    public isRowExpanded(rowId: number): boolean {
-        return this.expandedRows?.has(rowId);
+    public onColumnWidthResize(resizeAction: ITableResizeAction): void {
+        this.onColumnResize.emit(resizeAction);
     }
 
-    ngOnDestroy() {
-        this.resizeObserver.disconnect();
+    public isRowExpanded(rowId: number): boolean {
+        return this.expandedRows?.has(rowId);
     }
 }

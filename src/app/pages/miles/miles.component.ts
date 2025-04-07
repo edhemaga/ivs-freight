@@ -1,7 +1,7 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { Subject, takeUntil } from 'rxjs';
+import { combineLatest, Subject, takeUntil } from 'rxjs';
 
 // components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
@@ -18,23 +18,35 @@ import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.com
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
+import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
+
+// base classes
+import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
 import { ModalService } from '@shared/services';
+import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
 import { eMileTabs } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
+    eDropdownMenu,
+    eDropdownMenuColumns,
     eGeneralActions,
     eSharedString,
 } from '@shared/enums';
 import { eTableEmpty } from '@shared/components/ta-table/ta-table-empty/enums';
 
+// models
+import { TableCardBodyActions } from '@shared/models';
+
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-miles',
@@ -57,8 +69,13 @@ import { IStateFilters } from '@shared/interfaces';
         TaTableEmptyComponent,
     ],
 })
-export class MilesComponent implements OnInit, OnDestroy {
-    private destroy$ = new Subject<void>();
+export class MilesComponent
+    extends DropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
+    @ViewChild(MilesCardComponent) milesCardComponent!: MilesCardComponent;
+
+    protected destroy$ = new Subject<void>();
 
     private filter: IStateFilters = {};
 
@@ -67,20 +84,35 @@ export class MilesComponent implements OnInit, OnDestroy {
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
 
-    constructor(
-        private modalService: ModalService,
+    public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
 
-        public milesStoreService: MilesStoreService
-    ) {}
+    constructor(
+        public milesStoreService: MilesStoreService,
+        protected modalService: ModalService,
+        protected tableService: TruckassistTableService,
+        protected confirmationResetService: ConfirmationResetService
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.storeSubscription();
     }
 
     private storeSubscription(): void {
-        this.milesStoreService.filter$
+        combineLatest([
+            this.milesStoreService.filter$,
+            this.milesStoreService.toolbarDropdownMenuOptionsSelector$,
+        ])
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => (this.filter = res));
+            .subscribe(([filter, toolbarDropdownMenuOptions]) => {
+                this.filter = filter;
+                this.toolbarDropdownMenuOptions = toolbarDropdownMenuOptions;
+            });
+    }
+
+    private toggleToolbarDropdownMenuColumnsActive(): void {
+        this.milesStoreService.dispatchToggleToolbarDropdownMenuColumnsActive();
     }
 
     private handleTableEmptyImportListClick(): void {
@@ -92,6 +124,40 @@ export class MilesComponent implements OnInit, OnDestroy {
             size: eSharedString.SMALL,
         });
     }
+
+    private handleTableLockingStatus(): void {
+        this.milesStoreService.toggleTableLockingStatus();
+    }
+
+    private handleResetTable(): void {
+        this.milesStoreService.dispatchResetTable();
+    }
+
+    private openResetConfirmationModal(): void {
+        this.modalService.openModal(
+            ConfirmationResetModalComponent,
+            { size: eDropdownMenu.SMALL },
+            {
+                template: eGeneralActions.RESET_MODAL,
+                type: eGeneralActions.RESET,
+                modalTitle: 'List | Miles',
+                tableType: 'Miles',
+            }
+        );
+    }
+
+    private handleFlipAllCards(): void {
+        this.milesStoreService.dispatchToggleCardFlipViewMode();
+    }
+
+    private toggleColumnVisibility(columnType: string, isChecked): void {
+        this.milesStoreService.dispatchToggleColumnsVisiblity(
+            columnType,
+            isChecked
+        );
+    }
+
+    public handleShowMoreAction(): void {}
 
     public setFilters(filters: IFilterAction): void {
         this.milesStoreService.dispatchFilters(filters, this.filter);
@@ -128,6 +194,41 @@ export class MilesComponent implements OnInit, OnDestroy {
     public onSearchQueryChange(query: string[]): void {
         // TODO remove, for easier emitted data preview
         console.log(query);
+    }
+
+    public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {
+        const { type, isActive } = action;
+
+        switch (type) {
+            case eDropdownMenuColumns.OPEN_TYPE:
+            case eDropdownMenuColumns.CLOSE_TYPE:
+                break;
+            case eDropdownMenuColumns.COLUMNS_TYPE:
+                this.toggleToolbarDropdownMenuColumnsActive();
+
+                break;
+            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
+                this.handleTableLockingStatus();
+
+                break;
+            case eDropdownMenuColumns.RESET_TABLE_TYPE:
+                this.openResetConfirmationModal();
+                break;
+            case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
+                this.handleResetTable();
+                break;
+            case eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE:
+                this.handleFlipAllCards();
+                break;
+            case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
+                this.milesCardComponent.openColumnsModal();
+                break;
+            default:
+                this.toggleColumnVisibility(type, isActive);
+
+                break;
+        }
     }
 
     ngOnDestroy(): void {

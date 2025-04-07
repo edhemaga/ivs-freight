@@ -28,4 +28,8 @@ import { FormatCurrencyPipe, ThousandSeparatorPipe } from '@shared/pipes';
 })
 export class MilesCardComponent {
     constructor(public milesStoreService: MilesStoreService) {}
+
+    public openColumnsModal(): void {
+        // todo open columns modal
+    }
 }
