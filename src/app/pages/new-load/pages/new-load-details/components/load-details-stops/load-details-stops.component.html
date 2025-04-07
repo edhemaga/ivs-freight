@@ -989,8 +989,8 @@
                             status.id | loadStatusBackgroundColor: true,
                         ]"
                         triggers="manual"
-                        (mouseenter)="setHoveredStatus(index, dropdownPopover)"
-                        (mouseleave)="resetHovered(dropdownPopover)"
+                        (mouseenter)="toggleHoverStatus(index, dropdownPopover)"
+                        (mouseleave)="toggleHoverStatus(null, dropdownPopover)"
                     ></div>
                 }
             </div>

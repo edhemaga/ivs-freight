@@ -19,7 +19,7 @@ import {
     LoadModel,
 } from '@pages/load/pages/load-table/models/index';
 import { ITableOptions } from '@shared/models';
-import { IClosedLoadStatus } from '@pages/load/models/close-load-status.interface';
+import { IClosedLoadStatus } from '@pages/load/models/';
 
 // enums
 import { eActiveViewMode, TableStringEnum } from '@shared/enums';

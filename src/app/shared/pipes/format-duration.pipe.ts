@@ -39,7 +39,7 @@ export class FormatDurationPipe implements PipeTransform {
 
         const filteredUnits = timeUnits.filter((unit) => unit.value > 0);
 
-        if (filteredUnits.length === 0) {
+        if (!filteredUnits.length) {
             return short ? '0s' : '0 seconds';
         }
 
