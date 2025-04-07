@@ -987,6 +987,7 @@
                             'opacity-40':
                                 index !== hoveredIndex && hoveredIndex !== null,
                         }"
+                        [ngClass]="status.id | loadStatusBackgroundColor: true"
                         triggers="manual"
                         (mouseenter)="setHoveredStatus(index, dropdownPopover)"
                         (mouseleave)="resetHovered(dropdownPopover)"

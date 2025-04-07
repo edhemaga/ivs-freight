@@ -29,7 +29,7 @@ import {
     CaMapComponent,
     ICaMapProps,
     MapOptionsConstants,
-    LoadStatusColorsPipe,
+    LoadStatusBackgroundColorPipe,
     CaLoadStatusComponent,
 } from 'ca-components';
 
@@ -49,7 +49,7 @@ import {
         FormatTimePipe,
         FormatDurationPipe,
         StopStatusPipe,
-        LoadStatusColorsPipe,
+        LoadStatusBackgroundColorPipe,
 
         // Components
         CaMapComponent,
