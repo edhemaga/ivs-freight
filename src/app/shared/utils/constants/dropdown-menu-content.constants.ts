@@ -198,7 +198,7 @@ export class DropdownMenuContentConstants {
 
         [eDropdownMenuColumns.COLUMNS_BACK]: {
             title: eDropdownMenuColumns.COLUMNS,
-            type: eDropdownMenuColumns.COLUMNS_TYPE,
+            type: eDropdownMenuColumns.COLUMNS_BACK_TYPE,
             titleOptionalClass: 'ca-font-extra-bold',
             svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
             svgClass: eDropdownMenu.REGULAR_SVG_CLASS,

@@ -167,7 +167,7 @@ export const milesReducer = createReducer(
         Functions.toggleCardFlipViewMode(state)
     ),
 
-    on(MilesAction.toggleToolbarDropdownMenuColumnsActive, (state) =>
-        Functions.toggleToolbarDropdownMenuColumnsActive(state)
+    on(MilesAction.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
+        Functions.setToolbarDropdownMenuColumnsActive(state, isActive)
     )
 );
