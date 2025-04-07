@@ -1,4 +1,6 @@
 @let load = loadStoreService.resolveLoadDetails$ | async;
+@let statusHistory = load?.statusHistory;
+@let reversedStatusHistory = statusHistory?.toReversed();
 
 <div class="h-44 d-flex align-items-center w-100 m-b-7">
     <div
@@ -16,4 +18,14 @@
     </div>
 </div>
 
-<div class="background-white p-x-6 p-y-6 br-3 w-100">Load status</div>
+<div class="background-white p-x-6 p-y-6 br-3 w-100">
+    <app-ca-load-status-log
+        [loadStatusHistory]="
+            statusLogSortDirection === eSharedString.DSC 
+                ? statusHistory 
+                : reversedStatusHistory
+            "
+        (onSortChange)="onSortChange($event)"   
+    >
+    </app-ca-load-status-log>
+</div>
