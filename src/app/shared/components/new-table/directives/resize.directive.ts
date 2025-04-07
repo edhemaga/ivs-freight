@@ -22,6 +22,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
     @Input() columnId: number = null;
     @Input() minWidth: number = 0;
     @Input() maxWidth: number = 0;
+    @Input() hasDoubleHeightBorder: boolean = false;
 
     @Output() onColumnResize = new EventEmitter<ITableResizeAction>();
 
@@ -80,8 +81,8 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
             'bottom-0',
             'end-0',
             'w-2',
-            'h-14',
-            'm-r-4',
+            this.hasDoubleHeightBorder ? 'h-26' : 'h-14',
+            'm-r-6',
             'background-muted',
             'background-hover-black',
         ];

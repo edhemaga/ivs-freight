@@ -78,6 +78,8 @@ export class LoadCardComponent
 
     public loadImageRoutes = LoadCardSvgRoutes;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         protected router: Router,
 
