@@ -35,7 +35,7 @@ export const initialState: IMilesState = {
     toolbarDropdownMenuOptions:
         MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
             eActiveViewMode.List,
-            false,
+            true,
             eCardFlipViewMode.FRONT,
             false
         ),
