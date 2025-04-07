@@ -131,8 +131,6 @@ export class NewLoadDetailsComponent
         );
     }
 
-    public handleShowMoreAction(): void {}
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
