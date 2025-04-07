@@ -974,20 +974,20 @@
                     track index
                 ) {
                     <div
-                        class="d-inline-block background-muted h-8"
+                        class="d-inline-block h-8"
                         #dropdownPopover="ngbPopover"
                         [ngbPopover]="dropdownOptions"
                         popoverClass="load-stops-options-popover"
                         [autoClose]="true"
                         [placement]="'bottom'"
                         [ngStyle]="{ width: status.width }"
-                        [ngClass]="{
-                            'h-8': index !== hoveredIndex,
-                            'h-16': index === hoveredIndex,
-                            'opacity-40':
-                                index !== hoveredIndex && hoveredIndex !== null,
-                        }"
-                        [ngClass]="status.id | loadStatusBackgroundColor: true"
+                        [ngClass]="[
+                            index === hoveredIndex ? 'h-16' : 'h-8',
+                            index !== hoveredIndex && hoveredIndex !== null
+                                ? 'opacity-40'
+                                : '',
+                            status.id | loadStatusBackgroundColor: true,
+                        ]"
                         triggers="manual"
                         (mouseenter)="setHoveredStatus(index, dropdownPopover)"
                         (mouseleave)="resetHovered(dropdownPopover)"
@@ -1024,26 +1024,24 @@
             </div>
 
             <ng-template #dropdownOptions data-toggle="popover">
-                <!-- <svg-icon
-                    class="svg-fill-muted svg-size-18 d-flex mr-1 justify-content-center"
-                    [class]="status.id | loadStatusColors: true"
-                    [src]="'assets/svg/common/ic_broker-user.svg'"
-                ></svg-icon> -->
                 @let selectStatusHistory = statusHistory[hoveredIndex];
                 @if (hoveredIndex !== -1 && selectStatusHistory) {
-                    <!-- {{ selectStatusHistory | json }} -->
-
                     <div class="d-flex align-items-center">
                         <div
                             class="h-10 w-10 m-r-6 rounded-circle background-white"
+                            [ngClass]="
+                                selectStatusHistory.id
+                                    | loadStatusBackgroundColor: true
+                            "
                         ></div>
                         <div class="d-flex flex-column align-items-center">
                             <div class="d-flex justify-content-between w-full">
                                 <app-ca-load-status
                                     [status]="{
-                                        name: selectStatusHistory?.status,
+                                        name: selectStatusHistory?.statusString,
                                         id: selectStatusHistory?.id,
                                     }"
+                                    [isDark]="true"
                                     [isNoStyle]="true"
                                     [fontSize]="11"
                                 >
@@ -1055,33 +1053,31 @@
                             </div>
 
                             <div class="d-flex">
-                                <div class="d-flex">
-                                    <span class="text-color-white-4">
-                                        {{
-                                            selectStatusHistory.dateTimeFrom
-                                                | formatDateP
-                                        }}
-                                    </span>
-                                    <span class="text-color-white-4">
-                                        {{
-                                            selectStatusHistory.dateTimeFrom
-                                                | formatTime
-                                        }}
-                                    </span>
+                                <div class="text-size-11 text-color-white-4">
+                                    {{
+                                        selectStatusHistory.dateTimeFrom
+                                            | formatDateP
+                                    }}
+                                    {{
+                                        selectStatusHistory.dateTimeFrom
+                                            | formatTime
+                                    }}
                                 </div>
-                                <div class="d-flex">
-                                    <span class="text-color-white-4">
-                                        {{
-                                            selectStatusHistory.dateTimeTo
-                                                | formatDateP
-                                        }}
-                                    </span>
-                                    <span class="text-color-white-4">
-                                        {{
-                                            selectStatusHistory.dateTimeTo
-                                                | formatTime
-                                        }}
-                                    </span>
+
+                                <svg-icon
+                                    [src]="sharedSvgRoutes.ARROW_RIGHT"
+                                    class="svg-size-10 svg-fill-light-grey-6 d-flex align-items-center m-l-6 m-r-6"
+                                ></svg-icon>
+
+                                <div class="text-size-11 text-color-white-4">
+                                    {{
+                                        selectStatusHistory.dateTimeTo
+                                            | formatDateP
+                                    }}
+                                    {{
+                                        selectStatusHistory.dateTimeTo
+                                            | formatTime
+                                    }}
                                 </div>
                             </div>
                         </div>

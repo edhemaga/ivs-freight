@@ -424,6 +424,7 @@ export const closedLoadStatusSelector = createSelector(loadState, (state) => {
 
                 return {
                     status: item.status.name,
+                    statusString: item.statusString,
                     dateTimeFrom: item.dateTimeFrom,
                     dateTimeTo: item.dateTimeTo,
                     id: item.status?.id,
@@ -432,6 +433,7 @@ export const closedLoadStatusSelector = createSelector(loadState, (state) => {
             } else {
                 return {
                     status: item.status.name,
+                    statusString: item.statusString,
                     dateTimeFrom: item.dateTimeFrom,
                     dateTimeTo: null,
                     id: item.status?.id,
