@@ -88,7 +88,7 @@ export class NewLoadDetailsComponent
             .pipe(takeUntil(this.destroy$))
             .subscribe((res) => {
                 this.load = res;
-                this.setDropdownMenuOptions(res.statusType.name);
+                this.setDropdownMenuOptions(res?.statusType?.name);
             });
     }
 
