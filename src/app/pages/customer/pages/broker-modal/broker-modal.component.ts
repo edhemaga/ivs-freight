@@ -580,7 +580,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     public onModalAction(action: string, cancelWrapper): void {
         if (this.isUploadInProgress) return;
 
-        this.activeAction = action;
+        if (this.isModalValidToSubmit) this.activeAction = action;
 
         if (
             action === TaModalActionEnum.MOVE_TO_BFB ||

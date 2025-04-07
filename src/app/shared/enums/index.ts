@@ -39,3 +39,6 @@ export * from './plaid/plaid-event.enum';
 
 // Colors
 export * from './color.enum';
+
+// Cards
+export * from './table-card-view-data.enum';

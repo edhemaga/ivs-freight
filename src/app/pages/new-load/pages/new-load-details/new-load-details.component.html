@@ -8,9 +8,10 @@
             <app-ta-details-page-title
                 textTitle="Load Detail"
                 [routeLink]="backLink"
-                [detailsDropdownOptions]="detailsDropdownOptions"
+                [dropdownMenuOptions]="dropdownMenuOptions"
                 [isLoading]="isLoading"
                 [rightSide]="rightSide"
+                (detailsActions)="onDetailsDropdownMenuActions($event)"
             >
                 <ng-template #rightSide>
                     @if (isLoading) {

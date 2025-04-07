@@ -105,6 +105,8 @@ export class NewTableComponent<T> {
         );
 
         this.mainColumns = columns.filter((col) => !col.pinned);
+
+        console.log('this.mainColumns', this.mainColumns);
     }
 
     public handlePinColumnClick(column: ITableColumn): void {

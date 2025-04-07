@@ -1,7 +1,7 @@
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 // appcoretruckassist
-import { TableType } from 'appcoretruckassist';
+import { LoadStatusHistoryResponse, TableType } from 'appcoretruckassist';
 
 // table settings
 import {
@@ -19,6 +19,7 @@ import {
     LoadModel,
 } from '@pages/load/pages/load-table/models/index';
 import { ITableOptions } from '@shared/models';
+import { IClosedLoadStatus } from '@pages/load/models/';
 
 // enums
 import { eActiveViewMode, TableStringEnum } from '@shared/enums';
@@ -396,6 +397,71 @@ export const loadDetailsSelector = createSelector(loadState, (state) => {
     const { details } = state;
 
     return details;
+});
+
+export const loadStatusHistoryReversedSelector = createSelector(
+    loadDetailsSelector,
+    (details) => {
+        const statusHistory = details?.statusHistory;
+
+        return statusHistory?.slice()?.reverse();
+    }
+);
+
+export const closedLoadStatusSelector = createSelector(loadState, (state) => {
+    const { details } = state;
+
+    const calculateWidths = (
+        statuses: LoadStatusHistoryResponse[]
+    ): IClosedLoadStatus[] => {
+        let totalDuration = 0;
+
+        statuses.forEach((curr) => {
+            if (curr.dateTimeTo) {
+                const duration =
+                    new Date(curr.dateTimeTo).getTime() -
+                    new Date(curr.dateTimeFrom).getTime();
+                totalDuration += duration;
+            }
+        });
+
+        // This will come from backend in the future
+        const sortedDataWithWidth = [...statuses].reverse().map((item) => {
+            const fromTime = new Date(item.dateTimeFrom).getTime();
+            const toTime = item.dateTimeTo
+                ? new Date(item.dateTimeTo).getTime()
+                : null;
+
+            if (toTime) {
+                const duration = toTime - fromTime;
+                const widthPercentage = (duration / totalDuration) * 100;
+
+                return {
+                    status: item.status,
+                    statusString: item.statusString,
+                    dateTimeFrom: item.dateTimeFrom,
+                    dateTimeTo: item.dateTimeTo,
+                    id: item.status?.id,
+                    width: widthPercentage.toFixed(2) + '%',
+                    wait: item.wait,
+                };
+            } else {
+                return {
+                    status: item.status,
+                    statusString: item.statusString,
+                    dateTimeFrom: item.dateTimeFrom,
+                    dateTimeTo: null,
+                    id: item.status?.id,
+                    wait: item.wait,
+                    width: '0.00%',
+                };
+            }
+        });
+
+        return sortedDataWithWidth;
+    };
+
+    return calculateWidths(details.statusHistory);
 });
 
 export const isLoadDetailsLoadedSelector = createSelector(
