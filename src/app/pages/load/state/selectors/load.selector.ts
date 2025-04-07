@@ -398,6 +398,16 @@ export const loadDetailsSelector = createSelector(loadState, (state) => {
 
     return details;
 });
+
+export const loadStatusHistoryReversedSelector = createSelector(
+    loadDetailsSelector,
+    (details) => {
+        const statusHistory = details?.statusHistory;
+
+        return statusHistory?.slice()?.reverse();
+    }
+);
+
 export const closedLoadStatusSelector = createSelector(loadState, (state) => {
     const { details } = state;
 
