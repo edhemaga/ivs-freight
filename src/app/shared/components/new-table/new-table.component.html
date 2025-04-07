@@ -7,23 +7,53 @@
 
         <div class="d-flex m-b-6 p-x-8 table-header">
             <div class="d-flex new-table--pinned-left">
-                @for (column of leftPinnedColumns; track column.key) {
+                @for (
+                    column of leftPinnedColumns;
+                    track column.key;
+                    let aIndex = $index
+                ) {
                     <ng-container
-                        *ngTemplateOutlet="columnTemplate; context: { column }"
+                        *ngTemplateOutlet="
+                            columnTemplate;
+                            context: {
+                                column,
+                                nextColumn: leftPinnedColumns[aIndex + 1],
+                            }
+                        "
                     ></ng-container>
                 }
             </div>
 
-            @for (column of mainColumns; track column.key) {
+            @for (
+                column of mainColumns;
+                track column.key;
+                let bIndex = $index
+            ) {
                 <ng-container
-                    *ngTemplateOutlet="columnTemplate; context: { column }"
+                    *ngTemplateOutlet="
+                        columnTemplate;
+                        context: {
+                            column,
+                            nextColumn: mainColumns[bIndex + 1],
+                        }
+                    "
                 ></ng-container>
             }
 
             <div class="d-flex new-table--pinned-right">
-                @for (column of rightPinnedColumns; track column.key) {
+                @for (
+                    column of rightPinnedColumns;
+                    track column.key;
+                    let cIndex = $index
+                ) {
                     <ng-container
-                        *ngTemplateOutlet="columnTemplate; context: { column }"
+                        *ngTemplateOutlet="
+                            columnTemplate;
+                            context: {
+                                column,
+                                nextColumn: rightPinnedColumns[cIndex + 1],
+                            }
+                        "
                     ></ng-container>
                 }
             </div>
@@ -136,7 +166,7 @@
 
 <!-- Templates -->
 
-<ng-template #columnTemplate let-column="column">
+<ng-template #columnTemplate let-column="column" let-nextColumn="nextColumn">
     @if (column.columns?.length) {
         <div
             class="d-flex h-30 new-table--row-heading-group"
@@ -150,6 +180,8 @@
                 @let hasLabelTop =
                     _column.isChecked &&
                     !column.columns[_columnIndex - 1]?.isChecked;
+                @let hasDoubleHeightBorderOnResize =
+                    !column.columns && nextColumn?.columns?.length;
 
                 <ng-container
                     *ngTemplateOutlet="
@@ -159,6 +191,7 @@
                             hasLabelTop,
                             isGroup: true,
                             label: column.label,
+                            hasDoubleHeightBorderOnResize,
                         }
                     "
                 ></ng-container>
@@ -176,6 +209,7 @@
         let-hasLabelTop="hasLabelTop"
         let-isGroup="isGroup"
         let-label="label"
+        let-hasDoubleHeightBorderOnResize="hasDoubleHeightBorderOnResize"
     >
         @if (column.isChecked) {
             @let isResizableColumn = !isTableLocked && column.isResizable;
@@ -199,6 +233,7 @@
                 [columnId]="column.id"
                 [minWidth]="column.minWidth"
                 [maxWidth]="column.maxWidth"
+                [hasDoubleHeightBorder]="hasDoubleHeightBorderOnResize"
                 (click)="handleSortColumnClick(column)"
                 (onColumnResize)="onColumnWidthResize($event)"
             >
