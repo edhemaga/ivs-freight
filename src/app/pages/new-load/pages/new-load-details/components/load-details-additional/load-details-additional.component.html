@@ -1,6 +1,6 @@
 @let load = loadStoreService.resolveLoadDetails$ | async;
 @let statusHistory = load?.statusHistory;
-@let reversedStatusHistory = statusHistory?.toReversed();
+@let reversedStatusHistory = loadStoreService.loadStatusHistoryReversedSelector$ | async;
 
 <div class="h-44 d-flex align-items-center w-100 m-b-7">
     <div

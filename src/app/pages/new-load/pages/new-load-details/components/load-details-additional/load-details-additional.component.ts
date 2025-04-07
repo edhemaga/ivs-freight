@@ -20,7 +20,8 @@ import { CaLoadStatusLogComponent } from 'ca-components';
         CommonModule,
 
         // Components
-        CaLoadStatusLogComponent],
+        CaLoadStatusLogComponent,
+    ],
 })
 export class LoadDetailsAdditionalComponent {
     public eSharedString = eSharedString;
@@ -29,7 +30,7 @@ export class LoadDetailsAdditionalComponent {
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
-    onSortChange(sortDirection: eSharedString) {
+    public onSortChange(sortDirection: eSharedString): void {
         this.statusLogSortDirection = sortDirection;
     }
 }

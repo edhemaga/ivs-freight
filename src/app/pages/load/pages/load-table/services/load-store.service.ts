@@ -32,6 +32,7 @@ import {
     LoadModalResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
+    LoadStatusHistoryResponse,
     LoadStatusType,
     LoadTemplateListResponse,
     RevertLoadStatusCommand,
@@ -70,6 +71,7 @@ import {
     tableColumnsSelector,
     groupedByStatusTypeListSelector,
     closedLoadStatusSelector,
+    loadStatusHistoryReversedSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -148,6 +150,10 @@ export class LoadStoreService {
 
     public resolveLoadDetails$: Observable<LoadResponse> = this.store.pipe(
         select(loadDetailsSelector)
+    );
+
+    public loadStatusHistoryReversedSelector$: Observable<LoadStatusHistoryResponse[]> = this.store.pipe(
+        select(loadStatusHistoryReversedSelector)
     );
 
     // TODO:
