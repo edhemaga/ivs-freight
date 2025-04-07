@@ -188,7 +188,7 @@ export class DriverCdlModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (this.cdlForm.valid && this.isFormDirty) this.activeAction = action;
 
         switch (action) {
             case DriverCdlModalStringEnum.CLOSE:
