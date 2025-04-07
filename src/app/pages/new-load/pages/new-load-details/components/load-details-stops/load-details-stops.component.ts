@@ -1,6 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
-import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import {
+    NgbModule,
+    NgbPopover,
+    NgbPopoverModule,
+} from '@ng-bootstrap/ng-bootstrap';
 
 // Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
@@ -18,12 +22,15 @@ import { eColor } from '@shared/enums';
 // Pipes
 import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
 import { StopStatusPipe } from '@pages/new-load/pages/new-load-details/components/load-details-stops/pipes/stop-status.pipe';
+import { FormatDurationPipe } from '@shared/pipes/format-duration.pipe';
 
-// COmponents
+// Components
 import {
     CaMapComponent,
     ICaMapProps,
     MapOptionsConstants,
+    LoadStatusBackgroundColorPipe,
+    CaLoadStatusComponent,
 } from 'ca-components';
 
 @Component({
@@ -33,18 +40,20 @@ import {
     standalone: true,
     imports: [
         CommonModule,
+        AngularSvgIconModule,
+        NgbModule,
+        NgbPopoverModule,
 
         // Pipes
         FormatDatePipe,
         FormatTimePipe,
+        FormatDurationPipe,
         StopStatusPipe,
+        LoadStatusBackgroundColorPipe,
 
         // Components
-        AngularSvgIconModule,
         CaMapComponent,
-        NgbModule,
-
-        // Components
+        CaLoadStatusComponent,
         TaAppTooltipV2Component,
         AngularSvgIconModule,
     ],
@@ -52,6 +61,7 @@ import {
 export class LoadDetailsStopsComponent {
     public openStopIndex: number = -1;
     public mapData: ICaMapProps = MapOptionsConstants.DEFAULT_MAP_CONFIG;
+    public hoveredIndex: number | null = null;
 
     // Svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
@@ -67,5 +77,16 @@ export class LoadDetailsStopsComponent {
 
     public toggleStopDetails(newIndex: number): void {
         this.openStopIndex = this.openStopIndex === newIndex ? -1 : newIndex;
+    }
+
+    // Status hover
+    public toggleHoverStatus(index: number | null, popover: NgbPopover): void {
+        this.hoveredIndex = index;
+
+        if (index !== null) {
+            popover.open();
+        } else {
+            popover.close();
+        }
     }
 }

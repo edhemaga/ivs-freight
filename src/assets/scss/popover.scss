@@ -2528,3 +2528,11 @@ ngb-popover-window {
         }
     }
 }
+
+.load-stops-options-popover {
+    .popover-body {
+        padding: 4px 6px 4px 4px !important;
+        border-radius: 3px;
+        background-color: $ta-black-2;
+    }
+}

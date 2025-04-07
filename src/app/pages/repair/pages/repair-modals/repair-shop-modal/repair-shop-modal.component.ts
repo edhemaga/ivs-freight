@@ -1015,7 +1015,7 @@ export class RepairShopModalComponent
     }
 
     public onModalAction(data: string): void {
-        this.activeAction = data;
+        if (this.isModalValidToSubmit) this.activeAction = data;
 
         if (data === ActionTypesEnum.CLOSE) {
             this.ngbActiveModal.close();

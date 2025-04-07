@@ -4,5 +4,6 @@ export interface CardsModalData {
     checked: boolean;
     front_side: CardRows[];
     back_side: CardRows[];
+    cardsAllData?: CardRows[];
     numberOfRows: number;
 }

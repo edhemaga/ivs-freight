@@ -55,6 +55,8 @@ export class TruckCardComponent
 
     public truckCardImageRoutes = TruckCardIcons;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         protected router: Router,
 

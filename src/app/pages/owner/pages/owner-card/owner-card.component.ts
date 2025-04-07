@@ -58,6 +58,8 @@ export class OwnerCardComponent
     public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         // services
         protected modalService: ModalService,
