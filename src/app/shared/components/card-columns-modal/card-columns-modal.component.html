@@ -8,6 +8,13 @@
         <div class="divider divider--dark divider--small"></div>
         <!-- Number of rows -->
         <form [formGroup]="cardsForm">
+            @let backSideStyle =
+                {
+                    'margin-bottom': cardsForm.get('checked').value
+                        ? '24px'
+                        : '8px',
+                };
+
             <div
                 class="d-flex justify-content-between form-holder head-title modal-cards align-items-center"
             >
@@ -57,7 +64,7 @@
                                 class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
                             >
                                 @if (
-                                    front_side_form.at($index).get('inputItem')
+                                    frontSideForm.at($index).get('inputItem')
                                         .value.title !== 'empty'
                                 ) {
                                     <span
@@ -88,14 +95,7 @@
                 <div class="divider card-color"></div>
 
                 <!-- For Back side of cards -->
-                <div
-                    class="back-side-body"
-                    [ngStyle]="{
-                        'margin-bottom': cardsForm.get('checked').value
-                            ? '24px'
-                            : '8px',
-                    }"
-                >
+                <div class="back-side-body" [ngStyle]="backSideStyle">
                     <div class="checkbox-modal">
                         <app-ta-checkbox
                             formControlName="checked"
@@ -118,10 +118,8 @@
                                     class="modal-holder first-row modal-holder-first d-grid align-items-end d-grid align-items-end"
                                 >
                                     @if (
-                                        back_side_form
-                                            .at($index)
-                                            .get('inputItem').value.title !==
-                                        'empty'
+                                        backSideForm.at($index).get('inputItem')
+                                            .value.title !== 'empty'
                                     ) {
                                         <span
                                             class="input-title ta-font-semi-bold"

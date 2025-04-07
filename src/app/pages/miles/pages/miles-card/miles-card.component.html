@@ -1,23 +1,23 @@
-@let store = milesStoreService.miles$ | async;
-@let cardsFlipType = milesStoreService.cardFlipViewModeSelector$ | async;
+@let store =
+    {
+        cardsFlipType: milesStoreService.cardFlipViewModeSelector$ | async,
+        miles: milesStoreService.miles$ | async,
+    };
 
-@if (store) {
+@if (store.miles) {
     <ca-table-card-view
-        [viewData]="store"
+        [viewData]="store.miles"
         [frontSide]="frontSide"
         [backSide]="backSide"
         [cardTitle]="'unit'"
         [isDropdownMenuHidden]="true"
-        [cardsFlipType]="cardsFlipType"
+        [cardsFlipType]="store.cardsFlipType"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
         @for (item of frontSideData; track $index) {
             <ng-container
-                *ngTemplateOutlet="
-                    cardTemplate;
-                    context: { item: item, data: data }
-                "
+                *ngTemplateOutlet="cardTemplate; context: { item, data }"
             ></ng-container>
         }
     </ng-template>
@@ -25,38 +25,39 @@
     <ng-template #backSide let-data="data">
         @for (item of backSideData; track $index) {
             <ng-container
-                *ngTemplateOutlet="
-                    cardTemplate;
-                    context: { item: item, data: data }
-                "
+                *ngTemplateOutlet="cardTemplate; context: { item, data }"
             ></ng-container>
         }
     </ng-template>
 
     <ng-template #cardTemplate let-item="item" let-data="data">
+        @let template =
+            item.template === tableCardViewEnums.DOUBLE_TEXT_PERCENT
+                ? doubleTextPercent
+                : item.template === tableCardViewEnums.TEXT_WITH_IMAGE
+                  ? textWithImage
+                  : textWithTitle;
+
+        @let text =
+            item.format === tableCardViewEnums.CURRENCY
+                ? ((data | getNestedValue: item.key | formatCurrency) ?? 0)
+                : item.format === tableCardViewEnums.NUMBER
+                  ? ((data | getNestedValue: item.key | thousandSeparator) ?? 0)
+                  : (data | getNestedValue: item.key);
+
+        @let percent =
+            item.percentKey ? (data | getNestedValue: item.percentKey) : null;
+
+        @let image = data | getNestedValue: item.image;
+
         <ng-container
             *ngTemplateOutlet="
-                item.template === tableCardViewEnums.DOUBLE_TEXT_PERCENT
-                    ? doubleTextPercent
-                    : item.template === tableCardViewEnums.TEXT_WITH_IMAGE
-                      ? textWithImage
-                      : textWithTitle;
+                template;
                 context: {
                     title: item.title,
-                    text:
-                        item.format === tableCardViewEnums.CURRENCY
-                            ? ((data
-                                  | getNestedValue: item.key
-                                  | formatCurrency) ?? 0)
-                            : item.format === tableCardViewEnums.NUMBER
-                              ? ((data
-                                    | getNestedValue: item.key
-                                    | thousandSeparator) ?? 0)
-                              : (data | getNestedValue: item.key),
-                    percent: item.percentKey
-                        ? (data | getNestedValue: item.percentKey)
-                        : null,
-                    image: data | getNestedValue: item.image,
+                    text,
+                    percent,
+                    image,
                 }
             "
         ></ng-container>

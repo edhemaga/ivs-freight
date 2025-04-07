@@ -2,8 +2,6 @@ import { CommonModule } from '@angular/common';
 import {
     Component,
     OnInit,
-    ViewEncapsulation,
-    ChangeDetectorRef,
     OnDestroy,
     Input,
 } from '@angular/core';
@@ -49,7 +47,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     templateUrl: './card-columns-modal.component.html',
     styleUrls: ['./card-columns-modal.component.scss'],
     standalone: true,
-    encapsulation: ViewEncapsulation.None,
     providers: [ModalService, FormService],
     imports: [
         // modules
@@ -100,11 +97,18 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
 
     constructor(
         private formBuilder: UntypedFormBuilder,
-        private cdr: ChangeDetectorRef,
 
         // Modules
         private activeModal: NgbActiveModal
     ) {}
+
+    public get frontSideForm(): FormArray {
+        return this.cardsForm.get(CardsModalStringEnum.FRONT_SIDE) as FormArray;
+    }
+
+    public get backSideForm(): FormArray {
+        return this.cardsForm.get(CardsModalStringEnum.BACK_SIDE) as FormArray;
+    }
 
     ngOnInit(): void {
         this.createFormData();
@@ -155,7 +159,7 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
         });
 
         dataState.front_side.map((item, index) => {
-            this.front_side_form.at(index).patchValue({
+            this.frontSideForm.at(index).patchValue({
                 inputItem:
                     !item || item.title == CardsModalStringEnum.EMPTY
                         ? { title: null, key: null }
@@ -164,7 +168,7 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
         });
 
         dataState.back_side.map((item, index) => {
-            this.back_side_form.at(index).patchValue({
+            this.backSideForm.at(index).patchValue({
                 inputItem:
                     !item || item.title == CardsModalStringEnum.EMPTY
                         ? { title: null, key: null }
@@ -173,7 +177,6 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
         });
 
         this.cardsAllData = dataState.cardsAllData;
-        this.cdr.detectChanges();
     }
 
     public onActionModal(action: string): void {
@@ -188,14 +191,6 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
                 this.activeModal.close();
                 break;
         }
-    }
-
-    public get front_side_form(): FormArray {
-        return this.cardsForm.get(CardsModalStringEnum.FRONT_SIDE) as FormArray;
-    }
-
-    public get back_side_form(): FormArray {
-        return this.cardsForm.get(CardsModalStringEnum.BACK_SIDE) as FormArray;
     }
 
     private saveCardsData(): void {

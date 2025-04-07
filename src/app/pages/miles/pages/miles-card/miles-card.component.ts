@@ -63,25 +63,27 @@ export class MilesCardComponent {
     public sharedSvgRoutes = SharedSvgRoutes;
 
     constructor(
-        public milesStoreService: MilesStoreService,
-        private modalService: ModalService
+        private modalService: ModalService,
+        public milesStoreService: MilesStoreService
     ) {}
 
     public openColumnsModal(): void {
+        const action = {
+            data: {
+                cardsAllData: MilesCardDataConfig.CARD_ALL_DATA,
+                front_side: this.frontSideData,
+                back_side: this.backSideData,
+                numberOfRows: 4,
+                checked: true,
+            },
+            title: eMilesCardData.MILES_ACTIVE_TRUCK,
+        };
+        
         this.modalService
             .openModal(
                 CardColumnsModalComponent,
                 { size: TableStringEnum.SMALL },
-                {
-                    data: {
-                        cardsAllData: MilesCardDataConfig.CARD_ALL_DATA,
-                        front_side: this.frontSideData,
-                        back_side: this.backSideData,
-                        numberOfRows: 4,
-                        checked: true,
-                    },
-                    title: eMilesCardData.MILES_ACTIVE_TRUCK,
-                }
+                action
             )
             .then((result) => {
                 if (result) {
