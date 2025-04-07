@@ -33,7 +33,10 @@
                 <ca-dropdown-menu
                     [type]="'dots-menu-type'"
                     [placement]="'right-top'"
-                    [options]="detailsDropdownOptions"
+                    [options]="dropdownMenuOptions"
+                    (dropdownOptionEmitter)="
+                        onToggleDropdownMenuActions($event)
+                    "
                 >
                 </ca-dropdown-menu>
             }

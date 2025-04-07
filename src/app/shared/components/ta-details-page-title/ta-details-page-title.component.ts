@@ -1,18 +1,27 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, TemplateRef } from '@angular/core';
+import {
+    Component,
+    EventEmitter,
+    Input,
+    Output,
+    TemplateRef,
+} from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-// Models
-import { DetailsDropdownOptions } from '@shared/models';
-
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { CaDropdownMenuComponent } from 'ca-components';
+
+// Interfaces
+import {
+    IDropdownMenuItem,
+    IDropdownMenuOptionEmit,
+} from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-ta-details-page-title',
@@ -33,8 +42,11 @@ export class TaDetailsPageTitleComponent {
     @Input() isLoading: boolean;
     @Input() textTitle!: string;
     @Input() routeLink!: string;
-    @Input() detailsDropdownOptions!: DetailsDropdownOptions;
+    @Input() dropdownMenuOptions!: IDropdownMenuItem[];
     @Input() rightSide?: TemplateRef<any>;
+
+    @Output() detailsActions: EventEmitter<IDropdownMenuOptionEmit> =
+        new EventEmitter<IDropdownMenuOptionEmit>();
 
     private history: string[] = [];
 
@@ -60,5 +72,10 @@ export class TaDetailsPageTitleComponent {
             // Fallback
             this.router.navigate([this.routeLink]);
         }
+    }
+
+    // Toggle Dropdown
+    public onToggleDropdownMenuActions(action: IDropdownMenuOptionEmit): void {
+        this.detailsActions.emit(action);
     }
 }
