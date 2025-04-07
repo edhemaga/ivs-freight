@@ -7,21 +7,39 @@ import { MilesStopSortBy } from 'appcoretruckassist';
 const checkbox: ITableColumn = {
     key: 'select',
     label: '',
-    width: 26,
     pinned: 'left',
+    labelToolbar: 'Load No.',
+    width: 80,
+    minWidth: 80,
+    maxWidth: 200,
+    isResizable: true,
+    isDisabled: true,
+    isChecked: true,
+    hasSort: true,
 };
 
 const loadNumber: ITableColumn = {
     key: 'loadNumber',
     label: 'Load No.',
-    width: 120,
+    labelToolbar: 'Load No.',
+    width: 200,
+    minWidth: 200,
+    maxWidth: 200,
+    isResizable: true,
+    isChecked: true,
+    hasSort: true,
     pinned: 'left',
 };
 
 const refNumber: ITableColumn = {
     key: 'referenceNumber',
     label: 'REF NO',
-    width: 108,
+    labelToolbar: 'REF NO',
+    width: 200,
+    minWidth: 200,
+    maxWidth: 200,
+    isResizable: true,
+    isChecked: true,
     hasSort: true,
     sortName: MilesStopSortBy.UnitNumber,
 };
@@ -29,7 +47,12 @@ const refNumber: ITableColumn = {
 const dispatcher: ITableColumn = {
     key: 'dispatcher',
     label: 'Dispatcher',
-    width: 208,
+    labelToolbar: 'Dispatcher',
+    width: 200,
+    minWidth: 200,
+    maxWidth: 200,
+    isResizable: true,
+    isChecked: true,
     hasSort: true,
     sortName: MilesStopSortBy.UnitNumber,
 };
@@ -37,7 +60,12 @@ const dispatcher: ITableColumn = {
 const businessName = {
     key: 'loadBroker',
     label: 'businessName',
-    width: 238,
+    labelToolbar: 'businessName',
+    width: 200,
+    minWidth: 200,
+    maxWidth: 200,
+    isResizable: true,
+    isChecked: true,
     hasSort: true,
     sortName: MilesStopSortBy.UnitNumber,
 };
@@ -60,7 +88,12 @@ const driver = {
 const truck = {
     key: 'tableAssignedUnitTruck',
     label: 'Truck',
+    labelToolbar: 'Truck',
     width: 238,
+    minWidth: 238,
+    maxWidth: 238,
+    isResizable: true,
+    isChecked: true,
     hasSort: true,
     sortName: MilesStopSortBy.UnitNumber,
 };
@@ -69,6 +102,11 @@ const trailer = {
     key: 'tableAssignedUnitTrailer',
     label: 'Trailer',
     width: 238,
+    labelToolbar: 'Trailer',
+    minWidth: 238,
+    maxWidth: 238,
+    isResizable: true,
+    isChecked: true,
     hasSort: true,
     sortName: MilesStopSortBy.UnitNumber,
 };
@@ -76,6 +114,7 @@ const trailer = {
 const assignedGroup: ITableColumn = {
     key: 'brokerGroup',
     label: 'business name',
+    labelToolbar: 'business namne',
     hasSort: false,
     columns: [truck, trailer, driver],
 };
@@ -84,6 +123,11 @@ const status = {
     key: 'loadStatus',
     label: 'Status',
     width: 238,
+    labelToolbar: 'Status',
+    minWidth: 238,
+    maxWidth: 238,
+    isResizable: true,
+    isChecked: true,
     hasSort: true,
     sortName: MilesStopSortBy.UnitNumber,
 };
