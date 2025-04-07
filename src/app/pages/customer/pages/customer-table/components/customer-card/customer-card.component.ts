@@ -20,7 +20,7 @@ import { ConfirmationResetService } from '@shared/components/ta-shared-modals/co
 import { FormatCurrencyPipe, TimeFormatPipe } from '@shared/pipes';
 
 // enums
-import { TableStringEnum } from '@shared/enums';
+import { eDropdownMenu, TableStringEnum } from '@shared/enums';
 
 // models
 import { CardDetails } from '@shared/models/card-models/card-table-data.model';
@@ -59,6 +59,8 @@ export class CustomerCardComponent
 
     public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
+
+    public eDropdownMenu = eDropdownMenu;
 
     constructor(
         // services
@@ -129,8 +131,6 @@ export class CustomerCardComponent
     }
 
     public handleShowMoreAction(): void {}
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

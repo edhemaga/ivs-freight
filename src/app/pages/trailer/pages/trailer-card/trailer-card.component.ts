@@ -65,6 +65,8 @@ export class TrailerCardComponent
 
     public trailerImageRoutes = TrailerCardsSvgRoutes;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         protected router: Router,
 
@@ -136,8 +138,6 @@ export class TrailerCardComponent
     }
 
     public handleShowMoreAction(): void {}
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

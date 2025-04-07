@@ -77,6 +77,8 @@ export class AccountCardComponent
 
     public dropdownElementWidth: number;
 
+    public eDropdownMenu = eDropdownMenu;
+
     get viewData() {
         return this._viewData;
     }
@@ -191,8 +193,6 @@ export class AccountCardComponent
     }
 
     public handleShowMoreAction(): void {}
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy(): void {
         this.destroy$.next();

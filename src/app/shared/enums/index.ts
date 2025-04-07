@@ -15,6 +15,7 @@ export * from './toolbar-variant.enum';
 export * from './modal-button-text.enum';
 export * from './common-element.enum';
 export * from './active-view-mode.enum';
+export * from './card-flip-view-mode.enum';
 
 export * from './general-actions.enum';
 export * from './string-placeholder.enum';

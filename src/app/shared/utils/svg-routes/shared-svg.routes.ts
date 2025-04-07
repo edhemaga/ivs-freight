@@ -56,4 +56,5 @@ export class SharedSvgRoutes {
     static LOAD_FILLED: string = 'assets/svg/common/load/load-filled.svg';
     static LTLC_FILLED: string = 'assets/svg/common/load/ltlc-filled.svg';
     static LTL_FILLED: string = 'assets/svg/common/load/ltl-filled.svg';
+    static ARROW_RIGHT: string = 'assets/svg/common/ic-arrow-right.svg';
 }

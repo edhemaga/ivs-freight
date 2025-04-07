@@ -49,6 +49,8 @@ export class ContactsCardComponent
     public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
 
+    public eDropdownMenu = eDropdownMenu;
+
     get viewData() {
         return this._viewData;
     }
@@ -114,8 +116,6 @@ export class ContactsCardComponent
    
            this.accountBackFilter(this.backFilterQuery, true); */
     }
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

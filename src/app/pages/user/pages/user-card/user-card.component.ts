@@ -49,6 +49,8 @@ export class UserCardComponent
     public isCardFlippedCheckInCards: number[] = [];
     public isAllCardsFlipp: boolean = false;
 
+    public eDropdownMenu = eDropdownMenu;
+
     get viewData() {
         return this._viewData;
     }
@@ -113,8 +115,6 @@ export class UserCardComponent
     }
 
     public handleShowMoreAction(): void {}
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

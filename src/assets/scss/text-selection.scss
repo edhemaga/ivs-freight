@@ -10,6 +10,9 @@
 }
 
 .text {
+    &-nowrap {
+        white-space: nowrap;
+    }
     &-color {
         &-black {
             color: $ta-black !important;
@@ -44,6 +47,11 @@
         &-blue-13 {
             color: $ta-blue-13 !important;
             @include text-selection($ta-blue-13);
+
+            p,
+            span {
+                @include text-selection($ta-blue-13);
+            }
         }
 
         &-blue-15 {
@@ -59,6 +67,11 @@
         &-blue-18 {
             color: $ta-blue-18 !important;
             @include text-selection($ta-blue-18);
+
+            p,
+            span {
+                @include text-selection($ta-blue-13);
+            }
         }
 
         &-blue-19 {
@@ -143,6 +156,11 @@
         &-bw6-2 {
             color: $bw6-2 !important;
             @include text-selection($bw6-2);
+
+            p,
+            span {
+                @include text-selection($bw6-2);
+            }
         }
 
         &-bw-9 {
@@ -172,6 +190,10 @@
 
         &-blue-18 {
             @include hover($ta-blue-18);
+        }
+
+        &-bw6-2 {
+            @include hover($bw6-2);
         }
     }
 }

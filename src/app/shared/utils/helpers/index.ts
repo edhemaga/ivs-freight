@@ -15,4 +15,4 @@ export * from './timespan-convert.helper';
 export * from './filter-helper';
 export * from './sorting.helper';
 export * from './open-hours.helper';
-export * from './table-view.helper'
+export * from './table-view.helper';

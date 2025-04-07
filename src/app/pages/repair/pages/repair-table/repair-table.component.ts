@@ -2084,8 +2084,6 @@ export class RepairTableComponent
             : this.repairBackFilter(filterQuery, true);
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

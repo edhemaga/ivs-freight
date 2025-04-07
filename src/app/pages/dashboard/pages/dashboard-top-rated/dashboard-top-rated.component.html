@@ -32,6 +32,7 @@
             >
                 @if (topRatedTitle !== 'Shipper') {
                     <app-ca-tab-switch
+                        [type]="'type4-modal-popup'"
                         [tabs]="topRatedTabs"
                         [dashboardHeight]="true"
                         (switchClicked)="handleSwitchTabClick($event)"

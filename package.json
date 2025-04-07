@@ -60,7 +60,7 @@
         "angular-svg-icon-preloader": "^8.0.0",
         "bank-routing-number-validator": "0.0.4",
         "bootstrap": "^5.2.3",
-        "ca-components": "1.6.20",
+        "ca-components": "1.6.51",
         "chart.js": "^4.4.5",
         "chartjs-plugin-annotation": "^3.1.0",
         "croppie": "^2.6.5",

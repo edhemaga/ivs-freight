@@ -28,7 +28,7 @@ export abstract class ColumnsDropdownMenuActionsBase {
     protected abstract confirmationResetService: ConfirmationResetService;
     protected abstract destroy$: Subject<void>;
 
-    protected abstract updateToolbarDropdownMenuContent(action?: string): void;
+    protected updateToolbarDropdownMenuContent(action?: string): void {}
 
     protected handleColumnsDropdownMenuActions<T>(
         action: TableCardBodyActions<T>
@@ -39,6 +39,8 @@ export abstract class ColumnsDropdownMenuActionsBase {
             case eDropdownMenuColumns.OPEN_TYPE:
                 this.updateToolbarDropdownMenuContent();
 
+                break;
+            case eDropdownMenuColumns.CLOSE_TYPE:
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
                 this.updateToolbarDropdownMenuContent(type);

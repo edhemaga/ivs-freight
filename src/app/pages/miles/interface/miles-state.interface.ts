@@ -1,5 +1,5 @@
 // Feature Enums
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // Shared Models
@@ -8,6 +8,7 @@ import { ITableData } from '@shared/models';
 // Interface
 import { IStateFilters } from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // External Services or Models
 import {
@@ -29,9 +30,10 @@ export interface IMilesState {
     activeViewMode: eActiveViewMode;
     filters: IStateFilters;
     states: MilesStateFilterResponse[];
-    selectedCount: number;
     columns: ITableColumn[];
-    hasAllItemsSelected: boolean;
+    cardFlipViewMode: eCardFlipViewMode;
+    toolbarDropdownMenuOptions: IDropdownMenuItem[];
+    isToolbarDropdownMenuColumnsActive: boolean;
     page: number;
 
     tabResults: IMilesTabResults;
