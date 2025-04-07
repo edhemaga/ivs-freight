@@ -33,9 +33,11 @@ import {
     LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatusType,
+    LoadStopResponse,
     LoadTemplateListResponse,
     RevertLoadStatusCommand,
     ShipperLoadModalResponse,
+    StopResponse,
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 import { IActiveLoadModalData, Load } from '@pages/load/models';
@@ -69,6 +71,7 @@ import {
     minimalListSelector,
     tableColumnsSelector,
     groupedByStatusTypeListSelector,
+    loadDetailsMapDataSelector,
 } from '@pages/load/state/selectors/load.selector';
 
 // constants
@@ -79,7 +82,7 @@ import { eActiveViewMode } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadRouting } from '@pages/new-load/enums';
 
-import { IFilterDropdownList } from 'ca-components';
+import { ICaMapProps, IFilterDropdownList } from 'ca-components';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 @Injectable({
@@ -179,6 +182,10 @@ export class LoadStoreService {
 
     public isLoadDetailsMapOpen$: Observable<boolean> = this.store.pipe(
         select(isLoadDetailsMapOpenSelector)
+    );
+
+    public loadDetailsMapData$: Observable<ICaMapProps> = this.store.pipe(
+        select(loadDetailsMapDataSelector)
     );
 
     public minimalListSelector$: Observable<LoadMinimalListResponse> =
@@ -671,6 +678,22 @@ export class LoadStoreService {
     public toggleMap(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TOGGLE_MAP,
+        });
+    }
+
+    public setLoadDetailsMapData(loadMapLocations: LoadStopResponse[]): void {
+        if (!loadMapLocations) return;
+        
+        const mapLocations = JSON.stringify(
+            loadMapLocations.map(({ shipper: { longitude, latitude } }) => ({
+                longitude,
+                latitude,
+            }))
+        );
+
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_LOAD_DETAILS_MAP_DATA,
+            mapLocations,
         });
     }
 }
