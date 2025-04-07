@@ -6,21 +6,25 @@ export class MilesCardDataConfig {
             title: 'Stops • Count',
             key: 'stopsCount',
             template: 'textWithTitle',
+            format: 'number',
         },
         {
             title: 'Miles • Empty',
             key: 'milesEmpty',
             template: 'textWithTitle',
+            format: 'number',
         },
         {
             title: 'Miles • Loaded',
             key: 'milesLoaded',
             template: 'textWithTitle',
+            format: 'number',
         },
         {
             title: 'Miles • Total',
             key: 'milesTotal',
             template: 'textWithTitle',
+            format: 'number',
         },
     ];
 
@@ -29,18 +33,21 @@ export class MilesCardDataConfig {
             title: 'Load',
             key: 'loadCount',
             template: 'textWithTitle',
+            format: 'number',
         },
         {
             title: 'Stops • Pickup',
             key: 'stopsPickup.count',
             percentKey: 'stopsPickup.percent',
             template: 'doubleTextPercent',
+            format: 'number',
         },
         {
             title: 'Stops • Delivery',
             key: 'stopsDelivery.count',
             percentKey: 'stopsDelivery.percent',
             template: 'doubleTextPercent',
+            format: 'number',
         },
         {
             title: 'Revenue',
@@ -54,8 +61,9 @@ export class MilesCardDataConfig {
         {
             title: 'Type',
             key: 'truckType.name',
-            image: 'truckType.logo',
+            image: 'truckType.logoName',
             template: 'textWithImage',
+            format: 'text',
         },
         {
             isDropdown: true,
@@ -66,6 +74,7 @@ export class MilesCardDataConfig {
                     secondTitle: 'Count',
                     key: 'stopsCount',
                     template: 'textWithTitle',
+                    format: 'number',
                 },
                 {
                     title: 'Stops • Pickup',
@@ -73,6 +82,7 @@ export class MilesCardDataConfig {
                     key: 'stopsPickup.count',
                     percentKey: 'stopsPickup.percent',
                     template: 'doubleTextPercent',
+                    format: 'number',
                 },
                 {
                     title: 'Stops • Delivery',
@@ -80,6 +90,7 @@ export class MilesCardDataConfig {
                     key: 'stopsDelivery.count',
                     percentKey: 'stopsDelivery.percent',
                     template: 'doubleTextPercent',
+                    format: 'number',
                 },
                 {
                     title: 'Stops • Fuel',
@@ -87,6 +98,7 @@ export class MilesCardDataConfig {
                     key: 'fuelCount?.count',
                     percentKey: 'fuelCount.percent',
                     template: 'doubleTextPercent',
+                    format: 'number',
                 },
                 {
                     title: 'Stops • Parking',
@@ -94,6 +106,7 @@ export class MilesCardDataConfig {
                     key: 'parkingCount?.count',
                     percentKey: 'parkingCount.percent',
                     template: 'doubleTextPercent',
+                    format: 'number',
                 },
                 {
                     title: 'Stops • Deadhead',
@@ -101,6 +114,7 @@ export class MilesCardDataConfig {
                     key: 'deadHeadCount?.count',
                     percentKey: 'deadHeadCount.percent',
                     template: 'doubleTextPercent',
+                    format: 'number',
                 },
                 {
                     title: 'Stops • Repair',
@@ -108,6 +122,7 @@ export class MilesCardDataConfig {
                     key: 'repairCount?.count',
                     percentKey: 'repairCount.percent',
                     template: 'doubleTextPercent',
+                    format: 'number',
                 },
                 {
                     title: 'Stops • Towing',
@@ -115,6 +130,7 @@ export class MilesCardDataConfig {
                     key: 'towingCount?.count',
                     percentKey: 'towingCount.percent',
                     template: 'doubleTextPercent',
+                    format: 'number',
                 },
             ],
         },
@@ -122,6 +138,7 @@ export class MilesCardDataConfig {
             title: 'Load',
             key: 'loadCount',
             template: 'textWithTitle',
+            format: 'number',
         },
         {
             isDropdown: true,
@@ -132,6 +149,7 @@ export class MilesCardDataConfig {
                     secondTitle: 'Gallon',
                     key: 'fuelGalons',
                     template: 'textWithTitle',
+                    format: 'number',
                 },
                 {
                     title: 'Fuel • Cost',
@@ -145,6 +163,7 @@ export class MilesCardDataConfig {
                     secondTitle: 'MPG',
                     key: 'fuelMpg',
                     template: 'fuelMpg',
+                    format: 'number',
                 },
             ],
         },
@@ -157,18 +176,21 @@ export class MilesCardDataConfig {
                     secondTitle: 'Loaded',
                     key: 'milesLoaded',
                     template: 'textWithTitle',
+                    format: 'number',
                 },
                 {
                     title: 'Miles • Empty',
                     secondTitle: 'Empty',
                     key: 'milesEmpty',
                     template: 'textWithTitle',
+                    format: 'number',
                 },
                 {
                     title: 'Miles • Total',
                     secondTitle: 'Total',
                     key: 'milesTotal',
                     template: 'textWithTitle',
+                    format: 'number',
                 },
             ],
         },

@@ -660,6 +660,12 @@ html ngb-modal-backdrop {
     line-height: 0;
 }
 
+.cards-icon {
+    svg {
+        display: flex;
+    }
+}
+
 ngb-modal-window.modal {
     backdrop-filter: blur(0.0625rem);
     background: $dark-3 !important;

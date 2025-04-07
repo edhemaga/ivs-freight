@@ -8,4 +8,5 @@ export interface ICardValueData {
     isDropdown?: boolean;
     values?: ICardValueData[];
     image?: string;
+    inputItem?: ICardValueData;
 }

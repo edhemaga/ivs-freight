@@ -14,13 +14,14 @@ import {
     FormGroup,
     FormArray,
 } from '@angular/forms';
-import { Observable, Subject, Subscription, first, takeUntil } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
+
+// Modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbActiveModal, NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
 import { CardsModalStringEnum } from '@shared/components/ta-shared-modals/cards-modal/enums/cards-modal-string.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // Services
 import { ModalService } from '@shared/services/modal.service';
@@ -32,15 +33,9 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { CaModalComponent } from 'ca-components';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// Helpers
-import { CompareObjectsModal } from '@shared/components/ta-shared-modals/cards-modal/utils/helpers/cards-modal.helper';
-
 // Models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
 import { CardsModalData } from '@shared/components/ta-shared-modals/cards-modal/models/cards-modal-data.model';
-
-//Store
-import { Store } from '@ngrx/store';
 
 //Pipes
 import { NgForLengthFilterPipe } from '@shared/pipes/ng-for-length-filter.pipe';
@@ -76,33 +71,38 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     ],
 })
 export class CardColumnsModalComponent implements OnInit, OnDestroy {
-    @Input() editData: any;
-    public cardsForm: FormGroup;
+    @Input() editData: any; //leave this any fow now
 
+    private destroy$ = new Subject<void>();
+
+    // Cards data
+    public cardsForm: FormGroup;
     public setDefaultDataFront: CardRows[];
     public setDefaultDataBack: CardRows[];
 
     public cardsAllData: CardRows[] = [];
 
+    // Form
     public hasFormChanged: boolean = false;
     public isChecked: boolean = false;
     public resetForm: boolean = false;
 
-    public tabSelected: string;
-
+    // Config
     public titlesInForm: string[] = [];
     public displayData$: Observable<CardsModalData>;
     public rowValues: number[] = [3, 4, 5, 6];
-    private destroy$ = new Subject<void>();
 
+    // Svg-routes
     public svgRoutes = SharedSvgRoutes;
+
+    // Enums
     public cardsModalStringEnum = CardsModalStringEnum;
 
     constructor(
         private formBuilder: UntypedFormBuilder,
         private cdr: ChangeDetectorRef,
-        //Store
-        private store: Store,
+
+        // Modules
         private activeModal: NgbActiveModal
     ) {}
 
@@ -114,8 +114,6 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
         this.getFormValueOnInit();
 
         this.getValueForm();
-
-        this.compareDataInStoreAndDefaultData();
     }
 
     public createFormData(): void {
@@ -124,95 +122,29 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
 
             checked: false,
 
-            front_side: this.formBuilder.array([
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-            ]),
+            front_side: this.formBuilder.array(
+                Array.from({ length: 6 }).map(() =>
+                    this.formBuilder.group({
+                        inputItem: {
+                            title: null,
+                            id: null,
+                            key: null,
+                        },
+                    })
+                )
+            ),
 
-            back_side: this.formBuilder.array([
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-                this.formBuilder.group({
-                    inputItem: {
-                        title: null,
-                        id: null,
-                        key: null,
-                    },
-                }),
-            ]),
+            back_side: this.formBuilder.array(
+                Array.from({ length: 6 }).map(() =>
+                    this.formBuilder.group({
+                        inputItem: {
+                            title: null,
+                            id: null,
+                            key: null,
+                        },
+                    })
+                )
+            ),
         });
     }
 
@@ -247,7 +179,7 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
     public onActionModal(action: string): void {
         switch (action) {
             case CardsModalStringEnum.CARDS_MODAL:
-                this.updateStore();
+                this.saveCardsData();
                 break;
             case CardsModalStringEnum.RESET_TO_DEFAULT:
                 this.resetToDefault();
@@ -266,29 +198,11 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
         return this.cardsForm.get(CardsModalStringEnum.BACK_SIDE) as FormArray;
     }
 
-    private updateStore(): void {
-        console.log(this.cardsForm.value, 'this.cardsForm.value');
+    private saveCardsData(): void {
         this.activeModal.close({ selectedColumns: this.cardsForm.value });
-        // this.modalService.updateStore(this.cardsForm.value, this.tabSelected);
-        // this.activeModal.close();
     }
 
     private resetToDefault(): void {
-        // const cardsData = {
-        //     numberOfRows: UserCardsModalConfig.rows,
-        //     checked: true,
-        //     front_side:
-        //         this.tabSelected === TableStringEnum.ACTIVE
-        //             ? UserCardsModalConfig.displayRowsFrontActive
-        //             : UserCardsModalConfig.displayRowsFrontInactive,
-        //     back_side:
-        //         this.tabSelected === TableStringEnum.ACTIVE
-        //             ? UserCardsModalConfig.displayRowsBackActive
-        //             : UserCardsModalConfig.displayRowsBackInactive,
-        // };
-
-        // this.createForm(cardsData);
-
         this.resetForm = false;
     }
 
@@ -328,33 +242,6 @@ export class CardColumnsModalComponent implements OnInit, OnDestroy {
                           .map((titles) => titles.inputItem.title)
                     : []
         );
-    }
-
-    private compareDataInStoreAndDefaultData(): void {
-        // const isFrontSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
-        //     this.tabSelected === TableStringEnum.ACTIVE
-        //         ? UserCardsModalConfig.displayRowsFrontActive
-        //         : UserCardsModalConfig.displayRowsFrontInactive,
-        //     this.setDefaultDataFront
-        // );
-        // const areBackSidesEqual = CompareObjectsModal.areArraysOfObjectsEqual(
-        //     this.tabSelected === TableStringEnum.ACTIVE
-        //         ? UserCardsModalConfig.displayRowsBackActive
-        //         : UserCardsModalConfig.displayRowsBackInactive,
-        //     this.setDefaultDataBack
-        // );
-        // if (
-        //     isFrontSidesEqual &&
-        //     areBackSidesEqual &&
-        //     this.cardsForm.get(CardsModalStringEnum.CHECKED).value &&
-        //     this.cardsForm.get(CardsModalStringEnum.NUMBER_OF_ROWS).value === 4
-        // )
-        //     this.resetForm = false;
-        // else this.resetForm = true;
-    }
-
-    public identity(item: CardRows): number {
-        return item.id;
     }
 
     ngOnDestroy(): void {

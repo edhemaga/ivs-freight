@@ -15,9 +15,7 @@
                     No. of Rows
                 </div>
                 <div class="form-radio-btns d-flex">
-                    <ng-container
-                        *ngFor="let item of rowValues; trackBy: identity"
-                    >
+                    @for (item of rowValues; track $index) {
                         <label class="d-flex align-items-center radio-label">
                             <input
                                 type="radio"
@@ -29,16 +27,14 @@
                                 {{ item }}
                             </span>
                         </label>
-                    </ng-container>
+                    }
                 </div>
             </div>
 
-            <!-- Divider -->
             <div class="divider card-color"></div>
 
             <!-- Front Side -->
             <div class="modal-cards">
-                <!-- For Front side of cards -->
                 <div class="front-side-body mb-4">
                     <div
                         class="ta-font-extra-bold title-card-modal title-margin"
@@ -89,7 +85,6 @@
                     </div>
                 </div>
 
-                <!-- Divider -->
                 <div class="divider card-color"></div>
 
                 <!-- For Back side of cards -->

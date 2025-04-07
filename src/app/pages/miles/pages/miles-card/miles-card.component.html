@@ -36,22 +36,27 @@
     <ng-template #cardTemplate let-item="item" let-data="data">
         <ng-container
             *ngTemplateOutlet="
-                item.template === 'doubleTextPercent'
+                item.template === tableCardViewEnums.DOUBLE_TEXT_PERCENT
                     ? doubleTextPercent
-                    : textWithTitle;
+                    : item.template === tableCardViewEnums.TEXT_WITH_IMAGE
+                      ? textWithImage
+                      : textWithTitle;
                 context: {
                     title: item.title,
                     text:
-                        item.format === 'currency'
+                        item.format === tableCardViewEnums.CURRENCY
                             ? ((data
                                   | getNestedValue: item.key
                                   | formatCurrency) ?? 0)
-                            : ((data
-                                  | getNestedValue: item.key
-                                  | thousandSeparator) ?? 0),
+                            : item.format === tableCardViewEnums.NUMBER
+                              ? ((data
+                                    | getNestedValue: item.key
+                                    | thousandSeparator) ?? 0)
+                              : (data | getNestedValue: item.key),
                     percent: item.percentKey
                         ? (data | getNestedValue: item.percentKey)
                         : null,
+                    image: data | getNestedValue: item.image,
                 }
             "
         ></ng-container>
@@ -66,12 +71,26 @@
         </div>
     </ng-template>
 
-    <ng-template #textWithImage let-title="title" let-text="text" let-image="image">
+    <ng-template
+        #textWithImage
+        let-title="title"
+        let-text="text"
+        let-data="data"
+        let-image="image"
+    >
         <div class="d-flex flex-column px-1 gap-1">
             <div class="text-size-11 text-color-black ta-font-bold">
                 {{ title }}
             </div>
-            <div class="text-size-14 text-color-black-2">{{ text }}</div>
+            <div class="d-flex gap-1">
+                <svg-icon
+                    [svgStyle]="{ 'height.px': 18 }"
+                    [ngStyle]="{ height: '18px' }"
+                    [src]="'assets/svg/common/trucks/' + image"
+                    class="cards-icon"
+                ></svg-icon>
+                <div class="text-size-14 text-color-black-2">{{ text }}</div>
+            </div>
         </div>
     </ng-template>
 
