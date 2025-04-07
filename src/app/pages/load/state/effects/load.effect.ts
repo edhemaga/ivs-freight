@@ -19,6 +19,7 @@ import { CommentsService } from '@shared/services/comments.service';
 import { ModalService } from '@shared/services/modal.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { BrokerService } from '@pages/customer/services';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // store
 import * as LoadActions from '@pages/load/state/actions/load.action';
@@ -41,6 +42,7 @@ export class LoadEffect {
 
         // services
         private loadService: LoadLocalService,
+        private loadStoreService: LoadStoreService,
         private brokerService: BrokerService,
         private apiLoadService: LoadService,
         private commentService: CommentsService,
@@ -773,6 +775,11 @@ export class LoadEffect {
                             details,
                         });
                     }),
+                    tap((data) =>
+                        this.loadStoreService.setLoadDetailsMapData(
+                            data.details.stops
+                        )
+                    ),
                     catchError((error) =>
                         of(LoadActions.getLoadDetailsError({ error }))
                     )
@@ -781,6 +788,26 @@ export class LoadEffect {
         )
     );
     // #endregion
+
+    public getLoadDetailsMapData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.getLoadDetailsMapData),
+            exhaustMap((action) => {
+                const { mapLocations } = action || {};
+
+                return this.loadService.getRouting(mapLocations).pipe(
+                    map((mapRoutes) => {
+                        return LoadActions.getLoadDetailsMapDataSuccess({
+                            mapRoutes,
+                        });
+                    }),
+                    catchError((error) =>
+                        of(LoadActions.getLoadDetailsMapDataError({ error }))
+                    )
+                );
+            })
+        )
+    );
 
     public getLoadDetails$ = createEffect(() =>
         this.actions$.pipe(

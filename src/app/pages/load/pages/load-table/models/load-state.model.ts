@@ -8,6 +8,7 @@ import {
     LoadModalResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 import { IActiveLoadModalData } from '@pages/load/models/active-load-modal-data.model';
 import { IFilterDropdownList } from 'ca-components';
@@ -40,6 +41,7 @@ export interface ILoadState {
 
     details: LoadResponse;
     isLoadDetailsLoaded: boolean;
+    mapRoutes: RoutingResponse;
 
     selectLoadCount: number;
     selectLoadRateSum: number;

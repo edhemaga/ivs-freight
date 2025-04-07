@@ -867,6 +867,8 @@
 
 <ng-template #mapTemplate>
     @let isMapOpen = loadStoreService.isLoadDetailsMapOpen$ | async;
+    @let mapData = loadStoreService.loadDetailsMapData$ | async;
+
     @if (isMapOpen) {
         <div
             class="d-flex justify-content-center align-items-center br-3 p-6 pt-0 h-486"

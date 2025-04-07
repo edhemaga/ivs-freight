@@ -12,6 +12,7 @@ import {
     LoadStatus,
     LoadStatusResponse,
     LoadTemplateResponse,
+    RoutingResponse,
     ShipperLoadModalResponse,
     TableType,
 } from 'appcoretruckassist';
@@ -598,6 +599,14 @@ export const getLoadDetails = function (
         isLoadDetailsLoaded: true,
     };
 };
+
+export const getLoadDetailsMapRoutes = function (
+    state: ILoadState,
+    mapRoutes: RoutingResponse
+): ILoadState {
+    return { ...state, mapRoutes, isLoadDetailsLoaded: true };
+};
+
 export function updateAllLoadsSelectStatus(state: ILoadState): ILoadState {
     const hasAllLoadsSelected = !state.hasAllLoadsSelected;
     const { data } = state;
