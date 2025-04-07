@@ -444,7 +444,10 @@ export class DropdownMenuContentHelper {
     }
 
     // load
-    static getLoadDropdownContent(selectedTab: string): IDropdownMenuItem[] {
+    static getLoadDropdownContent(
+        selectedTab: string,
+        isDetailsPageDropdown: boolean = false
+    ): IDropdownMenuItem[] {
         const isPendingLoad = selectedTab === eDropdownMenu.PENDING;
         const isClosedLoad = selectedTab === eDropdownMenu.CLOSED;
 
@@ -458,7 +461,7 @@ export class DropdownMenuContentHelper {
 
         const requestedSharedItems = [
             eDropdownMenu.EDIT,
-            eDropdownMenu.VIEW_DETAILS,
+            !isDetailsPageDropdown && eDropdownMenu.VIEW_DETAILS,
             isClosedLoad && eDropdownMenu.EXPORT_BATCH,
             eDropdownMenu.SHARE,
             eDropdownMenu.PRINT,
