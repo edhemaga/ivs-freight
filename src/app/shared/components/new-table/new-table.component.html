@@ -176,6 +176,8 @@
 
 <ng-template #columnTemplate let-column="column" let-nextColumn="nextColumn">
     @if (column.columns?.length) {
+        @let firstCheckedIndex = column.columns | tableGroupLabelIndex;
+
         <div
             class="d-flex h-30 new-table--row-heading-group"
             [class]="column | tableGroupClass: isTableLocked"
@@ -186,9 +188,7 @@
                 let _columnIndex = $index;
                 let _lastColumn = $last
             ) {
-                @let hasLabelTop =
-                    _column.isChecked &&
-                    !column.columns[_columnIndex - 1]?.isChecked;
+                @let hasLabelTop = _columnIndex === firstCheckedIndex;
 
                 @let hasDoubleHeightBorder =
                     _lastColumn && !!nextColumn?.columns;
