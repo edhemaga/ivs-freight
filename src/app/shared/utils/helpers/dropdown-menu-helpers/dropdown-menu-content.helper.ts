@@ -747,8 +747,8 @@ export class DropdownMenuContentHelper {
         const requestedSharedItems = [
             eDropdownMenuColumns.COLUMNS,
             isTableLocked
-                ? eDropdownMenuColumns.LOCK_TABLE
-                : eDropdownMenuColumns.UNLOCK_TABLE,
+                ? eDropdownMenuColumns.UNLOCK_TABLE
+                : eDropdownMenuColumns.LOCK_TABLE,
             eDropdownMenuColumns.RESET_TABLE,
         ];
 
