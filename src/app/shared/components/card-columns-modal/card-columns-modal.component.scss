@@ -112,6 +112,6 @@ app-ta-modal .modal-container {
     }
 }
 
-.cdk-drag {
+::ng-deep .cdk-drag {
     overflow: visible !important;
 }
