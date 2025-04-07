@@ -10,14 +10,17 @@
                 @for (
                     column of leftPinnedColumns;
                     track column.key;
-                    let aIndex = $index
+                    let leftPinnedColumnIndex = $index
                 ) {
+                    @let nextColumn =
+                        leftPinnedColumns[leftPinnedColumnIndex + 1];
+
                     <ng-container
                         *ngTemplateOutlet="
                             columnTemplate;
                             context: {
                                 column,
-                                nextColumn: leftPinnedColumns[aIndex + 1],
+                                nextColumn,
                             }
                         "
                     ></ng-container>
@@ -27,14 +30,16 @@
             @for (
                 column of mainColumns;
                 track column.key;
-                let bIndex = $index
+                let mainColumnIndex = $index
             ) {
+                @let nextColumn = mainColumns[mainColumnIndex + 1];
+
                 <ng-container
                     *ngTemplateOutlet="
                         columnTemplate;
                         context: {
                             column,
-                            nextColumn: mainColumns[bIndex + 1],
+                            nextColumn,
                         }
                     "
                 ></ng-container>
@@ -44,14 +49,17 @@
                 @for (
                     column of rightPinnedColumns;
                     track column.key;
-                    let cIndex = $index
+                    let rightPinnedColumnIndex = $index
                 ) {
+                    @let nextColumn =
+                        rightPinnedColumns[rightPinnedColumnIndex + 1];
+
                     <ng-container
                         *ngTemplateOutlet="
                             columnTemplate;
                             context: {
                                 column,
-                                nextColumn: rightPinnedColumns[cIndex + 1],
+                                nextColumn,
                             }
                         "
                     ></ng-container>
@@ -175,13 +183,15 @@
             @for (
                 _column of column.columns;
                 track _column.key;
-                let _columnIndex = $index
+                let _columnIndex = $index;
+                let _lastColumn = $last
             ) {
                 @let hasLabelTop =
                     _column.isChecked &&
                     !column.columns[_columnIndex - 1]?.isChecked;
-                @let hasDoubleHeightBorderOnResize =
-                    !column.columns && nextColumn?.columns?.length;
+
+                @let hasDoubleHeightBorder =
+                    _lastColumn && !!nextColumn?.columns;
 
                 <ng-container
                     *ngTemplateOutlet="
@@ -191,15 +201,20 @@
                             hasLabelTop,
                             isGroup: true,
                             label: column.label,
-                            hasDoubleHeightBorderOnResize,
+                            hasDoubleHeightBorder,
                         }
                     "
                 ></ng-container>
             }
         </div>
     } @else {
+        @let hasDoubleHeightBorder = !!nextColumn?.columns;
+
         <ng-container
-            *ngTemplateOutlet="columnDisplay; context: { column }"
+            *ngTemplateOutlet="
+                columnDisplay;
+                context: { column, hasDoubleHeightBorder }
+            "
         ></ng-container>
     }
 
@@ -209,7 +224,7 @@
         let-hasLabelTop="hasLabelTop"
         let-isGroup="isGroup"
         let-label="label"
-        let-hasDoubleHeightBorderOnResize="hasDoubleHeightBorderOnResize"
+        let-hasDoubleHeightBorder="hasDoubleHeightBorder"
     >
         @if (column.isChecked) {
             @let isResizableColumn = !isTableLocked && column.isResizable;
@@ -233,7 +248,7 @@
                 [columnId]="column.id"
                 [minWidth]="column.minWidth"
                 [maxWidth]="column.maxWidth"
-                [hasDoubleHeightBorder]="hasDoubleHeightBorderOnResize"
+                [hasDoubleHeightBorder]="hasDoubleHeightBorder"
                 (click)="handleSortColumnClick(column)"
                 (onColumnResize)="onColumnWidthResize($event)"
             >
