@@ -950,8 +950,6 @@ export class PmTableComponent
             : this.pmTrailerBackFilter(filterQuery, true);
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

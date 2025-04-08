@@ -44,6 +44,7 @@ export const initialState: ILoadState = {
     totalLoadSum: 0,
     hasAllLoadsSelected: false,
     isLoadDetailsMapOpen: true,
+    mapRoutes: null,
 
     minimalList: {},
 
@@ -184,6 +185,11 @@ export const loadReducer = createReducer(
         ...state,
         isLoadDetailsLoaded: false,
     })),
+
+    on(LoadActions.getLoadDetailsMapDataSuccess, (state, { mapRoutes }) =>
+        Functions.getLoadDetailsMapRoutes(state, mapRoutes)
+    ),
+    on(LoadActions.getLoadDetailsMapDataError, (state) => ({ ...state })),
 
     // #endregion
 

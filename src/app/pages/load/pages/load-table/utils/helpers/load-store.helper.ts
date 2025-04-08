@@ -247,7 +247,6 @@ export class LoadStoreHelper {
             rate: {
                 paid:
                     TableStringEnum.DOLLAR_SIGN +
-                    ' ' +
                     thousandSeparatorPipe.transform(billing?.rate),
                 paidDue: totalAdjustedRate
                     ? TableStringEnum.DOLLAR_SIGN +

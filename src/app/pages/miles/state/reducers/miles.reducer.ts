@@ -1,24 +1,26 @@
-// External Libraries
 import { createReducer, on } from '@ngrx/store';
 
-// Feature Actions
+// feature Actions
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 
-// Constants
-import {
-    MilesTableColumns,
-    MilesToolbarTabs,
-} from '@pages/miles/utils/constants';
+// constants
+import { MilesToolbarTabs } from '@pages/miles/utils/constants';
 
 // interface
 import { IMilesState } from '@pages/miles/interface';
 
 // functions
-import * as Functions from '@pages/miles/utils/functions/miles-reducer.functions';
+import * as Functions from '@pages/miles/state/functions/miles-reducer.functions';
+
+// configs
+import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
+
+// helpers
+import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';
 
 export const initialState: IMilesState = {
     items: [],
@@ -28,8 +30,15 @@ export const initialState: IMilesState = {
     activeViewMode: eActiveViewMode.List,
     filters: {},
     states: [],
-    selectedCount: 0,
-    hasAllItemsSelected: false,
+    cardFlipViewMode: eCardFlipViewMode.FRONT,
+    isToolbarDropdownMenuColumnsActive: false,
+    toolbarDropdownMenuOptions:
+        MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
+            eActiveViewMode.List,
+            true,
+            eCardFlipViewMode.FRONT,
+            false
+        ),
     page: 1,
     tabResults: {
         activeTruckCount: 0,
@@ -37,7 +46,7 @@ export const initialState: IMilesState = {
     },
 
     // Table
-    columns: MilesTableColumns,
+    columns: MilesTableColumnsConfig.columnsConfig,
 
     // Unit list
     details: {},
@@ -50,7 +59,7 @@ export const initialState: IMilesState = {
         isLastInCurrentList: false,
     },
     tableSettings: {
-        isTableLocked: false,
+        isTableLocked: true,
         sortKey: null,
         sortDirection: null,
     },
@@ -106,16 +115,6 @@ export const milesReducer = createReducer(
     on(MilesAction.setStates, (state, { states }) => ({ ...state, states })),
     // #endregion
 
-    // #region Checkbox selection
-    on(MilesAction.selectOneRow, (state, { mile }) =>
-        Functions.toggleRowSelection(state, mile)
-    ),
-
-    on(MilesAction.selectAll, (state, { action }) =>
-        Functions.toggleSelectAll(state, action)
-    ),
-    // #endregion
-
     // #region Unit detail
     on(MilesAction.setUnitDetails, (state, { details, isLast }) =>
         Functions.setUnitDetails(state, details, isLast)
@@ -136,6 +135,7 @@ export const milesReducer = createReducer(
                 isLastInCurrentList
             )
     ),
+    // #endregion
 
     on(MilesAction.toggleTableLockingStatus, (state) =>
         Functions.toggleTableLockingStatus(state)
@@ -149,8 +149,25 @@ export const milesReducer = createReducer(
         Functions.tableSortingChange(state, column)
     ),
 
+    on(MilesAction.toggleColumnVisibility, (state, { columnKey, isActive }) =>
+        Functions.toggleColumnVisibility(state, columnKey, isActive)
+    ),
+
+    on(MilesAction.tableResizeChange, (state, { resizeAction }) =>
+        Functions.tableResizeChange(state, resizeAction)
+    ),
+
     on(MilesAction.onSearchChange, (state, { search }) =>
         Functions.onSearchChange(state, search)
+    ),
+
+    on(MilesAction.resetTable, (state) => Functions.resetTable(state)),
+
+    on(MilesAction.toggleCardFlipViewMode, (state) =>
+        Functions.toggleCardFlipViewMode(state)
+    ),
+
+    on(MilesAction.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
+        Functions.setToolbarDropdownMenuColumnsActive(state, isActive)
     )
-    // #endregion
 );

@@ -72,6 +72,9 @@
         }
     }
     &-l {
+        &-2 {
+            margin-left: 2px;
+        }
         &-4 {
             margin-left: 4px;
         }
@@ -184,6 +187,11 @@
             padding-top: 8px;
         }
     }
+
+    &-4 {
+        padding: 4px;
+    }
+
     &-6 {
         padding: 6px;
     }

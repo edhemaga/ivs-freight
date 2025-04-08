@@ -78,6 +78,8 @@ export class LoadCardComponent
 
     public loadImageRoutes = LoadCardSvgRoutes;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         protected router: Router,
 
@@ -154,8 +156,6 @@ export class LoadCardComponent
     }
 
     public handleShowMoreAction(): void {}
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

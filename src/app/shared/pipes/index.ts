@@ -37,3 +37,4 @@ export * from './activity-time.pipe';
 export * from './middle-ellipsis.pipe';
 export * from './highlight-comment-part.pipe';
 export * from './create-load-comment.pipe';
+export * from './get-nested-value.pipe';

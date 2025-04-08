@@ -74,6 +74,8 @@ export class RepairCardComponent
 
     public dropdownElementWidth: number;
 
+    public eDropdownMenu = eDropdownMenu;
+
     get viewData() {
         return this._viewData;
     }
@@ -203,8 +205,6 @@ export class RepairCardComponent
     }
 
     public handleShowMoreAction(): void {}
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

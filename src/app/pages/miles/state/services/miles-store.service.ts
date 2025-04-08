@@ -1,56 +1,58 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+
 import { Observable } from 'rxjs';
 
-// Selectors
+// selectors
 import {
     selectMilesItems,
     activeViewModeSelector,
     selectTableViewData,
     selectSelectedTab,
     statesSelector,
-    selectedCountSelector,
     tableColumnsSelector,
     filterSelector,
-    hasAllItemsSelectedSelector,
     detailsSelector,
     unitsPaginationSelector,
     tableSettingsSelector,
+    toolbarDropdownMenuOptionsSelector,
     tabResultsSelector,
+    cardFlipViewModeSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
-// Models
-import {
-    IMilesDetailsFilters,
-    IMilesModel,
-    IMilesState,
-    IMilesTabResults,
-} from '@pages/miles/interface';
+// models
 import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
-import { IFilterAction } from 'ca-components';
 import { ITableData } from '@shared/models';
-import { IStateFilters } from '@shared/interfaces';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
-// Constants
+// constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
-// Helpers
+// helpers
 import { FilterHelper } from '@shared/utils/helpers';
 import { MilesHelper } from '@pages/miles/utils/helpers';
 
-// interface
+// interfaces
 import {
     ITableColumn,
     ITableConfig,
+    ITableResizeAction,
 } from '@shared/components/new-table/interface';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { IFilterAction } from 'ca-components';
+import { IStateFilters } from '@shared/interfaces';
+import {
+    IMilesDetailsFilters,
+    IMilesModel,
+    IMilesTabResults,
+} from '@pages/miles/interface';
 
 @Injectable({
     providedIn: 'root',
@@ -73,19 +75,12 @@ export class MilesStoreService {
     public statesSelector$: Observable<MilesStateFilterResponse[]> =
         this.store.pipe(select(statesSelector));
 
-    public selectedCountSelector$: Observable<number> = this.store.pipe(
-        select(selectedCountSelector)
-    );
     public columns$: Observable<ITableColumn[]> = this.store.pipe(
         select(tableColumnsSelector)
     );
 
     public filter$: Observable<IStateFilters> = this.store.pipe(
         select(filterSelector)
-    );
-
-    public hasAllItemsSelectedSelector$: Observable<boolean> = this.store.pipe(
-        select(hasAllItemsSelectedSelector)
     );
 
     public unitsPaginationSelector$: Observable<IMilesDetailsFilters> =
@@ -98,8 +93,16 @@ export class MilesStoreService {
         select(tableSettingsSelector)
     );
 
+    public toolbarDropdownMenuOptionsSelector$: Observable<
+        IDropdownMenuItem[]
+    > = this.store.pipe(select(toolbarDropdownMenuOptionsSelector));
+
     public tabResultsSelector$: Observable<IMilesTabResults> = this.store.pipe(
         select(tabResultsSelector)
+    );
+
+    public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
+        select(cardFlipViewModeSelector)
     );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
@@ -154,20 +157,6 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchSelectOneRow(mile: IMilesModel): void {
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_SELECT_ONE_ROW,
-            mile,
-        });
-    }
-
-    public dispatchSelectAll(action: string): void {
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
-            action,
-        });
-    }
-
     public dispatchFollowingUnit(
         getFollowingUnitDirection: ArrowActionsStringEnum
     ): void {
@@ -197,6 +186,24 @@ export class MilesStoreService {
         });
     }
 
+    public dispatchToggleColumnsVisiblity(
+        columnKey: string,
+        isActive: boolean
+    ) {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+            columnKey,
+            isActive,
+        });
+    }
+
+    public dispatchResizeColumn(resizeAction: ITableResizeAction): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESIZE_CHANGE,
+            resizeAction,
+        });
+    }
+
     public dispatchSearchInputChanged(search: string): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SEARCH_CHANGED,
@@ -211,6 +218,26 @@ export class MilesStoreService {
         });
     }
 
+    public dispatchResetTable(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_RESET_TABLE,
+        });
+    }
+
+    public dispatchToggleCardFlipViewMode(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE,
+        });
+    }
+
+    public dispatchSetToolbarDropdownMenuColumnsActive(
+        isActive: boolean
+    ): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+            isActive,
+        });
+    }
     public getNewPage(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,

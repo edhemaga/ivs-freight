@@ -156,6 +156,10 @@ export class LoadStoreConstants {
     static ACTION_GET_LOAD_DETAILS_BY_ID_SUCCESS = `${this.COMPONENT_NAME_KEY} Get Load Details By Id Success`;
     static ACTION_GET_LOAD_DETAILS_BY_ID_ERROR = `${this.COMPONENT_NAME_KEY} Get Load Details By Id Error`;
 
+    static ACTION_GET_LOAD_DETAILS_MAP_DATA = `${this.COMPONENT_NAME_KEY} Get Load Details Map Data`;
+    static ACTION_GET_LOAD_DETAILS_MAP_DATA_SUCCESS = `${this.COMPONENT_NAME_KEY} Get Load Details Map Data Success`;
+    static ACTION_GET_LOAD_DETAILS_MAP_DATA_ERROR = `${this.COMPONENT_NAME_KEY} Get Load Details Map Data Error`;
+
     static ACTION_SET_LOAD_DETAILS_TO_UNLOAD = `${this.COMPONENT_NAME_KEY}  ACTION_SET_LOAD_DETAILS_TO_UNLOAD`;
 
     static ACTION_SELECT_ALL_ROWS = `${this.COMPONENT_NAME_KEY}  ACTION_SELECT_ALL_ROWS`;

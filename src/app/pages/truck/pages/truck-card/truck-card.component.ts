@@ -55,6 +55,8 @@ export class TruckCardComponent
 
     public truckCardImageRoutes = TruckCardIcons;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         protected router: Router,
 
@@ -119,8 +121,6 @@ export class TruckCardComponent
     }
 
     public handleShowMoreAction(): void {}
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();

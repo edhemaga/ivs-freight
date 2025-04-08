@@ -1,10 +1,9 @@
-// External Libraries
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
 // Enums
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 
-// Models
+// models
 import { IMilesState } from '@pages/miles/interface';
 
 export const milesFeatureKey: string = 'miles';
@@ -45,27 +44,11 @@ export const statesSelector = createSelector(selectMilesState, (state) => {
     return states;
 });
 
-export const selectedCountSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { selectedCount } = state || {};
-        return selectedCount;
-    }
-);
-
 export const tableColumnsSelector = createSelector(
     selectMilesState,
     (state) => {
         const { columns } = state || {};
         return columns;
-    }
-);
-
-export const hasAllItemsSelectedSelector = createSelector(
-    selectMilesState,
-    (state) => {
-        const { hasAllItemsSelected } = state || {};
-        return hasAllItemsSelected;
     }
 );
 
@@ -92,4 +75,20 @@ export const tableSettingsSelector = createSelector(
 export const tabResultsSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.tabResults
+);
+
+export const toolbarDropdownMenuOptionsSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { toolbarDropdownMenuOptions } = state || {};
+        return toolbarDropdownMenuOptions;
+    }
+);
+
+export const cardFlipViewModeSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => {
+        const { cardFlipViewMode } = state || {};
+        return eCardFlipViewMode[cardFlipViewMode];
+    }
 );

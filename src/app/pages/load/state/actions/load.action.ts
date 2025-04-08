@@ -22,8 +22,10 @@ import {
     LoadResponse,
     LoadStatusResponse,
     LoadStatusType,
+    LoadStopResponse,
     LoadTemplateResponse,
     RevertLoadStatusCommand,
+    RoutingResponse,
     ShipperLoadModalResponse,
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
@@ -38,6 +40,7 @@ import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 import { eActiveViewMode, eSortDirection } from '@shared/enums';
+import { ICaMapProps } from 'ca-components';
 
 // #region loadList
 export const getLoadsPayload = createAction(
@@ -732,6 +735,22 @@ export const getLoadDetailsError = createAction(
     LoadStoreConstants.ACTION_GET_LOAD_DETAILS_BY_ID_ERROR,
     props<{ error: Error }>()
 );
+
+export const getLoadDetailsMapData = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_MAP_DATA,
+    props<{ mapLocations: string }>()
+);
+
+export const getLoadDetailsMapDataSuccess = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_MAP_DATA_SUCCESS,
+    props<{ mapRoutes: RoutingResponse }>()
+);
+
+export const getLoadDetailsMapDataError = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_DETAILS_MAP_DATA_ERROR,
+    props<{ error: Error }>()
+);
+
 // #endregion
 
 export const setLoadDetailsToUnload = createAction(

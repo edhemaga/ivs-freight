@@ -34,6 +34,9 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
                 this.handleLoadEditAction(action, selectedTab);
 
                 break;
+            case eDropdownMenu.EXPORT_BATCH_TYPE:
+                // todo
+                break;
             case eDropdownMenu.CREATE_TEMPLATE_TYPE:
             case eDropdownMenu.CREATE_LOAD_TYPE:
             case eDropdownMenu.CREATE_TEMPLATE_TYPE:

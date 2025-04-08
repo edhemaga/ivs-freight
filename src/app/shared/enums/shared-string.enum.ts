@@ -19,4 +19,7 @@ export enum eSharedString {
     BUSINESS = 'business',
 
     SMALL = 'small',
+
+    DSC = 'dsc',
+    ASC = 'asc',
 }

@@ -1,23 +1,25 @@
-// External Libraries
 import { createAction, props } from '@ngrx/store';
 
-// Constants
+// constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
-// Enums
+// enums
 import { eMileTabs } from '@pages/miles/enums';
 import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
-// Models
+// models
 import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
 } from 'appcoretruckassist';
 import { IMilesModel } from '@pages/miles/interface';
 
-// Interface
+// interfaces
 import { IStateFilters } from '@shared/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableResizeAction,
+} from '@shared/components/new-table/interface';
 
 export const getLoadsPayloadSuccess = createAction(
     MilesStoreConstants.LOAD_MILES_SUCCESS,
@@ -63,16 +65,6 @@ export const setStates = createAction(
     props<{ states: MilesStateFilterResponse[] }>()
 );
 
-export const selectOneRow = createAction(
-    MilesStoreConstants.ACTION_SELECT_ONE_ROW,
-    props<{ mile: IMilesModel }>()
-);
-
-export const selectAll = createAction(
-    MilesStoreConstants.ACTION_SELECT_ALL_ROWS,
-    props<{ action: string }>()
-);
-
 export const getInitalUnitDetails = createAction(
     MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE
 );
@@ -112,8 +104,18 @@ export const tableSortingChange = createAction(
     props<{ column: ITableColumn }>()
 );
 
+export const tableResizeChange = createAction(
+    MilesStoreConstants.ACTION_RESIZE_CHANGE,
+    props<{ resizeAction: ITableResizeAction }>()
+);
+
 export const pageChanges = createAction(
     MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
+);
+
+export const toggleColumnVisibility = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+    props<{ columnKey: string; isActive: boolean }>()
 );
 
 export const onSearchChange = createAction(
@@ -124,4 +126,15 @@ export const onSearchChange = createAction(
 export const onUnitSelection = createAction(
     MilesStoreConstants.ACTION_UNIT_SELECTED,
     props<{ unit: IMilesModel }>()
+);
+
+export const resetTable = createAction(MilesStoreConstants.ACTION_RESET_TABLE);
+
+export const toggleCardFlipViewMode = createAction(
+    MilesStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
+);
+
+export const setToolbarDropdownMenuColumnsActive = createAction(
+    MilesStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+    props<{ isActive: boolean }>()
 );

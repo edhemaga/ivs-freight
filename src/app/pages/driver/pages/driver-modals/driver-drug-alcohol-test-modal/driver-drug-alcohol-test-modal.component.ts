@@ -166,7 +166,8 @@ export class DriverDrugAlcoholTestModalComponent implements OnInit, OnDestroy {
     }
 
     public onModalAction(action: string): void {
-        this.activeAction = action;
+        if (this.drugForm.valid && this.isFormDirty) this.activeAction = action;
+        
         switch (action) {
             case DriverDrugAlcoholTestModalStringEnum.CLOSE:
                 this.ngbActiveModal.close();

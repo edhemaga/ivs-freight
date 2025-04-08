@@ -182,7 +182,7 @@ export class DropdownMenuContentConstants {
         },
         [eDropdownMenu.EXPORT_BATCH]: {
             title: eDropdownMenu.EXPORT_BATCH,
-            type: eDropdownMenu.EXPORT_BATH_TYPE,
+            type: eDropdownMenu.EXPORT_BATCH_TYPE,
             svgUrl: 'assets/svg/common/ic_document.svg',
             svgClass: eDropdownMenu.ACTIVATE_SVG_CLASS,
         },
@@ -198,7 +198,7 @@ export class DropdownMenuContentConstants {
 
         [eDropdownMenuColumns.COLUMNS_BACK]: {
             title: eDropdownMenuColumns.COLUMNS,
-            type: eDropdownMenuColumns.COLUMNS_TYPE,
+            type: eDropdownMenuColumns.COLUMNS_BACK_TYPE,
             titleOptionalClass: 'ca-font-extra-bold',
             svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
             svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
@@ -226,6 +226,31 @@ export class DropdownMenuContentConstants {
             type: eDropdownMenuColumns.RESET_TABLE_TYPE,
             svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
             svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
+        },
+
+        [eDropdownMenuColumns.COLUMNS_CARD]: {
+            title: eDropdownMenuColumns.COLUMNS,
+            type: eDropdownMenuColumns.COLUMNS_CARD_TYPE,
+            svgUrl: 'assets/svg/truckassist-table/columns-new.svg',
+            svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
+        },
+
+        [eDropdownMenuColumns.FLIP_ALL_CARDS]: {
+            title: eDropdownMenuColumns.FLIP_ALL_CARDS,
+            type: eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE,
+            svgUrl: 'assets/svg/common/resize-arrow.svg',
+            svgClass: eDropdownMenu.REGULAR_SVG_CLASS,
+            isSelectMenuTypeActionItem: true,
+            hasBorder: true,
+        },
+
+        [eDropdownMenuColumns.FLIP_ALL_CARDS_BACK]: {
+            title: eDropdownMenuColumns.FLIP_ALL_CARDS,
+            type: eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE,
+            svgUrl: 'assets/svg/common/ic_resize-arrow-top.svg',
+            svgClass: eDropdownMenu.ACTIVATE_SVG_CLASS,
+            isSelectMenuTypeActionItem: true,
+            hasBorder: true,
         },
     };
 

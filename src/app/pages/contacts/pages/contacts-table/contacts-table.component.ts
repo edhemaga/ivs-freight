@@ -302,8 +302,6 @@ export class ContactsTableComponent
         this.contactStoreService.dispatchGetContactList(this.filter, true);
     }
 
-    public updateToolbarDropdownMenuContent(): void {}
-
     ngOnDestroy(): void {
         this.tableService.sendActionAnimation({});
 

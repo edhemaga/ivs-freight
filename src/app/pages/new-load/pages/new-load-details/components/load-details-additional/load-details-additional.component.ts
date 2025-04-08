@@ -13,6 +13,12 @@ import { TaCommentsSearchComponent } from '@shared/components/ta-comments-search
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Enums
+import { eSharedString } from '@shared/enums';
+
+// Components
+import { CaLoadStatusLogComponent } from 'ca-components';
+
+// Enums
 import {
     eGeneralActions,
     eColor,
@@ -44,8 +50,14 @@ import { eStringPlaceholder } from 'ca-components';
     styleUrl: './load-details-additional.component.scss',
     standalone: true,
     imports: [
+        // Modules
+
         // modules
         CommonModule,
+
+        // Components
+        CaLoadStatusLogComponent,
+        ,
         AngularSvgIconModule,
         NgbModule,
         // components
@@ -54,123 +66,14 @@ import { eStringPlaceholder } from 'ca-components';
         CreateLoadCommentsPipe,
     ],
 })
-export class LoadDetailsAdditionalComponent implements OnInit {
-    @Input() isAddNewComment: boolean;
-    @Input() isSearchComment: boolean;
-    @Input() isHeaderHidden: boolean = false;
+export class LoadDetailsAdditionalComponent {
+    public eSharedString = eSharedString;
 
-    @Output() commentsCountChanged = new EventEmitter<boolean>();
+    public statusLogSortDirection = eSharedString.DSC;
 
-    private destroy$ = new Subject<void>();
+    constructor(protected loadStoreService: LoadStoreService) {}
 
-    public companyUser: SignInResponse;
-
-    // boolean flags
-    public isStatusHistoryDisplayed: boolean = false;
-    public isSearchActive: boolean = false;
-
-    // enums
-    public eColor = eColor;
-    public eIconPath = eIconPath;
-
-    // filter
-    public commentFilter: string = eStringPlaceholder.EMPTY;
-
-    constructor(
-        public loadStoreService: LoadStoreService,
-        public commentService: CommentService
-    ) {}
-
-    public ngOnInit(): void {
-        this.getCompanyUser();
-    }
-
-    private getCompanyUser(): void {
-        this.companyUser = UserHelper.getUserFromLocalStorage();
-    }
-
-    public handleCommentActionEmit(
-        commentData: CommentData,
-        loadId: number
-    ): void {
-        console.log(commentData.btnType);
-        switch (commentData.btnType) {
-            case eGeneralActions.CANCEL:
-                break;
-            case eGeneralActions.CONFIRM:
-                const comment = {
-                    ...commentData,
-                    commentDate: `${commentData.commentDate}, ${commentData.commentTime}`,
-                    isCommenting: false,
-                    isEdited: commentData.isEditConfirm,
-                };
-                if (comment.isEdited)
-                    this.loadStoreService.dispatchUpdateComment({ ...comment });
-                else {
-                    const newComment: CreateCommentCommand = {
-                        entityTypeCommentId: 2,
-                        entityTypeId: loadId,
-                        commentContent: commentData.commentContent,
-                    };
-
-                    this.commentService
-                        .apiCommentPost(newComment)
-                        .pipe(takeUntil(this.destroy$))
-                        .subscribe();
-                }
-                break;
-            case eGeneralActions.DELETE:
-                this.loadStoreService.dispatchDeleteCommentById(
-                    commentData.commentId,
-                    loadId
-                );
-                break;
-            default:
-                break;
-        }
-    }
-
-    public handleSortActionEmit(
-        sortDirection: eSortDirection,
-        loadId: number
-    ): void {
-        if (!sortDirection) return;
-        this.loadStoreService.sortLoadComments(loadId, sortDirection);
-    }
-
-    public handleSearchHighlightActionEmit(searchHighlightValue: string): void {
-        this.commentFilter = searchHighlightValue;
-    }
-
-    public toggleIsSearchActive(): void {
-        this.isSearchActive = !this.isSearchActive;
-    }
-
-    public addNewComment(loadId: number): void {
-        const comment: CreateCommentCommand = {
-            entityTypeCommentId: 2,
-            entityTypeId: loadId,
-            commentContent: eStringPlaceholder.EMPTY,
-        };
-        const dateNow = moment().format(eDateTimeFormat.MM_DD_YY);
-        const { avatarFile, firstName, lastName, companyUserId } =
-            this.companyUser;
-
-        const commentMetadata: ICreateCommentMetadata = {
-            cardId: loadId,
-            date: dateNow,
-            createdAt: dateNow,
-            companyUser: {
-                avatar: avatarFile.url,
-                fullName: `${firstName} ${lastName}`,
-                id: companyUserId,
-            },
-        };
-        this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
-    }
-
-    ngOnDestroy() {
-        this.destroy$.next();
-        this.destroy$.complete();
+    public onSortChange(sortDirection: eSharedString): void {
+        this.statusLogSortDirection = sortDirection;
     }
 }

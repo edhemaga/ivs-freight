@@ -70,7 +70,6 @@ import { OwnerModalComponent } from '@pages/owner/pages/owner-modal/owner-modal.
 import { ConfirmationActivationModalComponent } from '@shared/components/ta-shared-modals/confirmation-activation-modal/confirmation-activation-modal.component';
 import {
     CaInputAddressDropdownComponent,
-    CaInputComponent,
     CaInputDatetimePickerComponent,
     CaInputDropdownComponent,
     CaInputNoteComponent,
@@ -165,7 +164,6 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaUploadFilesComponent,
 
         CaInputDropdownComponent,
-        CaInputComponent,
         CaUploadFilesComponent,
         CaInputNoteComponent,
         CaInputDatetimePickerComponent,

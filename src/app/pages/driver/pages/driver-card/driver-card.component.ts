@@ -58,6 +58,8 @@ export class DriverCardComponent
 
     public driverImageRoutes = DriverCardSvgRoutes;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         protected router: Router,
 
@@ -123,8 +125,6 @@ export class DriverCardComponent
     }
 
     public handleShowMoreAction(): void {}
-
-    public updateToolbarDropdownMenuContent(): void {}
 
     ngOnDestroy() {
         this.destroy$.next();
