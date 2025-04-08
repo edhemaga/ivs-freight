@@ -511,25 +511,22 @@ export class LoadEffect {
         this.actions$.pipe(
             ofType(LoadActions.deleteCommentById),
             exhaustMap((action) => {
-                console.log(action);
                 const { apiParam, loadId } = action;
                 return this.commentService
                     .deleteCommentById(apiParam, loadId)
                     .pipe(
-                        tap(
-                            () => {
-                                LoadActions.deleteCommentByIdSuccess({
-                                    loadId,
-                                    commentId: apiParam,
-                                });
-                            },
-                            catchError((error) => {
-                                return of(
-                                    LoadActions.deleteCommentByIdError({
-                                        error,
-                                    })
-                                );
+                        map(() =>
+                            LoadActions.deleteCommentByIdSuccess({
+                                loadId,
+                                commentId: apiParam,
                             })
+                        ),
+                        catchError((error) =>
+                            of(
+                                LoadActions.deleteCommentByIdError({
+                                    error,
+                                })
+                            )
                         )
                     );
             })
@@ -546,7 +543,7 @@ export class LoadEffect {
                     commentContent,
                 };
                 return this.commentService.updateComment(commentDTO).pipe(
-                    tap(() => {
+                    map(() => {
                         return LoadActions.updateCommentSuccess({
                             apiParam: {
                                 commentId,
@@ -554,9 +551,9 @@ export class LoadEffect {
                             },
                         });
                     }),
-                    catchError((error) => {
-                        return of(LoadActions.updateCommentError({ error }));
-                    })
+                    catchError((error) =>
+                        of(LoadActions.updateCommentError({ error }))
+                    )
                 );
             })
         )
@@ -778,12 +775,11 @@ export class LoadEffect {
     public deleteCommentById$ = createEffect(() => {
         return this.actions$.pipe(
             ofType(LoadActions.deleteCommentById),
-            mergeMap((action) => {
-                console.log(action);
+            exhaustMap((action) => {
                 const { apiParam, loadId } = action;
 
                 return this.commentService.deleteCommentById(apiParam).pipe(
-                    map(() => {
+                    tap(() => {
                         return LoadActions.deleteCommentByIdSuccess({
                             loadId,
                             commentId: apiParam,

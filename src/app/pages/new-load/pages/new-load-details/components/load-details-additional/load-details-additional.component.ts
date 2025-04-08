@@ -35,7 +35,7 @@ import {
 } from '@shared/enums';
 
 // Models
-import { CommentData } from '@shared/models';
+import { CommentCompanyUser, CommentData } from '@shared/models';
 import {
     CommentService,
     CreateCommentCommand,
@@ -120,9 +120,22 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                     isCommenting: false,
                     isEdited: commentData.isEditConfirm,
                 };
-                if (comment.isEdited)
-                    this.loadStoreService.dispatchUpdateComment(comment);
-                else {
+                if (comment.isEdited) {
+                    const { commentId, commentContent, commentDate, isEdited } =
+                        comment;
+                    const updatedComment: CommentCompanyUser = {
+                        commentId,
+                        commentContent,
+                        commentDate,
+                        isEdited,
+                        companyUser: {
+                            id: this.companyUser.userId,
+                            name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
+                            avatarFile: this.companyUser.avatarFile,
+                        },
+                    };
+                    this.loadStoreService.dispatchUpdateComment(updatedComment);
+                } else {
                     const newComment: CreateCommentCommand = {
                         entityTypeCommentId: 2,
                         entityTypeId: loadId,

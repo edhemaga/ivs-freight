@@ -462,8 +462,6 @@ export const updateCommentSuccessResult = (
     content: string
 ) => {
     const details: LoadResponse = state?.details;
-    console.log(details);
-
     if (!details?.comments?.length) return { ...state };
 
     const comments: CommentResponse[] = [...details.comments];

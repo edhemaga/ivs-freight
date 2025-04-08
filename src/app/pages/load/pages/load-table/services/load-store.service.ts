@@ -486,7 +486,7 @@ export class LoadStoreService {
         });
     }
 
-    public dispatchUpdateComment(apiParam: Partial<CommentCompanyUser>): void {
+    public dispatchUpdateComment(apiParam: CommentCompanyUser): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_UPDATE_COMMENT,
             apiParam,
