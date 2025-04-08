@@ -46,6 +46,7 @@ import { TableCardBodyActions } from '@shared/models';
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { IMilesModel } from '@pages/miles/interface';
 
 @Component({
     selector: 'app-miles',
@@ -82,6 +83,7 @@ export class MilesComponent
     public eCommonElement = eCommonElement;
 
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
+    public firstUnit: IMilesModel;
 
     constructor(
         public milesStoreService: MilesStoreService,
@@ -101,11 +103,13 @@ export class MilesComponent
         combineLatest([
             this.milesStoreService.filter$,
             this.milesStoreService.toolbarDropdownMenuOptionsSelector$,
+            this.milesStoreService.miles$,
         ])
             .pipe(takeUntil(this.destroy$))
-            .subscribe(([filter, toolbarDropdownMenuOptions]) => {
+            .subscribe(([filter, toolbarDropdownMenuOptions, units]) => {
                 this.filter = filter;
                 this.toolbarDropdownMenuOptions = toolbarDropdownMenuOptions;
+                this.firstUnit = units[0] || ({} as IMilesModel);
             });
     }
 
@@ -169,10 +173,19 @@ export class MilesComponent
         if (action === eGeneralActions.TAB_SELECTED) {
             this.milesStoreService.dispatchListChange(mode);
         } else if (action === eGeneralActions.VIEW_MODE) {
-            this.milesStoreService.dispatchSetActiveViewMode(
-                eActiveViewMode[mode]
-            );
+            this.redirectUserToNewView(mode);
+        }
+    }
 
+    private redirectUserToNewView(mode: eMileTabs) {
+        this.milesStoreService.dispatchSetActiveViewMode(eActiveViewMode[mode]);
+
+        if (mode === eActiveViewMode[eActiveViewMode.Map]) {
+            // What if we don't have a unit? should user be able to go to map?
+            this.router.navigate([
+                `/${MILES_ROUTING.BASE}/${MILES_ROUTING.MAP}/${this.firstUnit.truckId}`,
+            ]);
+        } else {
             this.router.navigate([
                 `/${MILES_ROUTING.BASE}/${mode.toLowerCase()}`,
             ]);

@@ -9,4 +9,5 @@ export interface IMinimalStopsState {
     currentPage: number;
     totalCount: number;
     searchString: string;
+    activeUnitId: number | null;
 }

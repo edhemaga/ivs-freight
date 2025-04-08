@@ -55,6 +55,7 @@ export const initialState: IMilesState = {
         currentPage: 1,
         totalCount: 1,
         searchString: '',
+        activeUnitId: null,
     },
 
     tableSettings: {

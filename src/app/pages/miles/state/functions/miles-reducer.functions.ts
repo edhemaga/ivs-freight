@@ -125,14 +125,20 @@ export const setUnitDetails = function (
     state: IMilesState,
     details: MilesByUnitPaginatedStopsResponse
 ): IMilesState {
+    const selectedTab = details.truck.status
+        ? eMileTabs.ACTIVE
+        : eMileTabs.INACTIVE;
+
     return {
         ...state,
+        selectedTab,
         details: {
             ...state.details,
             data: details,
             currentPage: details.stops.pageIndex,
             totalCount: details.stops.count,
             stops: details.stops.data,
+            activeUnitId: details.truck.id,
         },
     };
 };

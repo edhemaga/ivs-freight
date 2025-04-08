@@ -43,4 +43,5 @@ export class MilesStoreConstants {
     public static ACTION_UPDATE_UNIT_DETAILS_ON_SCROLL = `${this.COMPONENT_NAME_KEY} ACTION_UPDATE_UNIT_DETAILS_ON_SCROLL`;
 
     public static MINIMAL_LIST_RESULTS_PER_PAGE = 50;
+    public static STOPS_LIST_RESULTS_PER_PAGE = 50;
 }

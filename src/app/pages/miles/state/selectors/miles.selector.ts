@@ -75,6 +75,14 @@ export const currentStopsPageSelector = createSelector(
     }
 );
 
+export const activeUnitIdSelector = createSelector(
+    selectMilesState,
+    (state) => {
+        const { details } = state || {};
+        return details.activeUnitId;
+    }
+);
+
 export const totalStopsCountSelector = createSelector(
     selectMilesState,
     (state) => {

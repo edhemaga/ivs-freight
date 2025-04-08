@@ -12,11 +12,12 @@ import {
     exhaustMap,
     take,
     switchMap,
-    startWith,
     distinctUntilChanged,
     merge,
     filter,
     withLatestFrom,
+    mergeMap,
+    from,
 } from 'rxjs';
 
 // functions
@@ -27,6 +28,7 @@ import { MilesService } from 'appcoretruckassist';
 
 // selectors
 import {
+    activeUnitIdSelector,
     activeViewModeSelector,
     currentPageSelector,
     currentStopsPageSelector,
@@ -34,7 +36,6 @@ import {
     minimalListSelector,
     pageSelector,
     searchTextSelector,
-    selectMilesItems,
     selectSelectedTab,
     stopsSearchSelector,
     stopsSelector,
@@ -63,13 +64,7 @@ export class MilesEffects {
         private router: Router
     ) {}
 
-    private fetchMilesData(): Observable<
-        | Action<string>
-        | ({
-              miles: IMilesModel[];
-              totalResultsCount: number;
-          } & Action<string>)
-    > {
+    private fetchMilesData(): Observable<Action<string>> {
         return combineLatest([
             this.store.select(selectSelectedTab),
             this.store.select(filterSelector),
@@ -96,26 +91,48 @@ export class MilesEffects {
                         tableSettings.sortKey
                     )
                     .pipe(
-                        map((response) => {
+                        switchMap((response) => {
                             const miles = MilesHelper.milesMapper(
                                 response.pagination.data
                             );
-                            return {
+                            const firstUnitId = miles?.[0]?.truckId;
+
+                            const milesAction = MilesAction.loadMilesSuccess({
                                 miles,
-                                action: MilesAction.loadMilesSuccess({
-                                    miles,
-                                    totalResultsCount:
-                                        response.pagination.count,
-                                }),
-                            };
+                                totalResultsCount: response.pagination.count,
+                            });
+
+                            if (!firstUnitId) {
+                                return of(milesAction);
+                            }
+
+                            return this.milesService
+                                .apiMilesUnitGet(
+                                    firstUnitId,
+                                    null,
+                                    null,
+                                    null,
+                                    1,
+                                    MilesStoreConstants.STOPS_LIST_RESULTS_PER_PAGE
+                                )
+                                .pipe(
+                                    mergeMap((unitResponse) =>
+                                        from([
+                                            milesAction,
+                                            MilesAction.setUnitDetails({
+                                                details: unitResponse,
+                                            }),
+                                        ])
+                                    ),
+                                    catchError(() =>
+                                        from([
+                                            milesAction,
+                                            MilesAction.getLoadsPayloadError(),
+                                        ])
+                                    )
+                                );
                         }),
-                        catchError(() =>
-                            of({
-                                miles: [],
-                                action: MilesAction.getLoadsPayloadError(),
-                            })
-                        ),
-                        switchMap(({ miles, action }) => of(action))
+                        catchError(() => of(MilesAction.getLoadsPayloadError()))
                     );
             })
         );
@@ -128,22 +145,30 @@ export class MilesEffects {
                 this.store.select(stopsSelector),
                 this.store.select(totalStopsCountSelector),
                 this.store.select(currentStopsPageSelector),
-                this.store.select(stopsSearchSelector)
+                this.store.select(stopsSearchSelector),
+                this.store.select(activeUnitIdSelector)
             ),
             // Call API if we aren't on last page and there are more items to load
-            filter(([_, stopsSelector, totalCount]) => {
+            filter(([action, stopsSelector, totalCount]) => {
                 return stopsSelector.length < totalCount;
             }),
             exhaustMap(
-                ([_, stopsSelector, totalPage, currentPage, searchString]) => {
+                ([
+                    action,
+                    stopsSelector,
+                    totalPage,
+                    currentPage,
+                    searchString,
+                    activeUnitId,
+                ]) => {
                     return this.milesService
                         .apiMilesUnitGet(
-                            368,
+                            activeUnitId,
                             null,
                             null,
                             null,
                             currentPage + 1,
-                            25,
+                            MilesStoreConstants.STOPS_LIST_RESULTS_PER_PAGE,
                             null,
                             null,
                             null,
@@ -186,7 +211,14 @@ export class MilesEffects {
             ofType(MilesAction.getInitalUnitDetailsOnRouteChange),
             exhaustMap((action) =>
                 this.milesService
-                    .apiMilesUnitGet(action.unitId, null, null, null, 1, 25)
+                    .apiMilesUnitGet(
+                        action.unitId,
+                        null,
+                        null,
+                        null,
+                        1,
+                        MilesStoreConstants.STOPS_LIST_RESULTS_PER_PAGE
+                    )
                     .pipe(
                         map((unitResponse) =>
                             MilesAction.setUnitDetails({
@@ -206,19 +238,20 @@ export class MilesEffects {
         this.actions$.pipe(
             ofType(MilesAction.onSearchChange),
             switchMap((action) =>
-                this.store.select(selectMilesItems).pipe(
-                    take(1),
-                    switchMap((milesItems) => {
+                combineLatest([
+                    this.store.select(activeUnitIdSelector).pipe(take(1)),
+                ]).pipe(
+                    switchMap(([activeUnitId]) => {
                         const searchText = action.search;
 
                         return this.milesService
                             .apiMilesUnitGet(
-                                368,
+                                activeUnitId,
                                 null,
                                 null,
                                 null,
                                 1,
-                                25,
+                                MilesStoreConstants.STOPS_LIST_RESULTS_PER_PAGE,
                                 null,
                                 null,
                                 null,
@@ -335,10 +368,10 @@ export class MilesEffects {
                 this.store.select(totalMinimalListCountSelector)
             ),
             // Call API if we aren't on last page and there are more items to load
-            filter(([_, __, ___, minimalList, totalCount]) => {
+            filter(([action, page, searchText, minimalList, totalCount]) => {
                 return minimalList.length < totalCount;
             }),
-            exhaustMap(([_, currentPage, searchText]) =>
+            exhaustMap(([action, currentPage, searchText]) =>
                 this.milesService
                     .apiMilesListMinimalGet(
                         currentPage + 1,
