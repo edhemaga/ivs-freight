@@ -187,17 +187,14 @@ export const loadReducer = createReducer(
 
     // #endregion
 
+    on(LoadActions.sortLoadComments, (state, { loadId, sortDirection }) =>
+        Functions.sortLoadComments(state, loadId, sortDirection)
+    ),
+
     // #region CREATE
     on(LoadActions.createComment, (state) => ({ ...state })),
-    on(
-        LoadActions.createCommentSuccess,
-        (state, { loadId, comment, metadata }) =>
-            Functions.createCommentSuccessResult(
-                state,
-                loadId,
-                comment,
-                metadata
-            )
+    on(LoadActions.createCommentSuccess, (state) =>
+        Functions.createCommentSuccessResult(state)
     ),
     on(LoadActions.createCommentError, (state) => ({ ...state })),
 
@@ -272,11 +269,10 @@ export const loadReducer = createReducer(
 
     // #region DELETE
     on(LoadActions.deleteCommentById, (state) => ({ ...state })),
-    on(LoadActions.deleteCommentByIdSuccess, (state, { loadId, commentId }) =>
-        Functions.deleteCommentByIdSuccessResult(state, loadId, commentId)
+    on(LoadActions.deleteCommentByIdSuccess, (state, { commentId }) =>
+        Functions.deleteCommentByIdSuccessResult(state, commentId)
     ),
     on(LoadActions.deleteCommentByIdError, (state) => ({ ...state })),
-
     on(LoadActions.deleteLoadTemplateById, (state) => ({ ...state })),
     // TODO: Do filtering for success
     on(LoadActions.deleteLoadTemplateByIdSuccess, (state) => ({ ...state })),

@@ -12,11 +12,10 @@ import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.com
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 
 // enums
-import { CommentsSearchStringEnum } from '@shared/components/ta-comments-search/enums/comments-search-string.enum';
+import { eSortDirection } from '@shared/enums';
 
 // models
-import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
-import { CommentData } from '@shared/models/comment-data.model';
+import { CommentCompanyUser, CommentData } from '@shared/models';
 
 @Component({
     selector: 'app-ta-comments-search',
@@ -40,13 +39,13 @@ export class TaCommentsSearchComponent {
 
     @Output() btnActionEmitter = new EventEmitter<CommentData>();
     @Output() btnSortEmitter = new EventEmitter<string>();
-    @Output() searchHightlightEmitter = new EventEmitter<string>();
+    @Output() searchHighlightEmitter = new EventEmitter<string>();
 
     public commentsSearchSvgRoutes = CommentsSearchSvgRoutes;
 
-    public sortDirection: string = CommentsSearchStringEnum.DSC;
+    public sortDirection: string = eSortDirection.DSC;
 
-    public lettersToHightlight: string;
+    public lettersToHighlight: string;
 
     constructor() {}
 
@@ -56,16 +55,15 @@ export class TaCommentsSearchComponent {
 
     public handleSortClick(): void {
         this.sortDirection =
-            this.sortDirection === CommentsSearchStringEnum.DSC
-                ? CommentsSearchStringEnum.ASC
-                : CommentsSearchStringEnum.DSC;
+            this.sortDirection === eSortDirection.DSC
+                ? eSortDirection.ASC
+                : eSortDirection.DSC;
 
         this.btnSortEmitter.emit(this.sortDirection);
     }
 
     public handleSearchValue(searchValue: string): void {
-        this.lettersToHightlight = searchValue;
-
-        this.searchHightlightEmitter.emit(searchValue);
+        this.lettersToHighlight = searchValue;
+        this.searchHighlightEmitter.emit(searchValue);
     }
 }

@@ -41,9 +41,13 @@ import { CommentStringEnum } from '@shared/components/ta-comment/enums/comment-s
 import { TableStringEnum } from '@shared/enums/table-string.enum';
 
 // pipes
-import { SafeHtmlPipe } from '@shared/pipes/safe-html.pipe';
-import { FormatDatePipe } from '@shared/pipes/format-date.pipe';
 import { TaCommentHighlistComponentPipe } from '@shared/components/ta-comment/pipes/ta-comment-higlits-comment.pipe';
+import {
+    AbbreviateFullnamePipe,
+    HighlightCommentPartPipe,
+    FormatDatePipe,
+    SafeHtmlPipe,
+} from '@shared/pipes';
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
@@ -51,12 +55,12 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 
 // helpers
 import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
-import { CardDropdownHelper } from '@shared/utils/helpers/card-dropdown-helper';
 
 // models
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
 import { Comment } from '@shared/models/card-models/card-table-data.model';
+import { UserHelper } from '@shared/utils/helpers';
 
 @Component({
     selector: 'app-ta-comment',
@@ -75,6 +79,8 @@ import { Comment } from '@shared/models/card-models/card-table-data.model';
         // pipes
         SafeHtmlPipe,
         TaCommentHighlistComponentPipe,
+        AbbreviateFullnamePipe,
+        HighlightCommentPartPipe,
 
         // components
         TaAppTooltipV2Component,
@@ -158,17 +164,6 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public transformDate(date: string): void {
         this.commentCardsDataDropdown.createdAt =
             this.formatDatePipe.transform(date);
-    }
-
-    public abbreviateFullName(fullName: string): string {
-        const words = fullName.split(' ');
-        if (fullName.length > 19) {
-            if (words.length > 1) {
-                return `${words[0].charAt(0)}. ${words.slice(1).join(' ')}`;
-            }
-        } else {
-            return fullName;
-        }
     }
 
     public openEditComment(openClose: boolean): void {
@@ -262,29 +257,18 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     }
 
     public checkIfLoggedUserCommented(user: number): void {
-        const userLocalStorage = JSON.parse(
-            localStorage.getItem(CommentStringEnum.USER)
-        );
+        const userLocalStorage = UserHelper.getUserFromLocalStorage();
 
         this.loggedUserCommented = user === userLocalStorage.companyUserId;
 
         this.cdr.detectChanges();
     }
 
-    public higlitsPartOfCommentSearchValue(commentTitle: string): string {
-        return CardDropdownHelper.higlitsPartOfCommentSearchValue(
-            commentTitle,
-            this.commentHighlight,
-            this.sanitizer
-        );
-    }
-
-    public toogleComment(comment: Comment): void {
-        if (comment.isOpen) {
-            this.commentCardsDataDropdown = { ...comment, isOpen: false };
-        } else {
-            this.commentCardsDataDropdown = { ...comment, isOpen: true };
-        }
+    public toggleComment(comment: Comment): void {
+        this.commentCardsDataDropdown = {
+            ...comment,
+            isOpen: comment.isOpen,
+        };
     }
 
     private setCommentPlaceholder(): void {
@@ -394,7 +378,6 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         }, 100);
 
         this.commentDate = this.commentData.commentDate;
-
         this.isEdited = this.commentData.isEdited;
     }
 

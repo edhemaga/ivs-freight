@@ -2,29 +2,29 @@
     class="d-flex flex-column justify-content-center comments-search-container"
 >
     <div class="search-container">
-        <ng-container *ngIf="isDisplaySearch">
+        @if (isDisplaySearch) {
             <app-ta-search-v2
                 [isDetailsSearchLayout]="true"
                 [placeHolderText]="'Comment'"
                 (searchValueEmitter)="handleSearchValue($event)"
             ></app-ta-search-v2>
-        </ng-container>
+        }
     </div>
 
     <div class="d-flex flex-column justify-content-center comments-container">
-        <ng-container *ngIf="!isHeaderHidden">
+        @if (!isHeaderHidden) {
             <div
                 class="d-flex align-items-center justify-content-between comments-container-header"
                 [ngClass]="{ disabled: commentsData?.length === 1 }"
             >
-                <ng-container *ngIf="!lettersToHightlight; else showResultsCount">
+                @if (lettersToHighlight) {
+                    <p class="m-0 ta-font-bold">
+                        {{ commentsData.length }}
+                        {{ commentsData.length === 1 ? 'RESULT' : 'RESULTS' }}
+                    </p>
+                } @else {
                     <p class="m-0 ta-font-bold">SORT BY</p>
-                </ng-container>
-
-                <ng-template #showResultsCount>
-                    <p class="m-0 ta-font-bold">{{commentsData.length}} {{commentsData.length === 1 ? 'RESULT' : 'RESULTS'}} </p>
-                </ng-template>
-
+                }
                 <div class="d-flex align-items-center">
                     <span class="ta-font-medium"> Date </span>
 
@@ -39,17 +39,17 @@
                     ></svg-icon>
                 </div>
             </div>
-        </ng-container>
+        }
 
-        <ng-container *ngFor="let comment of commentsData; let i = index">
+        @for (comment of commentsData; let i = $index; track i) {
             <app-ta-comment
                 [isDetailsCommentLayout]="true"
                 [commentData]="comment"
                 [commentIndex]="i"
                 [isMe]="comment.isMe"
-                [commentHighlight]="lettersToHightlight"
+                [commentHighlight]="lettersToHighlight"
                 (btnActionEmitter)="handleCommentActionEmit($event)"
             ></app-ta-comment>
-        </ng-container>
+        }
     </div>
 </div>

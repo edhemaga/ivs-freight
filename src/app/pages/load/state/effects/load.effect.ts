@@ -13,11 +13,17 @@ import {
 } from 'rxjs';
 
 // services
-import { LoadService as LoadLocalService } from '@shared/services/load.service';
-import { LoadService, UpdateLoadStatusCommand } from 'appcoretruckassist';
-import { CommentsService } from '@shared/services/comments.service';
-import { ModalService } from '@shared/services/modal.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
+import {
+    LoadService,
+    UpdateCommentCommand,
+    UpdateLoadStatusCommand,
+} from 'appcoretruckassist';
+import {
+    LoadService as LoadLocalService,
+    ModalService,
+    CommentsService,
+    TruckassistTableService,
+} from '@shared/services';
 import { BrokerService } from '@pages/customer/services';
 
 // store
@@ -498,40 +504,11 @@ export class LoadEffect {
         )
     );
 
-    public createComment$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(LoadActions.createComment),
-            exhaustMap((action) => {
-                const { apiParam, metadata } = action || {};
-
-                return this.loadService.apiCreateComment(apiParam).pipe(
-                    exhaustMap((createResponse) => {
-                        const { id } = createResponse || {};
-
-                        return this.loadService.apiGetCommentById(id).pipe(
-                            map((getResponse) => {
-                                const { entityTypeId } = apiParam || {};
-
-                                return LoadActions.createCommentSuccess({
-                                    loadId: entityTypeId,
-                                    comment: getResponse,
-                                    metadata,
-                                });
-                            }),
-                            catchError((error) =>
-                                of(LoadActions.createCommentError({ error }))
-                            )
-                        );
-                    })
-                );
-            })
-        )
-    );
-
     public deleteComment$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.deleteCommentById),
             exhaustMap((action) => {
+                console.log(action);
                 const { apiParam, loadId } = action;
                 return this.commentService
                     .deleteCommentById(apiParam, loadId)
@@ -557,7 +534,29 @@ export class LoadEffect {
     );
 
     public updateComment$ = createEffect(() =>
-        this.actions$.pipe(ofType(LoadActions.comment))
+        this.actions$.pipe(
+            ofType(LoadActions.updateComment),
+            exhaustMap((action) => {
+                const { commentId, commentContent } = action.apiParam;
+                const commentDTO: UpdateCommentCommand = {
+                    id: commentId,
+                    commentContent,
+                };
+                return this.commentService.updateComment(commentDTO).pipe(
+                    tap(() => {
+                        return LoadActions.updateCommentSuccess({
+                            apiParam: {
+                                commentId,
+                                commentContent,
+                            },
+                        });
+                    }),
+                    catchError((error) => {
+                        return of(LoadActions.updateCommentError({ error }));
+                    })
+                );
+            })
+        )
     );
 
     public updateLoad$ = createEffect(() =>

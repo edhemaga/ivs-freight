@@ -1,4 +1,7 @@
 export enum eSharedString {
+    USER = 'User',
+    USER_LOWERCASE = 'user',
+
     TRUCK = 'truck',
     TRUCK_CAPITALIZED = 'Truck',
     TRAILER = 'trailer',

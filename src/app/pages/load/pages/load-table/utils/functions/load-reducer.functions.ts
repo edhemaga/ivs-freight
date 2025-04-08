@@ -29,10 +29,13 @@ import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models
 
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
+import { eDateTimeFormat, eSortDirection } from '@shared/enums';
 
-// Helpers
-import { FilterHelper } from '@shared/utils/helpers';
+// helpers
+import { FilterHelper, UserHelper } from '@shared/utils/helpers';
 import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers';
+import moment from 'moment';
+import { eStringPlaceholder } from 'ca-components';
 
 export const getLoadsOrTemplatesPayloadSuccessResult = function (
     state: ILoadState,
@@ -117,34 +120,39 @@ export const createLoadTemplateSuccessResult = function (
 };
 
 export const createCommentSuccessResult = function (
-    state: ILoadState,
-    loadId: number,
-    comment: CommentResponse,
-    metadata: ICreateCommentMetadata
+    state: ILoadState
 ): ILoadState {
-    const { data } = state || {};
-    const updatingEntity: ILoadGridItem = (<ILoadGridItem[]>data).find(
-        (_) => _.id === loadId
-    );
-    const updatingEntityIndex: number = (<ILoadGridItem[]>data).findIndex(
-        (_) => _.id === loadId
-    );
-    const { comments } = updatingEntity || {};
-    let _updatingEntity: ILoadGridItem = JSON.parse(
-        JSON.stringify(updatingEntity)
-    );
-    let _data: ILoadGridItem[] = JSON.parse(JSON.stringify(data));
+    const details = state?.details;
 
-    _updatingEntity.comments = [...comments, comment];
-    _updatingEntity.loadCommentsCount += 1;
-    _data.splice(updatingEntityIndex, 1, _updatingEntity);
+    const dateNow = moment().format(eDateTimeFormat.MM_DD_YY);
+    const { avatarFile, firstName, lastName, companyUserId } =
+        UserHelper.getUserFromLocalStorage();
 
-    const result: ILoadState = {
-        ...state,
-        data: _data,
+    const commentMetadata: CommentResponse = {
+        commentContent: eStringPlaceholder.EMPTY,
+        createdAt: dateNow,
+        companyUser: {
+            avatarFile,
+            fullName: `${firstName} ${lastName}`,
+            id: companyUserId,
+        },
     };
 
-    return result;
+    const comments = [
+        {
+            ...commentMetadata,
+        },
+        ...details.comments,
+    ];
+
+    return {
+        ...state,
+        details: {
+            ...details,
+            comments,
+            commentsCount: comments.length,
+        },
+    };
 };
 
 export const updateLoadAndTemplateSuccessResult = function (
@@ -391,26 +399,57 @@ export const getLoadModalDataSuccessResult = function (
     return result;
 };
 
-export const deleteCommentByIdSuccessResult = function (
+export const sortLoadComments = (
     state: ILoadState,
     loadId: number,
+    sortDirection: eSortDirection
+): ILoadState => {
+    const details: LoadResponse = state?.details;
+
+    if (!details?.comments?.length) return { ...state };
+
+    const dateFormat = eDateTimeFormat.YYYY_MM_DD_HH_MM_SS;
+
+    let comments: CommentResponse[] = [...details.comments];
+
+    comments?.sort((a, b) => {
+        if (!a?.createdAt || !b?.createdAt) return;
+        const dateA = moment(a?.createdAt, dateFormat).valueOf();
+        const dateB = moment(b?.createdAt, dateFormat).valueOf();
+        if (sortDirection === eSortDirection.ASC) return dateA - dateB;
+        else return dateB - dateA;
+    });
+
+    const modifiedState: ILoadState = {
+        ...state,
+        details: {
+            ...details,
+            comments,
+        },
+    };
+
+    return modifiedState;
+};
+
+export const deleteCommentByIdSuccessResult = function (
+    state: ILoadState,
     commentId: number
 ): ILoadState {
-    const { data } = state || {};
-    const updatingLoadIndex: number = data.findIndex((_) => _.id === loadId);
-    let _data: ILoadGridItem[] = JSON.parse(JSON.stringify(data));
-    let _updatingEntity: ILoadGridItem = _data[updatingLoadIndex];
-    const { comments } = _updatingEntity || {};
-    const updatingCommentIndex: number = comments.findIndex(
-        (_) => _.id === commentId
-    );
+    const details: LoadResponse = state?.details;
 
-    _updatingEntity.comments.splice(updatingCommentIndex, 1);
-    _updatingEntity.loadCommentsCount--;
+    if (!details?.comments?.length) return { ...state };
+
+    const comments = details.comments?.filter(
+        (comment) => comment.id !== commentId
+    );
 
     const result: ILoadState = {
         ...state,
-        data: _data,
+        details: {
+            ...details,
+            comments,
+            commentsCount: details.commentsCount - 1,
+        },
     };
 
     return result;
@@ -418,10 +457,44 @@ export const deleteCommentByIdSuccessResult = function (
 
 export const updateCommentSuccessResult = (
     state: ILoadState,
-    loadId: number,
     commentId: number,
     content: string
-) => {};
+) => {
+    const details: LoadResponse = state?.details;
+
+    if (!details?.comments?.length) return { ...state };
+
+    const comments: CommentResponse[] = [...details.comments];
+
+    let commentFoundIndex: number = 0;
+
+    const commentFound: CommentResponse = comments?.find(
+        (comment: CommentResponse, index: number) => {
+            if (comment.id === commentId) {
+                commentFoundIndex = index;
+                return comment;
+            }
+        }
+    );
+
+    if (!commentFound || commentFoundIndex < 0)
+        return {
+            ...state,
+        };
+
+    comments[commentFoundIndex] = {
+        ...commentFound,
+        commentContent: content,
+    };
+
+    return {
+        ...state,
+        details: {
+            ...details,
+            comments,
+        },
+    };
+};
 
 export const updateLoadStatusSignalRSuccess = function (
     state: ILoadState,

@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+
+// Third-party modules
+import { AngularSvgIconModule } from 'angular-svg-icon';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { TaCommentsSearchComponent } from '@shared/components/ta-comments-search/ta-comments-search.component';
@@ -8,11 +13,30 @@ import { TaCommentsSearchComponent } from '@shared/components/ta-comments-search
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Enums
-import { eGeneralActions } from '@shared/enums';
+import {
+    eGeneralActions,
+    eColor,
+    eDateTimeFormat,
+    eSortDirection,
+    eIconPath,
+} from '@shared/enums';
 
 // Models
 import { CommentData } from '@shared/models';
-import { takeUntil } from 'rxjs';
+import {
+    CommentService,
+    CreateCommentCommand,
+    SignInResponse,
+} from 'appcoretruckassist';
+import { ICreateCommentMetadata } from '@pages/load/pages/load-table/models';
+
+// helpers
+import moment from 'moment';
+import { UserHelper } from '@shared/utils/helpers';
+
+// pipes
+import { CreateLoadCommentsPipe } from '@shared/pipes';
+import { eStringPlaceholder } from 'ca-components';
 
 @Component({
     selector: 'app-load-details-additional',
@@ -20,109 +44,133 @@ import { takeUntil } from 'rxjs';
     styleUrl: './load-details-additional.component.scss',
     standalone: true,
     imports: [
-        // Modules
+        // modules
         CommonModule,
-
-        // Components
+        AngularSvgIconModule,
+        NgbModule,
+        // components
         TaCommentsSearchComponent,
+        // pipes
+        CreateLoadCommentsPipe,
     ],
 })
-export class LoadDetailsAdditionalComponent {
-    constructor(protected loadStoreService: LoadStoreService) {}
+export class LoadDetailsAdditionalComponent implements OnInit {
+    @Input() isAddNewComment: boolean;
+    @Input() isSearchComment: boolean;
+    @Input() isHeaderHidden: boolean = false;
 
-    // public handleCommentActionEmit(commentData: CommentData): void {
-    //     switch (commentData.btnType) {
-    //         case eGeneralActions.CANCEL:
-    //             if (!commentData.isEditCancel)
-    //                 this.comments.splice(commentData.commentIndex, 1);
+    @Output() commentsCountChanged = new EventEmitter<boolean>();
 
-    //             this.isCommenting = false;
+    private destroy$ = new Subject<void>();
 
-    //             break;
-    //         case eGeneralActions.CONFIRM:
-    //             this.comments[commentData.commentIndex] = {
-    //                 ...this.comments[commentData.commentIndex],
-    //                 commentContent: commentData.commentContent,
-    //                 commentDate: `${commentData.commentDate}, ${commentData.commentTime}`,
-    //                 isCommenting: false,
-    //                 isEdited: commentData.isEditConfirm,
-    //             };
+    public companyUser: SignInResponse;
 
-    //             this.editedCommentId = commentData.commentId;
+    // boolean flags
+    public isStatusHistoryDisplayed: boolean = false;
+    public isSearchActive: boolean = false;
 
-    //             this.isCommenting = false;
+    // enums
+    public eColor = eColor;
+    public eIconPath = eIconPath;
 
-    //             const commentContent =
-    //                 this.comments[commentData.commentIndex].commentContent;
+    // filter
+    public commentFilter: string = eStringPlaceholder.EMPTY;
 
-    //             if (commentData.isEditConfirm) {
-    //                 this.updateCommentById(
-    //                     this.editedCommentId,
-    //                     commentContent
-    //                 );
-    //             } else {
-    //                 this.createComment(
-    //                     commentContent,
-    //                     commentData.commentIndex
-    //                 );
-    //             }
+    constructor(
+        public loadStoreService: LoadStoreService,
+        public commentService: CommentService
+    ) {}
 
-    //             this.commentsCountChanged.emit(true);
+    public ngOnInit(): void {
+        this.getCompanyUser();
+    }
 
-    //             break;
-    //         case eGeneralActions.DELETE:
-    //             this.comments.splice(commentData.commentIndex, 1);
+    private getCompanyUser(): void {
+        this.companyUser = UserHelper.getUserFromLocalStorage();
+    }
 
-    //             this.deletedCommentId = commentData.commentId;
+    public handleCommentActionEmit(
+        commentData: CommentData,
+        loadId: number
+    ): void {
+        console.log(commentData.btnType);
+        switch (commentData.btnType) {
+            case eGeneralActions.CANCEL:
+                break;
+            case eGeneralActions.CONFIRM:
+                const comment = {
+                    ...commentData,
+                    commentDate: `${commentData.commentDate}, ${commentData.commentTime}`,
+                    isCommenting: false,
+                    isEdited: commentData.isEditConfirm,
+                };
+                if (comment.isEdited)
+                    this.loadStoreService.dispatchUpdateComment({ ...comment });
+                else {
+                    const newComment: CreateCommentCommand = {
+                        entityTypeCommentId: 2,
+                        entityTypeId: loadId,
+                        commentContent: commentData.commentContent,
+                    };
 
-    //             this.isCommenting = false;
+                    this.commentService
+                        .apiCommentPost(newComment)
+                        .pipe(takeUntil(this.destroy$))
+                        .subscribe();
+                }
+                break;
+            case eGeneralActions.DELETE:
+                this.loadStoreService.dispatchDeleteCommentById(
+                    commentData.commentId,
+                    loadId
+                );
+                break;
+            default:
+                break;
+        }
+    }
 
-    //             this.deleteCommentById(this.deletedCommentId);
+    public handleSortActionEmit(
+        sortDirection: eSortDirection,
+        loadId: number
+    ): void {
+        if (!sortDirection) return;
+        this.loadStoreService.sortLoadComments(loadId, sortDirection);
+    }
 
-    //             this.commentsCountChanged.emit(true);
+    public handleSearchHighlightActionEmit(searchHighlightValue: string): void {
+        this.commentFilter = searchHighlightValue;
+    }
 
-    //             break;
-    //         default:
-    //             break;
-    //     }
-    // }
+    public toggleIsSearchActive(): void {
+        this.isSearchActive = !this.isSearchActive;
+    }
 
-    // private createComment(commentContent: string, commentIndex: number): void {
+    public addNewComment(loadId: number): void {
+        const comment: CreateCommentCommand = {
+            entityTypeCommentId: 2,
+            entityTypeId: loadId,
+            commentContent: eStringPlaceholder.EMPTY,
+        };
+        const dateNow = moment().format(eDateTimeFormat.MM_DD_YY);
+        const { avatarFile, firstName, lastName, companyUserId } =
+            this.companyUser;
 
-    //     this.loadStoreService.dispatchCreateComment()
-    //     const comment = {
-    //         entityTypeCommentId: 2,
-    //         entityTypeId: this.load?.id,
-    //         commentContent: commentContent,
-    //     };
+        const commentMetadata: ICreateCommentMetadata = {
+            cardId: loadId,
+            date: dateNow,
+            createdAt: dateNow,
+            companyUser: {
+                avatar: avatarFile.url,
+                fullName: `${firstName} ${lastName}`,
+                id: companyUserId,
+            },
+        };
+        this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
+    }
 
-    //     this.commentsService
-    //         .createComment(comment, this.load?.id)
-    //         .pipe(takeUntil(this.destroy$))
-    //         .subscribe((res) => {
-    //             this.comments[commentIndex] = {
-    //                 ...this.comments[commentIndex],
-    //                 commentId: res.id,
-    //             };
-    //         });
-    // }
-
-    // private updateCommentById(id: number, commentContent: string): void {
-    //     const comment = {
-    //         id,
-    //         commentContent,
-    //     };
-
-    //     this.commentsService
-    //         .updateComment(comment, this.load?.id)
-    //         .pipe(takeUntil(this.destroy$))
-    //         .subscribe();
-    // }
-
-    // private deleteCommentById(id: number): void {
-    //     this.commentsService
-    //         .deleteCommentById(id, this.load?.id)
-    //         .pipe(takeUntil(this.destroy$))
-    //         .subscribe();
-    // }
+    ngOnDestroy() {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 }
