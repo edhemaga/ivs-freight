@@ -110,7 +110,6 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         commentData: CommentData,
         loadId: number
     ): void {
-        console.log(commentData.btnType);
         switch (commentData.btnType) {
             case eGeneralActions.CANCEL:
                 break;
@@ -122,7 +121,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                     isEdited: commentData.isEditConfirm,
                 };
                 if (comment.isEdited)
-                    this.loadStoreService.dispatchUpdateComment({ ...comment });
+                    this.loadStoreService.dispatchUpdateComment(comment);
                 else {
                     const newComment: CreateCommentCommand = {
                         entityTypeCommentId: 2,

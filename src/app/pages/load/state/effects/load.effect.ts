@@ -7,6 +7,7 @@ import {
     exhaustMap,
     filter,
     map,
+    mergeMap,
     of,
     tap,
     withLatestFrom,
@@ -539,7 +540,7 @@ export class LoadEffect {
         this.actions$.pipe(
             ofType(LoadActions.updateComment),
             exhaustMap((action) => {
-                const { commentId, commentContent } = action.apiParam;
+                const { commentId, commentContent } = action?.apiParam;
                 const commentDTO: UpdateCommentCommand = {
                     id: commentId,
                     commentContent,
@@ -774,11 +775,12 @@ export class LoadEffect {
         )
     );
 
-    public deleteCommentById$ = createEffect(() =>
-        this.actions$.pipe(
+    public deleteCommentById$ = createEffect(() => {
+        return this.actions$.pipe(
             ofType(LoadActions.deleteCommentById),
-            exhaustMap((action) => {
-                const { apiParam, loadId } = action || {};
+            mergeMap((action) => {
+                console.log(action);
+                const { apiParam, loadId } = action;
 
                 return this.commentService.deleteCommentById(apiParam).pipe(
                     map(() => {
@@ -792,8 +794,8 @@ export class LoadEffect {
                     )
                 );
             })
-        )
-    );
+        );
+    });
 
     public getDispatcherList$ = createEffect(() =>
         this.actions$.pipe(

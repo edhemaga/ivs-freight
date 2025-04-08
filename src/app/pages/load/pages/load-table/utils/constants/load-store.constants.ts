@@ -127,9 +127,9 @@ export class LoadStoreConstants {
     static ACTION_UPDATE_LOAD_AND_REVERT_STATUS_SUCCESS = `${this.COMPONENT_NAME_KEY} Update Load and Revert Status Success`;
     static ACTION_UPDATE_LOAD_AND_REVERT_STATUS_ERROR = `${this.COMPONENT_NAME_KEY} Update Load and Revert Status Error`;
 
-    static ACTION_DELETE_COMMENT_BY_ID = `${this.COMPONENT_NAME_KEY} Delete Comment By Id`;
-    static ACTION_DELETE_COMMENT_BY_ID_SUCCESS = `${this.COMPONENT_NAME_KEY} Delete Comment By Id Success`;
-    static ACTION_DELETE_COMMENT_BY_ID_ERROR = `${this.COMPONENT_NAME_KEY} Delete Comment By Id Error`;
+    static ACTION_DELETE_COMMENT_BY_ID = `${this.COMPONENT_NAME_KEY} Delete Load Comment By Id`;
+    static ACTION_DELETE_COMMENT_BY_ID_SUCCESS = `${this.COMPONENT_NAME_KEY} Delete Load Comment By Id Success`;
+    static ACTION_DELETE_COMMENT_BY_ID_ERROR = `${this.COMPONENT_NAME_KEY} Delete Load Comment By Id Error`;
 
     static ACTION_DELETE_LOAD_TEMPLATE_BY_ID = `${this.COMPONENT_NAME_KEY} Delete Load Template By Id`;
     static ACTION_DELETE_LOAD_TEMPLATE_BY_ID_SUCCESS = `${this.COMPONENT_NAME_KEY} Delete Load Template By Id Success`;

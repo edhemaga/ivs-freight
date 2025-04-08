@@ -60,7 +60,7 @@ export class SettingsLocationConfig {
                 danger: true,
                 show: true,
                 redIcon: true,
-                iconName: eGeneralActions.DELETE,
+                iconName: eGeneralActions.DELETE_LOWERCASE,
             },
         ],
         export: true,

@@ -541,11 +541,11 @@ export const updateComment = createAction(
 );
 
 export const updateCommentSuccess = createAction(
-    LoadStoreConstants.ACTION_UPDATE_COMMENT,
+    LoadStoreConstants.ACTION_UPDATE_COMMENT_SUCCESS,
     props<{ apiParam: { commentId: number; commentContent: string } }>()
 );
 export const updateCommentError = createAction(
-    LoadStoreConstants.ACTION_UPDATE_COMMENT,
+    LoadStoreConstants.ACTION_UPDATE_COMMENT_ERROR,
     props<{ error: Error }>()
 );
 

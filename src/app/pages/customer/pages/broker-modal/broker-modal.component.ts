@@ -774,7 +774,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.brokerForm
                     .get(eFileFormControls.FILES)
                     .patchValue(
@@ -1286,7 +1286,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.deleteReview(true, review);
                 break;
             case eGeneralActions.ADD:

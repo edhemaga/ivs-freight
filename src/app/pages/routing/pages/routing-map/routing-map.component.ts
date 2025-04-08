@@ -657,16 +657,16 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
         },
         {
             title: 'Delete',
-            name: eGeneralActions.DELETE,
+            name: eGeneralActions.DELETE_LOWERCASE,
             type: 'route',
             text: 'Are you sure you want to delete this Route?',
             class: 'delete-text',
-            contentType: eGeneralActions.DELETE,
+            contentType: eGeneralActions.DELETE_LOWERCASE,
             show: true,
             danger: true,
             svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
             redIcon: true,
-            iconName: eGeneralActions.DELETE,
+            iconName: eGeneralActions.DELETE_LOWERCASE,
         },
     ];
 
@@ -891,7 +891,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case eGeneralActions.DELETE:
+                        case eGeneralActions.DELETE_LOWERCASE:
                             if (res.template === 'route') {
                                 this.showHideRouteLine(res.data, true);
 
@@ -1887,7 +1887,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
             this.reverseRouteStops(currentId);
         } else if (actionName === 'clear-route-stops') {
             this.clearRouteStops(currentId);
-        } else if (actionName === eGeneralActions.DELETE) {
+        } else if (actionName === eGeneralActions.DELETE_LOWERCASE) {
             let route = this.getRouteById(currentId);
 
             var routeObj = {
@@ -1902,7 +1902,7 @@ export class RoutingMapComponent implements OnInit, OnDestroy {
                 {
                     ...routeObj,
                     template: 'route',
-                    type: eGeneralActions.DELETE,
+                    type: eGeneralActions.DELETE_LOWERCASE,
                 }
             );
         } else if (actionName === 'open-settings') {

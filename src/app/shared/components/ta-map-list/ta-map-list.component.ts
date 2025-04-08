@@ -109,7 +109,7 @@ export class TaMapListComponent
             this.checkResizeButton();
 
             this.mapListContent?.map((data) => {
-                if (data.actionAnimation == eGeneralActions.DELETE) {
+                if (data.actionAnimation == eGeneralActions.DELETE_LOWERCASE) {
                     this.deleteAnimation(data.id);
                 }
             });

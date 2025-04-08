@@ -46,21 +46,7 @@
         </svg-icon>
     </div>
 </div>
-<div
-    class="d-flex flex-column p-x-6 p-y-6 justify-content-center comments-container"
-    [ngStyle]="{
-        background: isHeaderHidden ? eColor.TRANSPARENT : eColor.WHITE,
-    }"
->
-    <app-ta-comments-search
-        [commentsData]="comments | createLoadComment: commentFilter"
-        [isDisplaySearch]="isSearchActive"
-        [isHeaderHidden]="isHeaderHidden"
-        (btnActionEmitter)="handleCommentActionEmit($event, load.id)"
-        (btnSortEmitter)="handleSortActionEmit($event, load.id)"
-        (searchHighlightEmitter)="handleSearchHighlightActionEmit($event)"
-    ></app-ta-comments-search>
-</div>
+
 <div
     class="d-flex flex-column p-x-6 p-y-6 justify-content-center comments-container"
     [ngStyle]="{

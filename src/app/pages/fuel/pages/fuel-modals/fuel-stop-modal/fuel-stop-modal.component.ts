@@ -259,7 +259,7 @@ export class FuelStopModalComponent
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.fuelStopForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

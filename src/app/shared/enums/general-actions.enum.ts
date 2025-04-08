@@ -1,7 +1,8 @@
 export enum eGeneralActions {
     ADD = 'add',
     UPDATE = 'update',
-    DELETE = 'delete',
+    DELETE_LOWERCASE = 'delete',
+    DELETE = 'Delete',
     EDIT = 'edit',
     CANCEL = 'cancel',
     CANCEL_CAPITALIZED = 'Cancel',

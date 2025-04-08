@@ -267,7 +267,6 @@ export const loadReducer = createReducer(
             )
     ),
     on(LoadActions.updateLoadAndRevertStatus, (state) => ({ ...state })),
-
     on(LoadActions.saveNote, (state, { entityId, value }) =>
         Functions.saveNoteResult(state, entityId, value)
     ),
@@ -280,10 +279,19 @@ export const loadReducer = createReducer(
     ),
     on(LoadActions.deleteCommentByIdError, (state) => ({ ...state })),
     on(LoadActions.deleteLoadTemplateById, (state) => ({ ...state })),
+
+    on(LoadActions.updateComment, (state) => ({ ...state })),
+    on(LoadActions.updateCommentSuccess, (state, { apiParam }) =>
+        Functions.updateCommentSuccessResult(
+            state,
+            apiParam.commentId,
+            apiParam.commentContent
+        )
+    ),
+    on(LoadActions.updateCommentError, (state) => ({ ...state })),
+
     // TODO: Do filtering for success
     on(LoadActions.deleteLoadTemplateByIdSuccess, (state) => ({ ...state })),
-    on(LoadActions.deleteCommentByIdError, (state) => ({ ...state })),
-
     on(LoadActions.deleteLoadById, (state) => ({ ...state })),
     on(LoadActions.deleteLoadByIdSuccess, (state, { loadId }) =>
         Functions.deleteLoadByIdSuccessResult(state, loadId)

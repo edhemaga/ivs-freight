@@ -60,7 +60,7 @@ export class LoadDetailsHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                     disabled: LoadDetailsHelper.enableDeleteButton(
                         load.statusType.name
                     ),

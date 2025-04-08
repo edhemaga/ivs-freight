@@ -112,7 +112,7 @@ export class TaUserReviewComponent implements OnChanges {
                 );
                 break;
             }
-            case eGeneralActions.DELETE: {
+            case eGeneralActions.DELETE_LOWERCASE: {
                 this.reviewData = this.reviewData.filter(
                     (item) => item.id !== review.id
                 );

@@ -70,7 +70,7 @@ export class SettingsInsurancepolicyComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case eGeneralActions.DELETE:
+                        case eGeneralActions.DELETE_LOWERCASE:
                             if (res.template === 'insurance')
                                 this.deleteInsurancePolicy(res.id);
 
@@ -150,7 +150,7 @@ export class SettingsInsurancepolicyComponent
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                 },
             ],
             export: true,
@@ -174,7 +174,7 @@ export class SettingsInsurancepolicyComponent
                     {
                         id: insurance.id,
                         template: 'insurance',
-                        type: eGeneralActions.DELETE,
+                        type: eGeneralActions.DELETE_LOWERCASE,
                         image: false,
                     }
                 );

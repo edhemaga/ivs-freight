@@ -418,7 +418,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
     public onModalAction(action: string): void {
         if (this.trailerForm.valid && this.isFormDirty)
             this.activeAction = action;
-        
+
         if (action === TaModalActionEnum.CLOSE) {
             if (this.editData?.canOpenModal)
                 switch (this.editData?.key) {
@@ -993,7 +993,7 @@ export class TrailerModalComponent implements OnInit, OnDestroy {
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.trailerForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

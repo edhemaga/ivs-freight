@@ -146,7 +146,7 @@ export class SettingsIntegrationComponent
                     type: 'integrations',
                     text: 'Are you sure you want to delete integration(s)?',
                     class: 'delete-text',
-                    contentType: eGeneralActions.DELETE,
+                    contentType: eGeneralActions.DELETE_LOWERCASE,
                 },
             ],
         };

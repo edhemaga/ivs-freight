@@ -156,9 +156,9 @@ export class LoadStoreService {
         select(loadDetailsSelector)
     );
 
-    public loadStatusHistoryReversedSelector$: Observable<LoadStatusHistoryResponse[]> = this.store.pipe(
-        select(loadStatusHistoryReversedSelector)
-    );
+    public loadStatusHistoryReversedSelector$: Observable<
+        LoadStatusHistoryResponse[]
+    > = this.store.pipe(select(loadStatusHistoryReversedSelector));
 
     // TODO:
     public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
@@ -395,7 +395,7 @@ export class LoadStoreService {
         else this.dispatchDeleteBulkLoads(ids);
     }
 
-    public dsipatchCanDeleteSelectedDataRows(
+    public dispatchCanDeleteSelectedDataRows(
         canDeleteSelectedDataRows: boolean,
         ids: number[]
     ): void {
@@ -714,7 +714,7 @@ export class LoadStoreService {
 
     public setLoadDetailsMapData(loadMapLocations: LoadStopResponse[]): void {
         if (!loadMapLocations) return;
-        
+
         const mapLocations = JSON.stringify(
             loadMapLocations.map(({ shipper: { longitude, latitude } }) => ({
                 longitude,

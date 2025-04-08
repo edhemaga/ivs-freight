@@ -185,11 +185,11 @@ export class AccidentTableComponent
                 },
                 {
                     title: 'Delete',
-                    name: eGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE_LOWERCASE,
                     type: 'safety',
                     text: 'Are you sure you want to delete accident?',
                     class: 'delete-text',
-                    contentType: eGeneralActions.DELETE,
+                    contentType: eGeneralActions.DELETE_LOWERCASE,
                     show: true,
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
