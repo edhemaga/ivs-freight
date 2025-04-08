@@ -24,6 +24,8 @@ import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.com
 import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
 import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 import { MilesDetailsResolver } from '@pages/miles/resolvers/miles-details.resolver';
+import { MilesCardsResolver } from '@pages/miles/resolvers/miles-card.resolver';
+import { MilesListResolver } from '@pages/miles/resolvers/miles-list.resolver';
 
 export class PageRoutes {
     static routes = [
@@ -112,14 +114,17 @@ export class PageRoutes {
                 {
                     path: '',
                     component: MilesTableComponent,
+                    resolve: { miles: MilesListResolver },
                 },
                 {
                     path: MILES_ROUTING.CARD,
                     component: MilesCardComponent,
+                    resolve: { miles: MilesCardsResolver },
                 },
                 {
                     path: MILES_ROUTING.LIST,
                     component: MilesTableComponent,
+                    resolve: { miles: MilesListResolver },
                 },
                 {
                     path: `${MILES_ROUTING.MAP}/:id`,

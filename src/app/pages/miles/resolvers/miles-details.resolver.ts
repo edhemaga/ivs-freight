@@ -1,12 +1,16 @@
 // External Libraries
 import { Injectable } from '@angular/core';
-import { Observable, forkJoin } from 'rxjs';
+import { forkJoin, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { ActivatedRouteSnapshot } from '@angular/router';
 
 // Feature Services
 import { MilesStoreService } from '@pages/miles/state/services/miles-store.service';
-import { MilesByUnitListResponse, MilesService } from 'appcoretruckassist';
-import { ActivatedRouteSnapshot } from '@angular/router';
+
+// Models
+import { MilesService } from 'appcoretruckassist';
+
+// Enums
 import { eActiveViewMode } from '@shared/enums';
 
 @Injectable({
@@ -17,7 +21,7 @@ export class MilesDetailsResolver {
         private milesStoreService: MilesService,
         private milesService: MilesStoreService
     ) {}
-    resolve(route: ActivatedRouteSnapshot): any {
+    resolve(route: ActivatedRouteSnapshot): Observable<void> {
         const id = route.paramMap.get('id');
 
         const states = this.milesStoreService.apiMilesStateFilterGet();
