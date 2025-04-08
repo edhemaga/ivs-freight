@@ -17,6 +17,7 @@ import {
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
+import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
@@ -108,8 +109,10 @@ export class MilesComponent
             });
     }
 
-    private toggleToolbarDropdownMenuColumnsActive(): void {
-        this.milesStoreService.dispatchToggleToolbarDropdownMenuColumnsActive();
+    private setToolbarDropdownMenuColumnsActive(isActive: boolean): void {
+        this.milesStoreService.dispatchSetToolbarDropdownMenuColumnsActive(
+            isActive
+        );
     }
 
     private handleTableEmptyImportListClick(): void {
@@ -203,10 +206,17 @@ export class MilesComponent
 
         switch (type) {
             case eDropdownMenuColumns.OPEN_TYPE:
+                break;
             case eDropdownMenuColumns.CLOSE_TYPE:
+                this.setToolbarDropdownMenuColumnsActive(false);
+
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
-                this.toggleToolbarDropdownMenuColumnsActive();
+                this.setToolbarDropdownMenuColumnsActive(true);
+
+                break;
+            case eDropdownMenuColumns.COLUMNS_BACK_TYPE:
+                this.setToolbarDropdownMenuColumnsActive(false);
 
                 break;
             case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
@@ -216,15 +226,19 @@ export class MilesComponent
                 break;
             case eDropdownMenuColumns.RESET_TABLE_TYPE:
                 this.openResetConfirmationModal();
+
                 break;
             case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
                 this.handleResetTable();
+
                 break;
             case eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE:
                 this.handleFlipAllCards();
+
                 break;
             case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
                 this.milesCardComponent.openColumnsModal();
+
                 break;
             default:
                 this.toggleColumnVisibility(type, isActive);

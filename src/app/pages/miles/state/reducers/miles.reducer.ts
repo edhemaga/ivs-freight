@@ -159,11 +159,6 @@ export const milesReducer = createReducer(
     on(MilesAction.toggleCardFlipViewMode, (state) =>
         Functions.toggleCardFlipViewMode(state)
     ),
-
-    on(MilesAction.toggleToolbarDropdownMenuColumnsActive, (state) =>
-        Functions.toggleToolbarDropdownMenuColumnsActive(state)
-    ),
-
     // #region Miles minimal list
     on(MilesAction.setInitalMinimalList, (state, { list, text }) =>
         Functions.setInitalMinimalList(state, list, text)
@@ -174,5 +169,8 @@ export const milesReducer = createReducer(
     on(MilesAction.getMinimalListError, (state) => ({
         ...state,
         isMinimalListLoading: false,
-    }))
+    })),
+    on(MilesAction.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
+        Functions.setToolbarDropdownMenuColumnsActive(state, isActive)
+    )
 );

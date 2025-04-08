@@ -250,9 +250,12 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchToggleToolbarDropdownMenuColumnsActive(): void {
+    public dispatchSetToolbarDropdownMenuColumnsActive(
+        isActive: boolean
+    ): void {
         this.store.dispatch({
-            type: MilesStoreConstants.ACTION_TOGGLE_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+            type: MilesStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+            isActive,
         });
     }
     public getNewPage(): void {

@@ -120,8 +120,9 @@ export const toggleCardFlipViewMode = createAction(
     MilesStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
 );
 
-export const toggleToolbarDropdownMenuColumnsActive = createAction(
-    MilesStoreConstants.ACTION_TOGGLE_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE
+export const setToolbarDropdownMenuColumnsActive = createAction(
+    MilesStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+    props<{ isActive: boolean }>()
 );
 
 // Minimal list

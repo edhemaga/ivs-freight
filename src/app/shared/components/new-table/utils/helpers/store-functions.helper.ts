@@ -114,4 +114,34 @@ export class StoreFunctionsHelper {
             sortDirection: updatedSortDirection,
         };
     }
+
+    static updateColumnWidth(
+        columns: ITableColumn[],
+        columnId: number,
+        newWidth: number
+    ): ITableColumn[] {
+        return columns.map((col) => {
+            // if this column contains nested columns, recursively call updateColumnWidth
+
+            if (col.columns)
+                return {
+                    ...col,
+                    columns: this.updateColumnWidth(
+                        col.columns,
+                        columnId,
+                        newWidth
+                    ), // recursive call
+                };
+
+            // if column id matches, update the width
+
+            if (col.id === columnId)
+                return {
+                    ...col,
+                    width: newWidth,
+                };
+
+            return col;
+        });
+    }
 }

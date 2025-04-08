@@ -23,6 +23,7 @@ import {
     TableColumnClassPipe,
     TableGroupClassPipe,
 } from '@shared/components/new-table/pipes';
+import { TableGroupLabelIndexPipe } from '@shared/components/new-table/pipes/table-group-label.pipe';
 
 // enums
 import { ePosition, eUnit } from 'ca-components';
@@ -55,6 +56,7 @@ import {
         // pipes
         TableColumnClassPipe,
         TableGroupClassPipe,
+        TableGroupLabelIndexPipe,
 
         // directives
         ResizableColumnDirective,
@@ -105,8 +107,6 @@ export class NewTableComponent<T> {
         );
 
         this.mainColumns = columns.filter((col) => !col.pinned);
-
-        console.log('this.mainColumns', this.mainColumns);
     }
 
     public handlePinColumnClick(column: ITableColumn): void {

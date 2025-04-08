@@ -251,14 +251,14 @@ export function resetTable(state: IMilesState): IMilesState {
         ...state,
         columns: MilesTableColumnsConfig.columnsConfig,
         tableSettings: {
-            isTableLocked: false,
+            isTableLocked: true,
             sortKey: null,
             sortDirection: null,
         },
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
-                false,
+                true,
                 cardFlipViewMode,
                 isToolbarDropdownMenuColumnsActive
             ),
@@ -291,29 +291,24 @@ export function toggleCardFlipViewMode(state: IMilesState): IMilesState {
     };
 }
 
-export function toggleToolbarDropdownMenuColumnsActive(
-    state: IMilesState
+export function setToolbarDropdownMenuColumnsActive(
+    state: IMilesState,
+    isActive: boolean
 ): IMilesState {
-    const {
-        cardFlipViewMode,
-        activeViewMode,
-        tableSettings,
-        isToolbarDropdownMenuColumnsActive,
-        columns,
-    } = state;
+    const { cardFlipViewMode, activeViewMode, tableSettings, columns } = state;
 
     const toolbarDropdownColumns =
         DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(columns);
 
     return {
         ...state,
-        isToolbarDropdownMenuColumnsActive: !isToolbarDropdownMenuColumnsActive,
+        isToolbarDropdownMenuColumnsActive: isActive,
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
                 tableSettings.isTableLocked,
                 cardFlipViewMode,
-                !isToolbarDropdownMenuColumnsActive,
+                isActive,
                 toolbarDropdownColumns
             ),
     };
@@ -326,33 +321,11 @@ export function tableResizeChange(
     const { columns } = state;
     const { id, newWidth } = resizeAction;
 
-    function updateColumnWidth(
-        columns: ITableColumn[],
-        columnId: number,
-        newWidth: number
-    ): ITableColumn[] {
-        return columns.map((col) => {
-            // if this column contains nested columns, recursively call updateColumnWidth
-
-            if (col.columns)
-                return {
-                    ...col,
-                    columns: updateColumnWidth(col.columns, columnId, newWidth), // recursive call
-                };
-
-            // if column id matches, update the width
-
-            if (col.id === columnId)
-                return {
-                    ...col,
-                    width: newWidth,
-                };
-
-            return col;
-        });
-    }
-
-    const resizedColumns = updateColumnWidth(columns, id, newWidth);
+    const resizedColumns = StoreFunctionsHelper.updateColumnWidth(
+        columns,
+        id,
+        newWidth
+    );
 
     return {
         ...state,
