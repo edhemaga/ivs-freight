@@ -5,7 +5,7 @@ import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 // enums
 import { eMileTabs } from '@pages/miles/enums';
-import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // models
 import {

@@ -51,8 +51,7 @@ import { MilesHelper } from '@pages/miles/utils/helpers';
 import { eActiveViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
-// intefaces
-import { IMilesModel } from '@pages/miles/interface';
+// constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
 
 @Injectable()
