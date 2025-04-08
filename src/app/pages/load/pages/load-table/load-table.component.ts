@@ -746,6 +746,7 @@ export class LoadTableComponent
 
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
+            case eDropdownMenuColumns.COLUMNS_BACK_TYPE:
                 this.updateToolbarDropdownMenuContentColumnsAction();
 
                 break;
