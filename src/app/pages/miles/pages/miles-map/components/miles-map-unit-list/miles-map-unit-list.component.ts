@@ -28,16 +28,19 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
-import { CaInputComponent, CaDetailsTitleCardComponent } from 'ca-components';
+import {
+    CaInputComponent,
+    CaDetailsTitleCardComponent,
+    eStringPlaceholder,
+    eGeneralActions,
+    ePosition,
+} from 'ca-components';
 
 // Enums
 import { ArrowActionsStringEnum } from '@shared/enums';
 
 // Const
 import { MilesStopsTable } from '@pages/miles/utils/constants';
-
-// Interface
-import { IMilesModel, IMilesState } from '@pages/miles/interface';
 
 @Component({
     selector: 'app-miles-map-unit-list',
@@ -103,9 +106,11 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public onScroll(): void {
         const element = this.stopListViewport.nativeElement;
         const scrollOffset = element.scrollHeight - element.scrollTop;
-        const threshold = 100;
 
-        if (scrollOffset <= element.clientHeight + threshold) {
+        if (
+            scrollOffset <=
+            element.clientHeight + MilesStopsTable.BOTTOM_SCROLL_THRESHOLD
+        ) {
             this.milesStoreService.loadNextStopsPage();
         }
     }
@@ -136,15 +141,16 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     }
     public onMinimalListScroll(): void {
         const viewport = this.minimalListViewport;
-        const scrollOffset = viewport.measureScrollOffset('bottom');
-        const threshold = 100;
-        if (scrollOffset < threshold) {
+        const scrollOffset = viewport.measureScrollOffset(ePosition.BOTTOM);
+        if (scrollOffset < MilesStopsTable.BOTTOM_SCROLL_THRESHOLD) {
             this.milesStoreService.loadNextMinimalListPage();
         }
     }
 
     public onClearInputEvent(): void {
-        this.searchForm.get('search').patchValue('');
+        this.searchForm
+            .get(eGeneralActions.SEARCH)
+            .patchValue(eStringPlaceholder.EMPTY);
     }
 
     private manageScrollDebounce(): void {
@@ -168,7 +174,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     private onSeachFieldChange(): void {
         this.searchForm
-            .get('search')
+            .get(eGeneralActions.SEARCH)
             ?.valueChanges.pipe(debounceTime(300))
             .subscribe((value) => {
                 this.milesStoreService.dispatchSearchInputChanged(value);

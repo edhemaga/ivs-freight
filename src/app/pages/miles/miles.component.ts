@@ -86,10 +86,10 @@ export class MilesComponent
     public firstUnit: IMilesModel;
 
     constructor(
-        public milesStoreService: MilesStoreService,
         protected modalService: ModalService,
         protected tableService: TruckassistTableService,
         protected confirmationResetService: ConfirmationResetService,
+        public milesStoreService: MilesStoreService,
         public router: Router
     ) {
         super();
@@ -177,7 +177,7 @@ export class MilesComponent
         }
     }
 
-    private redirectUserToNewView(mode: eMileTabs) {
+    private redirectUserToNewView(mode: eMileTabs): void {
         this.milesStoreService.dispatchSetActiveViewMode(eActiveViewMode[mode]);
 
         if (mode === eActiveViewMode[eActiveViewMode.Map]) {

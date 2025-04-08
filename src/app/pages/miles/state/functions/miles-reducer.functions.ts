@@ -344,14 +344,14 @@ export function setInitalMinimalList(
     text: string
 ): IMilesState {
     const data = list.pagination?.data ?? [];
-    const count = list.pagination?.count ?? 0;
+    const totalCount = list.pagination?.count ?? 0;
 
     return {
         ...state,
         minimalList: {
-            data: data,
+            data,
             currentPage: 1,
-            totalCount: count,
+            totalCount,
             searchString: text,
         },
     };
@@ -362,7 +362,7 @@ export function appendToMinimalList(
     list: MilesByUnitMinimalListResponse
 ): IMilesState {
     const newData = list.pagination?.data ?? [];
-    const count = list.pagination?.count ?? state.minimalList.totalCount;
+    const totalCount = list.pagination?.count ?? state.minimalList.totalCount;
 
     return {
         ...state,
@@ -370,7 +370,7 @@ export function appendToMinimalList(
             ...state.minimalList,
             data: [...state.minimalList.data, ...newData],
             currentPage: state.minimalList.currentPage + 1,
-            totalCount: count,
+            totalCount,
         },
     };
 }

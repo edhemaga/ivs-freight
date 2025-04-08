@@ -264,7 +264,7 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchSearchMinimalUnitList(text: string) {
+    public dispatchSearchMinimalUnitList(text: string): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SEARCH_MINIMAL_UNIT_LIST,
             text,

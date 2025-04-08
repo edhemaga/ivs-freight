@@ -1,7 +1,6 @@
 @let details = milesStoreService.detailsSelector$ | async;
 @let stops = milesStoreService.stopsSelector$ | async;
 @let minimalList = milesStoreService.minimalListSelector$ | async;
-<!-- @let pagination = milesStoreService.unitsPaginationSelector$ | async; -->
 @let isPreviousButtonDisabled = true;
 @let isNextButtonDisabled = true;
 
@@ -36,9 +35,9 @@
                     <ng-template #titleDropdown>
                         <cdk-virtual-scroll-viewport
                             #minimalListViewport
-                            (scroll)="onMinimalListScroll()"
                             [itemSize]="26"
                             style="height: 190px"
+                            (scroll)="onMinimalListScroll()"
                         >
                             <div *cdkVirtualFor="let unit of minimalList">
                                 <ng-container
@@ -104,15 +103,16 @@
 
                 <div class="divider mt-1 mb-1"></div>
             </div>
-
-            <div
-                #stopListViewport
-                class="gap-1 d-flex flex-column scrollable-element overflow-scroll p-r-4"
-                [ngStyle]="{
+            @let listHeight =
+                {
                     height: isStopListHeightExpanded
                         ? 'calc(100vh - 188px)'
                         : '396px',
-                }"
+                };
+            <div
+                #stopListViewport
+                class="gap-1 d-flex flex-column scrollable-element overflow-scroll p-r-4"
+                [ngStyle]="listHeight"
                 (scroll)="onScrollEvent()"
             >
                 @for (stop of stops; track stop.id; let index = $index) {
@@ -149,13 +149,13 @@
 }
 
 <ng-template #stopRows let-stop="stop" let-index="index">
+    @let widthClass =
+        isStopListWidthExpanded
+            ? 'stops-container-large'
+            : 'stops-container-small';
     <div
         class="stops-container h-26 br-2 background-white background-hover-light-grey d-grid align-items-center p-r-6 gap-1 c-pointer m-b-2"
-        [ngClass]="
-            isStopListWidthExpanded
-                ? 'stops-container-large'
-                : 'stops-container-small'
-        "
+        [ngClass]="widthClass"
     >
         <div class="text-color-muted text-size-11 text-center">
             {{ index + 1 }}
@@ -232,12 +232,13 @@
             </span>
 
             <div class="w-42 h-18 d-flex">
+                @let truckPath =
+                    sharedSvgRoutes.TRUCK_PATH_BASE +
+                    unit.truck.truckType.logoName;
+
                 <svg-icon
                     class="svg-size-42-18 d-flex"
-                    [src]="
-                        sharedSvgRoutes.TRUCK_PATH_BASE +
-                        unit.truck.truckType.logoName
-                    "
+                    [src]="truckPath"
                 ></svg-icon>
             </div>
         </div>
