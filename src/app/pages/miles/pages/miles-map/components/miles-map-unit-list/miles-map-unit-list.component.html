@@ -53,6 +53,16 @@
                             </div>
                         </cdk-virtual-scroll-viewport>
                     </ng-template>
+
+                    <ng-template #titleRightIconTemplate>
+                        <svg-icon
+                            class="svg-size-42-18 d-flex align-items-center"
+                            [src]="
+                                sharedSvgRoutes.TRUCK_PATH_BASE +
+                                details?.truck?.truckType?.logoName
+                            "
+                        ></svg-icon>
+                    </ng-template>
                 </app-ca-details-title-card>
             </div>
         </div>
@@ -192,29 +202,36 @@
 </ng-template>
 
 <ng-template #mileUnits let-unit="unit">
+    @let truckId = details?.truck?.id;
+
     <div
-        class="h-26 br-2 p-y-4 p-x-6 background-hover-black d-flex justify-content-between c-pointer miles-unit-dropdown"
+        class="h-26 br-2 p-y-4 p-x-6 background-hover-black d-grid c-pointer miles-unit-dropdown gap-1"
+        [class.miles-unit-dropdown-large]="isStopListWidthExpanded"
         (click)="selectUnit(unit.truck.id)"
     >
-        <p class="text-size-14 text-color-white">
+        <p
+            class="text-size-14 text-color-white text-ellipsis"
+            [class.ta-font-bold]="unit.truck.id === truckId"
+        >
             {{ unit.truck.truckNumber }}
         </p>
 
-        <div class="d-flex align-items-center">
+        <div class="d-flex align-items-center gap-1 m-l-auto">
             <span
-                class="m-r-4 text-color-muted text-size-11 miles-unit-dropdown-owner"
+                class="m-r-4 text-color-muted text-size-11 miles-unit-dropdown-owner text-ellipsis"
+                [class.ta-font-bold]="unit.truck.id === truckId"
+                [class.text-color-blue-19]="unit.truck.id === truckId"
             >
                 {{ unit.truck.owner }}
             </span>
 
-            <!-- TODO: ADD VIN, ONCE BACKEND ADDS IT -->
             <span
-                class="m-r-4 text-color-muted text-size-11 miles-unit-dropdown-vin"
+                class="m-r-4 text-color-muted text-size-11 miles-unit-dropdown-vin text-ellipsis"
             >
-                {{ unit.id }}
+                {{ unit.vin }}
             </span>
 
-            <div class="w-42 h-18">
+            <div class="w-42 h-18 d-flex">
                 <svg-icon
                     class="svg-size-42-18 d-flex"
                     [src]="
