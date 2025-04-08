@@ -38,6 +38,8 @@ export class TableColumnClassPipe<
             'flex-column align-items-start mt-auto': isGroup && !isAlignedRight,
             'align-items-end': !isGroup,
             'disable-text-selection': !isTableLocked,
+            'justify-content-end m-l-4': isAlignedRight && isTableLocked,
+            'justify-content-start ml-0': isAlignedRight && !isTableLocked,
         };
     }
 }
