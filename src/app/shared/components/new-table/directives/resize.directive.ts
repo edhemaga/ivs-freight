@@ -22,6 +22,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
     @Input() columnId: number = null;
     @Input() minWidth: number = 0;
     @Input() maxWidth: number = 0;
+    @Input() isGroup: boolean = false;
     @Input() hasDoubleHeightBorder: boolean = false;
 
     @Output() onColumnResize = new EventEmitter<ITableResizeAction>();
@@ -78,7 +79,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
         const classes = [
             'resize-handler',
             'pos-absolute',
-            'bottom-0',
+            this.isGroup ? 'bottom-10' : 'bottom-0',
             'end-0',
             'w-2',
             this.hasDoubleHeightBorder ? 'h-26' : 'h-14',

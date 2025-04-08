@@ -243,11 +243,21 @@
                         isAlignedRight,
                     } | tableColumnClass
                 "
+                [ngStyle]="{
+                    top: !isTableLocked
+                        ? isGroup
+                            ? hasLabelTop && label
+                                ? '4px'
+                                : '10px'
+                            : '0'
+                        : '',
+                }"
                 [style.width]="columnWidth"
                 [appResizableColumn]="isResizableColumn"
                 [columnId]="column.id"
                 [minWidth]="column.minWidth"
                 [maxWidth]="column.maxWidth"
+                [isGroup]="isGroup"
                 [hasDoubleHeightBorder]="hasDoubleHeightBorder"
                 (click)="handleSortColumnClick(column)"
                 (onColumnResize)="onColumnWidthResize($event)"
@@ -260,7 +270,18 @@
                     </span>
                 }
 
-                <div class="d-flex w-100">
+                <div
+                    class="d-flex w-100"
+                    [ngClass]="{
+                        'align-items-end justify-content-between':
+                            !isTableLocked,
+                    }"
+                    [ngStyle]="{
+                        position:
+                            !isTableLocked && isGroup ? 'relative' : 'unset',
+                        bottom: !isTableLocked && isGroup ? '10px' : 'unset',
+                    }"
+                >
                     <!-- Display custom header template if template exists -->
 
                     @if (headerTemplates[column.key]) {
@@ -274,16 +295,31 @@
                         <!-- Default header template - if no custom template -->
 
                         <span
-                            class="text-size-11 ta-font-bold color-inherit text-uppercase"
+                            class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                            [ngStyle]="{
+                                'max-width': !isTableLocked
+                                    ? 'calc(' +
+                                      column.width +
+                                      eUnit.PX +
+                                      ' - 50px)'
+                                    : '100%',
+                            }"
                         >
                             {{ column.label }}
                         </span>
                     }
 
-                    @if (!isTableLocked && false) {
-                        <div class="d-flex">
+                    @if (!isTableLocked) {
+                        <div
+                            class="d-flex"
+                            [ngStyle]="{
+                                position: 'relative',
+                                top: '4px',
+                                right: '12px',
+                            }"
+                        >
                             <div
-                                class="c-pointer"
+                                class="d-flex justfiy-content-center align-items-center m-r-2 c-pointer"
                                 [ngClass]="{
                                     'svg-hover-black': !column.pinned,
                                     'svg-hover-blue-15 svg-fill-blue-13':
@@ -297,7 +333,7 @@
                                 position="bottom"
                             >
                                 <svg-icon
-                                    class="new-table--row-heading-arrow mr-1 svg-size-14"
+                                    class="new-table--row-heading-arrow svg-size-14"
                                     [src]="sharedSvgRoutes.PIN_ICON"
                                     (click)="handlePinColumnClick(column)"
                                 ></svg-icon>
@@ -305,14 +341,14 @@
 
                             @if (!column.pinned) {
                                 <div
-                                    class="svg-hover-black c-pointer"
+                                    class="d-flex justfiy-content-center align-items-center svg-hover-black c-pointer"
                                     ngbTooltip
                                     mainTooltip="Remove Column"
                                     [tooltipBackground]="eColor.BLACK"
                                     position="bottom"
                                 >
                                     <svg-icon
-                                        class="new-table--row-heading-arrow svg-size-14"
+                                        class="new-table--row-heading-arrow svg-size-18"
                                         [src]="
                                             sharedSvgRoutes.CLOSE_ICON_NORMAL
                                         "
