@@ -33,6 +33,9 @@ import { LoadModalResponse, LoadResponse } from 'appcoretruckassist';
 // Constants
 import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants';
 
+// Config
+import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
+
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
 import {
@@ -92,6 +95,9 @@ export class NewLoadModalComponent implements OnInit {
     // Form
     public loadForm: UntypedFormGroup;
 
+    // Config
+    public LoadModalConfig = LoadModalConfig;
+
     constructor(
         private ngbActiveModal: NgbActiveModal,
         private loadService: LoadService,
@@ -138,6 +144,10 @@ export class NewLoadModalComponent implements OnInit {
             dispatcherId: null,
             companyId: null,
             referenceNumber: null,
+            brokerId: null,
+            weight: null,
+            generalCommodity: null,
+            brokerContact: null,
         });
     }
 
@@ -161,9 +171,15 @@ export class NewLoadModalComponent implements OnInit {
 
                 // TODO: Check this
                 this.loadForm.patchValue({
-                    dispatcherId: load.dispatcher.id,
-                    companyId: load.company.id,
+                    dispatcherId: load.dispatcher?.id,
+                    companyId: load.company?.id,
                     referenceNumber: load.referenceNumber,
+                    brokerId: load.broker?.id,
+                    weight: load.weight,
+                    // Check this generalCommodity
+                    generalCommodity: load.generalCommodity?.id,
+                    // Check this brokerContact
+                    brokerContact: load.brokerContact?.brokerId,
                 });
             });
         } else {

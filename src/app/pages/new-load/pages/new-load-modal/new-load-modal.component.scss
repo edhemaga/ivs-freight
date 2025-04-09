@@ -1,4 +1,16 @@
-.d-grid-normal {
-    gap: 12px;
-    grid-template-columns: 94px 26px 230px 230px;
+.d-grid {
+    &-normal {
+        gap: 12px;
+        grid-template-columns: 94px 26px 230px 230px;
+    }
+
+    &-reference {
+        gap: 12px;
+        grid-template-columns: 172px 432px;
+    }
+
+    &-contact {
+        gap: 12px;
+        grid-template-columns: 308px 142px 142px;
+    }
 }

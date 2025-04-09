@@ -1,6 +1,6 @@
 @let isEdit = editData.isEdit;
 @let isTemplate = editData.isTemplate;
-@let isLoaded = !!load;
+@let isLoaded = !!load || staticData;
 
 <app-ca-modal
     [footerTemplate]="footerTemplate"
@@ -9,84 +9,97 @@
     [modalTitle]="modalTitle"
     customClass="modal-container-M"
 >
-    <div class="new-modal p-b-12" origin>
-        <div class="divider divider--dark divider--small"></div>
-        <form [formGroup]="loadForm">
-            <div class="d-grid d-grid-normal m-t-26">
-                <app-ca-tab-switch
-                    [tabs]="tabs"
-                    [type]="'type3-modal-popup'"
-                    (switchClicked)="onTabChange()"
-                >
-                </app-ca-tab-switch>
+    @if (isLoaded) {
+        <div class="new-modal p-b-12" origin>
+            <div class="divider divider--dark divider--small"></div>
+            <form [formGroup]="loadForm">
+                <div class="d-grid d-grid-normal m-t-26">
+                    <app-ca-tab-switch
+                        [tabs]="tabs"
+                        [type]="'type3-modal-popup'"
+                        (switchClicked)="onTabChange()"
+                    >
+                    </app-ca-tab-switch>
 
-                <div
-                    class="h-26 w-26 d-flex align-items-center justify-content-center br-2 background-light-grey-5 svg-fill-bw-9"
-                >
-                    <svg-icon
-                        class="svg-size-18 d-flex"
-                        [src]="svgRoutes.SELECT_TEMPLATE"
-                    ></svg-icon>
-                </div>
+                    <div
+                        class="h-26 w-26 d-flex align-items-center justify-content-center br-2 background-light-grey-5 svg-fill-bw-9"
+                    >
+                        <svg-icon
+                            class="svg-size-18 d-flex"
+                            [src]="svgRoutes.SELECT_TEMPLATE"
+                        ></svg-icon>
+                    </div>
 
-                @if (staticData) {
                     <ca-input-dropdown-test
                         formControlName="dispatcherId"
                         optionValue="id"
                         template="load-dispatcher"
                         label="fullName"
+                        [canAddNew]="true"
                         [options]="staticData.dispatchers"
-                        [inputConfig]="{
-                            name: 'Input Dropdown',
-                            type: 'text',
-                            label: 'Dispatcher',
-                            isDropdown: true,
-                            isRequired: true,
-                            dropdownImageInput: {
-                                withText: true,
-                                svg: false,
-                                image: true,
-                                template: 'user',
-                            },
-                            textTransform: 'capitalize',
-                            dropdownWidthClass:
-                                'w-col-230 load-dispatcher-wrapper',
-                        }"
+                        [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
                     ></ca-input-dropdown-test>
-                }
 
-                <ca-input-dropdown-test
-                    formControlName="companyId"
-                    optionValue="id"
-                    label="companyName"
-                    [options]="staticData.companies"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Company',
-                        isDropdown: true,
-                        dropdownWidthClass: 'w-col-230',
-                    }"
-                ></ca-input-dropdown-test>
-            </div>
+                    <ca-input-dropdown-test
+                        formControlName="companyId"
+                        optionValue="id"
+                        label="companyName"
+                        [options]="staticData.companies"
+                        [inputConfig]="
+                            LoadModalConfig.LOAD_COMPANY_INPUT_CONFIG
+                        "
+                    ></ca-input-dropdown-test>
+                </div>
 
-            <div class="">
-                <ca-input-test
-                    formControlName="referenceNumber"
-                    [inputConfig]="{
-                        name: 'Ref Number',
-                        type: 'text',
-                        label: 'Reference No.',
-                        isRequired: true,
-                        textTransform: 'uppercase',
-                        maxLength: 16,
-                    }"
-                ></ca-input-test>
-            </div>
+                <div class="d-grid d-grid-reference m-t-26">
+                    <ca-input-test
+                        formControlName="referenceNumber"
+                        [inputConfig]="LoadModalConfig.LOAD_REFERENCE_NUMBER"
+                    ></ca-input-test>
 
-            {{ loadForm.value | json }}
-        </form>
-    </div>
+                    <ca-input-dropdown-test
+                        [optionValue]="'id'"
+                        formControlName="brokerId"
+                        [label]="'businessName'"
+                        [template]="'load-broker'"
+                        [inputConfig]="LoadModalConfig.LOAD_BROKER_INPUT_CONFIG"
+                        [canAddNew]="true"
+                        [canOpenModal]="true"
+                        [options]="staticData.brokers"
+                    >
+                    </ca-input-dropdown-test>
+                </div>
+
+                <div class="d-grid d-grid-contact m-t-26">
+                    <ca-input-dropdown-test
+                        formControlName="brokerContact"
+                        [label]="'name'"
+                        [optionValue]="'id'"
+                        [template]="'load-broker-contact'"
+                        [inputConfig]="
+                            LoadModalConfig.LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG
+                        "
+                        [options]="staticData.brokerContacts"
+                    ></ca-input-dropdown-test>
+
+                    <ca-input-dropdown-test
+                        formControlName="generalCommodity"
+                        optionValue="id"
+                        label="name"
+                        [inputConfig]="LoadModalConfig.LOAD_COMMODITY_CONFIG"
+                        [options]="staticData.generalCommodities"
+                    ></ca-input-dropdown-test>
+
+                    <ca-input-test
+                        formControlName="weight"
+                        [inputConfig]="LoadModalConfig.LOAD_WEIGHT_CONFIG"
+                    ></ca-input-test>
+                </div>
+
+                {{ loadForm.value | json }}
+            </form>
+        </div>
+    }
 
     <ng-template #rightModalContent>
         <div
