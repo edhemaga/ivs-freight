@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
 
 // rxjs
 import { filter, Observable, take } from 'rxjs';
@@ -39,7 +39,6 @@ import {
     LoadTemplateListResponse,
     RevertLoadStatusCommand,
     ShipperLoadModalResponse,
-    StopResponse,
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 import { IActiveLoadModalData, Load } from '@pages/load/models';
@@ -88,6 +87,13 @@ import { eLoadRouting } from '@pages/new-load/enums';
 
 import { ICaMapProps, IFilterDropdownList } from 'ca-components';
 import { ITableColumn } from '@shared/components/new-table/interface';
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
+
+// Service
+import { ModalService } from '@shared/services';
+
+// Components
+import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
 
 @Injectable({
     providedIn: 'root',
@@ -95,7 +101,8 @@ import { ITableColumn } from '@shared/components/new-table/interface';
 export class LoadStoreService {
     constructor(
         private store: Store,
-        private router: Router
+        private router: Router,
+        private modalService: ModalService
     ) {}
 
     public resolveInitialData$: Observable<
@@ -704,6 +711,15 @@ export class LoadStoreService {
         this.router.navigate([
             `/${eLoadRouting.LIST}/${id}/${eLoadRouting.DETAILS}`,
         ]);
+    }
+
+    public onOpenModal(id: number, isTemplate: boolean): void {
+        const modal: ILoadModal = {
+            id,
+            isEdit: true,
+            isTemplate,
+        };
+        this.modalService.openModal(NewLoadModalComponent, {}, modal);
     }
 
     public toggleMap(): void {
