@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 // modules
@@ -48,6 +48,7 @@ import { PayrollModal } from '@pages/accounting/pages/payroll/state/models';
 })
 export class PayrollPdfReportComponent implements OnInit {
     @Input() editData: PayrollModal;
+    @ViewChild('contentIframe', { static: false }) iframeRef!: ElementRef;
 
     // zoom
     public zoomLevel = PayrollPdfReportConstants.ZOOM_LEVEL;
@@ -90,7 +91,6 @@ export class PayrollPdfReportComponent implements OnInit {
         this.payrollService.generateReport(id, type).subscribe({
             next: (pdfReport) => {
                 const html = this.safeHtmlPipe.transform(pdfReport.html);
-
                 this.pdfReport = {
                     ...pdfReport,
                     html,
@@ -101,6 +101,12 @@ export class PayrollPdfReportComponent implements OnInit {
         });
     }
 
+    public onIframeLoad() {
+        const iframe = this.iframeRef.nativeElement as HTMLIFrameElement;
+        const doc = iframe.contentDocument || iframe.contentWindow?.document;
+        const height = doc.body.offsetHeight;
+        iframe.style.height = height + 'px';
+    }
     public handleDownloadReportClick(): void {
         const { downloadUrl } = this.pdfReport;
 
