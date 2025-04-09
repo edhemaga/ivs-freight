@@ -33,7 +33,6 @@ import {
     CaDetailsTitleCardComponent,
     eStringPlaceholder,
     eGeneralActions,
-    ePosition,
 } from 'ca-components';
 
 // Enums
@@ -73,7 +72,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     minimalListViewport!: CdkVirtualScrollViewport;
 
     @ViewChild('detailsTitleCard')
-    detailsTitleCard: CaDetailsTitleCardComponent;
+    detailsTitleCard: CaDetailsTitleCardComponent<any>;
 
     public sharedSvgRoutes = SharedSvgRoutes;
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;

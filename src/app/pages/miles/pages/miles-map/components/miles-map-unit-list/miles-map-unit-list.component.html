@@ -20,14 +20,14 @@
                         title: title,
                         tooltip: 'Search Truck',
                         placeholder: title,
-                        width: isStopListWidthExpanded ? 398 : 270,
+                        width: isStopListWidthExpanded ? 398 : 264,
                         tooltipNext: 'Next Truck',
                         tooltipPrevious: 'Previous Truck',
                         disableNext: isNextButtonDisabled,
                         disablePrevious: isPreviousButtonDisabled,
                     }"
                     [dropdownTemplate]="titleDropdown"
-                    [titleRightIconTemplate]="titleRightIconTemplate"
+                    [titleTemplate]="titleTemplate"
                     (onNextAction)="getTruckUnit(minimalListFilters.nextId)"
                     (onPreviousAction)="getTruckUnit(minimalListFilters.prevId)"
                     (onSearchTextChange)="onSearchTextChange($event)"
@@ -53,14 +53,30 @@
                         </cdk-virtual-scroll-viewport>
                     </ng-template>
 
-                    <ng-template #titleRightIconTemplate>
-                        <svg-icon
-                            class="svg-size-42-18 d-flex align-items-center"
-                            [src]="
-                                sharedSvgRoutes.TRUCK_PATH_BASE +
-                                details?.truck?.truckType?.logoName
-                            "
-                        ></svg-icon>
+                    <ng-template #titleTemplate>
+                        <div class="d-flex justify-content-between w-full">
+                            <div class="d-flex">
+                                @if (!details?.truck?.status) {
+                                    <svg-icon
+                                        [src]="sharedSvgRoutes.DEACTIVATE_ICON"
+                                        class="svg-fill-muted svg-size-18 m-r-6 d-flex align-items-center"
+                                    ></svg-icon>
+                                }
+
+                                <span
+                                    class="text-size-20 ta-font-bold text-color-black"
+                                    >{{ title }}</span
+                                >
+                            </div>
+
+                            <svg-icon
+                                class="svg-size-42-18 d-flex align-items-center"
+                                [src]="
+                                    sharedSvgRoutes.TRUCK_PATH_BASE +
+                                    details?.truck?.truckType?.logoName
+                                "
+                            ></svg-icon>
+                        </div>
                     </ng-template>
                 </app-ca-details-title-card>
             </div>
