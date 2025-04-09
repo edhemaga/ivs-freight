@@ -6,9 +6,10 @@ import { eMileTabs } from '@pages/miles/enums';
 import { ITableData } from '@shared/models';
 
 // Interface
-import { IStateFilters } from '@shared/interfaces';
+import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { ITableConfig } from '@shared/components/new-table/interface';
 
 // External Services or Models
 import { MilesStateFilterResponse } from 'appcoretruckassist';
@@ -18,7 +19,6 @@ import {
     IMinimalListState,
     IMinimalStopsState,
 } from '@pages/miles/interface';
-import { ITableConfig } from '@shared/components/new-table/interface';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -39,4 +39,5 @@ export interface IMilesState {
     details: IMinimalStopsState;
     tableSettings: ITableConfig;
     minimalList: IMinimalListState;
+    minimalListFilters: IMinimalListFilters;
 }

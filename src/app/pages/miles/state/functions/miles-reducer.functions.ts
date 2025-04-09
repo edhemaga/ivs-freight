@@ -1,6 +1,10 @@
 // interfaces
-import { IMilesModel, IMilesState } from '@pages/miles/interface';
-import { IStateFilters } from '@shared/interfaces';
+import {
+    IMilesModel,
+    IMilesState,
+    IMinimalListState,
+} from '@pages/miles/interface';
+import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
 import {
     ITableColumn,
     ITableResizeAction,
@@ -128,7 +132,10 @@ export const setUnitDetails = function (
     const selectedTab = details.truck.status
         ? eMileTabs.ACTIVE
         : eMileTabs.INACTIVE;
-
+    const minimalListFilters = getTruckNavigationMeta(
+        details.truck.id,
+        state.minimalList
+    );
     return {
         ...state,
         selectedTab,
@@ -140,6 +147,7 @@ export const setUnitDetails = function (
             stops: details.stops.data,
             activeUnitId: details.truck.id,
         },
+        minimalListFilters,
     };
 };
 export const updateUnitDetails = function (
@@ -372,5 +380,36 @@ export function appendToMinimalList(
             currentPage: state.minimalList.currentPage + 1,
             totalCount,
         },
+    };
+}
+
+function getTruckNavigationMeta(
+    currentId: number,
+    truckList: IMinimalListState
+): IMinimalListFilters {
+    const index = truckList.data.findIndex(
+        (truck) => truck.truck.id === currentId
+    );
+
+    const isFirst = index === 0;
+    const isLast = index === truckList.data.length - 1;
+
+    if (index === -1) {
+        return {
+            isFirst: true,
+            isLast: false,
+            prevId: null,
+            nextId: truckList.data[0]?.truck.id ?? null,
+        };
+    }
+
+    const prevId = !isFirst ? truckList.data[index - 1].truck.id : null;
+    const nextId = !isLast ? truckList.data[index + 1].truck.id : null;
+
+    return {
+        isFirst,
+        isLast,
+        prevId,
+        nextId,
     };
 }

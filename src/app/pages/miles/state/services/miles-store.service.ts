@@ -23,6 +23,7 @@ import {
     searchTextSelector,
     totalMinimalListCountSelector,
     stopsSelector,
+    minimalListFiltersSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -54,7 +55,7 @@ import {
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IFilterAction } from 'ca-components';
-import { IStateFilters } from '@shared/interfaces';
+import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
 import { IMilesModel, IMilesTabResults } from '@pages/miles/interface';
 
 @Injectable({
@@ -121,6 +122,9 @@ export class MilesStoreService {
     public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
         select(cardFlipViewModeSelector)
     );
+
+    public minimalListFiltersSelector$: Observable<IMinimalListFilters> =
+        this.store.pipe(select(minimalListFiltersSelector));
 
     public minimalListSelector$: Observable<MilesByUnitMinimalResponse[]> =
         this.store.pipe(select(minimalListSelector));

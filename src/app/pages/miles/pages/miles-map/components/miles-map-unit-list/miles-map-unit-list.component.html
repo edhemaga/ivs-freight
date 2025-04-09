@@ -1,8 +1,10 @@
 @let details = milesStoreService.detailsSelector$ | async;
 @let stops = milesStoreService.stopsSelector$ | async;
 @let minimalList = milesStoreService.minimalListSelector$ | async;
-@let isPreviousButtonDisabled = true;
-@let isNextButtonDisabled = true;
+@let minimalListFilters = milesStoreService.minimalListFiltersSelector$ | async;
+
+@let isPreviousButtonDisabled = minimalListFilters.isFirst;
+@let isNextButtonDisabled = minimalListFilters.isLast;
 
 @if (details) {
     <div class="position-relative z-2">
@@ -26,10 +28,8 @@
                     }"
                     [dropdownTemplate]="titleDropdown"
                     [titleRightIconTemplate]="titleRightIconTemplate"
-                    (onNextAction)="getTruckUnit(ArrowActionsStringEnum.NEXT)"
-                    (onPreviousAction)="
-                        getTruckUnit(ArrowActionsStringEnum.PREV)
-                    "
+                    (onNextAction)="getTruckUnit(minimalListFilters.nextId)"
+                    (onPreviousAction)="getTruckUnit(minimalListFilters.prevId)"
                     (onSearchTextChange)="onSearchTextChange($event)"
                 >
                     <ng-template #titleDropdown>

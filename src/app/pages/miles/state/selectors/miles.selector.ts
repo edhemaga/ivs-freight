@@ -141,3 +141,8 @@ export const totalMinimalListCountSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.minimalList.totalCount
 );
+
+export const minimalListFiltersSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.minimalListFilters
+);

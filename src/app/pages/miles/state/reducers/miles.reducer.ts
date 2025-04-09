@@ -70,6 +70,13 @@ export const initialState: IMilesState = {
         totalCount: 1,
         searchString: '',
     },
+
+    minimalListFilters: {
+        isFirst: false,
+        isLast: false,
+        prevId: null,
+        nextId: null,
+    },
 };
 
 export const milesReducer = createReducer(
