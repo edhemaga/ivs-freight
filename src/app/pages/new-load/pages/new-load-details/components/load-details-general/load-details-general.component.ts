@@ -61,7 +61,7 @@ import {
 })
 export class LoadDetailsGeneralComponent {
     @ViewChild('detailsTitleCard')
-    detailsTitleCard: CaDetailsTitleCardComponent;
+    detailsTitleCard: CaDetailsTitleCardComponent<LoadDetailsGeneralComponent>;
 
     // assets
     public sharedIcons = SharedSvgRoutes;

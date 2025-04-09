@@ -1,0 +1,152 @@
+@let isEdit = editData.isEdit;
+@let isTemplate = editData.isTemplate;
+@let isLoaded = !!load;
+
+<app-ca-modal
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [modalTitle]="modalTitle"
+    customClass="modal-container-M"
+>
+    <div class="new-modal" origin></div>
+
+    <ng-template #rightModalContent>
+        <div
+            class="d-flex align-items-center justify-content-center w-26 h-26 background-hover-bw2 svg-fill-muted svg-hover-black"
+            (click)="onModalAction(eGeneralActions.CLOSE)"
+        >
+            <svg-icon
+                class="svg-size-14"
+                [src]="svgRoutes.CLOSE_ICON"
+            ></svg-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #leftModalContent>
+        <div class="d-flex align-items-center">
+            @if (isEdit && isLoaded) {
+                @let text = isTemplate ? load.name : load.loadNumber;
+                <div
+                    class="background-muted br-2 h-26 p-l-6 p-r-4 text-color-white text-size-14 ta-font-bold align-items-center d-flex"
+                    [class.m-r-6]="!isTemplate"
+                >
+                    {{ text }}
+                </div>
+
+                @if (!isTemplate) {
+                    @let status =
+                        {
+                            name: load?.status.statusString,
+                            id: load?.status.statusValue.id,
+                        };
+                    <app-ca-load-status
+                        height="26"
+                        [status]="status"
+                        [fontSize]="14"
+                    >
+                    </app-ca-load-status>
+                }
+            }
+        </div>
+    </ng-template>
+
+    <ng-template #footerTemplate>
+        <div class="p-b-12 p-x-12">
+            <div class="divider divider--dark divider--small"></div>
+
+            <div class="d-flex justify-content-between w-full m-t-12">
+                <div class="d-flex">
+                    @if (isTemplate) {
+                        @if (isEdit) {
+                            <app-ca-modal-button
+                                class="mr-12"
+                                text="Delete"
+                                [size]="eModalButtonSize.SMALL"
+                                (click)="onModalAction(eGeneralActions.DELETE)"
+                                [type]="
+                                    eModalButtonClassType.SECONDARY_NEGATIVE
+                                "
+                            >
+                            </app-ca-modal-button>
+
+                            <app-ca-modal-button
+                                text="Use Template"
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                                (click)="
+                                    onModalAction(
+                                        eGeneralActions.CONVERT_TO_LOAD
+                                    )
+                                "
+                            >
+                            </app-ca-modal-button>
+                        } @else {
+                            <app-ca-modal-button
+                                text="Convert to Load"
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                                (click)="
+                                    onModalAction(
+                                        eGeneralActions.CONVERT_TO_LOAD
+                                    )
+                                "
+                            >
+                            </app-ca-modal-button>
+                        }
+                    } @else {
+                        <app-ca-modal-button
+                            text="Convert to Template"
+                            [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                            (click)="
+                                onModalAction(
+                                    eGeneralActions.CONVERT_TO_TEMPLATE
+                                )
+                            "
+                        >
+                        </app-ca-modal-button>
+                    }
+                </div>
+
+                <div class="d-flex">
+                    @if (isEdit) {
+                        <app-ca-modal-button
+                            text="Save Changes"
+                            [isValid]="isModalValidToSubmit"
+                            [isSpinnerShown]="
+                                activeAction === eGeneralActions.SAVE
+                            "
+                            [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                            (click)="onModalAction(eGeneralActions.SAVE)"
+                        >
+                        </app-ca-modal-button>
+                    } @else {
+                        <app-ca-modal-button
+                            class="mr-12"
+                            text="Save and Add New"
+                            [isValid]="isModalValidToSubmit"
+                            [isSpinnerShown]="
+                                activeAction ===
+                                eGeneralActions.SAVE_AND_ADD_NEW
+                            "
+                            [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                            (click)="
+                                onModalAction(eGeneralActions.SAVE_AND_ADD_NEW)
+                            "
+                        >
+                        </app-ca-modal-button>
+
+                        <app-ca-modal-button
+                            text="Save"
+                            [isValid]="isModalValidToSubmit"
+                            [isSpinnerShown]="
+                                activeAction === eGeneralActions.SAVE
+                            "
+                            [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                            (click)="onModalAction(eGeneralActions.SAVE)"
+                        >
+                        </app-ca-modal-button>
+                    }
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</app-ca-modal>
