@@ -15,7 +15,7 @@
             <div class="d-grid d-grid-normal m-t-26">
                 <app-ca-tab-switch
                     [tabs]="tabs"
-                    [type]="'type4-modal-popup'"
+                    [type]="'type3-modal-popup'"
                     (switchClicked)="onTabChange()"
                 >
                 </app-ca-tab-switch>
@@ -29,34 +29,37 @@
                     ></svg-icon>
                 </div>
 
-                <ca-input-dropdown-test
-                    formControlName="dispatcherId"
-                    optionValue="id"
-                    label="name"
-                    template="load-dispatcher"
-                    [options]="staticData.dispatchers"
-                    [inputConfig]="{
-                        name: 'Input Dropdown',
-                        type: 'text',
-                        label: 'Dispatcher',
-                        isDropdown: true,
-                        isRequired: true,
-                        dropdownImageInput: {
-                            withText: true,
-                            svg: false,
-                            image: true,
-                            template: 'user',
-                        },
-                        textTransform: 'capitalize',
-                        dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
-                    }"
-                ></ca-input-dropdown-test>
-                <!-- [options]="driversDropdownList"
-                    [activeItem]="selectedDriver"
-                    (selectedItem)="selectDriver($event)" -->
+                @if (staticData) {
+                    <ca-input-dropdown-test
+                        formControlName="dispatcherId"
+                        optionValue="id"
+                        template="load-dispatcher"
+                        label="fullName"
+                        [options]="staticData.dispatchers"
+                        [inputConfig]="{
+                            name: 'Input Dropdown',
+                            type: 'text',
+                            label: 'Dispatcher',
+                            isDropdown: true,
+                            isRequired: true,
+                            dropdownImageInput: {
+                                withText: true,
+                                svg: false,
+                                image: true,
+                                template: 'user',
+                            },
+                            textTransform: 'capitalize',
+                            dropdownWidthClass:
+                                'w-col-230 load-dispatcher-wrapper',
+                        }"
+                    ></ca-input-dropdown-test>
+                }
 
                 <ca-input-dropdown-test
                     formControlName="companyId"
+                    optionValue="id"
+                    label="companyName"
+                    [options]="staticData.companies"
                     [inputConfig]="{
                         name: 'Input Dropdown',
                         type: 'text',
@@ -66,6 +69,22 @@
                     }"
                 ></ca-input-dropdown-test>
             </div>
+
+            <div class="">
+                <ca-input-test
+                    formControlName="referenceNumber"
+                    [inputConfig]="{
+                        name: 'Ref Number',
+                        type: 'text',
+                        label: 'Reference No.',
+                        isRequired: true,
+                        textTransform: 'uppercase',
+                        maxLength: 16,
+                    }"
+                ></ca-input-test>
+            </div>
+
+            {{ loadForm.value | json }}
         </form>
     </div>
 

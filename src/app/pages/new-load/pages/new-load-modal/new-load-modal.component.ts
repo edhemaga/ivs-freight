@@ -8,6 +8,9 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 
+// rxjs
+import { forkJoin } from 'rxjs';
+
 // Enums
 import { eGeneralActions } from '@shared/enums';
 
@@ -40,6 +43,7 @@ import {
     eModalButtonSize,
     CaTabSwitchComponent,
     CaInputDropdownTestComponent,
+    InputTestComponent,
 } from 'ca-components';
 
 @Component({
@@ -58,6 +62,7 @@ import {
         CaLoadStatusComponent,
         CaTabSwitchComponent,
         CaInputDropdownTestComponent,
+        InputTestComponent,
     ],
 })
 export class NewLoadModalComponent implements OnInit {
@@ -132,39 +137,43 @@ export class NewLoadModalComponent implements OnInit {
         this.loadForm = this.formBuilder.group({
             dispatcherId: null,
             companyId: null,
+            referenceNumber: null,
         });
     }
 
     private setupInitalData(): void {
-        this.loadService.apiGetLoadModal().subscribe((staticData) => {
-            this.staticData = {
-                ...staticData,
-                // dispatcher
-                dispatchers: staticData?.dispatchers?.map((item) => {
-                    return {
-                        ...item,
-                        name: item?.fullName,
-                        logoName: item?.avatarFile?.url,
-                    };
-                }),
-            };
-        });
-        // Before setting the title we should get modal by id to see if modal is active | pending or active
-        if (this.editData.isEdit) {
-            this.loadService
-                .getLoadById(this.editData.id, this.editData.isTemplate)
-                .subscribe((load) => {
-                    // We will use this for some static data
-                    this.load = load;
+        const staticData$ = this.loadService.apiGetLoadModal();
 
-                    this.modalTitle = LoadModalHelper.generateTitle(
-                        this.editData,
-                        load.statusType
-                    );
+        if (this.editData.isEdit) {
+            const load$ = this.loadService.getLoadById(
+                this.editData.id,
+                this.editData.isTemplate
+            );
+
+            forkJoin([staticData$, load$]).subscribe(([staticData, load]) => {
+                this.staticData = staticData;
+                this.load = load;
+
+                this.modalTitle = LoadModalHelper.generateTitle(
+                    this.editData,
+                    load.statusType
+                );
+
+                // TODO: Check this
+                this.loadForm.patchValue({
+                    dispatcherId: load.dispatcher.id,
+                    companyId: load.company.id,
+                    referenceNumber: load.referenceNumber,
                 });
+            });
         } else {
-            // Creating new load
-            this.modalTitle = LoadModalHelper.generateTitle(this.editData, {});
+            staticData$.subscribe((staticData) => {
+                this.staticData = staticData;
+                this.modalTitle = LoadModalHelper.generateTitle(
+                    this.editData,
+                    {}
+                );
+            });
         }
     }
 
