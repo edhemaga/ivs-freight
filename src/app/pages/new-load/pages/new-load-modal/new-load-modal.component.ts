@@ -63,7 +63,7 @@ export class NewLoadModalComponent implements OnInit {
     // Enums
     public eModalButtonClassType = eModalButtonClassType;
     public eModalButtonSize = eModalButtonSize;
-    public generalActions = eGeneralActions;
+    public eGeneralActions = eGeneralActions;
 
     // Icon routes
     public svgRoutes = SharedSvgRoutes;
@@ -79,14 +79,14 @@ export class NewLoadModalComponent implements OnInit {
 
     public onModalAction(action: eGeneralActions): void {
         switch (action) {
-            case this.generalActions.CLOSE:
+            case this.eGeneralActions.CLOSE:
                 this.onCloseModal();
                 break;
 
-            case this.generalActions.CONVERT_TO_LOAD:
-            case this.generalActions.CONVERT_TO_TEMPLATE:
+            case this.eGeneralActions.CONVERT_TO_LOAD:
+            case this.eGeneralActions.CONVERT_TO_TEMPLATE:
                 const isTemplate =
-                    action === this.generalActions.CONVERT_TO_TEMPLATE;
+                    action === this.eGeneralActions.CONVERT_TO_TEMPLATE;
 
                 this.editData = {
                     isEdit: false,

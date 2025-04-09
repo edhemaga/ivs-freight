@@ -14,7 +14,7 @@
     <ng-template #rightModalContent>
         <div
             class="d-flex align-items-center justify-content-center w-26 h-26 background-hover-bw2 svg-fill-muted svg-hover-black"
-            (click)="onModalAction(generalActions.CLOSE)"
+            (click)="onModalAction(eGeneralActions.CLOSE)"
         >
             <svg-icon
                 class="svg-size-14"
@@ -63,7 +63,7 @@
                                 class="mr-12"
                                 text="Delete"
                                 [size]="eModalButtonSize.SMALL"
-                                (click)="onModalAction(generalActions.DELETE)"
+                                (click)="onModalAction(eGeneralActions.DELETE)"
                                 [type]="
                                     eModalButtonClassType.SECONDARY_NEGATIVE
                                 "
@@ -75,7 +75,7 @@
                                 [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
                                 (click)="
                                     onModalAction(
-                                        generalActions.CONVERT_TO_LOAD
+                                        eGeneralActions.CONVERT_TO_LOAD
                                     )
                                 "
                             >
@@ -86,7 +86,7 @@
                                 [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
                                 (click)="
                                     onModalAction(
-                                        generalActions.CONVERT_TO_LOAD
+                                        eGeneralActions.CONVERT_TO_LOAD
                                     )
                                 "
                             >
@@ -98,7 +98,7 @@
                             [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
                             (click)="
                                 onModalAction(
-                                    generalActions.CONVERT_TO_TEMPLATE
+                                    eGeneralActions.CONVERT_TO_TEMPLATE
                                 )
                             "
                         >
@@ -112,10 +112,10 @@
                             text="Save Changes"
                             [isValid]="isModalValidToSubmit"
                             [isSpinnerShown]="
-                                activeAction === generalActions.SAVE
+                                activeAction === eGeneralActions.SAVE
                             "
                             [type]="eModalButtonClassType.SECONDARY_POSITIVE"
-                            (click)="onModalAction(generalActions.SAVE)"
+                            (click)="onModalAction(eGeneralActions.SAVE)"
                         >
                         </app-ca-modal-button>
                     } @else {
@@ -124,11 +124,12 @@
                             text="Save and Add New"
                             [isValid]="isModalValidToSubmit"
                             [isSpinnerShown]="
-                                activeAction === generalActions.SAVE_AND_ADD_NEW
+                                activeAction ===
+                                eGeneralActions.SAVE_AND_ADD_NEW
                             "
                             [type]="eModalButtonClassType.SECONDARY_POSITIVE"
                             (click)="
-                                onModalAction(generalActions.SAVE_AND_ADD_NEW)
+                                onModalAction(eGeneralActions.SAVE_AND_ADD_NEW)
                             "
                         >
                         </app-ca-modal-button>
@@ -137,10 +138,10 @@
                             text="Save"
                             [isValid]="isModalValidToSubmit"
                             [isSpinnerShown]="
-                                activeAction === generalActions.SAVE
+                                activeAction === eGeneralActions.SAVE
                             "
                             [type]="eModalButtonClassType.PRIMARY_POSITIVE"
-                            (click)="onModalAction(generalActions.SAVE)"
+                            (click)="onModalAction(eGeneralActions.SAVE)"
                         >
                         </app-ca-modal-button>
                     }
