@@ -83,7 +83,6 @@ export class LoadDetailsStopsComponent {
     public toggleHoverStatus(index: number | null, popover: NgbPopover): void {
         this.hoveredIndex = index;
 
-        if (index !== null) popover.open();
-        else popover.close();
+        this.hoveredIndex !== null ? popover.open() : popover.close();
     }
 }

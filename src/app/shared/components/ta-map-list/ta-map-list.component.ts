@@ -315,7 +315,7 @@ export class TaMapListComponent
         }
     }
 
-    public handleSearchValue(searchValue: string): void {
+    public onHandleSearchValue(searchValue: string): void {
         this.searchValue = searchValue;
 
         this.searchEvent.emit(searchValue);

@@ -37,9 +37,9 @@ export class TaCommentsSearchComponent {
     @Input() isDisplaySearch: boolean = false;
     @Input() isHeaderHidden: boolean = false;
 
-    @Output() btnActionEmitter = new EventEmitter<CommentData>();
-    @Output() btnSortEmitter = new EventEmitter<string>();
-    @Output() searchHighlightEmitter = new EventEmitter<string>();
+    @Output() handleActionEmitter = new EventEmitter<CommentData>();
+    @Output() handleSortEmitter = new EventEmitter<string>();
+    @Output() handleSearchHighlightEmitter = new EventEmitter<string>();
 
     public commentsSearchSvgRoutes = CommentsSearchSvgRoutes;
 
@@ -53,7 +53,7 @@ export class TaCommentsSearchComponent {
     constructor() {}
 
     public handleCommentActionEmit(commentData: CommentData): void {
-        this.btnActionEmitter.emit(commentData);
+        this.handleActionEmitter.emit(commentData);
     }
 
     public handleSortClick(): void {
@@ -62,11 +62,11 @@ export class TaCommentsSearchComponent {
                 ? eSortDirection.ASC
                 : eSortDirection.DSC;
 
-        this.btnSortEmitter.emit(this.sortDirection);
+        this.handleSortEmitter.emit(this.sortDirection);
     }
 
-    public handleSearchValue(searchValue: string): void {
+    public onHandleSearchValue(searchValue: string): void {
         this.lettersToHighlight = searchValue;
-        this.searchHighlightEmitter.emit(searchValue);
+        this.handleSearchHighlightEmitter.emit(searchValue);
     }
 }

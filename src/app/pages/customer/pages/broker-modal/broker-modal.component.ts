@@ -692,7 +692,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.isUploadInProgress = true;
 
-                    if (this.editData?.type.includes(eGeneralActions.EDIT)) {
+                    if (
+                        this.editData?.type.includes(
+                            eGeneralActions.EDIT_LOWERCASE
+                        )
+                    ) {
                         this.updateBroker(this.editData.id);
                     } else {
                         this.addBroker();

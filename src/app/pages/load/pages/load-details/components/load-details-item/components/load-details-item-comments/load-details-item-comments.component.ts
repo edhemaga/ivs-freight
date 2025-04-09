@@ -50,7 +50,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
     @Input() isSearchComment: boolean;
     @Input() isHeaderHidden: boolean = false;
 
-    @Output() commentsCountChanged = new EventEmitter<boolean>();
+    @Output() onCommentsCountChanged = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
 
@@ -169,7 +169,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
                     );
                 }
 
-                this.commentsCountChanged.emit(true);
+                this.onCommentsCountChanged.emit(true);
 
                 break;
             case LoadDetailsItemStringEnum.DELETE:
@@ -181,7 +181,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
 
                 this.deleteCommentById(this.deletedCommentId);
 
-                this.commentsCountChanged.emit(true);
+                this.onCommentsCountChanged.emit(true);
 
                 break;
             default:

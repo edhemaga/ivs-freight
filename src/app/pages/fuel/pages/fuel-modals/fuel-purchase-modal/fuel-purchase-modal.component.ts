@@ -925,13 +925,13 @@ export class FuelPurchaseModalComponent implements OnInit, OnDestroy {
 
         const truckId = data?.truckId ?? null;
         const transactionDate =
-            type === eGeneralActions.EDIT
+            type === eGeneralActions.EDIT_LOWERCASE
                 ? MethodsCalculationsHelper.convertDateFromBackend(
                       data?.transactionDate
                   )
                 : null;
         const transactionTime =
-            type === eGeneralActions.EDIT
+            type === eGeneralActions.EDIT_LOWERCASE
                 ? MethodsCalculationsHelper.convertDateToTimeFromBackend(
                       transactionDate
                   )

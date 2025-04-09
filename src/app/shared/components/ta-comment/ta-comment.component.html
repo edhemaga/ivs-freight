@@ -7,14 +7,13 @@
                 <div class="d-flex align-items-center top-comment-body">
                     @if (!commentCardsDataDropdown.userAvatar) {
                         <div class="d-flex">
+                            @let avatarColor =
+                                commentCardsDataDropdown?.avatarColor;
                             <span
                                 class="user-image d-flex align-items-center justify-content-center ta-font-extra-bold"
                                 [style]="{
-                                    background:
-                                        commentCardsDataDropdown?.avatarColor
-                                            ?.background,
-                                    color: commentCardsDataDropdown?.avatarColor
-                                        ?.color,
+                                    background: avatarColor?.background,
+                                    color: avatarColor.color,
                                 }"
                                 >{{
                                     commentCardsDataDropdown.textShortName
@@ -26,8 +25,7 @@
                     @if (avatar) {
                         {{ avatar }}
                         <img
-                            src="{{ 'data:image/jpg;base64,' + avatar }}"
-                            alt=""
+                            [src]="eSharedString.DATA_IMAGE_JPG_BASE64 + avatar"
                         />
                     }
 
@@ -60,12 +58,12 @@
                             <div class="user-icons d-flex">
                                 <span
                                     ngbTooltip
-                                    mainTooltip="Confirm"
                                     type="button"
-                                    tooltipBackground="#CCCCCC"
-                                    tooltipColor="#2F2F2F"
+                                    [tooltipBackground]="eColor.LIGHT_GRAY_6"
                                     customClass="mb-2"
-                                    position="top"
+                                    [tooltipColor]="eColor.BLACK_2"
+                                    [mainTooltip]="eGeneralActions.CONFIRM"
+                                    [position]="ePosition.TOP"
                                     (click)="
                                         editComment(commentCardsDataDropdown.id)
                                     "
@@ -80,14 +78,16 @@
 
                                 <span
                                     ngbTooltip
-                                    mainTooltip="Cancel"
-                                    tooltipBackground="#CCCCCC"
-                                    tooltipColor="#2F2F2F"
                                     customClass="mb-2"
-                                    position="top"
                                     type="button"
-                                    (click)="openEditComment(false)"
                                     class="cancel-tooltip d-flex align-items-center justify-content-center"
+                                    [tooltipColor]="eColor.BLACK_2"
+                                    [tooltipBackground]="eColor.LIGHT_GRAY_6"
+                                    [mainTooltip]="
+                                        eGeneralActions.CANCEL_CAPITALIZED
+                                    "
+                                    [position]="ePosition.TOP"
+                                    (click)="onOpenEditComment(false)"
                                 >
                                     <svg-icon
                                         class="cancel-icon d-flex align-items-center justify-content-center svg-size-10"
@@ -160,7 +160,7 @@
                                         <span
                                             class="text-white ta-font-semi-bold"
                                             (click)="
-                                                toogleComment(
+                                                onToogleComment(
                                                     commentCardsDataDropdown
                                                 )
                                             "
@@ -199,14 +199,16 @@
                                 @if (loggedUserCommented) {
                                     <span
                                         ngbTooltip
-                                        mainTooltip="Edit"
                                         type="button"
-                                        tooltipBackground="#CCCCCC"
-                                        tooltipColor="#2F2F2F"
+                                        [tooltipBackground]="
+                                            eColor.LIGHT_GRAY_6
+                                        "
                                         customClass="mb-2"
-                                        position="top"
-                                        (click)="openEditComment(true)"
                                         class="edit-tooltip d-flex align-items-center justify-content-center"
+                                        [tooltipColor]="eColor.BLACK_2"
+                                        [position]="ePosition.TOP"
+                                        [mainTooltip]="eGeneralActions.EDIT"
+                                        (click)="onOpenEditComment(true)"
                                     >
                                         <svg-icon
                                             class="edit-icon svg-size-13"
@@ -218,13 +220,15 @@
 
                                     <span
                                         ngbTooltip
-                                        mainTooltip="Delete"
-                                        tooltipBackground="#CCCCCC"
-                                        tooltipColor="#2F2F2F"
                                         customClass="mb-2"
-                                        position="top"
                                         type="button"
                                         class="edit-tooltip d-flex align-items-center justify-content-center"
+                                        [tooltipColor]="eColor.BLACK_2"
+                                        [tooltipBackground]="
+                                            eColor.LIGHT_GRAY_6
+                                        "
+                                        [position]="ePosition.TOP"
+                                        [mainTooltip]="eeGeneralActions.DELETE"
                                         (click)="
                                             deleteComment(
                                                 commentCardsDataDropdown.id
@@ -422,8 +426,8 @@
                 @if (isCommenting) {
                     <div
                         ngbTooltip
-                        tooltipBackground="#424242"
-                        position="top"
+                        [tooltipBackground]="eColor.BLACK"
+                        [position]="ePosition.TOP"
                         [mainTooltip]="
                             isEditing
                                 ? eGeneralActions.CONFIRM_EDIT
@@ -437,22 +441,22 @@
                             }"
                             [src]="sharedSvgRoutes.SPEC_CONFIRM"
                             (click)="
-                                handleBtnActionClick(eGeneralActions.CONFIRM)
+                                onHandleBtnActionClick(eGeneralActions.CONFIRM)
                             "
                         ></svg-icon>
                     </div>
 
                     <div
                         ngbTooltip
-                        mainTooltip="Cancel"
-                        tooltipBackground="#424242"
-                        position="top"
+                        [tooltipBackground]="eColor.BLACK"
+                        [mainTooltip]="eGeneralActions.CANCEL_CAPITALIZED"
+                        [position]="ePosition.TOP"
                     >
                         <svg-icon
                             class="cancel-icon svg-size-18"
                             [src]="sharedSvgRoutes.X_ICON_DARK"
                             (click)="
-                                handleBtnActionClick(
+                                onHandleBtnActionClick(
                                     eGeneralActions.CANCEL_CAPITALIZED
                                 )
                             "
@@ -463,14 +467,14 @@
                         <div
                             class="d-flex justify-content-center align-items-center edit-icon-container"
                             ngbTooltip
-                            mainTooltip="Edit"
-                            tooltipBackground="#424242"
-                            position="top"
+                            [tooltipBackground]="eColor.BLACK"
+                            [mainTooltip]="eeGeneralActions.EDIT"
+                            [position]="ePosition.TOP"
                         >
                             <svg-icon
                                 class="icon svg-size-13"
                                 [src]="sharedSvgRoutes.EDIT_HOVER"
-                                (click)="handleBtnActionClick('Edit')"
+                                (click)="onHandleBtnActionClick('Edit')"
                             ></svg-icon>
                         </div>
                     }
@@ -478,15 +482,15 @@
                     <div
                         class="d-flex justify-content-center align-items-center delete-icon-container"
                         ngbTooltip
-                        mainTooltip="Delete"
-                        tooltipBackground="#DF3C3C"
-                        position="top"
+                        [tooltipBackground]="eColor.RED_11"
+                        [mainTooltip]="eeGeneralActions.DELETE"
+                        [position]="ePosition.TOP"
                     >
                         <svg-icon
                             class="icon svg-size-13"
                             [src]="sharedSvgRoutes.DELETE_NEW_HOVER"
                             (click)="
-                                handleBtnActionClick(eGeneralActions.DELETE)
+                                onHandleBtnActionClick(eGeneralActions.DELETE)
                             "
                         ></svg-icon>
                     </div>

@@ -412,7 +412,9 @@ export class ShipperModalComponent
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (this.editData?.type.includes(eGeneralActions.EDIT))
+                if (
+                    this.editData?.type.includes(eGeneralActions.EDIT_LOWERCASE)
+                )
                     this.updateShipper(this.editData.id);
                 else this.addShipper();
             }

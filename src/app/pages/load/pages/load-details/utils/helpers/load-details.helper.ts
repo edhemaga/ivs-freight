@@ -29,9 +29,9 @@ export class LoadDetailsHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                     subText: load.statusType.name.toUpperCase(),
                 },
                 {

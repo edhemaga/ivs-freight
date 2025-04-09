@@ -52,6 +52,7 @@ import { eStringPlaceholder } from 'ca-components';
 
 // assets
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { CommentHelper } from '../../utils';
 
 @Component({
     selector: 'app-load-details-additional',
@@ -75,19 +76,21 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
     @Input() isSearchComment: boolean;
     @Input() isHeaderHidden: boolean = false;
 
-    @Output() commentsCountChanged = new EventEmitter<boolean>();
+    @Output() onCommentsCountChanged = new EventEmitter<boolean>();
 
-    public eSharedString = eSharedString;
+    private destroy$ = new Subject<void>();
 
     public statusLogSortDirection = eSharedString.DSC;
 
-    private destroy$ = new Subject<void>();
     public companyUser: SignInResponse;
+
     // boolean flags
     public isStatusHistoryDisplayed: boolean = false;
     public isSearchActive: boolean = false;
+
     // enums
     public eColor = eColor;
+    public eSharedString = eSharedString;
 
     // assets
     public sharedSvgRoutes = SharedSvgRoutes;
@@ -125,27 +128,19 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                     isCommenting: false,
                     isEdited: commentData.isEditConfirm,
                 };
-                if (comment.isEdited) {
-                    const { commentId, commentContent, commentDate, isEdited } =
-                        comment;
-                    const updatedComment: CommentCompanyUser = {
-                        commentId,
-                        commentContent,
-                        commentDate,
-                        isEdited,
-                        companyUser: {
-                            id: this.companyUser.userId,
-                            name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
-                            avatarFile: this.companyUser.avatarFile,
-                        },
-                    };
-                    this.loadStoreService.dispatchUpdateComment(updatedComment);
-                } else {
-                    const newComment: CreateCommentCommand = {
-                        entityTypeCommentId: 2,
-                        entityTypeId: loadId,
-                        commentContent: commentData.commentContent,
-                    };
+                if (comment.isEdited)
+                    this.editComment(
+                        comment.commentId,
+                        comment.commentContent,
+                        comment.commentDate,
+                        comment.isEdited
+                    );
+                else {
+                    const newComment: CreateCommentCommand =
+                        CommentHelper.createCommentCommand(
+                            loadId,
+                            commentData.commentContent
+                        );
                     this.commentService
                         .apiCommentPost(newComment)
                         .pipe(takeUntil(this.destroy$))
@@ -162,6 +157,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                 break;
         }
     }
+
     public handleSortActionEmit(
         sortDirection: eSortDirection,
         loadId: number
@@ -169,18 +165,18 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         if (!sortDirection) return;
         this.loadStoreService.sortLoadComments(loadId, sortDirection);
     }
+
     public handleSearchHighlightActionEmit(searchHighlightValue: string): void {
         this.commentFilter = searchHighlightValue;
     }
+
     public toggleIsSearchActive(): void {
         this.isSearchActive = !this.isSearchActive;
     }
+
     public addNewComment(loadId: number): void {
-        const comment: CreateCommentCommand = {
-            entityTypeCommentId: 2,
-            entityTypeId: loadId,
-            commentContent: eStringPlaceholder.EMPTY,
-        };
+        const comment: CreateCommentCommand =
+            CommentHelper.createCommentCommand(loadId);
         const dateNow = moment().format(eDateTimeFormat.MM_DD_YY);
         const { avatarFile, firstName, lastName, companyUserId } =
             this.companyUser;
@@ -196,6 +192,27 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         };
         this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
     }
+
+    private editComment(
+        commentId: number,
+        commentContent: string,
+        commentDate: string,
+        isEdited: boolean
+    ): void {
+        const updatedComment: CommentCompanyUser = {
+            commentId,
+            commentContent,
+            commentDate,
+            isEdited,
+            companyUser: {
+                id: this.companyUser.userId,
+                name: `${this.companyUser.firstName} ${this.companyUser.lastName}`,
+                avatarFile: this.companyUser.avatarFile,
+            },
+        };
+        this.loadStoreService.dispatchUpdateComment(updatedComment);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();

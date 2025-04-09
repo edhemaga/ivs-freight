@@ -113,7 +113,7 @@ export class SettingsIntegrationComponent
                     title: 'Edit',
                     name: 'edit-table',
                     class: 'regular-text',
-                    contentType: eGeneralActions.EDIT,
+                    contentType: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'Website',

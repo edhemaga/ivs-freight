@@ -22,4 +22,6 @@ export enum eSharedString {
 
     DSC = 'dsc',
     ASC = 'asc',
+
+    DATA_IMAGE_JPG_BASE64 = 'data:image/jpg;base64,',
 }

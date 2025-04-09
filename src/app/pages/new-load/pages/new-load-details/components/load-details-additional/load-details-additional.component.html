@@ -47,19 +47,20 @@
     </div>
 </div>
 
+@let backgroundColor = isHeaderHidden ? eColor.TRANSPARENT : eColor.WHITE;
 <div
     class="d-flex flex-column p-x-6 p-y-6 justify-content-center comments-container"
     [ngStyle]="{
-        background: isHeaderHidden ? eColor.TRANSPARENT : eColor.WHITE,
+        background: backgroundColor,
     }"
 >
     <app-ta-comments-search
         [commentsData]="comments | createLoadComment: commentFilter"
         [isDisplaySearch]="isSearchActive"
         [isHeaderHidden]="isHeaderHidden"
-        (btnActionEmitter)="handleCommentActionEmit($event, load.id)"
-        (btnSortEmitter)="handleSortActionEmit($event, load.id)"
-        (searchHighlightEmitter)="handleSearchHighlightActionEmit($event)"
+        (handleActionEmitter)="handleCommentActionEmit($event, load.id)"
+        (handleSortEmitter)="handleSortActionEmit($event, load.id)"
+        (handleSearchHighlightEmitter)="handleSearchHighlightActionEmit($event)"
     ></app-ta-comments-search>
 
     <div class="background-white p-x-6 p-y-6 br-3 w-100">

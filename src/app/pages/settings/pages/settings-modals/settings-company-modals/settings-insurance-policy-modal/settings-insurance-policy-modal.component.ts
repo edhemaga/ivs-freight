@@ -226,7 +226,7 @@ export class SettingsInsurancePolicyModalComponent
                     this.inputService.markInvalid(this.insurancePolicyForm);
                     return;
                 }
-                if (this.editData.type === eGeneralActions.EDIT) {
+                if (this.editData.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.updateInsurancePolicy(this.editData.company.id);
                     this.modalService.setModalSpinner({
                         action: null,
@@ -449,7 +449,7 @@ export class SettingsInsurancePolicyModalComponent
                 next: (res: InsurancePolicyModalResponse) => {
                     this.ratings = res.ratings;
 
-                    if (this.editData.type === eGeneralActions.EDIT) {
+                    if (this.editData.type === eGeneralActions.EDIT_LOWERCASE) {
                         this.isCardAnimationDisabled = true;
                         this.editInsurancePolicyById(this.editData.company);
                     } else this.startFormChanges();

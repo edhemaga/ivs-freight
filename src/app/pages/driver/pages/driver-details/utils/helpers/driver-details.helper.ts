@@ -22,10 +22,10 @@ export class DriverDetailsHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     disabled: !status,
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'border',

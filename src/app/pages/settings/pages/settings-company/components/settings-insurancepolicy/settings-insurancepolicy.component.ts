@@ -123,10 +123,10 @@ export class SettingsInsurancepolicyComponent
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'border',
@@ -160,10 +160,10 @@ export class SettingsInsurancepolicyComponent
     // Function for drop-down
     public optionsEvent(action: any, insurance: any): void {
         switch (action.type) {
-            case eGeneralActions.EDIT:
+            case eGeneralActions.EDIT_LOWERCASE:
                 this.onAction({
                     modalName: 'insurance-policy',
-                    type: eGeneralActions.EDIT,
+                    type: eGeneralActions.EDIT_LOWERCASE,
                     company: insurance,
                 });
                 break;

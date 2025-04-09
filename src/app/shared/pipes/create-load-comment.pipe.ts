@@ -44,24 +44,6 @@ export class CreateLoadCommentsPipe implements PipeTransform {
             }),
         ];
 
-        // // TODO remove, test
-        // _comments.push({
-        //     companyUser: {
-        //         id: currentUser.userId,
-        //         name: `${currentUser.firstName} ${currentUser.lastName}`,
-        //         avatarFile: { ...currentUser.avatarFile },
-        //     },
-        //     commentId: 0,
-        //     commentContent: 'new comment',
-        //     commentDate:
-        //         MethodsCalculationsHelper.convertDateFromBackendToDateAndTime(
-        //             new Date()
-        //         ),
-        //     isCommenting: true,
-        //     isEdited: false,
-        //     isMe: true,
-        // });
-
         if (!filter) return _comments;
         return [
             ..._comments?.filter((comment) =>

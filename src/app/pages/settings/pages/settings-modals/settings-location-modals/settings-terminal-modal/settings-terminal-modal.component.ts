@@ -320,7 +320,7 @@ export class SettingsTerminalModalComponent
                     this.inputService.markInvalid(this.terminalForm);
                     return;
                 }
-                if (this.editData?.type === eGeneralActions.EDIT)
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE)
                     this.updateTerminal(this.editData.id);
                 else this.addTerminal();
                 break;
@@ -680,7 +680,9 @@ export class SettingsTerminalModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === eGeneralActions.EDIT) {
+                    if (
+                        this.editData?.type === eGeneralActions.EDIT_LOWERCASE
+                    ) {
                         this.editTerminalById(this.editData.id);
                     } else {
                         this.startFormChanges();

@@ -131,7 +131,7 @@ export class ViolationTableComponent
                     title: 'Edit',
                     name: 'edit-violation',
                     class: 'regular-text',
-                    contentType: eGeneralActions.EDIT,
+                    contentType: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'Delete',
@@ -323,7 +323,7 @@ export class ViolationTableComponent
                     { size: 'large-xl' },
                     {
                         id: event.id,
-                        type: eGeneralActions.EDIT,
+                        type: eGeneralActions.EDIT_LOWERCASE,
                         data: event.data,
                     }
                 );

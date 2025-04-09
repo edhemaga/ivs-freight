@@ -40,6 +40,7 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 import { CommentStringEnum } from '@shared/components/ta-comment/enums/comment-string.enum';
 import {
     eGeneralActions,
+    eSharedString,
     eSortDirection,
     TableStringEnum,
 } from '@shared/enums';
@@ -59,15 +60,16 @@ import { ConfirmationModalComponent } from '@shared/components/ta-shared-modals/
 
 // helpers
 import { CopyPasteHelper } from '@shared/utils/helpers/copy-paste.helper';
+import { UserHelper } from '@shared/utils/helpers';
 
 // models
 import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
 import { Comment } from '@shared/models/card-models/card-table-data.model';
-import { UserHelper } from '@shared/utils/helpers';
 
 // assets
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { ePosition } from 'ca-components';
 
 @Component({
     selector: 'app-ta-comment',
@@ -138,6 +140,8 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public sharedSvgRoutes = SharedSvgRoutes;
     public eGeneralActions = eGeneralActions;
     public eSortDirection = eSortDirection;
+    public eSharedString = eSharedString;
+    public ePosition = ePosition;
 
     constructor(
         private cdr: ChangeDetectorRef,
@@ -177,7 +181,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
             this.formatDatePipe.transform(date);
     }
 
-    public openEditComment(openClose: boolean): void {
+    public onOpenEditComment(openClose: boolean): void {
         if (openClose) {
             this.taInputDropdownTableService.setDropdownCommentNewCommentState(
                 CommentStringEnum.OPEN_COMMENT
@@ -275,7 +279,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         this.cdr.detectChanges();
     }
 
-    public toggleComment(comment: Comment): void {
+    public onToggleComment(comment: Comment): void {
         this.commentCardsDataDropdown = {
             ...comment,
             isOpen: comment.isOpen,
@@ -322,7 +326,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
         return (this.isDisabled = false);
     }
 
-    public handleBtnActionClick(btnType: string): void {
+    public onHandleBtnActionClick(btnType: string): void {
         switch (btnType) {
             case CommentStringEnum.CONFIRM:
                 if (this.isEditing) {
