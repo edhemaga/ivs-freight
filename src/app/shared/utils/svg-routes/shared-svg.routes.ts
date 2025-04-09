@@ -53,8 +53,22 @@ export class SharedSvgRoutes {
     static TOP_RIGHT_ARROW: string = 'assets/svg/common/arrow_top_right.svg';
     static TRUCK_PATH_BASE: string = 'assets/svg/common/trucks/';
     static PRIMARY_ARROW_UP: string = 'assets/svg/common/ic_arrow-up.svg';
+    static PRIMARY_ARROW_DOWN: string = 'assets/svg/common/fill_arrow_down.svg';
     static LOAD_FILLED: string = 'assets/svg/common/load/load-filled.svg';
     static LTLC_FILLED: string = 'assets/svg/common/load/ltlc-filled.svg';
     static LTL_FILLED: string = 'assets/svg/common/load/ltl-filled.svg';
     static ARROW_RIGHT: string = 'assets/svg/common/ic-arrow-right.svg';
+    static SEARCH_ICON = 'assets/svg/common/ic_search.svg';
+    static LIKE_ICON = 'assets/svg/common/ic_like.svg';
+    static DISLIKE_ICON = 'assets/svg/common/ic_dislike.svg';
+    static USER_AVATAR_NO_PROFILE: string =
+        'assets/svg/truckassist-table/user-avatar-no-profile.svg';
+    static SPEC_CONFIRM = 'assets/svg/ic_spec-confirm.svg';
+    static X_ICON_DARK: string = 'assets/svg/ic_x.svg';
+    public EDIT_HOVER: string =
+        'assets/svg/truckassist-table/dropdown/content/edit-hover.svg';
+    public DELETE_NEW_HOVER: string =
+        'assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg';
+    // applicant
+    static BLUE_CHECKMARK: string = 'assets/svg/applicant/check.svg';
 }

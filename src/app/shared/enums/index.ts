@@ -27,7 +27,6 @@ export * from './shared-string.enum';
 export * from './avatar-color.enum';
 export * from './date-time-format.enum';
 export * from './sort-direction.enum';
-export * from './icon-path.enum';
 
 // Files
 export * from './file/file-form-controls.enum';

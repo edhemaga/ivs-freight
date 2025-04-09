@@ -31,7 +31,6 @@ import {
     eColor,
     eDateTimeFormat,
     eSortDirection,
-    eIconPath,
 } from '@shared/enums';
 
 // Models
@@ -50,6 +49,9 @@ import { UserHelper } from '@shared/utils/helpers';
 // pipes
 import { CreateLoadCommentsPipe } from '@shared/pipes';
 import { eStringPlaceholder } from 'ca-components';
+
+// assets
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-load-details-additional',
@@ -86,7 +88,10 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
     public isSearchActive: boolean = false;
     // enums
     public eColor = eColor;
-    public eIconPath = eIconPath;
+
+    // assets
+    public sharedSvgRoutes = SharedSvgRoutes;
+
     // filter
     public commentFilter: string = eStringPlaceholder.EMPTY;
 

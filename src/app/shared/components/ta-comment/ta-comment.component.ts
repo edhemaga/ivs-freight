@@ -12,7 +12,7 @@ import {
     Output,
     ViewChild,
 } from '@angular/core';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { SafeResourceUrl } from '@angular/platform-browser';
 
 import { Subject, takeUntil } from 'rxjs';
 
@@ -38,7 +38,11 @@ import { MethodsCalculationsHelper } from '@shared/utils/helpers/methods-calcula
 
 // enums
 import { CommentStringEnum } from '@shared/components/ta-comment/enums/comment-string.enum';
-import { TableStringEnum } from '@shared/enums/table-string.enum';
+import {
+    eGeneralActions,
+    eSortDirection,
+    TableStringEnum,
+} from '@shared/enums';
 
 // pipes
 import { TaCommentHighlistComponentPipe } from '@shared/components/ta-comment/pipes/ta-comment-higlits-comment.pipe';
@@ -61,6 +65,9 @@ import { CommentCompanyUser } from '@shared/models/comment-company-user.model';
 import { CommentData } from '@shared/models/comment-data.model';
 import { Comment } from '@shared/models/card-models/card-table-data.model';
 import { UserHelper } from '@shared/utils/helpers';
+
+// assets
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-ta-comment',
@@ -127,9 +134,13 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     public loggedUserCommented: boolean;
 
+    // assets
+    public sharedSvgRoutes = SharedSvgRoutes;
+    public eGeneralActions = eGeneralActions;
+    public eSortDirection = eSortDirection;
+
     constructor(
         private cdr: ChangeDetectorRef,
-        private sanitizer: DomSanitizer,
 
         // services
         private formatDatePipe: FormatDatePipe,

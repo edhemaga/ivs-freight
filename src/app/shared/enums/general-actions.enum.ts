@@ -10,6 +10,7 @@ export enum eGeneralActions {
     ESCAPE = 'Escape',
     CONFIRM = 'Confirm',
     CONFIRM_LOWERCASE = 'confirm',
+    CONFIRM_EDIT = 'Confirm Edit',
     ACTIVATE = 'activate',
     DEACTIVATE = 'deactivate',
     CLOSE = 'close',

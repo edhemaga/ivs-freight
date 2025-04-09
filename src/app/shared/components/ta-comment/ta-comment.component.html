@@ -74,7 +74,7 @@
                                 >
                                     <svg-icon
                                         class="confirm-icon d-flex align-items-center justify-content-center svg-size-12"
-                                        [src]="'assets/svg/applicant/check.svg'"
+                                        [src]="sharedSvgRoutes.BLUE_CHECKMARK"
                                     ></svg-icon>
                                 </span>
 
@@ -91,9 +91,7 @@
                                 >
                                     <svg-icon
                                         class="cancel-icon d-flex align-items-center justify-content-center svg-size-10"
-                                        [src]="
-                                            'assets/svg/applicant/invalid-review-x.svg'
-                                        "
+                                        [src]="sharedSvgRoutes.CLOSE_ICON"
                                     ></svg-icon>
                                 </span>
                             </div>
@@ -186,15 +184,13 @@
                                 @if (commentCardsDataDropdown.liked) {
                                     <svg-icon
                                         class="like-icon svg-size-13"
-                                        [src]="'assets/svg/common/ic_like.svg'"
+                                        [src]="sharedSvgRoutes.LIKE_ICON"
                                     ></svg-icon>
                                 }
                                 @if (commentCardsDataDropdown.disliked) {
                                     <svg-icon
                                         class="dislike-icon svg-size-13"
-                                        [src]="
-                                            'assets/svg/common/ic_dislike.svg'
-                                        "
+                                        [src]="sharedSvgRoutes.DISLIKE_ICON"
                                     ></svg-icon>
                                 }
                             </div>
@@ -237,9 +233,7 @@
                                     >
                                         <svg-icon
                                             class="delete-icon svg-size-13"
-                                            [src]="
-                                                'assets/svg/truckassist-table/dropdown/content/delete.svg'
-                                            "
+                                            [src]="sharedSvgRoutes.DELETE_ICON"
                                         ></svg-icon>
                                     </span>
                                 }
@@ -253,7 +247,7 @@
                                         ) {
                                             <svg-icon
                                                 [src]="
-                                                    'assets/svg/common/fill_arrow_down.svg'
+                                                    sharedSvgRoutes.PRIMARY_ARROW_DOWN
                                                 "
                                                 [ngClass]="{
                                                     'rotate-svg':
@@ -261,11 +255,7 @@
                                                     'rotate-back':
                                                         !commentCardsDataDropdown.isOpen,
                                                 }"
-                                                class="arrow-svg-icon"
-                                                [svgStyle]="{
-                                                    'width.px': 10,
-                                                    'height.px': 10,
-                                                }"
+                                                class="arrow-svg-icon svg-size-10"
                                             >
                                             </svg-icon>
                                         }
@@ -330,7 +320,7 @@
                             [ngStyle]="{ 'margin-bottom': !isMe ? '6px' : 0 }"
                             [src]="
                                 commentAvatar ??
-                                'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                                sharedSvgRoutes.USER_AVATAR_NO_PROFILE
                             "
                             alt="User Profile Image"
                         />
@@ -393,7 +383,7 @@
                     <img
                         [src]="
                             commentAvatar ??
-                            'assets/svg/truckassist-table/user-avatar-no-profile.svg'
+                            sharedSvgRoutes.USER_AVATAR_NO_PROFILE
                         "
                         alt="User Profile Image"
                     />
@@ -432,17 +422,23 @@
                 @if (isCommenting) {
                     <div
                         ngbTooltip
-                        [mainTooltip]="isEditing ? 'Confirm Edit' : 'Confirm'"
                         tooltipBackground="#424242"
                         position="top"
+                        [mainTooltip]="
+                            isEditing
+                                ? eGeneralActions.CONFIRM_EDIT
+                                : eGeneralActions.CONFIRM
+                        "
                     >
                         <svg-icon
                             class="confirm-icon svg-size-18"
                             [ngClass]="{
                                 disabled: isDisabled,
                             }"
-                            src="assets/svg/ic_spec-confirm.svg"
-                            (click)="handleBtnActionClick('Confirm')"
+                            [src]="sharedSvgRoutes.SPEC_CONFIRM"
+                            (click)="
+                                handleBtnActionClick(eGeneralActions.CONFIRM)
+                            "
                         ></svg-icon>
                     </div>
 
@@ -454,8 +450,12 @@
                     >
                         <svg-icon
                             class="cancel-icon svg-size-18"
-                            src="assets/svg/ic_x.svg"
-                            (click)="handleBtnActionClick('Cancel')"
+                            [src]="sharedSvgRoutes.X_ICON_DARK"
+                            (click)="
+                                handleBtnActionClick(
+                                    eGeneralActions.CANCEL_CAPITALIZED
+                                )
+                            "
                         ></svg-icon>
                     </div>
                 } @else {
@@ -469,7 +469,7 @@
                         >
                             <svg-icon
                                 class="icon svg-size-13"
-                                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
+                                [src]="sharedSvgRoutes.EDIT_HOVER"
                                 (click)="handleBtnActionClick('Edit')"
                             ></svg-icon>
                         </div>
@@ -484,8 +484,10 @@
                     >
                         <svg-icon
                             class="icon svg-size-13"
-                            src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
-                            (click)="handleBtnActionClick('Delete')"
+                            [src]="sharedSvgRoutes.DELETE_NEW_HOVER"
+                            (click)="
+                                handleBtnActionClick(eGeneralActions.DELETE)
+                            "
                         ></svg-icon>
                     </div>
                 }

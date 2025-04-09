@@ -13,14 +13,15 @@
 
     <div class="d-flex flex-column justify-content-center comments-container">
         @if (!isHeaderHidden) {
+            @let commentsDataCount = commentsData?.length;
             <div
                 class="d-flex align-items-center justify-content-between comments-container-header"
-                [ngClass]="{ disabled: commentsData?.length === 1 }"
+                [ngClass]="{ disabled: commentsDataCount === 1 }"
             >
                 @if (lettersToHighlight) {
                     <p class="m-0 ta-font-bold">
-                        {{ commentsData.length }}
-                        {{ commentsData.length === 1 ? 'RESULT' : 'RESULTS' }}
+                        {{ commentsDataCount }}
+                        {{ commentsDataCount === 1 ? 'RESULT' : 'RESULTS' }}
                     </p>
                 } @else {
                     <p class="m-0 ta-font-bold">SORT BY</p>
@@ -31,7 +32,7 @@
                     <svg-icon
                         class="icon"
                         [src]="
-                            sortDirection === 'dsc'
+                            sortDirection === eSortDirection.DSC
                                 ? commentsSearchSvgRoutes.arrowUpSortRoute
                                 : commentsSearchSvgRoutes.arrowDownSortRoute
                         "
