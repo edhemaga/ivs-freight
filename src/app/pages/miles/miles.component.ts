@@ -29,7 +29,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { eMileTabs, MILES_ROUTING } from '@pages/miles/enums';
+import { eMileTabs, eMilesRouting } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
@@ -183,11 +183,11 @@ export class MilesComponent
         if (mode === eActiveViewMode[eActiveViewMode.Map]) {
             // What if we don't have a unit? should user be able to go to map?
             this.router.navigate([
-                `/${MILES_ROUTING.BASE}/${MILES_ROUTING.MAP}/${this.firstUnit.truckId}`,
+                `/${eMilesRouting.BASE}/${eMilesRouting.MAP}/${this.firstUnit.truckId}`,
             ]);
         } else {
             this.router.navigate([
-                `/${MILES_ROUTING.BASE}/${mode.toLowerCase()}`,
+                `/${eMilesRouting.BASE}/${mode.toLowerCase()}`,
             ]);
         }
     }

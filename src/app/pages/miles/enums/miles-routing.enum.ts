@@ -1,6 +1,8 @@
-export enum MILES_ROUTING {
+import { eCommonElement } from '@shared/enums';
+
+export enum eMilesRouting {
     BASE = 'tools/miles',
-    CARD = 'card',
-    LIST = 'list',
-    MAP = 'map',
+    CARD = eCommonElement.CARD_LOWERCASE,
+    LIST = eCommonElement.LIST_LOWERCASE,
+    MAP = eCommonElement.MAP_LOWERCASE,
 }

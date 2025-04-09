@@ -41,6 +41,10 @@ import { ArrowActionsStringEnum } from '@shared/enums';
 
 // Const
 import { MilesStopsTable } from '@pages/miles/utils/constants';
+import {
+    handleVirtualScrollTrigger,
+    onHTMLElementScroll,
+} from '@shared/utils/helpers/scroll-helper';
 
 @Component({
     selector: 'app-miles-map-unit-list',
@@ -77,8 +81,6 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     public isStopListWidthExpanded: boolean = false;
     public isStopListHeightExpanded: boolean = false;
-    public isLoading: boolean = false;
-    public isUserOnLastPage: boolean = false;
     public truckId: number;
     public ArrowActionsStringEnum = ArrowActionsStringEnum;
 
@@ -99,20 +101,15 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     }
 
     public onScrollEvent(): void {
-        if (this.isLoading || this.isUserOnLastPage) return;
         this.scrollSubject.next();
     }
 
     public onScroll(): void {
-        const element = this.stopListViewport.nativeElement;
-        const scrollOffset = element.scrollHeight - element.scrollTop;
-
-        if (
-            scrollOffset <=
-            element.clientHeight + MilesStopsTable.BOTTOM_SCROLL_THRESHOLD
-        ) {
-            this.milesStoreService.loadNextStopsPage();
-        }
+        onHTMLElementScroll(
+            this.stopListViewport.nativeElement,
+            MilesStopsTable.BOTTOM_SCROLL_THRESHOLD,
+            () => this.milesStoreService.loadNextStopsPage()
+        );
     }
 
     public getTruckUnit(
@@ -140,11 +137,11 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
         this.milesStoreService.dispatchSearchMinimalUnitList(text);
     }
     public onMinimalListScroll(): void {
-        const viewport = this.minimalListViewport;
-        const scrollOffset = viewport.measureScrollOffset(ePosition.BOTTOM);
-        if (scrollOffset < MilesStopsTable.BOTTOM_SCROLL_THRESHOLD) {
-            this.milesStoreService.loadNextMinimalListPage();
-        }
+        handleVirtualScrollTrigger(
+            this.minimalListViewport,
+            MilesStopsTable.BOTTOM_SCROLL_THRESHOLD,
+            () => this.milesStoreService.loadNextMinimalListPage()
+        );
     }
 
     public onClearInputEvent(): void {

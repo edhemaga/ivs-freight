@@ -36,7 +36,7 @@ import {
 import { ITableData } from '@shared/models';
 
 // enums
-import { eMileTabs, MILES_ROUTING } from '@pages/miles/enums';
+import { eMileTabs, eMilesRouting } from '@pages/miles/enums';
 import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 
 // constants
@@ -292,7 +292,7 @@ export class MilesStoreService {
 
     public goToMilesDetailsPage(unitId: string): void {
         this.router.navigate([
-            `/${MILES_ROUTING.BASE}/${MILES_ROUTING.MAP}/${unitId}`,
+            `/${eMilesRouting.BASE}/${eMilesRouting.MAP}/${unitId}`,
         ]);
     }
 }

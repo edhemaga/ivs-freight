@@ -6,7 +6,7 @@ import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
 import { AuthGuard } from '@core/guards/authentication.guard';
 
 // enums
-import { MILES_ROUTING } from '@pages/miles/enums';
+import { eMilesRouting } from '@pages/miles/enums';
 
 // resolvers
 import { DashboardResolver } from '@pages/dashboard/resolvers/dashboard.resolver';
@@ -105,7 +105,7 @@ export class PageRoutes {
             data: { title: 'Test' },
         },
         {
-            path: MILES_ROUTING.BASE,
+            path: eMilesRouting.BASE,
             component: MilesComponent,
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: { miles: MilesResolver },
@@ -117,17 +117,17 @@ export class PageRoutes {
                     resolve: { miles: MilesListResolver },
                 },
                 {
-                    path: MILES_ROUTING.CARD,
+                    path: eMilesRouting.CARD,
                     component: MilesCardComponent,
                     resolve: { miles: MilesCardsResolver },
                 },
                 {
-                    path: MILES_ROUTING.LIST,
+                    path: eMilesRouting.LIST,
                     component: MilesTableComponent,
                     resolve: { miles: MilesListResolver },
                 },
                 {
-                    path: `${MILES_ROUTING.MAP}/:id`,
+                    path: `${eMilesRouting.MAP}/:id`,
                     component: MilesMapComponent,
                     resolve: { miles: MilesDetailsResolver },
                 },
