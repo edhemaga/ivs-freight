@@ -47,7 +47,9 @@ import {
     CaTabSwitchComponent,
     CaInputDropdownTestComponent,
     InputTestComponent,
+    CaCustomCardComponent,
 } from 'ca-components';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -65,7 +67,9 @@ import {
         CaLoadStatusComponent,
         CaTabSwitchComponent,
         CaInputDropdownTestComponent,
+        CaCustomCardComponent,
         InputTestComponent,
+        TaCheckboxComponent,
     ],
 })
 export class NewLoadModalComponent implements OnInit {
@@ -149,6 +153,11 @@ export class NewLoadModalComponent implements OnInit {
             weight: null,
             generalCommodity: null,
             brokerContact: null,
+            trailerLengthId: null,
+            doorType: null,
+            suspension: null,
+            year: null,
+            liftgate: null,
         });
     }
 
@@ -170,6 +179,8 @@ export class NewLoadModalComponent implements OnInit {
                     load.statusType
                 );
 
+                const { loadRequirements } = load || {};
+
                 // TODO: Check this
                 this.loadForm.patchValue({
                     dispatcherId: load.dispatcher?.id,
@@ -178,6 +189,11 @@ export class NewLoadModalComponent implements OnInit {
                     brokerId: load.broker?.id,
                     weight: load.weight,
                     dispatchId: load.dispatch?.id,
+                    trailerLengthId: loadRequirements?.trailerLength,
+                    doorType: loadRequirements?.doorType?.id,
+                    suspension: loadRequirements?.suspension?.id,
+                    year: loadRequirements?.year,
+                    liftgate: loadRequirements?.liftgate,
                     // Check this generalCommodity
                     generalCommodity: load.generalCommodity?.id,
                     // Check this brokerContact

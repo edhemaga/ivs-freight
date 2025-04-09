@@ -112,7 +112,61 @@
                     ></ca-input-test>
                 </div>
 
-                {{ loadForm.value | json }}
+                <app-ca-custom-card
+                    [headerLeftSideTemplate]="headerLeftSideTemplate"
+                    cardName="Requirement"
+                >
+                    <div origin>
+                        <div class="d-grid d-grid-requirement-first-row"></div>
+
+                        <div class="d-grid d-grid-requirement-second-row">
+                            <ca-input-dropdown-test
+                                formControlName="trailerLengthId"
+                                optionValue="id"
+                                label="name"
+                                [inputConfig]="
+                                    LoadModalConfig.LOAD_TRAILER_LENGTH_CONFIG
+                                "
+                                [options]="staticData.trailerLengths"
+                            ></ca-input-dropdown-test>
+
+                            <ca-input-dropdown-test
+                                formControlName="doorType"
+                                optionValue="id"
+                                label="name"
+                                [inputConfig]="
+                                    LoadModalConfig.LOAD_DOOR_TYPE_CONFIG
+                                "
+                                [options]="staticData.doorTypes"
+                            ></ca-input-dropdown-test>
+
+                            <ca-input-dropdown-test
+                                formControlName="suspension"
+                                optionValue="id"
+                                label="name"
+                                [inputConfig]="
+                                    LoadModalConfig.LOAD_SUSPENSION_CONFIG
+                                "
+                                [options]="staticData.suspensions"
+                            ></ca-input-dropdown-test>
+
+                            <ca-input-dropdown-test
+                                formControlName="year"
+                                optionValue="id"
+                                label="name"
+                                [inputConfig]="LoadModalConfig.LOAD_YEAR_CONFIG"
+                                [options]="staticData.years"
+                            ></ca-input-dropdown-test>
+
+                            <app-ta-checkbox
+                                formControlName="liftgate"
+                                name="liftgate"
+                                [customClass]="'medium'"
+                                [label]="'Lifgate'"
+                            ></app-ta-checkbox>
+                        </div>
+                    </div>
+                </app-ca-custom-card>
             </form>
         </div>
     }
