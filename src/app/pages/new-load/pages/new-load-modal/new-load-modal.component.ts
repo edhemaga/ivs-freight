@@ -18,11 +18,8 @@ import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/helpers';
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
 import {
-    CaInputComponent,
-    CaInputDropdownComponent,
     CaModalButtonComponent,
     CaModalComponent,
-    CaTabSwitchComponent,
     eModalButtonClassType,
     eModalButtonSize,
 } from 'ca-components';
@@ -38,9 +35,6 @@ import {
         // Components
         CaModalComponent,
         SvgIconComponent,
-        CaTabSwitchComponent,
-        CaInputComponent,
-        CaInputDropdownComponent,
         CaModalButtonComponent,
     ],
 })
@@ -84,10 +78,10 @@ export class NewLoadModalComponent implements OnInit {
         if (this.editData.isEdit) {
             this.loadService
                 .getLoadById(this.editData.id, this.editData.isTemplate)
-                .subscribe((res) => {
+                .subscribe((load) => {
                     this.modalTitle = LoadModalHelper.generateTitle(
                         this.editData,
-                        res.statusType
+                        load.statusType
                     );
                 });
         } else {

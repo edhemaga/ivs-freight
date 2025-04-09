@@ -10,11 +10,11 @@
     <ng-template #rightModalContent>
         <div
             class="d-flex align-items-center justify-content-center w-26 h-26 background-hover-bw2 svg-fill-muted svg-hover-black"
+            (click)="onModalAction(actionTypesEnum.CLOSE)"
         >
             <svg-icon
                 class="svg-size-14"
                 [src]="svgRoutes.CLOSE_ICON"
-                (click)="onModalAction(actionTypesEnum.CLOSE)"
             ></svg-icon>
         </div>
     </ng-template>
