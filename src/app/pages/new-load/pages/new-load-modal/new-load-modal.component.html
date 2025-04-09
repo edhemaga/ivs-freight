@@ -51,6 +51,22 @@
                     ></ca-input-dropdown-test>
                 </div>
 
+                <div class="w-full m-t-26">
+                    <ca-input-dropdown-test
+                        [optionValue]="'id'"
+                        formControlName="dispatchId"
+                        [label]="'businessName'"
+                        [template]="'load-dispatches-ttd'"
+                        [inputConfig]="
+                            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
+                        "
+                        [canAddNew]="true"
+                        [canOpenModal]="true"
+                        [options]="staticData.brokers"
+                    >
+                    </ca-input-dropdown-test>
+                </div>
+
                 <div class="d-grid d-grid-reference m-t-26">
                     <ca-input-test
                         formControlName="referenceNumber"

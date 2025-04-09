@@ -142,6 +142,7 @@ export class NewLoadModalComponent implements OnInit {
     private createForm() {
         this.loadForm = this.formBuilder.group({
             dispatcherId: null,
+            dispatchId: null,
             companyId: null,
             referenceNumber: null,
             brokerId: null,
@@ -176,6 +177,7 @@ export class NewLoadModalComponent implements OnInit {
                     referenceNumber: load.referenceNumber,
                     brokerId: load.broker?.id,
                     weight: load.weight,
+                    dispatchId: load.dispatch?.id,
                     // Check this generalCommodity
                     generalCommodity: load.generalCommodity?.id,
                     // Check this brokerContact
