@@ -101,7 +101,7 @@ export class PayrollPdfReportComponent implements OnInit {
         });
     }
 
-    public onIframeLoad() {
+    public onIframeLoad(): void {
         const iframe = this.iframeRef.nativeElement as HTMLIFrameElement;
         const doc = iframe.contentDocument || iframe.contentWindow?.document;
         const height = doc.body.offsetHeight;
