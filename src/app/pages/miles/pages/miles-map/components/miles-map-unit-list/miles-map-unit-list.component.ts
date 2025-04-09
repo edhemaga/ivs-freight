@@ -88,7 +88,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     private subscriptions: Subscription = new Subscription();
 
     public searchForm = this.formBuilder.group({
-        search: null,
+        [eGeneralActions.SEARCH_LOWERCASE]: null,
     });
 
     constructor(
@@ -113,6 +113,8 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     }
 
     public getTruckUnit(unitId: string): void {
+        this.resetFormValue();
+        this.detailsTitleCard.dropdownPopover?.close();
         this.milesStoreService.goToMilesDetailsPage(unitId);
     }
 
@@ -143,7 +145,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     public onClearInputEvent(): void {
         this.searchForm
-            .get(eGeneralActions.SEARCH)
+            .get(eGeneralActions.SEARCH_LOWERCASE)
             .patchValue(eStringPlaceholder.EMPTY);
     }
 
@@ -168,7 +170,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
 
     private onSeachFieldChange(): void {
         this.searchForm
-            .get(eGeneralActions.SEARCH)
+            .get(eGeneralActions.SEARCH_LOWERCASE)
             ?.valueChanges.pipe(debounceTime(300))
             .subscribe((value) => {
                 this.milesStoreService.dispatchSearchInputChanged(value);
