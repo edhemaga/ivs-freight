@@ -15,11 +15,15 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 // Helpers
 import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/helpers';
 
+// Models
+import { LoadResponse } from 'appcoretruckassist';
+
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
 import {
     CaModalButtonComponent,
     CaModalComponent,
+    CaLoadStatusComponent,
     eModalButtonClassType,
     eModalButtonSize,
 } from 'ca-components';
@@ -36,6 +40,7 @@ import {
         CaModalComponent,
         SvgIconComponent,
         CaModalButtonComponent,
+        CaLoadStatusComponent,
     ],
 })
 export class NewLoadModalComponent implements OnInit {
@@ -48,6 +53,9 @@ export class NewLoadModalComponent implements OnInit {
 
     // Main modal title
     public modalTitle: string;
+
+    // Show static data, such as status, load number
+    public load: LoadResponse;
 
     // Enums
     public eModalButtonClassType = eModalButtonClassType;
@@ -79,6 +87,9 @@ export class NewLoadModalComponent implements OnInit {
             this.loadService
                 .getLoadById(this.editData.id, this.editData.isTemplate)
                 .subscribe((load) => {
+                    // We will use this for some static data
+                    this.load = load;
+
                     this.modalTitle = LoadModalHelper.generateTitle(
                         this.editData,
                         load.statusType

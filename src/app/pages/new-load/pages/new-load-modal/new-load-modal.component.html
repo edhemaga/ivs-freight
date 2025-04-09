@@ -1,3 +1,7 @@
+@let isEdit = editData.isEdit;
+@let isTemplate = editData.isTemplate;
+@let isLoaded = !!load;
+
 <app-ca-modal
     [footerTemplate]="footerTemplate"
     [rightHeaderTemplate]="rightModalContent"
@@ -19,7 +23,31 @@
         </div>
     </ng-template>
 
-    <ng-template #leftModalContent> </ng-template>
+    <ng-template #leftModalContent>
+        <div class="d-flex align-items-center">
+            @if (isEdit && isLoaded) {
+                @let text = isTemplate ? load.name : load.loadNumber;
+                <div
+                    class="background-muted br-2 h-26 p-l-6 p-r-4 text-color-white text-size-14 ta-font-bold align-items-center d-flex"
+                    [class.m-r-6]="!isTemplate"
+                >
+                    {{ text }}
+                </div>
+
+                @if (!isTemplate) {
+                    <app-ca-load-status
+                        height="26"
+                        [status]="{
+                            name: load?.status.statusString,
+                            id: load?.status.statusValue.id,
+                        }"
+                        [fontSize]="14"
+                    >
+                    </app-ca-load-status>
+                }
+            }
+        </div>
+    </ng-template>
 
     <ng-template #footerTemplate>
         <div class="p-b-12 p-x-12">
