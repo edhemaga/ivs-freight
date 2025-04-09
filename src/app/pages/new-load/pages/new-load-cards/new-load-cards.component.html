@@ -1,1 +1,113 @@
-<p>new-load-cards works!</p>
+@let store =
+    {
+        viewData: loadStoreService.viewData$ | async,
+    };
+
+@if (store.viewData) {
+    <ca-table-card-view
+        [viewData]="store.viewData"
+        [frontSide]="frontSide"
+        [backSide]="backSide"
+        [cardTitle]="'unit'"
+    ></ca-table-card-view>
+
+    <ng-template #frontSide let-data="data">
+        @for (item of frontSideData; track $index) {
+            <ng-container
+                *ngTemplateOutlet="cardTemplate; context: { item, data }"
+            ></ng-container>
+        }
+    </ng-template>
+
+    <ng-template #backSide let-data="data">
+        @for (item of backSideData; track $index) {
+            <ng-container
+                *ngTemplateOutlet="cardTemplate; context: { item, data }"
+            ></ng-container>
+        }
+    </ng-template>
+
+    <ng-template #cardTemplate let-item="item" let-data="data">
+        @let template =
+            item.template === tableCardViewEnums.DOUBLE_TEXT_PERCENT
+                ? doubleTextPercent
+                : item.template === tableCardViewEnums.TEXT_WITH_IMAGE
+                  ? textWithImage
+                  : textWithTitle;
+
+        @let text =
+            item.format === tableCardViewEnums.CURRENCY
+                ? ((data | getNestedValue: item.key | formatCurrency) ?? 0)
+                : item.format === tableCardViewEnums.NUMBER
+                  ? ((data | getNestedValue: item.key | thousandSeparator) ?? 0)
+                  : (data | getNestedValue: item.key);
+
+        @let percent =
+            item.percentKey ? (data | getNestedValue: item.percentKey) : null;
+
+        @let image = data | getNestedValue: item.image;
+
+        <ng-container
+            *ngTemplateOutlet="
+                template;
+                context: {
+                    title: item.title,
+                    text,
+                    percent,
+                    image,
+                }
+            "
+        ></ng-container>
+    </ng-template>
+
+    <ng-template #textWithTitle let-title="title" let-text="text">
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="text-size-14 text-color-black-2">{{ text }}</div>
+        </div>
+    </ng-template>
+
+    <ng-template
+        #textWithImage
+        let-title="title"
+        let-text="text"
+        let-data="data"
+        let-image="image"
+    >
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="d-flex gap-1">
+                <svg-icon
+                    [svgStyle]="{ 'height.px': 18 }"
+                    [ngStyle]="{ height: '18px' }"
+                    [src]="sharedSvgRoutes.TRUCK_PATH_BASE + image"
+                    class="cards-icon"
+                ></svg-icon>
+                <div class="text-size-14 text-color-black-2">{{ text }}</div>
+            </div>
+        </div>
+    </ng-template>
+
+    <ng-template
+        #doubleTextPercent
+        let-title="title"
+        let-text="text"
+        let-percent="percent"
+    >
+        <div class="d-flex flex-column px-1 gap-1">
+            <div class="text-size-11 text-color-black ta-font-bold">
+                {{ title }}
+            </div>
+            <div class="text-size-14 text-color-black-2">
+                {{ text }}
+                <span class="text-size-11 text-color-grey ta-font-semi-bold"
+                    >{{ percent }}%</span
+                >
+            </div>
+        </div>
+    </ng-template>
+}
