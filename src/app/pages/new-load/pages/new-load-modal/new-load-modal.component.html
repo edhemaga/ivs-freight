@@ -1,0 +1,65 @@
+<app-ca-modal
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [modalTitle]="modalTitle"
+    customClass="modal-container-M"
+>
+    <div class="new-modal" origin></div>
+
+    <ng-template #rightModalContent>
+        <div
+            class="d-flex align-items-center justify-content-center w-26 h-26 background-hover-bw2 svg-fill-muted svg-hover-black"
+        >
+            <svg-icon
+                class="svg-size-14"
+                [src]="svgRoutes.CLOSE_ICON"
+                (click)="onModalAction(actionTypesEnum.CLOSE)"
+            ></svg-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #leftModalContent> </ng-template>
+
+    <ng-template #footerTemplate>
+        <div class="p-b-12 p-x-12">
+            <div class="divider divider--dark divider--small"></div>
+
+            <div class="d-flex justify-content-between w-full m-t-12">
+                <div class="d-flex">
+                    <app-ca-modal-button
+                        text="Convert to Template"
+                        [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                        (click)="onModalAction()"
+                    >
+                    </app-ca-modal-button>
+                </div>
+
+                <div class="d-flex">
+                    <app-ca-modal-button
+                        class="mr-12"
+                        text="Save and Add New"
+                        [isValid]="isModalValidToSubmit"
+                        [isSpinnerShown]="
+                            activeAction === actionTypesEnum.SAVE_AND_ADD_NEW
+                        "
+                        [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                        (click)="
+                            onModalAction(actionTypesEnum.SAVE_AND_ADD_NEW)
+                        "
+                    >
+                    </app-ca-modal-button>
+
+                    <app-ca-modal-button
+                        text="Save"
+                        [isValid]="isModalValidToSubmit"
+                        [isSpinnerShown]="activeAction === actionTypesEnum.SAVE"
+                        [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                        (click)="onModalAction(actionTypesEnum.SAVE)"
+                    >
+                    </app-ca-modal-button>
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</app-ca-modal>
