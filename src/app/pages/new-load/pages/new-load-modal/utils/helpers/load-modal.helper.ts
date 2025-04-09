@@ -1,9 +1,9 @@
 // Enums
 import { eLoadModal } from '@pages/new-load/pages/new-load-modal/enums';
+import { EnumValue } from 'appcoretruckassist';
 
 // Interfaces
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
-import { EnumValue } from 'appcoretruckassist';
 
 export class LoadModalHelper {
     static generateTitle(editData: ILoadModal, statusType: EnumValue): string {

@@ -4,4 +4,6 @@ export enum ActionTypesEnum {
     CLOSE = 'close',
     SAVE = 'save',
     CLOSE_BUSINESS = 'CLOSE_BUSINESS',
+    CONVERT_TO_LOAD = 'Convert to Load',
+    CONVERT_TO_TEMPLATE = 'Convert To Template',
 }

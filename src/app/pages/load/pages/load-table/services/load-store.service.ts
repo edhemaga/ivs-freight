@@ -694,7 +694,7 @@ export class LoadStoreService {
         ]);
     }
 
-    public openLoadModal(id: number, isTemplate: boolean): void {
+    public onOpenModal(id: number, isTemplate: boolean): void {
         const modal: ILoadModal = {
             id,
             isEdit: true,

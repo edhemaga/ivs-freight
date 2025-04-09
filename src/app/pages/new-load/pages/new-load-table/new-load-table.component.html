@@ -21,7 +21,7 @@
     >
         <!-- TODO: For testing load modal only !! Will be removed later !! -->
         <ng-template let-data="data" #select>
-            <div (click)="openLoadModal(data.id, !store.selectedTab)">EDIT</div>
+            <div (click)="onOpenModal(data.id, !store.selectedTab)">EDIT</div>
         </ng-template>
 
         <ng-template let-data="data" #loadNumber>

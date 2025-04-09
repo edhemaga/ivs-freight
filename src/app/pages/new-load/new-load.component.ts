@@ -217,13 +217,13 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     }
 
     private handleOpenModal(): void {
-        const modal: ILoadModal = {
+        const modalData: ILoadModal = {
             isEdit: false,
             id: null,
             isTemplate: this.selectedTab === eLoadStatusStringType.TEMPLATE,
         };
 
-        this.modalService.openModal(NewLoadModalComponent, {}, modal);
+        this.modalService.openModal(NewLoadModalComponent, {}, modalData);
     }
 
     private setToolbarDropdownMenuContent(

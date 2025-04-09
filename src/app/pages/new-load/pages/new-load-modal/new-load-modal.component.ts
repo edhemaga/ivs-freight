@@ -1,9 +1,12 @@
+// Modules
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
-import { ActionTypesEnum } from '@pages/repair/pages/repair-modals/repair-shop-modal/enums';
+import { eGeneralActions } from '@shared/enums';
+
+// Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Services
@@ -13,7 +16,7 @@ import { LoadService } from '@shared/services/load.service';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Helpers
-import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/helpers';
+import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
 
 // Models
 import { LoadResponse } from 'appcoretruckassist';
@@ -60,7 +63,7 @@ export class NewLoadModalComponent implements OnInit {
     // Enums
     public eModalButtonClassType = eModalButtonClassType;
     public eModalButtonSize = eModalButtonSize;
-    public actionTypesEnum = ActionTypesEnum;
+    public generalActions = eGeneralActions;
 
     // Icon routes
     public svgRoutes = SharedSvgRoutes;
@@ -74,10 +77,28 @@ export class NewLoadModalComponent implements OnInit {
         this.setupInitalData();
     }
 
-    public onModalAction(action: ActionTypesEnum): void {
-        // TODO: This will have a lot of actions, close is for testing so far
-        if (action === this.actionTypesEnum.CLOSE) {
-            this.closeModal();
+    public onModalAction(action: eGeneralActions): void {
+        switch (action) {
+            case this.generalActions.CLOSE:
+                this.onCloseModal();
+                break;
+
+            case this.generalActions.CONVERT_TO_LOAD:
+            case this.generalActions.CONVERT_TO_TEMPLATE:
+                const isTemplate =
+                    action === this.generalActions.CONVERT_TO_TEMPLATE;
+
+                this.editData = {
+                    isEdit: false,
+                    id: null,
+                    isTemplate,
+                };
+
+                this.modalTitle = LoadModalHelper.generateTitle(
+                    this.editData,
+                    {}
+                );
+                break;
         }
     }
 
@@ -101,7 +122,7 @@ export class NewLoadModalComponent implements OnInit {
         }
     }
 
-    private closeModal(): void {
+    private onCloseModal(): void {
         this.ngbActiveModal.close();
     }
 }
