@@ -2,6 +2,11 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+    ReactiveFormsModule,
+    UntypedFormBuilder,
+    UntypedFormGroup,
+} from '@angular/forms';
 
 // Enums
 import { eGeneralActions } from '@shared/enums';
@@ -11,6 +16,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
+import { ModalService } from '@shared/services';
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -19,7 +25,10 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
 
 // Models
-import { LoadResponse } from 'appcoretruckassist';
+import { LoadModalResponse, LoadResponse } from 'appcoretruckassist';
+
+// Constants
+import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -29,6 +38,8 @@ import {
     CaLoadStatusComponent,
     eModalButtonClassType,
     eModalButtonSize,
+    CaTabSwitchComponent,
+    CaInputDropdownTestComponent,
 } from 'ca-components';
 
 @Component({
@@ -38,12 +49,15 @@ import {
     standalone: true,
     imports: [
         CommonModule,
+        ReactiveFormsModule,
 
         // Components
         CaModalComponent,
         SvgIconComponent,
         CaModalButtonComponent,
         CaLoadStatusComponent,
+        CaTabSwitchComponent,
+        CaInputDropdownTestComponent,
     ],
 })
 export class NewLoadModalComponent implements OnInit {
@@ -59,6 +73,8 @@ export class NewLoadModalComponent implements OnInit {
 
     // Show static data, such as status, load number
     public load: LoadResponse;
+    public staticData: LoadModalResponse;
+    public tabs = LoadModalConstants.LOAD_MODAL_TABS;
 
     // Enums
     public eModalButtonClassType = eModalButtonClassType;
@@ -68,14 +84,22 @@ export class NewLoadModalComponent implements OnInit {
     // Icon routes
     public svgRoutes = SharedSvgRoutes;
 
+    // Form
+    public loadForm: UntypedFormGroup;
+
     constructor(
         private ngbActiveModal: NgbActiveModal,
-        private loadService: LoadService
+        private loadService: LoadService,
+        private formBuilder: UntypedFormBuilder,
+        private modalService: ModalService
     ) {}
 
     ngOnInit(): void {
+        this.createForm();
         this.setupInitalData();
     }
+
+    public onTabChange(): void {}
 
     public onModalAction(action: eGeneralActions): void {
         switch (action) {
@@ -99,10 +123,32 @@ export class NewLoadModalComponent implements OnInit {
                     {}
                 );
                 break;
+            case this.eGeneralActions.CREATE_TEMPLATE:
+            // Open projection modal
         }
     }
 
+    private createForm() {
+        this.loadForm = this.formBuilder.group({
+            dispatcherId: null,
+            companyId: null,
+        });
+    }
+
     private setupInitalData(): void {
+        this.loadService.apiGetLoadModal().subscribe((staticData) => {
+            this.staticData = {
+                ...staticData,
+                // dispatcher
+                dispatchers: staticData?.dispatchers?.map((item) => {
+                    return {
+                        ...item,
+                        name: item?.fullName,
+                        logoName: item?.avatarFile?.url,
+                    };
+                }),
+            };
+        });
         // Before setting the title we should get modal by id to see if modal is active | pending or active
         if (this.editData.isEdit) {
             this.loadService

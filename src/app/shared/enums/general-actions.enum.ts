@@ -36,4 +36,5 @@ export enum eGeneralActions {
     SAVE_AND_ADD_NEW = 'save and add new',
     CONVERT_TO_LOAD = 'Convert to Load',
     CONVERT_TO_TEMPLATE = 'Convert To Template',
+    CREATE_TEMPLATE = 'Create Template',
 }

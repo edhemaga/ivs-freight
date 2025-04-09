@@ -9,7 +9,65 @@
     [modalTitle]="modalTitle"
     customClass="modal-container-M"
 >
-    <div class="new-modal" origin></div>
+    <div class="new-modal p-b-12" origin>
+        <div class="divider divider--dark divider--small"></div>
+        <form [formGroup]="loadForm">
+            <div class="d-grid d-grid-normal m-t-26">
+                <app-ca-tab-switch
+                    [tabs]="tabs"
+                    [type]="'type4-modal-popup'"
+                    (switchClicked)="onTabChange()"
+                >
+                </app-ca-tab-switch>
+
+                <div
+                    class="h-26 w-26 d-flex align-items-center justify-content-center br-2 background-light-grey-5 svg-fill-bw-9"
+                >
+                    <svg-icon
+                        class="svg-size-18 d-flex"
+                        [src]="svgRoutes.SELECT_TEMPLATE"
+                    ></svg-icon>
+                </div>
+
+                <ca-input-dropdown-test
+                    formControlName="dispatcherId"
+                    optionValue="id"
+                    label="name"
+                    template="load-dispatcher"
+                    [options]="staticData.dispatchers"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Dispatcher',
+                        isDropdown: true,
+                        isRequired: true,
+                        dropdownImageInput: {
+                            withText: true,
+                            svg: false,
+                            image: true,
+                            template: 'user',
+                        },
+                        textTransform: 'capitalize',
+                        dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
+                    }"
+                ></ca-input-dropdown-test>
+                <!-- [options]="driversDropdownList"
+                    [activeItem]="selectedDriver"
+                    (selectedItem)="selectDriver($event)" -->
+
+                <ca-input-dropdown-test
+                    formControlName="companyId"
+                    [inputConfig]="{
+                        name: 'Input Dropdown',
+                        type: 'text',
+                        label: 'Company',
+                        isDropdown: true,
+                        dropdownWidthClass: 'w-col-230',
+                    }"
+                ></ca-input-dropdown-test>
+            </div>
+        </form>
+    </div>
 
     <ng-template #rightModalContent>
         <div
@@ -93,16 +151,29 @@
                             </app-ca-modal-button>
                         }
                     } @else {
-                        <app-ca-modal-button
-                            text="Convert to Template"
-                            [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
-                            (click)="
-                                onModalAction(
-                                    eGeneralActions.CONVERT_TO_TEMPLATE
-                                )
-                            "
-                        >
-                        </app-ca-modal-button>
+                        @if (isEdit) {
+                            <app-ca-modal-button
+                                text="Create Template"
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                                (click)="
+                                    onModalAction(
+                                        eGeneralActions.CREATE_TEMPLATE
+                                    )
+                                "
+                            >
+                            </app-ca-modal-button>
+                        } @else {
+                            <app-ca-modal-button
+                                text="Convert to Template"
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                                (click)="
+                                    onModalAction(
+                                        eGeneralActions.CONVERT_TO_TEMPLATE
+                                    )
+                                "
+                            >
+                            </app-ca-modal-button>
+                        }
                     }
                 </div>
 
