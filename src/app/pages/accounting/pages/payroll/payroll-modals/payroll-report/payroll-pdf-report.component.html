@@ -26,9 +26,10 @@
             >
                 @if (!isLoading) {
                     <iframe
+                        #contentIframe
+                        (load)="onIframeLoad()"
                         [srcdoc]="pdfReport?.html"
                         width="100%"
-                        height="960px"
                     ></iframe>
                 } @else {
                     <div class="h-800">
