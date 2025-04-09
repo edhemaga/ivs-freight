@@ -12,7 +12,7 @@ import { TaCommentComponent } from '@shared/components/ta-comment/ta-comment.com
 import { TaSearchV2Component } from '@shared/components/ta-search-v2/ta-search-v2.component';
 
 // enums
-import { eSortDirection } from '@shared/enums';
+import { eGeneralActions, eSortDirection } from '@shared/enums';
 
 // models
 import { CommentCompanyUser, CommentData } from '@shared/models';
@@ -44,6 +44,9 @@ export class TaCommentsSearchComponent {
     public commentsSearchSvgRoutes = CommentsSearchSvgRoutes;
 
     public sortDirection: string = eSortDirection.DSC;
+
+    public eGeneralActions = eGeneralActions;
+    public eSortDirection = eSortDirection;
 
     public lettersToHighlight: string;
 
