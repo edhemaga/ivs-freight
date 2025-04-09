@@ -81,6 +81,7 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public isStopListHeightExpanded: boolean = false;
     public truckId: number;
     public ArrowActionsStringEnum = ArrowActionsStringEnum;
+    public sekeletonSize = new Array(11);
 
     private scrollSubject: Subject<void> = new Subject();
     private subscriptions: Subscription = new Subscription();

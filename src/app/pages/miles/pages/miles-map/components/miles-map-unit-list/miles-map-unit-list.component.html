@@ -6,6 +6,8 @@
 @let isPreviousButtonDisabled = minimalListFilters.isFirst;
 @let isNextButtonDisabled = minimalListFilters.isLast;
 
+@let isLoading = milesStoreService.detailsLoadingSelector$ | async;
+
 @if (details) {
     <div class="position-relative z-2">
         <div
@@ -13,85 +15,121 @@
             [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
         >
             <div class="h-42 d-flex align-items-center justify-content-between">
-                @let title = 'UNIT ' + details?.truck?.truckNumber;
-                <app-ca-details-title-card
-                    #detailsTitleCard
-                    [detailsTitleCardConfig]="{
-                        title: title,
-                        tooltip: 'Search Truck',
-                        placeholder: title,
-                        width: isStopListWidthExpanded ? 398 : 264,
-                        tooltipNext: 'Next Truck',
-                        tooltipPrevious: 'Previous Truck',
-                        disableNext: isNextButtonDisabled,
-                        disablePrevious: isPreviousButtonDisabled,
-                    }"
-                    [dropdownTemplate]="titleDropdown"
-                    [titleTemplate]="titleTemplate"
-                    (onNextAction)="getTruckUnit(minimalListFilters.nextId)"
-                    (onPreviousAction)="getTruckUnit(minimalListFilters.prevId)"
-                    (onSearchTextChange)="onSearchTextChange($event)"
-                >
-                    <ng-template #titleDropdown>
-                        <div
-                            #minimalListViewport
-                            class="gap-1 d-flex flex-column"
-                            (scroll)="onMinimalListScroll()"
-                        >
-                            @for (
-                                unit of minimalList;
-                                track unit.id;
-                                let index = $index
-                            ) {
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        mileUnits;
-                                        context: {
-                                            unit,
-                                        }
-                                    "
-                                >
-                                </ng-container>
-                            }
-                        </div>
-                    </ng-template>
+                @if (isLoading) {
+                    <div
+                        class="d-flex align-items-center w-100 justify-content-between"
+                    >
+                        <p class="placeholder-glow">
+                            <span
+                                class="placeholder background-muted br-2 h-20 w-144"
+                            ></span>
+                        </p>
 
-                    <ng-template #titleTemplate>
-                        <div class="d-flex justify-content-between w-full">
-                            <div class="d-flex">
-                                @if (!details?.truck?.status) {
-                                    <div
-                                        ngbTooltip
-                                        mainTooltip="Deactivated"
-                                        tooltipBackground="#424242"
-                                        position="bottom"
-                                        class="d-flex"
-                                    >
-                                        <svg-icon
-                                            [src]="
-                                                sharedSvgRoutes.DEACTIVATE_ICON
-                                            "
-                                            class="svg-fill-muted svg-size-18 m-r-6 d-flex align-items-center"
-                                        ></svg-icon>
-                                    </div>
-                                }
-
-                                <span
-                                    class="text-size-20 ta-font-bold text-color-black"
-                                    >{{ title }}</span
-                                >
+                        <div class="d-flex">
+                            <div
+                                class="d-flex w-26 h-26 justify-content-center"
+                            >
+                                <p class="placeholder-glow">
+                                    <span
+                                        class="placeholder background-muted br-2 w-7 h-18"
+                                    ></span>
+                                </p>
                             </div>
 
-                            <svg-icon
-                                class="svg-size-42-18 d-flex align-items-center"
-                                [src]="
-                                    sharedSvgRoutes.TRUCK_PATH_BASE +
-                                    details?.truck?.truckType?.logoName
-                                "
-                            ></svg-icon>
+                            <div
+                                class="d-flex w-26 h-26 justify-content-center ml-1"
+                            >
+                                <p class="placeholder-glow">
+                                    <span
+                                        class="placeholder background-muted br-2 w-7 h-18"
+                                    ></span>
+                                </p>
+                            </div>
                         </div>
-                    </ng-template>
-                </app-ca-details-title-card>
+                    </div>
+                } @else {
+                    @let title = 'UNIT ' + details?.truck?.truckNumber;
+                    <app-ca-details-title-card
+                        #detailsTitleCard
+                        [detailsTitleCardConfig]="{
+                            title: title,
+                            tooltip: 'Search Truck',
+                            placeholder: title,
+                            width: isStopListWidthExpanded ? 398 : 264,
+                            tooltipNext: 'Next Truck',
+                            tooltipPrevious: 'Previous Truck',
+                            disableNext: isNextButtonDisabled,
+                            disablePrevious: isPreviousButtonDisabled,
+                        }"
+                        [dropdownTemplate]="titleDropdown"
+                        [titleTemplate]="titleTemplate"
+                        (onNextAction)="getTruckUnit(minimalListFilters.nextId)"
+                        (onPreviousAction)="
+                            getTruckUnit(minimalListFilters.prevId)
+                        "
+                        (onSearchTextChange)="onSearchTextChange($event)"
+                    >
+                        <ng-template #titleDropdown>
+                            <div
+                                #minimalListViewport
+                                class="gap-1 d-flex flex-column"
+                                (scroll)="onMinimalListScroll()"
+                            >
+                                @for (
+                                    unit of minimalList;
+                                    track unit.id;
+                                    let index = $index
+                                ) {
+                                    <ng-container
+                                        *ngTemplateOutlet="
+                                            mileUnits;
+                                            context: {
+                                                unit,
+                                            }
+                                        "
+                                    >
+                                    </ng-container>
+                                }
+                            </div>
+                        </ng-template>
+
+                        <ng-template #titleTemplate>
+                            <div class="d-flex justify-content-between w-full">
+                                <div class="d-flex">
+                                    @if (!details?.truck?.status) {
+                                        <div
+                                            ngbTooltip
+                                            mainTooltip="Deactivated"
+                                            tooltipBackground="#424242"
+                                            position="bottom"
+                                            class="d-flex"
+                                        >
+                                            <svg-icon
+                                                [src]="
+                                                    sharedSvgRoutes.DEACTIVATE_ICON
+                                                "
+                                                class="svg-fill-muted svg-size-18 m-r-6 d-flex align-items-center"
+                                            ></svg-icon>
+                                        </div>
+                                    }
+
+                                    <span
+                                        class="text-size-20 ta-font-bold text-color-black"
+                                        >{{ title }}</span
+                                    >
+                                </div>
+
+                                <svg-icon
+                                    class="svg-size-42-18 d-flex align-items-center"
+                                    [src]="
+                                        sharedSvgRoutes.TRUCK_PATH_BASE +
+                                        details?.truck?.truckType?.logoName
+                                    "
+                                ></svg-icon>
+                            </div>
+                        </ng-template>
+                    </app-ca-details-title-card>
+                }
             </div>
         </div>
         <div
@@ -99,12 +137,20 @@
             [ngClass]="isStopListWidthExpanded ? 'w-442' : 'w-334'"
         >
             <div class="p-r-6">
-                <form [formGroup]="searchForm">
-                    <app-ca-input
-                        formControlName="search"
-                        [inputConfig]="searchField"
-                    ></app-ca-input>
-                </form>
+                @if (isLoading) {
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder background-muted br-2 w-100 h-26"
+                        ></span>
+                    </p>
+                } @else {
+                    <form [formGroup]="searchForm">
+                        <app-ca-input
+                            formControlName="search"
+                            [inputConfig]="searchField"
+                        ></app-ca-input>
+                    </form>
+                }
 
                 <div
                     class="h-22 d-grid align-items-center p-r-6 gap-1 m-t-4"
@@ -114,17 +160,45 @@
                             : 'stops-container-small'
                     "
                 >
-                    @for (item of stopsConfig; let i = $index; track i) {
-                        @if (!item.isExpandable || isStopListWidthExpanded) {
-                            <div
-                                class="text-color-muted text-size-11 ta-font-bold"
-                                [ngClass]="{
-                                    'text-right': item.isAlignedRight,
-                                    'text-center': item.isAlignedCenter,
-                                }"
-                            >
-                                {{ item.label }}
-                            </div>
+                    @if (isLoading) {
+                        <p class="placeholder-glow text-right">
+                            <span
+                                class="placeholder background-muted br-2 w-26 h-10"
+                            ></span>
+                        </p>
+
+                        <p class="placeholder-glow text-right">
+                            <span
+                                class="placeholder background-muted br-2 w-49 h-10"
+                            ></span>
+                        </p>
+
+                        <p class="placeholder-glow text-right">
+                            <span
+                                class="placeholder background-muted br-2 w-42 h-10"
+                            ></span>
+                        </p>
+
+                        <p class="placeholder-glow text-right">
+                            <span
+                                class="placeholder background-muted br-2 w-36 h-10"
+                            ></span>
+                        </p>
+                    } @else {
+                        @for (item of stopsConfig; let i = $index; track i) {
+                            @if (
+                                !item.isExpandable || isStopListWidthExpanded
+                            ) {
+                                <div
+                                    class="text-color-muted text-size-11 ta-font-bold"
+                                    [ngClass]="{
+                                        'text-right': item.isAlignedRight,
+                                        'text-center': item.isAlignedCenter,
+                                    }"
+                                >
+                                    {{ item.label }}
+                                </div>
+                            }
                         }
                     }
                 </div>
@@ -143,17 +217,66 @@
                 [ngStyle]="listHeight"
                 (scroll)="onScrollEvent()"
             >
-                @for (stop of stops; track stop.id; let index = $index) {
-                    <ng-container
-                        *ngTemplateOutlet="
-                            stopRows;
-                            context: {
-                                stop,
-                                index,
-                            }
-                        "
-                    >
-                    </ng-container>
+                @if (isLoading) {
+                    @for (
+                        sekeleton of sekeletonSize;
+                        track $index;
+                        let even = $even
+                    ) {
+                        <div
+                            class="stops-container-small stops-container h-26 br-2 background-white background-hover-light-grey d-grid align-items-center gap-1 c-pointer m-b-2"
+                        >
+                            <div class="d-flex">
+                                <p
+                                    class="placeholder-glow text-right w-24 text-center"
+                                >
+                                    <span
+                                        class="placeholder background-muted rounded-circle w-10 h-10"
+                                    ></span>
+                                </p>
+                                <p class="placeholder-glow text-right">
+                                    <span
+                                        [ngClass]="even ? 'w-36' : 'w-29'"
+                                        class="placeholder background-muted br-2 h-10"
+                                    ></span>
+                                </p>
+                            </div>
+
+                            <p class="placeholder-glow text-right">
+                                <span
+                                    [ngClass]="even ? 'w-57' : 'w-49'"
+                                    class="placeholder background-muted br-2 h-10"
+                                ></span>
+                            </p>
+
+                            <p class="placeholder-glow text-right">
+                                <span
+                                    [ngClass]="even ? 'w-49' : 'w-42'"
+                                    class="placeholder background-muted br-2 h-10"
+                                ></span>
+                            </p>
+
+                            <p class="placeholder-glow text-right">
+                                <span
+                                    [ngClass]="even ? 'w-42' : 'w-36'"
+                                    class="placeholder background-muted br-2 h-10"
+                                ></span>
+                            </p>
+                        </div>
+                    }
+                } @else {
+                    @for (stop of stops; track stop.id; let index = $index) {
+                        <ng-container
+                            *ngTemplateOutlet="
+                                stopRows;
+                                context: {
+                                    stop,
+                                    index,
+                                }
+                            "
+                        >
+                        </ng-container>
+                    }
                 }
             </div>
 

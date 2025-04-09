@@ -24,6 +24,7 @@ import {
     totalMinimalListCountSelector,
     stopsSelector,
     minimalListFiltersSelector,
+    detailsLoadingSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -128,6 +129,10 @@ export class MilesStoreService {
 
     public minimalListSelector$: Observable<MilesByUnitMinimalResponse[]> =
         this.store.pipe(select(minimalListSelector));
+
+    public detailsLoadingSelector$: Observable<boolean> = this.store.pipe(
+        select(detailsLoadingSelector)
+    );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({

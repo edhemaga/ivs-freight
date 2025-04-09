@@ -49,6 +49,7 @@ export const initialState: IMilesState = {
     columns: MilesTableColumnsConfig.columnsConfig,
 
     // Unit list
+    isDetailsLoading: false,
     details: {
         data: {},
         stops: [],

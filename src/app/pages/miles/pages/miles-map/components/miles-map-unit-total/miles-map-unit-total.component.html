@@ -1,6 +1,7 @@
 @let total = milesStoreService.detailsSelector$ | async;
+@let isLoading = milesStoreService.detailsLoadingSelector$ | async;
 
-@if (total) {
+@if (total && !isLoading) {
     @let hasTotalMiles = total?.totalMiles || total?.stops?.count;
     <div
         class="background-white br-3 p-x-12 miles-map-total position-relative z-2 miles-unit-total-list overflow-x-hidden overflow-y-auto opacity-90"

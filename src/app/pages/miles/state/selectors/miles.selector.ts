@@ -146,3 +146,8 @@ export const minimalListFiltersSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.minimalListFilters
 );
+
+export const detailsLoadingSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.isDetailsLoading
+);

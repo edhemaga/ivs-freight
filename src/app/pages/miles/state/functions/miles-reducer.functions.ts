@@ -62,6 +62,7 @@ export const changeViewMode = function (
     return {
         ...state,
         activeViewMode,
+        isDetailsLoading: true,
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
@@ -138,6 +139,7 @@ export const setUnitDetails = function (
     return {
         ...state,
         selectedTab,
+        isDetailsLoading: false,
         details: {
             ...state.details,
             data: details,

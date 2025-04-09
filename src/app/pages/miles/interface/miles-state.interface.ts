@@ -37,6 +37,7 @@ export interface IMilesState {
     tabResults: IMilesTabResults;
 
     details: IMinimalStopsState;
+    isDetailsLoading: boolean;
     tableSettings: ITableConfig;
     minimalList: IMinimalListState;
     minimalListFilters: IMinimalListFilters;
