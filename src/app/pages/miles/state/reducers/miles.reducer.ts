@@ -82,17 +82,15 @@ export const initialState: IMilesState = {
 export const milesReducer = createReducer(
     initialState,
     // #region Get miles
-    on(
-        MilesAction.getLoadsPayloadSuccess,
-        (state, { miles, totalResultsCount }) =>
-            Functions.updateMilesData(state, miles, totalResultsCount)
+    on(MilesAction.getLoadsPayloadSuccess, (state, { miles }) =>
+        Functions.updateMilesData(state, miles)
     ),
     on(MilesAction.getLoadsPayloadError, (state) => ({
         ...state,
         loading: false,
     })),
-    on(MilesAction.loadMilesSuccess, (state, { miles, totalResultsCount }) =>
-        Functions.updateMilesData(state, miles, totalResultsCount)
+    on(MilesAction.loadMilesSuccess, (state, { miles }) =>
+        Functions.updateMilesData(state, miles)
     ),
 
     on(MilesAction.updateMilesList, (state, { miles }) =>

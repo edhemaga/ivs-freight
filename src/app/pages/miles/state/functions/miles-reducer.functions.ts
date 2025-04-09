@@ -74,8 +74,7 @@ export const changeViewMode = function (
 
 export const updateMilesData = function (
     state: IMilesState,
-    miles: IMilesModel[],
-    totalResultsCount: number
+    miles: IMilesModel[]
 ): IMilesState {
     return {
         ...state,
