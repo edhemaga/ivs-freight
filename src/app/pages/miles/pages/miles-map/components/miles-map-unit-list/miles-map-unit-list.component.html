@@ -33,13 +33,16 @@
                     (onSearchTextChange)="onSearchTextChange($event)"
                 >
                     <ng-template #titleDropdown>
-                        <cdk-virtual-scroll-viewport
+                        <div
                             #minimalListViewport
-                            [itemSize]="26"
-                            style="height: 190px"
+                            class="gap-1 d-flex flex-column"
                             (scroll)="onMinimalListScroll()"
                         >
-                            <div *cdkVirtualFor="let unit of minimalList">
+                            @for (
+                                unit of minimalList;
+                                track unit.id;
+                                let index = $index
+                            ) {
                                 <ng-container
                                     *ngTemplateOutlet="
                                         mileUnits;
@@ -49,18 +52,28 @@
                                     "
                                 >
                                 </ng-container>
-                            </div>
-                        </cdk-virtual-scroll-viewport>
+                            }
+                        </div>
                     </ng-template>
 
                     <ng-template #titleTemplate>
                         <div class="d-flex justify-content-between w-full">
                             <div class="d-flex">
                                 @if (!details?.truck?.status) {
-                                    <svg-icon
-                                        [src]="sharedSvgRoutes.DEACTIVATE_ICON"
-                                        class="svg-fill-muted svg-size-18 m-r-6 d-flex align-items-center"
-                                    ></svg-icon>
+                                    <div
+                                        ngbTooltip
+                                        mainTooltip="Deactivated"
+                                        tooltipBackground="#424242"
+                                        position="bottom"
+                                        class="d-flex"
+                                    >
+                                        <svg-icon
+                                            [src]="
+                                                sharedSvgRoutes.DEACTIVATE_ICON
+                                            "
+                                            class="svg-fill-muted svg-size-18 m-r-6 d-flex align-items-center"
+                                        ></svg-icon>
+                                    </div>
                                 }
 
                                 <span

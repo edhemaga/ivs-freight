@@ -8,10 +8,8 @@ import {
 } from '@angular/core';
 import { Subscription, Subject } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
-import {
-    CdkVirtualScrollViewport,
-    ScrollingModule,
-} from '@angular/cdk/scrolling';
+import { ScrollingModule } from '@angular/cdk/scrolling';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Form
 import { ReactiveFormsModule, UntypedFormBuilder } from '@angular/forms';
@@ -34,16 +32,16 @@ import {
     eStringPlaceholder,
     eGeneralActions,
 } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // Enums
 import { ArrowActionsStringEnum } from '@shared/enums';
 
 // Const
 import { MilesStopsTable } from '@pages/miles/utils/constants';
-import {
-    handleVirtualScrollTrigger,
-    onHTMLElementScroll,
-} from '@shared/utils/helpers/scroll-helper';
+
+// Helpers
+import { onHTMLElementScroll } from '@shared/utils/helpers/scroll-helper';
 
 @Component({
     selector: 'app-miles-map-unit-list',
@@ -55,11 +53,13 @@ import {
         CommonModule,
         ReactiveFormsModule,
         ScrollingModule,
+        NgbTooltip,
 
         // Components
         SvgIconComponent,
         CaInputComponent,
         CaDetailsTitleCardComponent,
+        TaAppTooltipV2Component,
 
         // Pipes
         ThousandSeparatorPipe,
@@ -68,11 +68,10 @@ import {
 })
 export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     @ViewChild('stopListViewport') stopListViewport!: ElementRef;
-    @ViewChild(CdkVirtualScrollViewport)
-    minimalListViewport!: CdkVirtualScrollViewport;
+    @ViewChild('minimalListViewport') minimalListViewport!: ElementRef;
 
     @ViewChild('detailsTitleCard')
-    detailsTitleCard: CaDetailsTitleCardComponent<any>;
+    detailsTitleCard: CaDetailsTitleCardComponent<unknown>;
 
     public sharedSvgRoutes = SharedSvgRoutes;
     public stopsConfig = MilesStopsTable.HEADER_CONFIG;
@@ -134,9 +133,10 @@ export class MilesMapUnitListComponent implements OnInit, OnDestroy {
     public onSearchTextChange(text: string): void {
         this.milesStoreService.dispatchSearchMinimalUnitList(text);
     }
+
     public onMinimalListScroll(): void {
-        handleVirtualScrollTrigger(
-            this.minimalListViewport,
+        onHTMLElementScroll(
+            this.minimalListViewport.nativeElement,
             MilesStopsTable.BOTTOM_SCROLL_THRESHOLD,
             () => this.milesStoreService.loadNextMinimalListPage()
         );
