@@ -58,4 +58,8 @@ export class NewLoadTableComponent {
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
     }
+
+    public onOpenModal(id: number, isTemplate: boolean): void {
+        this.loadStoreService.onOpenModal(id, isTemplate);
+    }
 }
