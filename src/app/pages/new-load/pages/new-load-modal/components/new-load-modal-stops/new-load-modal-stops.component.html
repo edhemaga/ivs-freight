@@ -1,5 +1,5 @@
 <form [formGroup]="stopsForm">
-    <ng-container formArrayName="stops">
+    <div class="d-flex gap-1 flex-column" formArrayName="stops">
         @for (stop of stops.controls; track $index) {
             <app-ca-custom-card
                 [hasDivider]="false"
@@ -10,8 +10,8 @@
                     marginBottom: '0',
                 }"
             >
-                <div origin [formGroupName]="i">
-                    <div class="d-flex">
+                <div origin [formGroupName]="i" class="w-612">
+                    <div class="d-flex m-t-26">
                         <ca-input-dropdown-test
                             [label]="'name'"
                             [optionValue]="'id'"
@@ -27,7 +27,7 @@
                         </ca-input-dropdown-test>
                     </div>
 
-                    <div class="d-grid d-grid-working-time">
+                    <div class="d-grid d-grid-working-time m-t-26">
                         <app-ca-tab-switch
                             [type]="'type4-modal-popup'"
                             [tabs]="tabs"
@@ -46,10 +46,53 @@
                         >
                         </ca-input-dropdown-test>
                     </div>
+
+                    <div class="d-grid d-grid-time-picker m-t-26">
+                        <ca-input-datetime-picker
+                            formControlName="dateFrom"
+                            [inputConfig]="{
+                                name: 'datepicker',
+                                type: 'text',
+                                isDropdown: true,
+                                label: 'Date',
+                                placeholderIcon: 'date',
+                                isRequired: true,
+                                customClass: 'datetimeclass',
+                            }"
+                        ></ca-input-datetime-picker>
+
+                        <div class="w-26 h-26 d-flex background-muted"></div>
+
+                        <ca-input-datetime-picker
+                            formControlName="timeFrom"
+                            [inputConfig]="{
+                                name: 'timepicker',
+                                type: 'text',
+                                label: 'From',
+                                placeholderIcon: 'time',
+                                isDropdown: true,
+                                isRequired: true,
+                                customClass: 'datetimeclass',
+                            }"
+                        ></ca-input-datetime-picker>
+
+                        <ca-input-datetime-picker
+                            formControlName="timeTo"
+                            [inputConfig]="{
+                                name: 'timepicker',
+                                type: 'text',
+                                label: 'To',
+                                placeholderIcon: 'time',
+                                isDropdown: true,
+                                isRequired: true,
+                                customClass: 'datetimeclass',
+                            }"
+                        ></ca-input-datetime-picker>
+                    </div>
                 </div>
             </app-ca-custom-card>
         }
-    </ng-container>
+    </div>
 
     <ng-template #headerLeftSideTemplate>
         <div class="d-flex flex-column gap-1">

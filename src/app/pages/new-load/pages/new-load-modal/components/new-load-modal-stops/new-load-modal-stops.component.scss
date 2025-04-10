@@ -1,9 +1,15 @@
 .d-grid {
     &-stops {
-        gap: 8px;
+        gap: 4px;
         grid-template-columns: 26px 330px 150px 88px;
     }
 
     &-working-time {
+        grid-template-columns: 272px 332px;
+    }
+
+    &-time-picker {
+        gap: 12px;
+        grid-template-columns: 1fr 26px repeat(2, 1fr);
     }
 }

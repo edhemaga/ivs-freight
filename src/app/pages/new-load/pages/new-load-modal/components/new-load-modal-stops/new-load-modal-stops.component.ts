@@ -16,6 +16,7 @@ import { LoadModalStopsHelper } from '@pages/new-load/pages/new-load-modal/compo
 // Components
 import {
     CaCustomCardComponent,
+    CaInputDatetimePickerComponent,
     CaInputDropdownTestComponent,
     CaTabSwitchComponent,
 } from 'ca-components';
@@ -30,6 +31,7 @@ import {
         CaCustomCardComponent,
         CaTabSwitchComponent,
         CaInputDropdownTestComponent,
+        CaInputDatetimePickerComponent,
     ],
     templateUrl: './new-load-modal-stops.component.html',
     styleUrl: './new-load-modal-stops.component.scss',

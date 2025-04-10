@@ -21,6 +21,11 @@ export class LoadModalStopsHelper {
             stopType: [data.stopType],
             shipperId: [data.shipperId],
             brokerContactId: [1],
+            timeTo: null,
+            timeFrom: null,
+            dateFrom: null,
+            dateTo: null,
+            items: [],
         });
     }
 }
