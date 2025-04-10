@@ -1119,6 +1119,8 @@ export class FuelTableComponent
             .pipe(takeUntil(this.destroy$))
             .pipe(
                 switchMap((currentFilter) => {
+                    console.log('currentSetTableFilter currentFilter', currentFilter);
+
                     if (
                         currentFilter?.filterName === TableStringEnum.FUEL_ARRAY
                     )
