@@ -52,7 +52,7 @@ export class TaCommentsSearchComponent {
 
     constructor() {}
 
-    public onCommentActionEmit(commentData: CommentData): void {
+    public onCommentAction(commentData: CommentData): void {
         this.onActionEmitter.emit(commentData);
     }
 
