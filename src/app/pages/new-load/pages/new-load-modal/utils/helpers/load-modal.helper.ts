@@ -1,6 +1,11 @@
 // Enums
 import { eLoadModal } from '@pages/new-load/pages/new-load-modal/enums';
-import { EnumValue } from 'appcoretruckassist';
+import {
+    EnumValue,
+    LoadRequirementsResponse,
+    LoadResponse,
+    LoadType,
+} from 'appcoretruckassist';
 
 // Interfaces
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -34,35 +39,83 @@ export class LoadModalHelper {
             : eLoadModal.CREATE_TITLE;
     }
 
-    static generateInitalForm(): UntypedFormGroup {
+    static generateInitalForm(
+        load?: LoadResponse,
+        loadRequirements?: LoadRequirementsResponse
+    ): UntypedFormGroup {
         return new UntypedFormGroup({
-            dispatcherId: new UntypedFormControl(null, Validators.required),
-            companyId: new UntypedFormControl(null, Validators.required),
-            brokerId: new UntypedFormControl(null, Validators.required),
-            referenceNumber: new UntypedFormControl(null, Validators.required),
-            baseRate: new UntypedFormControl(null, Validators.required),
-            dispatchId: new UntypedFormControl(null),
-            weight: new UntypedFormControl(null),
-            generalCommodity: new UntypedFormControl(null),
-            brokerContact: new UntypedFormControl(null),
-            trailerLengthId: new UntypedFormControl(null),
-            doorType: new UntypedFormControl(null),
-            suspension: new UntypedFormControl(null),
-            year: new UntypedFormControl(null),
-            liftgate: new UntypedFormControl(null),
-            trailerTypeId: new UntypedFormControl(null),
-            truckTypeId: new UntypedFormControl(null),
-            driverMessage: new UntypedFormControl(null),
-            note: new UntypedFormControl(null),
-            statusType: new UntypedFormControl(null),
-            status: new UntypedFormControl(null),
+            dispatcherId: new UntypedFormControl(
+                load?.dispatcher?.id ?? null,
+                Validators.required
+            ),
+            companyId: new UntypedFormControl(
+                load?.company?.id ?? null,
+                Validators.required
+            ),
+            brokerId: new UntypedFormControl(
+                load?.broker?.id ?? null,
+                Validators.required
+            ),
+            referenceNumber: new UntypedFormControl(
+                load?.referenceNumber ?? null,
+                Validators.required
+            ),
+            baseRate: new UntypedFormControl(
+                load?.baseRate ?? null,
+                Validators.required
+            ),
+            dispatchId: new UntypedFormControl(load?.dispatch?.id ?? null),
+            weight: new UntypedFormControl(load?.weight ?? null),
+            generalCommodity: new UntypedFormControl(
+                load?.generalCommodity?.id ?? null
+            ),
+            brokerContact: new UntypedFormControl(
+                load?.brokerContact?.brokerId ?? null
+            ),
+            driverMessage: new UntypedFormControl(''),
+            note: new UntypedFormControl(load?.note ?? null),
+            statusType: new UntypedFormControl(load?.statusType?.name ?? null),
+            status: new UntypedFormControl(load?.status?.statusString ?? null),
+            loadRequirements:
+                this.generateLoadRequirementsForm(loadRequirements),
         });
     }
 
-    // TODO: Should we define return time? All the values should be inside form anyway?
+    static generateLoadRequirementsForm(
+        loadRequirements?: LoadRequirementsResponse
+    ): UntypedFormGroup {
+        return new UntypedFormGroup({
+            id: new UntypedFormControl(loadRequirements?.id ?? null),
+            trailerTypeId: new UntypedFormControl(
+                loadRequirements?.trailerType?.id ?? null
+            ),
+            truckTypeId: new UntypedFormControl(
+                loadRequirements?.truckType?.id ?? null
+            ),
+            trailerLengthId: new UntypedFormControl(
+                loadRequirements?.trailerLength?.id ?? null
+            ),
+            doorType: new UntypedFormControl(
+                loadRequirements?.doorType?.id ?? null
+            ),
+            suspension: new UntypedFormControl(
+                loadRequirements?.suspension?.id ?? null
+            ),
+            year: new UntypedFormControl(loadRequirements?.year ?? null),
+            liftgate: new UntypedFormControl(
+                loadRequirements?.liftgate ?? null
+            ),
+        });
+    }
+
+    // TODO: Should we define return type? All the values should be inside form anyway?
     static generateLoadModel(id: number, loadForm: UntypedFormGroup): any {
         return {
             id,
+
+            // We don't have LTL NOW, Hardcode
+            type: LoadType.Ftl,
+
             // TODO: HARDCODE VALUES SO WE CAN SAVE LOAD, FOR TESTING ONLY!!!
             additionalBillingRates: [
                 { additionalBillingType: 1 },
@@ -71,6 +124,7 @@ export class LoadModalHelper {
                 { additionalBillingType: 4 },
                 { additionalBillingType: 5 },
             ],
+
             ...loadForm.value,
         };
     }

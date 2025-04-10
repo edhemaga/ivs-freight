@@ -2,14 +2,10 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import {
-    ReactiveFormsModule,
-    UntypedFormBuilder,
-    UntypedFormGroup,
-} from '@angular/forms';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 
 // rxjs
-import { forkJoin } from 'rxjs';
+import { catchError, forkJoin, Observable, of } from 'rxjs';
 
 // Enums
 import { eGeneralActions } from '@shared/enums';
@@ -19,7 +15,6 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
-import { ModalService } from '@shared/services';
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -28,7 +23,11 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
 
 // Models
-import { LoadModalResponse, LoadResponse } from 'appcoretruckassist';
+import {
+    LoadModalResponse,
+    LoadResponse,
+    LoadTemplateResponseCreateGenericWithUploadsResponse,
+} from 'appcoretruckassist';
 
 // Constants
 import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants';
@@ -106,13 +105,10 @@ export class NewLoadModalComponent implements OnInit {
 
     constructor(
         private ngbActiveModal: NgbActiveModal,
-        private loadService: LoadService,
-        private formBuilder: UntypedFormBuilder,
-        private modalService: ModalService
+        private loadService: LoadService
     ) {}
 
     ngOnInit(): void {
-        this.createForm();
         this.setupInitalData();
     }
 
@@ -145,21 +141,28 @@ export class NewLoadModalComponent implements OnInit {
         const isSaveAndAddNew =
             action === this.eGeneralActions.SAVE_AND_ADD_NEW;
         const { isEdit, isTemplate, id } = this.editData;
+        const load = LoadModalHelper.generateLoadModel(id, this.loadForm);
 
-        // TODO: For now handle only edit
+        let saveObservable: Observable<LoadTemplateResponseCreateGenericWithUploadsResponse>;
+
         if (isEdit) {
-            const load = LoadModalHelper.generateLoadModel(id, this.loadForm);
-
-            if (isTemplate) {
-                this.loadService
-                    .updateLoadTemplate(load)
-                    .subscribe(() => this.onSaveAndAddNew(isSaveAndAddNew));
-            } else {
-                this.loadService
-                    .apiUpdateLoad(load)
-                    .subscribe(() => this.onSaveAndAddNew(isSaveAndAddNew));
-            }
+            saveObservable = isTemplate
+                ? this.loadService.updateLoadTemplate(load)
+                : this.loadService.apiUpdateLoad(load);
+        } else {
+            saveObservable = isTemplate
+                ? this.loadService.apiCreateLoadTemplate(load)
+                : this.loadService.apiCreateLoad(load);
         }
+
+        saveObservable
+            .pipe(
+                catchError((error) => {
+                    this.activeAction = null;
+                    return of(null);
+                })
+            )
+            .subscribe((result) => this.onSaveAndAddNew(isSaveAndAddNew));
     }
 
     private onSaveAndAddNew(isSaveAndAddNew: boolean): void {
@@ -177,10 +180,6 @@ export class NewLoadModalComponent implements OnInit {
         };
 
         this.modalTitle = LoadModalHelper.generateTitle(this.editData, {});
-    }
-
-    private createForm() {
-        this.loadForm = LoadModalHelper.generateInitalForm();
     }
 
     private setupInitalData(): void {
@@ -201,38 +200,14 @@ export class NewLoadModalComponent implements OnInit {
                     load.statusType
                 );
 
-                const { loadRequirements } = load || {};
-
-                // TODO: Check this
-                this.loadForm.patchValue({
-                    dispatcherId: load.dispatcher?.id,
-                    companyId: load.company?.id,
-                    referenceNumber: load.referenceNumber,
-                    brokerId: load.broker?.id,
-                    weight: load.weight,
-                    dispatchId: load.dispatch?.id,
-                    // TODO: EXTRACT TO NEW FORM TO AVOID THIS REMAPING
-                    trailerTypeId: loadRequirements?.trailerType?.id,
-                    truckTypeId: loadRequirements?.truckType?.id,
-                    trailerLengthId: loadRequirements?.trailerLength?.id,
-                    doorType: loadRequirements?.doorType?.id,
-                    suspension: loadRequirements?.suspension?.id,
-                    year: loadRequirements?.year,
-                    liftgate: loadRequirements?.liftgate,
-                    // Check this generalCommodity
-                    generalCommodity: load.generalCommodity?.id,
-                    // Check this brokerContact
-                    brokerContact: load.brokerContact?.brokerId,
-
-                    driverMessage: '',
-                    note: load.note,
-                    baseRate: load.baseRate,
-                    statusType: load.statusType?.name,
-                    status: load.status?.statusString,
-                });
+                this.loadForm = LoadModalHelper.generateInitalForm(
+                    load,
+                    load.loadRequirements
+                );
             });
         } else {
             staticData$.subscribe((staticData) => {
+                this.loadForm = LoadModalHelper.generateInitalForm();
                 this.staticData = staticData;
                 this.modalTitle = LoadModalHelper.generateTitle(
                     this.editData,

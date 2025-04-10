@@ -1,7 +1,7 @@
 @let isEdit = editData.isEdit;
 @let isTemplate = editData.isTemplate;
 @let isLoaded = !!load || staticData;
-@let isModalValidToSubmit = loadForm.valid;
+@let isModalValidToSubmit = loadForm?.valid;
 
 <app-ca-modal
     [footerTemplate]="footerTemplate"
@@ -122,7 +122,11 @@
                         marginBottom: '0',
                     }"
                 >
-                    <div origin class="m-t-18 m-b-14">
+                    <div
+                        origin
+                        class="m-t-18 m-b-14"
+                        formGroupName="loadRequirements"
+                    >
                         <div class="d-grid d-grid-requirement-first-row m-b-28">
                             <ca-input-dropdown-test
                                 formControlName="truckTypeId"
