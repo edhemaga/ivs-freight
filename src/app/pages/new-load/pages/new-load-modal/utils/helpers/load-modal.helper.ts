@@ -54,6 +54,24 @@ export class LoadModalHelper {
             truckTypeId: new UntypedFormControl(null),
             driverMessage: new UntypedFormControl(null),
             note: new UntypedFormControl(null),
+            statusType: new UntypedFormControl(null),
+            status: new UntypedFormControl(null),
         });
+    }
+
+    // TODO: Should we define return time? All the values should be inside form anyway?
+    static generateLoadModel(id: number, loadForm: UntypedFormGroup): any {
+        return {
+            id,
+            // TODO: HARDCODE VALUES SO WE CAN SAVE LOAD, FOR TESTING ONLY!!!
+            additionalBillingRates: [
+                { additionalBillingType: 1 },
+                { additionalBillingType: 2 },
+                { additionalBillingType: 3 },
+                { additionalBillingType: 4 },
+                { additionalBillingType: 5 },
+            ],
+            ...loadForm.value,
+        };
     }
 }

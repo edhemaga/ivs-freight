@@ -126,23 +126,57 @@ export class NewLoadModalComponent implements OnInit {
 
             case this.eGeneralActions.CONVERT_TO_LOAD:
             case this.eGeneralActions.CONVERT_TO_TEMPLATE:
-                const isTemplate =
-                    action === this.eGeneralActions.CONVERT_TO_TEMPLATE;
-
-                this.editData = {
-                    isEdit: false,
-                    id: null,
-                    isTemplate,
-                };
-
-                this.modalTitle = LoadModalHelper.generateTitle(
-                    this.editData,
-                    {}
-                );
+                this.onLoadConvert(action);
                 break;
+
             case this.eGeneralActions.CREATE_TEMPLATE:
-            // Open projection modal
+                // Open projection modal
+                break;
+
+            case this.eGeneralActions.SAVE:
+            case this.eGeneralActions.SAVE_AND_ADD_NEW:
+                this.onLoadSave(action);
+                break;
         }
+    }
+    private onLoadSave(action: eGeneralActions): void {
+        this.activeAction = action;
+
+        const isSaveAndAddNew =
+            action === this.eGeneralActions.SAVE_AND_ADD_NEW;
+        const { isEdit, isTemplate, id } = this.editData;
+
+        // TODO: For now handle only edit
+        if (isEdit) {
+            const load = LoadModalHelper.generateLoadModel(id, this.loadForm);
+
+            if (isTemplate) {
+                this.loadService
+                    .updateLoadTemplate(load)
+                    .subscribe(() => this.onSaveAndAddNew(isSaveAndAddNew));
+            } else {
+                this.loadService
+                    .apiUpdateLoad(load)
+                    .subscribe(() => this.onSaveAndAddNew(isSaveAndAddNew));
+            }
+        }
+    }
+
+    private onSaveAndAddNew(isSaveAndAddNew: boolean): void {
+        if (isSaveAndAddNew) this.loadForm.reset();
+        else this.ngbActiveModal.close();
+    }
+
+    private onLoadConvert(action: eGeneralActions): void {
+        const isTemplate = action === this.eGeneralActions.CONVERT_TO_TEMPLATE;
+
+        this.editData = {
+            isEdit: false,
+            id: null,
+            isTemplate,
+        };
+
+        this.modalTitle = LoadModalHelper.generateTitle(this.editData, {});
     }
 
     private createForm() {
@@ -193,6 +227,8 @@ export class NewLoadModalComponent implements OnInit {
                     driverMessage: '',
                     note: load.note,
                     baseRate: load.baseRate,
+                    statusType: load.statusType?.name,
+                    status: load.status?.statusString,
                 });
             });
         } else {

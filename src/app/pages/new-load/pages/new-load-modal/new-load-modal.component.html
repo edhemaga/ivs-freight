@@ -1,6 +1,7 @@
 @let isEdit = editData.isEdit;
 @let isTemplate = editData.isTemplate;
 @let isLoaded = !!load || staticData;
+@let isModalValidToSubmit = loadForm.valid;
 
 <app-ca-modal
     [footerTemplate]="footerTemplate"
@@ -231,10 +232,23 @@
                     </div>
                 </app-ca-custom-card>
 
-                <ca-input-test
-                    formControlName="baseRate"
-                    [inputConfig]="LoadModalConfig.LOAD_BASE_RATE"
-                ></ca-input-test>
+                <app-ca-custom-card
+                    customDividerClass="divider--dark"
+                    cardName="Billing"
+                    [hasDivider]="true"
+                    [isCardOpen]="true"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0',
+                    }"
+                >
+                    <div origin class="m-t-8 m-b-14">
+                        <ca-input-test
+                            formControlName="baseRate"
+                            [inputConfig]="LoadModalConfig.LOAD_BASE_RATE"
+                        ></ca-input-test>
+                    </div>
+                </app-ca-custom-card>
 
                 <app-ca-custom-card
                     customDividerClass="divider--dark"
