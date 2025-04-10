@@ -186,6 +186,11 @@ export class NewLoadModalComponent implements OnInit {
             isTemplate,
         };
 
+        LoadModalHelper.updateFormValidatorsForTemplate(
+            this.loadForm,
+            isTemplate
+        );
+
         this.modalTitle = LoadModalHelper.generateTitle(this.editData, {});
     }
 
