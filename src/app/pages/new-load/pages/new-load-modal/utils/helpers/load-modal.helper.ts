@@ -1,12 +1,14 @@
 // Enums
-import { eLoadModal } from '@pages/new-load/pages/new-load-modal/enums';
+import {
+    eLoadModal,
+    eLoadModalForm,
+} from '@pages/new-load/pages/new-load-modal/enums';
 import {
     EnumValue,
     LoadRequirementsResponse,
     LoadResponse,
     LoadType,
 } from 'appcoretruckassist';
-import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // Interfaces
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -18,7 +20,25 @@ import {
     Validators,
 } from '@angular/forms';
 
+// Models
+import { Tabs } from '@ca-shared/models/tabs.model';
+
 export class LoadModalHelper {
+    static getLoadTypeTabs(): Tabs[] {
+        return [
+            {
+                id: 1,
+                name: 'FTL',
+                checked: true,
+            },
+            {
+                id: 2,
+                name: 'LTL',
+                checked: false,
+            },
+        ];
+    }
+
     static generateTitle(editData: ILoadModal, statusType: EnumValue): string {
         const { isEdit, isTemplate } = editData;
 
@@ -40,7 +60,7 @@ export class LoadModalHelper {
             : eLoadModal.CREATE_TITLE;
     }
 
-    static generateInitalForm(
+    static createForm(
         load?: LoadResponse,
         loadRequirements?: LoadRequirementsResponse,
         isTemplate?: boolean
@@ -118,10 +138,8 @@ export class LoadModalHelper {
         loadForm: UntypedFormGroup,
         isTemplate: boolean
     ): void {
-        const nameControl = loadForm.get(LoadModalStringEnum.NAME);
-        const dispatcherControl = loadForm.get(
-            LoadModalStringEnum.DISPATCHER_ID
-        );
+        const nameControl = loadForm.get(eLoadModalForm.NAME);
+        const dispatcherControl = loadForm.get(eLoadModalForm.DISPATCHER_ID);
 
         if (nameControl) {
             nameControl.setValidators(isTemplate ? Validators.required : null);

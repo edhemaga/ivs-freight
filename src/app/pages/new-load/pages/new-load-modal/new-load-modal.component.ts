@@ -29,9 +29,7 @@ import {
     LoadResponse,
     LoadTemplateResponseCreateGenericWithUploadsResponse,
 } from 'appcoretruckassist';
-
-// Constants
-import { LoadModalConstants } from '@pages/load/pages/load-modal/utils/constants';
+import { Tabs } from '@shared/models';
 
 // Config
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
@@ -90,7 +88,7 @@ export class NewLoadModalComponent implements OnInit {
     // Show static data, such as status, load number
     public load: LoadResponse;
     public staticData: LoadModalResponse;
-    public tabs = LoadModalConstants.LOAD_MODAL_TABS;
+    public tabs: Tabs[] = [];
 
     // Enums
     public eModalButtonClassType = eModalButtonClassType;
@@ -113,32 +111,14 @@ export class NewLoadModalComponent implements OnInit {
     ) {}
 
     ngOnInit(): void {
+        this.getConstantData();
         this.setupInitalData();
     }
 
-    public onTabChange(): void {}
-
-    public onModalAction(action: eGeneralActions): void {
-        switch (action) {
-            case this.eGeneralActions.CLOSE:
-                this.onCloseModal();
-                break;
-
-            case this.eGeneralActions.CONVERT_TO_LOAD:
-            case this.eGeneralActions.CONVERT_TO_TEMPLATE:
-                this.onLoadConvert(action);
-                break;
-
-            case this.eGeneralActions.CREATE_TEMPLATE:
-                // Open projection modal
-                break;
-
-            case this.eGeneralActions.SAVE:
-            case this.eGeneralActions.SAVE_AND_ADD_NEW:
-                this.onLoadSave(action);
-                break;
-        }
+    private getConstantData(): void {
+        this.tabs = LoadModalHelper.getLoadTypeTabs();
     }
+
     private onLoadSave(action: eGeneralActions): void {
         this.activeAction = action;
 
@@ -214,7 +194,7 @@ export class NewLoadModalComponent implements OnInit {
                     load.statusType
                 );
 
-                this.loadForm = LoadModalHelper.generateInitalForm(
+                this.loadForm = LoadModalHelper.createForm(
                     load,
                     load.loadRequirements,
                     this.editData.isTemplate
@@ -222,7 +202,7 @@ export class NewLoadModalComponent implements OnInit {
             });
         } else {
             staticData$.subscribe((staticData) => {
-                this.loadForm = LoadModalHelper.generateInitalForm(
+                this.loadForm = LoadModalHelper.createForm(
                     null,
                     null,
                     this.editData.isTemplate
@@ -238,5 +218,29 @@ export class NewLoadModalComponent implements OnInit {
 
     private onCloseModal(): void {
         this.ngbActiveModal.close();
+    }
+
+    public onTabChange(): void {}
+
+    public onModalAction(action: eGeneralActions): void {
+        switch (action) {
+            case this.eGeneralActions.CLOSE:
+                this.onCloseModal();
+                break;
+
+            case this.eGeneralActions.CONVERT_TO_LOAD:
+            case this.eGeneralActions.CONVERT_TO_TEMPLATE:
+                this.onLoadConvert(action);
+                break;
+
+            case this.eGeneralActions.CREATE_TEMPLATE:
+                // Open projection modal
+                break;
+
+            case this.eGeneralActions.SAVE:
+            case this.eGeneralActions.SAVE_AND_ADD_NEW:
+                this.onLoadSave(action);
+                break;
+        }
     }
 }
