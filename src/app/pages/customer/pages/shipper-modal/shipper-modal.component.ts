@@ -971,6 +971,7 @@ export class ShipperModalComponent
                                   : null,
                         note: res.note,
                         contacts: this.mapContacts(res.shipperContacts, true),
+                        addressUnit: res?.address?.addressUnit,
                     });
 
                     this.shipperName = res.businessName;
@@ -1253,15 +1254,17 @@ export class ShipperModalComponent
                 )
                 .pipe(takeUntil(this.destroy$))
                 .subscribe((res: AddressEntity) => {
+                    const { addressUnit, ...addressData } = res;
+
                     this.shipperForm.patchValue({
-                        ...res,
+                        ...addressData,
                         countryStateAddress:
-                            res?.county +
+                            addressData?.county +
                             eStringPlaceholder.COMMA_WHITESPACE +
-                            res.stateShortName,
+                            addressData.stateShortName,
                     });
 
-                    this.selectedAddress = res;
+                    this.selectedAddress = addressData;
                 });
         } else
             this.shipperForm.patchValue({
