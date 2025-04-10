@@ -1,0 +1,9 @@
+.d-grid {
+    &-stops {
+        gap: 8px;
+        grid-template-columns: 26px 330px 150px 88px;
+    }
+
+    &-working-time {
+    }
+}

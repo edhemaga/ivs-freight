@@ -238,9 +238,31 @@
                     }"
                 >
                     <div origin>
-                        <pre>
-                            {{ loadForm.value | json }}
-                        </pre>
+                        <div
+                            class="d-grid d-grid-stops-heading p-x-8 gap-1 mb-1"
+                        >
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold"
+                            >
+                                #
+                            </div>
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold"
+                            >
+                                Shipper • Location
+                            </div>
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold"
+                            >
+                                Date • Time
+                            </div>
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold text-right"
+                            >
+                                Leg
+                            </div>
+                        </div>
+                        <app-new-load-modal-stops></app-new-load-modal-stops>
                     </div>
                 </app-ca-custom-card>
 

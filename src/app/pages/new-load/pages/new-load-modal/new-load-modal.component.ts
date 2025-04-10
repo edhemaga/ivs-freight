@@ -51,6 +51,7 @@ import {
 } from 'ca-components';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
+import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -72,6 +73,7 @@ import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-
         InputTestComponent,
         TaCheckboxComponent,
         TaInputNoteComponent,
+        NewLoadModalStopsComponent,
     ],
 })
 export class NewLoadModalComponent implements OnInit {

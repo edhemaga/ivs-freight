@@ -20,6 +20,7 @@ import {
     CaLoadStatusComponent,
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
 
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -37,6 +38,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
         CaProfileImageComponent,
         CaCheckboxComponent,
         CaLoadStatusComponent,
+        NewLoadModalStopsComponent,
 
         // Pipes
         NameInitialsPipe,
