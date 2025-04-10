@@ -5,6 +5,13 @@ import { EnumValue } from 'appcoretruckassist';
 // Interfaces
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
+// Forms
+import {
+    UntypedFormControl,
+    UntypedFormGroup,
+    Validators,
+} from '@angular/forms';
+
 export class LoadModalHelper {
     static generateTitle(editData: ILoadModal, statusType: EnumValue): string {
         const { isEdit, isTemplate } = editData;
@@ -27,25 +34,26 @@ export class LoadModalHelper {
             : eLoadModal.CREATE_TITLE;
     }
 
-    static generateInitalForm() {
-        return {
-            dispatcherId: null,
-            dispatchId: null,
-            companyId: null,
-            referenceNumber: null,
-            brokerId: null,
-            weight: null,
-            generalCommodity: null,
-            brokerContact: null,
-            trailerLengthId: null,
-            doorType: null,
-            suspension: null,
-            year: null,
-            liftgate: null,
-            trailerTypeId: null,
-            truckTypeId: null,
-            driverMessage: null,
-            note: null,
-        };
+    static generateInitalForm(): UntypedFormGroup {
+        return new UntypedFormGroup({
+            dispatcherId: new UntypedFormControl(null, Validators.required),
+            companyId: new UntypedFormControl(null, Validators.required),
+            brokerId: new UntypedFormControl(null, Validators.required),
+            referenceNumber: new UntypedFormControl(null, Validators.required),
+            baseRate: new UntypedFormControl(null, Validators.required),
+            dispatchId: new UntypedFormControl(null),
+            weight: new UntypedFormControl(null),
+            generalCommodity: new UntypedFormControl(null),
+            brokerContact: new UntypedFormControl(null),
+            trailerLengthId: new UntypedFormControl(null),
+            doorType: new UntypedFormControl(null),
+            suspension: new UntypedFormControl(null),
+            year: new UntypedFormControl(null),
+            liftgate: new UntypedFormControl(null),
+            trailerTypeId: new UntypedFormControl(null),
+            truckTypeId: new UntypedFormControl(null),
+            driverMessage: new UntypedFormControl(null),
+            note: new UntypedFormControl(null),
+        });
     }
 }

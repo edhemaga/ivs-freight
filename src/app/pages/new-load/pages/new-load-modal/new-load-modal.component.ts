@@ -146,9 +146,7 @@ export class NewLoadModalComponent implements OnInit {
     }
 
     private createForm() {
-        this.loadForm = this.formBuilder.group(
-            LoadModalHelper.generateInitalForm()
-        );
+        this.loadForm = LoadModalHelper.generateInitalForm();
     }
 
     private setupInitalData(): void {
@@ -194,6 +192,7 @@ export class NewLoadModalComponent implements OnInit {
 
                     driverMessage: '',
                     note: load.note,
+                    baseRate: load.baseRate,
                 });
             });
         } else {
