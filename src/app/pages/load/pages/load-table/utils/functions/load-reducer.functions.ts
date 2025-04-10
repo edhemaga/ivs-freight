@@ -19,7 +19,6 @@ import {
 
 // models
 import {
-    ICreateCommentMetadata,
     ILoadGridItem,
     ILoadState,
     ILoadTemplateGridItem,
@@ -30,13 +29,16 @@ import { BrokerContactExtended } from '@pages/customer/pages/broker-modal/models
 
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
-import { eDateTimeFormat, eSortDirection } from '@shared/enums';
+import {
+    eDateTimeFormat,
+    eSortDirection,
+    eStringPlaceholder,
+} from '@shared/enums';
 
 // helpers
 import { FilterHelper, UserHelper } from '@shared/utils/helpers';
 import { LoadStoreHelper } from '@pages/load/pages/load-table/utils/helpers';
 import moment from 'moment';
-import { eStringPlaceholder } from 'ca-components';
 
 export const getLoadsOrTemplatesPayloadSuccessResult = function (
     state: ILoadState,

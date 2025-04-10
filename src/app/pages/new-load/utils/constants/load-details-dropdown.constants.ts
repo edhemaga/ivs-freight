@@ -1,7 +1,7 @@
-import { iMultipleSelectDetailsDropdownItem } from '@pages/new-load/interfaces';
+import { IMultipleSelectDetailsDropdownItem } from '@pages/new-load/interfaces';
 
 export class LoadDetailsConstants {
-    static MULTIPLE_SELECT_DETAILS_DROPDOWN: iMultipleSelectDetailsDropdownItem[] =
+    static MULTIPLE_SELECT_DETAILS_DROPDOWN: IMultipleSelectDetailsDropdownItem[] =
         [
             {
                 id: 1,

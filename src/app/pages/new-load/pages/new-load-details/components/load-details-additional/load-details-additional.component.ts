@@ -45,6 +45,7 @@ import { ICreateCommentMetadata } from '@pages/load/pages/load-table/models';
 // helpers
 import moment from 'moment';
 import { UserHelper } from '@shared/utils/helpers';
+import { CommentHelper } from '@pages/new-load/pages/new-load-details/utils';
 
 // pipes
 import { CreateLoadCommentsPipe } from '@shared/pipes';
@@ -52,7 +53,6 @@ import { eStringPlaceholder } from 'ca-components';
 
 // assets
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { CommentHelper } from '../../utils';
 
 @Component({
     selector: 'app-load-details-additional',

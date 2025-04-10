@@ -1,4 +1,4 @@
-export interface iMultipleSelectDetailsDropdownItem {
+export interface IMultipleSelectDetailsDropdownItem {
     id: number;
     title: string;
     length: number;
