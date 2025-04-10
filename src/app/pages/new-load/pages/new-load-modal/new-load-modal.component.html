@@ -14,7 +14,11 @@
         <div class="new-modal" origin>
             <div class="divider divider--dark divider--small"></div>
             <form [formGroup]="loadForm">
-                <div class="d-grid d-grid-normal m-t-26">
+                <div
+                    class="d-grid m-t-26"
+                    [class.d-grid-template]="isTemplate"
+                    [class.d-grid-normal]="!isTemplate"
+                >
                     <app-ca-tab-switch
                         [tabs]="tabs"
                         [type]="'type3-modal-popup'"
@@ -22,24 +26,31 @@
                     >
                     </app-ca-tab-switch>
 
-                    <div
-                        class="h-26 w-26 d-flex align-items-center justify-content-center br-2 background-light-grey-5 svg-fill-bw-9"
-                    >
-                        <svg-icon
-                            class="svg-size-18 d-flex"
-                            [src]="svgRoutes.SELECT_TEMPLATE"
-                        ></svg-icon>
-                    </div>
+                    @if (isTemplate) {
+                        <ca-input-test
+                            formControlName="name"
+                            [inputConfig]="LoadModalConfig.LOAD_TEMPLATE_CONFIG"
+                        ></ca-input-test>
+                    } @else {
+                        <div
+                            class="h-26 w-26 d-flex align-items-center justify-content-center br-2 background-light-grey-5 svg-fill-bw-9"
+                        >
+                            <svg-icon
+                                class="svg-size-18 d-flex"
+                                [src]="svgRoutes.SELECT_TEMPLATE"
+                            ></svg-icon>
+                        </div>
 
-                    <ca-input-dropdown-test
-                        formControlName="dispatcherId"
-                        optionValue="id"
-                        template="load-dispatcher"
-                        label="fullName"
-                        [canAddNew]="true"
-                        [options]="staticData.dispatchers"
-                        [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
-                    ></ca-input-dropdown-test>
+                        <ca-input-dropdown-test
+                            formControlName="dispatcherId"
+                            optionValue="id"
+                            template="load-dispatcher"
+                            label="fullName"
+                            [canAddNew]="true"
+                            [options]="staticData.dispatchers"
+                            [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
+                        ></ca-input-dropdown-test>
+                    }
 
                     <ca-input-dropdown-test
                         formControlName="companyId"

@@ -41,12 +41,17 @@ export class LoadModalHelper {
 
     static generateInitalForm(
         load?: LoadResponse,
-        loadRequirements?: LoadRequirementsResponse
+        loadRequirements?: LoadRequirementsResponse,
+        isTemplate?: boolean
     ): UntypedFormGroup {
         return new UntypedFormGroup({
+            name: new UntypedFormControl(
+                null,
+                isTemplate ? Validators.required : null
+            ),
             dispatcherId: new UntypedFormControl(
                 load?.dispatcher?.id ?? null,
-                Validators.required
+                !isTemplate ? Validators.required : null
             ),
             companyId: new UntypedFormControl(
                 load?.company?.id ?? null,
