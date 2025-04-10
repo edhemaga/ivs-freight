@@ -6,7 +6,7 @@ import {
 } from 'ca-components/lib/components/ca-map-dropdown/models';
 
 // Enums
-import { eMilesMapData } from '@pages/miles/pages/miles-map/enums';
+import { eSharedString } from '@shared/enums';
 
 // Constants
 import { MilesMapDataConstants } from '@pages/miles/pages/miles-map/utils/constants';
@@ -15,7 +15,7 @@ export class MilesMapDropdownHelper {
     static getMilesUnitMapDropdownConfig(
         data: MilesStopDetailsResponse
     ): MapDropdownContent {
-        const stopType: eMilesMapData = data.type.name as eMilesMapData;
+        const stopType: eSharedString = data.type.name as eSharedString;
 
         const typeColor = MilesMapDataConstants.MILES_MAP_STOP_COLORS[stopType];
 
@@ -74,7 +74,7 @@ export class MilesMapDropdownHelper {
         ];
 
         const conditionalSection: MapDropdownContentItem[] =
-            stopType === eMilesMapData.FUEL
+            stopType === eSharedString.FUEL
                 ? [
                       {
                           template: 'subtitle',

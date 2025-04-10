@@ -13,7 +13,7 @@ import {
     eGeneralActions,
 } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
-import { eMilesMapData } from '@pages/miles/pages/miles-map/enums';
+import { eSharedString } from '@shared/enums';
 
 // models
 import {
@@ -247,7 +247,7 @@ export const setUnitMapData = function (state: IMilesState): IMilesState {
             const isDashedPath = !!stops?.data?.[index - 1]?.empty;
 
             const strokeColor =
-                stops?.data?.[index - 1].type.name === eMilesMapData.TOWING
+                stops?.data?.[index - 1].type.name === eSharedString.TOWING
                     ? MapOptionsConstants.ROUTING_PATH_COLORS.purple
                     : MapOptionsConstants.ROUTING_PATH_COLORS.gray;
 

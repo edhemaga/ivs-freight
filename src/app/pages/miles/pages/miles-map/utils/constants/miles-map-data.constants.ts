@@ -1,16 +1,16 @@
-import {
-    eMilesMapData,
-    eMilesStopColor,
-} from '@pages/miles/pages/miles-map/enums';
+import { eMilesStopColor } from '@pages/miles/pages/miles-map/enums';
+import { eSharedString } from '@shared/enums';
 
 export class MilesMapDataConstants {
-    static MILES_MAP_STOP_COLORS: Record<eMilesMapData, eMilesStopColor> = {
-        [eMilesMapData.PICKUP]: eMilesStopColor.PICKUP,
-        [eMilesMapData.DELIVERY]: eMilesStopColor.DELIVERY,
-        [eMilesMapData.FUEL]: eMilesStopColor.FUEL,
-        [eMilesMapData.DEADHEAD]: eMilesStopColor.DEADHEAD,
-        [eMilesMapData.REPAIR]: eMilesStopColor.REPAIR,
-        [eMilesMapData.TOWING]: eMilesStopColor.TOWING,
-        [eMilesMapData.PARKING]: eMilesStopColor.PARKING,
+    static MILES_MAP_STOP_COLORS: Partial<
+        Record<eSharedString, eMilesStopColor>
+    > = {
+        [eSharedString.PICKUP]: eMilesStopColor.PICKUP,
+        [eSharedString.DELIVERY]: eMilesStopColor.DELIVERY,
+        [eSharedString.FUEL]: eMilesStopColor.FUEL,
+        [eSharedString.DEADHEAD]: eMilesStopColor.DEADHEAD,
+        [eSharedString.REPAIR]: eMilesStopColor.REPAIR,
+        [eSharedString.TOWING]: eMilesStopColor.TOWING,
+        [eSharedString.PARKING]: eMilesStopColor.PARKING,
     };
 }

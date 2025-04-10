@@ -19,4 +19,13 @@ export enum eSharedString {
 
     DSC = 'dsc',
     ASC = 'asc',
+
+    // Miels Stop Types
+    PICKUP = 'Pickup',
+    DELIVERY = 'Delivery',
+    FUEL = 'Fuel',
+    DEADHEAD = 'DeadHead',
+    REPAIR = 'Repair',
+    TOWING = 'Towing',
+    PARKING = 'Parking',
 }
