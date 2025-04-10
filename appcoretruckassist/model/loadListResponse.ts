@@ -19,5 +19,7 @@ export interface LoadListResponse {
     closedCount?: number;
     templateCount?: number;
     totalSum?: number;
+    includedInComboCount?: number;
+    comboCount?: number;
 }
 

@@ -104,6 +104,7 @@ model/addFuelCardCommand.ts
 model/addIntegrationCommand.ts
 model/addressEntity.ts
 model/addressListResponse.ts
+model/addressMobileResponse.ts
 model/addressResponse.ts
 model/apUnit.ts
 model/apiAccidentPostRequest.ts
@@ -427,6 +428,7 @@ model/dispatchHosCommand.ts
 model/dispatchHosFlag.ts
 model/dispatchHosResponse.ts
 model/dispatchLoadModalResponse.ts
+model/dispatchMobileResponse.ts
 model/dispatchModalResponse.ts
 model/dispatchParkingFilterResponse.ts
 model/dispatchPossibleStatusResponse.ts
@@ -711,6 +713,9 @@ model/mileStopManualType.ts
 model/mileStopType.ts
 model/milesByStateResponse.ts
 model/milesByUnitListResponse.ts
+model/milesByUnitMinimalListResponse.ts
+model/milesByUnitMinimalResponse.ts
+model/milesByUnitMinimalResponsePagination.ts
 model/milesByUnitPaginatedStopsResponse.ts
 model/milesByUnitResponse.ts
 model/milesByUnitResponsePagination.ts
@@ -858,6 +863,7 @@ model/pickupDeliveryByStateResponse.ts
 model/pickupDeliveryByStateResponsePagination.ts
 model/pickupDeliveryIntervalResponse.ts
 model/poBoxEntity.ts
+model/possibleLoadStatusResponse.ts
 model/preferredLoadType.ts
 model/previousEmployerAccidentHistoryItemCommand.ts
 model/previousEmployerDocumentsResponse.ts

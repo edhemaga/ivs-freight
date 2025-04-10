@@ -11,7 +11,7 @@
  */
 
 
-export type LoadSortBy = 'LoadNumber' | 'Dispatcher' | 'BrokerBusinessName' | 'BrokerContactName' | 'BrokerContactPhone' | 'Weight' | 'Status' | 'TruckType' | 'TrailerType' | 'TrailerLength' | 'Year' | 'DriverMessage' | 'InvoicedDate' | 'PaidDate' | 'AddedDate' | 'EditedDate' | 'Suspension';
+export type LoadSortBy = 'LoadNumber' | 'Dispatcher' | 'BrokerBusinessName' | 'BrokerContactName' | 'BrokerContactPhone' | 'Weight' | 'Status' | 'TruckType' | 'TrailerType' | 'TrailerLength' | 'Year' | 'DriverMessage' | 'InvoicedDate' | 'PaidDate' | 'AddedDate' | 'EditedDate' | 'Suspension' | 'LTLComboNumber';
 
 export const LoadSortBy = {
     LoadNumber: 'LoadNumber' as LoadSortBy,
@@ -30,6 +30,7 @@ export const LoadSortBy = {
     PaidDate: 'PaidDate' as LoadSortBy,
     AddedDate: 'AddedDate' as LoadSortBy,
     EditedDate: 'EditedDate' as LoadSortBy,
-    Suspension: 'Suspension' as LoadSortBy
+    Suspension: 'Suspension' as LoadSortBy,
+    LtlComboNumber: 'LTLComboNumber' as LoadSortBy
 };
 

@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PossibleLoadStatusResponse } from './possibleLoadStatusResponse';
+import { MilesByUnitMinimalResponse } from './milesByUnitMinimalResponse';
 
 
-export interface LoadPossibleStatusesResponse { 
-    possibleStatuses?: Array<PossibleLoadStatusResponse> | null;
-    previousStatus?: PossibleLoadStatusResponse;
+export interface MilesByUnitMinimalResponsePagination { 
+    pageIndex?: number;
+    pageSize?: number;
+    count?: number;
+    data?: Array<MilesByUnitMinimalResponse> | null;
 }
 

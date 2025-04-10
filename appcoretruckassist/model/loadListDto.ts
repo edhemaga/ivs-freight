@@ -25,12 +25,14 @@ import { MilesInfo } from './milesInfo';
 export interface LoadListDto { 
     id?: number;
     loadNumber?: string | null;
+    ltlComboNumber?: string | null;
     statusType?: EnumValue;
     loadType?: EnumValue;
     lastStatusPassed?: { [key: string]: number; } | null;
     status?: LoadStatusResponse;
     dispatcher?: CompanyUserShortResponse;
     broker?: LoadBrokerInfo;
+    brokers?: Array<LoadBrokerInfo> | null;
     loadDetails?: LoadDetails;
     truckId?: number | null;
     trailerId?: number | null;
