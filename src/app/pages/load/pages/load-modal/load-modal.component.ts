@@ -326,7 +326,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
     public stopItemsValid: boolean[] = [];
 
     // input configurations
-    public loadDispatchesTTDInputConfig: ITaInput;
+    public loadDispatchesTTDInputConfig: ICaInput;
     public loadBrokerInputConfig: ITaInput;
     public loadBrokerContactsInputConfig: ICaInput;
     public loadPickupShipperInputConfig: ITaInput;

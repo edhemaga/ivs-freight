@@ -45,4 +45,5 @@ export enum eGeneralActions {
     REMOVE_GROUP = 'Remove Group',
     CONVERT_TO_LOAD = 'Convert to Load',
     CONVERT_TO_TEMPLATE = 'Convert To Template',
+    CREATE_TEMPLATE = 'Create Template',
 }
