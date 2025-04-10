@@ -25,7 +25,7 @@ export enum eSharedString {
 
     DATA_IMAGE_JPG_BASE64 = 'data:image/jpg;base64,',
 
-    // Miels Stop Types
+    // Miles Stop Types
     PICKUP = 'Pickup',
     DELIVERY = 'Delivery',
     FUEL = 'Fuel',
