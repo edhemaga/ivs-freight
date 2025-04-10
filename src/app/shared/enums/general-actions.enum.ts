@@ -32,4 +32,10 @@ export enum eGeneralActions {
     VIEW_MODE = 'view-mode',
 
     DOWNLOAD = 'Download',
+
+    PIN_COLUMN = 'Pin Column',
+    PIN_GROUP = 'Pin Group',
+    REMOVE_PIN = 'Remove Pin',
+    REMOVE_COLUMN = 'Remove Column',
+    REMOVE_GROUP = 'Remove Group',
 }

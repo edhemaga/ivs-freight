@@ -22,7 +22,7 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
     @Input() columnId: number = null;
     @Input() minWidth: number = 0;
     @Input() maxWidth: number = 0;
-    @Input() isGroup: boolean = false;
+    @Input() hasLabelTop: boolean = false;
     @Input() hasDoubleHeightBorder: boolean = false;
 
     @Output() onColumnResize = new EventEmitter<ITableResizeAction>();
@@ -54,15 +54,20 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
     }
 
     private initializeDirective(changes: SimpleChanges): void {
-        if (!changes.appResizableColumn.currentValue) {
-            if (this.resizer) {
-                // element is there just hide it
-                this.renderer.addClass(this.resizer, 'd-none');
-            }
+        // safely get the latest value of appResizableColumn
+        const isResizable =
+            changes.appResizableColumn?.currentValue ?? this.appResizableColumn;
+
+        if (!isResizable) {
+            if (this.resizer) this.renderer.addClass(this.resizer, 'd-none');
         } else {
-            // if element is there just show it, no need to create it
             if (this.isInitialized) {
                 this.renderer.removeClass(this.resizer, 'd-none');
+
+                // update position/height class if hasLabelTop or hasDoubleHeightBorder changed
+                if (changes?.hasLabelTop || changes?.hasDoubleHeightBorder) {
+                    this.updateResizerStyle();
+                }
             } else {
                 this.initializeResizer();
             }
@@ -76,18 +81,21 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
         this.resizer = this.renderer.createElement('div');
 
         // add style classes
-        const classes = [
+        const classesToAdd = [
             'resize-handler',
             'pos-absolute',
-            this.isGroup ? 'bottom-10' : 'bottom-0',
+            this.hasLabelTop ? 'bottom-10' : 'bottom-0',
             'end-0',
             'w-2',
             this.hasDoubleHeightBorder ? 'h-26' : 'h-14',
             'm-r-6',
+            'br-1',
             'background-muted',
             'background-hover-black',
         ];
-        classes.forEach((cls) => this.renderer.addClass(this.resizer, cls));
+        classesToAdd.forEach((cls) =>
+            this.renderer.addClass(this.resizer, cls)
+        );
 
         // attach the resizer to the column
         this.renderer.appendChild(this.column.nativeElement, this.resizer);
@@ -106,6 +114,25 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
         );
 
         this.isInitialized = true;
+    }
+
+    private updateResizerStyle(): void {
+        if (!this.resizer) return;
+
+        // remove the old dynamic classes
+        const classesToRemove = ['bottom-10', 'bottom-0', 'h-26', 'h-14'];
+        classesToRemove.forEach((cls) =>
+            this.renderer.removeClass(this.resizer, cls)
+        );
+
+        // add the correct ones
+        const classesToAdd = [
+            this.hasLabelTop ? 'bottom-10' : 'bottom-0',
+            this.hasDoubleHeightBorder ? 'h-26' : 'h-14',
+        ];
+        classesToAdd.forEach((cls) =>
+            this.renderer.addClass(this.resizer, cls)
+        );
     }
 
     private onMouseMove = (event: MouseEvent): void => {

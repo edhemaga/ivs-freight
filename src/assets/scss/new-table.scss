@@ -7,9 +7,6 @@
 
     &--row {
         &-heading {
-            cursor: default;
-            position: relative;
-
             // sort
             &-sortable {
                 &:hover {
@@ -21,14 +18,13 @@
 
             // resize
             .resize-handler {
-                border-radius: 1px;
-                cursor:
-                    url('/assets/svg/common/resize-arrow-outline.svg') 8 32,
-                    col-resize;
-
                 &:hover {
                     transform: scaleX(2);
                 }
+
+                cursor:
+                    url('/assets/svg/common/resize-arrow-outline.svg') 8 32,
+                    col-resize;
             }
         }
     }

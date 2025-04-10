@@ -7,11 +7,7 @@ import {
 } from '@shared/components/new-table/interface';
 
 // enums
-import {
-    eActiveViewMode,
-    eCardFlipViewMode,
-    eGeneralActions,
-} from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
 
 // models
