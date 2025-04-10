@@ -26,4 +26,26 @@ export class LoadModalHelper {
             ? eLoadModal.CREATE_TEMPLATE_TITLE
             : eLoadModal.CREATE_TITLE;
     }
+
+    static generateInitalForm() {
+        return {
+            dispatcherId: null,
+            dispatchId: null,
+            companyId: null,
+            referenceNumber: null,
+            brokerId: null,
+            weight: null,
+            generalCommodity: null,
+            brokerContact: null,
+            trailerLengthId: null,
+            doorType: null,
+            suspension: null,
+            year: null,
+            liftgate: null,
+            trailerTypeId: null,
+            truckTypeId: null,
+            driverMessage: null,
+            note: null,
+        };
+    }
 }

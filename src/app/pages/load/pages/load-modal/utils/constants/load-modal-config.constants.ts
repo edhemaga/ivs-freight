@@ -461,6 +461,23 @@ export class LoadModalConfig {
         };
     }
 
+    static TRUCK_TYPE_CONFIG: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Truck Requirement',
+        isRequired: true,
+        isDropdown: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: true,
+            image: false,
+            iconsPath: '/assets/ca-components/svg/common/trucks/',
+            activeItemIconKey: 'logoName',
+        } as any,
+        dropdownWidthClass: 'w-col-302',
+        customClass: 'truck-trailer-dropdown',
+    };
+
     static getTruckTypeIdInputConfig(
         selectedTruckReq: TruckTypeResponse
     ): ITaInput {
@@ -484,6 +501,23 @@ export class LoadModalConfig {
             customClass: 'truck-trailer-dropdown',
         };
     }
+
+    static TRAILER_TYPE_CONFIG: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Trailer Requirement',
+        isRequired: true,
+        isDropdown: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: true,
+            image: false,
+            iconsPath: '/assets/ca-components/svg/common/trucks/',
+            activeItemIconKey: 'logoName',
+        } as any,
+        dropdownWidthClass: 'w-col-302',
+        customClass: 'truck-trailer-dropdown',
+    };
 
     static getTrailerInputConfig(
         selectedTrailerReq: TrailerTypeResponse,

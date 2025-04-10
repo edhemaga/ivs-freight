@@ -10,7 +10,7 @@
     customClass="modal-container-M"
 >
     @if (isLoaded) {
-        <div class="new-modal p-b-12" origin>
+        <div class="new-modal" origin>
             <div class="divider divider--dark divider--small"></div>
             <form [formGroup]="loadForm">
                 <div class="d-grid d-grid-normal m-t-26">
@@ -86,7 +86,7 @@
                     </ca-input-dropdown-test>
                 </div>
 
-                <div class="d-grid d-grid-contact m-t-26">
+                <div class="d-grid d-grid-contact m-t-26 m-b-14">
                     <ca-input-dropdown-test
                         formControlName="brokerContact"
                         [label]="'name'"
@@ -113,11 +113,35 @@
                 </div>
 
                 <app-ca-custom-card
-                    [headerLeftSideTemplate]="headerLeftSideTemplate"
+                    customDividerClass="divider--dark"
                     cardName="Requirement"
+                    [hasDivider]="true"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0',
+                    }"
                 >
-                    <div origin>
-                        <div class="d-grid d-grid-requirement-first-row"></div>
+                    <div origin class="m-t-18 m-b-14">
+                        <div class="d-grid d-grid-requirement-first-row m-b-28">
+                            <ca-input-dropdown-test
+                                formControlName="truckTypeId"
+                                optionValue="id"
+                                label="name"
+                                [inputConfig]="
+                                    LoadModalConfig.TRUCK_TYPE_CONFIG
+                                "
+                                [options]="staticData.truckTypes"
+                            ></ca-input-dropdown-test>
+                            <ca-input-dropdown-test
+                                formControlName="trailerTypeId"
+                                optionValue="id"
+                                label="name"
+                                [inputConfig]="
+                                    LoadModalConfig.TRAILER_TYPE_CONFIG
+                                "
+                                [options]="staticData.trailerTypes"
+                            ></ca-input-dropdown-test>
+                        </div>
 
                         <div class="d-grid d-grid-requirement-second-row">
                             <ca-input-dropdown-test
@@ -167,6 +191,77 @@
                         </div>
                     </div>
                 </app-ca-custom-card>
+
+                <!-- // TODO: Check with Andrej -->
+                <div class="divider divider--small divider--dark"></div>
+
+                <app-ta-input-note
+                    formControlName="driverMessage"
+                    [isVisibleNote]="
+                        loadForm.get('driverMessage').value &&
+                        loadForm.get('driverMessage').value !== 'null'
+                    "
+                    [note]="
+                        loadForm.get('driverMessage').value &&
+                        loadForm.get('driverMessage').value !== 'null'
+                            ? loadForm.get('driverMessage').value
+                            : ''
+                    "
+                    [noteLabel]="'Driver Message'"
+                    [placeholder]="'Type something...'"
+                    [isVisibleDivider]="false"
+                    (styledValueEmitter)="
+                        getDriverMessageOrNote($event, 'driverMessage')
+                    "
+                ></app-ta-input-note>
+
+                <app-ca-custom-card
+                    customDividerClass="divider--dark"
+                    cardName="Stops"
+                    [hasDivider]="true"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0',
+                    }"
+                >
+                    <div origin>
+                        <pre>
+                            {{ loadForm.value | json }}
+                        </pre>
+                    </div>
+                </app-ca-custom-card>
+
+                <app-ca-custom-card
+                    customDividerClass="divider--dark"
+                    cardName="Document"
+                    [hasDivider]="true"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0',
+                    }"
+                >
+                    <div origin></div>
+                </app-ca-custom-card>
+
+                <div class="divider divider--small divider--dark"></div>
+
+                <app-ta-input-note
+                    [isVisibleDivider]="false"
+                    formControlName="note"
+                    [isVisibleNote]="
+                        loadForm.get('note').value &&
+                        loadForm.get('note').value !== 'null'
+                    "
+                    [note]="
+                        loadForm.get('note').value &&
+                        loadForm.get('note').value !== 'null'
+                            ? loadForm.get('note').value
+                            : ''
+                    "
+                    (styledValueEmitter)="
+                        getDriverMessageOrNote($event, 'note')
+                    "
+                ></app-ta-input-note>
             </form>
         </div>
     }

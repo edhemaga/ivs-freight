@@ -50,6 +50,7 @@ import {
     CaCustomCardComponent,
 } from 'ca-components';
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -70,6 +71,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
         CaCustomCardComponent,
         InputTestComponent,
         TaCheckboxComponent,
+        TaInputNoteComponent,
     ],
 })
 export class NewLoadModalComponent implements OnInit {
@@ -144,21 +146,9 @@ export class NewLoadModalComponent implements OnInit {
     }
 
     private createForm() {
-        this.loadForm = this.formBuilder.group({
-            dispatcherId: null,
-            dispatchId: null,
-            companyId: null,
-            referenceNumber: null,
-            brokerId: null,
-            weight: null,
-            generalCommodity: null,
-            brokerContact: null,
-            trailerLengthId: null,
-            doorType: null,
-            suspension: null,
-            year: null,
-            liftgate: null,
-        });
+        this.loadForm = this.formBuilder.group(
+            LoadModalHelper.generateInitalForm()
+        );
     }
 
     private setupInitalData(): void {
@@ -189,7 +179,10 @@ export class NewLoadModalComponent implements OnInit {
                     brokerId: load.broker?.id,
                     weight: load.weight,
                     dispatchId: load.dispatch?.id,
-                    trailerLengthId: loadRequirements?.trailerLength,
+                    // TODO: EXTRACT TO NEW FORM TO AVOID THIS REMAPING
+                    trailerTypeId: loadRequirements?.trailerType?.id,
+                    truckTypeId: loadRequirements?.truckType?.id,
+                    trailerLengthId: loadRequirements?.trailerLength?.id,
                     doorType: loadRequirements?.doorType?.id,
                     suspension: loadRequirements?.suspension?.id,
                     year: loadRequirements?.year,
@@ -198,6 +191,9 @@ export class NewLoadModalComponent implements OnInit {
                     generalCommodity: load.generalCommodity?.id,
                     // Check this brokerContact
                     brokerContact: load.brokerContact?.brokerId,
+
+                    driverMessage: '',
+                    note: load.note,
                 });
             });
         } else {

@@ -16,7 +16,7 @@
 
     &-requirement {
         &-first-row {
-            display: grid;
+            gap: 12px;
             grid-template-columns: 302px 302px;
         }
         &-second-row {
