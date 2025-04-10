@@ -6,6 +6,7 @@ import {
     LoadResponse,
     LoadType,
 } from 'appcoretruckassist';
+import { LoadModalStringEnum } from '@pages/load/pages/load-modal/enums';
 
 // Interfaces
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -41,12 +42,17 @@ export class LoadModalHelper {
 
     static generateInitalForm(
         load?: LoadResponse,
-        loadRequirements?: LoadRequirementsResponse
+        loadRequirements?: LoadRequirementsResponse,
+        isTemplate?: boolean
     ): UntypedFormGroup {
         return new UntypedFormGroup({
+            name: new UntypedFormControl(
+                null,
+                isTemplate ? Validators.required : null
+            ),
             dispatcherId: new UntypedFormControl(
                 load?.dispatcher?.id ?? null,
-                Validators.required
+                !isTemplate ? Validators.required : null
             ),
             companyId: new UntypedFormControl(
                 load?.company?.id ?? null,
@@ -106,6 +112,28 @@ export class LoadModalHelper {
                 loadRequirements?.liftgate ?? null
             ),
         });
+    }
+
+    static updateFormValidatorsForTemplate(
+        loadForm: UntypedFormGroup,
+        isTemplate: boolean
+    ): void {
+        const nameControl = loadForm.get(LoadModalStringEnum.NAME);
+        const dispatcherControl = loadForm.get(
+            LoadModalStringEnum.DISPATCHER_ID
+        );
+
+        if (nameControl) {
+            nameControl.setValidators(isTemplate ? Validators.required : null);
+            nameControl.updateValueAndValidity();
+        }
+
+        if (dispatcherControl) {
+            dispatcherControl.setValidators(
+                !isTemplate ? Validators.required : null
+            );
+            dispatcherControl.updateValueAndValidity();
+        }
     }
 
     // TODO: Should we define return type? All the values should be inside form anyway?

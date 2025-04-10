@@ -60,6 +60,10 @@ export class NewLoadTableComponent {
     }
 
     public onOpenModal(id: number, isTemplate: boolean): void {
-        this.loadStoreService.onOpenModal(id, isTemplate);
+        this.loadStoreService.onOpenModal({
+            id,
+            isTemplate,
+            isEdit: true,
+        });
     }
 }

@@ -15,6 +15,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
+import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -105,7 +106,8 @@ export class NewLoadModalComponent implements OnInit {
 
     constructor(
         private ngbActiveModal: NgbActiveModal,
-        private loadService: LoadService
+        private loadService: LoadService,
+        private loadStoreService: LoadStoreService
     ) {}
 
     ngOnInit(): void {
@@ -166,8 +168,13 @@ export class NewLoadModalComponent implements OnInit {
     }
 
     private onSaveAndAddNew(isSaveAndAddNew: boolean): void {
-        if (isSaveAndAddNew) this.loadForm.reset();
-        else this.ngbActiveModal.close();
+        // Reopen modal
+        if (isSaveAndAddNew) {
+            this.ngbActiveModal.close();
+            this.loadStoreService.onOpenModal(this.editData);
+
+            // TODO: Update
+        } else this.ngbActiveModal.close();
     }
 
     private onLoadConvert(action: eGeneralActions): void {
@@ -178,6 +185,11 @@ export class NewLoadModalComponent implements OnInit {
             id: null,
             isTemplate,
         };
+
+        LoadModalHelper.updateFormValidatorsForTemplate(
+            this.loadForm,
+            isTemplate
+        );
 
         this.modalTitle = LoadModalHelper.generateTitle(this.editData, {});
     }
@@ -202,12 +214,17 @@ export class NewLoadModalComponent implements OnInit {
 
                 this.loadForm = LoadModalHelper.generateInitalForm(
                     load,
-                    load.loadRequirements
+                    load.loadRequirements,
+                    this.editData.isTemplate
                 );
             });
         } else {
             staticData$.subscribe((staticData) => {
-                this.loadForm = LoadModalHelper.generateInitalForm();
+                this.loadForm = LoadModalHelper.generateInitalForm(
+                    null,
+                    null,
+                    this.editData.isTemplate
+                );
                 this.staticData = staticData;
                 this.modalTitle = LoadModalHelper.generateTitle(
                     this.editData,

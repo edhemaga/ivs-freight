@@ -466,7 +466,7 @@ export class LoadModalConfig {
         name: 'Input Dropdown',
         type: 'text',
         label: 'Truck Requirement',
-        isRequired: true,
+        isRequired: false,
         isDropdown: true,
         dropdownImageInput: {
             withText: true,
@@ -507,7 +507,7 @@ export class LoadModalConfig {
         name: 'Input Dropdown',
         type: 'text',
         label: 'Trailer Requirement',
-        isRequired: true,
+        isRequired: false,
         isDropdown: true,
         dropdownImageInput: {
             withText: true,
