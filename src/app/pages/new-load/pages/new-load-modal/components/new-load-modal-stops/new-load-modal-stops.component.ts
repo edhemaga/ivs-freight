@@ -7,7 +7,7 @@ import {
     UntypedFormGroup,
 } from '@angular/forms';
 
-// Enums
+// Constants
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
 
 // Helpers
@@ -25,9 +25,11 @@ import {
     selector: 'app-new-load-modal-stops',
     standalone: true,
     imports: [
+        // Modules
         CommonModule,
         ReactiveFormsModule,
 
+        // Components
         CaCustomCardComponent,
         CaTabSwitchComponent,
         CaInputDropdownTestComponent,
@@ -43,6 +45,10 @@ export class NewLoadModalStopsComponent implements OnInit {
     public tabs = LoadModalStopsHelper.tabs;
 
     public stopsForm: UntypedFormGroup;
+
+    get stops(): FormArray {
+        return this.stopsForm.get('stops') as FormArray;
+    }
 
     constructor(private fb: FormBuilder) {}
 
@@ -63,9 +69,5 @@ export class NewLoadModalStopsComponent implements OnInit {
                 }),
             ]),
         });
-    }
-
-    get stops(): FormArray {
-        return this.stopsForm.get('stops') as FormArray;
     }
 }

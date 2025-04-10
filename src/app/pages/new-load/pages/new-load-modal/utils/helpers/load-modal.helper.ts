@@ -39,7 +39,7 @@ export class LoadModalHelper {
         ];
     }
 
-    static generateTitle(editData: ILoadModal, statusType: EnumValue): string {
+    static generateTitle(editData: ILoadModal, statusType?: EnumValue): string {
         const { isEdit, isTemplate } = editData;
 
         if (isEdit) {
@@ -98,7 +98,6 @@ export class LoadModalHelper {
             brokerContact: new UntypedFormControl(
                 load?.brokerContact?.brokerId ?? null
             ),
-            driverMessage: new UntypedFormControl(''),
             note: new UntypedFormControl(load?.note ?? null),
             statusType: new UntypedFormControl(load?.statusType?.name ?? null),
             status: new UntypedFormControl(load?.status?.statusString ?? null),
@@ -112,6 +111,9 @@ export class LoadModalHelper {
     ): UntypedFormGroup {
         return new UntypedFormGroup({
             id: new UntypedFormControl(loadRequirements?.id ?? null),
+            driverMessage: new UntypedFormControl(
+                loadRequirements?.driverMessage ?? null
+            ),
             trailerTypeId: new UntypedFormControl(
                 loadRequirements?.trailerType?.id ?? null
             ),

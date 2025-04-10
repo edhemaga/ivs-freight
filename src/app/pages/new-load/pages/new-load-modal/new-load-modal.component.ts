@@ -87,8 +87,8 @@ export class NewLoadModalComponent implements OnInit {
 
     // Show static data, such as status, load number
     public load: LoadResponse;
-    public staticData: LoadModalResponse;
-    public tabs: Tabs[] = [];
+    public dropdownList: LoadModalResponse;
+    public tabs: Tabs[] = LoadModalHelper.getLoadTypeTabs();
 
     // Enums
     public eModalButtonClassType = eModalButtonClassType;
@@ -105,29 +105,27 @@ export class NewLoadModalComponent implements OnInit {
     public LoadModalConfig = LoadModalConfig;
 
     constructor(
+        // Modules
         private ngbActiveModal: NgbActiveModal,
+
+        // Services
         private loadService: LoadService,
         private loadStoreService: LoadStoreService
     ) {}
 
     ngOnInit(): void {
-        this.getConstantData();
         this.setupInitalData();
     }
 
-    private getConstantData(): void {
-        this.tabs = LoadModalHelper.getLoadTypeTabs();
-    }
-
     private onLoadSave(action: eGeneralActions): void {
-        this.activeAction = action;
-
         const isSaveAndAddNew =
             action === this.eGeneralActions.SAVE_AND_ADD_NEW;
         const { isEdit, isTemplate, id } = this.editData;
         const load = LoadModalHelper.generateLoadModel(id, this.loadForm);
 
         let saveObservable: Observable<LoadTemplateResponseCreateGenericWithUploadsResponse>;
+
+        this.activeAction = action;
 
         if (isEdit) {
             saveObservable = isTemplate
@@ -173,7 +171,7 @@ export class NewLoadModalComponent implements OnInit {
             isTemplate
         );
 
-        this.modalTitle = LoadModalHelper.generateTitle(this.editData, {});
+        this.modalTitle = LoadModalHelper.generateTitle(this.editData);
     }
 
     private setupInitalData(): void {
@@ -185,8 +183,8 @@ export class NewLoadModalComponent implements OnInit {
                 this.editData.isTemplate
             );
 
-            forkJoin([staticData$, load$]).subscribe(([staticData, load]) => {
-                this.staticData = staticData;
+            forkJoin([staticData$, load$]).subscribe(([dropdownList, load]) => {
+                this.dropdownList = dropdownList;
                 this.load = load;
 
                 this.modalTitle = LoadModalHelper.generateTitle(
@@ -201,17 +199,14 @@ export class NewLoadModalComponent implements OnInit {
                 );
             });
         } else {
-            staticData$.subscribe((staticData) => {
+            staticData$.subscribe((dropdownList) => {
                 this.loadForm = LoadModalHelper.createForm(
                     null,
                     null,
                     this.editData.isTemplate
                 );
-                this.staticData = staticData;
-                this.modalTitle = LoadModalHelper.generateTitle(
-                    this.editData,
-                    {}
-                );
+                this.dropdownList = dropdownList;
+                this.modalTitle = LoadModalHelper.generateTitle(this.editData);
             });
         }
     }

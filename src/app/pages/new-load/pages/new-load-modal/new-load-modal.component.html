@@ -1,6 +1,6 @@
 @let isEdit = editData.isEdit;
 @let isTemplate = editData.isTemplate;
-@let isLoaded = !!load || staticData;
+@let isLoaded = !!load || dropdownList;
 @let isModalValidToSubmit = loadForm?.valid;
 
 <app-ca-modal
@@ -14,11 +14,10 @@
         <div class="new-modal" origin>
             <div class="divider divider--dark divider--small"></div>
             <form [formGroup]="loadForm">
-                <div
-                    class="d-grid m-t-26"
-                    [class.d-grid-template]="isTemplate"
-                    [class.d-grid-normal]="!isTemplate"
-                >
+                @let firstRowClassName =
+                    isTemplate ? 'd-grid-template-load' : 'd-grid-normal-load';
+
+                <div class="d-grid m-t-26" [ngClass]="firstRowClassName">
                     <app-ca-tab-switch
                         [tabs]="tabs"
                         [type]="'type3-modal-popup'"
@@ -48,7 +47,7 @@
                             label="fullName"
                             [canAddNew]="true"
                             [canOpenModal]="true"
-                            [options]="staticData.dispatchers"
+                            [options]="dropdownList.dispatchers"
                             [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
                         ></ca-input-dropdown-test>
                     }
@@ -57,7 +56,7 @@
                         formControlName="companyId"
                         optionValue="id"
                         label="companyName"
-                        [options]="staticData.companies"
+                        [options]="dropdownList.companies"
                         [inputConfig]="
                             LoadModalConfig.LOAD_COMPANY_INPUT_CONFIG
                         "
@@ -66,16 +65,16 @@
 
                 <div class="w-full m-t-26">
                     <ca-input-dropdown-test
-                        [optionValue]="'id'"
-                        [label]="'id'"
                         formControlName="dispatchId"
-                        [template]="'load-dispatches-ttd'"
+                        optionValue="id"
+                        label="id"
+                        template="load-dispatches-ttd"
                         [inputConfig]="
                             LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
                         "
                         [canAddNew]="true"
                         [canOpenModal]="true"
-                        [options]="staticData.dispatches"
+                        [options]="dropdownList.dispatches"
                     >
                     </ca-input-dropdown-test>
                 </div>
@@ -87,14 +86,14 @@
                     ></ca-input-test>
 
                     <ca-input-dropdown-test
-                        [optionValue]="'id'"
                         formControlName="brokerId"
-                        [label]="'businessName'"
-                        [template]="'load-broker'"
+                        optionValue="id"
+                        label="businessName"
+                        template="load-broker"
                         [inputConfig]="LoadModalConfig.LOAD_BROKER_INPUT_CONFIG"
                         [canAddNew]="true"
                         [canOpenModal]="true"
-                        [options]="staticData.brokers"
+                        [options]="dropdownList.brokers"
                     >
                     </ca-input-dropdown-test>
                 </div>
@@ -102,13 +101,13 @@
                 <div class="d-grid d-grid-contact m-t-26 m-b-14">
                     <ca-input-dropdown-test
                         formControlName="brokerContact"
-                        [label]="'name'"
-                        [optionValue]="'id'"
-                        [template]="'load-broker-contact'"
+                        label="name"
+                        optionValue="id"
+                        template="load-broker-contact"
                         [inputConfig]="
                             LoadModalConfig.LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG
                         "
-                        [options]="staticData.brokerContacts"
+                        [options]="dropdownList.brokerContacts"
                     ></ca-input-dropdown-test>
 
                     <ca-input-dropdown-test
@@ -116,7 +115,7 @@
                         optionValue="id"
                         label="name"
                         [inputConfig]="LoadModalConfig.LOAD_COMMODITY_CONFIG"
-                        [options]="staticData.generalCommodities"
+                        [options]="dropdownList.generalCommodities"
                     ></ca-input-dropdown-test>
 
                     <ca-input-test
@@ -124,121 +123,123 @@
                         [inputConfig]="LoadModalConfig.LOAD_WEIGHT_CONFIG"
                     ></ca-input-test>
                 </div>
+                <ng-container formGroupName="loadRequirements">
+                    <app-ca-custom-card
+                        customDividerClass="divider--dark"
+                        cardName="Requirement"
+                        [hasDivider]="true"
+                        [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '18px',
+                            marginBottom: '14px',
+                        }"
+                    >
+                        <div origin>
+                            <div
+                                class="d-grid d-grid-requirement-first-row m-b-28"
+                            >
+                                <ca-input-dropdown-test
+                                    formControlName="truckTypeId"
+                                    optionValue="id"
+                                    label="name"
+                                    [template]="'svgtext-template'"
+                                    [inputConfig]="
+                                        LoadModalConfig.TRUCK_TYPE_CONFIG
+                                    "
+                                    [options]="dropdownList.truckTypes"
+                                ></ca-input-dropdown-test>
+                                <ca-input-dropdown-test
+                                    formControlName="trailerTypeId"
+                                    optionValue="id"
+                                    [template]="'svgtext-template'"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.TRAILER_TYPE_CONFIG
+                                    "
+                                    [options]="dropdownList.trailerTypes"
+                                ></ca-input-dropdown-test>
+                            </div>
 
-                <app-ca-custom-card
-                    customDividerClass="divider--dark"
-                    cardName="Requirement"
-                    [hasDivider]="true"
-                    [isCardOpen]="true"
-                    [animationMarginParams]="{
-                        marginTop: '18px',
-                        marginBottom: '14px',
-                    }"
-                >
-                    <div origin formGroupName="loadRequirements">
-                        <div class="d-grid d-grid-requirement-first-row m-b-28">
-                            <ca-input-dropdown-test
-                                formControlName="truckTypeId"
-                                optionValue="id"
-                                label="name"
-                                [template]="'svgtext-template'"
-                                [inputConfig]="
-                                    LoadModalConfig.TRUCK_TYPE_CONFIG
-                                "
-                                [options]="staticData.truckTypes"
-                            ></ca-input-dropdown-test>
-                            <ca-input-dropdown-test
-                                formControlName="trailerTypeId"
-                                optionValue="id"
-                                [template]="'svgtext-template'"
-                                label="name"
-                                [inputConfig]="
-                                    LoadModalConfig.TRAILER_TYPE_CONFIG
-                                "
-                                [options]="staticData.trailerTypes"
-                            ></ca-input-dropdown-test>
+                            <div class="d-grid d-grid-requirement-second-row">
+                                <ca-input-dropdown-test
+                                    formControlName="trailerLengthId"
+                                    optionValue="id"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.LOAD_TRAILER_LENGTH_CONFIG
+                                    "
+                                    [options]="dropdownList.trailerLengths"
+                                ></ca-input-dropdown-test>
+
+                                <ca-input-dropdown-test
+                                    formControlName="doorType"
+                                    optionValue="id"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.LOAD_DOOR_TYPE_CONFIG
+                                    "
+                                    [options]="dropdownList.doorTypes"
+                                ></ca-input-dropdown-test>
+
+                                <ca-input-dropdown-test
+                                    formControlName="suspension"
+                                    optionValue="id"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.LOAD_SUSPENSION_CONFIG
+                                    "
+                                    [options]="dropdownList.suspensions"
+                                ></ca-input-dropdown-test>
+
+                                <ca-input-dropdown-test
+                                    formControlName="year"
+                                    optionValue="id"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.LOAD_YEAR_CONFIG
+                                    "
+                                    [options]="dropdownList.years"
+                                ></ca-input-dropdown-test>
+
+                                <app-ta-checkbox
+                                    formControlName="liftgate"
+                                    name="liftgate"
+                                    customClass="medium"
+                                    [label]="'Lifgate'"
+                                ></app-ta-checkbox>
+                            </div>
                         </div>
+                    </app-ca-custom-card>
 
-                        <div class="d-grid d-grid-requirement-second-row">
-                            <ca-input-dropdown-test
-                                formControlName="trailerLengthId"
-                                optionValue="id"
-                                label="name"
-                                [inputConfig]="
-                                    LoadModalConfig.LOAD_TRAILER_LENGTH_CONFIG
-                                "
-                                [options]="staticData.trailerLengths"
-                            ></ca-input-dropdown-test>
+                    <!-- // TODO: Check with Andrej -->
+                    <div class="divider divider--small divider--dark"></div>
 
-                            <ca-input-dropdown-test
-                                formControlName="doorType"
-                                optionValue="id"
-                                label="name"
-                                [inputConfig]="
-                                    LoadModalConfig.LOAD_DOOR_TYPE_CONFIG
-                                "
-                                [options]="staticData.doorTypes"
-                            ></ca-input-dropdown-test>
-
-                            <ca-input-dropdown-test
-                                formControlName="suspension"
-                                optionValue="id"
-                                label="name"
-                                [inputConfig]="
-                                    LoadModalConfig.LOAD_SUSPENSION_CONFIG
-                                "
-                                [options]="staticData.suspensions"
-                            ></ca-input-dropdown-test>
-
-                            <ca-input-dropdown-test
-                                formControlName="year"
-                                optionValue="id"
-                                label="name"
-                                [inputConfig]="LoadModalConfig.LOAD_YEAR_CONFIG"
-                                [options]="staticData.years"
-                            ></ca-input-dropdown-test>
-
-                            <app-ta-checkbox
-                                formControlName="liftgate"
-                                name="liftgate"
-                                [customClass]="'medium'"
-                                [label]="'Lifgate'"
-                            ></app-ta-checkbox>
-                        </div>
-                    </div>
-                </app-ca-custom-card>
-
-                <!-- // TODO: Check with Andrej -->
-                <div class="divider divider--small divider--dark"></div>
-
-                <app-ta-input-note
-                    formControlName="driverMessage"
-                    [isVisibleNote]="
-                        loadForm.get('driverMessage').value &&
-                        loadForm.get('driverMessage').value !== 'null'
-                    "
-                    [note]="
-                        loadForm.get('driverMessage').value &&
-                        loadForm.get('driverMessage').value !== 'null'
-                            ? loadForm.get('driverMessage').value
-                            : ''
-                    "
-                    [noteLabel]="'Driver Message'"
-                    [placeholder]="'Type something...'"
-                    [isVisibleDivider]="false"
-                    (styledValueEmitter)="
-                        getDriverMessageOrNote($event, 'driverMessage')
-                    "
-                ></app-ta-input-note>
+                    <!-- // TODO: Leave for last -->
+                    <!-- <app-ta-input-note
+                        formControlName="driverMessage"
+                        [isVisibleNote]="
+                            loadForm.get('driverMessage').value &&
+                            loadForm.get('driverMessage').value !== 'null'
+                        "
+                        [note]="
+                            loadForm.get('driverMessage').value &&
+                            loadForm.get('driverMessage').value !== 'null'
+                                ? loadForm.get('driverMessage').value
+                                : ''
+                        "
+                        [noteLabel]="'Driver Message'"
+                        [placeholder]="'Type something...'"
+                        [isVisibleDivider]="false"
+                        (styledValueEmitter)="
+                            getDriverMessageOrNote($event, 'driverMessage')
+                        "
+                    ></app-ta-input-note> -->
+                </ng-container>
 
                 <app-ca-custom-card
                     customDividerClass="divider--dark"
                     cardName="Stops"
                     [hasDivider]="true"
-                    [animationMarginParams]="{
-                        marginTop: '0',
-                        marginBottom: '0',
-                    }"
                 >
                     <div origin>
                         <div
@@ -319,7 +320,7 @@
                             : ''
                     "
                     (styledValueEmitter)="
-                        getDriverMessageOrNote($event, 'note')
+                        onGetDriverMessageOrNote($event, 'note')
                     "
                 ></app-ta-input-note>
             </form>

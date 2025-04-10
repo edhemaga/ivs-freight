@@ -13,9 +13,9 @@
                 <div origin [formGroupName]="i" class="w-612">
                     <div class="d-flex m-t-26">
                         <ca-input-dropdown-test
+                            formControlName="shipperId"
                             [label]="'name'"
                             [optionValue]="'id'"
-                            formControlName="shipperId"
                             [template]="'load-shipper'"
                             [inputConfig]="
                                 LoadModalConfig.LOAD_PICKUP_SHIPPER_INPUT_CONFIG
@@ -35,9 +35,9 @@
                         </app-ca-tab-switch>
 
                         <ca-input-dropdown-test
+                            formControlName="brokerContactId"
                             [label]="'name'"
                             [optionValue]="'id'"
-                            formControlName="brokerContactId"
                             [template]="'load-broker-contact'"
                             [inputConfig]="
                                 LoadModalConfig.LOAD_BROKER_CONTACTS_INPUT_CONFIG
@@ -97,7 +97,7 @@
     <ng-template #headerLeftSideTemplate>
         <div class="d-flex flex-column gap-1">
             <div
-                class="d-grid h-42 d-grid-stops p-l-8 p-r-6 align-items-center background-blue-16"
+                class="d-grid h-42 stops-container gap-1 p-l-8 p-r-6 align-items-center background-blue-16"
             >
                 <div
                     class="background-green h-26 w-26 br-2 text-color-white ta-font-bold text-size-14 d-flex align-items-center justify-content-center"
