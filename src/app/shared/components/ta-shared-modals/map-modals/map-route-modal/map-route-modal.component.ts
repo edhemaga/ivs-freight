@@ -168,7 +168,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                     return;
                 }
 
-                if (this.editData?.type === eGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.updateRoute(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: 'create-map-route',
@@ -229,7 +229,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
                 });
 
                 // Edit
-                if (this.editData?.type === eGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.getRoute(this.editData.id);
                 }
             });
@@ -332,7 +332,7 @@ export class MapRouteModalComponent implements OnInit, OnDestroy {
     }
 
     private resetForm() {
-        if (this.editData?.type === eGeneralActions.EDIT) {
+        if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
             this.getRoute(this.editData.id);
         } else {
             this.mapRouteForm.reset();

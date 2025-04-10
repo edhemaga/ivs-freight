@@ -11,7 +11,7 @@ export class SettingsOfficeConfig {
             label: 'Office Name',
             isRequired: true,
             textTransform: 'capitalize',
-            autoFocus: type !== eGeneralActions.EDIT,
+            autoFocus: type !== eGeneralActions.EDIT_LOWERCASE,
             minLength: 2,
             maxLength: 64,
         };

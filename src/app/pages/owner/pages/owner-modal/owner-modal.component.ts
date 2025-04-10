@@ -339,7 +339,7 @@ export class OwnerModalComponent
                     .get('files')
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.ownerForm
                     .get('files')
                     .patchValue(

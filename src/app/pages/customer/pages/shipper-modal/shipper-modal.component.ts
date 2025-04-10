@@ -412,7 +412,9 @@ export class ShipperModalComponent
                     this.inputService.markInvalid(this.shipperForm);
                     return;
                 }
-                if (this.editData?.type.includes(eGeneralActions.EDIT))
+                if (
+                    this.editData?.type.includes(eGeneralActions.EDIT_LOWERCASE)
+                )
                     this.updateShipper(this.editData.id);
                 else this.addShipper();
             }
@@ -517,7 +519,7 @@ export class ShipperModalComponent
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.deleteReview(true, review);
                 break;
             case eGeneralActions.ADD:
@@ -1161,7 +1163,7 @@ export class ShipperModalComponent
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.shipperForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

@@ -326,7 +326,7 @@ export class ApplicantMvrAuthorizationComponent implements OnInit, OnDestroy {
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.mvrAuthorizationForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

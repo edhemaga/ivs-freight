@@ -1,4 +1,7 @@
 export enum eSharedString {
+    USER = 'User',
+    USER_LOWERCASE = 'user',
+
     TRUCK = 'truck',
     TRUCK_CAPITALIZED = 'Truck',
     TRAILER = 'trailer',
@@ -20,7 +23,9 @@ export enum eSharedString {
     DSC = 'dsc',
     ASC = 'asc',
 
-    // Miels Stop Types
+    DATA_IMAGE_JPG_BASE64 = 'data:image/jpg;base64,',
+
+    // Miles Stop Types
     PICKUP = 'Pickup',
     DELIVERY = 'Delivery',
     FUEL = 'Fuel',

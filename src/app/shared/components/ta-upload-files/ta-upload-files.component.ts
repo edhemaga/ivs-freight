@@ -136,7 +136,7 @@ export class TaUploadFilesComponent implements OnInit, OnDestroy {
                 });
                 break;
             }
-            case eGeneralActions.DELETE: {
+            case eGeneralActions.DELETE_LOWERCASE: {
                 let isLastDeleted = false;
                 this._files.map((item, index) => {
                     if (

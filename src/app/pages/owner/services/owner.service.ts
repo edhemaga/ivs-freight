@@ -251,7 +251,7 @@ export class OwnerService {
                 );
 
                 this.tableService.sendActionAnimation({
-                    animation: eGeneralActions.DELETE,
+                    animation: eGeneralActions.DELETE_LOWERCASE,
                     tab: tableSelectedTab,
                     id: ownerId,
                 });

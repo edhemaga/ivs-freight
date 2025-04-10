@@ -810,7 +810,7 @@ export class DropdownMenuContentHelper {
         return [
             {
                 title: 'Edit',
-                name: eGeneralActions.EDIT,
+                name: eGeneralActions.EDIT_LOWERCASE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,

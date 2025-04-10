@@ -295,7 +295,7 @@ export class BrokerService {
                 ).subscribe({
                     next: (broker: BrokerResponse | any) => {
                         this.tableService.sendActionAnimation({
-                            animation: eGeneralActions.DELETE,
+                            animation: eGeneralActions.DELETE_LOWERCASE,
                             tab: 'broker',
                             data: broker,
                             id: broker.id,

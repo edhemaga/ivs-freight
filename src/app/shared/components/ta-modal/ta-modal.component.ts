@@ -734,7 +734,7 @@ export class TaModalComponent implements OnInit, OnDestroy {
             .subscribe(
                 (data: { action: string; status: boolean; close: boolean }) => {
                     switch (data.action) {
-                        case eGeneralActions.DELETE: {
+                        case eGeneralActions.DELETE_LOWERCASE: {
                             this.deleteSpinnerVisibility = data.status;
                             break;
                         }
