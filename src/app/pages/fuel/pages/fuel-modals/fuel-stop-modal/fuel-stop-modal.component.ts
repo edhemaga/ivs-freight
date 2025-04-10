@@ -259,7 +259,7 @@ export class FuelStopModalComponent
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.fuelStopForm
                     .get(eFileFormControls.FILES)
                     .patchValue(
@@ -525,7 +525,9 @@ export class FuelStopModalComponent
                         (v, i, a) => a.findIndex((v2) => v2.id === v.id) === i
                     );
 
-                    if (this.editData?.type === eGeneralActions.EDIT) {
+                    if (
+                        this.editData?.type === eGeneralActions.EDIT_LOWERCASE
+                    ) {
                         this.isCardAnimationDisabled = true;
 
                         this.getFuelStopById(this.editData.id);

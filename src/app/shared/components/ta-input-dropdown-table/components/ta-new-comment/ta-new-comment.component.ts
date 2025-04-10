@@ -15,7 +15,7 @@ import { takeUntil } from 'rxjs/operators';
 
 // models
 import { AngularSvgIconModule } from 'angular-svg-icon';
-import { User } from '@shared/models/user.model';
+import { User } from '@shared/models';
 import { CreateCommentCommand } from 'appcoretruckassist';
 import { ICreateCommentMetadata } from '@pages/load/pages/load-table/models';
 
@@ -63,9 +63,7 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
     public newCommentSvgRoutes = NewCommentSvgRoutes;
 
     constructor(
-        private loadService: LoadService,
         private loadStoreService: LoadStoreService,
-        private commentService: CommentsService,
         private taInputDropdownTableService: TaInputDropdownTableService,
         private cdr: ChangeDetectorRef
     ) {}
@@ -110,7 +108,8 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
                 const dateNow = moment().format(
                     CommentStringEnum.COMMENT_DATE_FORMAT
                 );
-                const { avatarFile, firstName, lastName, companyUserId } = this.user || {};
+                const { avatarFile, firstName, lastName, companyUserId } =
+                    this.user || {};
                 const { url } = avatarFile || {};
                 const commentMetadata: ICreateCommentMetadata = {
                     cardId: loadId,
@@ -118,12 +117,15 @@ export class TaNewCommentComponent implements OnDestroy, OnInit {
                     createdAt: dateNow,
                     companyUser: {
                         avatar: url,
-                        fullName: `${ firstName } ${ lastName }`,
+                        fullName: `${firstName} ${lastName}`,
                         id: companyUserId,
-                    }
-                }
+                    },
+                };
 
-                this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
+                this.loadStoreService.dispatchCreateComment(
+                    comment,
+                    commentMetadata
+                );
 
                 this.openNewComment = false;
 

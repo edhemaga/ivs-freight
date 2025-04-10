@@ -774,7 +774,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
 
     public onFilesAction(fileActionEvent: {
         files: File[];
-        action: eGeneralActions.ADD | eGeneralActions.DELETE;
+        action: eGeneralActions.ADD | eGeneralActions.DELETE_LOWERCASE;
         deleteId?: number;
     }): void {
         this.documents = fileActionEvent.files;
@@ -787,7 +787,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.personalInfoForm
                     .get(eFileFormControls.FILES)
                     .patchValue(
@@ -1287,7 +1287,7 @@ export class Step1Component implements OnInit, OnDestroy, AfterViewInit {
             return;
         }
 
-        if(!this.isEachPreviousAddressesRowValid) return;
+        if (!this.isEachPreviousAddressesRowValid) return;
 
         let mappedPreviousAddresses = previousAddresses.map(
             (previousAddress) => {

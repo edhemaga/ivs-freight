@@ -19,6 +19,7 @@ import { ITableData } from '@shared/models/table-data.model';
 
 import {
     Column,
+    CommentCompanyUser,
     ICurrentSearchTableData,
     ITableColummn,
     ITableOptions,
@@ -80,7 +81,7 @@ import {
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
 // enums
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eSortDirection } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadRouting } from '@pages/new-load/enums';
 
@@ -401,7 +402,7 @@ export class LoadStoreService {
         else this.dispatchDeleteBulkLoads(ids);
     }
 
-    public dsipatchCanDeleteSelectedDataRows(
+    public dispatchCanDeleteSelectedDataRows(
         canDeleteSelectedDataRows: boolean,
         ids: number[]
     ): void {
@@ -486,9 +487,27 @@ export class LoadStoreService {
         metadata: ICreateCommentMetadata
     ): void {
         this.store.dispatch({
-            type: LoadStoreConstants.ACTION_CREATE_COMMENT,
+            type: LoadStoreConstants.ACTION_CREATE_COMMENT_SUCCESS,
             apiParam,
             metadata,
+        });
+    }
+
+    public dispatchUpdateComment(apiParam: CommentCompanyUser): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_UPDATE_COMMENT,
+            apiParam,
+        });
+    }
+
+    public sortLoadComments(
+        loadId: number,
+        sortDirection: eSortDirection
+    ): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SORT_COMMENTS,
+            loadId,
+            sortDirection,
         });
     }
 

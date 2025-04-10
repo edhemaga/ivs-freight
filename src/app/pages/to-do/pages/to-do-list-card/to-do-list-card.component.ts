@@ -204,7 +204,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case eGeneralActions.DELETE:
+                        case eGeneralActions.DELETE_LOWERCASE:
                             this.dropAct(res);
                             break;
                         default:
@@ -483,10 +483,10 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'border',
@@ -564,7 +564,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                 },
             ],
             export: true,
@@ -572,7 +572,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
     }
 
     dropAct(event) {
-        if (event.type == eGeneralActions.DELETE) {
+        if (event.type == eGeneralActions.DELETE_LOWERCASE) {
             this.todoService.deleteTodoById(event.id).subscribe();
             this.cardData = this.cardData.filter((item) => {
                 if (event.id == item.id) {
@@ -593,7 +593,7 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 {
                     ...event,
                     template: 'task',
-                    type: eGeneralActions.DELETE,
+                    type: eGeneralActions.DELETE_LOWERCASE,
                 }
             );
         } else if (event.type === 'add-comment') {
@@ -616,14 +616,14 @@ export class ToDoListCardComponent implements OnInit, OnDestroy {
                 { size: 'small' },
                 {
                     ...event,
-                    type: eGeneralActions.EDIT,
+                    type: eGeneralActions.EDIT_LOWERCASE,
                 }
             );
         }
     }
 
     changeReviewsEvent(event) {
-        if (event.action == eGeneralActions.DELETE) {
+        if (event.action == eGeneralActions.DELETE_LOWERCASE) {
             this.commentsService.deleteCommentById(event.data).subscribe({
                 next: () => {
                     let todoCom = this.scene.children[

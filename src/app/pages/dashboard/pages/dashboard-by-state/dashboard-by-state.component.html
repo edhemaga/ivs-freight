@@ -129,16 +129,17 @@
                     <app-dashboard-loading-placeholder
                         [listPlaceholder]="true"
                     ></app-dashboard-loading-placeholder>
-                }
 
-                @else {
+                } @else {
                     <!-- Search -->
                     @if (isShowingMore) {
                         <div class="dashboard-by-state-body-up-list-search">
                             <app-ta-search-v2
                                 [placeHolderText]="byStateTitle"
                                 [clearSearchValue]="clearSearchValue"
-                                (searchValueEmitter)="handleSearchValue($event)"
+                                (searchValueEmitter)="
+                                    onHandleSearchValue($event)
+                                "
                             ></app-ta-search-v2>
                         </div>
                     }
@@ -215,9 +216,7 @@
 
                                         <svg-icon
                                             class="close-icon"
-                                            [src]="
-                                                svgRoutes.CLOSE_X
-                                            "
+                                            [src]="svgRoutes.CLOSE_X"
                                             [svgStyle]="{
                                                 'width.px': 18,
                                                 'height.px': 18,
@@ -324,9 +323,7 @@
                                         class="ta-font-bold show-more-btn"
                                         (click)="handleShowMoreClick()"
                                     >
-                                        {{
-                                            isShowingMore | showMore
-                                        }}
+                                        {{ isShowingMore | showMore }}
                                     </button>
                                 </div>
                             }

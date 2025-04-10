@@ -208,7 +208,7 @@ export class TruckService implements OnDestroy {
                     .subscribe({
                         next: (truck: any) => {
                             this.tableService.sendActionAnimation({
-                                animation: eGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE_LOWERCASE,
                                 data: truck,
                                 id: truck.id,
                             });

@@ -139,7 +139,7 @@ export class RepairShopDetailsItemRepairComponent
             .subscribe({
                 next: (res) => {
                     if (
-                        res?.type === eGeneralActions.DELETE &&
+                        res?.type === eGeneralActions.DELETE_LOWERCASE &&
                         res?.template === eRepairShopDetails.REPAIR_LOWERCASE
                     )
                         this.resetIndexes();

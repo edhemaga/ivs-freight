@@ -26,9 +26,9 @@ export class DriverDetailsItemHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                     show: true,
                 },
                 {
@@ -92,7 +92,7 @@ export class DriverDetailsItemHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                     danger: true,
                     show: true,
                     redIcon: true,
@@ -120,9 +120,9 @@ export class DriverDetailsItemHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                     show: true,
                     disabled: !driverStatus,
                 },
@@ -161,7 +161,7 @@ export class DriverDetailsItemHelper {
                     name: 'delete-item',
                     type: 'driver',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                     danger: true,
                     show: true,
                     redIcon: true,

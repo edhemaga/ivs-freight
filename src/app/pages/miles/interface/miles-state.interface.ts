@@ -14,6 +14,7 @@ import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interf
 import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 import {
     IMilesDetailsFilters,
@@ -21,6 +22,7 @@ import {
     IMilesTabResults,
 } from '@pages/miles/interface';
 import { ITableConfig } from '@shared/components/new-table/interface';
+import { ICaMapProps } from 'ca-components';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -42,4 +44,6 @@ export interface IMilesState {
     details: MilesByUnitPaginatedStopsResponse;
     unitsPagination: IMilesDetailsFilters;
     tableSettings: ITableConfig;
+    unitMapRoutes: RoutingResponse;
+    unitMapData: ICaMapProps;
 }

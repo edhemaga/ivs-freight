@@ -133,7 +133,7 @@ export class FuelStopDetailsComponent
                 next: (res) => {
                     const { id, type, template } = res;
 
-                    if (type === eGeneralActions.DELETE) {
+                    if (type === eGeneralActions.DELETE_LOWERCASE) {
                         template === eFuelStopDetails.FUEL_STOP
                             ? this.deleteFuelStop(id)
                             : this.deleteFuelTransaction(id);

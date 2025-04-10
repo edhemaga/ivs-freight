@@ -10,4 +10,5 @@ export enum eStringPlaceholder {
     ELLIPSIS = '...',
     NA = 'N/A',
     NONE = 'None',
+    GI = 'gi',
 }

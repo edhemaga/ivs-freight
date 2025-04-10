@@ -179,17 +179,17 @@ export class AccidentTableComponent
                     title: 'Edit',
                     name: 'edit-accident',
                     class: 'regular-text',
-                    contentType: eGeneralActions.EDIT,
+                    contentType: eGeneralActions.EDIT_LOWERCASE,
                     show: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                 },
                 {
                     title: 'Delete',
-                    name: eGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE_LOWERCASE,
                     type: 'safety',
                     text: 'Are you sure you want to delete accident?',
                     class: 'delete-text',
-                    contentType: eGeneralActions.DELETE,
+                    contentType: eGeneralActions.DELETE_LOWERCASE,
                     show: true,
                     danger: true,
                     svg: 'assets/svg/truckassist-table/dropdown/content/delete.svg',
@@ -348,7 +348,7 @@ export class AccidentTableComponent
                     { size: 'large-xl' },
                     {
                         id: event.id,
-                        type: eGeneralActions.EDIT,
+                        type: eGeneralActions.EDIT_LOWERCASE,
                         data: event.data,
                     }
                 );

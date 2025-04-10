@@ -691,7 +691,7 @@ export class LoadTableComponent
                         }
                     });
 
-                    this.loadStoreService.dsipatchCanDeleteSelectedDataRows(
+                    this.loadStoreService.dispatchCanDeleteSelectedDataRows(
                         isDeleteHidden,
                         selectedIds
                     );
