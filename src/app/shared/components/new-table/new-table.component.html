@@ -1,11 +1,10 @@
-<!-- TODO: REMOVE MARGIN -->
 @let displayedDataCount = rows.length;
 
 <div class="table-container">
     <div class="w-full">
         <!-- Header -->
 
-        <div class="d-flex m-b-6 p-x-8 table-header">
+        <div class="d-flex m-b-6 p-x-8">
             <div class="d-flex new-table--pinned-left">
                 @for (
                     column of leftPinnedColumns;
@@ -13,7 +12,8 @@
                     let leftPinnedColumnIndex = $index
                 ) {
                     @let nextColumn =
-                        leftPinnedColumns[leftPinnedColumnIndex + 1];
+                        leftPinnedColumns[leftPinnedColumnIndex + 1] ??
+                        mainColumns[0];
 
                     <ng-container
                         *ngTemplateOutlet="
@@ -46,20 +46,12 @@
             }
 
             <div class="d-flex new-table--pinned-right">
-                @for (
-                    column of rightPinnedColumns;
-                    track column.key;
-                    let rightPinnedColumnIndex = $index
-                ) {
-                    @let nextColumn =
-                        rightPinnedColumns[rightPinnedColumnIndex + 1];
-
+                @for (column of rightPinnedColumns; track column.key) {
                     <ng-container
                         *ngTemplateOutlet="
                             columnTemplate;
                             context: {
                                 column,
-                                nextColumn,
                             }
                         "
                     ></ng-container>
@@ -175,12 +167,15 @@
 <!-- Templates -->
 
 <ng-template #columnTemplate let-column="column" let-nextColumn="nextColumn">
+    @let isAlignedRight = column.isAlignedRight;
+
     @if (column.columns?.length) {
         @let firstCheckedIndex = column.columns | tableGroupLabelIndex;
+        @let tableGroupClass = { column, isTableLocked } | tableGroupClass;
 
         <div
-            class="d-flex h-30 new-table--row-heading-group"
-            [class]="column | tableGroupClass: isTableLocked"
+            class="d-flex h-30 p-t-4 new-table--row-heading-group"
+            [ngClass]="tableGroupClass"
         >
             @for (
                 _column of column.columns;
@@ -198,9 +193,11 @@
                         columnDisplay;
                         context: {
                             column: _column,
+                            groupColumn: column,
                             hasLabelTop,
                             isGroup: true,
-                            label: column.label,
+                            isLastInGroup: _lastColumn,
+                            isAlignedRight,
                             hasDoubleHeightBorder,
                         }
                     "
@@ -213,7 +210,11 @@
         <ng-container
             *ngTemplateOutlet="
                 columnDisplay;
-                context: { column, hasDoubleHeightBorder }
+                context: {
+                    column,
+                    isAlignedRight,
+                    hasDoubleHeightBorder,
+                }
             "
         ></ng-container>
     }
@@ -221,98 +222,185 @@
     <ng-template
         #columnDisplay
         let-column="column"
+        let-groupColumn="groupColumn"
         let-hasLabelTop="hasLabelTop"
         let-isGroup="isGroup"
-        let-label="label"
+        let-isLastInGroup="isLastInGroup"
+        let-isAlignedRight="isAlignedRight"
         let-hasDoubleHeightBorder="hasDoubleHeightBorder"
     >
         @if (column.isChecked) {
             @let isResizableColumn = !isTableLocked && column.isResizable;
             @let isEmptyTable = !displayedDataCount;
             @let columnWidth = column.width + eUnit.PX;
-            @let isAlignedRight = column.isAlignedRight;
+
+            @let tableColumnClass =
+                {
+                    column,
+                    isTableLocked,
+                    isGroup,
+                    isEmptyTable,
+                    isAlignedRight,
+                } | tableColumnClass;
 
             <div
-                class="d-flex new-table--row-heading"
-                [ngClass]="
-                    {
-                        column,
-                        isTableLocked,
-                        isGroup,
-                        isEmptyTable,
-                        isAlignedRight,
-                    } | tableColumnClass
-                "
+                class="d-flex position-relative new-table--row-heading"
+                [ngClass]="tableColumnClass"
                 [style.width]="columnWidth"
                 [appResizableColumn]="isResizableColumn"
                 [columnId]="column.id"
                 [minWidth]="column.minWidth"
                 [maxWidth]="column.maxWidth"
+                [hasLabelTop]="hasLabelTop && groupColumn.label"
                 [hasDoubleHeightBorder]="hasDoubleHeightBorder"
                 (click)="handleSortColumnClick(column)"
                 (onColumnResize)="onColumnWidthResize($event)"
+                (mouseenter)="onColumnHeadingHover(column.id)"
+                (mouseleave)="onColumnHeadingHover(-1)"
             >
                 @if (hasLabelTop) {
                     <span
                         class="text-size-9 ta-font-extra-bold text-color-light-grey-2 text-uppercase"
                     >
-                        {{ label }}
+                        {{ groupColumn.label }}
                     </span>
                 }
 
-                <div class="d-flex w-100">
+                @let tableColumnInnerClass =
+                    {
+                        isTableLocked,
+                        isAlignedRight,
+                        isTableColumnInnerClass: true,
+                        hasLabelTop: hasLabelTop && groupColumn.label,
+                    } | tableColumnClass;
+
+                <div
+                    class="d-flex align-items-end w-100"
+                    [ngClass]="tableColumnInnerClass"
+                >
+                    @let isHeadingHover = headingHoverId === column.id;
+
+                    @let isPinned =
+                        !isGroup ? column.pinned : groupColumn.pinned;
+
+                    @let tableColumnLabelWidth =
+                        {
+                            columnWidth: column.width,
+                            isTableLocked,
+                            isPinned,
+                            isHeadingHover,
+                            isGroup,
+                            isLastInGroup,
+                        } | tableColumnLabelWidth;
+
                     <!-- Display custom header template if template exists -->
 
                     @if (headerTemplates[column.key]) {
                         <ng-container
                             *ngTemplateOutlet="
                                 headerTemplates[column.key];
-                                context: { data: column }
+                                context: {
+                                    data: column,
+                                    tableColumnClass,
+                                    tableColumnLabelWidth,
+                                }
                             "
                         ></ng-container>
                     } @else {
                         <!-- Default header template - if no custom template -->
 
                         <span
-                            class="text-size-11 ta-font-bold color-inherit text-uppercase"
+                            class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                            [ngStyle]="tableColumnLabelWidth"
                         >
                             {{ column.label }}
                         </span>
                     }
 
-                    @if (!isTableLocked && false) {
-                        <div class="d-flex">
-                            <div
-                                class="c-pointer"
-                                [ngClass]="{
-                                    'svg-hover-black': !column.pinned,
-                                    'svg-hover-blue-15 svg-fill-blue-13':
-                                        column.pinned,
-                                }"
-                                ngbTooltip
-                                [mainTooltip]="
-                                    column.pinned ? 'Remove Pin' : 'Pin Column'
-                                "
-                                [tooltipBackground]="eColor.BLACK"
-                                position="bottom"
-                            >
-                                <svg-icon
-                                    class="new-table--row-heading-arrow mr-1 svg-size-14"
-                                    [src]="sharedSvgRoutes.PIN_ICON"
-                                    (click)="handlePinColumnClick(column)"
-                                ></svg-icon>
-                            </div>
+                    <!-- Actions -->
 
-                            @if (!column.pinned) {
+                    <!-- Pin, Remove Column Action -->
+
+                    @let hasActions = !isTableLocked && !column.isDisabled;
+
+                    @if (hasActions) {
+                        @let tableColumnActionClass =
+                            {
+                                isHeadingHover,
+                                isGroup,
+                                isLastInGroup,
+                                isPinned,
+                            } | tableColumnActionClass;
+
+                        <div
+                            class="d-flex position-relative right-12 new-table--row-heading-actions"
+                            [ngClass]="tableColumnActionClass"
+                        >
+                            @let hasPinAction = !isGroup || isLastInGroup;
+
+                            @if (hasPinAction) {
+                                @let pinColumnTooltip =
+                                    isPinned
+                                        ? eGeneralActions.REMOVE_PIN
+                                        : isLastInGroup
+                                          ? eGeneralActions.PIN_GROUP
+                                          : eGeneralActions.PIN_COLUMN;
+
+                                @let pinColumnAction =
+                                    isLastInGroup ? groupColumn : column;
+
                                 <div
-                                    class="svg-hover-black c-pointer"
+                                    class="d-flex justfiy-content-center align-items-center m-r-2 c-pointer"
                                     ngbTooltip
-                                    mainTooltip="Remove Column"
+                                    [mainTooltip]="pinColumnTooltip"
                                     [tooltipBackground]="eColor.BLACK"
-                                    position="bottom"
+                                    [position]="ePosition.BOTTOM"
+                                    (click)="
+                                        handlePinColumnClick(pinColumnAction)
+                                    "
+                                >
+                                    @let pinColumnClass =
+                                        {
+                                            isPinned,
+                                            isPinAction: true,
+                                        } | tableColumnActionClass;
+
+                                    <svg-icon
+                                        class="svg-size-14"
+                                        [ngClass]="pinColumnClass"
+                                        [src]="sharedSvgRoutes.PIN_ICON"
+                                    ></svg-icon>
+                                </div>
+                            }
+
+                            @let hasRemoveColumnAction =
+                                !isGroup
+                                    ? !isPinned
+                                    : !isLastInGroup || !isPinned;
+
+                            @if (hasRemoveColumnAction) {
+                                @let removeColumnTooltip =
+                                    isLastInGroup
+                                        ? eGeneralActions.REMOVE_GROUP
+                                        : eGeneralActions.REMOVE_COLUMN;
+
+                                @let removeColumnAction =
+                                    isLastInGroup
+                                        ? groupColumn.key
+                                        : column.key;
+
+                                <div
+                                    class="d-flex justfiy-content-center align-items-center svg-fill-grey svg-hover-black c-pointer"
+                                    ngbTooltip
+                                    [mainTooltip]="removeColumnTooltip"
+                                    [tooltipBackground]="eColor.BLACK"
+                                    [position]="ePosition.BOTTOM"
+                                    (click)="
+                                        onRemoveColumnClick(removeColumnAction)
+                                    "
                                 >
                                     <svg-icon
-                                        class="new-table--row-heading-arrow svg-size-14"
+                                        class="svg-size-18"
                                         [src]="
                                             sharedSvgRoutes.CLOSE_ICON_NORMAL
                                         "
@@ -321,21 +409,26 @@
                             }
                         </div>
                     } @else {
-                        <!-- Show this on hover if column.direction is not null -->
+                        <!-- Sort Column Action -->
 
-                        @let sortIconClass =
-                            column.direction ? 'd-flex' : 'd-none';
+                        @let isSortActive = !!column.direction;
 
-                        @let sortIconSrc =
-                            column.direction === sortOrder.Ascending ||
-                            !column.direction
+                        @let sortColumnClass =
+                            {
+                                isSortActive,
+                                isSortAction: true,
+                            } | tableColumnActionClass;
+
+                        @let sortColumnIconSrc =
+                            !isSortActive ||
+                            column.direction === sortOrder.Ascending
                                 ? sharedSvgRoutes.SORT_ICON
                                 : sharedSvgRoutes.SORT_ICON_ASC;
 
                         <svg-icon
                             class="new-table--row-heading-arrow m-l-4 svg-size-14"
-                            [ngClass]="sortIconClass"
-                            [src]="sortIconSrc"
+                            [ngClass]="sortColumnClass"
+                            [src]="sortColumnIconSrc"
                         ></svg-icon>
                     }
                 </div>
@@ -385,35 +478,55 @@
         let-hasMarginRight="hasMarginRight"
     >
         @if (column.isChecked) {
-            @let cellColumnTemplateClass =
+            <!--   @let tableColumnCellClass =
                 {
                     'p-l-6': hasPaddingLeft,
                     'm-r-7': hasMarginRight,
-                };
+                }; -->
+
+            @let tableColumnCellClass =
+                {
+                    hasPaddingLeft,
+                    hasMarginRight,
+                } | tableColumnCellClass;
 
             <div
-                [class]="cellColumnTemplateClass"
+                [ngClass]="tableColumnCellClass"
                 [style.min-width]="column.width + eUnit.PX"
                 [style.width]="column.width + eUnit.PX"
             >
+                <!--    @let tableColumnCellColorClass = -->
+                <!--        !!row[column.key] -->
+                <!--            ? 'text-color-black-2' -->
+                <!--            : 'text-color-muted'; -->
+
+                @let tableColumnCellColorClass =
+                    {
+                        isTableColumnCellColorClass: true,
+                        hasValue: !!row[column.key],
+                    } | tableColumnCellClass;
+
                 <!-- Display custom template if template exists -->
 
                 @if (templates[column.key]) {
                     <ng-container
                         *ngTemplateOutlet="
                             templates[column.key];
-                            context: { data: row, key: column.key, column }
+                            context: {
+                                data: row,
+                                key: column.key,
+                                column,
+                                cellColumnTextColorClass,
+                            }
                         "
                     ></ng-container>
                 } @else {
                     <!-- Default - text - if no custom template -->
 
-                    @let cellColumnNoTemplateClass =
-                        !!row[column.key]
-                            ? 'text-color-black-2'
-                            : 'text-color-muted';
-
-                    <p class="text-size-14" [class]="cellColumnNoTemplateClass">
+                    <p
+                        class="text-size-14"
+                        [ngClass]="tableColumnCellColorClass"
+                    >
                         {{ row[column.key] }}
                     </p>
                 }

@@ -14,7 +14,6 @@ export interface ITableColumn {
     pinned?: 'left' | 'right';
     hasSort?: boolean;
     direction?: SortOrder | null;
-    isPinEnabled?: boolean;
     isResizable?: boolean;
     isAlignedRight?: boolean;
     columns?: ITableColumn[];

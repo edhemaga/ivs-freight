@@ -18,6 +18,7 @@ export enum eGeneralActions {
     OPEN = 'open',
     OPEN_CAPITALIZED = 'Open',
     SAVE = 'save',
+    SAVE_AND_ADD_NEW = 'save and add new',
     NEXT = 'Next',
     NEXT_LOWERCASE = 'next',
     PREVIOUS = 'Previous',
@@ -37,7 +38,11 @@ export enum eGeneralActions {
 
     DOWNLOAD = 'Download',
 
-    SAVE_AND_ADD_NEW = 'save and add new',
+    PIN_COLUMN = 'Pin Column',
+    PIN_GROUP = 'Pin Group',
+    REMOVE_PIN = 'Remove Pin',
+    REMOVE_COLUMN = 'Remove Column',
+    REMOVE_GROUP = 'Remove Group',
     CONVERT_TO_LOAD = 'Convert to Load',
     CONVERT_TO_TEMPLATE = 'Convert To Template',
 }

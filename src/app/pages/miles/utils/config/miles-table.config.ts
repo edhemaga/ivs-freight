@@ -11,6 +11,7 @@ export class MilesTableColumnsConfig {
             key: 'unit',
             label: 'Unit',
             labelToolbar: 'Unit No',
+            pinned: 'left',
             width: 80,
             minWidth: 80,
             maxWidth: 200,
@@ -25,6 +26,7 @@ export class MilesTableColumnsConfig {
             key: 'truckType',
             label: 'Type',
             labelToolbar: 'Type',
+            pinned: null,
             width: 64,
             minWidth: 64,
             maxWidth: 200,
@@ -37,6 +39,7 @@ export class MilesTableColumnsConfig {
             key: 'stops',
             label: 'Stop',
             labelToolbar: 'Stops',
+            pinned: null,
             columns: [
                 {
                     id: 3,
@@ -147,6 +150,7 @@ export class MilesTableColumnsConfig {
         {
             key: 'load',
             label: '',
+            pinned: null,
             columns: [
                 {
                     id: 11,
@@ -167,6 +171,7 @@ export class MilesTableColumnsConfig {
             key: 'fuel',
             label: 'Fuel',
             labelToolbar: 'Fuel',
+            pinned: null,
             hasSort: false,
             columns: [
                 {
@@ -213,6 +218,7 @@ export class MilesTableColumnsConfig {
             key: 'miles',
             label: 'Miles',
             labelToolbar: 'Miles',
+            pinned: null,
             hasSort: false,
             columns: [
                 {
@@ -259,6 +265,7 @@ export class MilesTableColumnsConfig {
         {
             key: 'revenueGroup',
             label: '',
+            pinned: null,
             isAlignedRight: true,
             columns: [
                 {
