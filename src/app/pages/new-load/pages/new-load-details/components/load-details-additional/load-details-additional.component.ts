@@ -114,10 +114,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         this.statusLogSortDirection = sortDirection;
     }
 
-    public handleCommentActionEmit(
-        commentData: CommentData,
-        loadId: number
-    ): void {
+    public onCommentActionEmit(commentData: CommentData, loadId: number): void {
         switch (commentData.btnType) {
             case eGeneralActions.CANCEL:
                 break;
@@ -158,7 +155,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         }
     }
 
-    public handleSortActionEmit(
+    public onSortActionEmit(
         sortDirection: eSortDirection,
         loadId: number
     ): void {
@@ -166,7 +163,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         this.loadStoreService.sortLoadComments(loadId, sortDirection);
     }
 
-    public handleSearchHighlightActionEmit(searchHighlightValue: string): void {
+    public onSearchHighlightActionEmit(searchHighlightValue: string): void {
         this.commentFilter = searchHighlightValue;
     }
 

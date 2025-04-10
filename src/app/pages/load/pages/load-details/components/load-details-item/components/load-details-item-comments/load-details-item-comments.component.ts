@@ -132,7 +132,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         this.comments = [newComment, ...this.comments];
     }
 
-    public handleCommentActionEmit(commentData: CommentData): void {
+    public onCommentActionEmit(commentData: CommentData): void {
         switch (commentData.btnType) {
             case LoadDetailsItemStringEnum.CANCEL:
                 if (!commentData.isEditCancel)
@@ -189,7 +189,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         }
     }
 
-    public handleSortActionEmit(sortDirection: string): void {
+    public onSortActionEmit(sortDirection: string): void {
         const dateFormat = LoadDetailsItemStringEnum.DATE_FORMAT;
 
         this.comments = this.comments.sort((a, b) => {
@@ -204,7 +204,7 @@ export class LoadDetailsItemCommentsComponent implements OnChanges, OnDestroy {
         });
     }
 
-    public handleSearchHighlightActionEmit(searchHighlightValue: string): void {
+    public onSearchHighlightActionEmit(searchHighlightValue: string): void {
         if (searchHighlightValue) {
             this.comments = this.comments.filter(
                 ({ commentContent, companyUser }) =>

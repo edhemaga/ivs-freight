@@ -58,9 +58,9 @@
         [commentsData]="comments | createLoadComment: commentFilter"
         [isDisplaySearch]="isSearchActive"
         [isHeaderHidden]="isHeaderHidden"
-        (handleActionEmitter)="handleCommentActionEmit($event, load.id)"
-        (handleSortEmitter)="handleSortActionEmit($event, load.id)"
-        (handleSearchHighlightEmitter)="handleSearchHighlightActionEmit($event)"
+        (onActionEmitter)="onCommentActionEmit($event, load.id)"
+        (onSortEmitter)="onSortActionEmit($event, load.id)"
+        (onSearchHighlightEmitter)="onSearchHighlightActionEmit($event)"
     ></app-ta-comments-search>
 
     <div class="background-white p-x-6 p-y-6 br-3 w-100">
