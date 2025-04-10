@@ -11,7 +11,7 @@
  */
 
 
-export type TableType = 'LOAD_TEMPLATE' | 'LOAD_CLOSED' | 'LOAD_REGULAR' | 'BROKER' | 'SHIPPER' | 'DRIVER' | 'APPLICANT' | 'TRUCK' | 'TRAILER' | 'REPAIR_TRUCK' | 'REPAIR_TRAILER' | 'REPAIR_SHOP' | 'PM_TRUCK' | 'PM_TRAILER' | 'FUEL_TRANSACTION' | 'FUEL_STOP' | 'OWNER' | 'ACCOUNT' | 'CONTACT' | 'ROADSIDE_INSPECTION' | 'ACCIDENT' | 'USER';
+export type TableType = 'LOAD_TEMPLATE' | 'LOAD_CLOSED' | 'LOAD_REGULAR' | 'BROKER' | 'SHIPPER' | 'DRIVER' | 'APPLICANT' | 'TRUCK' | 'TRAILER' | 'REPAIR_TRUCK' | 'REPAIR_TRAILER' | 'REPAIR_SHOP' | 'PM_TRUCK' | 'PM_TRAILER' | 'FUEL_TRANSACTION' | 'FUEL_STOP' | 'OWNER' | 'ACCOUNT' | 'CONTACT' | 'ROADSIDE_INSPECTION' | 'ACCIDENT' | 'USER' | 'MILES_UNIT';
 
 export const TableType = {
     LoadTemplate: 'LOAD_TEMPLATE' as TableType,
@@ -35,6 +35,7 @@ export const TableType = {
     Contact: 'CONTACT' as TableType,
     RoadsideInspection: 'ROADSIDE_INSPECTION' as TableType,
     Accident: 'ACCIDENT' as TableType,
-    User: 'USER' as TableType
+    User: 'USER' as TableType,
+    MilesUnit: 'MILES_UNIT' as TableType
 };
 

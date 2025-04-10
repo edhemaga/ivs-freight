@@ -9,11 +9,12 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PossibleLoadStatusResponse } from './possibleLoadStatusResponse';
+import { TruckMinimalResponse } from './truckMinimalResponse';
 
 
-export interface LoadPossibleStatusesResponse { 
-    possibleStatuses?: Array<PossibleLoadStatusResponse> | null;
-    previousStatus?: PossibleLoadStatusResponse;
+export interface MilesByUnitMinimalResponse { 
+    id?: number;
+    truck?: TruckMinimalResponse;
+    vin?: string | null;
 }
 
