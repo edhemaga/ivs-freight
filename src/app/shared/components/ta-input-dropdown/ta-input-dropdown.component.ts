@@ -495,7 +495,10 @@ export class TaInputDropdownComponent
             this.addNewItem();
         }
 
-        if (event.action === 'confirm' && event.mode === eGeneralActions.EDIT) {
+        if (
+            event.action === 'confirm' &&
+            event.mode === eGeneralActions.EDIT_LOWERCASE
+        ) {
             this.updateItem();
         }
 
@@ -555,7 +558,7 @@ export class TaInputDropdownComponent
 
         this.saveItem.emit({
             data: this._activeItem,
-            action: eGeneralActions.EDIT,
+            action: eGeneralActions.EDIT_LOWERCASE,
         });
     }
 
@@ -942,7 +945,9 @@ export class TaInputDropdownComponent
             this.commandEvent({
                 data: this.getSuperControl.value,
                 action: 'confirm',
-                mode: data.dropdownLabelNew ? 'new' : eGeneralActions.EDIT,
+                mode: data.dropdownLabelNew
+                    ? 'new'
+                    : eGeneralActions.EDIT_LOWERCASE,
             });
             this.clearTimeoutDropdown = setTimeout(() => {
                 this.getSuperControl.setErrors(null);

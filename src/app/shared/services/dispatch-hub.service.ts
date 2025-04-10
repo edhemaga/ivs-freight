@@ -52,10 +52,7 @@ export class DispatchHubService {
         )
             return;
 
-        DispatchHubService.hubConnection
-            .start()
-            .then()
-            .catch((e) => console.log(e));
+        DispatchHubService.hubConnection.start().then().catch();
 
         DispatchHubService.hubConnection.onclose(() => {
             DispatchHubService.hubConnection.start();

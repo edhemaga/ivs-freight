@@ -57,7 +57,7 @@ export class UserModalConfig {
             maxLength: 64,
             isDisabled: selectedUserType === 'Owner',
             textTransform: 'lowercase',
-            autoFocus: editDataType !== eGeneralActions.EDIT,
+            autoFocus: editDataType !== eGeneralActions.EDIT_LOWERCASE,
         };
     }
 

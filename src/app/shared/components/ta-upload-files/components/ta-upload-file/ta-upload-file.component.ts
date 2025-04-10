@@ -174,7 +174,7 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.file.fileName = this.fileNewName.value;
                 // this.file.fileName =
                 //   this.fileNewName.value[0].toUpperCase() +
-                //   this.fileAction.emit({ file: this.file, action: eGeneralActions.EDIT });
+                //   this.fileAction.emit({ file: this.file, action: eGeneralActions.EDIT_LOWERCASE });
             }
         }
     }
@@ -218,7 +218,7 @@ export class TaUploadFileComponent implements OnInit, AfterViewInit, OnDestroy {
                 this.downloadFile(this.file.url, this.file.fileName);
                 break;
             }
-            case eGeneralActions.DELETE: {
+            case eGeneralActions.DELETE_LOWERCASE: {
                 this.isFileDelete = false;
                 this.fileAction.emit({ file: this.file, action });
                 break;

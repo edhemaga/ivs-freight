@@ -19,7 +19,7 @@ import {
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
 // services
-import { MilesService } from 'appcoretruckassist';
+import { MilesService, RoutingService } from 'appcoretruckassist';
 
 // selectors
 import {
@@ -48,6 +48,7 @@ export class MilesEffects {
     constructor(
         private actions$: Actions,
         private milesService: MilesService,
+        private routingService: RoutingService,
         private store: Store
     ) {}
 
@@ -124,12 +125,15 @@ export class MilesEffects {
         return this.milesService
             .apiMilesUnitGet(null, null, null, firstItemId)
             .pipe(
-                map((unitResponse) =>
+                mergeMap((unitResponse) => [
                     MilesAction.setUnitDetails({
                         details: unitResponse,
                         isLast: milesItems.length === 1,
-                    })
-                ),
+                    }),
+                    MilesAction.getUnitMapData({
+                        unitMapLocations: unitResponse.stops,
+                    }),
+                ]),
                 catchError(() => of(MilesAction.getLoadsPayloadError()))
             );
     }
@@ -207,15 +211,18 @@ export class MilesEffects {
                         return this.milesService
                             .apiMilesUnitGet(null, null, null, truckId)
                             .pipe(
-                                map((unitResponse) =>
+                                mergeMap((unitResponse) => [
                                     MilesAction.setFollowingUnitDetails({
                                         unitResponse,
                                         index,
                                         isFirst,
                                         isLast,
                                         isLastInCurrentList,
-                                    })
-                                ),
+                                    }),
+                                    MilesAction.getUnitMapData({
+                                        unitMapLocations: unitResponse.stops,
+                                    }),
+                                ]),
                                 catchError(() =>
                                     of(MilesAction.getLoadsPayloadError())
                                 )
@@ -223,6 +230,56 @@ export class MilesEffects {
                     })
                 )
             )
+        )
+    );
+
+    public getUnitMapData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getUnitMapData),
+            exhaustMap((action) => {
+                const { unitMapLocations } = action || {};
+
+                const mapLocations = JSON.stringify(
+                    unitMapLocations.data.map(({ longitude, latitude }) => ({
+                        longitude,
+                        latitude,
+                    }))
+                );
+
+                return this.routingService.apiRoutingGet(mapLocations).pipe(
+                    map((unitMapRoutes) => {
+                        return MilesAction.getUnitMapDataSuccess({
+                            unitMapRoutes,
+                        });
+                    }),
+                    catchError(() => of(MilesAction.getLoadsPayloadError()))
+                );
+            })
+        )
+    );
+
+    public setUnitMapData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getUnitMapDataSuccess),
+            map(() => MilesAction.setUnitMapData())
+        )
+    );
+
+    public getMapStopData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getMapStopData),
+            exhaustMap((action) => {
+                const { stopId } = action || {};
+
+                return this.milesService.apiMilesUnitStopIdGet(stopId).pipe(
+                    map((unitStopData) => {
+                        return MilesAction.getMapStopDataSuccess({
+                            unitStopData,
+                        });
+                    }),
+                    catchError(() => of(MilesAction.getLoadsPayloadError()))
+                );
+            })
         )
     );
 
@@ -244,7 +301,7 @@ export class MilesEffects {
                                 details.id
                             )
                             .pipe(
-                                map((unitResponse) =>
+                                mergeMap((unitResponse) => [
                                     MilesAction.setFollowingUnitDetails({
                                         unitResponse,
                                         index: unitsPagination.activeUnitIndex,
@@ -257,8 +314,11 @@ export class MilesEffects {
                                                 1,
                                         isLastInCurrentList:
                                             unitsPagination.isLastInCurrentList,
-                                    })
-                                ),
+                                    }),
+                                    MilesAction.getUnitMapData({
+                                        unitMapLocations: unitResponse.stops,
+                                    }),
+                                ]),
                                 catchError(() =>
                                     of(MilesAction.getLoadsPayloadError())
                                 )
@@ -315,6 +375,10 @@ export class MilesEffects {
                                             isLast: hasOnlyOneResult,
                                             isLastInCurrentList:
                                                 hasOnlyOneResult,
+                                        }),
+                                        MilesAction.getUnitMapData({
+                                            unitMapLocations:
+                                                unitResponse.stops,
                                         }),
                                     ])
                                 );

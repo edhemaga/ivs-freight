@@ -337,7 +337,7 @@ export class AccountModalComponent implements OnInit, OnDestroy {
 
     public onSaveLabel(data: { data: any; action: string }) {
         switch (data.action) {
-            case eGeneralActions.EDIT:
+            case eGeneralActions.EDIT_LOWERCASE:
                 this.selectedAccountLabel = data.data;
                 this.accountService
                     .updateCompanyAccountLabel({

@@ -418,7 +418,7 @@ export class ViolationModalComponent implements OnInit, OnDestroy {
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.violationForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

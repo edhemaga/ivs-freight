@@ -92,3 +92,8 @@ export const cardFlipViewModeSelector = createSelector(
         return eCardFlipViewMode[cardFlipViewMode];
     }
 );
+
+export const milesUnitMapDataSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.unitMapData
+);

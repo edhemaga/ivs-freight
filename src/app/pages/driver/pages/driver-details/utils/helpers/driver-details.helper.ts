@@ -22,10 +22,10 @@ export class DriverDetailsHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     disabled: !status,
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'border',
@@ -110,7 +110,7 @@ export class DriverDetailsHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                     danger: true,
                     show: true,
                     redIcon: true,

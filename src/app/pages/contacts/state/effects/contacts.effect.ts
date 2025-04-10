@@ -110,10 +110,10 @@ export class ContactEffect {
                             contactLabels,
                             tableCount: count,
                             isShowMore,
-                        }
+                        };
 
                         return ContactActions.getInitialContactsSuccess({
-                            inititalContactsData
+                            inititalContactsData,
                         });
                     }),
                     catchError((error) =>
@@ -343,7 +343,7 @@ export class ContactEffect {
                     .pipe(
                         tap(() => {
                             this.tableService.sendActionAnimation({
-                                animation: eGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE_LOWERCASE,
                                 id: apiParam,
                             });
                         }),
@@ -370,7 +370,7 @@ export class ContactEffect {
                     tap(() => {
                         apiParam.forEach((contactId) => {
                             this.tableService.sendActionAnimation({
-                                animation: eGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE_LOWERCASE,
                                 id: contactId,
                             });
                         });
