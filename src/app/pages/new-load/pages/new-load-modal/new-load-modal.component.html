@@ -47,6 +47,7 @@
                             template="load-dispatcher"
                             label="fullName"
                             [canAddNew]="true"
+                            [canOpenModal]="true"
                             [options]="staticData.dispatchers"
                             [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
                         ></ca-input-dropdown-test>
@@ -66,15 +67,15 @@
                 <div class="w-full m-t-26">
                     <ca-input-dropdown-test
                         [optionValue]="'id'"
+                        [label]="'id'"
                         formControlName="dispatchId"
-                        [label]="'businessName'"
                         [template]="'load-dispatches-ttd'"
                         [inputConfig]="
                             LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
                         "
                         [canAddNew]="true"
                         [canOpenModal]="true"
-                        [options]="staticData.dispatchers"
+                        [options]="staticData.dispatches"
                     >
                     </ca-input-dropdown-test>
                 </div>
@@ -140,6 +141,7 @@
                                 formControlName="truckTypeId"
                                 optionValue="id"
                                 label="name"
+                                [template]="'svgtext-template'"
                                 [inputConfig]="
                                     LoadModalConfig.TRUCK_TYPE_CONFIG
                                 "
@@ -148,6 +150,7 @@
                             <ca-input-dropdown-test
                                 formControlName="trailerTypeId"
                                 optionValue="id"
+                                [template]="'svgtext-template'"
                                 label="name"
                                 [inputConfig]="
                                     LoadModalConfig.TRAILER_TYPE_CONFIG
