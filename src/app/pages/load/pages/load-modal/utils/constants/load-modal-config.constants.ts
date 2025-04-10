@@ -5,7 +5,7 @@ import { eStringPlaceholder } from '@shared/enums';
 import { TrailerTypeResponse, TruckTypeResponse } from 'appcoretruckassist';
 
 export class LoadModalConfig {
-    static LOAD_DISPATCHES_TTD_INPUT_CONFIG: ITaInput = {
+    static LOAD_DISPATCHES_TTD_INPUT_CONFIG: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -431,12 +431,13 @@ export class LoadModalConfig {
         };
     }
 
-    static DISPATCHER_INPUT: ITaInput = {
+    static DISPATCHER_INPUT: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         label: 'Dispatcher',
         isDropdown: true,
         isRequired: true,
+        blackInput: false,
         textTransform: 'capitalize',
         dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
     };
