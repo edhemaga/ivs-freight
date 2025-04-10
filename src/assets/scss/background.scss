@@ -21,10 +21,18 @@
     }
     &-muted {
         background: $muted;
+
+        &-o20 {
+            background: rgb($muted, 0.2);
+        }
     }
 
     &-black {
         background: $ta-black;
+
+        &-2 {
+            background: $ta-black-2;
+        }
     }
 
     &-green {
@@ -85,6 +93,10 @@
 
     &-red-10 {
         background-color: $ta-red-10;
+
+        &-o20 {
+            background-color: rgb($ta-red-10, 0.2);
+        }
     }
 
     &-blue {
@@ -102,6 +114,16 @@
 
         &-26 {
             background-color: $ta-blue-26;
+        }
+    }
+
+    &-yellow {
+        &-1 {
+            background-color: $ta-yellow-1;
+
+            &-o20 {
+                background-color: rgb($ta-yellow-1, 0.2);
+            }
         }
     }
 
