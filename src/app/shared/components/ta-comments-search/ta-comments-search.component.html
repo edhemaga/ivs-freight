@@ -49,7 +49,7 @@
                 [commentIndex]="i"
                 [isMe]="comment.isMe"
                 [commentHighlight]="lettersToHighlight"
-                (btnActionEmitter)="onCommentActionEmit($event)"
+                (onAction)="onCommentActionEmit($event)"
             ></app-ta-comment>
         }
     </div>

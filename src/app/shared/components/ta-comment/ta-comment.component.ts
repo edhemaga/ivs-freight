@@ -114,7 +114,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
     @Input() isDetailsCommentLayout?: boolean = false;
 
-    @Output() btnActionEmitter = new EventEmitter<CommentData>();
+    @Output() onAction = new EventEmitter<CommentData>();
     @Output() closeDropdown = new EventEmitter<boolean>();
 
     private destroy$ = new Subject<void>();
@@ -255,7 +255,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
                             btnType,
                         };
 
-                        this.btnActionEmitter.emit(emitData);
+                        this.onAction.emit(emitData);
 
                         this.isEditing = false;
                         this.isCommenting = false;
@@ -363,7 +363,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
 
                 this.isCommenting = false;
 
-                this.btnActionEmitter.emit(commentData);
+                this.onAction.emit(commentData);
 
                 break;
             case CommentStringEnum.CANCEL:

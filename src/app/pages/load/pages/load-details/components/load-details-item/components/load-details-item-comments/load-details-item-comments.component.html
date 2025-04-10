@@ -6,7 +6,7 @@
         [commentsData]="comments"
         [isDisplaySearch]="isSearchComment"
         [isHeaderHidden]="isHeaderHidden"
-        (btnActionEmitter)="onCommentActionEmit($event)"
+        (onAction)="onCommentActionEmit($event)"
         (btnSortEmitter)="onSortActionEmit($event)"
         (searchHighlightEmitter)="onSearchHighlightActionEmit($event)"
     ></app-ta-comments-search>
