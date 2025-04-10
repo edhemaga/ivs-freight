@@ -117,16 +117,13 @@
                     customDividerClass="divider--dark"
                     cardName="Requirement"
                     [hasDivider]="true"
+                    [isCardOpen]="true"
                     [animationMarginParams]="{
-                        marginTop: '0',
-                        marginBottom: '0',
+                        marginTop: '18px',
+                        marginBottom: '14px',
                     }"
                 >
-                    <div
-                        origin
-                        class="m-t-18 m-b-14"
-                        formGroupName="loadRequirements"
-                    >
+                    <div origin formGroupName="loadRequirements">
                         <div class="d-grid d-grid-requirement-first-row m-b-28">
                             <ca-input-dropdown-test
                                 formControlName="truckTypeId"
@@ -236,17 +233,19 @@
                     </div>
                 </app-ca-custom-card>
 
+                <div class="divider divider--small divider--dark"></div>
+
                 <app-ca-custom-card
                     customDividerClass="divider--dark"
                     cardName="Billing"
-                    [hasDivider]="true"
+                    [hasDivider]="false"
                     [isCardOpen]="true"
                     [animationMarginParams]="{
-                        marginTop: '0',
-                        marginBottom: '0',
+                        marginTop: '8px',
+                        marginBottom: '14px',
                     }"
                 >
-                    <div origin class="m-t-8 m-b-14">
+                    <div origin>
                         <ca-input-test
                             formControlName="baseRate"
                             [inputConfig]="LoadModalConfig.LOAD_BASE_RATE"
@@ -254,10 +253,12 @@
                     </div>
                 </app-ca-custom-card>
 
+                <div class="divider divider--small divider--dark"></div>
+
                 <app-ca-custom-card
                     customDividerClass="divider--dark"
                     cardName="Document"
-                    [hasDivider]="true"
+                    [hasDivider]="false"
                     [animationMarginParams]="{
                         marginTop: '0',
                         marginBottom: '0',
