@@ -25,5 +25,8 @@ export interface InsurancePolicyResponse {
     insurancePolicyAddons?: Array<InsurancePolicyAddonResponse> | null;
     files?: Array<FileResponse> | null;
     note?: string | null;
+    companyName?: string | null;
+    companyId?: number | null;
+    isCompanyDivision?: boolean | null;
 }
 

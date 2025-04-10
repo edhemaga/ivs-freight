@@ -9,11 +9,13 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { PossibleLoadStatusResponse } from './possibleLoadStatusResponse';
+import { EnumValue } from './enumValue';
 
 
-export interface LoadPossibleStatusesResponse { 
-    possibleStatuses?: Array<PossibleLoadStatusResponse> | null;
-    previousStatus?: PossibleLoadStatusResponse;
+export interface PossibleLoadStatusResponse { 
+    statusValue?: EnumValue;
+    statusString?: string | null;
+    statusCheckInNumber?: string | null;
+    isPossible?: boolean;
 }
 
