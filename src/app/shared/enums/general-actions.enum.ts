@@ -36,4 +36,8 @@ export enum eGeneralActions {
     VIEW_MODE = 'view-mode',
 
     DOWNLOAD = 'Download',
+
+    SAVE_AND_ADD_NEW = 'save and add new',
+    CONVERT_TO_LOAD = 'Convert to Load',
+    CONVERT_TO_TEMPLATE = 'Convert To Template',
 }
