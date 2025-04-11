@@ -935,20 +935,12 @@ export class ShipperModalComponent
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : res.receivingFrom
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.receivingFrom
-                                    )
-                                  : null,
+                                : res.receivingFrom,
                         receivingTo:
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : res.receivingTo
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.receivingTo
-                                    )
-                                  : null,
+                                : res.receivingTo,
                         shippingFrom:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
