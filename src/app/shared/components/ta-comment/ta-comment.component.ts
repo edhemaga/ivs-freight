@@ -43,7 +43,9 @@ import {
     eSharedString,
     eSortDirection,
     TableStringEnum,
+    eColor,
 } from '@shared/enums';
+import { ePosition } from 'ca-components';
 
 // pipes
 import { TaCommentHighlistComponentPipe } from '@shared/components/ta-comment/pipes/ta-comment-higlits-comment.pipe';
@@ -69,7 +71,6 @@ import { Comment } from '@shared/models/card-models/card-table-data.model';
 
 // assets
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { ePosition } from 'ca-components';
 
 @Component({
     selector: 'app-ta-comment',
@@ -142,6 +143,7 @@ export class TaCommentComponent implements OnInit, AfterViewInit, OnDestroy {
     public eSortDirection = eSortDirection;
     public eSharedString = eSharedString;
     public ePosition = ePosition;
+    public eColor = eColor;
 
     constructor(
         private cdr: ChangeDetectorRef,
