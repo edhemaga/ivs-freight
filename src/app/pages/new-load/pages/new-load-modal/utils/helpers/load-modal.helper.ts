@@ -7,6 +7,7 @@ import {
     EnumValue,
     LoadRequirementsResponse,
     LoadResponse,
+    LoadTemplateResponse,
     LoadType,
 } from 'appcoretruckassist';
 
@@ -61,13 +62,14 @@ export class LoadModalHelper {
     }
 
     static createForm(
+        isEdit: boolean,
         load?: LoadResponse,
         loadRequirements?: LoadRequirementsResponse,
         isTemplate?: boolean
     ): UntypedFormGroup {
         return new UntypedFormGroup({
             name: new UntypedFormControl(
-                null,
+                isTemplate ? (load as LoadTemplateResponse)?.name : null,
                 isTemplate ? Validators.required : null
             ),
             dispatcherId: new UntypedFormControl(
@@ -101,16 +103,21 @@ export class LoadModalHelper {
             note: new UntypedFormControl(load?.note ?? null),
             statusType: new UntypedFormControl(load?.statusType?.name ?? null),
             status: new UntypedFormControl(load?.status?.statusString ?? null),
-            loadRequirements:
-                this.generateLoadRequirementsForm(loadRequirements),
+            loadRequirements: this.generateLoadRequirementsForm(
+                isEdit,
+                loadRequirements
+            ),
         });
     }
 
     static generateLoadRequirementsForm(
+        isEdit: boolean,
         loadRequirements?: LoadRequirementsResponse
     ): UntypedFormGroup {
         return new UntypedFormGroup({
-            id: new UntypedFormControl(loadRequirements?.id ?? null),
+            id: new UntypedFormControl(
+                isEdit ? (loadRequirements?.id ?? null) : null
+            ),
             driverMessage: new UntypedFormControl(
                 loadRequirements?.driverMessage ?? null
             ),

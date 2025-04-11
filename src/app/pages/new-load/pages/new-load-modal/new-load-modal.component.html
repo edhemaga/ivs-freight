@@ -1,5 +1,5 @@
-@let isEdit = editData.isEdit;
-@let isTemplate = editData.isTemplate;
+@let isEdit = editData?.isEdit;
+@let isTemplate = editData?.isTemplate;
 @let isLoaded = !!load || dropdownList;
 @let isModalValidToSubmit = loadForm?.valid;
 
@@ -31,13 +31,43 @@
                             [inputConfig]="LoadModalConfig.LOAD_TEMPLATE_CONFIG"
                         ></ca-input-test>
                     } @else {
+                        @let templateButtonConfig =
+                            {
+                                isTemplateSelected,
+                                isPopoverOpen,
+                                templateLength: dropdownList.templates.length,
+                            } | templateButtonConfig;
+
                         <div
-                            class="h-26 w-26 d-flex align-items-center justify-content-center br-2 background-light-grey-5 svg-fill-bw-9"
+                            class="h-26 w-26 d-flex align-items-center justify-content-center br-2"
+                            ngbTooltip
+                            position="bottom"
+                            [tooltipColor]="templateButtonConfig.tooltipColor"
+                            [tooltipBackground]="
+                                templateButtonConfig.tooltipBackground
+                            "
+                            [mainTooltip]="templateButtonConfig.tooltip"
+                            [ngClass]="templateButtonConfig.class"
+                            (click)="isTemplateSelected && onRemoveTemplate()"
                         >
-                            <svg-icon
-                                class="svg-size-18 d-flex"
-                                [src]="svgRoutes.SELECT_TEMPLATE"
-                            ></svg-icon>
+                            <div
+                                #popover="ngbPopover"
+                                container="body"
+                                placement="bottom-start"
+                                autoClose="outside"
+                                [ngbPopover]="
+                                    isTemplateSelected
+                                        ? null
+                                        : templateListPopover
+                                "
+                                (shown)="isPopoverOpen = true"
+                                (hidden)="isPopoverOpen = false"
+                            >
+                                <svg-icon
+                                    class="svg-size-18 d-flex"
+                                    [src]="svgRoutes.SELECT_TEMPLATE"
+                                ></svg-icon>
+                            </div>
                         </div>
 
                         <ca-input-dropdown-test
@@ -45,8 +75,6 @@
                             optionValue="id"
                             template="load-dispatcher"
                             label="fullName"
-                            [canAddNew]="true"
-                            [canOpenModal]="true"
                             [options]="dropdownList.dispatchers"
                             [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
                         ></ca-input-dropdown-test>
@@ -266,7 +294,7 @@
                                 Leg
                             </div>
                         </div>
-                        <app-new-load-modal-stops></app-new-load-modal-stops>
+                        <!-- <app-new-load-modal-stops></app-new-load-modal-stops> -->
                     </div>
                 </app-ca-custom-card>
 
@@ -481,3 +509,18 @@
         </div>
     </ng-template>
 </app-ca-modal>
+
+<ng-template #templateListPopover>
+    <div
+        class="popover-load-template scrollable-element d-flex flex-column gap-1 py-1 px-1 background-black-2 br-4"
+    >
+        @for (template of dropdownList.templates; track template.id) {
+            <div
+                class="background-hover-black h-26 d-flex align-items-center p-x-6 text-color-white c-pointer br-2 text-truncate"
+                (click)="onSelectTemplate(template)"
+            >
+                {{ template.name }}
+            </div>
+        }
+    </div>
+</ng-template>
