@@ -1,9 +1,14 @@
-@let receivingAppointmentControl = this.shipperForm.get(shipperModalString.RECEIVING_APPOINTMENT);
-@let receivingOpenTwentyFourHoursControl = this.shipperForm.get(shipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS);
-@let receivingFromControl = this.shipperForm.get(shipperModalString.RECEIVING_FROM);
+@let receivingAppointmentControl =
+    this.shipperForm.get(shipperModalString.RECEIVING_APPOINTMENT);
+@let receivingOpenTwentyFourHoursControl =
+    this.shipperForm.get(shipperModalString.RECEIVING_OPEN_TWENTY_FOUR_HOURS);
+@let receivingFromControl =
+    this.shipperForm.get(shipperModalString.RECEIVING_FROM);
 @let receivingToControl = this.shipperForm.get(shipperModalString.RECEIVING_TO);
-@let shippingAppointmentControl = this.shipperForm.get(shipperModalString.SHIPPING_APPOINTMENT);
-@let shippingOpenTwentyFourHoursControl = this.shipperForm.get(shipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS);
+@let shippingAppointmentControl =
+    this.shipperForm.get(shipperModalString.SHIPPING_APPOINTMENT);
+@let shippingOpenTwentyFourHoursControl =
+    this.shipperForm.get(shipperModalString.SHIPPING_OPEN_TWENTY_FOUR_HOURS);
 
 <app-ca-modal
     [modalTitle]="
@@ -182,13 +187,16 @@
                                     [name]="'receivingOpenTwentyFourHours'"
                                     [customClass]="'medium'"
                                     [label]="'Open 24h'"
-                                    [disabled]="receivingAppointmentControl.value"
+                                    [disabled]="
+                                        receivingAppointmentControl.value
+                                    "
                                 ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
                                 <!-- Time Picker -->
                                 <ca-input-datetime-picker
                                     formControlName="receivingFrom"
+                                    [formFormat]="'HH:MM'"
                                     [inputConfig]="{
                                         name: 'timepicker',
                                         type: 'text',
@@ -196,11 +204,11 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            receivingAppointmentControl.value || 
+                                            receivingAppointmentControl.value ||
                                             receivingOpenTwentyFourHoursControl.value,
                                         customClass: 'datetimeclass',
-                                        isRequired: 
-                                            receivingFromControl.value || 
+                                        isRequired:
+                                            receivingFromControl.value ||
                                             receivingToControl.value,
                                     }"
                                 ></ca-input-datetime-picker>
@@ -209,6 +217,7 @@
                                 <!-- Time Picker -->
                                 <ca-input-datetime-picker
                                     formControlName="receivingTo"
+                                    [formFormat]="'HH:MM'"
                                     [inputConfig]="{
                                         name: 'timepicker',
                                         type: 'text',
@@ -216,11 +225,11 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                            receivingAppointmentControl.value || 
+                                            receivingAppointmentControl.value ||
                                             receivingOpenTwentyFourHoursControl.value,
                                         customClass: 'datetimeclass',
-                                        isRequired: 
-                                            receivingFromControl.value || 
+                                        isRequired:
+                                            receivingFromControl.value ||
                                             receivingToControl.value,
                                     }"
                                 ></ca-input-datetime-picker>
@@ -263,7 +272,9 @@
                                     [name]="'shippingOpenTwentyFourHours'"
                                     [customClass]="'medium'"
                                     [label]="'Open 24h'"
-                                    [disabled]="shippingAppointmentControl.value"
+                                    [disabled]="
+                                        shippingAppointmentControl.value
+                                    "
                                 ></app-ta-checkbox>
                             </div>
                             <div class="shipper-work-hours-field">
@@ -277,8 +288,8 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                        shippingAppointmentControl.value || 
-                                        shippingOpenTwentyFourHoursControl.value,
+                                            shippingAppointmentControl.value ||
+                                            shippingOpenTwentyFourHoursControl.value,
                                         customClass: 'datetimeclass',
                                     }"
                                 ></ca-input-datetime-picker>
@@ -287,6 +298,7 @@
                                 <!-- Time Picker -->
                                 <ca-input-datetime-picker
                                     formControlName="shippingTo"
+                                    [formFormat]="'HH:MM'"
                                     [inputConfig]="{
                                         name: 'timepicker',
                                         type: 'text',
@@ -294,8 +306,8 @@
                                         placeholderIcon: 'time',
                                         isDropdown: true,
                                         isDisabled:
-                                        shippingAppointmentControl.value || 
-                                        shippingOpenTwentyFourHoursControl.value,
+                                            shippingAppointmentControl.value ||
+                                            shippingOpenTwentyFourHoursControl.value,
                                         customClass: 'datetimeclass',
                                     }"
                                 ></ca-input-datetime-picker>
