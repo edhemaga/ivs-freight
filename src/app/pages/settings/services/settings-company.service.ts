@@ -232,7 +232,7 @@ export class SettingsCompanyService implements OnDestroy {
 
                             companiesCount.numberOfCompany--;
                             this.tableService.sendActionAnimation({
-                                animation: eGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE_LOWERCASE,
                                 data: company,
                                 id: company.id,
                             });
@@ -257,7 +257,7 @@ export class SettingsCompanyService implements OnDestroy {
                     .subscribe({
                         next: (company: CompanyResponse) => {
                             this.tableService.sendActionAnimation({
-                                animation: eGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE_LOWERCASE,
                                 data: company,
                                 id: company.id,
                             });
@@ -352,7 +352,7 @@ export class SettingsCompanyService implements OnDestroy {
                     .subscribe({
                         next: (company: CompanyResponse) => {
                             this.tableService.sendActionAnimation({
-                                animation: eGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE_LOWERCASE,
                                 data: company,
                                 id: company.id,
                             });

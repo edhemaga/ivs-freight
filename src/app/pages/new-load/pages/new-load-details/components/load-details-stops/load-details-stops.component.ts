@@ -23,6 +23,7 @@ import { eColor } from '@shared/enums';
 import { FormatDatePipe, FormatTimePipe } from '@shared/pipes';
 import { StopStatusPipe } from '@pages/new-load/pages/new-load-details/components/load-details-stops/pipes/stop-status.pipe';
 import { FormatDurationPipe } from '@shared/pipes/format-duration.pipe';
+import { PendingLoadProgressPipe } from './pipes/pending-load-progress.pipe';
 
 // Components
 import {
@@ -50,6 +51,7 @@ import {
         FormatDurationPipe,
         StopStatusPipe,
         LoadStatusBackgroundColorPipe,
+        PendingLoadProgressPipe,
 
         // Components
         CaMapComponent,
@@ -83,10 +85,6 @@ export class LoadDetailsStopsComponent {
     public toggleHoverStatus(index: number | null, popover: NgbPopover): void {
         this.hoveredIndex = index;
 
-        if (index !== null) {
-            popover.open();
-        } else {
-            popover.close();
-        }
+        this.hoveredIndex !== null ? popover.open() : popover.close();
     }
 }

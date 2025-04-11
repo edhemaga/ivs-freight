@@ -260,7 +260,7 @@ export class SettingsGeneralComponent implements OnInit, OnDestroy, OnChanges {
             {
                 id: this.companyData.id,
                 template: 'company',
-                type: eGeneralActions.DELETE,
+                type: eGeneralActions.DELETE_LOWERCASE,
                 image: false,
             }
         );

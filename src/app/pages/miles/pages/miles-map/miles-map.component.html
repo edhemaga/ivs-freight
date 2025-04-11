@@ -4,5 +4,10 @@
 </div>
 
 <div class="map-container">
-    <app-ca-map [data]="mapData"></app-ca-map>
+    @let mapData = milesStoreService.unitMapDataSelector$ | async;
+
+    <app-ca-map
+        [data]="mapData"
+        (routingMarkerClick)="handleRoutingMarkerClick($event)"
+    ></app-ca-map>
 </div>

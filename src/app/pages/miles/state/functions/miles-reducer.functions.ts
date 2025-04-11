@@ -11,18 +11,24 @@ import {
 } from '@shared/components/new-table/interface';
 
 // enums
-import {
-    eActiveViewMode,
-    eCardFlipViewMode,
-    eGeneralActions,
-} from '@shared/enums';
+import { eActiveViewMode, eCardFlipViewMode } from '@shared/enums';
 import { eMileTabs } from '@pages/miles/enums';
+import { eSharedString } from '@shared/enums';
 
 // models
 import {
     MilesByUnitMinimalListResponse,
     MilesByUnitPaginatedStopsResponse,
+    MilesStopDetailsResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
+import {
+    ICaMapProps,
+    IMapMarkers,
+    IMapRoutePath,
+    MapMarkerIconHelper,
+    MapOptionsConstants,
+} from 'ca-components';
 
 // configs
 import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
@@ -31,6 +37,7 @@ import { MilesTableColumnsConfig } from '@pages/miles/utils/config';
 import { MilesDropdownMenuHelper } from '@pages/miles/utils/helpers';
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
+import { MilesMapDropdownHelper } from '@pages/miles/pages/miles-map/utils/helpers';
 
 export const updateTruckCounts = function (
     state: IMilesState,
@@ -165,6 +172,101 @@ export const updateUnitDetails = function (
             currentPage: state.details.currentPage + 1,
         },
     };
+};
+
+export const setUnitMapRoutes = function (
+    state: IMilesState,
+    unitMapRoutes: RoutingResponse
+): IMilesState {
+    return { ...state, unitMapRoutes };
+};
+
+export const setMapSelectedStop = function (
+    state: IMilesState,
+    unitStopData: MilesStopDetailsResponse
+): IMilesState {
+    const { unitMapData } = state;
+
+    const markerData = unitMapData.routingMarkers.find(
+        (marker) => marker.data?.id === unitStopData.id
+    );
+
+    let selectedRoutingMarkerData: IMapMarkers = null;
+
+    if (markerData)
+        selectedRoutingMarkerData = {
+            ...markerData,
+            infoWindowContent:
+                MilesMapDropdownHelper.getMilesUnitMapDropdownConfig(
+                    unitStopData
+                ),
+            data: { ...unitStopData },
+        };
+
+    const newMapData = { ...unitMapData, selectedRoutingMarkerData };
+
+    return { ...state, unitMapData: newMapData };
+};
+
+export const setUnitMapData = function (state: IMilesState): IMilesState {
+    const {
+        unitMapRoutes,
+        details: { stops },
+    } = state || {};
+
+    let routeMarkers: IMapMarkers[] = [];
+    let routePaths: IMapRoutePath[] = [];
+
+    stops?.map((stop, index) => {
+        const routeMarker: IMapMarkers = {
+            position: {
+                lat: stop.latitude,
+                lng: stop.longitude,
+            },
+            content: MapMarkerIconHelper.getMilesMarkerElement(
+                stop.order ?? 0,
+                stop.type.name.toLowerCase(),
+                stop.location.address,
+                index
+            ),
+            hasClickEvent: true,
+            data: { ...stop },
+        };
+
+        routeMarkers = [...routeMarkers, routeMarker];
+
+        if (index > 0) {
+            const isDashedPath = !!stops?.[index - 1]?.empty;
+
+            const strokeColor =
+                stops?.[index - 1].type.name === eSharedString.TOWING
+                    ? MapOptionsConstants.ROUTING_PATH_COLORS.purple
+                    : MapOptionsConstants.ROUTING_PATH_COLORS.gray;
+
+            const routePath: IMapRoutePath = {
+                path: [],
+                decodedShape: unitMapRoutes?.legs?.[index - 1]?.decodedShape,
+                strokeColor,
+                strokeOpacity: 1,
+                strokeWeight: 4,
+                isDashed: isDashedPath,
+            };
+
+            routePaths = [...routePaths, routePath];
+        }
+    });
+
+    const unitMapData = {
+        markers: [],
+        clusterMarkers: [],
+        darkMode: false,
+        isZoomShown: true,
+        isVerticalZoom: true,
+        routingMarkers: routeMarkers,
+        routePaths: routePaths,
+    } as ICaMapProps;
+
+    return { ...state, unitMapData };
 };
 
 export const toggleTableLockingStatus = function (

@@ -78,6 +78,9 @@ export const initialState: IMilesState = {
         prevId: null,
         nextId: null,
     },
+
+    unitMapRoutes: null,
+    unitMapData: null,
 };
 
 export const milesReducer = createReducer(
@@ -179,5 +182,15 @@ export const milesReducer = createReducer(
     })),
     on(MilesAction.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
         Functions.setToolbarDropdownMenuColumnsActive(state, isActive)
-    )
+    ),
+
+    on(MilesAction.getUnitMapDataSuccess, (state, { unitMapRoutes }) =>
+        Functions.setUnitMapRoutes(state, unitMapRoutes)
+    ),
+
+    on(MilesAction.getMapStopDataSuccess, (state, { unitStopData }) =>
+        Functions.setMapSelectedStop(state, unitStopData)
+    ),
+
+    on(MilesAction.setUnitMapData, (state) => Functions.setUnitMapData(state))
 );

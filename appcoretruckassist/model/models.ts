@@ -787,6 +787,7 @@ export * from './pickupDeliveryByStateResponse';
 export * from './pickupDeliveryByStateResponsePagination';
 export * from './pickupDeliveryIntervalResponse';
 export * from './poBoxEntity';
+export * from './possibleLoadStatusResponse';
 export * from './preferredLoadType';
 export * from './previousEmployerAccidentHistoryItemCommand';
 export * from './previousEmployerDocumentsResponse';

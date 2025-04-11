@@ -12,13 +12,15 @@ import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interf
 import { ITableConfig } from '@shared/components/new-table/interface';
 
 // External Services or Models
-import { MilesStateFilterResponse } from 'appcoretruckassist';
+import { MilesStateFilterResponse, RoutingResponse } from 'appcoretruckassist';
 import {
+    IMilesDetailsFilters,
     IMilesModel,
     IMilesTabResults,
     IMinimalListState,
     IMinimalStopsState,
 } from '@pages/miles/interface';
+import { ICaMapProps } from 'ca-components';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -41,4 +43,6 @@ export interface IMilesState {
     tableSettings: ITableConfig;
     minimalList: IMinimalListState;
     minimalListFilters: IMinimalListFilters;
+    unitMapRoutes: RoutingResponse;
+    unitMapData: ICaMapProps;
 }

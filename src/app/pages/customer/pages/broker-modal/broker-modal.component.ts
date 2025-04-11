@@ -692,7 +692,11 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
                     this.isUploadInProgress = true;
 
-                    if (this.editData?.type.includes(eGeneralActions.EDIT)) {
+                    if (
+                        this.editData?.type.includes(
+                            eGeneralActions.EDIT_LOWERCASE
+                        )
+                    ) {
                         this.updateBroker(this.editData.id);
                     } else {
                         this.addBroker();
@@ -774,7 +778,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                     .patchValue(JSON.stringify(event.files));
 
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.brokerForm
                     .get(eFileFormControls.FILES)
                     .patchValue(
@@ -1286,7 +1290,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
 
     public changeReviewsEvent(review: ReviewComment): void {
         switch (review.action) {
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.deleteReview(true, review);
                 break;
             case eGeneralActions.ADD:

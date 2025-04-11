@@ -262,7 +262,7 @@ export class ShipperService {
                 ).subscribe({
                     next: (shipper: any) => {
                         this.tableService.sendActionAnimation({
-                            animation: eGeneralActions.DELETE,
+                            animation: eGeneralActions.DELETE_LOWERCASE,
                             tab: 'shipper',
                             data: shipper,
                             id: shipper.id,

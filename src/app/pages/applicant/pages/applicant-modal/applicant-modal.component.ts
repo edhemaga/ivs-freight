@@ -78,7 +78,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
     ngOnInit() {
         this.createForm();
 
-        if (this.editData?.type === eGeneralActions.EDIT)
+        if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE)
             this.editApplicant(this.editData.id);
     }
 
@@ -135,7 +135,7 @@ export class ApplicantModalComponent implements OnInit, OnDestroy {
                     this.inputService.markInvalid(this.applicantForm);
                     return;
                 }
-                if (this.editData?.type === eGeneralActions.EDIT) {
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.updateApplicant(this.editData.id);
                     this.modalService.setModalSpinner({
                         action: null,

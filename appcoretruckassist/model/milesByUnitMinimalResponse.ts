@@ -15,5 +15,6 @@ import { TruckMinimalResponse } from './truckMinimalResponse';
 export interface MilesByUnitMinimalResponse { 
     id?: number;
     truck?: TruckMinimalResponse;
+    vin?: string | null;
 }
 

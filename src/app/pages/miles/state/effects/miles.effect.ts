@@ -24,7 +24,7 @@ import {
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
 // services
-import { MilesService } from 'appcoretruckassist';
+import { MilesService, RoutingService } from 'appcoretruckassist';
 
 // selectors
 import {
@@ -59,6 +59,7 @@ export class MilesEffects {
     constructor(
         private actions$: Actions,
         private milesService: MilesService,
+        private routingService: RoutingService,
         private store: Store,
         private router: Router
     ) {}
@@ -121,6 +122,10 @@ export class MilesEffects {
                                             MilesAction.setUnitDetails({
                                                 details: unitResponse,
                                             }),
+                                            MilesAction.getUnitMapData({
+                                                unitMapLocations:
+                                                    unitResponse.stops.data,
+                                            }),
                                         ])
                                     ),
                                     catchError(() =>
@@ -136,6 +141,84 @@ export class MilesEffects {
             })
         );
     }
+
+    public loadMilesEffect$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(
+                MilesAction.milesTabChange,
+                MilesAction.changeFilters,
+                MilesAction.tableSortingChange
+            ),
+            exhaustMap(() =>
+                this.store.select(activeViewModeSelector).pipe(
+                    take(1),
+                    switchMap((activeViewMode) => this.fetchMilesData())
+                )
+            )
+        )
+    );
+
+    public getUnitMapData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getUnitMapData),
+            exhaustMap((action) => {
+                const { unitMapLocations } = action || {};
+
+                const mapLocations = JSON.stringify(
+                    unitMapLocations.map(({ longitude, latitude }) => ({
+                        longitude,
+                        latitude,
+                    }))
+                );
+
+                return this.routingService.apiRoutingGet(mapLocations).pipe(
+                    map((unitMapRoutes) => {
+                        return MilesAction.getUnitMapDataSuccess({
+                            unitMapRoutes,
+                        });
+                    }),
+                    catchError(() => of(MilesAction.getLoadsPayloadError()))
+                );
+            })
+        )
+    );
+
+    public setUnitMapData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getUnitMapDataSuccess),
+            map(() => MilesAction.setUnitMapData())
+        )
+    );
+
+    public getMapStopData$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.getMapStopData),
+            exhaustMap((action) => {
+                const { stopId } = action || {};
+
+                return this.milesService.apiMilesUnitStopIdGet(stopId).pipe(
+                    map((unitStopData) => {
+                        return MilesAction.getMapStopDataSuccess({
+                            unitStopData,
+                        });
+                    }),
+                    catchError(() => of(MilesAction.getLoadsPayloadError()))
+                );
+            })
+        )
+    );
+
+    public updateUnitMapDataOnListScroll$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(MilesAction.updateUnitDetails),
+            withLatestFrom(this.store.select(stopsSelector)),
+            map(([action, stops]) =>
+                MilesAction.getUnitMapData({
+                    unitMapLocations: stops,
+                })
+            )
+        )
+    );
 
     public fetchUnitStopsOnScroll$ = createEffect(() =>
         this.actions$.pipe(
@@ -189,27 +272,11 @@ export class MilesEffects {
         )
     );
 
-    public loadMilesEffect$ = createEffect(() =>
-        this.actions$.pipe(
-            ofType(
-                MilesAction.milesTabChange,
-                MilesAction.changeFilters,
-                MilesAction.tableSortingChange
-            ),
-            exhaustMap(() =>
-                this.store.select(activeViewModeSelector).pipe(
-                    take(1),
-                    switchMap((activeViewMode) => this.fetchMilesData())
-                )
-            )
-        )
-    );
-
     public loadInitialUnitDetailsOnPageResolver$ = createEffect(() =>
         this.actions$.pipe(
             ofType(MilesAction.getInitalUnitDetailsOnRouteChange),
-            exhaustMap((action) =>
-                this.milesService
+            exhaustMap((action) => {
+                return this.milesService
                     .apiMilesUnitGet(
                         action.unitId,
                         null,
@@ -219,17 +286,22 @@ export class MilesEffects {
                         MilesStoreConstants.STOPS_LIST_RESULTS_PER_PAGE
                     )
                     .pipe(
-                        map((unitResponse) =>
-                            MilesAction.setUnitDetails({
-                                details: unitResponse,
-                            })
+                        mergeMap((unitResponse) =>
+                            from([
+                                MilesAction.setUnitDetails({
+                                    details: unitResponse,
+                                }),
+                                MilesAction.getUnitMapData({
+                                    unitMapLocations: unitResponse.stops.data,
+                                }),
+                            ])
                         ),
                         catchError(() => {
                             this.router.navigate(['tools/miles/list']);
                             return of(MilesAction.getLoadsPayloadError());
                         })
-                    )
-            )
+                    );
+            })
         )
     );
 
@@ -258,10 +330,16 @@ export class MilesEffects {
                                 searchText
                             )
                             .pipe(
-                                map((unitResponse) =>
-                                    MilesAction.setUnitDetails({
-                                        details: unitResponse,
-                                    })
+                                mergeMap((unitResponse) =>
+                                    from([
+                                        MilesAction.setUnitDetails({
+                                            details: unitResponse,
+                                        }),
+                                        MilesAction.getUnitMapData({
+                                            unitMapLocations:
+                                                unitResponse.stops.data,
+                                        }),
+                                    ])
                                 ),
                                 catchError(() =>
                                     of(MilesAction.getLoadsPayloadError())

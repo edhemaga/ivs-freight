@@ -25,6 +25,7 @@ import {
     stopsSelector,
     minimalListFiltersSelector,
     detailsLoadingSelector,
+    milesUnitMapDataSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -39,7 +40,7 @@ import { ITableData } from '@shared/models';
 
 // enums
 import { eMileTabs, eMilesRouting } from '@pages/miles/enums';
-import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
@@ -55,7 +56,7 @@ import {
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { IFilterAction } from 'ca-components';
+import { ICaMapProps, IFilterAction } from 'ca-components';
 import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
 import { IMilesModel, IMilesTabResults } from '@pages/miles/interface';
 
@@ -134,6 +135,10 @@ export class MilesStoreService {
         select(detailsLoadingSelector)
     );
 
+    public unitMapDataSelector$: Observable<ICaMapProps> = this.store.pipe(
+        select(milesUnitMapDataSelector)
+    );
+
     public dispatchStates(states: MilesStateFilterResponse[]) {
         this.store.dispatch({
             type: MilesStoreConstants.SET_STATES,
@@ -183,15 +188,6 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SET_FILTERS,
             filters: FilterHelper.mapFilters(filters, currentFilter),
-        });
-    }
-
-    public dispatchFollowingUnit(
-        getFollowingUnitDirection: ArrowActionsStringEnum
-    ): void {
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
-            getFollowingUnitDirection,
         });
     }
 
@@ -303,5 +299,21 @@ export class MilesStoreService {
         this.router.navigate([
             `/${eMilesRouting.BASE}/${eMilesRouting.MAP}/${unitId}`,
         ]);
+    }
+
+    public dispatchUnitMapData(unitMapLocations: MilesStopItemResponse): void {
+        if (!unitMapLocations) return;
+
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_UNIT_MAP_DATA,
+            unitMapLocations,
+        });
+    }
+
+    public dispatchGetMapStopData(stopId: number): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_MAP_STOP_DATA,
+            stopId,
+        });
     }
 }

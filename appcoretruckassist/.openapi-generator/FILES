@@ -863,6 +863,7 @@ model/pickupDeliveryByStateResponse.ts
 model/pickupDeliveryByStateResponsePagination.ts
 model/pickupDeliveryIntervalResponse.ts
 model/poBoxEntity.ts
+model/possibleLoadStatusResponse.ts
 model/preferredLoadType.ts
 model/previousEmployerAccidentHistoryItemCommand.ts
 model/previousEmployerDocumentsResponse.ts

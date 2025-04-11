@@ -151,3 +151,8 @@ export const detailsLoadingSelector = createSelector(
     selectMilesState,
     (state: IMilesState) => state.isDetailsLoading
 );
+
+export const milesUnitMapDataSelector = createSelector(
+    selectMilesState,
+    (state: IMilesState) => state.unitMapData
+);

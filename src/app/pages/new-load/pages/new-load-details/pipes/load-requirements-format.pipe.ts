@@ -7,7 +7,7 @@ import { EnumValue, LoadRequirementsResponse } from 'appcoretruckassist';
 import { MethodsCalculationsHelper } from '@shared/utils/helpers';
 
 // enums
-import { eUnit } from 'ca-components';
+import { eStringPlaceholder, eUnit } from 'ca-components';
 import { eLoadDetailsGeneral } from '@pages/new-load/enums';
 
 @Pipe({
@@ -37,8 +37,7 @@ export class LoadRequirementsFormatPipe implements PipeTransform {
 
         const weightValue = weight
             ? MethodsCalculationsHelper.convertNumberInThousandSep(weight) +
-              eLoadDetailsGeneral.EMPTY_SPACE_STRING +
-              'lbs' //eUnit.POUNDS
+              `${eStringPlaceholder.WHITESPACE}${eUnit.POUNDS}`
             : null;
 
         const liftGateValue = loadRequirements?.liftgate

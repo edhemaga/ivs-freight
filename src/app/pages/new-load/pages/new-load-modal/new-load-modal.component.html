@@ -1,0 +1,524 @@
+@let isEdit = editData?.isEdit;
+@let isTemplate = editData?.isTemplate;
+@let isLoaded = !!load || dropdownList;
+@let isModalValidToSubmit = loadForm?.valid;
+
+<app-ca-modal
+    [footerTemplate]="footerTemplate"
+    [rightHeaderTemplate]="rightModalContent"
+    [leftHeaderTemplate]="leftModalContent"
+    [modalTitle]="modalTitle"
+    customClass="modal-container-M"
+>
+    @if (isLoaded) {
+        <div class="new-modal" origin>
+            <div class="divider divider--dark divider--small"></div>
+            <form [formGroup]="loadForm">
+                @let firstRowClassName =
+                    isTemplate ? 'd-grid-template-load' : 'd-grid-normal-load';
+
+                <div class="d-grid m-t-26" [ngClass]="firstRowClassName">
+                    <app-ca-tab-switch
+                        [tabs]="tabs"
+                        [type]="'type3-modal-popup'"
+                        (switchClicked)="onTabChange()"
+                    >
+                    </app-ca-tab-switch>
+
+                    @if (isTemplate) {
+                        <ca-input-test
+                            formControlName="name"
+                            [inputConfig]="LoadModalConfig.LOAD_TEMPLATE_CONFIG"
+                        ></ca-input-test>
+                    } @else {
+                        @let templateButtonConfig =
+                            {
+                                isTemplateSelected,
+                                isPopoverOpen,
+                                templateLength: dropdownList.templates.length,
+                            } | templateButtonConfig;
+
+                        <div
+                            class="h-26 w-26 d-flex align-items-center justify-content-center br-2"
+                            ngbTooltip
+                            position="bottom"
+                            [tooltipColor]="templateButtonConfig.tooltipColor"
+                            [tooltipBackground]="
+                                templateButtonConfig.tooltipBackground
+                            "
+                            [mainTooltip]="templateButtonConfig.tooltip"
+                            [ngClass]="templateButtonConfig.class"
+                            (click)="isTemplateSelected && onRemoveTemplate()"
+                        >
+                            <div
+                                #popover="ngbPopover"
+                                container="body"
+                                placement="bottom-start"
+                                autoClose="outside"
+                                [ngbPopover]="
+                                    isTemplateSelected
+                                        ? null
+                                        : templateListPopover
+                                "
+                                (shown)="isPopoverOpen = true"
+                                (hidden)="isPopoverOpen = false"
+                            >
+                                <svg-icon
+                                    class="svg-size-18 d-flex"
+                                    [src]="svgRoutes.SELECT_TEMPLATE"
+                                ></svg-icon>
+                            </div>
+                        </div>
+
+                        <ca-input-dropdown-test
+                            formControlName="dispatcherId"
+                            optionValue="id"
+                            template="load-dispatcher"
+                            label="fullName"
+                            [options]="dropdownList.dispatchers"
+                            [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
+                        ></ca-input-dropdown-test>
+                    }
+
+                    <ca-input-dropdown-test
+                        formControlName="companyId"
+                        optionValue="id"
+                        label="companyName"
+                        [options]="dropdownList.companies"
+                        [inputConfig]="
+                            LoadModalConfig.LOAD_COMPANY_INPUT_CONFIG
+                        "
+                    ></ca-input-dropdown-test>
+                </div>
+
+                <div class="w-full m-t-26">
+                    <ca-input-dropdown-test
+                        formControlName="dispatchId"
+                        optionValue="id"
+                        label="id"
+                        template="load-dispatches-ttd"
+                        [inputConfig]="
+                            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
+                        "
+                        [options]="dropdownList.dispatches"
+                    >
+                    </ca-input-dropdown-test>
+                </div>
+
+                <div class="d-grid d-grid-reference m-t-26">
+                    <ca-input-test
+                        formControlName="referenceNumber"
+                        [inputConfig]="LoadModalConfig.LOAD_REFERENCE_NUMBER"
+                    ></ca-input-test>
+
+                    <ca-input-dropdown-test
+                        formControlName="brokerId"
+                        optionValue="id"
+                        label="businessName"
+                        template="load-broker"
+                        [inputConfig]="LoadModalConfig.LOAD_BROKER_INPUT_CONFIG"
+                        [canAddNew]="true"
+                        [canOpenModal]="true"
+                        [options]="dropdownList.brokers"
+                    >
+                    </ca-input-dropdown-test>
+                </div>
+
+                <div class="d-grid d-grid-contact m-t-26 m-b-14">
+                    <ca-input-dropdown-test
+                        formControlName="brokerContact"
+                        label="name"
+                        optionValue="id"
+                        template="load-broker-contact"
+                        [inputConfig]="
+                            LoadModalConfig.LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG
+                        "
+                        [options]="dropdownList.brokerContacts"
+                    ></ca-input-dropdown-test>
+
+                    <ca-input-dropdown-test
+                        formControlName="generalCommodity"
+                        optionValue="id"
+                        label="name"
+                        [inputConfig]="LoadModalConfig.LOAD_COMMODITY_CONFIG"
+                        [options]="dropdownList.generalCommodities"
+                    ></ca-input-dropdown-test>
+
+                    <ca-input-test
+                        formControlName="weight"
+                        [inputConfig]="LoadModalConfig.LOAD_WEIGHT_CONFIG"
+                    ></ca-input-test>
+                </div>
+                <ng-container formGroupName="loadRequirements">
+                    <app-ca-custom-card
+                        customDividerClass="divider--dark"
+                        cardName="Requirement"
+                        [hasDivider]="true"
+                        [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '18px',
+                            marginBottom: '14px',
+                        }"
+                    >
+                        <div origin>
+                            <div
+                                class="d-grid d-grid-requirement-first-row m-b-28"
+                            >
+                                <ca-input-dropdown-test
+                                    formControlName="truckTypeId"
+                                    optionValue="id"
+                                    label="name"
+                                    [template]="'svgtext-template'"
+                                    [inputConfig]="
+                                        LoadModalConfig.TRUCK_TYPE_CONFIG
+                                    "
+                                    [options]="dropdownList.truckTypes"
+                                ></ca-input-dropdown-test>
+                                <ca-input-dropdown-test
+                                    formControlName="trailerTypeId"
+                                    optionValue="id"
+                                    [template]="'svgtext-template'"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.TRAILER_TYPE_CONFIG
+                                    "
+                                    [options]="dropdownList.trailerTypes"
+                                ></ca-input-dropdown-test>
+                            </div>
+
+                            <div class="d-grid d-grid-requirement-second-row">
+                                <ca-input-dropdown-test
+                                    formControlName="trailerLengthId"
+                                    optionValue="id"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.LOAD_TRAILER_LENGTH_CONFIG
+                                    "
+                                    [options]="dropdownList.trailerLengths"
+                                ></ca-input-dropdown-test>
+
+                                <ca-input-dropdown-test
+                                    formControlName="doorType"
+                                    optionValue="id"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.LOAD_DOOR_TYPE_CONFIG
+                                    "
+                                    [options]="dropdownList.doorTypes"
+                                ></ca-input-dropdown-test>
+
+                                <ca-input-dropdown-test
+                                    formControlName="suspension"
+                                    optionValue="id"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.LOAD_SUSPENSION_CONFIG
+                                    "
+                                    [options]="dropdownList.suspensions"
+                                ></ca-input-dropdown-test>
+
+                                <ca-input-dropdown-test
+                                    formControlName="year"
+                                    optionValue="id"
+                                    label="name"
+                                    [inputConfig]="
+                                        LoadModalConfig.LOAD_YEAR_CONFIG
+                                    "
+                                    [options]="dropdownList.years"
+                                ></ca-input-dropdown-test>
+
+                                <app-ta-checkbox
+                                    formControlName="liftgate"
+                                    name="liftgate"
+                                    customClass="medium"
+                                    [label]="'Lifgate'"
+                                ></app-ta-checkbox>
+                            </div>
+                        </div>
+                    </app-ca-custom-card>
+
+                    <!-- // TODO: Check with Andrej -->
+                    <div class="divider divider--small divider--dark"></div>
+
+                    <!-- // TODO: Leave for last -->
+                    <!-- <app-ta-input-note
+                        formControlName="driverMessage"
+                        [isVisibleNote]="
+                            loadForm.get('driverMessage').value &&
+                            loadForm.get('driverMessage').value !== 'null'
+                        "
+                        [note]="
+                            loadForm.get('driverMessage').value &&
+                            loadForm.get('driverMessage').value !== 'null'
+                                ? loadForm.get('driverMessage').value
+                                : ''
+                        "
+                        [noteLabel]="'Driver Message'"
+                        [placeholder]="'Type something...'"
+                        [isVisibleDivider]="false"
+                        (styledValueEmitter)="
+                            getDriverMessageOrNote($event, 'driverMessage')
+                        "
+                    ></app-ta-input-note> -->
+                </ng-container>
+
+                <app-ca-custom-card
+                    customDividerClass="divider--dark"
+                    cardName="Stops"
+                    [hasDivider]="true"
+                >
+                    <div origin>
+                        <div
+                            class="d-grid d-grid-stops-heading p-x-8 gap-1 mb-1"
+                        >
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold"
+                            >
+                                #
+                            </div>
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold"
+                            >
+                                Shipper • Location
+                            </div>
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold"
+                            >
+                                Date • Time
+                            </div>
+                            <div
+                                class="text-color-muted text-size-11 ta-font-bold text-right"
+                            >
+                                Leg
+                            </div>
+                        </div>
+                        <!-- <app-new-load-modal-stops></app-new-load-modal-stops> -->
+                    </div>
+                </app-ca-custom-card>
+
+                <div class="divider divider--small divider--dark"></div>
+
+                <app-ca-custom-card
+                    customDividerClass="divider--dark"
+                    cardName="Billing"
+                    [hasDivider]="false"
+                    [isCardOpen]="true"
+                    [animationMarginParams]="{
+                        marginTop: '8px',
+                        marginBottom: '14px',
+                    }"
+                >
+                    <div origin>
+                        <ca-input-test
+                            formControlName="baseRate"
+                            [inputConfig]="LoadModalConfig.LOAD_BASE_RATE"
+                        ></ca-input-test>
+                    </div>
+                </app-ca-custom-card>
+
+                <div class="divider divider--small divider--dark"></div>
+
+                <app-ca-custom-card
+                    customDividerClass="divider--dark"
+                    cardName="Document"
+                    [hasDivider]="false"
+                    [animationMarginParams]="{
+                        marginTop: '0',
+                        marginBottom: '0',
+                    }"
+                >
+                    <div origin></div>
+                </app-ca-custom-card>
+
+                <div class="divider divider--small divider--dark"></div>
+
+                <app-ta-input-note
+                    [isVisibleDivider]="false"
+                    formControlName="note"
+                    [isVisibleNote]="
+                        loadForm.get('note').value &&
+                        loadForm.get('note').value !== 'null'
+                    "
+                    [note]="
+                        loadForm.get('note').value &&
+                        loadForm.get('note').value !== 'null'
+                            ? loadForm.get('note').value
+                            : ''
+                    "
+                    (styledValueEmitter)="
+                        onGetDriverMessageOrNote($event, 'note')
+                    "
+                ></app-ta-input-note>
+            </form>
+        </div>
+    }
+
+    <ng-template #rightModalContent>
+        <div
+            class="d-flex align-items-center justify-content-center w-26 h-26 background-hover-bw2 svg-fill-muted svg-hover-black"
+            (click)="onModalAction(eGeneralActions.CLOSE)"
+        >
+            <svg-icon
+                class="svg-size-14"
+                [src]="svgRoutes.CLOSE_ICON"
+            ></svg-icon>
+        </div>
+    </ng-template>
+
+    <ng-template #leftModalContent>
+        <div class="d-flex align-items-center">
+            @if (isEdit && isLoaded) {
+                @let text = isTemplate ? load.name : load.loadNumber;
+                <div
+                    class="background-muted br-2 h-26 p-l-6 p-r-4 text-color-white text-size-14 ta-font-bold align-items-center d-flex"
+                    [class.m-r-6]="!isTemplate"
+                >
+                    {{ text }}
+                </div>
+
+                @if (!isTemplate) {
+                    @let status =
+                        {
+                            name: load?.status.statusString,
+                            id: load?.status.statusValue.id,
+                        };
+                    <app-ca-load-status
+                        height="26"
+                        [isDark]="true"
+                        [isNoStatesColor]="true"
+                        [status]="status"
+                        [fontSize]="14"
+                    >
+                    </app-ca-load-status>
+                }
+            }
+        </div>
+    </ng-template>
+
+    <ng-template #footerTemplate>
+        <div class="p-b-12 p-x-12">
+            <div class="divider divider--dark divider--small"></div>
+
+            <div class="d-flex justify-content-between w-full m-t-12">
+                <div class="d-flex">
+                    @if (isTemplate) {
+                        @if (isEdit) {
+                            <app-ca-modal-button
+                                class="mr-12"
+                                text="Delete"
+                                [size]="eModalButtonSize.SMALL"
+                                (click)="onModalAction(eGeneralActions.DELETE)"
+                                [type]="
+                                    eModalButtonClassType.SECONDARY_NEGATIVE
+                                "
+                            >
+                            </app-ca-modal-button>
+
+                            <app-ca-modal-button
+                                text="Use Template"
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                                (click)="
+                                    onModalAction(
+                                        eGeneralActions.CONVERT_TO_LOAD
+                                    )
+                                "
+                            >
+                            </app-ca-modal-button>
+                        } @else {
+                            <app-ca-modal-button
+                                text="Convert to Load"
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                                (click)="
+                                    onModalAction(
+                                        eGeneralActions.CONVERT_TO_LOAD
+                                    )
+                                "
+                            >
+                            </app-ca-modal-button>
+                        }
+                    } @else {
+                        @if (isEdit) {
+                            <app-ca-modal-button
+                                text="Create Template"
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                                (click)="
+                                    onModalAction(
+                                        eGeneralActions.CREATE_TEMPLATE
+                                    )
+                                "
+                            >
+                            </app-ca-modal-button>
+                        } @else {
+                            <app-ca-modal-button
+                                text="Convert to Template"
+                                [type]="eModalButtonClassType.SECONDARY_NEUTRAL"
+                                (click)="
+                                    onModalAction(
+                                        eGeneralActions.CONVERT_TO_TEMPLATE
+                                    )
+                                "
+                            >
+                            </app-ca-modal-button>
+                        }
+                    }
+                </div>
+
+                <div class="d-flex">
+                    @if (isEdit) {
+                        <app-ca-modal-button
+                            text="Save Changes"
+                            [isValid]="isModalValidToSubmit"
+                            [isSpinnerShown]="
+                                activeAction === eGeneralActions.SAVE
+                            "
+                            [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                            (click)="onModalAction(eGeneralActions.SAVE)"
+                        >
+                        </app-ca-modal-button>
+                    } @else {
+                        <app-ca-modal-button
+                            class="mr-12"
+                            text="Save and Add New"
+                            [isValid]="isModalValidToSubmit"
+                            [isSpinnerShown]="
+                                activeAction ===
+                                eGeneralActions.SAVE_AND_ADD_NEW
+                            "
+                            [type]="eModalButtonClassType.SECONDARY_POSITIVE"
+                            (click)="
+                                onModalAction(eGeneralActions.SAVE_AND_ADD_NEW)
+                            "
+                        >
+                        </app-ca-modal-button>
+
+                        <app-ca-modal-button
+                            text="Save"
+                            [isValid]="isModalValidToSubmit"
+                            [isSpinnerShown]="
+                                activeAction === eGeneralActions.SAVE
+                            "
+                            [type]="eModalButtonClassType.PRIMARY_POSITIVE"
+                            (click)="onModalAction(eGeneralActions.SAVE)"
+                        >
+                        </app-ca-modal-button>
+                    }
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</app-ca-modal>
+
+<ng-template #templateListPopover>
+    <div
+        class="popover-load-template scrollable-element d-flex flex-column gap-1 py-1 px-1 background-black-2 br-4"
+    >
+        @for (template of dropdownList.templates; track template.id) {
+            <div
+                class="background-hover-black h-26 d-flex align-items-center p-x-6 text-color-white c-pointer br-2 text-truncate"
+                (click)="onSelectTemplate(template)"
+            >
+                {{ template.name }}
+            </div>
+        }
+    </div>
+</ng-template>
