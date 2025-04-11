@@ -9,18 +9,14 @@
 >
     <div class="d-flex justify-content-start align-items-center">
         <div class="text-color-black text-size-16 ta-font-extra-bold mx-1">
-            {{ isStatusHistoryDisplayed ? 'Status Log' : 'Comments' }}
+            <ca-toolbar-dropdown
+                [dropdownOptions]="
+                    load | createLoadAdditionalInfoDropdownOptions
+                "
+                (handleDropdownItemSelectEmitter)="onDropdownItemSelect($event)"
+            ></ca-toolbar-dropdown>
         </div>
-        <div
-            class="d-flex align-items-center justify-content-center text-size-11 ta-font-bold text-color-white background-bw6-2 m-x-4 p-x-5 br-60 h-18 min-w-18"
-        >
-            {{
-                isStatusHistoryDisplayed
-                    ? load.statusHistory?.length
-                    : load.commentsCount
-            }}
-        </div>
-        @if (!isStatusHistoryDisplayed && !isSearchActive) {
+        @if (!isSearchActive) {
             <div class="d-flex alignt-items-center mx-1">
                 <div class="d-flex align-items-center h-26">
                     <div class="h-18 w-1 background-light-grey-6"></div>
@@ -54,24 +50,32 @@
         background: backgroundColor,
     }"
 >
-    <app-ta-comments-search
-        [commentsData]="comments | createLoadComment: commentFilter"
-        [isDisplaySearch]="isSearchActive"
-        [isHeaderHidden]="isHeaderHidden"
-        (onActionEmitter)="onCommentAction($event, load.id)"
-        (onSortEmitter)="onSortAction($event, load.id)"
-        (onSearchHighlightEmitter)="onSearchHighlightAction($event)"
-    ></app-ta-comments-search>
-
-    <div class="background-white p-x-6 p-y-6 br-3 w-100">
-        <app-ca-load-status-log
-            [loadStatusHistory]="
-                statusLogSortDirection === eSharedString.DSC
-                    ? statusHistory
-                    : reversedStatusHistory
-            "
-            (onSortChange)="onSortChange($event)"
-        >
-        </app-ca-load-status-log>
-    </div>
+    @switch (displayedSection) {
+        @case (eLoadDetailsGeneral.COMMENTS) {
+            <app-ta-comments-search
+                [commentsData]="comments | createLoadComment: commentFilter"
+                [isDisplaySearch]="isSearchActive"
+                [isHeaderHidden]="isHeaderHidden"
+                (onActionEmitter)="onCommentAction($event, load.id)"
+                (onSortEmitter)="onSortAction($event, load.id)"
+                (onSearchHighlightEmitter)="onSearchHighlightAction($event)"
+            ></app-ta-comments-search>
+        }
+        @case (eLoadDetailsGeneral.STATUS_LOG) {
+            <div class="background-white p-x-6 p-y-6 br-3 w-100">
+                <app-ca-load-status-log
+                    [loadStatusHistory]="
+                        statusLogSortDirection === eSharedString.DSC
+                            ? statusHistory
+                            : reversedStatusHistory
+                    "
+                    (onSortChange)="onSortChange($event)"
+                >
+                </app-ca-load-status-log>
+            </div>
+        }
+        @default {
+            Invalid selection.
+        }
+    }
 </div>

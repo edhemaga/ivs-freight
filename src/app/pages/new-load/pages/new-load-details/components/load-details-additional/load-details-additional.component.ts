@@ -15,15 +15,13 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { TaCommentsSearchComponent } from '@shared/components/ta-comments-search/ta-comments-search.component';
+import {
+    CaLoadStatusLogComponent,
+    CaToolbarDropdownComponent,
+} from 'ca-components';
 
 // Services
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
-
-// Enums
-import { eSharedString } from '@shared/enums';
-
-// Components
-import { CaLoadStatusLogComponent } from 'ca-components';
 
 // Enums
 import {
@@ -31,7 +29,10 @@ import {
     eColor,
     eDateTimeFormat,
     eSortDirection,
+    eSharedString,
 } from '@shared/enums';
+import { eStringPlaceholder } from 'ca-components';
+import { eLoadDetailsGeneral } from '@pages/new-load/enums';
 
 // Models
 import { CommentCompanyUser, CommentData } from '@shared/models';
@@ -49,10 +50,11 @@ import { CommentHelper } from '@pages/new-load/pages/new-load-details/utils';
 
 // pipes
 import { CreateLoadCommentsPipe } from '@shared/pipes';
-import { eStringPlaceholder } from 'ca-components';
+import { CreateLoadAdditionalInfoDropdownOptionsPipe } from '@pages/new-load/pages/new-load-details/pipes';
 
 // assets
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { iDropdownItem } from 'ca-components/lib/components/ca-toolbar-dropdown/interfaces';
 
 @Component({
     selector: 'app-load-details-additional',
@@ -65,10 +67,12 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         AngularSvgIconModule,
         NgbModule,
         // components
-        CaLoadStatusLogComponent,
         TaCommentsSearchComponent,
+        CaLoadStatusLogComponent,
+        CaToolbarDropdownComponent,
         // pipes
         CreateLoadCommentsPipe,
+        CreateLoadAdditionalInfoDropdownOptionsPipe,
     ],
 })
 export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
@@ -85,12 +89,17 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
     public companyUser: SignInResponse;
 
     // boolean flags
-    public isStatusHistoryDisplayed: boolean = false;
     public isSearchActive: boolean = false;
+
+    // TODO mozda ovo preko nekog id-a odraditi
+    public displayedSection:
+        | eLoadDetailsGeneral.COMMENTS
+        | eLoadDetailsGeneral.STATUS_LOG = eLoadDetailsGeneral.COMMENTS;
 
     // enums
     public eColor = eColor;
     public eSharedString = eSharedString;
+    public eLoadDetailsGeneral = eLoadDetailsGeneral;
 
     // assets
     public sharedSvgRoutes = SharedSvgRoutes;
@@ -102,6 +111,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
         public loadStoreService: LoadStoreService,
         public commentService: CommentService
     ) {}
+
     public ngOnInit(): void {
         this.getCompanyUser();
     }
@@ -205,6 +215,16 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
             },
         };
         this.loadStoreService.dispatchUpdateComment(updatedComment);
+    }
+
+    public onDropdownItemSelect(event: iDropdownItem): void {
+        if (
+            event.title !== eLoadDetailsGeneral.COMMENTS &&
+            event.title !== eLoadDetailsGeneral.STATUS_LOG
+        )
+            return;
+
+        this.displayedSection = event.title;
     }
 
     ngOnDestroy(): void {
