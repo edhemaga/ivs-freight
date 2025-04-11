@@ -256,8 +256,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             });
     }
 
-    public trackByIdentity = (index: number): number => index;
-
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
 
