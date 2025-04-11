@@ -42,6 +42,7 @@ import {
     SignInResponse,
 } from 'appcoretruckassist';
 import { ICreateCommentMetadata } from '@pages/load/pages/load-table/models';
+import { iDropdownItem } from 'ca-components';
 
 // helpers
 import moment from 'moment';
@@ -54,7 +55,6 @@ import { CreateLoadAdditionalInfoDropdownOptionsPipe } from '@pages/new-load/pag
 
 // assets
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { iDropdownItem } from 'ca-components/lib/components/ca-toolbar-dropdown/interfaces';
 
 @Component({
     selector: 'app-load-details-additional',
