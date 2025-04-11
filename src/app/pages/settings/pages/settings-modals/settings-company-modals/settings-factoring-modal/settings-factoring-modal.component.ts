@@ -154,7 +154,7 @@ export class SettingsFactoringModalComponent
 
     ngOnInit(): void {
         this.createForm();
-        if (this.editData.type === eGeneralActions.EDIT) {
+        if (this.editData.type === eGeneralActions.EDIT_LOWERCASE) {
             this.isCardAnimationDisabled = true;
             this.editFactoringCompany(this.editData.company);
         } else {

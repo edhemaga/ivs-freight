@@ -1,0 +1,143 @@
+<form [formGroup]="stopsForm">
+    <div class="d-flex gap-1 flex-column" formArrayName="stops">
+        @for (stop of stops.controls; track $index) {
+            <app-ca-custom-card
+                [hasDivider]="false"
+                [hasArrow]="false"
+                [headerLeftSideTemplate]="headerLeftSideTemplate"
+                [animationMarginParams]="{
+                    marginTop: '0',
+                    marginBottom: '0',
+                }"
+            >
+                <div origin [formGroupName]="i" class="w-612">
+                    <div class="d-flex m-t-26">
+                        <ca-input-dropdown-test
+                            formControlName="shipperId"
+                            [label]="'name'"
+                            [optionValue]="'id'"
+                            [template]="'load-shipper'"
+                            [inputConfig]="
+                                LoadModalConfig.LOAD_PICKUP_SHIPPER_INPUT_CONFIG
+                            "
+                            [canAddNew]="true"
+                            [canOpenModal]="true"
+                            [options]="[]"
+                        >
+                        </ca-input-dropdown-test>
+                    </div>
+
+                    <div class="d-grid d-grid-working-time m-t-26">
+                        <app-ca-tab-switch
+                            [type]="'type4-modal-popup'"
+                            [tabs]="tabs"
+                        >
+                        </app-ca-tab-switch>
+
+                        <ca-input-dropdown-test
+                            formControlName="brokerContactId"
+                            [label]="'name'"
+                            [optionValue]="'id'"
+                            [template]="'load-broker-contact'"
+                            [inputConfig]="
+                                LoadModalConfig.LOAD_BROKER_CONTACTS_INPUT_CONFIG
+                            "
+                            [options]="[]"
+                        >
+                        </ca-input-dropdown-test>
+                    </div>
+
+                    <div class="d-grid d-grid-time-picker m-t-26">
+                        <ca-input-datetime-picker
+                            formControlName="dateFrom"
+                            [inputConfig]="{
+                                name: 'datepicker',
+                                type: 'text',
+                                isDropdown: true,
+                                label: 'Date',
+                                placeholderIcon: 'date',
+                                isRequired: true,
+                                customClass: 'datetimeclass',
+                            }"
+                        ></ca-input-datetime-picker>
+
+                        <div class="w-26 h-26 d-flex background-muted"></div>
+
+                        <ca-input-datetime-picker
+                            formControlName="timeFrom"
+                            [inputConfig]="{
+                                name: 'timepicker',
+                                type: 'text',
+                                label: 'From',
+                                placeholderIcon: 'time',
+                                isDropdown: true,
+                                isRequired: true,
+                                customClass: 'datetimeclass',
+                            }"
+                        ></ca-input-datetime-picker>
+
+                        <ca-input-datetime-picker
+                            formControlName="timeTo"
+                            [inputConfig]="{
+                                name: 'timepicker',
+                                type: 'text',
+                                label: 'To',
+                                placeholderIcon: 'time',
+                                isDropdown: true,
+                                isRequired: true,
+                                customClass: 'datetimeclass',
+                            }"
+                        ></ca-input-datetime-picker>
+                    </div>
+                </div>
+            </app-ca-custom-card>
+        }
+    </div>
+
+    <ng-template #headerLeftSideTemplate>
+        <div class="d-flex flex-column gap-1">
+            <div
+                class="d-grid h-42 stops-container gap-1 p-l-8 p-r-6 align-items-center background-blue-16"
+            >
+                <div
+                    class="background-green h-26 w-26 br-2 text-color-white ta-font-bold text-size-14 d-flex align-items-center justify-content-center"
+                >
+                    1
+                </div>
+                <div class="d-flex flex-column">
+                    <span class="text-color-black ta-font-bold text-size-11"
+                        >CREATIVE MEDIA ART</span
+                    >
+                    <span class="text-color-bw6-2 ta-font-medium text-size-11"
+                        >1530 County Road, Rush Springs, OK 73082, US</span
+                    >
+                </div>
+                <div class="d-flex flex-column">
+                    <span
+                        class="text-color-black ta-font-semi-bold text-size-11"
+                        >02/12/25</span
+                    >
+                    <span class="text-color-bw6-2 ta-font-medium text-size-11"
+                        >10:30 AM - 12:30 PM</span
+                    >
+                </div>
+                <div class="d-flex flex-column text-right">
+                    <span class="text-color-black ta-font-medium text-size-11"
+                        >0.0 mi</span
+                    >
+                    <span class="text-color-bw6-2 ta-font-medium text-size-11"
+                        >0m</span
+                    >
+                </div>
+            </div>
+        </div>
+    </ng-template>
+</form>
+
+<!-- for colors use pipe 
+      stop
+                                            | stopStatus
+                                                : isPickup
+                                                : isDelivery
+                                                : isDeadhead
+-->

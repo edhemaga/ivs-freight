@@ -445,7 +445,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             { size: 'small' },
             {
                 ...this.activeTableData,
-                type: eGeneralActions.EDIT,
+                type: eGeneralActions.EDIT_LOWERCASE,
             }
         );
     }
@@ -719,7 +719,7 @@ export class TaMapToolbarComponent implements OnInit, OnChanges, OnDestroy {
             {
                 ...route,
                 mapId: this.activeTableData.id,
-                type: eGeneralActions.EDIT,
+                type: eGeneralActions.EDIT_LOWERCASE,
             }
         );
     }

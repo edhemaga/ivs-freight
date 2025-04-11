@@ -20,7 +20,6 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
-import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
 
 @Component({
     selector: 'app-miles-table',
@@ -36,7 +35,6 @@ import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
 
         // pipes
         ThousandSeparatorPipe,
-        TableColumnClassPipe,
     ],
 })
 export class MilesTableComponent {
@@ -59,5 +57,9 @@ export class MilesTableComponent {
 
     public onColumnResize(resizeAction: ITableResizeAction): void {
         this.milesStoreService.dispatchResizeColumn(resizeAction);
+    }
+
+    public onRemoveColumn(columnKey: string): void {
+        this.milesStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
     }
 }

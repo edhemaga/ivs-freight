@@ -170,7 +170,7 @@ export class DashboardByStateComponent implements OnInit, OnDestroy {
         );
     }
 
-    public handleSearchValue(searchValue: string): void {
+    public onHandleSearchValue(searchValue: string): void {
         if (searchValue) {
             this.searchValue = searchValue;
 

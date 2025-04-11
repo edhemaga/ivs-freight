@@ -17,10 +17,10 @@ export class SettingsLocationConfig {
         actions: [
             {
                 title: 'Edit',
-                name: eGeneralActions.EDIT,
+                name: eGeneralActions.EDIT_LOWERCASE,
                 svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                 show: true,
-                iconName: eGeneralActions.EDIT,
+                iconName: eGeneralActions.EDIT_LOWERCASE,
             },
             {
                 title: 'border',
@@ -60,7 +60,7 @@ export class SettingsLocationConfig {
                 danger: true,
                 show: true,
                 redIcon: true,
-                iconName: eGeneralActions.DELETE,
+                iconName: eGeneralActions.DELETE_LOWERCASE,
             },
         ],
         export: true,

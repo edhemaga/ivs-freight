@@ -4,7 +4,7 @@
         focused: isInputFocused,
         confirmed: isValueConfirmed,
         'details-layout': isDetailsSearchLayout,
-        'details-layout-valid': isDetailsSearchLayoutValueValid
+        'details-layout-valid': isDetailsSearchLayoutValueValid,
     }"
 >
     <!-- Icon -->
@@ -29,7 +29,7 @@
             type="text"
             spellcheck="false"
             [placeholder]="placeHolderText ? 'Find ' + placeHolderText : 'Find'"
-            (keyup)="handleSearchValue($event); handleEnterKeyUp($event)"
+            (keyup)="onHandleSearchValue($event); handleEnterKeyUp($event)"
             (focus)="handleSearchFocus(true)"
             (blur)="handleSearchFocus(false)"
         />
