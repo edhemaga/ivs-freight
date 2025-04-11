@@ -30,3 +30,13 @@
         grid-template-columns: 26px 330px 140px 98px;
     }
 }
+
+.popover-load-template {
+    width: fit-content;
+    max-height: 184px;
+    overflow-y: auto;
+    max-width: 200px;
+    position: relative;
+    left: -8px;
+    overflow-x: hidden;
+}

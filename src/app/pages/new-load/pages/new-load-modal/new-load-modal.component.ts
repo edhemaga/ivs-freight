@@ -1,7 +1,11 @@
 // Modules
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    NgbActiveModal,
+    NgbModule,
+    NgbPopover,
+} from '@ng-bootstrap/ng-bootstrap';
 import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 
 // rxjs
@@ -9,6 +13,7 @@ import { catchError, forkJoin, Observable, of } from 'rxjs';
 
 // Enums
 import { eGeneralActions } from '@shared/enums';
+import { eLoadModalActions } from '@pages/new-load/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -25,6 +30,7 @@ import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/help
 
 // Models
 import {
+    EnumValue,
     LoadModalResponse,
     LoadResponse,
     LoadTemplateResponseCreateGenericWithUploadsResponse,
@@ -33,6 +39,9 @@ import { Tabs } from '@shared/models';
 
 // Config
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
+
+// Pipes
+import { TemplateButtonConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/template-button-config.pipe';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -50,6 +59,7 @@ import {
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -59,6 +69,7 @@ import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal
     imports: [
         CommonModule,
         ReactiveFormsModule,
+        NgbModule,
 
         // Components
         CaModalComponent,
@@ -71,10 +82,17 @@ import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal
         InputTestComponent,
         TaCheckboxComponent,
         TaInputNoteComponent,
+        TaAppTooltipV2Component,
         NewLoadModalStopsComponent,
+
+        // Pipes
+        TemplateButtonConfigPipe,
     ],
 })
 export class NewLoadModalComponent implements OnInit {
+    @ViewChild('popover') popover!: NgbPopover;
+
+    // Inputs
     @Input() editData: ILoadModal;
 
     public isModalValidToSubmit = false;
@@ -85,8 +103,12 @@ export class NewLoadModalComponent implements OnInit {
     // Main modal title
     public modalTitle: string;
 
+    // If user preselect template we need to change template popover
+    public isTemplateSelected: boolean;
+    public isPopoverOpen: boolean = false;
     // Show static data, such as status, load number
     public load: LoadResponse;
+    // Show dropdown list options
     public dropdownList: LoadModalResponse;
     public tabs: Tabs[] = LoadModalHelper.getLoadTypeTabs();
 
@@ -94,6 +116,7 @@ export class NewLoadModalComponent implements OnInit {
     public eModalButtonClassType = eModalButtonClassType;
     public eModalButtonSize = eModalButtonSize;
     public eGeneralActions = eGeneralActions;
+    public eLoadModalActions = eLoadModalActions;
 
     // Icon routes
     public svgRoutes = SharedSvgRoutes;
@@ -158,12 +181,22 @@ export class NewLoadModalComponent implements OnInit {
     }
 
     private onLoadConvert(action: eGeneralActions): void {
+        // Reset tooltip template button styles
+        this.isTemplateSelected = false;
+
+        // Switch view
         const isTemplate = action === this.eGeneralActions.CONVERT_TO_TEMPLATE;
+
+        const isTemplateConvertedToLoad =
+            action === this.eGeneralActions.CONVERT_TO_LOAD;
 
         this.editData = {
             isEdit: false,
             id: null,
             isTemplate,
+            type: isTemplateConvertedToLoad
+                ? eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE
+                : null,
         };
 
         LoadModalHelper.updateFormValidatorsForTemplate(
@@ -177,11 +210,29 @@ export class NewLoadModalComponent implements OnInit {
     private setupInitalData(): void {
         const staticData$ = this.loadService.apiGetLoadModal();
 
-        if (this.editData.isEdit) {
+        if (this.editData.isEdit || !!this.editData.type) {
             const load$ = this.loadService.getLoadById(
                 this.editData.id,
                 this.editData.isTemplate
             );
+
+            // Preselect button tooltip
+            this.isTemplateSelected =
+                this.editData.type ===
+                eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE;
+
+            // If we have load type that means we are converting load to template or vice versa
+            if (
+                this.editData.type ===
+                eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE
+            ) {
+                this.editData = {
+                    ...this.editData,
+                    id: null,
+                    isTemplate: false,
+                    isEdit: false,
+                };
+            }
 
             forkJoin([staticData$, load$]).subscribe(([dropdownList, load]) => {
                 this.dropdownList = dropdownList;
@@ -193,6 +244,7 @@ export class NewLoadModalComponent implements OnInit {
                 );
 
                 this.loadForm = LoadModalHelper.createForm(
+                    this.editData.isEdit,
                     load,
                     load.loadRequirements,
                     this.editData.isTemplate
@@ -201,6 +253,7 @@ export class NewLoadModalComponent implements OnInit {
         } else {
             staticData$.subscribe((dropdownList) => {
                 this.loadForm = LoadModalHelper.createForm(
+                    false,
                     null,
                     null,
                     this.editData.isTemplate
@@ -216,6 +269,34 @@ export class NewLoadModalComponent implements OnInit {
     }
 
     public onTabChange(): void {}
+
+    public onRemoveTemplate(): void {
+        this.isTemplateSelected = false;
+    }
+
+    public onSelectTemplate(template: EnumValue): void {
+        this.isTemplateSelected = true;
+
+        this.editData = {
+            isTemplate: false,
+            isEdit: false,
+            id: template.id,
+        };
+
+        const loadTemplate$ = this.loadService.getLoadById(template.id, true);
+
+        loadTemplate$.subscribe((loadTemplate) => {
+            this.modalTitle = LoadModalHelper.generateTitle(this.editData);
+            const templateForm = LoadModalHelper.createForm(
+                false,
+                loadTemplate,
+                loadTemplate.loadRequirements,
+                false
+            );
+
+            this.loadForm.patchValue(templateForm.value);
+        });
+    }
 
     public onModalAction(action: eGeneralActions): void {
         switch (action) {

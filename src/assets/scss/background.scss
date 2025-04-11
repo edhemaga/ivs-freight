@@ -142,12 +142,22 @@
             }
         }
 
+        &-red {
+            &-15 {
+                @include hover($ta-red-15);
+            }
+        }
+
         &-bw2 {
             @include hover($bw2);
         }
 
         &-light-grey {
             @include hover($ta-light-grey);
+        }
+
+        &-bw-9 {
+            background-color: $bw-9;
         }
     }
 }
