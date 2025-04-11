@@ -947,20 +947,12 @@ export class ShipperModalComponent
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : res.shippingFrom
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.shippingFrom
-                                    )
-                                  : null,
+                                : res.shippingFrom,
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : res.shippingTo
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.shippingTo
-                                    )
-                                  : null,
+                                : res.shippingTo,
                         note: res.note,
                         contacts: this.mapContacts(res.shipperContacts, true),
                         addressUnit: res?.address?.addressUnit,
