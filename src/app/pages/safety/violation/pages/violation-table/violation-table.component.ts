@@ -131,15 +131,15 @@ export class ViolationTableComponent
                     title: 'Edit',
                     name: 'edit-violation',
                     class: 'regular-text',
-                    contentType: eGeneralActions.EDIT,
+                    contentType: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'Delete',
-                    name: eGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE_LOWERCASE,
                     type: 'violations',
                     text: 'Are you sure you want to delete violation?',
                     class: 'delete-text',
-                    contentType: eGeneralActions.DELETE,
+                    contentType: eGeneralActions.DELETE_LOWERCASE,
                 },
             ],
         };
@@ -323,7 +323,7 @@ export class ViolationTableComponent
                     { size: 'large-xl' },
                     {
                         id: event.id,
-                        type: eGeneralActions.EDIT,
+                        type: eGeneralActions.EDIT_LOWERCASE,
                         data: event.data,
                     }
                 );

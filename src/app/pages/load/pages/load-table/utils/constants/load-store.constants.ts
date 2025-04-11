@@ -103,6 +103,14 @@ export class LoadStoreConstants {
     static ACTION_CREATE_COMMENT_SUCCESS = `${this.COMPONENT_NAME_KEY} Create Comment Success`;
     static ACTION_CREATE_COMMENT_ERROR = `${this.COMPONENT_NAME_KEY} Create Comment Error`;
 
+    static ACTION_UPDATE_COMMENT = `${this.COMPONENT_NAME_KEY} Update Comment`;
+    static ACTION_UPDATE_COMMENT_SUCCESS = `${this.COMPONENT_NAME_KEY} Update Comment Success`;
+    static ACTION_UPDATE_COMMENT_ERROR = `${this.COMPONENT_NAME_KEY} Update Comment Error`;
+
+    static ACTION_SORT_COMMENTS = `${this.COMPONENT_NAME_KEY} Sort Comments`;
+    static ACTION_SORT_COMMENTS_SUCCESS = `${this.COMPONENT_NAME_KEY} Sort Comments Success`;
+    static ACTION_SORT_COMMENTS_ERROR = `${this.COMPONENT_NAME_KEY} Sort Comments Error`;
+
     static ACTION_UPDATE_LOAD = `${this.COMPONENT_NAME_KEY} Update Load`;
     static ACTION_UPDATE_LOAD_SUCCESS = `${this.COMPONENT_NAME_KEY} Update Load Success`;
     static ACTION_UPDATE_LOAD_ERROR = `${this.COMPONENT_NAME_KEY} Update Load Error`;
@@ -119,9 +127,9 @@ export class LoadStoreConstants {
     static ACTION_UPDATE_LOAD_AND_REVERT_STATUS_SUCCESS = `${this.COMPONENT_NAME_KEY} Update Load and Revert Status Success`;
     static ACTION_UPDATE_LOAD_AND_REVERT_STATUS_ERROR = `${this.COMPONENT_NAME_KEY} Update Load and Revert Status Error`;
 
-    static ACTION_DELETE_COMMENT_BY_ID = `${this.COMPONENT_NAME_KEY} Delete Comment By Id`;
-    static ACTION_DELETE_COMMENT_BY_ID_SUCCESS = `${this.COMPONENT_NAME_KEY} Delete Comment By Id Success`;
-    static ACTION_DELETE_COMMENT_BY_ID_ERROR = `${this.COMPONENT_NAME_KEY} Delete Comment By Id Error`;
+    static ACTION_DELETE_COMMENT_BY_ID = `${this.COMPONENT_NAME_KEY} Delete Load Comment By Id`;
+    static ACTION_DELETE_COMMENT_BY_ID_SUCCESS = `${this.COMPONENT_NAME_KEY} Delete Load Comment By Id Success`;
+    static ACTION_DELETE_COMMENT_BY_ID_ERROR = `${this.COMPONENT_NAME_KEY} Delete Load Comment By Id Error`;
 
     static ACTION_DELETE_LOAD_TEMPLATE_BY_ID = `${this.COMPONENT_NAME_KEY} Delete Load Template By Id`;
     static ACTION_DELETE_LOAD_TEMPLATE_BY_ID_SUCCESS = `${this.COMPONENT_NAME_KEY} Delete Load Template By Id Success`;

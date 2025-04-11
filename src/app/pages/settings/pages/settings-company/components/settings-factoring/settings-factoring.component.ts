@@ -72,7 +72,7 @@ export class SettingsFactoringComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case eGeneralActions.DELETE:
+                        case eGeneralActions.DELETE_LOWERCASE:
                             if (res.template === 'factoring') {
                                 this.deleteFactoringByCompanyId(res.id);
                             }
@@ -101,7 +101,7 @@ export class SettingsFactoringComponent
             {
                 id: this.factoringData.id,
                 template: 'factoring',
-                type: eGeneralActions.DELETE,
+                type: eGeneralActions.DELETE_LOWERCASE,
                 image: false,
             }
         );

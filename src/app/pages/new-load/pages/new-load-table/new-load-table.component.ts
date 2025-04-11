@@ -20,6 +20,7 @@ import {
     CaLoadStatusComponent,
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
 
 // Pipes
 import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
@@ -37,6 +38,7 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
         CaProfileImageComponent,
         CaCheckboxComponent,
         CaLoadStatusComponent,
+        NewLoadModalStopsComponent,
 
         // Pipes
         NameInitialsPipe,
@@ -57,5 +59,13 @@ export class NewLoadTableComponent {
 
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
+    }
+
+    public onOpenModal(id: number, isTemplate: boolean): void {
+        this.loadStoreService.onOpenModal({
+            id,
+            isTemplate,
+            isEdit: true,
+        });
     }
 }

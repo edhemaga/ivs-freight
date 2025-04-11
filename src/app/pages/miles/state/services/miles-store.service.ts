@@ -18,6 +18,7 @@ import {
     toolbarDropdownMenuOptionsSelector,
     tabResultsSelector,
     cardFlipViewModeSelector,
+    milesUnitMapDataSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
@@ -25,6 +26,7 @@ import {
     MilesByUnitListResponse,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
+    MilesStopItemResponsePagination,
 } from 'appcoretruckassist';
 import { ITableData } from '@shared/models';
 
@@ -46,7 +48,7 @@ import {
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { IFilterAction } from 'ca-components';
+import { ICaMapProps, IFilterAction } from 'ca-components';
 import { IStateFilters } from '@shared/interfaces';
 import {
     IMilesDetailsFilters,
@@ -103,6 +105,10 @@ export class MilesStoreService {
 
     public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
         select(cardFlipViewModeSelector)
+    );
+
+    public unitMapDataSelector$: Observable<ICaMapProps> = this.store.pipe(
+        select(milesUnitMapDataSelector)
     );
 
     public dispatchStates(states: MilesStateFilterResponse[]) {
@@ -241,6 +247,24 @@ export class MilesStoreService {
     public getNewPage(): void {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
+        });
+    }
+
+    public dispatchUnitMapData(
+        unitMapLocations: MilesStopItemResponsePagination
+    ): void {
+        if (!unitMapLocations) return;
+
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_UNIT_MAP_DATA,
+            unitMapLocations,
+        });
+    }
+
+    public dispatchGetMapStopData(stopId: number): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_MAP_STOP_DATA,
+            stopId,
         });
     }
 }

@@ -52,21 +52,11 @@ export class StoreFunctionsHelper {
         column: ITableColumn,
         columns: ITableColumn[]
     ): ITableColumn[] {
-        return columns.map((col) => {
-            if (col.key === column.key) {
-                // Use left as pinned side
-                return { ...col, pinned: col.pinned ? null : 'left' };
-            }
-            if (col.columns && col.columns.length) {
-                // Check all sub group column
-                const updatedColumns = this.togglePinned(column, col.columns);
-                return {
-                    ...col,
-                    columns: updatedColumns,
-                };
-            }
-            return col;
-        });
+        return columns.map((col) =>
+            col.key === column.key
+                ? { ...col, pinned: col.pinned ? null : 'left' }
+                : col
+        );
     }
 
     static toggleSort(

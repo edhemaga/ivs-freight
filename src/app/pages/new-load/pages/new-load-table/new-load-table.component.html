@@ -10,6 +10,7 @@
         [columns]="store.columns"
         [rows]="store.viewData"
         [templates]="{
+            select,
             loadNumber,
             dispatcher,
             tableAssignedUnitTruck,
@@ -18,6 +19,11 @@
             loadStatus,
         }"
     >
+        <!-- TODO: For testing load modal only !! Will be removed later !! -->
+        <ng-template let-data="data" #select>
+            <div (click)="onOpenModal(data.id, !store.selectedTab)">EDIT</div>
+        </ng-template>
+
         <ng-template let-data="data" #loadNumber>
             <span
                 class="ta-font-bold text-size-14 text-color-black c-pointer text-hover-blue-15"
@@ -78,3 +84,4 @@
         </ng-template>
     </app-new-table>
 }
+<!-- <app-new-load-modal-stops></app-new-load-modal-stops> -->

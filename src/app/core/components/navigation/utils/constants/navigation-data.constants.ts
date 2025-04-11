@@ -23,6 +23,7 @@ export class NavigationDataConstants {
             image: 'ic_dashboard.svg',
             route: '/dashboard',
             isRouteActive: false,
+            qaId: 'navbar_dashboard',
         },
         {
             id: 2,
@@ -31,6 +32,7 @@ export class NavigationDataConstants {
             route: '/dispatcher',
             construction: false,
             isRouteActive: true,
+            qaId: 'navbar_dispatch_board',
         },
         {
             id: 3,
@@ -39,66 +41,79 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
+            qaId: 'navbar_list',
             route: [
                 {
                     name: 'Load',
                     route: '/list/load',
+                    qaId: 'navbar_list_load',
                     activeRouteFlegId: 3, // for active sub-route to know which sub-route list is active
                 },
                 {
                     name: 'Customer',
                     route: '/list/customer',
+                    qaId: 'navbar_list_customer',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'Driver',
                     route: '/list/driver',
+                    qaId: 'navbar_list_driver',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'Truck',
                     route: '/list/truck',
+                    qaId: 'navbar_list_truck',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'Trailer',
                     route: '/list/trailer',
+                    qaId: 'navbar_list_trailer',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'Repair',
                     route: '/list/repair',
+                    qaId: 'navbar_list_repair',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'PM',
                     route: '/list/pm',
+                    qaId: 'navbar_list_pm',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'Fuel',
                     route: '/list/fuel',
+                    qaId: 'navbar_list_fuel',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'Owner',
                     route: '/list/owner',
+                    qaId: 'navbar_list_owner',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'Rentor',
                     route: '/list/rentor',
+                    qaId: 'navbar_list_rentor',
                     activeRouteFlegId: 3,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Account',
                     route: '/list/account',
+                    qaId: 'navbar_list_account',
                     activeRouteFlegId: 3,
                 },
                 {
                     name: 'Contact',
                     route: '/list/contact',
+                    qaId: 'navbar_list_contact',
                     activeRouteFlegId: 3,
                 },
             ],
@@ -110,27 +125,32 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
+            qaId: 'navbar_accounting',
             route: [
                 {
                     name: 'Payroll',
                     route: '/accounting/payroll',
+                    qaId: 'navbar_account_payroll',
                     activeRouteFlegId: 4,
                 },
                 {
                     name: 'IFTA',
                     route: '/accounting/ifta',
+                    qaId: 'navbar_account_ifta',
                     activeRouteFlegId: 4,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Ledger',
                     route: '/accounting/ledger',
+                    qaId: 'navbar_account_ledger',
                     activeRouteFlegId: 4,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Tax',
                     route: '/accounting/tax',
+                    qaId: 'navbar_account_tax',
                     activeRouteFlegId: 4,
                     construction: environment.staging || environment.production,
                 },
@@ -144,40 +164,47 @@ export class NavigationDataConstants {
             isRouteActive: false,
             construction: environment.staging || environment.production,
             isSubrouteActive: false,
+            qaId: 'navbar_safety',
             route: [
                 {
                     name: 'Violation',
                     route: '/safety/violation',
+                    qaId: 'navbar_safety_violation',
                     activeRouteFlegId: 5,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Accident',
                     route: '/safety/accident',
+                    qaId: 'navbar_safety_accident',
                     activeRouteFlegId: 5,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Log',
                     route: '/safety/log',
+                    qaId: 'navbar_safety_log',
                     activeRouteFlegId: 5,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Scheduled Ins.',
                     route: '/safety/scheduled-insurance',
+                    qaId: 'navbar_safety_scheduled-insurance',
                     activeRouteFlegId: 5,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'MVR',
                     route: '/safety/mvr',
+                    qaId: 'navbar_safety_mvr',
                     activeRouteFlegId: 5,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Test',
                     route: '/safety/test',
+                    qaId: 'navbar_safety_test',
                     activeRouteFlegId: 5,
                     construction: environment.staging || environment.production,
                 },
@@ -191,52 +218,61 @@ export class NavigationDataConstants {
             isRouteActive: false,
             isSubrouteActive: false,
             construction: environment.staging || environment.production,
+            qaId: 'navbar_tools',
             route: [
                 {
                     name: 'Miles',
                     route: '/tools/miles',
+                    qaId: 'navbar_tools_miles',
                     activeRouteFlegId: 6,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Calendar',
                     route: '/tools/calendar',
+                    qaId: 'navbar_tools_calendar',
                     activeRouteFlegId: 6,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'To-Do',
                     route: '/tools/todo',
+                    qaId: 'navbar_tools_todo',
                     activeRouteFlegId: 6,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: '1099',
                     route: '/tools/1099',
+                    qaId: 'navbar_tools_1099',
                     activeRouteFlegId: 6,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: '2290',
                     route: '/tools/2290',
+                    qaId: 'navbar_tools_2290',
                     activeRouteFlegId: 6,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Factoring',
                     route: '/tools/factoring',
+                    qaId: 'navbar_tools_factoring',
                     activeRouteFlegId: 6,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Fax',
                     route: '/tools/fax',
+                    qaId: 'navbar_tools_fax',
                     activeRouteFlegId: 6,
                     construction: environment.staging || environment.production,
                 },
                 {
                     name: 'SMS',
                     route: '/tools/sms',
+                    qaId: 'navbar_tools_sms',
                     activeRouteFlegId: 6,
                     construction: environment.staging || environment.production,
                 },
@@ -249,6 +285,7 @@ export class NavigationDataConstants {
             route: '/routing',
             isRouteActive: false,
             construction: environment.staging || environment.production,
+            qaId: 'navbar_routing',
         },
         {
             id: 8,
@@ -257,6 +294,7 @@ export class NavigationDataConstants {
             route: 'report',
             isRouteActive: false,
             construction: environment.staging || environment.production,
+            qaId: 'navbar_report',
         },
         {
             id: 9,
@@ -265,6 +303,7 @@ export class NavigationDataConstants {
             route: 'statistic' /* /statistic/load -> Bilo je pre. Pravi problem load tabeli, nakon reloada, pokusava da vodi ka ovoj ruti, posto ne postoji prebaci se na dashboard */,
             isRouteActive: false,
             construction: environment.staging || environment.production,
+            qaId: 'navbar_statistic',
         },
         {
             id: 10,
@@ -274,6 +313,7 @@ export class NavigationDataConstants {
             isRouteActive: true,
             messages: 5,
             construction: false,
+            qaId: 'navbar_chat',
         },
         {
             id: 11,
@@ -282,6 +322,7 @@ export class NavigationDataConstants {
             route: '/telematic',
             isRouteActive: false,
             construction: environment.staging || environment.production,
+            qaId: 'navbar_telematics',
         },
         {
             id: 12,
@@ -290,6 +331,7 @@ export class NavigationDataConstants {
             route: 'places',
             isRouteActive: false,
             construction: environment.staging || environment.production,
+            qaId: 'navbar_places',
         },
         {
             id: 13,
@@ -299,6 +341,7 @@ export class NavigationDataConstants {
             isRouteActive: false,
             files: 83,
             construction: environment.staging || environment.production,
+            qaId: 'navbar_file_manager',
         },
         {
             id: 34,
@@ -307,24 +350,28 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
+            qaId: 'navbar_company',
             route: [
                 {
                     name: 'Settings',
                     image: 'ic_settings.svg',
                     route: '/company/settings',
                     activeRouteFlegId: 34,
+                    qaId: 'navbar_company_settings',
                 },
                 {
                     name: 'Location',
                     image: 'ic_location.svg',
                     route: '/company/location',
                     activeRouteFlegId: 34,
+                    qaId: 'navbar_company_location',
                 },
                 {
                     name: 'Document',
                     image: 'ic_document.svg',
                     route: '/company/document',
                     activeRouteFlegId: 34,
+                    qaId: 'navbar_company_document',
                 },
                 {
                     name: 'User',
@@ -332,6 +379,7 @@ export class NavigationDataConstants {
                     route: '/company/user',
                     construction: false,
                     activeRouteFlegId: 34,
+                    qaId: 'navbar_company_user',
                 },
                 {
                     name: 'Custom Agreement',
@@ -339,6 +387,7 @@ export class NavigationDataConstants {
                     route: '/custom-agreement',
                     construction: environment.staging || environment.production,
                     activeRouteFlegId: 34,
+                    qaId: 'navbar_company_custom-agreement',
                 },
                 {
                     name: 'Training Material',
@@ -346,6 +395,7 @@ export class NavigationDataConstants {
                     route: '/training-material',
                     activeRouteFlegId: 34,
                     construction: environment.staging || environment.production,
+                    qaId: 'navbar_company_training-material',
                 },
                 {
                     name: 'Billing',
@@ -353,6 +403,7 @@ export class NavigationDataConstants {
                     route: '/billing',
                     activeRouteFlegId: 34,
                     construction: environment.staging || environment.production,
+                    qaId: 'navbar_company_billing',
                 },
                 {
                     name: 'Integration',
@@ -360,6 +411,7 @@ export class NavigationDataConstants {
                     route: '/integration',
                     activeRouteFlegId: 34,
                     construction: environment.staging || environment.production,
+                    qaId: 'navbar_company_integration',
                 },
             ],
         },
@@ -611,6 +663,7 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
+            qaId: 'navbar_company',
             route: [
                 {
                     name: 'Settings',
@@ -652,6 +705,7 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
+            qaId: 'navbar_company',
             route: [
                 {
                     name: 'Settings',

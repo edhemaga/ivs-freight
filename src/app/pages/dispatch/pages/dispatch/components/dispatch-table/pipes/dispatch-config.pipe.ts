@@ -13,9 +13,6 @@ export class DispatchConfigPipe implements PipeTransform {
             case 'trailer':
                 const { type, truckDropdownWidth, trailerDropdownWidth } =
                     config;
-
-                    console.log("UPDATEE");
-
                 return {
                     name: 'Input Dropdown',
                     type: 'text',
@@ -24,7 +21,7 @@ export class DispatchConfigPipe implements PipeTransform {
                     placeholderInsteadOfLabel: true,
                     hideDropdownArrow: true,
                     autoFocus: true,
-                   // blackInput: true,
+                    // blackInput: true,
                     hideRequiredCheck: true,
                     hideDangerMark: true,
                     hideErrorMessage: true,

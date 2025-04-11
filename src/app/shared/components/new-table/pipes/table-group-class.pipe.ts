@@ -8,8 +8,14 @@ import { ITableColumn } from '@shared/components/new-table/interface';
     standalone: true,
 })
 export class TableGroupClassPipe implements PipeTransform {
-    transform(groupColumn: ITableColumn, isTableLocked: boolean): object {
-        const { columns, isAlignedRight } = groupColumn;
+    transform({
+        column,
+        isTableLocked,
+    }: {
+        column: ITableColumn;
+        isTableLocked: boolean;
+    }): object {
+        const { columns, isAlignedRight } = column;
 
         const hasCheckedColumn = columns.some((column) => column.isChecked);
 

@@ -39,6 +39,7 @@ import {
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 import { SvgIconComponent } from 'angular-svg-icon';
+import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
 
 // Constants
 import { TableDropdownComponentConstants } from '@shared/utils/constants';
@@ -53,6 +54,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Interface
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Base class
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
@@ -215,7 +217,13 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     }
 
     private handleOpenModal(): void {
-        // TODO: Denis Implement modal opening logic
+        const modalData: ILoadModal = {
+            isEdit: false,
+            id: null,
+            isTemplate: this.selectedTab === eLoadStatusStringType.TEMPLATE,
+        };
+
+        this.loadStoreService.onOpenModal(modalData);
     }
 
     private setToolbarDropdownMenuContent(

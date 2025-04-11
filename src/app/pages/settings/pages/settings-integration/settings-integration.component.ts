@@ -113,7 +113,7 @@ export class SettingsIntegrationComponent
                     title: 'Edit',
                     name: 'edit-table',
                     class: 'regular-text',
-                    contentType: eGeneralActions.EDIT,
+                    contentType: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'Website',
@@ -146,7 +146,7 @@ export class SettingsIntegrationComponent
                     type: 'integrations',
                     text: 'Are you sure you want to delete integration(s)?',
                     class: 'delete-text',
-                    contentType: eGeneralActions.DELETE,
+                    contentType: eGeneralActions.DELETE_LOWERCASE,
                 },
             ],
         };

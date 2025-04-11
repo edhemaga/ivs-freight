@@ -330,7 +330,7 @@ export class SettingsParkingModalComponent
                     this.inputService.markInvalid(this.parkingForm);
                     return;
                 }
-                if (this.editData?.type === eGeneralActions.EDIT)
+                if (this.editData?.type === eGeneralActions.EDIT_LOWERCASE)
                     this.updateParking(this.editData.id);
                 else this.addParking();
                 break;
@@ -617,7 +617,9 @@ export class SettingsParkingModalComponent
                     this.payPeriods = res.payPeriod;
                     this.weeklyDays = res.dayOfWeek;
 
-                    if (this.editData?.type === eGeneralActions.EDIT) {
+                    if (
+                        this.editData?.type === eGeneralActions.EDIT_LOWERCASE
+                    ) {
                         this.isCardAnimationDisabled = true;
                         this.editCompanyParkingById(this.editData.id);
                     } else {

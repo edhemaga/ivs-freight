@@ -1,5 +1,6 @@
 <div class="navigation">
     <div
+        id="navbar_menu"
         class="nav-holder"
         #navbar
         [ngClass]="isNavigationHovered == true ? 'dark-nav' : 'animation'"
@@ -41,7 +42,7 @@
                     <div
                         [ngClass]="{
                             'open-navigation': isNavigationHovered,
-                            'close-navigation': !isNavigationHovered
+                            'close-navigation': !isNavigationHovered,
                         }"
                     ></div>
                     <div class="navigation-divider"></div>
@@ -53,6 +54,7 @@
                     [route]="item"
                     [message]="item.messages"
                     [index]="index"
+                    [id]="item.qaId"
                     [files]="item.files"
                     [isActiveFooterRoute]="isActiveFooterRoute"
                     [isNavigationHovered]="isNavigationHovered"
