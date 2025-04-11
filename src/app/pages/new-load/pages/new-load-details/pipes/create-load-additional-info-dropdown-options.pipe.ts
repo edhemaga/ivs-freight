@@ -1,8 +1,11 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
+// enums
+import { eLoadDetailsGeneral } from '@pages/new-load/enums';
+
 // models
 import { LoadResponse } from 'appcoretruckassist';
-import { iDropdownItem } from 'ca-components/lib/components/ca-toolbar-dropdown/interfaces';
+import { iDropdownItem } from 'ca-components';
 
 @Pipe({
     name: 'createLoadAdditionalInfoDropdownOptions',
@@ -17,12 +20,12 @@ export class CreateLoadAdditionalInfoDropdownOptionsPipe
 
         dropdownOptions = [
             {
-                title: 'Comments',
+                title: eLoadDetailsGeneral.COMMENTS,
                 count: load.commentsCount,
                 isSelected: false,
             },
             {
-                title: 'Status Log',
+                title: eLoadDetailsGeneral.STATUS_LOG,
                 count: load.statusHistory?.length,
                 isSelected: false,
             },
