@@ -226,7 +226,7 @@ export class SettingsInsurancePolicyModalComponent
                     this.inputService.markInvalid(this.insurancePolicyForm);
                     return;
                 }
-                if (this.editData.type === eGeneralActions.EDIT) {
+                if (this.editData.type === eGeneralActions.EDIT_LOWERCASE) {
                     this.updateInsurancePolicy(this.editData.company.id);
                     this.modalService.setModalSpinner({
                         action: null,
@@ -242,10 +242,10 @@ export class SettingsInsurancePolicyModalComponent
                     });
                 }
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.deleteInsurancePolicyById(this.editData.company.id);
                 this.modalService.setModalSpinner({
-                    action: eGeneralActions.DELETE,
+                    action: eGeneralActions.DELETE_LOWERCASE,
                     status: true,
                     close: false,
                 });
@@ -427,7 +427,7 @@ export class SettingsInsurancePolicyModalComponent
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(event.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.insurancePolicyForm
                     .get(eFileFormControls.FILES)
                     .patchValue(
@@ -449,7 +449,7 @@ export class SettingsInsurancePolicyModalComponent
                 next: (res: InsurancePolicyModalResponse) => {
                     this.ratings = res.ratings;
 
-                    if (this.editData.type === eGeneralActions.EDIT) {
+                    if (this.editData.type === eGeneralActions.EDIT_LOWERCASE) {
                         this.isCardAnimationDisabled = true;
                         this.editInsurancePolicyById(this.editData.company);
                     } else this.startFormChanges();
@@ -944,14 +944,14 @@ export class SettingsInsurancePolicyModalComponent
             .subscribe({
                 next: () => {
                     this.modalService.setModalSpinner({
-                        action: eGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE_LOWERCASE,
                         status: true,
                         close: true,
                     });
                 },
                 error: () => {
                     this.modalService.setModalSpinner({
-                        action: eGeneralActions.DELETE,
+                        action: eGeneralActions.DELETE_LOWERCASE,
                         status: false,
                         close: false,
                     });

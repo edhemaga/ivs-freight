@@ -11,6 +11,9 @@ import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
 import {
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
+    MilesStopDetailsResponse,
+    MilesStopItemResponsePagination,
+    RoutingResponse,
 } from 'appcoretruckassist';
 import { IMilesModel } from '@pages/miles/interface';
 
@@ -77,6 +80,30 @@ export const setUnitDetails = createAction(
 export const getFollowingUnit = createAction(
     MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
     props<{ getFollowingUnitDirection: ArrowActionsStringEnum }>()
+);
+
+export const getUnitMapData = createAction(
+    MilesStoreConstants.ACTION_GET_UNIT_MAP_DATA,
+    props<{ unitMapLocations: MilesStopItemResponsePagination }>()
+);
+
+export const getUnitMapDataSuccess = createAction(
+    MilesStoreConstants.ACTION_GET_UNIT_MAP_DATA_SUCCESS,
+    props<{ unitMapRoutes: RoutingResponse }>()
+);
+
+export const setUnitMapData = createAction(
+    MilesStoreConstants.ACTION_SET_UNIT_MAP_DATA
+);
+
+export const getMapStopData = createAction(
+    MilesStoreConstants.ACTION_GET_MAP_STOP_DATA,
+    props<{ stopId: number }>()
+);
+
+export const getMapStopDataSuccess = createAction(
+    MilesStoreConstants.ACTION_GET_MAP_STOP_DATA_SUCCESS,
+    props<{ unitStopData: MilesStopDetailsResponse }>()
 );
 
 export const setFollowingUnitDetails = createAction(

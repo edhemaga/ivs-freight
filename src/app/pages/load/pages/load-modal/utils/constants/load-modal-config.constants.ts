@@ -5,7 +5,7 @@ import { eStringPlaceholder } from '@shared/enums';
 import { TrailerTypeResponse, TruckTypeResponse } from 'appcoretruckassist';
 
 export class LoadModalConfig {
-    static LOAD_DISPATCHES_TTD_INPUT_CONFIG: ITaInput = {
+    static LOAD_DISPATCHES_TTD_INPUT_CONFIG: ICaInput = {
         name: 'Input Dropdown',
         type: 'text',
         multipleLabel: {
@@ -40,10 +40,9 @@ export class LoadModalConfig {
             customClass: 'load-broker-contact',
         },
         isDropdown: true,
-        isDisabled: true,
         blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-308'
+        dropdownWidthClass: 'w-col-308',
     };
 
     static LOAD_PICKUP_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -68,10 +67,10 @@ export class LoadModalConfig {
             customClass: 'load-shipper-contact',
         },
         isDropdown: true,
-        isDisabled: true,
+        isDisabled: false,
         blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-370'
+        dropdownWidthClass: 'w-col-308',
     };
 
     static LOAD_DELIVERY_SHIPPER_INPUT_CONFIG: ITaInput = {
@@ -99,7 +98,7 @@ export class LoadModalConfig {
         isDisabled: true,
         blackInput: false,
         textTransform: 'capitalize',
-        dropdownWidthClass: 'w-col-370'
+        dropdownWidthClass: 'w-col-370',
     };
 
     static LOAD_COMPANY_INPUT_CONFIG: ITaInput = {
@@ -432,6 +431,17 @@ export class LoadModalConfig {
         };
     }
 
+    static DISPATCHER_INPUT: ICaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Dispatcher',
+        isDropdown: true,
+        isRequired: true,
+        blackInput: false,
+        textTransform: 'capitalize',
+        dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
+    };
+
     static getDispatcherInputConfig(logoName: string, name: string): ITaInput {
         return {
             name: 'Input Dropdown',
@@ -451,6 +461,23 @@ export class LoadModalConfig {
             dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
         };
     }
+
+    static TRUCK_TYPE_CONFIG: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Truck Requirement',
+        isRequired: false,
+        isDropdown: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: true,
+            image: false,
+            iconsPath: '/assets/ca-components/svg/common/trucks/',
+            activeItemIconKey: 'logoName',
+        } as any,
+        dropdownWidthClass: 'w-col-302',
+        customClass: 'truck-trailer-dropdown',
+    };
 
     static getTruckTypeIdInputConfig(
         selectedTruckReq: TruckTypeResponse
@@ -475,6 +502,23 @@ export class LoadModalConfig {
             customClass: 'truck-trailer-dropdown',
         };
     }
+
+    static TRAILER_TYPE_CONFIG: ITaInput = {
+        name: 'Input Dropdown',
+        type: 'text',
+        label: 'Trailer Requirement',
+        isRequired: false,
+        isDropdown: true,
+        dropdownImageInput: {
+            withText: true,
+            svg: true,
+            image: false,
+            iconsPath: '/assets/ca-components/svg/common/trucks/',
+            activeItemIconKey: 'logoName',
+        } as any,
+        dropdownWidthClass: 'w-col-302',
+        customClass: 'truck-trailer-dropdown',
+    };
 
     static getTrailerInputConfig(
         selectedTrailerReq: TrailerTypeResponse,

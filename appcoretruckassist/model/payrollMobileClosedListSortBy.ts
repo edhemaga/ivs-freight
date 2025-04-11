@@ -11,7 +11,7 @@
  */
 
 
-export type PayrollMobileClosedListSortBy = 'Period' | 'TotalMiles' | 'EmptyMiles' | 'LoadedMiles' | 'Earnings' | 'Salary' | 'Credit' | 'Deduction';
+export type PayrollMobileClosedListSortBy = 'Period' | 'TotalMiles' | 'EmptyMiles' | 'LoadedMiles' | 'Earnings' | 'Salary' | 'Credit' | 'Deduction' | 'Number';
 
 export const PayrollMobileClosedListSortBy = {
     Period: 'Period' as PayrollMobileClosedListSortBy,
@@ -21,6 +21,7 @@ export const PayrollMobileClosedListSortBy = {
     Earnings: 'Earnings' as PayrollMobileClosedListSortBy,
     Salary: 'Salary' as PayrollMobileClosedListSortBy,
     Credit: 'Credit' as PayrollMobileClosedListSortBy,
-    Deduction: 'Deduction' as PayrollMobileClosedListSortBy
+    Deduction: 'Deduction' as PayrollMobileClosedListSortBy,
+    Number: 'Number' as PayrollMobileClosedListSortBy
 };
 

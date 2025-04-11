@@ -19,6 +19,7 @@ import { ITableData } from '@shared/models/table-data.model';
 
 import {
     Column,
+    CommentCompanyUser,
     ICurrentSearchTableData,
     ITableColummn,
     ITableOptions,
@@ -80,9 +81,9 @@ import {
 import { LoadStoreConstants } from '@pages/load/pages/load-table/utils/constants/index';
 
 // enums
-import { eActiveViewMode } from '@shared/enums';
+import { eActiveViewMode, eSortDirection } from '@shared/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eLoadRouting } from '@pages/new-load/enums';
+import { eLoadModalActions, eLoadRouting } from '@pages/new-load/enums';
 
 import { ICaMapProps, IFilterDropdownList } from 'ca-components';
 import { ITableColumn } from '@shared/components/new-table/interface';
@@ -401,7 +402,7 @@ export class LoadStoreService {
         else this.dispatchDeleteBulkLoads(ids);
     }
 
-    public dsipatchCanDeleteSelectedDataRows(
+    public dispatchCanDeleteSelectedDataRows(
         canDeleteSelectedDataRows: boolean,
         ids: number[]
     ): void {
@@ -486,9 +487,27 @@ export class LoadStoreService {
         metadata: ICreateCommentMetadata
     ): void {
         this.store.dispatch({
-            type: LoadStoreConstants.ACTION_CREATE_COMMENT,
+            type: LoadStoreConstants.ACTION_CREATE_COMMENT_SUCCESS,
             apiParam,
             metadata,
+        });
+    }
+
+    public dispatchUpdateComment(apiParam: CommentCompanyUser): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_UPDATE_COMMENT,
+            apiParam,
+        });
+    }
+
+    public sortLoadComments(
+        loadId: number,
+        sortDirection: eSortDirection
+    ): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SORT_COMMENTS,
+            loadId,
+            sortDirection,
         });
     }
 
@@ -694,13 +713,26 @@ export class LoadStoreService {
         ]);
     }
 
-    public onOpenModal(id: number, isTemplate: boolean): void {
-        const modal: ILoadModal = {
-            id,
-            isEdit: true,
-            isTemplate,
-        };
+    public onOpenModal(modal: ILoadModal): void {
         this.modalService.openModal(NewLoadModalComponent, {}, modal);
+    }
+
+    public onCreateLoadFromTemplate(id: number): void {
+        this.onOpenModal({
+            isEdit: false,
+            id,
+            isTemplate: true,
+            type: eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE,
+        });
+    }
+
+    public onCreateTemplateFromLoad(id: number): void {
+        this.onOpenModal({
+            isEdit: false,
+            id,
+            isTemplate: false,
+            type: eLoadModalActions.CREATE_TEMPLATE_FROM_LOAD,
+        });
     }
 
     public toggleMap(): void {

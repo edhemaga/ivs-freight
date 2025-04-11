@@ -599,7 +599,7 @@ export class Step3FormComponent
 
     public onFilesAction(fileActionEvent: {
         files: File[];
-        action: eGeneralActions.ADD | eGeneralActions.DELETE;
+        action: eGeneralActions.ADD | eGeneralActions.DELETE_LOWERCASE;
         deleteId?: number;
     }): void {
         this.documents = fileActionEvent.files;
@@ -612,7 +612,7 @@ export class Step3FormComponent
                     .get(eFileFormControls.FILES)
                     .patchValue(JSON.stringify(fileActionEvent.files));
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.licenseForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

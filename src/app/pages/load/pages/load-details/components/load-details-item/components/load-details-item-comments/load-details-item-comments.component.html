@@ -6,8 +6,8 @@
         [commentsData]="comments"
         [isDisplaySearch]="isSearchComment"
         [isHeaderHidden]="isHeaderHidden"
-        (btnActionEmitter)="handleCommentActionEmit($event)"
-        (btnSortEmitter)="handleSortActionEmit($event)"
-        (searchHightlightEmitter)="handleSearchHighlightActionEmit($event)"
+        (onAction)="onCommentAction($event)"
+        (onSort)="onSortAction($event)"
+        (onSearchHighlight)="onSearchHighlightAction($event)"
     ></app-ta-comments-search>
 </div>

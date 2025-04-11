@@ -20,10 +20,13 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // pipes
 import {
+    TableColumnActionClassPipe,
+    TableColumnCellClassPipe,
     TableColumnClassPipe,
+    TableColumnLabelWidthPipe,
     TableGroupClassPipe,
+    TableGroupLabelIndexPipe,
 } from '@shared/components/new-table/pipes';
-import { TableGroupLabelIndexPipe } from '@shared/components/new-table/pipes/table-group-label.pipe';
 
 // enums
 import { ePosition, eUnit } from 'ca-components';
@@ -57,6 +60,9 @@ import {
         TableColumnClassPipe,
         TableGroupClassPipe,
         TableGroupLabelIndexPipe,
+        TableColumnLabelWidthPipe,
+        TableColumnActionClassPipe,
+        TableColumnCellClassPipe,
 
         // directives
         ResizableColumnDirective,
@@ -80,10 +86,15 @@ export class NewTableComponent<T> {
     @Output() onColumnResize: EventEmitter<ITableResizeAction> =
         new EventEmitter();
 
+    @Output() onRemoveColumn: EventEmitter<string> = new EventEmitter();
+
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
+
+    // actions
+    public headingHoverId: number = null;
 
     // enums
     public ePosition = ePosition;
@@ -128,6 +139,14 @@ export class NewTableComponent<T> {
 
     public onColumnWidthResize(resizeAction: ITableResizeAction): void {
         this.onColumnResize.emit(resizeAction);
+    }
+
+    public onColumnHeadingHover(columnId: number): void {
+        this.headingHoverId = columnId;
+    }
+
+    public onRemoveColumnClick(columnKey: string): void {
+        this.onRemoveColumn.emit(columnKey);
     }
 
     public isRowExpanded(rowId: number): boolean {

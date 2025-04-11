@@ -1169,7 +1169,7 @@ export class TruckModalComponent implements OnInit, OnDestroy {
                     JSON.stringify(event.files)
                 );
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 const value = event.files.length
                     ? JSON.stringify(event.files)
                     : null;

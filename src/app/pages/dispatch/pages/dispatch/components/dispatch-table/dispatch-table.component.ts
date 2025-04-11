@@ -256,8 +256,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
             });
     }
 
-    public trackByIdentity = (index: number): number => index;
-
     private initDispatchData(data: DispatchBoardResponse): void {
         this.dispatchData = JSON.parse(JSON.stringify(data));
 
@@ -1381,12 +1379,13 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
     private refreshDispatchTable(dispatchChanged: DispatchResponse): void {
         const { dispatches } = this.dispatchData || {};
         const index = dispatches?.findIndex((d) => d.id === dispatchChanged.id);
-        // let dispatchToChange = dispatches?.find(d => d.id === dispatchChange.id);
 
         if (index >= 0)
             this.dispatchData.dispatches.splice(index, 1, dispatchChanged);
 
         this.initDispatchData(this.dispatchData);
+
+        this.cdRef.detectChanges();
     }
 
     ngOnDestroy(): void {

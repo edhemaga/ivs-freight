@@ -21,5 +21,6 @@ export interface LoadStatusHistoryResponse {
     dateTimeTo?: string | null;
     wait?: { [key: string]: number; } | null;
     updatedAt?: string;
+    percentage?: number | null;
 }
 

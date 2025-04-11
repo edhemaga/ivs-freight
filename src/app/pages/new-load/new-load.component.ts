@@ -223,7 +223,7 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
             isTemplate: this.selectedTab === eLoadStatusStringType.TEMPLATE,
         };
 
-        this.modalService.openModal(NewLoadModalComponent, {}, modalData);
+        this.loadStoreService.onOpenModal(modalData);
     }
 
     private setToolbarDropdownMenuContent(

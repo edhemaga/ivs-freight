@@ -1,0 +1,42 @@
+.d-grid {
+    gap: 12px;
+
+    &-normal-load {
+        grid-template-columns: 94px 26px 230px 230px;
+    }
+
+    &-template-load {
+        grid-template-columns: 94px 249px 249px;
+    }
+
+    &-reference {
+        grid-template-columns: 172px 432px;
+    }
+
+    &-contact {
+        grid-template-columns: 308px 142px 142px;
+    }
+
+    &-requirement {
+        &-first-row {
+            grid-template-columns: 302px 302px;
+        }
+        &-second-row {
+            grid-template-columns: 100px 120px 150px 117px 81px;
+        }
+    }
+
+    &-stops-heading {
+        grid-template-columns: 26px 330px 140px 98px;
+    }
+}
+
+.popover-load-template {
+    width: fit-content;
+    max-height: 184px;
+    overflow-y: auto;
+    max-width: 200px;
+    position: relative;
+    left: -8px;
+    overflow-x: hidden;
+}

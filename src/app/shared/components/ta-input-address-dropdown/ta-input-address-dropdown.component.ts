@@ -115,7 +115,7 @@ export class TaInputAddressDropdownComponent
         if (this.inputConfig.name == 'RoutingAddress') {
             if (key === eGeneralActions.ENTER) {
                 if (this.currentAddressData)
-                    this.onCommands(event, eGeneralActions.CONFIRM);
+                    this.onCommands(event, eGeneralActions.CONFIRM_LOWERCASE);
             } else if (key === eGeneralActions.ESCAPE) this.clearInput(event);
         }
     }
@@ -343,7 +343,8 @@ export class TaInputAddressDropdownComponent
         e.stopPropagation();
 
         if (
-            (type === eGeneralActions.CONFIRM && this.currentAddressData) ||
+            (type === eGeneralActions.CONFIRM_LOWERCASE &&
+                this.currentAddressData) ||
             type === eGeneralActions.CANCEL
         ) {
             this.currentAddressData.type = type;

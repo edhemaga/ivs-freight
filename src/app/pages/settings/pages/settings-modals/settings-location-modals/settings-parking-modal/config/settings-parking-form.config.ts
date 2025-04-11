@@ -10,7 +10,7 @@ export class SettingsParkingConfig {
             type: 'text',
             label: 'Parking Name',
             isRequired: true,
-            autoFocus: type !== eGeneralActions.EDIT,
+            autoFocus: type !== eGeneralActions.EDIT_LOWERCASE,
             textTransform: 'uppercase',
             minLength: 1,
             maxLength: 64,

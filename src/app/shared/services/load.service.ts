@@ -107,6 +107,7 @@ export class LoadService {
         return this.loadService.apiLoadListGet(
             _params.loadType,
             _params.statusType,
+            false,
             _params.status,
             _params.dispatcherIds,
             _params.dispatcherId,

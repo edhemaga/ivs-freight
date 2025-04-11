@@ -9,11 +9,11 @@
  * https://openapi-generator.tech
  * Do not edit the class manually.
  */
-import { LoadStatusResponse } from './loadStatusResponse';
+import { PossibleLoadStatusResponse } from './possibleLoadStatusResponse';
 
 
 export interface LoadPossibleStatusesResponse { 
-    possibleStatuses?: Array<LoadStatusResponse> | null;
-    previousStatus?: LoadStatusResponse;
+    possibleStatuses?: Array<PossibleLoadStatusResponse> | null;
+    previousStatus?: PossibleLoadStatusResponse;
 }
 

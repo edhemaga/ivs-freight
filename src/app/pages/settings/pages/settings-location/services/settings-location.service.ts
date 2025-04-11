@@ -130,7 +130,7 @@ export class SettingsLocationService implements OnDestroy {
                                 ({ id }) => id === parkingId
                             );
                             this.tableService.sendActionAnimation({
-                                animation: eGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE_LOWERCASE,
                                 data: parking,
                                 id: parkingId,
                             });
@@ -212,7 +212,7 @@ export class SettingsLocationService implements OnDestroy {
                                 );
 
                                 this.tableService.sendActionAnimation({
-                                    animation: eGeneralActions.DELETE,
+                                    animation: eGeneralActions.DELETE_LOWERCASE,
                                     data: office,
                                     id: office.id,
                                 });
@@ -295,7 +295,7 @@ export class SettingsLocationService implements OnDestroy {
                                 ({ id }) => id === terminalId
                             );
                             this.tableService.sendActionAnimation({
-                                animation: eGeneralActions.DELETE,
+                                animation: eGeneralActions.DELETE_LOWERCASE,
                                 data: terminal,
                                 id: terminalId,
                             });

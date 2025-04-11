@@ -70,7 +70,7 @@ export class SettingsInsurancepolicyComponent
             .subscribe({
                 next: (res) => {
                     switch (res.type) {
-                        case eGeneralActions.DELETE:
+                        case eGeneralActions.DELETE_LOWERCASE:
                             if (res.template === 'insurance')
                                 this.deleteInsurancePolicy(res.id);
 
@@ -123,10 +123,10 @@ export class SettingsInsurancepolicyComponent
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                 },
                 {
                     title: 'border',
@@ -150,7 +150,7 @@ export class SettingsInsurancepolicyComponent
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                 },
             ],
             export: true,
@@ -160,10 +160,10 @@ export class SettingsInsurancepolicyComponent
     // Function for drop-down
     public optionsEvent(action: any, insurance: any): void {
         switch (action.type) {
-            case eGeneralActions.EDIT:
+            case eGeneralActions.EDIT_LOWERCASE:
                 this.onAction({
                     modalName: 'insurance-policy',
-                    type: eGeneralActions.EDIT,
+                    type: eGeneralActions.EDIT_LOWERCASE,
                     company: insurance,
                 });
                 break;
@@ -174,7 +174,7 @@ export class SettingsInsurancepolicyComponent
                     {
                         id: insurance.id,
                         template: 'insurance',
-                        type: eGeneralActions.DELETE,
+                        type: eGeneralActions.DELETE_LOWERCASE,
                         image: false,
                     }
                 );
