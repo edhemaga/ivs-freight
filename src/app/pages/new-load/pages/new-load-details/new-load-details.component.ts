@@ -6,7 +6,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
 // Services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
@@ -84,12 +84,12 @@ export class NewLoadDetailsComponent
     }
 
     private getStoreData(): void {
-        this.loadStoreService.resolveLoadDetails$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((res) => {
-                this.load = res;
-                this.setDropdownMenuOptions(res?.statusType?.name);
-            });
+        // this.loadStoreService.resolveLoadDetails$
+        //     .pipe(takeUntil(this.destroy$))
+        //     .subscribe((res) => {
+        //         this.load = res;
+        //         this.setDropdownMenuOptions(res?.statusType?.name);
+        //     });
     }
 
     private setDropdownMenuOptions(statusType: string): void {
@@ -107,10 +107,10 @@ export class NewLoadDetailsComponent
                     const { id } = confirmationData || {};
                     const { statusType } = this.load;
 
-                    this.loadStoreService.dispatchDeleteLoadOrTemplateById(
-                        id,
-                        eLoadStatusType[statusType.name]
-                    );
+                    // this.loadStoreService.dispatchDeleteLoadOrTemplateById(
+                    //     id,
+                    //     eLoadStatusType[statusType.name]
+                    // );
                 }
             });
     }

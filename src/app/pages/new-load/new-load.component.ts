@@ -9,7 +9,6 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import {
-    eActiveViewMode,
     eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
@@ -21,7 +20,7 @@ import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
 import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
 
 // Services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 import { ModalService } from '@shared/services/modal.service';
@@ -137,13 +136,13 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     public setFilters(filters: IFilterAction): void {
         const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
 
-        this.loadStoreService.dispatchGetList(
-            {
-                ...FilterHelper.mapFilters(filters, this.filter),
-                statusType: selectedTab,
-            },
-            selectedTab
-        );
+        // this.loadStoreService.dispatchGetList(
+        //     {
+        //         ...FilterHelper.mapFilters(filters, this.filter),
+        //         statusType: selectedTab,
+        //     },
+        //     selectedTab
+        // );
     }
 
     public handleToolbarDropdownMenuActions<T>(
@@ -223,7 +222,7 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
             isTemplate: this.selectedTab === eLoadStatusStringType.TEMPLATE,
         };
 
-        this.loadStoreService.onOpenModal(modalData);
+        // this.loadStoreService.onOpenModal(modalData);
     }
 
     private setToolbarDropdownMenuContent(
@@ -256,22 +255,22 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     }
 
     private handleViewModeChange(mode: string): void {
-        this.loadStoreService.dispatchSetActiveViewMode(eActiveViewMode[mode]);
+        console.log(mode);
+        // this.loadStoreService.dispatchSetActiveViewMode(eActiveViewMode[mode]);
     }
 
     private getLoadStatusFilter(): void {
-        if (this.selectedTab === eLoadStatusStringType.TEMPLATE) {
-            this.loadStoreService.dispatchLoadTemplateList(this.filter);
-        } else {
-            this.loadStoreService.loadDispatchFilters({
-                loadStatusType: this.selectedTab,
-            });
-
-            this.loadStoreService.dispatchGetList(
-                this.filter,
-                eLoadStatusType[this.selectedTab]
-            );
-        }
+        // if (this.selectedTab === eLoadStatusStringType.TEMPLATE) {
+        //     this.loadStoreService.dispatchLoadTemplateList(this.filter);
+        // } else {
+        //     this.loadStoreService.loadDispatchFilters({
+        //         loadStatusType: this.selectedTab,
+        //     });
+        //     this.loadStoreService.dispatchGetList(
+        //         this.filter,
+        //         eLoadStatusType[this.selectedTab]
+        //     );
+        // }
     }
 
     public onSearchQueryChange(query: string[]): void {

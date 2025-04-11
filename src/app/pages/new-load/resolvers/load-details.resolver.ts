@@ -11,10 +11,11 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
 @Injectable({
     providedIn: 'root',
 })
-export class NewLoadDetailsResolver {
+export class loadDetailsResolver {
     constructor(private loadStoreService: LoadStoreService) {}
 
     resolve(route: ActivatedRouteSnapshot): Observable<LoadResponse> {
+        // TODO: Teo
         this.loadStoreService.dispatchLoadDetails(
             parseInt(route.paramMap.get('id'))
         );

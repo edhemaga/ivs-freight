@@ -1,4 +1,4 @@
-@let store =
+<!-- @let store =
     {
         viewData: loadStoreService.viewData$ | async,
         tableData: loadStoreService.tableData$ | async,
@@ -54,7 +54,6 @@
             </ng-template>
 
             <ng-container *ngTemplateOutlet="divider"></ng-container>
-            <!-- TODO Property name 'selectedTab' can be changed, if more use cases come around -->
             <ca-search-multiple-states-2
                 [selectedTab]="selectedTab"
                 (onSearchQueryChange)="onSearchQueryChange($event)"
@@ -121,7 +120,6 @@
                 @let isPending = selectedTab === eLoadStatusStringType.PENDING;
                 @let isTemplate =
                     selectedTab === eLoadStatusStringType.TEMPLATE;
-                <!-- Only template and pending loads can be deleted -->
                 @if (isPending || isTemplate) {
                     <svg-icon
                         [src]="sharedIcons.DELETE_ICON"
@@ -160,4 +158,41 @@
     } @else {
         <app-new-load-cards></app-new-load-cards>
     }
+} -->
+
+@let store =
+    {
+        loads: loadStoreService.loadsSelector$ | async,
+        selectedTab: loadStoreService.selectedTabSelector$ | async,
+        toolbarTabs: loadStoreService.toolbarTabsSelector$ | async,
+        activeViewMode: loadStoreService.activeViewModeSelector$ | async,
+    };
+
+@if (store) {
+    <app-new-table-toolbar
+        [title]="'Load'"
+        [leftSide]="leftSide"
+        [rightSide]="rightSide"
+        [toolbarDropdownContent]="toolbarDropdownMenuOptions"
+        (onPlusClick)="
+            onToolBarAction({
+                action: generalActions.OPEN_MODAL,
+            })
+        "
+        (toolbarDropdownAction)="handleToolbarDropdownMenuActions($event)"
+    >
+        <!-- 
+[betweenTabsTemplate]="betweenTabsTemplate" -->
+        <ng-template #leftSide>
+            <app-toolbar-tabs-wrapper
+                class="d-flex align-items-center"
+                [data]="store.toolbarTabs"
+                [selectedTab]="store.selectedTab"
+                [viewMode]="store.activeViewMode"
+                (onTabChange)="onToolBarAction($event)"
+            ></app-toolbar-tabs-wrapper>
+        </ng-template>
+
+        <ng-template #rightSide></ng-template>
+    </app-new-table-toolbar>
 }

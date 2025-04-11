@@ -1,0 +1,5 @@
+export class LoadStoreConstants {
+    static COMPONENT_NAME_KEY = '[Miles Table Component]';
+    public static ACTION_DISPATCH_LOAD_LIST = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_LOAD_LIST`;
+    public static ACTION_LOAD_LIST_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_LOAD_LIST_SUCCESS`;
+}
