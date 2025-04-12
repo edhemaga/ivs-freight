@@ -63,11 +63,11 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
 
         const selectedLoadTab: eLoadStatusType = eLoadStatusType[selectedTab];
 
-        // this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(
-        //     id,
-        //     selectedLoadTab,
-        //     type
-        // );
+        this.loadStoreService.dispatchGetEditLoadOrTemplateModalData(
+            id,
+            selectedLoadTab,
+            type
+        );
     }
 
     private handleCreateLoadOrTemplateAction<T>(
@@ -78,11 +78,11 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
 
         const selectedLoadTab: eLoadStatusType = eLoadStatusType[selectedTab];
 
-        // this.loadStoreService.dispatchGetConvertToLoadOrTemplateModalData(
-        //     id,
-        //     selectedLoadTab,
-        //     type
-        // );
+        this.loadStoreService.dispatchGetConvertToLoadOrTemplateModalData(
+            id,
+            selectedLoadTab,
+            type
+        );
     }
 
     private handleLoadDeleteAction<T>(

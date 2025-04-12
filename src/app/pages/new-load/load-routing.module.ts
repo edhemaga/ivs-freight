@@ -27,7 +27,7 @@ const routes: Routes = [
             import(
                 '@pages/new-load/pages/new-load-details/new-load-details.component'
             ).then((c) => c.NewLoadDetailsComponent),
-        // resolve: { data: loadDetailsResolver },
+        resolve: { data: loadDetailsResolver },
     },
 ];
 

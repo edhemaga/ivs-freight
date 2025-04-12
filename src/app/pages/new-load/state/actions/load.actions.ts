@@ -1,3 +1,4 @@
+// ngrx
 import { createAction, props } from '@ngrx/store';
 
 // Enums
@@ -7,7 +8,7 @@ import { eCommonElement } from '@shared/enums';
 // Const
 import { LoadStoreConstants } from '@pages/new-load/utils/constants/load-store.constants';
 
-// Interface
+// Models
 import {
     DispatcherFilterResponse,
     LoadListResponse,

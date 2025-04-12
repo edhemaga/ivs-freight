@@ -9,8 +9,7 @@ import { LoadStoreService } from '@pages/new-load/state/services/load-store.serv
 export class LoadResolver {
     constructor(private loadStoreService: LoadStoreService) {}
 
-    resolve(): any {
-        this.loadStoreService.dispatchLoadList();
-        return true;
+    resolve(): void {
+        return this.loadStoreService.dispatchLoadList();
     }
 }

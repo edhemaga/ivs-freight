@@ -13,5 +13,4 @@ export interface ITableData {
     isUpperCaseTitle?: boolean;
     isActive?: boolean;
     gridColumns?: any[];
-    value?: string | number;
 }

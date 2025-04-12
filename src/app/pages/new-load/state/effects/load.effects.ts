@@ -1,10 +1,12 @@
-import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { exhaustMap, map, withLatestFrom } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
 import { Injectable } from '@angular/core';
 
-// Store
+// rxjs
+import { exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import { forkJoin, of } from 'rxjs';
+
+// ngrx
 import { Store } from '@ngrx/store';
+import { Actions, createEffect, ofType } from '@ngrx/effects';
 
 // Actions
 import * as LoadActions from '@pages/new-load/state/actions/load.actions';
