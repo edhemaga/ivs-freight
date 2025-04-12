@@ -33,6 +33,7 @@ import {
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
     CaSearchMultipleStates2Component,
+    IFilterAction,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
@@ -141,6 +142,10 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     public onSearchQueryChange(query: string[]): void {
         // TODO remove, for easier emitted data preview
         console.log(query);
+    }
+
+    public setFilters(filters: IFilterAction): void {
+        this.loadStoreService.dispatchFiltersChange(filters);
     }
 
     public navigateToLoadDetails(id: number): void {

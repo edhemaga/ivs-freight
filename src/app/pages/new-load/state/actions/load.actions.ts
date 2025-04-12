@@ -18,6 +18,9 @@ import {
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
+// Ca components
+import { IFilterAction } from 'ca-components';
+
 export const getLoadsPayload = createAction(
     LoadStoreConstants.ACTION_DISPATCH_LOAD_LIST
 );
@@ -26,8 +29,6 @@ export const getLoadsPayloadSuccess = createAction(
     LoadStoreConstants.ACTION_LOAD_LIST_SUCCESS,
     props<{
         payload: LoadListResponse;
-        dispatcherFilters: DispatcherFilterResponse[];
-        statusFilters: LoadStatusFilterResponse[];
     }>()
 );
 
@@ -59,6 +60,23 @@ export const onLoadDetailsAction = createAction(
     LoadStoreConstants.ACTION_GO_TO_LOAD_DETIALS,
     props<{
         id: number;
+    }>()
+);
+//#endregion
+
+//#region Filters
+export const onFiltersChange = createAction(
+    LoadStoreConstants.ACTION_FILTER_CHANGED,
+    props<{
+        filters: IFilterAction;
+    }>()
+);
+
+export const setFilterDropdownList = createAction(
+    LoadStoreConstants.ACTION_SET_FILTER_DROPDOPWN_LIST,
+    props<{
+        dispatcherFilters: DispatcherFilterResponse[];
+        statusFilters: LoadStatusFilterResponse[];
     }>()
 );
 //#endregion

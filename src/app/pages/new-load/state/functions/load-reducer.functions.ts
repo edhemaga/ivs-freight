@@ -16,20 +16,17 @@ import { eCommonElement } from '@shared/enums';
 import { LoadHelper } from '@pages/new-load/utils/helpers';
 import { FilterHelper } from '@shared/utils/helpers';
 
+// Ca components
+import { IFilterAction } from 'ca-components';
+
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
-    loadResponse: LoadListResponse,
-    dispatcherFilters: DispatcherFilterResponse[],
-    statusFilters: LoadStatusFilterResponse[]
+    loadResponse: LoadListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
     return {
         ...state,
         loads: LoadHelper.loadMapper(loadResponse.pagination.data),
-        filtersDropdownList: {
-            dispatcherFilters: FilterHelper.dispatcherFilter(dispatcherFilters),
-            statusFilters,
-        },
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs
@@ -58,3 +55,29 @@ export const getViewModeChange = function (
         activeViewMode,
     };
 };
+
+export function onFiltersChange(
+    state: ILoadState,
+    filters: IFilterAction
+): ILoadState {
+    console.log('onFiltersChange');
+    return {
+        ...state,
+        filters: FilterHelper.mapFilters(filters, state.filters),
+    };
+}
+
+export function setFilterDropdownList(
+    state: ILoadState,
+    dispatcherFilters: DispatcherFilterResponse[],
+    statusFilters: LoadStatusFilterResponse[]
+): ILoadState {
+    console.log('setFilterDropdownList');
+    return {
+        ...state,
+        filtersDropdownList: {
+            dispatcherFilters: FilterHelper.dispatcherFilter(dispatcherFilters),
+            statusFilters,
+        },
+    };
+}

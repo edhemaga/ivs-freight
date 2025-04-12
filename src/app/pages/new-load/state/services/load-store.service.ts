@@ -25,6 +25,9 @@ import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement } from '@shared/enums';
 
+// Ca components
+import { IFilterAction } from 'ca-components';
+
 @Injectable({
     providedIn: 'root',
 })
@@ -84,6 +87,13 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GO_TO_LOAD_DETIALS,
             id,
+        });
+    }
+
+    public dispatchFiltersChange(filters: IFilterAction): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_FILTER_CHANGED,
+            filters,
         });
     }
 }

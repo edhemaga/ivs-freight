@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 // rxjs
@@ -15,6 +15,9 @@ import {
 // Environment
 import { environment } from 'src/environments/environment';
 
+// Interface
+import { IStateFilters } from '@shared/interfaces';
+
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
@@ -24,13 +27,32 @@ import { eLoadStatusStringType } from '@pages/new-load/enums';
 export class LoadService {
     constructor(public http: HttpClient) {}
 
-    public getLoadList(statusType: number): Observable<LoadListResponse> {
-        return this.http.get(
-            `${environment.API_ENDPOINT}/api/load/list?statusType=${statusType}`
+    public getLoadList(
+        statusType: number,
+        filters: IStateFilters
+    ): Observable<LoadListResponse> {
+        let params = new HttpParams().set('statusType', statusType.toString());
+
+        if (filters.dispatcherIds?.length) {
+            filters.dispatcherIds.forEach((id) => {
+                params = params.append('DispatcherIds', id.toString());
+            });
+        }
+
+        if (filters.status?.length) {
+            filters.status.forEach((status) => {
+                params = params.append('status', status.toString());
+            });
+        }
+
+        return this.http.get<LoadListResponse>(
+            `${environment.API_ENDPOINT}/api/load/list`,
+            { params }
         );
     }
-
-    public getLoadTemplateList(): Observable<LoadTemplateListResponse> {
+    public getLoadTemplateList(
+        filters: IStateFilters
+    ): Observable<LoadTemplateListResponse> {
         return this.http.get(
             `${environment.API_ENDPOINT}/api/load/template/list`
         );

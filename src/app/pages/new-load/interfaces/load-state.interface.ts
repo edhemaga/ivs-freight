@@ -1,6 +1,7 @@
 // Interfaces
 import { ILoadModel, ILoadPageFilters } from '@pages/new-load/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
+import { IStateFilters } from '@shared/interfaces';
 
 // Models
 import { ITableData } from '@shared/models';
@@ -21,6 +22,7 @@ export interface ILoadState {
 
     // Filters
     filtersDropdownList: ILoadPageFilters;
+    filters: IStateFilters;
 
     // Table
     tableColumns: ITableColumn[];

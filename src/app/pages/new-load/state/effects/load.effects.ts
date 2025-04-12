@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 
 // rxjs
 import { exhaustMap, map, withLatestFrom } from 'rxjs/operators';
-import { forkJoin, of } from 'rxjs';
+import { forkJoin, Observable, of } from 'rxjs';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -22,9 +22,15 @@ import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
 // Components
 import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
 
+// Models
+import { LoadTemplateListResponse, LoadListResponse } from 'appcoretruckassist';
+
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadRouting } from '@pages/new-load/enums';
+
+// Interfaces
+import { IStateFilters } from '@shared/interfaces';
 
 @Injectable()
 export class LoadEffect {
@@ -40,6 +46,40 @@ export class LoadEffect {
         private router: Router
     ) {}
 
+    private getLoadData(
+        mode: string,
+        isFilterChange: boolean,
+        filters: IStateFilters
+    ): Observable<{
+        loadResponse: LoadTemplateListResponse | LoadListResponse;
+        dispatcherFilters: any[];
+        statusFilters: any[];
+    }> {
+        const tabValue = eLoadStatusType[mode];
+        const isTemplate = tabValue === eLoadStatusType.Template;
+
+        const loadRequest$ = isTemplate
+            ? this.loadService.getLoadTemplateList(filters)
+            : this.loadService.getLoadList(tabValue, filters);
+
+        // On filter change or on template we don't have to update filter dropdown list
+        const dispatcherFilters$ =
+            isTemplate || isFilterChange
+                ? of([])
+                : this.loadService.getDispatcherFilters(tabValue);
+
+        const statusFilters$ =
+            isTemplate || isFilterChange
+                ? of([])
+                : this.loadService.getStatusFilters(tabValue);
+
+        return forkJoin({
+            loadResponse: loadRequest$,
+            dispatcherFilters: dispatcherFilters$,
+            statusFilters: statusFilters$,
+        });
+    }
+
     public getLoadList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(
@@ -47,38 +87,50 @@ export class LoadEffect {
                 LoadActions.getLoadsPayloadOnTabTypeChange
             ),
             withLatestFrom(
-                this.store.select(LoadSelectors.selectedTabSelector)
+                this.store.select(LoadSelectors.selectedTabSelector),
+                this.store.select(LoadSelectors.filtersSelector)
             ),
-            exhaustMap(([action, mode]) => {
-                const tabValue = eLoadStatusType[mode];
-                const isTemplate = tabValue === eLoadStatusType.Template;
-
-                const loadRequest$ = isTemplate
-                    ? this.loadService.getLoadTemplateList()
-                    : this.loadService.getLoadList(tabValue);
-
-                const dispatcherFilters$ = isTemplate
-                    ? of([])
-                    : this.loadService.getDispatcherFilters(mode);
-
-                const statusFilters$ = isTemplate
-                    ? of([])
-                    : this.loadService.getStatusFilters(mode);
-
-                return forkJoin([
-                    loadRequest$,
-                    dispatcherFilters$,
-                    statusFilters$,
-                ]).pipe(
-                    map(([loadResponse, dispatcherFilters, statusFilters]) =>
-                        LoadActions.getLoadsPayloadSuccess({
-                            payload: loadResponse,
+            exhaustMap(([action, mode, filters]) =>
+                this.getLoadData(mode, false, filters).pipe(
+                    map(
+                        ({
+                            loadResponse,
                             dispatcherFilters,
                             statusFilters,
+                        }) => {
+                            this.store.dispatch(
+                                LoadActions.setFilterDropdownList({
+                                    dispatcherFilters,
+                                    statusFilters,
+                                })
+                            );
+
+                            return LoadActions.getLoadsPayloadSuccess({
+                                payload: loadResponse,
+                            });
+                        }
+                    )
+                )
+            )
+        )
+    );
+
+    public getLoadsOnFilterChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onFiltersChange),
+            withLatestFrom(
+                this.store.select(LoadSelectors.selectedTabSelector),
+                this.store.select(LoadSelectors.filtersSelector)
+            ),
+            exhaustMap(([action, mode, filters]) =>
+                this.getLoadData(mode, true, filters).pipe(
+                    map(({ loadResponse }) =>
+                        LoadActions.getLoadsPayloadSuccess({
+                            payload: loadResponse,
                         })
                     )
-                );
-            })
+                )
+            )
         )
     );
 

@@ -30,6 +30,7 @@ export const initialState: ILoadState = {
         dispatcherFilters: [],
         statusFilters: [],
     },
+    filters: {},
 
     tableColumns: LoadTableColumns,
 };
@@ -37,15 +38,8 @@ export const initialState: ILoadState = {
 export const loadReducer = createReducer(
     initialState,
 
-    on(
-        LoadActions.getLoadsPayloadSuccess,
-        (state, { payload, dispatcherFilters, statusFilters }) =>
-            Functions.getLoadByIdSuccessResult(
-                state,
-                payload,
-                dispatcherFilters,
-                statusFilters
-            )
+    on(LoadActions.getLoadsPayloadSuccess, (state, { payload }) =>
+        Functions.getLoadByIdSuccessResult(state, payload)
     ),
 
     on(LoadActions.getLoadsPayloadOnTabTypeChange, (state, { mode }) =>
@@ -54,5 +48,19 @@ export const loadReducer = createReducer(
 
     on(LoadActions.getViewModeChange, (state, { viewMode }) =>
         Functions.getViewModeChange(state, viewMode)
+    ),
+
+    on(LoadActions.onFiltersChange, (state, { filters }) =>
+        Functions.onFiltersChange(state, filters)
+    ),
+
+    on(
+        LoadActions.setFilterDropdownList,
+        (state, { dispatcherFilters, statusFilters }) =>
+            Functions.setFilterDropdownList(
+                state,
+                dispatcherFilters,
+                statusFilters
+            )
     )
 );

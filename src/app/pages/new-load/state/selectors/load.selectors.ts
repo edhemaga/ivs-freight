@@ -42,6 +42,11 @@ export const filtersDropdownListSelector = createSelector(
     (state: ILoadState) => state.filtersDropdownList
 );
 
+export const filtersSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.filters
+);
+
 //#endregion
 
 //#region Table
