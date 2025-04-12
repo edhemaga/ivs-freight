@@ -2,6 +2,7 @@
     {
         viewData: loadStoreService.loadsSelector$ | async,
         columns: loadStoreService.tableColumnsSelector$ | async,
+        selectedTab: loadStoreService.selectedTabSelector$ | async,
     };
 @if (store) {
     @let templates =
@@ -17,7 +18,7 @@
     >
         <ng-template let-data="data" #edit>
             <!-- TODO: For testing load modal only !! Will be removed later !! -->
-            <div (click)="onOpenModal(data.id, !store.selectedTab)">EDIT</div>
+            <div (click)="onOpenModal(data.id, store.selectedTab)">EDIT</div>
         </ng-template>
 
         <ng-template let-data="data" #loadNumber>

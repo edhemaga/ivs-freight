@@ -6,6 +6,7 @@ import { LoadStoreService } from '@pages/new-load/state/services/load-store.serv
 
 // Enums
 import { eColor } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Components
 import { CaLoadStatusComponent } from 'ca-components';
@@ -32,7 +33,9 @@ export class NewLoadTableComponent {
         this.loadStoreService.navigateToLoadDetails(id);
     }
 
-    public onOpenModal(id: number, isTemplate: boolean): void {
+    public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
+        const isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
+
         this.loadStoreService.onOpenModal({
             id,
             isTemplate,

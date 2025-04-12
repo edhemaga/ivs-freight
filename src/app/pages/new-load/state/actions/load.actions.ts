@@ -15,6 +15,9 @@ import {
     LoadStatusFilterResponse,
 } from 'appcoretruckassist';
 
+// Interface
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
+
 export const getLoadsPayload = createAction(
     LoadStoreConstants.ACTION_DISPATCH_LOAD_LIST
 );
@@ -41,3 +44,21 @@ export const getViewModeChange = createAction(
         viewMode: eCommonElement;
     }>()
 );
+
+//#region Modal
+export const onOpenLoadModal = createAction(
+    LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
+    props<{
+        modal: ILoadModal;
+    }>()
+);
+//#endregion
+
+//#region Load details
+export const onLoadDetailsAction = createAction(
+    LoadStoreConstants.ACTION_GO_TO_LOAD_DETIALS,
+    props<{
+        id: number;
+    }>()
+);
+//#endregion

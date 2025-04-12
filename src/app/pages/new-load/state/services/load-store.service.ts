@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { Router } from '@angular/router';
 
 // Store
 import { select, Store } from '@ngrx/store';
@@ -15,20 +14,14 @@ import { ITableColumn } from '@shared/components/new-table/interface';
 // Selectors
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
 
-// Services
-import { ModalService } from '@shared/services';
-
 // Const
 import { LoadStoreConstants } from '@pages/new-load/utils/constants/load-store.constants';
 
 // Models
 import { ITableData } from '@shared/models';
 
-// Components
-import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
-
 // Enums
-import { eLoadRouting, eLoadStatusStringType } from '@pages/new-load/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement } from '@shared/enums';
 
@@ -36,11 +29,7 @@ import { eCommonElement } from '@shared/enums';
     providedIn: 'root',
 })
 export class LoadStoreService {
-    constructor(
-        private store: Store,
-        private modalService: ModalService,
-        private router: Router
-    ) {}
+    constructor(private store: Store) {}
 
     public loadsSelector$: Observable<ILoadModel[]> = this.store.pipe(
         select(LoadSelectors.selectLoads)
@@ -85,12 +74,16 @@ export class LoadStoreService {
     }
 
     public onOpenModal(modal: ILoadModal): void {
-        this.modalService.openModal(NewLoadModalComponent, {}, modal);
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
+            modal,
+        });
     }
 
     public navigateToLoadDetails(id: number): void {
-        this.router.navigate([
-            `/${eLoadRouting.LIST}/${id}/${eLoadRouting.DETAILS}`,
-        ]);
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GO_TO_LOAD_DETIALS,
+            id,
+        });
     }
 }

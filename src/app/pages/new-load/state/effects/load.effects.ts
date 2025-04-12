@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { Router } from '@angular/router';
 
 // rxjs
 import { exhaustMap, map, withLatestFrom } from 'rxjs/operators';
@@ -13,19 +14,30 @@ import * as LoadActions from '@pages/new-load/state/actions/load.actions';
 
 // Service
 import { LoadService } from '@pages/new-load/services/load.service';
+import { ModalService } from '@shared/services';
 
 // Selector
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
 
+// Components
+import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
+
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+import { eLoadRouting } from '@pages/new-load/enums';
 
 @Injectable()
 export class LoadEffect {
     constructor(
-        private actions$: Actions,
+        // Services
+        private modalService: ModalService,
         private loadService: LoadService,
-        private store: Store
+
+        // Store
+        private actions$: Actions,
+        private store: Store,
+
+        private router: Router
     ) {}
 
     public getLoadList$ = createEffect(() =>
@@ -68,5 +80,33 @@ export class LoadEffect {
                 );
             })
         )
+    );
+
+    public onOpenLoadModal$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(LoadActions.onOpenLoadModal),
+                map(({ modal }) =>
+                    this.modalService.openModal(
+                        NewLoadModalComponent,
+                        {},
+                        modal
+                    )
+                )
+            ),
+        { dispatch: false }
+    );
+
+    public goToLoadDetails$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(LoadActions.onLoadDetailsAction),
+                map(({ id }) => {
+                    this.router.navigate([
+                        `/${eLoadRouting.LIST}/${id}/${eLoadRouting.DETAILS}`,
+                    ]);
+                })
+            ),
+        { dispatch: false }
     );
 }
