@@ -17,7 +17,6 @@ import {
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Models
-import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
 import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
 
 // Services
@@ -34,18 +33,12 @@ import {
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
     CaSearchMultipleStates2Component,
-    IFilterAction,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
-
-// Constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants';
 
 // Helpers
-import { FilterHelper } from '@shared/utils/helpers';
 import { LoadTableHelper } from '@pages/load/pages/load-table/utils/helpers';
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
@@ -117,7 +110,7 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
 
         switch (action) {
             case eGeneralActions.OPEN_MODAL:
-                this.handleOpenModal();
+                this.onCreateNewLoad();
                 break;
 
             case eGeneralActions.TAB_SELECTED:
@@ -224,19 +217,18 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
             );
     }
 
-    private onLoadTypeChange(mode: string) {
+    private onLoadTypeChange(mode: string): void {
         this.selectedTab = mode as eLoadStatusStringType;
         this.loadStoreService.dispatchLoadTypeChange(eLoadStatusType[mode]);
     }
 
-    private onViewModeChange(viewMode: string) {
+    private onViewModeChange(viewMode: string): void {
         this.loadStoreService.dispatchViewModeChange(
             viewMode as eCommonElement
         );
     }
 
-    private handleOpenModal(): void {
-        // TODO: Maybe move?
+    private onCreateNewLoad(): void {
         const modalData: ILoadModal = {
             isEdit: false,
             id: null,
