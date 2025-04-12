@@ -8,12 +8,14 @@
     class="d-flex w-100 h-34 background-white p-x-4 m-t-6 m-b-12 br-3 justify-content-between align-items-center disable-text-selection"
 >
     <div class="d-flex justify-content-start align-items-center">
-        <div class="text-color-black text-size-16 ta-font-extra-bold mx-1">
+        <div
+            class="dropdown-wrapper position-relative text-color-black text-size-16 ta-font-extra-bold mx-1"
+        >
             <ca-toolbar-dropdown
                 [dropdownOptions]="
                     load | createLoadAdditionalInfoDropdownOptions
                 "
-                (handleDropdownItemSelectEmitter)="onDropdownItemSelect($event)"
+                (onDropdownItemSelect)="onDropdownItemSelect($event)"
             ></ca-toolbar-dropdown>
         </div>
         @if (!isSearchActive) {
