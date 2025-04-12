@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 // Interfaces
 import { ILoadModel } from '@pages/new-load/interfaces';
@@ -26,7 +27,7 @@ import { ITableData } from '@shared/models';
 import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
 
 // Enums
-import { eLoadStatusStringType } from '@pages/new-load/enums';
+import { eLoadRouting, eLoadStatusStringType } from '@pages/new-load/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement } from '@shared/enums';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -37,7 +38,8 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 export class LoadStoreService {
     constructor(
         private store: Store,
-        private modalService: ModalService
+        private modalService: ModalService,
+        private router: Router
     ) {}
 
     public loadsSelector$: Observable<ILoadModel[]> = this.store.pipe(
@@ -77,5 +79,11 @@ export class LoadStoreService {
 
     public onOpenModal(modal: ILoadModal): void {
         this.modalService.openModal(NewLoadModalComponent, {}, modal);
+    }
+
+    public navigateToLoadDetails(id: number): void {
+        this.router.navigate([
+            `/${eLoadRouting.LIST}/${id}/${eLoadRouting.DETAILS}`,
+        ]);
     }
 }

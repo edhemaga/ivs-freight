@@ -15,6 +15,7 @@ export const getLoadByIdSuccessResult = function (
     state: ILoadState,
     a: LoadListResponse
 ): ILoadState {
+    console.log('getLoadByIdSuccessResult');
     return {
         ...state,
         loads: a.pagination.data,
@@ -26,6 +27,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
     state: ILoadState,
     selectedTabValue: eLoadStatusType
 ): ILoadState {
+    console.log('getLoadsPayloadOnTabTypeChange');
     return {
         ...state,
         selectedTabValue,
@@ -37,6 +39,7 @@ export const getViewModeChange = function (
     state: ILoadState,
     activeViewMode: eCommonElement
 ): ILoadState {
+    console.log('getViewModeChange');
     return {
         ...state,
         activeViewMode,

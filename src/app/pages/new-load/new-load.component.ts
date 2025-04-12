@@ -87,19 +87,15 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     public eLoadStatusStringType = eLoadStatusStringType;
     public generalActions = eGeneralActions;
 
+    // Shared routes
+    public sharedIcons = SharedSvgRoutes;
+
     public selectedTab = eLoadStatusStringType.ACTIVE;
-
-    // filter
-    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
-
     private isToolbarDropdownMenuColumnsActive: boolean = false;
     public isTableLocked: boolean = false;
 
     // dropdown
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
-
-    // icons
-    public sharedIcons = SharedSvgRoutes;
 
     constructor(
         // router
@@ -148,6 +144,15 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     }
 
     public handleShowMoreAction(): void {}
+
+    public onSearchQueryChange(query: string[]): void {
+        // TODO remove, for easier emitted data preview
+        console.log(query);
+    }
+
+    public navigateToLoadDetails(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
+    }
 
     public updateToolbarDropdownMenuContent(action?: string): void {
         if (!action) {
@@ -220,6 +225,7 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     }
 
     private onLoadTypeChange(mode: string) {
+        this.selectedTab = mode as eLoadStatusStringType;
         this.loadStoreService.dispatchLoadTypeChange(eLoadStatusType[mode]);
     }
 
@@ -230,6 +236,7 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     }
 
     private handleOpenModal(): void {
+        // TODO: Maybe move?
         const modalData: ILoadModal = {
             isEdit: false,
             id: null,
@@ -237,10 +244,5 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
         };
 
         this.loadStoreService.onOpenModal(modalData);
-    }
-
-    public onSearchQueryChange(query: string[]): void {
-        // TODO remove, for easier emitted data preview
-        console.log(query);
     }
 }

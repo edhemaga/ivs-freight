@@ -38,6 +38,8 @@ export class LoadEffect {
                 this.store.select(LoadSelectors.selectedTabValueSelector)
             ),
             exhaustMap(([action, mode]) => {
+                console.log('Trying to update load list');
+
                 const request$ =
                     mode === eLoadStatusType.Template
                         ? this.loadService.getLoadTemplateList()
