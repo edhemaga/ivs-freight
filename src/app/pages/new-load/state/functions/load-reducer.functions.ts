@@ -1,31 +1,15 @@
 // Interfaces
 import { ILoadState } from '@pages/new-load/interfaces';
-import { ITableData } from '@shared/models';
+
+// Models
 import { LoadListResponse } from 'appcoretruckassist';
 
-const updateTabsCount = (
-    listResponse: LoadListResponse,
-    toolbarTabs: ITableData[]
-): ITableData[] => {
-    return [
-        {
-            ...toolbarTabs[0],
-            length: listResponse.templateCount,
-        },
-        {
-            ...toolbarTabs[1],
-            length: listResponse.pendingCount,
-        },
-        {
-            ...toolbarTabs[2],
-            length: listResponse.activeCount,
-        },
-        {
-            ...toolbarTabs[3],
-            length: listResponse.closedCount,
-        },
-    ];
-};
+// Enums
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+import { eCommonElement } from '@shared/enums';
+
+// Helper
+import { LoadHelper } from '@pages/new-load/utils/helpers';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
@@ -34,6 +18,27 @@ export const getLoadByIdSuccessResult = function (
     return {
         ...state,
         loads: a.pagination.data,
-        toolbarTabs: updateTabsCount(a, state.toolbarTabs),
+        toolbarTabs: LoadHelper.updateTabsCount(a, state.toolbarTabs),
+    };
+};
+
+export const getLoadsPayloadOnTabTypeChange = function (
+    state: ILoadState,
+    selectedTabValue: eLoadStatusType
+): ILoadState {
+    return {
+        ...state,
+        selectedTabValue,
+        selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
+    };
+};
+
+export const getViewModeChange = function (
+    state: ILoadState,
+    activeViewMode: eCommonElement
+): ILoadState {
+    return {
+        ...state,
+        activeViewMode,
     };
 };

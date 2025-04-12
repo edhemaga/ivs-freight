@@ -15,6 +15,7 @@ export const selectLoads = createSelector(
     (state: ILoadState) => state.loads
 );
 
+//#region Tabs
 export const toolbarTabsSelector = createSelector(
     selectMilesState,
     (state: ILoadState) => state.toolbarTabs
@@ -25,7 +26,16 @@ export const selectedTabSelector = createSelector(
     (state: ILoadState) => state.selectedTab
 );
 
+export const selectedTabValueSelector = createSelector(
+    selectMilesState,
+    (state: ILoadState) => state.selectedTabValue
+);
+//#endregion
+
+//#region View: CARD | LIST
 export const activeViewModeSelector = createSelector(
     selectMilesState,
     (state: ILoadState) => state.activeViewMode
 );
+
+//#endregion

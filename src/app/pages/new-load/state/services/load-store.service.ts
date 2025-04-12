@@ -13,21 +13,32 @@ import {
     toolbarTabsSelector,
 } from '@pages/new-load/state/selectors/load.selectors';
 
+// Services
+import { ModalService } from '@shared/services';
+
 // Const
 import { LoadStoreConstants } from '@pages/new-load/utils/constants/load-store.constants';
 
 // Models
 import { ITableData } from '@shared/models';
 
+// Components
+import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
+
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
-import { eActiveViewMode } from '@shared/enums';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+import { eCommonElement } from '@shared/enums';
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 @Injectable({
     providedIn: 'root',
 })
 export class LoadStoreService {
-    constructor(private store: Store) {}
+    constructor(
+        private store: Store,
+        private modalService: ModalService
+    ) {}
 
     public loadsSelector$: Observable<ILoadModel[]> = this.store.pipe(
         select(selectLoads)
@@ -48,5 +59,23 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DISPATCH_LOAD_LIST,
         });
+    }
+
+    public dispatchLoadTypeChange(mode: eLoadStatusType): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_DISPATCH_LOAD_TYPE_CHANGE,
+            mode,
+        });
+    }
+
+    public dispatchViewModeChange(viewMode: eCommonElement): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_DISPATCH_VIEW_MODE_CHANGE,
+            viewMode,
+        });
+    }
+
+    public onOpenModal(modal: ILoadModal): void {
+        this.modalService.openModal(NewLoadModalComponent, {}, modal);
     }
 }

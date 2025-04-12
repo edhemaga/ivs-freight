@@ -9,6 +9,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import {
+    eCommonElement,
     eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
@@ -124,25 +125,13 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
                 break;
 
             case eGeneralActions.TAB_SELECTED:
-                this.handleTabSelected(mode);
+                this.onLoadTypeChange(mode);
                 break;
 
             case eGeneralActions.VIEW_MODE:
-                this.handleViewModeChange(mode);
+                this.onViewModeChange(mode);
                 break;
         }
-    }
-
-    public setFilters(filters: IFilterAction): void {
-        const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
-
-        // this.loadStoreService.dispatchGetList(
-        //     {
-        //         ...FilterHelper.mapFilters(filters, this.filter),
-        //         statusType: selectedTab,
-        //     },
-        //     selectedTab
-        // );
     }
 
     public handleToolbarDropdownMenuActions<T>(
@@ -215,16 +204,6 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
         );
     }
 
-    private handleOpenModal(): void {
-        const modalData: ILoadModal = {
-            isEdit: false,
-            id: null,
-            isTemplate: this.selectedTab === eLoadStatusStringType.TEMPLATE,
-        };
-
-        // this.loadStoreService.onOpenModal(modalData);
-    }
-
     private setToolbarDropdownMenuContent(
         selectedTab: string,
         isTableLocked: boolean,
@@ -240,37 +219,24 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
             );
     }
 
-    private handleTabSelected(mode: string): void {
-        this.selectedTab = mode as eLoadStatusStringType;
-        this.resetFilters();
-        this.getLoadStatusFilter();
+    private onLoadTypeChange(mode: string) {
+        this.loadStoreService.dispatchLoadTypeChange(eLoadStatusType[mode]);
     }
 
-    private resetFilters(): void {
-        this.filter = {
-            statusType: eLoadStatusType[this.selectedTab],
-            pageIndex: 1,
-            pageSize: 25,
+    private onViewModeChange(viewMode: string) {
+        this.loadStoreService.dispatchViewModeChange(
+            viewMode as eCommonElement
+        );
+    }
+
+    private handleOpenModal(): void {
+        const modalData: ILoadModal = {
+            isEdit: false,
+            id: null,
+            isTemplate: this.selectedTab === eLoadStatusStringType.TEMPLATE,
         };
-    }
 
-    private handleViewModeChange(mode: string): void {
-        console.log(mode);
-        // this.loadStoreService.dispatchSetActiveViewMode(eActiveViewMode[mode]);
-    }
-
-    private getLoadStatusFilter(): void {
-        // if (this.selectedTab === eLoadStatusStringType.TEMPLATE) {
-        //     this.loadStoreService.dispatchLoadTemplateList(this.filter);
-        // } else {
-        //     this.loadStoreService.loadDispatchFilters({
-        //         loadStatusType: this.selectedTab,
-        //     });
-        //     this.loadStoreService.dispatchGetList(
-        //         this.filter,
-        //         eLoadStatusType[this.selectedTab]
-        //     );
-        // }
+        this.loadStoreService.onOpenModal(modalData);
     }
 
     public onSearchQueryChange(query: string[]): void {

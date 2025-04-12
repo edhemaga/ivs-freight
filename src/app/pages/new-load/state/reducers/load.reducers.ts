@@ -15,19 +15,30 @@ import { LoadToolbarTabs } from '@pages/new-load/utils/constants/load-toolbar-ta
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
-import { TableStringEnum } from '@shared/enums';
+import { eCommonElement } from '@shared/enums';
+import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 export const initialState: ILoadState = {
     loads: [],
 
     toolbarTabs: LoadToolbarTabs,
     selectedTab: eLoadStatusStringType.ACTIVE,
-    activeViewMode: TableStringEnum.LIST,
+    selectedTabValue: eLoadStatusType.Active,
+
+    activeViewMode: eCommonElement.LIST,
 };
 
 export const loadReducer = createReducer(
     initialState,
     on(LoadActions.getLoadsPayloadSuccess, (state, { payload }) =>
         Functions.getLoadByIdSuccessResult(state, payload)
+    ),
+
+    on(LoadActions.getLoadsPayloadOnTabTypeChange, (state, { mode }) =>
+        Functions.getLoadsPayloadOnTabTypeChange(state, mode)
+    ),
+
+    on(LoadActions.getViewModeChange, (state, { viewMode }) =>
+        Functions.getViewModeChange(state, viewMode)
     )
 );

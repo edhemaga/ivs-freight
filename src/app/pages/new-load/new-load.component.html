@@ -195,4 +195,8 @@
 
         <ng-template #rightSide></ng-template>
     </app-new-table-toolbar>
+
+    @for (a of store.loads; track a.id) {
+        {{ a.id }} <br />
+    }
 }
