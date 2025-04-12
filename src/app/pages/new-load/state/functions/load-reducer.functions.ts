@@ -13,13 +13,16 @@ import { LoadHelper } from '@pages/new-load/utils/helpers';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
-    a: LoadListResponse
+    loadResponse: LoadListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
     return {
         ...state,
-        loads: a.pagination.data,
-        toolbarTabs: LoadHelper.updateTabsCount(a, state.toolbarTabs),
+        loads: LoadHelper.loadMapper(loadResponse.pagination.data),
+        toolbarTabs: LoadHelper.updateTabsCount(
+            loadResponse,
+            state.toolbarTabs
+        ),
     };
 };
 
@@ -30,7 +33,6 @@ export const getLoadsPayloadOnTabTypeChange = function (
     console.log('getLoadsPayloadOnTabTypeChange');
     return {
         ...state,
-        selectedTabValue,
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
     };
 };

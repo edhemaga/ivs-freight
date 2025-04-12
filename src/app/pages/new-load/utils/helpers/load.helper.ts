@@ -13,7 +13,13 @@ import { LoadListDto, LoadListResponse } from 'appcoretruckassist';
 
 export class LoadHelper {
     static loadMapper(loads: LoadListDto[]): ILoadModel[] {
-        return loads;
+        return loads.map((load) => {
+            return {
+                id: load.id,
+                loadNumber: load.loadNumber,
+                status: load.status,
+            };
+        });
     }
 
     static updateTabsCount = (

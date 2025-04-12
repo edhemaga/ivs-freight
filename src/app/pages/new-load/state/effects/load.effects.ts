@@ -14,9 +14,6 @@ import { LoadService } from '@pages/new-load/services/load.service';
 // Selector
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
 
-// Helpers
-import { LoadHelper } from '@pages/new-load/utils/helpers';
-
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
@@ -35,24 +32,21 @@ export class LoadEffect {
                 LoadActions.getLoadsPayloadOnTabTypeChange
             ),
             withLatestFrom(
-                this.store.select(LoadSelectors.selectedTabValueSelector)
+                this.store.select(LoadSelectors.selectedTabSelector)
             ),
             exhaustMap(([action, mode]) => {
                 console.log('Trying to update load list');
-
-                const request$ =
-                    mode === eLoadStatusType.Template
-                        ? this.loadService.getLoadTemplateList()
-                        : this.loadService.getLoadList(mode);
+                const tabValue = eLoadStatusType[mode];
 
                 // TODO: Use this request somehow
-                if (mode === eLoadStatusType.Template) {
+                const request$ =
+                    tabValue === eLoadStatusType.Template
+                        ? this.loadService.getLoadTemplateList()
+                        : this.loadService.getLoadList(tabValue);
+
+                if (tabValue === eLoadStatusType.Template) {
                     return this.loadService.getLoadTemplateList().pipe(
                         map((response) => {
-                            const loads = LoadHelper.loadMapper(
-                                response.pagination.data
-                            );
-
                             return LoadActions.getLoadsPayloadSuccess({
                                 payload: response,
                             });
@@ -60,12 +54,8 @@ export class LoadEffect {
                     );
                 }
 
-                return this.loadService.getLoadList(mode).pipe(
+                return this.loadService.getLoadList(tabValue).pipe(
                     map((response) => {
-                        const loads = LoadHelper.loadMapper(
-                            response.pagination.data
-                        );
-
                         return LoadActions.getLoadsPayloadSuccess({
                             payload: response,
                         });

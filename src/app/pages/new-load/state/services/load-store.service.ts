@@ -4,15 +4,12 @@ import { Observable } from 'rxjs';
 import { Router } from '@angular/router';
 
 // Interfaces
-import { ILoadModel } from '@pages/new-load/interfaces';
+import { ILoadModel, ILoadPageFilters } from '@pages/new-load/interfaces';
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Selectors
-import {
-    activeViewModeSelector,
-    selectedTabSelector,
-    selectLoads,
-    toolbarTabsSelector,
-} from '@pages/new-load/state/selectors/load.selectors';
+import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
 
 // Services
 import { ModalService } from '@shared/services';
@@ -30,7 +27,6 @@ import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-
 import { eLoadRouting, eLoadStatusStringType } from '@pages/new-load/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement } from '@shared/enums';
-import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 @Injectable({
     providedIn: 'root',
@@ -43,18 +39,25 @@ export class LoadStoreService {
     ) {}
 
     public loadsSelector$: Observable<ILoadModel[]> = this.store.pipe(
-        select(selectLoads)
+        select(LoadSelectors.selectLoads)
     );
 
     public toolbarTabsSelector$: Observable<ITableData[]> = this.store.pipe(
-        select(toolbarTabsSelector)
+        select(LoadSelectors.toolbarTabsSelector)
     );
 
     public selectedTabSelector$: Observable<eLoadStatusStringType> =
-        this.store.pipe(select(selectedTabSelector));
+        this.store.pipe(select(LoadSelectors.selectedTabSelector));
 
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
-        select(activeViewModeSelector)
+        select(LoadSelectors.activeViewModeSelector)
+    );
+
+    public filtersDropdownListSelector$: Observable<ILoadPageFilters> =
+        this.store.pipe(select(LoadSelectors.filtersDropdownListSelector));
+
+    public tableColumnsSelector$: Observable<ITableColumn[]> = this.store.pipe(
+        select(LoadSelectors.tableColumnsSelector)
     );
 
     public dispatchLoadList(): void {

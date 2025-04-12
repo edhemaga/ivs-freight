@@ -3,6 +3,8 @@
         selectedTab: loadStoreService.selectedTabSelector$ | async,
         toolbarTabs: loadStoreService.toolbarTabsSelector$ | async,
         activeViewMode: loadStoreService.activeViewModeSelector$ | async,
+        filtersDropdownList:
+            loadStoreService.filtersDropdownListSelector$ | async,
     };
 
 @if (store) {
@@ -66,7 +68,7 @@
                     >
                     </app-ca-filter-time-dropdown>
 
-                    <app-ca-filter-list-dropdown
+                    <!-- <app-ca-filter-list-dropdown
                         type="Dispatcher"
                         [list]="store.dispatcherList"
                         [entityType]="selectedTab"
@@ -80,7 +82,7 @@
                         [entityType]="selectedTab"
                         (setFilter)="setFilters($event)"
                     >
-                    </app-ca-filter-list-dropdown>
+                    </app-ca-filter-list-dropdown> -->
                 }
 
                 <app-ca-filter

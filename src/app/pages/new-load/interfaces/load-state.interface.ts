@@ -1,12 +1,12 @@
 // Interfaces
-import { ILoadModel } from '@pages/new-load/interfaces';
+import { ILoadModel, ILoadPageFilters } from '@pages/new-load/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Models
 import { ITableData } from '@shared/models';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
-import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement } from '@shared/enums';
 
 export interface ILoadState {
@@ -15,8 +15,13 @@ export interface ILoadState {
     // Main tabs
     toolbarTabs: ITableData[];
     selectedTab: eLoadStatusStringType;
-    selectedTabValue: eLoadStatusType;
 
-    // Active table view
+    // Active table view CARD | TABLE
     activeViewMode: eCommonElement;
+
+    // Filters
+    filtersDropdownList: ILoadPageFilters;
+
+    // Table
+    tableColumns: ITableColumn[];
 }

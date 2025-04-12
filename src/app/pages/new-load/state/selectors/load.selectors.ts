@@ -7,35 +7,46 @@ import { ILoadState } from '@pages/new-load/interfaces';
 // It has to have same name as in StoreModule.forRoot inside app module
 export const loadsFeatureKey: string = 'newLoad';
 
-export const selectMilesState =
+export const selectLoadState =
     createFeatureSelector<ILoadState>(loadsFeatureKey);
 
 export const selectLoads = createSelector(
-    selectMilesState,
+    selectLoadState,
     (state: ILoadState) => state.loads
 );
 
 //#region Tabs
 export const toolbarTabsSelector = createSelector(
-    selectMilesState,
+    selectLoadState,
     (state: ILoadState) => state.toolbarTabs
 );
 
 export const selectedTabSelector = createSelector(
-    selectMilesState,
+    selectLoadState,
     (state: ILoadState) => state.selectedTab
 );
 
-export const selectedTabValueSelector = createSelector(
-    selectMilesState,
-    (state: ILoadState) => state.selectedTabValue
-);
 //#endregion
 
 //#region View: CARD | LIST
 export const activeViewModeSelector = createSelector(
-    selectMilesState,
+    selectLoadState,
     (state: ILoadState) => state.activeViewMode
 );
 
+//#endregion
+
+//#region Filters
+export const filtersDropdownListSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.filtersDropdownList
+);
+
+//#endregion
+
+//#region Table
+export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
+    const { tableColumns } = state;
+    return tableColumns;
+});
 //#endregion

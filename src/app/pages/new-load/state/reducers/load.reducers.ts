@@ -12,20 +12,23 @@ import { ILoadState } from '@pages/new-load/interfaces';
 
 // Constants
 import { LoadToolbarTabs } from '@pages/new-load/utils/constants/load-toolbar-tabs.constants';
+import { LoadTableColumns } from '@pages/load/pages/load-table/utils/constants';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { eCommonElement } from '@shared/enums';
-import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 export const initialState: ILoadState = {
     loads: [],
 
     toolbarTabs: LoadToolbarTabs,
     selectedTab: eLoadStatusStringType.ACTIVE,
-    selectedTabValue: eLoadStatusType.Active,
 
     activeViewMode: eCommonElement.LIST,
+
+    filtersDropdownList: {},
+
+    tableColumns: LoadTableColumns,
 };
 
 export const loadReducer = createReducer(
