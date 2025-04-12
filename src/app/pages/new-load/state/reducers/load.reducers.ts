@@ -26,15 +26,26 @@ export const initialState: ILoadState = {
 
     activeViewMode: eCommonElement.LIST,
 
-    filtersDropdownList: {},
+    filtersDropdownList: {
+        dispatcherFilters: [],
+        statusFilters: [],
+    },
 
     tableColumns: LoadTableColumns,
 };
 
 export const loadReducer = createReducer(
     initialState,
-    on(LoadActions.getLoadsPayloadSuccess, (state, { payload }) =>
-        Functions.getLoadByIdSuccessResult(state, payload)
+
+    on(
+        LoadActions.getLoadsPayloadSuccess,
+        (state, { payload, dispatcherFilters, statusFilters }) =>
+            Functions.getLoadByIdSuccessResult(
+                state,
+                payload,
+                dispatcherFilters,
+                statusFilters
+            )
     ),
 
     on(LoadActions.getLoadsPayloadOnTabTypeChange, (state, { mode }) =>

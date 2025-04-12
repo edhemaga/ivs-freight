@@ -1,14 +1,22 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 // rxjs
 import { Observable } from 'rxjs';
 
 // Models
-import { LoadListResponse, LoadTemplateListResponse } from 'appcoretruckassist';
+import {
+    DispatcherFilterResponse,
+    LoadListResponse,
+    LoadStatusFilterResponse,
+    LoadTemplateListResponse,
+} from 'appcoretruckassist';
 
 // Environment
 import { environment } from 'src/environments/environment';
+
+// Enums
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -25,6 +33,22 @@ export class LoadService {
     public getLoadTemplateList(): Observable<LoadTemplateListResponse> {
         return this.http.get(
             `${environment.API_ENDPOINT}/api/load/template/list`
+        );
+    }
+
+    public getStatusFilters(
+        loadStatusType: eLoadStatusStringType
+    ): Observable<LoadStatusFilterResponse[]> {
+        return this.http.get<LoadStatusFilterResponse[]>(
+            `${environment.API_ENDPOINT}/api/load/status/filter?loadStatusType=${loadStatusType}`
+        );
+    }
+
+    public getDispatcherFilters(
+        loadStatusType: eLoadStatusStringType
+    ): Observable<DispatcherFilterResponse[]> {
+        return this.http.get<DispatcherFilterResponse[]>(
+            `${environment.API_ENDPOINT}/api/load/dispatcher/filter?LoadStatusType=${loadStatusType}`
         );
     }
 }

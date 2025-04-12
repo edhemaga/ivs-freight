@@ -2,7 +2,11 @@
 import { ILoadState } from '@pages/new-load/interfaces';
 
 // Models
-import { LoadListResponse } from 'appcoretruckassist';
+import {
+    DispatcherFilterResponse,
+    LoadListResponse,
+    LoadStatusFilterResponse,
+} from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
@@ -10,15 +14,22 @@ import { eCommonElement } from '@shared/enums';
 
 // Helper
 import { LoadHelper } from '@pages/new-load/utils/helpers';
+import { FilterHelper } from '@shared/utils/helpers';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
-    loadResponse: LoadListResponse
+    loadResponse: LoadListResponse,
+    dispatcherFilters: DispatcherFilterResponse[],
+    statusFilters: LoadStatusFilterResponse[]
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
     return {
         ...state,
         loads: LoadHelper.loadMapper(loadResponse.pagination.data),
+        filtersDropdownList: {
+            dispatcherFilters: FilterHelper.dispatcherFilter(dispatcherFilters),
+            statusFilters,
+        },
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs

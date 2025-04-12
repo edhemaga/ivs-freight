@@ -68,9 +68,9 @@
                     >
                     </app-ca-filter-time-dropdown>
 
-                    <!-- <app-ca-filter-list-dropdown
+                    <app-ca-filter-list-dropdown
                         type="Dispatcher"
-                        [list]="store.dispatcherList"
+                        [list]="store.filtersDropdownList.dispatcherFilters"
                         [entityType]="selectedTab"
                         (setFilter)="setFilters($event)"
                     >
@@ -78,11 +78,11 @@
 
                     <app-ca-filter-list-dropdown
                         type="Status"
-                        [list]="store.statusList"
+                        [list]="store.filtersDropdownList.statusFilters"
                         [entityType]="selectedTab"
                         (setFilter)="setFilters($event)"
                     >
-                    </app-ca-filter-list-dropdown> -->
+                    </app-ca-filter-list-dropdown>
                 }
 
                 <app-ca-filter
