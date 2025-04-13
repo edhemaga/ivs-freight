@@ -1,6 +1,6 @@
 import { LoadStatusResponse } from 'appcoretruckassist';
 
-export interface ILoadMappedModel {
+export interface IMappedLoad {
     loadNumber: string;
     id: number;
     status: LoadStatusResponse;

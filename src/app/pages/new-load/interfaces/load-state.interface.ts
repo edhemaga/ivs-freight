@@ -2,7 +2,7 @@
 import {
     ILoadDetails,
     ILoadDetailsLoadMinimalList,
-    ILoadMappedModel,
+    IMappedLoad,
     ILoadPageFilters,
 } from '@pages/new-load/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
@@ -16,7 +16,7 @@ import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { eCommonElement } from '@shared/enums';
 
 export interface ILoadState {
-    loads: ILoadMappedModel[];
+    loads: IMappedLoad[];
 
     // Main tabs
     toolbarTabs: ITableData[];
