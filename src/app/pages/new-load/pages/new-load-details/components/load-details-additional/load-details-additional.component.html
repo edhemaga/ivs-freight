@@ -54,8 +54,21 @@
 >
     @switch (displayedSection) {
         @case (eLoadDetailsGeneral.COMMENTS) {
+            <div class="w-100">
+                <app-ca-tab-switch
+                    [tabs]="commentTabs"
+                    [type]="'type4-modal-popup'"
+                    (switchClicked)="onItemSelected($event)"
+                >
+                </app-ca-tab-switch>
+            </div>
             <app-ta-comments-search
-                [commentsData]="comments | createLoadComment: commentFilter"
+                [commentsData]="
+                    comments
+                        | createLoadComment
+                            : commentFilter
+                            : isDriverButtonSelected
+                "
                 [isDisplaySearch]="isSearchActive"
                 [isHeaderHidden]="isHeaderHidden"
                 (onActionEmitter)="onCommentAction($event, load.id)"
