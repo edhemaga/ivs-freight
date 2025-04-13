@@ -21,7 +21,7 @@ import { environment } from 'src/environments/environment';
 import { IStateFilters } from '@shared/interfaces';
 
 // Helpers
-import { LoadHelper } from '@pages/new-load/utils/helpers';
+import { LoadQueryHelper } from '@pages/new-load/utils/helpers';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
@@ -36,7 +36,10 @@ export class LoadService {
         statusType: number,
         filters: IStateFilters
     ): Observable<LoadListResponse> {
-        const params = LoadHelper.mapLoadListQueryParams(statusType, filters);
+        const params = LoadQueryHelper.mapLoadListQueryParams(
+            statusType,
+            filters
+        );
 
         return this.http.get<LoadListResponse>(
             `${environment.API_ENDPOINT}/api/load/list`,
@@ -46,7 +49,7 @@ export class LoadService {
     public getLoadTemplateList(
         filters: IStateFilters
     ): Observable<LoadTemplateListResponse> {
-        const params = LoadHelper.mapLoadListQueryParams(0, filters);
+        const params = LoadQueryHelper.mapLoadListQueryParams(0, filters);
 
         return this.http.get(
             `${environment.API_ENDPOINT}/api/load/template/list`,

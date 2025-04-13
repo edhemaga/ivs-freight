@@ -19,7 +19,7 @@ import { ITableColumn } from '@shared/components/new-table/interface';
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
 
 // Const
-import { LoadStoreConstants } from '@pages/new-load/utils/constants/load-store.constants';
+import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 
 // Models
 import { ITableData } from '@shared/models';

@@ -1,4 +1,4 @@
-import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+// Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Models

@@ -15,7 +15,7 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement } from '@shared/enums';
 
 // Helper
-import { LoadHelper } from '@pages/new-load/utils/helpers';
+import { LoadHelper, LoadStoreHelper } from '@pages/new-load/utils/helpers';
 import { FilterHelper } from '@shared/utils/helpers';
 
 // Ca components
@@ -109,7 +109,7 @@ export function onGetLoadByIdSuccess(
     minimalList: LoadMinimalListResponse
 ): ILoadState {
     console.log('onGetLoadByIdSuccess');
-    return setLoadDetailsState(
+    return LoadStoreHelper.setLoadDetailsState(
         (state = {
             ...state,
             minimalList,
@@ -121,12 +121,12 @@ export function onGetLoadByIdSuccess(
 
 export function onGetLoadById(state: ILoadState): ILoadState {
     console.log('onGetLoadById');
-    return setLoadDetailsState(state, {}, true);
+    return LoadStoreHelper.setLoadDetailsState(state, {}, true);
 }
 
 export function onGetLoadByIdError(state: ILoadState): ILoadState {
     console.log('onGetLoadByIdError');
-    return setLoadDetailsState(state, {}, false);
+    return LoadStoreHelper.setLoadDetailsState(state, {}, false);
 }
 
 export function onMapVisiblityToggle(state: ILoadState): ILoadState {
@@ -142,33 +142,4 @@ export function onMapVisiblityToggle(state: ILoadState): ILoadState {
     };
 }
 
-function setLoadDetailsState(
-    state: ILoadState,
-    data: LoadResponse,
-    isLoading: boolean
-): ILoadState {
-    const stops = data?.stops || [];
-
-    const isFirstStopDeadhead = stops[0]?.stopType?.id === 0;
-
-    const stopCount = stops.length - (isFirstStopDeadhead ? 1 : 0);
-
-    const extraStopCount =
-        stops.length <= 2
-            ? 0
-            : isFirstStopDeadhead
-              ? stops.length - 3
-              : stops.length - 2;
-
-    return {
-        ...state,
-        details: {
-            data,
-            isLoading,
-            isMapOpen: true,
-            stopCount,
-            extraStopCount,
-        },
-    };
-}
 //#endregion

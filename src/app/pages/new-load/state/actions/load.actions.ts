@@ -6,7 +6,7 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement } from '@shared/enums';
 
 // Const
-import { LoadStoreConstants } from '@pages/new-load/utils/constants/load-store.constants';
+import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 
 // Models
 import {

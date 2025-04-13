@@ -11,8 +11,10 @@ import * as Functions from '@pages/new-load/state/functions/load-reducer.functio
 import { ILoadState } from '@pages/new-load/interfaces';
 
 // Constants
-import { LoadToolbarTabs } from '@pages/new-load/utils/constants/load-toolbar-tabs.constants';
-import { LoadTableColumns } from '@pages/load/pages/load-table/utils/constants';
+import { LoadToolbarTabs } from '@pages/new-load/utils/constants';
+
+// Config
+import { LoadTableColumns } from '@pages/new-load/utils/config';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';

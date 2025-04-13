@@ -15,7 +15,7 @@ import { eActiveViewMode } from '@shared/enums';
 import * as Functions from '@pages/load/pages/load-table/utils/functions/load-reducer.functions';
 
 // Helpers
-import { LoadTableColumns } from '@pages/load/pages/load-table/utils/constants';
+import { LoadTableColumns } from '@pages/new-load/utils/config';
 
 // #region initialState
 export const initialState: ILoadState = {

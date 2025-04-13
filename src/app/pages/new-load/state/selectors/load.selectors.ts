@@ -63,6 +63,7 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
 //#region Details
 export const loadDetailsSelector = createSelector(selectLoadState, (state) => {
     const { details } = state;
+    console.log('loadDetailsSelectorloadDetailsSelector');
     return details;
 });
 
@@ -70,6 +71,9 @@ export const loadStatusHistoryReversedSelector = createSelector(
     selectLoadState,
     (state) => {
         const { details } = state;
+        console.log(
+            'loadStatusHistoryReversedSelectorloadStatusHistoryReversedSelector'
+        );
         const statusHistory = details.data.statusHistory;
 
         return statusHistory?.slice()?.reverse();
@@ -79,6 +83,9 @@ export const loadStatusHistoryReversedSelector = createSelector(
 export const groupedByStatusTypeListSelector = createSelector(
     selectLoadState,
     (state) => {
+        console.log(
+            'groupedByStatusTypeListSelectorgroupedByStatusTypeListSelector'
+        );
         let groupedByStatusType;
         const data = state.minimalList?.pagination?.data;
 
