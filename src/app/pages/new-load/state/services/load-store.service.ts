@@ -120,14 +120,14 @@ export class LoadStoreService {
         });
     }
 
-    public dispatchGetLoadDetails(id: number) {
+    public dispatchGetLoadDetails(id: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_LOAD_BY_ID,
             id,
         });
     }
 
-    public toggleMap() {
+    public toggleMap(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TOGGLE_MAP,
         });
