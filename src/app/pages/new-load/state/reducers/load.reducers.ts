@@ -43,6 +43,7 @@ export const initialState: ILoadState = {
         stopCount: 0,
         extraStopCount: 0,
         reveresedHistory: [],
+        mapRoutes: {},
     },
 
     minimalList: {
@@ -91,8 +92,10 @@ export const loadReducer = createReducer(
     //#region Details
     on(LoadActions.onGetLoadById, (state) => Functions.onGetLoadById(state)),
 
-    on(LoadActions.onGetLoadByIdSuccess, (state, { load, minimalList }) =>
-        Functions.onGetLoadByIdSuccess(state, load, minimalList)
+    on(
+        LoadActions.onGetLoadByIdSuccess,
+        (state, { load, minimalList, mapRoutes }) =>
+            Functions.onGetLoadByIdSuccess(state, load, minimalList, mapRoutes)
     ),
 
     on(LoadActions.onGetLoadByIdError, (state) =>

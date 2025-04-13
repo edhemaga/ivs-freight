@@ -2,7 +2,13 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 // rxjs
-import { catchError, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import {
+    catchError,
+    exhaustMap,
+    map,
+    switchMap,
+    withLatestFrom,
+} from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 
 // ngrx
@@ -150,9 +156,26 @@ export class LoadEffect {
                     minimalList:
                         this.loadService.apiGetLoadDetailsMinimalList(),
                 }).pipe(
-                    map(({ load, minimalList }) =>
-                        LoadActions.onGetLoadByIdSuccess({ load, minimalList })
-                    ),
+                    switchMap(({ load, minimalList }) => {
+                        const mapLocations = load.stops.map(
+                            ({ shipper: { longitude, latitude } }) => ({
+                                longitude,
+                                latitude,
+                            })
+                        );
+
+                        return this.loadService
+                            .apiGetLoadDetailsRouting(mapLocations)
+                            .pipe(
+                                map((mapRoutes) =>
+                                    LoadActions.onGetLoadByIdSuccess({
+                                        load,
+                                        minimalList,
+                                        mapRoutes,
+                                    })
+                                )
+                            );
+                    }),
                     catchError((error) => {
                         this.router.navigate([`/${eLoadRouting.LIST}`]);
                         return of(LoadActions.onGetLoadByIdError());

@@ -2,7 +2,21 @@
 import { ILoadState } from '@pages/new-load/interfaces';
 
 // Models
-import { LoadMinimalListResponse, LoadResponse } from 'appcoretruckassist';
+import {
+    LoadMinimalListResponse,
+    LoadResponse,
+    LoadStopResponse,
+    RoutingResponse,
+} from 'appcoretruckassist';
+
+// Ca components
+import {
+    IMapMarkers,
+    IMapRoutePath,
+    MapMarkerIconHelper,
+    MapOptionsConstants,
+    ICaMapProps,
+} from 'ca-components';
 
 export class LoadStoreHelper {
     static groupedByStatusTypeList(
@@ -27,7 +41,8 @@ export class LoadStoreHelper {
     static setLoadDetailsState(
         state: ILoadState,
         data: LoadResponse,
-        isLoading: boolean
+        isLoading: boolean,
+        mapRoutes: ICaMapProps
     ): ILoadState {
         console.log('setLoadDetailsState');
         const stops = data?.stops || [];
@@ -52,7 +67,64 @@ export class LoadStoreHelper {
                 stopCount,
                 extraStopCount,
                 reveresedHistory: data.statusHistory?.slice()?.reverse(),
+                mapRoutes,
             },
         };
+    }
+
+    static mapRouting(mapRoutes: RoutingResponse, stops: LoadStopResponse[]) {
+        let routeMarkers: IMapMarkers[] = [];
+        let routePaths: IMapRoutePath[] = [];
+
+        stops?.map((loadStop, index) => {
+            const routeMarker: IMapMarkers = {
+                position: {
+                    lat: loadStop.shipper.latitude,
+                    lng: loadStop.shipper.longitude,
+                },
+                content: MapMarkerIconHelper.getRoutingMarkerElement(
+                    loadStop.stopLoadOrder ?? 0,
+                    loadStop.stopType.name.toLowerCase(),
+                    loadStop.stopType.name === 'DeadHead' || !!loadStop.arrive,
+                    true,
+                    !loadStop.arrive ? loadStop.shipper.businessName : null,
+                    false,
+                    true,
+                    index
+                ),
+                hasClickEvent: true,
+            };
+
+            routeMarkers = [...routeMarkers, routeMarker];
+
+            if (index > 0) {
+                const isDashedPath =
+                    stops?.[index - 1]?.stopType?.name === 'DeadHead';
+                const routeColor = !!loadStop.arrive
+                    ? MapOptionsConstants.ROUTING_PATH_COLORS.darkgray
+                    : MapOptionsConstants.ROUTING_PATH_COLORS.gray;
+
+                const routePath: IMapRoutePath = {
+                    path: [],
+                    decodedShape: mapRoutes?.legs?.[index - 1]?.decodedShape,
+                    strokeColor: routeColor,
+                    strokeOpacity: 1,
+                    strokeWeight: 4,
+                    isDashed: isDashedPath,
+                };
+
+                routePaths = [...routePaths, routePath];
+            }
+        });
+
+        return {
+            markers: [],
+            clusterMarkers: [],
+            darkMode: false,
+            isZoomShown: true,
+            isVerticalZoom: true,
+            routingMarkers: routeMarkers,
+            routePaths: routePaths,
+        } as ICaMapProps;
     }
 }

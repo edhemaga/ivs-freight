@@ -1,4 +1,8 @@
+// Models
 import { LoadResponse, LoadStatusHistoryResponse } from 'appcoretruckassist';
+
+// Ca components
+import { ICaMapProps } from 'ca-components';
 
 export interface ILoadDetails {
     data: LoadResponse;
@@ -7,4 +11,5 @@ export interface ILoadDetails {
     stopCount: number;
     extraStopCount: number;
     reveresedHistory: LoadStatusHistoryResponse[];
+    mapRoutes: ICaMapProps;
 }

@@ -8,6 +8,7 @@ import {
     LoadMinimalListResponse,
     LoadResponse,
     LoadStatusFilterResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 
 // Enums
@@ -106,7 +107,8 @@ export function onSeachFilterChange(
 export function onGetLoadByIdSuccess(
     state: ILoadState,
     data: LoadResponse,
-    minimalList: LoadMinimalListResponse
+    minimalList: LoadMinimalListResponse,
+    mapRoutes: RoutingResponse
 ): ILoadState {
     console.log('onGetLoadByIdSuccess');
     return LoadStoreHelper.setLoadDetailsState(
@@ -119,18 +121,19 @@ export function onGetLoadByIdSuccess(
             },
         }),
         data,
-        false
+        false,
+        LoadStoreHelper.mapRouting(mapRoutes, data.stops)
     );
 }
 
 export function onGetLoadById(state: ILoadState): ILoadState {
     console.log('onGetLoadById');
-    return LoadStoreHelper.setLoadDetailsState(state, {}, true);
+    return LoadStoreHelper.setLoadDetailsState(state, {}, true, {});
 }
 
 export function onGetLoadByIdError(state: ILoadState): ILoadState {
     console.log('onGetLoadByIdError');
-    return LoadStoreHelper.setLoadDetailsState(state, {}, false);
+    return LoadStoreHelper.setLoadDetailsState(state, {}, false, {});
 }
 
 export function onMapVisiblityToggle(state: ILoadState): ILoadState {

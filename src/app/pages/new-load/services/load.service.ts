@@ -12,6 +12,7 @@ import {
     LoadResponse,
     LoadStatusFilterResponse,
     LoadTemplateListResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 
 // Environment
@@ -79,9 +80,13 @@ export class LoadService {
         );
     }
 
-    public apiGetLoadDetailsRouting(id: number): Observable<LoadResponse> {
-        return this.http.get<LoadResponse>(
-            `${environment.API_ENDPOINT}/api/routing`
+    public apiGetLoadDetailsRouting(
+        locations: { longitude: number; latitude: number }[]
+    ): Observable<RoutingResponse> {
+        const locationParam = encodeURIComponent(JSON.stringify(locations));
+
+        return this.http.get<RoutingResponse>(
+            `${environment.API_ENDPOINT}/api/routing?Locations=${locationParam}`
         );
     }
 

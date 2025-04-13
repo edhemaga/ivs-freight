@@ -3,6 +3,7 @@
 @let isLoading = loadDetailsSelector.isLoading;
 @let isPendingLoad = load.statusType?.id === 1;
 @let isMapOpen = loadDetailsSelector.isMapOpen;
+@let mapData = loadDetailsSelector.mapRoutes;
 @let stopCount = loadDetailsSelector.stopCount;
 @let extraStopCount = loadDetailsSelector.extraStopCount;
 
@@ -865,8 +866,6 @@
 </ng-template>
 
 <ng-template #mapTemplate>
-    @let mapData = loadStoreService.loadDetailsMapData$ | async;
-
     @if (isMapOpen) {
         <div
             class="d-flex justify-content-center align-items-center br-3 p-6 pt-0 h-486"

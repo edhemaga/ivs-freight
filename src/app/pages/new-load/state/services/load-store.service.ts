@@ -24,11 +24,6 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 
 // Models
 import { ITableData } from '@shared/models';
-import {
-    LoadMinimalListResponse,
-    LoadStatusHistoryResponse,
-} from 'appcoretruckassist';
-
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';

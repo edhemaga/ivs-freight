@@ -15,6 +15,7 @@ import {
     LoadMinimalListResponse,
     LoadResponse,
     LoadStatusFilterResponse,
+    RoutingResponse,
 } from 'appcoretruckassist';
 
 // Interface
@@ -105,6 +106,7 @@ export const onGetLoadByIdSuccess = createAction(
     props<{
         load: LoadResponse;
         minimalList: LoadMinimalListResponse;
+        mapRoutes: RoutingResponse;
     }>()
 );
 
