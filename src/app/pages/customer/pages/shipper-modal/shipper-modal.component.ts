@@ -937,38 +937,22 @@ export class ShipperModalComponent
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : res.receivingFrom
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.receivingFrom
-                                    )
-                                  : null,
+                                : res.receivingFrom,
                         receivingTo:
                             res.receivingAppointment &&
                             res.receivingOpenTwentyFourHours
                                 ? null
-                                : res.receivingTo
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.receivingTo
-                                    )
-                                  : null,
+                                : res.receivingTo,
                         shippingFrom:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : res.shippingFrom
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.shippingFrom
-                                    )
-                                  : null,
+                                : res.shippingFrom,
                         shippingTo:
                             res.shippingHoursSameReceiving &&
                             res.shippingAppointment
                                 ? null
-                                : res.shippingTo
-                                  ? MethodsCalculationsHelper.convertTimeFromBackend(
-                                        res.shippingTo
-                                    )
-                                  : null,
+                                : res.shippingTo,
                         note: res.note,
                         contacts: this.mapContacts(res.shipperContacts, true),
                         addressUnit: res?.address?.addressUnit,
