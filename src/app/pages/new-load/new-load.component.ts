@@ -9,7 +9,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import {
-    eActiveViewMode,
+    eCommonElement,
     eDropdownMenu,
     eDropdownMenuColumns,
     eGeneralActions,
@@ -17,11 +17,10 @@ import {
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Models
-import { IGetLoadListParam } from '@pages/load/pages/load-table/models';
 import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
 
 // Services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 import { ModalService } from '@shared/services/modal.service';
@@ -39,13 +38,8 @@ import {
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
-
-// Constants
-import { TableDropdownComponentConstants } from '@shared/utils/constants';
 
 // Helpers
-import { FilterHelper } from '@shared/utils/helpers';
 import { LoadTableHelper } from '@pages/load/pages/load-table/utils/helpers';
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
@@ -87,19 +81,15 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     public eLoadStatusStringType = eLoadStatusStringType;
     public generalActions = eGeneralActions;
 
+    // Shared routes
+    public sharedIcons = SharedSvgRoutes;
+
     public selectedTab = eLoadStatusStringType.ACTIVE;
-
-    // filter
-    private filter: IGetLoadListParam = TableDropdownComponentConstants.FILTER;
-
     private isToolbarDropdownMenuColumnsActive: boolean = false;
     public isTableLocked: boolean = false;
 
     // dropdown
     public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
-
-    // icons
-    public sharedIcons = SharedSvgRoutes;
 
     constructor(
         // router
@@ -121,29 +111,17 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
 
         switch (action) {
             case eGeneralActions.OPEN_MODAL:
-                this.handleOpenModal();
+                this.onCreateNewLoad();
                 break;
 
             case eGeneralActions.TAB_SELECTED:
-                this.handleTabSelected(mode);
+                this.onLoadTypeChange(mode);
                 break;
 
             case eGeneralActions.VIEW_MODE:
-                this.handleViewModeChange(mode);
+                this.onViewModeChange(mode);
                 break;
         }
-    }
-
-    public setFilters(filters: IFilterAction): void {
-        const selectedTab: eLoadStatusType = eLoadStatusType[this.selectedTab];
-
-        this.loadStoreService.dispatchGetList(
-            {
-                ...FilterHelper.mapFilters(filters, this.filter),
-                statusType: selectedTab,
-            },
-            selectedTab
-        );
     }
 
     public handleToolbarDropdownMenuActions<T>(
@@ -160,6 +138,18 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     }
 
     public handleShowMoreAction(): void {}
+
+    public onSearchQueryChange(query: string[]): void {
+        this.loadStoreService.dispatchSearchChange(query);
+    }
+
+    public setFilters(filters: IFilterAction): void {
+        this.loadStoreService.dispatchFiltersChange(filters);
+    }
+
+    public navigateToLoadDetails(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
+    }
 
     public updateToolbarDropdownMenuContent(action?: string): void {
         if (!action) {
@@ -216,16 +206,6 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
         );
     }
 
-    private handleOpenModal(): void {
-        const modalData: ILoadModal = {
-            isEdit: false,
-            id: null,
-            isTemplate: this.selectedTab === eLoadStatusStringType.TEMPLATE,
-        };
-
-        this.loadStoreService.onOpenModal(modalData);
-    }
-
     private setToolbarDropdownMenuContent(
         selectedTab: string,
         isTableLocked: boolean,
@@ -241,41 +221,24 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
             );
     }
 
-    private handleTabSelected(mode: string): void {
+    private onLoadTypeChange(mode: string): void {
         this.selectedTab = mode as eLoadStatusStringType;
-        this.resetFilters();
-        this.getLoadStatusFilter();
+        this.loadStoreService.dispatchLoadTypeChange(eLoadStatusType[mode]);
     }
 
-    private resetFilters(): void {
-        this.filter = {
-            statusType: eLoadStatusType[this.selectedTab],
-            pageIndex: 1,
-            pageSize: 25,
+    private onViewModeChange(viewMode: string): void {
+        this.loadStoreService.dispatchViewModeChange(
+            viewMode as eCommonElement
+        );
+    }
+
+    private onCreateNewLoad(): void {
+        const modalData: ILoadModal = {
+            isEdit: false,
+            id: null,
+            isTemplate: this.selectedTab === eLoadStatusStringType.TEMPLATE,
         };
-    }
 
-    private handleViewModeChange(mode: string): void {
-        this.loadStoreService.dispatchSetActiveViewMode(eActiveViewMode[mode]);
-    }
-
-    private getLoadStatusFilter(): void {
-        if (this.selectedTab === eLoadStatusStringType.TEMPLATE) {
-            this.loadStoreService.dispatchLoadTemplateList(this.filter);
-        } else {
-            this.loadStoreService.loadDispatchFilters({
-                loadStatusType: this.selectedTab,
-            });
-
-            this.loadStoreService.dispatchGetList(
-                this.filter,
-                eLoadStatusType[this.selectedTab]
-            );
-        }
-    }
-
-    public onSearchQueryChange(query: string[]): void {
-        // TODO remove, for easier emitted data preview
-        console.log(query);
+        this.loadStoreService.onOpenModal(modalData);
     }
 }

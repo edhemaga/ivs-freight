@@ -1,14 +1,10 @@
 @let store =
     {
-        viewData: loadStoreService.viewData$ | async,
-        tableData: loadStoreService.tableData$ | async,
-        activeTableData: loadStoreService.activeTableData$ | async,
-        activeViewMode: loadStoreService.activeViewMode$ | async,
-        dispatcherList: loadStoreService.dispatcherList$ | async,
-        statusList: loadStoreService.statusList$ | async,
-        selectedCount: loadStoreService.selectedCount$ | async,
-        selectLoadRateSum: loadStoreService.selectLoadRateSum$ | async,
-        totalLoadSum: loadStoreService.totalLoadSum$ | async,
+        selectedTab: loadStoreService.selectedTabSelector$ | async,
+        toolbarTabs: loadStoreService.toolbarTabsSelector$ | async,
+        activeViewMode: loadStoreService.activeViewModeSelector$ | async,
+        filtersDropdownList:
+            loadStoreService.filtersDropdownListSelector$ | async,
     };
 
 @if (store) {
@@ -27,15 +23,16 @@
         <ng-template #leftSide>
             <app-toolbar-tabs-wrapper
                 class="d-flex align-items-center"
-                [data]="store.tableData"
-                [selectedTab]="selectedTab"
-                [viewMode]="loadStoreService.activeViewMode$ | async"
+                [data]="store.toolbarTabs"
+                [selectedTab]="store.selectedTab"
+                [viewMode]="store.activeViewMode"
                 [betweenTabsTemplate]="betweenTabsTemplate"
                 (onTabChange)="onToolBarAction($event)"
             ></app-toolbar-tabs-wrapper>
 
             <ng-template #betweenTabsTemplate>
-                @if (selectedTab !== 'Template') {
+                <!-- TODO:  MISSING IN NEW STORE 
+                 @if (selectedTab !== 'Template') {
                     <div
                         class="text-color-blue-18 text-size-14 ta-font-bold br-2 p-x-10 p-y-4"
                         [ngClass]="{
@@ -50,11 +47,10 @@
                     </div>
 
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
-                }
+                } -->
             </ng-template>
 
             <ng-container *ngTemplateOutlet="divider"></ng-container>
-            <!-- TODO Property name 'selectedTab' can be changed, if more use cases come around -->
             <ca-search-multiple-states-2
                 [selectedTab]="selectedTab"
                 (onSearchQueryChange)="onSearchQueryChange($event)"
@@ -74,7 +70,7 @@
 
                     <app-ca-filter-list-dropdown
                         type="Dispatcher"
-                        [list]="store.dispatcherList"
+                        [list]="store.filtersDropdownList.dispatcherFilters"
                         [entityType]="selectedTab"
                         (setFilter)="setFilters($event)"
                     >
@@ -82,7 +78,7 @@
 
                     <app-ca-filter-list-dropdown
                         type="Status"
-                        [list]="store.statusList"
+                        [list]="store.filtersDropdownList.statusFilters"
                         [entityType]="selectedTab"
                         (setFilter)="setFilters($event)"
                     >
@@ -103,6 +99,8 @@
                 </app-ca-filter>
             </div>
 
+            <!-- TODO: MISSING IN NEW STORE 
+             
             @if (
                 selectedTab === eLoadStatusStringType.TEMPLATE &&
                 store.selectedCount
@@ -113,7 +111,7 @@
                 >
                     {{ store.selectedCount }} Selected
                 </div>
-            }
+            } -->
         </ng-template>
 
         <ng-template #rightSide>
@@ -121,7 +119,6 @@
                 @let isPending = selectedTab === eLoadStatusStringType.PENDING;
                 @let isTemplate =
                     selectedTab === eLoadStatusStringType.TEMPLATE;
-                <!-- Only template and pending loads can be deleted -->
                 @if (isPending || isTemplate) {
                     <svg-icon
                         [src]="sharedIcons.DELETE_ICON"
@@ -145,7 +142,6 @@
             </div>
             <ng-container *ngTemplateOutlet="divider"></ng-container>
         </ng-template>
-
         <ng-template #divider>
             <div class="new-table--toolbar-divider">
                 <div
@@ -155,6 +151,7 @@
         </ng-template>
     </app-new-table-toolbar>
 
+    <!-- TODO: Should this be moved to separete routes? -->
     @if (store?.activeViewMode === 'List') {
         <app-new-load-table></app-new-load-table>
     } @else {

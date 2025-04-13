@@ -2,8 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
 // resolvers
-import { NewLoadDetailsResolver } from '@pages/new-load/resolvers/new-load-details.resolver';
-import { LoadResolver } from '@pages/load/resolvers/load.resolver';
+import { loadDetailsResolver } from '@pages/new-load/resolvers/load-details.resolver';
+import { LoadResolver } from '@pages/new-load/resolvers/load.resolver';
 
 // enums
 import { eLoadRouting } from '@pages/new-load/enums';
@@ -27,7 +27,7 @@ const routes: Routes = [
             import(
                 '@pages/new-load/pages/new-load-details/new-load-details.component'
             ).then((c) => c.NewLoadDetailsComponent),
-        resolve: { data: NewLoadDetailsResolver },
+        resolve: { data: loadDetailsResolver },
     },
 ];
 
