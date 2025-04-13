@@ -28,6 +28,52 @@ export class LoadModalInputConfigPipe implements PipeTransform {
                 };
 
                 break;
+
+            case 'companyInputConfig':
+                config = {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Company',
+                    isDropdown: true,
+                    dropdownWidthClass: 'w-col-230',
+                    isRequired: true,
+                };
+
+                break;
+
+            case 'referenceNumberConfig':
+                config = {
+                    name: 'Reference No.',
+                    type: 'text',
+                    label: 'Reference No.',
+                    isRequired: !isTemplate,
+                    isDisabled: isTemplate,
+                    textTransform: 'uppercase',
+                    minLength: 2,
+                    maxLength: 16,
+                };
+
+                break;
+
+            case 'dispatcherInputConfig':
+                config = {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    label: 'Dispatcher',
+                    isDropdown: true,
+                    isRequired: !isTemplate,
+                    dropdownImageInput: {
+                        withText: true,
+                        svg: false,
+                        image: true,
+                        url: 'logoName',
+                        template: 'user',
+                    },
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-230 load-dispatcher-wrapper',
+                };
+
+                break;
         }
 
         return config;

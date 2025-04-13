@@ -24,6 +24,9 @@ import {
 // Models
 import { Tabs } from '@ca-shared/models/tabs.model';
 
+// Helpers
+import { LoadModalFormHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
+
 export class LoadModalHelper {
     static getLoadTypeTabs(): Tabs[] {
         return [
@@ -70,7 +73,9 @@ export class LoadModalHelper {
         return new UntypedFormGroup({
             name: new UntypedFormControl(
                 isTemplate ? (load as LoadTemplateResponse)?.name : null,
-                isTemplate ? Validators.required : null
+                isTemplate
+                    ? [Validators.required, Validators.maxLength(24)]
+                    : null
             ),
             dispatcherId: new UntypedFormControl(
                 load?.dispatcher?.id ?? null,
@@ -86,7 +91,7 @@ export class LoadModalHelper {
             ),
             referenceNumber: new UntypedFormControl(
                 load?.referenceNumber ?? null,
-                Validators.required
+                LoadModalFormHelper.referenceNumberValidators(isTemplate)
             ),
             baseRate: new UntypedFormControl(
                 load?.baseRate ?? null,
@@ -148,11 +153,19 @@ export class LoadModalHelper {
         isTemplate: boolean
     ): void {
         const nameControl = loadForm.get(eLoadModalForm.NAME);
+        const referenceNumber = loadForm.get(eLoadModalForm.REFERENCE_NUMBER);
         const dispatcherControl = loadForm.get(eLoadModalForm.DISPATCHER_ID);
 
         if (nameControl) {
             nameControl.setValidators(isTemplate ? Validators.required : null);
             nameControl.updateValueAndValidity();
+        }
+
+        if (referenceNumber) {
+            referenceNumber.setValidators(
+                LoadModalFormHelper.referenceNumberValidators(isTemplate)
+            );
+            referenceNumber.reset();
         }
 
         if (dispatcherControl) {

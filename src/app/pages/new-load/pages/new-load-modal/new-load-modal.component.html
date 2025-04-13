@@ -25,14 +25,28 @@
                     >
                     </app-ca-tab-switch>
 
+                    @let dispatcherInputConfig =
+                        { configType: 'dispatcherInputConfig', isTemplate }
+                            | loadModalInputConfig;
+
                     @if (isTemplate) {
+                        @let templateNameInputConfig =
+                            { configType: 'templateNameConfig', isTemplate }
+                                | loadModalInputConfig;
+
                         <ca-input-test
                             formControlName="name"
-                            [inputConfig]="
-                                { configType: 'templateNameConfig', isTemplate }
-                                    | loadModalInputConfig
-                            "
+                            [inputConfig]="templateNameInputConfig"
                         ></ca-input-test>
+
+                        <ca-input-dropdown-test
+                            formControlName="dispatcherId"
+                            optionValue="id"
+                            template="load-dispatcher"
+                            label="fullName"
+                            [options]="dropdownList.dispatchers"
+                            [inputConfig]="dispatcherInputConfig"
+                        ></ca-input-dropdown-test>
                     } @else {
                         @let templateButtonConfig =
                             {
@@ -79,25 +93,31 @@
                             template="load-dispatcher"
                             label="fullName"
                             [options]="dropdownList.dispatchers"
-                            [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
+                            [inputConfig]="dispatcherInputConfig"
+                        ></ca-input-dropdown-test>
+
+                        @let companyInputConfig =
+                            { configType: 'companyInputConfig', isTemplate }
+                                | loadModalInputConfig;
+
+                        <ca-input-dropdown-test
+                            formControlName="companyId"
+                            optionValue="id"
+                            label="companyName"
+                            [options]="dropdownList.companies"
+                            [inputConfig]="companyInputConfig"
                         ></ca-input-dropdown-test>
                     }
-
-                    <ca-input-dropdown-test
-                        formControlName="companyId"
-                        optionValue="id"
-                        label="companyName"
-                        [options]="dropdownList.companies"
-                        [inputConfig]="
-                            LoadModalConfig.LOAD_COMPANY_INPUT_CONFIG
-                        "
-                    ></ca-input-dropdown-test>
                 </div>
 
                 <div class="d-grid d-grid-reference m-t-26">
+                    @let referenceNumberInputConfig =
+                        { configType: 'referenceNumberConfig', isTemplate }
+                            | loadModalInputConfig;
+
                     <ca-input-test
                         formControlName="referenceNumber"
-                        [inputConfig]="LoadModalConfig.LOAD_REFERENCE_NUMBER"
+                        [inputConfig]="referenceNumberInputConfig"
                     ></ca-input-test>
 
                     <ca-input-dropdown-test
