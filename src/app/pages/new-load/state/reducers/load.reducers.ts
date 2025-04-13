@@ -42,6 +42,7 @@ export const loadReducer = createReducer(
         Functions.getLoadByIdSuccessResult(state, payload)
     ),
 
+    //#region Toolbar tabs
     on(LoadActions.getLoadsPayloadOnTabTypeChange, (state, { mode }) =>
         Functions.getLoadsPayloadOnTabTypeChange(state, mode)
     ),
@@ -49,7 +50,9 @@ export const loadReducer = createReducer(
     on(LoadActions.getViewModeChange, (state, { viewMode }) =>
         Functions.getViewModeChange(state, viewMode)
     ),
+    //#endregion
 
+    //#region Filters
     on(LoadActions.onFiltersChange, (state, { filters }) =>
         Functions.onFiltersChange(state, filters)
     ),
@@ -62,5 +65,10 @@ export const loadReducer = createReducer(
                 dispatcherFilters,
                 statusFilters
             )
+    ),
+
+    on(LoadActions.onSeachFilterChange, (state, { query }) =>
+        Functions.onSeachFilterChange(state, query)
     )
+    //#endregion
 );

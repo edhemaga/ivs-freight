@@ -117,7 +117,10 @@ export class LoadEffect {
 
     public getLoadsOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(LoadActions.onFiltersChange),
+            ofType(
+                LoadActions.onFiltersChange,
+                LoadActions.onSeachFilterChange
+            ),
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector),
                 this.store.select(LoadSelectors.filtersSelector)

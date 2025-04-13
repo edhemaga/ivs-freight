@@ -81,3 +81,17 @@ export function setFilterDropdownList(
         },
     };
 }
+
+export function onSeachFilterChange(
+    state: ILoadState,
+    searchQuery: string[]
+): ILoadState {
+    console.log('onSeachFilterChange');
+    return {
+        ...state,
+        filters: {
+            ...state.filters,
+            searchQuery,
+        },
+    };
+}

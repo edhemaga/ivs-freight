@@ -21,6 +21,7 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 // Ca components
 import { IFilterAction } from 'ca-components';
 
+//#region List request
 export const getLoadsPayload = createAction(
     LoadStoreConstants.ACTION_DISPATCH_LOAD_LIST
 );
@@ -31,7 +32,9 @@ export const getLoadsPayloadSuccess = createAction(
         payload: LoadListResponse;
     }>()
 );
+//#endregion
 
+//#region Tabs
 export const getLoadsPayloadOnTabTypeChange = createAction(
     LoadStoreConstants.ACTION_DISPATCH_LOAD_TYPE_CHANGE,
     props<{
@@ -43,23 +46,6 @@ export const getViewModeChange = createAction(
     LoadStoreConstants.ACTION_DISPATCH_VIEW_MODE_CHANGE,
     props<{
         viewMode: eCommonElement;
-    }>()
-);
-
-//#region Modal
-export const onOpenLoadModal = createAction(
-    LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
-    props<{
-        modal: ILoadModal;
-    }>()
-);
-//#endregion
-
-//#region Load details
-export const onLoadDetailsAction = createAction(
-    LoadStoreConstants.ACTION_GO_TO_LOAD_DETIALS,
-    props<{
-        id: number;
     }>()
 );
 //#endregion
@@ -77,6 +63,31 @@ export const setFilterDropdownList = createAction(
     props<{
         dispatcherFilters: DispatcherFilterResponse[];
         statusFilters: LoadStatusFilterResponse[];
+    }>()
+);
+
+export const onSeachFilterChange = createAction(
+    LoadStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
+    props<{
+        query: string[];
+    }>()
+);
+//#endregion
+
+//#region Modal
+export const onOpenLoadModal = createAction(
+    LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
+    props<{
+        modal: ILoadModal;
+    }>()
+);
+//#endregion
+
+//#region Load details
+export const onLoadDetailsAction = createAction(
+    LoadStoreConstants.ACTION_GO_TO_LOAD_DETIALS,
+    props<{
+        id: number;
     }>()
 );
 //#endregion

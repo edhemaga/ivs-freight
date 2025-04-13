@@ -140,8 +140,7 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     public handleShowMoreAction(): void {}
 
     public onSearchQueryChange(query: string[]): void {
-        // TODO remove, for easier emitted data preview
-        console.log(query);
+        this.loadStoreService.dispatchSearchChange(query);
     }
 
     public setFilters(filters: IFilterAction): void {

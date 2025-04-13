@@ -96,4 +96,11 @@ export class LoadStoreService {
             filters,
         });
     }
+
+    public dispatchSearchChange(query: string[]): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
+            query,
+        });
+    }
 }
