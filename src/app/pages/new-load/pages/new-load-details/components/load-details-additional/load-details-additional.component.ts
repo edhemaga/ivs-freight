@@ -21,7 +21,7 @@ import {
 } from 'ca-components';
 
 // Services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // Enums
 import {
@@ -155,10 +155,10 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                 }
                 break;
             case eGeneralActions.DELETE:
-                this.loadStoreService.dispatchDeleteCommentById(
-                    commentData.commentId,
-                    loadId
-                );
+                // this.loadStoreService.dispatchDeleteCommentById(
+                //     commentData.commentId,
+                //     loadId
+                // );
                 break;
             default:
                 break;
@@ -167,7 +167,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
 
     public onSortAction(sortDirection: eSortDirection, loadId: number): void {
         if (!sortDirection) return;
-        this.loadStoreService.sortLoadComments(loadId, sortDirection);
+        // this.loadStoreService.sortLoadComments(loadId, sortDirection);
     }
 
     public onSearchHighlightAction(searchHighlightValue: string): void {
@@ -194,7 +194,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                 id: companyUserId,
             },
         };
-        this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
+        // this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
     }
 
     private editComment(
@@ -214,7 +214,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                 avatarFile: this.companyUser.avatarFile,
             },
         };
-        this.loadStoreService.dispatchUpdateComment(updatedComment);
+        // this.loadStoreService.dispatchUpdateComment(updatedComment);
     }
 
     public onDropdownItemSelect(event: iDropdownItem): void {

@@ -66,6 +66,16 @@ export const loadDetailsSelector = createSelector(selectLoadState, (state) => {
     return details;
 });
 
+export const loadStatusHistoryReversedSelector = createSelector(
+    selectLoadState,
+    (state) => {
+        const { details } = state;
+        const statusHistory = details.data.statusHistory;
+
+        return statusHistory?.slice()?.reverse();
+    }
+);
+
 export const groupedByStatusTypeListSelector = createSelector(
     selectLoadState,
     (state) => {

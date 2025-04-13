@@ -23,7 +23,10 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants/load-store.c
 
 // Models
 import { ITableData } from '@shared/models';
-import { LoadMinimalListResponse } from 'appcoretruckassist';
+import {
+    LoadMinimalListResponse,
+    LoadStatusHistoryResponse,
+} from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
@@ -63,6 +66,12 @@ export class LoadStoreService {
 
     public loadDetailsSelector$: Observable<ILoadDetails> = this.store.pipe(
         select(LoadSelectors.loadDetailsSelector)
+    );
+
+    public loadStatusHistoryReversedSelector$: Observable<
+        LoadStatusHistoryResponse[]
+    > = this.store.pipe(
+        select(LoadSelectors.loadStatusHistoryReversedSelector)
     );
 
     // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!

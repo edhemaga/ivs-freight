@@ -1,8 +1,10 @@
-@let load = loadStoreService.resolveLoadDetails$ | async;
+@let loadDetailsSelector = loadStoreService.loadDetailsSelector$ | async;
+@let load = loadDetailsSelector.data;
+@let isLoading = loadDetailsSelector.isLoading;
+@let comments = load?.comments;
 @let statusHistory = load?.statusHistory;
 @let reversedStatusHistory =
     loadStoreService.loadStatusHistoryReversedSelector$ | async;
-@let comments = load?.comments;
 
 <div
     class="d-flex w-100 h-34 background-white p-x-4 m-t-6 m-b-12 br-3 justify-content-between align-items-center disable-text-selection"
