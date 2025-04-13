@@ -83,11 +83,11 @@ export class LoadModalHelper {
             ),
             companyId: new UntypedFormControl(
                 load?.company?.id ?? null,
-                Validators.required
+                isTemplate ? null : Validators.required
             ),
             brokerId: new UntypedFormControl(
                 load?.broker?.id ?? null,
-                Validators.required
+                isTemplate ? null : Validators.required
             ),
             referenceNumber: new UntypedFormControl(
                 load?.referenceNumber ?? null,
@@ -153,19 +153,35 @@ export class LoadModalHelper {
         isTemplate: boolean
     ): void {
         const nameControl = loadForm.get(eLoadModalForm.NAME);
-        const referenceNumber = loadForm.get(eLoadModalForm.REFERENCE_NUMBER);
+        const referenceNumberControl = loadForm.get(
+            eLoadModalForm.REFERENCE_NUMBER
+        );
         const dispatcherControl = loadForm.get(eLoadModalForm.DISPATCHER_ID);
+        const companyId = loadForm.get(eLoadModalForm.COMPANY_ID);
+        const brokerControl = loadForm.get(eLoadModalForm.BROKER_ID);
 
         if (nameControl) {
             nameControl.setValidators(isTemplate ? Validators.required : null);
             nameControl.updateValueAndValidity();
         }
 
-        if (referenceNumber) {
-            referenceNumber.setValidators(
+        if (companyId) {
+            companyId.setValidators(isTemplate ? null : Validators.required);
+            companyId.updateValueAndValidity();
+        }
+
+        if (brokerControl) {
+            brokerControl.setValidators(
+                isTemplate ? null : Validators.required
+            );
+            brokerControl.updateValueAndValidity();
+        }
+
+        if (referenceNumberControl) {
+            referenceNumberControl.setValidators(
                 LoadModalFormHelper.referenceNumberValidators(isTemplate)
             );
-            referenceNumber.reset();
+            referenceNumberControl.reset();
         }
 
         if (dispatcherControl) {

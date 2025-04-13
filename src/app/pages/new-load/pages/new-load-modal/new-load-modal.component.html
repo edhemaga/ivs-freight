@@ -120,12 +120,15 @@
                         [inputConfig]="referenceNumberInputConfig"
                     ></ca-input-test>
 
+                    @let brokerInputConfig =
+                        { configType: 'brokerInputConfig', isTemplate }
+                            | loadModalInputConfig;
                     <ca-input-dropdown-test
                         formControlName="brokerId"
                         optionValue="id"
                         label="businessName"
                         template="load-broker"
-                        [inputConfig]="LoadModalConfig.LOAD_BROKER_INPUT_CONFIG"
+                        [inputConfig]="brokerInputConfig"
                         [canAddNew]="true"
                         [canOpenModal]="true"
                         [options]="dropdownList.brokers"

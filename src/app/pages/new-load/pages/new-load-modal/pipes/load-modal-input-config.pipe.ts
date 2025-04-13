@@ -74,6 +74,23 @@ export class LoadModalInputConfigPipe implements PipeTransform {
                 };
 
                 break;
+
+            case 'brokerInputConfig':
+                config = {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    multipleLabel: {
+                        labels: ['Broker', 'Credit'],
+                        customClass: 'load-broker hide-loads',
+                    },
+                    isDropdown: true,
+                    isRequired: !isTemplate,
+                    blackInput: false,
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-432',
+                };
+
+                break;
         }
 
         return config;
