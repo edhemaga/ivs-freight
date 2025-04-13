@@ -11,18 +11,25 @@ import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
     standalone: true,
 })
 export class LoadModalInputConfigPipe implements PipeTransform {
-    transform(args: ILoadModalConfigPipeArgs): ITaInput {
+    transform({ configType, isTemplate }: ILoadModalConfigPipeArgs): ITaInput {
         console.log('Calling pipe');
 
-        const { configType, isTemplate } = args;
+        let config: ITaInput;
 
-        if (configType === 'templateNameConfig') {
-            return {
-                name: 'Template Name',
-                label: 'Template Name',
-                type: 'text',
-                isRequired: isTemplate,
-            };
+        switch (configType) {
+            case 'templateNameConfig':
+                config = {
+                    name: 'Template Name',
+                    label: 'Template Name',
+                    type: 'text',
+                    minLength: 1,
+                    maxLength: 24,
+                    isRequired: isTemplate,
+                };
+
+                break;
         }
+
+        return config;
     }
 }
