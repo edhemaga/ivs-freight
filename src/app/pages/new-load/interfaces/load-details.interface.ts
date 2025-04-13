@@ -1,4 +1,4 @@
-import { LoadResponse } from 'appcoretruckassist';
+import { LoadResponse, LoadStatusHistoryResponse } from 'appcoretruckassist';
 
 export interface ILoadDetails {
     data: LoadResponse;
@@ -6,4 +6,5 @@ export interface ILoadDetails {
     isMapOpen: boolean;
     stopCount: number;
     extraStopCount: number;
+    reveresedHistory: LoadStatusHistoryResponse[];
 }

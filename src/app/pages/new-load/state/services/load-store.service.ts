@@ -9,6 +9,7 @@ import { Observable } from 'rxjs';
 // Interfaces
 import {
     ILoadDetails,
+    ILoadDetailsLoadMinimalList,
     ILoadModel,
     ILoadPageFilters,
 } from '@pages/new-load/interfaces';
@@ -68,19 +69,13 @@ export class LoadStoreService {
         select(LoadSelectors.loadDetailsSelector)
     );
 
-    public loadStatusHistoryReversedSelector$: Observable<
-        LoadStatusHistoryResponse[]
-    > = this.store.pipe(
-        select(LoadSelectors.loadStatusHistoryReversedSelector)
-    );
+    public minimalListSelector$: Observable<ILoadDetailsLoadMinimalList> =
+        this.store.pipe(select(LoadSelectors.minimalListSelector));
 
     // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!
     public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
         select(LoadSelectors.closedLoadStatusSelector)
     );
-
-    public groupedByStatusTypeListSelector$: Observable<LoadMinimalListResponse> =
-        this.store.pipe(select(LoadSelectors.groupedByStatusTypeListSelector));
 
     public dispatchLoadList(): void {
         this.store.dispatch({

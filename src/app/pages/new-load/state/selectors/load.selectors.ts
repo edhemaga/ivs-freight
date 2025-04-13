@@ -67,40 +67,11 @@ export const loadDetailsSelector = createSelector(selectLoadState, (state) => {
     return details;
 });
 
-export const loadStatusHistoryReversedSelector = createSelector(
-    selectLoadState,
-    (state) => {
-        const { details } = state;
-        console.log(
-            'loadStatusHistoryReversedSelectorloadStatusHistoryReversedSelector'
-        );
-        const statusHistory = details.data.statusHistory;
-
-        return statusHistory?.slice()?.reverse();
-    }
-);
-
-export const groupedByStatusTypeListSelector = createSelector(
-    selectLoadState,
-    (state) => {
-        console.log(
-            'groupedByStatusTypeListSelectorgroupedByStatusTypeListSelector'
-        );
-        let groupedByStatusType;
-        const data = state.minimalList?.pagination?.data;
-
-        if (data) {
-            groupedByStatusType = data?.reduce((acc, item) => {
-                const key = item.statusType.name;
-                acc[key] = acc[key] || [];
-                acc[key].push(item);
-                return acc;
-            }, {});
-        }
-
-        return groupedByStatusType;
-    }
-);
+export const minimalListSelector = createSelector(selectLoadState, (state) => {
+    const { minimalList } = state;
+    console.log('minimalListSelector');
+    return minimalList;
+});
 
 export const closedLoadStatusSelector = createSelector(
     selectLoadState,

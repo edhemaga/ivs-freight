@@ -42,9 +42,13 @@ export const initialState: ILoadState = {
         isMapOpen: true,
         stopCount: 0,
         extraStopCount: 0,
+        reveresedHistory: [],
     },
 
-    minimalList: {},
+    minimalList: {
+        pagination: {},
+        groupedByStatusTypeList: {},
+    },
 };
 
 export const loadReducer = createReducer(

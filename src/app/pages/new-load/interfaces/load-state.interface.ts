@@ -1,6 +1,7 @@
 // Interfaces
 import {
     ILoadDetails,
+    ILoadDetailsLoadMinimalList,
     ILoadModel,
     ILoadPageFilters,
 } from '@pages/new-load/interfaces';
@@ -9,7 +10,6 @@ import { IStateFilters } from '@shared/interfaces';
 
 // Models
 import { ITableData } from '@shared/models';
-import { LoadMinimalListResponse } from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
@@ -36,5 +36,5 @@ export interface ILoadState {
     details: ILoadDetails;
 
     // Minimal list
-    minimalList: LoadMinimalListResponse;
+    minimalList: ILoadDetailsLoadMinimalList;
 }

@@ -112,7 +112,11 @@ export function onGetLoadByIdSuccess(
     return LoadStoreHelper.setLoadDetailsState(
         (state = {
             ...state,
-            minimalList,
+            minimalList: {
+                pagination: minimalList,
+                groupedByStatusTypeList:
+                    LoadStoreHelper.groupedByStatusTypeList(minimalList),
+            },
         }),
         data,
         false

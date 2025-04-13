@@ -2,14 +2,34 @@
 import { ILoadState } from '@pages/new-load/interfaces';
 
 // Models
-import { LoadResponse } from 'appcoretruckassist';
+import { LoadMinimalListResponse, LoadResponse } from 'appcoretruckassist';
 
 export class LoadStoreHelper {
+    static groupedByStatusTypeList(
+        minimalList: LoadMinimalListResponse
+    ): Record<string, LoadMinimalListResponse[]> {
+        console.log('groupedByStatusTypeList');
+        let groupedByStatusType;
+        const data = minimalList?.pagination?.data;
+
+        if (data) {
+            groupedByStatusType = data?.reduce((acc, item) => {
+                const key = item.statusType.name;
+                acc[key] = acc[key] || [];
+                acc[key].push(item);
+                return acc;
+            }, {});
+        }
+
+        return groupedByStatusType;
+    }
+
     static setLoadDetailsState(
         state: ILoadState,
         data: LoadResponse,
         isLoading: boolean
     ): ILoadState {
+        console.log('setLoadDetailsState');
         const stops = data?.stops || [];
 
         const isFirstStopDeadhead = stops[0]?.stopType?.id === 0;
@@ -31,6 +51,7 @@ export class LoadStoreHelper {
                 isMapOpen: true,
                 stopCount,
                 extraStopCount,
+                reveresedHistory: data.statusHistory?.slice()?.reverse(),
             },
         };
     }

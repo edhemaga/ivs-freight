@@ -86,9 +86,11 @@ export class NewLoadDetailsComponent
         // TODO: Dragan, do we need this?
         this.loadStoreService.loadDetailsSelector$
             .pipe(takeUntil(this.destroy$))
-            .subscribe((res) =>
-                this.setDropdownMenuOptions(res?.data.statusType?.name)
-            );
+            .subscribe((res) => {
+                this.load = res.data;
+
+                this.setDropdownMenuOptions(res?.data.statusType?.name);
+            });
     }
 
     private setDropdownMenuOptions(statusType: string): void {
