@@ -137,14 +137,18 @@
                 </div>
 
                 <div class="d-grid d-grid-contact m-t-26">
+                    @let brokerContactInputConfig =
+                        {
+                            configType: 'brokerContactInputConfig',
+                            isTemplate,
+                        } | loadModalInputConfig;
+
                     <ca-input-dropdown-test
                         formControlName="brokerContact"
                         label="name"
                         optionValue="id"
                         template="load-broker-contact"
-                        [inputConfig]="
-                            LoadModalConfig.LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG
-                        "
+                        [inputConfig]="brokerContactInputConfig"
                         [options]="dropdownList.brokerContacts"
                     ></ca-input-dropdown-test>
 

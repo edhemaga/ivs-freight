@@ -91,6 +91,22 @@ export class LoadModalInputConfigPipe implements PipeTransform {
                 };
 
                 break;
+
+            case 'brokerContactInputConfig':
+                config = {
+                    name: 'Input Dropdown',
+                    type: 'text',
+                    multipleLabel: {
+                        labels: ['Contact', 'Phone'],
+                        customClass: 'load-broker-contact',
+                    },
+                    isDropdown: true,
+                    blackInput: false,
+                    textTransform: 'capitalize',
+                    dropdownWidthClass: 'w-col-308',
+                };
+
+                break;
         }
 
         return config;
