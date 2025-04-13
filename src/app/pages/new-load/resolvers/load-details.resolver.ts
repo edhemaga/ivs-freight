@@ -11,8 +11,7 @@ export class loadDetailsResolver {
     constructor(private loadStoreService: LoadStoreService) {}
 
     resolve(route: ActivatedRouteSnapshot): void {
-        return this.loadStoreService.dispatchGetLoadDetails(
-            parseInt(route.paramMap.get('id'))
-        );
+        const id = route.paramMap.get('id');
+        return this.loadStoreService.dispatchGetLoadDetails(parseInt(id));
     }
 }

@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import {
     ILoadDetails,
     ILoadDetailsLoadMinimalList,
-    ILoadModel,
+    ILoadMappedModel,
     ILoadPageFilters,
 } from '@pages/new-load/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -38,7 +38,7 @@ import { IFilterAction } from 'ca-components';
 export class LoadStoreService {
     constructor(private store: Store) {}
 
-    public loadsSelector$: Observable<ILoadModel[]> = this.store.pipe(
+    public loadsSelector$: Observable<ILoadMappedModel[]> = this.store.pipe(
         select(LoadSelectors.selectLoads)
     );
 

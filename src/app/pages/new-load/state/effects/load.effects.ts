@@ -29,7 +29,12 @@ import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
 import { NewLoadModalComponent } from '@pages/new-load/pages/new-load-modal/new-load-modal.component';
 
 // Models
-import { LoadTemplateListResponse, LoadListResponse } from 'appcoretruckassist';
+import {
+    LoadTemplateListResponse,
+    LoadListResponse,
+    DispatcherFilterResponse,
+    LoadStatusFilterResponse,
+} from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
@@ -194,8 +199,8 @@ export class LoadEffect {
         filters: IStateFilters
     ): Observable<{
         loadResponse: LoadTemplateListResponse | LoadListResponse;
-        dispatcherFilters: any[];
-        statusFilters: any[];
+        dispatcherFilters: DispatcherFilterResponse[];
+        statusFilters: LoadStatusFilterResponse[];
     }> {
         const tabValue = eLoadStatusType[mode];
         const isTemplate = tabValue === eLoadStatusType.Template;

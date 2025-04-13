@@ -3,7 +3,7 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Interfaces
-import { ILoadModel } from '@pages/new-load/interfaces';
+import { ILoadMappedModel } from '@pages/new-load/interfaces';
 
 // Models
 import { ITableData } from '@shared/models';
@@ -12,7 +12,7 @@ import { ITableData } from '@shared/models';
 import { LoadListDto, LoadListResponse } from 'appcoretruckassist';
 
 export class LoadHelper {
-    static loadMapper(loads: LoadListDto[]): ILoadModel[] {
+    static loadMapper(loads: LoadListDto[]): ILoadMappedModel[] {
         return loads.map((load) => {
             return {
                 id: load.id,
