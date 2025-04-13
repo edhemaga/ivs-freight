@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
 import {
     ILoadDetails,
     ILoadDetailsLoadMinimalList,
-    ILoadModel,
+    IMappedLoad,
     ILoadPageFilters,
 } from '@pages/new-load/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -38,7 +38,7 @@ import { IFilterAction } from 'ca-components';
 export class LoadStoreService {
     constructor(private store: Store) {}
 
-    public loadsSelector$: Observable<ILoadModel[]> = this.store.pipe(
+    public loadsSelector$: Observable<IMappedLoad[]> = this.store.pipe(
         select(LoadSelectors.selectLoads)
     );
 
@@ -120,14 +120,14 @@ export class LoadStoreService {
         });
     }
 
-    public dispatchGetLoadDetails(id: number) {
+    public dispatchGetLoadDetails(id: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GET_LOAD_BY_ID,
             id,
         });
     }
 
-    public toggleMap() {
+    public toggleMap(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TOGGLE_MAP,
         });
