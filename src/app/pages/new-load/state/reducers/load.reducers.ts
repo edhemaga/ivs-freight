@@ -33,6 +33,16 @@ export const initialState: ILoadState = {
     filters: {},
 
     tableColumns: LoadTableColumns,
+
+    details: {
+        data: {},
+        isLoading: true,
+        isMapOpen: true,
+        stopCount: 0,
+        extraStopCount: 0,
+    },
+
+    minimalList: {},
 };
 
 export const loadReducer = createReducer(
@@ -69,6 +79,22 @@ export const loadReducer = createReducer(
 
     on(LoadActions.onSeachFilterChange, (state, { query }) =>
         Functions.onSeachFilterChange(state, query)
+    ),
+    //#endregion
+
+    //#region Details
+    on(LoadActions.onGetLoadById, (state) => Functions.onGetLoadById(state)),
+
+    on(LoadActions.onGetLoadByIdSuccess, (state, { load, minimalList }) =>
+        Functions.onGetLoadByIdSuccess(state, load, minimalList)
+    ),
+
+    on(LoadActions.onGetLoadByIdError, (state) =>
+        Functions.onGetLoadByIdError(state)
+    ),
+
+    on(LoadActions.onMapVisiblityToggle, (state) =>
+        Functions.onMapVisiblityToggle(state)
     )
     //#endregion
 );

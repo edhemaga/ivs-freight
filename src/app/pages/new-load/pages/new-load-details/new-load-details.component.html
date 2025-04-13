@@ -1,5 +1,6 @@
-<!-- @let load = loadStoreService.resolveLoadDetails$ | async;
-@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
+@let loadDetailsSelector = loadStoreService.loadDetailsSelector$ | async;
+@let load = loadDetailsSelector.data;
+@let isLoading = loadDetailsSelector.isLoading;
 
 <div class="load-details-row">
     <aside>
@@ -15,7 +16,7 @@
             >
                 <ng-template #rightSide>
                     @if (isLoading) {
-                        <p class="placeholder-glow">
+                        <p class="placeholder-glow m-r-8">
                             <span
                                 class="placeholder background-muted br-2 h-26 w-70"
                             ></span>
@@ -37,4 +38,4 @@
 
     <app-load-details-stops></app-load-details-stops>
     <app-load-details-additional></app-load-details-additional>
-</div> -->
+</div>

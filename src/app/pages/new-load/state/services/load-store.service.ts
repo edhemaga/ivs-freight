@@ -7,7 +7,11 @@ import { select, Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 
 // Interfaces
-import { ILoadModel, ILoadPageFilters } from '@pages/new-load/interfaces';
+import {
+    ILoadDetails,
+    ILoadModel,
+    ILoadPageFilters,
+} from '@pages/new-load/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
@@ -19,6 +23,7 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants/load-store.c
 
 // Models
 import { ITableData } from '@shared/models';
+import { LoadMinimalListResponse } from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
@@ -56,6 +61,18 @@ export class LoadStoreService {
         select(LoadSelectors.tableColumnsSelector)
     );
 
+    public loadDetailsSelector$: Observable<ILoadDetails> = this.store.pipe(
+        select(LoadSelectors.loadDetailsSelector)
+    );
+
+    // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!
+    public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
+        select(LoadSelectors.closedLoadStatusSelector)
+    );
+
+    public groupedByStatusTypeListSelector$: Observable<LoadMinimalListResponse> =
+        this.store.pipe(select(LoadSelectors.groupedByStatusTypeListSelector));
+
     public dispatchLoadList(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DISPATCH_LOAD_LIST,
@@ -85,7 +102,7 @@ export class LoadStoreService {
 
     public navigateToLoadDetails(id: number): void {
         this.store.dispatch({
-            type: LoadStoreConstants.ACTION_GO_TO_LOAD_DETIALS,
+            type: LoadStoreConstants.ACTION_GO_TO_LOAD_DETAILS,
             id,
         });
     }
@@ -101,6 +118,19 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
             query,
+        });
+    }
+
+    public dispatchGetLoadDetails(id: number) {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_LOAD_BY_ID,
+            id,
+        });
+    }
+
+    public toggleMap() {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_TOGGLE_MAP,
         });
     }
 }

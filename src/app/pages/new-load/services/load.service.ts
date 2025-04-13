@@ -8,6 +8,8 @@ import { Observable } from 'rxjs';
 import {
     DispatcherFilterResponse,
     LoadListResponse,
+    LoadMinimalListResponse,
+    LoadResponse,
     LoadStatusFilterResponse,
     LoadTemplateListResponse,
 } from 'appcoretruckassist';
@@ -65,6 +67,24 @@ export class LoadService {
     ): Observable<DispatcherFilterResponse[]> {
         return this.http.get<DispatcherFilterResponse[]>(
             `${environment.API_ENDPOINT}/api/load/dispatcher/filter?LoadStatusType=${loadStatusType}`
+        );
+    }
+
+    public apiGetLoadById(id: number): Observable<LoadResponse> {
+        return this.http.get<LoadResponse>(
+            `${environment.API_ENDPOINT}/api/load/${id}`
+        );
+    }
+
+    public apiGetLoadDetailsRouting(id: number): Observable<LoadResponse> {
+        return this.http.get<LoadResponse>(
+            `${environment.API_ENDPOINT}/api/routing`
+        );
+    }
+
+    public apiGetLoadDetailsMinimalList(): Observable<LoadMinimalListResponse> {
+        return this.http.get<LoadMinimalListResponse>(
+            `${environment.API_ENDPOINT}/api/load/list/minimal`
         );
     }
 }

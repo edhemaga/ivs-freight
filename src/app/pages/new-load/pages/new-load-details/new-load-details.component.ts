@@ -28,7 +28,6 @@ import { LoadResponse } from 'appcoretruckassist';
 // Enums
 import { eLoadRouting } from '@pages/new-load/enums';
 import { eDropdownMenu, TableStringEnum } from '@shared/enums';
-import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 
 // Interfaces
 import {
@@ -84,12 +83,12 @@ export class NewLoadDetailsComponent
     }
 
     private getStoreData(): void {
-        // this.loadStoreService.resolveLoadDetails$
-        //     .pipe(takeUntil(this.destroy$))
-        //     .subscribe((res) => {
-        //         this.load = res;
-        //         this.setDropdownMenuOptions(res?.statusType?.name);
-        //     });
+        // TODO: Dragan, do we need this?
+        this.loadStoreService.loadDetailsSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((res) =>
+                this.setDropdownMenuOptions(res?.data.statusType?.name)
+            );
     }
 
     private setDropdownMenuOptions(statusType: string): void {
@@ -107,6 +106,7 @@ export class NewLoadDetailsComponent
                     const { id } = confirmationData || {};
                     const { statusType } = this.load;
 
+                    // TODO: Dragan, do we need this?
                     // this.loadStoreService.dispatchDeleteLoadOrTemplateById(
                     //     id,
                     //     eLoadStatusType[statusType.name]

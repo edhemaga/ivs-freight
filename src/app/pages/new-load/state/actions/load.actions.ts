@@ -12,6 +12,8 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants/load-store.c
 import {
     DispatcherFilterResponse,
     LoadListResponse,
+    LoadMinimalListResponse,
+    LoadResponse,
     LoadStatusFilterResponse,
 } from 'appcoretruckassist';
 
@@ -85,9 +87,33 @@ export const onOpenLoadModal = createAction(
 
 //#region Load details
 export const onLoadDetailsAction = createAction(
-    LoadStoreConstants.ACTION_GO_TO_LOAD_DETIALS,
+    LoadStoreConstants.ACTION_GO_TO_LOAD_DETAILS,
     props<{
         id: number;
     }>()
 );
+
+export const onGetLoadById = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_BY_ID,
+    props<{
+        id: number;
+    }>()
+);
+
+export const onGetLoadByIdSuccess = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_BY_ID_SUCCESS,
+    props<{
+        load: LoadResponse;
+        minimalList: LoadMinimalListResponse;
+    }>()
+);
+
+export const onGetLoadByIdError = createAction(
+    LoadStoreConstants.ACTION_GET_LOAD_BY_ID_ERROR
+);
+
+export const onMapVisiblityToggle = createAction(
+    LoadStoreConstants.ACTION_TOGGLE_MAP
+);
+
 //#endregion

@@ -22,6 +22,12 @@ export class LoadStoreConstants {
     //#endregion
 
     //#region Load details
-    public static ACTION_GO_TO_LOAD_DETIALS = `${this.COMPONENT_NAME_KEY} ACTION_GO_TO_LOAD_DETIALS`;
+    public static ACTION_GO_TO_LOAD_DETAILS = `${this.COMPONENT_NAME_KEY} ACTION_GO_TO_LOAD_DETAILS`;
+    public static ACTION_GET_LOAD_BY_ID = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_BY_ID`;
+    public static ACTION_GET_LOAD_BY_ID_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_BY_ID_SUCCESS`;
+    public static ACTION_GET_LOAD_BY_ID_ERROR = `${this.COMPONENT_NAME_KEY} ACTION_GET_LOAD_BY_ID_ERROR`;
+    public static ACTION_TOGGLE_MAP = `${this.COMPONENT_NAME_KEY} ACTION_TOGGLE_MAP`;
+    public static ACTION_GET_MAP_ROUTING = `${this.COMPONENT_NAME_KEY} ACTION_GET_MAP_ROUTING`;
+
     //#endregion
 }

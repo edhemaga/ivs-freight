@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 
 // rxjs
-import { exhaustMap, map, withLatestFrom } from 'rxjs/operators';
+import { catchError, exhaustMap, map, withLatestFrom } from 'rxjs/operators';
 import { forkJoin, Observable, of } from 'rxjs';
 
 // ngrx
@@ -46,40 +46,7 @@ export class LoadEffect {
         private router: Router
     ) {}
 
-    private getLoadData(
-        mode: string,
-        isFilterChange: boolean,
-        filters: IStateFilters
-    ): Observable<{
-        loadResponse: LoadTemplateListResponse | LoadListResponse;
-        dispatcherFilters: any[];
-        statusFilters: any[];
-    }> {
-        const tabValue = eLoadStatusType[mode];
-        const isTemplate = tabValue === eLoadStatusType.Template;
-
-        const loadRequest$ = isTemplate
-            ? this.loadService.getLoadTemplateList(filters)
-            : this.loadService.getLoadList(tabValue, filters);
-
-        // On filter change or on template we don't have to update filter dropdown list
-        const dispatcherFilters$ =
-            isTemplate || isFilterChange
-                ? of([])
-                : this.loadService.getDispatcherFilters(tabValue);
-
-        const statusFilters$ =
-            isTemplate || isFilterChange
-                ? of([])
-                : this.loadService.getStatusFilters(tabValue);
-
-        return forkJoin({
-            loadResponse: loadRequest$,
-            dispatcherFilters: dispatcherFilters$,
-            statusFilters: statusFilters$,
-        });
-    }
-
+    //#region List Data
     public getLoadList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(
@@ -114,7 +81,9 @@ export class LoadEffect {
             )
         )
     );
+    //#endregion
 
+    //#region  Filters
     public getLoadsOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
             ofType(
@@ -136,7 +105,9 @@ export class LoadEffect {
             )
         )
     );
+    //#endregion
 
+    //#region Modal actions
     public onOpenLoadModal$ = createEffect(
         () =>
             this.actions$.pipe(
@@ -152,6 +123,9 @@ export class LoadEffect {
         { dispatch: false }
     );
 
+    //#endregion
+
+    //#region Details
     public goToLoadDetails$ = createEffect(
         () =>
             this.actions$.pipe(
@@ -164,4 +138,64 @@ export class LoadEffect {
             ),
         { dispatch: false }
     );
+
+    public getLoadById$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onGetLoadById),
+            exhaustMap((action) => {
+                const { id } = action || {};
+
+                return forkJoin({
+                    load: this.loadService.apiGetLoadById(id),
+                    minimalList:
+                        this.loadService.apiGetLoadDetailsMinimalList(),
+                }).pipe(
+                    map(({ load, minimalList }) =>
+                        LoadActions.onGetLoadByIdSuccess({ load, minimalList })
+                    ),
+                    catchError((error) => {
+                        this.router.navigate([`/${eLoadRouting.LIST}`]);
+                        return of(LoadActions.onGetLoadByIdError());
+                    })
+                );
+            })
+        )
+    );
+
+    //#endregion
+
+    //#region Get load list
+    private getLoadData(
+        mode: string,
+        isFilterChange: boolean,
+        filters: IStateFilters
+    ): Observable<{
+        loadResponse: LoadTemplateListResponse | LoadListResponse;
+        dispatcherFilters: any[];
+        statusFilters: any[];
+    }> {
+        const tabValue = eLoadStatusType[mode];
+        const isTemplate = tabValue === eLoadStatusType.Template;
+
+        const loadRequest$ = isTemplate
+            ? this.loadService.getLoadTemplateList(filters)
+            : this.loadService.getLoadList(tabValue, filters);
+
+        // On filter change or on template we don't have to update filter dropdown list
+        const dispatcherFilters$ =
+            isTemplate || isFilterChange
+                ? of([])
+                : this.loadService.getDispatcherFilters(tabValue);
+
+        const statusFilters$ =
+            isTemplate || isFilterChange
+                ? of([])
+                : this.loadService.getStatusFilters(tabValue);
+
+        return forkJoin({
+            loadResponse: loadRequest$,
+            dispatcherFilters: dispatcherFilters$,
+            statusFilters: statusFilters$,
+        });
+    }
 }

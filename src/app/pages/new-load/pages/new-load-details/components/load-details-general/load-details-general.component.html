@@ -1,6 +1,6 @@
-@let load = loadStoreService.resolveLoadDetails$ | async;
-@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-@let minimalList = loadStoreService.minimalListSelector$ | async;
+@let loadDetailsSelector = loadStoreService.loadDetailsSelector$ | async;
+@let load = loadDetailsSelector.data;
+@let isLoading = loadDetailsSelector.isLoading;
 @let isSpacingBottom = true;
 @let groupedByStatusTypeList =
     loadStoreService.groupedByStatusTypeListSelector$ | async;

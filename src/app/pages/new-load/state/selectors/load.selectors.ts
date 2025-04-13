@@ -1,6 +1,10 @@
 // Store
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+// Models
+import { IClosedLoadStatus } from '@pages/load/models';
+import { LoadStatusHistoryResponse } from 'appcoretruckassist';
+
 // Intefaces
 import { ILoadState } from '@pages/new-load/interfaces';
 
@@ -54,4 +58,89 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     const { tableColumns } = state;
     return tableColumns;
 });
+//#endregion
+
+//#region Details
+export const loadDetailsSelector = createSelector(selectLoadState, (state) => {
+    const { details } = state;
+    return details;
+});
+
+export const groupedByStatusTypeListSelector = createSelector(
+    selectLoadState,
+    (state) => {
+        let groupedByStatusType;
+        const data = state.minimalList?.pagination?.data;
+
+        if (data) {
+            groupedByStatusType = data?.reduce((acc, item) => {
+                const key = item.statusType.name;
+                acc[key] = acc[key] || [];
+                acc[key].push(item);
+                return acc;
+            }, {});
+        }
+
+        return groupedByStatusType;
+    }
+);
+
+export const closedLoadStatusSelector = createSelector(
+    selectLoadState,
+    (state) => {
+        const { details } = state;
+        // TODO: WE WILL GET THIS FROM BACKEND LEAVE IT LIKE THIS FOR NOW
+        const calculateWidths = (
+            statuses: LoadStatusHistoryResponse[]
+        ): IClosedLoadStatus[] => {
+            let totalDuration = 0;
+
+            statuses.forEach((curr) => {
+                if (curr.dateTimeTo) {
+                    const duration =
+                        new Date(curr.dateTimeTo).getTime() -
+                        new Date(curr.dateTimeFrom).getTime();
+                    totalDuration += duration;
+                }
+            });
+
+            // This will come from backend in the future
+            const sortedDataWithWidth = [...statuses].reverse().map((item) => {
+                const fromTime = new Date(item.dateTimeFrom).getTime();
+                const toTime = item.dateTimeTo
+                    ? new Date(item.dateTimeTo).getTime()
+                    : null;
+
+                if (toTime) {
+                    const duration = toTime - fromTime;
+                    const widthPercentage = (duration / totalDuration) * 100;
+
+                    return {
+                        status: item.status,
+                        statusString: item.statusString,
+                        dateTimeFrom: item.dateTimeFrom,
+                        dateTimeTo: item.dateTimeTo,
+                        id: item.status?.id,
+                        width: widthPercentage.toFixed(2) + '%',
+                        wait: item.wait,
+                    };
+                } else {
+                    return {
+                        status: item.status,
+                        statusString: item.statusString,
+                        dateTimeFrom: item.dateTimeFrom,
+                        dateTimeTo: null,
+                        id: item.status?.id,
+                        wait: item.wait,
+                        width: '0.00%',
+                    };
+                }
+            });
+
+            return sortedDataWithWidth;
+        };
+
+        return calculateWidths(details.data.statusHistory);
+    }
+);
 //#endregion
