@@ -28,7 +28,10 @@
                     @if (isTemplate) {
                         <ca-input-test
                             formControlName="name"
-                            [inputConfig]="LoadModalConfig.LOAD_TEMPLATE_CONFIG"
+                            [inputConfig]="
+                                { configType: 'templateNameConfig', isTemplate }
+                                    | loadModalInputConfig
+                            "
                         ></ca-input-test>
                     } @else {
                         @let templateButtonConfig =
@@ -91,20 +94,6 @@
                     ></ca-input-dropdown-test>
                 </div>
 
-                <div class="w-full m-t-26">
-                    <ca-input-dropdown-test
-                        formControlName="dispatchId"
-                        optionValue="id"
-                        label="id"
-                        template="load-dispatches-ttd"
-                        [inputConfig]="
-                            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
-                        "
-                        [options]="dropdownList.dispatches"
-                    >
-                    </ca-input-dropdown-test>
-                </div>
-
                 <div class="d-grid d-grid-reference m-t-26">
                     <ca-input-test
                         formControlName="referenceNumber"
@@ -124,7 +113,7 @@
                     </ca-input-dropdown-test>
                 </div>
 
-                <div class="d-grid d-grid-contact m-t-26 m-b-14">
+                <div class="d-grid d-grid-contact m-t-26">
                     <ca-input-dropdown-test
                         formControlName="brokerContact"
                         label="name"
@@ -148,6 +137,20 @@
                         formControlName="weight"
                         [inputConfig]="LoadModalConfig.LOAD_WEIGHT_CONFIG"
                     ></ca-input-test>
+                </div>
+
+                <div class="w-full m-t-26 m-b-14">
+                    <ca-input-dropdown-test
+                        formControlName="dispatchId"
+                        optionValue="id"
+                        label="id"
+                        template="load-dispatches-ttd"
+                        [inputConfig]="
+                            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
+                        "
+                        [options]="dropdownList.dispatches"
+                    >
+                    </ca-input-dropdown-test>
                 </div>
                 <ng-container formGroupName="loadRequirements">
                     <app-ca-custom-card
