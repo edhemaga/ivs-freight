@@ -6,18 +6,21 @@ import { ILoadModalConfigPipeArgs } from '@pages/new-load/pages/new-load-modal/i
 // Config
 import { ITaInput } from '@shared/components/ta-input/config/ta-input.config';
 
+// Enumn
+import { eLoadModalForm } from '@pages/new-load/pages/new-load-modal/enums';
+
 @Pipe({
     name: 'loadModalInputConfig',
     standalone: true,
 })
 export class LoadModalInputConfigPipe implements PipeTransform {
     transform({ configType, isTemplate }: ILoadModalConfigPipeArgs): ITaInput {
-        console.log('Calling pipe');
+        console.log('Calling pipe for: ', configType);
 
         let config: ITaInput;
 
         switch (configType) {
-            case 'templateNameConfig':
+            case eLoadModalForm.NAME:
                 config = {
                     name: 'Template Name',
                     label: 'Template Name',
@@ -29,7 +32,7 @@ export class LoadModalInputConfigPipe implements PipeTransform {
 
                 break;
 
-            case 'companyInputConfig':
+            case eLoadModalForm.COMPANY_ID:
                 config = {
                     name: 'Input Dropdown',
                     type: 'text',
@@ -41,7 +44,7 @@ export class LoadModalInputConfigPipe implements PipeTransform {
 
                 break;
 
-            case 'referenceNumberConfig':
+            case eLoadModalForm.REFERENCE_NUMBER:
                 config = {
                     name: 'Reference No.',
                     type: 'text',
@@ -55,7 +58,7 @@ export class LoadModalInputConfigPipe implements PipeTransform {
 
                 break;
 
-            case 'dispatcherInputConfig':
+            case eLoadModalForm.DISPATCHER_ID:
                 config = {
                     name: 'Input Dropdown',
                     type: 'text',
@@ -75,7 +78,7 @@ export class LoadModalInputConfigPipe implements PipeTransform {
 
                 break;
 
-            case 'brokerInputConfig':
+            case eLoadModalForm.BROKER_ID:
                 config = {
                     name: 'Input Dropdown',
                     type: 'text',
@@ -92,7 +95,7 @@ export class LoadModalInputConfigPipe implements PipeTransform {
 
                 break;
 
-            case 'brokerContactInputConfig':
+            case eLoadModalForm.BROKER_CONTACT:
                 config = {
                     name: 'Input Dropdown',
                     type: 'text',

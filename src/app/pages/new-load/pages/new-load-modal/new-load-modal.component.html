@@ -26,12 +26,12 @@
                     </app-ca-tab-switch>
 
                     @let dispatcherInputConfig =
-                        { configType: 'dispatcherInputConfig', isTemplate }
+                        { configType: eLoadModalForm.DISPATCHER_ID, isTemplate }
                             | loadModalInputConfig;
 
                     @if (isTemplate) {
                         @let templateNameInputConfig =
-                            { configType: 'templateNameConfig', isTemplate }
+                            { configType: eLoadModalForm.NAME, isTemplate }
                                 | loadModalInputConfig;
 
                         <ca-input-test
@@ -97,8 +97,10 @@
                         ></ca-input-dropdown-test>
 
                         @let companyInputConfig =
-                            { configType: 'companyInputConfig', isTemplate }
-                                | loadModalInputConfig;
+                            {
+                                configType: eLoadModalForm.COMPANY_ID,
+                                isTemplate,
+                            } | loadModalInputConfig;
 
                         <ca-input-dropdown-test
                             formControlName="companyId"
@@ -112,8 +114,10 @@
 
                 <div class="d-grid d-grid-reference m-t-26">
                     @let referenceNumberInputConfig =
-                        { configType: 'referenceNumberConfig', isTemplate }
-                            | loadModalInputConfig;
+                        {
+                            configType: eLoadModalForm.REFERENCE_NUMBER,
+                            isTemplate,
+                        } | loadModalInputConfig;
 
                     <ca-input-test
                         formControlName="referenceNumber"
@@ -121,7 +125,7 @@
                     ></ca-input-test>
 
                     @let brokerInputConfig =
-                        { configType: 'brokerInputConfig', isTemplate }
+                        { configType: eLoadModalForm.BROKER_ID, isTemplate }
                             | loadModalInputConfig;
                     <ca-input-dropdown-test
                         formControlName="brokerId"
@@ -139,7 +143,7 @@
                 <div class="d-grid d-grid-contact m-t-26">
                     @let brokerContactInputConfig =
                         {
-                            configType: 'brokerContactInputConfig',
+                            configType: eLoadModalForm.BROKER_CONTACT,
                             isTemplate,
                         } | loadModalInputConfig;
 

@@ -14,6 +14,7 @@ import { catchError, forkJoin, Observable, of } from 'rxjs';
 // Enums
 import { eGeneralActions } from '@shared/enums';
 import { eLoadModalActions } from '@pages/new-load/enums';
+import { eLoadModalForm } from '@pages/new-load/pages/new-load-modal/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -119,6 +120,7 @@ export class NewLoadModalComponent implements OnInit {
     public eModalButtonSize = eModalButtonSize;
     public eGeneralActions = eGeneralActions;
     public eLoadModalActions = eLoadModalActions;
+    public eLoadModalForm = eLoadModalForm;
 
     // Icon routes
     public svgRoutes = SharedSvgRoutes;
