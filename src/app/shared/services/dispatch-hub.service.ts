@@ -21,8 +21,6 @@ import { UserHelper } from '@shared/utils/helpers';
 // enums
 import { eStringPlaceholder } from 'ca-components';
 
-// utils
-
 @Injectable({
     providedIn: 'root',
 })
