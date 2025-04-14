@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewChild } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 
 // modules
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -74,6 +74,7 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 })
 export class NewLoadComponent {
     @ViewChild(NewLoadCardsComponent) loadCardComponent!: NewLoadCardsComponent;
+    @ViewChild('deleteTemplate') deleteTemplate!: TemplateRef<any>;
     // enums
     public eLoadStatusStringType = eLoadStatusStringType;
     public generalActions = eGeneralActions;
@@ -169,12 +170,12 @@ export class NewLoadComponent {
         );
     }
 
-    public onShowDeleteLoadModal() {
-        this.loadStoreService.onShowDeleteLoadModal();
-    }
-
-    public onLoadDelete() {
-        this.loadStoreService.onLoadDelete();
+    public onShowDeleteLoadModal(isTemplate: boolean, count: number): void {
+        this.loadStoreService.onShowDeleteLoadModal(
+            this.deleteTemplate,
+            isTemplate,
+            count
+        );
     }
 
     private onCreateNewLoad(): void {

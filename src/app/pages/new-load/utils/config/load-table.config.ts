@@ -42,6 +42,18 @@ export class LoadTableColumnsConfig {
                 isChecked: true,
                 hasSort: true,
             },
+            // For modal testing!!!!
+            {
+                key: 'edit',
+                label: 'edit',
+                width: 50,
+                minWidth: 50,
+                maxWidth: 200,
+                isResizable: true,
+                isDisabled: true,
+                isChecked: true,
+                hasSort: true,
+            },
             {
                 id: 1,
                 key: 'loadInvoice',

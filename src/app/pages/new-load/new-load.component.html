@@ -121,7 +121,12 @@
                     <svg-icon
                         class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
                         [src]="sharedIcons.DELETE_ICON"
-                        (click)="onShowDeleteLoadModal()"
+                        (click)="
+                            onShowDeleteLoadModal(
+                                isTemplate,
+                                store.selectedCount
+                            )
+                        "
                     >
                     </svg-icon>
                 }
@@ -129,7 +134,6 @@
                 <svg-icon
                     [src]="sharedIcons.PRINT_ICON"
                     class="background-hover-dark-2 svg-fill-muted svg-hover-black svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
-                    (click)="onLoadDelete()"
                 >
                 </svg-icon>
             }
@@ -158,18 +162,48 @@
         <app-new-load-cards></app-new-load-cards>
     }
 
-    <ng-container *ngTemplateOutlet="deleteTemplate"></ng-container>
-
     <ng-template #deleteTemplate>
         @let isPending = selectedTab === eLoadStatusStringType.PENDING;
         @let isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
+        @let isSingular = store.selectedCount === 1;
 
-        @if (isPending || isTemplate) {
-            @for (load of store.viewData; track load.id) {
-                @if (load.isSelected) {
-                    {{ load.id }}
+        @if ((isPending || isTemplate) && store.selectedCount) {
+            <div class="gap-1 d-flex flex-column">
+                @for (load of store.viewData; track load.id) {
+                    @if (load.isSelected) {
+                        <div class="gap-1 d-flex flex-column m-b-8">
+                            @let title =
+                                isTemplate ? load.name : load.loadNumber;
+                            <div
+                                class="text-size-16 text-color-black ta-font-bold"
+                            >
+                                {{ title }}
+                            </div>
+                            <div
+                                class="text-size-14 ta-font-medium text-color-muted"
+                            >
+                                {{ load.broker?.businessName }}
+                            </div>
+                        </div>
+                    }
                 }
-            }
+
+                <div class="text-size-14 ta-font-medium text-color-black">
+                    @if (isTemplate && isSingular) {
+                        Are you sure you want to delete the selected load
+                        template?
+                    } @else if (isTemplate && !isSingular) {
+                        Are you sure you want to delete the selected load
+                        templates?
+                    } @else if (isPending && isSingular) {
+                        Are you sure you want to delete the selected pending
+                        load?
+                    } @else if (isPending && !isSingular) {
+                        Are you sure you want to delete the selected pending
+                        loads?
+                    }
+                </div>
+            </div>
         }
     </ng-template>
 }

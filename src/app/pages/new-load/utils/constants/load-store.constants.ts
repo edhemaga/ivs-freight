@@ -41,9 +41,8 @@ export class LoadStoreConstants {
     //#endregion
 
     //#region Delete
-    public static ACTION_ON_SHOW_DELETE_LOAD_MODAL = `${this.COMPONENT_NAME_KEY} ACTION_ON_SHOW_DELETE_LOAD_MODAL`;
-    public static ACTION_ON_DELETE_LOAD = `${this.COMPONENT_NAME_KEY} ACTION_ON_DELETE_LOAD`;
-    public static ACTION_ON_DELETE_LOAD_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_DELETE_LOAD_SUCCESS`;
+    public static ACTION_ON_DELETE_LOAD_LIST = `${this.COMPONENT_NAME_KEY} ACTION_ON_DELETE_LOAD_LIST`;
+    public static ACTION_ON_DELETE_LOAD_LIST_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_DELETE_LOAD_LIST_SUCCESS`;
 
     //#endregion
 }

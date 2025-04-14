@@ -19,8 +19,8 @@ import { NewTableComponent } from '@shared/components/new-table/new-table.compon
     standalone: true,
     imports: [
         CommonModule,
-        // Components
 
+        // Components
         NewTableComponent,
         CaLoadStatusComponent,
         CaCheckboxComponent,

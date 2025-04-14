@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
 
 // Store
 import { select, Store } from '@ngrx/store';
@@ -34,13 +34,20 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement } from '@shared/enums';
 
 // Ca components
-import { IFilterAction } from 'ca-components';
+import { CaDeleteModalComponent, IFilterAction } from 'ca-components';
+
+// Services
+
+import { ModalService } from '@shared/services';
 
 @Injectable({
     providedIn: 'root',
 })
 export class LoadStoreService {
-    constructor(private store: Store) {}
+    constructor(
+        private store: Store,
+        private modalService: ModalService
+    ) {}
 
     public loadsSelector$: Observable<IMappedLoad[]> = this.store.pipe(
         select(LoadSelectors.selectLoads)
@@ -162,17 +169,35 @@ export class LoadStoreService {
         });
     }
 
-    public onShowDeleteLoadModal(): void {
-        this.store.dispatch({
-            type: LoadStoreConstants.ACTION_ON_SHOW_DELETE_LOAD_MODAL,
-        });
+    public onShowDeleteLoadModal(
+        templateRef: TemplateRef<any>,
+        isTemplate: boolean,
+        count: number
+    ): void {
+        this.modalService
+            .openModalNew(
+                CaDeleteModalComponent,
+                {},
+                {
+                    // Don't show count for 1 load
+                    count: count === 1 ? 0 : count,
+                    title: isTemplate
+                        ? 'Delete Template'
+                        : 'Delete Pending Load',
+                },
+                templateRef
+            )
+            .closed.subscribe((value) => {
+                if (value) {
+                    this.store.dispatch({
+                        type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
+                        count,
+                        isTemplate,
+                    });
+                }
+            });
     }
 
-    public onLoadDelete(): void {
-        this.store.dispatch({
-            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD,
-        });
-    }
     public dispatchSetToolbarDropdownMenuColumnsActive(
         isActive: boolean
     ): void {

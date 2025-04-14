@@ -8,6 +8,7 @@ import {
     LoadMinimalListResponse,
     LoadResponse,
     LoadStatusFilterResponse,
+    LoadTemplateListResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
 
@@ -26,14 +27,13 @@ import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers
 
 // Ca components
 import { IFilterAction } from 'ca-components';
-import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Config
 import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
-    loadResponse: LoadListResponse
+    loadResponse: LoadListResponse | LoadTemplateListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
     const loads = LoadHelper.loadMapper(loadResponse.pagination.data);
@@ -196,7 +196,7 @@ export function onSelectLoad(state: ILoadState, id: number): ILoadState {
 //#endregion
 
 //#region Delete
-export function onDeleteLoadSuccess(state: ILoadState): ILoadState {
+export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
     const { selectedTab, toolbarTabs } = state;
     const updatedLoads = state.loads.filter((load) => !load.isSelected);
 

@@ -42,7 +42,7 @@ import { eLoadRouting } from '@pages/new-load/enums';
 
 // Interfaces
 import { IStateFilters } from '@shared/interfaces';
-
+import { selectLoads } from '@pages/new-load/state/selectors/load.selectors';
 @Injectable()
 export class LoadEffect {
     constructor(
@@ -195,23 +195,20 @@ export class LoadEffect {
     //#endregion
 
     //#region Delete load
-    public onShowDeleteLoadModal$ = createEffect(
-        () =>
-            this.actions$.pipe(
-                ofType(LoadActions.onShowDeleteLoadModal),
-                map(() =>
-                    this.modalService.openModal(NewLoadModalComponent, {})
-                )
-            ),
-        { dispatch: false }
-    );
 
-    public onDeleteLoad$ = createEffect(() =>
+    public onDeleteLoadList$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(LoadActions.onDeleteLoad),
-            map(() => {
-                console.log('onDeleteLoad$');
-                return LoadActions.onDeleteLoadSuccess();
+            ofType(LoadActions.onDeleteLoadList),
+            withLatestFrom(this.store.select(selectLoads)),
+            switchMap(([action, loads]) => {
+                const { isTemplate, count } = action;
+                const selectedIds = loads
+                    .filter((load) => load.isSelected)
+                    .map((load) => load.id);
+
+                return this.loadService
+                    .deleteLoads(selectedIds, isTemplate, count === 1)
+                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
             })
         )
     );

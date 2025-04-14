@@ -10,7 +10,7 @@
         {
             select,
             edit,
-            loadNumber,
+            loadInvoice,
             loadStatus,
         };
 
@@ -37,7 +37,7 @@
             <div (click)="onOpenModal(data.id, store.selectedTab)">EDIT</div>
         </ng-template>
 
-        <ng-template let-data="data" #loadNumber>
+        <ng-template let-data="data" #loadInvoice>
             <span
                 class="ta-font-bold text-size-14 text-color-black c-pointer text-hover-blue-15"
                 (click)="navigateToLoadDetails(data.id)"

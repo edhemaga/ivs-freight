@@ -138,8 +138,8 @@ export const loadReducer = createReducer(
     //#endregion
 
     //#region Delete actions
-    on(LoadActions.onDeleteLoadSuccess, (state) =>
-        Functions.onDeleteLoadSuccess(state)
+    on(LoadActions.onDeleteLoadListSuccess, (state) =>
+        Functions.onDeleteLoadListSuccess(state)
     ),
 
     //#region Toolbar hamburger menu

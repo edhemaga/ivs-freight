@@ -23,6 +23,7 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
+import { TemplateRef } from '@angular/core';
 
 //#region List request
 export const getLoadsPayload = createAction(
@@ -153,15 +154,15 @@ export const onSelectLoad = createAction(
 //#endregion
 
 //#region Delete actions
-export const onShowDeleteLoadModal = createAction(
-    LoadStoreConstants.ACTION_ON_SHOW_DELETE_LOAD_MODAL
+export const onDeleteLoadList = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
+    props<{
+        count: number;
+        isTemplate: boolean;
+    }>()
 );
 
-export const onDeleteLoad = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD
-);
-
-export const onDeleteLoadSuccess = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_SUCCESS
+export const onDeleteLoadListSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS
 );
 //#endregion
