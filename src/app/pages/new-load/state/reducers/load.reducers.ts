@@ -25,8 +25,6 @@ import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown
 
 export const initialState: ILoadState = {
     loads: [],
-    selectedCount: 0,
-    totalLoadSum: 0,
 
     toolbarTabs: LoadToolbarTabs,
     selectedTab: eLoadStatusStringType.ACTIVE,

@@ -21,8 +21,6 @@ import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 
 export interface ILoadState {
     loads: IMappedLoad[];
-    selectedCount: number;
-    totalLoadSum: number;
 
     // Main tabs
     toolbarTabs: ITableData[];

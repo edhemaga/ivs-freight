@@ -991,29 +991,33 @@
                         let index = $index;
                         track index
                     ) {
-                        <div
-                            class="d-inline-block h-8"
-                            #dropdownPopover="ngbPopover"
-                            [ngbPopover]="dropdownOptions"
-                            popoverClass="load-stops-options-popover"
-                            [autoClose]="true"
-                            [placement]="'bottom'"
-                            [ngStyle]="{ width: status.width }"
-                            [ngClass]="[
-                                index === hoveredIndex ? 'h-16' : 'h-8',
-                                index !== hoveredIndex && hoveredIndex !== null
-                                    ? 'opacity-40'
-                                    : '',
-                                status.id | loadStatusBackgroundColor: true,
-                            ]"
-                            triggers="manual"
-                            (mouseenter)="
-                                toggleHoverStatus(index, dropdownPopover)
-                            "
-                            (mouseleave)="
-                                toggleHoverStatus(null, dropdownPopover)
-                            "
-                        ></div>
+                        @if (status.percentage) {
+                            <div
+                                class="d-inline-block h-8"
+                                #dropdownPopover="ngbPopover"
+                                [ngbPopover]="dropdownOptions"
+                                popoverClass="load-stops-options-popover"
+                                [autoClose]="true"
+                                [placement]="'bottom'"
+                                [ngStyle]="{ width: status.percentage + '%' }"
+                                [ngClass]="[
+                                    index === hoveredIndex ? 'h-16' : 'h-8',
+                                    index !== hoveredIndex &&
+                                    hoveredIndex !== null
+                                        ? 'opacity-40'
+                                        : '',
+                                    status.status.id
+                                        | loadStatusBackgroundColor: true,
+                                ]"
+                                triggers="manual"
+                                (mouseenter)="
+                                    toggleHoverStatus(index, dropdownPopover)
+                                "
+                                (mouseleave)="
+                                    toggleHoverStatus(null, dropdownPopover)
+                                "
+                            ></div>
+                        }
                     }
                 </div>
             }

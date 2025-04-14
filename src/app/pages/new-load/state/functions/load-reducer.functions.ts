@@ -42,8 +42,6 @@ export const getLoadByIdSuccessResult = function (
     return {
         ...state,
         loads,
-        selectedCount: 0,
-        totalLoadSum: LoadStoreHelper.getTotalLoadSum(loads),
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs
@@ -181,15 +179,9 @@ export function onSelectLoad(state: ILoadState, id: number): ILoadState {
     const updatedLoads = state.loads.map((load) =>
         load.id === id ? { ...load, isSelected: !load.isSelected } : load
     );
-
-    const newSelectedCount = updatedLoads.filter(
-        (load) => load.isSelected
-    ).length;
-
     return {
         ...state,
         loads: updatedLoads,
-        selectedCount: newSelectedCount,
     };
 }
 
@@ -203,8 +195,6 @@ export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
     return {
         ...state,
         loads: updatedLoads,
-        selectedCount: 0,
-        totalLoadSum: LoadStoreHelper.getTotalLoadSum(updatedLoads),
         toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
             toolbarTabs,
             updatedLoads,
@@ -223,8 +213,6 @@ export function onDeleteLoadListTemplate(
     return {
         ...state,
         loads: updatedLoads,
-        selectedCount: 0,
-        totalLoadSum: LoadStoreHelper.getTotalLoadSum(updatedLoads),
         toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
             toolbarTabs,
             updatedLoads,

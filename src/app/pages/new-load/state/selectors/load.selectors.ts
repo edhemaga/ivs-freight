@@ -1,12 +1,11 @@
 // Store
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-// Models
-import { IClosedLoadStatus } from '@pages/load/models';
-import { LoadStatusHistoryResponse } from 'appcoretruckassist';
-
 // Intefaces
 import { ILoadState } from '@pages/new-load/interfaces';
+
+// Helpers
+import { LoadStoreHelper } from '@pages/new-load/utils/helpers';
 
 // It has to have same name as in StoreModule.forRoot inside app module
 export const loadsFeatureKey: string = 'newLoad';
@@ -23,9 +22,9 @@ export const selectLoads = createSelector(
 export const selectedCountSelector = createSelector(
     selectLoadState,
     (state) => {
-        const { selectedCount } = state;
-        console.log('selectedCountSelector');
-        return selectedCount;
+        const { loads } = state;
+
+        return loads.filter((load) => load.isSelected).length;
     }
 );
 
@@ -71,15 +70,22 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     return tableColumns;
 });
 
-export const totalSumSelector = createSelector(selectLoadState, (state) => {
-    const { loads, selectedCount, totalLoadSum } = state;
+export const totalSumSelector = createSelector(
+    selectLoadState,
+    selectedCountSelector,
+    (state, selectedCount) => {
+        console.log('totalSumSelector');
+        const { loads } = state;
 
-    if (!selectedCount) return totalLoadSum;
+        if (!selectedCount) {
+            return LoadStoreHelper.getTotalLoadSum(loads);
+        }
 
-    return loads
-        .filter((item) => item.isSelected)
-        .reduce((sum, item) => sum + (item.totalDue || 0), 0);
-});
+        return loads
+            .filter((item) => item.isSelected)
+            .reduce((sum, item) => sum + (item.totalDue || 0), 0);
+    }
+);
 
 export const tableSettingsSelector = createSelector(
     selectLoadState,
@@ -103,59 +109,9 @@ export const minimalListSelector = createSelector(selectLoadState, (state) => {
 export const closedLoadStatusSelector = createSelector(
     selectLoadState,
     (state) => {
-        const { details } = state;
-        // TODO: WE WILL GET THIS FROM BACKEND LEAVE IT LIKE THIS FOR NOW
-        const calculateWidths = (
-            statuses: LoadStatusHistoryResponse[]
-        ): IClosedLoadStatus[] => {
-            let totalDuration = 0;
+        const history = state.details?.data?.statusHistory;
 
-            statuses.forEach((curr) => {
-                if (curr.dateTimeTo) {
-                    const duration =
-                        new Date(curr.dateTimeTo).getTime() -
-                        new Date(curr.dateTimeFrom).getTime();
-                    totalDuration += duration;
-                }
-            });
-
-            // This will come from backend in the future
-            const sortedDataWithWidth = [...statuses].reverse().map((item) => {
-                const fromTime = new Date(item.dateTimeFrom).getTime();
-                const toTime = item.dateTimeTo
-                    ? new Date(item.dateTimeTo).getTime()
-                    : null;
-
-                if (toTime) {
-                    const duration = toTime - fromTime;
-                    const widthPercentage = (duration / totalDuration) * 100;
-
-                    return {
-                        status: item.status,
-                        statusString: item.statusString,
-                        dateTimeFrom: item.dateTimeFrom,
-                        dateTimeTo: item.dateTimeTo,
-                        id: item.status?.id,
-                        width: widthPercentage.toFixed(2) + '%',
-                        wait: item.wait,
-                    };
-                } else {
-                    return {
-                        status: item.status,
-                        statusString: item.statusString,
-                        dateTimeFrom: item.dateTimeFrom,
-                        dateTimeTo: null,
-                        id: item.status?.id,
-                        wait: item.wait,
-                        width: '0.00%',
-                    };
-                }
-            });
-
-            return sortedDataWithWidth;
-        };
-
-        return calculateWidths(details.data.statusHistory);
+        return Array.isArray(history) ? [...history].reverse() : [];
     }
 );
 //#endregion
