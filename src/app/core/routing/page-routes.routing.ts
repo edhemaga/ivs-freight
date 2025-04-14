@@ -1,5 +1,8 @@
 import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
 import { MilesComponent } from '@pages/miles/miles.component';
+import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
+import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
+import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 
 // guards
 import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
@@ -20,9 +23,6 @@ import { MilesResolver } from '@pages/miles/resolvers/miles.resolver';
 import { TodoResolver } from '@pages/to-do/resolvers/to-do.resolver';
 import { RoutingStateResolver } from '@pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from '@pages/telematic/resolvers/telematic-state.resolver';
-import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
-import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
-import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 import { MilesDetailsResolver } from '@pages/miles/resolvers/miles-details.resolver';
 import { MilesCardsResolver } from '@pages/miles/resolvers/miles-card.resolver';
 import { MilesListResolver } from '@pages/miles/resolvers/miles-list.resolver';
