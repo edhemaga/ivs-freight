@@ -151,6 +151,12 @@ export const onSelectLoad = createAction(
         id: number;
     }>()
 );
+
+export const onSelectAllLoads = createAction(
+    LoadStoreConstants.ACTION_ON_SELECT_LOAD_ALL,
+    props<{ action: string }>()
+);
+
 //#endregion
 
 //#region Delete actions

@@ -143,6 +143,13 @@ export class LoadStoreService {
         });
     }
 
+    public onSelectAll(action: string): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_SELECT_LOAD_ALL,
+            action,
+        });
+    }
+
     public dispatchFiltersChange(filters: IFilterAction): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_FILTER_CHANGED,

@@ -26,7 +26,7 @@ import {
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 // Ca components
-import { IFilterAction } from 'ca-components';
+import { eGeneralActions, IFilterAction } from 'ca-components';
 
 // Config
 import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
@@ -179,9 +179,35 @@ export function onSelectLoad(state: ILoadState, id: number): ILoadState {
     const updatedLoads = state.loads.map((load) =>
         load.id === id ? { ...load, isSelected: !load.isSelected } : load
     );
+
+    const areAllLoadsSelected = state.loads.every((load) => load.isSelected);
+
     return {
         ...state,
         loads: updatedLoads,
+        areAllLoadsSelected,
+    };
+}
+
+export function onSelectAllLoads(
+    state: ILoadState,
+    action: string
+): ILoadState {
+    const shouldSelectAll =
+        action === eGeneralActions.SELECT_ALL ||
+        action === eGeneralActions.CLEAR_SELECTED
+            ? !state.areAllLoadsSelected
+            : true;
+
+    const updatedLoads = state.loads.map((load) => ({
+        ...load,
+        isSelected: shouldSelectAll,
+    }));
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        areAllLoadsSelected: shouldSelectAll,
     };
 }
 

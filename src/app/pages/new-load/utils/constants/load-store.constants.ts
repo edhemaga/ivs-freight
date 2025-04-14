@@ -38,6 +38,7 @@ export class LoadStoreConstants {
 
     //#region List
     public static ACTION_ON_ONE_LOAD_SELECT = `${this.COMPONENT_NAME_KEY} ACTION_ON_ONE_LOAD_SELECT`;
+    public static ACTION_ON_SELECT_LOAD_ALL = `${this.COMPONENT_NAME_KEY} ACTION_ON_SELECT_LOAD_ALL`;
     //#endregion
 
     //#region Delete
