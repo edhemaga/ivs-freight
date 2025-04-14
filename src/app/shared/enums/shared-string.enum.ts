@@ -20,6 +20,8 @@ export enum eSharedString {
 
     SMALL = 'small',
 
+    HEIGHT = 'height',
+
     DSC = 'dsc',
     ASC = 'asc',
 
