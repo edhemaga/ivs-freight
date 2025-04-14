@@ -33,6 +33,7 @@ import {
     IMapBounds,
     TruckTrailerColorFinderPipe,
     eFilterDropdownEnum,
+    MapOptionsConstants,
 } from 'ca-components';
 
 // base classes
@@ -86,7 +87,10 @@ import {
     RepairShopMapDropdownHelper,
     RepairTableBackFilterDataHelper,
 } from '@pages/repair/pages/repair-table/utils/helpers';
-import { DropdownMenuContentHelper } from '@shared/utils/helpers';
+import {
+    DropdownMenuContentHelper,
+    MethodsCalculationsHelper,
+} from '@shared/utils/helpers';
 
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -1034,6 +1038,22 @@ export class RepairTableComponent
                                 distance: res.queryParams?.rangeValue,
                             };
 
+                            const areaFilterData = res.queryParams && {
+                                ...MapOptionsConstants.AREA_FILTER_DATA,
+                                center: {
+                                    lat: res.queryParams.latValue,
+                                    lng: res.queryParams.longValue,
+                                },
+                                radius: MethodsCalculationsHelper.convertMilesToMeters(
+                                    res.queryParams.rangeValue
+                                ),
+                            };
+
+                            this.mapData = {
+                                ...this.mapData,
+                                areaFilterData,
+                            };
+
                             break;
                         case eFilterDropdownEnum.PM:
                             this.backFilterQuery = {
@@ -1729,9 +1749,9 @@ export class RepairTableComponent
                 null, // shipperDistance
                 this.mapStateFilter, // shipperStates
                 this.backFilterQuery.categoryIds, // categoryIds?: Array<number>,
-                null, // _long?: number,
-                null, // lat?: number,
-                null, // distance?: number,
+                this.shopFilterQuery.long, // _long?: number,
+                this.shopFilterQuery.lat, // lat?: number,
+                this.shopFilterQuery.distance, // distance?: number,
                 this.backFilterQuery.costFrom, // costFrom?: number,
                 this.backFilterQuery.costTo, // costTo?: number,
                 null, // lastFrom?: number,
@@ -1889,9 +1909,9 @@ export class RepairTableComponent
                 this.mapClustersObject?.southWestLatitude,
                 this.mapClustersObject?.southWestLongitude,
                 this.backFilterQuery.categoryIds, // category ids
-                null, // _long
-                null, // lat
-                null, // distance
+                this.shopFilterQuery.long, // _long
+                this.shopFilterQuery.lat, // lat
+                this.shopFilterQuery.distance, // distance
                 this.backFilterQuery.costFrom, // costFrom
                 this.backFilterQuery.costTo, // costTo
                 this.filter === TableStringEnum.CLOSED_ARRAY ? 0 : null, // active
