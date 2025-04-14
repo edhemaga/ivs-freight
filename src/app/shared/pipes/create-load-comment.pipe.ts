@@ -14,7 +14,8 @@ import { CommentResponse } from 'appcoretruckassist';
 export class CreateLoadCommentsPipe implements PipeTransform {
     transform(
         comments: CommentResponse[] | null,
-        filter?: string
+        filter?: string,
+        isDriver?: boolean
     ): CommentCompanyUser[] {
         if (!comments) return [];
 
@@ -22,8 +23,14 @@ export class CreateLoadCommentsPipe implements PipeTransform {
 
         const _comments = [
             ...comments?.map((comment: CommentResponse) => {
-                const { companyUser, id, commentContent, createdAt, isEdited } =
-                    comment;
+                const {
+                    companyUser,
+                    id,
+                    commentContent,
+                    createdAt,
+                    isEdited,
+                    isDriver,
+                } = comment;
 
                 return {
                     companyUser: {
@@ -40,15 +47,19 @@ export class CreateLoadCommentsPipe implements PipeTransform {
                     isCommenting: false,
                     isEdited,
                     isMe: companyUser.id === currentUser.userId,
+                    isDriver,
                 };
             }),
         ];
 
-        if (!filter) return _comments;
-        return [
-            ..._comments?.filter((comment) =>
-                comment.commentContent?.includes(filter)
-            ),
-        ];
+        const commentsWithIsDriverFilter = isDriver
+            ? _comments.filter((comment) => comment.isDriver)
+            : _comments;
+
+        const filteredComments = commentsWithIsDriverFilter?.filter((comment) =>
+            comment.commentContent?.includes(filter)
+        );
+
+        return filter ? filteredComments : commentsWithIsDriverFilter;
     }
 }

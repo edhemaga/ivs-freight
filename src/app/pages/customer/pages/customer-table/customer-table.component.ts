@@ -43,6 +43,8 @@ import {
     IMapSelectedMarkerData,
     SortColumn,
     MapMarkerIconService,
+    MapOptionsConstants,
+    IMapAreaFilter,
 } from 'ca-components';
 import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
@@ -80,6 +82,7 @@ import {
     DropdownMenuContentHelper,
     DataFilterHelper,
     MethodsGlobalHelper,
+    MethodsCalculationsHelper,
 } from '@shared/utils/helpers';
 import { ShipperMapDropdownHelper } from '@pages/customer/pages/customer-table/utils/helpers';
 
@@ -171,6 +174,7 @@ export class CustomerTableComponent
     public isSelectedFromMapList: boolean = false;
     public mapListCount: number = 0;
     public isSelectedFromDetails: boolean = false;
+    public areaFilterData: IMapAreaFilter | null = null;
 
     // filters
     public filter: string;
@@ -761,7 +765,27 @@ export class CustomerTableComponent
                                         : null;
                                 }
                             );
-                        } else this.viewData = this.customerTableData;
+
+                            this.areaFilterData = res.queryParams && {
+                                ...MapOptionsConstants.AREA_FILTER_DATA,
+                                center: {
+                                    lat: res.queryParams.latValue,
+                                    lng: res.queryParams.longValue,
+                                },
+                                radius: MethodsCalculationsHelper.convertMilesToMeters(
+                                    res.queryParams.rangeValue
+                                ),
+                            };
+                        } else {
+                            this.viewData = this.customerTableData;
+
+                            this.areaFilterData = null;
+                        }
+
+                        this.mapData = {
+                            ...this.mapData,
+                            areaFilterData: this.areaFilterData,
+                        };
                     } else if (
                         res.filterType === TableStringEnum.MONEY_FILTER
                     ) {
@@ -2149,9 +2173,11 @@ export class CustomerTableComponent
                 this.mapClustersObject.southWestLongitude,
                 this.mapClustersObject.zoomLevel,
                 this.isAddedNewShipper, // addedNew flag
-                null, // shipperLong
-                null, // shipperLat
-                null, // shipperDistance
+                this.areaFilterData?.center?.lng, // shipperLong
+                this.areaFilterData?.center?.lat, // shipperLat
+                MethodsCalculationsHelper.convertMetersToMiles(
+                    this.areaFilterData?.radius
+                ), // shipperDistance
                 this.mapStateFilter, // shipperStates
                 null, // categoryIds?: Array<number>,
                 null, // _long?: number,
@@ -2312,9 +2338,11 @@ export class CustomerTableComponent
                 this.mapClustersObject.northEastLongitude,
                 this.mapClustersObject.southWestLatitude,
                 this.mapClustersObject.southWestLongitude,
-                null, // shipperLong
-                null, // shipperLat
-                null, // shipperDistance
+                this.areaFilterData?.center?.lng, // shipperLong
+                this.areaFilterData?.center?.lat, // shipperLat
+                MethodsCalculationsHelper.convertMetersToMiles(
+                    this.areaFilterData?.radius
+                ), // shipperDistance
                 this.mapStateFilter, // shipperStates
                 !this.isSelectedFromMapList
                     ? this.mapsService.selectedMarkerId

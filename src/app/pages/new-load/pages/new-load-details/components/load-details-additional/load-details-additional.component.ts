@@ -17,11 +17,12 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TaCommentsSearchComponent } from '@shared/components/ta-comments-search/ta-comments-search.component';
 import {
     CaLoadStatusLogComponent,
+    CaTabSwitchComponent,
     CaToolbarDropdownComponent,
 } from 'ca-components';
 
 // Services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // Enums
 import {
@@ -35,19 +36,22 @@ import { eStringPlaceholder } from 'ca-components';
 import { eLoadDetailsGeneral } from '@pages/new-load/enums';
 
 // Models
-import { CommentCompanyUser, CommentData } from '@shared/models';
+import { CommentCompanyUser, CommentData, Tabs } from '@shared/models';
 import {
     CommentService,
     CreateCommentCommand,
     SignInResponse,
 } from 'appcoretruckassist';
 import { ICreateCommentMetadata } from '@pages/load/pages/load-table/models';
-import { iDropdownItem } from 'ca-components';
+import { IDropdownItem } from 'ca-components';
 
 // helpers
 import moment from 'moment';
 import { UserHelper } from '@shared/utils/helpers';
-import { CommentHelper } from '@pages/new-load/pages/new-load-details/utils';
+import {
+    CommentHelper,
+    CommentTabHelper,
+} from '@pages/new-load/pages/new-load-details/utils';
 
 // pipes
 import { CreateLoadCommentsPipe } from '@shared/pipes';
@@ -70,6 +74,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         TaCommentsSearchComponent,
         CaLoadStatusLogComponent,
         CaToolbarDropdownComponent,
+        CaTabSwitchComponent,
         // pipes
         CreateLoadCommentsPipe,
         CreateLoadAdditionalInfoDropdownOptionsPipe,
@@ -90,6 +95,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
 
     // boolean flags
     public isSearchActive: boolean = false;
+    public isDriverButtonSelected: boolean = false;
 
     // TODO mozda ovo preko nekog id-a odraditi
     public displayedSection:
@@ -103,6 +109,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
 
     // assets
     public sharedSvgRoutes = SharedSvgRoutes;
+    public commentTabs: Tabs[] = CommentTabHelper.getCommentTabs();
 
     // filter
     public commentFilter: string = eStringPlaceholder.EMPTY;
@@ -155,10 +162,10 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                 }
                 break;
             case eGeneralActions.DELETE:
-                this.loadStoreService.dispatchDeleteCommentById(
-                    commentData.commentId,
-                    loadId
-                );
+                // this.loadStoreService.dispatchDeleteCommentById(
+                //     commentData.commentId,
+                //     loadId
+                // );
                 break;
             default:
                 break;
@@ -167,7 +174,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
 
     public onSortAction(sortDirection: eSortDirection, loadId: number): void {
         if (!sortDirection) return;
-        this.loadStoreService.sortLoadComments(loadId, sortDirection);
+        // this.loadStoreService.sortLoadComments(loadId, sortDirection);
     }
 
     public onSearchHighlightAction(searchHighlightValue: string): void {
@@ -194,7 +201,7 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                 id: companyUserId,
             },
         };
-        this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
+        // this.loadStoreService.dispatchCreateComment(comment, commentMetadata);
     }
 
     private editComment(
@@ -214,10 +221,10 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
                 avatarFile: this.companyUser.avatarFile,
             },
         };
-        this.loadStoreService.dispatchUpdateComment(updatedComment);
+        // this.loadStoreService.dispatchUpdateComment(updatedComment);
     }
 
-    public onDropdownItemSelect(event: iDropdownItem): void {
+    public onDropdownItemSelect(event: IDropdownItem): void {
         if (
             event.title !== eLoadDetailsGeneral.COMMENTS &&
             event.title !== eLoadDetailsGeneral.STATUS_LOG
@@ -225,6 +232,10 @@ export class LoadDetailsAdditionalComponent implements OnDestroy, OnInit {
             return;
 
         this.displayedSection = event.title;
+    }
+
+    public onItemSelected(event: Tabs): void {
+        this.isDriverButtonSelected = event.id === 2;
     }
 
     ngOnDestroy(): void {

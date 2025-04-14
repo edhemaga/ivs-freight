@@ -8,7 +8,7 @@ import {
 } from '@angular/forms';
 
 // Services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // Enums
 import { eSharedString, eColor, eStringPlaceholder } from '@shared/enums';
