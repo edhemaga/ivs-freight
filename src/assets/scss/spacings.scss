@@ -227,7 +227,7 @@
     width: 100%;
 }
 
-@for $i from 1 through 40 {
+@for $i from -40 through 40 {
     .top {
         &-#{$i} {
             top: #{$i}px;

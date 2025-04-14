@@ -8,7 +8,8 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 // models
 import { ConfirmationReset } from '@shared/components/ta-shared-modals/confirmation-reset-modal/models/confirmation-reset.model';
 import { ModalOptions } from '@shared/components/ta-modal/models/modal-options.model';
-import { IModalData } from '@shared/components/ta-shared-modals/delete-modal/interfaces/modal-data.interface';
+import { IModalData } from 'ca-components';
+
 
 // services
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
@@ -185,8 +186,6 @@ export class ModalService {
         backdropClass?: string,
         keyboardEsc: boolean = true
     ): NgbModalRef {
-        console.log('templateRef: ', templateRef);
-        console.log('openModalNew: ');
         options = {
             ...options,
             backdrop: 'static',
