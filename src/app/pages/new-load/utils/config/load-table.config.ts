@@ -40,7 +40,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isDisabled: true,
                 isChecked: true,
-                hasSort: true,
+                hasSort: false,
             },
             // For modal testing!!!!
             {
