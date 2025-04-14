@@ -14,7 +14,11 @@ import {
     ILoadPageFilters,
 } from '@pages/new-load/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableConfig,
+} from '@shared/components/new-table/interface';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // Selectors
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
@@ -78,6 +82,16 @@ export class LoadStoreService {
     // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!
     public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
         select(LoadSelectors.closedLoadStatusSelector)
+    );
+
+    public toolbarDropdownMenuOptionsSelector$: Observable<
+        IDropdownMenuItem[]
+    > = this.store.pipe(
+        select(LoadSelectors.toolbarDropdownMenuOptionsSelector)
+    );
+
+    public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
+        select(LoadSelectors.tableSettingsSelector)
     );
 
     public dispatchLoadList(): void {
@@ -157,6 +171,43 @@ export class LoadStoreService {
     public onLoadDelete(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_ON_DELETE_LOAD,
+        });
+    }
+    public dispatchSetToolbarDropdownMenuColumnsActive(
+        isActive: boolean
+    ): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+            isActive,
+        });
+    }
+
+    public dispatchToggleColumnsVisiblity(
+        columnKey: string,
+        isActive: boolean
+    ) {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+            columnKey,
+            isActive,
+        });
+    }
+
+    public dispatchTableUnlockToggle(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_TABLE_UNLOCK_TOGGLE,
+        });
+    }
+
+    public dispatchTableColumnReset(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_RESET_COLUMNS,
+        });
+    }
+
+    public dispatchToggleCardFlipViewMode(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE,
         });
     }
 }

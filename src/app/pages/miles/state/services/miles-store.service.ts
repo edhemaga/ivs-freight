@@ -172,8 +172,9 @@ export class MilesStoreService {
         });
     }
 
-    public toggleTableLockingStatus(): void {
+    public toggleTableLockingStatus(isLocked?: boolean): void {
         this.store.dispatch({
+            isLocked,
             type: MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS,
         });
     }

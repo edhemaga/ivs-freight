@@ -5,15 +5,19 @@ import {
     IMappedLoad,
     ILoadPageFilters,
 } from '@pages/new-load/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableConfig,
+} from '@shared/components/new-table/interface';
 import { IStateFilters } from '@shared/interfaces';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // Models
 import { ITableData } from '@shared/models';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
-import { eCommonElement } from '@shared/enums';
+import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 
 export interface ILoadState {
     loads: IMappedLoad[];
@@ -33,10 +37,16 @@ export interface ILoadState {
 
     // Table
     tableColumns: ITableColumn[];
+    tableSettings: ITableConfig;
 
     // Load details
     details: ILoadDetails;
 
     // Minimal list
     minimalList: ILoadDetailsLoadMinimalList;
+
+    // Hamburger menu options
+    toolbarDropdownMenuOptions: IDropdownMenuItem[];
+    cardFlipViewMode: eCardFlipViewMode;
+    isToolbarDropdownMenuColumnsActive: boolean;
 }

@@ -1,7 +1,7 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { combineLatest, Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 
 // components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
@@ -46,7 +46,6 @@ import { TableCardBodyActions } from '@shared/models';
 
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Component({
     selector: 'app-miles',
@@ -84,8 +83,6 @@ export class MilesComponent
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
 
-    public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
-
     constructor(
         public milesStoreService: MilesStoreService,
         protected modalService: ModalService,
@@ -100,14 +97,10 @@ export class MilesComponent
     }
 
     private storeSubscription(): void {
-        combineLatest([
-            this.milesStoreService.filter$,
-            this.milesStoreService.toolbarDropdownMenuOptionsSelector$,
-        ])
+        this.milesStoreService.filter$
             .pipe(takeUntil(this.destroy$))
-            .subscribe(([filter, toolbarDropdownMenuOptions]) => {
+            .subscribe((filter) => {
                 this.filter = filter;
-                this.toolbarDropdownMenuOptions = toolbarDropdownMenuOptions;
             });
     }
 
@@ -127,8 +120,8 @@ export class MilesComponent
         });
     }
 
-    private handleTableLockingStatus(): void {
-        this.milesStoreService.toggleTableLockingStatus();
+    private handleTableLockingStatus(isTableLocked?: boolean): void {
+        this.milesStoreService.toggleTableLockingStatus(isTableLocked);
     }
 
     private handleResetTable(): void {
@@ -245,6 +238,8 @@ export class MilesComponent
     }
 
     ngOnDestroy(): void {
+        this.handleTableLockingStatus(true);
+
         this.destroy$.next();
         this.destroy$.complete();
     }

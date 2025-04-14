@@ -229,5 +229,9 @@
         &-44-16 {
             @include svg-size(44px, 16px);
         }
+
+        &-90 {
+            @include svg-size(90px, 90px);
+        }
     }
 }

@@ -81,6 +81,10 @@ export const totalSumSelector = createSelector(selectLoadState, (state) => {
         .reduce((sum, item) => sum + (item.totalDue || 0), 0);
 });
 
+export const tableSettingsSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.tableSettings
+);
 //#endregion
 
 //#region Details
@@ -155,3 +159,15 @@ export const closedLoadStatusSelector = createSelector(
     }
 );
 //#endregion
+
+//#region Toolbar hamburger menu
+
+export const toolbarDropdownMenuOptionsSelector = createSelector(
+    selectLoadState,
+    (state) => {
+        const { toolbarDropdownMenuOptions } = state;
+        return toolbarDropdownMenuOptions;
+    }
+);
+
+//#endRegion
