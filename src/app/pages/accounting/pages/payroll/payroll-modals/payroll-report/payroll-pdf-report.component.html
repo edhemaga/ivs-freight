@@ -7,13 +7,16 @@
         <div class="divider divider--dark divider--small"></div>
         @let isZoomLevelTwoStepsBelowDefault = zoomLevel < 0.75;
 
-        <div
-            class="d-flex justify-content-center pos-relative w-full h-960 overflow-auto scrollable-element remove-scroll-track"
-            [ngStyle]="{
+        @let scrollableElementStyles =
+            {
                 'margin-bottom': isZoomLevelTwoStepsBelowDefault
                     ? '-20px'
                     : '-80px',
-            }"
+            };
+
+        <div
+            class="d-flex justify-content-center pos-relative w-full h-960 overflow-auto scrollable-element remove-scroll-track"
+            [ngStyle]="scrollableElementStyles"
         >
             <!-- Zoom Content -->
 
@@ -50,11 +53,12 @@
 
             <!-- Zoom Controls -->
 
+            @let zoomControlsElementClass =
+                isZoomLevelTwoStepsBelowDefault ? 'bottom-34' : 'bottom-92';
+
             <div
                 class="d-flex flex-column align-items-center justify-content-center pos-absolute right-16 w-30 h-52 br-50 p-x-4 p-y-4 background-white shadow-100 z-2"
-                [ngClass]="
-                    isZoomLevelTwoStepsBelowDefault ? 'bottom-34' : 'bottom-92'
-                "
+                [class]="zoomControlsElementClass"
             >
                 @let zoomInControlSvgClass =
                     zoomLevel === maxZoom
