@@ -239,12 +239,18 @@ export class NewLoadModalComponent<T> implements OnInit {
             // If we have load type that means we are converting load to template or vice versa
             if (
                 this.editData.type ===
-                eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE
+                    eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE ||
+                this.editData.type ===
+                    eLoadModalActions.CREATE_TEMPLATE_FROM_LOAD
             ) {
+                const isTemplate =
+                    this.editData.type ===
+                    eLoadModalActions.CREATE_TEMPLATE_FROM_LOAD;
+
                 this.editData = {
                     ...this.editData,
                     id: null,
-                    isTemplate: false,
+                    isTemplate,
                     isEdit: false,
                 };
             }

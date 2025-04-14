@@ -30,9 +30,12 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 // Models
 import { ITableData } from '@shared/models';
 // Enums
-import { eLoadStatusStringType } from '@pages/new-load/enums';
+import {
+    eLoadModalActions,
+    eLoadStatusStringType,
+} from '@pages/new-load/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eCommonElement } from '@shared/enums';
+import { eCommonElement, TableStringEnum } from '@shared/enums';
 
 // Ca components
 import { CaDeleteModalComponent, IFilterAction } from 'ca-components';
@@ -123,6 +126,41 @@ export class LoadStoreService {
     }
 
     public onOpenModal(modal: ILoadModal): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
+            modal,
+        });
+    }
+
+    public dispatchGetEditLoadOrTemplateModalData(
+        id: number,
+        selectedLoadTab: eLoadStatusType
+    ): void {
+        const modal: ILoadModal = {
+            isEdit: true,
+            isTemplate: selectedLoadTab === eLoadStatusType.Template,
+            id,
+        };
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
+            modal,
+        });
+    }
+
+    public dispatchGetConvertToLoadOrTemplateModalData(
+        id: number,
+        selectedLoadTab: eLoadStatusType,
+        type: string
+    ): void {
+        const modal: ILoadModal = {
+            isEdit: true,
+            isTemplate: selectedLoadTab === eLoadStatusType.Template,
+            id,
+            type:
+                type === TableStringEnum.CONVERT_TO_TEMPLATE
+                    ? eLoadModalActions.CREATE_TEMPLATE_FROM_LOAD
+                    : eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE,
+        };
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
             modal,
