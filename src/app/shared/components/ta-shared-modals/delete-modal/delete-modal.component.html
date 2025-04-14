@@ -1,0 +1,64 @@
+<app-ca-modal
+	[customClass]="'modal-container-XS'"
+    [customHeaderTemplate]="headerContent"
+    [footerTemplate]="footerTemplate"
+>
+    <div origin>
+        <div class="divider"></div>
+        <div class="d-flex p-y-8">
+            <ng-container *ngTemplateOutlet="template"></ng-container>
+        </div>
+        <ng-container *ngTemplateOutlet="trashIcon"></ng-container>
+    </div>
+</app-ca-modal>
+
+<ng-template #headerContent>
+    <div class="d-flex align-items-center gap-6 p-y-2">
+        <ng-container *ngTemplateOutlet="headerSvgTemplate"></ng-container>
+        <p class="ta-font-extra-bold font-size-18 text-color-black line-height-1"> {{ modalData?.title }}</p>
+        @if(modalData?.count) {
+            <div class="d-flex align-items-center justify-content-center w-22 h-22 background-bw6-2 ta-font-extra-bold text-size-14 text-color-white br-50"> 
+                {{ modalData?.count }} 
+            </div>
+        }
+    </div>
+</ng-template>
+
+<ng-template #footerTemplate>
+  <div class="modal-footer modal-footer-payroll">
+      <div class="divider m-0"></div>
+      <div class="d-flex gap-12 m-0 w-100">
+          <button
+            (click)="onModalAction()"
+            class="ta-font-bold modal-cancel-btn active-cancel-btn"
+            type="button"
+            >
+                No
+            </button>
+    
+            <button
+                (click)="onModalAction(true)"
+                class="modal-delete-btn modal-confirmation-btn"
+                type="button"
+            >
+                Yes
+            </button>
+      </div>
+  </div>
+</ng-template>
+
+<ng-template #trashIcon>
+	<div class="trash-icon-container">
+		<svg-icon
+			class="svg-size-90 p-l-10 background-white"
+			[src]="sharedSvgRoutes.CONFIRMATION_TRASH_MODAL_ICON"
+		></svg-icon>
+	</div>
+</ng-template>
+
+<ng-template #headerSvgTemplate>
+	<svg-icon
+		class="d-flex svg-size-18 modal-header-svg"
+		[src]="sharedSvgRoutes.CONFIRMATION_DELETE_ICON"
+	></svg-icon>
+</ng-template>

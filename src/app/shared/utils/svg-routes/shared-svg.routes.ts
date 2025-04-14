@@ -71,6 +71,10 @@ export class SharedSvgRoutes {
         'assets/svg/truckassist-table/dropdown/content/edit-hover.svg';
     public DELETE_NEW_HOVER: string =
         'assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg';
+    static CONFIRMATION_TRASH_MODAL_ICON: string =
+        'assets/svg/common/confirmation/ic_confirmation_modal_trash.svg';
+    static CONFIRMATION_DELETE_ICON: string =
+        'assets/svg/common/confirmation/ic_confirmation_delete.svg';
     // applicant
     static BLUE_CHECKMARK: string = 'assets/svg/applicant/check.svg';
 }

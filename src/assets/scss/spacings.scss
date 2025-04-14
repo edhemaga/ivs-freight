@@ -131,6 +131,9 @@
         &-8 {
             padding-left: 8px;
         }
+        &-10 {
+            padding-left: 10px;
+        }
     }
     &-r {
         &-4 {
@@ -261,5 +264,14 @@
         &-12 {
             --bs-gutter-y: 12px !important;
         }
+    }
+}
+
+.gap {
+    &-12 {
+        gap: 12px;
+    }
+    &-6 {
+        gap: 6px;
     }
 }
