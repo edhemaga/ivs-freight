@@ -16,14 +16,18 @@ import {
     GetFuelStopRangeResponse,
 } from 'appcoretruckassist';
 import {
+    IMapAreaFilter,
     IMapMarkers,
     IMapSelectedMarkerData,
     MapMarkerIconService,
+    MapOptionsConstants,
     SortColumn,
 } from 'ca-components';
+import { IStateFilters } from '@shared/interfaces';
 
 // helpers
 import { FuelMapDropdownHelper } from '@pages/fuel/pages/fuel-table/utils/helpers/fuel-map-dropdown.helper';
+import { FilterHelper, MethodsCalculationsHelper } from '@shared/utils/helpers';
 
 // constants
 import { FuelMapConstants } from '@pages/fuel/pages/fuel-table/utils/constants';
@@ -31,6 +35,9 @@ import { FuelMapConstants } from '@pages/fuel/pages/fuel-table/utils/constants';
 // pipes
 import { LastFuelPriceRangeClassColorPipe } from '@pages/fuel/pages/fuel-stop-details/pipes';
 import { MapDropdownContent } from '@ca-shared/components/ca-map-dropdown/models';
+
+// enums
+import { TableStringEnum } from '@shared/enums';
 
 export function FuelMapMixin<T extends Constructor>(Base: T) {
     return class extends MapMixin(Base as Constructor) {
@@ -44,6 +51,10 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
 
         protected fuelStopMapListSortColumns: SortColumn[] =
             FuelMapConstants.FUEL_STOP_MAP_LIST_SORT_COLUMNS;
+
+        protected areaFilterData: IMapAreaFilter | null = null;
+        protected mapFiltersData: IStateFilters | null = null;
+        protected isClosedFilterActive: boolean = false;
 
         constructor(
             ref: ChangeDetectorRef,
@@ -78,17 +89,19 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                     null, // shipperDistance
                     null, // shipperStates
                     null, // categoryIds?: Array<number>,
-                    null, // _long?: number,
-                    null, // lat?: number,
-                    null, // distance?: number,
-                    null, // costFrom?: number,
-                    null, // costTo?: number,
-                    null, // lastFrom?: number,
-                    null, // lastTo?: number,
-                    null, // ppgFrom?: number,
-                    null, // ppgTo?: number,
+                    this.areaFilterData?.center?.lng, // _long?: number,
+                    this.areaFilterData?.center?.lat, // lat?: number,
+                    MethodsCalculationsHelper.convertMetersToMiles(
+                        this.areaFilterData?.radius
+                    ), // distance?: number,
+                    this.mapFiltersData?.dueFrom, // costFrom?: number,
+                    this.mapFiltersData?.dueTo, // costTo?: number,
+                    this.mapFiltersData?.rateFrom, // lastFrom?: number,
+                    this.mapFiltersData?.rateTo, // lastTo?: number,
+                    this.mapFiltersData?.paidFrom, // ppgFrom?: number,
+                    this.mapFiltersData?.paidTo, // ppgTo?: number,
                     this.mapsService.selectedMarkerId ?? null, // selectedId
-                    null, // active
+                    this.isClosedFilterActive ? 0 : 1, // active
                     this.mapClustersPagination.pageIndex, // pageIndex
                     this.mapClustersPagination.pageSize, // pageSize
                     null, // companyId
@@ -124,15 +137,17 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                     this.mapClustersObject.northEastLongitude,
                     this.mapClustersObject.southWestLatitude,
                     this.mapClustersObject.southWestLongitude,
-                    null, // _long?: number,
-                    null, // lat?: number,
-                    null, // distance?: number,
-                    null, // lastFrom?: number,
-                    null, // lastTo?: number,
-                    null, // costFrom?: number,
-                    null, // costTo?: number,
-                    null, // ppgFrom?: number,
-                    null, // ppgTo?: number,
+                    this.areaFilterData?.center?.lng, // _long?: number,
+                    this.areaFilterData?.center?.lat, // lat?: number,
+                    MethodsCalculationsHelper.convertMetersToMiles(
+                        this.areaFilterData?.radius
+                    ), // distance?: number,
+                    this.mapFiltersData?.rateFrom, // lastFrom?: number,
+                    this.mapFiltersData?.rateTo, // lastTo?: number,
+                    this.mapFiltersData?.dueFrom, // costFrom?: number,
+                    this.mapFiltersData?.dueTo, // costTo?: number,
+                    this.mapFiltersData?.paidFrom, // ppgFrom?: number,
+                    this.mapFiltersData?.paidTo, // ppgTo?: number,
                     this.mapListPagination.pageIndex,
                     this.mapListPagination.pageSize,
                     null, // companyId
@@ -313,6 +328,49 @@ export function FuelMapMixin<T extends Constructor>(Base: T) {
                     };
                 }
             }
+        }
+
+        protected handleMapFilters(currentFilter): void {
+            switch (currentFilter.filterType) {
+                case TableStringEnum.LOCATION_FILTER:
+                    this.areaFilterData = currentFilter.queryParams && {
+                        ...MapOptionsConstants.AREA_FILTER_DATA,
+                        center: {
+                            lat: currentFilter.queryParams.latValue,
+                            lng: currentFilter.queryParams.longValue,
+                        },
+                        radius: MethodsCalculationsHelper.convertMilesToMeters(
+                            currentFilter.queryParams.rangeValue
+                        ),
+                    };
+
+                    this.mapData = {
+                        ...this.mapData,
+                        areaFilterData: this.areaFilterData,
+                    };
+
+                    break;
+
+                case TableStringEnum.MONEY_FILTER:
+                    this.mapFiltersData = FilterHelper.mapFilters(
+                        currentFilter,
+                        this.mapFiltersData
+                    );
+
+                    break;
+
+                // TO DO: FUEL STOP FILTER
+                // case TableStringEnum.FUEL_STOP_FILTER:
+                //     break;
+            }
+
+            if (currentFilter.filterName === TableStringEnum.CLOSED_ARRAY)
+                this.isClosedFilterActive = currentFilter.selectedFilter;
+
+            this.isAddedNewMarker = true;
+
+            this.getClusters();
+            this.getMapList();
         }
     };
 }

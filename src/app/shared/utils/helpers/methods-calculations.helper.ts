@@ -162,9 +162,7 @@ export class MethodsCalculationsHelper {
     };
 
     //------------------------------- CONVERT DATE TO TIME  -------------------------------
-    static convertDateToTime = (
-        date: Date | string
-    ): string => {
+    static convertDateToTime = (date: Date | string): string => {
         return moment(new Date(date)).format('hh:mm A');
     };
 
@@ -213,5 +211,15 @@ export class MethodsCalculationsHelper {
         }
 
         return formatedValue;
+    };
+
+    // Convert Miles to Meters
+    static convertMilesToMeters = (miles: number): number => {
+        return Math.round(miles * 1609.344);
+    };
+
+    // Convert Meters to Miles
+    static convertMetersToMiles = (meters: number): number => {
+        return Math.round(meters * 0.000621371192);
     };
 }
