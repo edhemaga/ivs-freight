@@ -20,13 +20,13 @@ export class CreateLoadAdditionalInfoDropdownOptionsPipe
 
         dropdownOptions = [
             {
-                id: 0,
+                id: 1,
                 title: eLoadDetailsGeneral.COMMENTS,
                 count: load.commentsCount,
                 isSelected: false,
             },
             {
-                id: 1,
+                id: 2,
                 title: eLoadDetailsGeneral.STATUS_LOG,
                 count: load.statusHistory?.length,
                 isSelected: false,

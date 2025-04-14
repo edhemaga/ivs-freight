@@ -60,7 +60,6 @@ export class CreateLoadCommentsPipe implements PipeTransform {
             comment.commentContent?.includes(filter)
         );
 
-        if (!filter) return commentsWithIsDriverFilter;
-        return filteredComments;
+        return filter ? filteredComments : commentsWithIsDriverFilter;
     }
 }

@@ -62,13 +62,11 @@
                 >
                 </app-ca-tab-switch>
             </div>
+            @let _comments =
+                comments
+                    | createLoadComment: commentFilter : isDriverButtonSelected;
             <app-ta-comments-search
-                [commentsData]="
-                    comments
-                        | createLoadComment
-                            : commentFilter
-                            : isDriverButtonSelected
-                "
+                [commentsData]="_comments"
                 [isDisplaySearch]="isSearchActive"
                 [isHeaderHidden]="isHeaderHidden"
                 (onActionEmitter)="onCommentAction($event, load.id)"
