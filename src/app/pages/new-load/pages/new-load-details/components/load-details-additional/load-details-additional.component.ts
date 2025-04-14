@@ -43,7 +43,7 @@ import {
     SignInResponse,
 } from 'appcoretruckassist';
 import { ICreateCommentMetadata } from '@pages/load/pages/load-table/models';
-import { IDropdownItem, IRadioButton } from 'ca-components';
+import { IDropdownItem } from 'ca-components';
 
 // helpers
 import moment from 'moment';
