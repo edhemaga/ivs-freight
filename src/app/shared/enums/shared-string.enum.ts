@@ -33,4 +33,9 @@ export enum eSharedString {
     REPAIR = 'Repair',
     TOWING = 'Towing',
     PARKING = 'Parking',
+
+    // Address
+    ADDRESS = 'address',
+    PO_BOX_ADDRESS = 'poBoxAddress',
+    PO_BOX = 'poBox',
 }

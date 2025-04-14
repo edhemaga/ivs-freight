@@ -59,42 +59,55 @@
                     ></app-ca-input>
                 </div>
             </div>
+            <div class="address-tab-switch-holder">
+                <app-ca-tab-switch
+                    [tabs]="addressTabData"
+                    (switchClicked)="onHandleTabChange($event)"
+                    [type]="'type4-modal-popup'"
+                ></app-ca-tab-switch>
+            </div>
             <div class="row last-row">
-                <div class="col-10">
-                    <app-ca-input-address-dropdown
-                        formControlName="address"
-                        [inputConfig]="{
-                            name: 'address',
-                            type: 'text',
-                            label: 'Address, City, State Zip',
-                            placeholderIcon: 'address',
-                            textTransform: 'capitalize',
-                            dropdownWidthClass: 'w-col-376',
-                            minLength: 6,
-                            maxLength: 256
-                        }"
-                        [placeholderType]="'longAddress'"
-                        [activeAddress]="selectedAddress"
-                        (selectedAddress)="onHandleAddress($event)"
-                        [receivedAddressList]="addressList"
-                        [receivedAddressData]="addressData"
-                        (sentAddressData)="onAddressChange($event)"
-                        (sentAddressValue)="getAddressData($event)"
-                    ></app-ca-input-address-dropdown>
-                </div>
-                <div class="col-2">
-                    <app-ca-input
-                        formControlName="addressUnit"
-                        [inputConfig]="{
-                            name: 'addressUnit',
-                            type: 'text',
-                            label: 'Unit #',
-                            textTransform: 'uppercase',
-                            minLength: 1,
-                            maxLength: 10,
-                        }"
-                    ></app-ca-input>
-                </div>
+                @if(selectedAddressTab === 1) {
+                    <div class="col-10">
+                        <app-ca-input-address-dropdown
+                            formControlName="address"
+                            [inputConfig]="settingsFactoringConfig.addressInputConfig"
+                            [placeholderType]="'longAddress'"
+                            [activeAddress]="selectedAddress"
+                            (selectedAddress)="onHandleAddress($event)"
+                            [receivedAddressList]="addressList"
+                            [receivedAddressData]="addressData"
+                            (sentAddressData)="onAddressChange($event)"
+                            (sentAddressValue)="getAddressData($event)"
+                        ></app-ca-input-address-dropdown>
+                    </div>
+                    <div class="col-2">
+                        <app-ca-input
+                            formControlName="addressUnit"
+                            [inputConfig]="settingsFactoringConfig.addressUnitInputConfig"
+                        ></app-ca-input>
+                    </div>
+                } @else {
+                    <div class="col-5">
+                        <app-ca-input
+                            formControlName="poBox"
+                            [inputConfig]="settingsFactoringConfig.poBoxInputConfig"
+                        ></app-ca-input>
+                    </div>
+                    <div class="col-7">
+                        <app-ca-input-address-dropdown
+                            formControlName="poBoxAddress"
+                            [inputConfig]="settingsFactoringConfig.addressPoBoxInputConfig"
+                            [placeholderType]="'shortAddress'"
+                            [activeAddress]="selectedAddress"
+                            (selectedAddress)="onHandleAddress($event)"
+                            [receivedAddressList]="addressList"
+                            [receivedAddressData]="addressData"
+                            (sentAddressData)="onAddressChange($event)"
+                            (sentAddressValue)="getAddressData($event)"
+                        ></app-ca-input-address-dropdown>
+                    </div>
+                }
             </div>
             <app-ta-custom-card
                 [cardName]="'Notice of Assignment'"
