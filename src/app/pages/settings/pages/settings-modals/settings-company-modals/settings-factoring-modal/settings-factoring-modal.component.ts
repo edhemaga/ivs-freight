@@ -1,6 +1,7 @@
 import {
     FormsModule,
     ReactiveFormsModule,
+    RequiredValidator,
     UntypedFormBuilder,
     UntypedFormGroup,
     Validators,
@@ -43,10 +44,12 @@ import {
     CaInputAddressDropdownComponent,
     eModalButtonClassType,
     eModalButtonSize,
+    CaTabSwitchComponent,
 } from 'ca-components';
 
 // models
 import { AddressEntity } from 'appcoretruckassist';
+import { Tabs } from '@shared/models';
 
 // constants
 import { SettingsFactoringModalConstants } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-factoring-modal/utils/constants/settings-factoring-modal.constants';
@@ -56,13 +59,16 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Enums
 import { TaModalActionEnum } from '@shared/components/ta-modal/enums';
-import { eGeneralActions } from '@shared/enums';
+import { eGeneralActions, eSharedString } from '@shared/enums';
 
 // Pipes
 import { FormatDatePipe } from '@shared/pipes';
 
 // mixin
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
+
+// Configs
+import { SettingsFactoringInputConfig } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-factoring-modal/utils/configs';
 
 @Component({
     selector: 'app-settings-factoring-modal',
@@ -87,6 +93,7 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputAddressDropdownComponent,
         TaCustomCardComponent,
         TaAppTooltipV2Component,
+        CaTabSwitchComponent,
 
         // Pipes
         FormatDatePipe,
@@ -119,6 +126,8 @@ export class SettingsFactoringModalComponent
 
     public constants = SettingsFactoringModalConstants;
 
+    public settingsFactoringInputConfig = SettingsFactoringInputConfig;
+
     private nameInputBlurTimeoutCleaner: NodeJS.Timeout = null;
 
     noticeValue: any = '';
@@ -139,6 +148,11 @@ export class SettingsFactoringModalComponent
     public eModalButtonClassType = eModalButtonClassType;
     public eModalButtonSize = eModalButtonSize;
     public company: FactoringCompany;
+
+    // Address
+    public addressTabData: Tabs[] = [...SettingsFactoringModalConstants.ADDRESS_TABS];
+    public selectedAddressTab: number = 1;
+
     constructor(
         private formBuilder: UntypedFormBuilder,
         private ngbActiveModal: NgbActiveModal,
@@ -167,8 +181,10 @@ export class SettingsFactoringModalComponent
             name: [null, Validators.required],
             phone: [null, phoneFaxRegex],
             email: [null],
-            address: [null, [...addressValidation]],
+            address: [null, [Validators.required, ...addressValidation]],
+            poBoxAddress: [null, [Validators.required, ...addressValidation]],
             addressUnit: [null, [...addressUnitValidation]],
+            poBox: [null, Validators.required],
             noticeOfAssigment: [null, Validators.required],
             note: [null],
         });
@@ -218,8 +234,15 @@ export class SettingsFactoringModalComponent
     }
 
     private updateFactoringCompany(company: any) {
-        const { name, phone, email, addressUnit, noticeOfAssigment, note } =
-            this.factoringForm.value;
+        const {
+            name,
+            phone,
+            email,
+            addressUnit,
+            noticeOfAssigment,
+            note,
+            poBox,
+        } = this.factoringForm.value;
 
         if (this.selectedAddress) {
             this.selectedAddress = {
@@ -230,12 +253,13 @@ export class SettingsFactoringModalComponent
 
         const newData: UpdateFactoringCompanyCommand = {
             companyId: company.divisions.length ? null : company.id,
-            name: name,
-            phone: phone,
-            email: email,
+            name,
+            phone,
+            email,
             address: this.selectedAddress,
-            noticeOfAssigment: noticeOfAssigment,
-            note: note,
+            noticeOfAssigment,
+            note,
+            poBox,
         };
         this.settingsCompanyService
             .updateFactoringCompany(newData)
@@ -267,10 +291,25 @@ export class SettingsFactoringModalComponent
             name: company.factoringCompany.name,
             phone: company.factoringCompany.phone,
             email: company.factoringCompany.email,
-            address: company.factoringCompany.address,
+            address: company.factoringCompany.poBox
+                ? company.factoringCompany.address
+                : null,
+            poBoxAddress: company.factoringCompany.poBox
+                ? company.factoringCompany.address
+                : null,
             addressUnit: company.factoringCompany.address.addressUnit,
             noticeOfAssigment: company.factoringCompany.noticeOfAssigment,
             note: company.factoringCompany.note,
+            poBox: company.factoringCompany.poBox,
+        });
+
+        this.selectedAddressTab = company.factoringCompany.poBox ? 2 : 1;
+        this.setAddressValidations(this.selectedAddressTab);
+
+        this.addressTabData.forEach((tab: Tabs) => {
+            tab.checked = company.factoringCompany.poBox
+                ? tab.id === 2
+                : tab.id === 1;
         });
 
         this.onHandleAddress({
@@ -320,6 +359,50 @@ export class SettingsFactoringModalComponent
             .subscribe((isFormChange: boolean) => {
                 this.isFormDirty = isFormChange;
             });
+    }
+
+    public onHandleTabChange(event: Tabs): void {
+        this.selectedAddressTab = event.id;
+
+        this.setAddressValidations(event.id, true);
+    }
+
+    private setAddressValidations(tabId: number, isTabChanged?: boolean): void {
+        const addressControl = this.factoringForm.get(eSharedString.ADDRESS);
+
+        const poBoxAddressControl = this.factoringForm.get(
+            eSharedString.PO_BOX_ADDRESS
+        );
+
+        if (isTabChanged) {
+            this.selectedAddress = null;
+            this.addressList = null;
+            this.addressData = null;
+            this.factoringForm.get(eSharedString.PO_BOX).setValue(null);
+        }
+
+        if (tabId === 1) {
+            addressControl.setValidators([
+                Validators.required,
+                ...addressValidation,
+            ]);
+
+            poBoxAddressControl.clearValidators();
+            poBoxAddressControl.setErrors(null);
+            poBoxAddressControl.setValue(null);
+        } else {
+            poBoxAddressControl.setValidators([
+                Validators.required,
+                ...addressValidation,
+            ]);
+
+            addressControl.clearValidators();
+            addressControl.setErrors(null);
+            addressControl.setValue(null);
+        }
+
+        addressControl.updateValueAndValidity();
+        poBoxAddressControl.updateValueAndValidity();
     }
 
     ngOnDestroy(): void {
