@@ -89,7 +89,7 @@
                     ></app-ta-input-dropdown>
                 </ng-container>
 
-                <app-ca-input
+                <ca-input-test
                     formControlName="mileage"
                     [inputConfig]="{
                         name: isPMTruckTable ? 'MILEAGE' : 'MONTHS',
@@ -118,7 +118,7 @@
                         maxLength: isPMTruckTable ? 999999999 : 2,
                         defaultValue: pmItemRow.value.defaultMileage,
                     }"
-                ></app-ca-input>
+                ></ca-input-test>
             </div>
         </ng-container>
     </div>
