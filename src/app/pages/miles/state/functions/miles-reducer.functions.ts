@@ -274,7 +274,8 @@ export const setUnitMapData = function (state: IMilesState): IMilesState {
 };
 
 export const toggleTableLockingStatus = function (
-    state: IMilesState
+    state: IMilesState,
+    isLocked?: boolean
 ): IMilesState {
     const {
         tableSettings,
@@ -283,10 +284,12 @@ export const toggleTableLockingStatus = function (
         isToolbarDropdownMenuColumnsActive,
     } = state;
 
+    const isTableLocked = isLocked ?? !tableSettings.isTableLocked;
+
     const toolbarDropdownMenuOptions =
         MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
             activeViewMode,
-            !tableSettings.isTableLocked,
+            isTableLocked,
             cardFlipViewMode,
             isToolbarDropdownMenuColumnsActive
         );
@@ -295,7 +298,7 @@ export const toggleTableLockingStatus = function (
         ...state,
         tableSettings: {
             ...tableSettings,
-            isTableLocked: !tableSettings.isTableLocked,
+            isTableLocked,
         },
         toolbarDropdownMenuOptions,
     };

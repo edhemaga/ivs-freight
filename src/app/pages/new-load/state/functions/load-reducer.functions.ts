@@ -13,20 +13,29 @@ import {
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eCommonElement } from '@shared/enums';
+import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 
 // Helper
 import { LoadHelper, LoadStoreHelper } from '@pages/new-load/utils/helpers';
 import { FilterHelper } from '@shared/utils/helpers';
+import {
+    DropdownMenuColumnsActionsHelper,
+    DropdownMenuToolbarContentHelper,
+} from '@shared/utils/helpers/dropdown-menu-helpers';
+import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
+
+// Config
+import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
     loadResponse: LoadListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
+    const { selectedTab } = state;
     return {
         ...state,
         loads: LoadHelper.loadMapper(loadResponse.pagination.data),
@@ -34,6 +43,7 @@ export const getLoadByIdSuccessResult = function (
             loadResponse,
             state.toolbarTabs
         ),
+        tableColumns: LoadTableColumnsConfig.getLoadTableColumns(selectedTab),
     };
 };
 
@@ -54,9 +64,21 @@ export const getViewModeChange = function (
     activeViewMode: eCommonElement
 ): ILoadState {
     console.log('getViewModeChange');
+    const {
+        tableSettings,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
     return {
         ...state,
         activeViewMode,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                cardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
     };
 };
 //#endregion
@@ -149,4 +171,94 @@ export function onMapVisiblityToggle(state: ILoadState): ILoadState {
     };
 }
 
+//#endregion
+
+//#region Toolbar Hamburger Menu
+export function setToolbarDropdownMenuColumnsActive(
+    state: ILoadState,
+    isActive: boolean
+): ILoadState {
+    const { cardFlipViewMode, activeViewMode, tableSettings, tableColumns } =
+        state;
+    const toolbarDropdownColumns =
+        DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(
+            tableColumns
+        );
+    return {
+        ...state,
+        isToolbarDropdownMenuColumnsActive: isActive,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                cardFlipViewMode,
+                isActive,
+                toolbarDropdownColumns
+            ),
+    };
+}
+
+export function toggleColumnVisibility(
+    state: ILoadState,
+    columnKey: string,
+    isActive: boolean
+): ILoadState {
+    const tableColumns = StoreFunctionsHelper.mapColumnsVisibility(
+        state.tableColumns,
+        columnKey,
+        isActive
+    );
+    return {
+        ...state,
+        tableColumns,
+    };
+}
+
+export function toggleTableLockingStatus(state: ILoadState): ILoadState {
+    const {
+        tableSettings,
+        activeViewMode,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+    const toolbarDropdownMenuOptions =
+        DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+            activeViewMode,
+            !tableSettings.isTableLocked,
+            cardFlipViewMode,
+            isToolbarDropdownMenuColumnsActive
+        );
+    return {
+        ...state,
+        tableSettings: {
+            ...tableSettings,
+            isTableLocked: !tableSettings.isTableLocked,
+        },
+        toolbarDropdownMenuOptions,
+    };
+}
+
+export function toggleCardFlipViewMode(state: ILoadState): ILoadState {
+    const {
+        cardFlipViewMode,
+        activeViewMode,
+        tableSettings,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+    const nextCardFlipViewMode =
+        cardFlipViewMode === eCardFlipViewMode.FRONT
+            ? eCardFlipViewMode.BACK
+            : eCardFlipViewMode.FRONT;
+    return {
+        ...state,
+        cardFlipViewMode: nextCardFlipViewMode,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                nextCardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
+    };
+}
 //#endregion

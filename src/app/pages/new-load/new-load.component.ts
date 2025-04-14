@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, ViewChild } from '@angular/core';
 
 // modules
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -21,8 +20,6 @@ import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
-import { TruckassistTableService } from '@shared/services/truckassist-table.service';
-import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 import { ModalService } from '@shared/services/modal.service';
 
 // Components
@@ -38,20 +35,13 @@ import {
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 import { SvgIconComponent } from 'angular-svg-icon';
-
-// Helpers
-import { LoadTableHelper } from '@pages/load/pages/load-table/utils/helpers';
-import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Interface
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
-
-// Base class
-import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
 @Component({
     selector: 'app-new-load',
@@ -76,7 +66,8 @@ import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
         SvgIconComponent,
     ],
 })
-export class NewLoadComponent extends LoadDropdownMenuActionsBase {
+export class NewLoadComponent {
+    @ViewChild(NewLoadCardsComponent) loadCardComponent!: NewLoadCardsComponent;
     // enums
     public eLoadStatusStringType = eLoadStatusStringType;
     public generalActions = eGeneralActions;
@@ -85,24 +76,13 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
     public sharedIcons = SharedSvgRoutes;
 
     public selectedTab = eLoadStatusStringType.ACTIVE;
-    private isToolbarDropdownMenuColumnsActive: boolean = false;
-    public isTableLocked: boolean = false;
-
-    // dropdown
-    public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
 
     constructor(
-        // router
-        protected router: Router,
-
         // services
-        protected modalService: ModalService,
-        protected loadStoreService: LoadStoreService,
-        protected tableService: TruckassistTableService,
-        protected confirmationResetService: ConfirmationResetService
-    ) {
-        super();
-    }
+
+        public loadStoreService: LoadStoreService,
+        private modalService: ModalService
+    ) {}
 
     public onToolBarAction(event: TableToolbarActions): void {
         if (!event) return;
@@ -124,21 +104,6 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
         }
     }
 
-    public handleToolbarDropdownMenuActions<T>(
-        action: TableCardBodyActions<T>
-    ) {
-        const mappedAction = {
-            ...action,
-            subType: DropdownMenuColumnsActionsHelper.getTableType(
-                this.selectedTab
-            ),
-        };
-
-        this.handleDropdownMenuActions(mappedAction, eDropdownMenu.LOAD);
-    }
-
-    public handleShowMoreAction(): void {}
-
     public onSearchQueryChange(query: string[]): void {
         this.loadStoreService.dispatchSearchChange(query);
     }
@@ -151,74 +116,40 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
         this.loadStoreService.navigateToLoadDetails(id);
     }
 
-    public updateToolbarDropdownMenuContent(action?: string): void {
-        if (!action) {
-            this.isToolbarDropdownMenuColumnsActive = false;
-
-            this.setToolbarDropdownMenuContent(
-                this.selectedTab,
-                this.isTableLocked,
-                this.isToolbarDropdownMenuColumnsActive
-            );
-
-            return;
-        }
-
-        switch (action) {
-            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
-            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
-                this.updateToolbarDropdownMenuContentUnlockLockAction();
-
+    public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {
+        const { type, isActive } = action;
+        switch (type) {
+            case eDropdownMenuColumns.OPEN_TYPE:
+                break;
+            case eDropdownMenuColumns.CLOSE_TYPE:
+                this.setToolbarDropdownMenuColumnsActive(false);
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
-                this.updateToolbarDropdownMenuContentColumnsAction();
-
+                this.setToolbarDropdownMenuColumnsActive(true);
+                break;
+            case eDropdownMenuColumns.COLUMNS_BACK_TYPE:
+                this.setToolbarDropdownMenuColumnsActive(false);
+                break;
+            case eDropdownMenuColumns.UNLOCK_TABLE_TYPE:
+            case eDropdownMenuColumns.LOCK_TABLE_TYPE:
+                this.handleTableLockingStatus();
+                break;
+            case eDropdownMenuColumns.RESET_TABLE_TYPE:
+                this.openResetConfirmationModal();
+                break;
+            case eDropdownMenuColumns.RESET_TABLE_CONFIRMED_TYPE:
+                this.handleResetTable();
+                break;
+            case eDropdownMenuColumns.FLIP_ALL_CARDS_TYPE:
+                this.handleFlipAllCards();
+                break;
+            case eDropdownMenuColumns.COLUMNS_CARD_TYPE:
+                this.loadCardComponent.openColumnsModal();
                 break;
             default:
+                this.toggleColumnVisibility(type, isActive);
                 break;
         }
-    }
-
-    private updateToolbarDropdownMenuContentUnlockLockAction(): void {
-        this.isTableLocked = !this.isTableLocked;
-
-        this.setToolbarDropdownMenuContent(
-            this.selectedTab,
-            this.isTableLocked,
-            this.isToolbarDropdownMenuColumnsActive
-        );
-    }
-
-    private updateToolbarDropdownMenuContentColumnsAction(): void {
-        this.isToolbarDropdownMenuColumnsActive =
-            !this.isToolbarDropdownMenuColumnsActive;
-
-        const loadColumns =
-            DropdownMenuColumnsActionsHelper.getDropdownMenuColumnsContent(
-                this.selectedTab
-            );
-
-        this.setToolbarDropdownMenuContent(
-            this.selectedTab,
-            this.isTableLocked,
-            this.isToolbarDropdownMenuColumnsActive,
-            loadColumns
-        );
-    }
-
-    private setToolbarDropdownMenuContent(
-        selectedTab: string,
-        isTableLocked: boolean,
-        isColumnsDropdownActive: boolean,
-        loadColumnsList?: IDropdownMenuItem[]
-    ): void {
-        this.toolbarDropdownMenuOptions =
-            LoadTableHelper.getToolbarDropdownMenuContent(
-                selectedTab,
-                isTableLocked,
-                isColumnsDropdownActive,
-                loadColumnsList
-            );
     }
 
     private onLoadTypeChange(mode: string): void {
@@ -240,5 +171,38 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
         };
 
         this.loadStoreService.onOpenModal(modalData);
+    }
+
+    private setToolbarDropdownMenuColumnsActive(isActive: boolean): void {
+        this.loadStoreService.dispatchSetToolbarDropdownMenuColumnsActive(
+            isActive
+        );
+    }
+    private handleTableLockingStatus(): void {
+        this.loadStoreService.dispatchTableUnlockToggle();
+    }
+    private openResetConfirmationModal(): void {
+        this.modalService.openModal(
+            ConfirmationResetModalComponent,
+            { size: eDropdownMenu.SMALL },
+            {
+                template: eGeneralActions.RESET_MODAL,
+                type: eGeneralActions.RESET,
+                modalTitle: 'List | Load',
+                tableType: 'Load',
+            }
+        );
+    }
+    private handleResetTable(): void {
+        this.loadStoreService.dispatchTableColumnReset();
+    }
+    private handleFlipAllCards(): void {
+        this.loadStoreService.dispatchToggleCardFlipViewMode();
+    }
+    private toggleColumnVisibility(columnType: string, isChecked): void {
+        this.loadStoreService.dispatchToggleColumnsVisiblity(
+            columnType,
+            isChecked
+        );
     }
 }

@@ -10,12 +10,12 @@ import * as LoadActions from '@pages/load/state/actions/load.action';
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 import { eActiveViewMode } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // functions
 import * as Functions from '@pages/load/pages/load-table/utils/functions/load-reducer.functions';
-
-// Helpers
-import { LoadTableColumns } from '@pages/new-load/utils/config';
+// config
+import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
 
 // #region initialState
 export const initialState: ILoadState = {
@@ -48,7 +48,9 @@ export const initialState: ILoadState = {
 
     minimalList: {},
 
-    tableColumns: LoadTableColumns,
+    tableColumns: LoadTableColumnsConfig.getLoadTableColumns(
+        eLoadStatusStringType.ACTIVE
+    ),
 };
 // #endregion
 

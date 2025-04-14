@@ -3,6 +3,7 @@
         viewData: loadStoreService.loadsSelector$ | async,
         columns: loadStoreService.tableColumnsSelector$ | async,
         selectedTab: loadStoreService.selectedTabSelector$ | async,
+        tableSettings: loadStoreService.tableSettingsSelector$ | async,
     };
 @if (store) {
     @let templates =
@@ -11,11 +12,13 @@
             loadStatus,
             edit,
         };
+
+    @let isTableLocked = store.tableSettings.isTableLocked;
     <app-new-table
         [columns]="store.columns"
         [rows]="store.viewData"
         [templates]="templates"
-        [isTableLocked]="true"
+        [isTableLocked]="isTableLocked"
     >
         <ng-template let-data="data" #edit>
             <!-- TODO: For testing load modal only !! Will be removed later !! -->

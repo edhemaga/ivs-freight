@@ -14,11 +14,14 @@ import { ILoadState } from '@pages/new-load/interfaces';
 import { LoadToolbarTabs } from '@pages/new-load/utils/constants';
 
 // Config
-import { LoadTableColumns } from '@pages/new-load/utils/config';
+import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
-import { eCommonElement } from '@shared/enums';
+import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
+
+// Helpers
+import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 export const initialState: ILoadState = {
     loads: [],
@@ -34,7 +37,9 @@ export const initialState: ILoadState = {
     },
     filters: {},
 
-    tableColumns: LoadTableColumns,
+    tableColumns: LoadTableColumnsConfig.getLoadTableColumns(
+        eLoadStatusStringType.ACTIVE
+    ),
 
     details: {
         data: {},
@@ -49,6 +54,23 @@ export const initialState: ILoadState = {
     minimalList: {
         pagination: {},
         groupedByStatusTypeList: {},
+    },
+
+    cardFlipViewMode: eCardFlipViewMode.FRONT,
+    isToolbarDropdownMenuColumnsActive: false,
+
+    toolbarDropdownMenuOptions:
+        DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+            eCommonElement.LIST,
+            true,
+            eCardFlipViewMode.FRONT,
+            false
+        ),
+
+    tableSettings: {
+        isTableLocked: true,
+        sortKey: null,
+        sortDirection: null,
     },
 };
 
@@ -104,6 +126,22 @@ export const loadReducer = createReducer(
 
     on(LoadActions.onMapVisiblityToggle, (state) =>
         Functions.onMapVisiblityToggle(state)
+    ),
+    //#endregion
+
+    //#region Toolbar hamburger menu
+    on(LoadActions.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
+        Functions.setToolbarDropdownMenuColumnsActive(state, isActive)
+    ),
+    on(LoadActions.toggleColumnVisibility, (state, { columnKey, isActive }) =>
+        Functions.toggleColumnVisibility(state, columnKey, isActive)
+    ),
+    on(LoadActions.tableUnlockToggle, (state) =>
+        Functions.toggleTableLockingStatus(state)
+    ),
+    on(LoadActions.tableColumnReset, (state) => ({ ...state })),
+    on(LoadActions.toggleCardFlipViewMode, (state) =>
+        Functions.toggleCardFlipViewMode(state)
     )
     //#endregion
 );

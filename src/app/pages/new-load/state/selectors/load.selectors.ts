@@ -58,6 +58,11 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     const { tableColumns } = state;
     return tableColumns;
 });
+
+export const tableSettingsSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.tableSettings
+);
 //#endregion
 
 //#region Details
@@ -132,3 +137,15 @@ export const closedLoadStatusSelector = createSelector(
     }
 );
 //#endregion
+
+//#region Toolbar hamburger menu
+
+export const toolbarDropdownMenuOptionsSelector = createSelector(
+    selectLoadState,
+    (state) => {
+        const { toolbarDropdownMenuOptions } = state;
+        return toolbarDropdownMenuOptions;
+    }
+);
+
+//#endRegion

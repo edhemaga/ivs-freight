@@ -5,6 +5,8 @@
         activeViewMode: loadStoreService.activeViewModeSelector$ | async,
         filtersDropdownList:
             loadStoreService.filtersDropdownListSelector$ | async,
+        toolbarDropdownMenuOptions:
+            loadStoreService.toolbarDropdownMenuOptionsSelector$ | async,
     };
 
 @if (store) {
@@ -12,13 +14,13 @@
         [title]="'Load'"
         [leftSide]="leftSide"
         [rightSide]="rightSide"
-        [toolbarDropdownContent]="toolbarDropdownMenuOptions"
+        [toolbarDropdownContent]="store.toolbarDropdownMenuOptions"
         (onPlusClick)="
             onToolBarAction({
                 action: generalActions.OPEN_MODAL,
             })
         "
-        (toolbarDropdownAction)="handleToolbarDropdownMenuActions($event)"
+        (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
     >
         <ng-template #leftSide>
             <app-toolbar-tabs-wrapper

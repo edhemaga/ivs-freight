@@ -117,5 +117,28 @@ export const onGetLoadByIdError = createAction(
 export const onMapVisiblityToggle = createAction(
     LoadStoreConstants.ACTION_TOGGLE_MAP
 );
+//#endregion
 
+//#region Toolbar Hamburger Menu
+export const setToolbarDropdownMenuColumnsActive = createAction(
+    LoadStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+    props<{ isActive: boolean }>()
+);
+
+export const toggleColumnVisibility = createAction(
+    LoadStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+    props<{ columnKey: string; isActive: boolean }>()
+);
+
+export const tableUnlockToggle = createAction(
+    LoadStoreConstants.ACTION_TABLE_UNLOCK_TOGGLE
+);
+
+export const tableColumnReset = createAction(
+    LoadStoreConstants.ACTION_RESET_COLUMNS
+);
+
+export const toggleCardFlipViewMode = createAction(
+    LoadStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
+);
 //#endregion
