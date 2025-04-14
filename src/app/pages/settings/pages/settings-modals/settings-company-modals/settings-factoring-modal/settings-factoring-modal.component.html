@@ -62,8 +62,8 @@
             <div class="address-tab-switch-holder">
                 <app-ca-tab-switch
                     [tabs]="addressTabData"
-                    (switchClicked)="onHandleTabChange($event)"
                     [type]="'type4-modal-popup'"
+                    (switchClicked)="onHandleTabChange($event)"
                 ></app-ca-tab-switch>
             </div>
             <div class="row last-row">
@@ -71,12 +71,12 @@
                     <div class="col-10">
                         <app-ca-input-address-dropdown
                             formControlName="address"
-                            [inputConfig]="settingsFactoringConfig.addressInputConfig"
+                            [inputConfig]="settingsFactoringInputConfig.addressInputConfig"
                             [placeholderType]="'longAddress'"
                             [activeAddress]="selectedAddress"
-                            (selectedAddress)="onHandleAddress($event)"
                             [receivedAddressList]="addressList"
                             [receivedAddressData]="addressData"
+                            (selectedAddress)="onHandleAddress($event)"
                             (sentAddressData)="onAddressChange($event)"
                             (sentAddressValue)="getAddressData($event)"
                         ></app-ca-input-address-dropdown>
@@ -84,25 +84,25 @@
                     <div class="col-2">
                         <app-ca-input
                             formControlName="addressUnit"
-                            [inputConfig]="settingsFactoringConfig.addressUnitInputConfig"
+                            [inputConfig]="settingsFactoringInputConfig.addressUnitInputConfig"
                         ></app-ca-input>
                     </div>
                 } @else {
                     <div class="col-5">
                         <app-ca-input
                             formControlName="poBox"
-                            [inputConfig]="settingsFactoringConfig.poBoxInputConfig"
+                            [inputConfig]="settingsFactoringInputConfig.poBoxInputConfig"
                         ></app-ca-input>
                     </div>
                     <div class="col-7">
                         <app-ca-input-address-dropdown
                             formControlName="poBoxAddress"
-                            [inputConfig]="settingsFactoringConfig.addressPoBoxInputConfig"
+                            [inputConfig]="settingsFactoringInputConfig.addressPoBoxInputConfig"
                             [placeholderType]="'shortAddress'"
                             [activeAddress]="selectedAddress"
-                            (selectedAddress)="onHandleAddress($event)"
                             [receivedAddressList]="addressList"
                             [receivedAddressData]="addressData"
+                            (selectedAddress)="onHandleAddress($event)"
                             (sentAddressData)="onAddressChange($event)"
                             (sentAddressValue)="getAddressData($event)"
                         ></app-ca-input-address-dropdown>

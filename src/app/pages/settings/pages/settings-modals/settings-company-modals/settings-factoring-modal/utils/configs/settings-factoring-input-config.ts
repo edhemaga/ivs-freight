@@ -1,20 +1,6 @@
-import { Tabs } from '@shared/models';
 import { ICaInput } from 'ca-components';
 
-export class SettingsFactoringConfig {
-    static addressTabs: Tabs[] = [
-        {
-            id: 1,
-            name: 'Physical Address',
-            checked: true,
-        },
-        {
-            id: 2,
-            name: 'PO Box',
-            checked: false,
-        },
-    ];
-
+export class SettingsFactoringInputConfig {
     static addressInputConfig: ICaInput = {
         name: 'address',
         type: 'text',

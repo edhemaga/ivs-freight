@@ -1,1 +1,1 @@
-export * from './settings-factoring-config';
+export * from './settings-factoring-input-config';

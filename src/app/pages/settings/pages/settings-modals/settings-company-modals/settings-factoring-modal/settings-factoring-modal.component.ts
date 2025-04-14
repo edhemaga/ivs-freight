@@ -68,7 +68,7 @@ import { FormatDatePipe } from '@shared/pipes';
 import { AddressMixin } from '@shared/mixins/address/address.mixin';
 
 // Configs
-import { SettingsFactoringConfig } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-factoring-modal/utils/configs';
+import { SettingsFactoringInputConfig } from '@pages/settings/pages/settings-modals/settings-company-modals/settings-factoring-modal/utils/configs';
 
 @Component({
     selector: 'app-settings-factoring-modal',
@@ -126,7 +126,7 @@ export class SettingsFactoringModalComponent
 
     public constants = SettingsFactoringModalConstants;
 
-    public settingsFactoringConfig = SettingsFactoringConfig;
+    public settingsFactoringInputConfig = SettingsFactoringInputConfig;
 
     private nameInputBlurTimeoutCleaner: NodeJS.Timeout = null;
 
@@ -150,7 +150,7 @@ export class SettingsFactoringModalComponent
     public company: FactoringCompany;
 
     // Address
-    public addressTabData: Tabs[] = [...SettingsFactoringConfig.addressTabs];
+    public addressTabData: Tabs[] = [...SettingsFactoringModalConstants.ADDRESS_TABS];
     public selectedAddressTab: number = 1;
 
     constructor(
@@ -307,8 +307,9 @@ export class SettingsFactoringModalComponent
         this.setAddressValidations(this.selectedAddressTab);
 
         this.addressTabData.forEach((tab: Tabs) => {
-            if (company.factoringCompany.poBox) tab.checked = tab.id === 2;
-            else tab.checked = tab.id === 1;
+            tab.checked = company.factoringCompany.poBox
+                ? tab.id === 2
+                : tab.id === 1;
         });
 
         this.onHandleAddress({
@@ -369,7 +370,9 @@ export class SettingsFactoringModalComponent
     private setAddressValidations(tabId: number, isTabChanged?: boolean): void {
         const addressControl = this.factoringForm.get(eSharedString.ADDRESS);
 
-        const poBoxAddressControl = this.factoringForm.get(eSharedString.PO_BOX_ADDRESS);
+        const poBoxAddressControl = this.factoringForm.get(
+            eSharedString.PO_BOX_ADDRESS
+        );
 
         if (isTabChanged) {
             this.selectedAddress = null;
