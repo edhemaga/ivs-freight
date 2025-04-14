@@ -11,6 +11,7 @@ import { ILoadState } from '@pages/new-load/interfaces';
 // It has to have same name as in StoreModule.forRoot inside app module
 export const loadsFeatureKey: string = 'newLoad';
 
+//#region List
 export const selectLoadState =
     createFeatureSelector<ILoadState>(loadsFeatureKey);
 
@@ -18,6 +19,17 @@ export const selectLoads = createSelector(
     selectLoadState,
     (state: ILoadState) => state.loads
 );
+
+export const selectedCountSelector = createSelector(
+    selectLoadState,
+    (state) => {
+        const { selectedCount } = state;
+        console.log('selectedCountSelector');
+        return selectedCount;
+    }
+);
+
+//#endregion
 
 //#region Tabs
 export const toolbarTabsSelector = createSelector(
@@ -58,6 +70,17 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     const { tableColumns } = state;
     return tableColumns;
 });
+
+export const totalSumSelector = createSelector(selectLoadState, (state) => {
+    const { loads, selectedCount, totalLoadSum } = state;
+
+    if (!selectedCount) return totalLoadSum;
+
+    return loads
+        .filter((item) => item.isSelected)
+        .reduce((sum, item) => sum + (item.totalDue || 0), 0);
+});
+
 //#endregion
 
 //#region Details

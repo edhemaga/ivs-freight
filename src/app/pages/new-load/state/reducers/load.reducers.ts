@@ -22,6 +22,8 @@ import { eCommonElement } from '@shared/enums';
 
 export const initialState: ILoadState = {
     loads: [],
+    selectedCount: 0,
+    totalLoadSum: 0,
 
     toolbarTabs: LoadToolbarTabs,
     selectedTab: eLoadStatusStringType.ACTIVE,
@@ -104,6 +106,18 @@ export const loadReducer = createReducer(
 
     on(LoadActions.onMapVisiblityToggle, (state) =>
         Functions.onMapVisiblityToggle(state)
+    ),
+    //#endregion
+
+    //#region List
+    on(LoadActions.onSelectLoad, (state, { id }) =>
+        Functions.onSelectLoad(state, id)
+    ),
+    //#endregion
+
+    //#region Delete actions
+    on(LoadActions.onDeleteLoadSuccess, (state) =>
+        Functions.onDeleteLoadSuccess(state)
     )
     //#endregion
 );

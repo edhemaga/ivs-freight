@@ -33,7 +33,9 @@ import {
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
     CaSearchMultipleStates2Component,
+    CaDeleteModalComponent,
     IFilterAction,
+    ThousandSeparatorPipe,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
@@ -74,6 +76,10 @@ import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
         CaFilterListDropdownComponent,
         CaSearchMultipleStates2Component,
         SvgIconComponent,
+        CaDeleteModalComponent,
+
+        // Pipes
+        ThousandSeparatorPipe,
     ],
 })
 export class NewLoadComponent extends LoadDropdownMenuActionsBase {
@@ -230,6 +236,14 @@ export class NewLoadComponent extends LoadDropdownMenuActionsBase {
         this.loadStoreService.dispatchViewModeChange(
             viewMode as eCommonElement
         );
+    }
+
+    public onShowDeleteLoadModal() {
+        this.loadStoreService.onShowDeleteLoadModal();
+    }
+
+    public onLoadDelete() {
+        this.loadStoreService.onLoadDelete();
     }
 
     private onCreateNewLoad(): void {

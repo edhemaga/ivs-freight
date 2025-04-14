@@ -1,7 +1,9 @@
 import { LoadStatusResponse } from 'appcoretruckassist';
 
 export interface IMappedLoad {
-    loadNumber: string;
     id: number;
+    isSelected: boolean;
+    loadNumber: string;
     status: LoadStatusResponse;
+    totalDue: number;
 }

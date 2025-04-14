@@ -67,6 +67,14 @@ export class LoadStoreService {
     public minimalListSelector$: Observable<ILoadDetailsLoadMinimalList> =
         this.store.pipe(select(LoadSelectors.minimalListSelector));
 
+    public selectedCountSelector$: Observable<number> = this.store.pipe(
+        select(LoadSelectors.selectedCountSelector)
+    );
+
+    public totalSumSelector$: Observable<number> = this.store.pipe(
+        select(LoadSelectors.totalSumSelector)
+    );
+
     // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!
     public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
         select(LoadSelectors.closedLoadStatusSelector)
@@ -106,6 +114,13 @@ export class LoadStoreService {
         });
     }
 
+    public onSelectLoad(id: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_ONE_LOAD_SELECT,
+            id,
+        });
+    }
+
     public dispatchFiltersChange(filters: IFilterAction): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_FILTER_CHANGED,
@@ -130,6 +145,18 @@ export class LoadStoreService {
     public toggleMap(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TOGGLE_MAP,
+        });
+    }
+
+    public onShowDeleteLoadModal(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_SHOW_DELETE_LOAD_MODAL,
+        });
+    }
+
+    public onLoadDelete(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD,
         });
     }
 }

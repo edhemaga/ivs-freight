@@ -1,10 +1,13 @@
 @let store =
     {
         selectedTab: loadStoreService.selectedTabSelector$ | async,
+        viewData: loadStoreService.loadsSelector$ | async,
         toolbarTabs: loadStoreService.toolbarTabsSelector$ | async,
         activeViewMode: loadStoreService.activeViewModeSelector$ | async,
         filtersDropdownList:
             loadStoreService.filtersDropdownListSelector$ | async,
+        selectedCount: loadStoreService.selectedCountSelector$ | async,
+        totalSum: loadStoreService.totalSumSelector$ | async,
     };
 
 @if (store) {
@@ -31,23 +34,18 @@
             ></app-toolbar-tabs-wrapper>
 
             <ng-template #betweenTabsTemplate>
-                <!-- TODO:  MISSING IN NEW STORE 
-                 @if (selectedTab !== 'Template') {
+                @if (selectedTab !== eLoadStatusStringType.TEMPLATE) {
                     <div
-                        class="text-color-blue-18 text-size-14 ta-font-bold br-2 p-x-10 p-y-4"
+                        class="text-color-blue-18 text-size-14 ta-font-bold br-2 h-26 w-88 justify-content-center d-flex align-items-center"
                         [ngClass]="{
                             'background-blue-16': store.selectedCount,
                         }"
                     >
-                        ${{
-                            store.selectedCount
-                                ? store.selectLoadRateSum
-                                : store.totalLoadSum
-                        }}
+                        ${{ store.totalSum | thousandSeparator }}
                     </div>
 
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
-                } -->
+                }
             </ng-template>
 
             <ng-container *ngTemplateOutlet="divider"></ng-container>
@@ -99,8 +97,6 @@
                 </app-ca-filter>
             </div>
 
-            <!-- TODO: MISSING IN NEW STORE 
-             
             @if (
                 selectedTab === eLoadStatusStringType.TEMPLATE &&
                 store.selectedCount
@@ -111,7 +107,7 @@
                 >
                     {{ store.selectedCount }} Selected
                 </div>
-            } -->
+            }
         </ng-template>
 
         <ng-template #rightSide>
@@ -121,8 +117,9 @@
                     selectedTab === eLoadStatusStringType.TEMPLATE;
                 @if (isPending || isTemplate) {
                     <svg-icon
-                        [src]="sharedIcons.DELETE_ICON"
                         class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
+                        [src]="sharedIcons.DELETE_ICON"
+                        (click)="onShowDeleteLoadModal()"
                     >
                     </svg-icon>
                 }
@@ -130,6 +127,7 @@
                 <svg-icon
                     [src]="sharedIcons.PRINT_ICON"
                     class="background-hover-dark-2 svg-fill-muted svg-hover-black svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
+                    (click)="onLoadDelete()"
                 >
                 </svg-icon>
             }
@@ -157,4 +155,19 @@
     } @else {
         <app-new-load-cards></app-new-load-cards>
     }
+
+    <ng-container *ngTemplateOutlet="deleteTemplate"></ng-container>
+
+    <ng-template #deleteTemplate>
+        @let isPending = selectedTab === eLoadStatusStringType.PENDING;
+        @let isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
+
+        @if (isPending || isTemplate) {
+            @for (load of store.viewData; track load.id) {
+                @if (load.isSelected) {
+                    {{ load.id }}
+                }
+            }
+        }
+    </ng-template>
 }

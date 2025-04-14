@@ -192,6 +192,32 @@ export class LoadEffect {
 
     //#endregion
 
+    //#endregion
+
+    //#region Delete load
+    public onShowDeleteLoadModal$ = createEffect(
+        () =>
+            this.actions$.pipe(
+                ofType(LoadActions.onShowDeleteLoadModal),
+                map(() =>
+                    this.modalService.openModal(NewLoadModalComponent, {})
+                )
+            ),
+        { dispatch: false }
+    );
+
+    public onDeleteLoad$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onDeleteLoad),
+            map(() => {
+                console.log('onDeleteLoad$');
+                return LoadActions.onDeleteLoadSuccess();
+            })
+        )
+    );
+
+    //#endregion
+
     //#region Get load list
     private getLoadData(
         mode: string,

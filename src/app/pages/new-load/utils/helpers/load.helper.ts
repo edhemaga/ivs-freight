@@ -16,8 +16,10 @@ export class LoadHelper {
         return loads.map((load) => {
             return {
                 id: load.id,
+                isSelected: false,
                 loadNumber: load.loadNumber,
                 status: load.status,
+                totalDue: load.totalDue,
             };
         });
     }

@@ -30,4 +30,15 @@ export class LoadStoreConstants {
     public static ACTION_GET_MAP_ROUTING = `${this.COMPONENT_NAME_KEY} ACTION_GET_MAP_ROUTING`;
 
     //#endregion
+
+    //#region List
+    public static ACTION_ON_ONE_LOAD_SELECT = `${this.COMPONENT_NAME_KEY} ACTION_ON_ONE_LOAD_SELECT`;
+    //#endregion
+
+    //#region Delete
+    public static ACTION_ON_SHOW_DELETE_LOAD_MODAL = `${this.COMPONENT_NAME_KEY} ACTION_ON_SHOW_DELETE_LOAD_MODAL`;
+    public static ACTION_ON_DELETE_LOAD = `${this.COMPONENT_NAME_KEY} ACTION_ON_DELETE_LOAD`;
+    public static ACTION_ON_DELETE_LOAD_SUCCESS = `${this.COMPONENT_NAME_KEY} ACTION_ON_DELETE_LOAD_SUCCESS`;
+
+    //#endregion
 }

@@ -21,15 +21,20 @@ import { FilterHelper } from '@shared/utils/helpers';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
     loadResponse: LoadListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
+    const loads = LoadHelper.loadMapper(loadResponse.pagination.data);
+
     return {
         ...state,
-        loads: LoadHelper.loadMapper(loadResponse.pagination.data),
+        loads,
+        selectedCount: 0,
+        totalLoadSum: LoadStoreHelper.getTotalLoadSum(loads),
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs
@@ -43,6 +48,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
     selectedTabValue: eLoadStatusType
 ): ILoadState {
     console.log('getLoadsPayloadOnTabTypeChange');
+
     return {
         ...state,
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
@@ -149,4 +155,39 @@ export function onMapVisiblityToggle(state: ILoadState): ILoadState {
     };
 }
 
+export function onSelectLoad(state: ILoadState, id: number): ILoadState {
+    const updatedLoads = state.loads.map((load) =>
+        load.id === id ? { ...load, isSelected: !load.isSelected } : load
+    );
+
+    const newSelectedCount = updatedLoads.filter(
+        (load) => load.isSelected
+    ).length;
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        selectedCount: newSelectedCount,
+    };
+}
+
+//#endregion
+
+//#region Delete
+export function onDeleteLoadSuccess(state: ILoadState): ILoadState {
+    const { selectedTab, toolbarTabs } = state;
+    const updatedLoads = state.loads.filter((load) => !load.isSelected);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        selectedCount: 0,
+        totalLoadSum: LoadStoreHelper.getTotalLoadSum(updatedLoads),
+        toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
+            toolbarTabs,
+            updatedLoads,
+            selectedTab
+        ),
+    };
+}
 //#endregion

@@ -119,3 +119,26 @@ export const onMapVisiblityToggle = createAction(
 );
 
 //#endregion
+
+//#region List
+export const onSelectLoad = createAction(
+    LoadStoreConstants.ACTION_ON_ONE_LOAD_SELECT,
+    props<{
+        id: number;
+    }>()
+);
+//#endregion
+
+//#region Delete actions
+export const onShowDeleteLoadModal = createAction(
+    LoadStoreConstants.ACTION_ON_SHOW_DELETE_LOAD_MODAL
+);
+
+export const onDeleteLoad = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD
+);
+
+export const onDeleteLoadSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_SUCCESS
+);
+//#endregion

@@ -7,9 +7,10 @@
 @if (store) {
     @let templates =
         {
+            select,
+            edit,
             loadNumber,
             loadStatus,
-            edit,
         };
     <app-new-table
         [columns]="store.columns"
@@ -17,6 +18,17 @@
         [templates]="templates"
         [isTableLocked]="true"
     >
+        <ng-template let-data="data" #select>
+            @let loadName = 'Load-' + data.id;
+            <app-ca-checkbox
+                [isChecked]="data.isSelected"
+                [isRegularCheckbox]="false"
+                [itemIndex]="data.id"
+                [name]="loadName"
+                (columnCheckAction)="onSelectLoad(data.id)"
+            ></app-ca-checkbox>
+        </ng-template>
+
         <ng-template let-data="data" #edit>
             <!-- TODO: For testing load modal only !! Will be removed later !! -->
             <div (click)="onOpenModal(data.id, store.selectedTab)">EDIT</div>
