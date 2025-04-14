@@ -159,10 +159,22 @@ export const onDeleteLoadList = createAction(
     props<{
         count: number;
         isTemplate: boolean;
+        templateId: number;
     }>()
 );
 
 export const onDeleteLoadListSuccess = createAction(
     LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS
+);
+
+export const onDeleteLoadListTemplate = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
+    props<{
+        templateId: number;
+    }>()
+);
+
+export const onDeleteLoadListTemplateSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE_SUCCESS
 );
 //#endregion

@@ -142,6 +142,10 @@ export const loadReducer = createReducer(
         Functions.onDeleteLoadListSuccess(state)
     ),
 
+    on(LoadActions.onDeleteLoadListTemplate, (state, { templateId }) =>
+        Functions.onDeleteLoadListTemplate(state, templateId)
+    ),
+
     //#region Toolbar hamburger menu
     on(LoadActions.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
         Functions.setToolbarDropdownMenuColumnsActive(state, isActive)

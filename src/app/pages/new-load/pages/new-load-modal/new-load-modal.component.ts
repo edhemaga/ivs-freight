@@ -1,6 +1,12 @@
 // Modules
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    TemplateRef,
+    ViewChild,
+} from '@angular/core';
 import {
     NgbActiveModal,
     NgbModule,
@@ -21,10 +27,13 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // Interface
-import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
+import {
+    ILoadModal,
+    ILoadModalView,
+} from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Helpers
 import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
@@ -33,7 +42,6 @@ import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/help
 import {
     EnumValue,
     LoadModalResponse,
-    LoadResponse,
     LoadTemplateResponseCreateGenericWithUploadsResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models';
@@ -62,6 +70,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-delete-modal/load-delete-modal.component';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -86,14 +95,16 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         TaInputNoteComponent,
         TaAppTooltipV2Component,
         NewLoadModalStopsComponent,
+        LoadDeleteModalComponent,
 
         // Pipes
         TemplateButtonConfigPipe,
         LoadModalInputConfigPipe,
     ],
 })
-export class NewLoadModalComponent implements OnInit {
+export class NewLoadModalComponent<T> implements OnInit {
     @ViewChild('popover') popover!: NgbPopover;
+    @ViewChild('deleteTemplate') deleteTemplate!: TemplateRef<T>;
 
     // Inputs
     @Input() editData: ILoadModal;
@@ -110,7 +121,7 @@ export class NewLoadModalComponent implements OnInit {
     public isTemplateSelected: boolean;
     public isPopoverOpen: boolean = false;
     // Show static data, such as status, load number
-    public load: LoadResponse;
+    public load: ILoadModalView;
     // Show dropdown list options
     public dropdownList: LoadModalResponse;
     public tabs: Tabs[] = LoadModalHelper.getLoadTypeTabs();
@@ -240,7 +251,10 @@ export class NewLoadModalComponent implements OnInit {
 
             forkJoin([staticData$, load$]).subscribe(([dropdownList, load]) => {
                 this.dropdownList = dropdownList;
-                this.load = load;
+                this.load = {
+                    ...load,
+                    isSelected: true,
+                };
 
                 this.modalTitle = LoadModalHelper.generateTitle(
                     this.editData,
@@ -278,6 +292,16 @@ export class NewLoadModalComponent implements OnInit {
         this.isTemplateSelected = false;
     }
 
+    public onDeleteTemplate(): void {
+        this.loadStoreService.onShowDeleteLoadModal(
+            this.deleteTemplate,
+            true,
+            1,
+            this.ngbActiveModal,
+            this.load.id
+        );
+    }
+
     public onSelectTemplate(template: EnumValue): void {
         this.isTemplateSelected = true;
 
@@ -304,6 +328,9 @@ export class NewLoadModalComponent implements OnInit {
 
     public onModalAction(action: eGeneralActions): void {
         switch (action) {
+            case this.eGeneralActions.DELETE:
+                this.onDeleteTemplate();
+                break;
             case this.eGeneralActions.CLOSE:
                 this.onCloseModal();
                 break;

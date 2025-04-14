@@ -212,6 +212,27 @@ export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
         ),
     };
 }
+
+export function onDeleteLoadListTemplate(
+    state: ILoadState,
+    templateId: number
+): ILoadState {
+    const { selectedTab, toolbarTabs } = state;
+    const updatedLoads = state.loads.filter((load) => load.id !== templateId);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        selectedCount: 0,
+        totalLoadSum: LoadStoreHelper.getTotalLoadSum(updatedLoads),
+        toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
+            toolbarTabs,
+            updatedLoads,
+            selectedTab
+        ),
+    };
+}
+
 //#endregion
 
 //#region Toolbar Hamburger Menu

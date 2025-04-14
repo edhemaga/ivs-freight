@@ -168,42 +168,11 @@
         @let isSingular = store.selectedCount === 1;
 
         @if ((isPending || isTemplate) && store.selectedCount) {
-            <div class="gap-1 d-flex flex-column">
-                @for (load of store.viewData; track load.id) {
-                    @if (load.isSelected) {
-                        <div class="gap-1 d-flex flex-column m-b-8">
-                            @let title =
-                                isTemplate ? load.name : load.loadNumber;
-                            <div
-                                class="text-size-16 text-color-black ta-font-bold"
-                            >
-                                {{ title }}
-                            </div>
-                            <div
-                                class="text-size-14 ta-font-medium text-color-muted"
-                            >
-                                {{ load.broker?.businessName }}
-                            </div>
-                        </div>
-                    }
-                }
-
-                <div class="text-size-14 ta-font-medium text-color-black">
-                    @if (isTemplate && isSingular) {
-                        Are you sure you want to delete the selected load
-                        template?
-                    } @else if (isTemplate && !isSingular) {
-                        Are you sure you want to delete the selected load
-                        templates?
-                    } @else if (isPending && isSingular) {
-                        Are you sure you want to delete the selected pending
-                        load?
-                    } @else if (isPending && !isSingular) {
-                        Are you sure you want to delete the selected pending
-                        loads?
-                    }
-                </div>
-            </div>
+            <app-load-delete-modal
+                [loads]="store.viewData"
+                [isTemplate]="isTemplate"
+                [isPending]="isPending"
+            ></app-load-delete-modal>
         }
     </ng-template>
 }

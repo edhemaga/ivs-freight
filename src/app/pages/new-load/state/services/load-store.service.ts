@@ -1,4 +1,5 @@
 import { Injectable, TemplateRef } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Store
 import { select, Store } from '@ngrx/store';
@@ -172,7 +173,9 @@ export class LoadStoreService {
     public onShowDeleteLoadModal(
         templateRef: TemplateRef<any>,
         isTemplate: boolean,
-        count: number
+        count: number,
+        ngbActiveModal?: NgbActiveModal,
+        templateId?: number
     ): void {
         this.modalService
             .openModalNew(
@@ -189,11 +192,20 @@ export class LoadStoreService {
             )
             .closed.subscribe((value) => {
                 if (value) {
-                    this.store.dispatch({
-                        type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
-                        count,
-                        isTemplate,
-                    });
+                    if (templateId) {
+                        this.store.dispatch({
+                            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
+                            templateId,
+                        });
+                    } else {
+                        this.store.dispatch({
+                            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
+                            count,
+                            isTemplate,
+                        });
+                    }
+
+                    if (ngbActiveModal) ngbActiveModal.close();
                 }
             });
     }

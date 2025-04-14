@@ -195,7 +195,6 @@ export class LoadEffect {
     //#endregion
 
     //#region Delete load
-
     public onDeleteLoadList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.onDeleteLoadList),
@@ -213,6 +212,16 @@ export class LoadEffect {
         )
     );
 
+    public onDeleteLoadListTemplate$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onDeleteLoadListTemplate),
+            switchMap(({ templateId }) => {
+                return this.loadService
+                    .deleteLoads([templateId], true, true)
+                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+            })
+        )
+    );
     //#endregion
 
     //#region Get load list

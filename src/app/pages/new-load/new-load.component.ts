@@ -30,7 +30,6 @@ import {
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
     CaSearchMultipleStates2Component,
-    CaDeleteModalComponent,
     IFilterAction,
     ThousandSeparatorPipe,
 } from 'ca-components';
@@ -38,6 +37,7 @@ import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
+import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-delete-modal/load-delete-modal.component';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -66,15 +66,15 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
         CaFilterListDropdownComponent,
         CaSearchMultipleStates2Component,
         SvgIconComponent,
-        CaDeleteModalComponent,
+        LoadDeleteModalComponent,
 
         // Pipes
         ThousandSeparatorPipe,
     ],
 })
-export class NewLoadComponent {
+export class NewLoadComponent<T> {
     @ViewChild(NewLoadCardsComponent) loadCardComponent!: NewLoadCardsComponent;
-    @ViewChild('deleteTemplate') deleteTemplate!: TemplateRef<any>;
+    @ViewChild('deleteTemplate') deleteTemplate!: TemplateRef<T>;
     // enums
     public eLoadStatusStringType = eLoadStatusStringType;
     public generalActions = eGeneralActions;
