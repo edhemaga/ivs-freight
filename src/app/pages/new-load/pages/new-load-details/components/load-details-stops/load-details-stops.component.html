@@ -1,13 +1,17 @@
+@let loadDetailsSelector = loadStoreService.loadDetailsSelector$ | async;
+@let load = loadDetailsSelector.data;
+@let isLoading = loadDetailsSelector.isLoading;
+@let isPendingLoad = load.statusType?.id === 1;
+@let isMapOpen = loadDetailsSelector.isMapOpen;
+@let mapData = loadDetailsSelector.mapRoutes;
+@let stopCount = loadDetailsSelector.stopCount;
+@let extraStopCount = loadDetailsSelector.extraStopCount;
+
 <ng-container *ngTemplateOutlet="stopsHeader"></ng-container>
 <ng-container *ngTemplateOutlet="progressBar"></ng-container>
 <ng-container *ngTemplateOutlet="stopList"></ng-container>
 
 <ng-template #stopsHeader>
-    @let stopCount = loadStoreService.loadDetailsStopCount$ | async;
-    @let extraStopCount = loadStoreService.loadDetailsExtraStopCount$ | async;
-    @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-    @let isMapOpen = loadStoreService.isLoadDetailsMapOpen$ | async;
-
     <div class="h-44 d-flex align-items-center w-100 m-b-7">
         <div
             class="background-white br-3 p-l-8 p-r-4 d-flex justify-content-between align-items-center h-34 disable-text-selection w-100"
@@ -81,10 +85,6 @@
 </ng-template>
 
 <ng-template #stopList>
-    @let load = loadStoreService.resolveLoadDetails$ | async;
-    @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-    @let isPendingLoad = load.statusType?.id === 1;
-
     <div class="background-white br-3 m-t-8">
         @if (isLoading) {
             <div class="p-6">
@@ -866,9 +866,6 @@
 </ng-template>
 
 <ng-template #mapTemplate>
-    @let isMapOpen = loadStoreService.isLoadDetailsMapOpen$ | async;
-    @let mapData = loadStoreService.loadDetailsMapData$ | async;
-
     @if (isMapOpen) {
         <div
             class="d-flex justify-content-center align-items-center br-3 p-6 pt-0 h-486"
@@ -883,8 +880,6 @@
 </ng-template>
 
 <ng-template #progressBar>
-    @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-
     <div class="background-white br-3 p-y-8 p-x-12">
         @if (isLoading) {
             <div class="d-flex justify-content-between">
@@ -941,8 +936,6 @@
         } @else {
             @let statusHistory =
                 loadStoreService.closedLoadStatusSelector$ | async;
-            @let load = loadStoreService.resolveLoadDetails$ | async;
-            @let isPendingLoad = load.statusType?.id === 1;
             <div class="d-flex justify-content-between">
                 <div>
                     <div
@@ -969,17 +962,20 @@
                 </div>
             </div>
 
-            @if(isPendingLoad) {
+            @if (isPendingLoad) {
                 @let percent = load?.pendingPercentage;
                 @let color = percent | pendingLoadProgress;
-                @let bgClass = percent ? 'background-' + color + '-o20' : 'background-muted';
-                @let bgFilledClass = percent ? 'background-' + color : 'background-muted';
-                
+                @let bgClass =
+                    percent
+                        ? 'background-' + color + '-o20'
+                        : 'background-muted';
+                @let bgFilledClass =
+                    percent ? 'background-' + color : 'background-muted';
+
                 <div
                     class="stop-progress-bar h-8 w-100 d-inline-block br-2 overflow-hidden mb-1"
                     [class]="bgClass"
                 >
-
                     <div
                         class="h-8"
                         [ngStyle]="{ width: percent + '%' }"
@@ -1011,8 +1007,12 @@
                                 status.id | loadStatusBackgroundColor: true,
                             ]"
                             triggers="manual"
-                            (mouseenter)="toggleHoverStatus(index, dropdownPopover)"
-                            (mouseleave)="toggleHoverStatus(null, dropdownPopover)"
+                            (mouseenter)="
+                                toggleHoverStatus(index, dropdownPopover)
+                            "
+                            (mouseleave)="
+                                toggleHoverStatus(null, dropdownPopover)
+                            "
                         ></div>
                     }
                 </div>

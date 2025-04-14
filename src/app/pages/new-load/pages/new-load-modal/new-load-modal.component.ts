@@ -14,6 +14,7 @@ import { catchError, forkJoin, Observable, of } from 'rxjs';
 // Enums
 import { eGeneralActions } from '@shared/enums';
 import { eLoadModalActions } from '@pages/new-load/enums';
+import { eLoadModalForm } from '@pages/new-load/pages/new-load-modal/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -42,6 +43,7 @@ import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
 
 // Pipes
 import { TemplateButtonConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/template-button-config.pipe';
+import { LoadModalInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/load-modal-input-config.pipe';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -87,6 +89,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
         // Pipes
         TemplateButtonConfigPipe,
+        LoadModalInputConfigPipe,
     ],
 })
 export class NewLoadModalComponent implements OnInit {
@@ -117,6 +120,7 @@ export class NewLoadModalComponent implements OnInit {
     public eModalButtonSize = eModalButtonSize;
     public eGeneralActions = eGeneralActions;
     public eLoadModalActions = eLoadModalActions;
+    public eLoadModalForm = eLoadModalForm;
 
     // Icon routes
     public svgRoutes = SharedSvgRoutes;

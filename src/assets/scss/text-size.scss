@@ -62,10 +62,17 @@
         &-14 {
             font-size: 14px !important;
         }
+        &-18 {
+            font-size: 18px !important;
+        }
     }
 }
 
 .line-height {
+    &-1 {
+        line-height: 1px;
+    }
+
     &-18 {
         line-height: 18px !important;
     }

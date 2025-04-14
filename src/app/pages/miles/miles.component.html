@@ -6,6 +6,8 @@
         statesSelector: milesStoreService.statesSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
         miles: milesStoreService.miles$ | async,
+        toolbarDropdownMenuActions:
+            milesStoreService.toolbarDropdownMenuOptionsSelector$ | async,
     };
 
 <div
@@ -20,7 +22,7 @@
             [isMarginTopDisabled]="true"
             [leftSide]="leftSide"
             [hasPlusIcon]="false"
-            [toolbarDropdownContent]="toolbarDropdownMenuOptions"
+            [toolbarDropdownContent]="store.toolbarDropdownMenuActions"
             (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
         >
             <ng-template #leftSide>
