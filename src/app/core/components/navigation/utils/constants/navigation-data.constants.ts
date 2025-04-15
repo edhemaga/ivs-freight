@@ -217,7 +217,6 @@ export class NavigationDataConstants {
             arrow: 'assets/svg/common/ic_arrow-down.svg',
             isRouteActive: false,
             isSubrouteActive: false,
-            construction: environment.staging || environment.production,
             qaId: 'navbar_tools',
             route: [
                 {
