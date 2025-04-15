@@ -37,7 +37,7 @@ import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
-import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-delete-modal/load-delete-modal.component';
+import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';

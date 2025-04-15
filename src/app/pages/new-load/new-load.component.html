@@ -2,6 +2,7 @@
     {
         selectedTab: loadStoreService.selectedTabSelector$ | async,
         viewData: loadStoreService.loadsSelector$ | async,
+        selectedLoads: loadStoreService.selectedLoadsSelector$ | async,
         toolbarTabs: loadStoreService.toolbarTabsSelector$ | async,
         activeViewMode: loadStoreService.activeViewModeSelector$ | async,
         filtersDropdownList:
@@ -165,11 +166,10 @@
     <ng-template #deleteTemplate>
         @let isPending = selectedTab === eLoadStatusStringType.PENDING;
         @let isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
-        @let isSingular = store.selectedCount === 1;
 
         @if ((isPending || isTemplate) && store.selectedCount) {
             <app-load-delete-modal
-                [loads]="store.viewData"
+                [loads]="store.selectedLoads"
                 [isTemplate]="isTemplate"
                 [isPending]="isPending"
             ></app-load-delete-modal>

@@ -19,12 +19,16 @@ export const selectLoads = createSelector(
     (state: ILoadState) => state.loads
 );
 
-export const selectedCountSelector = createSelector(
+export const selectedLoadsSelector = createSelector(
     selectLoadState,
-    (state) => {
-        const { loads } = state;
+    (state: ILoadState) => state.loads.filter((load) => load.isSelected)
+);
 
-        return loads.filter((load) => load.isSelected).length;
+export const selectedCountSelector = createSelector(
+    selectedLoadsSelector,
+    (selectedLoads) => {
+        console.log(selectedLoads);
+        return selectedLoads.length;
     }
 );
 

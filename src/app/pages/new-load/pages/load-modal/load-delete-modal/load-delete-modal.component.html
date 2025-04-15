@@ -1,16 +1,14 @@
 <div class="gap-1 d-flex flex-column">
     @for (load of loads; track load.id) {
-        @if (load.isSelected) {
-            <div class="gap-1 d-flex flex-column m-b-8">
-                @let title = isTemplate ? load.name : load.loadNumber;
-                <div class="text-size-16 text-color-black ta-font-bold">
-                    {{ title }}
-                </div>
-                <div class="text-size-14 ta-font-medium text-color-muted">
-                    {{ load.broker?.businessName }}
-                </div>
+        <div class="gap-1 d-flex flex-column m-b-8">
+            @let title = isTemplate ? load.name : load.loadNumber;
+            <div class="text-size-16 text-color-black ta-font-bold">
+                {{ title }}
             </div>
-        }
+            <div class="text-size-14 ta-font-medium text-color-muted">
+                {{ load.broker?.businessName }}
+            </div>
+        </div>
     }
 
     @let isSingular = loads.length === 1;

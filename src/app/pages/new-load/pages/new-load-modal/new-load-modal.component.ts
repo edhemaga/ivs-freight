@@ -30,10 +30,7 @@ import { LoadService } from '@shared/services/load.service';
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // Interface
-import {
-    ILoadModal,
-    ILoadModalView,
-} from '@pages/new-load/pages/new-load-modal/interfaces';
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Helpers
 import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
@@ -42,6 +39,7 @@ import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/help
 import {
     EnumValue,
     LoadModalResponse,
+    LoadResponse,
     LoadTemplateResponseCreateGenericWithUploadsResponse,
 } from 'appcoretruckassist';
 import { Tabs } from '@shared/models';
@@ -70,7 +68,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-delete-modal/load-delete-modal.component';
+import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -121,7 +119,7 @@ export class NewLoadModalComponent<T> implements OnInit {
     public isTemplateSelected: boolean;
     public isPopoverOpen: boolean = false;
     // Show static data, such as status, load number
-    public load: ILoadModalView;
+    public load: LoadResponse;
     // Show dropdown list options
     public dropdownList: LoadModalResponse;
     public tabs: Tabs[] = LoadModalHelper.getLoadTypeTabs();
@@ -257,10 +255,7 @@ export class NewLoadModalComponent<T> implements OnInit {
 
             forkJoin([staticData$, load$]).subscribe(([dropdownList, load]) => {
                 this.dropdownList = dropdownList;
-                this.load = {
-                    ...load,
-                    isSelected: true,
-                };
+                this.load = load;
 
                 this.modalTitle = LoadModalHelper.generateTitle(
                     this.editData,

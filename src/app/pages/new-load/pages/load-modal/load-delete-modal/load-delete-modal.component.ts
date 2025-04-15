@@ -6,10 +6,10 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
 
 @Component({
     selector: 'app-load-delete-modal',
-    standalone: true,
-    imports: [CommonModule],
     templateUrl: './load-delete-modal.component.html',
     styleUrl: './load-delete-modal.component.scss',
+    standalone: true,
+    imports: [CommonModule],
 })
 export class LoadDeleteModalComponent {
     @Input() loads: IMappedLoad[];

@@ -57,6 +57,10 @@ export class LoadStoreService {
         select(LoadSelectors.selectLoads)
     );
 
+    public selectedLoadsSelector$: Observable<IMappedLoad[]> = this.store.pipe(
+        select(LoadSelectors.selectedLoadsSelector)
+    );
+
     public toolbarTabsSelector$: Observable<ITableData[]> = this.store.pipe(
         select(LoadSelectors.toolbarTabsSelector)
     );
@@ -222,19 +226,14 @@ export class LoadStoreService {
         ngbActiveModal?: NgbActiveModal,
         templateId?: number
     ): void {
+        const modalData = {
+            // Don't show count for 1 load
+            count: count > 1 ? count : 0,
+            title: isTemplate ? 'Delete Template' : 'Delete Pending Load',
+        };
+
         this.modalService
-            .openModalNew(
-                CaDeleteModalComponent,
-                {},
-                {
-                    // Don't show count for 1 load
-                    count: count === 1 ? 0 : count,
-                    title: isTemplate
-                        ? 'Delete Template'
-                        : 'Delete Pending Load',
-                },
-                templateRef
-            )
+            .openModalNew(CaDeleteModalComponent, {}, modalData, templateRef)
             .closed.subscribe((value) => {
                 if (value) {
                     if (templateId) {

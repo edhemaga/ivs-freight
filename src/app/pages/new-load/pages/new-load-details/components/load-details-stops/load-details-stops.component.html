@@ -992,14 +992,15 @@
                         track index
                     ) {
                         @if (status.percentage) {
+                            @let width = { width: status.percentage + '%' };
                             <div
                                 class="d-inline-block h-8"
                                 #dropdownPopover="ngbPopover"
                                 [ngbPopover]="dropdownOptions"
                                 popoverClass="load-stops-options-popover"
                                 [autoClose]="true"
-                                [placement]="'bottom'"
-                                [ngStyle]="{ width: status.percentage + '%' }"
+                                [placement]="ePlacemnet.BOTTOM"
+                                [ngStyle]="width"
                                 [ngClass]="[
                                     index === hoveredIndex ? 'h-16' : 'h-8',
                                     index !== hoveredIndex &&
@@ -1011,10 +1012,10 @@
                                 ]"
                                 triggers="manual"
                                 (mouseenter)="
-                                    toggleHoverStatus(index, dropdownPopover)
+                                    onHoverStatus(index, dropdownPopover)
                                 "
                                 (mouseleave)="
-                                    toggleHoverStatus(null, dropdownPopover)
+                                    onHoverStatus(null, dropdownPopover)
                                 "
                             ></div>
                         }
