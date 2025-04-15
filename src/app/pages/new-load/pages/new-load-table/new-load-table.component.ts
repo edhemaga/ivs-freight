@@ -21,7 +21,7 @@ import {
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { Subject, takeUntil } from 'rxjs';
-import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
@@ -35,9 +35,6 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 
 // Models
 import { LoadStatusResponse } from 'appcoretruckassist';
-
-// Mixing
-import { DestroyableMixin } from '@shared/mixins';
 
 @Component({
     selector: 'app-new-load-table',
