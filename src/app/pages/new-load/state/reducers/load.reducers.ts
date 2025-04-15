@@ -25,6 +25,7 @@ import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown
 
 export const initialState: ILoadState = {
     loads: [],
+    areAllLoadsSelected: false,
 
     toolbarTabs: LoadToolbarTabs,
     selectedTab: eLoadStatusStringType.ACTIVE,
@@ -128,6 +129,25 @@ export const loadReducer = createReducer(
         Functions.onMapVisiblityToggle(state)
     ),
     //#endregion
+
+    //#region List
+    on(LoadActions.onSelectLoad, (state, { id }) =>
+        Functions.onSelectLoad(state, id)
+    ),
+
+    on(LoadActions.onSelectAllLoads, (state, { action }) =>
+        Functions.onSelectAllLoads(state, action)
+    ),
+    //#endregion
+
+    //#region Delete actions
+    on(LoadActions.onDeleteLoadListSuccess, (state) =>
+        Functions.onDeleteLoadListSuccess(state)
+    ),
+
+    on(LoadActions.onDeleteLoadListTemplate, (state, { templateId }) =>
+        Functions.onDeleteLoadListTemplate(state, templateId)
+    ),
 
     //#region Toolbar hamburger menu
     on(LoadActions.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>

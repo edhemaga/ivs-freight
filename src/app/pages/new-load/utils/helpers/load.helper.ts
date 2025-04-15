@@ -1,5 +1,6 @@
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
+import { LoadTemplate } from '@pages/load/pages/load-table/models';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Interfaces
@@ -9,17 +10,28 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
 import { ITableData } from '@shared/models';
 
 // Modesl
-import { LoadListDto, LoadListResponse } from 'appcoretruckassist';
+import {
+    LoadListDto,
+    LoadListResponse,
+    LoadTemplateResponse,
+} from 'appcoretruckassist';
 
 export class LoadHelper {
-    static loadMapper(loads: LoadListDto[]): IMappedLoad[] {
+    static loadMapper(
+        loads: LoadListDto[] | LoadTemplateResponse[]
+    ): IMappedLoad[] {
         return loads.map((load) => {
             return {
                 id: load.id,
+                edit: true,
+                isSelected: false,
                 loadNumber: load.loadNumber,
+                name: load.name,
                 status: load.status,
                 dispatcher: load.dispatcher,
-                loadDetails: load.loadDetails
+                loadDetails: load.loadDetails,
+                totalDue: load.totalDue,
+                broker: load.broker,
             };
         });
     }

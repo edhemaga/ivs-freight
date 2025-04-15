@@ -9,7 +9,12 @@ import { eColor } from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Components
-import { CaLoadStatusComponent, CaProfileImageComponent } from 'ca-components';
+import {
+    CaCheckboxComponent,
+    CaLoadStatusComponent,
+    CaCheckboxSelectedCountComponent,
+    CaProfileImageComponent
+} from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 
 @Component({
@@ -19,10 +24,13 @@ import { NewTableComponent } from '@shared/components/new-table/new-table.compon
     standalone: true,
     imports: [
         CommonModule,
+
         // Components
         NewTableComponent,
         CaLoadStatusComponent,
-        CaProfileImageComponent
+        CaProfileImageComponent,
+        CaCheckboxComponent,
+        CaCheckboxSelectedCountComponent,
     ],
 })
 export class NewLoadTableComponent {
@@ -42,5 +50,13 @@ export class NewLoadTableComponent {
             isTemplate,
             isEdit: true,
         });
+    }
+
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
     }
 }

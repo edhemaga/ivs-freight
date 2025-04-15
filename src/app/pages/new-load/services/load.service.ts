@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 // rxjs
@@ -94,5 +94,27 @@ export class LoadService {
         return this.http.get<LoadMinimalListResponse>(
             `${environment.API_ENDPOINT}/api/load/list/minimal`
         );
+    }
+
+    public deleteLoads(
+        ids: number[],
+        isTemplate: boolean,
+        isSingular: boolean
+    ): Observable<boolean> {
+        const basePath = `${environment.API_ENDPOINT}/api/load`;
+        const templateSegment = isTemplate ? '/template' : '';
+
+        if (isSingular && ids.length === 1) {
+            const url = `${basePath}${templateSegment}/${ids[0]}`;
+            return this.http.delete<boolean>(url);
+        }
+
+        let params = new HttpParams();
+        ids.forEach((id) => {
+            params = params.append('Ids', id.toString());
+        });
+
+        const url = `${basePath}/list${templateSegment}`;
+        return this.http.delete<boolean>(url, { params });
     }
 }
