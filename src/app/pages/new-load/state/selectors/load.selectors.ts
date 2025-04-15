@@ -1,16 +1,16 @@
 // Store
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
-// Models
-import { IClosedLoadStatus } from '@pages/load/models';
-import { LoadStatusHistoryResponse } from 'appcoretruckassist';
-
 // Intefaces
 import { ILoadState } from '@pages/new-load/interfaces';
+
+// Helpers
+import { LoadStoreHelper } from '@pages/new-load/utils/helpers';
 
 // It has to have same name as in StoreModule.forRoot inside app module
 export const loadsFeatureKey: string = 'newLoad';
 
+//#region List
 export const selectLoadState =
     createFeatureSelector<ILoadState>(loadsFeatureKey);
 
@@ -18,6 +18,21 @@ export const selectLoads = createSelector(
     selectLoadState,
     (state: ILoadState) => state.loads
 );
+
+export const selectedLoadsSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.loads.filter((load) => load.isSelected)
+);
+
+export const selectedCountSelector = createSelector(
+    selectedLoadsSelector,
+    (selectedLoads) => {
+        console.log(selectedLoads);
+        return selectedLoads.length;
+    }
+);
+
+//#endregion
 
 //#region Tabs
 export const toolbarTabsSelector = createSelector(
@@ -58,6 +73,28 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     const { tableColumns } = state;
     return tableColumns;
 });
+
+export const totalSumSelector = createSelector(
+    selectLoadState,
+    selectedCountSelector,
+    (state, selectedCount) => {
+        console.log('totalSumSelector');
+        const { loads } = state;
+
+        if (!selectedCount) {
+            return LoadStoreHelper.getTotalLoadSum(loads);
+        }
+
+        return loads
+            .filter((item) => item.isSelected)
+            .reduce((sum, item) => sum + (item.totalDue || 0), 0);
+    }
+);
+
+export const tableSettingsSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.tableSettings
+);
 //#endregion
 
 //#region Details
@@ -76,59 +113,21 @@ export const minimalListSelector = createSelector(selectLoadState, (state) => {
 export const closedLoadStatusSelector = createSelector(
     selectLoadState,
     (state) => {
-        const { details } = state;
-        // TODO: WE WILL GET THIS FROM BACKEND LEAVE IT LIKE THIS FOR NOW
-        const calculateWidths = (
-            statuses: LoadStatusHistoryResponse[]
-        ): IClosedLoadStatus[] => {
-            let totalDuration = 0;
+        const history = state.details?.data?.statusHistory;
 
-            statuses.forEach((curr) => {
-                if (curr.dateTimeTo) {
-                    const duration =
-                        new Date(curr.dateTimeTo).getTime() -
-                        new Date(curr.dateTimeFrom).getTime();
-                    totalDuration += duration;
-                }
-            });
-
-            // This will come from backend in the future
-            const sortedDataWithWidth = [...statuses].reverse().map((item) => {
-                const fromTime = new Date(item.dateTimeFrom).getTime();
-                const toTime = item.dateTimeTo
-                    ? new Date(item.dateTimeTo).getTime()
-                    : null;
-
-                if (toTime) {
-                    const duration = toTime - fromTime;
-                    const widthPercentage = (duration / totalDuration) * 100;
-
-                    return {
-                        status: item.status,
-                        statusString: item.statusString,
-                        dateTimeFrom: item.dateTimeFrom,
-                        dateTimeTo: item.dateTimeTo,
-                        id: item.status?.id,
-                        width: widthPercentage.toFixed(2) + '%',
-                        wait: item.wait,
-                    };
-                } else {
-                    return {
-                        status: item.status,
-                        statusString: item.statusString,
-                        dateTimeFrom: item.dateTimeFrom,
-                        dateTimeTo: null,
-                        id: item.status?.id,
-                        wait: item.wait,
-                        width: '0.00%',
-                    };
-                }
-            });
-
-            return sortedDataWithWidth;
-        };
-
-        return calculateWidths(details.data.statusHistory);
+        return Array.isArray(history) ? [...history].reverse() : [];
     }
 );
 //#endregion
+
+//#region Toolbar hamburger menu
+
+export const toolbarDropdownMenuOptionsSelector = createSelector(
+    selectLoadState,
+    (state) => {
+        const { toolbarDropdownMenuOptions } = state;
+        return toolbarDropdownMenuOptions;
+    }
+);
+
+//#endRegion

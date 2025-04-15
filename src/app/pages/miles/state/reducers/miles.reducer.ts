@@ -140,8 +140,8 @@ export const milesReducer = createReducer(
     ),
     // #endregion
 
-    on(MilesAction.toggleTableLockingStatus, (state) =>
-        Functions.toggleTableLockingStatus(state)
+    on(MilesAction.toggleTableLockingStatus, (state, { isLocked }) =>
+        Functions.toggleTableLockingStatus(state, isLocked)
     ),
 
     on(MilesAction.pinTableColumn, (state, { column }) =>

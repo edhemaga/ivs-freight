@@ -8,32 +8,45 @@ import {
     LoadMinimalListResponse,
     LoadResponse,
     LoadStatusFilterResponse,
+    LoadTemplateListResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eCommonElement } from '@shared/enums';
+import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 
 // Helper
 import { LoadHelper, LoadStoreHelper } from '@pages/new-load/utils/helpers';
 import { FilterHelper } from '@shared/utils/helpers';
+import {
+    DropdownMenuColumnsActionsHelper,
+    DropdownMenuToolbarContentHelper,
+} from '@shared/utils/helpers/dropdown-menu-helpers';
+import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 // Ca components
-import { IFilterAction } from 'ca-components';
+import { eGeneralActions, IFilterAction } from 'ca-components';
+
+// Config
+import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
-    loadResponse: LoadListResponse
+    loadResponse: LoadListResponse | LoadTemplateListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
+    const loads = LoadHelper.loadMapper(loadResponse.pagination.data);
+
+    const { selectedTab } = state;
     return {
         ...state,
-        loads: LoadHelper.loadMapper(loadResponse.pagination.data),
+        loads,
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs
         ),
+        tableColumns: LoadTableColumnsConfig.getLoadTableColumns(selectedTab),
     };
 };
 
@@ -43,6 +56,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
     selectedTabValue: eLoadStatusType
 ): ILoadState {
     console.log('getLoadsPayloadOnTabTypeChange');
+
     return {
         ...state,
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
@@ -54,9 +68,21 @@ export const getViewModeChange = function (
     activeViewMode: eCommonElement
 ): ILoadState {
     console.log('getViewModeChange');
+    const {
+        tableSettings,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
     return {
         ...state,
         activeViewMode,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                cardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
     };
 };
 //#endregion
@@ -149,4 +175,166 @@ export function onMapVisiblityToggle(state: ILoadState): ILoadState {
     };
 }
 
+export function onSelectLoad(state: ILoadState, id: number): ILoadState {
+    const updatedLoads = state.loads.map((load) =>
+        load.id === id ? { ...load, isSelected: !load.isSelected } : load
+    );
+
+    const areAllLoadsSelected = state.loads.every((load) => load.isSelected);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        areAllLoadsSelected,
+    };
+}
+
+export function onSelectAllLoads(
+    state: ILoadState,
+    action: string
+): ILoadState {
+    const shouldSelectAll =
+        action === eGeneralActions.SELECT_ALL ||
+        action === eGeneralActions.CLEAR_SELECTED
+            ? !state.areAllLoadsSelected
+            : true;
+
+    const updatedLoads = state.loads.map((load) => ({
+        ...load,
+        isSelected: shouldSelectAll,
+    }));
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        areAllLoadsSelected: shouldSelectAll,
+    };
+}
+
+//#endregion
+
+//#region Delete
+export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
+    const { selectedTab, toolbarTabs } = state;
+    const updatedLoads = state.loads.filter((load) => !load.isSelected);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
+            toolbarTabs,
+            updatedLoads,
+            selectedTab
+        ),
+    };
+}
+
+export function onDeleteLoadListTemplate(
+    state: ILoadState,
+    templateId: number
+): ILoadState {
+    const { selectedTab, toolbarTabs } = state;
+    const updatedLoads = state.loads.filter((load) => load.id !== templateId);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
+            toolbarTabs,
+            updatedLoads,
+            selectedTab
+        ),
+    };
+}
+
+//#endregion
+
+//#region Toolbar Hamburger Menu
+export function setToolbarDropdownMenuColumnsActive(
+    state: ILoadState,
+    isActive: boolean
+): ILoadState {
+    const { cardFlipViewMode, activeViewMode, tableSettings, tableColumns } =
+        state;
+    const toolbarDropdownColumns =
+        DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(
+            tableColumns
+        );
+    return {
+        ...state,
+        isToolbarDropdownMenuColumnsActive: isActive,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                cardFlipViewMode,
+                isActive,
+                toolbarDropdownColumns
+            ),
+    };
+}
+
+export function toggleColumnVisibility(
+    state: ILoadState,
+    columnKey: string,
+    isActive: boolean
+): ILoadState {
+    const tableColumns = StoreFunctionsHelper.mapColumnsVisibility(
+        state.tableColumns,
+        columnKey,
+        isActive
+    );
+    return {
+        ...state,
+        tableColumns,
+    };
+}
+
+export function toggleTableLockingStatus(state: ILoadState): ILoadState {
+    const {
+        tableSettings,
+        activeViewMode,
+        cardFlipViewMode,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+    const toolbarDropdownMenuOptions =
+        DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+            activeViewMode,
+            !tableSettings.isTableLocked,
+            cardFlipViewMode,
+            isToolbarDropdownMenuColumnsActive
+        );
+    return {
+        ...state,
+        tableSettings: {
+            ...tableSettings,
+            isTableLocked: !tableSettings.isTableLocked,
+        },
+        toolbarDropdownMenuOptions,
+    };
+}
+
+export function toggleCardFlipViewMode(state: ILoadState): ILoadState {
+    const {
+        cardFlipViewMode,
+        activeViewMode,
+        tableSettings,
+        isToolbarDropdownMenuColumnsActive,
+    } = state;
+    const nextCardFlipViewMode =
+        cardFlipViewMode === eCardFlipViewMode.FRONT
+            ? eCardFlipViewMode.BACK
+            : eCardFlipViewMode.FRONT;
+    return {
+        ...state,
+        cardFlipViewMode: nextCardFlipViewMode,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                nextCardFlipViewMode,
+                isToolbarDropdownMenuColumnsActive
+            ),
+    };
+}
 //#endregion

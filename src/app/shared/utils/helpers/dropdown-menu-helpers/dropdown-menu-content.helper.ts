@@ -786,7 +786,7 @@ export class DropdownMenuContentHelper {
 
     // columns
     static getToolbarColumnsDropdownContent(
-        milesColumnsList: IDropdownMenuItem[]
+        columnsList: IDropdownMenuItem[]
     ): IDropdownMenuItem[] {
         const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
 
@@ -796,7 +796,7 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [...conditionalItems, ...milesColumnsList];
+        return [...conditionalItems, ...columnsList];
     }
 
     /////////////////////////////////////////////////////////////////////////////////

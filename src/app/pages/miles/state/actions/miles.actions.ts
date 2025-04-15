@@ -109,7 +109,8 @@ export const getMapStopDataSuccess = createAction(
 );
 
 export const toggleTableLockingStatus = createAction(
-    MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS
+    MilesStoreConstants.ACTION_TOGGLE_TABLE_LOCK_STATUS,
+    props<{ isLocked?: boolean }>()
 );
 
 export const pinTableColumn = createAction(

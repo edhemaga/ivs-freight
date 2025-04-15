@@ -45,7 +45,6 @@ import { TableCardBodyActions } from '@shared/models';
 
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { IMilesModel } from '@pages/miles/interface';
 
 @Component({
@@ -82,7 +81,6 @@ export class MilesComponent
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
 
-    public toolbarDropdownMenuOptions: IDropdownMenuItem[] = [];
     public firstUnit: IMilesModel;
 
     constructor(
@@ -102,13 +100,11 @@ export class MilesComponent
     private storeSubscription(): void {
         combineLatest([
             this.milesStoreService.filter$,
-            this.milesStoreService.toolbarDropdownMenuOptionsSelector$,
             this.milesStoreService.miles$,
         ])
             .pipe(takeUntil(this.destroy$))
-            .subscribe(([filter, toolbarDropdownMenuOptions, units]) => {
+            .subscribe(([filter, units]) => {
                 this.filter = filter;
-                this.toolbarDropdownMenuOptions = toolbarDropdownMenuOptions;
                 this.firstUnit = units[0] || ({} as IMilesModel);
             });
     }
@@ -129,8 +125,8 @@ export class MilesComponent
         });
     }
 
-    private handleTableLockingStatus(): void {
-        this.milesStoreService.toggleTableLockingStatus();
+    private handleTableLockingStatus(isTableLocked?: boolean): void {
+        this.milesStoreService.toggleTableLockingStatus(isTableLocked);
     }
 
     private handleResetTable(): void {
@@ -261,6 +257,8 @@ export class MilesComponent
     }
 
     ngOnDestroy(): void {
+        this.handleTableLockingStatus(true);
+
         this.destroy$.next();
         this.destroy$.complete();
     }

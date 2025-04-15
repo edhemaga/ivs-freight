@@ -1,5 +1,8 @@
 // Interface
-import { ILoadState } from '@pages/new-load/interfaces';
+import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
+
+// Enums
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Models
 import {
@@ -8,6 +11,7 @@ import {
     LoadStopResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
+import { ITableData } from '@shared/models';
 
 // Ca components
 import {
@@ -126,5 +130,27 @@ export class LoadStoreHelper {
             routingMarkers: routeMarkers,
             routePaths: routePaths,
         } as ICaMapProps;
+    }
+
+    static getTotalLoadSum(loads: IMappedLoad[]): number {
+        return loads.reduce((sum, item) => sum + (item.totalDue || 0), 0);
+    }
+
+    static updateTabsAfterDelete(
+        toolbarTabs: ITableData[],
+        updatedLoads: IMappedLoad[],
+        selectedTab: eLoadStatusStringType
+    ): ITableData[] {
+        return toolbarTabs.map((tab, index) => {
+            if (index === 0 && selectedTab === eLoadStatusStringType.TEMPLATE) {
+                return { ...tab, length: updatedLoads.length };
+            }
+
+            if (index === 1 && selectedTab === eLoadStatusStringType.PENDING) {
+                return { ...tab, length: updatedLoads.length };
+            }
+
+            return tab;
+        });
     }
 }

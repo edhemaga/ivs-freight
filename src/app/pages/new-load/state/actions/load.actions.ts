@@ -23,6 +23,7 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
+import { TemplateRef } from '@angular/core';
 
 //#region List request
 export const getLoadsPayload = createAction(
@@ -117,5 +118,69 @@ export const onGetLoadByIdError = createAction(
 export const onMapVisiblityToggle = createAction(
     LoadStoreConstants.ACTION_TOGGLE_MAP
 );
+//#endregion
 
+//#region Toolbar Hamburger Menu
+export const setToolbarDropdownMenuColumnsActive = createAction(
+    LoadStoreConstants.ACTION_SET_TOOLBAR_DROPDOWN_MENU_COLUMNS_ACTIVE,
+    props<{ isActive: boolean }>()
+);
+
+export const toggleColumnVisibility = createAction(
+    LoadStoreConstants.ACTION_TOGGLE_COLUMN_VISIBILITY,
+    props<{ columnKey: string; isActive: boolean }>()
+);
+
+export const tableUnlockToggle = createAction(
+    LoadStoreConstants.ACTION_TABLE_UNLOCK_TOGGLE
+);
+
+export const tableColumnReset = createAction(
+    LoadStoreConstants.ACTION_RESET_COLUMNS
+);
+
+export const toggleCardFlipViewMode = createAction(
+    LoadStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
+);
+//#endregion
+
+//#region List
+export const onSelectLoad = createAction(
+    LoadStoreConstants.ACTION_ON_ONE_LOAD_SELECT,
+    props<{
+        id: number;
+    }>()
+);
+
+export const onSelectAllLoads = createAction(
+    LoadStoreConstants.ACTION_ON_SELECT_LOAD_ALL,
+    props<{ action: string }>()
+);
+
+//#endregion
+
+//#region Delete actions
+export const onDeleteLoadList = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
+    props<{
+        count: number;
+        isTemplate: boolean;
+        templateId: number;
+    }>()
+);
+
+export const onDeleteLoadListSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS
+);
+
+export const onDeleteLoadListTemplate = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
+    props<{
+        templateId: number;
+    }>()
+);
+
+export const onDeleteLoadListTemplateSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE_SUCCESS
+);
 //#endregion
