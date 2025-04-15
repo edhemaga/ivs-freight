@@ -16,4 +16,7 @@ export enum eSharedString {
     BUSINESS = 'business',
 
     SMALL = 'small',
+
+    // Status
+    INVITED = 'Invited',
 }
