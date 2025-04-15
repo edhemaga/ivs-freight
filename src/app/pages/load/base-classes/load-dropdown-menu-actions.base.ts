@@ -2,7 +2,7 @@
 import { DropdownMenuActionsBase } from '@shared/base-classes';
 
 // services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // enums
 import { eDropdownMenu } from '@shared/enums';
@@ -15,8 +15,8 @@ import { LoadTableHelper } from 'src/app/pages/load/pages/load-table/utils/helpe
 import { TableCardBodyActions } from '@shared/models';
 
 export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBase {
-    // services
-    protected abstract loadStoreService: LoadStoreService;
+    // services Not working on old stuff keep as any but it is LoadStoreService
+    protected abstract loadStoreService: any;
 
     constructor() {
         super();

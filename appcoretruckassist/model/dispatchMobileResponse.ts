@@ -12,16 +12,13 @@
 import { LoadDispatcherMobileResponse } from './loadDispatcherMobileResponse';
 import { DispatchShortMobileResponse } from './dispatchShortMobileResponse';
 import { LoadStopMobileShortResponse } from './loadStopMobileShortResponse';
-import { EnumValue } from './enumValue';
 import { AddressMobileResponse } from './addressMobileResponse';
+import { DispatchStatusResponse } from './dispatchStatusResponse';
 
 
 export interface DispatchMobileResponse { 
-    activeLoadId?: number | null;
     dispatchId?: number | null;
-    dispatchStatus?: EnumValue;
-    loadStatus?: EnumValue;
-    lastStatusPassedLoad?: { [key: string]: number; } | null;
+    dispatchStatus?: DispatchStatusResponse;
     lastStatusPassedDispatch?: { [key: string]: number; } | null;
     lastLocation?: string | null;
     nextStop?: AddressMobileResponse;

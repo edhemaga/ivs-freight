@@ -25,11 +25,28 @@
                     >
                     </app-ca-tab-switch>
 
+                    @let dispatcherInputConfig =
+                        { configType: eLoadModalForm.DISPATCHER_ID, isTemplate }
+                            | loadModalInputConfig;
+
                     @if (isTemplate) {
+                        @let templateNameInputConfig =
+                            { configType: eLoadModalForm.NAME, isTemplate }
+                                | loadModalInputConfig;
+
                         <ca-input-test
                             formControlName="name"
-                            [inputConfig]="LoadModalConfig.LOAD_TEMPLATE_CONFIG"
+                            [inputConfig]="templateNameInputConfig"
                         ></ca-input-test>
+
+                        <ca-input-dropdown-test
+                            formControlName="dispatcherId"
+                            optionValue="id"
+                            template="load-dispatcher"
+                            label="fullName"
+                            [options]="dropdownList.dispatchers"
+                            [inputConfig]="dispatcherInputConfig"
+                        ></ca-input-dropdown-test>
                     } @else {
                         @let templateButtonConfig =
                             {
@@ -76,47 +93,46 @@
                             template="load-dispatcher"
                             label="fullName"
                             [options]="dropdownList.dispatchers"
-                            [inputConfig]="LoadModalConfig.DISPATCHER_INPUT"
+                            [inputConfig]="dispatcherInputConfig"
+                        ></ca-input-dropdown-test>
+
+                        @let companyInputConfig =
+                            {
+                                configType: eLoadModalForm.COMPANY_ID,
+                                isTemplate,
+                            } | loadModalInputConfig;
+
+                        <ca-input-dropdown-test
+                            formControlName="companyId"
+                            optionValue="id"
+                            label="companyName"
+                            [options]="dropdownList.companies"
+                            [inputConfig]="companyInputConfig"
                         ></ca-input-dropdown-test>
                     }
-
-                    <ca-input-dropdown-test
-                        formControlName="companyId"
-                        optionValue="id"
-                        label="companyName"
-                        [options]="dropdownList.companies"
-                        [inputConfig]="
-                            LoadModalConfig.LOAD_COMPANY_INPUT_CONFIG
-                        "
-                    ></ca-input-dropdown-test>
-                </div>
-
-                <div class="w-full m-t-26">
-                    <ca-input-dropdown-test
-                        formControlName="dispatchId"
-                        optionValue="id"
-                        label="id"
-                        template="load-dispatches-ttd"
-                        [inputConfig]="
-                            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
-                        "
-                        [options]="dropdownList.dispatches"
-                    >
-                    </ca-input-dropdown-test>
                 </div>
 
                 <div class="d-grid d-grid-reference m-t-26">
+                    @let referenceNumberInputConfig =
+                        {
+                            configType: eLoadModalForm.REFERENCE_NUMBER,
+                            isTemplate,
+                        } | loadModalInputConfig;
+
                     <ca-input-test
                         formControlName="referenceNumber"
-                        [inputConfig]="LoadModalConfig.LOAD_REFERENCE_NUMBER"
+                        [inputConfig]="referenceNumberInputConfig"
                     ></ca-input-test>
 
+                    @let brokerInputConfig =
+                        { configType: eLoadModalForm.BROKER_ID, isTemplate }
+                            | loadModalInputConfig;
                     <ca-input-dropdown-test
                         formControlName="brokerId"
                         optionValue="id"
                         label="businessName"
                         template="load-broker"
-                        [inputConfig]="LoadModalConfig.LOAD_BROKER_INPUT_CONFIG"
+                        [inputConfig]="brokerInputConfig"
                         [canAddNew]="true"
                         [canOpenModal]="true"
                         [options]="dropdownList.brokers"
@@ -124,15 +140,19 @@
                     </ca-input-dropdown-test>
                 </div>
 
-                <div class="d-grid d-grid-contact m-t-26 m-b-14">
+                <div class="d-grid d-grid-contact m-t-26">
+                    @let brokerContactInputConfig =
+                        {
+                            configType: eLoadModalForm.BROKER_CONTACT,
+                            isTemplate,
+                        } | loadModalInputConfig;
+
                     <ca-input-dropdown-test
                         formControlName="brokerContact"
                         label="name"
                         optionValue="id"
                         template="load-broker-contact"
-                        [inputConfig]="
-                            LoadModalConfig.LOAD_PICKUP_SHIPPER_CONTACTS_INPUT_CONFIG
-                        "
+                        [inputConfig]="brokerContactInputConfig"
                         [options]="dropdownList.brokerContacts"
                     ></ca-input-dropdown-test>
 
@@ -148,6 +168,20 @@
                         formControlName="weight"
                         [inputConfig]="LoadModalConfig.LOAD_WEIGHT_CONFIG"
                     ></ca-input-test>
+                </div>
+
+                <div class="w-full m-t-26 m-b-14">
+                    <ca-input-dropdown-test
+                        formControlName="dispatchId"
+                        optionValue="id"
+                        label="id"
+                        template="load-dispatches-ttd"
+                        [inputConfig]="
+                            LoadModalConfig.LOAD_DISPATCHES_TTD_INPUT_CONFIG
+                        "
+                        [options]="dropdownList.dispatches"
+                    >
+                    </ca-input-dropdown-test>
                 </div>
                 <ng-container formGroupName="loadRequirements">
                     <app-ca-custom-card
@@ -219,8 +253,6 @@
 
                                 <ca-input-dropdown-test
                                     formControlName="year"
-                                    optionValue="id"
-                                    label="name"
                                     [inputConfig]="
                                         LoadModalConfig.LOAD_YEAR_CONFIG
                                     "
@@ -350,6 +382,13 @@
                     "
                 ></app-ta-input-note>
             </form>
+
+            <ng-template #deleteTemplate>
+                <app-load-delete-modal
+                    [loads]="[load]"
+                    [isTemplate]="true"
+                ></app-load-delete-modal>
+            </ng-template>
         </div>
     }
 

@@ -49,20 +49,36 @@ export const initialState: IMilesState = {
     columns: MilesTableColumnsConfig.columnsConfig,
 
     // Unit list
-    details: {},
-    unitsPagination: {
-        activeUnitIndex: 0,
+    isDetailsLoading: false,
+    details: {
+        data: {},
+        stops: [],
         currentPage: 1,
-        totalPage: 0,
-        isFirstUnit: true,
-        isLastUnit: true,
-        isLastInCurrentList: false,
+        totalCount: 1,
+        searchString: '',
+        activeUnitId: null,
     },
+
     tableSettings: {
         isTableLocked: true,
         sortKey: null,
         sortDirection: null,
     },
+
+    minimalList: {
+        data: [],
+        currentPage: 1,
+        totalCount: 1,
+        searchString: '',
+    },
+
+    minimalListFilters: {
+        isFirst: false,
+        isLast: false,
+        prevId: null,
+        nextId: null,
+    },
+
     unitMapRoutes: null,
     unitMapData: null,
 };
@@ -70,17 +86,15 @@ export const initialState: IMilesState = {
 export const milesReducer = createReducer(
     initialState,
     // #region Get miles
-    on(
-        MilesAction.getLoadsPayloadSuccess,
-        (state, { miles, totalResultsCount }) =>
-            Functions.updateMilesData(state, miles, totalResultsCount)
+    on(MilesAction.getLoadsPayloadSuccess, (state, { miles }) =>
+        Functions.updateMilesData(state, miles)
     ),
     on(MilesAction.getLoadsPayloadError, (state) => ({
         ...state,
         loading: false,
     })),
-    on(MilesAction.loadMilesSuccess, (state, { miles, totalResultsCount }) =>
-        Functions.updateMilesData(state, miles, totalResultsCount)
+    on(MilesAction.loadMilesSuccess, (state, { miles }) =>
+        Functions.updateMilesData(state, miles)
     ),
 
     on(MilesAction.updateMilesList, (state, { miles }) =>
@@ -118,29 +132,16 @@ export const milesReducer = createReducer(
     // #endregion
 
     // #region Unit detail
-    on(MilesAction.setUnitDetails, (state, { details, isLast }) =>
-        Functions.setUnitDetails(state, details, isLast)
+    on(MilesAction.setUnitDetails, (state, { details }) =>
+        Functions.setUnitDetails(state, details)
     ),
-
-    on(
-        MilesAction.setFollowingUnitDetails,
-        (
-            state,
-            { unitResponse, index, isFirst, isLast, isLastInCurrentList }
-        ) =>
-            Functions.setFollowingUnitDetails(
-                state,
-                unitResponse,
-                index,
-                isFirst,
-                isLast,
-                isLastInCurrentList
-            )
+    on(MilesAction.updateUnitDetails, (state, { details }) =>
+        Functions.updateUnitDetails(state, details)
     ),
     // #endregion
 
-    on(MilesAction.toggleTableLockingStatus, (state) =>
-        Functions.toggleTableLockingStatus(state)
+    on(MilesAction.toggleTableLockingStatus, (state, { isLocked }) =>
+        Functions.toggleTableLockingStatus(state, isLocked)
     ),
 
     on(MilesAction.pinTableColumn, (state, { column }) =>
@@ -168,7 +169,17 @@ export const milesReducer = createReducer(
     on(MilesAction.toggleCardFlipViewMode, (state) =>
         Functions.toggleCardFlipViewMode(state)
     ),
-
+    // #region Miles minimal list
+    on(MilesAction.setInitalMinimalList, (state, { list, text }) =>
+        Functions.setInitalMinimalList(state, list, text)
+    ),
+    on(MilesAction.appendToMinimalList, (state, { list }) =>
+        Functions.appendToMinimalList(state, list)
+    ),
+    on(MilesAction.getMinimalListError, (state) => ({
+        ...state,
+        isMinimalListLoading: false,
+    })),
     on(MilesAction.setToolbarDropdownMenuColumnsActive, (state, { isActive }) =>
         Functions.setToolbarDropdownMenuColumnsActive(state, isActive)
     ),

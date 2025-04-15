@@ -1,9 +1,15 @@
 import { TaUnderConstructionComponent } from '@shared/components/ta-under-construction/ta-under-construction.component';
 import { MilesComponent } from '@pages/miles/miles.component';
+import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
+import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
+import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
 
 // guards
 import { CompanySettingsGuard } from '@core/guards/company-settings.guard';
 import { AuthGuard } from '@core/guards/authentication.guard';
+
+// enums
+import { eMilesRouting } from '@pages/miles/enums';
 
 // resolvers
 import { DashboardResolver } from '@pages/dashboard/resolvers/dashboard.resolver';
@@ -17,6 +23,9 @@ import { MilesResolver } from '@pages/miles/resolvers/miles.resolver';
 import { TodoResolver } from '@pages/to-do/resolvers/to-do.resolver';
 import { RoutingStateResolver } from '@pages/routing/resolvers/routing-state.resolver';
 import { TelematicResolver } from '@pages/telematic/resolvers/telematic-state.resolver';
+import { MilesDetailsResolver } from '@pages/miles/resolvers/miles-details.resolver';
+import { MilesCardsResolver } from '@pages/miles/resolvers/miles-card.resolver';
+import { MilesListResolver } from '@pages/miles/resolvers/miles-list.resolver';
 
 export class PageRoutes {
     static routes = [
@@ -96,11 +105,33 @@ export class PageRoutes {
             data: { title: 'Test' },
         },
         {
-            path: 'tools/miles',
+            path: eMilesRouting.BASE,
             component: MilesComponent,
             canActivate: [AuthGuard, CompanySettingsGuard],
             resolve: { miles: MilesResolver },
             data: { title: 'Miles' },
+            children: [
+                {
+                    path: '',
+                    component: MilesTableComponent,
+                    resolve: { miles: MilesListResolver },
+                },
+                {
+                    path: eMilesRouting.CARD,
+                    component: MilesCardComponent,
+                    resolve: { miles: MilesCardsResolver },
+                },
+                {
+                    path: eMilesRouting.LIST,
+                    component: MilesTableComponent,
+                    resolve: { miles: MilesListResolver },
+                },
+                {
+                    path: `${eMilesRouting.MAP}/:id`,
+                    component: MilesMapComponent,
+                    resolve: { miles: MilesDetailsResolver },
+                },
+            ],
         },
         {
             path: 'tools/calendar',
@@ -172,9 +203,8 @@ export class PageRoutes {
         },
         {
             path: 'chat',
-            loadChildren: () => import('@pages/chat/chat.module').then(
-                (m) => m.ChatModule
-            ),
+            loadChildren: () =>
+                import('@pages/chat/chat.module').then((m) => m.ChatModule),
             canActivate: [AuthGuard, CompanySettingsGuard],
             data: { title: 'Chat' },
         },

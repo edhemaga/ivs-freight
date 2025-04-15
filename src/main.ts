@@ -5,9 +5,9 @@ import { persistState } from '@datorama/akita';
 import { AppModule } from '@app/app.module';
 import { environment } from 'src/environments/environment';
 
-if (environment.production) {
-    enableProdMode();
-}
+// if (environment.staging) {
+//     enableProdMode();
+// }
 
 const storage = persistState();
 

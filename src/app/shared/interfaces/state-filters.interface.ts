@@ -11,5 +11,6 @@ export interface IStateFilters {
     dispatcherIds?: number[];
     revenueFrom?: number;
     revenueTo?: number;
-    states?: string[]
+    states?: string[];
+    searchQuery?: string[];
 }

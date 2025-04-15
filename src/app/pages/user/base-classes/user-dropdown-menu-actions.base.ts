@@ -31,7 +31,7 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
         action: TableCardBodyActions<T>,
         tableType: string
     ) {
-        const { id, type } = action;
+        const { id, type, data } = action;
 
         switch (type) {
             case eDropdownMenu.EDIT_TYPE:
@@ -39,7 +39,9 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
 
                 break;
             case eDropdownMenu.RESET_PASSWORD_TYPE:
-                this.handleResetPasswordAction();
+                const { email } = data;
+
+                this.handleResetPasswordAction(email);
 
                 break;
             case eDropdownMenu.RESEND_INVITATION_TYPE:
@@ -83,7 +85,12 @@ export abstract class UserDropdownMenuActionsBase extends DropdownMenuActionsBas
         super.handleSharedDropdownMenuActions(adjustedAction, tableType);
     }
 
-    private handleResetPasswordAction(): void {}
+    private handleResetPasswordAction(email: string): void {
+        this.userService
+            .userResetPassword({ email })
+            .pipe(takeUntil(this.destroy$))
+            .subscribe();
+    }
 
     private handleResendInvitationAction(id: number): void {
         this.userService

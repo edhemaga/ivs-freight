@@ -1,29 +1,30 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
-
-// Models
-import {
-    ILoadGridItem,
-    ILoadTemplateGridItem,
-} from '@pages/load/pages/load-table/models';
+import { Component, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // Enums
 import { eColor } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Components
 import {
+    CaStatusChangeDropdownComponent,
     CaCheckboxComponent,
-    CaProfileImageComponent,
     CaLoadStatusComponent,
+    CaCheckboxSelectedCountComponent,
+    ePosition,
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
-import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
 
-// Pipes
-import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
+// Models
+import { LoadStatusResponse } from 'appcoretruckassist';
+
+// Mixing
+import { DestroyableMixin } from '@shared/mixins';
 
 @Component({
     selector: 'app-new-load-table',
@@ -32,40 +33,76 @@ import { NameInitialsPipe } from '@shared/pipes/name-initials.pipe';
     standalone: true,
     imports: [
         CommonModule,
+        NgbPopover,
 
         // Components
         NewTableComponent,
-        CaProfileImageComponent,
-        CaCheckboxComponent,
         CaLoadStatusComponent,
-        NewLoadModalStopsComponent,
-
-        // Pipes
-        NameInitialsPipe,
+        CaCheckboxComponent,
+        CaCheckboxSelectedCountComponent,
+        CaStatusChangeDropdownComponent,
     ],
 })
-export class NewLoadTableComponent {
+export class NewLoadTableComponent
+    extends DestroyableMixin(class {})
+    implements OnInit
+{
+    public changeStatusPopover: NgbPopover;
+
     public eColor = eColor;
+    public ePosition = ePosition;
 
-    constructor(protected loadStoreService: LoadStoreService) {}
-
-    public selectLoad(load: ILoadGridItem | ILoadTemplateGridItem): void {
-        this.loadStoreService.dispatchSelectOneRow(load);
+    constructor(protected loadStoreService: LoadStoreService) {
+        super();
     }
 
-    public selectAll(): void {
-        this.loadStoreService.dispatchSelectAll();
+    ngOnInit(): void {
+        this.initChangeStatusDropdownListener();
     }
 
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
     }
 
-    public onOpenModal(id: number, isTemplate: boolean): void {
+    public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
+        const isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
+
         this.loadStoreService.onOpenModal({
             id,
             isTemplate,
             isEdit: true,
         });
+    }
+
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
+    }
+
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
+    }
+
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
+    }
+
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
     }
 }

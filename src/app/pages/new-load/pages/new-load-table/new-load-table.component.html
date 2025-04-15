@@ -1,30 +1,56 @@
 @let store =
     {
-        viewData: loadStoreService.viewData$ | async,
-        hasAllLoadsSelected: loadStoreService.hasAllLoadsSelected$ | async,
-        selectedTab: loadStoreService.selectedTab$ | async,
+        viewData: loadStoreService.loadsSelector$ | async,
         columns: loadStoreService.tableColumnsSelector$ | async,
+        selectedTab: loadStoreService.selectedTabSelector$ | async,
+        tableSettings: loadStoreService.tableSettingsSelector$ | async,
+        selectedCount: loadStoreService.selectedCountSelector$ | async,
     };
 @if (store) {
+    @let headerTemplates = { selectHeaderTemplate };
+    @let templates =
+        {
+            select,
+            edit,
+            loadInvoice,
+            loadStatus,
+        };
+
+    @let isTableLocked = store.tableSettings.isTableLocked;
     <app-new-table
         [columns]="store.columns"
         [rows]="store.viewData"
-        [templates]="{
-            select,
-            loadNumber,
-            dispatcher,
-            tableAssignedUnitTruck,
-            tableAssignedUnitTrailer,
-            loadBroker,
-            loadStatus,
+        [headerTemplates]="{
+            select: selectHeaderTemplate,
         }"
+        [templates]="templates"
+        [isTableLocked]="isTableLocked"
     >
-        <!-- TODO: For testing load modal only !! Will be removed later !! -->
-        <ng-template let-data="data" #select>
-            <div (click)="onOpenModal(data.id, !store.selectedTab)">EDIT</div>
+        <ng-template #selectHeaderTemplate>
+            <app-ca-checkbox-selected-count
+                [itemsTotalCount]="store.viewData.length"
+                [itemsSelectedCount]="store.selectedCount"
+                (onCheckboxCountClick)="onCheckboxCountClick($event)"
+            ></app-ca-checkbox-selected-count>
         </ng-template>
 
-        <ng-template let-data="data" #loadNumber>
+        <ng-template let-data="data" #select>
+            @let loadName = 'Load-' + data.id;
+            <app-ca-checkbox
+                [isChecked]="data.isSelected"
+                [isRegularCheckbox]="false"
+                [itemIndex]="data.id"
+                [name]="loadName"
+                (columnCheckAction)="onSelectLoad(data.id)"
+            ></app-ca-checkbox>
+        </ng-template>
+
+        <ng-template let-data="data" #edit>
+            <!-- TODO: For testing load modal only !! Will be removed later !! -->
+            <div (click)="onOpenModal(data.id, store.selectedTab)">EDIT</div>
+        </ng-template>
+
+        <ng-template let-data="data" #loadInvoice>
             <span
                 class="ta-font-bold text-size-14 text-color-black c-pointer text-hover-blue-15"
                 (click)="navigateToLoadDetails(data.id)"
@@ -33,49 +59,24 @@
             </span>
         </ng-template>
 
-        <ng-template let-data="data" #dispatcher>
-            <div class="d-flex align-items-center">
-                <app-ca-profile-image
-                    [avatarColor]="{
-                        background: eColor.BLUE_27,
-                        color: eColor.BLUE_28,
-                    }"
-                    [textShortName]="data.dispatcher?.fullName | nameInitials"
-                    [avatarImg]="data.dispatcher?.avatarFile?.url"
-                    [isRound]="true"
-                ></app-ca-profile-image>
-
-                <span class="text-color-black text-size-14 ml-1">{{
-                    data.dispatcher?.fullName
-                }}</span>
-            </div>
-        </ng-template>
-
-        <ng-template let-data="data" #tableAssignedUnitTruck>
-            <span class="text-size-14 text-color-black">
-                {{ data.driver?.truckNumber }}
-            </span>
-        </ng-template>
-
-        <ng-template let-data="data" #tableAssignedUnitTrailer>
-            <span class="text-size-14 text-color-black">
-                {{ data.driver?.trailerNumber }}
-            </span>
-        </ng-template>
-
-        <ng-template let-data="data" #loadBroker>
-            <span class="text-size-14 text-color-black">
-                {{ data.broker?.businessName }}
-            </span>
-        </ng-template>
-
         <ng-template let-data="data" #loadStatus>
-            <span class="ta-font-bold text-size-14 text-color-black">
+            <span 
+                class="ta-font-bold text-size-14 text-color-black"
+                #ngbStatus="ngbPopover"
+                [autoClose]="true"
+                [ngbPopover]="statusPopover"
+                [placement]="ePosition.BOTTOM + ' ' + ePosition.TOP"
+                container="body"
+                popoverClass="table-status-popover"
+                triggers="manual"
+                (click)="onOpenChangeStatusDropdown(ngbStatus, data.id)"
+            >
                 <app-ca-load-status
                     [status]="{
                         name: data.status?.statusString,
                         id: data.status?.statusValue?.id,
                     }"
+                    [isDefaultHoverFocus]="true"
                     [isNoStyle]="false"
                     [fontSize]="14"
                 >
@@ -83,5 +84,14 @@
             </span>
         </ng-template>
     </app-new-table>
+
+    <ng-template #statusPopover>
+        @let possibleStatuses = loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
+
+        <app-ca-status-change-dropdown 
+            [statuses]="possibleStatuses"
+            (onNextStatus)="onNextStatus($event)"
+            (onPreviousStatus)="onPreviousStatus($event)"
+        ></app-ca-status-change-dropdown>
+    </ng-template>
 }
-<!-- <app-new-load-modal-stops></app-new-load-modal-stops> -->

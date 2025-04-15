@@ -1,9 +1,8 @@
-@let load = loadStoreService.resolveLoadDetails$ | async;
-@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-@let minimalList = loadStoreService.minimalListSelector$ | async;
+@let loadDetailsSelector = loadStoreService.loadDetailsSelector$ | async;
+@let load = loadDetailsSelector.data;
+@let isLoading = loadDetailsSelector.isLoading;
 @let isSpacingBottom = true;
-@let groupedByStatusTypeList =
-    loadStoreService.groupedByStatusTypeListSelector$ | async;
+@let minimalListSelector = loadStoreService.minimalListSelector$ | async;
 @let loadNumberFormated = 'Load ' + load.loadNumber;
 
 <div class="background-white p-8 br-3">
@@ -72,7 +71,10 @@
             ></svg-icon>
         </div>
 
-        @for (listItem of groupedByStatusTypeList | keyvalue; track $index) {
+        @for (
+            listItem of minimalListSelector.groupedByStatusTypeList | keyvalue;
+            track $index
+        ) {
             <app-ta-custom-card
                 [cardName]="listItem.key"
                 [hasCounter]="listItem.value.length"
@@ -103,7 +105,7 @@
 
     <ng-template #titleTemplate>
         <div class="d-flex">
-            <div class="d-flex">
+            <div class="d-flex text-color-black">
                 {{ loadNumberFormated }}
             </div>
             <svg-icon

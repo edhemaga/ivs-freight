@@ -14,16 +14,19 @@ import {
     LoadListDto,
 } from 'appcoretruckassist';
 
-// constants
+// utils
 import { DispatchHubConstants } from '@shared/utils/constants';
+import { UserHelper } from '@shared/utils/helpers';
+
+// enums
+import { eStringPlaceholder } from 'ca-components';
 
 @Injectable({
     providedIn: 'root',
 })
 export class DispatchHubService {
-    private token: string = localStorage.getItem('user')
-        ? JSON.parse(localStorage.getItem('user')).token
-        : 0;
+    private token: string =
+        UserHelper.getUserFromLocalStorage()?.token ?? eStringPlaceholder.EMPTY;
 
     private static hubConnection: signalR.HubConnection;
 
