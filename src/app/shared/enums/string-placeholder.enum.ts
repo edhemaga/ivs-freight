@@ -11,4 +11,6 @@ export enum eStringPlaceholder {
     NA = 'N/A',
     NONE = 'None',
     GI = 'gi',
+    NA_UPPERCASE = 'NA',
+    ZERO = '0',
 }
