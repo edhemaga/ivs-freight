@@ -38,7 +38,7 @@ export const getLoadByIdSuccessResult = function (
     const { selectedTab } = state;
     return {
         ...state,
-        loads: LoadHelper.loadMapper(loadResponse.pagination.data),
+        loads: LoadHelper.loadMapper(loadResponse.pagination.data, selectedTab),
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs

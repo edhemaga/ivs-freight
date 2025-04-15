@@ -7,17 +7,25 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
 
 // Models
 import { ITableData } from '@shared/models';
-
-// Modesl
 import { LoadListDto, LoadListResponse } from 'appcoretruckassist';
 
+// helpers
+import { DropdownMenuContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
 export class LoadHelper {
-    static loadMapper(loads: LoadListDto[]): IMappedLoad[] {
+    static loadMapper(
+        loads: LoadListDto[],
+        selectedTab: eLoadStatusStringType
+    ): IMappedLoad[] {
         return loads.map((load) => {
             return {
                 id: load.id,
                 loadNumber: load.loadNumber,
                 status: load.status,
+                tableDropdownContent:
+                    DropdownMenuContentHelper.getLoadDropdownContent(
+                        selectedTab
+                    ),
             };
         });
     }

@@ -11,6 +11,7 @@
             loadNumber,
             loadStatus,
             edit,
+            action,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -47,6 +48,18 @@
                 >
                 </app-ca-load-status>
             </span>
+        </ng-template>
+
+        <ng-template let-data="data" #action>
+            <ca-dropdown-menu
+                [type]="'dots-menu-type'"
+                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                [options]="data.tableDropdownContent"
+                (dropdownOptionEmitter)="
+                    onToggleDropdownMenuActions($event, data, store.selectedTab)
+                "
+            >
+            </ca-dropdown-menu>
         </ng-template>
     </app-new-table>
 }

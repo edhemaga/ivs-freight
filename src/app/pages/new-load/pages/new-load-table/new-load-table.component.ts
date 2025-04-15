@@ -1,16 +1,27 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+
+// Enums
+import { eColor, eDropdownMenu } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
+
+// base classes
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
+
+// Components
+import { CaDropdownMenuComponent, CaLoadStatusComponent } from 'ca-components';
+import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+import { ModalService } from '@shared/services';
 
-// Enums
-import { eColor } from '@shared/enums';
-import { eLoadStatusStringType } from '@pages/new-load/enums';
+// interfaces
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
-// Components
-import { CaLoadStatusComponent } from 'ca-components';
-import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+// helpers
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 @Component({
     selector: 'app-new-load-table',
@@ -22,12 +33,22 @@ import { NewTableComponent } from '@shared/components/new-table/new-table.compon
         // Components
         NewTableComponent,
         CaLoadStatusComponent,
+        CaDropdownMenuComponent,
     ],
 })
-export class NewLoadTableComponent {
+export class NewLoadTableComponent extends LoadDropdownMenuActionsBase {
     public eColor = eColor;
+    public eDropdownMenu = eDropdownMenu;
 
-    constructor(protected loadStoreService: LoadStoreService) {}
+    constructor(
+        protected router: Router,
+
+        // services
+        protected loadStoreService: LoadStoreService,
+        protected modalService: ModalService
+    ) {
+        super();
+    }
 
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
@@ -41,5 +62,25 @@ export class NewLoadTableComponent {
             isTemplate,
             isEdit: true,
         });
+    }
+
+    public onToggleDropdownMenuActions(
+        action: IDropdownMenuOptionEmit,
+        data,
+        selectedTab
+    ): void {
+        const { type } = action;
+
+        const tableAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
+                type,
+                data
+            );
+
+        this.handleDropdownMenuActions(
+            tableAction,
+            eDropdownMenu.LOAD,
+            selectedTab
+        );
     }
 }

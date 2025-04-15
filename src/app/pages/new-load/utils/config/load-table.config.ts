@@ -26,9 +26,43 @@ export class LoadTableColumnsConfig {
             ...this.getBillingGroup(isClosed),
             ...this.getClosedDates(isClosed),
             ...this.getFinalDates(),
+            ...this.getActions(),
         ];
     }
     private static getBaseColumns(isTemplate: boolean): ITableColumn[] {
+        const baseTemplateOrLoadColumn: ITableColumn[] = isTemplate
+            ? [
+                  {
+                      key: 'templateName',
+                      label: 'Name',
+                      labelToolbar: 'Template Name',
+                      width: 154,
+                      minWidth: 60,
+                      maxWidth: 250,
+                      isResizable: true,
+                      isDisabled: true,
+                      isChecked: true,
+                      hasSort: true,
+                      pinned: 'left',
+                  },
+              ]
+            : [
+                  {
+                      id: 1,
+                      key: 'loadInvoice',
+                      label: 'Load No',
+                      labelToolbar: 'Load No.',
+                      width: 154,
+                      minWidth: 60,
+                      maxWidth: 250,
+                      isResizable: true,
+                      isDisabled: true,
+                      isChecked: true,
+                      hasSort: true,
+                      pinned: 'left',
+                  },
+              ];
+
         return [
             {
                 key: 'select',
@@ -42,20 +76,10 @@ export class LoadTableColumnsConfig {
                 isChecked: true,
                 hasSort: true,
             },
-            {
-                id: 1,
-                key: 'loadInvoice',
-                label: 'Load No',
-                labelToolbar: 'Load No.',
-                width: 154,
-                minWidth: 60,
-                maxWidth: 250,
-                isResizable: true,
-                isDisabled: true,
-                isChecked: true,
-                hasSort: true,
-                pinned: 'left',
-            },
+
+            // Template Name or Load No.
+            ...baseTemplateOrLoadColumn,
+
             {
                 key: 'type',
                 label: 'Type',
@@ -643,6 +667,22 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
+            },
+        ];
+    }
+
+    private static getActions(): ITableColumn[] {
+        return [
+            {
+                key: 'action',
+                label: '',
+                width: 26,
+                minWidth: 26,
+                maxWidth: 26,
+                isResizable: false,
+                isChecked: true,
+                hasSort: false,
                 sortName: MilesStopSortBy.UnitNumber,
             },
         ];
