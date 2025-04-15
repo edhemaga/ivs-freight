@@ -18,4 +18,6 @@ export class MilesStopsTable {
         placeholderIcon: 'ic_search',
         placeholderInsteadOfLabel: true,
     };
+
+    static BOTTOM_SCROLL_THRESHOLD = 100;
 }
