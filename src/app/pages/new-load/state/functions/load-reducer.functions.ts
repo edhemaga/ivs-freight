@@ -8,6 +8,7 @@ import {
     LoadMinimalListResponse,
     LoadResponse,
     LoadStatusFilterResponse,
+    LoadTemplateListResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
 
@@ -25,20 +26,22 @@ import {
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 // Ca components
-import { IFilterAction } from 'ca-components';
+import { eGeneralActions, IFilterAction } from 'ca-components';
 
 // Config
 import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
-    loadResponse: LoadListResponse
+    loadResponse: LoadListResponse | LoadTemplateListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
+    const loads = LoadHelper.loadMapper(loadResponse.pagination.data);
+
     const { selectedTab } = state;
     return {
         ...state,
-        loads: LoadHelper.loadMapper(loadResponse.pagination.data),
+        loads,
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs
@@ -53,6 +56,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
     selectedTabValue: eLoadStatusType
 ): ILoadState {
     console.log('getLoadsPayloadOnTabTypeChange');
+
     return {
         ...state,
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
@@ -168,6 +172,78 @@ export function onMapVisiblityToggle(state: ILoadState): ILoadState {
             ...details,
             isMapOpen: !details.isMapOpen,
         },
+    };
+}
+
+export function onSelectLoad(state: ILoadState, id: number): ILoadState {
+    const updatedLoads = state.loads.map((load) =>
+        load.id === id ? { ...load, isSelected: !load.isSelected } : load
+    );
+
+    const areAllLoadsSelected = state.loads.every((load) => load.isSelected);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        areAllLoadsSelected,
+    };
+}
+
+export function onSelectAllLoads(
+    state: ILoadState,
+    action: string
+): ILoadState {
+    const shouldSelectAll =
+        action === eGeneralActions.SELECT_ALL ||
+        action === eGeneralActions.CLEAR_SELECTED
+            ? !state.areAllLoadsSelected
+            : true;
+
+    const updatedLoads = state.loads.map((load) => ({
+        ...load,
+        isSelected: shouldSelectAll,
+    }));
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        areAllLoadsSelected: shouldSelectAll,
+    };
+}
+
+//#endregion
+
+//#region Delete
+export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
+    const { selectedTab, toolbarTabs } = state;
+    const updatedLoads = state.loads.filter((load) => !load.isSelected);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
+            toolbarTabs,
+            updatedLoads,
+            selectedTab
+        ),
+    };
+}
+
+export function onDeleteLoadListTemplate(
+    state: ILoadState,
+    templateId: number
+): ILoadState {
+    const { selectedTab, toolbarTabs } = state;
+    const updatedLoads = state.loads.filter((load) => load.id !== templateId);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
+            toolbarTabs,
+            updatedLoads,
+            selectedTab
+        ),
     };
 }
 
