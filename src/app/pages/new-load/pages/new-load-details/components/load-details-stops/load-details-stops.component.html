@@ -85,10 +85,6 @@
 </ng-template>
 
 <ng-template #stopList>
-    @let load = loadStoreService.resolveLoadDetails$ | async;
-    @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-    @let isPendingLoad = load.statusType?.id === 1;
-
     <div class="background-white br-3">
         @if (isLoading) {
             <div class="p-6">
