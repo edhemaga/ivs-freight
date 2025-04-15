@@ -218,9 +218,15 @@ export function onSelectAllLoads(
 //#endregion
 
 //#region Delete
-export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
+export function onDeleteLoadListSuccess(
+    state: ILoadState,
+    selectedIds: number[]
+): ILoadState {
     const { selectedTab, toolbarTabs } = state;
-    const updatedLoads = state.loads.filter((load) => !load.isSelected);
+
+    const updatedLoads = state.loads.filter(
+        (load) => !selectedIds.includes(load.id)
+    );
 
     return {
         ...state,
@@ -233,12 +239,9 @@ export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
     };
 }
 
-export function onDeleteLoadListTemplate(
-    state: ILoadState,
-    templateId: number
-): ILoadState {
+export function onDeleteLoad(state: ILoadState, id: number): ILoadState {
     const { selectedTab, toolbarTabs } = state;
-    const updatedLoads = state.loads.filter((load) => load.id !== templateId);
+    const updatedLoads = state.loads.filter((load) => load.id !== id);
 
     return {
         ...state,

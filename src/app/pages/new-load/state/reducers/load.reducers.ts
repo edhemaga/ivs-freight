@@ -144,12 +144,12 @@ export const loadReducer = createReducer(
     //#endregion
 
     //#region Delete actions
-    on(LoadActions.onDeleteLoadListSuccess, (state) =>
-        Functions.onDeleteLoadListSuccess(state)
+    on(LoadActions.onDeleteLoadListSuccess, (state, { selectedIds }) =>
+        Functions.onDeleteLoadListSuccess(state, selectedIds)
     ),
 
-    on(LoadActions.onDeleteLoadListTemplate, (state, { templateId }) =>
-        Functions.onDeleteLoadListTemplate(state, templateId)
+    on(LoadActions.onDeleteLoad, (state, { id }) =>
+        Functions.onDeleteLoad(state, id)
     ),
 
     //#region Toolbar hamburger menu

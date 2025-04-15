@@ -60,7 +60,7 @@
         </ng-template>
 
         <ng-template let-data="data" #loadStatus>
-            <span 
+            <span
                 class="ta-font-bold text-size-14 text-color-black"
                 #ngbStatus="ngbPopover"
                 [autoClose]="true"
@@ -79,6 +79,7 @@
                     [isDefaultHoverFocus]="true"
                     [isNoStyle]="false"
                     [fontSize]="14"
+                    height="26"
                 >
                 </app-ca-load-status>
             </span>
@@ -86,9 +87,10 @@
     </app-new-table>
 
     <ng-template #statusPopover>
-        @let possibleStatuses = loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
+        @let possibleStatuses =
+            loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
 
-        <app-ca-status-change-dropdown 
+        <app-ca-status-change-dropdown
             [statuses]="possibleStatuses"
             (onNextStatus)="onNextStatus($event)"
             (onPreviousStatus)="onPreviousStatus($event)"

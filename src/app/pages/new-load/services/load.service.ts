@@ -131,19 +131,21 @@ export class LoadService {
         isSingular: boolean
     ): Observable<boolean> {
         const basePath = `${environment.API_ENDPOINT}/api/load`;
-        const templateSegment = isTemplate ? '/template' : '';
 
         if (isSingular && ids.length === 1) {
-            const url = `${basePath}${templateSegment}/${ids[0]}`;
-            return this.http.delete<boolean>(url);
+            return this.http.delete<boolean>(
+                `${basePath}${isTemplate ? '/template' : ''}/${ids[0]}`
+            );
         }
 
-        let params = new HttpParams();
-        ids.forEach((id) => {
-            params = params.append('Ids', id.toString());
-        });
+        const params = ids.reduce(
+            (param, id) => param.append('Ids', id.toString()),
+            new HttpParams()
+        );
 
-        const url = `${basePath}/list${templateSegment}`;
-        return this.http.delete<boolean>(url, { params });
+        return this.http.delete<boolean>(
+            `${basePath}${isTemplate ? '/template/list' : '/list'}`,
+            { params }
+        );
     }
 }

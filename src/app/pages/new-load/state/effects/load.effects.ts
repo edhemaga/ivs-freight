@@ -198,33 +198,74 @@ export class LoadEffect {
 
     //#endregion
 
+    //#region
+    public refreshFilters$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(
+                LoadActions.openChangeStatuDropdown,
+                LoadActions.revertLoadStatusSuccess,
+                LoadActions.onDeleteLoadSuccess,
+                LoadActions.onDeleteLoadListSuccess
+            ),
+            withLatestFrom(
+                this.store.select(LoadSelectors.selectedTabSelector)
+            ),
+            switchMap(([_, selectedTab]) => {
+                console.log('refreshFilters$');
+                return forkJoin({
+                    dispatcherFilters:
+                        this.loadService.getDispatcherFilters(selectedTab),
+                    statusFilters:
+                        this.loadService.getStatusFilters(selectedTab),
+                }).pipe(
+                    map(({ dispatcherFilters, statusFilters }) => {
+                        return LoadActions.setFilterDropdownList({
+                            dispatcherFilters,
+                            statusFilters,
+                        });
+                    })
+                );
+            })
+        )
+    );
+
     //#endregion
 
     //#region Delete load
     public onDeleteLoadList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.onDeleteLoadList),
-            withLatestFrom(this.store.select(selectLoads)),
-            switchMap(([action, loads]) => {
-                const { isTemplate, count } = action;
-                const selectedIds = loads
-                    .filter((load) => load.isSelected)
-                    .map((load) => load.id);
+            switchMap((action) => {
+                const { isTemplate, count, selectedIds } = action;
 
                 return this.loadService
                     .deleteLoads(selectedIds, isTemplate, count === 1)
-                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+                    .pipe(
+                        map(() =>
+                            LoadActions.onDeleteLoadListSuccess({ selectedIds })
+                        )
+                    );
             })
         )
     );
 
     public onDeleteLoadListTemplate$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(LoadActions.onDeleteLoadListTemplate),
-            switchMap(({ templateId }) => {
+            ofType(LoadActions.onDeleteLoad),
+            switchMap(({ id, isTemplate, isDetailsPage }) => {
                 return this.loadService
-                    .deleteLoads([templateId], true, true)
-                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+                    .deleteLoads([id], isTemplate, true)
+                    .pipe(
+                        map(() => {
+                            if (isDetailsPage) {
+                                this.router.navigate([`/${eLoadRouting.LIST}`]);
+                            }
+
+                            return LoadActions.onDeleteLoadListSuccess({
+                                selectedIds: [id],
+                            });
+                        })
+                    );
             })
         )
     );

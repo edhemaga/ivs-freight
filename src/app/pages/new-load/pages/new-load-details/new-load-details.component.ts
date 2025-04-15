@@ -7,7 +7,6 @@ import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
-import { ConfirmationService } from '@shared/components/ta-shared-modals/confirmation-modal/services/confirmation.service';
 import { TruckassistTableService } from '@shared/services/truckassist-table.service';
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 import { ModalService } from '@shared/services';
@@ -70,16 +69,13 @@ export class NewLoadDetailsComponent
         protected loadStoreService: LoadStoreService,
         protected modalService: ModalService,
         protected tableService: TruckassistTableService,
-        protected confirmationResetService: ConfirmationResetService,
-
-        private confirmationService: ConfirmationService
+        protected confirmationResetService: ConfirmationResetService
     ) {
         super();
     }
 
     ngOnInit(): void {
         this.getStoreData();
-        this.confirmationDataSubscribe();
     }
 
     private getStoreData(): void {
@@ -98,25 +94,6 @@ export class NewLoadDetailsComponent
             DropdownMenuContentHelper.getLoadDropdownContent(statusType, true);
     }
 
-    private confirmationDataSubscribe(): void {
-        this.confirmationService.confirmationData$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((confirmationData) => {
-                const { type } = confirmationData || {};
-
-                if (type === TableStringEnum.DELETE) {
-                    const { id } = confirmationData || {};
-                    const { statusType } = this.load;
-
-                    // TODO: Dragan, do we need this?
-                    // this.loadStoreService.dispatchDeleteLoadOrTemplateById(
-                    //     id,
-                    //     eLoadStatusType[statusType.name]
-                    // );
-                }
-            });
-    }
-
     public onDetailsDropdownMenuActions(action: IDropdownMenuOptionEmit): void {
         const { type } = action;
         const { id, statusType } = this.load;
@@ -129,7 +106,9 @@ export class NewLoadDetailsComponent
         this.handleDropdownMenuActions(
             mappedAction,
             eDropdownMenu.LOAD,
-            statusType.name
+            statusType.name,
+            this.load,
+            true
         );
     }
 
