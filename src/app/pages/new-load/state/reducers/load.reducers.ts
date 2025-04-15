@@ -141,8 +141,8 @@ export const loadReducer = createReducer(
     //#endregion
 
     //#region Delete actions
-    on(LoadActions.onDeleteLoadListSuccess, (state) =>
-        Functions.onDeleteLoadListSuccess(state)
+    on(LoadActions.onDeleteLoadListSuccess, (state, { selectedIds }) =>
+        Functions.onDeleteLoadListSuccess(state, selectedIds)
     ),
 
     on(LoadActions.onDeleteLoad, (state, { id }) =>

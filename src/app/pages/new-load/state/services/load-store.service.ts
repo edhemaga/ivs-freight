@@ -229,7 +229,11 @@ export class LoadStoreService {
                         type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
                         count: modalData.loads.length,
                         isTemplate: modalData.isTemplate,
+                        selectedIds: modalData.loads.map((load) => load.id),
                     });
+
+                    if (modalData.ngbActiveModal)
+                        modalData.ngbActiveModal.close();
                 }
             });
     }

@@ -1,12 +1,6 @@
 // Modules
 import { CommonModule } from '@angular/common';
-import {
-    Component,
-    Input,
-    OnInit,
-    TemplateRef,
-    ViewChild,
-} from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import {
     NgbActiveModal,
     NgbModule,
@@ -291,11 +285,12 @@ export class NewLoadModalComponent<T> implements OnInit {
     }
 
     public onDeleteTemplate(): void {
-        // this.loadStoreService.onShowDeleteLoadModal({
-        //     isTemplate: true,
-        //     loads: [this.load],
-        //     isDetailsPage: false,
-        // });
+        this.loadStoreService.onDeleteLoadsFromList({
+            isTemplate: true,
+            loads: [this.load],
+            isDetailsPage: false,
+            ngbActiveModal: this.ngbActiveModal,
+        });
     }
 
     public onSelectTemplate(template: EnumValue): void {

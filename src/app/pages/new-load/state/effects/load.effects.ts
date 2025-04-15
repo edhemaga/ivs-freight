@@ -198,16 +198,16 @@ export class LoadEffect {
     public onDeleteLoadList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.onDeleteLoadList),
-            withLatestFrom(this.store.select(selectLoads)),
-            switchMap(([action, loads]) => {
-                const { isTemplate, count } = action;
-                const selectedIds = loads
-                    .filter((load) => load.isSelected)
-                    .map((load) => load.id);
+            switchMap((action) => {
+                const { isTemplate, count, selectedIds } = action;
 
                 return this.loadService
                     .deleteLoads(selectedIds, isTemplate, count === 1)
-                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+                    .pipe(
+                        map(() =>
+                            LoadActions.onDeleteLoadListSuccess({ selectedIds })
+                        )
+                    );
             })
         )
     );
@@ -224,7 +224,9 @@ export class LoadEffect {
                                 this.router.navigate([`/${eLoadRouting.LIST}`]);
                             }
 
-                            return LoadActions.onDeleteLoadListSuccess();
+                            return LoadActions.onDeleteLoadListSuccess({
+                                selectedIds: [id],
+                            });
                         })
                     );
             })
