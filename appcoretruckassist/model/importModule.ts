@@ -11,10 +11,16 @@
  */
 
 
-export type ImportModule = 'Account' | 'User';
+export type ImportModule = 'Account' | 'Broker' | 'Driver' | 'Owner' | 'Trailer' | 'Truck' | 'User' | 'Registration';
 
 export const ImportModule = {
     Account: 'Account' as ImportModule,
-    User: 'User' as ImportModule
+    Broker: 'Broker' as ImportModule,
+    Driver: 'Driver' as ImportModule,
+    Owner: 'Owner' as ImportModule,
+    Trailer: 'Trailer' as ImportModule,
+    Truck: 'Truck' as ImportModule,
+    User: 'User' as ImportModule,
+    Registration: 'Registration' as ImportModule
 };
 

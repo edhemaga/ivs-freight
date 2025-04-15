@@ -1,19 +1,24 @@
 // Interfaces
-import { ILoadState } from '@pages/new-load/interfaces';
+import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
 
 // Models
 import {
     DispatcherFilterResponse,
     LoadListResponse,
     LoadMinimalListResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
+    LoadStatus,
     LoadStatusFilterResponse,
+    LoadStatusResponse,
+    LoadTemplateListResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Helper
 import { LoadHelper, LoadStoreHelper } from '@pages/new-load/utils/helpers';
@@ -25,20 +30,25 @@ import {
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 // Ca components
-import { IFilterAction } from 'ca-components';
+import { eGeneralActions, IFilterAction } from 'ca-components';
 
 // Config
 import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
-    loadResponse: LoadListResponse
+    loadResponse: LoadListResponse | LoadTemplateListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
+
     const { selectedTab } = state;
+    const loads = LoadHelper.loadMapper(
+        loadResponse.pagination.data,
+        selectedTab
+    );
     return {
         ...state,
-        loads: LoadHelper.loadMapper(loadResponse.pagination.data, selectedTab),
+        loads,
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs
@@ -53,6 +63,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
     selectedTabValue: eLoadStatusType
 ): ILoadState {
     console.log('getLoadsPayloadOnTabTypeChange');
+
     return {
         ...state,
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
@@ -171,6 +182,78 @@ export function onMapVisiblityToggle(state: ILoadState): ILoadState {
     };
 }
 
+export function onSelectLoad(state: ILoadState, id: number): ILoadState {
+    const updatedLoads = state.loads.map((load) =>
+        load.id === id ? { ...load, isSelected: !load.isSelected } : load
+    );
+
+    const areAllLoadsSelected = state.loads.every((load) => load.isSelected);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        areAllLoadsSelected,
+    };
+}
+
+export function onSelectAllLoads(
+    state: ILoadState,
+    action: string
+): ILoadState {
+    const shouldSelectAll =
+        action === eGeneralActions.SELECT_ALL ||
+        action === eGeneralActions.CLEAR_SELECTED
+            ? !state.areAllLoadsSelected
+            : true;
+
+    const updatedLoads = state.loads.map((load) => ({
+        ...load,
+        isSelected: shouldSelectAll,
+    }));
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        areAllLoadsSelected: shouldSelectAll,
+    };
+}
+
+//#endregion
+
+//#region Delete
+export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
+    const { selectedTab, toolbarTabs } = state;
+    const updatedLoads = state.loads.filter((load) => !load.isSelected);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
+            toolbarTabs,
+            updatedLoads,
+            selectedTab
+        ),
+    };
+}
+
+export function onDeleteLoadListTemplate(
+    state: ILoadState,
+    templateId: number
+): ILoadState {
+    const { selectedTab, toolbarTabs } = state;
+    const updatedLoads = state.loads.filter((load) => load.id !== templateId);
+
+    return {
+        ...state,
+        loads: updatedLoads,
+        toolbarTabs: LoadStoreHelper.updateTabsAfterDelete(
+            toolbarTabs,
+            updatedLoads,
+            selectedTab
+        ),
+    };
+}
+
 //#endregion
 
 //#region Toolbar Hamburger Menu
@@ -262,3 +345,61 @@ export function toggleCardFlipViewMode(state: ILoadState): ILoadState {
     };
 }
 //#endregion
+
+export function openChangeStatuDropdownSuccessResult(
+    state: ILoadState,
+    possibleStatuses: LoadPossibleStatusesResponse,
+    loadId: number
+): ILoadState {
+    return {
+        ...state,
+        possibleStatuses,
+        loadIdLoadStatusChange: loadId,
+    };
+}
+
+export const updateLoadStatusSuccessResult = function (
+    state: ILoadState,
+    status: LoadStatusResponse,
+    load: LoadResponse
+): ILoadState {
+    const { statusType, id } = load;
+    const { loads, selectedTab, toolbarTabs } = state || {};
+    let loadsClone: IMappedLoad[] = structuredClone(loads);
+    let toolbarTabsClone = structuredClone(toolbarTabs);
+
+    if (statusType?.name === selectedTab) {
+        let loadUpdated: IMappedLoad = (<IMappedLoad[]>loadsClone).find(
+            (_) => _.id === id
+        );
+
+        loadUpdated.status = status;
+    } else {
+        toolbarTabsClone = toolbarTabsClone.map((tab) => {
+            if (tab.title === selectedTab) {
+                return {
+                    ...tab,
+                    length: tab.length - 1,
+                };
+            }
+
+            if (tab.title === statusType?.name) {
+                return {
+                    ...tab,
+                    length: tab.length + 1,
+                };
+            }
+
+            return tab;
+        });
+        loadsClone = loadsClone.filter((_) => _.id !== id);
+    }
+
+    const result: ILoadState = {
+        ...state,
+        loads: loadsClone,
+        toolbarTabs: toolbarTabsClone,
+    };
+
+    return result;
+};

@@ -94,16 +94,16 @@ export class TaToolbarFiltersComponent
     public showFtl: boolean = true;
     protected destroy$ = new Subject<void>();
 
-    public loadStatusOptionsArray: ArrayStatus[];
-    public unselectedDispatcher: ArrayStatus[];
-    public truckTypeArray: ArrayStatus[];
-    public trailerTypeArray: ArrayStatus[];
+    public loadStatusOptionsArray: ArrayStatus[] = [];
+    public unselectedDispatcher: ArrayStatus[] = [];
+    public truckTypeArray: ArrayStatus[] = [];
+    public trailerTypeArray: ArrayStatus[] = [];
     public usaStates: ArrayStatus[];
     public canadaStates: ArrayStatus[];
-    public categoryRepairArray: ArrayStatus[];
-    public pmFilterArray: ArrayStatus[];
+    public categoryRepairArray: ArrayStatus[] = [];
+    public pmFilterArray: ArrayStatus[] = [];
     public loadParkingOptionsArray: ArrayStatus[];
-    public categoryFuelArray: ArrayStatus[];
+    public categoryFuelArray: ArrayStatus[] = [];
     public fuelStopArray: ArrayStatus[] = DirectiveConstants.FUEL_STOP_ARRAY;
     public tableStringEnum = TableStringEnum;
 

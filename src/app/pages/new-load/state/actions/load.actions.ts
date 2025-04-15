@@ -13,8 +13,10 @@ import {
     DispatcherFilterResponse,
     LoadListResponse,
     LoadMinimalListResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatusFilterResponse,
+    LoadStatusResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
 
@@ -140,5 +142,96 @@ export const tableColumnReset = createAction(
 
 export const toggleCardFlipViewMode = createAction(
     LoadStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
+);
+//#endregion
+
+// #region updateLoadStatus
+export const updateLoadStatus = createAction(
+    LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
+    props<{ status: LoadStatusResponse }>()
+);
+
+export const updateLoadStatusSuccess = createAction(
+    LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_SUCCESS,
+    props<{ status: LoadStatusResponse; load: LoadResponse }>()
+);
+
+export const updateLoadStatusError = createAction(
+    LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_ERROR,
+    props<{ error: Error }>()
+);
+// #endregion
+
+// #region revertLoadStatus
+export const revertLoadStatus = createAction(
+    LoadStoreConstants.ACTION_REVERT_LOAD_STATUS,
+    props<{ status: LoadStatusResponse }>()
+);
+
+export const revertLoadStatusSuccess = createAction(
+    LoadStoreConstants.ACTION_REVERT_LOAD_STATUS_SUCCESS,
+    props<{ status: LoadStatusResponse; load: LoadResponse }>()
+);
+
+export const revertLoadStatusError = createAction(
+    LoadStoreConstants.ACTION_REVERT_LOAD_STATUS_ERROR,
+    props<{ error: Error }>()
+);
+// #endregion
+
+// #region openChangeStatuDropdown
+export const openChangeStatuDropdown = createAction(
+    LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
+    props<{ loadId: number }>()
+);
+
+export const openChangeStatuDropdownSuccess = createAction(
+    LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN_SUCCESS,
+    props<{ possibleStatuses: LoadPossibleStatusesResponse; loadId: number }>()
+);
+
+export const openChangeStatuDropdownError = createAction(
+    LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN_ERROR,
+    props<{ error: Error }>()
+);
+// #endregion
+//#region List
+export const onSelectLoad = createAction(
+    LoadStoreConstants.ACTION_ON_ONE_LOAD_SELECT,
+    props<{
+        id: number;
+    }>()
+);
+
+export const onSelectAllLoads = createAction(
+    LoadStoreConstants.ACTION_ON_SELECT_LOAD_ALL,
+    props<{ action: string }>()
+);
+
+//#endregion
+
+//#region Delete actions
+export const onDeleteLoadList = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
+    props<{
+        count: number;
+        isTemplate: boolean;
+        templateId: number;
+    }>()
+);
+
+export const onDeleteLoadListSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS
+);
+
+export const onDeleteLoadListTemplate = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
+    props<{
+        templateId: number;
+    }>()
+);
+
+export const onDeleteLoadListTemplateSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE_SUCCESS
 );
 //#endregion

@@ -1,5 +1,6 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 
 // Enums
@@ -10,8 +11,17 @@ import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
 // Components
-import { CaDropdownMenuComponent, CaLoadStatusComponent } from 'ca-components';
+import {
+    CaDropdownMenuComponent,
+    CaStatusChangeDropdownComponent,
+    CaCheckboxComponent,
+    CaLoadStatusComponent,
+    CaCheckboxSelectedCountComponent,
+    ePosition,
+} from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { Subject, takeUntil } from 'rxjs';
+import { NgbPopover, NgbPopoverModule } from '@ng-bootstrap/ng-bootstrap';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
@@ -23,6 +33,12 @@ import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
+// Models
+import { LoadStatusResponse } from 'appcoretruckassist';
+
+// Mixing
+import { DestroyableMixin } from '@shared/mixins';
+
 @Component({
     selector: 'app-new-load-table',
     templateUrl: './new-load-table.component.html',
@@ -30,14 +46,27 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
     standalone: true,
     imports: [
         CommonModule,
+        NgbPopover,
+
         // Components
         NewTableComponent,
         CaLoadStatusComponent,
         CaDropdownMenuComponent,
+        CaCheckboxComponent,
+        CaCheckboxSelectedCountComponent,
+        CaStatusChangeDropdownComponent,
     ],
 })
-export class NewLoadTableComponent extends LoadDropdownMenuActionsBase {
+export class NewLoadTableComponent
+    extends LoadDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
+    protected destroy$ = new Subject<void>();
+
+    public changeStatusPopover: NgbPopover;
+
     public eColor = eColor;
+    public ePosition = ePosition;
     public eDropdownMenu = eDropdownMenu;
 
     constructor(
@@ -48,6 +77,10 @@ export class NewLoadTableComponent extends LoadDropdownMenuActionsBase {
         protected modalService: ModalService
     ) {
         super();
+    }
+
+    ngOnInit(): void {
+        this.initChangeStatusDropdownListener();
     }
 
     public navigateToLoadDetails(id: number): void {
@@ -82,5 +115,42 @@ export class NewLoadTableComponent extends LoadDropdownMenuActionsBase {
             eDropdownMenu.LOAD,
             selectedTab
         );
+    }
+
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
+    }
+
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
+    }
+
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
+    }
+
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

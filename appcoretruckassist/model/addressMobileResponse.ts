@@ -15,5 +15,7 @@ export interface AddressMobileResponse {
     city?: string | null;
     state?: string | null;
     stateShortName?: string | null;
+    longitude?: number | null;
+    latitude?: number | null;
 }
 

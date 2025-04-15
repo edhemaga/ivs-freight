@@ -1,7 +1,8 @@
 import { Component, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Router, RouterOutlet } from '@angular/router';
 
-import { Subject, takeUntil } from 'rxjs';
+import { combineLatest, Subject, takeUntil } from 'rxjs';
 
 // components
 import { ToolbarTabsWrapperComponent } from '@shared/components/new-table-toolbar/components/toolbar-tabs-wrapper/toolbar-tabs-wrapper.component';
@@ -13,12 +14,10 @@ import {
     CaFilterStateDropdownComponent,
     CaFilterTimeDropdownComponent,
 } from 'ca-components';
-import { MilesMapComponent } from '@pages/miles/pages/miles-map/miles-map.component';
-import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
-import { MilesTableComponent } from '@pages/miles/pages/miles-table/miles-table.component';
 import { TaTableEmptyComponent } from '@shared/components/ta-table/ta-table-empty/ta-table-empty.component';
 import { TruckModalComponent } from '@pages/truck/pages/truck-modal/truck-modal.component';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
+import { MilesCardComponent } from '@pages/miles/pages/miles-card/miles-card.component';
 
 // base classes
 import { DropdownMenuActionsBase } from '@shared/base-classes';
@@ -30,7 +29,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { ConfirmationResetService } from '@shared/components/ta-shared-modals/confirmation-reset-modal/services/confirmation-reset.service';
 
 // enums
-import { eMileTabs } from '@pages/miles/enums';
+import { eMileTabs, eMilesRouting } from '@pages/miles/enums';
 import {
     eActiveViewMode,
     eCommonElement,
@@ -46,6 +45,7 @@ import { TableCardBodyActions } from '@shared/models';
 
 // interfaces
 import { IStateFilters } from '@shared/interfaces';
+import { IMilesModel } from '@pages/miles/interface';
 
 @Component({
     selector: 'app-miles',
@@ -54,6 +54,7 @@ import { IStateFilters } from '@shared/interfaces';
     standalone: true,
     imports: [
         CommonModule,
+        RouterOutlet,
 
         // Components
         NewTableToolbarComponent,
@@ -62,9 +63,6 @@ import { IStateFilters } from '@shared/interfaces';
         CaSearchMultipleStates2Component,
         CaFilterStateDropdownComponent,
         CaFilterTimeDropdownComponent,
-        MilesMapComponent,
-        MilesCardComponent,
-        MilesTableComponent,
         TaTableEmptyComponent,
     ],
 })
@@ -83,11 +81,14 @@ export class MilesComponent
     public eActiveViewMode = eActiveViewMode;
     public eCommonElement = eCommonElement;
 
+    public firstUnit: IMilesModel;
+
     constructor(
-        public milesStoreService: MilesStoreService,
         protected modalService: ModalService,
         protected tableService: TruckassistTableService,
-        protected confirmationResetService: ConfirmationResetService
+        protected confirmationResetService: ConfirmationResetService,
+        public milesStoreService: MilesStoreService,
+        public router: Router
     ) {
         super();
     }
@@ -97,10 +98,14 @@ export class MilesComponent
     }
 
     private storeSubscription(): void {
-        this.milesStoreService.filter$
+        combineLatest([
+            this.milesStoreService.filter$,
+            this.milesStoreService.miles$,
+        ])
             .pipe(takeUntil(this.destroy$))
-            .subscribe((filter) => {
+            .subscribe(([filter, units]) => {
                 this.filter = filter;
+                this.firstUnit = units[0] || ({} as IMilesModel);
             });
     }
 
@@ -163,10 +168,24 @@ export class MilesComponent
 
         if (action === eGeneralActions.TAB_SELECTED) {
             this.milesStoreService.dispatchListChange(mode);
-        } else if (action === eGeneralActions.VIEW_MODE)
-            this.milesStoreService.dispatchSetActiveViewMode(
-                eActiveViewMode[mode]
-            );
+        } else if (action === eGeneralActions.VIEW_MODE) {
+            this.redirectUserToNewView(mode);
+        }
+    }
+
+    private redirectUserToNewView(mode: eMileTabs): void {
+        this.milesStoreService.dispatchSetActiveViewMode(eActiveViewMode[mode]);
+
+        if (mode === eActiveViewMode[eActiveViewMode.Map]) {
+            // What if we don't have a unit? should user be able to go to map?
+            this.router.navigate([
+                `/${eMilesRouting.BASE}/${eMilesRouting.MAP}/${this.firstUnit.truckId}`,
+            ]);
+        } else {
+            this.router.navigate([
+                `/${eMilesRouting.BASE}/${mode.toLowerCase()}`,
+            ]);
+        }
     }
 
     public onTableEmptyBtnClick(btnClickType: string): void {
