@@ -20,7 +20,7 @@ import {
     ITableConfig,
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
+import { IFilterAction } from 'ca-components';
 
 // Selectors
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
@@ -34,6 +34,7 @@ import {
     LoadPossibleStatusesResponse,
     LoadStatusResponse,
 } from 'appcoretruckassist';
+
 // Enums
 import {
     eLoadModalActions,
@@ -42,12 +43,11 @@ import {
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement, TableStringEnum } from '@shared/enums';
 
-// Ca components
-import { IFilterAction } from 'ca-components';
-
 // Services
-
 import { ModalService } from '@shared/services';
+
+// Components
+import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
 
 @Injectable({
     providedIn: 'root',
@@ -234,12 +234,14 @@ export class LoadStoreService {
             .openModalNew(LoadDeleteModalComponent, modalData)
             .closed.subscribe((value) => {
                 if (value) {
-                    this.store.dispatch({
+                    const action = {
                         type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
                         count: modalData.loads.length,
                         isTemplate: modalData.isTemplate,
                         selectedIds: modalData.loads.map((load) => load.id),
-                    });
+                    };
+
+                    this.store.dispatch(action);
 
                     if (modalData.ngbActiveModal)
                         modalData.ngbActiveModal.close();
@@ -252,12 +254,14 @@ export class LoadStoreService {
             .openModalNew(LoadDeleteModalComponent, modalData)
             .closed.subscribe((value) => {
                 if (value) {
-                    this.store.dispatch({
+                    const action = {
                         type: LoadStoreConstants.ACTION_ON_DELETE_LOAD,
                         isTemplate: modalData.isTemplate,
                         id: modalData.loads[0].id,
                         isDetailsPage: modalData.isDetailsPage,
-                    });
+                    };
+
+                    this.store.dispatch(action);
                 }
             });
     }

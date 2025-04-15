@@ -139,7 +139,7 @@ export class LoadService {
         }
 
         const params = ids.reduce(
-            (p, id) => p.append('Ids', id.toString()),
+            (param, id) => param.append('Ids', id.toString()),
             new HttpParams()
         );
 
