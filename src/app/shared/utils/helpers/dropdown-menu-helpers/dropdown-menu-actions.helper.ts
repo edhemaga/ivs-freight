@@ -89,6 +89,10 @@ export class DropdownMenuActionsHelper {
                 detailsPath = eDropdownMenu.BROKER_DETAILS;
 
                 break;
+            case eDropdownMenu.LOAD:
+                adjustedTableType = eDropdownMenu.NEW_LOAD;
+
+                break;
             default:
                 adjustedTableType = tableType;
         }
