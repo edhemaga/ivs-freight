@@ -238,6 +238,21 @@ export class LoadStoreService {
             });
     }
 
+    public onDeleteLoadFromDropdown(modalData: ILoadDeleteModal): void {
+        this.modalService
+            .openModalNew(LoadDeleteModalComponent, modalData)
+            .closed.subscribe((value) => {
+                if (value) {
+                    this.store.dispatch({
+                        type: LoadStoreConstants.ACTION_ON_DELETE_LOAD,
+                        isTemplate: modalData.isTemplate,
+                        id: modalData.loads[0].id,
+                        isDetailsPage: modalData.isDetailsPage,
+                    });
+                }
+            });
+    }
+
     public dispatchSetToolbarDropdownMenuColumnsActive(
         isActive: boolean
     ): void {
