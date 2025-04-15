@@ -15,19 +15,133 @@ export class LoadTableColumnsConfig {
             selectedTab === eLoadStatusStringType.ACTIVE;
         const isClosed = selectedTab === eLoadStatusStringType.CLOSED;
         return [
-            ...this.getBaseColumns(isTemplate),
-            ...this.getBrokerGroup(isTemplate),
-            ...this.getBaseColumnsSecond(isTemplate),
-            ...this.getAssignedGroup(isPendingOrActive),
-            ...this.getStatusColumn(isTemplate),
-            ...this.getPickupAndRequirement(),
-            ...this.getDriverMessage(),
-            ...this.getMilesGroup(),
-            ...this.getBillingGroup(isClosed),
-            ...this.getClosedDates(isClosed),
-            ...this.getFinalDates(),
+            {
+                key: 'select',
+                label: '',
+                pinned: 'left',
+                width: 32,
+                minWidth: 32,
+                maxWidth: 200,
+                isResizable: true,
+                isDisabled: true,
+                isChecked: true,
+                hasSort: false,
+            },
+            ...this.templateTabColumns(isTemplate),
+            ...this.activeOrPendingTabColumns(isPendingOrActive),
+            ...this.closedTabColumns(isClosed)
         ];
     }
+
+    // MAPPING STRUCTURE FOR TEMPLATE TAB COLUMNS
+    private static templateTabColumns(isTemplate: boolean): ITableColumn[] {
+        console.log("isTemplate: ", isTemplate)
+
+        if (!isTemplate) return [];
+
+        return [
+            {
+                key: 'templateName',
+                label: 'Name',
+                labelToolbar: 'Name',
+                width: 200,
+                minWidth: 200,
+                maxWidth: 250,
+                isResizable: true,
+                isChecked: true,
+                hasSort: true,
+            },
+            {
+                key: 'templateCreated',
+                label: 'Created',
+                labelToolbar: 'Created',
+                width: 88,
+                minWidth: 88,
+                maxWidth: 88,
+                isResizable: true,
+                isChecked: true,
+                hasSort: true,
+            },
+            {
+                key: 'templateCommodity',
+                label: 'Commodity',
+                labelToolbar: 'Commodity',
+                width: 130,
+                minWidth: 130,
+                maxWidth: 130,
+                isResizable: true,
+                isChecked: true,
+                hasSort: true,
+            },
+            ...this.getBrokerGroup(isTemplate),
+            
+        ]
+    }
+
+    // MAPPING STRUCTURE FOR ACTIVE OR PENDING TAB COLUMNS
+    private static activeOrPendingTabColumns(isPendingOrActive: boolean): ITableColumn[] {
+        console.log("isPendingOrActive: ", isPendingOrActive)
+        if (!isPendingOrActive) return [];
+
+        return []
+    }
+
+    // MAPPING STRUCTURE FOR CLOSED TAB COLUMNS
+    private static closedTabColumns(isClosed: boolean): ITableColumn[] {
+        console.log("isClosed: ", isClosed)
+        if (!isClosed) return [];
+
+        return []
+    }
+
+    private static getBrokerGroup(isTemplate: boolean): ITableColumn[] {
+        return [
+            {
+                key: 'broker',
+                label: 'Broker',
+                labelToolbar: 'Broker Detail',
+                columns: [
+                    {
+                        key: 'brokerBusinessName',
+                        label: 'Business Name',
+                        labelToolbar: 'Business name',
+                        width: 238,
+                        minWidth: 50,
+                        maxWidth: 1020,
+                        isResizable: true,
+                        isChecked: true,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                    {
+                        key: 'brokerContact',
+                        label: 'Contact',
+                        labelToolbar: 'Contact',
+                        width: 186,
+                        minWidth: 50,
+                        maxWidth: 550,
+                        isResizable: true,
+                        isChecked: isTemplate,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                    {
+                        key: 'brokerPhone',
+                        label: 'Phone',
+                        labelToolbar: 'Phone',
+                        width: 188,
+                        minWidth: 150,
+                        maxWidth: 220,
+                        isResizable: true,
+                        isChecked: isTemplate,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                ],
+            },
+        ];
+    }
+
     private static getBaseColumns(isTemplate: boolean): ITableColumn[] {
         return [
             {
@@ -64,9 +178,21 @@ export class LoadTableColumnsConfig {
                 maxWidth: 250,
                 isResizable: true,
                 isDisabled: true,
-                isChecked: true,
+                isChecked: !isTemplate,
                 hasSort: true,
                 pinned: 'left',
+            },
+            {
+                key: 'referenceNumber',
+                label: 'REF NO',
+                labelToolbar: 'Ref Number',
+                width: 130,
+                minWidth: 130,
+                maxWidth: 160,
+                isResizable: true,
+                isChecked: !isTemplate,
+                hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
             },
             {
                 key: 'type',
@@ -106,68 +232,9 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
-    private static getBrokerGroup(isTemplate: boolean): ITableColumn[] {
-        return [
-            {
-                key: 'broker',
-                label: 'Broker',
-                labelToolbar: 'Broker Detail',
-                columns: [
-                    {
-                        key: 'loadBroker',
-                        label: 'Business Name',
-                        labelToolbar: 'Business name',
-                        width: 238,
-                        minWidth: 50,
-                        maxWidth: 1020,
-                        isResizable: true,
-                        isChecked: true,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                    {
-                        key: 'contact',
-                        label: 'Contact',
-                        labelToolbar: 'Contact',
-                        width: 186,
-                        minWidth: 50,
-                        maxWidth: 550,
-                        isResizable: true,
-                        isChecked: isTemplate,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                    {
-                        key: 'phone',
-                        label: 'Phone',
-                        labelToolbar: 'Phone',
-                        width: 188,
-                        minWidth: 150,
-                        maxWidth: 220,
-                        isResizable: true,
-                        isChecked: isTemplate,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                ],
-            },
-        ];
-    }
 
     private static getBaseColumnsSecond(isTemplate: boolean): ITableColumn[] {
         return [
-            {
-                key: 'referenceNumber',
-                label: 'REF NO',
-                labelToolbar: 'Ref Number',
-                width: 126,
-                minWidth: 108,
-                maxWidth: 160,
-                isResizable: true,
-                isChecked: !isTemplate,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
             {
                 key: 'textCommodity',
                 label: 'Commodity',

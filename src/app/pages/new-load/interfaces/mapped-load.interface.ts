@@ -7,7 +7,7 @@ export interface IMappedLoad {
     loadNumber: string;
     status: LoadStatusResponse;
     dispatcher: CompanyUserShortResponse;
-    loadDetails: LoadDetails;
+    referenceNumber: string;
     totalDue: number;
     broker: LoadBrokerInfo;
 }

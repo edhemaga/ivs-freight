@@ -1,6 +1,5 @@
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { LoadTemplate } from '@pages/load/pages/load-table/models';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Interfaces
@@ -26,12 +25,17 @@ export class LoadHelper {
                 edit: true,
                 isSelected: false,
                 loadNumber: load.loadNumber,
-                name: load.name,
+                templateName: load.name,
                 status: load.status,
                 dispatcher: load.dispatcher,
-                loadDetails: load.loadDetails,
+                referenceNumber: load.loadDetails?.referenceNumber,
                 totalDue: load.totalDue,
                 broker: load.broker,
+                templateCreated: load.dateCreated,
+                templateCommodity: load.generalCommodity,
+                brokerBusinessName: load.broker?.businessName,
+                brokerContact: load.brokerContact?.contactName,
+                brokerPhone: load.broker?.phone
             };
         });
     }

@@ -8,6 +8,9 @@ import { LoadStoreService } from '@pages/new-load/state/services/load-store.serv
 import { eColor } from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
+// svg-routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
 // Components
 import {
     CaCheckboxComponent,
@@ -16,6 +19,7 @@ import {
     CaProfileImageComponent
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { SvgIconComponent } from 'angular-svg-icon';
 
 @Component({
     selector: 'app-new-load-table',
@@ -31,10 +35,12 @@ import { NewTableComponent } from '@shared/components/new-table/new-table.compon
         CaProfileImageComponent,
         CaCheckboxComponent,
         CaCheckboxSelectedCountComponent,
+        SvgIconComponent
     ],
 })
 export class NewLoadTableComponent {
     public eColor = eColor;
+    public sharedSvgRoutes = SharedSvgRoutes;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
