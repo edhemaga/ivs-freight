@@ -31,13 +31,11 @@ import {
     CaFilterTimeDropdownComponent,
     CaSearchMultipleStates2Component,
     IFilterAction,
-    ThousandSeparatorPipe,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
 import { NewLoadTableComponent } from '@pages/new-load/pages/new-load-table/new-load-table.component';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { ConfirmationResetModalComponent } from '@shared/components/ta-shared-modals/confirmation-reset-modal/confirmation-reset-modal.component';
-import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -67,10 +65,6 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
         CaFilterListDropdownComponent,
         CaSearchMultipleStates2Component,
         SvgIconComponent,
-        LoadDeleteModalComponent,
-
-        // Pipes
-        ThousandSeparatorPipe,
     ],
 })
 export class NewLoadComponent<T> {

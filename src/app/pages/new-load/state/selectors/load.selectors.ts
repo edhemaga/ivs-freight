@@ -27,7 +27,7 @@ export const selectedLoadsSelector = createSelector(
 export const selectedCountSelector = createSelector(
     selectedLoadsSelector,
     (selectedLoads) => {
-        console.log(selectedLoads);
+        console.log('selectedLoadsSelector');
         return selectedLoads.length;
     }
 );

@@ -44,7 +44,7 @@
                             'background-blue-16': store.selectedCount,
                         }"
                     >
-                        ${{ store.totalSum | thousandSeparator }}
+                        {{ store.totalSum | currency: 'USD' }}
                     </div>
 
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
