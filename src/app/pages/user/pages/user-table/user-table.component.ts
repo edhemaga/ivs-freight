@@ -56,7 +56,7 @@ import { UserTableConfiguration } from '@pages/user/pages/user-table/utils/const
 
 // enums
 import { TableStringEnum } from '@shared/enums/table-string.enum';
-import { eDropdownMenu } from '@shared/enums';
+import { eDropdownMenu, eStringPlaceholder, eSharedString } from '@shared/enums';
 
 // models
 import { CardRows } from '@shared/models/card-models/card-rows.model';
@@ -606,10 +606,11 @@ export class UserTableComponent
             tablePersonalDetailsEmail: data?.personalEmail,
             tablePersonalDetailsAddress: data?.address?.address,
             tableTableStatus: {
-                status:
-                    data?.userStatus === TableStringEnum.ZERO
-                        ? TableStringEnum.NA
-                        : data?.userStatus,
+                status: isInvitationSent
+                    ? eSharedString.INVITED
+                    : data?.userStatus === eStringPlaceholder.ZERO
+                      ? eStringPlaceholder.NA_UPPERCASE
+                      : data?.userStatus,
             },
             tableBillingDetailsBankName: data?.bank?.name,
             tableBillingDetailsRouting: data?.routingNumber,
