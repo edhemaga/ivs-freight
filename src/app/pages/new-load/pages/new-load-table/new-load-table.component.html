@@ -9,6 +9,8 @@
     @let templates =
         {
             loadNumber,
+            referenceNumber,
+            loadDispatcher,
             loadStatus,
             edit,
         };
@@ -32,6 +34,33 @@
             >
                 {{ data.loadNumber }}
             </span>
+        </ng-template>
+
+        <ng-template let-data="data" #referenceNumber>
+            <span
+                class="text-size-14 text-color-black-2"
+            >
+                {{ data.loadDetails?.referenceNumber }}
+            </span>
+        </ng-template>
+
+        <ng-template let-data="data" #loadDispatcher>
+            <div class="d-flex gap-1">
+                <app-ca-profile-image
+                    [name]="data.dispatcher?.fullName"
+                    [size]="'small'"
+                    [type]="'user'"
+                    [withTooltip]="true"
+                    [size]="18"
+                    [isDispatch]="true"
+                    [avatarImg]="data.dispatcher?.avatarFile?.url"
+                >
+                </app-ca-profile-image>
+
+                <div class="text-color-black-2 text-size-14">
+                    {{ data.dispatcher?.fullName }}
+                </div>
+            </div>
         </ng-template>
 
         <ng-template let-data="data" #loadStatus>

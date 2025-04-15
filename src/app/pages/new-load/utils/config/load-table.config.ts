@@ -148,8 +148,8 @@ export class LoadTableColumnsConfig {
                 key: 'referenceNumber',
                 label: 'REF NO',
                 labelToolbar: 'Ref Number',
-                width: 108,
-                minWidth: 64,
+                width: 126,
+                minWidth: 108,
                 maxWidth: 160,
                 isResizable: true,
                 isChecked: !isTemplate,
@@ -237,17 +237,17 @@ export class LoadTableColumnsConfig {
         return isTemplate
             ? []
             : [
-                  {
-                      key: 'loadStatus',
-                      label: 'Status',
-                      labelToolbar: 'Status',
-                      width: 138,
-                      minWidth: 90,
-                      maxWidth: 150,
-                      isResizable: true,
-                      isChecked: true,
-                      hasSort: true,
-                      sortName: MilesStopSortBy.UnitNumber,
+                    {
+                        key: 'loadStatus',
+                        label: 'Status',
+                        labelToolbar: 'Status',
+                        width: 138,
+                        minWidth: 90,
+                        maxWidth: 150,
+                        isResizable: true,
+                        isChecked: true,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
                   },
               ];
     }

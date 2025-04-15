@@ -9,7 +9,7 @@ import { eColor } from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Components
-import { CaLoadStatusComponent } from 'ca-components';
+import { CaLoadStatusComponent, CaProfileImageComponent } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 
 @Component({
@@ -22,6 +22,7 @@ import { NewTableComponent } from '@shared/components/new-table/new-table.compon
         // Components
         NewTableComponent,
         CaLoadStatusComponent,
+        CaProfileImageComponent
     ],
 })
 export class NewLoadTableComponent {

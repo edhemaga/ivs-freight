@@ -18,6 +18,8 @@ export class LoadHelper {
                 id: load.id,
                 loadNumber: load.loadNumber,
                 status: load.status,
+                dispatcher: load.dispatcher,
+                loadDetails: load.loadDetails
             };
         });
     }
