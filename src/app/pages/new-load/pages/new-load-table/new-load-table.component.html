@@ -4,28 +4,53 @@
         columns: loadStoreService.tableColumnsSelector$ | async,
         selectedTab: loadStoreService.selectedTabSelector$ | async,
         tableSettings: loadStoreService.tableSettingsSelector$ | async,
+        selectedCount: loadStoreService.selectedCountSelector$ | async,
     };
 @if (store) {
+    @let headerTemplates = { selectHeaderTemplate };
     @let templates =
         {
-            loadNumber,
-            loadStatus,
+            select,
             edit,
+            loadInvoice,
+            loadStatus,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
     <app-new-table
         [columns]="store.columns"
         [rows]="store.viewData"
+        [headerTemplates]="{
+            select: selectHeaderTemplate,
+        }"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
     >
+        <ng-template #selectHeaderTemplate>
+            <app-ca-checkbox-selected-count
+                [itemsTotalCount]="store.viewData.length"
+                [itemsSelectedCount]="store.selectedCount"
+                (onCheckboxCountClick)="onCheckboxCountClick($event)"
+            ></app-ca-checkbox-selected-count>
+        </ng-template>
+
+        <ng-template let-data="data" #select>
+            @let loadName = 'Load-' + data.id;
+            <app-ca-checkbox
+                [isChecked]="data.isSelected"
+                [isRegularCheckbox]="false"
+                [itemIndex]="data.id"
+                [name]="loadName"
+                (columnCheckAction)="onSelectLoad(data.id)"
+            ></app-ca-checkbox>
+        </ng-template>
+
         <ng-template let-data="data" #edit>
             <!-- TODO: For testing load modal only !! Will be removed later !! -->
             <div (click)="onOpenModal(data.id, store.selectedTab)">EDIT</div>
         </ng-template>
 
-        <ng-template let-data="data" #loadNumber>
+        <ng-template let-data="data" #loadInvoice>
             <span
                 class="ta-font-bold text-size-14 text-color-black c-pointer text-hover-blue-15"
                 (click)="navigateToLoadDetails(data.id)"
@@ -35,7 +60,17 @@
         </ng-template>
 
         <ng-template let-data="data" #loadStatus>
-            <span class="ta-font-bold text-size-14 text-color-black">
+            <span 
+                class="ta-font-bold text-size-14 text-color-black"
+                #ngbStatus="ngbPopover"
+                [autoClose]="true"
+                [ngbPopover]="statusPopover"
+                [placement]="ePosition.BOTTOM + ' ' + ePosition.TOP"
+                container="body"
+                popoverClass="table-status-popover"
+                triggers="manual"
+                (click)="onOpenChangeStatusDropdown(ngbStatus, data.id)"
+            >
                 <app-ca-load-status
                     [status]="{
                         name: data.status?.statusString,
@@ -49,4 +84,14 @@
             </span>
         </ng-template>
     </app-new-table>
+
+    <ng-template #statusPopover>
+        @let possibleStatuses = loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
+
+        <app-ca-status-change-dropdown 
+            [statuses]="possibleStatuses"
+            (onNextStatus)="onNextStatus($event)"
+            (onPreviousStatus)="onPreviousStatus($event)"
+        ></app-ca-status-change-dropdown>
+    </ng-template>
 }

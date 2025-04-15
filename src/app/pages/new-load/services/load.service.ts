@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 
 // rxjs
@@ -9,10 +9,13 @@ import {
     DispatcherFilterResponse,
     LoadListResponse,
     LoadMinimalListResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatusFilterResponse,
+    LoadStatusResponse,
     LoadTemplateListResponse,
     RoutingResponse,
+    UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 
 // Environment
@@ -94,5 +97,53 @@ export class LoadService {
         return this.http.get<LoadMinimalListResponse>(
             `${environment.API_ENDPOINT}/api/load/list/minimal`
         );
+    }
+
+    public apiUpdateLoadStatus(
+        param: UpdateLoadStatusCommand
+    ): Observable<LoadStatusResponse> {
+        return this.http.put<LoadStatusResponse>(
+            `${environment.API_ENDPOINT}/api/load/status`,
+            param
+        );
+    }
+
+    public apiRevertLoadStatus(
+        param: UpdateLoadStatusCommand
+    ): Observable<LoadStatusResponse> {
+        return this.http.put<LoadStatusResponse>(
+            `${environment.API_ENDPOINT}/api/load/status/revert`,
+            param
+        );
+    }
+
+    public getLoadStatusDropdownOptions(
+        id: number
+    ): Observable<LoadPossibleStatusesResponse> {
+        return this.http.get<LoadPossibleStatusesResponse>(
+            `${environment.API_ENDPOINT}/api/load/list/status/${id}`
+        );
+    }
+
+    public deleteLoads(
+        ids: number[],
+        isTemplate: boolean,
+        isSingular: boolean
+    ): Observable<boolean> {
+        const basePath = `${environment.API_ENDPOINT}/api/load`;
+        const templateSegment = isTemplate ? '/template' : '';
+
+        if (isSingular && ids.length === 1) {
+            const url = `${basePath}${templateSegment}/${ids[0]}`;
+            return this.http.delete<boolean>(url);
+        }
+
+        let params = new HttpParams();
+        ids.forEach((id) => {
+            params = params.append('Ids', id.toString());
+        });
+
+        const url = `${basePath}/list${templateSegment}`;
+        return this.http.delete<boolean>(url, { params });
     }
 }

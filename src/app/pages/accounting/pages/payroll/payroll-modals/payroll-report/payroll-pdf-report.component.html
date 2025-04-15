@@ -3,14 +3,20 @@
     [rightHeaderTemplate]="rightModalContent"
     [customClass]="'modal-container-load modal-payroll-report'"
 >
-    <div
-        origin
-        class="w-full pos-relative scrollable-element remove-scroll-track"
-    >
+    <div origin class="w-full pos-relative">
         <div class="divider divider--dark divider--small"></div>
+        @let isZoomLevelTwoStepsBelowDefault = zoomLevel < 0.75;
+
+        @let scrollableElementStyles =
+            {
+                'margin-bottom': isZoomLevelTwoStepsBelowDefault
+                    ? '-20px'
+                    : '-80px',
+            };
 
         <div
-            class="d-flex justify-content-center overflow-hidden pos-relative w-full h-full"
+            class="d-flex justify-content-center pos-relative w-full h-960 overflow-auto scrollable-element remove-scroll-track"
+            [ngStyle]="scrollableElementStyles"
         >
             <!-- Zoom Content -->
 
@@ -27,9 +33,9 @@
                 @if (!isLoading) {
                     <iframe
                         #contentIframe
-                        (load)="onIframeLoad()"
                         [srcdoc]="pdfReport?.html"
                         width="100%"
+                        (load)="onIframeLoad()"
                     ></iframe>
                 } @else {
                     <div class="h-800">
@@ -47,41 +53,39 @@
 
             <!-- Zoom Controls -->
 
-            <div class="h-full pos-relative">
-                <div
-                    class="d-flex flex-column align-items-center justify-content-center pos-absolute bottom-12 right-12 w-30 h-52 br-50 p-x-4 p-y-4 background-white shadow-100 z-2"
-                >
-                    @let zoomInControlSvgClass =
-                        zoomLevel === maxZoom
-                            ? 'pe-none svg-fill-light-grey-6'
-                            : 'c-pointer svg-fill-muted svg-hover-black';
+            @let zoomControlsElementClass =
+                isZoomLevelTwoStepsBelowDefault ? 'bottom-34' : 'bottom-92';
 
-                    @let zoomOutControlSvgClass =
-                        zoomLevel === minZoom
-                            ? 'pe-none svg-fill-light-grey-6'
-                            : 'c-pointer svg-fill-muted svg-hover-black';
+            <div
+                class="d-flex flex-column align-items-center justify-content-center pos-absolute right-16 w-30 h-52 br-50 p-x-4 p-y-4 background-white shadow-100 z-2"
+                [class]="zoomControlsElementClass"
+            >
+                @let zoomInControlSvgClass =
+                    zoomLevel === maxZoom
+                        ? 'pe-none svg-fill-light-grey-6'
+                        : 'c-pointer svg-fill-muted svg-hover-black';
 
-                    <div
-                        class="d-flex align-items-center justify-content-center"
-                    >
-                        <svg-icon
-                            class="svg-size-12"
-                            [ngClass]="zoomInControlSvgClass"
-                            [src]="svgRoutes.plusIcon"
-                            (click)="handleZoomClick(1)"
-                        ></svg-icon>
-                    </div>
+                @let zoomOutControlSvgClass =
+                    zoomLevel === minZoom
+                        ? 'pe-none svg-fill-light-grey-6'
+                        : 'c-pointer svg-fill-muted svg-hover-black';
 
-                    <div
-                        class="d-flex align-items-center justify-content-center"
-                    >
-                        <svg-icon
-                            class="svg-size-12"
-                            [ngClass]="zoomOutControlSvgClass"
-                            [src]="svgRoutes.minusIcon"
-                            (click)="handleZoomClick(-1)"
-                        ></svg-icon>
-                    </div>
+                <div class="d-flex align-items-center justify-content-center">
+                    <svg-icon
+                        class="svg-size-12"
+                        [ngClass]="zoomInControlSvgClass"
+                        [src]="svgRoutes.plusIcon"
+                        (click)="onZoomClick(1)"
+                    ></svg-icon>
+                </div>
+
+                <div class="d-flex align-items-center justify-content-center">
+                    <svg-icon
+                        class="svg-size-12"
+                        [ngClass]="zoomOutControlSvgClass"
+                        [src]="svgRoutes.minusIcon"
+                        (click)="onZoomClick(-1)"
+                    ></svg-icon>
                 </div>
             </div>
         </div>
@@ -96,7 +100,7 @@
             [mainTooltip]="eGeneralActions.DOWNLOAD"
             [tooltipBackground]="eColor.BLACK"
             [position]="ePosition.BOTTOM"
-            (click)="handleDownloadReportClick()"
+            (click)="onDownloadReportClick()"
         >
             <svg-icon
                 [src]="svgRoutes.downloadIcon"
@@ -113,7 +117,7 @@
         [mainTooltip]="eGeneralActions.CANCEL_CAPITALIZED"
         [tooltipBackground]="eColor.BLACK"
         [position]="ePosition.BOTTOM"
-        (click)="handleCloseModalClick()"
+        (click)="onCloseModalClick()"
     >
         <svg-icon
             class="modal-close svg-size-14 svg-fill-muted modal-buttons"

@@ -1,6 +1,12 @@
 // Modules
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import {
+    Component,
+    Input,
+    OnInit,
+    TemplateRef,
+    ViewChild,
+} from '@angular/core';
 import {
     NgbActiveModal,
     NgbModule,
@@ -21,7 +27,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Services
 import { LoadService } from '@shared/services/load.service';
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
@@ -62,6 +68,7 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -86,14 +93,16 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         TaInputNoteComponent,
         TaAppTooltipV2Component,
         NewLoadModalStopsComponent,
+        LoadDeleteModalComponent,
 
         // Pipes
         TemplateButtonConfigPipe,
         LoadModalInputConfigPipe,
     ],
 })
-export class NewLoadModalComponent implements OnInit {
+export class NewLoadModalComponent<T> implements OnInit {
     @ViewChild('popover') popover!: NgbPopover;
+    @ViewChild('deleteTemplate') deleteTemplate!: TemplateRef<T>;
 
     // Inputs
     @Input() editData: ILoadModal;
@@ -228,12 +237,18 @@ export class NewLoadModalComponent implements OnInit {
             // If we have load type that means we are converting load to template or vice versa
             if (
                 this.editData.type ===
-                eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE
+                    eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE ||
+                this.editData.type ===
+                    eLoadModalActions.CREATE_TEMPLATE_FROM_LOAD
             ) {
+                const isTemplate =
+                    this.editData.type ===
+                    eLoadModalActions.CREATE_TEMPLATE_FROM_LOAD;
+
                 this.editData = {
                     ...this.editData,
                     id: null,
-                    isTemplate: false,
+                    isTemplate,
                     isEdit: false,
                 };
             }
@@ -278,6 +293,16 @@ export class NewLoadModalComponent implements OnInit {
         this.isTemplateSelected = false;
     }
 
+    public onDeleteTemplate(): void {
+        this.loadStoreService.onShowDeleteLoadModal(
+            this.deleteTemplate,
+            true,
+            1,
+            this.ngbActiveModal,
+            this.load.id
+        );
+    }
+
     public onSelectTemplate(template: EnumValue): void {
         this.isTemplateSelected = true;
 
@@ -304,6 +329,9 @@ export class NewLoadModalComponent implements OnInit {
 
     public onModalAction(action: eGeneralActions): void {
         switch (action) {
+            case this.eGeneralActions.DELETE:
+                this.onDeleteTemplate();
+                break;
             case this.eGeneralActions.CLOSE:
                 this.onCloseModal();
                 break;
