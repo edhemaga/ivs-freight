@@ -74,6 +74,10 @@ export class NewLoadTableComponent
         });
     }
 
+    public onHandleShowMoreClick(): void {
+        this.loadStoreService.getNewPage();
+    }
+
     public onNextStatus(status: LoadStatusResponse): void {
         this.loadStoreService.dispatchUpdateLoadStatus(status);
     }

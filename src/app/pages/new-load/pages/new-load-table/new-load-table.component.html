@@ -5,6 +5,8 @@
         selectedTab: loadStoreService.selectedTabSelector$ | async,
         tableSettings: loadStoreService.tableSettingsSelector$ | async,
         selectedCount: loadStoreService.selectedCountSelector$ | async,
+        selectedTabCountSelector:
+            loadStoreService.selectedTabCountSelector$ | async,
     };
 @if (store) {
     @let headerTemplates = { selectHeaderTemplate };
@@ -23,8 +25,11 @@
         [headerTemplates]="{
             select: selectHeaderTemplate,
         }"
+        [totalDataCount]="store.selectedTabCountSelector"
+        [totalDataCount]="selectedTabTotalDataCount"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
+        (onHandleShowMoreClick)="onHandleShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count

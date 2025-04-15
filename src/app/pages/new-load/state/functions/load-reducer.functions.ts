@@ -46,11 +46,29 @@ export const getLoadByIdSuccessResult = function (
     return {
         ...state,
         loads,
+        searchResultsCount: loadResponse.pagination.count,
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs
         ),
         tableColumns: LoadTableColumnsConfig.getLoadTableColumns(selectedTab),
+    };
+};
+
+export const onPageChanges = function (
+    state: ILoadState,
+    loadResponse: LoadListResponse | LoadTemplateListResponse
+): ILoadState {
+    console.log('onPageChangesonPageChanges');
+    const loads = [
+        ...state.loads,
+        ...LoadHelper.loadMapper(loadResponse.pagination.data),
+    ];
+
+    return {
+        ...state,
+        loads,
+        currentPage: state.currentPage + 1,
     };
 };
 
@@ -63,6 +81,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
 
     return {
         ...state,
+        currentPage: 1,
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
     };
 };
@@ -100,6 +119,7 @@ export function onFiltersChange(
     return {
         ...state,
         filters: FilterHelper.mapFilters(filters, state.filters),
+        currentPage: 1,
     };
 }
 
@@ -125,6 +145,7 @@ export function onSeachFilterChange(
     console.log('onSeachFilterChange');
     return {
         ...state,
+        currentPage: 1,
         filters: {
             ...state.filters,
             searchQuery,
