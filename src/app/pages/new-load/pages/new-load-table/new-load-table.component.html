@@ -60,7 +60,17 @@
         </ng-template>
 
         <ng-template let-data="data" #loadStatus>
-            <span class="ta-font-bold text-size-14 text-color-black">
+            <span 
+                class="ta-font-bold text-size-14 text-color-black"
+                #ngbStatus="ngbPopover"
+                [autoClose]="true"
+                [ngbPopover]="statusPopover"
+                [placement]="ePosition.BOTTOM + ' ' + ePosition.TOP"
+                container="body"
+                popoverClass="table-status-popover"
+                triggers="manual"
+                (click)="onOpenChangeStatusDropdown(ngbStatus, data.id)"
+            >
                 <app-ca-load-status
                     [status]="{
                         name: data.status?.statusString,
@@ -74,4 +84,14 @@
             </span>
         </ng-template>
     </app-new-table>
+
+    <ng-template #statusPopover>
+        @let possibleStatuses = loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
+
+        <app-ca-status-change-dropdown 
+            [statuses]="possibleStatuses"
+            (onNextStatus)="onNextStatus($event)"
+            (onPreviousStatus)="onPreviousStatus($event)"
+        ></app-ca-status-change-dropdown>
+    </ng-template>
 }

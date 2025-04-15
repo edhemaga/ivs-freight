@@ -1,6 +1,10 @@
 // interfaces
-import { IMilesModel, IMilesState } from '@pages/miles/interface';
-import { IStateFilters } from '@shared/interfaces';
+import {
+    IMilesModel,
+    IMilesState,
+    IMinimalListState,
+} from '@pages/miles/interface';
+import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
 import {
     ITableColumn,
     ITableResizeAction,
@@ -13,6 +17,7 @@ import { eSharedString } from '@shared/enums';
 
 // models
 import {
+    MilesByUnitMinimalListResponse,
     MilesByUnitPaginatedStopsResponse,
     MilesStopDetailsResponse,
     RoutingResponse,
@@ -64,10 +69,7 @@ export const changeViewMode = function (
     return {
         ...state,
         activeViewMode,
-        unitsPagination: {
-            ...state.unitsPagination,
-            activeUnitIndex: 0,
-        },
+        isDetailsLoading: true,
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(
                 activeViewMode,
@@ -80,19 +82,13 @@ export const changeViewMode = function (
 
 export const updateMilesData = function (
     state: IMilesState,
-    miles: IMilesModel[],
-    totalResultsCount: number
+    miles: IMilesModel[]
 ): IMilesState {
     return {
         ...state,
         items: miles,
         page: 1,
         loading: false,
-        unitsPagination: {
-            ...state.unitsPagination,
-            activeUnitIndex: 0,
-            totalResultsCount,
-        },
     };
 };
 
@@ -112,11 +108,6 @@ export const updateMilesListData = function (
     return {
         ...state,
         items,
-        // New items are not selected no need to filter it
-        unitsPagination: {
-            ...state.unitsPagination,
-            currentPage: state.unitsPagination.currentPage + 1,
-        },
     };
 };
 
@@ -143,37 +134,42 @@ export const updateTabSelection = function (
 
 export const setUnitDetails = function (
     state: IMilesState,
-    details: MilesByUnitPaginatedStopsResponse,
-    isLast: boolean
+    details: MilesByUnitPaginatedStopsResponse
 ): IMilesState {
+    const selectedTab = details.truck.status
+        ? eMileTabs.ACTIVE
+        : eMileTabs.INACTIVE;
+    const minimalListFilters = getTruckNavigationMeta(
+        details.truck.id,
+        state.minimalList
+    );
     return {
         ...state,
-        details,
-        unitsPagination: {
-            ...state.unitsPagination,
-            isLastUnit: isLast,
-            isFirstUnit: true,
+        selectedTab,
+        isDetailsLoading: false,
+        details: {
+            ...state.details,
+            data: details,
+            currentPage: details.stops.pageIndex,
+            totalCount: details.stops.count,
+            stops: details.stops.data,
+            activeUnitId: details.truck.id,
         },
+        minimalListFilters,
     };
 };
-export const setFollowingUnitDetails = function (
+export const updateUnitDetails = function (
     state: IMilesState,
-    details: MilesByUnitPaginatedStopsResponse,
-    activeUnitIndex: number,
-    isFirstUnit: boolean,
-    isLastUnit: boolean,
-    isLastInCurrentList: boolean
+    details: MilesByUnitPaginatedStopsResponse
 ): IMilesState {
-    const { unitsPagination } = state;
+    const newData = details.stops?.data ?? [];
+
     return {
         ...state,
-        details,
-        unitsPagination: {
-            ...unitsPagination,
-            isFirstUnit,
-            isLastUnit,
-            activeUnitIndex,
-            isLastInCurrentList,
+        details: {
+            ...state.details,
+            stops: [...state.details.stops, ...newData],
+            currentPage: state.details.currentPage + 1,
         },
     };
 };
@@ -221,7 +217,7 @@ export const setUnitMapData = function (state: IMilesState): IMilesState {
     let routeMarkers: IMapMarkers[] = [];
     let routePaths: IMapRoutePath[] = [];
 
-    stops?.data?.map((stop, index) => {
+    stops?.map((stop, index) => {
         const routeMarker: IMapMarkers = {
             position: {
                 lat: stop.latitude,
@@ -240,10 +236,10 @@ export const setUnitMapData = function (state: IMilesState): IMilesState {
         routeMarkers = [...routeMarkers, routeMarker];
 
         if (index > 0) {
-            const isDashedPath = !!stops?.data?.[index - 1]?.empty;
+            const isDashedPath = !!stops?.[index - 1]?.empty;
 
             const strokeColor =
-                stops?.data?.[index - 1].type.name === eSharedString.TOWING
+                stops?.[index - 1].type.name === eSharedString.TOWING
                     ? MapOptionsConstants.ROUTING_PATH_COLORS.purple
                     : MapOptionsConstants.ROUTING_PATH_COLORS.gray;
 
@@ -357,9 +353,9 @@ export function onSearchChange(
 ): IMilesState {
     return {
         ...state,
-        unitsPagination: {
-            ...state.unitsPagination,
-            search,
+        details: {
+            ...state.details,
+            searchString: search,
         },
     };
 }
@@ -454,5 +450,72 @@ export function tableResizeChange(
     return {
         ...state,
         columns: resizedColumns,
+    };
+}
+export function setInitalMinimalList(
+    state: IMilesState,
+    list: MilesByUnitMinimalListResponse,
+    text: string
+): IMilesState {
+    const data = list.pagination?.data ?? [];
+    const totalCount = list.pagination?.count ?? 0;
+
+    return {
+        ...state,
+        minimalList: {
+            data,
+            currentPage: 1,
+            totalCount,
+            searchString: text,
+        },
+    };
+}
+
+export function appendToMinimalList(
+    state: IMilesState,
+    list: MilesByUnitMinimalListResponse
+): IMilesState {
+    const newData = list.pagination?.data ?? [];
+    const totalCount = list.pagination?.count ?? state.minimalList.totalCount;
+
+    return {
+        ...state,
+        minimalList: {
+            ...state.minimalList,
+            data: [...state.minimalList.data, ...newData],
+            currentPage: state.minimalList.currentPage + 1,
+            totalCount,
+        },
+    };
+}
+
+function getTruckNavigationMeta(
+    currentId: number,
+    truckList: IMinimalListState
+): IMinimalListFilters {
+    const index = truckList.data.findIndex(
+        (truck) => truck.truck.id === currentId
+    );
+
+    const isFirst = index === 0;
+    const isLast = index === truckList.data.length - 1;
+
+    if (index === -1) {
+        return {
+            isFirst: true,
+            isLast: false,
+            prevId: null,
+            nextId: truckList.data[0]?.truck.id ?? null,
+        };
+    }
+
+    const prevId = !isFirst ? truckList.data[index - 1].truck.id : null;
+    const nextId = !isLast ? truckList.data[index + 1].truck.id : null;
+
+    return {
+        isFirst,
+        isLast,
+        prevId,
+        nextId,
     };
 }

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Store, select } from '@ngrx/store';
+import { Router } from '@angular/router';
 
 import { Observable } from 'rxjs';
 
@@ -13,26 +14,33 @@ import {
     tableColumnsSelector,
     filterSelector,
     detailsSelector,
-    unitsPaginationSelector,
     tableSettingsSelector,
     toolbarDropdownMenuOptionsSelector,
     tabResultsSelector,
     cardFlipViewModeSelector,
+    minimalListSelector,
+    currentPageSelector,
+    searchTextSelector,
+    totalMinimalListCountSelector,
+    stopsSelector,
+    minimalListFiltersSelector,
+    detailsLoadingSelector,
     milesUnitMapDataSelector,
 } from '@pages/miles/state/selectors/miles.selector';
 
 // models
 import {
     MilesByUnitListResponse,
+    MilesByUnitMinimalResponse,
     MilesByUnitPaginatedStopsResponse,
     MilesStateFilterResponse,
-    MilesStopItemResponsePagination,
+    MilesStopItemResponse,
 } from 'appcoretruckassist';
 import { ITableData } from '@shared/models';
 
 // enums
-import { eMileTabs } from '@pages/miles/enums';
-import { ArrowActionsStringEnum, eActiveViewMode } from '@shared/enums';
+import { eMileTabs, eMilesRouting } from '@pages/miles/enums';
+import { eActiveViewMode } from '@shared/enums';
 
 // constants
 import { MilesStoreConstants } from '@pages/miles/utils/constants';
@@ -49,18 +57,17 @@ import {
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { ICaMapProps, IFilterAction } from 'ca-components';
-import { IStateFilters } from '@shared/interfaces';
-import {
-    IMilesDetailsFilters,
-    IMilesModel,
-    IMilesTabResults,
-} from '@pages/miles/interface';
+import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
+import { IMilesModel, IMilesTabResults } from '@pages/miles/interface';
 
 @Injectable({
     providedIn: 'root',
 })
 export class MilesStoreService {
-    constructor(private store: Store) {}
+    constructor(
+        private store: Store,
+        private router: Router
+    ) {}
 
     public miles$: Observable<IMilesModel[]> = this.store.pipe(
         select(selectMilesItems)
@@ -85,11 +92,11 @@ export class MilesStoreService {
         select(filterSelector)
     );
 
-    public unitsPaginationSelector$: Observable<IMilesDetailsFilters> =
-        this.store.pipe(select(unitsPaginationSelector));
-
     public detailsSelector$: Observable<MilesByUnitPaginatedStopsResponse> =
         this.store.pipe(select(detailsSelector));
+
+    public stopsSelector$: Observable<MilesStopItemResponse[]> =
+        this.store.pipe(select(stopsSelector));
 
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(tableSettingsSelector)
@@ -103,8 +110,29 @@ export class MilesStoreService {
         select(tabResultsSelector)
     );
 
+    public currentPageSelector$: Observable<number> = this.store.pipe(
+        select(currentPageSelector)
+    );
+
+    public totalMinimalListCountSelector$: Observable<number> = this.store.pipe(
+        select(totalMinimalListCountSelector)
+    );
+    public searchTextSelector$: Observable<string> = this.store.pipe(
+        select(searchTextSelector)
+    );
+
     public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
         select(cardFlipViewModeSelector)
+    );
+
+    public minimalListFiltersSelector$: Observable<IMinimalListFilters> =
+        this.store.pipe(select(minimalListFiltersSelector));
+
+    public minimalListSelector$: Observable<MilesByUnitMinimalResponse[]> =
+        this.store.pipe(select(minimalListSelector));
+
+    public detailsLoadingSelector$: Observable<boolean> = this.store.pipe(
+        select(detailsLoadingSelector)
     );
 
     public unitMapDataSelector$: Observable<ICaMapProps> = this.store.pipe(
@@ -160,15 +188,6 @@ export class MilesStoreService {
         this.store.dispatch({
             type: MilesStoreConstants.ACTION_SET_FILTERS,
             filters: FilterHelper.mapFilters(filters, currentFilter),
-        });
-    }
-
-    public dispatchFollowingUnit(
-        getFollowingUnitDirection: ArrowActionsStringEnum
-    ): void {
-        this.store.dispatch({
-            type: MilesStoreConstants.ACTION_GET_FOLLOWING_UNIT,
-            getFollowingUnitDirection,
         });
     }
 
@@ -251,9 +270,39 @@ export class MilesStoreService {
         });
     }
 
-    public dispatchUnitMapData(
-        unitMapLocations: MilesStopItemResponsePagination
-    ): void {
+    public dispatchSearchMinimalUnitList(text: string): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SEARCH_MINIMAL_UNIT_LIST,
+            text,
+        });
+    }
+
+    public loadNextMinimalListPage(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_FETCH_NEXT_MINIMAL_UNIT_LIST,
+        });
+    }
+
+    public loadNextStopsPage(): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_FETCH_NEXT_STOPS_PAGE,
+        });
+    }
+
+    public loadUnitsOnPageChange(unitId: string): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_GET_MILES_DETAILS_NEW_PAGE_ON_NEW_PAGE,
+            unitId,
+        });
+    }
+
+    public goToMilesDetailsPage(unitId: string): void {
+        this.router.navigate([
+            `/${eMilesRouting.BASE}/${eMilesRouting.MAP}/${unitId}`,
+        ]);
+    }
+
+    public dispatchUnitMapData(unitMapLocations: MilesStopItemResponse): void {
         if (!unitMapLocations) return;
 
         this.store.dispatch({

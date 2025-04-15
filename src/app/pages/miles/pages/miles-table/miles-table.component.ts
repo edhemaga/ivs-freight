@@ -59,6 +59,10 @@ export class MilesTableComponent {
         this.milesStoreService.dispatchResizeColumn(resizeAction);
     }
 
+    public goToMilesDetailsPage(id: string): void {
+        this.milesStoreService.goToMilesDetailsPage(id);
+    }
+
     public onRemoveColumn(columnKey: string): void {
         this.milesStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
     }
