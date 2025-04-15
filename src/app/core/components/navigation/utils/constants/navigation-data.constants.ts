@@ -225,7 +225,6 @@ export class NavigationDataConstants {
                     route: '/tools/miles',
                     qaId: 'navbar_tools_miles',
                     activeRouteFlegId: 6,
-                    construction: environment.staging || environment.production,
                 },
                 {
                     name: 'Calendar',
