@@ -5,7 +5,7 @@ import { persistState } from '@datorama/akita';
 import { AppModule } from '@app/app.module';
 import { environment } from 'src/environments/environment';
 
-if (environment.production) {
+if (environment.staging) {
     enableProdMode();
 }
 
