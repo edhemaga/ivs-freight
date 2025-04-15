@@ -20,7 +20,9 @@
             templateName,
             templateCreated,
             templateCommodity,
-            
+            billingRate,
+            loadPickup,
+            loadDelivery,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -58,13 +60,27 @@
         </ng-template>
 
         <!-- where is invoice number in data model??? -->
-        <ng-template let-data="data" #loadInvoice>
+        <!-- <ng-template let-data="data" #loadInvoice>
             <span
                 class="ta-font-bold text-size-14 text-color-black c-pointer text-hover-blue-15"
                 (click)="navigateToLoadDetails(data.id)"
             >
                 {{ data.loadNumber }}
             </span>
+        </ng-template> -->
+
+        <ng-template let-data="data" #billingRate>
+            <span class="ta-font-bold text-size-14 text-color-black">
+                {{ data.billingRate | currency }}
+            </span>
+        </ng-template>
+
+        <ng-template let-data="data" #loadPickup>
+            <app-pickup-delivery-row [data]="data.loadPickup"></app-pickup-delivery-row>
+        </ng-template>
+
+        <ng-template let-data="data" #loadDelivery>
+            <app-pickup-delivery-row [data]="data.loadDelivery"></app-pickup-delivery-row>
         </ng-template>
 
         <ng-template let-data="data" #loadNumber>
@@ -85,7 +101,7 @@
                 </div>
             </div> -->
             <div class="text-color-black text-size-14 ta-font-bold">
-                {{ data.templateName}}
+                {{ data.templateName }}
             </div>
         </ng-template>
 
@@ -97,11 +113,11 @@
 
         <ng-template let-data="data" #templateCommodity>
             <div class="text-color-black-2 text-size-14">
-                @if(data.templateCommodity?.name === "Hazardous") {
-                <svg-icon
-                [src]="sharedSvgRoutes.HAZARDOUS_ICON"
-                class="svg-size-14"
-            ></svg-icon>
+                @if (data.templateCommodity?.name === 'Hazardous') {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.HAZARDOUS_ICON"
+                        class="svg-size-14"
+                    ></svg-icon>
                 }
                 {{ data.templateCommodity?.name }}
             </div>
