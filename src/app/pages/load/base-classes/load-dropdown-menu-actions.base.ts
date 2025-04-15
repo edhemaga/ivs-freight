@@ -101,7 +101,7 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
         this.loadStoreService.onDeleteLoadFromDropdown({
             isTemplate: false,
             loads: [load],
-            isDetailsPage: isDetailsPage,
+            isDetailsPage,
         });
     }
 }
