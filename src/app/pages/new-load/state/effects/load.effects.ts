@@ -198,6 +198,37 @@ export class LoadEffect {
 
     //#endregion
 
+    //#region
+    public refreshFilters$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(
+                LoadActions.openChangeStatuDropdown,
+                LoadActions.revertLoadStatusSuccess,
+                LoadActions.onDeleteLoadSuccess,
+                LoadActions.onDeleteLoadListSuccess
+            ),
+            withLatestFrom(
+                this.store.select(LoadSelectors.selectedTabSelector)
+            ),
+            switchMap(([_, selectedTab]) => {
+                console.log('refreshFilters$');
+                return forkJoin({
+                    dispatcherFilters:
+                        this.loadService.getDispatcherFilters(selectedTab),
+                    statusFilters:
+                        this.loadService.getStatusFilters(selectedTab),
+                }).pipe(
+                    map(({ dispatcherFilters, statusFilters }) => {
+                        return LoadActions.setFilterDropdownList({
+                            dispatcherFilters,
+                            statusFilters,
+                        });
+                    })
+                );
+            })
+        )
+    );
+
     //#endregion
 
     //#region Delete load
