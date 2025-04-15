@@ -28,6 +28,10 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 
 // Models
 import { ITableData } from '@shared/models';
+import {
+    LoadPossibleStatusesResponse,
+    LoadStatusResponse,
+} from 'appcoretruckassist';
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
@@ -85,6 +89,11 @@ export class LoadStoreService {
     public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
         select(LoadSelectors.tableSettingsSelector)
     );
+
+    public changeDropdownpossibleStatusesSelector$: Observable<LoadPossibleStatusesResponse> =
+        this.store.pipe(
+            select(LoadSelectors.changeDropdownpossibleStatusesSelector)
+        );
 
     public dispatchLoadList(): void {
         this.store.dispatch({
@@ -182,6 +191,27 @@ export class LoadStoreService {
     public dispatchToggleCardFlipViewMode(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE,
+        });
+    }
+
+    public dispatchUpdateLoadStatus(status: LoadStatusResponse): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
+            status,
+        });
+    }
+
+    public dispatchRevertLoadStatus(status: LoadStatusResponse): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_REVERT_LOAD_STATUS,
+            status,
+        });
+    }
+
+    public dispatchOpenChangeStatuDropdown(loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
+            loadId,
         });
     }
 }

@@ -18,6 +18,7 @@ import { ITableData } from '@shared/models';
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
+import { LoadPossibleStatusesResponse } from 'appcoretruckassist';
 
 export interface ILoadState {
     loads: IMappedLoad[];
@@ -47,4 +48,8 @@ export interface ILoadState {
     toolbarDropdownMenuOptions: IDropdownMenuItem[];
     cardFlipViewMode: eCardFlipViewMode;
     isToolbarDropdownMenuColumnsActive: boolean;
+
+    // Change status dropdown
+    possibleStatuses: LoadPossibleStatusesResponse;
+    loadIdLoadStatusChange: number;
 }

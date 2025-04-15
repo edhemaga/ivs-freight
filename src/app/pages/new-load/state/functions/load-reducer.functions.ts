@@ -1,13 +1,16 @@
 // Interfaces
-import { ILoadState } from '@pages/new-load/interfaces';
+import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
 
 // Models
 import {
     DispatcherFilterResponse,
     LoadListResponse,
     LoadMinimalListResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
+    LoadStatus,
     LoadStatusFilterResponse,
+    LoadStatusResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
 
@@ -29,6 +32,8 @@ import { IFilterAction } from 'ca-components';
 
 // Config
 import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
+import { ILoadGridItem } from '@pages/load/pages/load-table/models';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
@@ -262,3 +267,62 @@ export function toggleCardFlipViewMode(state: ILoadState): ILoadState {
     };
 }
 //#endregion
+
+export function openChangeStatuDropdownSuccessResult(
+    state: ILoadState,
+    possibleStatuses: LoadPossibleStatusesResponse,
+    loadId: number
+): ILoadState {
+    return {
+        ...state,
+        possibleStatuses,
+        loadIdLoadStatusChange: loadId,
+    };
+}
+
+export const updateLoadStatusSuccessResult = function (
+    state: ILoadState,
+    loadId: number,
+    status: LoadStatusResponse
+): ILoadState {
+    const { loads, selectedTab } = state || {};
+    const { statusString } = status || {};
+    let _data: IMappedLoad[] = JSON.parse(JSON.stringify(loads));
+
+    if (
+        (selectedTab === eLoadStatusStringType.PENDING &&
+            (statusString === LoadStatus.Dispatched ||
+                statusString === LoadStatus.Canceled)) ||
+        (selectedTab === eLoadStatusStringType.ACTIVE &&
+            (statusString === LoadStatus.Assigned ||
+                statusString === LoadStatus.Delivered ||
+                statusString === LoadStatus.Canceled ||
+                statusString === LoadStatus.LoadCanceled)) ||
+        (selectedTab === eLoadStatusStringType.CLOSED &&
+            (statusString === LoadStatus.Unassigned ||
+                statusString === LoadStatus.Assigned ||
+                statusString === LoadStatus.ArrivedPickup ||
+                statusString === LoadStatus.ArrivedDelivery ||
+                statusString === LoadStatus.CheckedIn ||
+                statusString === LoadStatus.CheckedInPickup ||
+                statusString === LoadStatus.CheckedInDelivery ||
+                statusString === LoadStatus.Offloading ||
+                statusString === LoadStatus.Loading ||
+                statusString === LoadStatus.Loaded))
+    ) {
+        _data = _data.filter((_) => _.id !== loadId);
+    } else {
+        let loadUpdated: IMappedLoad = (<IMappedLoad[]>_data).find(
+            (_) => _.id === loadId
+        );
+
+        loadUpdated.status = status;
+    }
+
+    const result: ILoadState = {
+        ...state,
+        loads: _data,
+    };
+
+    return result;
+};
