@@ -44,7 +44,7 @@ export class LoadTableColumnsConfig {
             },
             {
                 id: 1,
-                key: 'loadInvoice',
+                key: 'loadNumber',
                 label: 'Load No',
                 labelToolbar: 'Load No.',
                 width: 154,
