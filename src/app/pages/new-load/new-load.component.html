@@ -123,10 +123,7 @@
                         class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
                         [src]="sharedIcons.DELETE_ICON"
                         (click)="
-                            onShowDeleteLoadModal(
-                                isTemplate,
-                                store.selectedCount
-                            )
+                            onDeleteLoadList(isTemplate, store.selectedLoads)
                         "
                     >
                     </svg-icon>
@@ -162,17 +159,4 @@
     } @else {
         <app-new-load-cards></app-new-load-cards>
     }
-
-    <ng-template #deleteTemplate>
-        @let isPending = selectedTab === eLoadStatusStringType.PENDING;
-        @let isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
-
-        @if ((isPending || isTemplate) && store.selectedCount) {
-            <app-load-delete-modal
-                [loads]="store.selectedLoads"
-                [isTemplate]="isTemplate"
-                [isPending]="isPending"
-            ></app-load-delete-modal>
-        }
-    </ng-template>
 }

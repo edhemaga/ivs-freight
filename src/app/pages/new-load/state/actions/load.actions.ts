@@ -173,14 +173,16 @@ export const onDeleteLoadListSuccess = createAction(
     LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS
 );
 
-export const onDeleteLoadListTemplate = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
+export const onDeleteLoad = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD,
     props<{
-        templateId: number;
+        id: number;
+        isTemplate: boolean;
+        isDetailsPage: boolean;
     }>()
 );
 
-export const onDeleteLoadListTemplateSuccess = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE_SUCCESS
+export const onDeleteLoadSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_SUCCESS
 );
 //#endregion

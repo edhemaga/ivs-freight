@@ -214,11 +214,19 @@ export class LoadEffect {
 
     public onDeleteLoadListTemplate$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(LoadActions.onDeleteLoadListTemplate),
-            switchMap(({ templateId }) => {
+            ofType(LoadActions.onDeleteLoad),
+            switchMap(({ id, isTemplate, isDetailsPage }) => {
                 return this.loadService
-                    .deleteLoads([templateId], true, true)
-                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+                    .deleteLoads([id], isTemplate, true)
+                    .pipe(
+                        map(() => {
+                            if (isDetailsPage) {
+                                this.router.navigate([`/${eLoadRouting.LIST}`]);
+                            }
+
+                            return LoadActions.onDeleteLoadListSuccess();
+                        })
+                    );
             })
         )
     );

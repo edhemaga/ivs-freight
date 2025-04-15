@@ -1,5 +1,4 @@
-import { Injectable, TemplateRef } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Injectable } from '@angular/core';
 
 // Store
 import { select, Store } from '@ngrx/store';
@@ -13,6 +12,7 @@ import {
     ILoadDetailsLoadMinimalList,
     IMappedLoad,
     ILoadPageFilters,
+    ILoadDeleteModal,
 } from '@pages/new-load/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import {
@@ -20,6 +20,7 @@ import {
     ITableConfig,
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
 
 // Selectors
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
@@ -38,7 +39,7 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement, TableStringEnum } from '@shared/enums';
 
 // Ca components
-import { CaDeleteModalComponent, IFilterAction } from 'ca-components';
+import { IFilterAction } from 'ca-components';
 
 // Services
 
@@ -219,37 +220,16 @@ export class LoadStoreService {
         });
     }
 
-    public onShowDeleteLoadModal(
-        templateRef: TemplateRef<any>,
-        isTemplate: boolean,
-        count: number,
-        ngbActiveModal?: NgbActiveModal,
-        templateId?: number
-    ): void {
-        const modalData = {
-            // Don't show count for 1 load
-            count: count > 1 ? count : 0,
-            title: isTemplate ? 'Delete Template' : 'Delete Pending Load',
-        };
-
+    public onDeleteLoadsFromList(modalData: ILoadDeleteModal): void {
         this.modalService
-            .openModalNew(CaDeleteModalComponent, {}, modalData, templateRef)
+            .openModalNew(LoadDeleteModalComponent, modalData)
             .closed.subscribe((value) => {
                 if (value) {
-                    if (templateId) {
-                        this.store.dispatch({
-                            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
-                            templateId,
-                        });
-                    } else {
-                        this.store.dispatch({
-                            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
-                            count,
-                            isTemplate,
-                        });
-                    }
-
-                    if (ngbActiveModal) ngbActiveModal.close();
+                    this.store.dispatch({
+                        type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
+                        count: modalData.loads.length,
+                        isTemplate: modalData.isTemplate,
+                    });
                 }
             });
     }

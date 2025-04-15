@@ -68,7 +68,6 @@ import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -93,7 +92,6 @@ import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-
         TaInputNoteComponent,
         TaAppTooltipV2Component,
         NewLoadModalStopsComponent,
-        LoadDeleteModalComponent,
 
         // Pipes
         TemplateButtonConfigPipe,
@@ -102,7 +100,6 @@ import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-
 })
 export class NewLoadModalComponent<T> implements OnInit {
     @ViewChild('popover') popover!: NgbPopover;
-    @ViewChild('deleteTemplate') deleteTemplate!: TemplateRef<T>;
 
     // Inputs
     @Input() editData: ILoadModal;
@@ -294,13 +291,11 @@ export class NewLoadModalComponent<T> implements OnInit {
     }
 
     public onDeleteTemplate(): void {
-        this.loadStoreService.onShowDeleteLoadModal(
-            this.deleteTemplate,
-            true,
-            1,
-            this.ngbActiveModal,
-            this.load.id
-        );
+        // this.loadStoreService.onShowDeleteLoadModal({
+        //     isTemplate: true,
+        //     loads: [this.load],
+        //     isDetailsPage: false,
+        // });
     }
 
     public onSelectTemplate(template: EnumValue): void {

@@ -44,6 +44,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
+import { IMappedLoad } from '@pages/new-load/interfaces';
 
 @Component({
     selector: 'app-new-load',
@@ -86,7 +87,6 @@ export class NewLoadComponent<T> {
 
     constructor(
         // services
-
         public loadStoreService: LoadStoreService,
         private modalService: ModalService
     ) {}
@@ -170,12 +170,12 @@ export class NewLoadComponent<T> {
         );
     }
 
-    public onShowDeleteLoadModal(isTemplate: boolean, count: number): void {
-        this.loadStoreService.onShowDeleteLoadModal(
-            this.deleteTemplate,
+    public onDeleteLoadList(isTemplate: boolean, loads: IMappedLoad[]): void {
+        this.loadStoreService.onDeleteLoadsFromList({
             isTemplate,
-            count
-        );
+            loads,
+            isDetailsPage: false,
+        });
     }
 
     private onCreateNewLoad(): void {
