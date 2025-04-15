@@ -182,8 +182,8 @@ export const loadReducer = createReducer(
     on(LoadActions.openChangeStatuDropdownError, (state) => ({ ...state })),
 
     on(LoadActions.updateLoadStatus, (state) => ({ ...state })),
-    on(LoadActions.updateLoadStatusSuccess, (state, { loadId, status }) =>
-        Functions.updateLoadStatusSuccessResult(state, loadId, status)
+    on(LoadActions.updateLoadStatusSuccess, (state, { status, load }) =>
+        Functions.updateLoadStatusSuccessResult(state, status, load)
     ),
     on(LoadActions.updateLoadStatusError, (state) => ({ ...state })),
 
@@ -192,8 +192,8 @@ export const loadReducer = createReducer(
     // ),
 
     on(LoadActions.revertLoadStatus, (state) => ({ ...state })),
-    on(LoadActions.revertLoadStatusSuccess, (state, { loadId, status }) =>
-        Functions.updateLoadStatusSuccessResult(state, loadId, status)
+    on(LoadActions.revertLoadStatusSuccess, (state, { status, load }) =>
+        Functions.updateLoadStatusSuccessResult(state, status, load)
     ),
     on(LoadActions.revertLoadStatusError, (state) => ({ ...state }))
 

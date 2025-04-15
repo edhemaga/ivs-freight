@@ -65,11 +65,11 @@
                 #ngbStatus="ngbPopover"
                 [autoClose]="true"
                 [ngbPopover]="statusPopover"
-                [placement]="'bottom top'"
+                [placement]="ePosition.BOTTOM + ' ' + ePosition.TOP"
                 container="body"
                 popoverClass="table-status-popover"
                 triggers="manual"
-                (click)="openChangeStatuDropdown(ngbStatus, data.id)"
+                (click)="onOpenChangeStatusDropdown(ngbStatus, data.id)"
             >
                 <app-ca-load-status
                     [status]="{

@@ -18,6 +18,7 @@ import {
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Helper
 import { LoadHelper, LoadStoreHelper } from '@pages/new-load/utils/helpers';
@@ -33,8 +34,6 @@ import { eGeneralActions, IFilterAction } from 'ca-components';
 
 // Config
 import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
-import { ILoadGridItem } from '@pages/load/pages/load-table/models';
-import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 export const getLoadByIdSuccessResult = function (
     state: ILoadState,
@@ -358,46 +357,45 @@ export function openChangeStatuDropdownSuccessResult(
 
 export const updateLoadStatusSuccessResult = function (
     state: ILoadState,
-    loadId: number,
-    status: LoadStatusResponse
+    status: LoadStatusResponse,
+    load: LoadResponse
 ): ILoadState {
-    const { loads, selectedTab } = state || {};
-    const { statusString } = status || {};
-    let _data: IMappedLoad[] = JSON.parse(JSON.stringify(loads));
+    const { statusType, id } = load;
+    const { loads, selectedTab, toolbarTabs } = state || {};
+    let loadsClone: IMappedLoad[] = structuredClone(loads);
+    let toolbarTabsClone = structuredClone(toolbarTabs);
 
-    if (
-        (selectedTab === eLoadStatusStringType.PENDING &&
-            (statusString === LoadStatus.Dispatched ||
-                statusString === LoadStatus.Canceled)) ||
-        (selectedTab === eLoadStatusStringType.ACTIVE &&
-            (statusString === LoadStatus.Assigned ||
-                statusString === LoadStatus.Delivered ||
-                statusString === LoadStatus.Canceled ||
-                statusString === LoadStatus.LoadCanceled)) ||
-        (selectedTab === eLoadStatusStringType.CLOSED &&
-            (statusString === LoadStatus.Unassigned ||
-                statusString === LoadStatus.Assigned ||
-                statusString === LoadStatus.ArrivedPickup ||
-                statusString === LoadStatus.ArrivedDelivery ||
-                statusString === LoadStatus.CheckedIn ||
-                statusString === LoadStatus.CheckedInPickup ||
-                statusString === LoadStatus.CheckedInDelivery ||
-                statusString === LoadStatus.Offloading ||
-                statusString === LoadStatus.Loading ||
-                statusString === LoadStatus.Loaded))
-    ) {
-        _data = _data.filter((_) => _.id !== loadId);
-    } else {
-        let loadUpdated: IMappedLoad = (<IMappedLoad[]>_data).find(
-            (_) => _.id === loadId
+    if (statusType?.name === selectedTab) {
+        let loadUpdated: IMappedLoad = (<IMappedLoad[]>loadsClone).find(
+            (_) => _.id === id
         );
 
         loadUpdated.status = status;
+    } else {
+        toolbarTabsClone = toolbarTabsClone.map((tab) => {
+            if (tab.title === selectedTab) {
+                return {
+                    ...tab,
+                    length: tab.length - 1,
+                };
+            }
+
+            if (tab.title === statusType?.name) {
+                return {
+                    ...tab,
+                    length: tab.length + 1,
+                };
+            }
+
+            return tab;
+        });
+        loadsClone = loadsClone.filter((_) => _.id !== id);
     }
 
     const result: ILoadState = {
         ...state,
-        loads: _data,
+        loads: loadsClone,
+        toolbarTabs: toolbarTabsClone,
     };
 
     return result;

@@ -25,8 +25,6 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import { TemplateRef } from '@angular/core';
 
 //#region List request
 export const getLoadsPayload = createAction(
@@ -155,7 +153,7 @@ export const updateLoadStatus = createAction(
 
 export const updateLoadStatusSuccess = createAction(
     LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_SUCCESS,
-    props<{ loadId: number; status: LoadStatusResponse }>()
+    props<{ status: LoadStatusResponse; load: LoadResponse }>()
 );
 
 export const updateLoadStatusError = createAction(
@@ -172,7 +170,7 @@ export const revertLoadStatus = createAction(
 
 export const revertLoadStatusSuccess = createAction(
     LoadStoreConstants.ACTION_REVERT_LOAD_STATUS_SUCCESS,
-    props<{ loadId: number; status: LoadStatusResponse }>()
+    props<{ status: LoadStatusResponse; load: LoadResponse }>()
 );
 
 export const revertLoadStatusError = createAction(
@@ -189,7 +187,7 @@ export const openChangeStatuDropdown = createAction(
 
 export const openChangeStatuDropdownSuccess = createAction(
     LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN_SUCCESS,
-    props<{ possibleStatuses: LoadPossibleStatusesResponse, loadId: number }>()
+    props<{ possibleStatuses: LoadPossibleStatusesResponse; loadId: number }>()
 );
 
 export const openChangeStatuDropdownError = createAction(

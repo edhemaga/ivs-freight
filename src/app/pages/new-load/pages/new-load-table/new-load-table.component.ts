@@ -16,11 +16,15 @@ import {
     CaCheckboxComponent,
     CaLoadStatusComponent,
     CaCheckboxSelectedCountComponent,
+    ePosition,
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 
 // Models
 import { LoadStatusResponse } from 'appcoretruckassist';
+
+// Mixing
+import { DestroyableMixin } from '@shared/mixins';
 
 @Component({
     selector: 'app-new-load-table',
@@ -29,22 +33,28 @@ import { LoadStatusResponse } from 'appcoretruckassist';
     standalone: true,
     imports: [
         CommonModule,
+        NgbPopover,
 
         // Components
         NewTableComponent,
         CaLoadStatusComponent,
         CaCheckboxComponent,
         CaCheckboxSelectedCountComponent,
-        CaStatusChangeDropdownComponent
+        CaStatusChangeDropdownComponent,
     ],
 })
-export class NewLoadTableComponent implements OnInit {
-    public destroy$ = new Subject<void>();
+export class NewLoadTableComponent
+    extends DestroyableMixin(class {})
+    implements OnInit
+{
     public changeStatusPopover: NgbPopover;
 
     public eColor = eColor;
+    public ePosition = ePosition;
 
-    constructor(protected loadStoreService: LoadStoreService) {}
+    constructor(protected loadStoreService: LoadStoreService) {
+        super();
+    }
 
     ngOnInit(): void {
         this.initChangeStatusDropdownListener();
@@ -72,7 +82,10 @@ export class NewLoadTableComponent implements OnInit {
         this.loadStoreService.dispatchRevertLoadStatus(status);
     }
 
-    public openChangeStatuDropdown(tooltip: NgbPopover, loadId: number): void {
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
         this.changeStatusPopover = tooltip;
         this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
     }
@@ -85,11 +98,6 @@ export class NewLoadTableComponent implements OnInit {
             });
     }
 
-    public ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
-    }
-    
     public onCheckboxCountClick(action: string): void {
         this.loadStoreService.onSelectAll(action);
     }

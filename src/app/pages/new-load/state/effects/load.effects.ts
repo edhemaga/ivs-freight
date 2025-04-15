@@ -307,15 +307,23 @@ export class LoadEffect {
                 return this.loadService
                     .apiUpdateLoadStatus(updateLoadStatusComand)
                     .pipe(
-                        map((response) => {
-                            return LoadActions.updateLoadStatusSuccess({
-                                loadId: loadId,
-                                status: response,
-                            });
-                        }),
-                        catchError((error) =>
-                            of(LoadActions.updateLoadStatusError({ error }))
-                        )
+                        exhaustMap((response) => {
+                            return this.loadService.apiGetLoadById(loadId).pipe(
+                                map((load) => {
+                                    return LoadActions.updateLoadStatusSuccess({
+                                        status: response,
+                                        load,
+                                    });
+                                }),
+                                catchError((error) =>
+                                    of(
+                                        LoadActions.updateLoadStatusError({
+                                            error,
+                                        })
+                                    )
+                                )
+                            );
+                        })
                     );
             })
         )
@@ -332,19 +340,27 @@ export class LoadEffect {
                     id: loadId,
                 };
 
-                return this.loadService.apiRevertLoadStatus(updateLoadStatusComand).pipe(
-                    map((response) => {
-                        const { id } = updateLoadStatusComand;
-
-                        return LoadActions.revertLoadStatusSuccess({
-                            loadId: id,
-                            status: response,
-                        });
-                    }),
-                    catchError((error) =>
-                        of(LoadActions.revertLoadStatusError({ error }))
-                    )
-                );
+                return this.loadService
+                    .apiRevertLoadStatus(updateLoadStatusComand)
+                    .pipe(
+                        exhaustMap((response) => {
+                            return this.loadService.apiGetLoadById(loadId).pipe(
+                                map((load) => {
+                                    return LoadActions.revertLoadStatusSuccess({
+                                        status: response,
+                                        load,
+                                    });
+                                }),
+                                catchError((error) =>
+                                    of(
+                                        LoadActions.revertLoadStatusError({
+                                            error,
+                                        })
+                                    )
+                                )
+                            );
+                        })
+                    );
             })
         )
     );

@@ -14,11 +14,11 @@ import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interf
 
 // Models
 import { ITableData } from '@shared/models';
+import { LoadPossibleStatusesResponse } from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
-import { LoadPossibleStatusesResponse } from 'appcoretruckassist';
 
 export interface ILoadState {
     loads: IMappedLoad[];
