@@ -32,6 +32,7 @@ import {
     MapOptionsConstants,
     LoadStatusBackgroundColorPipe,
     CaLoadStatusComponent,
+    ePlacement,
 } from 'ca-components';
 
 @Component({
@@ -70,6 +71,7 @@ export class LoadDetailsStopsComponent {
 
     // Enums
     public eColor = eColor;
+    public ePlacemnet = ePlacement;
 
     constructor(protected loadStoreService: LoadStoreService) {}
 
@@ -82,7 +84,7 @@ export class LoadDetailsStopsComponent {
     }
 
     // Status hover
-    public toggleHoverStatus(index: number | null, popover: NgbPopover): void {
+    public onHoverStatus(index: number | null, popover: NgbPopover): void {
         this.hoveredIndex = index;
 
         this.hoveredIndex !== null ? popover.open() : popover.close();

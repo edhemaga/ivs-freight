@@ -22,6 +22,7 @@ import { LoadPossibleStatusesResponse } from 'appcoretruckassist';
 
 export interface ILoadState {
     loads: IMappedLoad[];
+    areAllLoadsSelected: boolean;
 
     // Main tabs
     toolbarTabs: ITableData[];

@@ -12,8 +12,10 @@ import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Components
 import {
-    CaLoadStatusComponent,
     CaStatusChangeDropdownComponent,
+    CaCheckboxComponent,
+    CaLoadStatusComponent,
+    CaCheckboxSelectedCountComponent,
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 
@@ -27,11 +29,13 @@ import { LoadStatusResponse } from 'appcoretruckassist';
     standalone: true,
     imports: [
         CommonModule,
-        NgbPopoverModule,
+
         // Components
         NewTableComponent,
         CaLoadStatusComponent,
-        CaStatusChangeDropdownComponent,
+        CaCheckboxComponent,
+        CaCheckboxSelectedCountComponent,
+        CaStatusChangeDropdownComponent
     ],
 })
 export class NewLoadTableComponent implements OnInit {
@@ -84,5 +88,13 @@ export class NewLoadTableComponent implements OnInit {
     public ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
+    }
+    
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
     }
 }

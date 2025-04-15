@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, TemplateRef } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 // Store
 import { select, Store } from '@ngrx/store';
@@ -33,21 +34,35 @@ import {
     LoadStatusResponse,
 } from 'appcoretruckassist';
 // Enums
-import { eLoadStatusStringType } from '@pages/new-load/enums';
+import {
+    eLoadModalActions,
+    eLoadStatusStringType,
+} from '@pages/new-load/enums';
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eCommonElement } from '@shared/enums';
+import { eCommonElement, TableStringEnum } from '@shared/enums';
 
 // Ca components
-import { IFilterAction } from 'ca-components';
+import { CaDeleteModalComponent, IFilterAction } from 'ca-components';
+
+// Services
+
+import { ModalService } from '@shared/services';
 
 @Injectable({
     providedIn: 'root',
 })
 export class LoadStoreService {
-    constructor(private store: Store) {}
+    constructor(
+        private store: Store,
+        private modalService: ModalService
+    ) {}
 
     public loadsSelector$: Observable<IMappedLoad[]> = this.store.pipe(
         select(LoadSelectors.selectLoads)
+    );
+
+    public selectedLoadsSelector$: Observable<IMappedLoad[]> = this.store.pipe(
+        select(LoadSelectors.selectedLoadsSelector)
     );
 
     public toolbarTabsSelector$: Observable<ITableData[]> = this.store.pipe(
@@ -74,6 +89,14 @@ export class LoadStoreService {
 
     public minimalListSelector$: Observable<ILoadDetailsLoadMinimalList> =
         this.store.pipe(select(LoadSelectors.minimalListSelector));
+
+    public selectedCountSelector$: Observable<number> = this.store.pipe(
+        select(LoadSelectors.selectedCountSelector)
+    );
+
+    public totalSumSelector$: Observable<number> = this.store.pipe(
+        select(LoadSelectors.totalSumSelector)
+    );
 
     // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!
     public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
@@ -122,10 +145,59 @@ export class LoadStoreService {
         });
     }
 
+    public dispatchGetEditLoadOrTemplateModalData(
+        id: number,
+        selectedLoadTab: eLoadStatusType
+    ): void {
+        const modal: ILoadModal = {
+            isEdit: true,
+            isTemplate: selectedLoadTab === eLoadStatusType.Template,
+            id,
+        };
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
+            modal,
+        });
+    }
+
+    public dispatchGetConvertToLoadOrTemplateModalData(
+        id: number,
+        selectedLoadTab: eLoadStatusType,
+        type: string
+    ): void {
+        const modal: ILoadModal = {
+            isEdit: true,
+            isTemplate: selectedLoadTab === eLoadStatusType.Template,
+            id,
+            type:
+                type === TableStringEnum.CONVERT_TO_TEMPLATE
+                    ? eLoadModalActions.CREATE_TEMPLATE_FROM_LOAD
+                    : eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE,
+        };
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_OPEN_LOAD_MODAL,
+            modal,
+        });
+    }
+
     public navigateToLoadDetails(id: number): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_GO_TO_LOAD_DETAILS,
             id,
+        });
+    }
+
+    public onSelectLoad(id: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_ONE_LOAD_SELECT,
+            id,
+        });
+    }
+
+    public onSelectAll(action: string): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_ON_SELECT_LOAD_ALL,
+            action,
         });
     }
 
@@ -154,6 +226,41 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TOGGLE_MAP,
         });
+    }
+
+    public onShowDeleteLoadModal(
+        templateRef: TemplateRef<any>,
+        isTemplate: boolean,
+        count: number,
+        ngbActiveModal?: NgbActiveModal,
+        templateId?: number
+    ): void {
+        const modalData = {
+            // Don't show count for 1 load
+            count: count > 1 ? count : 0,
+            title: isTemplate ? 'Delete Template' : 'Delete Pending Load',
+        };
+
+        this.modalService
+            .openModalNew(CaDeleteModalComponent, {}, modalData, templateRef)
+            .closed.subscribe((value) => {
+                if (value) {
+                    if (templateId) {
+                        this.store.dispatch({
+                            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
+                            templateId,
+                        });
+                    } else {
+                        this.store.dispatch({
+                            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
+                            count,
+                            isTemplate,
+                        });
+                    }
+
+                    if (ngbActiveModal) ngbActiveModal.close();
+                }
+            });
     }
 
     public dispatchSetToolbarDropdownMenuColumnsActive(

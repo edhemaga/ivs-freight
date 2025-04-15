@@ -47,6 +47,7 @@ import { IStateFilters } from '@shared/interfaces';
 
 // Selectors
 import { loadIdLoadStatusChangeSelector } from '@pages/new-load/state/selectors/load.selectors';
+import { selectLoads } from '@pages/new-load/state/selectors/load.selectors';
 
 @Injectable()
 export class LoadEffect {
@@ -195,6 +196,38 @@ export class LoadEffect {
         )
     );
 
+    //#endregion
+
+    //#endregion
+
+    //#region Delete load
+    public onDeleteLoadList$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onDeleteLoadList),
+            withLatestFrom(this.store.select(selectLoads)),
+            switchMap(([action, loads]) => {
+                const { isTemplate, count } = action;
+                const selectedIds = loads
+                    .filter((load) => load.isSelected)
+                    .map((load) => load.id);
+
+                return this.loadService
+                    .deleteLoads(selectedIds, isTemplate, count === 1)
+                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+            })
+        )
+    );
+
+    public onDeleteLoadListTemplate$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.onDeleteLoadListTemplate),
+            switchMap(({ templateId }) => {
+                return this.loadService
+                    .deleteLoads([templateId], true, true)
+                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+            })
+        )
+    );
     //#endregion
 
     //#region Get load list
