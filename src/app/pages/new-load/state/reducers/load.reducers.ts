@@ -73,6 +73,9 @@ export const initialState: ILoadState = {
         sortKey: null,
         sortDirection: null,
     },
+
+    possibleStatuses: null,
+    loadIdLoadStatusChange: null,
 };
 
 export const loadReducer = createReducer(
@@ -162,6 +165,37 @@ export const loadReducer = createReducer(
     on(LoadActions.tableColumnReset, (state) => ({ ...state })),
     on(LoadActions.toggleCardFlipViewMode, (state) =>
         Functions.toggleCardFlipViewMode(state)
-    )
+    ),
+    //#endregion
+
+    //#region Change dropdown status
+    on(LoadActions.openChangeStatuDropdown, (state) => ({ ...state })),
+    on(
+        LoadActions.openChangeStatuDropdownSuccess,
+        (state, { possibleStatuses, loadId }) =>
+            Functions.openChangeStatuDropdownSuccessResult(
+                state,
+                possibleStatuses,
+                loadId
+            )
+    ),
+    on(LoadActions.openChangeStatuDropdownError, (state) => ({ ...state })),
+
+    on(LoadActions.updateLoadStatus, (state) => ({ ...state })),
+    on(LoadActions.updateLoadStatusSuccess, (state, { status, load }) =>
+        Functions.updateLoadStatusSuccessResult(state, status, load)
+    ),
+    on(LoadActions.updateLoadStatusError, (state) => ({ ...state })),
+
+    // on(LoadActions.updateLoadStatusSignalR, (state, { response }) =>
+    //     Functions.updateLoadStatusSignalRSuccess(state, response)
+    // ),
+
+    on(LoadActions.revertLoadStatus, (state) => ({ ...state })),
+    on(LoadActions.revertLoadStatusSuccess, (state, { status, load }) =>
+        Functions.updateLoadStatusSuccessResult(state, status, load)
+    ),
+    on(LoadActions.revertLoadStatusError, (state) => ({ ...state }))
+
     //#endregion
 );

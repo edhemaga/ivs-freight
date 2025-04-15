@@ -1,13 +1,16 @@
 // Interfaces
-import { ILoadState } from '@pages/new-load/interfaces';
+import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
 
 // Models
 import {
     DispatcherFilterResponse,
     LoadListResponse,
     LoadMinimalListResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
+    LoadStatus,
     LoadStatusFilterResponse,
+    LoadStatusResponse,
     LoadTemplateListResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
@@ -15,6 +18,7 @@ import {
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Helper
 import { LoadHelper, LoadStoreHelper } from '@pages/new-load/utils/helpers';
@@ -338,3 +342,61 @@ export function toggleCardFlipViewMode(state: ILoadState): ILoadState {
     };
 }
 //#endregion
+
+export function openChangeStatuDropdownSuccessResult(
+    state: ILoadState,
+    possibleStatuses: LoadPossibleStatusesResponse,
+    loadId: number
+): ILoadState {
+    return {
+        ...state,
+        possibleStatuses,
+        loadIdLoadStatusChange: loadId,
+    };
+}
+
+export const updateLoadStatusSuccessResult = function (
+    state: ILoadState,
+    status: LoadStatusResponse,
+    load: LoadResponse
+): ILoadState {
+    const { statusType, id } = load;
+    const { loads, selectedTab, toolbarTabs } = state || {};
+    let loadsClone: IMappedLoad[] = structuredClone(loads);
+    let toolbarTabsClone = structuredClone(toolbarTabs);
+
+    if (statusType?.name === selectedTab) {
+        let loadUpdated: IMappedLoad = (<IMappedLoad[]>loadsClone).find(
+            (_) => _.id === id
+        );
+
+        loadUpdated.status = status;
+    } else {
+        toolbarTabsClone = toolbarTabsClone.map((tab) => {
+            if (tab.title === selectedTab) {
+                return {
+                    ...tab,
+                    length: tab.length - 1,
+                };
+            }
+
+            if (tab.title === statusType?.name) {
+                return {
+                    ...tab,
+                    length: tab.length + 1,
+                };
+            }
+
+            return tab;
+        });
+        loadsClone = loadsClone.filter((_) => _.id !== id);
+    }
+
+    const result: ILoadState = {
+        ...state,
+        loads: loadsClone,
+        toolbarTabs: toolbarTabsClone,
+    };
+
+    return result;
+};

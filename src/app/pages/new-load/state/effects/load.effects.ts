@@ -34,6 +34,8 @@ import {
     LoadListResponse,
     DispatcherFilterResponse,
     LoadStatusFilterResponse,
+    UpdateLoadStatusCommand,
+    LoadStatus,
 } from 'appcoretruckassist';
 
 // Enums
@@ -42,7 +44,11 @@ import { eLoadRouting } from '@pages/new-load/enums';
 
 // Interfaces
 import { IStateFilters } from '@shared/interfaces';
+
+// Selectors
+import { loadIdLoadStatusChangeSelector } from '@pages/new-load/state/selectors/load.selectors';
 import { selectLoads } from '@pages/new-load/state/selectors/load.selectors';
+
 @Injectable()
 export class LoadEffect {
     constructor(
@@ -258,4 +264,105 @@ export class LoadEffect {
             statusFilters: statusFilters$,
         });
     }
+
+    //#region Change load status
+    public openChangeStatusDropdown$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.openChangeStatuDropdown),
+            exhaustMap((action) => {
+                const { loadId } = action || {};
+
+                return this.loadService
+                    .getLoadStatusDropdownOptions(loadId)
+                    .pipe(
+                        map((response) => {
+                            return LoadActions.openChangeStatuDropdownSuccess({
+                                possibleStatuses: response,
+                                loadId,
+                            });
+                        }),
+                        catchError((error) =>
+                            of(
+                                LoadActions.openChangeStatuDropdownError({
+                                    error,
+                                })
+                            )
+                        )
+                    );
+            })
+        )
+    );
+
+    public updateLoadStatus$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.updateLoadStatus),
+            withLatestFrom(this.store.select(loadIdLoadStatusChangeSelector)),
+            exhaustMap(([action, loadId]) => {
+                const { status } = action || {};
+                const updateLoadStatusComand: UpdateLoadStatusCommand = {
+                    status: status.statusValue.name as LoadStatus,
+                    id: loadId,
+                };
+
+                return this.loadService
+                    .apiUpdateLoadStatus(updateLoadStatusComand)
+                    .pipe(
+                        exhaustMap((response) => {
+                            return this.loadService.apiGetLoadById(loadId).pipe(
+                                map((load) => {
+                                    return LoadActions.updateLoadStatusSuccess({
+                                        status: response,
+                                        load,
+                                    });
+                                }),
+                                catchError((error) =>
+                                    of(
+                                        LoadActions.updateLoadStatusError({
+                                            error,
+                                        })
+                                    )
+                                )
+                            );
+                        })
+                    );
+            })
+        )
+    );
+
+    public revertLoadStatus$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.revertLoadStatus),
+            withLatestFrom(this.store.select(loadIdLoadStatusChangeSelector)),
+            exhaustMap(([action, loadId]) => {
+                const { status } = action || {};
+                const updateLoadStatusComand: UpdateLoadStatusCommand = {
+                    status: status.statusValue.name as LoadStatus,
+                    id: loadId,
+                };
+
+                return this.loadService
+                    .apiRevertLoadStatus(updateLoadStatusComand)
+                    .pipe(
+                        exhaustMap((response) => {
+                            return this.loadService.apiGetLoadById(loadId).pipe(
+                                map((load) => {
+                                    return LoadActions.revertLoadStatusSuccess({
+                                        status: response,
+                                        load,
+                                    });
+                                }),
+                                catchError((error) =>
+                                    of(
+                                        LoadActions.revertLoadStatusError({
+                                            error,
+                                        })
+                                    )
+                                )
+                            );
+                        })
+                    );
+            })
+        )
+    );
+    //#endregion
 }

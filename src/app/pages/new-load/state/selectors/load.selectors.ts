@@ -131,3 +131,15 @@ export const toolbarDropdownMenuOptionsSelector = createSelector(
 );
 
 //#endRegion
+
+//#region Change load status
+export const changeDropdownpossibleStatusesSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.possibleStatuses
+);
+
+export const loadIdLoadStatusChangeSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.loadIdLoadStatusChange
+);
+//#endRegion
