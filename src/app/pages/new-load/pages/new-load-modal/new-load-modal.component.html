@@ -253,8 +253,6 @@
 
                                 <ca-input-dropdown-test
                                     formControlName="year"
-                                    optionValue="id"
-                                    label="name"
                                     [inputConfig]="
                                         LoadModalConfig.LOAD_YEAR_CONFIG
                                     "
@@ -384,13 +382,6 @@
                     "
                 ></app-ta-input-note>
             </form>
-
-            <ng-template #deleteTemplate>
-                <app-load-delete-modal
-                    [loads]="[load]"
-                    [isTemplate]="true"
-                ></app-load-delete-modal>
-            </ng-template>
         </div>
     }
 

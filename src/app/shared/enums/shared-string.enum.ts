@@ -40,4 +40,7 @@ export enum eSharedString {
     ADDRESS = 'address',
     PO_BOX_ADDRESS = 'poBoxAddress',
     PO_BOX = 'poBox',
+
+    // Status
+    INVITED = 'Invited',
 }
