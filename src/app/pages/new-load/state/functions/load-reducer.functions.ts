@@ -40,9 +40,12 @@ export const getLoadByIdSuccessResult = function (
     loadResponse: LoadListResponse | LoadTemplateListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
-    const loads = LoadHelper.loadMapper(loadResponse.pagination.data);
 
     const { selectedTab } = state;
+    const loads = LoadHelper.loadMapper(
+        loadResponse.pagination.data,
+        selectedTab
+    );
     return {
         ...state,
         loads,
@@ -62,7 +65,10 @@ export const onPageChanges = function (
     console.log('onPageChangesonPageChanges');
     const loads = [
         ...state.loads,
-        ...LoadHelper.loadMapper(loadResponse.pagination.data),
+        ...LoadHelper.loadMapper(
+            loadResponse.pagination.data,
+            state.selectedTab
+        ),
     ];
 
     return {

@@ -478,12 +478,6 @@
         let-hasMarginRight="hasMarginRight"
     >
         @if (column.isChecked) {
-            <!--   @let tableColumnCellClass =
-                {
-                    'p-l-6': hasPaddingLeft,
-                    'm-r-7': hasMarginRight,
-                }; -->
-
             @let tableColumnCellClass =
                 {
                     hasPaddingLeft,
@@ -495,11 +489,6 @@
                 [style.min-width]="column.width + eUnit.PX"
                 [style.width]="column.width + eUnit.PX"
             >
-                <!--    @let tableColumnCellColorClass = -->
-                <!--        !!row[column.key] -->
-                <!--            ? 'text-color-black-2' -->
-                <!--            : 'text-color-muted'; -->
-
                 @let tableColumnCellColorClass =
                     {
                         isTableColumnCellColorClass: true,
@@ -516,7 +505,8 @@
                                 data: row,
                                 key: column.key,
                                 column,
-                                cellColumnTextColorClass,
+                                cellColumnTextColorClass:
+                                    tableColumnCellColorClass,
                             }
                         "
                     ></ng-container>

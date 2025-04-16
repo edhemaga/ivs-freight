@@ -236,12 +236,12 @@ export class DropdownMenuContentConditionalItemsHelper {
 
     // load
     static getLoadModifierItems(
-        isPendingLoad: boolean
+        isTemplateOrPendingLoad: boolean
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: eDropdownMenu.DELETE,
-                isDisabled: !isPendingLoad,
+                isDisabled: !isTemplateOrPendingLoad,
             },
         ];
     }
