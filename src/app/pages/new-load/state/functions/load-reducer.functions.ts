@@ -257,6 +257,7 @@ export function onDeleteLoadListSuccess(
             updatedLoads,
             selectedTab
         ),
+        searchResultsCount: state.searchResultsCount - selectedIds.length,
     };
 }
 
@@ -272,6 +273,7 @@ export function onDeleteLoad(state: ILoadState, id: number): ILoadState {
             updatedLoads,
             selectedTab
         ),
+        searchResultsCount: state.searchResultsCount - 1,
     };
 }
 
@@ -388,6 +390,7 @@ export const updateLoadStatusSuccessResult = function (
     const { loads, selectedTab, toolbarTabs } = state || {};
     let loadsClone: IMappedLoad[] = structuredClone(loads);
     let toolbarTabsClone = structuredClone(toolbarTabs);
+    let searchResultsCount = state.searchResultsCount;
 
     if (statusType?.name === selectedTab) {
         let loadUpdated: IMappedLoad = (<IMappedLoad[]>loadsClone).find(
@@ -398,6 +401,7 @@ export const updateLoadStatusSuccessResult = function (
     } else {
         toolbarTabsClone = toolbarTabsClone.map((tab) => {
             if (tab.title === selectedTab) {
+                searchResultsCount = searchResultsCount - 1;
                 return {
                     ...tab,
                     length: tab.length - 1,
@@ -420,6 +424,7 @@ export const updateLoadStatusSuccessResult = function (
         ...state,
         loads: loadsClone,
         toolbarTabs: toolbarTabsClone,
+        searchResultsCount,
     };
 
     return result;
