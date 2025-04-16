@@ -5,6 +5,8 @@
         selectedTab: loadStoreService.selectedTabSelector$ | async,
         tableSettings: loadStoreService.tableSettingsSelector$ | async,
         selectedCount: loadStoreService.selectedCountSelector$ | async,
+        selectedTabCountSelector:
+            loadStoreService.selectedTabCountSelector$ | async,
     };
 @if (store) {
     @let headerTemplates = { selectHeaderTemplate };
@@ -12,6 +14,7 @@
         {
             select,
             edit,
+            action,
             loadInvoice,
             loadStatus,
         };
@@ -23,8 +26,10 @@
         [headerTemplates]="{
             select: selectHeaderTemplate,
         }"
+        [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
+        (onHandleShowMoreClick)="onHandleShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
@@ -83,6 +88,18 @@
                 >
                 </app-ca-load-status>
             </span>
+        </ng-template>
+
+        <ng-template let-data="data" #action>
+            <ca-dropdown-menu
+                [type]="'dots-menu-type'"
+                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                [options]="data.tableDropdownContent"
+                (dropdownOptionEmitter)="
+                    onToggleDropdownMenuActions($event, data, store.selectedTab)
+                "
+            >
+            </ca-dropdown-menu>
         </ng-template>
     </app-new-table>
 

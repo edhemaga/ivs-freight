@@ -73,6 +73,10 @@ export class LoadStoreService {
     public selectedTabSelector$: Observable<eLoadStatusStringType> =
         this.store.pipe(select(LoadSelectors.selectedTabSelector));
 
+    public selectedTabCountSelector$: Observable<number> = this.store.pipe(
+        select(LoadSelectors.selectedTabCountSelector)
+    );
+
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
         select(LoadSelectors.activeViewModeSelector)
     );
@@ -129,6 +133,12 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DISPATCH_LOAD_TYPE_CHANGE,
             mode,
+        });
+    }
+
+    public getNewPage(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
         });
     }
 

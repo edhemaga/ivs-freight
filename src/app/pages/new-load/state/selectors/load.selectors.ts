@@ -45,6 +45,11 @@ export const selectedTabSelector = createSelector(
     (state: ILoadState) => state.selectedTab
 );
 
+export const selectedTabCountSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.searchResultsCount
+);
+
 //#endregion
 
 //#region View: CARD | LIST
@@ -64,6 +69,11 @@ export const filtersDropdownListSelector = createSelector(
 export const filtersSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => state.filters
+);
+
+export const pageSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.currentPage
 );
 
 //#endregion

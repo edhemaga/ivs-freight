@@ -38,11 +38,13 @@ export class LoadService {
 
     public getLoadList(
         statusType: number,
-        filters: IStateFilters
+        filters: IStateFilters,
+        page: number
     ): Observable<LoadListResponse> {
         const params = LoadQueryHelper.mapLoadListQueryParams(
             statusType,
-            filters
+            filters,
+            page
         );
 
         return this.http.get<LoadListResponse>(
@@ -51,9 +53,10 @@ export class LoadService {
         );
     }
     public getLoadTemplateList(
-        filters: IStateFilters
+        filters: IStateFilters,
+        page: number
     ): Observable<LoadTemplateListResponse> {
-        const params = LoadQueryHelper.mapLoadListQueryParams(0, filters);
+        const params = LoadQueryHelper.mapLoadListQueryParams(0, filters, page);
 
         return this.http.get(
             `${environment.API_ENDPOINT}/api/load/template/list`,

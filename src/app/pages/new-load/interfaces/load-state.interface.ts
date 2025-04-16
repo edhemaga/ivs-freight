@@ -23,6 +23,7 @@ import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 export interface ILoadState {
     loads: IMappedLoad[];
     areAllLoadsSelected: boolean;
+    searchResultsCount: number;
 
     // Main tabs
     toolbarTabs: ITableData[];
@@ -34,6 +35,7 @@ export interface ILoadState {
     // Filters
     filtersDropdownList: ILoadPageFilters;
     filters: IStateFilters;
+    currentPage: number;
 
     // Table
     tableColumns: ITableColumn[];
