@@ -24,7 +24,11 @@ import {
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
 // services
-import { MilesService, RoutingService } from 'appcoretruckassist';
+import {
+    MilesService,
+    MilesStopSortBy,
+    RoutingService,
+} from 'appcoretruckassist';
 
 // selectors
 import {
@@ -88,7 +92,7 @@ export class MilesEffects {
                         null,
                         null,
                         tableSettings.sortDirection,
-                        tableSettings.sortKey
+                        tableSettings.sortKey as MilesStopSortBy
                     )
                     .pipe(
                         switchMap((response) => {
@@ -381,7 +385,7 @@ export class MilesEffects {
                                 null,
                                 null,
                                 tableSettings.sortDirection,
-                                tableSettings.sortKey
+                                tableSettings.sortKey as MilesStopSortBy
                             )
                             .pipe(
                                 map((response) => {

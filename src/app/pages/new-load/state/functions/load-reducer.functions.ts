@@ -1,5 +1,6 @@
 // Interfaces
 import { ILoadState, IMappedLoad } from '@pages/new-load/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Models
 import {
@@ -8,7 +9,6 @@ import {
     LoadMinimalListResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
-    LoadStatus,
     LoadStatusFilterResponse,
     LoadStatusResponse,
     LoadTemplateListResponse,
@@ -18,7 +18,6 @@ import {
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
-import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Helper
 import { LoadHelper, LoadStoreHelper } from '@pages/new-load/utils/helpers';
@@ -53,7 +52,6 @@ export const getLoadByIdSuccessResult = function (
             loadResponse,
             state.toolbarTabs
         ),
-        tableColumns: LoadTableColumnsConfig.getLoadTableColumns(selectedTab),
     };
 };
 
@@ -63,10 +61,12 @@ export const getLoadsPayloadOnTabTypeChange = function (
     selectedTabValue: eLoadStatusType
 ): ILoadState {
     console.log('getLoadsPayloadOnTabTypeChange');
+    const { selectedTab } = state;
 
     return {
         ...state,
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
+        tableColumns: LoadTableColumnsConfig.getLoadTableColumns(selectedTab),
     };
 };
 
@@ -131,6 +131,26 @@ export function onSeachFilterChange(
         filters: {
             ...state.filters,
             searchQuery,
+        },
+    };
+}
+
+export function onTableSortingChange(
+    state: ILoadState,
+    column: ITableColumn
+): ILoadState {
+    const { columns, sortKey, sortDirection } = StoreFunctionsHelper.toggleSort(
+        column,
+        state.tableColumns
+    );
+
+    return {
+        ...state,
+        tableColumns: columns,
+        tableSettings: {
+            ...state.tableSettings,
+            sortDirection,
+            sortKey,
         },
     };
 }

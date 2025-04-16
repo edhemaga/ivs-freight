@@ -1,5 +1,5 @@
 // enums
-import { MilesStopSortBy } from 'appcoretruckassist';
+import { LoadSortBy, MilesStopSortBy } from 'appcoretruckassist';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // interfaces
@@ -60,6 +60,7 @@ export class LoadTableColumnsConfig {
                       isChecked: true,
                       hasSort: true,
                       pinned: 'left',
+                      sortName: LoadSortBy.LoadNumber,
                   },
               ];
 
@@ -114,7 +115,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: !isTemplate,
                 hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                sortName: LoadSortBy.Dispatcher,
             },
             {
                 key: 'company',
@@ -125,8 +126,7 @@ export class LoadTableColumnsConfig {
                 maxWidth: 1020,
                 isResizable: true,
                 isChecked: false,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                hasSort: false,
             },
         ];
     }

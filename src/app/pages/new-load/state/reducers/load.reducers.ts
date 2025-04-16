@@ -168,6 +168,12 @@ export const loadReducer = createReducer(
     ),
     //#endregion
 
+    // #region table header
+    on(LoadActions.tableSortingChange, (state, { column }) =>
+        Functions.onTableSortingChange(state, column)
+    ),
+    //#endregion
+
     //#region Change dropdown status
     on(LoadActions.openChangeStatuDropdown, (state) => ({ ...state })),
     on(

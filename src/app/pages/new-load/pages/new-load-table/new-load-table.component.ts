@@ -29,6 +29,7 @@ import { ModalService } from '@shared/services';
 
 // interfaces
 import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -151,6 +152,10 @@ export class NewLoadTableComponent
 
     public onSelectLoad(id: number): void {
         this.loadStoreService.onSelectLoad(id);
+    }
+
+    public onSortingChange(column: ITableColumn): void {
+        this.loadStoreService.dispatchSortingChange(column);
     }
 
     ngOnDestroy(): void {
