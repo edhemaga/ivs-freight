@@ -1,5 +1,5 @@
 // enums
-import { MilesStopSortBy } from 'appcoretruckassist';
+import { LoadSortBy, MilesStopSortBy } from 'appcoretruckassist';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // interfaces
@@ -150,7 +150,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                sortName: LoadSortBy.InvoicedDate,
             },
             {
                 key: 'paidDate',
@@ -162,7 +162,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                sortName: LoadSortBy.PaidDate,
             },
             ...this.getCreatedAndEditedDates(),
         ];
@@ -196,7 +196,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: !isTemplateTab,
                 hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                sortName: LoadSortBy.Dispatcher,
             },
             {
                 key: 'company',
@@ -207,8 +207,8 @@ export class LoadTableColumnsConfig {
                 maxWidth: 1020,
                 isResizable: true,
                 isChecked: false,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                // hasSort: true,
+                // sortName: MilesStopSortBy.UnitNumber,
             },
             ...this.getBrokerGroup(isTemplateTab),
             {
@@ -220,8 +220,8 @@ export class LoadTableColumnsConfig {
                 maxWidth: 160,
                 isResizable: true,
                 isChecked: !isTemplateTab,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                // hasSort: true,
+                // sortName: MilesStopSortBy.UnitNumber,
             },
             {
                 key: 'commodity',
@@ -232,8 +232,8 @@ export class LoadTableColumnsConfig {
                 maxWidth: 140,
                 isResizable: true,
                 isChecked: isTemplateTab,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                // hasSort: true,
+                // sortName: MilesStopSortBy.UnitNumber,
             },
             {
                 key: 'weight',
@@ -245,7 +245,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                sortName: LoadSortBy.Weight,
             },
             ...this.getAssignedGroup(isPendingOrActiveTab),
             ...this.getStatusColumn(!isTemplateTab),
@@ -287,7 +287,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: true,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.BrokerBusinessName,
                     },
                     {
                         key: 'brokerContact',
@@ -299,7 +299,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: isTemplate,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.BrokerContactName,
                     },
                     {
                         key: 'brokerPhone',
@@ -311,7 +311,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: isTemplate,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.BrokerContactPhone,
                     },
                 ],
             },
@@ -336,8 +336,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 1020,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: MilesStopSortBy.UnitNumber,
                     },
                     {
                         key: 'assignedDriverTruckNumber',
@@ -348,8 +348,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 140,
                         isResizable: true,
                         isChecked,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: LoadSortBy,
                     },
                     {
                         key: 'assignedDriverTrailerNumber',
@@ -360,8 +360,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 140,
                         isResizable: true,
                         isChecked,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: MilesStopSortBy.UnitNumber,
                     },
                 ],
             },
@@ -387,7 +387,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: false,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: MilesStopSortBy.LoadedMiles,
                     },
                     {
                         key: 'milesEmpty',
@@ -399,7 +399,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: false,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: MilesStopSortBy.EmptyMiles,
                     },
                     {
                         key: 'milesTotal',
@@ -411,7 +411,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: true,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: MilesStopSortBy.TotalMiles,
                     },
                 ],
             },
@@ -431,8 +431,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: false,
-                      hasSort: true,
-                      sortName: MilesStopSortBy.UnitNumber,
+                    //   hasSort: true,
+                    //   sortName: LoadSortBy.,
                   },
                   {
                       key: 'ageUnpaid',
@@ -443,8 +443,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: true,
-                      hasSort: true,
-                      sortName: MilesStopSortBy.UnitNumber,
+                    //   hasSort: true,
+                    //   sortName: MilesStopSortBy.UnitNumber,
                   },
                   {
                       key: 'agePaid',
@@ -455,8 +455,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: false,
-                      hasSort: true,
-                      sortName: MilesStopSortBy.UnitNumber,
+                    //   hasSort: true,
+                    //   sortName: MilesStopSortBy.UnitNumber,
                   },
               ]
             : [];
@@ -471,8 +471,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 140,
                       isResizable: true,
                       isChecked: true,
-                      hasSort: true,
-                      sortName: MilesStopSortBy.UnitNumber,
+                    //   hasSort: true,
+                    //   sortName: MilesStopSortBy.UnitNumber,
                   },
               ]
             : [];
@@ -493,8 +493,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 80,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: LoadSortBy.,
                     },
                     {
                         key: 'billingLayover',
@@ -505,8 +505,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 140,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: MilesStopSortBy.UnitNumber,
                     },
                     {
                         key: 'lumper',
@@ -517,8 +517,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 140,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: MilesStopSortBy.UnitNumber,
                     },
                     {
                         key: 'fuelSurcharge',
@@ -529,8 +529,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 140,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: MilesStopSortBy.UnitNumber,
                     },
                     {
                         key: 'escort',
@@ -541,8 +541,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 140,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: MilesStopSortBy.UnitNumber,
                     },
                     {
                         key: 'detention',
@@ -553,8 +553,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 140,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: MilesStopSortBy.UnitNumber,
                     },
                     {
                         key: 'billingRate',
@@ -565,8 +565,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 140,
                         isResizable: true,
                         isChecked: true,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: MilesStopSortBy.UnitNumber,
                     },
                     {
                         key: 'paid',
@@ -578,7 +578,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: isClosed,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.PaidDate,
                     },
                     ...dueColumn,
                 ],
@@ -598,7 +598,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked,
                 hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                sortName: LoadSortBy.Status,
             },
         ];
     }
@@ -622,7 +622,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: false,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.TruckType,
                     },
                     {
                         key: 'requirementTrailerType',
@@ -634,7 +634,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: false,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.TrailerType,
                     },
                     {
                         key: 'requirementLength',
@@ -646,7 +646,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: false,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.TrailerLength,
                     },
                     {
                         key: 'requirementDoorType',
@@ -657,8 +657,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 110,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: LoadSortBy.,
                     },
                     {
                         key: 'requirementSuspension',
@@ -670,7 +670,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: false,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.Suspension,
                     },
                     {
                         key: 'requirementYear',
@@ -682,7 +682,7 @@ export class LoadTableColumnsConfig {
                         isResizable: true,
                         isChecked: false,
                         hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        sortName: LoadSortBy.Year,
                     },
                     {
                         key: 'requirementLiftgate',
@@ -693,8 +693,8 @@ export class LoadTableColumnsConfig {
                         maxWidth: 78,
                         isResizable: true,
                         isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
+                        // hasSort: true,
+                        // sortName: LoadSortBy.,
                     },
                 ],
             },
@@ -714,7 +714,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                sortName: LoadSortBy.AddedDate,
             },
             {
                 key: 'dateEdited',
@@ -726,7 +726,7 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
+                sortName: LoadSortBy.EditedDate,
             },
         ];
     }
