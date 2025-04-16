@@ -14,6 +14,7 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { CaShowMoreComponent } from 'ca-components';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -30,7 +31,7 @@ import {
 
 // enums
 import { ePosition, eUnit } from 'ca-components';
-import { eColor, eGeneralActions } from '@shared/enums';
+import { eColor, eCommonElement, eGeneralActions } from '@shared/enums';
 import { SortOrder } from 'appcoretruckassist';
 
 // directives
@@ -55,6 +56,7 @@ import {
 
         // components
         TaAppTooltipV2Component,
+        CaShowMoreComponent,
 
         // pipes
         TableColumnClassPipe,
@@ -80,7 +82,7 @@ export class NewTableComponent<T> {
     @Input() templates: { [key: string]: TemplateRef<T> } = {};
     @Input() expandedRows: Set<number> = new Set([]);
 
-    @Output() onHandleShowMoreClick: EventEmitter<boolean> = new EventEmitter();
+    @Output() onShowMore: EventEmitter<boolean> = new EventEmitter();
     @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnResize: EventEmitter<ITableResizeAction> =
@@ -101,6 +103,7 @@ export class NewTableComponent<T> {
     public eColor = eColor;
     public eGeneralActions = eGeneralActions;
     public eUnit = eUnit;
+    public eCommonElement = eCommonElement;
     public sortOrder = SortOrder;
 
     // svg routes
@@ -133,8 +136,8 @@ export class NewTableComponent<T> {
         this.onSortingChange.emit(column);
     }
 
-    public handleShowMoreClick(): void {
-        this.onHandleShowMoreClick.emit(true);
+    public onShowMoreClick(): void {
+        this.onShowMore.emit();
     }
 
     public onColumnWidthResize(resizeAction: ITableResizeAction): void {
