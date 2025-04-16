@@ -15,6 +15,7 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { DispatcherService } from '@pages/dispatch/services/dispatcher.service';
 import { ModalService } from '@shared/services/modal.service';
 import { CaSearchMultipleStatesService, eFilterDropdownEnum } from 'ca-components';
+import { DispatchHubService } from '@shared/services/dispatch-hub.service';
 
 // decorators
 import { Titles } from '@core/decorators/titles.decorator';
@@ -100,7 +101,8 @@ export class DispatchComponent
         public dispatcherService: DispatcherService,
         private tableService: TruckassistTableService,
         private modalService: ModalService,
-        private caSearchMultipleStatesService: CaSearchMultipleStatesService
+        private caSearchMultipleStatesService: CaSearchMultipleStatesService,
+        private dispatchHubService: DispatchHubService
     ) {}
 
     ngOnInit(): void {
@@ -119,6 +121,8 @@ export class DispatchComponent
         this.toggleColumns();
 
         this.resetColumnsSubscribe();
+
+        this.dispatchHubService.connect();
     }
 
     ngOnChanges() {}
