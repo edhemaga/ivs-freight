@@ -9,7 +9,8 @@ export class LoadQueryHelper {
         statusType: number,
         filters: IStateFilters,
         sortOrder?: SortOrder,
-        sortBy?: LoadSortBy
+        sortBy?: LoadSortBy,
+        page?: number
     ): HttpParams {
         let params = new HttpParams().set('statusType', statusType.toString());
 
@@ -27,6 +28,9 @@ export class LoadQueryHelper {
 
         if (sortBy) params = params.append('SortBy', sortBy);
         if (sortOrder) params = params.append('SortOrder', sortOrder);
+        if (page) {
+            params = params.append('PageIndex', page);
+        }
 
         if (filters.dateFrom)
             params = params.append('dateFrom', filters.dateFrom);

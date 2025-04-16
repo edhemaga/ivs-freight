@@ -49,7 +49,6 @@ import { IStateFilters } from '@shared/interfaces';
 
 // Selectors
 import { loadIdLoadStatusChangeSelector } from '@pages/new-load/state/selectors/load.selectors';
-import { selectLoads } from '@pages/new-load/state/selectors/load.selectors';
 
 @Injectable()
 export class LoadEffect {
@@ -74,10 +73,11 @@ export class LoadEffect {
             ),
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector),
-                this.store.select(LoadSelectors.filtersSelector)
+                this.store.select(LoadSelectors.filtersSelector),
+                this.store.select(LoadSelectors.pageSelector)
             ),
-            exhaustMap(([action, mode, filters]) =>
-                this.getLoadData(mode, false, filters).pipe(
+            exhaustMap(([action, mode, filters, page]) =>
+                this.getLoadData(mode, false, filters, page).pipe(
                     map(
                         ({
                             loadResponse,
@@ -102,6 +102,34 @@ export class LoadEffect {
     );
     //#endregion
 
+    public getLoadsOnPageChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.getLoadsOnPageChange),
+            withLatestFrom(
+                this.store.select(LoadSelectors.selectedTabSelector),
+                this.store.select(LoadSelectors.filtersSelector),
+                this.store.select(LoadSelectors.pageSelector),
+                this.store.select(LoadSelectors.tableSettingsSelector)
+            ),
+            exhaustMap(([action, mode, filters, page, tableSettings]) => {
+                console.log('getLoadsOnPageChange');
+                return this.getLoadData(
+                    mode,
+                    true,
+                    filters,
+                    page + 1,
+                    tableSettings.sortDirection,
+                    tableSettings.sortKey as LoadSortBy
+                ).pipe(
+                    map(({ loadResponse }) =>
+                        LoadActions.getLoadsPagePayloadSuccess({
+                            payload: loadResponse,
+                        })
+                    )
+                );
+            })
+        )
+    );
     //#region  Filters
     public getLoadsOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
@@ -119,6 +147,7 @@ export class LoadEffect {
                     mode,
                     true,
                     filters,
+                    1,
                     tableSettings.sortDirection,
                     tableSettings.sortKey as LoadSortBy
                 ).pipe(
@@ -140,13 +169,15 @@ export class LoadEffect {
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector),
                 this.store.select(LoadSelectors.filtersSelector),
-                this.store.select(LoadSelectors.tableSettingsSelector)
+                this.store.select(LoadSelectors.tableSettingsSelector),
+                this.store.select(LoadSelectors.pageSelector)
             ),
-            exhaustMap(([action, mode, filters, tableSettings]) =>
+            exhaustMap(([action, mode, filters, tableSettings, page]) =>
                 this.getLoadData(
                     mode,
                     true,
                     filters,
+                    page,
                     tableSettings.sortDirection,
                     tableSettings.sortKey as LoadSortBy
                 ).pipe(
@@ -159,6 +190,7 @@ export class LoadEffect {
             )
         )
     );
+
     //#endregion
 
     //#region Modal actions
@@ -313,6 +345,7 @@ export class LoadEffect {
         mode: string,
         isFilterChange: boolean,
         filters: IStateFilters,
+        page?: number,
         sortOrder?: SortOrder,
         sortBy?: LoadSortBy
     ): Observable<{
@@ -323,14 +356,17 @@ export class LoadEffect {
         const tabValue = eLoadStatusType[mode];
         const isTemplate = tabValue === eLoadStatusType.Template;
 
-        // sortOrder,
-        // sortBy
-
         const loadRequest$ = isTemplate
-            ? this.loadService.getLoadTemplateList(filters, sortOrder, sortBy)
+            ? this.loadService.getLoadTemplateList(
+                  filters,
+                  page,
+                  sortOrder,
+                  sortBy
+              )
             : this.loadService.getLoadList(
                   tabValue,
                   filters,
+                  page,
                   sortOrder,
                   sortBy
               );

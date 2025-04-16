@@ -5413,6 +5413,7 @@ export class LoadModalComponent implements OnInit, OnDestroy {
                     lat: loadStop.latitude,
                     lng: loadStop.longitude,
                 },
+                id: index,
             };
 
             const routeMarker: IMapMarkers = {

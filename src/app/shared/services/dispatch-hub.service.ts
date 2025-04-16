@@ -20,6 +20,7 @@ import { UserHelper } from '@shared/utils/helpers';
 
 // enums
 import { eStringPlaceholder } from 'ca-components';
+import { LogLevel } from '@microsoft/signalr';
 
 @Injectable({
     providedIn: 'root',
@@ -39,6 +40,9 @@ export class DispatchHubService {
                 skipNegotiation: false,
                 accessTokenFactory: async () => this.token,
             })
+            .configureLogging(
+                !environment.staging ? LogLevel.Debug : LogLevel.None
+            )
             .build();
     }
 

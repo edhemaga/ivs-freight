@@ -41,6 +41,7 @@ export class LoadService {
     public getLoadList(
         statusType: number,
         filters: IStateFilters,
+        page?: number,
         sortOrder?: SortOrder,
         sortBy?: LoadSortBy
     ): Observable<LoadListResponse> {
@@ -48,7 +49,8 @@ export class LoadService {
             statusType,
             filters,
             sortOrder,
-            sortBy
+            sortBy,
+            page
         );
 
         return this.http.get<LoadListResponse>(
@@ -58,6 +60,7 @@ export class LoadService {
     }
     public getLoadTemplateList(
         filters: IStateFilters,
+        page?: number,
         sortOrder?: SortOrder,
         sortBy?: LoadSortBy
     ): Observable<LoadTemplateListResponse> {
@@ -65,7 +68,8 @@ export class LoadService {
             0,
             filters,
             sortOrder,
-            sortBy
+            sortBy,
+            page
         );
 
         return this.http.get(
