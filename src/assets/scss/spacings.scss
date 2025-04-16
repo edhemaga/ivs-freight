@@ -226,8 +226,13 @@
         padding: 12px;
     }
 }
+
 .w-full {
     width: 100%;
+}
+
+.w-fit-content {
+    width: fit-content;
 }
 
 @for $i from -40 through 100 {

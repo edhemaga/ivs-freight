@@ -29,7 +29,7 @@
         [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
-        (onHandleShowMoreClick)="onHandleShowMoreClick()"
+        (onShowMore)="onShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
