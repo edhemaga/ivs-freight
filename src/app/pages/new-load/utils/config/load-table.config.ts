@@ -263,7 +263,7 @@ export class LoadTableColumnsConfig {
                 hasSort: true,
                 sortName: MilesStopSortBy.UnitNumber,
             },
-            // LoadTemplateResponse contains property totalMiles but LoadListDto contains miles: MilesInfo and mapping is not working
+            // LoadTemplateResponse contains property totalMiles but LoadListDto contains object miles: MilesInfo and mapping is not working
             ...this.getMilesGroup(),
             ...this.getBillingGroup(isClosedTab),
         ];

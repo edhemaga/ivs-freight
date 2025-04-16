@@ -44,7 +44,7 @@ export class LoadHelper {
                 brokerBusinessName: load.broker?.businessName,
                 brokerContact: load.brokerContact?.contactName,
                 brokerPhone: load.broker?.phone,
-                assignedDriver: load.driver,
+                driverInfo: load.driver,
                 assignedDriverTruckNumber: load.driver?.truckNumber,
                 assignedDriverTrailerNumber: load.driver?.trailerNumber,
                 milesLoaded: load.miles?.loadedMiles,

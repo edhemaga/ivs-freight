@@ -20,5 +20,5 @@ export interface ITableColumn {
     isDisabled?: boolean;
     isChecked?: boolean;
     labelToolbar?: string;
-    sortName?: LoadSortBy | MilesStopSortBy;
+    sortName?: string;
 }

@@ -25,7 +25,7 @@
             templateCommodity,
             billingRate,
             invoiceDate,
-            assignedDriver,
+            driverInfo,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -59,21 +59,16 @@
             ></app-ca-checkbox>
         </ng-template>
 
-        <ng-template let-data="data" #edit>
-            <!-- TODO: For testing load modal only !! Will be removed later !! -->
-            <div (click)="onOpenModal(data.id, store.selectedTab)">EDIT</div>
-        </ng-template>
-
         <ng-template let-data="data" #invoiceDate>
             <div class="text-color-black-2 text-size-14">
                 {{ data.invoiceDate | date: 'dd/MM/yy' }}
             </div>
         </ng-template>
 
-        <ng-template let-data="data" #assignedDriver>
+        <ng-template let-data="data" #driverInfo>
             <div class="text-color-black-2 text-size-14">
-                {{ data.assignedDriver.firstName }}
-                {{ data.assignedDriver.lastName }}
+                {{ data.driverInfo.firstName }}
+                {{ data.driverInfo.lastName }}
             </div>
         </ng-template>
 
@@ -85,7 +80,11 @@
 
         <ng-template let-data="data" #loadNumber>
             <span
-                class="ta-font-bold text-size-14 text-color-black"
+                ngbTooltip
+                mainTooltip="View Details"
+                [tooltipBackground]="eColor.BLACK"
+                [position]="ePosition.BOTTOM"
+                class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
                 (click)="navigateToLoadDetails(data.id)"
             >
                 {{ data.loadNumber }}

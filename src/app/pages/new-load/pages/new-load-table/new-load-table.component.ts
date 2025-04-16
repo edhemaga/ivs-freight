@@ -7,8 +7,6 @@ import { Router } from '@angular/router';
 import { eColor, eDropdownMenu } from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
-// svg-routes
-import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 // base classes
 import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
@@ -21,9 +19,10 @@ import {
     CaCheckboxSelectedCountComponent,
     ePosition,
 } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { Subject, takeUntil } from 'rxjs';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 import { CaProfileImageComponent } from 'ca-components';
 import { SvgIconComponent } from 'angular-svg-icon';
@@ -48,6 +47,7 @@ import { LoadStatusResponse } from 'appcoretruckassist';
     standalone: true,
     imports: [
         CommonModule,
+        NgbTooltip,
         NgbPopover,
 
         // Components
@@ -59,6 +59,7 @@ import { LoadStatusResponse } from 'appcoretruckassist';
         CaStatusChangeDropdownComponent,
         CaProfileImageComponent,
         SvgIconComponent,
+        TaAppTooltipV2Component
     ],
 })
 export class NewLoadTableComponent

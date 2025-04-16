@@ -1,5 +1,5 @@
 // models
-import { CompanyUserShortResponse, LoadStatusResponse, LoadBrokerInfo } from 'appcoretruckassist';
+import { CompanyUserShortResponse, LoadStatusResponse, LoadBrokerInfo, LoadDriverInfo } from 'appcoretruckassist';
 
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -15,4 +15,5 @@ export interface IMappedLoad {
     tableDropdownContent: IDropdownMenuItem[];
     totalDue: number;
     broker: LoadBrokerInfo;
+    driverInfo: LoadDriverInfo;
 }
