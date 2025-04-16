@@ -1,7 +1,7 @@
 @let displayedDataCount = rows.length;
 
 <div class="table-container">
-    <div class="w-full">
+    <div class="w-fit-content">
         <!-- Header -->
 
         <div class="d-flex m-b-6 p-x-8">
@@ -64,7 +64,7 @@
         <div class="new-table--body">
             @for (row of rows; track row.id) {
                 <div
-                    class="d-flex align-items-center background-white p-x-4 br-3 m-b-2"
+                    class="d-flex align-items-center background-white p-x-4 br-3 m-b-2 w-fit-content"
                 >
                     @if (row) {
                         <div
