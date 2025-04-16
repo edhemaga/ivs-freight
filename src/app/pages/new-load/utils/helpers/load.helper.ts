@@ -16,9 +16,13 @@ import {
     LoadTemplateResponse,
 } from 'appcoretruckassist';
 
+// helpers
+import { DropdownMenuContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
 export class LoadHelper {
     static loadMapper(
-        loads: LoadListDto[] | LoadTemplateResponse[]
+        loads: LoadListDto[] | LoadTemplateResponse[],
+        selectedTab: eLoadStatusStringType
     ): IMappedLoad[] {
         return loads.map((load) => {
             return {
@@ -28,6 +32,10 @@ export class LoadHelper {
                 loadNumber: load.loadNumber,
                 name: load.name,
                 status: load.status,
+                tableDropdownContent:
+                    DropdownMenuContentHelper.getLoadDropdownContent(
+                        selectedTab
+                    ),
                 totalDue: load.totalDue,
                 broker: load.broker,
             };

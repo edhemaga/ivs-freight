@@ -23,9 +23,9 @@ import { TruckassistTableService } from '@shared/services/truckassist-table.serv
 import { DropdownMenuColumnsActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
 
 export abstract class ColumnsDropdownMenuActionsBase {
-    protected abstract modalService: ModalService;
-    protected abstract tableService: TruckassistTableService;
-    protected abstract confirmationResetService: ConfirmationResetService;
+    protected modalService: ModalService;
+    protected tableService: TruckassistTableService;
+    protected confirmationResetService: ConfirmationResetService;
     protected abstract destroy$: Subject<void>;
 
     protected updateToolbarDropdownMenuContent(action?: string): void {}

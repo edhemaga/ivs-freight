@@ -448,21 +448,27 @@ export class DropdownMenuContentHelper {
         selectedTab: string,
         isDetailsPageDropdown: boolean = false
     ): IDropdownMenuItem[] {
+        const isTemplateLoad = selectedTab === eDropdownMenu.TEMPLATE;
         const isPendingLoad = selectedTab === eDropdownMenu.PENDING;
         const isClosedLoad = selectedTab === eDropdownMenu.CLOSED;
+        const isTemplateOrPendingLoad = isTemplateLoad || isPendingLoad;
 
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getLoadModifierItems(
-                isPendingLoad
+                isTemplateOrPendingLoad
             );
 
         // requested items
-        const requestedConditionalItems = [eDropdownMenu.CREATE_TEMPLATE];
+        const requestedConditionalItems = isTemplateLoad
+            ? [eDropdownMenu.CREATE_LOAD]
+            : [eDropdownMenu.CREATE_TEMPLATE];
 
         const requestedSharedItems = [
             eDropdownMenu.EDIT,
-            !isDetailsPageDropdown && eDropdownMenu.VIEW_DETAILS,
-            isClosedLoad && eDropdownMenu.EXPORT_BATCH,
+            !isTemplateLoad &&
+                !isDetailsPageDropdown &&
+                eDropdownMenu.VIEW_DETAILS,
+            !isTemplateLoad && isClosedLoad && eDropdownMenu.EXPORT_BATCH,
             eDropdownMenu.SHARE,
             eDropdownMenu.PRINT,
             eDropdownMenu.DELETE,
@@ -482,10 +488,12 @@ export class DropdownMenuContentHelper {
                 modifierItems
             );
 
+        const sharedItemsStartIndex = isTemplateLoad ? 1 : isClosedLoad ? 3 : 2;
+
         return [
-            ...sharedItems.slice(0, isClosedLoad ? 3 : 2),
+            ...sharedItems.slice(0, sharedItemsStartIndex),
             ...conditionalItems,
-            ...sharedItems.slice(isClosedLoad ? 3 : 2),
+            ...sharedItems.slice(sharedItemsStartIndex),
         ];
     }
 
