@@ -284,6 +284,9 @@ export class LoadEffect {
         const tabValue = eLoadStatusType[mode];
         const isTemplate = tabValue === eLoadStatusType.Template;
 
+        // sortOrder,
+        // sortBy
+
         const loadRequest$ = isTemplate
             ? this.loadService.getLoadTemplateList(filters)
             : this.loadService.getLoadList(tabValue, filters);

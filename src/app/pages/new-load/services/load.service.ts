@@ -11,10 +11,12 @@ import {
     LoadMinimalListResponse,
     LoadPossibleStatusesResponse,
     LoadResponse,
+    LoadSortBy,
     LoadStatusFilterResponse,
     LoadStatusResponse,
     LoadTemplateListResponse,
     RoutingResponse,
+    SortOrder,
     UpdateLoadStatusCommand,
 } from 'appcoretruckassist';
 
@@ -38,11 +40,15 @@ export class LoadService {
 
     public getLoadList(
         statusType: number,
-        filters: IStateFilters
+        filters: IStateFilters,
+        sortOrder?: SortOrder,
+        sortBy?: LoadSortBy
     ): Observable<LoadListResponse> {
         const params = LoadQueryHelper.mapLoadListQueryParams(
             statusType,
-            filters
+            filters,
+            sortOrder,
+            sortBy
         );
 
         return this.http.get<LoadListResponse>(
@@ -51,9 +57,16 @@ export class LoadService {
         );
     }
     public getLoadTemplateList(
-        filters: IStateFilters
+        filters: IStateFilters,
+        sortOrder?: SortOrder,
+        sortBy?: LoadSortBy
     ): Observable<LoadTemplateListResponse> {
-        const params = LoadQueryHelper.mapLoadListQueryParams(0, filters);
+        const params = LoadQueryHelper.mapLoadListQueryParams(
+            0,
+            filters,
+            sortOrder,
+            sortBy
+        );
 
         return this.http.get(
             `${environment.API_ENDPOINT}/api/load/template/list`,
