@@ -7,9 +7,11 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+import { ModalService } from '@shared/services';
 
 // components
 import { CaTableCardViewComponent } from 'ca-components';
+import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
 
 // pipes
 import {
@@ -17,9 +19,6 @@ import {
     ThousandSeparatorPipe,
     GetNestedValuePipe,
 } from '@shared/pipes';
-
-import { ModalService } from '@shared/services';
-import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
 
 // configs
 import {
