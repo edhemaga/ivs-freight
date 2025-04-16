@@ -107,6 +107,13 @@ export class NewLoadTableComponent
                 data
             );
 
+        // this is because we have load and new load - it will be removed
+        if (type === eDropdownMenu.VIEW_DETAILS_TYPE) {
+            const { id } = data;
+            this.navigateToLoadDetails(id);
+
+            return;
+        }
         this.handleDropdownMenuActions(
             tableAction,
             eDropdownMenu.LOAD,
