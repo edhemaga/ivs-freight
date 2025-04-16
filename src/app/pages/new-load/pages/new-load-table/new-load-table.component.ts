@@ -94,6 +94,10 @@ export class NewLoadTableComponent
         });
     }
 
+    public onHandleShowMoreClick(): void {
+        this.loadStoreService.getNewPage();
+    }
+
     public onToggleDropdownMenuActions(
         action: IDropdownMenuOptionEmit,
         data,

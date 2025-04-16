@@ -37,6 +37,17 @@ export const getLoadsPayloadSuccess = createAction(
         payload: LoadListResponse;
     }>()
 );
+
+export const getLoadsPagePayloadSuccess = createAction(
+    LoadStoreConstants.ACTION_LOAD_PAGE_LIST_SUCCESS,
+    props<{
+        payload: LoadListResponse;
+    }>()
+);
+
+export const getLoadsOnPageChange = createAction(
+    LoadStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
+);
 //#endregion
 
 //#region Tabs
