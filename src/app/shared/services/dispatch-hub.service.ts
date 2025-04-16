@@ -41,7 +41,7 @@ export class DispatchHubService {
                 accessTokenFactory: async () => this.token,
             })
             .configureLogging(
-                environment.development ? LogLevel.Debug : LogLevel.None
+                !environment.staging ? LogLevel.Debug : LogLevel.None
             )
             .build();
     }
