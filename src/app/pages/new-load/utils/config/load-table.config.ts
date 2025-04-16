@@ -27,60 +27,53 @@ export class LoadTableColumnsConfig {
                 isChecked: true,
                 hasSort: false,
             },
-            ...this.templateTabColumns(isTemplate),
-            ...this.activeOrPendingTabColumns(isPendingOrActive, isTemplate, isClosed),
-            ...this.closedTabColumns(isClosed)
+            ...this.templateTabColumns(isTemplate, isPendingOrActive, isClosed),
+            ...this.activeOrPendingTabColumns(
+                isTemplate,
+                isPendingOrActive,
+                isClosed
+            ),
+            ...this.closedTabColumns(isTemplate, isPendingOrActive, isClosed),
         ];
     }
 
     // MAPPING STRUCTURE FOR TEMPLATE TAB COLUMNS
-    private static templateTabColumns(isTemplate: boolean): ITableColumn[] {
-        console.log("isTemplate: ", isTemplate)
-
+    private static templateTabColumns(
+        isTemplate: boolean,
+        isPendingOrActive: boolean,
+        isClosed: boolean
+    ): ITableColumn[] {
         if (!isTemplate) return [];
 
         return [
             {
                 key: 'templateName',
                 label: 'Name',
-                labelToolbar: 'Name',
+                labelToolbar: 'Template name',
                 width: 200,
                 minWidth: 200,
                 maxWidth: 250,
                 isResizable: true,
+                isDisabled: true,
                 isChecked: true,
                 pinned: 'left',
-                hasSort: true,            
-            },
-            {
-                key: 'templateCreated',
-                label: 'Created',
-                labelToolbar: 'Created',
-                width: 88,
-                minWidth: 88,
-                maxWidth: 88,
-                isResizable: true,
-                isChecked: true,
                 hasSort: true,
             },
-            {
-                key: 'templateCommodity',
-                label: 'Commodity',
-                labelToolbar: 'Commodity',
-                width: 130,
-                minWidth: 130,
-                maxWidth: 130,
-                isResizable: true,
-                isChecked: true,
-                hasSort: true,
-            },
-            ...this.getBrokerGroup(isTemplate),
-        ]
+            ...this.getCommonColumnsForAllTabs(
+                isTemplate,
+                isPendingOrActive,
+                isClosed
+            ),
+            ...this.getCreatedAndEditedDates(),
+        ];
     }
 
     // MAPPING STRUCTURE FOR ACTIVE OR PENDING TAB COLUMNS
-    private static activeOrPendingTabColumns(isPendingOrActive: boolean, isTemplate: boolean, isClosed: boolean): ITableColumn[] {
-        console.log("isActive: ", isPendingOrActive)
+    private static activeOrPendingTabColumns(
+        isTemplate: boolean,
+        isPendingOrActive: boolean,
+        isClosed: boolean
+    ): ITableColumn[] {
         if (!isPendingOrActive) return [];
 
         return [
@@ -98,29 +91,98 @@ export class LoadTableColumnsConfig {
                 isChecked: true,
                 pinned: 'left',
             },
+            ...this.getCommonColumnsForAllTabs(
+                isTemplate,
+                isPendingOrActive,
+                isClosed
+            ),
+            ...this.getCreatedAndEditedDates(),
+        ];
+    }
+
+    // MAPPING STRUCTURE FOR CLOSED TAB COLUMNS
+    private static closedTabColumns(
+        isTemplate: boolean,
+        isPendingOrActive: boolean,
+        isClosed: boolean
+    ): ITableColumn[] {
+        if (!isClosed) return [];
+
+        return [
+            {
+                key: 'invoiceNumber',
+                label: 'Invoice No',
+                labelToolbar: 'Invoice No.',
+                width: 146,
+                minWidth: 126,
+                maxWidth: 156,
+                isResizable: true,
+                isDisabled: true,
+                hasSort: true,
+                isChecked: true,
+                pinned: 'left',
+            },
+            {
+                key: 'invoiceDate',
+                label: 'Invoiced',
+                labelToolbar: 'Invoiced date',
+                width: 146,
+                minWidth: 126,
+                maxWidth: 156,
+                isResizable: true,
+                hasSort: true,
+                isChecked: true,
+            },
+            ...this.getCommonColumnsForAllTabs(
+                isTemplate,
+                isPendingOrActive,
+                isClosed
+            ),
+            {
+                key: 'tableInvoice',
+                label: 'Invoiced',
+                labelToolbar: 'Invoiced Date',
+                width: 88,
+                minWidth: 72,
+                maxWidth: 88,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
+            },
+            {
+                key: 'paidDate',
+                label: 'Date Paid',
+                labelToolbar: 'Paid Date',
+                width: 88,
+                minWidth: 72,
+                maxWidth: 88,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
+            },
+            ...this.getCreatedAndEditedDates(),
+        ];
+    }
+
+    // HELPER FOR MAPPING COMMON COLUMNS FOR ALL TABS
+    private static getCommonColumnsForAllTabs(
+        isTemplateTab: boolean,
+        isPendingOrActiveTab: boolean,
+        isClosedTab: boolean
+    ): ITableColumn[] {
+        return [
             {
                 key: 'type',
                 label: 'Type',
                 labelToolbar: 'Type',
-                pinned: 'left',
                 width: 82,
                 minWidth: 82,
                 maxWidth: 200,
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
-            },
-            {
-                key: 'referenceNumber',
-                label: 'REF NO',
-                labelToolbar: 'Ref Number',
-                width: 130,
-                minWidth: 130,
-                maxWidth: 160,
-                isResizable: true,
-                isChecked: true,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
             },
             {
                 key: 'loadDispatcher',
@@ -130,7 +192,7 @@ export class LoadTableColumnsConfig {
                 minWidth: 50,
                 maxWidth: 1020,
                 isResizable: true,
-                isChecked: !isTemplate,
+                isChecked: !isTemplateTab,
                 hasSort: true,
                 sortName: MilesStopSortBy.UnitNumber,
             },
@@ -146,34 +208,66 @@ export class LoadTableColumnsConfig {
                 hasSort: true,
                 sortName: MilesStopSortBy.UnitNumber,
             },
-            ...this.getBrokerGroup(isTemplate),
-            ...this.getAssignedGroup(isPendingOrActive),
+            ...this.getBrokerGroup(isTemplateTab),
             {
-                key: 'loadStatus',
-                label: 'Status',
-                labelToolbar: 'Status',
-                width: 138,
-                minWidth: 90,
-                maxWidth: 150,
+                key: 'referenceNumber',
+                label: 'REF NO',
+                labelToolbar: 'Ref Number',
+                width: 130,
+                minWidth: 130,
+                maxWidth: 160,
                 isResizable: true,
-                isChecked: true,
+                isChecked: !isTemplateTab,
                 hasSort: true,
                 sortName: MilesStopSortBy.UnitNumber,
             },
-            ...this.getPickupAndDelivery(),
+            {
+                key: 'commodity',
+                label: 'Commodity',
+                labelToolbar: 'Commodity',
+                width: 138,
+                minWidth: 100,
+                maxWidth: 140,
+                isResizable: true,
+                isChecked: isTemplateTab,
+                hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
+            },
+            {
+                key: 'weight',
+                label: 'Weight',
+                labelToolbar: 'Weight',
+                width: 88,
+                minWidth: 54,
+                maxWidth: 110,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
+            },
+            ...this.getAssignedGroup(isPendingOrActiveTab),
+            ...this.getStatusColumn(!isTemplateTab),
+            // RESERVE SLOT pickup & delivery
+            ...this.getRequirementGroup(),
+            {
+                key: 'driverMessage',
+                label: 'Driver Message',
+                labelToolbar: 'Driver Message',
+                width: 234,
+                minWidth: 100,
+                maxWidth: 310,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
+            },
+            // LoadTemplateResponse contains property totalMiles but LoadListDto contains miles: MilesInfo and mapping is not working
             ...this.getMilesGroup(),
-            ...this.getBillingGroup(isClosed)
-        ]
+            ...this.getBillingGroup(isClosedTab),
+        ];
     }
 
-    // MAPPING STRUCTURE FOR CLOSED TAB COLUMNS
-    private static closedTabColumns(isClosed: boolean): ITableColumn[] {
-        console.log("isClosed: ", isClosed)
-        if (!isClosed) return [];
-
-        return []
-    }
-
+    // HELPER FOR MAPPING BROKER GROUP - brokerBusinessName - brokerContact - brokerPhone
     private static getBrokerGroup(isTemplate: boolean): ITableColumn[] {
         return [
             {
@@ -222,9 +316,8 @@ export class LoadTableColumnsConfig {
         ];
     }
 
-    private static getAssignedGroup(
-        isPendingOrActive: boolean
-    ): ITableColumn[] {
+    // MAPPING HELPER FOR MAPPING ASSIGNED GROUP - assignedDriver - assignedDriverTruckNumber - assignedDriverTrailerNumber
+    private static getAssignedGroup(isChecked: boolean): ITableColumn[] {
         return [
             {
                 key: 'assignedGroup',
@@ -232,18 +325,18 @@ export class LoadTableColumnsConfig {
                 labelToolbar: 'Assigned',
                 hasSort: false,
                 columns: [
-                    // {
-                    //     key: 'tableDriver',
-                    //     label: 'Driver',
-                    //     labelToolbar: 'Driver',
-                    //     width: 208,
-                    //     minWidth: 50,
-                    //     maxWidth: 1020,
-                    //     isResizable: true,
-                    //     isChecked: false,
-                    //     hasSort: true,
-                    //     sortName: MilesStopSortBy.UnitNumber,
-                    // },
+                    {
+                        key: 'assignedDriver',
+                        label: 'Driver',
+                        labelToolbar: 'Driver',
+                        width: 208,
+                        minWidth: 50,
+                        maxWidth: 1020,
+                        isResizable: true,
+                        isChecked: false,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
                     {
                         key: 'assignedDriverTruckNumber',
                         label: 'Truck',
@@ -252,7 +345,7 @@ export class LoadTableColumnsConfig {
                         minWidth: 30,
                         maxWidth: 140,
                         isResizable: true,
-                        isChecked: isPendingOrActive,
+                        isChecked,
                         hasSort: true,
                         sortName: MilesStopSortBy.UnitNumber,
                     },
@@ -264,7 +357,7 @@ export class LoadTableColumnsConfig {
                         minWidth: 30,
                         maxWidth: 140,
                         isResizable: true,
-                        isChecked: isPendingOrActive,
+                        isChecked,
                         hasSort: true,
                         sortName: MilesStopSortBy.UnitNumber,
                     },
@@ -273,297 +366,7 @@ export class LoadTableColumnsConfig {
         ];
     }
 
-    private static getBaseColumns(isTemplate: boolean): ITableColumn[] {
-        return [
-            {
-                key: 'select',
-                label: '',
-                pinned: 'left',
-                width: 32,
-                minWidth: 32,
-                maxWidth: 200,
-                isResizable: true,
-                isDisabled: true,
-                isChecked: true,
-                hasSort: false,
-            },
-            // For modal testing!!!!
-            {
-                key: 'edit',
-                label: 'edit',
-                width: 50,
-                minWidth: 50,
-                maxWidth: 200,
-                isResizable: true,
-                isDisabled: true,
-                isChecked: true,
-                hasSort: true,
-            },
-            {
-                id: 1,
-                key: 'loadNumber',
-                label: 'Load No',
-                labelToolbar: 'Load No.',
-                width: 154,
-                minWidth: 60,
-                maxWidth: 250,
-                isResizable: true,
-                isDisabled: true,
-                isChecked: !isTemplate,
-                hasSort: true,
-                pinned: 'left',
-            },
-            {
-                key: 'referenceNumber',
-                label: 'REF NO',
-                labelToolbar: 'Ref Number',
-                width: 130,
-                minWidth: 130,
-                maxWidth: 160,
-                isResizable: true,
-                isChecked: !isTemplate,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-            {
-                key: 'type',
-                label: 'Type',
-                labelToolbar: 'Type',
-                pinned: 'left',
-                width: 82,
-                minWidth: 82,
-                maxWidth: 200,
-                isResizable: true,
-                isChecked: false,
-                hasSort: true,
-            },
-            {
-                key: 'loadDispatcher',
-                label: 'Dispatcher',
-                labelToolbar: 'Dispatcher',
-                width: 208,
-                minWidth: 50,
-                maxWidth: 1020,
-                isResizable: true,
-                isChecked: !isTemplate,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-            {
-                key: 'company',
-                label: 'Company',
-                labelToolbar: 'Company',
-                width: 238,
-                minWidth: 50,
-                maxWidth: 1020,
-                isResizable: true,
-                isChecked: false,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-        ];
-    }
-
-    private static getBaseColumnsSecond(isTemplate: boolean): ITableColumn[] {
-        return [
-            {
-                key: 'textCommodity',
-                label: 'Commodity',
-                labelToolbar: 'Commodity',
-                width: 138,
-                minWidth: 100,
-                maxWidth: 140,
-                isResizable: true,
-                isChecked: isTemplate,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-            {
-                key: 'textWeight',
-                label: 'Weight',
-                labelToolbar: 'Weight',
-                width: 88,
-                minWidth: 54,
-                maxWidth: 110,
-                isResizable: true,
-                isChecked: false,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-        ];
-    }
-
-    private static getStatusColumn(isTemplate: boolean): ITableColumn[] {
-        return isTemplate
-            ? []
-            : [
-                    {
-                        key: 'loadStatus',
-                        label: 'Status',
-                        labelToolbar: 'Status',
-                        width: 138,
-                        minWidth: 90,
-                        maxWidth: 150,
-                        isResizable: true,
-                        isChecked: true,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                  },
-              ];
-    }
-    private static getPickupAndDelivery(): ITableColumn[] {
-        return [
-            {
-                key: 'loadPickup',
-                label: 'Pickup',
-                labelToolbar: '',
-                width: 153,
-                minWidth: 153,
-                maxWidth: 238,
-                isResizable: true,
-                isChecked: true,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-            {
-                key: 'loadDelivery',
-                label: 'Delivery',
-                labelToolbar: '',
-                width: 153,
-                minWidth: 153,
-                maxWidth: 238,
-                isResizable: true,
-                isChecked: true,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-        ]
-    }
-
-    private static getPickupAndRequirement(): ITableColumn[] {
-        return [
-            {
-                key: 'loadPickupAndDelivery',
-                label: 'Pickup',
-                labelToolbar: 'Pickup & Delivery',
-                width: 153,
-                minWidth: 153,
-                maxWidth: 238,
-                isResizable: true,
-                isChecked: false,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-            {
-                key: 'requirement',
-                label: 'Requirem',
-                labelToolbar: 'Requirement',
-                hasSort: false,
-                columns: [
-                    {
-                        key: 'loadTruckNumber',
-                        label: 'Truck',
-                        labelToolbar: 'Truck Type',
-                        width: 64,
-                        minWidth: 50,
-                        maxWidth: 220,
-                        isResizable: true,
-                        isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                    {
-                        key: 'loadTrailerNumber',
-                        label: 'Trailer',
-                        labelToolbar: 'Trailer Type',
-                        width: 64,
-                        minWidth: 50,
-                        maxWidth: 220,
-                        isResizable: true,
-                        isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                    {
-                        key: 'tabelLength',
-                        label: 'ft',
-                        labelToolbar: 'Length',
-                        width: 52,
-                        minWidth: 32,
-                        maxWidth: 70,
-                        isResizable: true,
-                        isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                    {
-                        key: 'tableDoorType',
-                        label: 'Door',
-                        labelToolbar: 'Door Type',
-                        width: 90,
-                        minWidth: 52,
-                        maxWidth: 110,
-                        isResizable: true,
-                        isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                    {
-                        key: 'tableSuspension',
-                        label: 'Suspension',
-                        labelToolbar: 'Suspension',
-                        width: 92,
-                        minWidth: 45,
-                        maxWidth: 110,
-                        isResizable: true,
-                        isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                    {
-                        key: 'year',
-                        label: 'Year',
-                        labelToolbar: 'Year',
-                        width: 58,
-                        minWidth: 50,
-                        maxWidth: 64,
-                        isResizable: true,
-                        isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                    {
-                        key: 'liftgate',
-                        label: 'Liftgate',
-                        labelToolbar: 'Liftgate',
-                        width: 72,
-                        minWidth: 50,
-                        maxWidth: 78,
-                        isResizable: true,
-                        isChecked: false,
-                        hasSort: true,
-                        sortName: MilesStopSortBy.UnitNumber,
-                    },
-                ],
-            },
-        ];
-    }
-    private static getDriverMessage(): ITableColumn[] {
-        return [
-            {
-                key: 'textDriver',
-                label: 'Driver Message',
-                labelToolbar: 'Driver Message',
-                width: 234,
-                minWidth: 100,
-                maxWidth: 310,
-                isResizable: true,
-                isChecked: false,
-                hasSort: true,
-                sortName: MilesStopSortBy.UnitNumber,
-            },
-        ];
-    }
+    // HELPER FOR MAPPING MILES GROUP - milesLoaded - milesEmpty - milesTotal
     private static getMilesGroup(): ITableColumn[] {
         return [
             {
@@ -612,6 +415,8 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+
+    // HELPER FOR MAPPING BILLING GROUP
     private static getBillingGroup(isClosed: boolean): ITableColumn[] {
         const closedLoadColumns: ITableColumn[] = isClosed
             ? [
@@ -690,7 +495,7 @@ export class LoadTableColumnsConfig {
                         sortName: MilesStopSortBy.UnitNumber,
                     },
                     {
-                        key: 'layover',
+                        key: 'billingLayover',
                         label: 'Layover',
                         labelToolbar: 'Layover',
                         width: 101,
@@ -778,40 +583,127 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
-    private static getClosedDates(isClosed: boolean): ITableColumn[] {
-        return isClosed
-            ? [
-                  {
-                      key: 'tableInvoice',
-                      label: 'Invoiced',
-                      labelToolbar: 'Invoiced Date',
-                      width: 88,
-                      minWidth: 72,
-                      maxWidth: 88,
-                      isResizable: true,
-                      isChecked: false,
-                      hasSort: true,
-                      sortName: MilesStopSortBy.UnitNumber,
-                  },
-                  {
-                      key: 'paidDate',
-                      label: 'Date Paid',
-                      labelToolbar: 'Paid Date',
-                      width: 88,
-                      minWidth: 72,
-                      maxWidth: 88,
-                      isResizable: true,
-                      isChecked: false,
-                      hasSort: true,
-                      sortName: MilesStopSortBy.UnitNumber,
-                  },
-              ]
-            : [];
-    }
-    private static getFinalDates(): ITableColumn[] {
+
+    private static getStatusColumn(isChecked: boolean): ITableColumn[] {
         return [
             {
-                key: 'tableAdded',
+                key: 'loadStatus',
+                label: 'Status',
+                labelToolbar: 'Status',
+                width: 138,
+                minWidth: 90,
+                maxWidth: 150,
+                isResizable: true,
+                isChecked,
+                hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
+            },
+        ];
+    }
+
+    // HELPER FOR MAPPING REQUIREMENT GROUP - requirementTruckType - requirementTrailerType - requirementLength- requirementDoorType - requirementSuspension - requirementYear - requirementLiftgate
+    private static getRequirementGroup(): ITableColumn[] {
+        return [
+            {
+                key: 'requirementGroup',
+                label: 'Requirem',
+                labelToolbar: 'Requirement',
+                hasSort: false,
+                columns: [
+                    {
+                        key: 'requirementTruckType',
+                        label: 'Truck type',
+                        labelToolbar: 'Truck Type',
+                        width: 64,
+                        minWidth: 50,
+                        maxWidth: 220,
+                        isResizable: true,
+                        isChecked: false,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                    {
+                        key: 'requirementTrailerType',
+                        label: 'Trailer type',
+                        labelToolbar: 'Trailer Type',
+                        width: 64,
+                        minWidth: 50,
+                        maxWidth: 220,
+                        isResizable: true,
+                        isChecked: false,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                    {
+                        key: 'requirementLength',
+                        label: 'ft',
+                        labelToolbar: 'Length',
+                        width: 52,
+                        minWidth: 32,
+                        maxWidth: 70,
+                        isResizable: true,
+                        isChecked: false,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                    {
+                        key: 'requirementDoorType',
+                        label: 'Door',
+                        labelToolbar: 'Door Type',
+                        width: 90,
+                        minWidth: 52,
+                        maxWidth: 110,
+                        isResizable: true,
+                        isChecked: false,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                    {
+                        key: 'requirementSuspension',
+                        label: 'Suspension',
+                        labelToolbar: 'Suspension',
+                        width: 92,
+                        minWidth: 45,
+                        maxWidth: 110,
+                        isResizable: true,
+                        isChecked: false,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                    {
+                        key: 'requirementYear',
+                        label: 'Year',
+                        labelToolbar: 'Year',
+                        width: 58,
+                        minWidth: 50,
+                        maxWidth: 64,
+                        isResizable: true,
+                        isChecked: false,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                    {
+                        key: 'requirementLiftgate',
+                        label: 'Liftgate',
+                        labelToolbar: 'Liftgate',
+                        width: 72,
+                        minWidth: 50,
+                        maxWidth: 78,
+                        isResizable: true,
+                        isChecked: false,
+                        hasSort: true,
+                        sortName: MilesStopSortBy.UnitNumber,
+                    },
+                ],
+            },
+        ];
+    }
+
+    // HELPER FOR MAPPING CREATED AND EDITED DATES
+    private static getCreatedAndEditedDates(): ITableColumn[] {
+        return [
+            {
+                key: 'dateCreated',
                 label: 'Created',
                 labelToolbar: 'Date Created',
                 width: 88,
@@ -823,7 +715,7 @@ export class LoadTableColumnsConfig {
                 sortName: MilesStopSortBy.UnitNumber,
             },
             {
-                key: 'tableEdited',
+                key: 'dateEdited',
                 label: 'Edited',
                 labelToolbar: 'Date Edited',
                 width: 88,

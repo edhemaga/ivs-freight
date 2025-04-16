@@ -20,7 +20,6 @@ import {
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { SvgIconComponent } from 'angular-svg-icon';
-import { PickupDeliveryRowComponent } from './components/pickup-delivery-row/pickup-delivery-row.component';
 
 @Component({
     selector: 'app-new-load-table',
@@ -37,7 +36,6 @@ import { PickupDeliveryRowComponent } from './components/pickup-delivery-row/pic
         CaCheckboxComponent,
         CaCheckboxSelectedCountComponent,
         SvgIconComponent,
-        PickupDeliveryRowComponent
     ],
 })
 export class NewLoadTableComponent {

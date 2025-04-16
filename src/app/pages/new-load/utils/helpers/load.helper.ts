@@ -36,6 +36,7 @@ export class LoadHelper {
                 brokerBusinessName: load.broker?.businessName,
                 brokerContact: load.brokerContact?.contactName,
                 brokerPhone: load.broker?.phone,
+                assignedDriver: load.driver,
                 assignedDriverTruckNumber: load.driver?.truckNumber,
                 assignedDriverTrailerNumber: load.driver?.trailerNumber,
                 milesLoaded: load.miles?.loadedMiles,
@@ -43,8 +44,7 @@ export class LoadHelper {
                 milesTotal: load.miles?.totalMiles,
                 billingRatePerMile: load.billing?.rpm,
                 billingRate: load.billing?.rate,
-                loadPickup: load.pickup,
-                loadDelivery: load.delivery
+                invoiceDate: load.invoicedDate
             };
         });
     }

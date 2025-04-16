@@ -21,8 +21,8 @@
             templateCreated,
             templateCommodity,
             billingRate,
-            loadPickup,
-            loadDelivery,
+            invoiceDate,
+            assignedDriver,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -59,28 +59,23 @@
             <div (click)="onOpenModal(data.id, store.selectedTab)">EDIT</div>
         </ng-template>
 
-        <!-- where is invoice number in data model??? -->
-        <!-- <ng-template let-data="data" #loadInvoice>
-            <span
-                class="ta-font-bold text-size-14 text-color-black c-pointer text-hover-blue-15"
-                (click)="navigateToLoadDetails(data.id)"
-            >
-                {{ data.loadNumber }}
-            </span>
-        </ng-template> -->
+        <ng-template let-data="data" #invoiceDate>
+            <div class="text-color-black-2 text-size-14">
+                {{ data.invoiceDate | date: 'dd/MM/yy' }}
+            </div>
+        </ng-template>
+
+        <ng-template let-data="data" #assignedDriver>
+            <div class="text-color-black-2 text-size-14">
+                {{ data.assignedDriver.firstName }}
+                {{ data.assignedDriver.lastName }}
+            </div>
+        </ng-template>
 
         <ng-template let-data="data" #billingRate>
             <span class="ta-font-bold text-size-14 text-color-black">
                 {{ data.billingRate | currency }}
             </span>
-        </ng-template>
-
-        <ng-template let-data="data" #loadPickup>
-            <app-pickup-delivery-row [data]="data.loadPickup"></app-pickup-delivery-row>
-        </ng-template>
-
-        <ng-template let-data="data" #loadDelivery>
-            <app-pickup-delivery-row [data]="data.loadDelivery"></app-pickup-delivery-row>
         </ng-template>
 
         <ng-template let-data="data" #loadNumber>
@@ -92,14 +87,7 @@
             </span>
         </ng-template>
 
-        <!-- template columns for TEMPLATE TAB -->
         <ng-template let-data="data" #templateName>
-            <!-- <div class="d-flex gap-1">
-                when the icon will be available add it 
-                <div class="text-color-black-2 text-size-14">
-                    {{ data.name}}
-                </div>
-            </div> -->
             <div class="text-color-black text-size-14 ta-font-bold">
                 {{ data.templateName }}
             </div>
@@ -122,8 +110,6 @@
                 {{ data.templateCommodity?.name }}
             </div>
         </ng-template>
-
-        <!-- END OF template columns for TEMPLATE TAB -->
 
         <ng-template let-data="data" #loadDispatcher>
             <div class="d-flex gap-1">
