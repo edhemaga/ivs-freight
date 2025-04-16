@@ -1,14 +1,21 @@
 @let store =
     {
-        viewData: loadStoreService.viewData$ | async,
+        viewData: loadStoreService.loadsSelector$ | async,
     };
+
+@let frontSideData = tabCardData[selectedTab].front;
+@let backSideData = tabCardData[selectedTab].back;
 
 @if (store.viewData) {
     <ca-table-card-view
         [viewData]="store.viewData"
         [frontSide]="frontSide"
         [backSide]="backSide"
-        [cardTitle]="'loadNumber'"
+        [cardTitle]="
+            selectedTab === sharedEnums.TEMPLATE
+                ? sharedEnums.NAME
+                : sharedEnums.LOAD_NUMBER
+        "
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">

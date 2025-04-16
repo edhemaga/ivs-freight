@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 
 // modules
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
 // services
-import { LoadStoreService } from '@pages/load/pages/load-table/services/load-store.service';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 
 // components
 import { CaTableCardViewComponent } from 'ca-components';
@@ -21,13 +22,23 @@ import { ModalService } from '@shared/services';
 import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
 
 // configs
-import { LoadCardDataConfig } from '@pages/new-load/pages/new-load-cards/utils/configs';
+import {
+    LoadActiveCardDataConfig,
+    LoadCardDataConfig,
+    LoadClosedCardDataConfig,
+    LoadPendingCardDataConfig,
+    LoadTemplateCardDataConfig,
+} from '@pages/new-load/pages/new-load-cards/utils/configs';
 
 // interfaces
 import { ICardValueData } from '@shared/interfaces';
 
 // enums
-import { eTableCardViewData, TableStringEnum } from '@shared/enums';
+import {
+    eSharedString,
+    eTableCardViewData,
+    TableStringEnum,
+} from '@shared/enums';
 
 // svg-routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -50,15 +61,46 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         GetNestedValuePipe,
     ],
 })
-export class NewLoadCardsComponent {
-    public frontSideData: ICardValueData[] = LoadCardDataConfig.FRONT_SIDE_DATA;
-    public backSideData: ICardValueData[] = LoadCardDataConfig.BACK_SIDE_DATA;
+export class NewLoadCardsComponent implements OnInit, OnDestroy {
+    // data (this will be changed when store is implemented)
+    public tabCardData: {
+        [key: string]: {
+            front: ICardValueData[];
+            back: ICardValueData[];
+        };
+    } = {
+        Active: {
+            front: LoadActiveCardDataConfig.FRONT_SIDE_DATA,
+            back: LoadActiveCardDataConfig.BACK_SIDE_DATA,
+        },
+        Pending: {
+            front: LoadPendingCardDataConfig.PENDING_FRONT_SIDE_DATA,
+            back: LoadPendingCardDataConfig.PENDING_BACK_SIDE_DATA,
+        },
+        Closed: {
+            front: LoadClosedCardDataConfig.CLOSED_FRONT_SIDE_DATA,
+            back: LoadClosedCardDataConfig.CLOSED_BACK_SIDE_DATA,
+        },
+        Template: {
+            front: LoadTemplateCardDataConfig.TEMPLATE_FRONT_SIDE_DATA,
+            back: LoadTemplateCardDataConfig.TEMPLATE_BACK_SIDE_DATA,
+        },
+    };
 
     // enums
     public tableCardViewEnums = eTableCardViewData;
 
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
+
+    // tab
+    public selectedTab!: string;
+
+    // enums
+    public sharedEnums = eSharedString;
+
+    // destroy
+    private destroy$ = new Subject<void>();
 
     constructor(
         private modalService: ModalService,
@@ -69,12 +111,12 @@ export class NewLoadCardsComponent {
         const action = {
             data: {
                 cardsAllData: LoadCardDataConfig.CARD_ALL_DATA,
-                front_side: this.frontSideData,
-                back_side: this.backSideData,
+                front_side: this.tabCardData[this.selectedTab].front,
+                back_side: this.tabCardData[this.selectedTab].back,
                 numberOfRows: 4,
                 checked: true,
             },
-            title: 'test',
+            title: eSharedString.LOAD_VERTICAL_LINE + this.selectedTab,
         };
 
         this.modalService
@@ -85,14 +127,29 @@ export class NewLoadCardsComponent {
             )
             .then((result) => {
                 if (result) {
-                    this.frontSideData = result.selectedColumns.front_side
-                        .slice(0, result.selectedColumns.numberOfRows)
-                        .map((front: ICardValueData) => front.inputItem);
+                    this.tabCardData[this.selectedTab].front =
+                        result.selectedColumns.front_side
+                            .slice(0, result.selectedColumns.numberOfRows)
+                            .map((front: ICardValueData) => front.inputItem);
 
-                    this.backSideData = result.selectedColumns.back_side
-                        .slice(0, result.selectedColumns.numberOfRows)
-                        .map((back: ICardValueData) => back.inputItem);
+                    this.tabCardData[this.selectedTab].back =
+                        result.selectedColumns.back_side
+                            .slice(0, result.selectedColumns.numberOfRows)
+                            .map((back: ICardValueData) => back.inputItem);
                 }
             });
+    }
+
+    ngOnInit(): void {
+        this.loadStoreService.selectedTabSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((tab) => {
+                this.selectedTab = tab;
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
