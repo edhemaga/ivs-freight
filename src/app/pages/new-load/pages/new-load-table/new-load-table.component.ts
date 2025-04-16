@@ -5,7 +5,13 @@ import { Router } from '@angular/router';
 import { NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
-import { eColor, eSharedString, eDateTimeFormat, eDropdownMenu, eGeneralActions } from '@shared/enums';
+import {
+    eColor,
+    eSharedString,
+    eDateTimeFormat,
+    eDropdownMenu,
+    eGeneralActions,
+} from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // base classes
@@ -37,6 +43,7 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 
 // Models
 import { LoadStatusResponse } from 'appcoretruckassist';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-new-load-table',
@@ -57,7 +64,7 @@ import { LoadStatusResponse } from 'appcoretruckassist';
         CaStatusChangeDropdownComponent,
         CaProfileImageComponent,
         SvgIconComponent,
-        TaAppTooltipV2Component
+        TaAppTooltipV2Component,
     ],
 })
 export class NewLoadTableComponent
@@ -67,6 +74,9 @@ export class NewLoadTableComponent
     protected destroy$ = new Subject<void>();
 
     public changeStatusPopover: NgbPopover;
+
+    // svg-routes
+    public sharedSvgRoutes = SharedSvgRoutes;
 
     public eColor = eColor;
     public eSharedString = eSharedString;

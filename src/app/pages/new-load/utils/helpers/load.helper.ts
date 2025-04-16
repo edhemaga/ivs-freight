@@ -24,8 +24,22 @@ export class LoadHelper {
         selectedTab: eLoadStatusStringType
     ): IMappedLoad[] {
         return loads.map((load) => {
-            const {id, loadNumber, status, dispatcher, loadDetails, totalDue, broker, brokerContact, driver, miles, billing, invoicedDate} = load;
-            return {
+            const {
+                id,
+                loadNumber,
+                status,
+                dispatcher,
+                loadDetails,
+                totalDue,
+                broker,
+                driver,
+                miles,
+                billing,
+                invoicedDate,
+                generalCommodity
+            } = load;
+
+            const mapped: IMappedLoad = {
                 id,
                 edit: true,
                 isSelected: false,
@@ -41,10 +55,8 @@ export class LoadHelper {
                 totalDue,
                 broker,
                 templateCreated: load.dateCreated,
-                templateCommodity: load.generalCommodity,
+                generalCommodity,
                 brokerBusinessName: broker?.businessName,
-                brokerContact: brokerContact?.contactName,
-                brokerPhone: broker?.phone,
                 driverInfo: driver,
                 assignedDriverTruckNumber: driver?.truckNumber,
                 assignedDriverTrailerNumber: driver?.trailerNumber,
@@ -53,8 +65,9 @@ export class LoadHelper {
                 milesTotal: miles?.totalMiles,
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
-                invoicedDate
+                invoicedDate,
             };
+            return mapped;
         });
     }
 

@@ -22,10 +22,12 @@
             loadStatus,
             templateName,
             templateCreated,
-            templateCommodity,
+            commodity,
             billingRate,
             invoicedDate,
             driverInfo,
+            brokerContact,
+            brokerPhone,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -59,26 +61,77 @@
             ></app-ca-checkbox>
         </ng-template>
 
-        <ng-template let-data="data" #invoicedDate>
-            <div class="text-color-black-2 text-size-14">
+        <ng-template
+            #invoicedDate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
                 {{ data.invoicedDate | date: eDateTimeFormat.MM_DD_YY }}
             </div>
         </ng-template>
 
-        <ng-template let-data="data" #driverInfo>
-            <div class="text-color-black-2 text-size-14">
+        <ng-template
+            #brokerPhone
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.broker?.phone }}
+            </div>
+        </ng-template>
+
+        <ng-template
+            #brokerContact
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.broker?.contact }}
+            </div>
+        </ng-template>
+
+        <ng-template
+            #driverInfo
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+            let-data="data"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
                 {{ data.driverInfo.firstName }}
                 {{ data.driverInfo.lastName }}
             </div>
         </ng-template>
 
-        <ng-template let-data="data" #billingRate>
-            <span class="ta-font-bold text-size-14 text-color-black">
+        <ng-template
+            #billingRate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <span
+                class="ta-font-bold text-size-14 text-color-black"
+                [class]="cellColumnTextColorClass"
+            >
                 {{ data.billingRate | currency }}
             </span>
         </ng-template>
 
-        <ng-template let-data="data" #loadNumber>
+        <ng-template
+            #loadNumber
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
             <span
                 ngbTooltip
                 [mainTooltip]="eGeneralActions.VIEW_DETAILS"
@@ -86,6 +139,7 @@
                 [position]="ePosition.BOTTOM"
                 class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
                 (click)="navigateToLoadDetails(data.id)"
+                [class]="cellColumnTextColorClass"
             >
                 {{ data.loadNumber }}
             </span>
@@ -103,15 +157,15 @@
             </div>
         </ng-template>
 
-        <ng-template let-data="data" #templateCommodity>
+        <ng-template let-data="data" #commodity>
             <div class="text-color-black-2 text-size-14">
-                @if (data.templateCommodity?.name === eSharedString.HAZARDOUS) {
+                @if (data.generalCommodity?.name === eSharedString.HAZARDOUS) {
                     <svg-icon
                         [src]="sharedSvgRoutes.HAZARDOUS_ICON"
                         class="svg-size-14"
                     ></svg-icon>
                 }
-                {{ data.templateCommodity?.name }}
+                {{ data.generalCommodity?.name }}
             </div>
         </ng-template>
 
