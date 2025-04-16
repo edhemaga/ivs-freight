@@ -14,6 +14,11 @@
 .miles-unit-list {
     max-height: calc(100vh - 130px);
     height: fit-content;
+
+    .overflow-y-scroll {
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
 }
 
 .arrow {
