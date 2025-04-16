@@ -43,4 +43,7 @@ export enum eSharedString {
 
     // Status
     INVITED = 'Invited',
+
+    // Load commodity
+    HAZARDOUS = 'Hazardous'
 }

@@ -24,35 +24,36 @@ export class LoadHelper {
         selectedTab: eLoadStatusStringType
     ): IMappedLoad[] {
         return loads.map((load) => {
+            const {id, loadNumber, status, dispatcher, loadDetails, totalDue, broker, brokerContact, driver, miles, billing, invoicedDate} = load;
             return {
-                id: load.id,
+                id,
                 edit: true,
                 isSelected: false,
-                loadNumber: load.loadNumber,
+                loadNumber,
                 templateName: load.name,
-                status: load.status,
-                dispatcher: load.dispatcher,
-                referenceNumber: load.loadDetails?.referenceNumber,
+                status,
+                dispatcher,
+                referenceNumber: loadDetails?.referenceNumber,
                 tableDropdownContent:
                     DropdownMenuContentHelper.getLoadDropdownContent(
                         selectedTab
                     ),
-                totalDue: load.totalDue,
-                broker: load.broker,
+                totalDue,
+                broker,
                 templateCreated: load.dateCreated,
                 templateCommodity: load.generalCommodity,
-                brokerBusinessName: load.broker?.businessName,
-                brokerContact: load.brokerContact?.contactName,
-                brokerPhone: load.broker?.phone,
-                driverInfo: load.driver,
-                assignedDriverTruckNumber: load.driver?.truckNumber,
-                assignedDriverTrailerNumber: load.driver?.trailerNumber,
-                milesLoaded: load.miles?.loadedMiles,
-                milesEmpty: load.miles?.emptyMiles,
-                milesTotal: load.miles?.totalMiles,
-                billingRatePerMile: load.billing?.rpm,
-                billingRate: load.billing?.rate,
-                invoiceDate: load.invoicedDate
+                brokerBusinessName: broker?.businessName,
+                brokerContact: brokerContact?.contactName,
+                brokerPhone: broker?.phone,
+                driverInfo: driver,
+                assignedDriverTruckNumber: driver?.truckNumber,
+                assignedDriverTrailerNumber: driver?.trailerNumber,
+                milesLoaded: miles?.loadedMiles,
+                milesEmpty: miles?.emptyMiles,
+                milesTotal: miles?.totalMiles,
+                billingRatePerMile: billing?.rpm,
+                billingRate: billing?.rate,
+                invoicedDate
             };
         });
     }

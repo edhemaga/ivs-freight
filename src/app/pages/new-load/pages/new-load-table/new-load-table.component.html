@@ -24,7 +24,7 @@
             templateCreated,
             templateCommodity,
             billingRate,
-            invoiceDate,
+            invoicedDate,
             driverInfo,
         };
 
@@ -59,9 +59,9 @@
             ></app-ca-checkbox>
         </ng-template>
 
-        <ng-template let-data="data" #invoiceDate>
+        <ng-template let-data="data" #invoicedDate>
             <div class="text-color-black-2 text-size-14">
-                {{ data.invoiceDate | date: 'dd/MM/yy' }}
+                {{ data.invoicedDate | date: eDateTimeFormat.MM_DD_YY }}
             </div>
         </ng-template>
 
@@ -81,7 +81,7 @@
         <ng-template let-data="data" #loadNumber>
             <span
                 ngbTooltip
-                mainTooltip="View Details"
+                [mainTooltip]="eGeneralActions.VIEW_DETAILS"
                 [tooltipBackground]="eColor.BLACK"
                 [position]="ePosition.BOTTOM"
                 class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
@@ -99,13 +99,13 @@
 
         <ng-template let-data="data" #templateCreated>
             <div class="text-color-black-2 text-size-14">
-                {{ data.templateCreated | date: 'dd/MM/yy' }}
+                {{ data.templateCreated | date: eDateTimeFormat.MM_DD_YY }}
             </div>
         </ng-template>
 
         <ng-template let-data="data" #templateCommodity>
             <div class="text-color-black-2 text-size-14">
-                @if (data.templateCommodity?.name === 'Hazardous') {
+                @if (data.templateCommodity?.name === eSharedString.HAZARDOUS) {
                     <svg-icon
                         [src]="sharedSvgRoutes.HAZARDOUS_ICON"
                         class="svg-size-14"

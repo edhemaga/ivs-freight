@@ -16,4 +16,5 @@ export interface IMappedLoad {
     totalDue: number;
     broker: LoadBrokerInfo;
     driverInfo: LoadDriverInfo;
+    invoicedDate: string;
 }
