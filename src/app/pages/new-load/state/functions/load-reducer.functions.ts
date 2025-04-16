@@ -40,17 +40,41 @@ export const getLoadByIdSuccessResult = function (
     loadResponse: LoadListResponse | LoadTemplateListResponse
 ): ILoadState {
     console.log('getLoadByIdSuccessResult');
-    const loads = LoadHelper.loadMapper(loadResponse.pagination.data);
 
     const { selectedTab } = state;
+    const loads = LoadHelper.loadMapper(
+        loadResponse.pagination.data,
+        selectedTab
+    );
     return {
         ...state,
         loads,
+        searchResultsCount: loadResponse.pagination.count,
         toolbarTabs: LoadHelper.updateTabsCount(
             loadResponse,
             state.toolbarTabs
         ),
         tableColumns: LoadTableColumnsConfig.getLoadTableColumns(selectedTab),
+    };
+};
+
+export const onPageChanges = function (
+    state: ILoadState,
+    loadResponse: LoadListResponse | LoadTemplateListResponse
+): ILoadState {
+    console.log('onPageChangesonPageChanges');
+    const loads = [
+        ...state.loads,
+        ...LoadHelper.loadMapper(
+            loadResponse.pagination.data,
+            state.selectedTab
+        ),
+    ];
+
+    return {
+        ...state,
+        loads,
+        currentPage: state.currentPage + 1,
     };
 };
 
@@ -63,6 +87,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
 
     return {
         ...state,
+        currentPage: 1,
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
     };
 };
@@ -100,6 +125,7 @@ export function onFiltersChange(
     return {
         ...state,
         filters: FilterHelper.mapFilters(filters, state.filters),
+        currentPage: 1,
     };
 }
 
@@ -125,6 +151,7 @@ export function onSeachFilterChange(
     console.log('onSeachFilterChange');
     return {
         ...state,
+        currentPage: 1,
         filters: {
             ...state.filters,
             searchQuery,
@@ -218,9 +245,15 @@ export function onSelectAllLoads(
 //#endregion
 
 //#region Delete
-export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
+export function onDeleteLoadListSuccess(
+    state: ILoadState,
+    selectedIds: number[]
+): ILoadState {
     const { selectedTab, toolbarTabs } = state;
-    const updatedLoads = state.loads.filter((load) => !load.isSelected);
+
+    const updatedLoads = state.loads.filter(
+        (load) => !selectedIds.includes(load.id)
+    );
 
     return {
         ...state,
@@ -230,15 +263,13 @@ export function onDeleteLoadListSuccess(state: ILoadState): ILoadState {
             updatedLoads,
             selectedTab
         ),
+        searchResultsCount: state.searchResultsCount - selectedIds.length,
     };
 }
 
-export function onDeleteLoadListTemplate(
-    state: ILoadState,
-    templateId: number
-): ILoadState {
+export function onDeleteLoad(state: ILoadState, id: number): ILoadState {
     const { selectedTab, toolbarTabs } = state;
-    const updatedLoads = state.loads.filter((load) => load.id !== templateId);
+    const updatedLoads = state.loads.filter((load) => load.id !== id);
 
     return {
         ...state,
@@ -248,6 +279,7 @@ export function onDeleteLoadListTemplate(
             updatedLoads,
             selectedTab
         ),
+        searchResultsCount: state.searchResultsCount - 1,
     };
 }
 
@@ -364,6 +396,7 @@ export const updateLoadStatusSuccessResult = function (
     const { loads, selectedTab, toolbarTabs } = state || {};
     let loadsClone: IMappedLoad[] = structuredClone(loads);
     let toolbarTabsClone = structuredClone(toolbarTabs);
+    let searchResultsCount = state.searchResultsCount;
 
     if (statusType?.name === selectedTab) {
         let loadUpdated: IMappedLoad = (<IMappedLoad[]>loadsClone).find(
@@ -374,6 +407,7 @@ export const updateLoadStatusSuccessResult = function (
     } else {
         toolbarTabsClone = toolbarTabsClone.map((tab) => {
             if (tab.title === selectedTab) {
+                searchResultsCount = searchResultsCount - 1;
                 return {
                     ...tab,
                     length: tab.length - 1,
@@ -396,6 +430,7 @@ export const updateLoadStatusSuccessResult = function (
         ...state,
         loads: loadsClone,
         toolbarTabs: toolbarTabsClone,
+        searchResultsCount,
     };
 
     return result;

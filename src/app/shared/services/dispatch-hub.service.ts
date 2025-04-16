@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 
 // singalR
 import * as signalR from '@microsoft/signalr';
@@ -20,6 +20,7 @@ import { UserHelper } from '@shared/utils/helpers';
 
 // enums
 import { eStringPlaceholder } from 'ca-components';
+import { LogLevel } from '@microsoft/signalr';
 
 @Injectable({
     providedIn: 'root',
@@ -27,6 +28,8 @@ import { eStringPlaceholder } from 'ca-components';
 export class DispatchHubService {
     private token: string =
         UserHelper.getUserFromLocalStorage()?.token ?? eStringPlaceholder.EMPTY;
+
+    private isStaging = environment.staging;
 
     private static hubConnection: signalR.HubConnection;
 
@@ -39,6 +42,7 @@ export class DispatchHubService {
                 skipNegotiation: false,
                 accessTokenFactory: async () => this.token,
             })
+            .configureLogging(!this.isStaging ? LogLevel.Trace : LogLevel.None)
             .build();
     }
 
@@ -74,7 +78,15 @@ export class DispatchHubService {
                     observer.next(response);
                 }
             );
-        });
+        }).pipe(
+            tap((res) => {
+                !this.isStaging &&
+                    console.log(
+                        res,
+                        DispatchHubConstants.HUB_EVENT_LOAD_CHANGED
+                    );
+            })
+        );
     }
 
     public onDispatchChanged(): Observable<DispatchResponse> {
@@ -85,7 +97,15 @@ export class DispatchHubService {
                     observer.next(response);
                 }
             );
-        });
+        }).pipe(
+            tap((res) => {
+                !this.isStaging &&
+                    console.log(
+                        res,
+                        DispatchHubConstants.HUB_EVENT_DISPATCH_CHANGED
+                    );
+            })
+        );
     }
 
     public onDispatchBoardChanged(): Observable<DispatchBoardResponse> {
@@ -96,6 +116,14 @@ export class DispatchHubService {
                     observer.next(response);
                 }
             );
-        });
+        }).pipe(
+            tap((res) => {
+                !this.isStaging &&
+                    console.log(
+                        res,
+                        DispatchHubConstants.HUB_EVENT_DISPATCH_BOARD_CHANGED
+                    );
+            })
+        );
     }
 }

@@ -1,7 +1,7 @@
 @let displayedDataCount = rows.length;
 
 <div class="table-container">
-    <div class="w-full">
+    <div class="w-fit-content">
         <!-- Header -->
 
         <div class="d-flex m-b-6 p-x-8">
@@ -64,7 +64,7 @@
         <div class="new-table--body">
             @for (row of rows; track row.id) {
                 <div
-                    class="d-flex align-items-center background-white p-x-4 br-3 m-b-2"
+                    class="d-flex align-items-center background-white p-x-4 br-3 m-b-2 w-fit-content"
                 >
                     @if (row) {
                         <div
@@ -155,11 +155,11 @@
         <!-- Footer -->
 
         @if (displayedDataCount) {
-            <div
-                class="d-flex align-items-center justify-content-between m-t-2 m-b-22 new--table-footer"
-            >
-                <ng-container *ngTemplateOutlet="footerTemplate"></ng-container>
-            </div>
+            <app-ca-show-more
+                [displayedDataCount]="displayedDataCount"
+                [totalDataCount]="totalDataCount"
+                (onShowMore)="onShowMoreClick()"
+            ></app-ca-show-more>
         }
     </div>
 </div>
@@ -478,12 +478,6 @@
         let-hasMarginRight="hasMarginRight"
     >
         @if (column.isChecked) {
-            <!--   @let tableColumnCellClass =
-                {
-                    'p-l-6': hasPaddingLeft,
-                    'm-r-7': hasMarginRight,
-                }; -->
-
             @let tableColumnCellClass =
                 {
                     hasPaddingLeft,
@@ -495,11 +489,6 @@
                 [style.min-width]="column.width + eUnit.PX"
                 [style.width]="column.width + eUnit.PX"
             >
-                <!--    @let tableColumnCellColorClass = -->
-                <!--        !!row[column.key] -->
-                <!--            ? 'text-color-black-2' -->
-                <!--            : 'text-color-muted'; -->
-
                 @let tableColumnCellColorClass =
                     {
                         isTableColumnCellColorClass: true,
@@ -516,7 +505,8 @@
                                 data: row,
                                 key: column.key,
                                 column,
-                                cellColumnTextColorClass,
+                                cellColumnTextColorClass:
+                                    tableColumnCellColorClass,
                             }
                         "
                     ></ng-container>
@@ -533,20 +523,4 @@
             </div>
         }
     </ng-template>
-</ng-template>
-
-<ng-template #footerTemplate>
-    <p class="text-size-11 text-color-bw6-2 ta-font-semi-bold">
-        {{ displayedDataCount }} OF {{ totalDataCount }}
-    </p>
-
-    @if (displayedDataCount < totalDataCount) {
-        <button
-            type="button"
-            class="text-size-11 text-color-black text-hover-blue-15 ta-font-bold m-0 p-0 background-transparent border-0 text-uppercase"
-            (click)="handleShowMoreClick()"
-        >
-            {{ eGeneralActions.SHOW_MORE }}
-        </button>
-    }
 </ng-template>

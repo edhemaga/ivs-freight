@@ -85,10 +85,6 @@
 </ng-template>
 
 <ng-template #stopList>
-    @let load = loadStoreService.resolveLoadDetails$ | async;
-    @let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-    @let isPendingLoad = load.statusType?.id === 1;
-
     <div class="background-white br-3">
         @if (isLoading) {
             <div class="p-6">
@@ -988,7 +984,7 @@
                 </div>
             } @else {
                 <div
-                    class="d-flex gap-1px h-16 align-items-center m-t-6 overflow-hidden br-2"
+                    class="d-flex gap-1px h-16 align-items-center m-t-6 overflow-hidden br-2 stops-progres-bar-closed-load"
                 >
                     @for (
                         status of statusHistory;
@@ -996,17 +992,21 @@
                         track index
                     ) {
                         @if (status.percentage) {
-                            @let width = { width: status.percentage + '%' };
+                            @let barStyle =
+                                {
+                                    width: status.percentage + '%',
+                                    height:
+                                        index === hoveredIndex ? '16px' : '8px',
+                                };
                             <div
-                                class="d-inline-block h-8"
+                                class="d-inline-block h-8 stops-progres-bar-closed-load-status"
                                 #dropdownPopover="ngbPopover"
                                 [ngbPopover]="dropdownOptions"
                                 popoverClass="load-stops-options-popover"
                                 [autoClose]="true"
                                 [placement]="ePlacemnet.BOTTOM"
-                                [ngStyle]="width"
+                                [ngStyle]="barStyle"
                                 [ngClass]="[
-                                    index === hoveredIndex ? 'h-16' : 'h-8',
                                     index !== hoveredIndex &&
                                     hoveredIndex !== null
                                         ? 'opacity-40'

@@ -38,11 +38,13 @@ export class LoadService {
 
     public getLoadList(
         statusType: number,
-        filters: IStateFilters
+        filters: IStateFilters,
+        page: number
     ): Observable<LoadListResponse> {
         const params = LoadQueryHelper.mapLoadListQueryParams(
             statusType,
-            filters
+            filters,
+            page
         );
 
         return this.http.get<LoadListResponse>(
@@ -51,9 +53,10 @@ export class LoadService {
         );
     }
     public getLoadTemplateList(
-        filters: IStateFilters
+        filters: IStateFilters,
+        page: number
     ): Observable<LoadTemplateListResponse> {
-        const params = LoadQueryHelper.mapLoadListQueryParams(0, filters);
+        const params = LoadQueryHelper.mapLoadListQueryParams(0, filters, page);
 
         return this.http.get(
             `${environment.API_ENDPOINT}/api/load/template/list`,
@@ -131,19 +134,21 @@ export class LoadService {
         isSingular: boolean
     ): Observable<boolean> {
         const basePath = `${environment.API_ENDPOINT}/api/load`;
-        const templateSegment = isTemplate ? '/template' : '';
 
         if (isSingular && ids.length === 1) {
-            const url = `${basePath}${templateSegment}/${ids[0]}`;
-            return this.http.delete<boolean>(url);
+            return this.http.delete<boolean>(
+                `${basePath}${isTemplate ? '/template' : ''}/${ids[0]}`
+            );
         }
 
-        let params = new HttpParams();
-        ids.forEach((id) => {
-            params = params.append('Ids', id.toString());
-        });
+        const params = ids.reduce(
+            (param, id) => param.append('Ids', id.toString()),
+            new HttpParams()
+        );
 
-        const url = `${basePath}/list${templateSegment}`;
-        return this.http.delete<boolean>(url, { params });
+        return this.http.delete<boolean>(
+            `${basePath}${isTemplate ? '/template/list' : '/list'}`,
+            { params }
+        );
     }
 }

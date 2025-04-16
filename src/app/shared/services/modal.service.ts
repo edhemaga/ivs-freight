@@ -8,8 +8,6 @@ import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 // models
 import { ConfirmationReset } from '@shared/components/ta-shared-modals/confirmation-reset-modal/models/confirmation-reset.model';
 import { ModalOptions } from '@shared/components/ta-modal/models/modal-options.model';
-import { IModalData } from 'ca-components';
-
 
 // services
 import { EncryptionDecryptionService } from '@shared/services/encryption-decryption.service';
@@ -178,24 +176,13 @@ export class ModalService {
         return modal.result;
     }
 
-    public openModalNew(
-        component: any,
-        options: ModalOptions,
-        modalData?: IModalData,
-        templateRef?: TemplateRef<null>,
-        backdropClass?: string,
-        keyboardEsc: boolean = true
-    ): NgbModalRef {
-        options = {
-            ...options,
-            backdrop: 'static',
-            keyboard: keyboardEsc,
-            backdropClass: backdropClass ? backdropClass : 'myDropback',
+    public openModalNew(component: any, modalData?: any): NgbModalRef {
+        const options = {
+            keyboard: true,
+            backdropClass: 'myDropback',
         };
 
         const modal = this.ngbModal.open(component, options);
-
-        if (templateRef) modal.componentInstance.template = templateRef;
 
         if (modalData) modal.componentInstance.modalData = modalData;
 

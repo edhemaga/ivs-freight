@@ -37,6 +37,17 @@ export const getLoadsPayloadSuccess = createAction(
         payload: LoadListResponse;
     }>()
 );
+
+export const getLoadsPagePayloadSuccess = createAction(
+    LoadStoreConstants.ACTION_LOAD_PAGE_LIST_SUCCESS,
+    props<{
+        payload: LoadListResponse;
+    }>()
+);
+
+export const getLoadsOnPageChange = createAction(
+    LoadStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
+);
 //#endregion
 
 //#region Tabs
@@ -216,22 +227,27 @@ export const onDeleteLoadList = createAction(
     props<{
         count: number;
         isTemplate: boolean;
-        templateId: number;
+        selectedIds: number[];
     }>()
 );
 
 export const onDeleteLoadListSuccess = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS
-);
-
-export const onDeleteLoadListTemplate = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS,
     props<{
-        templateId: number;
+        selectedIds: number[];
     }>()
 );
 
-export const onDeleteLoadListTemplateSuccess = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE_SUCCESS
+export const onDeleteLoad = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD,
+    props<{
+        id: number;
+        isTemplate: boolean;
+        isDetailsPage: boolean;
+    }>()
+);
+
+export const onDeleteLoadSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_SUCCESS
 );
 //#endregion

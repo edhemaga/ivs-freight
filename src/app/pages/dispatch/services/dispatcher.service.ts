@@ -327,7 +327,7 @@ export class DispatcherService {
                 dispatchBoards: dispatchData.map((item) => {
                     let findedItem = false;
 
-                    if (item.id == boardData.id) {
+                    if (item.id == boardData?.item?.dispatchBoardId) {
                         item.dispatches = item.dispatches
                             .map((data) => {
                                 if (data.id == boardData.item.id) {
@@ -342,9 +342,8 @@ export class DispatcherService {
                                     data.truck || data.trailer || data.driver
                             );
 
-                        if (!findedItem) {
+                        if (!findedItem)
                             item.dispatches.push({ ...boardData.item });
-                        }
                     }
 
                     return item;

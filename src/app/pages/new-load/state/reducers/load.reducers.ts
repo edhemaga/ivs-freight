@@ -26,6 +26,7 @@ import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown
 export const initialState: ILoadState = {
     loads: [],
     areAllLoadsSelected: false,
+    searchResultsCount: 0,
 
     toolbarTabs: LoadToolbarTabs,
     selectedTab: eLoadStatusStringType.ACTIVE,
@@ -37,6 +38,7 @@ export const initialState: ILoadState = {
         statusFilters: [],
     },
     filters: {},
+    currentPage: 1,
 
     tableColumns: LoadTableColumnsConfig.getLoadTableColumns(
         eLoadStatusStringType.ACTIVE
@@ -83,6 +85,12 @@ export const loadReducer = createReducer(
 
     on(LoadActions.getLoadsPayloadSuccess, (state, { payload }) =>
         Functions.getLoadByIdSuccessResult(state, payload)
+    ),
+
+    on(LoadActions.getLoadsOnPageChange, (state) => state),
+
+    on(LoadActions.getLoadsPagePayloadSuccess, (state, { payload }) =>
+        Functions.onPageChanges(state, payload)
     ),
 
     //#region Toolbar tabs
@@ -144,12 +152,12 @@ export const loadReducer = createReducer(
     //#endregion
 
     //#region Delete actions
-    on(LoadActions.onDeleteLoadListSuccess, (state) =>
-        Functions.onDeleteLoadListSuccess(state)
+    on(LoadActions.onDeleteLoadListSuccess, (state, { selectedIds }) =>
+        Functions.onDeleteLoadListSuccess(state, selectedIds)
     ),
 
-    on(LoadActions.onDeleteLoadListTemplate, (state, { templateId }) =>
-        Functions.onDeleteLoadListTemplate(state, templateId)
+    on(LoadActions.onDeleteLoad, (state, { id }) =>
+        Functions.onDeleteLoad(state, id)
     ),
 
     //#region Toolbar hamburger menu

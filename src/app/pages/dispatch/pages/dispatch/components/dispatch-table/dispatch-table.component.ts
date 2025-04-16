@@ -239,8 +239,6 @@ export class DispatchTableComponent implements OnInit, OnDestroy {
 
         this.getColumnWidths();
 
-        this.dispatchHubService.connect();
-
         this.manageDispatchHubListeners();
     }
 

@@ -5,6 +5,8 @@
         selectedTab: loadStoreService.selectedTabSelector$ | async,
         tableSettings: loadStoreService.tableSettingsSelector$ | async,
         selectedCount: loadStoreService.selectedCountSelector$ | async,
+        selectedTabCountSelector:
+            loadStoreService.selectedTabCountSelector$ | async,
     };
 @if (store) {
     @let headerTemplates = { selectHeaderTemplate };
@@ -12,6 +14,7 @@
         {
             select,
             edit,
+            action,
             loadInvoice,
             loadStatus,
         };
@@ -23,8 +26,10 @@
         [headerTemplates]="{
             select: selectHeaderTemplate,
         }"
+        [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
+        (onShowMore)="onShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
@@ -60,7 +65,7 @@
         </ng-template>
 
         <ng-template let-data="data" #loadStatus>
-            <span 
+            <span
                 class="ta-font-bold text-size-14 text-color-black"
                 #ngbStatus="ngbPopover"
                 [autoClose]="true"
@@ -79,16 +84,30 @@
                     [isDefaultHoverFocus]="true"
                     [isNoStyle]="false"
                     [fontSize]="14"
+                    height="26"
                 >
                 </app-ca-load-status>
             </span>
         </ng-template>
+
+        <ng-template let-data="data" #action>
+            <ca-dropdown-menu
+                [type]="'dots-menu-type'"
+                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                [options]="data.tableDropdownContent"
+                (dropdownOptionEmitter)="
+                    onToggleDropdownMenuActions($event, data, store.selectedTab)
+                "
+            >
+            </ca-dropdown-menu>
+        </ng-template>
     </app-new-table>
 
     <ng-template #statusPopover>
-        @let possibleStatuses = loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
+        @let possibleStatuses =
+            loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
 
-        <app-ca-status-change-dropdown 
+        <app-ca-status-change-dropdown
             [statuses]="possibleStatuses"
             (onNextStatus)="onNextStatus($event)"
             (onPreviousStatus)="onPreviousStatus($event)"

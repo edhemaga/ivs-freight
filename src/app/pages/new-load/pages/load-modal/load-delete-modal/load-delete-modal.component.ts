@@ -2,17 +2,18 @@ import { CommonModule } from '@angular/common';
 import { Component, Input } from '@angular/core';
 
 // Interfaces
-import { IMappedLoad } from '@pages/new-load/interfaces';
+import { ILoadDeleteModal } from '@pages/new-load/interfaces';
+
+// Components
+import { CaDeleteModalComponent } from 'ca-components';
 
 @Component({
     selector: 'app-load-delete-modal',
     templateUrl: './load-delete-modal.component.html',
     styleUrl: './load-delete-modal.component.scss',
     standalone: true,
-    imports: [CommonModule],
+    imports: [CommonModule, CaDeleteModalComponent],
 })
 export class LoadDeleteModalComponent {
-    @Input() loads: IMappedLoad[];
-    @Input() isTemplate: boolean;
-    @Input() isPending: boolean;
+    @Input() modalData: ILoadDeleteModal;
 }

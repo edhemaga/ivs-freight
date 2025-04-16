@@ -41,7 +41,6 @@ import {
     AddressResponse,
 } from 'appcoretruckassist';
 import { LastStatusPassed } from '@shared/models/card-models/card-table-data.model';
-import { DispatchBoardParkingEmiter } from '@pages/dispatch/models/dispatch-parking-emmiter.model';
 
 @Component({
     selector: 'app-dispatch-table-status',
@@ -225,16 +224,6 @@ export class DispatchTableStatusComponent implements OnInit, OnDestroy {
 
         this.dispatchService
             .updateDispatchBoard(newData, this.dispatcher.id)
-            .pipe(
-                takeUntil(this.destroy$),
-                switchMap(() =>
-                    this.dispatchService.updateDispatchboardRowById(
-                        this.dispatchId,
-                        this.dispatchBoardId
-                    )
-                ),
-                tap(() => this.updateStatusEmitter.emit(false))
-            )
             .subscribe();
     }
 

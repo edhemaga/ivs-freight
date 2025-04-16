@@ -47,7 +47,6 @@ import { IStateFilters } from '@shared/interfaces';
 
 // Selectors
 import { loadIdLoadStatusChangeSelector } from '@pages/new-load/state/selectors/load.selectors';
-import { selectLoads } from '@pages/new-load/state/selectors/load.selectors';
 
 @Injectable()
 export class LoadEffect {
@@ -72,10 +71,11 @@ export class LoadEffect {
             ),
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector),
-                this.store.select(LoadSelectors.filtersSelector)
+                this.store.select(LoadSelectors.filtersSelector),
+                this.store.select(LoadSelectors.pageSelector)
             ),
-            exhaustMap(([action, mode, filters]) =>
-                this.getLoadData(mode, false, filters).pipe(
+            exhaustMap(([action, mode, filters, page]) =>
+                this.getLoadData(mode, false, filters, page).pipe(
                     map(
                         ({
                             loadResponse,
@@ -100,6 +100,26 @@ export class LoadEffect {
     );
     //#endregion
 
+    public getLoadsOnPageChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.getLoadsOnPageChange),
+            withLatestFrom(
+                this.store.select(LoadSelectors.selectedTabSelector),
+                this.store.select(LoadSelectors.filtersSelector),
+                this.store.select(LoadSelectors.pageSelector)
+            ),
+            exhaustMap(([action, mode, filters, page]) => {
+                console.log('getLoadsOnPageChange');
+                return this.getLoadData(mode, true, filters, page + 1).pipe(
+                    map(({ loadResponse }) =>
+                        LoadActions.getLoadsPagePayloadSuccess({
+                            payload: loadResponse,
+                        })
+                    )
+                );
+            })
+        )
+    );
     //#region  Filters
     public getLoadsOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
@@ -109,10 +129,11 @@ export class LoadEffect {
             ),
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector),
-                this.store.select(LoadSelectors.filtersSelector)
+                this.store.select(LoadSelectors.filtersSelector),
+                this.store.select(LoadSelectors.pageSelector)
             ),
-            exhaustMap(([action, mode, filters]) =>
-                this.getLoadData(mode, true, filters).pipe(
+            exhaustMap(([action, mode, filters, page]) =>
+                this.getLoadData(mode, true, filters, page).pipe(
                     map(({ loadResponse }) =>
                         LoadActions.getLoadsPayloadSuccess({
                             payload: loadResponse,
@@ -198,33 +219,74 @@ export class LoadEffect {
 
     //#endregion
 
+    //#region
+    public refreshFilters$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(
+                LoadActions.openChangeStatuDropdown,
+                LoadActions.revertLoadStatusSuccess,
+                LoadActions.onDeleteLoadSuccess,
+                LoadActions.onDeleteLoadListSuccess
+            ),
+            withLatestFrom(
+                this.store.select(LoadSelectors.selectedTabSelector)
+            ),
+            switchMap(([_, selectedTab]) => {
+                console.log('refreshFilters$');
+                return forkJoin({
+                    dispatcherFilters:
+                        this.loadService.getDispatcherFilters(selectedTab),
+                    statusFilters:
+                        this.loadService.getStatusFilters(selectedTab),
+                }).pipe(
+                    map(({ dispatcherFilters, statusFilters }) => {
+                        return LoadActions.setFilterDropdownList({
+                            dispatcherFilters,
+                            statusFilters,
+                        });
+                    })
+                );
+            })
+        )
+    );
+
     //#endregion
 
     //#region Delete load
     public onDeleteLoadList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(LoadActions.onDeleteLoadList),
-            withLatestFrom(this.store.select(selectLoads)),
-            switchMap(([action, loads]) => {
-                const { isTemplate, count } = action;
-                const selectedIds = loads
-                    .filter((load) => load.isSelected)
-                    .map((load) => load.id);
+            switchMap((action) => {
+                const { isTemplate, count, selectedIds } = action;
 
                 return this.loadService
                     .deleteLoads(selectedIds, isTemplate, count === 1)
-                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+                    .pipe(
+                        map(() =>
+                            LoadActions.onDeleteLoadListSuccess({ selectedIds })
+                        )
+                    );
             })
         )
     );
 
     public onDeleteLoadListTemplate$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(LoadActions.onDeleteLoadListTemplate),
-            switchMap(({ templateId }) => {
+            ofType(LoadActions.onDeleteLoad),
+            switchMap(({ id, isTemplate, isDetailsPage }) => {
                 return this.loadService
-                    .deleteLoads([templateId], true, true)
-                    .pipe(map(() => LoadActions.onDeleteLoadListSuccess()));
+                    .deleteLoads([id], isTemplate, true)
+                    .pipe(
+                        map(() => {
+                            if (isDetailsPage) {
+                                this.router.navigate([`/${eLoadRouting.LIST}`]);
+                            }
+
+                            return LoadActions.onDeleteLoadListSuccess({
+                                selectedIds: [id],
+                            });
+                        })
+                    );
             })
         )
     );
@@ -234,7 +296,8 @@ export class LoadEffect {
     private getLoadData(
         mode: string,
         isFilterChange: boolean,
-        filters: IStateFilters
+        filters: IStateFilters,
+        page: number
     ): Observable<{
         loadResponse: LoadTemplateListResponse | LoadListResponse;
         dispatcherFilters: DispatcherFilterResponse[];
@@ -244,8 +307,8 @@ export class LoadEffect {
         const isTemplate = tabValue === eLoadStatusType.Template;
 
         const loadRequest$ = isTemplate
-            ? this.loadService.getLoadTemplateList(filters)
-            : this.loadService.getLoadList(tabValue, filters);
+            ? this.loadService.getLoadTemplateList(filters, page)
+            : this.loadService.getLoadList(tabValue, filters, page);
 
         // On filter change or on template we don't have to update filter dropdown list
         const dispatcherFilters$ =
