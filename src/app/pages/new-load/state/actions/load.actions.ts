@@ -13,8 +13,10 @@ import {
     DispatcherFilterResponse,
     LoadListResponse,
     LoadMinimalListResponse,
+    LoadPossibleStatusesResponse,
     LoadResponse,
     LoadStatusFilterResponse,
+    LoadStatusResponse,
     RoutingResponse,
 } from 'appcoretruckassist';
 
@@ -23,7 +25,6 @@ import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
-import { TemplateRef } from '@angular/core';
 
 //#region List request
 export const getLoadsPayload = createAction(
@@ -35,6 +36,17 @@ export const getLoadsPayloadSuccess = createAction(
     props<{
         payload: LoadListResponse;
     }>()
+);
+
+export const getLoadsPagePayloadSuccess = createAction(
+    LoadStoreConstants.ACTION_LOAD_PAGE_LIST_SUCCESS,
+    props<{
+        payload: LoadListResponse;
+    }>()
+);
+
+export const getLoadsOnPageChange = createAction(
+    LoadStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
 );
 //#endregion
 
@@ -144,6 +156,56 @@ export const toggleCardFlipViewMode = createAction(
 );
 //#endregion
 
+// #region updateLoadStatus
+export const updateLoadStatus = createAction(
+    LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
+    props<{ status: LoadStatusResponse }>()
+);
+
+export const updateLoadStatusSuccess = createAction(
+    LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_SUCCESS,
+    props<{ status: LoadStatusResponse; load: LoadResponse }>()
+);
+
+export const updateLoadStatusError = createAction(
+    LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS_ERROR,
+    props<{ error: Error }>()
+);
+// #endregion
+
+// #region revertLoadStatus
+export const revertLoadStatus = createAction(
+    LoadStoreConstants.ACTION_REVERT_LOAD_STATUS,
+    props<{ status: LoadStatusResponse }>()
+);
+
+export const revertLoadStatusSuccess = createAction(
+    LoadStoreConstants.ACTION_REVERT_LOAD_STATUS_SUCCESS,
+    props<{ status: LoadStatusResponse; load: LoadResponse }>()
+);
+
+export const revertLoadStatusError = createAction(
+    LoadStoreConstants.ACTION_REVERT_LOAD_STATUS_ERROR,
+    props<{ error: Error }>()
+);
+// #endregion
+
+// #region openChangeStatuDropdown
+export const openChangeStatuDropdown = createAction(
+    LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
+    props<{ loadId: number }>()
+);
+
+export const openChangeStatuDropdownSuccess = createAction(
+    LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN_SUCCESS,
+    props<{ possibleStatuses: LoadPossibleStatusesResponse; loadId: number }>()
+);
+
+export const openChangeStatuDropdownError = createAction(
+    LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN_ERROR,
+    props<{ error: Error }>()
+);
+// #endregion
 //#region List
 export const onSelectLoad = createAction(
     LoadStoreConstants.ACTION_ON_ONE_LOAD_SELECT,
@@ -165,22 +227,27 @@ export const onDeleteLoadList = createAction(
     props<{
         count: number;
         isTemplate: boolean;
-        templateId: number;
+        selectedIds: number[];
     }>()
 );
 
 export const onDeleteLoadListSuccess = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS
-);
-
-export const onDeleteLoadListTemplate = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST_SUCCESS,
     props<{
-        templateId: number;
+        selectedIds: number[];
     }>()
 );
 
-export const onDeleteLoadListTemplateSuccess = createAction(
-    LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE_SUCCESS
+export const onDeleteLoad = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD,
+    props<{
+        id: number;
+        isTemplate: boolean;
+        isDetailsPage: boolean;
+    }>()
+);
+
+export const onDeleteLoadSuccess = createAction(
+    LoadStoreConstants.ACTION_ON_DELETE_LOAD_SUCCESS
 );
 //#endregion

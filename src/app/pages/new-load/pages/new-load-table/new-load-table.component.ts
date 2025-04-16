@@ -1,25 +1,45 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
 
-// Services
-import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 // Enums
-import { eColor } from '@shared/enums';
+import { eColor, eDropdownMenu } from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // svg-routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+// base classes
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
 
 // Components
 import {
+    CaDropdownMenuComponent,
+    CaStatusChangeDropdownComponent,
     CaCheckboxComponent,
     CaLoadStatusComponent,
     CaCheckboxSelectedCountComponent,
-    CaProfileImageComponent
+    ePosition,
 } from 'ca-components';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { Subject, takeUntil } from 'rxjs';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+
+import { CaProfileImageComponent } from 'ca-components';
 import { SvgIconComponent } from 'angular-svg-icon';
+
+// Services
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+import { ModalService } from '@shared/services';
+
+// interfaces
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
+// helpers
+import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// Models
+import { LoadStatusResponse } from 'appcoretruckassist';
 
 @Component({
     selector: 'app-new-load-table',
@@ -28,21 +48,44 @@ import { SvgIconComponent } from 'angular-svg-icon';
     standalone: true,
     imports: [
         CommonModule,
+        NgbPopover,
 
         // Components
         NewTableComponent,
         CaLoadStatusComponent,
-        CaProfileImageComponent,
+        CaDropdownMenuComponent,
         CaCheckboxComponent,
         CaCheckboxSelectedCountComponent,
+        CaStatusChangeDropdownComponent,
+        CaProfileImageComponent,
         SvgIconComponent,
     ],
 })
-export class NewLoadTableComponent {
-    public eColor = eColor;
-    public sharedSvgRoutes = SharedSvgRoutes;
+export class NewLoadTableComponent
+    extends LoadDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
+    protected destroy$ = new Subject<void>();
 
-    constructor(protected loadStoreService: LoadStoreService) {}
+    public changeStatusPopover: NgbPopover;
+
+    public eColor = eColor;
+    public ePosition = ePosition;
+    public eDropdownMenu = eDropdownMenu;
+
+    constructor(
+        protected router: Router,
+
+        // services
+        protected loadStoreService: LoadStoreService,
+        protected modalService: ModalService
+    ) {
+        super();
+    }
+
+    ngOnInit(): void {
+        this.initChangeStatusDropdownListener();
+    }
 
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
@@ -58,11 +101,71 @@ export class NewLoadTableComponent {
         });
     }
 
+    public onHandleShowMoreClick(): void {
+        this.loadStoreService.getNewPage();
+    }
+
+    public onToggleDropdownMenuActions(
+        action: IDropdownMenuOptionEmit,
+        data,
+        selectedTab
+    ): void {
+        const { type } = action;
+
+        const tableAction =
+            DropdownMenuActionsHelper.createDropdownMenuActionsEmitAction(
+                type,
+                data
+            );
+
+        // this is because we have load and new load - it will be removed
+        if (type === eDropdownMenu.VIEW_DETAILS_TYPE) {
+            const { id } = data;
+            this.navigateToLoadDetails(id);
+
+            return;
+        }
+        this.handleDropdownMenuActions(
+            tableAction,
+            eDropdownMenu.LOAD,
+            selectedTab
+        );
+    }
+
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
+    }
+
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
+    }
+
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
+    }
+
     public onCheckboxCountClick(action: string): void {
         this.loadStoreService.onSelectAll(action);
     }
 
     public onSelectLoad(id: number): void {
         this.loadStoreService.onSelectLoad(id);
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }

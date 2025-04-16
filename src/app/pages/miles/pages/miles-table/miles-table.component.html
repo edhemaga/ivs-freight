@@ -73,9 +73,17 @@
         <!-- Unit Template -->
 
         <ng-template #unitTemplate let-data="data" let-column="column">
+            @let unitTemplateStyle = { 'max-width': column.width + eUnit.PX };
+
             <div class="d-flex align-items-center">
                 <p
-                    class="text-color-black ta-font-bold text-size-14 d-inline-block text-truncate"
+                    ngbTooltip
+                    mainTooltip="Open Map"
+                    [tooltipBackground]="eColor.BLACK"
+                    [position]="ePosition.BOTTOM"
+                    class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 d-inline-block text-truncate"
+                    [ngStyle]="unitTemplateStyle"
+                    (click)="goToMilesDetailsPage(data.truckId)"
                 >
                     {{ data.unit }}
                 </p>

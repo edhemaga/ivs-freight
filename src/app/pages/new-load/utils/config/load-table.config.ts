@@ -65,6 +65,7 @@ export class LoadTableColumnsConfig {
                 isClosed
             ),
             ...this.getCreatedAndEditedDates(),
+            ...this.getActions(),
         ];
     }
 
@@ -97,6 +98,7 @@ export class LoadTableColumnsConfig {
                 isClosed
             ),
             ...this.getCreatedAndEditedDates(),
+            ...this.getActions(),
         ];
     }
 
@@ -724,6 +726,22 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isChecked: false,
                 hasSort: true,
+                sortName: MilesStopSortBy.UnitNumber,
+            },
+        ];
+    }
+
+    private static getActions(): ITableColumn[] {
+        return [
+            {
+                key: 'action',
+                label: '',
+                width: 26,
+                minWidth: 26,
+                maxWidth: 26,
+                isResizable: false,
+                isChecked: true,
+                hasSort: false,
                 sortName: MilesStopSortBy.UnitNumber,
             },
         ];

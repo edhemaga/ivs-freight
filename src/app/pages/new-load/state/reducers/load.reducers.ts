@@ -26,6 +26,7 @@ import { DropdownMenuToolbarContentHelper } from '@shared/utils/helpers/dropdown
 export const initialState: ILoadState = {
     loads: [],
     areAllLoadsSelected: false,
+    searchResultsCount: 0,
 
     toolbarTabs: LoadToolbarTabs,
     selectedTab: eLoadStatusStringType.ACTIVE,
@@ -37,6 +38,7 @@ export const initialState: ILoadState = {
         statusFilters: [],
     },
     filters: {},
+    currentPage: 1,
 
     tableColumns: LoadTableColumnsConfig.getLoadTableColumns(
         eLoadStatusStringType.ACTIVE
@@ -73,6 +75,9 @@ export const initialState: ILoadState = {
         sortKey: null,
         sortDirection: null,
     },
+
+    possibleStatuses: null,
+    loadIdLoadStatusChange: null,
 };
 
 export const loadReducer = createReducer(
@@ -80,6 +85,12 @@ export const loadReducer = createReducer(
 
     on(LoadActions.getLoadsPayloadSuccess, (state, { payload }) =>
         Functions.getLoadByIdSuccessResult(state, payload)
+    ),
+
+    on(LoadActions.getLoadsOnPageChange, (state) => state),
+
+    on(LoadActions.getLoadsPagePayloadSuccess, (state, { payload }) =>
+        Functions.onPageChanges(state, payload)
     ),
 
     //#region Toolbar tabs
@@ -141,12 +152,12 @@ export const loadReducer = createReducer(
     //#endregion
 
     //#region Delete actions
-    on(LoadActions.onDeleteLoadListSuccess, (state) =>
-        Functions.onDeleteLoadListSuccess(state)
+    on(LoadActions.onDeleteLoadListSuccess, (state, { selectedIds }) =>
+        Functions.onDeleteLoadListSuccess(state, selectedIds)
     ),
 
-    on(LoadActions.onDeleteLoadListTemplate, (state, { templateId }) =>
-        Functions.onDeleteLoadListTemplate(state, templateId)
+    on(LoadActions.onDeleteLoad, (state, { id }) =>
+        Functions.onDeleteLoad(state, id)
     ),
 
     //#region Toolbar hamburger menu
@@ -162,6 +173,37 @@ export const loadReducer = createReducer(
     on(LoadActions.tableColumnReset, (state) => ({ ...state })),
     on(LoadActions.toggleCardFlipViewMode, (state) =>
         Functions.toggleCardFlipViewMode(state)
-    )
+    ),
+    //#endregion
+
+    //#region Change dropdown status
+    on(LoadActions.openChangeStatuDropdown, (state) => ({ ...state })),
+    on(
+        LoadActions.openChangeStatuDropdownSuccess,
+        (state, { possibleStatuses, loadId }) =>
+            Functions.openChangeStatuDropdownSuccessResult(
+                state,
+                possibleStatuses,
+                loadId
+            )
+    ),
+    on(LoadActions.openChangeStatuDropdownError, (state) => ({ ...state })),
+
+    on(LoadActions.updateLoadStatus, (state) => ({ ...state })),
+    on(LoadActions.updateLoadStatusSuccess, (state, { status, load }) =>
+        Functions.updateLoadStatusSuccessResult(state, status, load)
+    ),
+    on(LoadActions.updateLoadStatusError, (state) => ({ ...state })),
+
+    // on(LoadActions.updateLoadStatusSignalR, (state, { response }) =>
+    //     Functions.updateLoadStatusSignalRSuccess(state, response)
+    // ),
+
+    on(LoadActions.revertLoadStatus, (state) => ({ ...state })),
+    on(LoadActions.revertLoadStatusSuccess, (state, { status, load }) =>
+        Functions.updateLoadStatusSuccessResult(state, status, load)
+    ),
+    on(LoadActions.revertLoadStatusError, (state) => ({ ...state }))
+
     //#endregion
 );

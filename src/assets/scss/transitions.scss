@@ -1,0 +1,11 @@
+@import 'src/theme/variables.scss';
+
+.transition {
+    &-height {
+        transition: height $transitionDuration ease-in-out;
+    }
+
+    &-width {
+        transition: width $transitionDuration ease-in-out;
+    }
+}

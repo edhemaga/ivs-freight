@@ -14,6 +14,7 @@ import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interf
 
 // Models
 import { ITableData } from '@shared/models';
+import { LoadPossibleStatusesResponse } from 'appcoretruckassist';
 
 // Enums
 import { eLoadStatusStringType } from '@pages/new-load/enums';
@@ -22,6 +23,7 @@ import { eCardFlipViewMode, eCommonElement } from '@shared/enums';
 export interface ILoadState {
     loads: IMappedLoad[];
     areAllLoadsSelected: boolean;
+    searchResultsCount: number;
 
     // Main tabs
     toolbarTabs: ITableData[];
@@ -33,6 +35,7 @@ export interface ILoadState {
     // Filters
     filtersDropdownList: ILoadPageFilters;
     filters: IStateFilters;
+    currentPage: number;
 
     // Table
     tableColumns: ITableColumn[];
@@ -48,4 +51,8 @@ export interface ILoadState {
     toolbarDropdownMenuOptions: IDropdownMenuItem[];
     cardFlipViewMode: eCardFlipViewMode;
     isToolbarDropdownMenuColumnsActive: boolean;
+
+    // Change status dropdown
+    possibleStatuses: LoadPossibleStatusesResponse;
+    loadIdLoadStatusChange: number;
 }

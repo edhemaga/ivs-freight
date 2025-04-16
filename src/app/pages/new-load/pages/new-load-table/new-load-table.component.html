@@ -5,6 +5,8 @@
         selectedTab: loadStoreService.selectedTabSelector$ | async,
         tableSettings: loadStoreService.tableSettingsSelector$ | async,
         selectedCount: loadStoreService.selectedCountSelector$ | async,
+        selectedTabCountSelector:
+            loadStoreService.selectedTabCountSelector$ | async,
     };
 @if (store) {
     @let headerTemplates = { selectHeaderTemplate };
@@ -16,6 +18,7 @@
             loadStatus,
             select,
             edit,
+            action,
             loadStatus,
             templateName,
             templateCreated,
@@ -32,8 +35,10 @@
         [headerTemplates]="{
             select: selectHeaderTemplate,
         }"
+        [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
+        (onHandleShowMoreClick)="onHandleShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
@@ -131,7 +136,17 @@
         </ng-template>
 
         <ng-template let-data="data" #loadStatus>
-            <span class="ta-font-bold text-size-14 text-color-black">
+            <span
+                class="ta-font-bold text-size-14 text-color-black"
+                #ngbStatus="ngbPopover"
+                [autoClose]="true"
+                [ngbPopover]="statusPopover"
+                [placement]="ePosition.BOTTOM + ' ' + ePosition.TOP"
+                container="body"
+                popoverClass="table-status-popover"
+                triggers="manual"
+                (click)="onOpenChangeStatusDropdown(ngbStatus, data.id)"
+            >
                 <app-ca-load-status
                     [status]="{
                         name: data.status?.statusString,
@@ -140,9 +155,33 @@
                     [isDefaultHoverFocus]="true"
                     [isNoStyle]="false"
                     [fontSize]="14"
+                    height="26"
                 >
                 </app-ca-load-status>
             </span>
         </ng-template>
+
+        <ng-template let-data="data" #action>
+            <ca-dropdown-menu
+                [type]="'dots-menu-type'"
+                [placement]="eDropdownMenu.TABLE_CARDS_PLACEMENT"
+                [options]="data.tableDropdownContent"
+                (dropdownOptionEmitter)="
+                    onToggleDropdownMenuActions($event, data, store.selectedTab)
+                "
+            >
+            </ca-dropdown-menu>
+        </ng-template>
     </app-new-table>
+
+    <ng-template #statusPopover>
+        @let possibleStatuses =
+            loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
+
+        <app-ca-status-change-dropdown
+            [statuses]="possibleStatuses"
+            (onNextStatus)="onNextStatus($event)"
+            (onPreviousStatus)="onPreviousStatus($event)"
+        ></app-ca-status-change-dropdown>
+    </ng-template>
 }

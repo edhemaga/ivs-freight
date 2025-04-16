@@ -6,7 +6,8 @@ import { IStateFilters } from '@shared/interfaces';
 export class LoadQueryHelper {
     static mapLoadListQueryParams(
         statusType: number,
-        filters: IStateFilters
+        filters: IStateFilters,
+        page: number
     ): HttpParams {
         let params = new HttpParams().set('statusType', statusType.toString());
 
@@ -20,6 +21,10 @@ export class LoadQueryHelper {
             filters.status.forEach((status) => {
                 params = params.append('status', status.toString());
             });
+        }
+
+        if (page) {
+            params = params.append('PageIndex', page);
         }
 
         if (filters.dateFrom)

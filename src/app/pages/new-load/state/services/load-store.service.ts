@@ -1,5 +1,4 @@
-import { Injectable, TemplateRef } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Injectable } from '@angular/core';
 
 // Store
 import { select, Store } from '@ngrx/store';
@@ -13,6 +12,7 @@ import {
     ILoadDetailsLoadMinimalList,
     IMappedLoad,
     ILoadPageFilters,
+    ILoadDeleteModal,
 } from '@pages/new-load/interfaces';
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 import {
@@ -20,6 +20,7 @@ import {
     ITableConfig,
 } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { IFilterAction } from 'ca-components';
 
 // Selectors
 import * as LoadSelectors from '@pages/new-load/state/selectors/load.selectors';
@@ -29,6 +30,11 @@ import { LoadStoreConstants } from '@pages/new-load/utils/constants';
 
 // Models
 import { ITableData } from '@shared/models';
+import {
+    LoadPossibleStatusesResponse,
+    LoadStatusResponse,
+} from 'appcoretruckassist';
+
 // Enums
 import {
     eLoadModalActions,
@@ -37,12 +43,11 @@ import {
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eCommonElement, TableStringEnum } from '@shared/enums';
 
-// Ca components
-import { CaDeleteModalComponent, IFilterAction } from 'ca-components';
-
 // Services
-
 import { ModalService } from '@shared/services';
+
+// Components
+import { LoadDeleteModalComponent } from '@pages/new-load/pages/load-modal/load-delete-modal/load-delete-modal.component';
 
 @Injectable({
     providedIn: 'root',
@@ -67,6 +72,10 @@ export class LoadStoreService {
 
     public selectedTabSelector$: Observable<eLoadStatusStringType> =
         this.store.pipe(select(LoadSelectors.selectedTabSelector));
+
+    public selectedTabCountSelector$: Observable<number> = this.store.pipe(
+        select(LoadSelectors.selectedTabCountSelector)
+    );
 
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
         select(LoadSelectors.activeViewModeSelector)
@@ -109,6 +118,11 @@ export class LoadStoreService {
         select(LoadSelectors.tableSettingsSelector)
     );
 
+    public changeDropdownpossibleStatusesSelector$: Observable<LoadPossibleStatusesResponse> =
+        this.store.pipe(
+            select(LoadSelectors.changeDropdownpossibleStatusesSelector)
+        );
+
     public dispatchLoadList(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DISPATCH_LOAD_LIST,
@@ -119,6 +133,12 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DISPATCH_LOAD_TYPE_CHANGE,
             mode,
+        });
+    }
+
+    public getNewPage(): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
         });
     }
 
@@ -219,37 +239,39 @@ export class LoadStoreService {
         });
     }
 
-    public onShowDeleteLoadModal(
-        templateRef: TemplateRef<any>,
-        isTemplate: boolean,
-        count: number,
-        ngbActiveModal?: NgbActiveModal,
-        templateId?: number
-    ): void {
-        const modalData = {
-            // Don't show count for 1 load
-            count: count > 1 ? count : 0,
-            title: isTemplate ? 'Delete Template' : 'Delete Pending Load',
-        };
-
+    public onDeleteLoadsFromList(modalData: ILoadDeleteModal): void {
         this.modalService
-            .openModalNew(CaDeleteModalComponent, {}, modalData, templateRef)
+            .openModalNew(LoadDeleteModalComponent, modalData)
             .closed.subscribe((value) => {
                 if (value) {
-                    if (templateId) {
-                        this.store.dispatch({
-                            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_TEMPLATE,
-                            templateId,
-                        });
-                    } else {
-                        this.store.dispatch({
-                            type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
-                            count,
-                            isTemplate,
-                        });
-                    }
+                    const action = {
+                        type: LoadStoreConstants.ACTION_ON_DELETE_LOAD_LIST,
+                        count: modalData.loads.length,
+                        isTemplate: modalData.isTemplate,
+                        selectedIds: modalData.loads.map((load) => load.id),
+                    };
 
-                    if (ngbActiveModal) ngbActiveModal.close();
+                    this.store.dispatch(action);
+
+                    if (modalData.ngbActiveModal)
+                        modalData.ngbActiveModal.close();
+                }
+            });
+    }
+
+    public onDeleteLoadFromDropdown(modalData: ILoadDeleteModal): void {
+        this.modalService
+            .openModalNew(LoadDeleteModalComponent, modalData)
+            .closed.subscribe((value) => {
+                if (value) {
+                    const action = {
+                        type: LoadStoreConstants.ACTION_ON_DELETE_LOAD,
+                        isTemplate: modalData.isTemplate,
+                        id: modalData.loads[0].id,
+                        isDetailsPage: modalData.isDetailsPage,
+                    };
+
+                    this.store.dispatch(action);
                 }
             });
     }
@@ -289,6 +311,27 @@ export class LoadStoreService {
     public dispatchToggleCardFlipViewMode(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE,
+        });
+    }
+
+    public dispatchUpdateLoadStatus(status: LoadStatusResponse): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_UPDATE_LOAD_STATUS,
+            status,
+        });
+    }
+
+    public dispatchRevertLoadStatus(status: LoadStatusResponse): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_REVERT_LOAD_STATUS,
+            status,
+        });
+    }
+
+    public dispatchOpenChangeStatuDropdown(loadId: number): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
+            loadId,
         });
     }
 }

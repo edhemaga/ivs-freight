@@ -27,7 +27,7 @@ export const selectedLoadsSelector = createSelector(
 export const selectedCountSelector = createSelector(
     selectedLoadsSelector,
     (selectedLoads) => {
-        console.log(selectedLoads);
+        console.log('selectedLoadsSelector');
         return selectedLoads.length;
     }
 );
@@ -43,6 +43,11 @@ export const toolbarTabsSelector = createSelector(
 export const selectedTabSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => state.selectedTab
+);
+
+export const selectedTabCountSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.searchResultsCount
 );
 
 //#endregion
@@ -64,6 +69,11 @@ export const filtersDropdownListSelector = createSelector(
 export const filtersSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => state.filters
+);
+
+export const pageSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.currentPage
 );
 
 //#endregion
@@ -130,4 +140,16 @@ export const toolbarDropdownMenuOptionsSelector = createSelector(
     }
 );
 
+//#endRegion
+
+//#region Change load status
+export const changeDropdownpossibleStatusesSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.possibleStatuses
+);
+
+export const loadIdLoadStatusChangeSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.loadIdLoadStatusChange
+);
 //#endRegion
