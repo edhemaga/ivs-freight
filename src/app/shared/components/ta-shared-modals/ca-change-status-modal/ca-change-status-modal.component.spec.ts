@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { CaChangeStatusModalComponent } from '@shared/components/ta-shared-modals/ca-change-status-modal/ca-change-status-modal.component';
 
-import { CaChangeStatusModalComponent } from './ca-change-status-modal.component';
 
 describe('CaChangeStatusModalComponent', () => {
   let component: CaChangeStatusModalComponent;

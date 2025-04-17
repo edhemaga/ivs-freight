@@ -38,6 +38,9 @@ import { IModalData } from 'ca-components';
 // Pipes
 import { LoadStatusBackgroundColorPipe } from 'ca-components';
 
+// Config
+import { ChangeStatusModalConfig } from '@shared/components/ta-shared-modals/ca-change-status-modal/utils/change-status-modal.config';
+
 @Component({
     selector: 'app-ca-change-status-modal',
     standalone: true,
@@ -73,10 +76,16 @@ export class CaChangeStatusModalComponent
     public isFormValid!: boolean;
 
     public sharedSvgRoutes = SharedSvgRoutes;
+    public changeStatusModalConfig = ChangeStatusModalConfig;
 
     constructor(
+        // Modal
         private ngbActiveModal: NgbActiveModal,
+
+        // Form
         private formBuilder: UntypedFormBuilder,
+
+        // Services
         public addressService: AddressService
     ) {
         super();
