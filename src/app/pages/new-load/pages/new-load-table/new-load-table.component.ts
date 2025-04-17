@@ -1,10 +1,17 @@
 import { CommonModule } from '@angular/common';
-
+import { Subject, takeUntil } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Enums
-import { eColor, eDropdownMenu } from '@shared/enums';
+import {
+    eColor,
+    eSharedString,
+    eDateTimeFormat,
+    eDropdownMenu,
+    eGeneralActions,
+} from '@shared/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // base classes
@@ -19,9 +26,10 @@ import {
     CaCheckboxSelectedCountComponent,
     ePosition,
 } from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
-import { Subject, takeUntil } from 'rxjs';
-import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
+import { CaProfileImageComponent } from 'ca-components';
+import { SvgIconComponent } from 'angular-svg-icon';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
@@ -35,6 +43,7 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 
 // Models
 import { LoadStatusResponse } from 'appcoretruckassist';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-new-load-table',
@@ -43,6 +52,7 @@ import { LoadStatusResponse } from 'appcoretruckassist';
     standalone: true,
     imports: [
         CommonModule,
+        NgbTooltip,
         NgbPopover,
 
         // Components
@@ -52,6 +62,9 @@ import { LoadStatusResponse } from 'appcoretruckassist';
         CaCheckboxComponent,
         CaCheckboxSelectedCountComponent,
         CaStatusChangeDropdownComponent,
+        CaProfileImageComponent,
+        SvgIconComponent,
+        TaAppTooltipV2Component,
     ],
 })
 export class NewLoadTableComponent
@@ -62,9 +75,15 @@ export class NewLoadTableComponent
 
     public changeStatusPopover: NgbPopover;
 
+    // svg-routes
+    public sharedSvgRoutes = SharedSvgRoutes;
+
     public eColor = eColor;
+    public eSharedString = eSharedString;
+    public eGeneralActions = eGeneralActions;
     public ePosition = ePosition;
     public eDropdownMenu = eDropdownMenu;
+    public eDateTimeFormat = eDateTimeFormat;
 
     constructor(
         protected router: Router,

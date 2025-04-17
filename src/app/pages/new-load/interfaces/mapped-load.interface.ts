@@ -1,5 +1,11 @@
 // models
-import { LoadBrokerInfo, LoadStatusResponse } from 'appcoretruckassist';
+import {
+    CompanyUserShortResponse,
+    LoadStatusResponse,
+    LoadBrokerInfo,
+    LoadDriverInfo,
+    EnumValue,
+} from 'appcoretruckassist';
 
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -10,7 +16,22 @@ export interface IMappedLoad {
     isSelected: boolean;
     loadNumber: string;
     status: LoadStatusResponse;
+    dispatcher: CompanyUserShortResponse;
+    referenceNumber: string;
     tableDropdownContent: IDropdownMenuItem[];
     totalDue: number;
     broker: LoadBrokerInfo;
+    driverInfo: LoadDriverInfo;
+    templateName: string;
+    templateCreated: string;
+    generalCommodity?: EnumValue;
+    brokerBusinessName: string;
+    assignedDriverTruckNumber: string;
+    assignedDriverTrailerNumber: string;
+    milesLoaded: number;
+    milesEmpty: number;
+    milesTotal: number;
+    billingRatePerMile: number;
+    billingRate: number;
+    invoicedDate: string;
 }
