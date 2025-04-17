@@ -7,17 +7,29 @@ import {
     NgbModule,
     NgbPopover,
 } from '@ng-bootstrap/ng-bootstrap';
+import {
+    CaModalButtonComponent,
+    CaModalComponent,
+    CaLoadStatusComponent,
+    eModalButtonClassType,
+    eModalButtonSize,
+    CaTabSwitchComponent,
+    CaInputDropdownTestComponent,
+    InputTestComponent,
+    CaCustomCardComponent,
+} from 'ca-components';
 
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 
 import { SvgIconComponent } from 'angular-svg-icon';
 
 import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
-import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
-
 import { eLoadModalActions } from '@pages/new-load/enums';
 import { eLoadModalForm } from '@pages/new-load/pages/new-load-modal/enums';
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
+import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
 import { eGeneralActions } from '@shared/enums';
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 import { Tabs } from '@shared/models';
 
@@ -36,24 +48,8 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
 import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
-import {
-    CaModalButtonComponent,
-    CaModalComponent,
-    CaLoadStatusComponent,
-    eModalButtonClassType,
-    eModalButtonSize,
-    CaTabSwitchComponent,
-    CaInputDropdownTestComponent,
-    InputTestComponent,
-    CaCustomCardComponent,
-} from 'ca-components';
-
 import { LoadModalInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/load-modal-input-config.pipe';
 import { TemplateButtonConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/template-button-config.pipe';
-
-import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-
-import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 @Component({
     selector: 'app-new-load-modal',
@@ -90,38 +86,31 @@ export class NewLoadModalComponent<T> implements OnInit {
     // Inputs
     @Input() editData: ILoadModal;
 
-    public isModalValidToSubmit = false;
-
     // Show spinner when saving modal
     public activeAction = null;
-
-    // Main modal title
-    public modalTitle: string;
-
-    // If user preselect template we need to change template popover
-    public isTemplateSelected: boolean;
-    public isPopoverOpen: boolean = false;
-    // Show static data, such as status, load number
-    public load: LoadResponse;
     // Show dropdown list options
     public dropdownList: LoadModalResponse;
-    public tabs: Tabs[] = LoadModalHelper.getLoadTypeTabs();
-
-    // Enums
-    public eModalButtonClassType = eModalButtonClassType;
-    public eModalButtonSize = eModalButtonSize;
     public eGeneralActions = eGeneralActions;
     public eLoadModalActions = eLoadModalActions;
     public eLoadModalForm = eLoadModalForm;
-
-    // Icon routes
-    public svgRoutes = SharedSvgRoutes;
-
+    // Enums
+    public eModalButtonClassType = eModalButtonClassType;
+    public eModalButtonSize = eModalButtonSize;
+    public isModalValidToSubmit = false;
+    public isPopoverOpen: boolean = false;
+    // If user preselect template we need to change template popover
+    public isTemplateSelected: boolean;
+    // Show static data, such as status, load number
+    public load: LoadResponse;
     // Form
     public loadForm: UntypedFormGroup;
-
     // Config
     public LoadModalConfig = LoadModalConfig;
+    // Main modal title
+    public modalTitle: string;
+    // Icon routes
+    public svgRoutes = SharedSvgRoutes;
+    public tabs: Tabs[] = LoadModalHelper.getLoadTypeTabs();
 
     constructor(
         // Modules
@@ -136,6 +125,95 @@ export class NewLoadModalComponent<T> implements OnInit {
         this.setupInitalData();
     }
 
+    public onDeleteTemplate(): void {
+        this.loadStoreService.onDeleteLoadsFromList({
+            isTemplate: true,
+            loads: [this.load],
+            isDetailsPage: false,
+            ngbActiveModal: this.ngbActiveModal,
+        });
+    }
+    public onModalAction(action: eGeneralActions): void {
+        switch (action) {
+            case this.eGeneralActions.DELETE:
+                this.onDeleteTemplate();
+                break;
+            case this.eGeneralActions.CLOSE:
+                this.onCloseModal();
+                break;
+
+            case this.eGeneralActions.CONVERT_TO_LOAD:
+            case this.eGeneralActions.CONVERT_TO_TEMPLATE:
+                this.onLoadConvert(action);
+                break;
+
+            case this.eGeneralActions.CREATE_TEMPLATE:
+                // Open projection modal
+                break;
+
+            case this.eGeneralActions.SAVE:
+            case this.eGeneralActions.SAVE_AND_ADD_NEW:
+                this.onLoadSave(action);
+                break;
+        }
+    }
+    public onRemoveTemplate(): void {
+        this.isTemplateSelected = false;
+    }
+    public onSelectTemplate(template: EnumValue): void {
+        this.isTemplateSelected = true;
+
+        this.editData = {
+            isTemplate: false,
+            isEdit: false,
+            id: template.id,
+        };
+
+        const loadTemplate$ = this.loadService.getLoadById(template.id, true);
+
+        loadTemplate$.subscribe((loadTemplate) => {
+            this.modalTitle = LoadModalHelper.generateTitle(this.editData);
+            const templateForm = LoadModalHelper.createForm(
+                false,
+                loadTemplate,
+                loadTemplate.loadRequirements,
+                false
+            );
+
+            this.loadForm.patchValue(templateForm.value);
+        });
+    }
+    public onTabChange(): void {}
+
+    private onCloseModal(): void {
+        this.ngbActiveModal.close();
+    }
+    private onLoadConvert(action: eGeneralActions): void {
+        // Reset tooltip template button styles
+        this.isTemplateSelected = false;
+
+        // Switch view
+        const isTemplate = action === this.eGeneralActions.CONVERT_TO_TEMPLATE;
+
+        const isTemplateConvertedToLoad =
+            action === this.eGeneralActions.CONVERT_TO_LOAD;
+
+        this.editData = {
+            isEdit: false,
+            id: null,
+            isTemplate,
+            type: isTemplateConvertedToLoad
+                ? eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE
+                : null,
+        };
+
+        LoadModalHelper.updateFormValidatorsForTemplate(
+            this.loadForm,
+            isTemplate
+        );
+
+        this.modalTitle = LoadModalHelper.generateTitle(this.editData);
+    }
     private onLoadSave(action: eGeneralActions): void {
         const isSaveAndAddNew =
             action === this.eGeneralActions.SAVE_AND_ADD_NEW;
@@ -165,7 +243,6 @@ export class NewLoadModalComponent<T> implements OnInit {
             )
             .subscribe((result) => this.onSaveAndAddNew(isSaveAndAddNew));
     }
-
     private onSaveAndAddNew(isSaveAndAddNew: boolean): void {
         // Reopen modal
         if (isSaveAndAddNew) {
@@ -175,34 +252,6 @@ export class NewLoadModalComponent<T> implements OnInit {
             // TODO: Update
         } else this.ngbActiveModal.close();
     }
-
-    private onLoadConvert(action: eGeneralActions): void {
-        // Reset tooltip template button styles
-        this.isTemplateSelected = false;
-
-        // Switch view
-        const isTemplate = action === this.eGeneralActions.CONVERT_TO_TEMPLATE;
-
-        const isTemplateConvertedToLoad =
-            action === this.eGeneralActions.CONVERT_TO_LOAD;
-
-        this.editData = {
-            isEdit: false,
-            id: null,
-            isTemplate,
-            type: isTemplateConvertedToLoad
-                ? eLoadModalActions.CREATE_LOAD_FROM_TEMPLATE
-                : null,
-        };
-
-        LoadModalHelper.updateFormValidatorsForTemplate(
-            this.loadForm,
-            isTemplate
-        );
-
-        this.modalTitle = LoadModalHelper.generateTitle(this.editData);
-    }
-
     private setupInitalData(): void {
         const staticData$ = this.loadService.apiGetLoadModal();
 
@@ -263,74 +312,6 @@ export class NewLoadModalComponent<T> implements OnInit {
                 this.dropdownList = dropdownList;
                 this.modalTitle = LoadModalHelper.generateTitle(this.editData);
             });
-        }
-    }
-
-    private onCloseModal(): void {
-        this.ngbActiveModal.close();
-    }
-
-    public onTabChange(): void {}
-
-    public onRemoveTemplate(): void {
-        this.isTemplateSelected = false;
-    }
-
-    public onDeleteTemplate(): void {
-        this.loadStoreService.onDeleteLoadsFromList({
-            isTemplate: true,
-            loads: [this.load],
-            isDetailsPage: false,
-            ngbActiveModal: this.ngbActiveModal,
-        });
-    }
-
-    public onSelectTemplate(template: EnumValue): void {
-        this.isTemplateSelected = true;
-
-        this.editData = {
-            isTemplate: false,
-            isEdit: false,
-            id: template.id,
-        };
-
-        const loadTemplate$ = this.loadService.getLoadById(template.id, true);
-
-        loadTemplate$.subscribe((loadTemplate) => {
-            this.modalTitle = LoadModalHelper.generateTitle(this.editData);
-            const templateForm = LoadModalHelper.createForm(
-                false,
-                loadTemplate,
-                loadTemplate.loadRequirements,
-                false
-            );
-
-            this.loadForm.patchValue(templateForm.value);
-        });
-    }
-
-    public onModalAction(action: eGeneralActions): void {
-        switch (action) {
-            case this.eGeneralActions.DELETE:
-                this.onDeleteTemplate();
-                break;
-            case this.eGeneralActions.CLOSE:
-                this.onCloseModal();
-                break;
-
-            case this.eGeneralActions.CONVERT_TO_LOAD:
-            case this.eGeneralActions.CONVERT_TO_TEMPLATE:
-                this.onLoadConvert(action);
-                break;
-
-            case this.eGeneralActions.CREATE_TEMPLATE:
-                // Open projection modal
-                break;
-
-            case this.eGeneralActions.SAVE:
-            case this.eGeneralActions.SAVE_AND_ADD_NEW:
-                this.onLoadSave(action);
-                break;
         }
     }
 }
