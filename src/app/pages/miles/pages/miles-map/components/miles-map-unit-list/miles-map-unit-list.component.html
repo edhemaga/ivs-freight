@@ -9,10 +9,11 @@
 @let isLoading = milesStoreService.detailsLoadingSelector$ | async;
 
 @if (details) {
+    @let stopListWidth = isStopListWidthExpanded ? '462px' : '334px';
     <div class="position-relative z-2">
         <div
             class="background-white br-3 p-x-6 mb-2 transition-width"
-            [ngStyle]="{ width: isStopListWidthExpanded ? '462px' : '334px' }"
+            [ngStyle]="{ width: stopListWidth }"
         >
             <div class="h-42 d-flex align-items-center justify-content-between">
                 @if (isLoading) {
@@ -135,9 +136,7 @@
 
         <div
             class="background-white br-3 p-l-6 p-y-6 miles-unit-list transition-width"
-            [ngStyle]="{
-                width: isStopListWidthExpanded ? '462px' : '334px',
-            }"
+            [ngStyle]="{ width: stopListWidth }"
         >
             <div class="p-r-6">
                 @if (isLoading) {
