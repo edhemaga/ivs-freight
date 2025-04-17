@@ -57,7 +57,7 @@ export class MilesTableComponent {
         this.milesStoreService.dispatchSortingChange(column);
     }
 
-    public onHandleShowMoreClick(): void {
+    public onShowMoreClick(): void {
         this.milesStoreService.getNewPage();
     }
 

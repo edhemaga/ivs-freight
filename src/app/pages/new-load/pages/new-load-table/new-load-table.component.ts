@@ -95,7 +95,7 @@ export class NewLoadTableComponent
         });
     }
 
-    public onHandleShowMoreClick(): void {
+    public onShowMoreClick(): void {
         this.loadStoreService.getNewPage();
     }
 

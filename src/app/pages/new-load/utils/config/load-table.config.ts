@@ -77,18 +77,6 @@ export class LoadTableColumnsConfig {
                 isChecked: true,
                 hasSort: false,
             },
-            // For modal testing!!!!
-            {
-                key: 'edit',
-                label: 'edit',
-                width: 50,
-                minWidth: 50,
-                maxWidth: 200,
-                isResizable: true,
-                isDisabled: true,
-                isChecked: true,
-                hasSort: true,
-            },
 
             // Template Name or Load No.
             ...baseTemplateOrLoadColumn,

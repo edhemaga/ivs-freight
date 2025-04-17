@@ -30,7 +30,7 @@
         [templates]="templates"
         [isTableLocked]="isTableLocked"
         (onSortingChange)="onSortingChange($event)"
-        (onHandleShowMoreClick)="onHandleShowMoreClick()"
+        (onShowMore)="onShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
