@@ -7,6 +7,8 @@
         selectedCount: loadStoreService.selectedCountSelector$ | async,
         selectedTabCountSelector:
             loadStoreService.selectedTabCountSelector$ | async,
+        isTypeColumnCheckedSelector:
+            loadStoreService.isTypeColumnCheckedSelector$ | async,
         searchStrings: loadStoreService.searchStringsSelector$ | async,
     };
 @if (store) {
@@ -29,8 +31,8 @@
             billingRate,
             invoicedDate,
             driverInfo,
-            brokerContact,
             brokerPhone,
+            loadType,
             referenceNumber,
             brokerBusinessName,
             requirementTruck,
@@ -88,6 +90,10 @@
             ></app-ca-checkbox>
         </ng-template>
 
+        <ng-template let-data="data" #loadType>
+            <app-load-type [loadType]="data.loadType" [isTextVisible]="true" />
+        </ng-template>
+
         <ng-template
             #invoicedDate
             let-data="data"
@@ -111,19 +117,6 @@
                 [class]="cellColumnTextColorClass"
             >
                 {{ data.broker?.phone }}
-            </div>
-        </ng-template>
-
-        <ng-template
-            #brokerContact
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <div
-                class="text-color-black-2 text-size-14"
-                [class]="cellColumnTextColorClass"
-            >
-                {{ data.broker?.contact }}
             </div>
         </ng-template>
 
@@ -159,25 +152,43 @@
             let-data="data"
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
-            <span
-                ngbTooltip
-                [mainTooltip]="eGeneralActions.VIEW_DETAILS"
-                [tooltipBackground]="eColor.BLACK"
-                [position]="ePosition.BOTTOM"
-                class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
-                [class]="cellColumnTextColorClass"
-                [innerHtml]="
-                    data.loadNumber
-                        | tableHighlightSearchText: store.searchStrings
-                "
-                (click)="navigateToLoadDetails(data.id)"
-            >
-            </span>
+            <div class="d-flex gap-1 align-items-center h-full">
+                @if (!store.isTypeColumnCheckedSelector) {
+                    <app-load-type
+                        [loadType]="data.loadType"
+                        [isTextVisible]="false"
+                    />
+                }
+
+                <span
+                    ngbTooltip
+                    [mainTooltip]="eGeneralActions.VIEW_DETAILS"
+                    [tooltipBackground]="eColor.BLACK"
+                    [position]="ePosition.BOTTOM"
+                    class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
+                    [class]="cellColumnTextColorClass"
+                    [innerHtml]="
+                        data.loadNumber
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                    (click)="navigateToLoadDetails(data.id)"
+                >
+                </span>
+            </div>
         </ng-template>
 
         <ng-template let-data="data" #templateName>
-            <div class="text-color-black text-size-14 ta-font-bold">
-                {{ data.templateName }}
+            <div class="d-flex gap-1 align-items-center h-full">
+                @if (!store.isTypeColumnCheckedSelector) {
+                    <app-load-type
+                        [loadType]="data.loadType"
+                        [isTextVisible]="false"
+                    >
+                    </app-load-type>
+                }
+                <div class="text-color-black text-size-14 ta-font-bold">
+                    {{ data.templateName }}
+                </div>
             </div>
         </ng-template>
 

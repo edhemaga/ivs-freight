@@ -187,7 +187,7 @@ export class LoadTableColumnsConfig {
     ): ITableColumn[] {
         return [
             {
-                key: 'type',
+                key: 'loadType',
                 label: 'Type',
                 labelToolbar: 'Type',
                 width: 82,

@@ -89,6 +89,14 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     return tableColumns;
 });
 
+export const isTypeColumnCheckedSelector = createSelector(
+    tableColumnsSelector,
+    (columns) => {
+        const typeColumn = columns.find((col) => col.key === 'loadType');
+        return typeColumn?.isChecked ?? false;
+    }
+);
+
 export const totalSumSelector = createSelector(
     selectLoadState,
     selectedCountSelector,
