@@ -11,6 +11,8 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 // models
 import { TableCardBodyActions } from '@shared/models';
 import { LoadResponse } from 'appcoretruckassist';
+
+// interfaces
 import { IMappedLoad } from '@pages/new-load/interfaces';
 
 export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBase {
