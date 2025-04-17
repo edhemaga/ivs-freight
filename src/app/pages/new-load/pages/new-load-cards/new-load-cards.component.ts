@@ -35,6 +35,7 @@ import { ICardValueData } from '@shared/interfaces';
 // enums
 import {
     eSharedString,
+    eStringPlaceholder,
     eTableCardViewData,
     TableStringEnum,
 } from '@shared/enums';
@@ -61,6 +62,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     ],
 })
 export class NewLoadCardsComponent implements OnInit, OnDestroy {
+    // destroy
+    private destroy$ = new Subject<void>();
+
     // data (this will be changed when store is implemented)
     public tabCardData: {
         [key: string]: {
@@ -97,14 +101,20 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
 
     // enums
     public sharedEnums = eSharedString;
-
-    // destroy
-    private destroy$ = new Subject<void>();
+    public placeholderEnums = eStringPlaceholder;
 
     constructor(
         private modalService: ModalService,
         public loadStoreService: LoadStoreService
     ) {}
+
+    ngOnInit(): void {
+        this.loadStoreService.selectedTabSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((tab) => {
+                this.selectedTab = tab;
+            });
+    }
 
     public openColumnsModal(): void {
         const action = {
@@ -136,14 +146,6 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
                             .slice(0, result.selectedColumns.numberOfRows)
                             .map((back: ICardValueData) => back.inputItem);
                 }
-            });
-    }
-
-    ngOnInit(): void {
-        this.loadStoreService.selectedTabSelector$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((tab) => {
-                this.selectedTab = tab;
             });
     }
 
