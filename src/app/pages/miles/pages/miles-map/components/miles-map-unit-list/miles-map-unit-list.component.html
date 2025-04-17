@@ -9,10 +9,11 @@
 @let isLoading = milesStoreService.detailsLoadingSelector$ | async;
 
 @if (details) {
+    @let stopListWidth = isStopListWidthExpanded ? '462px' : '334px';
     <div class="position-relative z-2">
         <div
-            class="background-white br-3 p-x-6 mb-2"
-            [ngClass]="isStopListWidthExpanded ? 'w-462' : 'w-334'"
+            class="background-white br-3 p-x-6 mb-2 transition-width"
+            [ngStyle]="{ width: stopListWidth }"
         >
             <div class="h-42 d-flex align-items-center justify-content-between">
                 @if (isLoading) {
@@ -55,7 +56,7 @@
                             title: title,
                             tooltip: 'Search Truck',
                             placeholder: title,
-                            width: isStopListWidthExpanded ? 390 : 264,
+                            width: isStopListWidthExpanded ? '390px' : '264px',
                             tooltipNext: 'Next Truck',
                             tooltipPrevious: 'Previous Truck',
                             disableNext: isNextButtonDisabled,
@@ -132,9 +133,10 @@
                 }
             </div>
         </div>
+
         <div
-            class="background-white br-3 p-l-6 p-y-6 miles-unit-list"
-            [ngClass]="isStopListWidthExpanded ? 'w-462' : 'w-334'"
+            class="background-white br-3 p-l-6 p-y-6 miles-unit-list transition-width"
+            [ngStyle]="{ width: stopListWidth }"
         >
             <div class="p-r-6">
                 @if (isLoading) {
@@ -213,7 +215,7 @@
                 };
             <div
                 #stopListViewport
-                class="gap-1 d-flex flex-column scrollable-element overflow-scroll p-r-4 transition-height"
+                class="gap-1 d-flex flex-column scrollable-element overflow-y-scroll p-r-4 transition-height"
                 [ngStyle]="listHeight"
                 (scroll)="onScrollEvent()"
             >

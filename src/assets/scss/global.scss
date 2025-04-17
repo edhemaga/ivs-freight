@@ -163,6 +163,11 @@ body {
     }
 }
 
+.overflow-y-scroll {
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
 .text-left {
     text-align: left !important;
 }

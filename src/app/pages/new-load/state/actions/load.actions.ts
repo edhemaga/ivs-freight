@@ -22,6 +22,7 @@ import {
 
 // Interface
 import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Ca components
 import { IFilterAction } from 'ca-components';
@@ -153,6 +154,11 @@ export const tableColumnReset = createAction(
 
 export const toggleCardFlipViewMode = createAction(
     LoadStoreConstants.ACTION_TOGGLE_CARD_FLIP_VIEW_MODE
+);
+
+export const tableSortingChange = createAction(
+    LoadStoreConstants.ACTION_SORTING_CHANGE,
+    props<{ column: ITableColumn }>()
 );
 //#endregion
 
