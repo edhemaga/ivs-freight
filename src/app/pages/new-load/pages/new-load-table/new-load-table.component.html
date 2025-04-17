@@ -150,12 +150,6 @@
             </div>
         </ng-template>
 
-        <!-- <ng-template let-data="data" #templateCreated>
-            <div class="text-color-black-2 text-size-14">
-                {{ data.templateCreated | date: eDateTimeFormat.MM_DD_YY }}
-            </div>
-        </ng-template> -->
-
         <ng-template let-data="data" #commodity>
             <div class="text-color-black-2 text-size-14">
                 @if (data.generalCommodity?.name === eSharedString.HAZARDOUS) {

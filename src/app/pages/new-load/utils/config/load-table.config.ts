@@ -59,7 +59,7 @@ export class LoadTableColumnsConfig {
                 hasSort: true,
             },
             {
-                key: 'created',
+                key: 'templateCreated',
                 label: 'Created',
                 labelToolbar: 'Created',
                 width: 88,
