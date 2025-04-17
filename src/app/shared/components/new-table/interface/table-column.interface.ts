@@ -1,4 +1,4 @@
-import { LoadSortBy, MilesStopSortBy, SortOrder } from 'appcoretruckassist';
+import { SortOrder } from 'appcoretruckassist';
 
 export interface ITableColumn {
     id?: number;

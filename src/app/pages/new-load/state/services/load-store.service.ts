@@ -334,4 +334,11 @@ export class LoadStoreService {
             loadId,
         });
     }
+
+    public dispatchSortingChange(column: ITableColumn): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SORTING_CHANGE,
+            column,
+        });
+    }
 }

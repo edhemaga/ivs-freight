@@ -24,7 +24,11 @@ import {
 import * as MilesAction from '@pages/miles/state/actions/miles.actions';
 
 // services
-import { MilesService, MilesStopSortBy, RoutingService } from 'appcoretruckassist';
+import {
+    MilesService,
+    MilesStopSortBy,
+    RoutingService,
+} from 'appcoretruckassist';
 
 // selectors
 import {
