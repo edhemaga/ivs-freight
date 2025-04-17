@@ -206,8 +206,7 @@ export class MilesComponent
     }
 
     public onSearchQueryChange(query: string[]): void {
-        // TODO remove, for easier emitted data preview
-        console.log(query);
+        this.milesStoreService.dispatchSearchChange(query);
     }
 
     public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {
