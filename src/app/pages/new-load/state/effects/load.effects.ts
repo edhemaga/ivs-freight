@@ -5,6 +5,7 @@ import { Router } from '@angular/router';
 import {
     catchError,
     exhaustMap,
+    filter,
     map,
     switchMap,
     withLatestFrom,
@@ -40,7 +41,7 @@ import {
 
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { eLoadRouting } from '@pages/new-load/enums';
+import { eLoadRouting, eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Interfaces
 import { IStateFilters } from '@shared/interfaces';
@@ -230,6 +231,10 @@ export class LoadEffect {
             ),
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector)
+            ),
+            filter(
+                ([_, selectedTab]) =>
+                    selectedTab !== eLoadStatusStringType.TEMPLATE
             ),
             switchMap(([_, selectedTab]) => {
                 console.log('refreshFilters$');
