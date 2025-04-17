@@ -46,6 +46,9 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 import { LoadStatusResponse } from 'appcoretruckassist';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
+// Pipes
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
+
 @Component({
     selector: 'app-new-load-table',
     templateUrl: './new-load-table.component.html',
@@ -66,6 +69,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaProfileImageComponent,
         SvgIconComponent,
         TaAppTooltipV2Component,
+
+        // Pipes
+        TableHighlightSearchTextPipe,
     ],
 })
 export class NewLoadTableComponent

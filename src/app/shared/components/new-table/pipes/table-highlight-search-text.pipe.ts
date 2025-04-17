@@ -8,8 +8,8 @@ import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
 export class TableHighlightSearchTextPipe implements PipeTransform {
     constructor(private sanitizer: DomSanitizer) {}
 
-    transform(text: any, chips: any[]): SafeHtml {
-        if (!chips.length) {
+    transform(text: string, chips: string[]): SafeHtml {
+        if (!chips?.length) {
             return text;
         }
 
@@ -24,9 +24,7 @@ export class TableHighlightSearchTextPipe implements PipeTransform {
 
             pattern = pattern
                 .split(' ')
-                .filter((t) => {
-                    return t.length > 0;
-                })
+                .filter((_pattern) => !!_pattern.length)
                 .join('|');
 
             const regex = new RegExp('(' + pattern + ')(?!([^<]+)?>)', 'gi');

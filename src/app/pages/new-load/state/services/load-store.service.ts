@@ -103,6 +103,10 @@ export class LoadStoreService {
         select(LoadSelectors.totalSumSelector)
     );
 
+    public searchStringsSelector$: Observable<string[]> = this.store.pipe(
+        select(LoadSelectors.searchStringsSelector)
+    );
+
     // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!
     public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
         select(LoadSelectors.closedLoadStatusSelector)
