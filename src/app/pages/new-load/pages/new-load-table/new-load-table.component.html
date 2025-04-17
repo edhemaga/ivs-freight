@@ -21,7 +21,6 @@
             action,
             loadStatus,
             templateName,
-            templateCreated,
             commodity,
             billingRate,
             invoicedDate,
@@ -149,12 +148,6 @@
         <ng-template let-data="data" #templateName>
             <div class="text-color-black text-size-14 ta-font-bold">
                 {{ data.templateName }}
-            </div>
-        </ng-template>
-
-        <ng-template let-data="data" #templateCreated>
-            <div class="text-color-black-2 text-size-14">
-                {{ data.templateCreated | date: eDateTimeFormat.MM_DD_YY }}
             </div>
         </ng-template>
 
