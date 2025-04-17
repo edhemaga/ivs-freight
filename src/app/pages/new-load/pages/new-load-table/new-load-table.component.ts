@@ -31,6 +31,7 @@ import { NewTableComponent } from '@shared/components/new-table/new-table.compon
 import { CaProfileImageComponent } from 'ca-components';
 import { SvgIconComponent } from 'angular-svg-icon';
 import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
+import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
@@ -71,6 +72,7 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
         SvgIconComponent,
         TaAppTooltipV2Component,
         LoadTypeComponent,
+        TaTruckTrailerIconComponent,
 
         // Pipes
         TableHighlightSearchTextPipe,

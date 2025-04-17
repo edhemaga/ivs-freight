@@ -1,6 +1,7 @@
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
+import { eSharedString } from '@shared/enums';
 
 // Interfaces
 import { IMappedLoad } from '@pages/new-load/interfaces';
@@ -40,6 +41,7 @@ export class LoadHelper {
                 generalCommodity,
                 loadType,
                 type,
+                loadRequirements,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -74,6 +76,16 @@ export class LoadHelper {
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
                 invoicedDate,
+                requirementTruck: loadRequirements?.truckType,
+                requirementTrailer: loadRequirements?.trailerType,
+                requirementLength:
+                    loadRequirements?.trailerLength?.name?.replace(/\D/g, ''),
+                requirementDoor: loadRequirements?.doorType?.name,
+                requirementSuspension: loadRequirements?.suspension?.name,
+                requirementYear: loadRequirements?.year,
+                requirementLiftgate: loadRequirements?.liftgate
+                    ? eSharedString.YES
+                    : eSharedString.EMPTY_STRING_PLACEHOLDER,
             };
             return mapped;
         });

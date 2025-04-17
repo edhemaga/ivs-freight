@@ -5,6 +5,8 @@ import {
     LoadBrokerInfo,
     LoadDriverInfo,
     EnumValue,
+    TruckTypeResponse,
+    TrailerTypeResponse,
 } from 'appcoretruckassist';
 
 // interfaces
@@ -36,4 +38,11 @@ export interface IMappedLoad {
     invoicedDate: string;
     brokerContact: string;
     loadType: EnumValue;
+    requirementTruck: TruckTypeResponse;
+    requirementTrailer: TrailerTypeResponse;
+    requirementLength: string;
+    requirementDoor: string;
+    requirementSuspension: string;
+    requirementYear: string;
+    requirementLiftgate: string;
 }
