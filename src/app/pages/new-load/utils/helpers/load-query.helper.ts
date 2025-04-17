@@ -2,12 +2,15 @@ import { HttpParams } from '@angular/common/http';
 
 // Interfaces
 import { IStateFilters } from '@shared/interfaces';
+import { LoadSortBy, SortOrder } from 'appcoretruckassist';
 
 export class LoadQueryHelper {
     static mapLoadListQueryParams(
         statusType: number,
         filters: IStateFilters,
-        page: number
+        sortOrder?: SortOrder,
+        sortBy?: LoadSortBy,
+        page?: number
     ): HttpParams {
         let params = new HttpParams().set('statusType', statusType.toString());
 
@@ -23,6 +26,8 @@ export class LoadQueryHelper {
             });
         }
 
+        if (sortBy) params = params.append('SortBy', sortBy);
+        if (sortOrder) params = params.append('SortOrder', sortOrder);
         if (page) {
             params = params.append('PageIndex', page);
         }

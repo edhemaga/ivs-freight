@@ -1356,7 +1356,7 @@ export class CustomerTableComponent
             {
                 title: TableStringEnum.BROKER,
                 field: TableStringEnum.ACTIVE,
-                length: filteredBrokerData?.length,
+                length: brokerShipperCount?.broker,
                 data: brokerActiveData,
                 extended: false,
                 moneyCountSelected: false,

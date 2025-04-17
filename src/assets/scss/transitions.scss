@@ -7,5 +7,6 @@
 
     &-width {
         transition: width $transitionDuration ease-in-out;
+        overflow-x: hidden;
     }
 }

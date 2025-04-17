@@ -5,6 +5,7 @@
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
         selectedTab: milesStoreService.selectedTab$ | async,
         tabResultsSelector: milesStoreService.tabResultsSelector$ | async,
+        filter: milesStoreService.filter$ | async,
     };
 
 @if (store) {
@@ -83,10 +84,13 @@
                     [position]="ePosition.BOTTOM"
                     class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 d-inline-block text-truncate"
                     [ngStyle]="unitTemplateStyle"
+                    [innerHtml]="
+                        data.unit
+                            | tableHighlightSearchText
+                                : store.filter?.searchQuery
+                    "
                     (click)="goToMilesDetailsPage(data.truckId)"
-                >
-                    {{ data.unit }}
-                </p>
+                ></p>
             </div>
         </ng-template>
 

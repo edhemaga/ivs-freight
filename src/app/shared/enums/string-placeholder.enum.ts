@@ -13,4 +13,5 @@ export enum eStringPlaceholder {
     GI = 'gi',
     NA_UPPERCASE = 'NA',
     ZERO = '0',
+    VERTICAL_LINE = '|',
 }

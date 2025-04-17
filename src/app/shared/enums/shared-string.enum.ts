@@ -27,6 +27,9 @@ export enum eSharedString {
 
     DATA_IMAGE_JPG_BASE64 = 'data:image/jpg;base64,',
 
+    YES = 'Yes',
+    EMPTY_STRING_PLACEHOLDER = '',
+
     // Miles Stop Types
     PICKUP = 'Pickup',
     DELIVERY = 'Delivery',
@@ -43,4 +46,11 @@ export enum eSharedString {
 
     // Status
     INVITED = 'Invited',
+
+    // Load
+    LOAD_VERTICAL_LINE = 'Load | ',
+    TEMPLATE = 'Template',
+    NAME = 'name',
+    LOAD_NUMBER = 'loadNumber',
+    HAZARDOUS = 'Hazardous',
 }

@@ -37,6 +37,8 @@ import {
     LoadStatusFilterResponse,
     UpdateLoadStatusCommand,
     LoadStatus,
+    LoadSortBy,
+    SortOrder,
 } from 'appcoretruckassist';
 
 // Enums
@@ -107,11 +109,19 @@ export class LoadEffect {
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector),
                 this.store.select(LoadSelectors.filtersSelector),
-                this.store.select(LoadSelectors.pageSelector)
+                this.store.select(LoadSelectors.pageSelector),
+                this.store.select(LoadSelectors.tableSettingsSelector)
             ),
-            exhaustMap(([action, mode, filters, page]) => {
+            exhaustMap(([action, mode, filters, page, tableSettings]) => {
                 console.log('getLoadsOnPageChange');
-                return this.getLoadData(mode, true, filters, page + 1).pipe(
+                return this.getLoadData(
+                    mode,
+                    true,
+                    filters,
+                    page + 1,
+                    tableSettings.sortDirection,
+                    tableSettings.sortKey as LoadSortBy
+                ).pipe(
                     map(({ loadResponse }) =>
                         LoadActions.getLoadsPagePayloadSuccess({
                             payload: loadResponse,
@@ -131,10 +141,17 @@ export class LoadEffect {
             withLatestFrom(
                 this.store.select(LoadSelectors.selectedTabSelector),
                 this.store.select(LoadSelectors.filtersSelector),
-                this.store.select(LoadSelectors.pageSelector)
+                this.store.select(LoadSelectors.tableSettingsSelector)
             ),
-            exhaustMap(([action, mode, filters, page]) =>
-                this.getLoadData(mode, true, filters, page).pipe(
+            exhaustMap(([action, mode, filters, tableSettings]) =>
+                this.getLoadData(
+                    mode,
+                    true,
+                    filters,
+                    1,
+                    tableSettings.sortDirection,
+                    tableSettings.sortKey as LoadSortBy
+                ).pipe(
                     map(({ loadResponse }) =>
                         LoadActions.getLoadsPayloadSuccess({
                             payload: loadResponse,
@@ -144,6 +161,37 @@ export class LoadEffect {
             )
         )
     );
+    //#endregion
+
+    //#region sorting
+    public getLoadsOnSortingChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(LoadActions.tableSortingChange),
+            withLatestFrom(
+                this.store.select(LoadSelectors.selectedTabSelector),
+                this.store.select(LoadSelectors.filtersSelector),
+                this.store.select(LoadSelectors.tableSettingsSelector),
+                this.store.select(LoadSelectors.pageSelector)
+            ),
+            exhaustMap(([action, mode, filters, tableSettings, page]) =>
+                this.getLoadData(
+                    mode,
+                    true,
+                    filters,
+                    page,
+                    tableSettings.sortDirection,
+                    tableSettings.sortKey as LoadSortBy
+                ).pipe(
+                    map(({ loadResponse }) =>
+                        LoadActions.getLoadsPayloadSuccess({
+                            payload: loadResponse,
+                        })
+                    )
+                )
+            )
+        )
+    );
+
     //#endregion
 
     //#region Modal actions
@@ -302,7 +350,9 @@ export class LoadEffect {
         mode: string,
         isFilterChange: boolean,
         filters: IStateFilters,
-        page: number
+        page?: number,
+        sortOrder?: SortOrder,
+        sortBy?: LoadSortBy
     ): Observable<{
         loadResponse: LoadTemplateListResponse | LoadListResponse;
         dispatcherFilters: DispatcherFilterResponse[];
@@ -312,8 +362,19 @@ export class LoadEffect {
         const isTemplate = tabValue === eLoadStatusType.Template;
 
         const loadRequest$ = isTemplate
-            ? this.loadService.getLoadTemplateList(filters, page)
-            : this.loadService.getLoadList(tabValue, filters, page);
+            ? this.loadService.getLoadTemplateList(
+                  filters,
+                  page,
+                  sortOrder,
+                  sortBy
+              )
+            : this.loadService.getLoadList(
+                  tabValue,
+                  filters,
+                  page,
+                  sortOrder,
+                  sortBy
+              );
 
         // On filter change or on template we don't have to update filter dropdown list
         const dispatcherFilters$ =

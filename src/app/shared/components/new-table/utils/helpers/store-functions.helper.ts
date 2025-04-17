@@ -64,7 +64,7 @@ export class StoreFunctionsHelper {
         columns: ITableColumn[]
     ): {
         columns: ITableColumn[];
-        sortKey: MilesStopSortBy;
+        sortKey: string;
         sortDirection: SortOrder | null;
     } {
         const { sortName, key } = column;

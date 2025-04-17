@@ -103,6 +103,10 @@ export class LoadStoreService {
         select(LoadSelectors.totalSumSelector)
     );
 
+    public searchStringsSelector$: Observable<string[]> = this.store.pipe(
+        select(LoadSelectors.searchStringsSelector)
+    );
+
     // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!
     public closedLoadStatusSelector$: Observable<any> = this.store.pipe(
         select(LoadSelectors.closedLoadStatusSelector)
@@ -332,6 +336,13 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
             loadId,
+        });
+    }
+
+    public dispatchSortingChange(column: ITableColumn): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SORTING_CHANGE,
+            column,
         });
     }
 }

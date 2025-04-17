@@ -71,6 +71,11 @@ export const filtersSelector = createSelector(
     (state: ILoadState) => state.filters
 );
 
+export const searchStringsSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.filters.searchQuery
+);
+
 export const pageSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => state.currentPage

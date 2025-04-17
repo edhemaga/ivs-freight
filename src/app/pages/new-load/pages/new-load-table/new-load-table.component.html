@@ -7,28 +7,45 @@
         selectedCount: loadStoreService.selectedCountSelector$ | async,
         selectedTabCountSelector:
             loadStoreService.selectedTabCountSelector$ | async,
+        searchStrings: loadStoreService.searchStringsSelector$ | async,
     };
 @if (store) {
-    @let headerTemplates = { selectHeaderTemplate };
+    @let headerTemplates = { 
+        select: selectHeaderTemplate,
+        requirementLength: lengthHeaderTemplate
+    };
     @let templates =
         {
+            loadNumber,
+            loadInvoice,
+            loadDispatcher,
+            loadStatus,
             select,
             edit,
             action,
-            loadInvoice,
             loadStatus,
+            templateName,
+            commodity,
+            billingRate,
+            invoicedDate,
+            driverInfo,
+            brokerContact,
+            brokerPhone,
+            referenceNumber,
+            brokerBusinessName,
+            requirementTruck,
+            requirementTrailer,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
     <app-new-table
         [columns]="store.columns"
         [rows]="store.viewData"
-        [headerTemplates]="{
-            select: selectHeaderTemplate,
-        }"
+        [headerTemplates]="headerTemplates"
         [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
+        (onSortingChange)="onSortingChange($event)"
         (onShowMore)="onShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
@@ -37,6 +54,27 @@
                 [itemsSelectedCount]="store.selectedCount"
                 (onCheckboxCountClick)="onCheckboxCountClick($event)"
             ></app-ca-checkbox-selected-count>
+        </ng-template>
+
+        <ng-template
+            #lengthHeaderTemplate
+            let-data="data"
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+        >
+            <div class="d-flex" [ngClass]="">
+                <svg-icon
+                    [src]="sharedSvgRoutes.TABLE_LENGTH_ICON"
+                    class="d-flex svg-fill-bw6-2 svg-size-14 m-r-4"
+                >
+                </svg-icon>
+                <span
+                    class="text-size-11 ta-font-semi-bold text-color-muted text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
+                >
+                    ft
+                </span>
+            </div>
         </ng-template>
 
         <ng-template let-data="data" #select>
@@ -50,18 +88,152 @@
             ></app-ca-checkbox>
         </ng-template>
 
-        <ng-template let-data="data" #edit>
-            <!-- TODO: For testing load modal only !! Will be removed later !! -->
-            <div (click)="onOpenModal(data.id, store.selectedTab)">EDIT</div>
+        <ng-template
+            #invoicedDate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.invoicedDate | date: eDateTimeFormat.MM_DD_YY }}
+            </div>
         </ng-template>
 
-        <ng-template let-data="data" #loadInvoice>
+        <ng-template
+            #brokerPhone
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.broker?.phone }}
+            </div>
+        </ng-template>
+
+        <ng-template
+            #brokerContact
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.broker?.contact }}
+            </div>
+        </ng-template>
+
+        <ng-template
+            #driverInfo
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+            let-data="data"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.driverInfo.firstName }}
+                {{ data.driverInfo.lastName }}
+            </div>
+        </ng-template>
+
+        <ng-template
+            #billingRate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
             <span
-                class="ta-font-bold text-size-14 text-color-black c-pointer text-hover-blue-15"
+                class="ta-font-bold text-size-14 text-color-black"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.billingRate | currency }}
+            </span>
+        </ng-template>
+
+        <ng-template
+            #loadNumber
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <span
+                ngbTooltip
+                [mainTooltip]="eGeneralActions.VIEW_DETAILS"
+                [tooltipBackground]="eColor.BLACK"
+                [position]="ePosition.BOTTOM"
+                class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
+                [class]="cellColumnTextColorClass"
+                [innerHtml]="
+                    data.loadNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
                 (click)="navigateToLoadDetails(data.id)"
             >
-                {{ data.loadNumber }}
             </span>
+        </ng-template>
+
+        <ng-template let-data="data" #templateName>
+            <div class="text-color-black text-size-14 ta-font-bold">
+                {{ data.templateName }}
+            </div>
+        </ng-template>
+
+        <ng-template let-data="data" #referenceNumber>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.referenceNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-data="data" #brokerBusinessName>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.brokerBusinessName
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-data="data" #commodity>
+            <div class="text-color-black-2 text-size-14">
+                @if (data.generalCommodity?.name === eSharedString.HAZARDOUS) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.HAZARDOUS_ICON"
+                        class="svg-size-14"
+                    ></svg-icon>
+                }
+                {{ data.generalCommodity?.name }}
+            </div>
+        </ng-template>
+
+        <ng-template let-data="data" #loadDispatcher>
+            <div class="d-flex gap-1">
+                <app-ca-profile-image
+                    [name]="data.dispatcher?.fullName"
+                    [size]="'small'"
+                    [type]="'user'"
+                    [withTooltip]="true"
+                    [size]="18"
+                    [isDispatch]="true"
+                    [avatarImg]="data.dispatcher?.avatarFile?.url"
+                >
+                </app-ca-profile-image>
+
+                <div
+                    class="text-color-black-2 text-size-14"
+                    [innerHtml]="
+                        data.dispatcher?.fullName
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                ></div>
+            </div>
         </ng-template>
 
         <ng-template let-data="data" #loadStatus>
@@ -88,6 +260,24 @@
                 >
                 </app-ca-load-status>
             </span>
+        </ng-template>
+
+        <ng-template #requirementTruck let-data="data">
+            @if(data.requirementTruck) {
+                <app-ta-truck-trailer-icon
+                    iconType="truck"
+                    [inputData]="data.requirementTruck"
+                ></app-ta-truck-trailer-icon>
+            }
+        </ng-template>
+
+        <ng-template #requirementTrailer let-data="data">
+            @if(data.requirementTrailer) {
+                <app-ta-truck-trailer-icon
+                    iconType="trailer"
+                    [inputData]="data.requirementTrailer"
+                ></app-ta-truck-trailer-icon>
+            }
         </ng-template>
 
         <ng-template let-data="data" #action>
