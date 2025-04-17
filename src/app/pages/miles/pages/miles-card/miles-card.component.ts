@@ -97,4 +97,8 @@ export class MilesCardComponent {
                 }
             });
     }
+
+    public onShowMoreClick(): void {
+        this.milesStoreService.getNewPage();
+    }
 }

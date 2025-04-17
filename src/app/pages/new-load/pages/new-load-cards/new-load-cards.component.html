@@ -1,6 +1,8 @@
 @let store =
     {
         viewData: loadStoreService.loadsSelector$ | async,
+        selectedTabCountSelector:
+            loadStoreService.selectedTabCountSelector$ | async,
     };
 
 @let frontSideData = tabCardData[selectedTab].front;
@@ -16,6 +18,9 @@
                 ? eSharedString.NAME
                 : eSharedString.LOAD_NUMBER
         "
+        [totalDataCount]="store.selectedTabCountSelector"
+        (showMore)="onShowMoreClick()"
+        (selectCard)="onSelectLoad($event)"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
