@@ -12,9 +12,9 @@
         [frontSide]="frontSide"
         [backSide]="backSide"
         [cardTitle]="
-            selectedTab === sharedEnums.TEMPLATE
-                ? sharedEnums.NAME
-                : sharedEnums.LOAD_NUMBER
+            selectedTab === eSharedString.TEMPLATE
+                ? eSharedString.NAME
+                : eSharedString.LOAD_NUMBER
         "
     ></ca-table-card-view>
 
@@ -110,7 +110,7 @@
             <div class="text-size-14 text-color-black-2">
                 {{ text }}
                 <span class="text-size-11 text-color-grey ta-font-semi-bold"
-                    >{{ percent }}placeholderEnums.PERCENT</span
+                    >{{ percent }}eStringPlaceholder.PERCENT</span
                 >
             </div>
         </div>

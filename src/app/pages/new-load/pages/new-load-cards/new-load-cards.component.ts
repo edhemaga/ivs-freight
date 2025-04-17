@@ -100,8 +100,8 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
     public selectedTab!: string;
 
     // enums
-    public sharedEnums = eSharedString;
-    public placeholderEnums = eStringPlaceholder;
+    public eSharedString = eSharedString;
+    public eStringPlaceholder = eStringPlaceholder;
 
     constructor(
         private modalService: ModalService,
