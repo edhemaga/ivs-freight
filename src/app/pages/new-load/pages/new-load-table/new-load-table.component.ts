@@ -64,21 +64,18 @@ export class NewLoadTableComponent
     extends LoadDropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
-    protected destroy$ = new Subject<void>();
-
     public changeStatusPopover: NgbPopover;
+    public eColor = eColor;
+    public eDateTimeFormat = eDateTimeFormat;
+    public eDropdownMenu = eDropdownMenu;
+    public eGeneralActions = eGeneralActions;
+    public ePosition = ePosition;
+    public eSharedString = eSharedString;
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
-    public eColor = eColor;
-    public eSharedString = eSharedString;
-    public eGeneralActions = eGeneralActions;
 
-    public ePosition = ePosition;
+    protected destroy$ = new Subject<void>();
 
-    private test = ePosition;
-
-    public eDropdownMenu = eDropdownMenu;
-    public eDateTimeFormat = eDateTimeFormat;
     constructor(
         protected router: Router,
 
@@ -93,10 +90,34 @@ export class NewLoadTableComponent
         this.initChangeStatusDropdownListener();
     }
 
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
+    }
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
     }
-
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
+    }
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
+    }
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
     public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
         const isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
 
@@ -106,15 +127,15 @@ export class NewLoadTableComponent
             isEdit: true,
         });
     }
-
-    private de(id: number): void {
-        this.loadStoreService.navigateToLoadDetails(id);
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
     }
-
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
+    }
     public onShowMoreClick(): void {
         this.loadStoreService.getNewPage();
     }
-
     public onToggleDropdownMenuActions(
         action: IDropdownMenuOptionEmit,
         data,
@@ -142,40 +163,7 @@ export class NewLoadTableComponent
         );
     }
 
-    public onNextStatus(status: LoadStatusResponse): void {
-        this.loadStoreService.dispatchUpdateLoadStatus(status);
-    }
-
-    public onPreviousStatus(status: LoadStatusResponse): void {
-        this.loadStoreService.dispatchRevertLoadStatus(status);
-    }
-
-    public onOpenChangeStatusDropdown(
-        tooltip: NgbPopover,
-        loadId: number
-    ): void {
-        this.changeStatusPopover = tooltip;
-        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
-    }
-
-    public initChangeStatusDropdownListener(): void {
-        this.loadStoreService.changeDropdownpossibleStatusesSelector$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) this.changeStatusPopover.open();
-            });
-    }
-
-    public onCheckboxCountClick(action: string): void {
-        this.loadStoreService.onSelectAll(action);
-    }
-
-    public onSelectLoad(id: number): void {
-        this.loadStoreService.onSelectLoad(id);
-    }
-
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
+    private de(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
     }
 }

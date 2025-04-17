@@ -1,7 +1,7 @@
 {
     "root": true,
     "ignorePatterns": ["projects/**/*"],
-    "plugins": ["@typescript-eslint", "import", "sort-class-members"],
+    "plugins": ["@typescript-eslint", "import", "perfectionist"],
     "overrides": [
         {
             "files": ["*.ts"],
@@ -16,29 +16,56 @@
                 "plugin:prettier/recommended"
             ],
             "rules": {
-                "sort-class-members/sort-class-members": [
+                "perfectionist/sort-classes": [
                     "error",
                     {
-                        "order": [
-                            "[static-properties]",
-                            "[static-methods]",
-                            "[properties]",
+                        "type": "alphabetical",
+                        "order": "asc",
+                        "newlinesBetween": "always",
+                        "groups": [
+                            "view-child-properties",
+                            "input-properties",
+                            "output-properties",
+                            "public-property",
+                            "private-property",
+                            "protected-property",
                             "constructor",
-                            "[methods]"
+                            "angular-lifecycle",
+                            "public-method",
+                            "protected-method",
+                            "private-method"
                         ],
-                        "groups": {
-                            "static-properties": [
-                                { "type": "property", "static": true }
-                            ],
-                            "static-methods": [
-                                { "type": "method", "static": true }
-                            ],
-                            "properties": [
-                                { "type": "property", "static": false }
-                            ],
-                            "methods": [{ "type": "method", "static": false }]
-                        },
-                        "accessorPairPositioning": "getThenSet"
+                        "customGroups": [
+                            {
+                                "groupName": "view-child-properties",
+                                "selector": "property",
+                                "modifiers": ["decorated"],
+                                "decoratorNamePattern": "ViewChild"
+                            },
+                            {
+                                "groupName": "input-properties",
+                                "selector": "property",
+                                "modifiers": ["decorated"],
+                                "decoratorNamePattern": "Input"
+                            },
+                            {
+                                "groupName": "output-properties",
+                                "selector": "property",
+                                "modifiers": ["decorated"],
+                                "decoratorNamePattern": "Output"
+                            },
+                            {
+                                "groupName": "angular-lifecycle",
+                                "type": "unsorted",
+                                "newlinesInside": "always",
+                                "anyOf": [
+                                    {
+                                        "selector": "method",
+                                        "elementNamePattern": "^(ngOnChanges|ngOnInit|ngDoCheck|ngAfterContentInit|ngAfterContentChecked|ngAfterViewInit|ngAfterViewChecked|ngOnDestroy)$"
+                                    }
+                                ]
+                            }
+                        ]
                     }
                 ],
                 "@typescript-eslint/no-explicit-any": "error",
@@ -67,6 +94,7 @@
                         "style": "kebab-case"
                     }
                 ],
+                // maybe to use also perfectionist here TODO: check documentation https://perfectionist.dev/rules/sort-imports
                 "import/order": [
                     "error",
                     {
