@@ -621,14 +621,14 @@ export class LoadTableColumnsConfig {
         return [
             {
                 key: 'requirementGroup',
-                label: 'Requirem',
+                label: 'Requirement',
                 labelToolbar: 'Requirement',
                 hasSort: false,
                 columns: [
                     {
-                        key: 'requirementTruckType',
-                        label: 'Truck type',
-                        labelToolbar: 'Truck Type',
+                        key: 'requirementTruck',
+                        label: 'Truck',
+                        labelToolbar: 'Truck',
                         width: 64,
                         minWidth: 50,
                         maxWidth: 220,
@@ -638,9 +638,9 @@ export class LoadTableColumnsConfig {
                         sortName: LoadSortBy.TruckType,
                     },
                     {
-                        key: 'requirementTrailerType',
-                        label: 'Trailer type',
-                        labelToolbar: 'Trailer Type',
+                        key: 'requirementTrailer',
+                        label: 'Trailer',
+                        labelToolbar: 'Trailer',
                         width: 64,
                         minWidth: 50,
                         maxWidth: 220,
@@ -651,7 +651,7 @@ export class LoadTableColumnsConfig {
                     },
                     {
                         key: 'requirementLength',
-                        label: 'ft',
+                        label: '',
                         labelToolbar: 'Length',
                         width: 52,
                         minWidth: 32,
@@ -662,9 +662,9 @@ export class LoadTableColumnsConfig {
                         sortName: LoadSortBy.TrailerLength,
                     },
                     {
-                        key: 'requirementDoorType',
+                        key: 'requirementDoor',
                         label: 'Door',
-                        labelToolbar: 'Door Type',
+                        labelToolbar: 'Door',
                         width: 90,
                         minWidth: 52,
                         maxWidth: 110,

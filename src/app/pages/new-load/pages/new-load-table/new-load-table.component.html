@@ -10,7 +10,12 @@
         searchStrings: loadStoreService.searchStringsSelector$ | async,
     };
 @if (store) {
-    @let headerTemplates = { selectHeaderTemplate, noteHeaderTemplate };
+    @let headerTemplates =
+        {
+            select: selectHeaderTemplate,
+            requirementLength: lengthHeaderTemplate,
+            note: noteHeaderTemplate,
+        };
     @let templates =
         {
             loadNumber,
@@ -31,16 +36,15 @@
             referenceNumber,
             brokerBusinessName,
             note,
+            requirementTruck,
+            requirementTrailer,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
     <app-new-table
         [columns]="store.columns"
         [rows]="store.viewData"
-        [headerTemplates]="{
-            select: selectHeaderTemplate,
-            note: noteHeaderTemplate,
-        }"
+        [headerTemplates]="headerTemplates"
         [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
@@ -65,6 +69,27 @@
                     [src]="sharedSvgRoutes.NOTE_ICON"
                     class="svg-size-14"
                 ></svg-icon>
+            </div>
+        </ng-template>
+
+        <ng-template
+            #lengthHeaderTemplate
+            let-data="data"
+            let-tableColumnClass="tableColumnClass"
+            let-tableColumnLabelWidth="tableColumnLabelWidth"
+        >
+            <div class="d-flex" [ngClass]="">
+                <svg-icon
+                    [src]="sharedSvgRoutes.TABLE_LENGTH_ICON"
+                    class="d-flex svg-fill-bw6-2 svg-size-14 m-r-4"
+                >
+                </svg-icon>
+                <span
+                    class="text-size-11 ta-font-semi-bold text-color-muted text-truncate d-inline-block"
+                    [ngStyle]="tableColumnLabelWidth"
+                >
+                    ft
+                </span>
             </div>
         </ng-template>
 
@@ -251,6 +276,24 @@
                 >
                 </app-ca-load-status>
             </span>
+        </ng-template>
+
+        <ng-template #requirementTruck let-data="data">
+            @if (data.requirementTruck) {
+                <app-ta-truck-trailer-icon
+                    iconType="truck"
+                    [inputData]="data.requirementTruck"
+                ></app-ta-truck-trailer-icon>
+            }
+        </ng-template>
+
+        <ng-template #requirementTrailer let-data="data">
+            @if (data.requirementTrailer) {
+                <app-ta-truck-trailer-icon
+                    iconType="trailer"
+                    [inputData]="data.requirementTrailer"
+                ></app-ta-truck-trailer-icon>
+            }
         </ng-template>
 
         <ng-template let-data="data" #action>

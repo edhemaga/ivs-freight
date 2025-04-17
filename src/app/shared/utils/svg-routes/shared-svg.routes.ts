@@ -79,6 +79,8 @@ export class SharedSvgRoutes {
         'assets/svg/common/confirmation/ic_confirmation_info2.svg';
     static CONFIRMATION_CHANGE_STATUS_ICON: string =
         'assets/svg/common/confirmation/confirmation_change_status.svg';
+    static TABLE_LENGTH_ICON: string =
+        'assets/svg/truckassist-table/length-icon.svg';
     // applicant
     static BLUE_CHECKMARK: string = 'assets/svg/applicant/check.svg';
     static HAZARDOUS_ICON: string = 'assets/svg/common/ic_hazardous.svg';
