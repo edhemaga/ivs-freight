@@ -93,7 +93,7 @@ export const isTypeColumnCheckedSelector = createSelector(
     tableColumnsSelector,
     (columns) => {
         const typeColumn = columns.find((col) => col.key === 'loadType');
-        return typeColumn?.isChecked ?? false; // ako je undefined, vrati false
+        return typeColumn?.isChecked ?? false;
     }
 );
 

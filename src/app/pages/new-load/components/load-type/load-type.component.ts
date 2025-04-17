@@ -13,6 +13,9 @@ import { LoadType } from 'appcoretruckassist';
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
+// constants
+import { LoadTypeConstants } from '@pages/new-load/utils/constants';
+
 @Component({
     selector: 'app-load-type',
     standalone: true,
@@ -36,9 +39,5 @@ export class LoadTypeComponent {
     public ePosition = ePosition;
     public eColor = eColor;
 
-    public loadTypeIcons: Record<LoadType, string> = {
-        FTL: SharedSvgRoutes.LOAD_FILLED,
-        LTL: SharedSvgRoutes.LTL_FILLED,
-        Combo: SharedSvgRoutes.LTLC_FILLED,
-    };
+    public loadTypeIcons = LoadTypeConstants.LOAD_TYPE_ICON;
 }
