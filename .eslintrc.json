@@ -1,89 +1,160 @@
 {
-  "root": true,
-  "ignorePatterns": [
-    "projects/**/*"
-  ],
-  "overrides": [
-    {
-      "files": [
-        "*.ts"
-      ],
-      "parserOptions": {
-        "project": [
-          "tsconfig.json",
-          "e2e/tsconfig.json"
-        ],
-        "createDefaultProgram": true
-      },
-      "extends": [
-        "plugin:@angular-eslint/recommended",
-        "plugin:@angular-eslint/template/process-inline-templates",
-        "prettier"
-      ],
-      "plugins": [
-        "unused-imports"
-      ],
-      "rules": {
-        "indent": "off",
-        "unused-imports/no-unused-imports": "error",
-        "@angular-eslint/component-selector": [
-          "error",
-          {
-            "style": "kebab-case",
-            "type": "element"
-          }
-        ],
-        "@angular-eslint/directive-selector": [
-          "error",
-          {
-            "style": "camelCase",
-            "type": "attribute"
-          }
-        ],
-        "@angular-eslint/no-empty-lifecycle-method": [
-          "off"
-        ],
-        "@angular-eslint/no-host-metadata-property": [
-          "off"
-        ],
-        "@angular-eslint/no-output-rename": [
-          "off"
-        ],
-        "@angular-eslint/no-output-on-prefix": [
-          "off"
-        ],
-        "@angular-eslint/no-output-native": [
-          "off"
-        ],
-        "no-unused-vars": [
-          "warn",
-          {
-            "argsIgnorePattern": "^_",
-            "varsIgnorePattern": "^_"
-          }
-        ]
-      }
-    },
-    {
-      "files": [
-        "*.html"
-      ],
-      "extends": [
-        "plugin:@angular-eslint/template/recommended"
-      ],
-      "rules": {
-        "@angular-eslint/template/eqeqeq": [
-          "off"
-        ]
-      }
-    },
-    {
-      "files": [
-        "*.ts"
-      ],
-      "extends": [
-        "plugin:@ngrx/recommended"
-      ]
+    "root": true,
+    "ignorePatterns": ["projects/**/*"],
+    "plugins": ["@typescript-eslint", "import"],
+    "overrides": [
+        {
+            "files": ["*.ts"],
+            "parser": "@typescript-eslint/parser",
+            "extends": [
+                "eslint:recommended",
+                "plugin:@typescript-eslint/recommended",
+                "plugin:@angular-eslint/recommended",
+                "plugin:@angular-eslint/template/process-inline-templates",
+                "plugin:import/recommended",
+                "plugin:import/typescript",
+                "plugin:prettier/recommended"
+            ],
+            "rules": {
+                "@angular-eslint/directive-selector": [
+                    "error",
+                    {
+                        "type": "attribute",
+                        "prefix": "app",
+                        "style": "camelCase"
+                    }
+                ],
+                "@angular-eslint/component-selector": [
+                    "error",
+                    {
+                        "type": "element",
+                        "prefix": "app",
+                        "style": "kebab-case"
+                    }
+                ],
+                "@typescript-eslint/no-explicit-any": "error",
+                "@typescript-eslint/no-shadow": "error",
+                "@typescript-eslint/no-var-requires": "off",
+                "@typescript-eslint/no-unused-vars": [
+                    "error",
+                    {
+                        "argsIgnorePattern": "^_",
+                        "varsIgnorePattern": "^_"
+                    }
+                ],
+                "import/order": [
+                    "error",
+                    {
+                        // "alphabetize": {
+                        //     "order": "asc",
+                        //     "caseInsensitive": true
+                        // },
+                        "newlines-between": "always",
+                        "groups": [
+                            "builtin",
+                            "external",
+                            "internal",
+                            "parent",
+                            "sibling",
+                            "index"
+                        ],
+                        "pathGroups": [
+                            // {
+                            //     "pattern": "@angular/**",
+                            //     "group": "builtin",
+                            //     "position": "after"
+                            // },
+                            {
+                                "pattern": "rxjs",
+                                "group": "external",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/enums/**",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/enums**",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/models**",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/model/**",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "appcoretruckassist",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/services/**",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "angular-svg-icon",
+                                "group": "external",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/components/**",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/component/**",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "ca-components",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/pipes/**",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/svg-routes",
+                                "group": "internal",
+                                "position": "after"
+                            },
+                            {
+                                "pattern": "**/interfaces**",
+                                "group": "internal",
+                                "position": "after"
+                            }
+                        ],
+                        "pathGroupsExcludedImportTypes": ["builtin"]
+                    }
+                ]
+            }
+        },
+        {
+            "files": ["*.html"],
+            "extends": [
+                "plugin:@angular-eslint/template/recommended",
+                "plugin:@angular-eslint/template/accessibility"
+            ],
+            "rules": {}
+        }
+    ],
+    "settings": {
+        "import/resolver": {
+            "typescript": {
+                "alwaysTryTypes": true,
+                "project": "./tsconfig.json"
+            }
+        }
     }
-  ]
 }
