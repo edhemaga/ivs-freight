@@ -110,3 +110,22 @@
         }
     }
 }
+
+// SEARCH HIGHLIGHT
+.table-highlight-text-0 {
+    color: $special-filter-green;
+    background: $special-filter-green-bg;
+    @include text-selection($special-filter-green);
+}
+
+.table-highlight-text-1 {
+    color: $ta-yellow-2;
+    background: $special-filter-orange-bg;
+    @include text-selection($ta-yellow-2);
+}
+
+.table-highlight-text-2 {
+    color: $special-filter-purple-1;
+    background: $special-filter-purple-bg;
+    @include text-selection($special-filter-purple-1);
+}

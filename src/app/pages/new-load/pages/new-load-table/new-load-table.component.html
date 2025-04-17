@@ -7,6 +7,7 @@
         selectedCount: loadStoreService.selectedCountSelector$ | async,
         selectedTabCountSelector:
             loadStoreService.selectedTabCountSelector$ | async,
+        searchStrings: loadStoreService.searchStringsSelector$ | async,
     };
 @if (store) {
     @let headerTemplates = { selectHeaderTemplate };
@@ -27,6 +28,8 @@
             driverInfo,
             brokerContact,
             brokerPhone,
+            referenceNumber,
+            brokerBusinessName,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -138,10 +141,13 @@
                 [tooltipBackground]="eColor.BLACK"
                 [position]="ePosition.BOTTOM"
                 class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
-                (click)="navigateToLoadDetails(data.id)"
                 [class]="cellColumnTextColorClass"
+                [innerHtml]="
+                    data.loadNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+                (click)="navigateToLoadDetails(data.id)"
             >
-                {{ data.loadNumber }}
             </span>
         </ng-template>
 
@@ -149,6 +155,26 @@
             <div class="text-color-black text-size-14 ta-font-bold">
                 {{ data.templateName }}
             </div>
+        </ng-template>
+
+        <ng-template let-data="data" #referenceNumber>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.referenceNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-data="data" #brokerBusinessName>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.brokerBusinessName
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
         </ng-template>
 
         <ng-template let-data="data" #commodity>
@@ -176,9 +202,13 @@
                 >
                 </app-ca-profile-image>
 
-                <div class="text-color-black-2 text-size-14">
-                    {{ data.dispatcher?.fullName }}
-                </div>
+                <div
+                    class="text-color-black-2 text-size-14"
+                    [innerHtml]="
+                        data.dispatcher?.fullName
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                ></div>
             </div>
         </ng-template>
 
