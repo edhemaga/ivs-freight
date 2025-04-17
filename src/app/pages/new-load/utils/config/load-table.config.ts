@@ -176,7 +176,7 @@ export class LoadTableColumnsConfig {
     ): ITableColumn[] {
         return [
             {
-                key: 'type',
+                key: 'loadType',
                 label: 'Type',
                 labelToolbar: 'Type',
                 width: 82,
@@ -431,8 +431,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: false,
-                    //   hasSort: true,
-                    //   sortName: LoadSortBy.,
+                      //   hasSort: true,
+                      //   sortName: LoadSortBy.,
                   },
                   {
                       key: 'ageUnpaid',
@@ -443,8 +443,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: true,
-                    //   hasSort: true,
-                    //   sortName: MilesStopSortBy.UnitNumber,
+                      //   hasSort: true,
+                      //   sortName: MilesStopSortBy.UnitNumber,
                   },
                   {
                       key: 'agePaid',
@@ -455,8 +455,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: false,
-                    //   hasSort: true,
-                    //   sortName: MilesStopSortBy.UnitNumber,
+                      //   hasSort: true,
+                      //   sortName: MilesStopSortBy.UnitNumber,
                   },
               ]
             : [];
@@ -471,8 +471,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 140,
                       isResizable: true,
                       isChecked: true,
-                    //   hasSort: true,
-                    //   sortName: MilesStopSortBy.UnitNumber,
+                      //   hasSort: true,
+                      //   sortName: MilesStopSortBy.UnitNumber,
                   },
               ]
             : [];

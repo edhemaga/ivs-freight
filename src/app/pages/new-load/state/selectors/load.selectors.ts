@@ -84,6 +84,15 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     return tableColumns;
 });
 
+export const isTypeColumnCheckedSelector = createSelector(
+    tableColumnsSelector,
+    (columns) => {
+        const typeColumn = columns.find((col) => col.key === 'loadType');
+        console.log('deki car typeColumn', typeColumn);
+        return typeColumn?.isChecked ?? false; // ako je undefined, vrati false
+    }
+);
+
 export const totalSumSelector = createSelector(
     selectLoadState,
     selectedCountSelector,

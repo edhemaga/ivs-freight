@@ -30,6 +30,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { CaProfileImageComponent } from 'ca-components';
 import { SvgIconComponent } from 'angular-svg-icon';
+import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
 
 // Services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
@@ -65,6 +66,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaProfileImageComponent,
         SvgIconComponent,
         TaAppTooltipV2Component,
+        LoadTypeComponent,
     ],
 })
 export class NewLoadTableComponent

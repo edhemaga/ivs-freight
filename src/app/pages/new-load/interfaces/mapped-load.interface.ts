@@ -34,4 +34,6 @@ export interface IMappedLoad {
     billingRatePerMile: number;
     billingRate: number;
     invoicedDate: string;
+    brokerContact: string;
+    loadType: EnumValue;
 }

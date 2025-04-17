@@ -36,7 +36,9 @@ export class LoadHelper {
                 miles,
                 billing,
                 invoicedDate,
-                generalCommodity
+                generalCommodity,
+                loadType,
+                type,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -53,7 +55,9 @@ export class LoadHelper {
                         selectedTab
                     ),
                 totalDue,
+                loadType: loadType ? loadType?.name : type?.name,
                 broker,
+                brokerContact: broker?.contact,
                 templateCreated: load.dateCreated,
                 generalCommodity,
                 brokerBusinessName: broker?.businessName,
