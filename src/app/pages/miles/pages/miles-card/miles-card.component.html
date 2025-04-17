@@ -2,6 +2,8 @@
     {
         cardsFlipType: milesStoreService.cardFlipViewModeSelector$ | async,
         miles: milesStoreService.miles$ | async,
+        selectedTabCountSelector:
+            milesStoreService.selectedTabCountSelector$ | async,
     };
 
 @if (store.miles) {
@@ -13,6 +15,8 @@
         [isDropdownMenuHidden]="true"
         [isSelectHidden]="true"
         [cardsFlipType]="store.cardsFlipType"
+        [totalDataCount]="store.selectedTabCountSelector"
+        (showMore)="onShowMoreClick()"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">

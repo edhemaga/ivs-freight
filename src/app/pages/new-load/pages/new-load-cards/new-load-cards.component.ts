@@ -149,6 +149,14 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
             });
     }
 
+    public onShowMoreClick(): void {
+        this.loadStoreService.getNewPage();
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
+    }
+
     ngOnDestroy(): void {
         this.destroy$.next();
         this.destroy$.complete();
