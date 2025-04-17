@@ -24,7 +24,7 @@
                     <div class="m-tab">
                         <div class="row">
                             <div class="email-field">
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="email"
                                     [inputConfig]="
                                         userModalConfig.emailInputConfig(
@@ -32,29 +32,29 @@
                                             editData?.type
                                         )
                                     "
-                                ></app-ca-input>
+                                ></ca-input-test>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-6">
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="firstName"
                                     [inputConfig]="
                                         userModalConfig.firstNameInputConfig(
                                             selectedUserType?.name
                                         )
                                     "
-                                ></app-ca-input>
+                                ></ca-input-test>
                             </div>
                             <div class="col-6">
-                                <app-ca-input
+                                <ca-input-test
                                     formControlName="lastName"
                                     [inputConfig]="
                                         userModalConfig.lastNameInputConfig(
                                             selectedUserType?.name
                                         )
                                     "
-                                ></app-ca-input>
+                                ></ca-input-test>
                             </div>
                         </div>
                         <div class="row">
@@ -78,7 +78,9 @@
                                     selectedUserType?.name === 'Owner'
                                 "
                             >
-                                <app-ca-input-dropdown
+                                <ca-input-dropdown-test
+                                    [optionValue]="'id'"
+                                    [label]="'name'"
                                     formControlName="departmentId"
                                     [inputConfig]="
                                         userModalConfig.departmentInputConfig(
@@ -86,11 +88,10 @@
                                         )
                                     "
                                     [options]="departments"
-                                    [activeItem]="selectedDepartment"
                                     (selectedItem)="
                                         onSelectDropdown($event, 'department')
                                     "
-                                ></app-ca-input-dropdown>
+                                ></ca-input-dropdown-test>
                             </div>
                         </div>
 
@@ -101,7 +102,9 @@
                             }"
                         >
                             <div class="col-5" [class.col-7]="!isPhoneExtExist">
-                                <app-ca-input-dropdown
+                                <ca-input-dropdown-test
+                                    [optionValue]="'id'"
+                                    [label]="'name'"
                                     formControlName="companyOfficeId"
                                     [inputConfig]="
                                         userModalConfig.companyOfficeInputConfig
@@ -109,11 +112,10 @@
                                     [canAddNew]="true"
                                     [canOpenModal]="true"
                                     [options]="offices"
-                                    [activeItem]="selectedOffice"
                                     (selectedItem)="
                                         onSelectDropdown($event, 'office')
                                     "
-                                ></app-ca-input-dropdown>
+                                ></ca-input-dropdown-test>
                             </div>
                             <div
                                 class="phone-ext-email-small-modal col-5"
@@ -124,7 +126,7 @@
                             >
                                 <div class="phone-extension">
                                     <div class="phone-field">
-                                        <app-ca-input
+                                        <ca-input-test
                                             formControlName="phone"
                                             [inputConfig]="{
                                                 name: 'Phone',
@@ -134,7 +136,7 @@
                                                 mask: '(000) 000-0000',
                                                 maxLength: 14,
                                             }"
-                                        ></app-ca-input>
+                                        ></ca-input-test>
                                     </div>
                                     <ng-container
                                         *ngIf="
@@ -161,7 +163,7 @@
                                         </div>
                                     </ng-container>
                                     <ng-template #phoneExtension>
-                                        <app-ca-input
+                                        <ca-input-test
                                             formControlName="extensionPhone"
                                             [inputConfig]="{
                                                 name: 'phone-extension',
@@ -172,7 +174,7 @@
                                                 placeholderIcon:
                                                     'phone-extension',
                                             }"
-                                        ></app-ca-input>
+                                        ></ca-input-test>
                                     </ng-template>
                                 </div>
                             </div>
@@ -216,7 +218,7 @@
                         >
                             <div class="row">
                                 <div class="col-5">
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="personalPhone"
                                         [inputConfig]="{
                                             name: 'Phone',
@@ -226,10 +228,10 @@
                                             mask: '(000) 000-0000',
                                             maxLength: 14,
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
                                 <div class="col-7">
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="personalEmail"
                                         [inputConfig]="{
                                             name: 'Email',
@@ -240,7 +242,7 @@
                                             maxLength: 64,
                                             textTransform: 'lowercase',
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
                             </div>
                             <div class="row remove-bottom-margin">
@@ -255,7 +257,7 @@
                                             textTransform: 'capitalize',
                                             dropdownWidthClass: 'w-col-376',
                                             minLength: 6,
-                                            maxLength: 256
+                                            maxLength: 256,
                                         }"
                                         [placeholderType]="'longAddress'"
                                         [activeAddress]="selectedAddress"
@@ -279,7 +281,7 @@
                                     ></app-ca-input-address-dropdown>
                                 </div>
                                 <div class="col-2">
-                                    <app-ca-input
+                                    <ca-input-test
                                         formControlName="addressUnit"
                                         [inputConfig]="{
                                             name: 'address-unit',
@@ -289,7 +291,7 @@
                                             minLength: 1,
                                             maxLength: 10,
                                         }"
-                                    ></app-ca-input>
+                                    ></ca-input-test>
                                 </div>
                             </div>
                         </app-ta-custom-card>
@@ -324,7 +326,9 @@
                                         "
                                     >
                                         <div class="col-5">
-                                            <app-ca-input-dropdown
+                                            <ca-input-dropdown-test
+                                                [optionValue]="'id'"
+                                                [label]="'name'"
                                                 formControlName="paymentType"
                                                 [inputConfig]="{
                                                     name: 'Input Dropdown',
@@ -344,19 +348,18 @@
                                                         'w-col-177',
                                                 }"
                                                 [options]="paymentOptions"
-                                                [activeItem]="selectedPayment"
                                                 (selectedItem)="
                                                     onSelectDropdown(
                                                         $event,
                                                         'payment'
                                                     )
                                                 "
-                                            ></app-ca-input-dropdown>
+                                            ></ca-input-dropdown-test>
                                         </div>
                                     </ng-container>
                                     <ng-template #salary>
                                         <div class="col-5">
-                                            <app-ca-input
+                                            <ca-input-test
                                                 formControlName="salary"
                                                 [inputConfig]="{
                                                     name: 'Salary',
@@ -368,7 +371,7 @@
                                                     minLength: 4,
                                                     maxLength: 8,
                                                 }"
-                                            ></app-ca-input>
+                                            ></ca-input-test>
                                         </div>
                                     </ng-template>
                                     <div class="col-4">
@@ -410,7 +413,7 @@
                                             *ngIf="allowPairCommissionBase"
                                         >
                                             <div class="col-6">
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="base"
                                                     [inputConfig]="{
                                                         name: 'Salary',
@@ -423,7 +426,7 @@
                                                         minLength: 4,
                                                         maxLength: 8,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </div>
                                         </ng-container>
                                         <div
@@ -440,7 +443,7 @@
                                                     else commissionSlider
                                                 "
                                             >
-                                                <app-ca-input
+                                                <ca-input-test
                                                     formControlName="salary"
                                                     [inputConfig]="{
                                                         name: 'Salary',
@@ -457,7 +460,7 @@
                                                         isRequired:
                                                             !selectedPayment?.name,
                                                     }"
-                                                ></app-ca-input>
+                                                ></ca-input-test>
                                             </ng-container>
 
                                             <ng-template #commissionSlider>
@@ -493,7 +496,9 @@
                                     }"
                                 >
                                     <div class="bank-field">
-                                        <app-ca-input-dropdown
+                                        <ca-input-dropdown-test
+                                            [optionValue]="'id'"
+                                            [label]="'name'"
                                             formControlName="bankId"
                                             [template]="'svg-template'"
                                             [inputConfig]="{
@@ -506,43 +511,54 @@
                                                 isDropdown: true,
                                                 isRequired: true,
                                                 dropdownWidthClass: 'w-col-164',
+                                                dropdownImageInput: {
+                                                    withText: true,
+                                                    svg: false,
+                                                    image: true,
+                                                    template: 'user',
+                                                    iconsPath: '',
+                                                    activeItemIconKey:
+                                                        'logoName',
+                                                },
                                             }"
                                             [canAddNew]="true"
                                             [options]="labelsBank"
-                                            [activeItem]="selectedBank"
                                             (selectedItem)="
                                                 onSelectDropdown($event, 'bank')
                                             "
                                             (saveItem)="onSaveNewBank($event)"
-                                        ></app-ca-input-dropdown>
+                                        ></ca-input-dropdown-test>
                                     </div>
+
+                                    @let isBankIdSelected =
+                                        userForm.get('bankId').value;
                                     <div class="bank-field">
-                                        <app-ca-input
+                                        <ca-input-test
                                             formControlName="routingNumber"
                                             [inputConfig]="{
                                                 name: 'routing-bank',
                                                 type: 'text',
                                                 label: 'Routing #',
-                                                isDisabled: !isBankSelected,
-                                                isRequired: isBankSelected,
+                                                isDisabled: !isBankIdSelected,
+                                                isRequired: true,
                                                 minLength: 9,
                                                 maxLength: 9,
                                             }"
-                                        ></app-ca-input>
+                                        ></ca-input-test>
                                     </div>
                                     <div class="bank-field">
-                                        <app-ca-input
+                                        <ca-input-test
                                             formControlName="accountNumber"
                                             [inputConfig]="{
                                                 name: 'account-bank',
                                                 type: 'text',
                                                 label: 'Account #',
-                                                isDisabled: !isBankSelected,
-                                                isRequired: isBankSelected,
+                                                isDisabled: !isBankIdSelected,
+                                                isRequired: true,
                                                 minLength: 5,
                                                 maxLength: 17,
                                             }"
-                                        ></app-ca-input>
+                                        ></ca-input-test>
                                     </div>
                                 </div>
                             </ng-container>
