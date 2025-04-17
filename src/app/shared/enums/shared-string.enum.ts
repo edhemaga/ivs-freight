@@ -44,6 +44,10 @@ export enum eSharedString {
     // Status
     INVITED = 'Invited',
 
-    // Load commodity
-    HAZARDOUS = 'Hazardous'
+    // Load
+    LOAD_VERTICAL_LINE = 'Load | ',
+    TEMPLATE = 'Template',
+    NAME = 'name',
+    LOAD_NUMBER = 'loadNumber',
+    HAZARDOUS = 'Hazardous',
 }
