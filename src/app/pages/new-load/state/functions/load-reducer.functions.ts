@@ -87,6 +87,10 @@ export const getLoadsPayloadOnTabTypeChange = function (
     return {
         ...state,
         currentPage: 1,
+        filters: {
+            ...state.filters,
+            searchQuery: [],
+        },
         selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
         tableColumns: LoadTableColumnsConfig.getLoadTableColumns(selectedTab),
     };

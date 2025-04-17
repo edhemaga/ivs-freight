@@ -121,6 +121,20 @@ export const updateFilters = function (
     };
 };
 
+export function onSeachFilterChange(
+    state: IMilesState,
+    searchQuery: string[]
+): IMilesState {
+    return {
+        ...state,
+        page: 1,
+        filters: {
+            ...state.filters,
+            searchQuery,
+        },
+    };
+}
+
 export const updateTabSelection = function (
     state: IMilesState,
     selectedTab: eMileTabs

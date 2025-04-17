@@ -22,6 +22,7 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 
 @Component({
     selector: 'app-miles-table',
@@ -39,6 +40,7 @@ import { ThousandSeparatorPipe } from '@shared/pipes';
 
         // pipes
         ThousandSeparatorPipe,
+        TableHighlightSearchTextPipe,
     ],
 })
 export class MilesTableComponent {

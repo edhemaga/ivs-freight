@@ -92,7 +92,10 @@ export class MilesEffects {
                         null,
                         null,
                         tableSettings.sortDirection,
-                        tableSettings.sortKey as MilesStopSortBy
+                        tableSettings.sortKey as MilesStopSortBy,
+                        filters.searchQuery[0],
+                        filters.searchQuery[1],
+                        filters.searchQuery[2]
                     )
                     .pipe(
                         switchMap((response) => {
@@ -151,7 +154,8 @@ export class MilesEffects {
             ofType(
                 MilesAction.milesTabChange,
                 MilesAction.changeFilters,
-                MilesAction.tableSortingChange
+                MilesAction.tableSortingChange,
+                MilesAction.onSeachFilterChange
             ),
             exhaustMap(() =>
                 this.store.select(activeViewModeSelector).pipe(
