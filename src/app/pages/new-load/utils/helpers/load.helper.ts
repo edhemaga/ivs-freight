@@ -37,7 +37,8 @@ export class LoadHelper {
                 miles,
                 billing,
                 invoicedDate,
-                generalCommodity
+                generalCommodity,
+                note,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -67,6 +68,7 @@ export class LoadHelper {
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
                 invoicedDate,
+                note,
             };
             return mapped;
         });

@@ -34,4 +34,5 @@ export interface IMappedLoad {
     billingRatePerMile: number;
     billingRate: number;
     invoicedDate: string;
+    note: string;
 }

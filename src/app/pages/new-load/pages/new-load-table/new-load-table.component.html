@@ -10,7 +10,7 @@
         searchStrings: loadStoreService.searchStringsSelector$ | async,
     };
 @if (store) {
-    @let headerTemplates = { selectHeaderTemplate };
+    @let headerTemplates = { selectHeaderTemplate, noteHeaderTemplate };
     @let templates =
         {
             loadNumber,
@@ -30,6 +30,7 @@
             brokerPhone,
             referenceNumber,
             brokerBusinessName,
+            note,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -38,6 +39,7 @@
         [rows]="store.viewData"
         [headerTemplates]="{
             select: selectHeaderTemplate,
+            note: noteHeaderTemplate,
         }"
         [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
@@ -51,6 +53,19 @@
                 [itemsSelectedCount]="store.selectedCount"
                 (onCheckboxCountClick)="onCheckboxCountClick($event)"
             ></app-ca-checkbox-selected-count>
+        </ng-template>
+
+        <ng-template
+            #noteHeaderTemplate
+            let-data="data"
+            let-tableColumnClass="tableColumnClass"
+        >
+            <div class="d-flex" [ngClass]="tableColumnClass">
+                <svg-icon
+                    [src]="sharedSvgRoutes.NOTE_ICON"
+                    class="svg-size-14"
+                ></svg-icon>
+            </div>
         </ng-template>
 
         <ng-template let-data="data" #select>
@@ -248,6 +263,23 @@
                 "
             >
             </ca-dropdown-menu>
+        </ng-template>
+
+        <ng-template let-data="data" #note>
+            <app-ta-note
+                [note]="data.note"
+                [mainData]="data"
+                [entityId]="data.id"
+                [openedAll]="false"
+                [parking]="false"
+                [entityType]="
+                    store.selectedTab === eSharedString.TEMPLATE
+                        ? eSharedString.LOAD_TEMPLATE
+                        : eSharedString.LOAD
+                "
+                (saveNoteValue)="saveNoteValue($event, card.id)"
+            >
+            </app-ta-note>
         </ng-template>
     </app-new-table>
 
