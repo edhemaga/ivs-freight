@@ -303,7 +303,6 @@ export function onDeleteLoad(state: ILoadState, id: number): ILoadState {
             updatedLoads,
             selectedTab
         ),
-        searchResultsCount: state.searchResultsCount - 1,
     };
 }
 
