@@ -1,7 +1,7 @@
 {
     "root": true,
     "ignorePatterns": ["projects/**/*"],
-    "plugins": ["@typescript-eslint", "import"],
+    "plugins": ["@typescript-eslint", "import", "sort-class-members"],
     "overrides": [
         {
             "files": ["*.ts"],
@@ -16,6 +16,41 @@
                 "plugin:prettier/recommended"
             ],
             "rules": {
+                "sort-class-members/sort-class-members": [
+                    "error",
+                    {
+                        "order": [
+                            "[static-properties]",
+                            "[static-methods]",
+                            "[properties]",
+                            "constructor",
+                            "[methods]"
+                        ],
+                        "groups": {
+                            "static-properties": [
+                                { "type": "property", "static": true }
+                            ],
+                            "static-methods": [
+                                { "type": "method", "static": true }
+                            ],
+                            "properties": [
+                                { "type": "property", "static": false }
+                            ],
+                            "methods": [{ "type": "method", "static": false }]
+                        },
+                        "accessorPairPositioning": "getThenSet"
+                    }
+                ],
+                "@typescript-eslint/no-explicit-any": "error",
+                "@typescript-eslint/no-shadow": "error",
+                "@typescript-eslint/no-var-requires": "off",
+                "@typescript-eslint/no-unused-vars": [
+                    "error",
+                    {
+                        "argsIgnorePattern": "^_",
+                        "varsIgnorePattern": "^_"
+                    }
+                ],
                 "@angular-eslint/directive-selector": [
                     "error",
                     {
@@ -32,23 +67,13 @@
                         "style": "kebab-case"
                     }
                 ],
-                "@typescript-eslint/no-explicit-any": "error",
-                "@typescript-eslint/no-shadow": "error",
-                "@typescript-eslint/no-var-requires": "off",
-                "@typescript-eslint/no-unused-vars": [
-                    "error",
-                    {
-                        "argsIgnorePattern": "^_",
-                        "varsIgnorePattern": "^_"
-                    }
-                ],
                 "import/order": [
                     "error",
                     {
-                        // "alphabetize": {
-                        //     "order": "asc",
-                        //     "caseInsensitive": true
-                        // },
+                        "alphabetize": {
+                            "order": "asc",
+                            "caseInsensitive": true
+                        },
                         "newlines-between": "always",
                         "groups": [
                             "builtin",
@@ -59,11 +84,11 @@
                             "index"
                         ],
                         "pathGroups": [
-                            // {
-                            //     "pattern": "@angular/**",
-                            //     "group": "builtin",
-                            //     "position": "after"
-                            // },
+                            {
+                                "pattern": "@angular/**",
+                                "group": "builtin",
+                                "position": "after"
+                            },
                             {
                                 "pattern": "rxjs",
                                 "group": "external",
@@ -75,17 +100,7 @@
                                 "position": "after"
                             },
                             {
-                                "pattern": "**/enums**",
-                                "group": "internal",
-                                "position": "after"
-                            },
-                            {
                                 "pattern": "**/models**",
-                                "group": "internal",
-                                "position": "after"
-                            },
-                            {
-                                "pattern": "**/model/**",
                                 "group": "internal",
                                 "position": "after"
                             },
@@ -110,27 +125,7 @@
                                 "position": "after"
                             },
                             {
-                                "pattern": "**/component/**",
-                                "group": "internal",
-                                "position": "after"
-                            },
-                            {
-                                "pattern": "ca-components",
-                                "group": "internal",
-                                "position": "after"
-                            },
-                            {
                                 "pattern": "**/pipes/**",
-                                "group": "internal",
-                                "position": "after"
-                            },
-                            {
-                                "pattern": "**/svg-routes",
-                                "group": "internal",
-                                "position": "after"
-                            },
-                            {
-                                "pattern": "**/interfaces**",
                                 "group": "internal",
                                 "position": "after"
                             }

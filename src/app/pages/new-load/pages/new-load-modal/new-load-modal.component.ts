@@ -1,52 +1,41 @@
-// Modules
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
+
 import {
     NgbActiveModal,
     NgbModule,
     NgbPopover,
 } from '@ng-bootstrap/ng-bootstrap';
-import { ReactiveFormsModule, UntypedFormGroup } from '@angular/forms';
 
-// rxjs
 import { catchError, forkJoin, Observable, of } from 'rxjs';
 
-// Enums
-import { eGeneralActions } from '@shared/enums';
-import { eLoadModalActions } from '@pages/new-load/enums';
-import { eLoadModalForm } from '@pages/new-load/pages/new-load-modal/enums';
+import { SvgIconComponent } from 'angular-svg-icon';
 
-// Svg routes
-import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-
-// Services
-import { LoadService } from '@shared/services/load.service';
-import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
-
-// Interface
-import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
-
-// Helpers
+import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
 import { LoadModalHelper } from '@pages/new-load/pages/new-load-modal/utils/helpers';
 
-// Models
+import { eLoadModalActions } from '@pages/new-load/enums';
+import { eLoadModalForm } from '@pages/new-load/pages/new-load-modal/enums';
+import { eGeneralActions } from '@shared/enums';
+
+import { Tabs } from '@shared/models';
+
 import {
     EnumValue,
     LoadModalResponse,
     LoadResponse,
     LoadTemplateResponseCreateGenericWithUploadsResponse,
 } from 'appcoretruckassist';
-import { Tabs } from '@shared/models';
 
-// Config
-import { LoadModalConfig } from '@pages/load/pages/load-modal/utils/constants';
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+import { LoadService } from '@shared/services/load.service';
 
-// Pipes
-import { TemplateButtonConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/template-button-config.pipe';
-import { LoadModalInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/load-modal-input-config.pipe';
+import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
+import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
 
-// Components
-import { SvgIconComponent } from 'angular-svg-icon';
 import {
     CaModalButtonComponent,
     CaModalComponent,
@@ -58,10 +47,13 @@ import {
     InputTestComponent,
     CaCustomCardComponent,
 } from 'ca-components';
-import { TaCheckboxComponent } from '@shared/components/ta-checkbox/ta-checkbox.component';
-import { TaInputNoteComponent } from '@shared/components/ta-input-note/ta-input-note.component';
-import { NewLoadModalStopsComponent } from '@pages/new-load/pages/new-load-modal/components/new-load-modal-stops/new-load-modal-stops.component';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+import { LoadModalInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/load-modal-input-config.pipe';
+import { TemplateButtonConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/template-button-config.pipe';
+
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+import { ILoadModal } from '@pages/new-load/pages/new-load-modal/interfaces';
 
 @Component({
     selector: 'app-new-load-modal',

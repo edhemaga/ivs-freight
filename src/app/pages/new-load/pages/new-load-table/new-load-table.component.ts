@@ -1,24 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Subject, takeUntil } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+
 import { NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-
-// Enums
 import {
-    eColor,
-    eSharedString,
-    eDateTimeFormat,
-    eDropdownMenu,
-    eGeneralActions,
-} from '@shared/enums';
-import { eLoadStatusStringType } from '@pages/new-load/enums';
-
-// base classes
-import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
-
-// Components
-import {
+    CaProfileImageComponent,
     CaDropdownMenuComponent,
     CaStatusChangeDropdownComponent,
     CaCheckboxComponent,
@@ -26,24 +12,31 @@ import {
     CaCheckboxSelectedCountComponent,
     ePosition,
 } from 'ca-components';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
-import { NewTableComponent } from '@shared/components/new-table/new-table.component';
-import { CaProfileImageComponent } from 'ca-components';
+
+import { Subject, takeUntil } from 'rxjs';
+
 import { SvgIconComponent } from 'angular-svg-icon';
 
-// Services
-import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
+import {
+    eColor,
+    eSharedString,
+    eDateTimeFormat,
+    eDropdownMenu,
+    eGeneralActions,
+} from '@shared/enums';
 import { ModalService } from '@shared/services';
-
-// interfaces
-import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-
-// helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
-
-// Models
-import { LoadStatusResponse } from 'appcoretruckassist';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+import { LoadStatusResponse } from 'appcoretruckassist';
+
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
+
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 @Component({
     selector: 'app-new-load-table',
@@ -74,17 +67,18 @@ export class NewLoadTableComponent
     protected destroy$ = new Subject<void>();
 
     public changeStatusPopover: NgbPopover;
-
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
-
     public eColor = eColor;
     public eSharedString = eSharedString;
     public eGeneralActions = eGeneralActions;
+
     public ePosition = ePosition;
+
+    private test = ePosition;
+
     public eDropdownMenu = eDropdownMenu;
     public eDateTimeFormat = eDateTimeFormat;
-
     constructor(
         protected router: Router,
 
@@ -111,6 +105,10 @@ export class NewLoadTableComponent
             isTemplate,
             isEdit: true,
         });
+    }
+
+    private de(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
     }
 
     public onShowMoreClick(): void {
