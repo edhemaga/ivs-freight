@@ -40,6 +40,7 @@
         [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
+        (onSortingChange)="onSortingChange($event)"
         (onShowMore)="onShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>

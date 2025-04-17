@@ -13,6 +13,8 @@ export class LoadStoreConstants {
     public static ACTION_TABLE_UNLOCK_TOGGLE = `${this.COMPONENT_NAME_KEY} ACTION_TABLE_UNLOCK_TOGGLE`;
     public static ACTION_RESET_COLUMNS = `${this.COMPONENT_NAME_KEY} ACTION_RESET_COLUMNS`;
     public static ACTION_TOGGLE_CARD_FLIP_VIEW_MODE = `${this.COMPONENT_NAME_KEY} ACTION_TOGGLE_CARD_FLIP_VIEW_MODE`;
+
+    public static ACTION_SORTING_CHANGE = `${this.COMPONENT_NAME_KEY} ACTION_SORTING_CHANGE`;
     //#endregion
 
     //#region Filters
