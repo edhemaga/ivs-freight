@@ -4,12 +4,14 @@ import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // Components
 import { SvgIconComponent } from 'angular-svg-icon';
-
-// Models
-import { SharedSvgRoutes } from '@shared/utils/svg-routes';
-import { LoadType } from 'appcoretruckassist';
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { eColor, ePosition } from 'ca-components';
+
+// Models
+import { LoadType } from 'appcoretruckassist';
+
+// Svg routes
+import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 @Component({
     selector: 'app-load-type',
