@@ -1,6 +1,5 @@
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
-import { LoadTemplate } from '@pages/load/pages/load-table/models';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // Interfaces
@@ -25,20 +24,50 @@ export class LoadHelper {
         selectedTab: eLoadStatusStringType
     ): IMappedLoad[] {
         return loads.map((load) => {
-            return {
-                id: load.id,
+            const {
+                id,
+                loadNumber,
+                status,
+                dispatcher,
+                loadDetails,
+                totalDue,
+                broker,
+                driver,
+                miles,
+                billing,
+                invoicedDate,
+                generalCommodity
+            } = load;
+
+            const mapped: IMappedLoad = {
+                id,
                 edit: true,
                 isSelected: false,
-                loadNumber: load.loadNumber,
-                name: load.name,
-                status: load.status,
+                loadNumber,
+                templateName: load.name,
+                status,
+                dispatcher,
+                referenceNumber: loadDetails?.referenceNumber,
                 tableDropdownContent:
                     DropdownMenuContentHelper.getLoadDropdownContent(
                         selectedTab
                     ),
-                totalDue: load.totalDue,
-                broker: load.broker,
+                totalDue,
+                broker,
+                templateCreated: load.dateCreated,
+                generalCommodity,
+                brokerBusinessName: broker?.businessName,
+                driverInfo: driver,
+                assignedDriverTruckNumber: driver?.truckNumber,
+                assignedDriverTrailerNumber: driver?.trailerNumber,
+                milesLoaded: miles?.loadedMiles,
+                milesEmpty: miles?.emptyMiles,
+                milesTotal: miles?.totalMiles,
+                billingRatePerMile: billing?.rpm,
+                billingRate: billing?.rate,
+                invoicedDate,
             };
+            return mapped;
         });
     }
 

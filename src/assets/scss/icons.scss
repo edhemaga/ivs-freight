@@ -26,6 +26,12 @@
     }
 }
 
+@mixin svg-height($height) {
+    svg {
+        height: $height;
+    }
+}
+
 .svg {
     // Colors
     &-fill {
@@ -236,6 +242,12 @@
         
         &-90 {
             @include svg-size(90px, 90px);
+        }
+    }
+
+    &-height {
+        &-18 {
+            @include svg-height(18px);
         }
     }
 }
