@@ -46,4 +46,5 @@ export enum eGeneralActions {
     CONVERT_TO_LOAD = 'Convert to Load',
     CONVERT_TO_TEMPLATE = 'Convert To Template',
     CREATE_TEMPLATE = 'Create Template',
+    VIEW_DETAILS = "View Details"
 }

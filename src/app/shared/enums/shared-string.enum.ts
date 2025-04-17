@@ -49,4 +49,5 @@ export enum eSharedString {
     TEMPLATE = 'Template',
     NAME = 'name',
     LOAD_NUMBER = 'loadNumber',
+    HAZARDOUS = 'Hazardous',
 }
