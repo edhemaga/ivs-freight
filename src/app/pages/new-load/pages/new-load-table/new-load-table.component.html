@@ -9,6 +9,7 @@
             loadStoreService.selectedTabCountSelector$ | async,
         isTypeColumnCheckedSelector:
             loadStoreService.isTypeColumnCheckedSelector$ | async,
+        searchStrings: loadStoreService.searchStringsSelector$ | async,
     };
 @if (store) {
     @let headerTemplates = { selectHeaderTemplate };
@@ -23,13 +24,14 @@
             action,
             loadStatus,
             templateName,
-            templateCreated,
             commodity,
             billingRate,
             invoicedDate,
             driverInfo,
             brokerPhone,
             loadType,
+            referenceNumber,
+            brokerBusinessName,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -42,6 +44,7 @@
         [totalDataCount]="store.selectedTabCountSelector"
         [templates]="templates"
         [isTableLocked]="isTableLocked"
+        (onSortingChange)="onSortingChange($event)"
         (onShowMore)="onShowMoreClick()"
     >
         <ng-template #selectHeaderTemplate>
@@ -140,9 +143,12 @@
                     [position]="ePosition.BOTTOM"
                     class="c-pointer text-color-black text-hover-blue-15 ta-font-bold text-size-14 text-truncate"
                     [class]="cellColumnTextColorClass"
+                    [innerHtml]="
+                        data.loadNumber
+                            | tableHighlightSearchText: store.searchStrings
+                    "
                     (click)="navigateToLoadDetails(data.id)"
                 >
-                    {{ data.loadNumber }}
                 </span>
             </div>
         </ng-template>
@@ -162,10 +168,24 @@
             </div>
         </ng-template>
 
-        <ng-template let-data="data" #templateCreated>
-            <div class="text-color-black-2 text-size-14">
-                {{ data.templateCreated | date: eDateTimeFormat.MM_DD_YY }}
-            </div>
+        <ng-template let-data="data" #referenceNumber>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.referenceNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-data="data" #brokerBusinessName>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.brokerBusinessName
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
         </ng-template>
 
         <ng-template let-data="data" #commodity>
@@ -193,9 +213,13 @@
                 >
                 </app-ca-profile-image>
 
-                <div class="text-color-black-2 text-size-14">
-                    {{ data.dispatcher?.fullName }}
-                </div>
+                <div
+                    class="text-color-black-2 text-size-14"
+                    [innerHtml]="
+                        data.dispatcher?.fullName
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                ></div>
             </div>
         </ng-template>
 

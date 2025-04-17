@@ -13,6 +13,7 @@
         [isDropdownMenuHidden]="true"
         [isSelectHidden]="true"
         [cardsFlipType]="store.cardsFlipType"
+        (showMore)="onShowMoreClick()"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">

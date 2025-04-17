@@ -38,6 +38,7 @@ import { ModalService } from '@shared/services';
 
 // interfaces
 import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
@@ -45,6 +46,9 @@ import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-h
 // Models
 import { LoadStatusResponse } from 'appcoretruckassist';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+
+// Pipes
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 
 @Component({
     selector: 'app-new-load-table',
@@ -67,6 +71,9 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         SvgIconComponent,
         TaAppTooltipV2Component,
         LoadTypeComponent,
+
+        // Pipes
+        TableHighlightSearchTextPipe,
     ],
 })
 export class NewLoadTableComponent
@@ -176,6 +183,10 @@ export class NewLoadTableComponent
 
     public onSelectLoad(id: number): void {
         this.loadStoreService.onSelectLoad(id);
+    }
+
+    public onSortingChange(column: ITableColumn): void {
+        this.loadStoreService.dispatchSortingChange(column);
     }
 
     ngOnDestroy(): void {

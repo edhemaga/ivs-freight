@@ -17,6 +17,7 @@ import {
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers';
 
 export class LoadHelper {
     static loadMapper(
@@ -58,7 +59,10 @@ export class LoadHelper {
                 loadType: loadType ? loadType?.name : type?.name,
                 broker,
                 brokerContact: broker?.contact,
-                templateCreated: load.dateCreated,
+                templateCreated:
+                    MethodsCalculationsHelper.convertDateFromBackend(
+                        load.dateCreated
+                    ),
                 generalCommodity,
                 brokerBusinessName: broker?.businessName,
                 driverInfo: driver,

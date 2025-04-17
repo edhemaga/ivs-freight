@@ -64,6 +64,13 @@ export const changeFilters = createAction(
     props<{ filters: IStateFilters }>()
 );
 
+export const onSeachFilterChange = createAction(
+    MilesStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
+    props<{
+        query: string[];
+    }>()
+);
+
 export const setStates = createAction(
     MilesStoreConstants.SET_STATES,
     props<{ states: MilesStateFilterResponse[] }>()

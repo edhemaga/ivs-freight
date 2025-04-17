@@ -77,8 +77,8 @@
         <span
             class="progress-text ta-font-semi-bold"
             [class.table-progress-text]="isTable"
-            [class.text-size-13]="text?.length >= 5"
-            [class.text-size-12]="text?.length > 5"
+            [class.text-size-13]="text?.length === 3"
+            [class.text-size-12]="text?.length > 3"
         >
             <ng-container *ngIf="type === 'days'">
                 <ng-container *ngIf="!daysExpired"
@@ -91,7 +91,6 @@
                     </div>
                 </ng-container>
             </ng-container>
-
             <ng-container *ngIf="type === 'miles'">
                 {{ text | thousandToShortFormatPipe }}
                 mi over

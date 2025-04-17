@@ -317,4 +317,11 @@ export class MilesStoreService {
             stopId,
         });
     }
+
+    public dispatchSearchChange(query: string[]): void {
+        this.store.dispatch({
+            type: MilesStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
+            query,
+        });
+    }
 }

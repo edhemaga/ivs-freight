@@ -76,7 +76,7 @@ import { NgxMaskModule } from 'ngx-mask';
 import { DomSanitizer } from '@angular/platform-browser';
 
 // pipes
-import { TableHighlightSearchTextPipe } from '@shared/components/ta-table/ta-table-body/pipes/table-highlight-search-text.pipe';
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 import { ContactPhoneEmailIconPipe } from '@shared/components/ta-table/ta-table-body/pipes/contact-phone-email-icon.pipe';
 import { FormatCurrencyPipe } from '@shared/pipes/format-currency.pipe';
 import { ThousandToShortFormatPipe } from '@shared/pipes/thousand-to-short-format.pipe';
