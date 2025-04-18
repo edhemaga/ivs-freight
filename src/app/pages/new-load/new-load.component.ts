@@ -30,6 +30,7 @@ import {
     CaFilterListDropdownComponent,
     CaFilterTimeDropdownComponent,
     CaSearchMultipleStates2Component,
+    CaCheckboxSelectedCountComponent,
     IFilterAction,
 } from 'ca-components';
 import { NewLoadCardsComponent } from '@pages/new-load/pages/new-load-cards/new-load-cards.component';
@@ -65,6 +66,7 @@ import { IMappedLoad } from '@pages/new-load/interfaces';
         CaFilterListDropdownComponent,
         CaSearchMultipleStates2Component,
         SvgIconComponent,
+        CaCheckboxSelectedCountComponent,
     ],
 })
 export class NewLoadComponent<T> {
@@ -73,6 +75,7 @@ export class NewLoadComponent<T> {
     // enums
     public eLoadStatusStringType = eLoadStatusStringType;
     public generalActions = eGeneralActions;
+    public eCommonElement = eCommonElement;
 
     // Shared routes
     public sharedIcons = SharedSvgRoutes;
@@ -115,6 +118,10 @@ export class NewLoadComponent<T> {
 
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
+    }
+
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
     }
 
     public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {

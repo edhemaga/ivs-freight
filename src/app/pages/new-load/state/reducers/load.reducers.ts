@@ -74,6 +74,7 @@ export const initialState: ILoadState = {
         isTableLocked: true,
         sortKey: null,
         sortDirection: null,
+        label: '',
     },
 
     possibleStatuses: null,

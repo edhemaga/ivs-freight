@@ -92,6 +92,9 @@ export class LoadStoreService {
         select(LoadSelectors.isTypeColumnCheckedSelector)
     );
 
+    public getSortableColumnSelector$: Observable<ITableColumn[]> =
+        this.store.pipe(select(LoadSelectors.getSortableColumn));
+
     public loadDetailsSelector$: Observable<ILoadDetails> = this.store.pipe(
         select(LoadSelectors.loadDetailsSelector)
     );

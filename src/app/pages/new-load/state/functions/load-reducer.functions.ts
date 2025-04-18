@@ -167,10 +167,8 @@ export function onTableSortingChange(
     state: ILoadState,
     column: ITableColumn
 ): ILoadState {
-    const { columns, sortKey, sortDirection } = StoreFunctionsHelper.toggleSort(
-        column,
-        state.tableColumns
-    );
+    const { columns, sortKey, sortDirection, label } =
+        StoreFunctionsHelper.toggleSort(column, state.tableColumns);
 
     return {
         ...state,
@@ -179,6 +177,7 @@ export function onTableSortingChange(
             ...state.tableSettings,
             sortDirection,
             sortKey,
+            label,
         },
     };
 }
