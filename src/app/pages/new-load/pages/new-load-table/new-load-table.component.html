@@ -320,18 +320,18 @@
         </ng-template>
 
         <ng-template let-data="data" #note>
+            @let entityType =
+                store.selectedTab === eSharedString.TEMPLATE
+                    ? eSharedString.LOAD_TEMPLATE
+                    : eSharedString.LOAD;
+
             <app-ta-note
                 [note]="data.note"
                 [mainData]="data"
                 [entityId]="data.id"
                 [openedAll]="false"
                 [parking]="false"
-                [entityType]="
-                    store.selectedTab === eSharedString.TEMPLATE
-                        ? eSharedString.LOAD_TEMPLATE
-                        : eSharedString.LOAD
-                "
-                (saveNoteValue)="saveNoteValue($event, card.id)"
+                [entityType]="entityType"
             >
             </app-ta-note>
         </ng-template>
