@@ -1,24 +1,11 @@
+/* eslint-disable */
 import { CommonModule } from '@angular/common';
+import { Subject, takeUntil } from 'rxjs';
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-
 import { NgbPopover, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
-import {
-    CaProfileImageComponent,
-    CaDropdownMenuComponent,
-    CaStatusChangeDropdownComponent,
-    CaCheckboxComponent,
-    CaLoadStatusComponent,
-    CaCheckboxSelectedCountComponent,
-    ePosition,
-} from 'ca-components';
 
-import { Subject, takeUntil } from 'rxjs';
-
-import { SvgIconComponent } from 'angular-svg-icon';
-
-import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
-import { eLoadStatusStringType } from '@pages/new-load/enums';
+// Enums
 import {
     eColor,
     eSharedString,
@@ -26,18 +13,45 @@ import {
     eDropdownMenu,
     eGeneralActions,
 } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
+
+// base classes
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
+
+// Components
+import {
+    CaDropdownMenuComponent,
+    CaStatusChangeDropdownComponent,
+    CaCheckboxComponent,
+    CaLoadStatusComponent,
+    CaCheckboxSelectedCountComponent,
+    ePosition,
+} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { NewTableComponent } from '@shared/components/new-table/new-table.component';
+import { CaProfileImageComponent } from 'ca-components';
+import { SvgIconComponent } from 'angular-svg-icon';
+import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
+import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
+
+// Services
+import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { ModalService } from '@shared/services';
+
+// interfaces
+import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
+
+// helpers
 import { DropdownMenuActionsHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+
+// Models
+import { LoadStatusResponse } from 'appcoretruckassist';
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
-import { LoadStatusResponse } from 'appcoretruckassist';
-
-import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
-import { ITableColumn } from '@shared/components/new-table/interface';
+// Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
-import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
-import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
 @Component({
     selector: 'app-new-load-table',
@@ -50,6 +64,7 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
         NgbPopover,
 
         // Components
+        NewTableComponent,
         CaLoadStatusComponent,
         CaDropdownMenuComponent,
         CaCheckboxComponent,
@@ -57,6 +72,7 @@ import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer
         CaStatusChangeDropdownComponent,
         CaProfileImageComponent,
         SvgIconComponent,
+        TaAppTooltipV2Component,
         TaNoteComponent,
         LoadTypeComponent,
         TaTruckTrailerIconComponent,
@@ -72,14 +88,16 @@ export class NewLoadTableComponent
     protected destroy$ = new Subject<void>();
 
     public changeStatusPopover: NgbPopover;
-    public eColor = eColor;
-    public eDateTimeFormat = eDateTimeFormat;
-    public eDropdownMenu = eDropdownMenu;
-    public eGeneralActions = eGeneralActions;
-    public ePosition = ePosition;
-    public eSharedString = eSharedString;
+
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
+
+    public eColor = eColor;
+    public eSharedString = eSharedString;
+    public eGeneralActions = eGeneralActions;
+    public ePosition = ePosition;
+    public eDropdownMenu = eDropdownMenu;
+    public eDateTimeFormat = eDateTimeFormat;
 
     constructor(
         protected router: Router,
@@ -95,36 +113,8 @@ export class NewLoadTableComponent
         this.initChangeStatusDropdownListener();
     }
 
-    private de(id: number): void {
-        this.loadStoreService.navigateToLoadDetails(id);
-    }
-
-    public initChangeStatusDropdownListener(): void {
-        this.loadStoreService.changeDropdownpossibleStatusesSelector$
-            .pipe(takeUntil(this.destroy$))
-            .subscribe((value) => {
-                if (value) this.changeStatusPopover.open();
-            });
-    }
-
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
-    }
-
-    public onCheckboxCountClick(action: string): void {
-        this.loadStoreService.onSelectAll(action);
-    }
-
-    public onNextStatus(status: LoadStatusResponse): void {
-        this.loadStoreService.dispatchUpdateLoadStatus(status);
-    }
-
-    public onOpenChangeStatusDropdown(
-        tooltip: NgbPopover,
-        loadId: number
-    ): void {
-        this.changeStatusPopover = tooltip;
-        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
     }
 
     public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
@@ -137,20 +127,8 @@ export class NewLoadTableComponent
         });
     }
 
-    public onPreviousStatus(status: LoadStatusResponse): void {
-        this.loadStoreService.dispatchRevertLoadStatus(status);
-    }
-
-    public onSelectLoad(id: number): void {
-        this.loadStoreService.onSelectLoad(id);
-    }
-
     public onShowMoreClick(): void {
         this.loadStoreService.getNewPage();
-    }
-
-    public onSortingChange(column: ITableColumn): void {
-        this.loadStoreService.dispatchSortingChange(column);
     }
 
     public onToggleDropdownMenuActions(
@@ -178,6 +156,42 @@ export class NewLoadTableComponent
             eDropdownMenu.LOAD,
             selectedTab
         );
+    }
+
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
+    }
+
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
+    }
+
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
+    }
+
+    public onCheckboxCountClick(action: string): void {
+        this.loadStoreService.onSelectAll(action);
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
+    }
+
+    public onSortingChange(column: ITableColumn): void {
+        this.loadStoreService.dispatchSortingChange(column);
     }
 
     ngOnDestroy(): void {
