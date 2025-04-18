@@ -228,15 +228,21 @@
             ></div>
         </ng-template>
 
-        <ng-template let-data="data" #commodity>
-            <div class="text-color-black-2 text-size-14">
-                @if (data.generalCommodity?.name === eSharedString.HAZARDOUS) {
+        <ng-template 
+            #commodity
+            let-data="data" 
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div class="text-color-black-2 text-size-14 align-items-center" [class]="cellColumnTextColorClass">
+                @if (data.commodity === eSharedString.HAZARDOUS) {
                     <svg-icon
                         [src]="sharedSvgRoutes.HAZARDOUS_ICON"
-                        class="svg-size-14"
+                        class="svg-size-18"
                     ></svg-icon>
                 }
-                {{ data.generalCommodity?.name }}
+                <span class="text-color-black text-size-14">
+                    {{ data.commodity }}
+                </span>
             </div>
         </ng-template>
 

@@ -66,7 +66,7 @@ export class LoadHelper {
                     MethodsCalculationsHelper.convertDateFromBackend(
                         load.dateCreated
                     ),
-                generalCommodity,
+                commodity: loadDetails ? loadDetails?.generalCommodityName : generalCommodity?.name,
                 brokerBusinessName: broker?.businessName,
                 driverInfo: driver,
                 assignedDriverTruckNumber: driver?.truckNumber,
