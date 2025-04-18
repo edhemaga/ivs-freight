@@ -21,6 +21,7 @@
         [totalDataCount]="store.selectedTabCountSelector"
         (showMore)="onShowMoreClick()"
         (selectCard)="onSelectLoad($event)"
+        (dropdownOptionEmitter)="onToggleDropdownMenuActions($event)"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
