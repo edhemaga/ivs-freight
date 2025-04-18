@@ -1,12 +1,22 @@
 @import 'src/theme/variables';
 
 .new-table {
-    &--header {
-        max-width: calc(100vw - 85px);
-    }
-
     &--row {
         &-heading {
+            &-inner {
+                width: calc(100% - 9px);
+
+                &.aligned-right {
+                    width: calc(100% - 4px);
+                }
+            }
+
+            // hover
+            &-group .hover-element,
+            .hover-element {
+                width: calc(100% - 6px);
+            }
+
             // sort
             &-sortable {
                 &:hover {
@@ -27,6 +37,10 @@
                     col-resize;
             }
         }
+    }
+
+    &--toolbar-container {
+        max-width: calc(100vw - 85px);
     }
 
     &--toolbar {

@@ -1,10 +1,21 @@
 @let displayedDataCount = rows.length;
 
 <div class="table-container">
+    <!-- 
+    <div cdkDropList cdkDropListOrientation="horizontal" class="example-list" (cdkDropListDropped)="drop($event)">
+  @for (timePeriod of timePeriods; track timePeriod) {
+    <div class="example-box" cdkDrag>{{timePeriod}}</div>
+  }
+</div>
+    -->
     <div class="w-fit-content">
         <!-- Header -->
 
-        <div class="d-flex m-b-6 p-x-8">
+        <div
+            cdkDropList
+            cdkDropListOrientation="horizontal"
+            class="d-flex m-b-6 p-x-8 new-table--header"
+        >
             <div class="d-flex new-table--pinned-left">
                 @for (
                     column of leftPinnedColumns;
@@ -173,9 +184,18 @@
         @let firstCheckedIndex = column.columns | tableGroupLabelIndex;
         @let tableGroupClass = { column, isTableLocked } | tableGroupClass;
 
+        @let groupColumnHoverAction = column.label ?? column.columns[0].label;
+
+        @let isGroupHeadingHover =
+            [column.label, column.columns[0].label].includes(
+                groupHeadingHoverLabel
+            );
+
         <div
-            class="d-flex h-30 p-t-4 new-table--row-heading-group"
+            class="d-flex h-30 p-t-4 position-relative new-table--row-heading-group"
             [ngClass]="tableGroupClass"
+            (mouseenter)="onHeadingHover(null, groupColumnHoverAction)"
+            (mouseleave)="onHeadingHover(null, null)"
         >
             @for (
                 _column of column.columns;
@@ -199,9 +219,21 @@
                             isLastInGroup: _lastColumn,
                             isAlignedRight,
                             hasDoubleHeightBorder,
+                            isGroupHeadingHover,
                         }
                     "
                 ></ng-container>
+            }
+
+            <!-- Hover Div -->
+
+            @let isGroupColumnHover =
+                !isTableLocked && isGroupHeadingHover && !headingHoverId;
+
+            @if (isGroupColumnHover) {
+                <div
+                    class="h-30 position-absolute left--4 bottom--2 br-2 shadow-100 hover-element"
+                ></div>
             }
         </div>
     } @else {
@@ -214,6 +246,7 @@
                     column,
                     isAlignedRight,
                     hasDoubleHeightBorder,
+                    isGroupHeadingHover,
                 }
             "
         ></ng-container>
@@ -228,6 +261,7 @@
         let-isLastInGroup="isLastInGroup"
         let-isAlignedRight="isAlignedRight"
         let-hasDoubleHeightBorder="hasDoubleHeightBorder"
+        let-isGroupHeadingHover="isGroupHeadingHover"
     >
         @if (column.isChecked) {
             @let isResizableColumn = !isTableLocked && column.isResizable;
@@ -253,10 +287,8 @@
                 [maxWidth]="column.maxWidth"
                 [hasLabelTop]="hasLabelTop && groupColumn.label"
                 [hasDoubleHeightBorder]="hasDoubleHeightBorder"
-                (click)="handleSortColumnClick(column)"
                 (onColumnResize)="onColumnWidthResize($event)"
-                (mouseenter)="onColumnHeadingHover(column.id)"
-                (mouseleave)="onColumnHeadingHover(-1)"
+                (click)="handleSortColumnClick(column)"
             >
                 @if (hasLabelTop) {
                     <span
@@ -274,12 +306,14 @@
                         hasLabelTop: hasLabelTop && groupColumn.label,
                     } | tableColumnClass;
 
-                <div
-                    class="d-flex align-items-end w-100"
-                    [ngClass]="tableColumnInnerClass"
-                >
-                    @let isHeadingHover = headingHoverId === column.id;
+                @let isHeadingHover = headingHoverId === column.id;
 
+                <div
+                    class="d-flex align-items-end z-2 new-table--row-heading-inner"
+                    [ngClass]="tableColumnInnerClass"
+                    (mouseenter)="onHeadingHover(column.id, null)"
+                    (mouseleave)="onHeadingHover(null, null)"
+                >
                     @let isPinned =
                         !isGroup ? column.pinned : groupColumn.pinned;
 
@@ -310,7 +344,8 @@
                         <!-- Default header template - if no custom template -->
 
                         <span
-                            class="text-size-11 ta-font-bold color-inherit text-uppercase text-truncate d-inline-block"
+                            class="text-size-11 ta-font-bold color-inherit text-uppercase d-inline-block"
+                            [ngClass]="!isTableLocked && 'text-truncate'"
                             [ngStyle]="tableColumnLabelWidth"
                         >
                             {{ column.label }}
@@ -327,13 +362,14 @@
                         @let tableColumnActionClass =
                             {
                                 isHeadingHover,
+                                isGroupHeadingHover,
                                 isGroup,
                                 isLastInGroup,
                                 isPinned,
                             } | tableColumnActionClass;
 
                         <div
-                            class="d-flex position-relative right-12 new-table--row-heading-actions"
+                            class="d-flex position-relative right-0 new-table--row-heading-actions"
                             [ngClass]="tableColumnActionClass"
                         >
                             @let hasPinAction = !isGroup || isLastInGroup;
@@ -432,6 +468,21 @@
                         ></svg-icon>
                     }
                 </div>
+
+                <!-- Hover Div -->
+
+                @let isColumnHover =
+                    !isTableLocked &&
+                    !column.isDisabled &&
+                    !isLastInGroup &&
+                    isHeadingHover;
+
+                @if (isColumnHover) {
+                    <div
+                        class="h-18 position-absolute left--4 br-2 shadow-100 hover-element"
+                        [class]="hasLabelTop ? 'bottom-2' : 'bottom--2'"
+                    ></div>
+                }
             </div>
         }
     </ng-template>

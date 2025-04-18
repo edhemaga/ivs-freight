@@ -84,12 +84,13 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
         const classesToAdd = [
             'resize-handler',
             'pos-absolute',
-            this.hasLabelTop ? 'bottom-10' : 'bottom-0',
+            this.hasLabelTop ? 'bottom-4' : 'bottom-0',
             'end-0',
             'w-2',
             this.hasDoubleHeightBorder ? 'h-26' : 'h-14',
             'm-r-6',
             'br-1',
+            'z-2',
             'background-muted',
             'background-hover-black',
         ];
@@ -120,14 +121,14 @@ export class ResizableColumnDirective implements AfterViewInit, OnChanges {
         if (!this.resizer) return;
 
         // remove the old dynamic classes
-        const classesToRemove = ['bottom-10', 'bottom-0', 'h-26', 'h-14'];
+        const classesToRemove = ['bottom-4', 'bottom-0', 'h-26', 'h-14'];
         classesToRemove.forEach((cls) =>
             this.renderer.removeClass(this.resizer, cls)
         );
 
         // add the correct ones
         const classesToAdd = [
-            this.hasLabelTop ? 'bottom-10' : 'bottom-0',
+            this.hasLabelTop ? 'bottom-4' : 'bottom-0',
             this.hasDoubleHeightBorder ? 'h-26' : 'h-14',
         ];
         classesToAdd.forEach((cls) =>

@@ -7,6 +7,12 @@ import {
     Output,
     TemplateRef,
 } from '@angular/core';
+import {
+    CdkDragDrop,
+    CdkDrag,
+    CdkDropList,
+    moveItemInArray,
+} from '@angular/cdk/drag-drop';
 
 // modules
 import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
@@ -68,6 +74,10 @@ import {
 
         // directives
         ResizableColumnDirective,
+
+        // drag & drop
+        CdkDropList,
+        CdkDrag,
     ],
 })
 export class NewTableComponent<T> {
@@ -97,6 +107,7 @@ export class NewTableComponent<T> {
 
     // actions
     public headingHoverId: number = null;
+    public groupHeadingHoverLabel: string = null;
 
     // enums
     public ePosition = ePosition;
@@ -112,6 +123,7 @@ export class NewTableComponent<T> {
     constructor() {}
 
     private processColumns(columns: ITableColumn[]): void {
+        console.log('columns', columns);
         this.leftPinnedColumns = columns.filter(
             (col) => col.pinned === ePosition.LEFT
         );
@@ -144,8 +156,12 @@ export class NewTableComponent<T> {
         this.onColumnResize.emit(resizeAction);
     }
 
-    public onColumnHeadingHover(columnId: number): void {
+    public onHeadingHover(
+        columnId: number | null,
+        groupLabel: string | null
+    ): void {
         this.headingHoverId = columnId;
+        this.groupHeadingHoverLabel = groupLabel;
     }
 
     public onRemoveColumnClick(columnKey: string): void {
@@ -154,5 +170,22 @@ export class NewTableComponent<T> {
 
     public isRowExpanded(rowId: number): boolean {
         return this.expandedRows?.has(rowId);
+    }
+
+    ////////////////////////////////////
+    timePeriods = [
+        'Bronze age',
+        'Iron age',
+        'Middle ages',
+        'Early modern period',
+        'Long nineteenth century',
+    ];
+
+    drop(event: CdkDragDrop<string[]>) {
+        moveItemInArray(
+            this.timePeriods,
+            event.previousIndex,
+            event.currentIndex
+        );
     }
 }

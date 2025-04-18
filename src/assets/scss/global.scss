@@ -675,3 +675,12 @@ ngb-modal-window.modal {
     backdrop-filter: blur(0.0625rem);
     background: $dark-3 !important;
 }
+
+// cursors
+.cursor-grab {
+    cursor: grab;
+}
+
+.cursor-grabbing {
+    cursor: grabbing;
+}

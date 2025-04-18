@@ -22,6 +22,7 @@ export class TableGroupClassPipe implements PipeTransform {
         return {
             'p-l-6': !isAlignedRight && isTableLocked,
             'border-left-light-grey-6': hasCheckedColumn && isTableLocked,
+            'cursor-grab': !isTableLocked,
         };
     }
 }
