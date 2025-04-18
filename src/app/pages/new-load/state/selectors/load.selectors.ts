@@ -97,6 +97,11 @@ export const isTypeColumnCheckedSelector = createSelector(
     }
 );
 
+export const getSortableColumn = createSelector(
+    tableColumnsSelector,
+    (columns) => columns.filter((col) => col.hasSort)
+);
+
 export const totalSumSelector = createSelector(
     selectLoadState,
     selectedCountSelector,

@@ -63,6 +63,7 @@ export const initialState: IMilesState = {
         isTableLocked: true,
         sortKey: null,
         sortDirection: null,
+        label: '',
     },
 
     minimalList: {
