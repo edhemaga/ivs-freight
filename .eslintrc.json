@@ -24,16 +24,17 @@
                         "newlinesBetween": "always",
                         "groups": [
                             "view-child-properties",
-                            "input-properties",
                             "output-properties",
-                            "public-property",
-                            "private-property",
+                            "input-properties",
                             "protected-property",
-                            "constructor",
-                            "angular-lifecycle",
-                            "public-method",
-                            "protected-method",
-                            "private-method"
+                            "private-property",
+                            "public-property",
+                            "constructor-custom-group",
+                            "angular-lifecycles",
+                            "protected-methods-spaced",
+                            "private-methods-spaced",
+                            "public-methods-spaced",
+                            "angular-lifecycle-ngOnDestroy"
                         ],
                         "customGroups": [
                             {
@@ -55,15 +56,51 @@
                                 "decoratorNamePattern": "Output"
                             },
                             {
-                                "groupName": "angular-lifecycle",
+                                "groupName": "angular-lifecycles",
                                 "type": "unsorted",
                                 "newlinesInside": "always",
                                 "anyOf": [
                                     {
                                         "selector": "method",
-                                        "elementNamePattern": "^(ngOnChanges|ngOnInit|ngDoCheck|ngAfterContentInit|ngAfterContentChecked|ngAfterViewInit|ngAfterViewChecked|ngOnDestroy)$"
+                                        "elementNamePattern": "^(ngOnChanges|ngOnInit|ngDoCheck|ngAfterContentInit|ngAfterContentChecked|ngAfterViewInit|ngAfterViewChecked)$"
                                     }
                                 ]
+                            },
+                            {
+                                "groupName": "angular-lifecycle-ngOnDestroy",
+                                "newlinesInside": "always",
+                                "anyOf": [
+                                    {
+                                        "selector": "method",
+                                        "elementNamePattern": "^(ngOnDestroy)$"
+                                    }
+                                ]
+                            },
+                            {
+                                // we cannot use reserved "constructor" name in "groups": [] from perfectionist because "constructor" belongs to a method selector
+                                // and when I write the custom group with method selector, like I did for protected-methods-spaced etc. "constructor" isn't on the right place
+                                // so I need to write constructor custom group and place it inside "customGroups": [] above method selectors protected-methods-spaced etc.
+                                "groupName": "constructor-custom-group",
+                                "selector": "constructor",
+                                "newlinesInside": "always"
+                            },
+                            {
+                                "groupName": "protected-methods-spaced",
+                                "selector": "method",
+                                "modifiers": ["protected"],
+                                "newlinesInside": "always"
+                            },
+                            {
+                                "groupName": "private-methods-spaced",
+                                "selector": "method",
+                                "modifiers": ["private"],
+                                "newlinesInside": "always"
+                            },
+                            {
+                                "groupName": "public-methods-spaced",
+                                "selector": "method",
+                                "modifiers": ["public"],
+                                "newlinesInside": "always"
                             }
                         ]
                     }

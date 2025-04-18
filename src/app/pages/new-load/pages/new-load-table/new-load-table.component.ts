@@ -64,6 +64,8 @@ export class NewLoadTableComponent
     extends LoadDropdownMenuActionsBase
     implements OnInit, OnDestroy
 {
+    protected destroy$ = new Subject<void>();
+
     public changeStatusPopover: NgbPopover;
     public eColor = eColor;
     public eDateTimeFormat = eDateTimeFormat;
@@ -73,8 +75,6 @@ export class NewLoadTableComponent
     public eSharedString = eSharedString;
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
-
-    protected destroy$ = new Subject<void>();
 
     constructor(
         protected router: Router,
@@ -90,9 +90,8 @@ export class NewLoadTableComponent
         this.initChangeStatusDropdownListener();
     }
 
-    ngOnDestroy(): void {
-        this.destroy$.next();
-        this.destroy$.complete();
+    private de(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
     }
 
     public initChangeStatusDropdownListener(): void {
@@ -102,15 +101,19 @@ export class NewLoadTableComponent
                 if (value) this.changeStatusPopover.open();
             });
     }
+
     public navigateToLoadDetails(id: number): void {
         this.loadStoreService.navigateToLoadDetails(id);
     }
+
     public onCheckboxCountClick(action: string): void {
         this.loadStoreService.onSelectAll(action);
     }
+
     public onNextStatus(status: LoadStatusResponse): void {
         this.loadStoreService.dispatchUpdateLoadStatus(status);
     }
+
     public onOpenChangeStatusDropdown(
         tooltip: NgbPopover,
         loadId: number
@@ -118,6 +121,7 @@ export class NewLoadTableComponent
         this.changeStatusPopover = tooltip;
         this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
     }
+
     public onOpenModal(id: number, selectedTab: eLoadStatusStringType): void {
         const isTemplate = selectedTab === eLoadStatusStringType.TEMPLATE;
 
@@ -127,15 +131,19 @@ export class NewLoadTableComponent
             isEdit: true,
         });
     }
+
     public onPreviousStatus(status: LoadStatusResponse): void {
         this.loadStoreService.dispatchRevertLoadStatus(status);
     }
+
     public onSelectLoad(id: number): void {
         this.loadStoreService.onSelectLoad(id);
     }
+
     public onShowMoreClick(): void {
         this.loadStoreService.getNewPage();
     }
+
     public onToggleDropdownMenuActions(
         action: IDropdownMenuOptionEmit,
         data,
@@ -163,7 +171,8 @@ export class NewLoadTableComponent
         );
     }
 
-    private de(id: number): void {
-        this.loadStoreService.navigateToLoadDetails(id);
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 }
