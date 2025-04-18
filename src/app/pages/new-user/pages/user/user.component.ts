@@ -14,13 +14,14 @@ import { NewTableToolbarComponent } from '@shared/components/new-table-toolbar/n
 import {
     CaSearchMultipleStates2Component,
     CaCheckboxSelectedCountComponent,
+    eCommonElement,
 } from 'ca-components';
 
 // Models
 import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
 
 // Enums
-import { eGeneralActions } from '@shared/enums';
+import { eGeneralActions, eStatusTab } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -55,7 +56,32 @@ export class UserComponent {
 
     public onToolBarAction(event: TableToolbarActions): void {
         if (!event) return;
+
+        const { action, mode } = event;
+
+        switch (action) {
+            case eGeneralActions.OPEN_MODAL:
+                break;
+
+            case eGeneralActions.TAB_SELECTED:
+                this.onTypeChange(mode);
+                break;
+
+            case eGeneralActions.VIEW_MODE:
+                this.onViewModeChange(mode);
+                break;
+        }
     }
 
     public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {}
+
+    private onTypeChange(mode: string): void {
+        this.userStoreService.dispatchTypeChange(mode as eStatusTab);
+    }
+
+    private onViewModeChange(viewMode: string): void {
+        this.userStoreService.dispatchViewModeChange(
+            viewMode as eCommonElement
+        );
+    }
 }

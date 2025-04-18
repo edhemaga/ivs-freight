@@ -12,8 +12,11 @@ import * as UserSelector from '@pages/new-user/state/selectors/user.selector';
 // Models
 import { ITableData } from '@shared/models';
 
+// Const
+import { UserStoreConstants } from '@pages/new-user/utils/constants';
+
 // Enums
-import { eStatusTab } from '@shared/enums';
+import { eCommonElement, eStatusTab } from '@shared/enums';
 
 @Injectable({
     providedIn: 'root',
@@ -32,4 +35,18 @@ export class UserStoreService {
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
         select(UserSelector.activeViewModeSelector)
     );
+
+    public dispatchTypeChange(mode: eStatusTab): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_USER_TYPE_CHANGE,
+            mode,
+        });
+    }
+
+    public dispatchViewModeChange(viewMode: eCommonElement): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_VIEW_MODE_CHANGE,
+            viewMode,
+        });
+    }
 }

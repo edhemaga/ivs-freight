@@ -1,11 +1,17 @@
 // Store
-import { createReducer } from '@ngrx/store';
+import { createReducer, on } from '@ngrx/store';
 
 // Interface
 import { IUserState } from '@pages/new-user/interfaces';
 
 // Constants
 import { UserToolbarTabs } from '@pages/new-user/utils/constants';
+
+// Actions
+import * as UserActions from '@pages/new-user/state/actions/user.action';
+
+// Functions
+import * as Functions from '@pages/new-user/state/functions/user-reducer.functions';
 
 // Enums
 import { eCommonElement, eStatusTab } from '@shared/enums';
@@ -19,4 +25,13 @@ export const initialState: IUserState = {
     activeViewMode: eCommonElement.LIST,
 };
 
-export const userReducer = createReducer(initialState);
+export const userReducer = createReducer(
+    initialState,
+    on(UserActions.onTabTypeChange, (state, { mode }) =>
+        Functions.onTabTypeChange(state, mode)
+    ),
+
+    on(UserActions.onViewModeChange, (state, { viewMode }) =>
+        Functions.onViewModeChange(state, viewMode)
+    )
+);
