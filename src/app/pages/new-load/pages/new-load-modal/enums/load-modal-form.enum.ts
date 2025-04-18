@@ -5,4 +5,6 @@ export enum eLoadModalForm {
     BROKER_ID = 'brokerId',
     BROKER_CONTACT = 'brokerContact',
     COMPANY_ID = 'companyId',
+    INVOICED_DATE = 'invoicedDate',
+    BASE_RATE = 'baseRate',
 }
