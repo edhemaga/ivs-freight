@@ -76,6 +76,7 @@ export class LoadTableColumnsConfig {
                 isClosed
             ),
             ...this.getCreatedAndEditedDates(),
+            this.noteColumn,
             ...this.getActions(),
         ];
     }
@@ -109,6 +110,7 @@ export class LoadTableColumnsConfig {
                 isClosed
             ),
             ...this.getCreatedAndEditedDates(),
+            this.noteColumn,
             ...this.getActions(),
         ];
     }
@@ -176,6 +178,7 @@ export class LoadTableColumnsConfig {
                 sortName: LoadSortBy.PaidDate,
             },
             ...this.getCreatedAndEditedDates(),
+            this.noteColumn,
         ];
     }
 
@@ -756,4 +759,16 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+
+    private static noteColumn: ITableColumn = {
+        key: 'note',
+        label: 'Note',
+        labelToolbar: '',
+        width: 26,
+        minWidth: 26,
+        isResizable: false,
+        isDisabled: false,
+        isChecked: true,
+        hasSort: false,
+    };
 }

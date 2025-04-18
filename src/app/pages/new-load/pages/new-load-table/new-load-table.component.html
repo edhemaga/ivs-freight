@@ -12,10 +12,12 @@
         searchStrings: loadStoreService.searchStringsSelector$ | async,
     };
 @if (store) {
-    @let headerTemplates = { 
-        select: selectHeaderTemplate,
-        requirementLength: lengthHeaderTemplate
-    };
+    @let headerTemplates =
+        {
+            select: selectHeaderTemplate,
+            requirementLength: lengthHeaderTemplate,
+            note: noteHeaderTemplate,
+        };
     @let templates =
         {
             loadNumber,
@@ -35,6 +37,7 @@
             loadType,
             referenceNumber,
             brokerBusinessName,
+            note,
             requirementTruck,
             requirementTrailer,
         };
@@ -56,6 +59,19 @@
                 [itemsSelectedCount]="store.selectedCount"
                 (onCheckboxCountClick)="onCheckboxCountClick($event)"
             ></app-ca-checkbox-selected-count>
+        </ng-template>
+
+        <ng-template
+            #noteHeaderTemplate
+            let-data="data"
+            let-tableColumnClass="tableColumnClass"
+        >
+            <div class="d-flex" [ngClass]="tableColumnClass">
+                <svg-icon
+                    [src]="sharedSvgRoutes.NOTE_ICON"
+                    class="svg-size-14"
+                ></svg-icon>
+            </div>
         </ng-template>
 
         <ng-template
@@ -274,7 +290,7 @@
         </ng-template>
 
         <ng-template #requirementTruck let-data="data">
-            @if(data.requirementTruck) {
+            @if (data.requirementTruck) {
                 <app-ta-truck-trailer-icon
                     iconType="truck"
                     [inputData]="data.requirementTruck"
@@ -283,7 +299,7 @@
         </ng-template>
 
         <ng-template #requirementTrailer let-data="data">
-            @if(data.requirementTrailer) {
+            @if (data.requirementTrailer) {
                 <app-ta-truck-trailer-icon
                     iconType="trailer"
                     [inputData]="data.requirementTrailer"
@@ -301,6 +317,23 @@
                 "
             >
             </ca-dropdown-menu>
+        </ng-template>
+
+        <ng-template let-data="data" #note>
+            @let entityType =
+                store.selectedTab === eSharedString.TEMPLATE
+                    ? eSharedString.LOAD_TEMPLATE
+                    : eSharedString.LOAD;
+
+            <app-ta-note
+                [note]="data.note"
+                [mainData]="data"
+                [entityId]="data.id"
+                [openedAll]="false"
+                [parking]="false"
+                [entityType]="entityType"
+            >
+            </app-ta-note>
         </ng-template>
     </app-new-table>
 

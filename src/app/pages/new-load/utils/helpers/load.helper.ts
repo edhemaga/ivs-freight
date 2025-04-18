@@ -39,6 +39,7 @@ export class LoadHelper {
                 billing,
                 invoicedDate,
                 generalCommodity,
+                note,
                 loadType,
                 type,
                 loadRequirements,
@@ -76,6 +77,7 @@ export class LoadHelper {
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
                 invoicedDate,
+                note,
                 requirementTruck: loadRequirements?.truckType,
                 requirementTrailer: loadRequirements?.trailerType,
                 requirementLength:
