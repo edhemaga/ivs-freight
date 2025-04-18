@@ -58,6 +58,8 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MilesEffects } from '@pages/miles/state/effects/miles.effect';
 import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
+import { UserEffects } from '@pages/new-user/state/effects/user.effect';
+import { userReducer } from '@pages/new-user/state/reducers/user-reducer';
 
 // Load
 // TODO: IT WILL BE RENAMED AND REMOVED ONCE WE HAVE NEW LOAD READY !!! DON'T COMMENT PR PLEASE :*
@@ -106,11 +108,17 @@ export const appConfig: ApplicationConfig = {
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }),
-        EffectsModule.forRoot([LoadEffect, MilesEffects, NewLoadEffect]),
+        EffectsModule.forRoot([
+            LoadEffect,
+            MilesEffects,
+            NewLoadEffect,
+            UserEffects,
+        ]),
         StoreModule.forRoot({
             load: loadReducer,
             miles: milesReducer,
             newLoad: NewLoadReducer,
+            user: userReducer,
         }),
         StoreDevtoolsModule.instrument({
             name: 'Carriera App',
