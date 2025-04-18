@@ -74,6 +74,7 @@ export const initialState: ILoadState = {
         isTableLocked: true,
         sortKey: null,
         sortDirection: null,
+        label: '',
     },
 
     possibleStatuses: null,
@@ -173,6 +174,12 @@ export const loadReducer = createReducer(
     on(LoadActions.tableColumnReset, (state) => ({ ...state })),
     on(LoadActions.toggleCardFlipViewMode, (state) =>
         Functions.toggleCardFlipViewMode(state)
+    ),
+    //#endregion
+
+    // #region table header
+    on(LoadActions.tableSortingChange, (state, { column }) =>
+        Functions.onTableSortingChange(state, column)
     ),
     //#endregion
 

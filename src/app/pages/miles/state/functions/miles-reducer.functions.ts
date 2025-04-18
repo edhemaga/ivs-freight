@@ -121,6 +121,20 @@ export const updateFilters = function (
     };
 };
 
+export function onSeachFilterChange(
+    state: IMilesState,
+    searchQuery: string[]
+): IMilesState {
+    return {
+        ...state,
+        page: 1,
+        filters: {
+            ...state.filters,
+            searchQuery,
+        },
+    };
+}
+
 export const updateTabSelection = function (
     state: IMilesState,
     selectedTab: eMileTabs
@@ -314,10 +328,8 @@ export function tableSortingChange(
     state: IMilesState,
     column: ITableColumn
 ): IMilesState {
-    const { columns, sortKey, sortDirection } = StoreFunctionsHelper.toggleSort(
-        column,
-        state.columns
-    );
+    const { columns, sortKey, sortDirection, label } =
+        StoreFunctionsHelper.toggleSort(column, state.columns);
 
     return {
         ...state,
@@ -326,6 +338,7 @@ export function tableSortingChange(
             ...state.tableSettings,
             sortDirection,
             sortKey,
+            label,
         },
     };
 }
@@ -374,6 +387,7 @@ export function resetTable(state: IMilesState): IMilesState {
             isTableLocked: true,
             sortKey: null,
             sortDirection: null,
+            label: '',
         },
         toolbarDropdownMenuOptions:
             MilesDropdownMenuHelper.getToolbarDropdownMenuContent(

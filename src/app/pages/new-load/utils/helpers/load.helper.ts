@@ -1,6 +1,7 @@
 // Enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums';
 import { eLoadStatusStringType } from '@pages/new-load/enums';
+import { eSharedString } from '@shared/enums';
 
 // Interfaces
 import { IMappedLoad } from '@pages/new-load/interfaces';
@@ -17,6 +18,7 @@ import {
 
 // helpers
 import { DropdownMenuContentHelper } from '@shared/utils/helpers/dropdown-menu-helpers';
+import { MethodsCalculationsHelper } from '@shared/utils/helpers';
 
 export class LoadHelper {
     static loadMapper(
@@ -36,7 +38,11 @@ export class LoadHelper {
                 miles,
                 billing,
                 invoicedDate,
-                generalCommodity
+                generalCommodity,
+                note,
+                loadType,
+                type,
+                loadRequirements,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -53,8 +59,13 @@ export class LoadHelper {
                         selectedTab
                     ),
                 totalDue,
+                loadType: loadType ? loadType?.name : type?.name,
                 broker,
-                templateCreated: load.dateCreated,
+                brokerContact: broker?.contact,
+                templateCreated:
+                    MethodsCalculationsHelper.convertDateFromBackend(
+                        load.dateCreated
+                    ),
                 generalCommodity,
                 brokerBusinessName: broker?.businessName,
                 driverInfo: driver,
@@ -66,6 +77,17 @@ export class LoadHelper {
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
                 invoicedDate,
+                note,
+                requirementTruck: loadRequirements?.truckType,
+                requirementTrailer: loadRequirements?.trailerType,
+                requirementLength:
+                    loadRequirements?.trailerLength?.name?.replace(/\D/g, ''),
+                requirementDoor: loadRequirements?.doorType?.name,
+                requirementSuspension: loadRequirements?.suspension?.name,
+                requirementYear: loadRequirements?.year,
+                requirementLiftgate: loadRequirements?.liftgate
+                    ? eSharedString.YES
+                    : eSharedString.EMPTY_STRING_PLACEHOLDER,
             };
             return mapped;
         });

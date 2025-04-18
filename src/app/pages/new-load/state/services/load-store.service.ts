@@ -88,6 +88,13 @@ export class LoadStoreService {
         select(LoadSelectors.tableColumnsSelector)
     );
 
+    public isTypeColumnCheckedSelector$: Observable<boolean> = this.store.pipe(
+        select(LoadSelectors.isTypeColumnCheckedSelector)
+    );
+
+    public getSortableColumnSelector$: Observable<ITableColumn[]> =
+        this.store.pipe(select(LoadSelectors.getSortableColumn));
+
     public loadDetailsSelector$: Observable<ILoadDetails> = this.store.pipe(
         select(LoadSelectors.loadDetailsSelector)
     );
@@ -101,6 +108,10 @@ export class LoadStoreService {
 
     public totalSumSelector$: Observable<number> = this.store.pipe(
         select(LoadSelectors.totalSumSelector)
+    );
+
+    public searchStringsSelector$: Observable<string[]> = this.store.pipe(
+        select(LoadSelectors.searchStringsSelector)
     );
 
     // TODO: WAIT FOR BACKEND TO CREATE THIS, THIS WE BE REMOVED THEN!!!
@@ -332,6 +343,13 @@ export class LoadStoreService {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_OPEN_CHANGE_STATUS_DROPDOWN,
             loadId,
+        });
+    }
+
+    public dispatchSortingChange(column: ITableColumn): void {
+        this.store.dispatch({
+            type: LoadStoreConstants.ACTION_SORTING_CHANGE,
+            column,
         });
     }
 }

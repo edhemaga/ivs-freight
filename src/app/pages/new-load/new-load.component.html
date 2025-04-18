@@ -9,8 +9,11 @@
             loadStoreService.filtersDropdownListSelector$ | async,
         selectedCount: loadStoreService.selectedCountSelector$ | async,
         totalSum: loadStoreService.totalSumSelector$ | async,
+        getSortableColumnSelector:
+            loadStoreService.getSortableColumnSelector$ | async,
         toolbarDropdownMenuOptions:
             loadStoreService.toolbarDropdownMenuOptionsSelector$ | async,
+        tableSettingsSelector: loadStoreService.tableSettingsSelector$ | async,
     };
 
 @if (store) {
@@ -143,6 +146,15 @@
                 LTL BUILDER
             </div>
             <ng-container *ngTemplateOutlet="divider"></ng-container>
+
+            @if (store?.activeViewMode === eCommonElement.CARD) {
+                <app-ca-checkbox-selected-count
+                    [itemsTotalCount]="store.viewData.length"
+                    [itemsSelectedCount]="store.selectedCount"
+                    (onCheckboxCountClick)="onCheckboxCountClick($event)"
+                ></app-ca-checkbox-selected-count>
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+            }
         </ng-template>
         <ng-template #divider>
             <div class="new-table--toolbar-divider">
@@ -154,7 +166,7 @@
     </app-new-table-toolbar>
 
     <!-- TODO: Should this be moved to separete routes? -->
-    @if (store?.activeViewMode === 'List') {
+    @if (store?.activeViewMode === eCommonElement.LIST) {
         <app-new-load-table></app-new-load-table>
     } @else {
         <app-new-load-cards></app-new-load-cards>

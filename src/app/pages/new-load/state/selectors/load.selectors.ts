@@ -71,6 +71,11 @@ export const filtersSelector = createSelector(
     (state: ILoadState) => state.filters
 );
 
+export const searchStringsSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => state.filters.searchQuery
+);
+
 export const pageSelector = createSelector(
     selectLoadState,
     (state: ILoadState) => state.currentPage
@@ -83,6 +88,19 @@ export const tableColumnsSelector = createSelector(selectLoadState, (state) => {
     const { tableColumns } = state;
     return tableColumns;
 });
+
+export const isTypeColumnCheckedSelector = createSelector(
+    tableColumnsSelector,
+    (columns) => {
+        const typeColumn = columns.find((col) => col.key === 'loadType');
+        return typeColumn?.isChecked ?? false;
+    }
+);
+
+export const getSortableColumn = createSelector(
+    tableColumnsSelector,
+    (columns) => columns.filter((col) => col.hasSort)
+);
 
 export const totalSumSelector = createSelector(
     selectLoadState,

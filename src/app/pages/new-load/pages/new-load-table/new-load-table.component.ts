@@ -32,11 +32,12 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 import { LoadStatusResponse } from 'appcoretruckassist';
 
-import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
-
 import { IDropdownMenuOptionEmit } from '@ca-shared/components/ca-dropdown-menu/interfaces';
-import { NewTableComponent } from '@shared/components/new-table/new-table.component';
-import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
+import { ITableColumn } from '@shared/components/new-table/interface';
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
+import { TaNoteComponent } from '@shared/components/ta-note/ta-note.component';
+import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
 
 @Component({
     selector: 'app-new-load-table',
@@ -49,7 +50,6 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         NgbPopover,
 
         // Components
-        NewTableComponent,
         CaLoadStatusComponent,
         CaDropdownMenuComponent,
         CaCheckboxComponent,
@@ -57,7 +57,12 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
         CaStatusChangeDropdownComponent,
         CaProfileImageComponent,
         SvgIconComponent,
-        TaAppTooltipV2Component,
+        TaNoteComponent,
+        LoadTypeComponent,
+        TaTruckTrailerIconComponent,
+
+        // Pipes
+        TableHighlightSearchTextPipe,
     ],
 })
 export class NewLoadTableComponent
@@ -142,6 +147,10 @@ export class NewLoadTableComponent
 
     public onShowMoreClick(): void {
         this.loadStoreService.getNewPage();
+    }
+
+    public onSortingChange(column: ITableColumn): void {
+        this.loadStoreService.dispatchSortingChange(column);
     }
 
     public onToggleDropdownMenuActions(

@@ -1,0 +1,22 @@
+<div class="load-type-row d-flex align-items-center">
+    @let iconPath = loadTypeIcons[loadType];
+    @let className = 'svg-fill-muted';
+    <div
+        ngbTooltip
+        [mainTooltip]="loadType"
+        [tooltipBackground]="eColor.BLACK"
+        [position]="ePosition.BOTTOM"
+    >
+        <svg-icon
+            [src]="iconPath"
+            class="d-flex align-items-center svg-size-18"
+            [ngClass]="className"
+        ></svg-icon>
+    </div>
+
+    @if (isTextVisible) {
+        <span class="text-color-black text-size-11 ta-font-bold m-l-4">
+            {{ loadType }}
+        </span>
+    }
+</div>

@@ -12,6 +12,9 @@ import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 import { TableCardBodyActions } from '@shared/models';
 import { LoadResponse } from 'appcoretruckassist';
 
+// interfaces
+import { IMappedLoad } from '@pages/new-load/interfaces';
+
 export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBase {
     // services Not working on old stuff keep as any but it is LoadStoreService
     protected abstract loadStoreService: any;
@@ -20,11 +23,10 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
         super();
     }
 
-    protected handleDropdownMenuActions<T>(
+    protected handleDropdownMenuActions<T extends IMappedLoad | LoadResponse>(
         action: TableCardBodyActions<T>,
         tableType: string,
         selectedTab?: string,
-        load?: LoadResponse,
         isDetailsPage?: boolean
     ) {
         const { type } = action;
@@ -44,13 +46,7 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
 
                 break;
             case eDropdownMenu.DELETE_TYPE:
-                this.handleLoadDeleteAction(
-                    action,
-                    tableType,
-                    selectedTab,
-                    load,
-                    isDetailsPage
-                );
+                this.handleLoadDeleteAction(action, isDetailsPage);
 
                 break;
             default:
@@ -91,16 +87,16 @@ export abstract class LoadDropdownMenuActionsBase extends DropdownMenuActionsBas
         );
     }
 
-    private handleLoadDeleteAction<T>(
+    private handleLoadDeleteAction<T extends IMappedLoad | LoadResponse>(
         action: TableCardBodyActions<T>,
-        tableType: string,
-        selectedTab: string,
-        load?: LoadResponse,
         isDetailsPage?: boolean
     ): void {
+        const { data } = action;
+        const isTemplate = !data.loadNumber;
+
         this.loadStoreService.onDeleteLoadFromDropdown({
-            isTemplate: false,
-            loads: [load],
+            isTemplate,
+            loads: [data],
             isDetailsPage,
         });
     }

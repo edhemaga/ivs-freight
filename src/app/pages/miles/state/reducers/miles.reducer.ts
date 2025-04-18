@@ -63,6 +63,7 @@ export const initialState: IMilesState = {
         isTableLocked: true,
         sortKey: null,
         sortDirection: null,
+        label: '',
     },
 
     minimalList: {
@@ -127,6 +128,9 @@ export const milesReducer = createReducer(
     // #region Table filters
     on(MilesAction.changeFilters, (state, { filters }) =>
         Functions.updateFilters(state, filters)
+    ),
+    on(MilesAction.onSeachFilterChange, (state, { query }) =>
+        Functions.onSeachFilterChange(state, query)
     ),
     on(MilesAction.setStates, (state, { states }) => ({ ...state, states })),
     // #endregion

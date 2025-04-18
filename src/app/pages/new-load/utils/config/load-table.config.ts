@@ -56,7 +56,18 @@ export class LoadTableColumnsConfig {
                 isResizable: true,
                 isDisabled: true,
                 isChecked: true,
-                pinned: 'left',
+                hasSort: true,
+            },
+            {
+                key: 'templateCreated',
+                label: 'Created',
+                labelToolbar: 'Created',
+                width: 88,
+                minWidth: 60,
+                maxWidth: 120,
+                isResizable: true,
+                isDisabled: true,
+                isChecked: true,
                 hasSort: true,
             },
             ...this.getCommonColumnsForAllTabs(
@@ -65,6 +76,7 @@ export class LoadTableColumnsConfig {
                 isClosed
             ),
             ...this.getCreatedAndEditedDates(),
+            this.noteColumn,
             ...this.getActions(),
         ];
     }
@@ -98,6 +110,7 @@ export class LoadTableColumnsConfig {
                 isClosed
             ),
             ...this.getCreatedAndEditedDates(),
+            this.noteColumn,
             ...this.getActions(),
         ];
     }
@@ -112,7 +125,7 @@ export class LoadTableColumnsConfig {
 
         return [
             {
-                key: 'invoiceNumber',
+                key: 'loadNumber',
                 label: 'Invoice No',
                 labelToolbar: 'Invoice No.',
                 width: 146,
@@ -125,7 +138,7 @@ export class LoadTableColumnsConfig {
                 pinned: 'left',
             },
             {
-                key: 'invoiceDate',
+                key: 'invoicedDate',
                 label: 'Invoiced',
                 labelToolbar: 'Invoiced date',
                 width: 146,
@@ -165,6 +178,7 @@ export class LoadTableColumnsConfig {
                 sortName: LoadSortBy.PaidDate,
             },
             ...this.getCreatedAndEditedDates(),
+            this.noteColumn,
         ];
     }
 
@@ -176,7 +190,7 @@ export class LoadTableColumnsConfig {
     ): ITableColumn[] {
         return [
             {
-                key: 'type',
+                key: 'loadType',
                 label: 'Type',
                 labelToolbar: 'Type',
                 width: 82,
@@ -207,8 +221,7 @@ export class LoadTableColumnsConfig {
                 maxWidth: 1020,
                 isResizable: true,
                 isChecked: false,
-                // hasSort: true,
-                // sortName: MilesStopSortBy.UnitNumber,
+                hasSort: false,
             },
             ...this.getBrokerGroup(isTemplateTab),
             {
@@ -431,8 +444,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: false,
-                    //   hasSort: true,
-                    //   sortName: LoadSortBy.,
+                      //   hasSort: true,
+                      //   sortName: LoadSortBy.,
                   },
                   {
                       key: 'ageUnpaid',
@@ -443,8 +456,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: true,
-                    //   hasSort: true,
-                    //   sortName: MilesStopSortBy.UnitNumber,
+                      //   hasSort: true,
+                      //   sortName: MilesStopSortBy.UnitNumber,
                   },
                   {
                       key: 'agePaid',
@@ -455,8 +468,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 68,
                       isResizable: true,
                       isChecked: false,
-                    //   hasSort: true,
-                    //   sortName: MilesStopSortBy.UnitNumber,
+                      //   hasSort: true,
+                      //   sortName: MilesStopSortBy.UnitNumber,
                   },
               ]
             : [];
@@ -471,8 +484,8 @@ export class LoadTableColumnsConfig {
                       maxWidth: 140,
                       isResizable: true,
                       isChecked: true,
-                    //   hasSort: true,
-                    //   sortName: MilesStopSortBy.UnitNumber,
+                      //   hasSort: true,
+                      //   sortName: MilesStopSortBy.UnitNumber,
                   },
               ]
             : [];
@@ -608,14 +621,14 @@ export class LoadTableColumnsConfig {
         return [
             {
                 key: 'requirementGroup',
-                label: 'Requirem',
+                label: 'Requirement',
                 labelToolbar: 'Requirement',
                 hasSort: false,
                 columns: [
                     {
-                        key: 'requirementTruckType',
-                        label: 'Truck type',
-                        labelToolbar: 'Truck Type',
+                        key: 'requirementTruck',
+                        label: 'Truck',
+                        labelToolbar: 'Truck',
                         width: 64,
                         minWidth: 50,
                         maxWidth: 220,
@@ -625,9 +638,9 @@ export class LoadTableColumnsConfig {
                         sortName: LoadSortBy.TruckType,
                     },
                     {
-                        key: 'requirementTrailerType',
-                        label: 'Trailer type',
-                        labelToolbar: 'Trailer Type',
+                        key: 'requirementTrailer',
+                        label: 'Trailer',
+                        labelToolbar: 'Trailer',
                         width: 64,
                         minWidth: 50,
                         maxWidth: 220,
@@ -638,7 +651,7 @@ export class LoadTableColumnsConfig {
                     },
                     {
                         key: 'requirementLength',
-                        label: 'ft',
+                        label: '',
                         labelToolbar: 'Length',
                         width: 52,
                         minWidth: 32,
@@ -649,9 +662,9 @@ export class LoadTableColumnsConfig {
                         sortName: LoadSortBy.TrailerLength,
                     },
                     {
-                        key: 'requirementDoorType',
+                        key: 'requirementDoor',
                         label: 'Door',
-                        labelToolbar: 'Door Type',
+                        labelToolbar: 'Door',
                         width: 90,
                         minWidth: 52,
                         maxWidth: 110,
@@ -746,4 +759,16 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+
+    private static noteColumn: ITableColumn = {
+        key: 'note',
+        label: 'Note',
+        labelToolbar: '',
+        width: 26,
+        minWidth: 26,
+        isResizable: false,
+        isDisabled: false,
+        isChecked: true,
+        hasSort: false,
+    };
 }

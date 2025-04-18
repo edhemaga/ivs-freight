@@ -5,6 +5,9 @@ import { Subject, takeUntil } from 'rxjs';
 import { CommonModule } from '@angular/common';
 import { AngularSvgIconModule } from 'angular-svg-icon';
 
+// base classes
+import { LoadDropdownMenuActionsBase } from '@pages/load/base-classes';
+
 // services
 import { LoadStoreService } from '@pages/new-load/state/services/load-store.service';
 import { ModalService } from '@shared/services';
@@ -31,14 +34,19 @@ import {
 
 // interfaces
 import { ICardValueData } from '@shared/interfaces';
+import { IMappedLoad } from '@pages/new-load/interfaces';
 
 // enums
 import {
+    eDropdownMenu,
     eSharedString,
     eStringPlaceholder,
     eTableCardViewData,
     TableStringEnum,
 } from '@shared/enums';
+
+// models
+import { TableCardBodyActions } from '@shared/models';
 
 // svg-routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -61,9 +69,12 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         GetNestedValuePipe,
     ],
 })
-export class NewLoadCardsComponent implements OnInit, OnDestroy {
+export class NewLoadCardsComponent
+    extends LoadDropdownMenuActionsBase
+    implements OnInit, OnDestroy
+{
     // destroy
-    private destroy$ = new Subject<void>();
+    protected destroy$ = new Subject<void>();
 
     // data (this will be changed when store is implemented)
     public tabCardData: {
@@ -92,6 +103,7 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
 
     // enums
     public tableCardViewEnums = eTableCardViewData;
+    public eDropdownMenu = eDropdownMenu;
 
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
@@ -104,9 +116,11 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
     public eStringPlaceholder = eStringPlaceholder;
 
     constructor(
-        private modalService: ModalService,
+        protected modalService: ModalService,
         public loadStoreService: LoadStoreService
-    ) {}
+    ) {
+        super();
+    }
 
     ngOnInit(): void {
         this.loadStoreService.selectedTabSelector$
@@ -114,6 +128,10 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
             .subscribe((tab) => {
                 this.selectedTab = tab;
             });
+    }
+
+    private navigateToLoadDetails(id: number): void {
+        this.loadStoreService.navigateToLoadDetails(id);
     }
 
     public openColumnsModal(): void {
@@ -147,6 +165,32 @@ export class NewLoadCardsComponent implements OnInit, OnDestroy {
                             .map((back: ICardValueData) => back.inputItem);
                 }
             });
+    }
+
+    public onShowMoreClick(): void {
+        this.loadStoreService.getNewPage();
+    }
+
+    public onSelectLoad(id: number): void {
+        this.loadStoreService.onSelectLoad(id);
+    }
+
+    public onToggleDropdownMenuActions(
+        action: TableCardBodyActions<IMappedLoad>
+    ): void {
+        const { type, id } = action;
+
+        // this is because we have load and new load - it will be removed
+        if (type === eDropdownMenu.VIEW_DETAILS_TYPE) {
+            this.navigateToLoadDetails(id);
+
+            return;
+        }
+        this.handleDropdownMenuActions(
+            action,
+            eDropdownMenu.LOAD,
+            this.selectedTab
+        );
     }
 
     ngOnDestroy(): void {
