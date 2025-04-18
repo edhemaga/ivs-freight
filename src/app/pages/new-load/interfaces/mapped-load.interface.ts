@@ -26,7 +26,7 @@ export interface IMappedLoad {
     driverInfo: LoadDriverInfo;
     templateName: string;
     templateCreated: string;
-    generalCommodity?: EnumValue;
+    commodity?: string;
     brokerBusinessName: string;
     assignedDriverTruckNumber: string;
     assignedDriverTrailerNumber: string;
