@@ -330,23 +330,61 @@
 
                 <div class="divider divider--small divider--dark"></div>
 
-                <app-ca-custom-card
-                    customDividerClass="divider--dark"
-                    cardName="Billing"
-                    [hasDivider]="false"
-                    [isCardOpen]="true"
-                    [animationMarginParams]="{
-                        marginTop: '8px',
-                        marginBottom: '14px',
-                    }"
-                >
-                    <div origin>
-                        <ca-input-test
-                            formControlName="baseRate"
-                            [inputConfig]="LoadModalConfig.LOAD_BASE_RATE"
-                        ></ca-input-test>
-                    </div>
-                </app-ca-custom-card>
+                <div class="d-grid d-grid-billing">
+                    <app-ca-custom-card
+                        cardName="Billing"
+                        [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '8px',
+                            marginBottom: '14px',
+                        }"
+                    >
+                        <div origin>
+                            @let baseRateInputConfig =
+                                {
+                                    configType: eLoadModalForm.BASE_RATE,
+                                    isTemplate,
+                                } | loadModalInputConfig;
+                            <ca-input-test
+                                formControlName="baseRate"
+                                [inputConfig]="baseRateInputConfig"
+                            ></ca-input-test>
+                        </div>
+                    </app-ca-custom-card>
+
+                    <app-ca-custom-card
+                        cardName="Payment"
+                        [isCardOpen]="true"
+                        [animationMarginParams]="{
+                            marginTop: '0',
+                            marginBottom: '0',
+                        }"
+                    >
+                        <div origin></div>
+                    </app-ca-custom-card>
+
+                    <app-ca-custom-card
+                        cardName="Invoice Aging"
+                        [isDisabledCard]="true"
+                        [isCardOpen]="false"
+                        [animationMarginParams]="{
+                            marginTop: '0',
+                            marginBottom: '0',
+                        }"
+                    >
+                        <div origin>
+                            @let invoicedDateInputConfig =
+                                {
+                                    configType: eLoadModalForm.INVOICED_DATE,
+                                    isTemplate,
+                                } | loadModalInputConfig;
+                            <ca-input-test
+                                formControlName="invoicedDate"
+                                [inputConfig]="invoicedDateInputConfig"
+                            ></ca-input-test>
+                        </div>
+                    </app-ca-custom-card>
+                </div>
 
                 <div class="divider divider--small divider--dark"></div>
 

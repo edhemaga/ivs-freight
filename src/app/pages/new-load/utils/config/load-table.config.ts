@@ -190,7 +190,7 @@ export class LoadTableColumnsConfig {
     ): ITableColumn[] {
         return [
             {
-                key: 'type',
+                key: 'loadType',
                 label: 'Type',
                 labelToolbar: 'Type',
                 width: 82,
@@ -763,7 +763,7 @@ export class LoadTableColumnsConfig {
     private static noteColumn: ITableColumn = {
         key: 'note',
         label: 'Note',
-        labelToolbar: 'test note',
+        labelToolbar: '',
         width: 26,
         minWidth: 26,
         isResizable: false,

@@ -82,7 +82,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
     selectedTabValue: eLoadStatusType
 ): ILoadState {
     console.log('getLoadsPayloadOnTabTypeChange');
-    const { selectedTab } = state;
+    const selectedTab = LoadHelper.loadStatusTypeToStringMap[selectedTabValue];
 
     return {
         ...state,
@@ -91,7 +91,7 @@ export const getLoadsPayloadOnTabTypeChange = function (
             ...state.filters,
             searchQuery: [],
         },
-        selectedTab: LoadHelper.loadStatusTypeToStringMap[selectedTabValue],
+        selectedTab,
         tableColumns: LoadTableColumnsConfig.getLoadTableColumns(selectedTab),
     };
 };
@@ -303,7 +303,6 @@ export function onDeleteLoad(state: ILoadState, id: number): ILoadState {
             updatedLoads,
             selectedTab
         ),
-        searchResultsCount: state.searchResultsCount - 1,
     };
 }
 

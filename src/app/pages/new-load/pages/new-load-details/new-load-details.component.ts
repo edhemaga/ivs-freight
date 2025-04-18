@@ -101,13 +101,13 @@ export class NewLoadDetailsComponent
         const mappedAction = {
             type,
             id,
+            data: this.load,
         };
 
         this.handleDropdownMenuActions(
             mappedAction,
             eDropdownMenu.LOAD,
             statusType.name,
-            this.load,
             true
         );
     }

@@ -37,6 +37,8 @@ export interface IMappedLoad {
     billingRate: number;
     invoicedDate: string;
     note: string;
+    brokerContact: string;
+    loadType: EnumValue;
     requirementTruck: TruckTypeResponse;
     requirementTrailer: TrailerTypeResponse;
     requirementLength: string;

@@ -110,6 +110,39 @@ export class LoadModalInputConfigPipe implements PipeTransform {
                 };
 
                 break;
+
+            case eLoadModalForm.INVOICED_DATE:
+                config = {
+                    name: 'datepicker',
+                    type: 'text',
+                    isDropdown: true,
+                    label: 'Invoiced',
+                    placeholderIcon: 'date',
+                    isDisabled: true,
+                    customClass: 'datetimeclass',
+                };
+
+                break;
+
+            case eLoadModalForm.BASE_RATE:
+                config = {
+                    name: 'price-separator',
+                    type: 'text',
+                    label: 'Base Rate',
+                    labelInInput: true,
+                    isRequired: true,
+                    priceSeparator: true,
+                    priceSeparatorLimitation: 6,
+                    placeholderIconRightSide: 'dollar',
+                    isPlaceHolderIconRightSideDynamicColor: true,
+                    placeholderIconColor: 'gray',
+                    inputCursorOnRightSide: true,
+                    hideErrorMessage: true,
+                    errorInsideInput: true,
+                    hideRequiredCheck: true,
+                };
+
+                break;
         }
 
         return config;

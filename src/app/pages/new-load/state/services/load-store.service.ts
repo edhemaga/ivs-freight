@@ -88,6 +88,10 @@ export class LoadStoreService {
         select(LoadSelectors.tableColumnsSelector)
     );
 
+    public isTypeColumnCheckedSelector$: Observable<boolean> = this.store.pipe(
+        select(LoadSelectors.isTypeColumnCheckedSelector)
+    );
+
     public loadDetailsSelector$: Observable<ILoadDetails> = this.store.pipe(
         select(LoadSelectors.loadDetailsSelector)
     );

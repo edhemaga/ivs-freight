@@ -40,6 +40,8 @@ export class LoadHelper {
                 invoicedDate,
                 generalCommodity,
                 note,
+                loadType,
+                type,
                 loadRequirements,
             } = load;
 
@@ -57,7 +59,9 @@ export class LoadHelper {
                         selectedTab
                     ),
                 totalDue,
+                loadType: loadType ? loadType?.name : type?.name,
                 broker,
+                brokerContact: broker?.contact,
                 templateCreated:
                     MethodsCalculationsHelper.convertDateFromBackend(
                         load.dateCreated
@@ -76,7 +80,8 @@ export class LoadHelper {
                 note,
                 requirementTruck: loadRequirements?.truckType,
                 requirementTrailer: loadRequirements?.trailerType,
-                requirementLength: loadRequirements?.trailerLength?.name?.replace(/\D/g, ""),
+                requirementLength:
+                    loadRequirements?.trailerLength?.name?.replace(/\D/g, ''),
                 requirementDoor: loadRequirements?.doorType?.name,
                 requirementSuspension: loadRequirements?.suspension?.name,
                 requirementYear: loadRequirements?.year,
