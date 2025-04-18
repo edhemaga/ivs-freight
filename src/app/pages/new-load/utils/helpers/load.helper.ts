@@ -43,6 +43,7 @@ export class LoadHelper {
                 loadType,
                 type,
                 loadRequirements,
+                dispatch,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -68,7 +69,7 @@ export class LoadHelper {
                     ),
                 generalCommodity,
                 brokerBusinessName: broker?.businessName,
-                driverInfo: driver,
+                driverInfo: driver ? driver : dispatch?.driver,
                 assignedDriverTruckNumber: driver?.truckNumber,
                 assignedDriverTrailerNumber: driver?.trailerNumber,
                 milesLoaded: miles?.loadedMiles,

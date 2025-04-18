@@ -32,7 +32,7 @@
             commodity,
             billingRate,
             invoicedDate,
-            driverInfo,
+            assignedDriver,
             brokerPhone,
             loadType,
             referenceNumber,
@@ -40,6 +40,8 @@
             note,
             requirementTruck,
             requirementTrailer,
+            assignedDriverTruckNumber,
+            assignedDriverTrailerNumber,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -129,24 +131,10 @@
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
             <div
-                class="text-color-black-2 text-size-14"
+                class="text-color-black text-size-14"
                 [class]="cellColumnTextColorClass"
             >
                 {{ data.broker?.phone }}
-            </div>
-        </ng-template>
-
-        <ng-template
-            #driverInfo
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-            let-data="data"
-        >
-            <div
-                class="text-color-black-2 text-size-14"
-                [class]="cellColumnTextColorClass"
-            >
-                {{ data.driverInfo.firstName }}
-                {{ data.driverInfo.lastName }}
             </div>
         </ng-template>
 
@@ -244,11 +232,7 @@
             <div class="d-flex gap-1">
                 <app-ca-profile-image
                     [name]="data.dispatcher?.fullName"
-                    [size]="'small'"
-                    [type]="'user'"
-                    [withTooltip]="true"
                     [size]="18"
-                    [isDispatch]="true"
                     [avatarImg]="data.dispatcher?.avatarFile?.url"
                 >
                 </app-ca-profile-image>
@@ -261,6 +245,63 @@
                     "
                 ></div>
             </div>
+        </ng-template>
+        <!-- ASSIGNED GROUP   -->
+
+        <ng-template
+            #assignedDriver
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+            let-data="data"
+        >
+            <div class="d-flex gap-1">
+                <app-ca-profile-image
+                    [name]="
+                        data.driverInfo?.firstName + data.driverInfo?.lastName
+                    "
+                    [isRound]="false"
+                    [size]="18"
+                    [avatarImg]="data.driverInfo?.avatarFile?.url"
+                >
+                </app-ca-profile-image>
+
+                <div class="d-flex">
+                    <div
+                        class="text-color-black-2 text-size-14"
+                        [innerHtml]="
+                            data.driverInfo?.firstName
+                                | tableHighlightSearchText: store.searchStrings
+                        "
+                    ></div>
+
+                    <div
+                        class="text-color-black-2 text-size-14 m-l-4"
+                        [innerHtml]="
+                            data.driverInfo?.lastName
+                                | tableHighlightSearchText: store.searchStrings
+                        "
+                    ></div>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template let-data="data" #assignedDriverTruckNumber>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.assignedDriverTruckNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-data="data" #assignedDriverTrailerNumber>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.assignedDriverTrailerNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
         </ng-template>
 
         <ng-template let-data="data" #loadStatus>
