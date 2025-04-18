@@ -125,7 +125,7 @@ export class LoadTableColumnsConfig {
 
         return [
             {
-                key: 'invoiceNumber',
+                key: 'loadNumber',
                 label: 'Invoice No',
                 labelToolbar: 'Invoice No.',
                 width: 146,
@@ -138,7 +138,7 @@ export class LoadTableColumnsConfig {
                 pinned: 'left',
             },
             {
-                key: 'invoiceDate',
+                key: 'invoicedDate',
                 label: 'Invoiced',
                 labelToolbar: 'Invoiced date',
                 width: 146,
