@@ -27,6 +27,15 @@ export const initialState: IUserState = {
 
 export const userReducer = createReducer(
     initialState,
+    //#region  List
+    on(UserActions.onGetListSuccess, (state, { payload }) =>
+        Functions.onGetListSuccess(state, payload)
+    ),
+
+    on(UserActions.onGetListError, (state) => ({ ...state })),
+    //#endregion
+
+    //#region Tabs
     on(UserActions.onTabTypeChange, (state, { mode }) =>
         Functions.onTabTypeChange(state, mode)
     ),
@@ -34,4 +43,5 @@ export const userReducer = createReducer(
     on(UserActions.onViewModeChange, (state, { viewMode }) =>
         Functions.onViewModeChange(state, viewMode)
     )
+    //#endregion
 );

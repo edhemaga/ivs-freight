@@ -1,5 +1,15 @@
-import { ResolveFn } from '@angular/router';
+import { Injectable } from '@angular/core';
 
-export const userResolver: ResolveFn<boolean> = (route, state) => {
-  return true;
-};
+// Services
+import { UserStoreService } from '@pages/new-user/state/services/user-store.service';
+
+@Injectable({
+    providedIn: 'root',
+})
+export class UserResolver {
+    constructor(private userStoreService: UserStoreService) {}
+
+    resolve(): void {
+        return this.userStoreService.dispatchLoadInitialList();
+    }
+}

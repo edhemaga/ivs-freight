@@ -18,11 +18,18 @@ import { UserStoreConstants } from '@pages/new-user/utils/constants';
 // Enums
 import { eCommonElement, eStatusTab } from '@shared/enums';
 
+// Interface
+import { IMappedUser } from '@pages/new-user/interfaces';
+
 @Injectable({
     providedIn: 'root',
 })
 export class UserStoreService {
     constructor(private store: Store) {}
+
+    public userListSelector$: Observable<IMappedUser[]> = this.store.pipe(
+        select(UserSelector.userListSelector)
+    );
 
     public toolbarTabsSelector$: Observable<ITableData[]> = this.store.pipe(
         select(UserSelector.toolbarTabsSelector)
@@ -35,6 +42,12 @@ export class UserStoreService {
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
         select(UserSelector.activeViewModeSelector)
     );
+
+    public dispatchLoadInitialList(): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_LOAD_USER_LIST,
+        });
+    }
 
     public dispatchTypeChange(mode: eStatusTab): void {
         this.store.dispatch({

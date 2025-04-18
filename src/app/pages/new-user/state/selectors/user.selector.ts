@@ -6,9 +6,14 @@ import { IUserState } from '@pages/new-user/interfaces';
 
 export const userFeatureKey: string = 'user';
 
-//#region List
 export const selectUserState =
     createFeatureSelector<IUserState>(userFeatureKey);
+
+//#region List
+export const userListSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.users
+);
 //#endregion
 
 //#region Tabs

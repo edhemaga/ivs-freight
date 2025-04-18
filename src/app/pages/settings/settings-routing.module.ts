@@ -8,7 +8,7 @@ import { CompanyOfficeResolver } from '@pages/settings/resolvers/company-office.
 import { CompanyTerminalResolver } from '@pages/settings/resolvers/company-terminal.resolver';
 import { CompanyRepairShopResolver } from '@pages/settings/resolvers/company-repairshop.resolver';
 import { UserResolver } from '@pages/user/resolvers/user.resolver';
-import { userResolver as NewUserResolver } from '@pages/new-user/resolvers/user.resolver';
+import { UserResolver as NewUserResolver } from '@pages/new-user/resolvers/user.resolver';
 
 import { CompanyIntegrationsResolver } from '@pages/settings/resolvers/company-integrations.resolver';
 
