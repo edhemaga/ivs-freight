@@ -27,7 +27,7 @@ export interface IMappedLoad {
     driverInfo?: LoadDriverInfo | DriverMinimalResponse;
     templateName: string;
     templateCreated: string;
-    generalCommodity?: EnumValue;
+    commodity?: string;
     brokerBusinessName: string;
     assignedDriverTruckNumber: string;
     assignedDriverTrailerNumber: string;
@@ -47,4 +47,5 @@ export interface IMappedLoad {
     requirementSuspension: string;
     requirementYear: string;
     requirementLiftgate: string;
+    driverMessage: string;
 }

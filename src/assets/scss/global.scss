@@ -180,6 +180,21 @@ body {
     text-align: right !important;
 }
 
+.text-ellipsis {
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.text-line-clamp {
+    &-2 {
+        display: -webkit-box;
+        -webkit-box-orient: vertical;
+        -webkit-line-clamp: 2;
+        overflow: hidden;
+    }
+}
+
 html {
     body {
         app-ca-modal,
@@ -378,12 +393,6 @@ app-load-modal {
 .dispatch-load-grid {
     grid-template-columns: 30px 176px 151px 151px 1fr;
     gap: 4px;
-}
-
-.text-ellipsis {
-    text-overflow: ellipsis;
-    overflow: hidden;
-    white-space: nowrap;
 }
 
 .h-full {

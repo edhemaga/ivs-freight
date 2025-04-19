@@ -67,7 +67,7 @@ export class LoadHelper {
                     MethodsCalculationsHelper.convertDateFromBackend(
                         load.dateCreated
                     ),
-                generalCommodity,
+                commodity: loadDetails ? loadDetails?.generalCommodityName : generalCommodity?.name,
                 brokerBusinessName: broker?.businessName,
                 driverInfo: driver ? driver : dispatch?.driver,
                 assignedDriverTruckNumber: driver?.truckNumber,
@@ -89,6 +89,7 @@ export class LoadHelper {
                 requirementLiftgate: loadRequirements?.liftgate
                     ? eSharedString.YES
                     : eSharedString.EMPTY_STRING_PLACEHOLDER,
+                driverMessage: loadRequirements?.driverMessage
             };
             return mapped;
         });
