@@ -85,4 +85,21 @@ export class UserEffects {
             })
         )
     );
+
+    public onDeleteUsers$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UserActions.onDeleteUsers),
+            switchMap(({ users }) => {
+                const userIds = users.map((user) => user.id);
+                return this.userService.deleteUsers(userIds).pipe(
+                    map(() => {
+                        return UserActions.onDeleteUsersSuccess({
+                            users,
+                        });
+                    }),
+                    catchError(() => of(UserActions.onDeleteUsersError()))
+                );
+            })
+        )
+    );
 }

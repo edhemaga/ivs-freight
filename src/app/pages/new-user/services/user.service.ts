@@ -65,4 +65,17 @@ export class UserService {
             { params }
         );
     }
+
+    // Any is used from CompanyUserService
+    public deleteUsers(ids: number[]): Observable<any> {
+        const params = ids.reduce(
+            (param, id) => param.append('Ids', id.toString()),
+            new HttpParams()
+        );
+
+        return this.http.get<CompanyUserListResponse>(
+            `${environment.API_ENDPOINT}/api/companyuser/list`,
+            { params }
+        );
+    }
 }

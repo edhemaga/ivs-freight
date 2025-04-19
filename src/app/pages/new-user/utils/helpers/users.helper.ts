@@ -1,5 +1,6 @@
 // Interface
 import { IMappedUser } from '@pages/new-user/interfaces';
+import { eStatusTab } from '@shared/enums';
 import { ITableData } from '@shared/models';
 
 // Models
@@ -20,6 +21,25 @@ export class UsersHelper {
                 length: payload.inactiveCount,
             },
         ];
+    }
+
+    static updateTabsCountAfterDelete(
+        tab: eStatusTab,
+        deletedLength: number,
+        toolbarTabs: ITableData[]
+    ): ITableData[] {
+        return toolbarTabs.map((t, i) => {
+            if (
+                (tab === eStatusTab.ACTIVE && i === 0) ||
+                (tab !== eStatusTab.ACTIVE && i === 1)
+            ) {
+                return {
+                    ...t,
+                    length: Math.max(0, t.length - deletedLength),
+                };
+            }
+            return t;
+        });
     }
 
     static usersMapper(users: CompanyUserListItemResponse[]): IMappedUser[] {

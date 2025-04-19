@@ -82,6 +82,12 @@ export const userReducer = createReducer(
 
     on(UserActions.tableSortingChange, (state, { column }) =>
         Functions.onTableSortingChange(state, column)
+    ),
+    //#endregion
+
+    // #region Delete
+    on(UserActions.onDeleteUsers, (state, { users }) =>
+        Functions.onDeleteUsers(state, users)
     )
     //#endregion
 );

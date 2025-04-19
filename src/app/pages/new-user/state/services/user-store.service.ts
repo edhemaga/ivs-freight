@@ -141,11 +141,14 @@ export class UserStoreService {
         modalData: IUserDeleteModal,
         ngbActiveModal: NgbActiveModal
     ): void {
-        // TODO: Dragan, if we delete user from dropdown send id inside array
         this.modalService
             .openModalNew(DeleteUserComponent, modalData)
             .closed.subscribe((value) => {
                 if (value) {
+                    this.store.dispatch({
+                        type: UserStoreConstants.ACTION_DISPATCH_DELETE_USERS,
+                        users: modalData.users,
+                    });
                 }
 
                 ngbActiveModal.close();

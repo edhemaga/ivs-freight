@@ -1,5 +1,5 @@
 // Interfaces
-import { IUserState } from '@pages/new-user/interfaces';
+import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Models
@@ -134,6 +134,26 @@ export function onTableSortingChange(
             sortKey,
             label,
         },
+    };
+}
+//#endregion
+
+// #region Delete
+export function onDeleteUsers(
+    state: IUserState,
+    usersToDelete: IMappedUser[]
+): IUserState {
+    const users = state.users.filter((user) => !usersToDelete.includes(user));
+
+    return {
+        ...state,
+        users,
+        searchResultsCount: state.searchResultsCount - usersToDelete.length,
+        toolbarTabs: UsersHelper.updateTabsCountAfterDelete(
+            state.selectedTab,
+            usersToDelete.length,
+            state.toolbarTabs
+        ),
     };
 }
 //#endregion

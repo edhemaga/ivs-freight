@@ -13,6 +13,7 @@ import { CompanyUserListResponse } from 'appcoretruckassist';
 
 // Interface
 import { ITableColumn } from '@shared/components/new-table/interface';
+import { IMappedUser } from '@pages/new-user/interfaces';
 
 //#region List
 export const onGetInitalList = createAction(
@@ -82,5 +83,23 @@ export const onSeachFilterChange = createAction(
 export const tableSortingChange = createAction(
     UserStoreConstants.ACTION_SORTING_CHANGE,
     props<{ column: ITableColumn }>()
+);
+//#endregion
+
+//#region Delete
+export const onDeleteUsers = createAction(
+    UserStoreConstants.ACTION_DISPATCH_DELETE_USERS,
+    props<{
+        users: IMappedUser[];
+    }>()
+);
+export const onDeleteUsersSuccess = createAction(
+    UserStoreConstants.ACTION_DISPATCH_DELETE_USERS_SUCCESS,
+    props<{
+        users: IMappedUser[];
+    }>()
+);
+export const onDeleteUsersError = createAction(
+    UserStoreConstants.ACTION_DISPATCH_DELETE_USERS_ERROR
 );
 //#endregion
