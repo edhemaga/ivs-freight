@@ -88,6 +88,7 @@ export class LoadHelper {
                 requirementLiftgate: loadRequirements?.liftgate
                     ? eSharedString.YES
                     : eSharedString.EMPTY_STRING_PLACEHOLDER,
+                driverMessage: loadRequirements?.driverMessage
             };
             return mapped;
         });

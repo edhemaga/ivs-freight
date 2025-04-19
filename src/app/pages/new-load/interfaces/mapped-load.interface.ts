@@ -46,4 +46,5 @@ export interface IMappedLoad {
     requirementSuspension: string;
     requirementYear: string;
     requirementLiftgate: string;
+    driverMessage: string;
 }

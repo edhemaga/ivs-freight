@@ -40,6 +40,7 @@
             note,
             requirementTruck,
             requirementTrailer,
+            driverMessage,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -311,6 +312,18 @@
                     [inputData]="data.requirementTrailer"
                 ></app-ta-truck-trailer-icon>
             }
+        </ng-template>
+
+        <ng-template
+            #driverMessage
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+            let-data="data"
+        >
+            <div
+                class="text-color-black-2 text-size-14 text-line-clamp-2"
+                [class]="cellColumnTextColorClass"
+                [innerHtml]="data.driverMessage"
+            ></div>
         </ng-template>
 
         <ng-template let-data="data" #action>
