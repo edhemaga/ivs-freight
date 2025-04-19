@@ -1,0 +1,25 @@
+@let users = modalData?.users || [];
+@let isSingular = users.length === 1;
+@let inputModalData =
+    {
+        count: isSingular ? 0 : users.length,
+        title: 'Delete User',
+    };
+
+<app-ca-delete-modal [template]="deleteTemplate" [modalData]="inputModalData">
+    <ng-template #deleteTemplate>
+        <div class="gap-1 d-flex flex-column">
+            @for (user of users; track user.id) {
+                <div class="gap-1 d-flex flex-column m-b-8">
+                    {{ user.fullName }}
+                    {{ user.department }}
+                </div>
+            }
+            <div class="text-size-14 ta-font-medium text-color-black">
+                Are you sure you want to delete selected user{{
+                    isSingular ? '' : 's'
+                }}?
+            </div>
+        </div>
+    </ng-template>
+</app-ca-delete-modal>

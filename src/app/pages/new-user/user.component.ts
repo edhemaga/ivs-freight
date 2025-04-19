@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 // Modules
-import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
+import { NgbActiveModal, NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule, SvgIconComponent } from 'angular-svg-icon';
 
 // Services
@@ -34,11 +34,15 @@ import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta
 // Pipes
 import { ActivateIconTooltipPipe } from '@shared/pipes/activate-icon-tooltip.pipe';
 
+// Interfaces
+import { IMappedUser } from '@pages/new-user/interfaces';
+
 @Component({
     selector: 'app-user',
     templateUrl: './user.component.html',
     styleUrl: './user.component.scss',
     standalone: true,
+    providers: [NgbActiveModal],
     imports: [
         // modules
         CommonModule,
@@ -70,7 +74,10 @@ export class UserComponent {
     public eColor = eColor;
     public ePosition = ePosition;
 
-    constructor(public userStoreService: UserStoreService) {}
+    constructor(
+        public userStoreService: UserStoreService,
+        private ngbActiveModal: NgbActiveModal
+    ) {}
 
     public onToolBarAction(event: TableToolbarActions): void {
         if (!event) return;
@@ -96,6 +103,13 @@ export class UserComponent {
     }
 
     public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {}
+
+    public onDeleteUserList(users: IMappedUser[]): void {
+        this.userStoreService.dispatchDeleteUsers(
+            { users },
+            this.ngbActiveModal
+        );
+    }
 
     private onTypeChange(mode: string): void {
         this.userStoreService.dispatchTypeChange(mode as eStatusTab);

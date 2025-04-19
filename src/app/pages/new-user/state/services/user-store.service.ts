@@ -1,5 +1,8 @@
 import { Injectable } from '@angular/core';
 
+// NgBootstrap
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+
 // Store
 import { select, Store } from '@ngrx/store';
 
@@ -19,20 +22,33 @@ import { UserStoreConstants } from '@pages/new-user/utils/constants';
 import { eCommonElement, eStatusTab } from '@shared/enums';
 
 // Interface
-import { IMappedUser } from '@pages/new-user/interfaces';
+import { IMappedUser, IUserDeleteModal } from '@pages/new-user/interfaces';
 import {
     ITableColumn,
     ITableConfig,
 } from '@shared/components/new-table/interface';
 
+// Services
+import { ModalService } from '@shared/services';
+
+// Components
+import { DeleteUserComponent } from '@pages/new-user/modals/delete-user/delete-user.component';
+
 @Injectable({
     providedIn: 'root',
 })
 export class UserStoreService {
-    constructor(private store: Store) {}
+    constructor(
+        private store: Store,
+        private modalService: ModalService
+    ) {}
 
     public userListSelector$: Observable<IMappedUser[]> = this.store.pipe(
         select(UserSelector.userListSelector)
+    );
+
+    public selectedUserSelector$: Observable<IMappedUser[]> = this.store.pipe(
+        select(UserSelector.selectedUserSelector)
     );
 
     public toolbarTabsSelector$: Observable<ITableData[]> = this.store.pipe(
@@ -58,6 +74,7 @@ export class UserStoreService {
     public selectedCountSelector$: Observable<number> = this.store.pipe(
         select(UserSelector.selectedCountSelector)
     );
+
     public selectedTabCountSelector$: Observable<number> = this.store.pipe(
         select(UserSelector.selectedTabCountSelector)
     );
@@ -118,5 +135,20 @@ export class UserStoreService {
             type: UserStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
             query,
         });
+    }
+
+    public dispatchDeleteUsers(
+        modalData: IUserDeleteModal,
+        ngbActiveModal: NgbActiveModal
+    ): void {
+        // TODO: Dragan, if we delete user from dropdown send id inside array
+        this.modalService
+            .openModalNew(DeleteUserComponent, modalData)
+            .closed.subscribe((value) => {
+                if (value) {
+                }
+
+                ngbActiveModal.close();
+            });
     }
 }

@@ -5,6 +5,7 @@
         activeViewMode: userStoreService.activeViewModeSelector$ | async,
         users: userStoreService.userListSelector$ | async,
         selectedCountSelector: userStoreService.selectedCountSelector$ | async,
+        selectedUserSelector: userStoreService.selectedUserSelector$ | async,
     };
 
 <ng-template #divider>
@@ -76,7 +77,7 @@
                 <svg-icon
                     class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
                     [src]="sharedIcons.DELETE_ICON"
-                    (click)="onDeleteLoadList()"
+                    (click)="onDeleteUserList(store.selectedUserSelector)"
                 >
                 </svg-icon>
 
