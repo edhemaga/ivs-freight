@@ -54,18 +54,23 @@
         </ng-template>
         <ng-template #rightSide>
             @if (store.selectedCountSelector) {
-                <!-- Activate | Deactivate (1) -->
-                <svg-icon
-                    [src]="sharedIcons.DEACTIVATE_ICON"
-                    class="svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
-                    [ngClass]="{
-                        'background-hover-dark-2 svg-fill-muted svg-hover-black':
-                            store.selectedTab === eStatusTab.ACTIVE,
-                        'background-hover-blue-16 svg-fill-blue-13 svg-hover-blue-15':
-                            store.selectedTab !== eStatusTab.ACTIVE,
-                    }"
+                @let iconConfig =
+                    store.selectedTab
+                        | activateIconTooltip: store.selectedCountSelector;
+
+                <div
+                    ngbTooltip
+                    [tooltipBackground]="eColor.BLACK"
+                    [position]="ePosition.BOTTOM"
+                    [mainTooltip]="iconConfig.tooltip"
                 >
-                </svg-icon>
+                    <svg-icon
+                        [src]="sharedIcons.DEACTIVATE_ICON"
+                        class="svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
+                        [ngClass]="iconConfig.iconClass"
+                    >
+                    </svg-icon>
+                </div>
 
                 <svg-icon
                     class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"

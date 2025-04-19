@@ -48,4 +48,9 @@ export const onUserSelection = createAction(
         id: number;
     }>()
 );
+
+export const onSelectAll = createAction(
+    UserStoreConstants.ACTION_ON_SELECT_ALL,
+    props<{ action: string }>()
+);
 //#endregion

@@ -3,6 +3,7 @@
         users: userStoreService.userListSelector$ | async,
         columns: userStoreService.tableColumnsSelector$ | async,
         selectedTab: userStoreService.selectedTabSelector$ | async,
+        selectedCount: userStoreService.selectedCountSelector$ | async,
     };
 
 @if (store) {

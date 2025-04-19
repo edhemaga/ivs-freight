@@ -78,4 +78,11 @@ export class UserStoreService {
             id,
         });
     }
+
+    public dispatchSelectAll(action: string): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_ON_SELECT_ALL,
+            action,
+        });
+    }
 }

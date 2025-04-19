@@ -63,4 +63,8 @@ export class UserTableComponent {
     public onSelectUser(userId: number): void {
         this.userStoreService.dispatchSelectUser(userId);
     }
+
+    public onCheckboxCountClick(action: string): void {
+        this.userStoreService.dispatchSelectAll(action);
+    }
 }

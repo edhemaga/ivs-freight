@@ -8,5 +8,6 @@ export class UserStoreConstants {
 
     //#region Selection
     public static ACTION_DISPATCH_ON_USER_SELECTION = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_ON_USER_SELECTION`;
+    public static ACTION_ON_SELECT_ALL = `${this.COMPONENT_NAME_KEY} ACTION_ON_SELECT_ALL`;
     //#endregion
 }

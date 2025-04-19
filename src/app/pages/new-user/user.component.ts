@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 
 // Modules
-import { NgbTooltipModule } from '@ng-bootstrap/ng-bootstrap';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 import { AngularSvgIconModule, SvgIconComponent } from 'angular-svg-icon';
 
 // Services
@@ -15,6 +15,8 @@ import {
     CaSearchMultipleStates2Component,
     CaCheckboxSelectedCountComponent,
     eCommonElement,
+    eColor,
+    ePosition,
 } from 'ca-components';
 import { UserTableComponent } from '@pages/new-user/pages/user-table/user-table.component';
 import { UserCardsComponent } from '@pages/new-user/pages/user-cards/user-cards.component';
@@ -27,6 +29,10 @@ import { eGeneralActions, eStatusTab } from '@shared/enums';
 
 // Svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
+
+// Pipes
+import { ActivateIconTooltipPipe } from '@shared/pipes/activate-icon-tooltip.pipe';
 
 @Component({
     selector: 'app-user',
@@ -36,7 +42,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     imports: [
         // modules
         CommonModule,
-        NgbTooltipModule,
+        NgbTooltip,
         AngularSvgIconModule,
 
         // Components
@@ -45,8 +51,12 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaSearchMultipleStates2Component,
         SvgIconComponent,
         CaCheckboxSelectedCountComponent,
+        TaAppTooltipV2Component,
         UserTableComponent,
         UserCardsComponent,
+
+        // Pipes
+        ActivateIconTooltipPipe,
     ],
 })
 export class UserComponent {
@@ -57,6 +67,8 @@ export class UserComponent {
     public generalActions = eGeneralActions;
     public eCommonElement = eCommonElement;
     public eStatusTab = eStatusTab;
+    public eColor = eColor;
+    public ePosition = ePosition;
 
     constructor(public userStoreService: UserStoreService) {}
 

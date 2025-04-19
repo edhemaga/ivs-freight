@@ -21,6 +21,7 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 
 export const initialState: IUserState = {
     users: [],
+    areAllUsersSelected: false,
 
     toolbarTabs: UserToolbarTabs,
     selectedTab: eStatusTab.ACTIVE,
@@ -53,6 +54,10 @@ export const userReducer = createReducer(
     //#region Selection
     on(UserActions.onUserSelection, (state, { id }) =>
         Functions.onUserSelection(state, id)
+    ),
+
+    on(UserActions.onSelectAll, (state, { action }) =>
+        Functions.onSelectAll(state, action)
     )
     //#endregion
 );

@@ -10,6 +10,7 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 
 export interface IUserState {
     users: IMappedUser[];
+    areAllUsersSelected: boolean;
 
     toolbarTabs: ITableData[];
     selectedTab: eStatusTab;

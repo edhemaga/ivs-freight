@@ -5,7 +5,7 @@ import { IUserState } from '@pages/new-user/interfaces';
 import { CompanyUserListResponse } from 'appcoretruckassist';
 
 // Enums
-import { eCommonElement } from 'ca-components';
+import { eCommonElement, eGeneralActions } from 'ca-components';
 import { eStatusTab } from '@shared/enums';
 
 // Helpers
@@ -53,10 +53,32 @@ export const onUserSelection = function (
     const users = state.users.map((user) =>
         user.id === id ? { ...user, isSelected: !user.isSelected } : user
     );
+    const areAllUsersSelected = state.users.every((user) => user.isSelected);
 
     return {
         ...state,
         users,
+        areAllUsersSelected,
     };
 };
+
+export function onSelectAll(state: IUserState, action: string): IUserState {
+    const shouldSelectAll =
+        action === eGeneralActions.SELECT_ALL ||
+        action === eGeneralActions.CLEAR_SELECTED
+            ? !state.areAllUsersSelected
+            : true;
+
+    const users = state.users.map((user) => ({
+        ...user,
+        isSelected: shouldSelectAll,
+    }));
+
+    return {
+        ...state,
+        users,
+        areAllUsersSelected: shouldSelectAll,
+    };
+}
+
 //#endregion
