@@ -7,7 +7,12 @@ import { eStatusTab } from '@shared/enums';
 
 // Const
 import { UserStoreConstants } from '@pages/new-user/utils/constants';
+
+// Models
 import { CompanyUserListResponse } from 'appcoretruckassist';
+
+// Interface
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 //#region List
 export const onGetInitalList = createAction(
@@ -72,5 +77,10 @@ export const onSeachFilterChange = createAction(
     props<{
         query: string[];
     }>()
+);
+
+export const tableSortingChange = createAction(
+    UserStoreConstants.ACTION_SORTING_CHANGE,
+    props<{ column: ITableColumn }>()
 );
 //#endregion

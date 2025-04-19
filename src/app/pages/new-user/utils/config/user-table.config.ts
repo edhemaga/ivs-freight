@@ -31,10 +31,24 @@ export class UserTableColumnsConfig {
         sortName: CompanyUserSortBy.Name,
     };
 
+    static departmentColumn: ITableColumn = {
+        key: 'department',
+        label: 'Department',
+        labelToolbar: 'Department',
+        width: 138,
+        minWidth: 138,
+        maxWidth: 234,
+        isResizable: true,
+        isChecked: true,
+        hasSort: true,
+        sortName: CompanyUserSortBy.Department,
+    };
+
     static getTableColumns(): ITableColumn[] {
         return [
             UserTableColumnsConfig.selectColumn,
             UserTableColumnsConfig.userNameColumn,
+            UserTableColumnsConfig.departmentColumn,
         ];
     }
 }

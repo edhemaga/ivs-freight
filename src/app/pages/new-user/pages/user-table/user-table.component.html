@@ -7,9 +7,11 @@
         selectedTabCountSelector:
             userStoreService.selectedTabCountSelector$ | async,
         searchStrings: userStoreService.searchStringsSelector$ | async,
+        tableSettings: userStoreService.tableSettingsSelector$ | async,
     };
 
 @if (store) {
+    @let isTableLocked = store.tableSettings.isTableLocked;
     @let templates = { select, name };
     @let headerTemplates =
         {
@@ -21,6 +23,7 @@
         [templates]="templates"
         [columns]="store.columns"
         [headerTemplates]="headerTemplates"
+        [isTableLocked]="isTableLocked"
         [totalDataCount]="store.selectedTabCountSelector"
         (onSortingChange)="onSortingChange($event)"
         (onShowMore)="onShowMoreClick()"

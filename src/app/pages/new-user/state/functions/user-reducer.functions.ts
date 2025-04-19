@@ -1,5 +1,6 @@
 // Interfaces
 import { IUserState } from '@pages/new-user/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Models
 import { CompanyUserListResponse } from 'appcoretruckassist';
@@ -10,6 +11,7 @@ import { eStatusTab } from '@shared/enums';
 
 // Helpers
 import { UsersHelper } from '@pages/new-user/utils/helpers';
+import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
 
 //#region Tabs
 export const onTabTypeChange = function (
@@ -112,6 +114,25 @@ export function onSeachFilterChange(
         filters: {
             ...state.filters,
             searchQuery,
+        },
+    };
+}
+
+export function onTableSortingChange(
+    state: IUserState,
+    column: ITableColumn
+): IUserState {
+    const { columns, sortKey, sortDirection, label } =
+        StoreFunctionsHelper.toggleSort(column, state.tableColumns);
+
+    return {
+        ...state,
+        tableColumns: columns,
+        tableSettings: {
+            ...state.tableSettings,
+            sortDirection,
+            sortKey,
+            label,
         },
     };
 }

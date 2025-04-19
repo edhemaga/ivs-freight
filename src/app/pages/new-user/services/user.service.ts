@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { ITableConfig } from '@shared/components/new-table/interface';
 import { IStateFilters } from '@shared/interfaces';
 
 // Models
@@ -33,13 +34,19 @@ export class UserService {
     public getUserList(
         active: number,
         page: number,
-        filters: IStateFilters
+        filters: IStateFilters,
+        tableSorting: ITableConfig
     ): Observable<CompanyUserListResponse> {
         let params = new HttpParams().set('Active', active.toString());
 
         if (page) {
             params = params.append('PageIndex', page);
         }
+
+        if (tableSorting.sortKey)
+            params = params.append('SortBy', tableSorting.sortKey);
+        if (tableSorting.sortDirection)
+            params = params.append('SortOrder', tableSorting.sortDirection);
 
         if (filters.searchQuery?.length) {
             const { searchQuery } = filters;

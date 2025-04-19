@@ -78,6 +78,10 @@ export const userReducer = createReducer(
     // #region Filters
     on(UserActions.onSeachFilterChange, (state, { query }) =>
         Functions.onSeachFilterChange(state, query)
+    ),
+
+    on(UserActions.tableSortingChange, (state, { column }) =>
+        Functions.onTableSortingChange(state, column)
     )
     //#endregion
 );

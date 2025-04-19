@@ -20,7 +20,10 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 
 // Interface
 import { IMappedUser } from '@pages/new-user/interfaces';
-import { ITableColumn } from '@shared/components/new-table/interface';
+import {
+    ITableColumn,
+    ITableConfig,
+} from '@shared/components/new-table/interface';
 
 @Injectable({
     providedIn: 'root',
@@ -46,6 +49,10 @@ export class UserStoreService {
 
     public tableColumnsSelector$: Observable<ITableColumn[]> = this.store.pipe(
         select(UserSelector.tableColumnsSelector)
+    );
+
+    public tableSettingsSelector$: Observable<ITableConfig> = this.store.pipe(
+        select(UserSelector.tableSettingsSelector)
     );
 
     public selectedCountSelector$: Observable<number> = this.store.pipe(
@@ -83,6 +90,13 @@ export class UserStoreService {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_DISPATCH_ON_USER_SELECTION,
             id,
+        });
+    }
+
+    public dispatchSortingChange(column: ITableColumn): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_SORTING_CHANGE,
+            column,
         });
     }
 

@@ -24,13 +24,14 @@ export class UsersHelper {
 
     static usersMapper(users: CompanyUserListItemResponse[]): IMappedUser[] {
         return users.map((user) => {
-            const { firstName, lastName, avatar, id } = user;
+            const { firstName, lastName, avatar, id, department } = user;
 
             const mapped: IMappedUser = {
                 id,
                 isSelected: false,
                 fullName: `${firstName} ${lastName}`,
                 avatar,
+                department,
             };
 
             return mapped;

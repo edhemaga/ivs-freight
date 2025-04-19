@@ -3,4 +3,5 @@ export interface IMappedUser {
     avatar: string | null;
     id: number;
     isSelected: boolean;
+    department: string;
 }

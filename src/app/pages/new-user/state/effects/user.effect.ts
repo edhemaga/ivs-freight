@@ -35,23 +35,27 @@ export class UserEffects {
             ofType(
                 UserActions.onGetInitalList,
                 UserActions.onTabTypeChange,
-                UserActions.onSeachFilterChange
+                UserActions.onSeachFilterChange,
+                UserActions.tableSortingChange
             ),
             withLatestFrom(
                 this.store.select(UserSelector.selectedTabSelector),
-                this.store.select(UserSelector.filterSelector)
+                this.store.select(UserSelector.filterSelector),
+                this.store.select(UserSelector.tableSettingsSelector)
             ),
-            switchMap(([_, selectedTab, filters]) => {
+            switchMap(([_, selectedTab, filters, tableSettings]) => {
                 let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
 
-                return this.userService.getUserList(active, 1, filters).pipe(
-                    map((response) =>
-                        UserActions.onGetListSuccess({
-                            payload: response,
-                        })
-                    ),
-                    catchError(() => of(UserActions.onGetListError()))
-                );
+                return this.userService
+                    .getUserList(active, 1, filters, tableSettings)
+                    .pipe(
+                        map((response) =>
+                            UserActions.onGetListSuccess({
+                                payload: response,
+                            })
+                        ),
+                        catchError(() => of(UserActions.onGetListError()))
+                    );
             })
         )
     );
@@ -62,13 +66,14 @@ export class UserEffects {
             withLatestFrom(
                 this.store.select(UserSelector.selectedTabSelector),
                 this.store.select(UserSelector.pageSelector),
-                this.store.select(UserSelector.filterSelector)
+                this.store.select(UserSelector.filterSelector),
+                this.store.select(UserSelector.tableSettingsSelector)
             ),
-            switchMap(([_, selectedTab, page, filters]) => {
+            switchMap(([_, selectedTab, page, filters, tableSettings]) => {
                 let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
 
                 return this.userService
-                    .getUserList(active, page + 1, filters)
+                    .getUserList(active, page + 1, filters, tableSettings)
                     .pipe(
                         map((response) =>
                             UserActions.onGetListOnPageChangeSuccess({

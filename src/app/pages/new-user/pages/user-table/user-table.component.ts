@@ -63,7 +63,7 @@ export class UserTableComponent {
     }
 
     public onSortingChange(column: ITableColumn): void {
-        // this.loadStoreService.dispatchSortingChange(column);
+        this.userStoreService.dispatchSortingChange(column);
     }
 
     public onSelectUser(userId: number): void {

@@ -40,6 +40,11 @@ export const tableColumnsSelector = createSelector(
     selectUserState,
     (state: IUserState) => state.tableColumns
 );
+
+export const tableSettingsSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.tableSettings
+);
 //#endregion
 
 //#region Selection
