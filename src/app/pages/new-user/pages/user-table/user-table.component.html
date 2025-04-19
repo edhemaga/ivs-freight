@@ -12,7 +12,7 @@
 
 @if (store) {
     @let isTableLocked = store.tableSettings.isTableLocked;
-    @let templates = { select, name };
+    @let templates = { select, name, department };
     @let headerTemplates =
         {
             select: selectHeaderTemplate,
@@ -77,6 +77,16 @@
                     "
                 ></div>
             </div>
+        </ng-template>
+
+        <ng-template let-user="data" #department>
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.department
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
         </ng-template>
     </app-new-table>
 }
