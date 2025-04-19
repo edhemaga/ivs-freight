@@ -31,6 +31,7 @@ import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.
 export class TaTruckTrailerIconComponent implements OnInit {
     @Input() iconType: TruckTrailerIconEnum;
     @Input() inputData: TruckTypeResponse | TrailerTypeResponse;
+    @Input() unitNumber: string;
 
     public icon: {
         icon: string;
@@ -106,6 +107,7 @@ export class TaTruckTrailerIconComponent implements OnInit {
 
     private mapTruck(): void {
         const truckType = this.inputData as TruckTypeResponse;
+        console.log("truckType: ", truckType);
         this.icon = {
             icon: `${TruckTrailerIconEnum.TRUCK_SVG_ROUTE}${truckType.logoName}`,
             name: truckType.name,
