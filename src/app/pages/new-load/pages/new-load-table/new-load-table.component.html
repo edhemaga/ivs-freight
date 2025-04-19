@@ -264,23 +264,18 @@
                 >
                 </app-ca-profile-image>
 
-                <div class="d-flex">
-                    <div
-                        class="text-color-black-2 text-size-14"
-                        [innerHtml]="
-                            data.driverInfo?.firstName
-                                | tableHighlightSearchText: store.searchStrings
-                        "
-                    ></div>
+                @let driverDisplayName =
+                    data.driverInfo?.firstName +
+                    ' ' +
+                    data.driverInfo?.lastName;
 
-                    <div
-                        class="text-color-black-2 text-size-14 m-l-4"
-                        [innerHtml]="
-                            data.driverInfo?.lastName
-                                | tableHighlightSearchText: store.searchStrings
-                        "
-                    ></div>
-                </div>
+                <div
+                    class="text-color-black-2 text-size-14"
+                    [innerHtml]="
+                        driverDisplayName
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                ></div>
             </div>
         </ng-template>
 
