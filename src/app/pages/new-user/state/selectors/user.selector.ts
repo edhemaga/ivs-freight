@@ -34,3 +34,10 @@ export const activeViewModeSelector = createSelector(
 );
 
 //#endregion
+
+// #region Table
+export const tableColumnsSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.tableColumns
+);
+//#endregion

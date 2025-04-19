@@ -20,6 +20,7 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 
 // Interface
 import { IMappedUser } from '@pages/new-user/interfaces';
+import { ITableColumn } from '@shared/components/new-table/interface';
 
 @Injectable({
     providedIn: 'root',
@@ -41,6 +42,10 @@ export class UserStoreService {
 
     public activeViewModeSelector$: Observable<string> = this.store.pipe(
         select(UserSelector.activeViewModeSelector)
+    );
+
+    public tableColumnsSelector$: Observable<ITableColumn[]> = this.store.pipe(
+        select(UserSelector.tableColumnsSelector)
     );
 
     public dispatchLoadInitialList(): void {

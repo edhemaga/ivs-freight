@@ -63,7 +63,7 @@ const routes: Routes = [
             {
                 path: 'new-user',
                 loadComponent: () =>
-                    import('@pages/new-user/pages/user/user.component').then(
+                    import('@pages/new-user/user.component').then(
                         (c) => c.UserComponent
                     ),
                 data: { title: 'User' },

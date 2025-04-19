@@ -16,6 +16,8 @@ import {
     CaCheckboxSelectedCountComponent,
     eCommonElement,
 } from 'ca-components';
+import { UserTableComponent } from '@pages/new-user/pages/user-table/user-table.component';
+import { UserCardsComponent } from '@pages/new-user/pages/user-cards/user-cards.component';
 
 // Models
 import { TableCardBodyActions, TableToolbarActions } from '@shared/models';
@@ -43,6 +45,8 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaSearchMultipleStates2Component,
         SvgIconComponent,
         CaCheckboxSelectedCountComponent,
+        UserTableComponent,
+        UserCardsComponent,
     ],
 })
 export class UserComponent {
@@ -51,6 +55,7 @@ export class UserComponent {
 
     // Enums
     public generalActions = eGeneralActions;
+    public eCommonElement = eCommonElement;
 
     constructor(public userStoreService: UserStoreService) {}
 

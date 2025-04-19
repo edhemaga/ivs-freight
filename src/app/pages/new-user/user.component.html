@@ -66,7 +66,9 @@
         </ng-template>
     </app-new-table-toolbar>
 
-    @for (user of store.users; track user.id) {
-        User : {{ user.id }} <br />
+    @if (store?.activeViewMode === eCommonElement.LIST) {
+        <app-user-table></app-user-table>
+    } @else {
+        <app-user-cards></app-user-cards>
     }
 }
