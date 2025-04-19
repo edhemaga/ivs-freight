@@ -51,6 +51,9 @@ export class UserStoreService {
     public selectedCountSelector$: Observable<number> = this.store.pipe(
         select(UserSelector.selectedCountSelector)
     );
+    public selectedTabCountSelector$: Observable<number> = this.store.pipe(
+        select(UserSelector.selectedTabCountSelector)
+    );
 
     public dispatchLoadInitialList(): void {
         this.store.dispatch({
@@ -83,6 +86,12 @@ export class UserStoreService {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_ON_SELECT_ALL,
             action,
+        });
+    }
+
+    public getNewPage(): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
         });
     }
 }

@@ -53,7 +53,7 @@ export class UserTableComponent {
     constructor(public userStoreService: UserStoreService) {}
 
     public onShowMoreClick(): void {
-        // this.loadStoreService.getNewPage();
+        this.userStoreService.getNewPage();
     }
 
     public onSortingChange(column: ITableColumn): void {

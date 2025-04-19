@@ -19,6 +19,7 @@ export const onTabTypeChange = function (
     return {
         ...state,
         selectedTab,
+        currentPage: 1,
     };
 };
 
@@ -40,7 +41,24 @@ export function onGetListSuccess(
 ): IUserState {
     return {
         ...state,
+        searchResultsCount: payload.pagination.count,
         users: UsersHelper.usersMapper(payload.pagination.data),
+        toolbarTabs: UsersHelper.updateTabsCount(payload, state.toolbarTabs),
+    };
+}
+
+export function onGetListOnPageChangeSuccess(
+    state: IUserState,
+    payload: CompanyUserListResponse
+): IUserState {
+    const users = [
+        ...state.users,
+        ...UsersHelper.usersMapper(payload.pagination.data),
+    ];
+    return {
+        ...state,
+        users,
+        currentPage: state.currentPage + 1,
     };
 }
 //#endregion

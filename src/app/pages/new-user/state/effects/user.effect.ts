@@ -33,11 +33,14 @@ export class UserEffects {
     public getUserList$ = createEffect(() =>
         this.actions$.pipe(
             ofType(UserActions.onGetInitalList, UserActions.onTabTypeChange),
-            withLatestFrom(this.store.select(UserSelector.selectedTabSelector)),
-            switchMap(([_, selectedTab]) => {
+            withLatestFrom(
+                this.store.select(UserSelector.selectedTabSelector),
+                this.store.select(UserSelector.filterSelector)
+            ),
+            switchMap(([_, selectedTab, filters]) => {
                 let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
 
-                return this.userService.getUserList(active).pipe(
+                return this.userService.getUserList(active, 1, filters).pipe(
                     map((response) =>
                         UserActions.onGetListSuccess({
                             payload: response,
@@ -45,6 +48,31 @@ export class UserEffects {
                     ),
                     catchError(() => of(UserActions.onGetListError()))
                 );
+            })
+        )
+    );
+
+    public getUserListOnPageChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UserActions.getLoadsOnPageChange),
+            withLatestFrom(
+                this.store.select(UserSelector.selectedTabSelector),
+                this.store.select(UserSelector.pageSelector),
+                this.store.select(UserSelector.filterSelector)
+            ),
+            switchMap(([_, selectedTab, page, filters]) => {
+                let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
+
+                return this.userService
+                    .getUserList(active, page + 1, filters)
+                    .pipe(
+                        map((response) =>
+                            UserActions.onGetListOnPageChangeSuccess({
+                                payload: response,
+                            })
+                        ),
+                        catchError(() => of(UserActions.onGetListError()))
+                    );
             })
         )
     );

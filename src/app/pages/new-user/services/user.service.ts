@@ -1,5 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { IStateFilters } from '@shared/interfaces';
 
 // Models
 import { CompanyUserListResponse } from 'appcoretruckassist';
@@ -29,8 +30,28 @@ export class UserService {
      * @param search1
      * @param search2
      */
-    public getUserList(active: number): Observable<CompanyUserListResponse> {
+    public getUserList(
+        active: number,
+        page: number,
+        filters: IStateFilters
+    ): Observable<CompanyUserListResponse> {
         let params = new HttpParams().set('Active', active.toString());
+
+        if (page) {
+            params = params.append('PageIndex', page);
+        }
+
+        if (filters.searchQuery?.length) {
+            const { searchQuery } = filters;
+            if (searchQuery[0])
+                params = params.append('search', filters.searchQuery[0]);
+
+            if (searchQuery[1])
+                params = params.append('search1', filters.searchQuery[1]);
+
+            if (searchQuery[2])
+                params = params.append('search2', filters.searchQuery[2]);
+        }
 
         return this.http.get<CompanyUserListResponse>(
             `${environment.API_ENDPOINT}/api/companyuser/list`,

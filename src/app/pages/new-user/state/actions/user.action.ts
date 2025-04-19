@@ -19,8 +19,19 @@ export const onGetListSuccess = createAction(
     props<{ payload: CompanyUserListResponse }>()
 );
 
+export const onGetListOnPageChangeSuccess = createAction(
+    UserStoreConstants.ACTION_NEW_PAGE_LIST_SUCCESS,
+    props<{
+        payload: CompanyUserListResponse;
+    }>()
+);
+
 export const onGetListError = createAction(
     UserStoreConstants.ACTION_DISPATCH_LOAD_USER_LIST_ERROR
+);
+
+export const getLoadsOnPageChange = createAction(
+    UserStoreConstants.ACTION_GET_NEW_PAGE_RESULTS
 );
 //#endregion
 

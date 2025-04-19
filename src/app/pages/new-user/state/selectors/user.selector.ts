@@ -52,4 +52,21 @@ export const selectedCountSelector = createSelector(
     selectedUserSelector,
     (selectUserState) => selectUserState.length
 );
+
+export const selectedTabCountSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.searchResultsCount
+);
+//#endregion
+
+// #region Filters
+export const pageSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.currentPage
+);
+
+export const filterSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.filters
+);
 //#endregion

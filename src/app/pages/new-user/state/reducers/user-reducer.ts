@@ -22,6 +22,16 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 export const initialState: IUserState = {
     users: [],
     areAllUsersSelected: false,
+    searchResultsCount: 0,
+
+    filters: {},
+    currentPage: 1,
+    tableSettings: {
+        isTableLocked: true,
+        sortKey: null,
+        sortDirection: null,
+        label: '',
+    },
 
     toolbarTabs: UserToolbarTabs,
     selectedTab: eStatusTab.ACTIVE,
@@ -39,6 +49,10 @@ export const userReducer = createReducer(
     ),
 
     on(UserActions.onGetListError, (state) => ({ ...state })),
+
+    on(UserActions.onGetListOnPageChangeSuccess, (state, { payload }) =>
+        Functions.onGetListOnPageChangeSuccess(state, payload)
+    ),
     //#endregion
 
     //#region Tabs

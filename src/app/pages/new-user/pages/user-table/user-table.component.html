@@ -4,6 +4,8 @@
         columns: userStoreService.tableColumnsSelector$ | async,
         selectedTab: userStoreService.selectedTabSelector$ | async,
         selectedCount: userStoreService.selectedCountSelector$ | async,
+        selectedTabCountSelector:
+            userStoreService.selectedTabCountSelector$ | async,
     };
 
 @if (store) {
@@ -18,12 +20,11 @@
         [templates]="templates"
         [columns]="store.columns"
         [headerTemplates]="headerTemplates"
+        [totalDataCount]="store.selectedTabCountSelector"
         (onSortingChange)="onSortingChange($event)"
         (onShowMore)="onShowMoreClick()"
     >
-        <!-- TODO: 
-    [totalDataCount]="store.selectedTabCountSelector"
-    [isTableLocked]="isTableLocked" -->
+        <!-- TODO:   [isTableLocked]="isTableLocked" -->
 
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
