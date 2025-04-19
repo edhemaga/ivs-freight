@@ -72,6 +72,12 @@ export const userReducer = createReducer(
 
     on(UserActions.onSelectAll, (state, { action }) =>
         Functions.onSelectAll(state, action)
+    ),
+    //#endregion
+
+    // #region Filters
+    on(UserActions.onSeachFilterChange, (state, { query }) =>
+        Functions.onSeachFilterChange(state, query)
     )
     //#endregion
 );

@@ -19,6 +19,7 @@ export const onTabTypeChange = function (
     return {
         ...state,
         selectedTab,
+        filters: {},
         currentPage: 1,
     };
 };
@@ -98,5 +99,20 @@ export function onSelectAll(state: IUserState, action: string): IUserState {
         areAllUsersSelected: shouldSelectAll,
     };
 }
+//#endregion
 
+//#region Filters
+export function onSeachFilterChange(
+    state: IUserState,
+    searchQuery: string[]
+): IUserState {
+    return {
+        ...state,
+        currentPage: 1,
+        filters: {
+            ...state.filters,
+            searchQuery,
+        },
+    };
+}
 //#endregion

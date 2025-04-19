@@ -69,4 +69,10 @@ export const filterSelector = createSelector(
     selectUserState,
     (state: IUserState) => state.filters
 );
+
+export const searchStringsSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.filters?.searchQuery
+);
+
 //#endregion

@@ -91,6 +91,10 @@ export class UserComponent {
         }
     }
 
+    public onSearchQueryChange(query: string[]): void {
+        this.userStoreService.dispatchSearchChange(query);
+    }
+
     public onToolbarDropdownMenuActions<T>(action: TableCardBodyActions<T>) {}
 
     private onTypeChange(mode: string): void {

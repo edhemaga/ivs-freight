@@ -6,6 +6,7 @@
         selectedCount: userStoreService.selectedCountSelector$ | async,
         selectedTabCountSelector:
             userStoreService.selectedTabCountSelector$ | async,
+        searchStrings: userStoreService.searchStringsSelector$ | async,
     };
 
 @if (store) {
@@ -67,9 +68,11 @@
 
                 <div
                     class="text-color-black text-size-14 ta-font-bold"
-                    [innerHtml]="user?.fullName"
+                    [innerHtml]="
+                        user?.fullName
+                            | tableHighlightSearchText: store.searchStrings
+                    "
                 ></div>
-                <!-- TODO: | tableHighlightSearchText: store.searchStrings -->
             </div>
         </ng-template>
     </app-new-table>

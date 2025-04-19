@@ -39,7 +39,7 @@
 
             <ng-container *ngTemplateOutlet="divider"></ng-container>
             <ca-search-multiple-states-2
-                [selectedTab]="selectedTab"
+                [selectedTab]="store.selectedTab"
                 (onSearchQueryChange)="onSearchQueryChange($event)"
             ></ca-search-multiple-states-2>
 

@@ -24,6 +24,9 @@ import {
     CaProfileImageComponent,
 } from 'ca-components';
 
+// Pipes
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
+
 @Component({
     selector: 'app-user-table',
     templateUrl: './user-table.component.html',
@@ -41,6 +44,9 @@ import {
         CaCheckboxSelectedCountComponent,
         CaProfileImageComponent,
         SvgIconComponent,
+
+        // Pipes
+        TableHighlightSearchTextPipe,
     ],
 })
 export class UserTableComponent {

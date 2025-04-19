@@ -55,6 +55,10 @@ export class UserStoreService {
         select(UserSelector.selectedTabCountSelector)
     );
 
+    public searchStringsSelector$: Observable<string[]> = this.store.pipe(
+        select(UserSelector.searchStringsSelector)
+    );
+
     public dispatchLoadInitialList(): void {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_DISPATCH_LOAD_USER_LIST,
@@ -92,6 +96,13 @@ export class UserStoreService {
     public getNewPage(): void {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_GET_NEW_PAGE_RESULTS,
+        });
+    }
+
+    public dispatchSearchChange(query: string[]): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
+            query,
         });
     }
 }

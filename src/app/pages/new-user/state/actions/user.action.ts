@@ -65,3 +65,12 @@ export const onSelectAll = createAction(
     props<{ action: string }>()
 );
 //#endregion
+
+// #region Filters
+export const onSeachFilterChange = createAction(
+    UserStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
+    props<{
+        query: string[];
+    }>()
+);
+//#endregion

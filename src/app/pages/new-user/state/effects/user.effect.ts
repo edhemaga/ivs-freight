@@ -32,7 +32,11 @@ export class UserEffects {
 
     public getUserList$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(UserActions.onGetInitalList, UserActions.onTabTypeChange),
+            ofType(
+                UserActions.onGetInitalList,
+                UserActions.onTabTypeChange,
+                UserActions.onSeachFilterChange
+            ),
             withLatestFrom(
                 this.store.select(UserSelector.selectedTabSelector),
                 this.store.select(UserSelector.filterSelector)
