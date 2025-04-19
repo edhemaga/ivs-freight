@@ -2,6 +2,7 @@
     {
         users: userStoreService.userListSelector$ | async,
         columns: userStoreService.tableColumnsSelector$ | async,
+        selectedTab: userStoreService.selectedTabSelector$ | async,
     };
 
 @if (store) {
@@ -44,19 +45,26 @@
 
         <ng-template let-user="data" #name>
             <div class="d-flex gap-1">
-                <app-ca-profile-image
-                    [name]="user?.fullName"
-                    [size]="'small'"
-                    [type]="'user'"
-                    [withTooltip]="true"
-                    [size]="18"
-                    [isDispatch]="true"
-                    [avatarImg]="user?.avatar"
-                >
-                </app-ca-profile-image>
+                @if (store.selectedTab === eStatusTab.ACTIVE) {
+                    <app-ca-profile-image
+                        [name]="user?.fullName"
+                        [size]="'small'"
+                        [type]="'user'"
+                        [withTooltip]="true"
+                        [size]="18"
+                        [isDispatch]="true"
+                        [avatarImg]="user?.avatar"
+                    >
+                    </app-ca-profile-image>
+                } @else {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.DEACTIVATE_ICON"
+                        class="svg-fill-muted svg-size-18 d-flex align-items-center"
+                    ></svg-icon>
+                }
 
                 <div
-                    class="text-color-black-2 text-size-14"
+                    class="text-color-black text-size-14 ta-font-bold"
                     [innerHtml]="user?.fullName"
                 ></div>
                 <!-- TODO: | tableHighlightSearchText: store.searchStrings -->

@@ -56,6 +56,7 @@ export class UserComponent {
     // Enums
     public generalActions = eGeneralActions;
     public eCommonElement = eCommonElement;
+    public eStatusTab = eStatusTab;
 
     constructor(public userStoreService: UserStoreService) {}
 

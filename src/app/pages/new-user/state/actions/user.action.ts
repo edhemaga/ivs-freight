@@ -40,3 +40,12 @@ export const onViewModeChange = createAction(
 );
 
 //#endregion
+
+//#region Selection
+export const onUserSelection = createAction(
+    UserStoreConstants.ACTION_DISPATCH_ON_USER_SELECTION,
+    props<{
+        id: number;
+    }>()
+);
+//#endregion

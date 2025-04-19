@@ -48,6 +48,10 @@ export class UserStoreService {
         select(UserSelector.tableColumnsSelector)
     );
 
+    public selectedCountSelector$: Observable<number> = this.store.pipe(
+        select(UserSelector.selectedCountSelector)
+    );
+
     public dispatchLoadInitialList(): void {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_DISPATCH_LOAD_USER_LIST,
@@ -65,6 +69,13 @@ export class UserStoreService {
         this.store.dispatch({
             type: UserStoreConstants.ACTION_DISPATCH_VIEW_MODE_CHANGE,
             viewMode,
+        });
+    }
+
+    public dispatchSelectUser(id: number): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_DISPATCH_ON_USER_SELECTION,
+            id,
         });
     }
 }

@@ -47,6 +47,12 @@ export const userReducer = createReducer(
 
     on(UserActions.onViewModeChange, (state, { viewMode }) =>
         Functions.onViewModeChange(state, viewMode)
+    ),
+    //#endregion
+
+    //#region Selection
+    on(UserActions.onUserSelection, (state, { id }) =>
+        Functions.onUserSelection(state, id)
     )
     //#endregion
 );

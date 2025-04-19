@@ -11,6 +11,7 @@ import { eStatusTab } from '@shared/enums';
 // Helpers
 import { UsersHelper } from '@pages/new-user/utils/helpers';
 
+//#region Tabs
 export const onTabTypeChange = function (
     state: IUserState,
     selectedTab: eStatusTab
@@ -30,6 +31,9 @@ export const onViewModeChange = function (
         activeViewMode,
     };
 };
+//#endregion
+
+//#region List
 export function onGetListSuccess(
     state: IUserState,
     payload: CompanyUserListResponse
@@ -39,3 +43,20 @@ export function onGetListSuccess(
         users: UsersHelper.usersMapper(payload.pagination.data),
     };
 }
+//#endregion
+
+//#region Selection
+export const onUserSelection = function (
+    state: IUserState,
+    id: number
+): IUserState {
+    const users = state.users.map((user) =>
+        user.id === id ? { ...user, isSelected: !user.isSelected } : user
+    );
+
+    return {
+        ...state,
+        users,
+    };
+};
+//#endregion

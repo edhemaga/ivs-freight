@@ -41,3 +41,15 @@ export const tableColumnsSelector = createSelector(
     (state: IUserState) => state.tableColumns
 );
 //#endregion
+
+//#region Selection
+export const selectedUserSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.users.filter((user) => user.isSelected)
+);
+
+export const selectedCountSelector = createSelector(
+    selectedUserSelector,
+    (selectUserState) => selectUserState.length
+);
+//#endregion
