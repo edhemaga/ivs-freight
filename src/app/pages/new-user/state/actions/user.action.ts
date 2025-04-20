@@ -97,9 +97,23 @@ export const onDeleteUsersSuccess = createAction(
     UserStoreConstants.ACTION_DISPATCH_DELETE_USERS_SUCCESS,
     props<{
         users: IMappedUser[];
+        isIncreaseInOtherTab: boolean;
     }>()
 );
 export const onDeleteUsersError = createAction(
     UserStoreConstants.ACTION_DISPATCH_DELETE_USERS_ERROR
+);
+//#endregion
+
+//#region Status
+export const onUserStatusChange = createAction(
+    UserStoreConstants.ACTION_DISPATCH_USER_STATUS_CHANGE,
+    props<{
+        users: IMappedUser[];
+    }>()
+);
+
+export const onUserStatusChangeError = createAction(
+    UserStoreConstants.ACTION_DISPATCH_USER_STATUS_CHANGE_ERROR
 );
 //#endregion

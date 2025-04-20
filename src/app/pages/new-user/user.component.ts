@@ -111,6 +111,13 @@ export class UserComponent {
         );
     }
 
+    public oUserStatusChange(users: IMappedUser[]): void {
+        this.userStoreService.dispatchUserStatusChange(
+            { users },
+            this.ngbActiveModal
+        );
+    }
+
     private onTypeChange(mode: string): void {
         this.userStoreService.dispatchTypeChange(mode as eStatusTab);
     }

@@ -33,6 +33,7 @@ import { ModalService } from '@shared/services';
 
 // Components
 import { DeleteUserComponent } from '@pages/new-user/modals/delete-user/delete-user.component';
+import { DeactivateUserComponent } from '@pages/new-user/modals/deactivate-user/deactivate-user.component';
 
 @Injectable({
     providedIn: 'root',
@@ -147,6 +148,24 @@ export class UserStoreService {
                 if (value) {
                     this.store.dispatch({
                         type: UserStoreConstants.ACTION_DISPATCH_DELETE_USERS,
+                        users: modalData.users,
+                    });
+                }
+
+                ngbActiveModal.close();
+            });
+    }
+
+    public dispatchUserStatusChange(
+        modalData: IUserDeleteModal,
+        ngbActiveModal: NgbActiveModal
+    ): void {
+        this.modalService
+            .openModalNew(DeactivateUserComponent, modalData)
+            .closed.subscribe((value) => {
+                if (value) {
+                    this.store.dispatch({
+                        type: UserStoreConstants.ACTION_DISPATCH_USER_STATUS_CHANGE,
                         users: modalData.users,
                     });
                 }

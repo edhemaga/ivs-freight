@@ -4,7 +4,10 @@ import { ITableConfig } from '@shared/components/new-table/interface';
 import { IStateFilters } from '@shared/interfaces';
 
 // Models
-import { CompanyUserListResponse } from 'appcoretruckassist';
+import {
+    CompanyUserListResponse,
+    StatusSetMultipleCompanyUserCommand,
+} from 'appcoretruckassist';
 
 // rxjs
 import { Observable } from 'rxjs';
@@ -73,9 +76,19 @@ export class UserService {
             new HttpParams()
         );
 
-        return this.http.get<CompanyUserListResponse>(
+        return this.http.delete<CompanyUserListResponse>(
             `${environment.API_ENDPOINT}/api/companyuser/list`,
             { params }
+        );
+    }
+
+    // Any is used from CompanyUserService
+    public changeUserStatus(
+        companyUserList: StatusSetMultipleCompanyUserCommand
+    ): Observable<any> {
+        return this.http.put<CompanyUserListResponse>(
+            `${environment.API_ENDPOINT}/api/companyuser/status/list`,
+            companyUserList
         );
     }
 }

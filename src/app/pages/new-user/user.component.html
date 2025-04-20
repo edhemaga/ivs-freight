@@ -70,6 +70,7 @@
                         [src]="sharedIcons.DEACTIVATE_ICON"
                         class="svg-size-18 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26 m-l-4"
                         [ngClass]="iconConfig.iconClass"
+                        (click)="oUserStatusChange(store.selectedUserSelector)"
                     >
                     </svg-icon>
                 </div>

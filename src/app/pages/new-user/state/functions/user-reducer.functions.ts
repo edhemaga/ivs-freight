@@ -22,6 +22,12 @@ export const onTabTypeChange = function (
         ...state,
         selectedTab,
         filters: {},
+        tableSettings: {
+            isTableLocked: true,
+            sortKey: null,
+            sortDirection: null,
+            label: '',
+        },
         currentPage: 1,
     };
 };
@@ -139,9 +145,10 @@ export function onTableSortingChange(
 //#endregion
 
 // #region Delete
-export function onDeleteUsers(
+export function onDeleteUsersSuccess(
     state: IUserState,
-    usersToDelete: IMappedUser[]
+    usersToDelete: IMappedUser[],
+    isIncreaseInOtherTab: boolean
 ): IUserState {
     const users = state.users.filter((user) => !usersToDelete.includes(user));
 
@@ -152,7 +159,8 @@ export function onDeleteUsers(
         toolbarTabs: UsersHelper.updateTabsCountAfterDelete(
             state.selectedTab,
             usersToDelete.length,
-            state.toolbarTabs
+            state.toolbarTabs,
+            isIncreaseInOtherTab
         ),
     };
 }

@@ -24,22 +24,38 @@ export class UsersHelper {
     }
 
     static updateTabsCountAfterDelete(
-        tab: eStatusTab,
+        currentTab: eStatusTab,
         deletedLength: number,
-        toolbarTabs: ITableData[]
+        toolbarTabs: ITableData[],
+        isIncreaseInOtherTab: boolean
     ): ITableData[] {
-        return toolbarTabs.map((t, i) => {
-            if (
-                (tab === eStatusTab.ACTIVE && i === 0) ||
-                (tab !== eStatusTab.ACTIVE && i === 1)
-            ) {
-                return {
-                    ...t,
-                    length: Math.max(0, t.length - deletedLength),
-                };
-            }
-            return t;
-        });
+        const [activeIndex, inactiveIndex] = [0, 1];
+        const updatedTabs = [...toolbarTabs];
+
+        // Get the indexes based on currentTab
+        const [tabToUpdate, otherTab] =
+            currentTab === eStatusTab.ACTIVE
+                ? [activeIndex, inactiveIndex]
+                : [inactiveIndex, activeIndex];
+
+        // Update the length for the current tab
+        updatedTabs[tabToUpdate] = {
+            ...toolbarTabs[tabToUpdate],
+            length: Math.max(
+                0,
+                toolbarTabs[tabToUpdate].length - deletedLength
+            ),
+        };
+
+        // If we should increase the length for the other tab
+        if (isIncreaseInOtherTab) {
+            updatedTabs[otherTab] = {
+                ...toolbarTabs[otherTab],
+                length: toolbarTabs[otherTab].length + deletedLength,
+            };
+        }
+
+        return updatedTabs;
     }
 
     static usersMapper(users: CompanyUserListItemResponse[]): IMappedUser[] {

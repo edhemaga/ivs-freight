@@ -20,6 +20,9 @@ import * as UserSelector from '@pages/new-user/state/selectors/user.selector';
 // Enums
 import { eStatusTab } from '@shared/enums';
 
+// Models
+import { StatusSetMultipleCompanyUserCommand } from 'appcoretruckassist';
+
 @Injectable()
 export class UserEffects {
     constructor(
@@ -95,8 +98,32 @@ export class UserEffects {
                     map(() => {
                         return UserActions.onDeleteUsersSuccess({
                             users,
+                            isIncreaseInOtherTab: false,
                         });
                     }),
+                    catchError(() => of(UserActions.onDeleteUsersError()))
+                );
+            })
+        )
+    );
+
+    public onUserStatusChange$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UserActions.onUserStatusChange),
+            withLatestFrom(this.store.select(UserSelector.selectedTabSelector)),
+            switchMap(([{ users }, selectedTab]) => {
+                const request: StatusSetMultipleCompanyUserCommand = {
+                    ids: users.map((user) => user.id),
+                    activate: selectedTab !== eStatusTab.ACTIVE,
+                };
+
+                return this.userService.changeUserStatus(request).pipe(
+                    map(() =>
+                        UserActions.onDeleteUsersSuccess({
+                            users,
+                            isIncreaseInOtherTab: true,
+                        })
+                    ),
                     catchError(() => of(UserActions.onDeleteUsersError()))
                 );
             })

@@ -86,8 +86,10 @@ export const userReducer = createReducer(
     //#endregion
 
     // #region Delete
-    on(UserActions.onDeleteUsers, (state, { users }) =>
-        Functions.onDeleteUsers(state, users)
+    on(
+        UserActions.onDeleteUsersSuccess,
+        (state, { users, isIncreaseInOtherTab }) =>
+            Functions.onDeleteUsersSuccess(state, users, isIncreaseInOtherTab)
     )
     //#endregion
 );
