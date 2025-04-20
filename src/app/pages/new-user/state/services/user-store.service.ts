@@ -14,6 +14,7 @@ import * as UserSelector from '@pages/new-user/state/selectors/user.selector';
 
 // Models
 import { ITableData } from '@shared/models';
+import { DepartmentFilterResponse } from 'appcoretruckassist';
 
 // Const
 import { UserStoreConstants } from '@pages/new-user/utils/constants';
@@ -34,6 +35,7 @@ import { ModalService } from '@shared/services';
 // Components
 import { DeleteUserComponent } from '@pages/new-user/modals/delete-user/delete-user.component';
 import { DeactivateUserComponent } from '@pages/new-user/modals/deactivate-user/deactivate-user.component';
+import { IFilterAction } from 'ca-components';
 
 @Injectable({
     providedIn: 'root',
@@ -47,6 +49,9 @@ export class UserStoreService {
     public userListSelector$: Observable<IMappedUser[]> = this.store.pipe(
         select(UserSelector.userListSelector)
     );
+
+    public departmentListSelector$: Observable<DepartmentFilterResponse[]> =
+        this.store.pipe(select(UserSelector.departmentListSelector));
 
     public selectedUserSelector$: Observable<IMappedUser[]> = this.store.pipe(
         select(UserSelector.selectedUserSelector)
@@ -172,5 +177,12 @@ export class UserStoreService {
 
                 ngbActiveModal.close();
             });
+    }
+
+    public dispatchFiltersChange(filters: IFilterAction): void {
+        this.store.dispatch({
+            type: UserStoreConstants.ACTION_FILTER_CHANGED,
+            filters,
+        });
     }
 }

@@ -17,6 +17,8 @@ import {
     eCommonElement,
     eColor,
     ePosition,
+    CaFilterListDropdownComponent,
+    IFilterAction,
 } from 'ca-components';
 import { UserTableComponent } from '@pages/new-user/pages/user-table/user-table.component';
 import { UserCardsComponent } from '@pages/new-user/pages/user-cards/user-cards.component';
@@ -53,6 +55,7 @@ import { IMappedUser } from '@pages/new-user/interfaces';
         NewTableToolbarComponent,
         ToolbarTabsWrapperComponent,
         CaSearchMultipleStates2Component,
+        CaFilterListDropdownComponent,
         SvgIconComponent,
         CaCheckboxSelectedCountComponent,
         TaAppTooltipV2Component,
@@ -116,6 +119,10 @@ export class UserComponent {
             { users },
             this.ngbActiveModal
         );
+    }
+
+    public setFilters(filters: IFilterAction): void {
+        this.userStoreService.dispatchFiltersChange(filters);
     }
 
     private onTypeChange(mode: string): void {

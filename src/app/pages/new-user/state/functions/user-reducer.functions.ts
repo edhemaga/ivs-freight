@@ -3,10 +3,13 @@ import { IMappedUser, IUserState } from '@pages/new-user/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 
 // Models
-import { CompanyUserListResponse } from 'appcoretruckassist';
+import {
+    CompanyUserListResponse,
+    DepartmentFilterResponse,
+} from 'appcoretruckassist';
 
 // Enums
-import { eCommonElement, eGeneralActions } from 'ca-components';
+import { eCommonElement, eGeneralActions, IFilterAction } from 'ca-components';
 import { eStatusTab } from '@shared/enums';
 
 // Helpers
@@ -46,11 +49,13 @@ export const onViewModeChange = function (
 //#region List
 export function onGetListSuccess(
     state: IUserState,
-    payload: CompanyUserListResponse
+    payload: CompanyUserListResponse,
+    departmentList: DepartmentFilterResponse[]
 ): IUserState {
     return {
         ...state,
         searchResultsCount: payload.pagination.count,
+        departmentList,
         users: UsersHelper.usersMapper(payload.pagination.data),
         toolbarTabs: UsersHelper.updateTabsCount(payload, state.toolbarTabs),
     };
@@ -121,6 +126,20 @@ export function onSeachFilterChange(
             ...state.filters,
             searchQuery,
         },
+    };
+}
+
+export function onFiltersChange(
+    state: IUserState,
+    filters: IFilterAction
+): IUserState {
+    return {
+        ...state,
+        filters: {
+            ...state.filters,
+            departmentIds: filters.selectedIds,
+        },
+        currentPage: 1,
     };
 }
 

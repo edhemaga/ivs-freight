@@ -14,6 +14,12 @@ export const userListSelector = createSelector(
     selectUserState,
     (state: IUserState) => state.users
 );
+
+export const departmentListSelector = createSelector(
+    selectUserState,
+    (state: IUserState) => state.departmentList
+);
+
 //#endregion
 
 //#region Tabs

@@ -13,4 +13,5 @@ export interface IStateFilters {
     revenueTo?: number;
     states?: string[];
     searchQuery?: string[];
+    departmentIds?: number[];
 }

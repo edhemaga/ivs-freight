@@ -8,12 +8,14 @@ import { IStateFilters } from '@shared/interfaces';
 
 // Models
 import { ITableData } from '@shared/models';
+import { DepartmentFilterResponse } from 'appcoretruckassist';
 
 // Enums
 import { eCommonElement, eStatusTab } from '@shared/enums';
 
 export interface IUserState {
     users: IMappedUser[];
+    departmentList: DepartmentFilterResponse[];
     searchResultsCount: number;
     areAllUsersSelected: boolean;
 

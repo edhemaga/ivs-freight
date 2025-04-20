@@ -11,7 +11,8 @@ export class UserStoreConstants {
 
     //#region Search
     public static ACTION_SEARCH_FILTER_CHANGED = `${this.COMPONENT_NAME_KEY} ACTION_SEARCH_FILTER_CHANGED`;
-    //#region
+    public static ACTION_FILTER_CHANGED = `${this.COMPONENT_NAME_KEY} ACTION_FILTER_CHANGED`;
+    //#endregin
     //#region Selection
     public static ACTION_DISPATCH_ON_USER_SELECTION = `${this.COMPONENT_NAME_KEY} ACTION_DISPATCH_ON_USER_SELECTION`;
     public static ACTION_ON_SELECT_ALL = `${this.COMPONENT_NAME_KEY} ACTION_ON_SELECT_ALL`;

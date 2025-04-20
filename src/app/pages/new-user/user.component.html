@@ -6,6 +6,7 @@
         users: userStoreService.userListSelector$ | async,
         selectedCountSelector: userStoreService.selectedCountSelector$ | async,
         selectedUserSelector: userStoreService.selectedUserSelector$ | async,
+        departmentList: userStoreService.departmentListSelector$ | async,
     };
 
 <ng-template #divider>
@@ -44,6 +45,14 @@
                 [selectedTab]="store.selectedTab"
                 (onSearchQueryChange)="onSearchQueryChange($event)"
             ></ca-search-multiple-states-2>
+
+            <!-- // TODO: Add department on components -->
+            <app-ca-filter-list-dropdown
+                type="Truck"
+                [list]="store.departmentList"
+                (setFilter)="setFilters($event)"
+            >
+            </app-ca-filter-list-dropdown>
 
             @if (store.selectedCountSelector) {
                 <ng-container *ngTemplateOutlet="divider"></ng-container>

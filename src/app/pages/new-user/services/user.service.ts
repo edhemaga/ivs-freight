@@ -6,6 +6,7 @@ import { IStateFilters } from '@shared/interfaces';
 // Models
 import {
     CompanyUserListResponse,
+    DepartmentFilterResponse,
     StatusSetMultipleCompanyUserCommand,
 } from 'appcoretruckassist';
 
@@ -51,6 +52,12 @@ export class UserService {
         if (tableSorting.sortDirection)
             params = params.append('SortOrder', tableSorting.sortDirection);
 
+        if (filters.departmentIds?.length) {
+            filters.departmentIds.forEach((id) => {
+                params = params.append('DepartmentId', id.toString());
+            });
+        }
+
         if (filters.searchQuery?.length) {
             const { searchQuery } = filters;
             if (searchQuery[0])
@@ -89,6 +96,15 @@ export class UserService {
         return this.http.put<CompanyUserListResponse>(
             `${environment.API_ENDPOINT}/api/companyuser/status/list`,
             companyUserList
+        );
+    }
+
+    public getDepartmentFilter(): Observable<DepartmentFilterResponse[]> {
+        let params = new HttpParams().set('IsCompanyUser', true.toString());
+
+        return this.http.get<DepartmentFilterResponse[]>(
+            `${environment.API_ENDPOINT}/api/department/filter`,
+            { params }
         );
     }
 }

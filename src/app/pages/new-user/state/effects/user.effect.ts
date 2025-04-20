@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 
 // rxjs
-import { switchMap, map, catchError, of, withLatestFrom } from 'rxjs';
+import { switchMap, map, catchError, of, withLatestFrom, forkJoin } from 'rxjs';
 
 // ngrx
 import { Store } from '@ngrx/store';
@@ -33,14 +33,42 @@ export class UserEffects {
         private userService: UserService
     ) {}
 
-    public getUserList$ = createEffect(() =>
+    public getUserListOnFilterChange$ = createEffect(() =>
         this.actions$.pipe(
             ofType(
-                UserActions.onGetInitalList,
-                UserActions.onTabTypeChange,
+                UserActions.onFiltersChange,
                 UserActions.onSeachFilterChange,
                 UserActions.tableSortingChange
             ),
+            withLatestFrom(
+                this.store.select(UserSelector.selectedTabSelector),
+                this.store.select(UserSelector.tableSettingsSelector),
+                this.store.select(UserSelector.departmentListSelector),
+                this.store.select(UserSelector.filterSelector)
+            ),
+            switchMap(
+                ([_, selectedTab, tableSettings, departmentList, filters]) => {
+                    let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
+
+                    return this.userService
+                        .getUserList(active, 1, filters, tableSettings)
+                        .pipe(
+                            map((payload) =>
+                                UserActions.onGetListSuccess({
+                                    payload,
+                                    departmentList,
+                                })
+                            ),
+                            catchError(() => of(UserActions.onGetListError()))
+                        );
+                }
+            )
+        )
+    );
+
+    public getUserList$ = createEffect(() =>
+        this.actions$.pipe(
+            ofType(UserActions.onGetInitalList, UserActions.onTabTypeChange),
             withLatestFrom(
                 this.store.select(UserSelector.selectedTabSelector),
                 this.store.select(UserSelector.filterSelector),
@@ -49,16 +77,23 @@ export class UserEffects {
             switchMap(([_, selectedTab, filters, tableSettings]) => {
                 let active = selectedTab === eStatusTab.ACTIVE ? 1 : 0;
 
-                return this.userService
-                    .getUserList(active, 1, filters, tableSettings)
-                    .pipe(
-                        map((response) =>
-                            UserActions.onGetListSuccess({
-                                payload: response,
-                            })
-                        ),
-                        catchError(() => of(UserActions.onGetListError()))
-                    );
+                return forkJoin([
+                    this.userService.getUserList(
+                        active,
+                        1,
+                        filters,
+                        tableSettings
+                    ),
+                    this.userService.getDepartmentFilter(),
+                ]).pipe(
+                    map(([payload, departmentList]) =>
+                        UserActions.onGetListSuccess({
+                            payload,
+                            departmentList,
+                        })
+                    ),
+                    catchError(() => of(UserActions.onGetListError()))
+                );
             })
         )
     );

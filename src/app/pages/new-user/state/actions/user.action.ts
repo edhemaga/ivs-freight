@@ -2,14 +2,17 @@
 import { createAction, props } from '@ngrx/store';
 
 // Enums
-import { eCommonElement } from 'ca-components';
+import { eCommonElement, IFilterAction } from 'ca-components';
 import { eStatusTab } from '@shared/enums';
 
 // Const
 import { UserStoreConstants } from '@pages/new-user/utils/constants';
 
 // Models
-import { CompanyUserListResponse } from 'appcoretruckassist';
+import {
+    CompanyUserListResponse,
+    DepartmentFilterResponse,
+} from 'appcoretruckassist';
 
 // Interface
 import { ITableColumn } from '@shared/components/new-table/interface';
@@ -22,7 +25,10 @@ export const onGetInitalList = createAction(
 
 export const onGetListSuccess = createAction(
     UserStoreConstants.ACTION_DISPATCH_LOAD_USER_LIST_SUCCESS,
-    props<{ payload: CompanyUserListResponse }>()
+    props<{
+        payload: CompanyUserListResponse;
+        departmentList: DepartmentFilterResponse[];
+    }>()
 );
 
 export const onGetListOnPageChangeSuccess = createAction(
@@ -77,6 +83,13 @@ export const onSeachFilterChange = createAction(
     UserStoreConstants.ACTION_SEARCH_FILTER_CHANGED,
     props<{
         query: string[];
+    }>()
+);
+
+export const onFiltersChange = createAction(
+    UserStoreConstants.ACTION_FILTER_CHANGED,
+    props<{
+        filters: IFilterAction;
     }>()
 );
 

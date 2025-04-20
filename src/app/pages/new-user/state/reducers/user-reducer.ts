@@ -21,6 +21,7 @@ import { eCommonElement, eStatusTab } from '@shared/enums';
 
 export const initialState: IUserState = {
     users: [],
+    departmentList: [],
     areAllUsersSelected: false,
     searchResultsCount: 0,
 
@@ -44,8 +45,8 @@ export const initialState: IUserState = {
 export const userReducer = createReducer(
     initialState,
     //#region  List
-    on(UserActions.onGetListSuccess, (state, { payload }) =>
-        Functions.onGetListSuccess(state, payload)
+    on(UserActions.onGetListSuccess, (state, { payload, departmentList }) =>
+        Functions.onGetListSuccess(state, payload, departmentList)
     ),
 
     on(UserActions.onGetListError, (state) => ({ ...state })),
@@ -78,6 +79,10 @@ export const userReducer = createReducer(
     // #region Filters
     on(UserActions.onSeachFilterChange, (state, { query }) =>
         Functions.onSeachFilterChange(state, query)
+    ),
+
+    on(UserActions.onFiltersChange, (state, { filters }) =>
+        Functions.onFiltersChange(state, filters)
     ),
 
     on(UserActions.tableSortingChange, (state, { column }) =>
