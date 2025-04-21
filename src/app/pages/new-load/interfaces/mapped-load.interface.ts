@@ -7,6 +7,7 @@ import {
     EnumValue,
     TruckTypeResponse,
     TrailerTypeResponse,
+    DriverMinimalResponse,
 } from 'appcoretruckassist';
 
 // interfaces
@@ -23,7 +24,7 @@ export interface IMappedLoad {
     tableDropdownContent: IDropdownMenuItem[];
     totalDue: number;
     broker: LoadBrokerInfo;
-    driverInfo: LoadDriverInfo;
+    driverInfo?: LoadDriverInfo | DriverMinimalResponse;
     templateName: string;
     templateCreated: string;
     commodity?: string;

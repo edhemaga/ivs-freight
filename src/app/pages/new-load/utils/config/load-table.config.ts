@@ -617,16 +617,23 @@ export class LoadTableColumnsConfig {
     private static getStatusColumn(isChecked: boolean): ITableColumn[] {
         return [
             {
-                key: 'loadStatus',
-                label: 'Status',
-                labelToolbar: 'Status',
-                width: 138,
-                minWidth: 90,
-                maxWidth: 150,
-                isResizable: true,
-                isChecked,
-                hasSort: true,
-                sortName: LoadSortBy.Status,
+                key: 'statusGroup',
+                label: '',
+                labelToolbar: '',
+                columns: [
+                    {
+                        key: 'loadStatus',
+                        label: 'Status',
+                        labelToolbar: 'Status',
+                        width: 138,
+                        minWidth: 90,
+                        maxWidth: 150,
+                        isResizable: true,
+                        isChecked,
+                        hasSort: true,
+                        sortName: LoadSortBy.Status,
+                    },
+                ],
             },
         ];
     }

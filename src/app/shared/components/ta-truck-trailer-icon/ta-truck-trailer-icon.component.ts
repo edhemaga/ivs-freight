@@ -31,6 +31,7 @@ import { TaAppTooltipV2Component } from '../ta-app-tooltip-v2/ta-app-tooltip-v2.
 export class TaTruckTrailerIconComponent implements OnInit {
     @Input() iconType: TruckTrailerIconEnum;
     @Input() inputData: TruckTypeResponse | TrailerTypeResponse;
+    @Input() unitNumber: string;
 
     public icon: {
         icon: string;
