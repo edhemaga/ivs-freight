@@ -64,6 +64,7 @@ export class NewLoadModalStopsComponent implements OnInit {
 
     // Each stop will have it's own tabs
     public tabs = LoadModalStopsHelper.tabs;
+    public stopTabs = LoadModalStopsHelper.stopTabs;
 
     public stopsForm: UntypedFormGroup;
 
@@ -81,12 +82,10 @@ export class NewLoadModalStopsComponent implements OnInit {
         const stopsArray = this.fb.array(
             [
                 LoadModalStopsHelper.createStop(this.fb, {
-                    stopType: 'PICKUP',
-                    shipperId: 101,
+                    stopType: 1,
                 }),
                 LoadModalStopsHelper.createStop(this.fb, {
-                    stopType: 'DELIVERY',
-                    shipperId: 102,
+                    stopType: 2,
                 }),
             ],
             [LoadModalStopsHelper.minStopsValidator(2)]
@@ -105,5 +104,13 @@ export class NewLoadModalStopsComponent implements OnInit {
     public onTabChange(tab: EnumValue, i: number): void {
         const group = this.stopsFormArray.at(i) as FormGroup;
         LoadModalStopsHelper.updateTimeValidators(group, tab);
+    }
+
+    public onAddNewStop(): void {
+        const newStop = LoadModalStopsHelper.createStop(this.fb, {
+            stopType: 1,
+        });
+
+        this.stopsFormArray.push(newStop);
     }
 }

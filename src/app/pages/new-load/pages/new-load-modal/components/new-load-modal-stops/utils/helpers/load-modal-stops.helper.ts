@@ -43,21 +43,15 @@ export class LoadModalStopsHelper {
         }
     }
 
-    static createStop(
-        fb: FormBuilder,
-        data: { stopType: string; shipperId: number }
-    ): FormGroup {
+    static createStop(fb: FormBuilder, data: { stopType: number }): FormGroup {
         const group = fb.group({
             [eLoadModalStopsForm.STOP_TYPE]: [data.stopType],
-            [eLoadModalStopsForm.SHIPPER_ID]: [
-                data.shipperId,
-                Validators.required,
-            ],
-            [eLoadModalStopsForm.SHIPPER_CONTACT_ID]: [1],
+            [eLoadModalStopsForm.SHIPPER_ID]: [null, Validators.required],
+            [eLoadModalStopsForm.SHIPPER_CONTACT_ID]: [],
             [eLoadModalStopsForm.TIME_TO]: [null],
             [eLoadModalStopsForm.TIME_FROM]: [null],
             [eLoadModalStopsForm.DATE_FROM]: [null, Validators.required],
-            [eLoadModalStopsForm.TIME_TYPE]: [1],
+            [eLoadModalStopsForm.TIME_TYPE]: [],
             [eLoadModalStopsForm.ITEMS]: [],
         });
 
@@ -77,6 +71,18 @@ export class LoadModalStopsHelper {
         {
             id: 2,
             name: 'APPOINTMENT',
+        },
+    ];
+
+    static stopTabs = [
+        {
+            id: 1,
+            name: 'PICKUP',
+            checked: true,
+        },
+        {
+            id: 2,
+            name: 'DELIVERY',
         },
     ];
 

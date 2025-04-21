@@ -1,10 +1,12 @@
 @if (stopsForm) {
+    <div (click)="onAddNewStop()">add new stop</div>
+
     <form [formGroup]="stopsForm">
         <div class="d-flex gap-1 flex-column" formArrayName="stops">
             @for (
                 stop of stopsFormArray.controls;
-                let i = $index;
-                track $index
+                let i = $index, first = $first, last = $last;
+                track i
             ) {
                 <app-ca-custom-card
                     [hasDivider]="false"
@@ -16,6 +18,15 @@
                     }"
                 >
                     <div origin [formGroupName]="i" class="w-616">
+                        @if (!first && !last) {
+                            <app-ca-tab-switch
+                                [type]="'type4-modal-popup'"
+                                [tabs]="stopTabs"
+                                (switchClicked)="onStopTypeChange($event, i)"
+                            >
+                            </app-ca-tab-switch>
+                        }
+
                         @let shipperInputConfig =
                             {
                                 configType: eLoadModalStopsForm.SHIPPER_ID,
