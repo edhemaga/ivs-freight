@@ -8,16 +8,21 @@ import {
     ValidatorFn,
     Validators,
 } from '@angular/forms';
+
+// Enums
 import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
 
+// Models
+import { EnumValue } from 'appcoretruckassist';
+
 export class LoadModalStopsHelper {
-    static updateTimeValidators(group: FormGroup): void {
-        const tabType = group.get('tabType')?.value;
+    static updateTimeValidators(group: FormGroup, tab: EnumValue): void {
+        group.patchValue({ [eLoadModalStopsForm.TIME_TYPE]: tab.id });
 
         const timeFrom = group.get(eLoadModalStopsForm.TIME_FROM);
         const timeTo = group.get(eLoadModalStopsForm.TIME_TO);
 
-        if (tabType === 1) {
+        if (tab.id === 1) {
             timeFrom?.setValidators(Validators.required);
             timeTo?.setValidators(Validators.required);
         } else {
@@ -43,25 +48,26 @@ export class LoadModalStopsHelper {
         data: { stopType: string; shipperId: number }
     ): FormGroup {
         const group = fb.group({
-            stopType: [data.stopType],
-            [eLoadModalStopsForm.SHIPPER]: [
+            [eLoadModalStopsForm.STOP_TYPE]: [data.stopType],
+            [eLoadModalStopsForm.SHIPPER_ID]: [
                 data.shipperId,
                 Validators.required,
             ],
-            [eLoadModalStopsForm.BROKER_CONTACT]: [1],
+            [eLoadModalStopsForm.SHIPPER_CONTACT_ID]: [1],
             [eLoadModalStopsForm.TIME_TO]: [null],
             [eLoadModalStopsForm.TIME_FROM]: [null],
             [eLoadModalStopsForm.DATE_FROM]: [null, Validators.required],
-            tabType: [1],
-            items: [],
+            [eLoadModalStopsForm.TIME_TYPE]: [1],
+            [eLoadModalStopsForm.ITEMS]: [],
         });
 
         // Apply initial validators
-        this.updateTimeValidators(group);
+        this.updateTimeValidators(group, { id: 1 });
 
         return group;
     }
 
+    // TODO: Maybe we will remove this and use backend value
     static tabs = [
         {
             id: 1,

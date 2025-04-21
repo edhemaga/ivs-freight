@@ -18,12 +18,14 @@
                     <div origin [formGroupName]="i" class="w-616">
                         @let shipperInputConfig =
                             {
-                                configType: eLoadModalStopsForm.SHIPPER,
+                                configType: eLoadModalStopsForm.SHIPPER_ID,
                             } | loadStopInputConfig;
 
                         <div class="d-grid d-grid-shipper m-t-40">
                             <ca-input-dropdown-test
-                                [formControlName]="eLoadModalStopsForm.SHIPPER"
+                                [formControlName]="
+                                    eLoadModalStopsForm.SHIPPER_ID
+                                "
                                 [label]="'businessName'"
                                 [optionValue]="'id'"
                                 [template]="'load-shipper'"
@@ -46,12 +48,12 @@
                             @let brokerContactInputConfig =
                                 {
                                     configType:
-                                        eLoadModalStopsForm.BROKER_CONTACT,
+                                        eLoadModalStopsForm.SHIPPER_CONTACT_ID,
                                 } | loadStopInputConfig;
 
                             <ca-input-dropdown-test
                                 [formControlName]="
-                                    eLoadModalStopsForm.BROKER_CONTACT
+                                    eLoadModalStopsForm.SHIPPER_CONTACT_ID
                                 "
                                 [label]="'name'"
                                 [optionValue]="'id'"
@@ -63,10 +65,12 @@
                         </div>
                         @let stopFormControl = stopsFormArray.at(i);
                         @let isDateRange =
-                            stopFormControl.get('dateTo') !== null;
+                            stopFormControl.get(eLoadModalStopsForm.DATE_TO) !==
+                            null;
 
                         @let isAppointment =
-                            stopFormControl.get('tabType').value === 2;
+                            stopFormControl.get(eLoadModalStopsForm.TIME_TYPE)
+                                .value === 2;
                         <div
                             class="d-grid m-t-26"
                             [ngClass]="

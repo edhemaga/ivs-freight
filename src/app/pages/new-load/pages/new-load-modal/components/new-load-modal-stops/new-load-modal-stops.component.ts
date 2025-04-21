@@ -102,11 +102,8 @@ export class NewLoadModalStopsComponent implements OnInit {
         LoadModalStopsHelper.addDateToControl(stopGroup);
     }
 
-    public onTabChange(e: EnumValue, i: number): void {
+    public onTabChange(tab: EnumValue, i: number): void {
         const group = this.stopsFormArray.at(i) as FormGroup;
-
-        group.patchValue({ tabType: e.id });
-
-        LoadModalStopsHelper.updateTimeValidators(group);
+        LoadModalStopsHelper.updateTimeValidators(group, tab);
     }
 }

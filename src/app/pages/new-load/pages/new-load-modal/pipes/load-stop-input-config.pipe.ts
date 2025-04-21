@@ -24,7 +24,7 @@ export class LoadStopInputConfigPipe implements PipeTransform {
         let config: ITaInput;
 
         switch (configType) {
-            case eLoadModalStopsForm.SHIPPER:
+            case eLoadModalStopsForm.SHIPPER_ID:
                 config = {
                     name: 'Input Dropdown',
                     type: 'text',
@@ -40,7 +40,7 @@ export class LoadStopInputConfigPipe implements PipeTransform {
                 };
                 break;
 
-            case eLoadModalStopsForm.BROKER_CONTACT:
+            case eLoadModalStopsForm.SHIPPER_CONTACT_ID:
                 config = {
                     name: 'Input Dropdown',
                     type: 'text',
