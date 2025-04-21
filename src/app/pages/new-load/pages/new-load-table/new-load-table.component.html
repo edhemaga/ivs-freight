@@ -32,14 +32,17 @@
             commodity,
             billingRate,
             invoicedDate,
-            driverInfo,
+            assignedDriver,
             brokerPhone,
             loadType,
             referenceNumber,
             brokerBusinessName,
+            brokerContact,
             note,
             requirementTruck,
             requirementTrailer,
+            assignedDriverTruckNumber,
+            assignedDriverTrailerNumber,
             driverMessage,
             companyName
         };
@@ -118,63 +121,7 @@
             ></app-ca-checkbox>
         </ng-template>
 
-        <ng-template let-data="data" #loadType>
-            <app-load-type [loadType]="data.loadType" [isTextVisible]="true" />
-        </ng-template>
-
-        <ng-template
-            #invoicedDate
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <div
-                class="text-color-black-2 text-size-14"
-                [class]="cellColumnTextColorClass"
-            >
-                {{ data.invoicedDate | date: eDateTimeFormat.ANGULAR_MM_DD_YY }}
-            </div>
-        </ng-template>
-
-        <ng-template
-            #brokerPhone
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <div
-                class="text-color-black-2 text-size-14"
-                [class]="cellColumnTextColorClass"
-            >
-                {{ data.broker?.phone }}
-            </div>
-        </ng-template>
-
-        <ng-template
-            #driverInfo
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-            let-data="data"
-        >
-            <div
-                class="text-color-black-2 text-size-14"
-                [class]="cellColumnTextColorClass"
-            >
-                {{ data.driverInfo.firstName }}
-                {{ data.driverInfo.lastName }}
-            </div>
-        </ng-template>
-
-        <ng-template
-            #billingRate
-            let-data="data"
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <span
-                class="ta-font-bold text-size-14 text-color-black"
-                [class]="cellColumnTextColorClass"
-            >
-                {{ data.billingRate | currency }}
-            </span>
-        </ng-template>
-
+        <!-- #region LOAD NUMBER COLUMN -->
         <ng-template
             #loadNumber
             let-data="data"
@@ -204,7 +151,9 @@
                 </span>
             </div>
         </ng-template>
+        <!-- #endregion END OF LOAD NUMBER COLUMN -->
 
+        <!-- #region TEMPLATE NAME COLUMN -->
         <ng-template let-data="data" #templateName>
             <div class="d-flex gap-1 align-items-center h-full">
                 @if (!store.isTypeColumnCheckedSelector) {
@@ -219,54 +168,20 @@
                 </div>
             </div>
         </ng-template>
+        <!-- #endregion END OF TEMPLATE NAME COLUMN -->
 
-        <ng-template let-data="data" #referenceNumber>
-            <div
-                class="text-color-black text-size-14"
-                [innerHtml]="
-                    data.referenceNumber
-                        | tableHighlightSearchText: store.searchStrings
-                "
-            ></div>
+        <!-- #region TYPE COLUMN -->
+        <ng-template let-data="data" #loadType>
+            <app-load-type [loadType]="data.loadType" [isTextVisible]="true" />
         </ng-template>
+        <!-- #endregion END OF TYPE COLUMN -->
 
-        <ng-template let-data="data" #brokerBusinessName>
-            <div
-                class="text-color-black text-size-14"
-                [innerHtml]="
-                    data.brokerBusinessName
-                        | tableHighlightSearchText: store.searchStrings
-                "
-            ></div>
-        </ng-template>
-
-        <ng-template 
-            #commodity
-            let-data="data" 
-            let-cellColumnTextColorClass="cellColumnTextColorClass"
-        >
-            <div class="text-color-black-2 text-size-14 align-items-center" [class]="cellColumnTextColorClass">
-                @if (data.commodity === eSharedString.HAZARDOUS) {
-                    <svg-icon
-                        [src]="sharedSvgRoutes.HAZARDOUS_ICON"
-                        class="svg-size-18"
-                    ></svg-icon>
-                }
-                <span class="text-color-black text-size-14">
-                    {{ data.commodity }}
-                </span>
-            </div>
-        </ng-template>
-
+        <!-- #region DISPATCHER COLUMN -->
         <ng-template let-data="data" #loadDispatcher>
             <div class="d-flex gap-1">
                 <app-ca-profile-image
                     [name]="data.dispatcher?.fullName"
-                    [size]="'small'"
-                    [type]="'user'"
-                    [withTooltip]="true"
                     [size]="18"
-                    [isDispatch]="true"
                     [avatarImg]="data.dispatcher?.avatarFile?.url"
                 >
                 </app-ca-profile-image>
@@ -280,7 +195,150 @@
                 ></div>
             </div>
         </ng-template>
+        <!-- #endregion END OF DISPATCHER COLUMN -->
 
+        <!-- #region BROKER GROUP -->
+        <ng-template let-data="data" #brokerBusinessName>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.brokerBusinessName
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template let-data="data" #brokerContact>
+            <p
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    data.brokerContact
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></p>
+        </ng-template>
+
+        <ng-template
+            #brokerPhone
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div class="text-size-14" [class]="cellColumnTextColorClass">
+                <span class="text-color-black-2">{{ data.broker?.phone }} </span>
+                @if (data.broker?.phoneExt) {
+                    <span class="text-color-muted"
+                        >x {{ data.broker?.phoneExt }}
+                    </span>
+                }
+            </div>
+        </ng-template>
+        <!-- #endregion END OF BROKER GROUP -->
+
+        <!-- #region REF NO ; COMMODITY ; WEIGHT GROUP -->
+        <ng-template let-data="data" #referenceNumber>
+            <div
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    data.referenceNumber
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+
+        <ng-template
+            #commodity
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14 align-items-center"
+                [class]="cellColumnTextColorClass"
+            >
+                @if (data.commodity === eSharedString.HAZARDOUS) {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.HAZARDOUS_ICON"
+                        class="svg-size-18"
+                    ></svg-icon>
+                }
+                <span class="text-color-black text-size-14">
+                    {{ data.commodity }}
+                </span>
+            </div>
+        </ng-template>
+        <!-- #endregion END OF REF NO ; COMMODITY ; WEIGHT GROUP -->
+
+        <!-- #region ASSIGNED GROUP -->
+        <ng-template
+            #assignedDriver
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+            let-data="data"
+        >
+            <div class="d-flex gap-1">
+                <app-ca-profile-image
+                    [name]="
+                        data.driverInfo?.firstName + data.driverInfo?.lastName
+                    "
+                    [isRound]="false"
+                    [size]="18"
+                    [avatarImg]="data.driverInfo?.avatarFile?.url"
+                >
+                </app-ca-profile-image>
+
+                @let driverDisplayName =
+                    data.driverInfo?.firstName +
+                    ' ' +
+                    data.driverInfo?.lastName;
+
+                <div
+                    class="text-color-black-2 text-size-14"
+                    [innerHtml]="
+                        driverDisplayName
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                ></div>
+            </div>
+        </ng-template>
+
+        <ng-template let-data="data" #assignedDriverTruckNumber>
+            @if (data.requirementTruck) {
+                <!-- truck number is searchable field but [innerHtml] is missing for app-ta-truck-trailer-icon -->
+                <app-ta-truck-trailer-icon
+                    iconType="truck"
+                    [inputData]="data.requirementTruck"
+                    [unitNumber]="data.assignedDriverTruckNumber"
+                ></app-ta-truck-trailer-icon>
+            } @else {
+                <div
+                    class="text-color-black text-size-14"
+                    [innerHtml]="
+                        data.assignedDriverTruckNumber
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                ></div>
+            }
+        </ng-template>
+
+        <ng-template let-data="data" #assignedDriverTrailerNumber>
+            @if (data.requirementTrailer) {
+                <!-- trailer number is searchable field but [innerHtml] is missing for app-ta-truck-trailer-icon -->
+                <app-ta-truck-trailer-icon
+                    iconType="trailer"
+                    [inputData]="data.requirementTrailer"
+                    [unitNumber]="data.assignedDriverTrailerNumber"
+                ></app-ta-truck-trailer-icon>
+            } @else {
+                <div
+                    class="text-color-black text-size-14"
+                    [innerHtml]="
+                        data.assignedDriverTrailerNumber
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                ></div>
+            }
+        </ng-template>
+        <!-- #endregion END OF ASSIGNED GROUP -->
+
+        <!-- #region STATUS ; PICKUP ; DELIVERY GROUP -->
         <ng-template let-data="data" #loadStatus>
             <span
                 class="ta-font-bold text-size-14 text-color-black"
@@ -306,7 +364,9 @@
                 </app-ca-load-status>
             </span>
         </ng-template>
+        <!-- #endregion END OF STATUS ; PICKUP ; DELIVERY GROUP -->
 
+        <!-- #region REQUIREMENT GROUP -->
         <ng-template #requirementTruck let-data="data">
             @if (data.requirementTruck) {
                 <app-ta-truck-trailer-icon
@@ -324,7 +384,9 @@
                 ></app-ta-truck-trailer-icon>
             }
         </ng-template>
+        <!-- #endregion END OF REQUIREMENT GROU -->
 
+        <!-- #region DRIVER MESSAGE COLUMN -->
         <ng-template
             #driverMessage
             let-cellColumnTextColorClass="cellColumnTextColorClass"
@@ -335,6 +397,38 @@
                 [class]="cellColumnTextColorClass"
                 [innerHtml]="data.driverMessage"
             ></div>
+        </ng-template>
+        <!-- #endregion END OF DRIVER MESSAGE COLUMN -->
+
+        <!-- #region MILES GROUP -->
+        <!-- #endregion END OF MILES GROUP -->
+
+        <!-- #region BILLING GROUP -->
+        <ng-template
+            #billingRate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <span
+                class="ta-font-bold text-size-14 text-color-black"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.billingRate | currency }}
+            </span>
+        </ng-template>
+        <!-- #endregion END OF BILLING GROUP -->
+
+        <ng-template
+            #invoicedDate
+            let-data="data"
+            let-cellColumnTextColorClass="cellColumnTextColorClass"
+        >
+            <div
+                class="text-color-black-2 text-size-14"
+                [class]="cellColumnTextColorClass"
+            >
+                {{ data.invoicedDate | date: eDateTimeFormat.ANGULAR_MM_DD_YY }}
+            </div>
         </ng-template>
 
         <ng-template let-data="data" #action>
