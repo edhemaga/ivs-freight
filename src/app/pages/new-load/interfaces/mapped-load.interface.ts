@@ -47,4 +47,5 @@ export interface IMappedLoad {
     requirementYear: string;
     requirementLiftgate: string;
     driverMessage: string;
+    companyName: string;
 }

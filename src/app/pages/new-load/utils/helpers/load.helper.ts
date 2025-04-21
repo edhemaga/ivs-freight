@@ -43,6 +43,7 @@ export class LoadHelper {
                 loadType,
                 type,
                 loadRequirements,
+                company
             } = load;
 
             const mapped: IMappedLoad = {
@@ -76,6 +77,7 @@ export class LoadHelper {
                 milesTotal: miles?.totalMiles,
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
+                companyName: company?.companyName,
                 invoicedDate,
                 note,
                 requirementTruck: loadRequirements?.truckType,
