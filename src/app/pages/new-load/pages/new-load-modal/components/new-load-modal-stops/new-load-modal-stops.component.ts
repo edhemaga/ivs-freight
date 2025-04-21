@@ -30,6 +30,7 @@ import { LoadStopInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pi
 
 // Models
 import {
+    EnumValue,
     ShipperContactGroupResponse,
     ShipperLoadModalResponse,
 } from 'appcoretruckassist';
@@ -101,7 +102,7 @@ export class NewLoadModalStopsComponent implements OnInit {
         LoadModalStopsHelper.addDateToControl(stopGroup);
     }
 
-    public onTabChange(e: any, i: number): void {
+    public onTabChange(e: EnumValue, i: number): void {
         const group = this.stopsFormArray.at(i) as FormGroup;
 
         group.patchValue({ tabType: e.id });
