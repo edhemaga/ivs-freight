@@ -37,6 +37,7 @@
             loadType,
             referenceNumber,
             brokerBusinessName,
+            brokerContact,
             note,
             requirementTruck,
             requirementTrailer,
@@ -196,6 +197,16 @@
             ></div>
         </ng-template>
 
+        <ng-template let-data="data" #brokerContact>
+            <p
+                class="text-color-black-2 text-size-14 text-truncate"
+                [innerHtml]="
+                    data.brokerContact
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></p>
+        </ng-template>
+
         <ng-template
             #brokerPhone
             let-data="data"
@@ -204,7 +215,7 @@
             <div class="text-size-14" [class]="cellColumnTextColorClass">
                 <span class="text-color-black-2">{{ data.broker?.phone }} </span>
                 @if (data.broker?.phoneExt) {
-                    <span class="text-color-black"
+                    <span class="text-color-muted"
                         >x {{ data.broker?.phoneExt }}
                     </span>
                 }
@@ -215,7 +226,7 @@
         <!-- #region REF NO ; COMMODITY ; WEIGHT GROUP -->
         <ng-template let-data="data" #referenceNumber>
             <div
-                class="text-color-black text-size-14"
+                class="text-color-black-2 text-size-14 text-truncate"
                 [innerHtml]="
                     data.referenceNumber
                         | tableHighlightSearchText: store.searchStrings
