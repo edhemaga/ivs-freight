@@ -324,7 +324,10 @@
                                 Leg
                             </div>
                         </div>
-                        <!-- <app-new-load-modal-stops></app-new-load-modal-stops> -->
+                        <app-new-load-modal-stops
+                            [shipperContacts]="dropdownList.shipperContacts"
+                            [shippers]="dropdownList.shippers"
+                        ></app-new-load-modal-stops>
                     </div>
                 </app-ca-custom-card>
 

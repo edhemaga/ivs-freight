@@ -1,8 +1,9 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import {
     FormArray,
     FormBuilder,
+    FormGroup,
     ReactiveFormsModule,
     UntypedFormGroup,
 } from '@angular/forms';
@@ -21,6 +22,18 @@ import {
     CaTabSwitchComponent,
 } from 'ca-components';
 
+// Enum
+import { eLoadModalStopsForm } from '@pages/new-load/pages/new-load-modal/enums';
+
+// Pipes
+import { LoadStopInputConfigPipe } from '@pages/new-load/pages/new-load-modal/pipes/load-stop-input-config.pipe';
+
+// Models
+import {
+    ShipperContactGroupResponse,
+    ShipperLoadModalResponse,
+} from 'appcoretruckassist';
+
 @Component({
     selector: 'app-new-load-modal-stops',
     standalone: true,
@@ -34,19 +47,26 @@ import {
         CaTabSwitchComponent,
         CaInputDropdownTestComponent,
         CaInputDatetimePickerComponent,
+
+        // Pipes
+        LoadStopInputConfigPipe,
     ],
     templateUrl: './new-load-modal-stops.component.html',
     styleUrl: './new-load-modal-stops.component.scss',
 })
 export class NewLoadModalStopsComponent implements OnInit {
+    @Input() shippers: ShipperLoadModalResponse[] = [];
+    @Input() shipperContacts: ShipperContactGroupResponse[] = [];
     public LoadModalConfig = LoadModalConfig;
+    // Enums
+    public eLoadModalStopsForm = eLoadModalStopsForm;
 
     // Each stop will have it's own tabs
     public tabs = LoadModalStopsHelper.tabs;
 
     public stopsForm: UntypedFormGroup;
 
-    get stops(): FormArray {
+    get stopsFormArray(): FormArray {
         return this.stopsForm.get('stops') as FormArray;
     }
 
@@ -57,8 +77,8 @@ export class NewLoadModalStopsComponent implements OnInit {
     }
 
     public createForm(): void {
-        this.stopsForm = this.fb.group({
-            stops: this.fb.array([
+        const stopsArray = this.fb.array(
+            [
                 LoadModalStopsHelper.createStop(this.fb, {
                     stopType: 'PICKUP',
                     shipperId: 101,
@@ -67,7 +87,25 @@ export class NewLoadModalStopsComponent implements OnInit {
                     stopType: 'DELIVERY',
                     shipperId: 102,
                 }),
-            ]),
+            ],
+            [LoadModalStopsHelper.minStopsValidator(2)]
+        );
+
+        this.stopsForm = this.fb.group({
+            stops: stopsArray,
         });
+    }
+
+    public onAddDateTo(index: number): void {
+        const stopGroup = this.stopsFormArray.at(index) as FormGroup;
+        LoadModalStopsHelper.addDateToControl(stopGroup);
+    }
+
+    public onTabChange(e: any, i: number): void {
+        const group = this.stopsFormArray.at(i) as FormGroup;
+
+        group.patchValue({ tabType: e.id });
+
+        LoadModalStopsHelper.updateTimeValidators(group);
     }
 }
