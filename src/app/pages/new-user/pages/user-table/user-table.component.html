@@ -28,8 +28,6 @@
         (onSortingChange)="onSortingChange($event)"
         (onShowMore)="onShowMoreClick()"
     >
-        <!-- TODO:   [isTableLocked]="isTableLocked" -->
-
         <ng-template #selectHeaderTemplate>
             <app-ca-checkbox-selected-count
                 [itemsTotalCount]="store.users.length"
