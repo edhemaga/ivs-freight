@@ -109,7 +109,7 @@
             ></app-ca-checkbox>
         </ng-template>
 
-        <!-- LOAD NUMBER COLUMN ------------------------------ LOAD NUMBER COLUMN ------------------------------ LOAD NUMBER COLUMN -->
+        <!-- #region LOAD NUMBER COLUMN -->
         <ng-template
             #loadNumber
             let-data="data"
@@ -139,9 +139,9 @@
                 </span>
             </div>
         </ng-template>
-        <!-- END OF LOAD NUMBER COLUMN ------------------------------ END OF LOAD NUMBER COLUMN ------------------------------ END OF LOAD NUMBER COLUMN -->
+        <!-- #endregion END OF LOAD NUMBER COLUMN -->
 
-        <!-- TEMPLATE NAME COLUMN ------------------------------ TEMPLATE NAME COLUMN ------------------------------ TEMPLATE NAME COLUMN -->
+        <!-- #region TEMPLATE NAME COLUMN -->
         <ng-template let-data="data" #templateName>
             <div class="d-flex gap-1 align-items-center h-full">
                 @if (!store.isTypeColumnCheckedSelector) {
@@ -156,15 +156,15 @@
                 </div>
             </div>
         </ng-template>
-        <!-- END OF TEMPLATE NAME COLUMN ------------------------------ END OF TEMPLATE NAME COLUMN ------------------------------ END OF TEMPLATE NAME COLUMN -->
+        <!-- #endregion END OF TEMPLATE NAME COLUMN -->
 
-        <!-- TYPE COLUMN ------------------------------ TYPE COLUMN ------------------------------ TYPE COLUMN -->
+        <!-- #region TYPE COLUMN -->
         <ng-template let-data="data" #loadType>
             <app-load-type [loadType]="data.loadType" [isTextVisible]="true" />
         </ng-template>
-        <!-- END OF TYPE COLUMN ------------------------------ END OF TYPE COLUMN ------------------------------ END OF TYPE COLUMN -->
+        <!-- #endregion END OF TYPE COLUMN -->
 
-        <!-- DISPATCHER COLUMN ------------------------------ DISPATCHER COLUMN ------------------------------ DISPATCHER COLUMN -->
+        <!-- #region DISPATCHER COLUMN -->
         <ng-template let-data="data" #loadDispatcher>
             <div class="d-flex gap-1">
                 <app-ca-profile-image
@@ -183,9 +183,9 @@
                 ></div>
             </div>
         </ng-template>
-        <!-- END OF DISPATCHER COLUMN ------------------------------ END OF DISPATCHER COLUMN ------------------------------ END OF DISPATCHER COLUMN -->
+        <!-- #endregion END OF DISPATCHER COLUMN -->
 
-        <!-- BROKER GROUP ------------------------------ BROKER GROUP ------------------------------ BROKER GROUP -->
+        <!-- #region BROKER GROUP -->
         <ng-template let-data="data" #brokerBusinessName>
             <div
                 class="text-color-black text-size-14"
@@ -210,9 +210,9 @@
                 }
             </div>
         </ng-template>
-        <!-- END OF BROKER GROUP ------------------------------ END OF BROKER GROUP ------------------------------ END OF BROKER GROUP -->
+        <!-- #endregion END OF BROKER GROUP -->
 
-        <!-- REF NO ; COMMODITY ; WEIGHT GROUP ------------------------------ REF NO ; COMMODITY ; WEIGHT GROUP ------------------------------ REF NO ; COMMODITY ; WEIGHT GROUP -->
+        <!-- #region REF NO ; COMMODITY ; WEIGHT GROUP -->
         <ng-template let-data="data" #referenceNumber>
             <div
                 class="text-color-black text-size-14"
@@ -243,9 +243,9 @@
                 </span>
             </div>
         </ng-template>
-        <!-- END OF REF NO ; COMMODITY ; WEIGHT GROUP ------------------------------ END OF REF NO ; COMMODITY ; WEIGHT GROUP ------------------------------ END OF REF NO ; COMMODITY ; WEIGHT GROUP -->
+        <!-- #endregion END OF REF NO ; COMMODITY ; WEIGHT GROUP -->
 
-        <!-- ASSIGNED GROUP ------------------------------ ASSIGNED GROUP ------------------------------ ASSIGNED GROUP -->
+        <!-- #region ASSIGNED GROUP -->
         <ng-template
             #assignedDriver
             let-cellColumnTextColorClass="cellColumnTextColorClass"
@@ -314,9 +314,9 @@
                 ></div>
             }
         </ng-template>
-        <!-- END OF ASSIGNED GROUP ------------------------------ END OF ASSIGNED GROUP ------------------------------ END OF ASSIGNED GROUP -->
+        <!-- #endregion END OF ASSIGNED GROUP -->
 
-        <!-- STATUS ; PICKUP ; DELIVERY GROUP ------------------------------ STATUS ; PICKUP ; DELIVERY GROUP ------------------------------ STATUS ; PICKUP ; DELIVERY GROUP -->
+        <!-- #region STATUS ; PICKUP ; DELIVERY GROUP -->
         <ng-template let-data="data" #loadStatus>
             <span
                 class="ta-font-bold text-size-14 text-color-black"
@@ -342,9 +342,9 @@
                 </app-ca-load-status>
             </span>
         </ng-template>
-        <!-- END OF STATUS ; PICKUP ; DELIVERY GROUP ------------------------------ END OF STATUS ; PICKUP ; DELIVERY GROUP ------------------------------ END OF STATUS ; PICKUP ; DELIVERY GROUP -->
+        <!-- #endregion END OF STATUS ; PICKUP ; DELIVERY GROUP -->
 
-        <!-- REQUIREMENT GROUP ------------------------------ REQUIREMENT GROUP ------------------------------ REQUIREMENT GROUP -->
+        <!-- #region REQUIREMENT GROUP -->
         <ng-template #requirementTruck let-data="data">
             @if (data.requirementTruck) {
                 <app-ta-truck-trailer-icon
@@ -362,9 +362,9 @@
                 ></app-ta-truck-trailer-icon>
             }
         </ng-template>
-        <!-- END OF REQUIREMENT GROUP ------------------------------ END OF REQUIREMENT GROUP ------------------------------ END OF REQUIREMENT GROUP -->
+        <!-- #endregion END OF REQUIREMENT GROU -->
 
-        <!-- DRIVER MESSAGE COLUMN ------------------------------ DRIVER MESSAGE COLUMN ------------------------------ DRIVER MESSAGE COLUMN -->
+        <!-- #region DRIVER MESSAGE COLUMN -->
         <ng-template
             #driverMessage
             let-cellColumnTextColorClass="cellColumnTextColorClass"
@@ -376,12 +376,12 @@
                 [innerHtml]="data.driverMessage"
             ></div>
         </ng-template>
-        <!-- END OF DRIVER MESSAGE COLUMN ------------------------------ END OF DRIVER MESSAGE COLUMN ------------------------------ END OF DRIVER MESSAGE COLUMN -->
+        <!-- #endregion END OF DRIVER MESSAGE COLUMN -->
 
-        <!-- MILES GROUP ------------------------------ MILES GROUP ------------------------------ MILES GROUP -->
-        <!-- END OF MILES GROUP ------------------------------ END OF MILES GROUP ------------------------------ END OF MILES GROUP -->
+        <!-- #region MILES GROUP -->
+        <!-- #endregion END OF MILES GROUP -->
 
-        <!-- BILLING GROUP ------------------------------ BILLING GROUP ------------------------------ BILLING GROUP -->
+        <!-- #region BILLING GROUP -->
         <ng-template
             #billingRate
             let-data="data"
@@ -394,7 +394,7 @@
                 {{ data.billingRate | currency }}
             </span>
         </ng-template>
-        <!-- END OF BILLING GROUP ------------------------------ END OF BILLING GROUP ------------------------------ END OF BILLING GROUP -->
+        <!-- #endregion END OF BILLING GROUP -->
 
         <ng-template
             #invoicedDate
