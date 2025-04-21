@@ -1,5 +1,6 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { NgbPopover } from '@ng-bootstrap/ng-bootstrap';
 
 // modules
 import { CommonModule } from '@angular/common';
@@ -13,7 +14,11 @@ import { LoadStoreService } from '@pages/new-load/state/services/load-store.serv
 import { ModalService } from '@shared/services';
 
 // components
-import { CaTableCardViewComponent } from 'ca-components';
+import {
+    CaTableCardViewComponent,
+    CaStatusChangeDropdownComponent,
+    ePosition,
+} from 'ca-components';
 import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
 
 // pipes
@@ -21,7 +26,9 @@ import {
     FormatCurrencyPipe,
     ThousandSeparatorPipe,
     GetNestedValuePipe,
+    FormatDatePipe,
 } from '@shared/pipes';
+import { LoadStatusBackgroundColorPipe } from 'ca-components';
 
 // configs
 import {
@@ -47,6 +54,7 @@ import {
 
 // models
 import { TableCardBodyActions } from '@shared/models';
+import { LoadStatusResponse } from 'appcoretruckassist';
 
 // svg-routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
@@ -59,14 +67,18 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
     imports: [
         CommonModule,
         AngularSvgIconModule,
+        NgbPopover,
 
         // components
         CaTableCardViewComponent,
+        CaStatusChangeDropdownComponent,
 
         // pipes
         FormatCurrencyPipe,
         ThousandSeparatorPipe,
         GetNestedValuePipe,
+        FormatDatePipe,
+        LoadStatusBackgroundColorPipe,
     ],
 })
 export class NewLoadCardsComponent
@@ -114,6 +126,7 @@ export class NewLoadCardsComponent
     // enums
     public eSharedString = eSharedString;
     public eStringPlaceholder = eStringPlaceholder;
+    public ePosition = ePosition;
 
     constructor(
         protected modalService: ModalService,
@@ -191,6 +204,14 @@ export class NewLoadCardsComponent
             eDropdownMenu.LOAD,
             this.selectedTab
         );
+    }
+
+    public onNextStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchUpdateLoadStatus(status);
+    }
+
+    public onPreviousStatus(status: LoadStatusResponse): void {
+        this.loadStoreService.dispatchRevertLoadStatus(status);
     }
 
     ngOnDestroy(): void {
