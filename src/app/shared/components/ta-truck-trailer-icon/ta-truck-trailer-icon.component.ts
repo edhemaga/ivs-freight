@@ -107,7 +107,6 @@ export class TaTruckTrailerIconComponent implements OnInit {
 
     private mapTruck(): void {
         const truckType = this.inputData as TruckTypeResponse;
-        console.log("truckType: ", truckType);
         this.icon = {
             icon: `${TruckTrailerIconEnum.TRUCK_SVG_ROUTE}${truckType.logoName}`,
             name: truckType.name,
