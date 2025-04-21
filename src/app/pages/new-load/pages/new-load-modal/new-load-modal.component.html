@@ -294,42 +294,10 @@
                     ></app-ta-input-note> -->
                 </ng-container>
 
-                <app-ca-custom-card
-                    customDividerClass="divider--dark"
-                    cardName="Stops"
-                    [hasDivider]="true"
-                >
-                    <div origin>
-                        <div
-                            class="d-grid d-grid-stops-heading p-x-8 gap-1 mb-1"
-                        >
-                            <div
-                                class="text-color-muted text-size-11 ta-font-bold"
-                            >
-                                #
-                            </div>
-                            <div
-                                class="text-color-muted text-size-11 ta-font-bold"
-                            >
-                                Shipper • Location
-                            </div>
-                            <div
-                                class="text-color-muted text-size-11 ta-font-bold"
-                            >
-                                Date • Time
-                            </div>
-                            <div
-                                class="text-color-muted text-size-11 ta-font-bold text-right"
-                            >
-                                Leg
-                            </div>
-                        </div>
-                        <app-new-load-modal-stops
-                            [shipperContacts]="dropdownList.shipperContacts"
-                            [shippers]="dropdownList.shippers"
-                        ></app-new-load-modal-stops>
-                    </div>
-                </app-ca-custom-card>
+                <app-new-load-modal-stops
+                    [shipperContacts]="dropdownList.shipperContacts"
+                    [shippers]="dropdownList.shippers"
+                ></app-new-load-modal-stops>
 
                 <div class="divider divider--small divider--dark"></div>
 

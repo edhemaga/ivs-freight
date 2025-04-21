@@ -21,4 +21,8 @@
         gap: 12px;
         grid-template-columns: repeat(4, 145px);
     }
+
+    &-stops-heading {
+        grid-template-columns: 26px 330px 140px 98px;
+    }
 }
