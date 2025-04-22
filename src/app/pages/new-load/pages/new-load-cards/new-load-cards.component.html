@@ -3,6 +3,7 @@
         viewData: loadStoreService.loadsSelector$ | async,
         selectedTabCountSelector:
             loadStoreService.selectedTabCountSelector$ | async,
+        cardsFlipType: loadStoreService.cardFlipViewModeSelector$ | async,
     };
 
 @let frontSideData = tabCardData[selectedTab].front;
@@ -19,6 +20,7 @@
                 : eSharedString.LOAD_NUMBER
         "
         [totalDataCount]="store.selectedTabCountSelector"
+        [cardsFlipType]="store.cardsFlipType"
         (showMore)="onShowMoreClick()"
         (selectCard)="onSelectLoad($event)"
         (dropdownOptionEmitter)="onToggleDropdownMenuActions($event)"
@@ -155,7 +157,9 @@
                                 | loadStatusBackgroundColor: true
                         "
                     ></div>
-                    <div class="text-uppercase">{{text.status?.statusString}}</div>
+                    <div class="text-uppercase">
+                        {{ text.status?.statusString }}
+                    </div>
                 </div>
             </span>
         </div>
