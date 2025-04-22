@@ -3,12 +3,26 @@
         grid-template-columns: 26px 330px 150px 88px;
     }
 
+    &-shipper {
+        grid-template-columns: 616px;
+    }
+
     &-working-time {
+        gap: 12px;
         grid-template-columns: 272px 332px;
     }
 
     &-time-picker {
         gap: 12px;
         grid-template-columns: 1fr 26px repeat(2, 1fr);
+    }
+
+    &-date-from-to {
+        gap: 12px;
+        grid-template-columns: repeat(4, 145px);
+    }
+
+    &-stops-heading {
+        grid-template-columns: 26px 330px 140px 98px;
     }
 }

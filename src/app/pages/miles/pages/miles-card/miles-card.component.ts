@@ -43,7 +43,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 })
 export class MilesCardComponent {
     // enums
-    public tableCardViewEnums = eTableCardViewData;
+    public eTableCardViewData = eTableCardViewData;
 
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;

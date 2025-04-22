@@ -56,12 +56,20 @@
     @switch (displayedSection) {
         @case (eLoadDetailsGeneral.COMMENTS) {
             <div class="w-100 mb-1">
-                <app-ca-tab-switch
-                    [tabs]="commentTabs"
-                    [type]="'type4-modal-popup'"
-                    (switchClicked)="onItemSelected($event)"
-                >
-                </app-ca-tab-switch>
+                @if (isLoading) {
+                    <p class="placeholder-glow">
+                        <span
+                            class="placeholder placeholder-muted br-2 h-26 w-100"
+                        ></span>
+                    </p>
+                } @else {
+                    <app-ca-tab-switch
+                        [tabs]="commentTabs"
+                        [type]="'type4-modal-popup'"
+                        (switchClicked)="onItemSelected($event)"
+                    >
+                    </app-ca-tab-switch>
+                }
             </div>
             @let _comments =
                 comments
@@ -70,6 +78,7 @@
                 [commentsData]="_comments"
                 [isDisplaySearch]="isSearchActive"
                 [isHeaderHidden]="isHeaderHidden"
+                [isLoading]="isLoading"
                 (onActionEmitter)="onCommentAction($event, load.id)"
                 (onSortEmitter)="onSortAction($event, load.id)"
                 (onSearchHighlightEmitter)="onSearchHighlightAction($event)"
