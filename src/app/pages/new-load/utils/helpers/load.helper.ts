@@ -63,23 +63,21 @@ export class LoadHelper {
                         selectedTab
                     ),
                 totalDue,
-                loadType: loadType ? loadType?.name : type?.name,
+                loadType: loadType?.name ?? type?.name,
                 broker,
                 brokerContact: broker?.contact,
                 templateCreated:
                     MethodsCalculationsHelper.convertDateFromBackend(
                         load.dateCreated
                     ),
-                commodity: loadDetails
-                    ? loadDetails?.generalCommodityName
-                    : generalCommodity?.name,
+                commodity: loadDetails?.generalCommodityName ?? generalCommodity?.name,
                 brokerBusinessName: broker?.businessName,
                 driverInfo: driver ? driver : dispatch?.driver,
                 assignedDriverTruckNumber: driver?.truckNumber,
                 assignedDriverTrailerNumber: driver?.trailerNumber,
                 milesLoaded: miles?.loadedMiles,
                 milesEmpty: miles?.emptyMiles,
-                milesTotal: miles ? miles?.totalMiles : totalMiles,
+                milesTotal: miles?.totalMiles ?? totalMiles,
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
                 invoicedDate,
