@@ -109,7 +109,7 @@ export class TaMapListComponent
             this.checkResizeButton();
 
             this.mapListContent?.map((data) => {
-                if (data.actionAnimation == eGeneralActions.DELETE) {
+                if (data.actionAnimation == eGeneralActions.DELETE_LOWERCASE) {
                     this.deleteAnimation(data.id);
                 }
             });
@@ -315,7 +315,7 @@ export class TaMapListComponent
         }
     }
 
-    public handleSearchValue(searchValue: string): void {
+    public onHandleSearchValue(searchValue: string): void {
         this.searchValue = searchValue;
 
         this.searchEvent.emit(searchValue);

@@ -10,12 +10,12 @@ import * as LoadActions from '@pages/load/state/actions/load.action';
 // enums
 import { eLoadStatusType } from '@pages/load/pages/load-table/enums/index';
 import { eActiveViewMode } from '@shared/enums';
+import { eLoadStatusStringType } from '@pages/new-load/enums';
 
 // functions
 import * as Functions from '@pages/load/pages/load-table/utils/functions/load-reducer.functions';
-
-// Helpers
-import { LoadTableColumns } from '@pages/load/pages/load-table/utils/constants';
+// config
+import { LoadTableColumnsConfig } from '@pages/new-load/utils/config';
 
 // #region initialState
 export const initialState: ILoadState = {
@@ -44,10 +44,13 @@ export const initialState: ILoadState = {
     totalLoadSum: 0,
     hasAllLoadsSelected: false,
     isLoadDetailsMapOpen: true,
+    mapRoutes: null,
 
     minimalList: {},
 
-    tableColumns: LoadTableColumns,
+    tableColumns: LoadTableColumnsConfig.getLoadTableColumns(
+        eLoadStatusStringType.ACTIVE
+    ),
 };
 // #endregion
 
@@ -185,19 +188,21 @@ export const loadReducer = createReducer(
         isLoadDetailsLoaded: false,
     })),
 
+    on(LoadActions.getLoadDetailsMapDataSuccess, (state, { mapRoutes }) =>
+        Functions.getLoadDetailsMapRoutes(state, mapRoutes)
+    ),
+    on(LoadActions.getLoadDetailsMapDataError, (state) => ({ ...state })),
+
     // #endregion
+
+    on(LoadActions.sortLoadComments, (state, { loadId, sortDirection }) =>
+        Functions.sortLoadComments(state, loadId, sortDirection)
+    ),
 
     // #region CREATE
     on(LoadActions.createComment, (state) => ({ ...state })),
-    on(
-        LoadActions.createCommentSuccess,
-        (state, { loadId, comment, metadata }) =>
-            Functions.createCommentSuccessResult(
-                state,
-                loadId,
-                comment,
-                metadata
-            )
+    on(LoadActions.createCommentSuccess, (state) =>
+        Functions.createCommentSuccessResult(state)
     ),
     on(LoadActions.createCommentError, (state) => ({ ...state })),
 
@@ -264,7 +269,6 @@ export const loadReducer = createReducer(
             )
     ),
     on(LoadActions.updateLoadAndRevertStatus, (state) => ({ ...state })),
-
     on(LoadActions.saveNote, (state, { entityId, value }) =>
         Functions.saveNoteResult(state, entityId, value)
     ),
@@ -272,16 +276,24 @@ export const loadReducer = createReducer(
 
     // #region DELETE
     on(LoadActions.deleteCommentById, (state) => ({ ...state })),
-    on(LoadActions.deleteCommentByIdSuccess, (state, { loadId, commentId }) =>
-        Functions.deleteCommentByIdSuccessResult(state, loadId, commentId)
+    on(LoadActions.deleteCommentByIdSuccess, (state, { commentId }) =>
+        Functions.deleteCommentByIdSuccessResult(state, commentId)
     ),
     on(LoadActions.deleteCommentByIdError, (state) => ({ ...state })),
-
     on(LoadActions.deleteLoadTemplateById, (state) => ({ ...state })),
+
+    on(LoadActions.updateComment, (state) => ({ ...state })),
+    on(LoadActions.updateCommentSuccess, (state, { apiParam }) =>
+        Functions.updateCommentSuccessResult(
+            state,
+            apiParam.commentId,
+            apiParam.commentContent
+        )
+    ),
+    on(LoadActions.updateCommentError, (state) => ({ ...state })),
+
     // TODO: Do filtering for success
     on(LoadActions.deleteLoadTemplateByIdSuccess, (state) => ({ ...state })),
-    on(LoadActions.deleteCommentByIdError, (state) => ({ ...state })),
-
     on(LoadActions.deleteLoadById, (state) => ({ ...state })),
     on(LoadActions.deleteLoadByIdSuccess, (state, { loadId }) =>
         Functions.deleteLoadByIdSuccessResult(state, loadId)

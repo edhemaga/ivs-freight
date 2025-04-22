@@ -1,26 +1,39 @@
-// Modules
-import { Component, Input, OnInit } from '@angular/core';
+import {
+    Component,
+    ElementRef,
+    Input,
+    OnInit,
+    Renderer2,
+    ViewChild,
+} from '@angular/core';
+import { CommonModule } from '@angular/common';
+
+// modules
 import { AngularSvgIconModule } from 'angular-svg-icon';
 import { NgbActiveModal, NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { CommonModule } from '@angular/common';
-import { PdfViewerModule } from 'ng2-pdf-viewer';
 
-// Services
+// services
 import { PayrollService } from '@pages/accounting/pages/payroll/services';
 
-// Components
-import { CaModalComponent } from 'ca-components';
+// components
 import { TaSpinnerComponent } from '@shared/components/ta-spinner/ta-spinner.component';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
-// Utils
+// svg routes
 import { PayrollSvgRoutes } from '@pages/accounting/pages/payroll/state/utils';
 
-// Models
-import { PayrollModal } from '@pages/accounting/pages/payroll/state/models';
+// enums
+import { CaModalComponent, eColor, ePosition, eUnit } from 'ca-components';
+import { eGeneralActions, eSharedString } from '@shared/enums';
 
-const ZOOM_STEP: number = 0.2;
-const DEFAULT_ZOOM: number = 1;
-const MAX_ZOOM: number = 2;
+// pipes
+import { SafeHtmlPipe } from '@shared/pipes';
+
+// constants
+import { PayrollPdfReportConstants } from '@pages/accounting/pages/payroll/payroll-modals/payroll-report/utils/constants';
+
+// models
+import { PayrollModal } from '@pages/accounting/pages/payroll/state/models';
 
 @Component({
     selector: 'app-payroll-report-pdf-preview',
@@ -28,93 +41,110 @@ const MAX_ZOOM: number = 2;
     styleUrls: ['./payroll-pdf-report.component.scss'],
     standalone: true,
     imports: [
-        // Module
+        // modules
         CommonModule,
         AngularSvgIconModule,
         NgbModule,
-        PdfViewerModule,
 
+        // components
         CaModalComponent,
         TaSpinnerComponent,
+        TaAppTooltipV2Component,
     ],
+    providers: [SafeHtmlPipe],
 })
 export class PayrollPdfReportComponent implements OnInit {
     @Input() editData: PayrollModal;
-    public pdfSrc: string | ArrayBuffer | undefined;
-    public pdfBlob: Blob | undefined;
-    public svgRoutes = PayrollSvgRoutes;
-    public maxZoom: number = MAX_ZOOM;
+    @ViewChild('contentIframe') iframeRef!: ElementRef;
 
-    public pdfZoom: number = DEFAULT_ZOOM;
+    // zoom
+    public zoomLevel = PayrollPdfReportConstants.ZOOM_LEVEL;
+    public minZoom = PayrollPdfReportConstants.MIN_ZOOM;
+    public maxZoom = PayrollPdfReportConstants.MAX_ZOOM;
+    public zoomStep = PayrollPdfReportConstants.ZOOM_STEP;
+
+    // svg routes
+    public svgRoutes = PayrollSvgRoutes;
+
+    // enums
+    public eColor = eColor;
+    public ePosition = ePosition;
+    public eGeneralActions = eGeneralActions;
+
+    // pdf
+    public pdfReport: { downloadUrl: string; html: string };
+
     public isLoading = true;
+
     constructor(
+        private renderer: Renderer2,
+
+        // services
         private payrollService: PayrollService,
-        private ngbActiveModal: NgbActiveModal
+
+        // modules
+        private ngbActiveModal: NgbActiveModal,
+
+        // pipes
+        private safeHtmlPipe: SafeHtmlPipe
     ) {}
 
     ngOnInit(): void {
-        if (!this.editData.data?.id) {
-            console.error('Report id is required');
-            return;
-        }
-
-        if (!this.editData.data?.type) {
-            console.error('Report type is required');
-            return;
-        }
-
         this.getReportById();
     }
 
     private getReportById(): void {
-        this.payrollService
-            .generateReport(this.editData.data.id, this.editData.data.type)
-            .subscribe({
-                next: (response: Blob) => {
-                    const reader = new FileReader();
-                    reader.onload = () => {
-                        // Store data for rendering PDF
-                        this.pdfSrc = reader.result;
-                        // Store Blob for download
-                        this.pdfBlob = response;
-                        this.isLoading = false;
-                    };
-                    reader.readAsArrayBuffer(response);
-                },
-                error: (error) => {
-                    console.error('Error loading the PDF:', error);
-                },
-            });
+        const { id, type } = this.editData?.data;
+
+        if (!id || !type) return;
+
+        this.payrollService.generateReport(id, type).subscribe({
+            next: (pdfReport) => {
+                const html = this.safeHtmlPipe.transform(pdfReport.html);
+                this.pdfReport = {
+                    ...pdfReport,
+                    html,
+                };
+
+                this.isLoading = false;
+            },
+        });
     }
 
-    public downloadReport(): void {
-        if (this.pdfBlob) {
-            const blobUrl = URL.createObjectURL(this.pdfBlob);
-            const link = document.createElement('a');
-            link.href = blobUrl;
-            link.download = `Report-${this.editData.data.type}-${this.editData.data.id}.pdf`;
-            link.click();
-            URL.revokeObjectURL(blobUrl);
-        }
+    public onIframeLoad(): void {
+        const iframe = this.iframeRef?.nativeElement as HTMLIFrameElement;
+        if (!iframe) return;
+
+        const doc = iframe.contentDocument || iframe.contentWindow?.document;
+        if (!doc || !doc.body) return;
+
+        const height = doc.body.offsetHeight + 80;
+
+        this.renderer.setStyle(iframe, eSharedString.HEIGHT, `${height}px`);
     }
 
-    public zoomIn(): void {
-        if (this.pdfZoom < MAX_ZOOM) {
-            this.pdfZoom += ZOOM_STEP;
-        }
+    public onDownloadReportClick(): void {
+        const { downloadUrl } = this.pdfReport;
+
+        if (!downloadUrl) return;
+
+        const { type, id } = this.editData?.data;
+
+        const filename = `Report-${type}-${id}.pdf`;
+
+        this.payrollService.downloadPayrollPdfReport(downloadUrl, filename);
     }
 
-    public zoomOut(): void {
-        if (this.pdfZoom > DEFAULT_ZOOM) {
-            this.pdfZoom -= ZOOM_STEP;
-        }
-    }
-
-    public resetZoom(): void {
-        this.pdfZoom = DEFAULT_ZOOM;
-    }
-
-    public onCloseModal(): void {
+    public onCloseModalClick(): void {
         this.ngbActiveModal.close();
+    }
+
+    public onZoomClick(change: number): void {
+        const newZoom = this.zoomLevel + change * this.zoomStep;
+
+        this.zoomLevel = Math.min(
+            this.maxZoom,
+            Math.max(this.minZoom, newZoom)
+        );
     }
 }

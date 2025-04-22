@@ -1,12 +1,13 @@
 @let store =
     {
-        selectedCount: milesStoreService.selectedCountSelector$ | async,
         tableViewData: milesStoreService.tableViewData$ | async,
         selectedTab: milesStoreService.selectedTab$ | async,
         activeViewMode: milesStoreService.activeViewMode$ | async,
         statesSelector: milesStoreService.statesSelector$ | async,
         tableSettings: milesStoreService.tableSettingsSelector$ | async,
         miles: milesStoreService.miles$ | async,
+        toolbarDropdownMenuActions:
+            milesStoreService.toolbarDropdownMenuOptionsSelector$ | async,
     };
 
 <div
@@ -21,7 +22,7 @@
             [isMarginTopDisabled]="true"
             [leftSide]="leftSide"
             [hasPlusIcon]="false"
-            [toolbarDropdownContent]="toolbarDropdownMenuOptions"
+            [toolbarDropdownContent]="store.toolbarDropdownMenuActions"
             (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
         >
             <ng-template #leftSide>
@@ -76,18 +77,6 @@
                         >
                         </app-ca-filter>
                     }
-
-                    @if (store.selectedCount) {
-                        <ng-container
-                            *ngTemplateOutlet="divider"
-                        ></ng-container>
-
-                        <div
-                            class="text-color-blue-18 background-blue-16 text-size-14 ta-font-bold br-2 p-x-8 p-y-4"
-                        >
-                            {{ store.selectedCount }} Selected
-                        </div>
-                    }
                 </div>
             </ng-template>
 
@@ -100,24 +89,9 @@
             </ng-template>
         </app-new-table-toolbar>
 
-        <!-- List, Card, Map -->
-
-        @switch (store.activeViewMode) {
-            @case (eCommonElement.LIST) {
-                <app-miles-table></app-miles-table>
-            }
-
-            @case (eCommonElement.CARD) {
-                <app-miles-card></app-miles-card>
-            }
-
-            @case (eCommonElement.MAP) {
-                <app-miles-map></app-miles-map>
-            }
-        }
+        <router-outlet></router-outlet>
 
         <!-- Empty State - List, Card -->
-
         <app-ta-table-empty
             [activeViewMode]="store.activeViewMode"
             [btnText]="eSharedString.TRUCK_CAPITALIZED"

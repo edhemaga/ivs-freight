@@ -110,7 +110,7 @@ export enum eDropdownMenu {
     RATING_DISLIKE_TYPE = 'rating-dislike',
     CREATE_LOAD_TYPE = 'create-new-load',
     CREATE_TEMPLATE_TYPE = 'create-template-from-load',
-    EXPORT_BATH_TYPE = 'export-batch',
+    EXPORT_BATCH_TYPE = 'export-batch',
     ADD_CONTACT_TYPE = 'add-contact',
     MOVE_TO_BAN_LIST_TYPE = 'move-to-ban-list',
     MOVE_TO_DNU_LIST_TYPE = 'move-to-dnu-list',
@@ -135,6 +135,7 @@ export enum eDropdownMenu {
     BROKER = 'broker',
     CUSTOMER = 'customer',
     MILES = 'miles',
+    NEW_LOAD = 'new-load',
 
     // svg classes
     REGULAR_SVG_CLASS = 'regular',
@@ -186,4 +187,7 @@ export enum eDropdownMenu {
     DETAILS = 'details',
     SHIPPER_DETAILS = 'shipper-details',
     BROKER_DETAILS = 'broker-details',
+
+    // placement
+    TABLE_CARDS_PLACEMENT = 'right-top bottom-right right-bottom top-right',
 }

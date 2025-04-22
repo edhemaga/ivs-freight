@@ -1,4 +1,5 @@
 @import 'src/assets/scss/mixins.scss';
+@import 'src/theme/variables';
 
 .load-stop-rows {
     &-not-pending {
@@ -36,5 +37,25 @@
 
     &-items {
         grid-template-columns: 180px 74px 34px 50px 34px 34px 34px 34px 56px 80px 90px 60px 60px;
+    }
+}
+
+.stops-progres-bar {
+    &-closed-load {
+        &-status {
+            transition:
+                height $transitionDuration ease-in-out,
+                opacity $transitionDuration ease-in-out;
+
+            &:first-of-type {
+                border-top-left-radius: 2px;
+                border-bottom-left-radius: 2px;
+            }
+
+            &:last-of-type {
+                border-top-right-radius: 2px;
+                border-bottom-right-radius: 2px;
+            }
+        }
     }
 }

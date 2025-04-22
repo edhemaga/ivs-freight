@@ -182,7 +182,7 @@ export class DropdownMenuContentConstants {
         },
         [eDropdownMenu.EXPORT_BATCH]: {
             title: eDropdownMenu.EXPORT_BATCH,
-            type: eDropdownMenu.EXPORT_BATH_TYPE,
+            type: eDropdownMenu.EXPORT_BATCH_TYPE,
             svgUrl: 'assets/svg/common/ic_document.svg',
             svgClass: eDropdownMenu.ACTIVATE_SVG_CLASS,
         },
@@ -198,7 +198,7 @@ export class DropdownMenuContentConstants {
 
         [eDropdownMenuColumns.COLUMNS_BACK]: {
             title: eDropdownMenuColumns.COLUMNS,
-            type: eDropdownMenuColumns.COLUMNS_TYPE,
+            type: eDropdownMenuColumns.COLUMNS_BACK_TYPE,
             titleOptionalClass: 'ca-font-extra-bold',
             svgUrl: 'assets/svg/truckassist-table/reset-icon.svg',
             svgClass: eDropdownMenu.REGULAR_SVG_CLASS,

@@ -34,7 +34,7 @@ export class DropdownMenuContentConditionalItemsHelper {
             });
         };
 
-        return mapDropdownMenuItems();
+        return modifiers ? mapDropdownMenuItems() : requestedItems;
     }
 
     // modifier items
@@ -236,12 +236,12 @@ export class DropdownMenuContentConditionalItemsHelper {
 
     // load
     static getLoadModifierItems(
-        isPendingLoad: boolean
+        isTemplateOrPendingLoad: boolean
     ): Partial<IDropdownMenuItem>[] {
         return [
             {
                 title: eDropdownMenu.DELETE,
-                isDisabled: !isPendingLoad,
+                isDisabled: !isTemplateOrPendingLoad,
             },
         ];
     }

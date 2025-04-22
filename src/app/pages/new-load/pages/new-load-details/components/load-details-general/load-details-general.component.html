@@ -1,9 +1,8 @@
-@let load = loadStoreService.resolveLoadDetails$ | async;
-@let isLoading = !(loadStoreService.isLoadDetailsLoaded$ | async);
-@let minimalList = loadStoreService.minimalListSelector$ | async;
+@let loadDetailsSelector = loadStoreService.loadDetailsSelector$ | async;
+@let load = loadDetailsSelector.data;
+@let isLoading = loadDetailsSelector.isLoading;
 @let isSpacingBottom = true;
-@let groupedByStatusTypeList =
-    loadStoreService.groupedByStatusTypeListSelector$ | async;
+@let minimalListSelector = loadStoreService.minimalListSelector$ | async;
 @let loadNumberFormated = 'Load ' + load.loadNumber;
 
 <div class="background-white p-8 br-3">
@@ -12,13 +11,13 @@
             <div class="d-flex align-items-center">
                 <p class="placeholder-glow">
                     <span
-                        class="placeholder background-muted br-2 h-20 w-93"
+                        class="placeholder placeholder-muted br-2 h-20 w-93"
                     ></span>
                 </p>
 
                 <p class="placeholder-glow m-l-8">
                     <span
-                        class="placeholder background-muted rounded-circle h-18 w-18"
+                        class="placeholder placeholder-muted rounded-circle h-18 w-18"
                     ></span>
                 </p>
             </div>
@@ -27,7 +26,7 @@
                 <div class="d-flex w-26 h-26 justify-content-center">
                     <p class="placeholder-glow">
                         <span
-                            class="placeholder background-muted br-2 w-7 h-18"
+                            class="placeholder placeholder-muted br-2 w-7 h-18"
                         ></span>
                     </p>
                 </div>
@@ -35,7 +34,7 @@
                 <div class="d-flex w-26 h-26 justify-content-center ml-1">
                     <p class="placeholder-glow">
                         <span
-                            class="placeholder background-muted br-2 w-7 h-18"
+                            class="placeholder placeholder-muted br-2 w-7 h-18"
                         ></span>
                     </p>
                 </div>
@@ -48,12 +47,12 @@
                 title: loadNumberFormated,
                 tooltip: 'Search load',
                 placeholder: load.loadNumber,
-                width: 372,
+                width: '372px',
                 tooltipNext: 'Next',
                 tooltipPrevious: 'Previous',
             }"
             [dropdownTemplate]="titleDropdown"
-            [titleRightIconTemplate]="titleRightIconTemplate"
+            [titleTemplate]="titleTemplate"
             (onNextAction)="onNextAction()"
             (onPreviousAction)="onPreviousAction()"
         >
@@ -72,7 +71,10 @@
             ></svg-icon>
         </div>
 
-        @for (listItem of groupedByStatusTypeList | keyvalue; track $index) {
+        @for (
+            listItem of minimalListSelector.groupedByStatusTypeList | keyvalue;
+            track $index
+        ) {
             <app-ta-custom-card
                 [cardName]="listItem.key"
                 [hasCounter]="listItem.value.length"
@@ -101,11 +103,16 @@
         }
     </ng-template>
 
-    <ng-template #titleRightIconTemplate>
-        <svg-icon
-            [src]="sharedIcons.LTL_FILLED"
-            class="d-flex align-items-center svg-size-18 m-l-6 svg-fill-muted"
-        ></svg-icon>
+    <ng-template #titleTemplate>
+        <div class="d-flex">
+            <div class="d-flex text-color-black">
+                {{ loadNumberFormated }}
+            </div>
+            <svg-icon
+                [src]="sharedIcons.LTL_FILLED"
+                class="d-flex align-items-center svg-size-18 m-l-6 svg-fill-muted"
+            ></svg-icon>
+        </div>
     </ng-template>
 
     @let loadingMarginTop = isLoading ? 'm-t-20' : 'm-t-12';
@@ -456,13 +463,14 @@
                 }
             </app-ta-custom-card>
         </div>
+
+        <ng-container *ngTemplateOutlet="messageForDriver"></ng-container>
         <ng-container
             *ngTemplateOutlet="
                 divider;
                 context: { isDividerVisible: true, isMarginTopDisabled: true }
             "
         ></ng-container>
-        <ng-container *ngTemplateOutlet="messageForDriver"></ng-container>
 
         <ng-container
             *ngTemplateOutlet="
@@ -600,7 +608,7 @@
         <div class="d-flex align-items-center">
             <p class="placeholder-glow">
                 <span
-                    class="placeholder background-muted br-2 h-16"
+                    class="placeholder placeholder-muted br-2 h-16"
                     [ngClass]="'w-' + width"
                 ></span>
             </p>
@@ -608,14 +616,14 @@
             @if (isCircle) {
                 <p class="placeholder-glow m-l-8">
                     <span
-                        class="placeholder background-muted rounded-circle h-18 w-18"
+                        class="placeholder placeholder-muted rounded-circle h-18 w-18"
                     ></span>
                 </p>
             }
         </div>
 
         <p class="placeholder-glow">
-            <span class="placeholder background-muted br-2 h-7 w-18"></span>
+            <span class="placeholder placeholder-muted br-2 h-7 w-18"></span>
         </p>
     </div>
 
@@ -1052,6 +1060,7 @@
                         id: item.status?.statusValue?.id,
                     }"
                     [isTitleCardDropdown]="true"
+                    [isDefaultHoverFocus]="true"
                 >
                 </app-ca-load-status>
             </div>

@@ -210,10 +210,10 @@ export class TaCustomCardComponent implements OnInit {
                 });
 
                 break;
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.onActionEvent.emit({
                     check: true,
-                    action: eGeneralActions.DELETE,
+                    action: eGeneralActions.DELETE_LOWERCASE,
                 });
 
                 break;

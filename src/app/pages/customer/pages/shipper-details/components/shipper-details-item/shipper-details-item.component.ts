@@ -82,7 +82,7 @@ export class ShipperDetailsItemComponent implements OnChanges {
     }
     public changeReviewsEvent(reviews: ReviewComment): void {
         switch (reviews.action) {
-            case eGeneralActions.DELETE:
+            case eGeneralActions.DELETE_LOWERCASE:
                 this.deleteReview(reviews);
                 break;
             case eGeneralActions.UPDATE:

@@ -347,6 +347,7 @@ export class LoadDetailsItemStopsMainComponent implements OnChanges, OnDestroy {
                                 lat: loadStop.shipper.latitude,
                                 lng: loadStop.shipper.longitude,
                             },
+                            id: loadStop.id,
                         };
 
                         const content =

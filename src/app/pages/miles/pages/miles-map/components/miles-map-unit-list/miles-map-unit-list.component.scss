@@ -13,10 +13,7 @@
 
 .miles-unit-list {
     max-height: calc(100vh - 130px);
-
-    &-minimal {
-        height: 462px;
-    }
+    height: fit-content;
 }
 
 .arrow {
@@ -40,4 +37,29 @@
             transform: rotate(-90deg);
         }
     }
+}
+
+.miles-unit-dropdown {
+    grid-template-columns: 50px 196px;
+
+    &-large {
+        grid-template-columns: 100px 270px;
+    }
+
+    &-vin {
+        display: none;
+    }
+    &:hover {
+        .miles-unit-dropdown-vin {
+            display: block;
+        }
+        .miles-unit-dropdown-owner {
+            display: none;
+        }
+    }
+}
+
+.miles-unit-list-scroll {
+    max-height: 190px;
+    overflow-y: scroll;
 }

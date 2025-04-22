@@ -283,7 +283,7 @@ export class RepairShopDetailsComponent
                 next: (res) => {
                     const { id, type, template, data } = res;
 
-                    if (type === eGeneralActions.DELETE) {
+                    if (type === eGeneralActions.DELETE_LOWERCASE) {
                         if (template === eRepairShopDetails.REPAIR_SHOP) {
                             this.deleteRepairShop(id);
                         } else if (

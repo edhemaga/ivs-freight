@@ -28,7 +28,7 @@
             >
                 <app-ta-modal-table
                     [tableType]="
-                        !!editData?.data?.truck
+                        editData?.header === TableStringEnum.TRUCK_PM_SETTINGS
                             ? modalTableTypeEnum.PM_TRUCK
                             : modalTableTypeEnum.PM_TRAILER
                     "

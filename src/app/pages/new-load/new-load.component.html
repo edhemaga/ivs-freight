@@ -1,14 +1,19 @@
 @let store =
     {
-        viewData: loadStoreService.viewData$ | async,
-        tableData: loadStoreService.tableData$ | async,
-        activeTableData: loadStoreService.activeTableData$ | async,
-        activeViewMode: loadStoreService.activeViewMode$ | async,
-        dispatcherList: loadStoreService.dispatcherList$ | async,
-        statusList: loadStoreService.statusList$ | async,
-        selectedCount: loadStoreService.selectedCount$ | async,
-        selectLoadRateSum: loadStoreService.selectLoadRateSum$ | async,
-        totalLoadSum: loadStoreService.totalLoadSum$ | async,
+        selectedTab: loadStoreService.selectedTabSelector$ | async,
+        viewData: loadStoreService.loadsSelector$ | async,
+        selectedLoads: loadStoreService.selectedLoadsSelector$ | async,
+        toolbarTabs: loadStoreService.toolbarTabsSelector$ | async,
+        activeViewMode: loadStoreService.activeViewModeSelector$ | async,
+        filtersDropdownList:
+            loadStoreService.filtersDropdownListSelector$ | async,
+        selectedCount: loadStoreService.selectedCountSelector$ | async,
+        totalSum: loadStoreService.totalSumSelector$ | async,
+        getSortableColumnSelector:
+            loadStoreService.getSortableColumnSelector$ | async,
+        toolbarDropdownMenuOptions:
+            loadStoreService.toolbarDropdownMenuOptionsSelector$ | async,
+        tableSettingsSelector: loadStoreService.tableSettingsSelector$ | async,
     };
 
 @if (store) {
@@ -16,37 +21,33 @@
         [title]="'Load'"
         [leftSide]="leftSide"
         [rightSide]="rightSide"
-        [toolbarDropdownContent]="toolbarDropdownMenuOptions"
+        [toolbarDropdownContent]="store.toolbarDropdownMenuOptions"
         (onPlusClick)="
             onToolBarAction({
                 action: generalActions.OPEN_MODAL,
             })
         "
-        (toolbarDropdownAction)="handleToolbarDropdownMenuActions($event)"
+        (toolbarDropdownAction)="onToolbarDropdownMenuActions($event)"
     >
         <ng-template #leftSide>
             <app-toolbar-tabs-wrapper
                 class="d-flex align-items-center"
-                [data]="store.tableData"
-                [selectedTab]="selectedTab"
-                [viewMode]="loadStoreService.activeViewMode$ | async"
+                [data]="store.toolbarTabs"
+                [selectedTab]="store.selectedTab"
+                [viewMode]="store.activeViewMode"
                 [betweenTabsTemplate]="betweenTabsTemplate"
                 (onTabChange)="onToolBarAction($event)"
             ></app-toolbar-tabs-wrapper>
 
             <ng-template #betweenTabsTemplate>
-                @if (selectedTab !== 'Template') {
+                @if (selectedTab !== eLoadStatusStringType.TEMPLATE) {
                     <div
-                        class="text-color-blue-18 text-size-14 ta-font-bold br-2 p-x-10 p-y-4"
+                        class="text-color-blue-18 text-size-14 ta-font-bold br-2 h-26 w-88 justify-content-center d-flex align-items-center"
                         [ngClass]="{
                             'background-blue-16': store.selectedCount,
                         }"
                     >
-                        ${{
-                            store.selectedCount
-                                ? store.selectLoadRateSum
-                                : store.totalLoadSum
-                        }}
+                        {{ store.totalSum | currency: 'USD' }}
                     </div>
 
                     <ng-container *ngTemplateOutlet="divider"></ng-container>
@@ -54,7 +55,6 @@
             </ng-template>
 
             <ng-container *ngTemplateOutlet="divider"></ng-container>
-            <!-- TODO Property name 'selectedTab' can be changed, if more use cases come around -->
             <ca-search-multiple-states-2
                 [selectedTab]="selectedTab"
                 (onSearchQueryChange)="onSearchQueryChange($event)"
@@ -74,7 +74,7 @@
 
                     <app-ca-filter-list-dropdown
                         type="Dispatcher"
-                        [list]="store.dispatcherList"
+                        [list]="store.filtersDropdownList.dispatcherFilters"
                         [entityType]="selectedTab"
                         (setFilter)="setFilters($event)"
                     >
@@ -82,12 +82,13 @@
 
                     <app-ca-filter-list-dropdown
                         type="Status"
-                        [list]="store.statusList"
+                        [list]="store.filtersDropdownList.statusFilters"
                         [entityType]="selectedTab"
                         (setFilter)="setFilters($event)"
                     >
                     </app-ca-filter-list-dropdown>
                 }
+
                 <app-ca-filter
                     subType="all"
                     type="moneyFilter"
@@ -120,11 +121,13 @@
                 @let isPending = selectedTab === eLoadStatusStringType.PENDING;
                 @let isTemplate =
                     selectedTab === eLoadStatusStringType.TEMPLATE;
-                <!-- Only template and pending loads can be deleted -->
                 @if (isPending || isTemplate) {
                     <svg-icon
-                        [src]="sharedIcons.DELETE_ICON"
                         class="background-hover-bw2 svg-fill-red-10 svg-hover-red-14 svg-size-16 c-pointer br-2 d-flex align-items-center justify-content-center h-26 w-26"
+                        [src]="sharedIcons.DELETE_ICON"
+                        (click)="
+                            onDeleteLoadList(isTemplate, store.selectedLoads)
+                        "
                     >
                     </svg-icon>
                 }
@@ -143,8 +146,16 @@
                 LTL BUILDER
             </div>
             <ng-container *ngTemplateOutlet="divider"></ng-container>
-        </ng-template>
 
+            @if (store?.activeViewMode === eCommonElement.CARD) {
+                <app-ca-checkbox-selected-count
+                    [itemsTotalCount]="store.viewData.length"
+                    [itemsSelectedCount]="store.selectedCount"
+                    (onCheckboxCountClick)="onCheckboxCountClick($event)"
+                ></app-ca-checkbox-selected-count>
+                <ng-container *ngTemplateOutlet="divider"></ng-container>
+            }
+        </ng-template>
         <ng-template #divider>
             <div class="new-table--toolbar-divider">
                 <div
@@ -154,7 +165,8 @@
         </ng-template>
     </app-new-table-toolbar>
 
-    @if (store?.activeViewMode === 'List') {
+    <!-- TODO: Should this be moved to separete routes? -->
+    @if (store?.activeViewMode === eCommonElement.LIST) {
         <app-new-load-table></app-new-load-table>
     } @else {
         <app-new-load-cards></app-new-load-cards>

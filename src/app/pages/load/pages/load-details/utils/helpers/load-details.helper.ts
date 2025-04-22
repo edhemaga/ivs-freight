@@ -29,9 +29,9 @@ export class LoadDetailsHelper {
             actions: [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                     subText: load.statusType.name.toUpperCase(),
                 },
                 {
@@ -60,7 +60,7 @@ export class LoadDetailsHelper {
                     type: 'driver',
                     text: 'Are you sure you want to delete driver(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                     disabled: LoadDetailsHelper.enableDeleteButton(
                         load.statusType.name
                     ),

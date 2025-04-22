@@ -269,7 +269,7 @@ export class TtFhwaInspectionModalComponent implements OnInit, OnDestroy {
                     .patchValue(JSON.stringify(event.files));
                 break;
             }
-            case eGeneralActions.DELETE: {
+            case eGeneralActions.DELETE_LOWERCASE: {
                 this.fhwaInspectionForm
                     .get(eFileFormControls.FILES)
                     .patchValue(

@@ -8,17 +8,10 @@ export class MilesTableColumnsConfig {
     static columnsConfig: ITableColumn[] = [
         {
             id: 1,
-            key: 'select',
-            label: '',
-            width: 26,
-            pinned: 'left',
-            isChecked: true,
-        },
-        {
-            id: 2,
             key: 'unit',
             label: 'Unit',
             labelToolbar: 'Unit No',
+            pinned: 'left',
             width: 88,
             minWidth: 88,
             maxWidth: 200,
@@ -26,14 +19,14 @@ export class MilesTableColumnsConfig {
             isDisabled: true,
             isChecked: true,
             hasSort: true,
-            pinned: 'left',
             sortName: MilesStopSortBy.UnitNumber,
         },
         {
-            id: 3,
+            id: 2,
             key: 'truckType',
             label: 'Type',
             labelToolbar: 'Type',
+            pinned: null,
             width: 64,
             minWidth: 64,
             maxWidth: 200,
@@ -46,9 +39,10 @@ export class MilesTableColumnsConfig {
             key: 'stops',
             label: 'Stop',
             labelToolbar: 'Stops',
+            pinned: null,
             columns: [
                 {
-                    id: 4,
+                    id: 3,
                     key: 'stopsCount',
                     label: 'Count',
                     labelToolbar: 'Count',
@@ -61,7 +55,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.Count,
                 },
                 {
-                    id: 5,
+                    id: 4,
                     key: 'stopsPickup',
                     label: 'PICKUP',
                     labelToolbar: 'Pickup',
@@ -74,7 +68,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.Pickup,
                 },
                 {
-                    id: 6,
+                    id: 5,
                     key: 'stopsDelivery',
                     label: 'DELIVERY',
                     labelToolbar: 'Delivery',
@@ -87,7 +81,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.Delivery,
                 },
                 {
-                    id: 7,
+                    id: 6,
                     key: 'fuelCount',
                     label: 'FUEL',
                     labelToolbar: 'Fuel',
@@ -100,7 +94,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.Fuel,
                 },
                 {
-                    id: 8,
+                    id: 7,
                     key: 'parkingCount',
                     label: 'PARKING',
                     labelToolbar: 'Parking',
@@ -113,7 +107,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.Parking,
                 },
                 {
-                    id: 9,
+                    id: 8,
                     key: 'deadHeadCount',
                     label: 'D-HEAD',
                     labelToolbar: 'Deadhead',
@@ -126,7 +120,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.Deadhead,
                 },
                 {
-                    id: 10,
+                    id: 9,
                     key: 'repairCount',
                     label: 'REPAIR',
                     labelToolbar: 'Repair',
@@ -139,7 +133,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.Repair,
                 },
                 {
-                    id: 11,
+                    id: 10,
                     key: 'towingCount',
                     label: 'TOWING',
                     labelToolbar: 'Towing',
@@ -156,9 +150,10 @@ export class MilesTableColumnsConfig {
         {
             key: 'load',
             label: '',
+            pinned: null,
             columns: [
                 {
-                    id: 12,
+                    id: 11,
                     key: 'loadCount',
                     label: 'LOAD',
                     labelToolbar: 'Load',
@@ -176,10 +171,11 @@ export class MilesTableColumnsConfig {
             key: 'fuel',
             label: 'Fuel',
             labelToolbar: 'Fuel',
+            pinned: null,
             hasSort: false,
             columns: [
                 {
-                    id: 13,
+                    id: 12,
                     key: 'fuelGalons',
                     label: 'GAL',
                     labelToolbar: 'Gallon',
@@ -192,7 +188,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.FuelGallons,
                 },
                 {
-                    id: 14,
+                    id: 13,
                     key: 'fuelCost',
                     label: 'Cost',
                     labelToolbar: 'Cost',
@@ -205,7 +201,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.FuelCost,
                 },
                 {
-                    id: 15,
+                    id: 14,
                     key: 'fuelMpg',
                     label: 'MPG',
                     labelToolbar: 'MPG',
@@ -222,10 +218,11 @@ export class MilesTableColumnsConfig {
             key: 'miles',
             label: 'Miles',
             labelToolbar: 'Miles',
+            pinned: null,
             hasSort: false,
             columns: [
                 {
-                    id: 16,
+                    id: 15,
                     key: 'milesLoaded',
                     label: 'LOADED',
                     labelToolbar: 'Loaded',
@@ -238,7 +235,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.LoadedMiles,
                 },
                 {
-                    id: 17,
+                    id: 16,
                     key: 'milesEmpty',
                     label: 'EMPTY',
                     labelToolbar: 'Empty',
@@ -251,7 +248,7 @@ export class MilesTableColumnsConfig {
                     sortName: MilesStopSortBy.EmptyMiles,
                 },
                 {
-                    id: 18,
+                    id: 17,
                     key: 'milesTotal',
                     label: 'TOTAL',
                     labelToolbar: 'Total',
@@ -268,10 +265,11 @@ export class MilesTableColumnsConfig {
         {
             key: 'revenueGroup',
             label: '',
+            pinned: null,
             isAlignedRight: true,
             columns: [
                 {
-                    id: 19,
+                    id: 18,
                     key: 'revenue',
                     label: 'revenue',
                     labelToolbar: 'Revenue',

@@ -77,6 +77,8 @@ import {
     CaInputAddressDropdownComponent,
     CaInputDatetimePickerComponent,
     CaTabSwitchComponent,
+    InputTestComponent,
+    CaInputDropdownTestComponent,
 } from 'ca-components';
 
 // enums
@@ -116,7 +118,9 @@ import { AddressMixin } from '@shared/mixins/address/address.mixin';
         CaInputComponent,
         CaInputDropdownComponent,
         CaInputAddressDropdownComponent,
-        CaInputDatetimePickerComponent
+        CaInputDatetimePickerComponent,
+        InputTestComponent,
+        CaInputDropdownTestComponent,
     ],
 })
 export class UserModalComponent
@@ -193,7 +197,6 @@ export class UserModalComponent
     ngOnInit() {
         this.createForm();
         this.getModalDropdowns();
-        this.onBankSelected();
         this.trackUserPayroll();
         this.confirmationActivationSubscribe();
         this.confirmationData();
@@ -456,7 +459,8 @@ export class UserModalComponent
             case 'bank': {
                 this.selectedBank = event;
                 if (!event) {
-                    this.userForm.get('bankId').patchValue(null);
+                    this.userForm.get('routingNumber').patchValue(null);
+                    this.userForm.get('accountNumber').patchValue(null);
                 }
                 break;
             }
@@ -596,6 +600,15 @@ export class UserModalComponent
                     this.inputService.changeValidators(
                         this.userForm.get('bankId')
                     );
+
+                    this.inputService.changeValidators(
+                        this.userForm.get('routingNumber'),
+                        true
+                    );
+                    this.inputService.changeValidators(
+                        this.userForm.get('accountNumber'),
+                        true
+                    );
                 } else {
                     this.inputService.changeValidators(
                         this.userForm.get('paymentType'),
@@ -629,23 +642,6 @@ export class UserModalComponent
                     this.selectedBank = null;
                     this.selectedPayment = null;
                 }
-            });
-    }
-
-    private onBankSelected(): void {
-        this.userForm
-            .get('bankId')
-            .valueChanges.pipe(distinctUntilChanged(), takeUntil(this.destroy$))
-            .subscribe(() => {
-                const timeout = setTimeout(async () => {
-                    this.isBankSelected =
-                        await this.bankVerificationService.onSelectBank(
-                            this.selectedBank ? this.selectedBank.name : null,
-                            this.userForm.get('routingNumber'),
-                            this.userForm.get('accountNumber')
-                        );
-                    clearTimeout(timeout);
-                }, 100);
             });
     }
 
@@ -821,11 +817,9 @@ export class UserModalComponent
                         addressUnit: res.address?.addressUnit,
                         personalPhone: res.personalPhone,
                         personalEmail: res.personalEmail,
-                        departmentId: res.department
-                            ? res.department.name
-                            : null,
+                        departmentId: res.department ? res.department.id : null,
                         companyOfficeId: res.companyOffice
-                            ? res.companyOffice.name
+                            ? res.companyOffice.id
                             : null,
                         userType: res.userType ? res.userType.name : null,
                         isAdmin: res.isAdmin,
@@ -847,7 +841,7 @@ export class UserModalComponent
                               )
                             : null,
                         is1099: res.is1099,
-                        bankId: res.bank ? res.bank.name : null,
+                        bankId: res.bank ? res.bank.id : null,
                         routingNumber: res.routingNumber,
                         accountNumber: res.accountNumber,
                         base: res.base
@@ -974,8 +968,7 @@ export class UserModalComponent
                         this.userForm.patchValue({
                             firstName: this.editData.data.firstName,
                             lastName: this.editData.data.lastName,
-                            address:
-                                this.editData.data.address ?? null,
+                            address: this.editData.data.address ?? null,
                             addressUnit:
                                 this.editData.data.address?.addressUnit ?? null,
                             personalPhone: this.editData.data.personalPhone,
@@ -983,7 +976,7 @@ export class UserModalComponent
                             departmentId: this.editData.data.departmentId
                                 ? this.departments[
                                       this.editData.data.departmentId - 1
-                                  ].name
+                                  ].id
                                 : null,
                             companyOfficeId:
                                 this.editData.data.companyOfficeId ?? null,
@@ -1013,7 +1006,7 @@ export class UserModalComponent
                                 : null,
                             is1099: this.editData.data.is1099,
                             bankId: this.editData.data.bank
-                                ? this.editData.data.bank.name
+                                ? this.editData.data.bank.id
                                 : null,
                             routingNumber: this.editData.data.routingNumber,
                             accountNumber: this.editData.data.accountNumber,

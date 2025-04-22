@@ -1,8 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
+import { NgbTooltip } from '@ng-bootstrap/ng-bootstrap';
 
 // interfaces
-import { IMilesModel } from '@pages/miles/interface';
 import {
     ITableColumn,
     ITableResizeAction,
@@ -13,18 +13,16 @@ import { MilesStoreService } from '@pages/miles/state/services/miles-store.servi
 
 // enums
 import { eMileTabs } from '@pages/miles/enums';
+import { eColor, ePosition, eUnit } from 'ca-components';
 
 // components
 import { NewTableComponent } from '@shared/components/new-table/new-table.component';
 import { TaTruckTrailerIconComponent } from '@shared/components/ta-truck-trailer-icon/ta-truck-trailer-icon.component';
-import {
-    CaCheckboxComponent,
-    CaCheckboxSelectedCountComponent,
-} from 'ca-components';
+import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 
 // pipes
 import { ThousandSeparatorPipe } from '@shared/pipes';
-import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
+import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
 
 @Component({
     selector: 'app-miles-table',
@@ -33,26 +31,25 @@ import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
     standalone: true,
     imports: [
         CommonModule,
+        NgbTooltip,
 
         // components
         NewTableComponent,
         TaTruckTrailerIconComponent,
-        CaCheckboxComponent,
-        CaCheckboxSelectedCountComponent,
+        TaAppTooltipV2Component,
 
         // pipes
         ThousandSeparatorPipe,
-        TableColumnClassPipe,
+        TableHighlightSearchTextPipe,
     ],
 })
 export class MilesTableComponent {
     public eMileTabs = eMileTabs;
+    public eUnit = eUnit;
+    public eColor = eColor;
+    public ePosition = ePosition;
 
     constructor(public milesStoreService: MilesStoreService) {}
-
-    public selectRow(mile: IMilesModel): void {
-        this.milesStoreService.dispatchSelectOneRow(mile);
-    }
 
     public onColumnPinned(column: ITableColumn): void {
         this.milesStoreService.dispatchColumnPinnedAction(column);
@@ -62,15 +59,19 @@ export class MilesTableComponent {
         this.milesStoreService.dispatchSortingChange(column);
     }
 
-    public onHandleShowMoreClick(): void {
+    public onShowMoreClick(): void {
         this.milesStoreService.getNewPage();
-    }
-
-    public onCheckboxCountClick(action: string): void {
-        this.milesStoreService.dispatchSelectAll(action);
     }
 
     public onColumnResize(resizeAction: ITableResizeAction): void {
         this.milesStoreService.dispatchResizeColumn(resizeAction);
+    }
+
+    public goToMilesDetailsPage(id: string): void {
+        this.milesStoreService.goToMilesDetailsPage(id);
+    }
+
+    public onRemoveColumn(columnKey: string): void {
+        this.milesStoreService.dispatchToggleColumnsVisiblity(columnKey, false);
     }
 }

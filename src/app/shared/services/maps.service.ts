@@ -144,7 +144,7 @@ export class MapsService implements OnDestroy {
                     name: 'edit-cutomer-or-shipper',
                     svg: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                     show: true,
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                     disabled: !data.status || data.isClosed,
                 },
                 {
@@ -193,21 +193,21 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: eGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/new-list-dropdown/Delete.svg',
                     redIcon: true,
                     show: true,
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                 },
             ];
         } else if (type == 'repairShop') {
             dropActions = [
                 {
                     title: 'Edit',
-                    name: eGeneralActions.EDIT,
+                    name: eGeneralActions.EDIT_LOWERCASE,
                     svg: 'assets/svg/truckassist-table/dropdown/content/edit.svg',
                     show: true,
-                    iconName: eGeneralActions.EDIT,
+                    iconName: eGeneralActions.EDIT_LOWERCASE,
                     disabled: data.status == 0 || data.isClosed,
                 },
                 {
@@ -271,14 +271,14 @@ export class MapsService implements OnDestroy {
                 },
                 {
                     title: 'Delete',
-                    name: eGeneralActions.DELETE,
+                    name: eGeneralActions.DELETE_LOWERCASE,
                     type: 'truck',
                     text: 'Are you sure you want to delete truck(s)?',
                     svg: 'assets/svg/common/ic_trash_updated.svg',
                     danger: true,
                     show: true,
                     redIcon: true,
-                    iconName: eGeneralActions.DELETE,
+                    iconName: eGeneralActions.DELETE_LOWERCASE,
                 },
             ];
         }

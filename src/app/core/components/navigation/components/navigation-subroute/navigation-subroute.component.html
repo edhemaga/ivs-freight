@@ -14,6 +14,7 @@
                 'subroute-active': selectedSubRoute == item.name,
                 'pe-none': item.construction,
             }"
+            [id]="item.qaId"
             (click)="onSubrouteAction(item); subrouteIndex(index)"
         >
             @if (selectedSubRoute !== item.name && item.image) {

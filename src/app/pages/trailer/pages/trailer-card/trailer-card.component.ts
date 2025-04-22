@@ -65,6 +65,8 @@ export class TrailerCardComponent
 
     public trailerImageRoutes = TrailerCardsSvgRoutes;
 
+    public eDropdownMenu = eDropdownMenu;
+
     constructor(
         protected router: Router,
 

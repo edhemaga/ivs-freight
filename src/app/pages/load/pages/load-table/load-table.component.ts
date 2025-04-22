@@ -691,7 +691,7 @@ export class LoadTableComponent
                         }
                     });
 
-                    this.loadStoreService.dsipatchCanDeleteSelectedDataRows(
+                    this.loadStoreService.dispatchCanDeleteSelectedDataRows(
                         isDeleteHidden,
                         selectedIds
                     );
@@ -746,6 +746,7 @@ export class LoadTableComponent
 
                 break;
             case eDropdownMenuColumns.COLUMNS_TYPE:
+            case eDropdownMenuColumns.COLUMNS_BACK_TYPE:
                 this.updateToolbarDropdownMenuContentColumnsAction();
 
                 break;

@@ -26,6 +26,12 @@
     }
 }
 
+@mixin svg-height($height) {
+    svg {
+        height: $height;
+    }
+}
+
 .svg {
     // Colors
     &-fill {
@@ -160,6 +166,11 @@
         &-red-18 {
             @include svg-fill($ta-red-18);
         }
+
+        &-bw6-2 {
+            @include svg-fill($bw6-2);
+        }
+
     }
 
     // Hovers
@@ -206,6 +217,10 @@
             @include svg-size(12px, 12px);
         }
 
+        &-13 {
+            @include svg-size(13px, 13px);
+        }
+
         &-14 {
             @include svg-size(14px, 14px);
         }
@@ -224,6 +239,20 @@
 
         &-44-16 {
             @include svg-size(44px, 16px);
+        }
+
+        &-42-18 {
+            @include svg-size(42px, 18px);
+        }
+        
+        &-90 {
+            @include svg-size(90px, 90px);
+        }
+    }
+
+    &-height {
+        &-18 {
+            @include svg-height(18px);
         }
     }
 }

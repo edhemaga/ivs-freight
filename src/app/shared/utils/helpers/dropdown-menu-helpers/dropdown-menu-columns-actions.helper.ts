@@ -144,7 +144,7 @@ export class DropdownMenuColumnsActionsHelper {
 
                     dropdownItems.push(group);
                 }
-            } else if (column.key !== 'select') {
+            } else if (column.labelToolbar) {
                 const item: IDropdownMenuItem = {
                     title: column.labelToolbar,
                     type: column.key,

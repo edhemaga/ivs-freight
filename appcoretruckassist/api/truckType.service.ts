@@ -96,13 +96,14 @@ export class TruckTypeService {
     /**
      * @param search 
      * @param active 
+     * @param repairShopId 
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public apiTrucktypeFilterGet(search?: string, active?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<TruckTypeFilterResponse>>;
-    public apiTrucktypeFilterGet(search?: string, active?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<TruckTypeFilterResponse>>>;
-    public apiTrucktypeFilterGet(search?: string, active?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<TruckTypeFilterResponse>>>;
-    public apiTrucktypeFilterGet(search?: string, active?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
+    public apiTrucktypeFilterGet(search?: string, active?: number, repairShopId?: number, observe?: 'body', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<Array<TruckTypeFilterResponse>>;
+    public apiTrucktypeFilterGet(search?: string, active?: number, repairShopId?: number, observe?: 'response', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpResponse<Array<TruckTypeFilterResponse>>>;
+    public apiTrucktypeFilterGet(search?: string, active?: number, repairShopId?: number, observe?: 'events', reportProgress?: boolean, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<HttpEvent<Array<TruckTypeFilterResponse>>>;
+    public apiTrucktypeFilterGet(search?: string, active?: number, repairShopId?: number, observe: any = 'body', reportProgress: boolean = false, options?: {httpHeaderAccept?: 'text/plain' | 'application/json' | 'text/json', context?: HttpContext}): Observable<any> {
 
         let localVarQueryParameters = new HttpParams({encoder: this.encoder});
         if (search !== undefined && search !== null) {
@@ -112,6 +113,10 @@ export class TruckTypeService {
         if (active !== undefined && active !== null) {
           localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
             <any>active, 'Active');
+        }
+        if (repairShopId !== undefined && repairShopId !== null) {
+          localVarQueryParameters = this.addToHttpParams(localVarQueryParameters,
+            <any>repairShopId, 'RepairShopId');
         }
 
         let localVarHeaders = this.defaultHeaders;

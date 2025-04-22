@@ -1,17 +1,17 @@
-import { TableStringEnum } from '@shared/enums';
+import { eCommonElement } from '@shared/enums';
 
 export class TableViewHelper {
     static createTableViewConts(shouldAddMap?: boolean) {
         // Base array of table views
         const tableViews = [
-            { name: TableStringEnum.LIST },
-            { name: TableStringEnum.CARD },
+            { name: eCommonElement.LIST },
+            { name: eCommonElement.CARD },
         ];
-        
+
         if (shouldAddMap) {
-            tableViews.push({ name: TableStringEnum.MAP });
+            tableViews.push({ name: eCommonElement.MAP });
         }
-    
+
         return tableViews;
     }
 }

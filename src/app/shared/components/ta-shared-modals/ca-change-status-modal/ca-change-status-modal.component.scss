@@ -1,0 +1,8 @@
+@import 'src/theme/variables.scss';
+
+.not-clickable {
+    pointer-events: none;
+    cursor: not-allowed;
+    background: $ta-light-grey-5 !important;
+    color: $ta-light-grey-6 !important;
+}

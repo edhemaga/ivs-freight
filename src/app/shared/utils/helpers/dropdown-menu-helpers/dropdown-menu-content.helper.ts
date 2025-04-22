@@ -13,11 +13,12 @@ import {
     DropdownMenuContentConditionalItemsHelper,
 } from '@shared/utils/helpers/dropdown-menu-helpers';
 
-// models
+// interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
+// models
 import { OptionsPopupContent } from '@shared/components/ta-table/ta-table-toolbar/models/options-popup-content.model';
 import { IDropdownMenuLoadItem } from '@pages/accounting/pages/payroll/state/models';
-import { DropdownMenuContentConstants } from '@shared/utils/constants';
 
 export class DropdownMenuContentHelper {
     // contact
@@ -443,22 +444,31 @@ export class DropdownMenuContentHelper {
     }
 
     // load
-    static getLoadDropdownContent(selectedTab: string): IDropdownMenuItem[] {
+    static getLoadDropdownContent(
+        selectedTab: string,
+        isDetailsPageDropdown: boolean = false
+    ): IDropdownMenuItem[] {
+        const isTemplateLoad = selectedTab === eDropdownMenu.TEMPLATE;
         const isPendingLoad = selectedTab === eDropdownMenu.PENDING;
         const isClosedLoad = selectedTab === eDropdownMenu.CLOSED;
+        const isTemplateOrPendingLoad = isTemplateLoad || isPendingLoad;
 
         const modifierItems =
             DropdownMenuContentConditionalItemsHelper.getLoadModifierItems(
-                isPendingLoad
+                isTemplateOrPendingLoad
             );
 
         // requested items
-        const requestedConditionalItems = [eDropdownMenu.CREATE_TEMPLATE];
+        const requestedConditionalItems = isTemplateLoad
+            ? [eDropdownMenu.CREATE_LOAD]
+            : [eDropdownMenu.CREATE_TEMPLATE];
 
         const requestedSharedItems = [
             eDropdownMenu.EDIT,
-            eDropdownMenu.VIEW_DETAILS,
-            isClosedLoad && eDropdownMenu.EXPORT_BATCH,
+            !isTemplateLoad &&
+                !isDetailsPageDropdown &&
+                eDropdownMenu.VIEW_DETAILS,
+            !isTemplateLoad && isClosedLoad && eDropdownMenu.EXPORT_BATCH,
             eDropdownMenu.SHARE,
             eDropdownMenu.PRINT,
             eDropdownMenu.DELETE,
@@ -478,10 +488,12 @@ export class DropdownMenuContentHelper {
                 modifierItems
             );
 
+        const sharedItemsStartIndex = isTemplateLoad ? 1 : isClosedLoad ? 3 : 2;
+
         return [
-            ...sharedItems.slice(0, isClosedLoad ? 3 : 2),
+            ...sharedItems.slice(0, sharedItemsStartIndex),
             ...conditionalItems,
-            ...sharedItems.slice(isClosedLoad ? 3 : 2),
+            ...sharedItems.slice(sharedItemsStartIndex),
         ];
     }
 
@@ -681,7 +693,13 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [...conditionalItems, ...sharedItems];
+        return isOpenPayroll
+            ? [...conditionalItems, ...sharedItems]
+            : [
+                  conditionalItems[0],
+                  ...sharedItems,
+                  ...conditionalItems.slice(1),
+              ];
     }
 
     // payroll select load
@@ -740,8 +758,8 @@ export class DropdownMenuContentHelper {
         const requestedSharedItems = [
             eDropdownMenuColumns.COLUMNS,
             isTableLocked
-                ? eDropdownMenuColumns.LOCK_TABLE
-                : eDropdownMenuColumns.UNLOCK_TABLE,
+                ? eDropdownMenuColumns.UNLOCK_TABLE
+                : eDropdownMenuColumns.LOCK_TABLE,
             eDropdownMenuColumns.RESET_TABLE,
         ];
 
@@ -754,6 +772,7 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
+    // cards
     static getCardToolbarDropdownContent(
         cardFlipViewMode: eCardFlipViewMode
     ): IDropdownMenuItem[] {
@@ -773,8 +792,9 @@ export class DropdownMenuContentHelper {
         return [...sharedItems];
     }
 
+    // columns
     static getToolbarColumnsDropdownContent(
-        milesColumnsList: IDropdownMenuItem[]
+        columnsList: IDropdownMenuItem[]
     ): IDropdownMenuItem[] {
         const requestedSharedItems = [eDropdownMenuColumns.COLUMNS_BACK];
 
@@ -784,7 +804,7 @@ export class DropdownMenuContentHelper {
                 true
             );
 
-        return [...conditionalItems, ...milesColumnsList];
+        return [...conditionalItems, ...columnsList];
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -798,7 +818,7 @@ export class DropdownMenuContentHelper {
         return [
             {
                 title: 'Edit',
-                name: eGeneralActions.EDIT,
+                name: eGeneralActions.EDIT_LOWERCASE,
                 svgUrl: 'assets/svg/truckassist-table/new-list-dropdown/Edit.svg',
                 svgStyle: {
                     width: 18,

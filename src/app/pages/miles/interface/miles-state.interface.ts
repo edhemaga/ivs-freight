@@ -6,21 +6,21 @@ import { eMileTabs } from '@pages/miles/enums';
 import { ITableData } from '@shared/models';
 
 // Interface
-import { IStateFilters } from '@shared/interfaces';
+import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+import { ITableConfig } from '@shared/components/new-table/interface';
 
 // External Services or Models
-import {
-    MilesByUnitPaginatedStopsResponse,
-    MilesStateFilterResponse,
-} from 'appcoretruckassist';
+import { MilesStateFilterResponse, RoutingResponse } from 'appcoretruckassist';
 import {
     IMilesDetailsFilters,
     IMilesModel,
     IMilesTabResults,
+    IMinimalListState,
+    IMinimalStopsState,
 } from '@pages/miles/interface';
-import { ITableConfig } from '@shared/components/new-table/interface';
+import { ICaMapProps } from 'ca-components';
 
 export interface IMilesState {
     items: IMilesModel[];
@@ -30,18 +30,19 @@ export interface IMilesState {
     activeViewMode: eActiveViewMode;
     filters: IStateFilters;
     states: MilesStateFilterResponse[];
-    selectedCount: number;
     columns: ITableColumn[];
-    hasAllItemsSelected: boolean;
     cardFlipViewMode: eCardFlipViewMode;
     toolbarDropdownMenuOptions: IDropdownMenuItem[];
     isToolbarDropdownMenuColumnsActive: boolean;
     page: number;
-    
+
     tabResults: IMilesTabResults;
 
-    // Is used for next, prev icons to navigate throught list
-    details: MilesByUnitPaginatedStopsResponse;
-    unitsPagination: IMilesDetailsFilters;
+    details: IMinimalStopsState;
+    isDetailsLoading: boolean;
     tableSettings: ITableConfig;
+    minimalList: IMinimalListState;
+    minimalListFilters: IMinimalListFilters;
+    unitMapRoutes: RoutingResponse;
+    unitMapData: ICaMapProps;
 }

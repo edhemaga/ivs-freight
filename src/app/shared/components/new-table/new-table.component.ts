@@ -16,16 +16,24 @@ import { AngularSvgIconModule } from 'angular-svg-icon';
 // components
 import { TaAppTooltipV2Component } from '@shared/components/ta-app-tooltip-v2/ta-app-tooltip-v2.component';
 import { TaCustomScrollbarComponent } from '@shared/components/ta-custom-scrollbar/ta-custom-scrollbar.component';
+import { CaShowMoreComponent } from 'ca-components';
 
 // svg routes
 import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // pipes
-import { TableColumnClassPipe } from '@shared/components/new-table/pipes';
+import {
+    TableColumnActionClassPipe,
+    TableColumnCellClassPipe,
+    TableColumnClassPipe,
+    TableColumnLabelWidthPipe,
+    TableGroupClassPipe,
+    TableGroupLabelIndexPipe,
+} from '@shared/components/new-table/pipes';
 
 // enums
 import { ePosition, eUnit } from 'ca-components';
-import { eColor, eGeneralActions } from '@shared/enums';
+import { eColor, eCommonElement, eGeneralActions } from '@shared/enums';
 import { SortOrder } from 'appcoretruckassist';
 
 // directives
@@ -54,9 +62,15 @@ import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
         // components
         TaAppTooltipV2Component,
         TaCustomScrollbarComponent,
+        CaShowMoreComponent,
 
         // pipes
         TableColumnClassPipe,
+        TableGroupClassPipe,
+        TableGroupLabelIndexPipe,
+        TableColumnLabelWidthPipe,
+        TableColumnActionClassPipe,
+        TableColumnCellClassPipe,
 
         // directives
         ResizableColumnDirective,
@@ -74,11 +88,13 @@ export class NewTableComponent<T> {
     @Input() templates: { [key: string]: TemplateRef<T> } = {};
     @Input() expandedRows: Set<number> = new Set([]);
 
-    @Output() onHandleShowMoreClick: EventEmitter<boolean> = new EventEmitter();
+    @Output() onShowMore: EventEmitter<boolean> = new EventEmitter();
     @Output() onSortingChange: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnPinned: EventEmitter<ITableColumn> = new EventEmitter();
     @Output() onColumnResize: EventEmitter<ITableResizeAction> =
         new EventEmitter();
+
+    @Output() onRemoveColumn: EventEmitter<string> = new EventEmitter();
 
     // columns
     public leftPinnedColumns: ITableColumn[] = [];
@@ -87,11 +103,15 @@ export class NewTableComponent<T> {
     public hasActiveLeftPinnedColumns: boolean = false;
     public hasActiveRightPinnedColumns: boolean = false;
 
+    // actions
+    public headingHoverId: number = null;
+
     // enums
     public ePosition = ePosition;
     public eColor = eColor;
     public eGeneralActions = eGeneralActions;
     public eUnit = eUnit;
+    public eCommonElement = eCommonElement;
     public sortOrder = SortOrder;
 
     // scroll
@@ -141,12 +161,20 @@ export class NewTableComponent<T> {
         this.onSortingChange.emit(column);
     }
 
-    public handleShowMoreClick(): void {
-        this.onHandleShowMoreClick.emit(true);
+    public onShowMoreClick(): void {
+        this.onShowMore.emit();
     }
 
     public onColumnWidthResize(resizeAction: ITableResizeAction): void {
         this.onColumnResize.emit(resizeAction);
+    }
+
+    public onColumnHeadingHover(columnId: number): void {
+        this.headingHoverId = columnId;
+    }
+
+    public onRemoveColumnClick(columnKey: string): void {
+        this.onRemoveColumn.emit(columnKey);
     }
 
     public isRowExpanded(rowId: number): boolean {

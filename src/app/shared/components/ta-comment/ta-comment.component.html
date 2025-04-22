@@ -1,504 +1,33 @@
-<ng-container *ngIf="!commentCardsDataDropdown">
-    <div
-        class="d-flex flex-column comment-container"
-        [ngClass]="{ inactive: !isCommenting }"
-    >
-        <!-- Comment Header -->
-
-        <div
-            class="d-flex align-items-start justify-content-between comment-header"
-        >
-            <div class="d-flex align-items-center comment-header-left">
-                <!-- Regular Layout -->
-
-                <ng-container
-                    *ngIf="!isDetailsCommentLayout; else detailsLayout"
-                >
-                    <img
-                        [src]="
-                            commentAvatar ??
-                            'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                        "
-                        alt="User Profile Image"
-                    />
-
-                    <p class="m-0 ta-font-semi-bold">
-                        {{ commentData.companyUser.name }}
-                    </p>
-
-                    <ng-container *ngIf="!isCommenting">
-                        <ng-container *ngIf="isMe">
-                            <div class="me-container">
-                                <span class="m-0 ta-font-bold">(Me)</span>
-                            </div>
-                        </ng-container>
-
-                        <ng-container *ngIf="commentDate">
-                            <div class="date-container">
-                                <span class="m-0 ta-font-medium">
-                                    • {{ commentDate }}
-                                </span>
-                            </div>
-                        </ng-container>
-
-                        <ng-container *ngIf="isEdited">
-                            <div class="edited-container">
-                                <span class="m-0 ta-font-medium">• Edited</span>
-                            </div>
-                        </ng-container>
-                    </ng-container>
-                </ng-container>
-
-                <!-- Details layout -->
-
-                <ng-template #detailsLayout>
-                    <div class="d-flex align-items-center details-container">
-                        <img
-                            [ngStyle]="{ 'margin-bottom': !isMe ? '6px' : 0 }"
-                            [src]="
-                                commentAvatar ??
-                                'assets/svg/truckassist-table/user-avatar-no-profile.svg'
-                            "
-                            alt="User Profile Image"
-                        />
-
-                        <div class="d-flex flex-column justify-content-center">
-                            <div class="d-flex align-items-center">
-                                <p
-                                    class="m-0 ta-font-semi-bold"
-                                    [innerHTML]="
-                                        higlitsPartOfCommentSearchValue(
-                                            commentData.companyUser.name
-                                        )
-                                    "
-                                ></p>
-
-                                <ng-container *ngIf="!isCommenting && isMe">
-                                    <div class="me-container">
-                                        <span class="m-0 ta-font-bold">
-                                            (Me)
-                                        </span>
-                                    </div>
-                                </ng-container>
-                            </div>
-
-                            <ng-container *ngIf="!isCommenting">
-                                <div class="d-flex align-items-center">
-                                    <ng-container *ngIf="commentDate">
-                                        <div
-                                            class="date-container"
-                                            [ngStyle]="{
-                                                'margin-top': isMe
-                                                    ? '-12px'
-                                                    : '-6px'
-                                            }"
-                                        >
-                                            <span class="m-0 ta-font-medium">
-                                                {{ commentDate }}
-                                            </span>
-                                        </div>
-                                    </ng-container>
-
-                                    <ng-container *ngIf="isEdited">
-                                        <div
-                                            class="edited-container"
-                                            [ngStyle]="{
-                                                'margin-top': isMe
-                                                    ? '-12px'
-                                                    : '-6px'
-                                            }"
-                                        >
-                                            <span class="m-0 ta-font-medium">
-                                                • Edited
-                                            </span>
-                                        </div>
-                                    </ng-container>
-                                </div>
-                            </ng-container>
-                        </div>
-                    </div>
-                </ng-template>
-            </div>
-
-            <div
-                class="d-flex align-items-center justify-content-center comment-header-right"
-            >
-                <ng-container *ngIf="isCommenting">
-                    <div
-                        ngbTooltip
-                        [mainTooltip]="isEditing ? 'Confirm Edit' : 'Confirm'"
-                        tooltipBackground="#424242"
-                        position="top"
-                    >
-                        <svg-icon
-                            class="confirm-icon"
-                            [ngClass]="{
-                                disabled: isDisabled
-                            }"
-                            src="assets/svg/ic_spec-confirm.svg"
-                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                            (click)="handleBtnActionClick('Confirm')"
-                        ></svg-icon>
-                    </div>
-
-                    <div
-                        ngbTooltip
-                        mainTooltip="Cancel"
-                        tooltipBackground="#424242"
-                        position="top"
-                    >
-                        <svg-icon
-                            class="cancel-icon"
-                            src="assets/svg/ic_x.svg"
-                            [svgStyle]="{ 'width.px': 18, 'height.px': 18 }"
-                            (click)="handleBtnActionClick('Cancel')"
-                        ></svg-icon>
-                    </div>
-                </ng-container>
-
-                <ng-container *ngIf="!isCommenting">
-                    <ng-container *ngIf="!isEditButtonDisabled">
-                        <div
-                            class="d-flex justify-content-center align-items-center edit-icon-container"
-                            ngbTooltip
-                            mainTooltip="Edit"
-                            tooltipBackground="#424242"
-                            position="top"
-                        >
-                            <svg-icon
-                                class="icon"
-                                src="assets/svg/truckassist-table/dropdown/content/edit-hover.svg"
-                                [svgStyle]="{ 'width.px': 13, 'height.px': 13 }"
-                                (click)="handleBtnActionClick('Edit')"
-                            ></svg-icon>
-                        </div>
-                    </ng-container>
-
-                    <div
-                        class="d-flex justify-content-center align-items-center delete-icon-container"
-                        ngbTooltip
-                        mainTooltip="Delete"
-                        tooltipBackground="#DF3C3C"
-                        position="top"
-                    >
-                        <svg-icon
-                            class="icon"
-                            src="assets/svg/truckassist-table/dropdown/content/delete-hover-new.svg"
-                            [svgStyle]="{ 'width.px': 11, 'height.px': 13 }"
-                            (click)="handleBtnActionClick('Delete')"
-                        ></svg-icon>
-                    </div>
-                </ng-container>
-            </div>
-        </div>
-
-        <!-- Comment Body -->
-
-        <div class="d-flex align-items-center comment-body">
-            <div
-                #commentInput
-                class="comment-input"
-                [ngClass]="{
-                    'no-value':
-                        commentInput?.textContent === 'Write Comment...',
-                    details: isDetailsCommentLayout
-                }"
-                [ngStyle]="{
-                    'margin-top':
-                        isDetailsCommentLayout && !isCommenting
-                            ? isMe
-                                ? '-8px'
-                                : '-6px'
-                            : '0'
-                }"
-                [attr.contenteditable]="isCommenting"
-                [innerHTML]="
-                    higlitsPartOfCommentSearchValue(commentData.commentContent)
-                "
-                spellcheck="false"
-                (focus)="handleCommentChange()"
-                (input)="handleCommentChange()"
-                (blur)="handleCommentBlur()"
-                (paste)="onPaste($event)"
-            ></div>
-        </div>
-    </div>
-</ng-container>
-
+@let avatar = commentCardsDataDropdown?.companyUser?.avatar;
 <!-- Comments for cards -->
-
-<ng-container *ngIf="commentCardsDataDropdown">
-    <ng-container *ngIf="!editingCardComment">
-        <div class="comments-dropdown hoverable">
-            <div class="d-grid">
-                <div class="d-flex align-items-center top-comment-body">
-                    <ng-container
-                        *ngIf="!commentCardsDataDropdown?.companyUser.avatar"
-                    >
-                        <div class="d-flex">
-                            <span
-                                class="user-image d-flex align-items-center justify-content-center ta-font-extra-bold"
-                                [style]="{
-                                    background:
-                                        commentCardsDataDropdown.avatarColor
-                                            ?.background,
-                                    color: commentCardsDataDropdown.avatarColor
-                                        ?.color
-                                }"
-                                >{{
-                                    commentCardsDataDropdown?.textShortName
-                                }}</span
-                            >
-                        </div>
-                    </ng-container>
-
-                    <div class="d-grid title-holder">
-                        <div
-                            class="d-flex justify-content-between title-svg-holder"
-                        >
-                            <div class="d-flex align-items-center creds-holder">
-                                <ng-container
-                                    *ngIf="loggedUserCommented; else notLogged"
-                                >
-                                    <span
-                                        class="text-white ta-font-semi-bold"
-                                        (click)="
-                                            toogleComment(
-                                                commentCardsDataDropdown
-                                            )
-                                        "
-                                        [innerHTML]="
-                                            abbreviateFullName(
-                                                commentCardsDataDropdown
-                                                    .companyUser.fullName
-                                            )
-                                                | taCommentHighlistComponentPipe
-                                                    : commentHighlight
-                                        "
-                                    ></span>
-                                </ng-container>
-
-                                <ng-template #notLogged>
-                                    <ng-container *ngIf="!loggedUserCommented">
-                                        <span
-                                            class="text-white ta-font-semi-bold"
-                                            (click)="
-                                                toogleComment(
-                                                    commentCardsDataDropdown
-                                                )
-                                            "
-                                            [innerHTML]="
-                                                commentCardsDataDropdown
-                                                    .companyUser.fullName
-                                                    | taCommentHighlistComponentPipe
-                                                        : commentHighlight
-                                            "
-                                        ></span>
-                                    </ng-container>
-                                </ng-template>
-                                <!-- if owner of the card -->
-
-                                <ng-container *ngIf="loggedUserCommented">
-                                    <span class="card-user-me ta-font-bold"
-                                        >(Me)</span
-                                    >
-                                </ng-container>
-
-                                <ng-container
-                                    *ngIf="commentCardsDataDropdown.liked"
-                                >
-                                    <svg-icon
-                                        class="like-icon"
-                                        [src]="'assets/svg/common/ic_like.svg'"
-                                        [svgStyle]="{
-                                            'width.px': 13,
-                                            'height.px': 13
-                                        }"
-                                    ></svg-icon>
-                                </ng-container>
-
-                                <ng-container
-                                    *ngIf="commentCardsDataDropdown.disliked"
-                                >
-                                    <svg-icon
-                                        class="dislike-icon"
-                                        [src]="
-                                            'assets/svg/common/ic_dislike.svg'
-                                        "
-                                        [svgStyle]="{
-                                            'width.px': 13,
-                                            'height.px': 13
-                                        }"
-                                    ></svg-icon>
-                                </ng-container>
-                            </div>
-
-                            <div class="user-icons d-flex align-items-center">
-                                <ng-container *ngIf="loggedUserCommented">
-                                    <span
-                                        ngbTooltip
-                                        mainTooltip="Edit"
-                                        type="button"
-                                        tooltipBackground="#CCCCCC"
-                                        tooltipColor="#2F2F2F"
-                                        customClass="mb-2"
-                                        position="top"
-                                        (click)="openEditComment(true)"
-                                        class="edit-tooltip d-flex align-items-center justify-content-center"
-                                    >
-                                        <svg-icon
-                                            class="edit-icon"
-                                            [src]="
-                                                'assets/svg/truckassist-table/dropdown/content/edit.svg'
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': 13,
-                                                'height.px': 13
-                                            }"
-                                        ></svg-icon>
-                                    </span>
-
-                                    <span
-                                        ngbTooltip
-                                        mainTooltip="Delete"
-                                        tooltipBackground="#CCCCCC"
-                                        tooltipColor="#2F2F2F"
-                                        customClass="mb-2"
-                                        position="top"
-                                        type="button"
-                                        class="edit-tooltip d-flex align-items-center justify-content-center"
-                                        (click)="
-                                            deleteComment(
-                                                commentCardsDataDropdown.id
-                                            )
-                                        "
-                                    >
-                                        <svg-icon
-                                            class="delete-icon"
-                                            [src]="
-                                                'assets/svg/truckassist-table/dropdown/content/delete.svg'
-                                            "
-                                            [svgStyle]="{
-                                                'width.px': 11,
-                                                'height.px': 13
-                                            }"
-                                        ></svg-icon>
-                                    </span>
-                                </ng-container>
-
-                                <ng-container
-                                    *ngIf="
-                                        commentCardsDataDropdown.commentContent
-                                    "
-                                >
-                                    <span
-                                        class="open-dropdown-icon d-flex align-items-center justify-content-center"
-                                    >
-                                        <ng-container
-                                            *ngIf="
-                                                commentCardsDataDropdown
-                                                    .commentContent.length >= 42
-                                            "
-                                        >
-                                            <svg-icon
-                                                [src]="
-                                                    'assets/svg/common/fill_arrow_down.svg'
-                                                "
-                                                [ngClass]="{
-                                                    'rotate-svg':
-                                                        commentCardsDataDropdown.isOpen,
-                                                    'rotate-back':
-                                                        !commentCardsDataDropdown.isOpen
-                                                }"
-                                                class="arrow-svg-icon"
-                                                [svgStyle]="{
-                                                    'width.px': 10,
-                                                    'height.px': 10
-                                                }"
-                                            >
-                                            </svg-icon>
-                                        </ng-container>
-                                    </span>
-                                </ng-container>
-                            </div>
-                        </div>
-
-                        <div class="d-flex">
-                            <span
-                                class="ta-font-medium muted-text"
-                                (click)="
-                                    toogleComment(commentCardsDataDropdown)
-                                "
-                                >{{ commentCardsDataDropdown.createdAt }}</span
-                            >
-
-                            <!-- if card is edited -->
-
-                            <ng-container
-                                *ngIf="commentCardsDataDropdown?.edited"
-                            >
-                                <span class="card-user-edited ta-font-medium"
-                                    >• Edited</span
-                                >
-                            </ng-container>
-                        </div>
-                    </div>
-                </div>
-                <ng-container *ngIf="commentCardsDataDropdown.commentContent">
-                    <span
-                        class="text-white comment-text"
-                        [ngClass]="{
-                            'show-comment': commentCardsDataDropdown.isOpen
-                        }"
-                        [@dropdownAnimationComment]="
-                            commentCardsDataDropdown.isOpen ? 'true' : 'false'
-                        "
-                        [innerHTML]="
-                            commentCardsDataDropdown.commentContent
-                                | taCommentHighlistComponentPipe
-                                    : commentHighlight
-                        "
-                    ></span>
-                </ng-container>
-            </div>
-        </div>
-    </ng-container>
-
-    <!-- Editing comment component -->
-    <ng-container *ngIf="editingCardComment">
+@if (commentCardsDataDropdown) {
+    @if (editingCardComment) {
         <div class="comments-dropdown editable">
             <div class="d-grid">
                 <div class="d-flex align-items-center top-comment-body">
-                    <ng-container *ngIf="!commentCardsDataDropdown.userAvatar">
+                    @if (!commentCardsDataDropdown.userAvatar) {
                         <div class="d-flex">
+                            @let avatarColor =
+                                commentCardsDataDropdown?.avatarColor;
                             <span
                                 class="user-image d-flex align-items-center justify-content-center ta-font-extra-bold"
                                 [style]="{
-                                    background:
-                                        commentCardsDataDropdown?.avatarColor
-                                            ?.background,
-                                    color: commentCardsDataDropdown?.avatarColor
-                                        ?.color
+                                    background: avatarColor?.background,
+                                    color: avatarColor.color,
                                 }"
                                 >{{
                                     commentCardsDataDropdown.textShortName
                                 }}</span
                             >
                         </div>
-                    </ng-container>
+                    }
 
-                    <ng-template
-                        *ngIf="commentCardsDataDropdown?.companyUser.avatar"
-                    >
-                        {{ commentCardsDataDropdown?.companyUser.avatar }}
+                    @if (avatar) {
+                        {{ avatar }}
                         <img
-                            src="{{
-                                'data:image/jpg;base64,' +
-                                    commentCardsDataDropdown?.companyUser.avatar
-                            }}"
-                            alt=""
+                            [src]="eSharedString.DATA_IMAGE_JPG_BASE64 + avatar"
                         />
-                    </ng-template>
+                    }
 
                     <div class="d-grid title-holder">
                         <div
@@ -521,24 +50,20 @@
                             ></span>
 
                             <!-- if card is edited -->
-
-                            <ng-container
-                                *ngIf="commentCardsDataDropdown.edited"
-                            >
+                            @if (commentCardsDataDropdown.edited) {
                                 <span class="card-user-edited ta-font-medium"
                                     >• Edited</span
                                 >
-                            </ng-container>
-
+                            }
                             <div class="user-icons d-flex">
                                 <span
                                     ngbTooltip
-                                    mainTooltip="Confirm"
                                     type="button"
-                                    tooltipBackground="#CCCCCC"
-                                    tooltipColor="#2F2F2F"
+                                    [tooltipBackground]="eColor.LIGHT_GRAY_6"
                                     customClass="mb-2"
-                                    position="top"
+                                    [tooltipColor]="eColor.BLACK_2"
+                                    [mainTooltip]="eGeneralActions.CONFIRM"
+                                    [position]="ePosition.TOP"
                                     (click)="
                                         editComment(commentCardsDataDropdown.id)
                                     "
@@ -546,35 +71,27 @@
                                     [tooltipClass]="customClass"
                                 >
                                     <svg-icon
-                                        class="confirm-icon d-flex align-items-center justify-content-center"
-                                        [src]="'assets/svg/applicant/check.svg'"
-                                        [svgStyle]="{
-                                            'width.px': 12,
-                                            'height.px': 10
-                                        }"
+                                        class="confirm-icon d-flex align-items-center justify-content-center svg-size-12"
+                                        [src]="sharedSvgRoutes.BLUE_CHECKMARK"
                                     ></svg-icon>
                                 </span>
 
                                 <span
                                     ngbTooltip
-                                    mainTooltip="Cancel"
-                                    tooltipBackground="#CCCCCC"
-                                    tooltipColor="#2F2F2F"
                                     customClass="mb-2"
-                                    position="top"
                                     type="button"
-                                    (click)="openEditComment(false)"
                                     class="cancel-tooltip d-flex align-items-center justify-content-center"
+                                    [tooltipColor]="eColor.BLACK_2"
+                                    [tooltipBackground]="eColor.LIGHT_GRAY_6"
+                                    [mainTooltip]="
+                                        eGeneralActions.CANCEL_CAPITALIZED
+                                    "
+                                    [position]="ePosition.TOP"
+                                    (click)="onOpenEditComment(false)"
                                 >
                                     <svg-icon
-                                        class="cancel-icon d-flex align-items-center justify-content-center"
-                                        [src]="
-                                            'assets/svg/applicant/invalid-review-x.svg'
-                                        "
-                                        [svgStyle]="{
-                                            'width.px': 10,
-                                            'height.px': 10
-                                        }"
+                                        class="cancel-icon d-flex align-items-center justify-content-center svg-size-10"
+                                        [src]="sharedSvgRoutes.CLOSE_ICON"
                                     ></svg-icon>
                                 </span>
                             </div>
@@ -595,5 +112,419 @@
                 ></div>
             </div>
         </div>
-    </ng-container>
-</ng-container>
+    } @else {
+        <div class="comments-dropdown hoverable">
+            <div class="d-grid">
+                <div class="d-flex align-items-center top-comment-body">
+                    @if (!avatar) {
+                        <div class="d-flex">
+                            <span
+                                class="user-image d-flex align-items-center justify-content-center ta-font-extra-bold"
+                                [style]="{
+                                    background:
+                                        commentCardsDataDropdown.avatarColor
+                                            ?.background,
+                                    color: commentCardsDataDropdown.avatarColor
+                                        ?.color,
+                                }"
+                                >{{
+                                    commentCardsDataDropdown?.textShortName
+                                }}</span
+                            >
+                        </div>
+                    }
+
+                    <div class="d-grid title-holder">
+                        <div
+                            class="d-flex justify-content-between title-svg-holder"
+                        >
+                            <div class="d-flex align-items-center creds-holder">
+                                @if (loggedUserCommented) {
+                                    <span
+                                        class="text-white ta-font-semi-bold"
+                                        (click)="
+                                            toggleComment(
+                                                commentCardsDataDropdown
+                                            )
+                                        "
+                                        [innerHTML]="
+                                            commentCardsDataDropdown.companyUser
+                                                .fullName
+                                                | abbreviateFullname
+                                                | taCommentHighlistComponentPipe
+                                                    : commentHighlight
+                                        "
+                                    ></span>
+                                } @else {
+                                    @if (!loggedUserCommented) {
+                                        <span
+                                            class="text-white ta-font-semi-bold"
+                                            (click)="
+                                                onToogleComment(
+                                                    commentCardsDataDropdown
+                                                )
+                                            "
+                                            [innerHTML]="
+                                                commentCardsDataDropdown
+                                                    .companyUser.fullName
+                                                    | taCommentHighlistComponentPipe
+                                                        : commentHighlight
+                                            "
+                                        ></span>
+                                    }
+                                }
+
+                                <!-- if owner of the card -->
+
+                                @if (loggedUserCommented) {
+                                    <span class="card-user-me ta-font-bold"
+                                        >(Me)</span
+                                    >
+                                }
+                                @if (commentCardsDataDropdown.liked) {
+                                    <svg-icon
+                                        class="like-icon svg-size-13"
+                                        [src]="sharedSvgRoutes.LIKE_ICON"
+                                    ></svg-icon>
+                                }
+                                @if (commentCardsDataDropdown.disliked) {
+                                    <svg-icon
+                                        class="dislike-icon svg-size-13"
+                                        [src]="sharedSvgRoutes.DISLIKE_ICON"
+                                    ></svg-icon>
+                                }
+                            </div>
+
+                            <div class="user-icons d-flex align-items-center">
+                                @if (loggedUserCommented) {
+                                    <span
+                                        ngbTooltip
+                                        type="button"
+                                        [tooltipBackground]="
+                                            eColor.LIGHT_GRAY_6
+                                        "
+                                        customClass="mb-2"
+                                        class="edit-tooltip d-flex align-items-center justify-content-center"
+                                        [tooltipColor]="eColor.BLACK_2"
+                                        [position]="ePosition.TOP"
+                                        [mainTooltip]="eGeneralActions.EDIT"
+                                        (click)="onOpenEditComment(true)"
+                                    >
+                                        <svg-icon
+                                            class="edit-icon svg-size-13"
+                                            [src]="
+                                                'assets/svg/truckassist-table/dropdown/content/edit.svg'
+                                            "
+                                        ></svg-icon>
+                                    </span>
+
+                                    <span
+                                        ngbTooltip
+                                        customClass="mb-2"
+                                        type="button"
+                                        class="edit-tooltip d-flex align-items-center justify-content-center"
+                                        [tooltipColor]="eColor.BLACK_2"
+                                        [tooltipBackground]="
+                                            eColor.LIGHT_GRAY_6
+                                        "
+                                        [position]="ePosition.TOP"
+                                        [mainTooltip]="eGeneralActions.DELETE"
+                                        (click)="
+                                            deleteComment(
+                                                commentCardsDataDropdown.id
+                                            )
+                                        "
+                                    >
+                                        <svg-icon
+                                            class="delete-icon svg-size-13"
+                                            [src]="sharedSvgRoutes.DELETE_ICON"
+                                        ></svg-icon>
+                                    </span>
+                                }
+                                @if (commentCardsDataDropdown.commentContent) {
+                                    <span
+                                        class="open-dropdown-icon d-flex align-items-center justify-content-center"
+                                    >
+                                        @if (
+                                            commentCardsDataDropdown
+                                                .commentContent.length >= 42
+                                        ) {
+                                            <svg-icon
+                                                [src]="
+                                                    sharedSvgRoutes.PRIMARY_ARROW_DOWN
+                                                "
+                                                [ngClass]="{
+                                                    'rotate-svg':
+                                                        commentCardsDataDropdown.isOpen,
+                                                    'rotate-back':
+                                                        !commentCardsDataDropdown.isOpen,
+                                                }"
+                                                class="arrow-svg-icon svg-size-10"
+                                            >
+                                            </svg-icon>
+                                        }
+                                    </span>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="d-flex">
+                            <span
+                                class="ta-font-medium muted-text"
+                                (click)="
+                                    toggleComment(commentCardsDataDropdown)
+                                "
+                                >{{ commentCardsDataDropdown.createdAt }}</span
+                            >
+
+                            <!-- if card is edited -->
+                            @if (commentCardsDataDropdown?.edited) {
+                                <span class="card-user-edited ta-font-medium"
+                                    >• Edited</span
+                                >
+                            }
+                        </div>
+                    </div>
+                </div>
+                @if (commentCardsDataDropdown.commentContent) {
+                    <span
+                        class="text-white comment-text"
+                        [ngClass]="{
+                            'show-comment': commentCardsDataDropdown.isOpen,
+                        }"
+                        [@dropdownAnimationComment]="
+                            commentCardsDataDropdown.isOpen ? 'true' : 'false'
+                        "
+                        [innerHTML]="
+                            commentCardsDataDropdown.commentContent
+                                | taCommentHighlistComponentPipe
+                                    : commentHighlight
+                        "
+                    ></span>
+                }
+            </div>
+        </div>
+    }
+} @else {
+    <div
+        class="d-flex flex-column comment-container"
+        [ngClass]="{ inactive: !isCommenting }"
+    >
+        <!-- Comment Header -->
+
+        <div
+            class="d-flex align-items-start justify-content-between comment-header"
+        >
+            <div class="d-flex align-items-center comment-header-left">
+                <!-- Regular Layout -->
+
+                @if (isDetailsCommentLayout) {
+                    <div class="d-flex align-items-center details-container">
+                        <img
+                            [ngStyle]="{ 'margin-bottom': !isMe ? '6px' : 0 }"
+                            [src]="
+                                commentAvatar ??
+                                sharedSvgRoutes.USER_AVATAR_NO_PROFILE
+                            "
+                            alt="User Profile Image"
+                        />
+
+                        <div class="d-flex flex-column justify-content-center">
+                            <div class="d-flex align-items-center">
+                                <p
+                                    class="m-0 ta-font-semi-bold"
+                                    [innerHTML]="
+                                        commentData.companyUser.name
+                                            | highlightCommentPart
+                                    "
+                                ></p>
+
+                                @if (!isCommenting && isMe) {
+                                    <div class="me-container">
+                                        <span class="m-0 ta-font-bold">
+                                            (Me)
+                                        </span>
+                                    </div>
+                                }
+                            </div>
+
+                            @if (!isCommenting) {
+                                <div class="d-flex align-items-center">
+                                    @if (commentDate) {
+                                        <div
+                                            class="date-container"
+                                            [ngStyle]="{
+                                                'margin-top': isMe
+                                                    ? '-12px'
+                                                    : '-6px',
+                                            }"
+                                        >
+                                            <span class="m-0 ta-font-medium">
+                                                {{ commentDate }}
+                                            </span>
+                                        </div>
+                                    }
+
+                                    @if (isEdited) {
+                                        <div
+                                            class="edited-container"
+                                            [ngStyle]="{
+                                                'margin-top': isMe
+                                                    ? '-12px'
+                                                    : '-6px',
+                                            }"
+                                        >
+                                            <span class="m-0 ta-font-medium">
+                                                • Edited
+                                            </span>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                } @else {
+                    <img
+                        [src]="
+                            commentAvatar ??
+                            sharedSvgRoutes.USER_AVATAR_NO_PROFILE
+                        "
+                        alt="User Profile Image"
+                    />
+
+                    <p class="m-0 ta-font-semi-bold">
+                        {{ commentData.companyUser.name }}
+                    </p>
+
+                    @if (!isCommenting) {
+                        @if (isMe) {
+                            <div class="me-container">
+                                <span class="m-0 ta-font-bold">(Me)</span>
+                            </div>
+                        }
+
+                        @if (commentDate) {
+                            <div class="date-container">
+                                <span class="m-0 ta-font-medium">
+                                    • {{ commentDate }}
+                                </span>
+                            </div>
+                        }
+
+                        @if (isEdited) {
+                            <div class="edited-container">
+                                <span class="m-0 ta-font-medium">• Edited</span>
+                            </div>
+                        }
+                    }
+                }
+            </div>
+
+            <div
+                class="d-flex align-items-center justify-content-center comment-header-right"
+            >
+                @if (isCommenting) {
+                    <div
+                        ngbTooltip
+                        [tooltipBackground]="eColor.BLACK"
+                        [position]="ePosition.TOP"
+                        [mainTooltip]="
+                            isEditing
+                                ? eGeneralActions.CONFIRM_EDIT
+                                : eGeneralActions.CONFIRM
+                        "
+                    >
+                        <svg-icon
+                            class="confirm-icon svg-size-18"
+                            [ngClass]="{
+                                disabled: isDisabled,
+                            }"
+                            [src]="sharedSvgRoutes.SPEC_CONFIRM"
+                            (click)="
+                                onHandleBtnActionClick(eGeneralActions.CONFIRM)
+                            "
+                        ></svg-icon>
+                    </div>
+
+                    <div
+                        ngbTooltip
+                        [tooltipBackground]="eColor.BLACK"
+                        [mainTooltip]="eGeneralActions.CANCEL_CAPITALIZED"
+                        [position]="ePosition.TOP"
+                    >
+                        <svg-icon
+                            class="cancel-icon svg-size-18"
+                            [src]="sharedSvgRoutes.X_ICON_DARK"
+                            (click)="
+                                onHandleBtnActionClick(
+                                    eGeneralActions.CANCEL_CAPITALIZED
+                                )
+                            "
+                        ></svg-icon>
+                    </div>
+                } @else {
+                    @if (!isEditButtonDisabled) {
+                        <div
+                            class="d-flex justify-content-center align-items-center edit-icon-container"
+                            ngbTooltip
+                            [tooltipBackground]="eColor.BLACK"
+                            [mainTooltip]="eGeneralActions.EDIT"
+                            [position]="ePosition.TOP"
+                        >
+                            <svg-icon
+                                class="icon svg-size-13"
+                                [src]="sharedSvgRoutes.EDIT_HOVER"
+                                (click)="onHandleBtnActionClick('Edit')"
+                            ></svg-icon>
+                        </div>
+                    }
+
+                    <div
+                        class="d-flex justify-content-center align-items-center delete-icon-container"
+                        ngbTooltip
+                        [tooltipBackground]="eColor.RED_11"
+                        [mainTooltip]="eGeneralActions.DELETE"
+                        [position]="ePosition.TOP"
+                    >
+                        <svg-icon
+                            class="icon svg-size-13"
+                            [src]="sharedSvgRoutes.DELETE_NEW_HOVER"
+                            (click)="
+                                onHandleBtnActionClick(eGeneralActions.DELETE)
+                            "
+                        ></svg-icon>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Comment Body -->
+
+        <div class="d-flex align-items-center comment-body">
+            <div
+                #commentInput
+                class="comment-input"
+                [ngClass]="{
+                    'no-value':
+                        commentInput?.textContent === 'Write Comment...',
+                    details: isDetailsCommentLayout,
+                }"
+                [ngStyle]="{
+                    'margin-top':
+                        isDetailsCommentLayout && !isCommenting
+                            ? isMe
+                                ? '-8px'
+                                : '-6px'
+                            : '0',
+                }"
+                [attr.contenteditable]="isCommenting"
+                [innerHTML]="commentData.commentContent | highlightCommentPart"
+                spellcheck="false"
+                (focus)="handleCommentChange()"
+                (input)="handleCommentChange()"
+                (blur)="handleCommentBlur()"
+                (paste)="onPaste($event)"
+            ></div>
+        </div>
+    </div>
+}

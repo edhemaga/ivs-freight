@@ -24,8 +24,17 @@
         &-8 {
             margin-bottom: 8px;
         }
+        &-12 {
+            margin-bottom: 12px;
+        }
+        &-14 {
+            margin-bottom: 14px;
+        }
         &-22 {
             margin-bottom: 22px;
+        }
+        &-28 {
+            margin-bottom: 28px;
         }
     }
     &-t {
@@ -50,8 +59,17 @@
         &-16 {
             margin-top: 16px;
         }
+        &-18 {
+            margin-top: 18px;
+        }
         &-20 {
             margin-top: 20px;
+        }
+        &-26 {
+            margin-top: 26px;
+        }
+        &-40 {
+            margin-top: 40px;
         }
     }
     &-r {
@@ -64,11 +82,17 @@
         &-7 {
             margin-right: 7px;
         }
+        &-8 {
+            margin-right: 8px;
+        }
         &-10 {
             margin-right: 10px;
         }
     }
     &-l {
+        &-2 {
+            margin-left: 2px;
+        }
         &-4 {
             margin-left: 4px;
         }
@@ -85,6 +109,9 @@
 }
 .p {
     &-t {
+        &-4 {
+            padding-top: 4px;
+        }
         &-8 {
             padding-top: 8px;
         }
@@ -93,8 +120,14 @@
         &-2 {
             padding-bottom: 2px;
         }
+        &-10 {
+            padding-bottom: 10px;
+        }
         &-12 {
             padding-bottom: 12px;
+        }
+        &-14 {
+            padding-bottom: 14px;
         }
     }
     &-l {
@@ -106,6 +139,9 @@
         }
         &-8 {
             padding-left: 8px;
+        }
+        &-10 {
+            padding-left: 10px;
         }
     }
     &-r {
@@ -120,6 +156,9 @@
         }
         &-10 {
             padding-right: 10px;
+        }
+        &-16 {
+            padding-right: 16px;
         }
         &-24 {
             padding-right: 24px;
@@ -181,6 +220,11 @@
             padding-top: 8px;
         }
     }
+
+    &-4 {
+        padding: 4px;
+    }
+
     &-6 {
         padding: 6px;
     }
@@ -191,11 +235,16 @@
         padding: 12px;
     }
 }
+
 .w-full {
     width: 100%;
 }
 
-@for $i from 1 through 40 {
+.w-fit-content {
+    width: fit-content;
+}
+
+@for $i from -40 through 100 {
     .top {
         &-#{$i} {
             top: #{$i}px;
@@ -232,5 +281,17 @@
         &-12 {
             --bs-gutter-y: 12px !important;
         }
+    }
+}
+
+.gap {
+    &-12 {
+        gap: 12px;
+    }
+    &-6 {
+        gap: 6px;
+    }
+    &-8 {
+        gap: 8px;
     }
 }

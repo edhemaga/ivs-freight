@@ -58,9 +58,15 @@ import { StoreModule } from '@ngrx/store';
 import { EffectsModule } from '@ngrx/effects';
 import { MilesEffects } from '@pages/miles/state/effects/miles.effect';
 import { milesReducer } from '@pages/miles/state/reducers/miles.reducer';
-// Store
+import { UserEffects } from '@pages/new-user/state/effects/user.effect';
+import { userReducer } from '@pages/new-user/state/reducers/user-reducer';
+
+// Load
+// TODO: IT WILL BE RENAMED AND REMOVED ONCE WE HAVE NEW LOAD READY !!! DON'T COMMENT PR PLEASE :*
 import { loadReducer } from '@pages/load/state/reducers/load.reducer';
 import { LoadEffect } from '@pages/load/state/effects/load.effect';
+import { loadReducer as NewLoadReducer } from '@pages/new-load/state/reducers/load.reducers';
+import { LoadEffect as NewLoadEffect } from '@pages/new-load/state/effects/load.effects';
 
 export const appConfig: ApplicationConfig = {
     providers: [
@@ -102,8 +108,18 @@ export const appConfig: ApplicationConfig = {
         ReactiveFormsModule.withConfig({
             warnOnNgModelWithFormControl: 'never',
         }),
-        EffectsModule.forRoot([LoadEffect, MilesEffects]),
-        StoreModule.forRoot({ load: loadReducer, miles: milesReducer }),
+        EffectsModule.forRoot([
+            LoadEffect,
+            MilesEffects,
+            NewLoadEffect,
+            UserEffects,
+        ]),
+        StoreModule.forRoot({
+            load: loadReducer,
+            miles: milesReducer,
+            newLoad: NewLoadReducer,
+            user: userReducer,
+        }),
         StoreDevtoolsModule.instrument({
             name: 'Carriera App',
         }),
