@@ -11,13 +11,13 @@
             <div class="d-flex align-items-center">
                 <p class="placeholder-glow">
                     <span
-                        class="placeholder background-muted br-2 h-20 w-93"
+                        class="placeholder placeholder-muted br-2 h-20 w-93"
                     ></span>
                 </p>
 
                 <p class="placeholder-glow m-l-8">
                     <span
-                        class="placeholder background-muted rounded-circle h-18 w-18"
+                        class="placeholder placeholder-muted rounded-circle h-18 w-18"
                     ></span>
                 </p>
             </div>
@@ -26,7 +26,7 @@
                 <div class="d-flex w-26 h-26 justify-content-center">
                     <p class="placeholder-glow">
                         <span
-                            class="placeholder background-muted br-2 w-7 h-18"
+                            class="placeholder placeholder-muted br-2 w-7 h-18"
                         ></span>
                     </p>
                 </div>
@@ -34,7 +34,7 @@
                 <div class="d-flex w-26 h-26 justify-content-center ml-1">
                     <p class="placeholder-glow">
                         <span
-                            class="placeholder background-muted br-2 w-7 h-18"
+                            class="placeholder placeholder-muted br-2 w-7 h-18"
                         ></span>
                     </p>
                 </div>
@@ -463,13 +463,14 @@
                 }
             </app-ta-custom-card>
         </div>
+
+        <ng-container *ngTemplateOutlet="messageForDriver"></ng-container>
         <ng-container
             *ngTemplateOutlet="
                 divider;
                 context: { isDividerVisible: true, isMarginTopDisabled: true }
             "
         ></ng-container>
-        <ng-container *ngTemplateOutlet="messageForDriver"></ng-container>
 
         <ng-container
             *ngTemplateOutlet="
@@ -607,7 +608,7 @@
         <div class="d-flex align-items-center">
             <p class="placeholder-glow">
                 <span
-                    class="placeholder background-muted br-2 h-16"
+                    class="placeholder placeholder-muted br-2 h-16"
                     [ngClass]="'w-' + width"
                 ></span>
             </p>
@@ -615,14 +616,14 @@
             @if (isCircle) {
                 <p class="placeholder-glow m-l-8">
                     <span
-                        class="placeholder background-muted rounded-circle h-18 w-18"
+                        class="placeholder placeholder-muted rounded-circle h-18 w-18"
                     ></span>
                 </p>
             }
         </div>
 
         <p class="placeholder-glow">
-            <span class="placeholder background-muted br-2 h-7 w-18"></span>
+            <span class="placeholder placeholder-muted br-2 h-7 w-18"></span>
         </p>
     </div>
 
