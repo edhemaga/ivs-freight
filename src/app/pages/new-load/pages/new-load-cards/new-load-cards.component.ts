@@ -29,7 +29,7 @@ import {
     GetNestedValuePipe,
     FormatDatePipe,
 } from '@shared/pipes';
-import { LoadStatusBackgroundColorPipe } from 'ca-components';
+import { CaLoadStatusComponent } from 'ca-components';
 
 // configs
 import {
@@ -74,13 +74,13 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         CaTableCardViewComponent,
         CaStatusChangeDropdownComponent,
         LoadTypeComponent,
+        CaLoadStatusComponent,
 
         // pipes
         FormatCurrencyPipe,
         ThousandSeparatorPipe,
         GetNestedValuePipe,
         FormatDatePipe,
-        LoadStatusBackgroundColorPipe,
     ],
 })
 export class NewLoadCardsComponent
