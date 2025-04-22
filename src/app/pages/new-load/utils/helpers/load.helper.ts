@@ -46,6 +46,7 @@ export class LoadHelper {
                 dispatch,
                 pickup,
                 delivery,
+                totalMiles,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -69,14 +70,16 @@ export class LoadHelper {
                     MethodsCalculationsHelper.convertDateFromBackend(
                         load.dateCreated
                     ),
-                commodity: loadDetails ? loadDetails?.generalCommodityName : generalCommodity?.name,
+                commodity: loadDetails
+                    ? loadDetails?.generalCommodityName
+                    : generalCommodity?.name,
                 brokerBusinessName: broker?.businessName,
                 driverInfo: driver ? driver : dispatch?.driver,
                 assignedDriverTruckNumber: driver?.truckNumber,
                 assignedDriverTrailerNumber: driver?.trailerNumber,
                 milesLoaded: miles?.loadedMiles,
                 milesEmpty: miles?.emptyMiles,
-                milesTotal: miles?.totalMiles,
+                milesTotal: miles ? miles?.totalMiles : totalMiles,
                 billingRatePerMile: billing?.rpm,
                 billingRate: billing?.rate,
                 invoicedDate,
