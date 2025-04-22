@@ -6,7 +6,11 @@ import { eMileTabs } from '@pages/miles/enums';
 import { ITableData } from '@shared/models';
 
 // Interface
-import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
+import {
+    ICardValueData,
+    IMinimalListFilters,
+    IStateFilters,
+} from '@shared/interfaces';
 import { ITableColumn } from '@shared/components/new-table/interface';
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 import { ITableConfig } from '@shared/components/new-table/interface';
@@ -45,4 +49,6 @@ export interface IMilesState {
     minimalListFilters: IMinimalListFilters;
     unitMapRoutes: RoutingResponse;
     unitMapData: ICaMapProps;
+    frontSideData: ICardValueData[];
+    backSideData: ICardValueData[];
 }

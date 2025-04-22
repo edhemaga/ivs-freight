@@ -4,7 +4,11 @@ import {
     IMilesState,
     IMinimalListState,
 } from '@pages/miles/interface';
-import { IMinimalListFilters, IStateFilters } from '@shared/interfaces';
+import {
+    ICardValueData,
+    IMinimalListFilters,
+    IStateFilters,
+} from '@shared/interfaces';
 import {
     ITableColumn,
     ITableResizeAction,
@@ -531,5 +535,17 @@ function getTruckNavigationMeta(
         isLast,
         prevId,
         nextId,
+    };
+}
+
+export function setColumnsModalResult(
+    state: IMilesState,
+    frontSideData: ICardValueData[],
+    backSideData: ICardValueData[]
+): IMilesState {
+    return {
+        ...state,
+        frontSideData,
+        backSideData,
     };
 }
