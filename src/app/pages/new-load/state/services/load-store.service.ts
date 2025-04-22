@@ -134,6 +134,10 @@ export class LoadStoreService {
             select(LoadSelectors.changeDropdownpossibleStatusesSelector)
         );
 
+    public cardFlipViewModeSelector$: Observable<string> = this.store.pipe(
+        select(LoadSelectors.cardFlipViewModeSelector)
+    );
+
     public dispatchLoadList(): void {
         this.store.dispatch({
             type: LoadStoreConstants.ACTION_DISPATCH_LOAD_LIST,

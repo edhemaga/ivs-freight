@@ -44,3 +44,6 @@ export * from './color.enum';
 
 // Cards
 export * from './table-card-view-data.enum';
+
+// Tabs
+export * from './status-tab.enum';

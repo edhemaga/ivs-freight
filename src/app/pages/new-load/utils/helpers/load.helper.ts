@@ -45,6 +45,8 @@ export class LoadHelper {
                 loadRequirements,
                 company,
                 dispatch,
+                pickup,
+                delivery,
             } = load;
 
             const mapped: IMappedLoad = {
@@ -91,7 +93,9 @@ export class LoadHelper {
                 requirementLiftgate: loadRequirements?.liftgate
                     ? eSharedString.YES
                     : eSharedString.EMPTY_STRING_PLACEHOLDER,
-                driverMessage: loadRequirements?.driverMessage
+                driverMessage: loadRequirements?.driverMessage,
+                pickup,
+                delivery,
             };
             return mapped;
         });
