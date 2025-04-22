@@ -9,6 +9,7 @@ import {
     TrailerTypeResponse,
     DriverMinimalResponse,
 } from 'appcoretruckassist';
+import { LoadDelivery, LoadPickup } from '@pages/load/pages/load-table/models';
 
 // interfaces
 import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
@@ -48,4 +49,6 @@ export interface IMappedLoad {
     requirementYear: string;
     requirementLiftgate: string;
     driverMessage: string;
+    pickup?: LoadPickup;
+    delivery?: LoadDelivery;
 }

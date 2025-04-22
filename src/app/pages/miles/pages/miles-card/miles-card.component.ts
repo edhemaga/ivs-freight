@@ -57,7 +57,7 @@ export class MilesCardComponent {
     public backSideData: ICardValueData[] = MilesCardDataConfig.BACK_SIDE_DATA;
 
     // enums
-    public tableCardViewEnums = eTableCardViewData;
+    public eTableCardViewData = eTableCardViewData;
 
     // svg-routes
     public sharedSvgRoutes = SharedSvgRoutes;
