@@ -1,0 +1,90 @@
+@let store =
+    {
+        users: userStoreService.userListSelector$ | async,
+        columns: userStoreService.tableColumnsSelector$ | async,
+        selectedTab: userStoreService.selectedTabSelector$ | async,
+        selectedCount: userStoreService.selectedCountSelector$ | async,
+        selectedTabCountSelector:
+            userStoreService.selectedTabCountSelector$ | async,
+        searchStrings: userStoreService.searchStringsSelector$ | async,
+        tableSettings: userStoreService.tableSettingsSelector$ | async,
+    };
+
+@if (store) {
+    @let isTableLocked = store.tableSettings.isTableLocked;
+    @let templates = { select, name, department };
+    @let headerTemplates =
+        {
+            select: selectHeaderTemplate,
+        };
+
+    <app-new-table
+        [rows]="store.users"
+        [templates]="templates"
+        [columns]="store.columns"
+        [headerTemplates]="headerTemplates"
+        [isTableLocked]="isTableLocked"
+        [totalDataCount]="store.selectedTabCountSelector"
+        (onSortingChange)="onSortingChange($event)"
+        (onShowMore)="onShowMoreClick()"
+    >
+        <ng-template #selectHeaderTemplate>
+            <app-ca-checkbox-selected-count
+                [itemsTotalCount]="store.users.length"
+                [itemsSelectedCount]="store.selectedCount"
+                (onCheckboxCountClick)="onCheckboxCountClick($event)"
+            ></app-ca-checkbox-selected-count>
+        </ng-template>
+
+        <ng-template let-user="data" #select>
+            @let userName = 'User-' + user.id;
+            <app-ca-checkbox
+                [isChecked]="user.isSelected"
+                [isRegularCheckbox]="false"
+                [itemIndex]="user.id"
+                [name]="userName"
+                (columnCheckAction)="onSelectUser(user.id)"
+            ></app-ca-checkbox>
+        </ng-template>
+
+        <ng-template let-user="data" #name>
+            <div class="d-flex gap-1">
+                @if (store.selectedTab === eStatusTab.ACTIVE) {
+                    <app-ca-profile-image
+                        [name]="user?.fullName"
+                        [size]="'small'"
+                        [type]="'user'"
+                        [withTooltip]="true"
+                        [size]="18"
+                        [isDispatch]="true"
+                        [avatarImg]="user?.avatar"
+                    >
+                    </app-ca-profile-image>
+                } @else {
+                    <svg-icon
+                        [src]="sharedSvgRoutes.DEACTIVATE_ICON"
+                        class="svg-fill-muted svg-size-18 d-flex align-items-center"
+                    ></svg-icon>
+                }
+
+                <div
+                    class="text-color-black text-size-14 ta-font-bold"
+                    [innerHtml]="
+                        user?.fullName
+                            | tableHighlightSearchText: store.searchStrings
+                    "
+                ></div>
+            </div>
+        </ng-template>
+
+        <ng-template let-user="data" #department>
+            <div
+                class="text-color-black-2 text-size-14"
+                [innerHtml]="
+                    user?.department
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+    </app-new-table>
+}
