@@ -3,6 +3,7 @@
         viewData: loadStoreService.loadsSelector$ | async,
         selectedTabCountSelector:
             loadStoreService.selectedTabCountSelector$ | async,
+        cardsFlipType: loadStoreService.cardFlipViewModeSelector$ | async,
     };
 
 @let frontSideData = tabCardData[selectedTab].front;
@@ -20,6 +21,7 @@
         "
         [totalDataCount]="store.selectedTabCountSelector"
         [titleIcon]="loadType"
+        [cardsFlipType]="store.cardsFlipType"
         (showMore)="onShowMoreClick()"
         (selectCard)="onSelectLoad($event)"
         (dropdownOptionEmitter)="onToggleDropdownMenuActions($event)"
