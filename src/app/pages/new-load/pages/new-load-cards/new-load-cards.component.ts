@@ -20,6 +20,7 @@ import {
     ePosition,
 } from 'ca-components';
 import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
+import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
 
 // pipes
 import {
@@ -72,6 +73,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         // components
         CaTableCardViewComponent,
         CaStatusChangeDropdownComponent,
+        LoadTypeComponent,
 
         // pipes
         FormatCurrencyPipe,
