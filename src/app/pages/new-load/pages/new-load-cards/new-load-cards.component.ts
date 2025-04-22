@@ -114,7 +114,7 @@ export class NewLoadCardsComponent
     };
 
     // enums
-    public tableCardViewEnums = eTableCardViewData;
+    public eTableCardViewData = eTableCardViewData;
     public eDropdownMenu = eDropdownMenu;
 
     // svg-routes

@@ -42,22 +42,22 @@
 
     <ng-template #cardTemplate let-item="item" let-data="data">
         @let template =
-            item.template === tableCardViewEnums.DOUBLE_TEXT_PERCENT
+            item.template === eTableCardViewData.DOUBLE_TEXT_PERCENT
                 ? doubleTextPercent
-                : item.template === tableCardViewEnums.TEXT_WITH_IMAGE
+                : item.template === eTableCardViewData.TEXT_WITH_IMAGE
                   ? textWithImage
-                  : item.template === tableCardViewEnums.LOAD_STATUS
+                  : item.template === eTableCardViewData.LOAD_STATUS
                     ? loadStatus
-                    : item.template === tableCardViewEnums.PICKUP_DELIVERY
+                    : item.template === eTableCardViewData.PICKUP_DELIVERY
                       ? pickupDelivery
                       : textWithTitle;
 
         @let text =
-            item.format === tableCardViewEnums.DATA
+            item.format === eTableCardViewData.DATA
                 ? data
-                : item.format === tableCardViewEnums.CURRENCY
+                : item.format === eTableCardViewData.CURRENCY
                   ? ((data | getNestedValue: item.key | formatCurrency) ?? 0)
-                  : item.format === tableCardViewEnums.NUMBER
+                  : item.format === eTableCardViewData.NUMBER
                     ? ((data | getNestedValue: item.key | thousandSeparator) ??
                       0)
                     : (data | getNestedValue: item.key);
