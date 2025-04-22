@@ -90,6 +90,8 @@ export class NewLoadCardsComponent
     // destroy
     protected destroy$ = new Subject<void>();
 
+    public changeStatusPopover: NgbPopover;
+
     // data (this will be changed when store is implemented)
     public tabCardData: {
         [key: string]: {
@@ -143,6 +145,8 @@ export class NewLoadCardsComponent
             .subscribe((tab) => {
                 this.selectedTab = tab;
             });
+
+        this.initChangeStatusDropdownListener();
     }
 
     private navigateToLoadDetails(id: number): void {
@@ -214,6 +218,22 @@ export class NewLoadCardsComponent
 
     public onPreviousStatus(status: LoadStatusResponse): void {
         this.loadStoreService.dispatchRevertLoadStatus(status);
+    }
+
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
     }
 
     ngOnDestroy(): void {
