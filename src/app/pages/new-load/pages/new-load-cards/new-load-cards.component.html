@@ -151,17 +151,17 @@
                     onToggleDropdownMenuActions($event, text, selectedTab)
                 "
             >
-                <div class="d-flex align-items-center gap-1 h-26">
-                    <div
-                        class="h-14 w-14 rounded-circle background-white"
-                        [ngClass]="
-                            text.status?.statusValue?.id
-                                | loadStatusBackgroundColor: true
-                        "
-                    ></div>
-                    <div class="text-uppercase">
-                        {{ text.status?.statusString }}
-                    </div>
+                <div class="load-status-container">
+                    <app-ca-load-status
+                        [status]="{
+                            name: text.status?.statusString,
+                            id: text.status?.statusValue?.id,
+                        }"
+                        [isStatusCard]="true"
+                        [fontSize]="14"
+                        [height]="26"
+                    >
+                    </app-ca-load-status>
                 </div>
             </span>
         </div>
