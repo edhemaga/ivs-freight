@@ -19,9 +19,11 @@
                 : eSharedString.LOAD_NUMBER
         "
         [totalDataCount]="store.selectedTabCountSelector"
+        [titleIcon]="loadType"
         (showMore)="onShowMoreClick()"
         (selectCard)="onSelectLoad($event)"
         (dropdownOptionEmitter)="onToggleDropdownMenuActions($event)"
+        (cardTitleClick)="navigateToLoadDetails($event)"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
@@ -155,7 +157,9 @@
                                 | loadStatusBackgroundColor: true
                         "
                     ></div>
-                    <div class="text-uppercase">{{text.status?.statusString}}</div>
+                    <div class="text-uppercase">
+                        {{ text.status?.statusString }}
+                    </div>
                 </div>
             </span>
         </div>
@@ -191,5 +195,9 @@
             (onNextStatus)="onNextStatus($event)"
             (onPreviousStatus)="onPreviousStatus($event)"
         ></app-ca-status-change-dropdown>
+    </ng-template>
+
+    <ng-template let-data="data" let-text="text" #loadType>
+        <app-load-type [loadType]="data.loadType" [isTextVisible]="text" />
     </ng-template>
 }
