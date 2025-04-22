@@ -92,7 +92,9 @@
         </ng-template>
 
         <ng-template #unitTemplate let-data="data">
-            <p class="text-color-black ta-font-bold text-size-14">
+            <p
+                class="text-color-black ta-font-bold text-size-14 overflow-hidden text-truncate"
+            >
                 {{ data.unit }}
             </p>
         </ng-template>

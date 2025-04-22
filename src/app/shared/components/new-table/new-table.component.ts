@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
 import {
     ChangeDetectionStrategy,
+    ChangeDetectorRef,
     Component,
     EventEmitter,
     Input,
@@ -35,6 +36,9 @@ import {
     ITableColumn,
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
+
+// helpers
+import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
 
 @Component({
     selector: 'app-new-table',
@@ -80,6 +84,8 @@ export class NewTableComponent<T> {
     public leftPinnedColumns: ITableColumn[] = [];
     public mainColumns: ITableColumn[] = [];
     public rightPinnedColumns: ITableColumn[] = [];
+    public hasActiveLeftPinnedColumns: boolean = false;
+    public hasActiveRightPinnedColumns: boolean = false;
 
     // enums
     public ePosition = ePosition;
@@ -88,10 +94,16 @@ export class NewTableComponent<T> {
     public eUnit = eUnit;
     public sortOrder = SortOrder;
 
+    // scroll
+    public isLeftScrollLineShown: boolean = false;
+    public isRightScrollLineShown: boolean = false;
+    public leftPinnedBorderWidth: number = 8;
+    public rightPinnedBorderWidth: number = 8;
+
     // svg routes
     public sharedSvgRoutes = SharedSvgRoutes;
 
-    constructor() {}
+    constructor(private cdr: ChangeDetectorRef) {}
 
     private processColumns(columns: ITableColumn[]): void {
         this.leftPinnedColumns = columns.filter(
@@ -103,6 +115,17 @@ export class NewTableComponent<T> {
         );
 
         this.mainColumns = columns.filter((col) => !col.pinned);
+
+        this.hasActiveLeftPinnedColumns =
+            TableScrollHelper.countCheckedColumns(this.leftPinnedColumns) > 0;
+
+        this.hasActiveRightPinnedColumns =
+            TableScrollHelper.countCheckedColumns(this.rightPinnedColumns) > 0;
+
+        this.leftPinnedBorderWidth =
+            TableScrollHelper.getTotalColumnWidth(this.leftPinnedColumns) + 8;
+        this.rightPinnedBorderWidth =
+            TableScrollHelper.getTotalColumnWidth(this.rightPinnedColumns) + 8;
     }
 
     public handlePinColumnClick(column: ITableColumn): void {
@@ -131,9 +154,39 @@ export class NewTableComponent<T> {
     }
 
     public onHorizontalScroll(scrollEvent: any): void {
+        if (scrollEvent.eventAction === 'scrolling') {
+            let isMaxScroll = false;
+
+            document
+                .querySelectorAll('#table-not-pined-scroll-container')
+                .forEach((el) => {
+                    el.scrollLeft = scrollEvent.scrollPosition;
+
+                    if (
+                        Math.round(scrollEvent.scrollPosition) >=
+                        Math.round(el.scrollWidth - el.clientWidth) - 3
+                    ) {
+                        isMaxScroll = true;
+                    }
+                });
+
+            if (scrollEvent.scrollPosition > 0) {
+                this.isLeftScrollLineShown = true;
+
+                this.isRightScrollLineShown = !isMaxScroll;
+            } else this.isLeftScrollLineShown = false;
+        } else if (scrollEvent.eventAction === 'isScrollShowing') {
+            if (!scrollEvent.isScrollBarShowing) {
+                this.isLeftScrollLineShown = false;
+                this.isRightScrollLineShown = false;
+            } else this.isRightScrollLineShown = true;
+        }
+
         let elements = document.getElementsByClassName('scrollable-columns');
         Array.from(elements).forEach((el) => {
             el.scrollLeft = scrollEvent.scrollPosition;
         });
+
+        this.cdr.detectChanges();
     }
 }

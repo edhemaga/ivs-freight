@@ -124,4 +124,18 @@
             }
         }
     }
+
+    &--scroll-border {
+        position: absolute;
+        width: 8px;
+        height: 100%;
+
+        &-left {
+            background-image: linear-gradient(to right, $bw2, $bw-10);
+        }
+
+        &-right {
+            background-image: linear-gradient(to right, $bw-10, $bw2);
+        }
+    }
 }
