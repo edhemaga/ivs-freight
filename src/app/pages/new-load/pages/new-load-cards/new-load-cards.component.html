@@ -193,11 +193,11 @@
         @let possibleStatuses =
             loadStoreService.changeDropdownpossibleStatusesSelector$ | async;
 
-            <app-ca-status-change-dropdown
-                [statuses]="possibleStatuses"
-                (onNextStatus)="onNextStatus($event)"
-                (onPreviousStatus)="onPreviousStatus($event)"
-            ></app-ca-status-change-dropdown>
+        <app-ca-status-change-dropdown
+            [statuses]="possibleStatuses"
+            (onNextStatus)="onNextStatus($event)"
+            (onPreviousStatus)="onPreviousStatus($event)"
+        ></app-ca-status-change-dropdown>
     </ng-template>
 
     <ng-template let-data="data" let-text="text" #loadType>
