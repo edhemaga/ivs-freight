@@ -147,6 +147,7 @@
                 container="body"
                 popoverClass="table-status-popover"
                 triggers="manual"
+                (click)="onOpenChangeStatusDropdown(ngbStatus, text.id)"
                 (dropdownOptionEmitter)="
                     onToggleDropdownMenuActions($event, text, selectedTab)
                 "
