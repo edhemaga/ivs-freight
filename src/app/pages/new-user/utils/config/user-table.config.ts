@@ -14,6 +14,12 @@ export class UserTableColumnsConfig {
             UserTableColumnsConfig.personalDetailGroup,
             UserTableColumnsConfig.statusColumn,
             UserTableColumnsConfig.activityColumn,
+            UserTableColumnsConfig.bankDetailGroup,
+            UserTableColumnsConfig.payrollDetailGroup,
+            UserTableColumnsConfig.dateHiredColumn,
+            UserTableColumnsConfig.dateDeactivatedColumn,
+            UserTableColumnsConfig.dateAddedColumn,
+            UserTableColumnsConfig.dateEditedColumn
         ];
     }
 
@@ -61,6 +67,7 @@ export class UserTableColumnsConfig {
         key: 'employeeDetailGroup',
         label: 'Employee',
         labelToolbar: 'Employee Detail',
+        isChecked: true,
         columns: [
             {
                 key: 'employeeOffice',
@@ -184,4 +191,185 @@ export class UserTableColumnsConfig {
             },
         ],
     };
+
+    static bankDetailGroup: ITableColumn = {
+        key: 'bankDetailGroup',
+        label: 'Bank',
+        labelToolbar: 'Bank Detail',
+        isChecked: false,
+        columns: [
+            {
+                key: 'bankName',
+                label: 'Name',
+                labelToolbar: 'Name',
+                width: 148,
+                minWidth: 148,
+                maxWidth: 148,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: CompanyUserSortBy.BankName,
+            },
+            {
+                key: 'bankRouting',
+                label: 'Routing',
+                labelToolbar: 'Routing',
+                width: 76,
+                minWidth: 76,
+                maxWidth: 76,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: CompanyUserSortBy.BankRouting,
+            },
+            {
+                key: 'bankAccount',
+                label: 'Account',
+                labelToolbar: 'Account',
+                width: 138,
+                minWidth: 138,
+                maxWidth: 138,
+                isResizable: true,
+                isChecked: false,
+                hasSort: false,
+            },
+        ],
+    };
+
+    static payrollDetailGroup: ITableColumn = {
+        key: 'payrollDetailGroup',
+        label: 'Payroll',
+        labelToolbar: 'Payroll Detail',
+        isChecked: false,
+        columns: [
+            {
+                key: 'payrollType',
+                label: 'Pay Type',
+                labelToolbar: 'Pay Type',
+                width: 108,
+                minWidth: 108,
+                maxWidth: 108,
+                isResizable: true,
+                isChecked: true,
+                hasSort: true,
+                sortName: CompanyUserSortBy.PayType,
+            },
+            {
+                key: 'payrollForm',
+                label: 'Form',
+                labelToolbar: 'Form',
+                width: 68,
+                minWidth: 68,
+                maxWidth: 68,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: CompanyUserSortBy.Form,
+            },
+            {
+                key: 'payrollComm',
+                label: 'Comm',
+                labelToolbar: 'Commission',
+                width: 68,
+                minWidth: 68,
+                maxWidth: 68,
+                isResizable: true,
+                isChecked: true,
+                hasSort: true,
+                sortName: CompanyUserSortBy.Comm,
+            },
+            {
+                key: 'payrollSalary',
+                label: 'Salary',
+                labelToolbar: 'Salary',
+                width: 101,
+                minWidth: 101,
+                maxWidth: 101,
+                isResizable: true,
+                isChecked: true,
+                hasSort: true,
+                sortName: CompanyUserSortBy.Salary,
+            },
+        ],
+    };
+
+    static dateHiredColumn: ITableColumn = {
+        key: 'dateHiredColumnGroup',
+        label: '',
+        labelToolbar: '',
+        columns: [
+            {
+                key: 'dateHired',
+                label: 'Hired',
+                labelToolbar: 'Date Hired',
+                width: 88,
+                minWidth: 88,
+                maxWidth: 88,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: CompanyUserSortBy.Hired
+            },
+        ],
+    };
+
+    static dateDeactivatedColumn: ITableColumn = {
+        key: 'dateDeactivatedColumnGroup',
+        label: '',
+        labelToolbar: '',
+        columns: [
+            {
+                key: 'dateDeactivated',
+                label: 'Deactivated',
+                labelToolbar: 'Date Deactivated',
+                width: 88,
+                minWidth: 88,
+                maxWidth: 88,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: CompanyUserSortBy.DateDeactivated
+            },
+        ],
+    };
+
+    static dateAddedColumn: ITableColumn = {
+        key: 'dateAddedColumnGroup',
+        label: '',
+        labelToolbar: '',
+        columns: [
+            {
+                key: 'dateAdded',
+                label: 'Added',
+                labelToolbar: 'Date Added',
+                width: 88,
+                minWidth: 88,
+                maxWidth: 88,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: CompanyUserSortBy.DateCreated
+            },
+        ],
+    };
+    static dateEditedColumn: ITableColumn = {
+        key: 'dateEditedColumnGroup',
+        label: '',
+        labelToolbar: '',
+        columns: [
+            {
+                key: 'dateEdited',
+                label: 'Edited',
+                labelToolbar: 'Date Edited',
+                width: 88,
+                minWidth: 88,
+                maxWidth: 88,
+                isResizable: true,
+                isChecked: false,
+                hasSort: true,
+                sortName: CompanyUserSortBy.DateUpdated
+            },
+        ],
+    };
+
 }
