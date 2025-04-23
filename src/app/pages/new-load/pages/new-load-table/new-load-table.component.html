@@ -44,6 +44,7 @@
             assignedDriverTruckNumber,
             assignedDriverTrailerNumber,
             driverMessage,
+            companyName,
             milesLoaded,
             milesEmpty,
             milesTotal,
@@ -188,6 +189,18 @@
             </div>
         </ng-template>
         <!-- #endregion END OF DISPATCHER COLUMN -->
+
+        <!-- #region COMPANY NAME COLUMN -->
+        <ng-template let-data="data" #companyName>
+            <div
+                class="text-color-black text-size-14"
+                [innerHtml]="
+                    data.companyName
+                        | tableHighlightSearchText: store.searchStrings
+                "
+            ></div>
+        </ng-template>
+        <!-- #endregion END OF COMPANY NAME COLUMN -->
 
         <!-- #region BROKER GROUP -->
         <ng-template let-data="data" #brokerBusinessName>
