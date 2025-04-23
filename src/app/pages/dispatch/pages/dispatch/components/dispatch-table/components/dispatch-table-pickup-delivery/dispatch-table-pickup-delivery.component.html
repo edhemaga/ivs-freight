@@ -6,26 +6,16 @@
                 isDispatchBoardLocked && isHoveringRowIndex === rowIndex
             "
         >
-            <div class="info-item w-100 c-pointer" [class.p-0]="dispatchResponse?.activeLoad">
-                <ng-container
-                    *ngIf="dispatchResponse?.activeLoad; else noActiveLoad"
-                >
-                    <app-ca-pickup-delivery-block
-                        [loads]="{
-                            active: dispatchLoads?.active,
-                            closed: dispatchLoads?.closed,
-                            pending:
-                                dispatchLoads?.pending
-                        }"
-                        [dispatchResponse]="dispatchResponse"
-                        [columnWidth]="_columnWidth"
-                    ></app-ca-pickup-delivery-block>
-                </ng-container>
-                <ng-template #noActiveLoad>
-                    <div class="no-active-load ta-font-medium">
-                        NO ACTIVE OR PENDING LOAD
-                    </div>
-                </ng-template>
+            <div class="info-item w-100 c-pointer p-0">
+                <app-ca-pickup-delivery-block
+                    [loads]="{
+                        active: dispatchLoads?.active,
+                        closed: dispatchLoads?.closed,
+                        pending: dispatchLoads?.pending,
+                    }"
+                    [dispatchResponse]="dispatchResponse"
+                    [columnWidth]="_columnWidth"
+                ></app-ca-pickup-delivery-block>
             </div>
         </div>
     </ng-container>
