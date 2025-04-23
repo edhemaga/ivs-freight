@@ -291,10 +291,9 @@
                 } | tableColumnClass;
 
             <div
-                class="d-flex position-relative new-table--row-heading"
+                class="d-flex position-relative new-table--row-heading flex-shrink-0"
                 [ngClass]="tableColumnClass"
                 [style.width]="columnWidth"
-                [style.minWidth]="columnMinWidth"
                 [appResizableColumn]="isResizableColumn"
                 [columnId]="column.id"
                 [minWidth]="column.minWidth"

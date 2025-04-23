@@ -35,6 +35,7 @@ import {
 import { ePosition, eUnit } from 'ca-components';
 import { eColor, eCommonElement, eGeneralActions } from '@shared/enums';
 import { SortOrder } from 'appcoretruckassist';
+import { eCustomScroll } from '@shared/components/ta-custom-scrollbar/enums';
 
 // directives
 import { ResizableColumnDirective } from '@shared/components/new-table/directives';
@@ -44,6 +45,7 @@ import {
     ITableColumn,
     ITableResizeAction,
 } from '@shared/components/new-table/interface';
+import { ICustomScrollEvent } from '@shared/components/ta-custom-scrollbar/interfaces';
 
 // helpers
 import { TableScrollHelper } from '@shared/components/new-table/utils/helpers';
@@ -181,38 +183,43 @@ export class NewTableComponent<T> {
         return this.expandedRows?.has(rowId);
     }
 
-    public onHorizontalScroll(scrollEvent: any): void {
-        if (scrollEvent.eventAction === 'scrolling') {
+    public onHorizontalScroll(scrollEvent: ICustomScrollEvent): void {
+        if (scrollEvent.eventAction === eCustomScroll.SCROLLING) {
             let isMaxScroll = false;
 
             document
-                .querySelectorAll('#table-not-pined-scroll-container')
-                .forEach((el) => {
-                    el.scrollLeft = scrollEvent.scrollPosition;
+                .querySelectorAll(eCustomScroll.NOT_PINNED_SCROLL_CONTAINER)
+                .forEach((element) => {
+                    element.scrollLeft = scrollEvent.scrollPosition;
 
                     if (
                         Math.round(scrollEvent.scrollPosition) >=
-                        Math.round(el.scrollWidth - el.clientWidth) - 3
+                        Math.round(element.scrollWidth - element.clientWidth) -
+                            3
                     ) {
                         isMaxScroll = true;
                     }
                 });
 
-            if (scrollEvent.scrollPosition > 0) {
+            if (scrollEvent.scrollPosition) {
                 this.isLeftScrollLineShown = true;
 
                 this.isRightScrollLineShown = !isMaxScroll;
             } else this.isLeftScrollLineShown = false;
-        } else if (scrollEvent.eventAction === 'isScrollShowing') {
+        } else if (
+            scrollEvent.eventAction === eCustomScroll.IS_SCROLL_SHOWING
+        ) {
             if (!scrollEvent.isScrollBarShowing) {
                 this.isLeftScrollLineShown = false;
                 this.isRightScrollLineShown = false;
             } else this.isRightScrollLineShown = true;
         }
 
-        let elements = document.getElementsByClassName('scrollable-columns');
-        Array.from(elements).forEach((el) => {
-            el.scrollLeft = scrollEvent.scrollPosition;
+        let elements = document.getElementsByClassName(
+            eCustomScroll.SCROLLABLE_COLUMNS
+        );
+        Array.from(elements).forEach((element) => {
+            element.scrollLeft = scrollEvent.scrollPosition;
         });
 
         this.cdr.detectChanges();
