@@ -12,6 +12,7 @@ import { DepartmentFilterResponse } from 'appcoretruckassist';
 
 // Enums
 import { eCommonElement, eStatusTab } from '@shared/enums';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export interface IUserState {
     users: IMappedUser[];
@@ -32,4 +33,8 @@ export interface IUserState {
 
     // Table
     tableColumns: ITableColumn[];
+
+    // Hamburger menu options
+    toolbarDropdownMenuOptions: IDropdownMenuItem[];
+    isToolbarDropdownMenuColumnsActive: boolean;
 }

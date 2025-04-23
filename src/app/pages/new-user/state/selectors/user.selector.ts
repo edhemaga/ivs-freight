@@ -22,6 +22,18 @@ export const departmentListSelector = createSelector(
 
 //#endregion
 
+//#region Toolbar hamburger menu
+
+export const toolbarDropdownMenuOptionsSelector = createSelector(
+    selectUserState,
+    (state) => {
+        const { toolbarDropdownMenuOptions } = state;
+        return toolbarDropdownMenuOptions;
+    }
+);
+
+//#endRegion
+
 //#region Tabs
 export const toolbarTabsSelector = createSelector(
     selectUserState,

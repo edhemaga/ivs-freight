@@ -10,11 +10,15 @@ import {
 
 // Enums
 import { eCommonElement, eGeneralActions, IFilterAction } from 'ca-components';
-import { eStatusTab } from '@shared/enums';
+import { eCardFlipViewMode, eStatusTab } from '@shared/enums';
 
 // Helpers
 import { UsersHelper } from '@pages/new-user/utils/helpers';
 import { StoreFunctionsHelper } from '@shared/components/new-table/utils/helpers';
+import {
+    DropdownMenuToolbarContentHelper,
+    DropdownMenuColumnsActionsHelper,
+} from '@shared/utils/helpers/dropdown-menu-helpers';
 
 //#region Tabs
 export const onTabTypeChange = function (
@@ -39,9 +43,17 @@ export const onViewModeChange = function (
     state: IUserState,
     activeViewMode: eCommonElement
 ): IUserState {
+    const { tableSettings, isToolbarDropdownMenuColumnsActive } = state;
     return {
         ...state,
         activeViewMode,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                eCardFlipViewMode.FRONT, // hardcoded - remove this when somone will do cards for user
+                isToolbarDropdownMenuColumnsActive
+            ),
     };
 };
 //#endregion
@@ -181,6 +193,47 @@ export function onDeleteUsersSuccess(
             state.toolbarTabs,
             isIncreaseInOtherTab
         ),
+    };
+}
+//#endregion
+
+//#region Toolbar Hamburger Menu
+export function setToolbarDropdownMenuColumnsActive(
+    state: IUserState,
+    isActive: boolean
+): IUserState {
+    const { activeViewMode, tableSettings, tableColumns } = state;
+    const toolbarDropdownColumns =
+        DropdownMenuColumnsActionsHelper.mapToolbarDropdownColumnsNew(
+            tableColumns
+        );
+    return {
+        ...state,
+        isToolbarDropdownMenuColumnsActive: isActive,
+        toolbarDropdownMenuOptions:
+            DropdownMenuToolbarContentHelper.getToolbarDropdownMenuContent(
+                activeViewMode,
+                tableSettings.isTableLocked,
+                eCardFlipViewMode.FRONT, // hardcoded - remove this when somone will do cards for user
+                isActive,
+                toolbarDropdownColumns
+            ),
+    };
+}
+
+export function toggleColumnVisibility(
+    state: IUserState,
+    columnKey: string,
+    isActive: boolean
+): IUserState {
+    const tableColumns = StoreFunctionsHelper.mapColumnsVisibility(
+        state.tableColumns,
+        columnKey,
+        isActive
+    );
+    return {
+        ...state,
+        tableColumns,
     };
 }
 //#endregion
