@@ -146,13 +146,15 @@
                 <!-- Dispatcher -->
 
                 <div class="dispatcher-container">
-                    <app-ca-input-dropdown
+                    <ca-input-dropdown-test
                         formControlName="dispatcherId"
+                        optionValue="id"
+                        label="fullName"
                         [template]="'load-dispatcher'"
                         [inputConfig]="getDispatcherInputConfig()"
                         [options]="labelsDispatcher"
                         (selectedItem)="onSelectDropdown($event, 'dispatcher')"
-                    ></app-ca-input-dropdown>
+                    ></ca-input-dropdown-test>
                 </div>
 
                 <!-- Truck -->
