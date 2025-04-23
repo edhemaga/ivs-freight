@@ -37,7 +37,7 @@ export class LoadTableColumnsConfig {
         ];
     }
 
-    // MAPPING STRUCTURE FOR TEMPLATE TAB COLUMNS
+    // #region TEMPLATE TAB COLUMNS MAPPING STRUCTURE
     private static templateTabColumns(
         isTemplate: boolean,
         isPendingOrActive: boolean,
@@ -80,8 +80,9 @@ export class LoadTableColumnsConfig {
             ...this.getActions(),
         ];
     }
+    // #endregion
 
-    // MAPPING STRUCTURE FOR ACTIVE OR PENDING TAB COLUMNS
+    // #region ACTIVE OR PENDING TAB COLUMNS MAPPING STRUCTURE 
     private static activeOrPendingTabColumns(
         isTemplate: boolean,
         isPendingOrActive: boolean,
@@ -114,8 +115,9 @@ export class LoadTableColumnsConfig {
             ...this.getActions(),
         ];
     }
+    // #endregion
 
-    // MAPPING STRUCTURE FOR CLOSED TAB COLUMNS
+    // #region CLOSED TAB COLUMNS MAPPING STRUCTURE
     private static closedTabColumns(
         isTemplate: boolean,
         isPendingOrActive: boolean,
@@ -181,8 +183,9 @@ export class LoadTableColumnsConfig {
             this.noteColumn,
         ];
     }
+    // #endregion
 
-    // HELPER FOR MAPPING COMMON COLUMNS FOR ALL TABS
+    // #region COMMON COLUMNS MAPPING HELPER FOR ALL TABS
     private static getCommonColumnsForAllTabs(
         isTemplateTab: boolean,
         isPendingOrActiveTab: boolean,
@@ -296,8 +299,9 @@ export class LoadTableColumnsConfig {
             ...this.getBillingGroup(isClosedTab),
         ];
     }
+    // #endregion
 
-    // HELPER FOR MAPPING BROKER GROUP - brokerBusinessName - brokerContact - brokerPhone
+    // #region BROKER GROUP MAPPING  HELPER 
     private static getBrokerGroup(isTemplate: boolean): ITableColumn[] {
         return [
             {
@@ -345,8 +349,9 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+    // #endregion
 
-    // MAPPING HELPER FOR MAPPING ASSIGNED GROUP - assignedDriver - assignedDriverTruckNumber - assignedDriverTrailerNumber
+    // #region ASSIGNED GROUP MAPPING HELPER
     private static getAssignedGroup(isChecked: boolean): ITableColumn[] {
         return [
             {
@@ -395,8 +400,9 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+    // #endregion
 
-    // HELPER FOR MAPPING MILES GROUP - milesLoaded - milesEmpty - milesTotal
+    // #region MILES GROUP MAPPING HELPER
     private static getMilesGroup(): ITableColumn[] {
         return [
             {
@@ -445,8 +451,9 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+    // #endregion
 
-    // HELPER FOR MAPPING BILLING GROUP
+    // #region BILLING GROUP MAPPING HELPER
     private static getBillingGroup(isClosed: boolean): ITableColumn[] {
         const closedLoadColumns: ITableColumn[] = isClosed
             ? [
@@ -637,8 +644,9 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+    // #endregion
 
-    // HELPER FOR MAPPING REQUIREMENT GROUP - requirementTruckType - requirementTrailerType - requirementLength- requirementDoorType - requirementSuspension - requirementYear - requirementLiftgate
+    // #region REQUIREMENT GROUP MAPPING HELPER FOR
     private static getRequirementGroup(): ITableColumn[] {
         return [
             {
@@ -735,8 +743,9 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+    // #endregion
 
-    // HELPER FOR MAPPING CREATED AND EDITED DATES
+    // #region CREATED AND EDITED DATES MAPPING HELPER
     private static getCreatedAndEditedDates(): ITableColumn[] {
         return [
             {
@@ -765,6 +774,7 @@ export class LoadTableColumnsConfig {
             },
         ];
     }
+    // #endregion
 
     private static getActions(): ITableColumn[] {
         return [

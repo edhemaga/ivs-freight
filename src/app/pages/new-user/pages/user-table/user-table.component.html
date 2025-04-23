@@ -51,13 +51,13 @@
             <div class="d-flex gap-1">
                 @if (store.selectedTab === eStatusTab.ACTIVE) {
                     <app-ca-profile-image
-                        [name]="user?.fullName"
+                        [name]="data?.fullName"
                         [size]="'small'"
                         [type]="'user'"
                         [withTooltip]="true"
                         [size]="18"
                         [isDispatch]="true"
-                        [avatarImg]="user?.avatar"
+                        [avatarImg]="data?.avatar"
                     >
                     </app-ca-profile-image>
                 } @else {
