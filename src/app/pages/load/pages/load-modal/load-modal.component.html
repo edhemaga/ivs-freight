@@ -151,6 +151,8 @@
 
                 <div class="dispatcher-container">
                     <ca-input-dropdown-test
+                        optionValue="id"
+                        label="fullName"
                         formControlName="dispatcherId"
                         [template]="'load-dispatcher'"
                         [inputConfig]="getDispatcherInputConfig()"
@@ -480,7 +482,7 @@
                                 [inputConfig]="
                                     loadPickupShipperContactsInputConfig
                                 "
-                                [canAddNew]="true" 
+                                [canAddNew]="true"
                                 [canOpenModal]="true"
                                 [options]="labelsShipperContacts"
                                 [activeItem]="selectedPickupShipperContact"
