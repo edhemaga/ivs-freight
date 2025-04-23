@@ -28,6 +28,8 @@ import {
     ITableColumn,
     ITableConfig,
 } from '@shared/components/new-table/interface';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
+
 
 // Services
 import { ModalService } from '@shared/services';
@@ -36,7 +38,6 @@ import { ModalService } from '@shared/services';
 import { DeleteUserComponent } from '@pages/new-user/modals/delete-user/delete-user.component';
 import { DeactivateUserComponent } from '@pages/new-user/modals/deactivate-user/deactivate-user.component';
 import { IFilterAction } from 'ca-components';
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 @Injectable({
     providedIn: 'root',

@@ -5,6 +5,7 @@ import {
     ITableConfig,
 } from '@shared/components/new-table/interface';
 import { IStateFilters } from '@shared/interfaces';
+import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 // Models
 import { ITableData } from '@shared/models';
@@ -12,7 +13,6 @@ import { DepartmentFilterResponse } from 'appcoretruckassist';
 
 // Enums
 import { eCommonElement, eStatusTab } from '@shared/enums';
-import { IDropdownMenuItem } from '@ca-shared/components/ca-dropdown-menu/interfaces';
 
 export interface IUserState {
     users: IMappedUser[];
