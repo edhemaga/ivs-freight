@@ -67,11 +67,7 @@
 
                 <!-- Load Template Picker -->
 
-                @if (
-                    !isConvertedToTemplate &&
-                    !isActiveLoad &&
-                    labelsTemplate.length
-                ) {
+                @if (!isConvertedToTemplate && !isActiveLoad) {
                     @if (!isTemplateSelected) {
                         <button
                             class="d-flex align-items-center justify-content-center load-template-switcher-container"
