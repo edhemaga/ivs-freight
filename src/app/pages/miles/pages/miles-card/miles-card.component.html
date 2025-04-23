@@ -4,9 +4,16 @@
         miles: milesStoreService.miles$ | async,
         frontSideData: milesStoreService.frontSideDataSelector$ | async,
         backSideData: milesStoreService.backSideDataSelector$ | async,
+        tabResultsSelector: milesStoreService.tabResultsSelector$ | async,
+        selectedTab: milesStoreService.selectedTab$ | async,
     };
 
 @if (store.miles) {
+    @let selectedTabTotalDataCount =
+        store.selectedTab === eMileTabs?.ACTIVE
+            ? store.tabResultsSelector.activeTruckCount
+            : store.tabResultsSelector.inactiveTruckCount;
+
     <ca-table-card-view
         [viewData]="store.miles"
         [frontSide]="frontSide"
@@ -14,6 +21,7 @@
         [cardTitle]="'unit'"
         [isDropdownMenuHidden]="true"
         [isSelectHidden]="true"
+        [totalDataCount]="selectedTabTotalDataCount"
         [cardsFlipType]="store.cardsFlipType"
         (showMore)="onShowMoreClick()"
     ></ca-table-card-view>
