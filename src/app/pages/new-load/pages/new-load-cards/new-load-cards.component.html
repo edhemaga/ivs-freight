@@ -3,6 +3,7 @@
         viewData: loadStoreService.loadsSelector$ | async,
         selectedTabCountSelector:
             loadStoreService.selectedTabCountSelector$ | async,
+        cardsFlipType: loadStoreService.cardFlipViewModeSelector$ | async,
     };
 
 @let frontSideData = tabCardData[selectedTab].front;
@@ -19,9 +20,12 @@
                 : eSharedString.LOAD_NUMBER
         "
         [totalDataCount]="store.selectedTabCountSelector"
+        [titleIcon]="loadType"
+        [cardsFlipType]="store.cardsFlipType"
         (showMore)="onShowMoreClick()"
         (selectCard)="onSelectLoad($event)"
         (dropdownOptionEmitter)="onToggleDropdownMenuActions($event)"
+        (cardTitleClick)="navigateToLoadDetails($event)"
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
@@ -143,19 +147,22 @@
                 container="body"
                 popoverClass="table-status-popover"
                 triggers="manual"
+                (click)="onOpenChangeStatusDropdown(ngbStatus, text.id)"
                 (dropdownOptionEmitter)="
                     onToggleDropdownMenuActions($event, text, selectedTab)
                 "
             >
-                <div class="d-flex align-items-center gap-1 h-26">
-                    <div
-                        class="h-14 w-14 rounded-circle background-white"
-                        [ngClass]="
-                            text.status?.statusValue?.id
-                                | loadStatusBackgroundColor: true
-                        "
-                    ></div>
-                    <div class="text-uppercase">{{text.status?.statusString}}</div>
+                <div class="load-status-container">
+                    <app-ca-load-status
+                        [status]="{
+                            name: text.status?.statusString,
+                            id: text.status?.statusValue?.id,
+                        }"
+                        [isStatusCard]="true"
+                        [fontSize]="14"
+                        [height]="26"
+                    >
+                    </app-ca-load-status>
                 </div>
             </span>
         </div>
@@ -191,5 +198,9 @@
             (onNextStatus)="onNextStatus($event)"
             (onPreviousStatus)="onPreviousStatus($event)"
         ></app-ca-status-change-dropdown>
+    </ng-template>
+
+    <ng-template let-data="data" let-text="text" #loadType>
+        <app-load-type [loadType]="data.loadType" [isTextVisible]="text" />
     </ng-template>
 }

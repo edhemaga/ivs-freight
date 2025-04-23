@@ -44,6 +44,9 @@
             assignedDriverTruckNumber,
             assignedDriverTrailerNumber,
             driverMessage,
+            milesLoaded,
+            milesEmpty,
+            milesTotal,
         };
 
     @let isTableLocked = store.tableSettings.isTableLocked;
@@ -213,7 +216,9 @@
             let-cellColumnTextColorClass="cellColumnTextColorClass"
         >
             <div class="text-size-14" [class]="cellColumnTextColorClass">
-                <span class="text-color-black-2">{{ data.broker?.phone }} </span>
+                <span class="text-color-black-2"
+                    >{{ data.broker?.phone }}
+                </span>
                 @if (data.broker?.phoneExt) {
                     <span class="text-color-muted"
                         >x {{ data.broker?.phoneExt }}
@@ -347,7 +352,6 @@
                     }"
                     [isDefaultHoverFocus]="true"
                     [isNoStyle]="false"
-                    [fontSize]="14"
                     height="26"
                 >
                 </app-ca-load-status>
@@ -390,6 +394,23 @@
         <!-- #endregion END OF DRIVER MESSAGE COLUMN -->
 
         <!-- #region MILES GROUP -->
+        <ng-template let-data="data" #milesLoaded>
+            <p class="text-color-black-2 text-size-14">
+                {{ data.milesLoaded | thousandSeparator }}
+            </p>
+        </ng-template>
+
+        <ng-template let-data="data" #milesEmpty>
+            <p class="text-color-black-2 text-size-14">
+                {{ data.milesEmpty | thousandSeparator }}
+            </p>
+        </ng-template>
+
+        <ng-template let-data="data" #milesTotal>
+            <p class="text-color-black-2 text-size-14">
+                {{ data.milesTotal | thousandSeparator }}
+            </p>
+        </ng-template>
         <!-- #endregion END OF MILES GROUP -->
 
         <!-- #region BILLING GROUP -->
