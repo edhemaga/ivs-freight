@@ -29,6 +29,17 @@
         }
     }
 
+    &--pinned-left {
+        position: sticky;
+        left: 0;
+        background-color: inherit;
+    }
+    &--pinned-right {
+        position: sticky;
+        right: 0;
+        background-color: inherit;
+    }
+
     &--toolbar {
         height: 34px;
         // Extract to radius
@@ -107,6 +118,20 @@
                     padding: 12px;
                 }
             }
+        }
+    }
+
+    &--scroll-border {
+        position: absolute;
+        width: 8px;
+        height: 100%;
+
+        &-left {
+            background-image: linear-gradient(to right, $bw2, $bw-10);
+        }
+
+        &-right {
+            background-image: linear-gradient(to right, $bw-10, $bw2);
         }
     }
 }

@@ -1,168 +1,205 @@
 @let displayedDataCount = rows.length;
+<app-ta-custom-scrollbar
+    [scrollBarOptions]="{
+        showHorizontalScrollBar: true,
+        dataLength: 25,
+    }"
+    (scrollEvent)="onHorizontalScroll($event)"
+>
+    <div class="table-container overflow-hidden">
+        <div class="w-fit-content" style="max-width: calc(100vw - 90px)">
+            <!-- Header -->
 
-<div class="table-container">
-    <div class="w-fit-content">
-        <!-- Header -->
+            <div class="d-flex m-b-6 p-x-8 table-header">
+                <div class="d-flex new-table--pinned-left">
+                    @for (
+                        column of leftPinnedColumns;
+                        track column.key;
+                        let leftPinnedColumnIndex = $index
+                    ) {
+                        @let nextColumn =
+                            leftPinnedColumns[leftPinnedColumnIndex + 1] ??
+                            mainColumns[0];
 
-        <div class="d-flex m-b-6 p-x-8">
-            <div class="d-flex new-table--pinned-left">
-                @for (
-                    column of leftPinnedColumns;
-                    track column.key;
-                    let leftPinnedColumnIndex = $index
-                ) {
-                    @let nextColumn =
-                        leftPinnedColumns[leftPinnedColumnIndex + 1] ??
-                        mainColumns[0];
-
-                    <ng-container
-                        *ngTemplateOutlet="
-                            columnTemplate;
-                            context: {
-                                column,
-                                nextColumn,
-                            }
-                        "
-                    ></ng-container>
-                }
-            </div>
-
-            @for (
-                column of mainColumns;
-                track column.key;
-                let mainColumnIndex = $index
-            ) {
-                @let nextColumn = mainColumns[mainColumnIndex + 1];
-
-                <ng-container
-                    *ngTemplateOutlet="
-                        columnTemplate;
-                        context: {
-                            column,
-                            nextColumn,
-                        }
-                    "
-                ></ng-container>
-            }
-
-            <div class="d-flex new-table--pinned-right">
-                @for (column of rightPinnedColumns; track column.key) {
-                    <ng-container
-                        *ngTemplateOutlet="
-                            columnTemplate;
-                            context: {
-                                column,
-                            }
-                        "
-                    ></ng-container>
-                }
-            </div>
-        </div>
-
-        <!-- Body -->
-
-        <div class="new-table--body">
-            @for (row of rows; track row.id) {
-                <div
-                    class="d-flex align-items-center background-white p-x-4 br-3 m-b-2 w-fit-content"
-                >
-                    @if (row) {
-                        <div
-                            class="d-flex align-items-center p-x-4 br-3 m-t-4 m-b-4 p-y-1 background-hover-light-grey h-26"
-                            [class.background-light-grey]="row.isSelected"
-                        >
-                            <!-- Left Pinned Columns -->
-
-                            <div class="d-flex new-table--pinned-left">
-                                @for (
-                                    column of leftPinnedColumns;
-                                    track column.key
-                                ) {
-                                    <ng-container
-                                        *ngTemplateOutlet="
-                                            cellTemplate;
-                                            context: {
-                                                column,
-                                                row,
-                                            }
-                                        "
-                                    ></ng-container>
+                        <ng-container
+                            *ngTemplateOutlet="
+                                columnTemplate;
+                                context: {
+                                    column,
+                                    nextColumn,
                                 }
-                            </div>
-
-                            <!-- Main Columns -->
-
-                            @for (
-                                column of mainColumns;
-                                track column.key;
-                                let mainColumnIndex = $index
-                            ) {
-                                <ng-container
-                                    *ngTemplateOutlet="
-                                        cellTemplate;
-                                        context: {
-                                            column,
-                                            row,
-                                            mainColumnIndex,
-                                        }
-                                    "
-                                ></ng-container>
-                            }
-
-                            <!-- Right Pinned Columns -->
-
-                            <div class="d-flex new-table--pinned-right">
-                                @for (
-                                    column of rightPinnedColumns;
-                                    track column.key
-                                ) {
-                                    <ng-container
-                                        *ngTemplateOutlet="
-                                            cellTemplate;
-                                            context: {
-                                                column,
-                                                row,
-                                            }
-                                        "
-                                    ></ng-container>
-                                }
-                            </div>
-                        </div>
-
-                        <!-- Expanded Row -->
-
-                        @if (isRowExpanded(row.id)) {
-                            <div
-                                class="background-light-grey p-x-8 p-y-8 m-b-2 br-3 pos-relative expanded-row"
-                            >
-                                @if (templates['expandedRow']) {
-                                    <ng-container
-                                        [ngTemplateOutlet]="
-                                            templates['expandedRow']
-                                        "
-                                        [ngTemplateOutletContext]="{
-                                            data: row,
-                                        }"
-                                    ></ng-container>
-                                }
-                            </div>
-                        }
+                            "
+                        ></ng-container>
                     }
                 </div>
+
+                <div
+                    id="table-not-pined-scroll-container"
+                    class="d-flex not-pined-columns scrollable-columns overflow-hidden"
+                >
+                    @for (
+                        column of mainColumns;
+                        track column.key;
+                        let mainColumnIndex = $index
+                    ) {
+                        @let nextColumn = mainColumns[mainColumnIndex + 1];
+
+                        <ng-container
+                            *ngTemplateOutlet="
+                                columnTemplate;
+                                context: {
+                                    column,
+                                    nextColumn,
+                                }
+                            "
+                        ></ng-container>
+                    }
+                </div>
+
+                <div class="d-flex new-table--pinned-right">
+                    @for (column of rightPinnedColumns; track column.key) {
+                        <ng-container
+                            *ngTemplateOutlet="
+                                columnTemplate;
+                                context: {
+                                    column,
+                                }
+                            "
+                        ></ng-container>
+                    }
+                </div>
+            </div>
+
+            <!-- Body -->
+
+            <div class="new-table--body position-relative">
+                <!-- Left Scroll Border -->
+                <div
+                    class="new-table--scroll-border new-table--scroll-border-left"
+                    [ngStyle]="{ left: leftPinnedBorderWidth + 'px' }"
+                    [class.hidden]="
+                        !isLeftScrollLineShown || !hasActiveLeftPinnedColumns
+                    "
+                ></div>
+
+                <!-- Right Scroll Border -->
+                <div
+                    class="new-table--scroll-border new-table--scroll-border-right"
+                    [ngStyle]="{ right: rightPinnedBorderWidth + 'px' }"
+                    [class.hidden]="
+                        !isRightScrollLineShown || !hasActiveRightPinnedColumns
+                    "
+                ></div>
+
+                @for (row of rows; track row.id) {
+                    <div
+                        class="d-flex align-items-center background-white p-x-4 br-3 m-b-2 scrollable-columns overflow-hidden"
+                    >
+                        @if (row) {
+                            <div
+                                class="d-flex align-items-center p-x-4 br-3 p-y-1 m-t-4 m-b-4 h-26 background-hover-light-grey overflow-hidden"
+                                [class.background-light-grey]="row.isSelected"
+                            >
+                                <!-- Left Pinned Columns -->
+
+                                <div
+                                    class="d-flex align-items-center new-table--pinned-left"
+                                >
+                                    @for (
+                                        column of leftPinnedColumns;
+                                        track column.key
+                                    ) {
+                                        <ng-container
+                                            *ngTemplateOutlet="
+                                                cellTemplate;
+                                                context: {
+                                                    column,
+                                                    row,
+                                                }
+                                            "
+                                        ></ng-container>
+                                    }
+                                </div>
+
+                                <!-- Main Columns -->
+                                <div
+                                    class="d-flex not-pined-columns overflow-hidden scrollable-columns"
+                                >
+                                    @for (
+                                        column of mainColumns;
+                                        track column.key;
+                                        let mainColumnIndex = $index
+                                    ) {
+                                        <ng-container
+                                            *ngTemplateOutlet="
+                                                cellTemplate;
+                                                context: {
+                                                    column,
+                                                    row,
+                                                    mainColumnIndex,
+                                                }
+                                            "
+                                        ></ng-container>
+                                    }
+                                </div>
+
+                                <!-- Right Pinned Columns -->
+
+                                <div
+                                    class="d-flex align-items-center new-table--pinned-right"
+                                >
+                                    @for (
+                                        column of rightPinnedColumns;
+                                        track column.key
+                                    ) {
+                                        <ng-container
+                                            *ngTemplateOutlet="
+                                                cellTemplate;
+                                                context: {
+                                                    column,
+                                                    row,
+                                                }
+                                            "
+                                        ></ng-container>
+                                    }
+                                </div>
+                            </div>
+
+                            <!-- Expanded Row -->
+
+                            @if (isRowExpanded(row.id)) {
+                                <div
+                                    class="background-light-grey p-x-8 p-y-8 m-b-2 br-3 pos-relative expanded-row"
+                                >
+                                    @if (templates['expandedRow']) {
+                                        <ng-container
+                                            [ngTemplateOutlet]="
+                                                templates['expandedRow']
+                                            "
+                                            [ngTemplateOutletContext]="{
+                                                data: row,
+                                            }"
+                                        ></ng-container>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                }
+            </div>
+
+            <!-- Footer -->
+
+            @if (displayedDataCount) {
+                <app-ca-show-more
+                    [displayedDataCount]="displayedDataCount"
+                    [totalDataCount]="totalDataCount"
+                    (onShowMore)="onShowMoreClick()"
+                ></app-ca-show-more>
             }
         </div>
-
-        <!-- Footer -->
-
-        @if (displayedDataCount) {
-            <app-ca-show-more
-                [displayedDataCount]="displayedDataCount"
-                [totalDataCount]="totalDataCount"
-                (onShowMore)="onShowMoreClick()"
-            ></app-ca-show-more>
-        }
     </div>
-</div>
+</app-ta-custom-scrollbar>
 
 <!-- Templates -->
 
@@ -244,7 +281,7 @@
                 } | tableColumnClass;
 
             <div
-                class="d-flex position-relative new-table--row-heading"
+                class="d-flex position-relative new-table--row-heading flex-shrink-0"
                 [ngClass]="tableColumnClass"
                 [style.width]="columnWidth"
                 [appResizableColumn]="isResizableColumn"
