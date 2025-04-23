@@ -20,6 +20,7 @@ import {
     ePosition,
 } from 'ca-components';
 import { CardColumnsModalComponent } from '@shared/components/card-columns-modal/card-columns-modal.component';
+import { LoadTypeComponent } from '@pages/new-load/components/load-type/load-type.component';
 
 // pipes
 import {
@@ -28,7 +29,7 @@ import {
     GetNestedValuePipe,
     FormatDatePipe,
 } from '@shared/pipes';
-import { LoadStatusBackgroundColorPipe } from 'ca-components';
+import { CaLoadStatusComponent } from 'ca-components';
 
 // configs
 import {
@@ -72,13 +73,14 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
         // components
         CaTableCardViewComponent,
         CaStatusChangeDropdownComponent,
+        LoadTypeComponent,
+        CaLoadStatusComponent,
 
         // pipes
         FormatCurrencyPipe,
         ThousandSeparatorPipe,
         GetNestedValuePipe,
         FormatDatePipe,
-        LoadStatusBackgroundColorPipe,
     ],
 })
 export class NewLoadCardsComponent
@@ -87,6 +89,8 @@ export class NewLoadCardsComponent
 {
     // destroy
     protected destroy$ = new Subject<void>();
+
+    public changeStatusPopover: NgbPopover;
 
     // data (this will be changed when store is implemented)
     public tabCardData: {
@@ -141,6 +145,8 @@ export class NewLoadCardsComponent
             .subscribe((tab) => {
                 this.selectedTab = tab;
             });
+
+        this.initChangeStatusDropdownListener();
     }
 
     private navigateToLoadDetails(id: number): void {
@@ -212,6 +218,22 @@ export class NewLoadCardsComponent
 
     public onPreviousStatus(status: LoadStatusResponse): void {
         this.loadStoreService.dispatchRevertLoadStatus(status);
+    }
+
+    public onOpenChangeStatusDropdown(
+        tooltip: NgbPopover,
+        loadId: number
+    ): void {
+        this.changeStatusPopover = tooltip;
+        this.loadStoreService.dispatchOpenChangeStatuDropdown(loadId);
+    }
+
+    public initChangeStatusDropdownListener(): void {
+        this.loadStoreService.changeDropdownpossibleStatusesSelector$
+            .pipe(takeUntil(this.destroy$))
+            .subscribe((value) => {
+                if (value) this.changeStatusPopover.open();
+            });
     }
 
     ngOnDestroy(): void {

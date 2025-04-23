@@ -19,7 +19,7 @@ import {
 import { IMilesModel } from '@pages/miles/interface';
 
 // interfaces
-import { IStateFilters } from '@shared/interfaces';
+import { ICardValueData, IStateFilters } from '@shared/interfaces';
 import {
     ITableColumn,
     ITableResizeAction,
@@ -186,4 +186,16 @@ export const getMinimalListError = createAction(
 
 export const fetchNextStopsPage = createAction(
     MilesStoreConstants.ACTION_FETCH_NEXT_STOPS_PAGE
+);
+
+export const openColumnsModal = createAction(
+    MilesStoreConstants.ACTION_OPEN_COLUMNS_MODAL
+);
+
+export const setColumnsModalResult = createAction(
+    MilesStoreConstants.ACTION_SET_COLUMNS_MODAL_RESULT,
+    props<{
+        frontSideData: ICardValueData[];
+        backSideData: ICardValueData[];
+    }>()
 );

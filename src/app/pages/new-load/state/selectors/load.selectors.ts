@@ -1,6 +1,9 @@
 // Store
 import { createFeatureSelector, createSelector } from '@ngrx/store';
 
+// Enums
+import { eCardFlipViewMode } from '@shared/enums';
+
 // Intefaces
 import { ILoadState } from '@pages/new-load/interfaces';
 
@@ -171,3 +174,11 @@ export const loadIdLoadStatusChangeSelector = createSelector(
     (state: ILoadState) => state.loadIdLoadStatusChange
 );
 //#endRegion
+
+export const cardFlipViewModeSelector = createSelector(
+    selectLoadState,
+    (state: ILoadState) => {
+        const { cardFlipViewMode } = state || {};
+        return eCardFlipViewMode[cardFlipViewMode];
+    }
+);

@@ -2,6 +2,8 @@
     {
         cardsFlipType: milesStoreService.cardFlipViewModeSelector$ | async,
         miles: milesStoreService.miles$ | async,
+        frontSideData: milesStoreService.frontSideDataSelector$ | async,
+        backSideData: milesStoreService.backSideDataSelector$ | async,
     };
 
 @if (store.miles) {
@@ -17,7 +19,7 @@
     ></ca-table-card-view>
 
     <ng-template #frontSide let-data="data">
-        @for (item of frontSideData; track $index) {
+        @for (item of store.frontSideData; track $index) {
             <ng-container
                 *ngTemplateOutlet="cardTemplate; context: { item, data }"
             ></ng-container>
@@ -25,7 +27,7 @@
     </ng-template>
 
     <ng-template #backSide let-data="data">
-        @for (item of backSideData; track $index) {
+        @for (item of store.backSideData; track $index) {
             <ng-container
                 *ngTemplateOutlet="cardTemplate; context: { item, data }"
             ></ng-container>

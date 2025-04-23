@@ -51,6 +51,7 @@ import { SharedSvgRoutes } from '@shared/utils/svg-routes';
 
 // Pipes
 import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes';
+import { ThousandSeparatorPipe } from '@shared/pipes';
 
 @Component({
     selector: 'app-new-load-table',
@@ -78,6 +79,8 @@ import { TableHighlightSearchTextPipe } from '@shared/components/new-table/pipes
 
         // Pipes
         TableHighlightSearchTextPipe,
+        ThousandSeparatorPipe
+        
     ],
 })
 export class NewLoadTableComponent
