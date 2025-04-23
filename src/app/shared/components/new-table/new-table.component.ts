@@ -201,6 +201,13 @@ export class NewTableComponent<T> {
                     }
                 });
 
+            const elements = document.getElementsByClassName(
+                eCustomScroll.SCROLLABLE_COLUMNS
+            );
+            Array.from(elements).forEach((element) => {
+                element.scrollLeft = scrollEvent.scrollPosition;
+            });
+
             if (scrollEvent.scrollPosition) {
                 this.isLeftScrollLineShown = true;
 
@@ -214,13 +221,6 @@ export class NewTableComponent<T> {
                 this.isRightScrollLineShown = false;
             } else this.isRightScrollLineShown = true;
         }
-
-        let elements = document.getElementsByClassName(
-            eCustomScroll.SCROLLABLE_COLUMNS
-        );
-        Array.from(elements).forEach((element) => {
-            element.scrollLeft = scrollEvent.scrollPosition;
-        });
 
         this.cdr.detectChanges();
     }
