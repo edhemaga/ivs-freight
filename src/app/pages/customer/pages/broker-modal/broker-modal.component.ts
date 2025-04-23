@@ -77,6 +77,7 @@ import {
     CaInputAddressDropdownComponent,
     eModalButtonClassType,
     eModalButtonSize,
+    InputTestComponent,
 } from 'ca-components';
 
 // enums
@@ -156,6 +157,7 @@ import { LoadStoreService } from '@pages/load/pages/load-table/services/load-sto
         CaInputDropdownComponent,
         CaModalButtonComponent,
         CaInputAddressDropdownComponent,
+        InputTestComponent,
 
         // Pipes
         FormatDatePipe,
@@ -574,8 +576,9 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
     }
 
     public tabCreditChange(event: Tabs): void {
+        const tab: Tabs = event ?? this.billingCredit[0];
         this.billingCredit.forEach((item) => {
-            if (item?.name === event?.name) {
+            if (item?.name === tab?.name) {
                 this.brokerForm.get('creditType').patchValue(item.name);
             }
         });
@@ -592,7 +595,7 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
         }
 
         this.billingCredit = this.billingCredit.map((item) => {
-            return { ...item, checked: item.id === event.id };
+            return { ...item, checked: item.id === tab.id };
         });
     }
 
@@ -1620,11 +1623,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                     };
 
                                 if (type)
-                                    this.loadStoreService.dispatchAddNewBrokerToStaticModalData(modalSingleBrokerItem);
-
-                                    this.loadStoreService.dispatchGetCreateLoadModalData(
+                                    this.loadStoreService.dispatchAddNewBrokerToStaticModalData(
                                         modalSingleBrokerItem
                                     );
+
+                                this.loadStoreService.dispatchGetCreateLoadModalData(
+                                    modalSingleBrokerItem
+                                );
                             }
                         }
                     }
@@ -1677,8 +1682,13 @@ export class BrokerModalComponent implements OnInit, OnDestroy {
                                 const { canOpenModal, key } = this.editData;
 
                                 if (canOpenModal && key) {
-                                    this.loadStoreService.dispatchUpdateEditedBrokerStaticModalData(newData, brokerContacts);
-                                    this.loadStoreService.dispatchGetCreateLoadModalData(newData);
+                                    this.loadStoreService.dispatchUpdateEditedBrokerStaticModalData(
+                                        newData,
+                                        brokerContacts
+                                    );
+                                    this.loadStoreService.dispatchGetCreateLoadModalData(
+                                        newData
+                                    );
                                 }
 
                                 break;
