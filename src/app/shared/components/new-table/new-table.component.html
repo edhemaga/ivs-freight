@@ -1,7 +1,6 @@
 @let displayedDataCount = rows.length;
 <app-ta-custom-scrollbar
     [scrollBarOptions]="{
-        showVerticalScrollBar: false,
         showHorizontalScrollBar: true,
         dataLength: 25,
     }"
@@ -28,7 +27,6 @@
                                 context: {
                                     column,
                                     nextColumn,
-                                    hideBorder: !hasActiveLeftPinnedColumns,
                                 }
                             "
                         ></ng-container>
@@ -65,7 +63,6 @@
                                 columnTemplate;
                                 context: {
                                     column,
-                                    hideBorder: !hasActiveRightPinnedColumns,
                                 }
                             "
                         ></ng-container>
@@ -206,12 +203,7 @@
 
 <!-- Templates -->
 
-<ng-template
-    #columnTemplate
-    let-column="column"
-    let-nextColumn="nextColumn"
-    let-hideBorder="hideBorder"
->
+<ng-template #columnTemplate let-column="column" let-nextColumn="nextColumn">
     @let isAlignedRight = column.isAlignedRight;
 
     @if (column.columns?.length) {
@@ -278,8 +270,6 @@
             @let isResizableColumn = !isTableLocked && column.isResizable;
             @let isEmptyTable = !displayedDataCount;
             @let columnWidth = column.width + eUnit.PX;
-            @let columnMinWidth = column.minWidth + eUnit.PX;
-            @let isAlignedRight = column.isAlignedRight;
 
             @let tableColumnClass =
                 {
